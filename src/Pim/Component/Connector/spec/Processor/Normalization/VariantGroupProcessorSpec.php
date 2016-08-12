@@ -3,6 +3,8 @@
 namespace spec\Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Component\Batch\Item\ExecutionContext;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -103,7 +105,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         ProductValueInterface $productValue,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('my/path/variant_group.csv');
@@ -119,7 +122,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('csv_variant_group_export');
-        $directory = 'my/path/csv_variant_group_export/100/';
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/working/directory/');
 
         $variantStandard = [
             'code' => 'my_variant_group',
@@ -145,7 +150,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $productTemplate->getValuesData()->willReturn($variantStandard['values']);
         $productTemplate->getValues()->willReturn($emptyCollection);
-        $mediaFetcher->fetchAll($emptyCollection, $directory, 'my_variant_group')->shouldBeCalled();
+        $mediaFetcher->fetchAll($emptyCollection, '/working/directory/', 'my_variant_group')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
 
         $variantGroupUpdater->update($variantGroup, ['values' => $variantStandard['values']])->shouldBeCalled();
@@ -170,7 +175,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         ProductValueInterface $productValue2,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('my/path/variant_group.csv');
@@ -188,7 +194,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('csv_variant_group_export');
-        $directory = 'my/path/csv_variant_group_export/100/';
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/working/directory/');
 
         $values = [
             'picture' => [
@@ -220,7 +228,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroupUpdater->update($variantGroup, ['values' => $variantStandard['values']])->shouldBeCalled();
         $productTemplate->getValuesData()->willReturn($variantStandard['values']);
         $productTemplate->getValues()->willReturn($productValueCollection);
-        $mediaFetcher->fetchAll($productValueCollection, $directory, 'my_variant_group')->shouldBeCalled();
+        $mediaFetcher->fetchAll($productValueCollection, '/working/directory/', 'my_variant_group')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
 
         $this->process($variantGroup)->shouldReturn($variantStandard);
@@ -243,7 +251,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         ProductValueInterface $productValue2,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('my/path/variant_group.csv');
@@ -261,7 +270,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('csv_variant_group_export');
-        $directory = 'my/path/csv_variant_group_export/100/';
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/working/directory/');
 
         $values = [
             'picture' => [
@@ -288,7 +299,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroupUpdater->update($variantGroup, ['values' => $variantStandard['values']])->shouldBeCalled();
         $productTemplate->getValuesData()->willReturn($variantStandard['values']);
         $productTemplate->getValues()->willReturn($productValueCollection);
-        $mediaFetcher->fetchAll($productValueCollection, $directory, 'my_variant_group')->shouldBeCalled();
+        $mediaFetcher->fetchAll($productValueCollection, '/working/directory/', 'my_variant_group')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn(
             [
                 [

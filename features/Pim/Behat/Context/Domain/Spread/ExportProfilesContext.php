@@ -154,7 +154,7 @@ class ExportProfilesContext extends ImportExportContext
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
     {
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        $path = $this->getMediaWorkingDirectory($jobInstance, $code, $jobInstance->getRawParameters()['filePath']);
+        $path = dirname($jobInstance->getRawParameters()['filePath']);
 
         $this->checkExportDirectoryFiles(true, $table, $path);
     }
@@ -170,7 +170,7 @@ class ExportProfilesContext extends ImportExportContext
     public function exportDirectoryOfShouldNotContainTheFollowingMedia($code, TableNode $table)
     {
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        $path = $this->getMediaWorkingDirectory($jobInstance, $code, $jobInstance->getRawParameters()['filePath']);
+        $path = dirname($jobInstance->getRawParameters()['filePath']);
 
         $this->checkExportDirectoryFiles(false, $table, $path);
     }
@@ -187,12 +187,6 @@ class ExportProfilesContext extends ImportExportContext
         if ($shouldBeInDirectory && !is_dir($path)) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('Directory "%s" doesn\'t exist', $path)
-            );
-        }
-
-        if (!$shouldBeInDirectory && is_dir($path)) {
-            throw $this->getMainContext()->createExpectationException(
-                sprintf('Directory "%s" exists, but it should not', $path)
             );
         }
 
@@ -230,25 +224,5 @@ class ExportProfilesContext extends ImportExportContext
         }
 
         return $filePath;
-    }
-
-    /**
-     * Build path of the working directory to import media in a specific directory.
-     * Will be extracted with TIP-539
-     *
-     * @param JobInstance $jobInstance
-     * @param string      $code
-     * @param string      $filePath
-     *
-     * @return string
-     */
-    protected function getMediaWorkingDirectory(JobInstance $jobInstance, $code, $filePath)
-    {
-        return dirname($filePath)
-               . DIRECTORY_SEPARATOR
-               . $code
-               . DIRECTORY_SEPARATOR
-               . $jobInstance->getJobExecutions()->first()->getId()
-               . DIRECTORY_SEPARATOR;
     }
 }

@@ -3,6 +3,8 @@
 namespace spec\Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Component\Batch\Item\ExecutionContext;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -122,7 +124,8 @@ class ProductProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         ProductValueInterface $identifier,
-        ArrayCollection $valuesCollection
+        ArrayCollection $valuesCollection,
+        ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
@@ -148,7 +151,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('csv_product_export');
-        $directory = '/my/path/csv_product_export/100/';
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/working/directory/');
 
         $productStandard = [
             'values' => [
@@ -168,7 +173,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
-        $mediaFetcher->fetchAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
+        $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
 
         $this->process($product)->shouldReturn($productStandard);
@@ -190,7 +195,8 @@ class ProductProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         ProductValueInterface $identifier,
-        ArrayCollection $valuesCollection
+        ArrayCollection $valuesCollection,
+        ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
@@ -216,7 +222,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('csv_product_export');
-        $directory = '/my/path/csv_product_export/100/';
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/working/directory/');
 
         $productStandard = [
             'values' => [
@@ -231,7 +239,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
-        $mediaFetcher->fetchAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
+        $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn(
             [
                 [
