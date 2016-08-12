@@ -28,7 +28,7 @@ class ProductReader extends Reader implements
     protected $mediaPathTransformer;
 
     /**
-     * @param FileIteratorFactory     $fileIteratorFactory ,
+     * @param FileIteratorFactory     $fileIteratorFactory
      * @param ArrayConverterInterface $converter
      * @param MediaPathTransformer    $mediaPathTransformer
      * @param array                   $options
