@@ -237,6 +237,7 @@ pim_enrich:
     not_allowed: "Vous n'êtes pas autorisé à accéder à cette page"
     error_occured: "Une erreur s'est produite lors du chargement de la page"
   form:
+    required: (obligatoire)
     product:
       tab:
         associations:
@@ -329,37 +330,51 @@ pim_enrich:
             no_available_attributes: "Il n'y a plus d'attributs disponibles"
   export:
     product:
+      data:
+        title: Filtres de données
       structure:
+        title: Filtres de structure
         attributes:
           title: Attributs
       filter:
         channel:
+          title: Canal
           help: Le canal que vous souhaitez exporter
         locales:
+          title: Locales
           help: La locale que vous souhaitez exporter
         attributes:
           title: Attributs
           edit: Modifier
+          label: '{0} Tous les attributs|{1} Un attribut sélectionné|]1,Inf[ {{ count }} attributs sélectionnés'
           help: Les catégories des produits que vous souhaitez exporter
+          empty: Tous les attributs vont être exportés
           modal:
             apply: Appliquer
             cancel: Annuler
+            title: "Sélection d'attributs"
         attributes_selector:
           attribute_group: "Groupes d'attributs"
+          attributes: 'Rechercher dans les {{ attributeCount }} attributs'
+          selected: Attributs sélectionnés
           clear: Réinitialiser
           all_group: Tous les groupes
+          empty_selection: Tous les attributs vont être exportés
         family:
           title: Famille
           help: Les familles que vous souhaitez exporter
           operators:
             IN: Dans la liste
+            NOT IN: Pas dans la liste
+            EMPTY: Produits qui n’ont pas de famille
+            NOT EMPTY: Produits qui ont une famille
           empty_selection: Sélectionnez une famille
         updated:
-          title: Mis à jour
+          title: Condition temporelle
           operators:
             ALL: Pas de condition de date
-            SINCE LAST N DAYS: Produits mis à jours depuis les derniers n jours
-            >: Produits mis à jours depuis une date définie
+            SINCE LAST N DAYS: Produits mis à jour durant les n derniers jours (par ex. 6)
+            >: Produits mis à jours depuis cette date
             SINCE LAST JOB: Produits mis à jour depuis le dernier export
         enabled:
           title: Statut
@@ -378,15 +393,20 @@ pim_enrich:
             LOWER THAN ON ALL LOCALES: Non complet sur toutes les locales sélectionnées
           empty_selection: Sélectionnez une famille
         category:
+          title: Catégorie
           help: Les catégories des produits que vous souhaitez exporter
+        identifier:
+          help: Les identifiants des produits que vous souhaitez exporter, séparés par une virgule, un espace ou un saut de ligne
         metric:
           operators:
-            =: '='
-            >=: '>='
-            >: '>'
-            <=: '<='
-            <: '<'
+            =: Est égal à
+            !=: "N'est pas égal à"
+            >=: Supérieur ou égal à
+            >: Supérieur à
+            <=: Inférieur ou égal à
+            <: Inférieur à
             EMPTY: Est vide
+            NOT EMPTY: "N'est pas vide"
         string:
           operators:
             ALL: Tous
@@ -396,18 +416,22 @@ pim_enrich:
             STARTS WITH: Commence par
             ENDS WITH: Finit par
             EMPTY: Est vide
+            NOT EMPTY: "N'est pas vide"
         price-collection:
           operators:
-            =: '='
-            >=: '>='
-            <=: '<='
-            >: '>'
-            <: '<'
+            =: Est égal à
+            !=: "N'est pas égal à"
+            >=: Supérieur ou égal à
+            >: Supérieur à
+            <=: Inférieur ou égal à
+            <: Inférieur à
             EMPTY: Est vide
+            NOT EMPTY: "N'est pas vide"
         multi_select:
           operators:
             IN: Dans la liste
             EMPTY: Est vide
+            NOT EMPTY: "N'est pas vide"
         media:
           operators:
             CONTAINS: Contient
@@ -416,16 +440,24 @@ pim_enrich:
             STARTS WITH: Commence par
             ENDS WITH: Finit par
             EMPTY: Est vide
+            NOT EMPTY: "N'est pas vide"
         date:
           operators:
             >: Supérieur à
             <: Inférieur à
             =: Est égal à
+            !=: "N'est pas égal à"
+            BETWEEN: Entre
+            NOT BETWEEN: Pas entre
             EMPTY: Est vide
             NOT EMPTY: "N'est pas vide"
         number:
           operators:
+            =: Est égal à
+            !=: "N'est pas égal à"
+            >=: Supérieur ou égal à
             >: Supérieur à
+            <=: Inférieur ou égal à
             <: Inférieur à
             EMPTY: Est vide
             NOT EMPTY: "N'est pas vide"
