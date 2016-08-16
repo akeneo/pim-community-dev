@@ -58,12 +58,21 @@ class Attribute implements ArrayConverterInterface
      */
     protected function convertFields($field, $booleanFields, $data, $convertedItem)
     {
+        if (false !== strpos($field, 'label-', 0)) {
+            $labelTokens = explode('-', $field);
+            $labelLocale = $labelTokens[1];
+            $convertedItem['labels'][$labelLocale] = $data;
+
+            return $convertedItem;
+        }
+
+        if (in_array($field, $booleanFields)) {
+            $convertedItem[$field] = (bool) $data;
+
+            return $convertedItem;
+        }
+
         switch ($field) {
-            case false !== strpos($field, 'label-', 0):
-                $labelTokens = explode('-', $field);
-                $labelLocale = $labelTokens[1];
-                $convertedItem['labels'][$labelLocale] = $data;
-                break;
             case 'type':
                 $convertedItem['attribute_type'] = $data;
                 break;
@@ -80,9 +89,6 @@ class Attribute implements ArrayConverterInterface
             case 'options':
             case 'available_locales':
                 $convertedItem[$field] = ('' === $data) ? [] : explode(',', $data);
-                break;
-            case in_array($field, $booleanFields):
-                $convertedItem[$field] = (bool) $data;
                 break;
             case 'date_min':
             case 'date_max':
