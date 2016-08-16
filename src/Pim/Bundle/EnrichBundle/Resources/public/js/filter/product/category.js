@@ -7,9 +7,10 @@ define([
     'pim/filter/filter',
     'routing',
     'pim/filter/product/category/selector',
+    'pim/fetcher-registry',
     'text!pim/template/filter/product/category',
     'jquery.select2'
-], function (_, __, Backbone, BaseFilter, Routing, CategoryTree, template) {
+], function (_, __, Backbone, BaseFilter, Routing, CategoryTree, fetcherRegistry, template) {
     var TreeModal = Backbone.BootstrapModal.extend({
         className: 'modal jstree-modal'
     });
@@ -32,23 +33,39 @@ define([
         },
 
         /**
+         * {@inheritdoc}
+         */
+        getTemplateContext: function (templateContext) {
+            return $.when(
+                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
+                this.getCurrentChannel()
+            ).then(function (templateContext, channel) {
+                return _.extend({}, templateContext, {
+                    channel: channel
+                });
+            }.bind(this));
+        },
+
+        /**
          * Returns rendered input.
          *
          * @return {String}
          */
-        renderInput: function () {
-            if (undefined === this.getValue()) {
-                this.setValue([]);
+        renderInput: function (templateContext) {
+            if (undefined === this.getValue() ||
+                'IN CHILDREN' === this.getOperator()) {
+                this.setDefaultValues(templateContext.channel);
             }
 
+            var categoryCount = 'IN CHILDREN' === this.getOperator() ? 0 : this.getValue().length;
             return this.template({
                 isEditable: this.isEditable(),
                 titleEdit: __('pim_connector.export.categories.selector.title'),
                 labelEdit: __('pim_connector.export.categories.selector.edit'),
                 labelInfo: __(
                     'pim_connector.export.categories.selector.label',
-                    {count: this.getValue().length},
-                    this.getValue().length
+                    {count: categoryCount},
+                    categoryCount
                 ),
                 value: this.getValue()
             });
@@ -58,8 +75,9 @@ define([
          * Resets selection after channel has been modified then re-renders the view.
          */
         channelUpdated: function () {
-            this.setValue([], {silent: false});
-            this.render();
+            this.getCurrentChannel().then(function (channel) {
+                this.setDefaultValues(channel);
+            }.bind(this));
         },
 
         /**
@@ -78,8 +96,8 @@ define([
             var tree = new CategoryTree({
                 el: modal.$el.find('.modal-body'),
                 attributes: {
-                    'channel': this.getParentForm().getFormData().structure.scope,
-                    'categories': this.getValue()
+                    channel: this.getParentForm().getFormData().structure.scope,
+                    categories: 'IN CHILDREN' === this.getOperator() ? [] : this.getValue()
                 }
             });
 
@@ -92,11 +110,17 @@ define([
             });
 
             modal.on('ok', function () {
-                this.setData({
-                    field: this.getField(),
-                    operator: 'IN',
-                    value: tree.attributes.categories
-                });
+                if (_.isEmpty(tree.attributes.categories)) {
+                    this.getCurrentChannel().then(function (channel) {
+                        this.setDefaultValues(channel);
+                    }.bind(this));
+                } else {
+                    this.setData({
+                        field: this.getField(),
+                        operator: 'IN',
+                        value: tree.attributes.categories
+                    });
+                }
 
                 modal.close();
                 modal.remove();
@@ -108,7 +132,7 @@ define([
          * {@inheritdoc}
          */
         isEmpty: function () {
-            return _.isEmpty(this.getValue()) || '' === this.getOperator();
+            return false;
         },
 
         /**
@@ -122,6 +146,29 @@ define([
             }
 
             return fieldName;
+        },
+
+        /**
+         * Get the current selected channel
+         *
+         * @return {Promise}
+         */
+        getCurrentChannel: function () {
+            return fetcherRegistry.getFetcher('channel').fetch(this.getParentForm().getFormData().structure.scope);
+        },
+
+        /**
+         * Set the default values for the filter
+         *
+         * @param {object} channel
+         */
+        setDefaultValues: function (channel) {
+            var silent = this.getOperator() === 'IN CHILDREN' && _.isEqual(this.getValue(), [channel.category.code]);
+            this.setData({
+                field: this.getField(),
+                operator: 'IN CHILDREN',
+                value: [channel.category.code]
+            }, {silent: silent});
         }
     });
 });
