@@ -26,8 +26,7 @@
     - [Update the configuration of your custom Product Exports](#update-the-configuration-of-your-custom-product-exports)
   - [Updates for projects adding custom Mass Edit Action](#updates-for-projects-adding-custom-mass-edit-action)
     - [Update the mass edit actions services](#update-the-mass-edit-actions-services)
-    - [Update the mass edit actions classes](#update-the-mass-edit-actions-classes)
-  - [Updates for projects adding custom Attribute Types](#updates-for-projects-adding-custom-attribute-types)
+    - [Update the mass edit backend processes](#update-the-mass-edit-backend-processes)
 - [Known issues](#known-issues)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -868,20 +867,18 @@ In case you have custom export products using the native processor, you may need
 
 ### Updates for projects adding custom Mass Edit Action
 
-The Mass Edit Action are based on Connector classes, the updates of the previous section must be applied before to start this section.
-
 #### Update the mass edit actions services
 
 In 1.5 and before mass edit actions could be declared like this:
 ```
 my_bundle.mass_edit_action.my_action:
-        public: false
-        class: '%my_bundle.mass_edit_action.my_action.class%'
-        tags:
-            -
-                name: pim_enrich.mass_edit_action
-                alias: my_action
-                acl: pim_enrich_product_edit_attributes
+    public: false
+    class: '%my_bundle.mass_edit_action.my_action.class%'
+    tags:
+        -
+            name: pim_enrich.mass_edit_action
+            alias: my_action
+            acl: pim_enrich_product_edit_attributes
 ```
 As of 1.6, the `datagrid` entry of the tag is mandatory because a mass edit action linked to no datagrid makes no sense.
 
@@ -891,26 +888,70 @@ There are two operation groups for now: "mass-edit" and "category-edit", "mass-e
 Now your custom mass action declaration should look like this:
 ```
 my_bundle.mass_edit_action.my_action:
-        public: false
-        class: '%my_bundle.mass_edit_action.my_action.class%'
-        tags:
-            -
-                name: pim_enrich.mass_edit_action
-                alias: my_action
-                datagrid: product-grid
-                operation_group: mass-edit
-                acl: pim_enrich_product_edit_attributes
+    public: false
+    class: '%my_bundle.mass_edit_action.my_action.class%'
+    tags:
+        -
+            name: pim_enrich.mass_edit_action
+            alias: my_action
+            datagrid: product-grid
+            operation_group: mass-edit
+            acl: pim_enrich_product_edit_attributes
 ```
 
 In this example, we show an action for the products grid that will appear in the default group.
 
-#### Update the mass edit actions classes
+#### Update the mass edit backend processes
 
-TODO: add example with getConfiguration change, how to access to parameters, etc
+The Mass Edit backend processes are based Batch and Connector classes. 
 
-### Updates for projects adding custom Attribute Types
+We also need here to apply the updates of the import / export chapter, as the replacement of the `batch_jobs.yml by several standard services.
 
-```TODO, export builder field? array converters for import / export?```
+The `Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor` has been simplified and does not require anymore to inject a `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface`.
+
+The `getJobConfiguration()` has been removed from the `AbstractProcessor` and we can now access to runtime parameters through `$this->stepExecution->getJobParameters()`.
+
+To detect the files impacted by this change, you can execute the following command in your project folder:
+```
+    grep -rl 'Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\AbstractProcessor' src/*
+```
+
+Before,
+```
+class MyProcessorProcessor extends AbstractProcessor
+{
+      public function __construct(JobConfigurationRepositoryInterface $jobConfigurationRepo, $myArgument)
+      {
+          parent::__construct($jobConfigurationRepo);
+          $this->myArgument = $myArgument;
+      }
+
+      public function process($product)
+      {
+         $configuration = $this->getJobConfiguration();
+         // [...]
+      }
+ }
+```
+
+After,
+
+```
+class MyProcessorProcessor extends AbstractProcessor
+{
+      public function __construct($myArgument)
+      {
+          $this->myArgument = $myArgument;
+      }
+
+      public function process($product)
+      {
+          $jobParameters = $this->stepExecution->getJobParameters();
+          $actions = $jobParameters->get('actions');
+          // [...]
+      }
+}
+```
 
 ## Known issues
 
