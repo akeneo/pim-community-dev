@@ -35,6 +35,7 @@ Feature: Export products according to boolean attribute filter
     And I visit the "Content" tab
     And I add available attributes Handmade
     And I filter by "handmade" with operator "" and value "No"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     Then I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page

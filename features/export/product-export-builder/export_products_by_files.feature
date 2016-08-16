@@ -38,6 +38,7 @@ Feature: Export products according to file media attribute
     And I visit the "Content" tab
     When I add available attributes Attachment
     And I filter by "attachment" with operator "Starts with" and value "akeneo.t"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     Then I should not see the text "There are unsaved changes"
     When I am on the "ecommerce_product_export" export job page
@@ -57,6 +58,7 @@ Feature: Export products according to file media attribute
     And I visit the "Content" tab
     When I add available attributes Attachment
     And I filter by "attachment" with operator "Is empty" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     Then I should not see the text "There are unsaved changes"
     When I am on the "ecommerce_product_export" export job page

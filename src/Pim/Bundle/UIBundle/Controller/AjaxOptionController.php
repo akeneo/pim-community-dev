@@ -4,6 +4,7 @@ namespace Pim\Bundle\UIBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,14 +22,17 @@ class AjaxOptionController
     /** @var RegistryInterface */
     protected $doctrine;
 
+    /** @var ConfigurationRegistryInterface */
+    protected $registry;
+
     /**
-     * Constructor
-     *
-     * @param RegistryInterface $doctrine
+     * @param RegistryInterface              $doctrine
+     * @param ConfigurationRegistryInterface $registry
      */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(RegistryInterface $doctrine, ConfigurationRegistryInterface $registry)
     {
         $this->doctrine = $doctrine;
+        $this->registry = $registry;
     }
 
     /**
@@ -40,9 +44,16 @@ class AjaxOptionController
      */
     public function listAction(Request $request)
     {
-        $query      = $request->query;
-        $search     = $query->get('search');
-        $repository = $this->doctrine->getRepository($query->get('class'));
+        $query = $request->query;
+        $search = $query->get('search');
+        $referenceDataName = $query->get('referenceDataName');
+        $class = $query->get('class');
+
+        if (null !== $referenceDataName) {
+            $class = $this->registry->get($referenceDataName)->getClass();
+        }
+
+        $repository = $this->doctrine->getRepository($class);
 
         if ($repository instanceof OptionRepositoryInterface) {
             $choices = $repository->getOptions(

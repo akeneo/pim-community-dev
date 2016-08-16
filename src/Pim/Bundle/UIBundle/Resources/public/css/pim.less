@@ -1691,7 +1691,9 @@ h3.tab-header {
 
 .filter-input {
   .select2-container-multi {
-    height: 32px;
+    .select2-search-field input {
+      margin: -1px 0;
+    }
 
     .select2-search-choice {
       margin: 2px 0 2px 2px;
@@ -1754,6 +1756,10 @@ h3.tab-header {
         display: inline-flex;
       }
     }
+  }
+
+  .below-input {
+    display: block;
   }
 }
 

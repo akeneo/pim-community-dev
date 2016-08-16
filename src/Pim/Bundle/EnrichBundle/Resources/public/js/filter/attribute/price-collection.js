@@ -57,10 +57,6 @@ define([
                 };
             }
 
-            if ('' !== value.data) {
-                value.data = Number(value.data);
-            }
-
             return this.template(_.extend({}, templateContext, {
                 __: __,
                 value: value,

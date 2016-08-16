@@ -27,10 +27,6 @@ class Edit extends Form
 
         $this->elements = array_merge(
             [
-                'Updated time condition' => [
-                    'css'        => '.updated-since-parameter .controls',
-                    'decorators' => ['Pim\Behat\Decorator\Export\Filter\UpdatedTimeConditionDecorator'],
-                ],
                 'Category tree' => [
                     'css'        => '.jstree',
                     'decorators' => ['Pim\Behat\Decorator\Tree\JsTreeDecorator']
@@ -42,7 +38,7 @@ class Edit extends Form
                 'Attribute selector' => [
                     'css'        => '.control-group.attributes',
                     'decorators' => ['Pim\Behat\Decorator\Export\Structure\AttributesDecorator']
-                ],
+                ]
             ],
             $this->elements
         );
