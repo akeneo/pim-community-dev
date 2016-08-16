@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -105,9 +106,11 @@ abstract class AbstractItemMediaWriter implements
         $converterOptions = $this->getConverterOptions($parameters);
 
         $flatItems = [];
+        $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
+            ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+
         foreach ($items as $item) {
             if ($parameters->has('with_media') && $parameters->get('with_media')) {
-                $directory = $this->getWorkingDirectory($parameters->get('filePath'));
                 $item = $this->resolveMediaPaths($item, $directory);
             }
 
@@ -138,6 +141,8 @@ abstract class AbstractItemMediaWriter implements
         foreach ($writtenFiles as $writtenFile) {
             $this->writtenFiles[$writtenFile] = basename($writtenFile);
         }
+
+        $this->exportMedias();
     }
 
     /**
@@ -284,22 +289,28 @@ abstract class AbstractItemMediaWriter implements
     }
 
     /**
-     * Build path of the working directory to import media in a specific directory.
-     * Will be extracted with TIP-539
+     * Export medias from the working directory to the output expected directory.
      *
-     * @param string $filePath
+     * Basically, we first remove the content of /path/where/my/user/expects/the/export/files/.
+     * (This path can exist of an export was launched previously)
      *
-     * @return string
+     * Then we copy /path/of/the/working/directory/files/ to /path/where/my/user/expects/the/export/files/.
      */
-    protected function getWorkingDirectory($filePath)
+    protected function exportMedias()
     {
-        $jobExecution = $this->stepExecution->getJobExecution();
+        $outputDirectory = dirname($this->getPath());
+        $workingDirectory = $this->stepExecution->getJobExecution()->getExecutionContext()
+            ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
-        return dirname($filePath)
-               . DIRECTORY_SEPARATOR
-               . $jobExecution->getJobInstance()->getCode()
-               . DIRECTORY_SEPARATOR
-               . $jobExecution->getId()
-               . DIRECTORY_SEPARATOR;
+        $outputFilesDirectory = $outputDirectory . DIRECTORY_SEPARATOR . 'files';
+        $workingFilesDirectory = $workingDirectory . 'files';
+
+        if ($this->localFs->exists($outputFilesDirectory)) {
+            $this->localFs->remove($outputFilesDirectory);
+        }
+
+        if ($this->localFs->exists($workingFilesDirectory)) {
+            $this->localFs->mirror($workingFilesDirectory, $outputFilesDirectory);
+        }
     }
 }

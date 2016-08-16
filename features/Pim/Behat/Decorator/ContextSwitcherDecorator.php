@@ -22,7 +22,7 @@ class ContextSwitcherDecorator extends ElementDecorator
      */
     public function switchLocale($localeCode)
     {
-        $dropdown = $this->spin(function () use ($localeCode) {
+        $this->spin(function () use ($localeCode) {
             $dropdown = $this->find('css', $this->selectors['Locales dropdown']);
             if (null === $dropdown) {
                 return false;

@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -70,7 +71,9 @@ class VariantGroupProcessor implements ItemProcessorInterface, StepExecutionAwar
         $parameters = $this->stepExecution->getJobParameters();
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
-            $directory = $this->getWorkingDirectory($parameters->get('filePath'));
+            $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
+                ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+
             $this->fetchMedia($variantGroup, $directory);
         }
 
@@ -107,25 +110,5 @@ class VariantGroupProcessor implements ItemProcessorInterface, StepExecutionAwar
         foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
-    }
-
-    /**
-     * Build path of the working directory to import media in a specific directory.
-     * Will be extracted with TIP-539
-     *
-     * @param string $filePath
-     *
-     * @return string
-     */
-    protected function getWorkingDirectory($filePath)
-    {
-        $jobExecution = $this->stepExecution->getJobExecution();
-
-        return dirname($filePath)
-            . DIRECTORY_SEPARATOR
-            . $jobExecution->getJobInstance()->getCode()
-            . DIRECTORY_SEPARATOR
-            . $jobExecution->getId()
-            . DIRECTORY_SEPARATOR;
     }
 }

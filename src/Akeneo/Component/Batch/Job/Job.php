@@ -4,11 +4,14 @@ namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Implementation of the {@link Job} interface.
@@ -33,6 +36,9 @@ class Job implements JobInterface
     /** @var array */
     protected $steps;
 
+    /** @var Filesystem */
+    protected $filesystem;
+
     /**
      * @param string                   $name
      * @param EventDispatcherInterface $eventDispatcher
@@ -49,6 +55,7 @@ class Job implements JobInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->jobRepository = $jobRepository;
         $this->steps = $steps;
+        $this->filesystem = new Filesystem();
     }
 
     /**
@@ -133,12 +140,19 @@ class Job implements JobInterface
      * @param JobExecution $jobExecution
      *
      * @see Job#execute(JobExecution)
+     *
+     * A unique working directory is created before the execution of the job. It is deleted when the job is terminated.
+     * The working directory is created in the temporary filesystem. Its pathname is placed in the JobExecutionContext
+     * via the key {@link \Akeneo\Component\Batch\Job\JobInterface::WORKING_DIRECTORY_PARAMETER}
      */
     final public function execute(JobExecution $jobExecution)
     {
-        $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION, $jobExecution);
-
         try {
+            $workingDirectory = $this->createWorkingDirectory();
+            $jobExecution->getExecutionContext()->put(JobInterface::WORKING_DIRECTORY_PARAMETER, $workingDirectory);
+
+            $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION, $jobExecution);
+
             if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
                 $jobExecution->setStartTime(new \DateTime());
                 $this->updateStatus($jobExecution, BatchStatus::STARTED);
@@ -154,6 +168,21 @@ class Job implements JobInterface
 
                 $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_STOPPED, $jobExecution);
             }
+
+            if (($jobExecution->getStatus()->getValue() <= BatchStatus::STOPPED)
+                && (count($jobExecution->getStepExecutions()) === 0)
+            ) {
+                $exitStatus = $jobExecution->getExitStatus();
+                $noopExitStatus = new ExitStatus(ExitStatus::NOOP);
+                $noopExitStatus->addExitDescription("All steps already completed or no steps configured for this job.");
+                $jobExecution->setExitStatus($exitStatus->logicalAnd($noopExitStatus));
+                $this->jobRepository->updateJobExecution($jobExecution);
+            }
+
+            $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
+
+            $jobExecution->setEndTime(new \DateTime());
+            $this->jobRepository->updateJobExecution($jobExecution);
         } catch (JobInterruptedException $e) {
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $jobExecution->setStatus(
@@ -172,23 +201,12 @@ class Job implements JobInterface
             $this->jobRepository->updateJobExecution($jobExecution);
 
             $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_FATAL_ERROR, $jobExecution);
+        } finally {
+            $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+            if (null !== $workingDirectory) {
+                $this->deleteWorkingDirectory($workingDirectory);
+            }
         }
-
-        if (($jobExecution->getStatus()->getValue() <= BatchStatus::STOPPED)
-            && (count($jobExecution->getStepExecutions()) === 0)
-        ) {
-            /* @var ExitStatus */
-            $exitStatus = $jobExecution->getExitStatus();
-            $noopExitStatus = new ExitStatus(ExitStatus::NOOP);
-            $noopExitStatus->addExitDescription("All steps already completed or no steps configured for this job.");
-            $jobExecution->setExitStatus($exitStatus->logicalAnd($noopExitStatus));
-            $this->jobRepository->updateJobExecution($jobExecution);
-        }
-
-        $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
-
-        $jobExecution->setEndTime(new \DateTime());
-        $this->jobRepository->updateJobExecution($jobExecution);
     }
 
     /**
@@ -316,5 +334,39 @@ class Job implements JobInterface
     private function updateStatus(JobExecution $jobExecution, $status)
     {
         $jobExecution->setStatus(new BatchStatus($status));
+    }
+
+    /**
+     * Create a unique working directory
+     *
+     * @return string the working directory path
+     */
+    private function createWorkingDirectory()
+    {
+        $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('akeneo_batch_') . DIRECTORY_SEPARATOR;
+        try {
+            $this->filesystem->mkdir($path);
+        } catch (IOException $e) {
+            // this exception will be catched by {Job->execute()} and will set the batch as failed
+            throw new RuntimeErrorException(
+                sprintf('Unable to create the working directory "%s".', $path),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        return $path;
+    }
+
+    /**
+     * Delete the working directory
+     *
+     * @param string $directory
+     */
+    private function deleteWorkingDirectory($directory)
+    {
+        if ($this->filesystem->exists($directory)) {
+            $this->filesystem->remove($directory);
+        }
     }
 }

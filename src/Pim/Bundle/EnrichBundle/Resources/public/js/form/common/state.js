@@ -46,7 +46,7 @@ define(
                     message: 'pim_enrich.info.entity.updated'
                 }, meta.config);
 
-                this.confirmationMessage = __(this.config.confirmationMessage, {entity: this.config.entity});
+                this.confirmationMessage = __(this.config.confirmationMessage, {entity: __(this.config.entity)});
                 this.confirmationTitle   = __(this.config.confirmationTitle);
                 this.message             = __(this.config.message);
 
