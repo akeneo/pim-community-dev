@@ -62,42 +62,51 @@ class Attribute implements ArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-
             return $convertedItem;
         }
 
-        if (in_array($field, $booleanFields)) {
+        if ($field === 'type') {
+            $convertedItem['attribute_type'] = $data;
+            return $convertedItem;
+        }
+
+        if ($field === 'number_min' ||
+            $field === 'number_max' ||
+            $field === 'max_file_size'
+        ) {
+            $convertedItem[$field] = ('' === $data) ? null : (float) $data;
+            return $convertedItem;
+        }
+
+        if ($field === 'sort_order' ||
+            $field === 'max_characters' ||
+            $field === 'minimum_input_length'
+        ) {
+            $convertedItem[$field] = ('' === $data) ? null : (int) $data;
+            return $convertedItem;
+        }
+
+        if ($field === 'options' ||
+            $field === 'available_locales'
+        ) {
+            $convertedItem[$field] = ('' === $data) ? [] : explode(',', $data);
+            return $convertedItem;
+        }
+
+        if ($field === 'date_min' ||
+            $field === 'date_max' ||
+            $field === 'reference_data_name'
+        ) {
+            $convertedItem[$field] = ('' === $data) ? null : $data;
+            return $convertedItem;
+        }
+
+        if (in_array($field, $booleanFields, true)) {
             $convertedItem[$field] = (bool) $data;
-
             return $convertedItem;
         }
 
-        switch ($field) {
-            case 'type':
-                $convertedItem['attribute_type'] = $data;
-                break;
-            case 'number_min':
-            case 'number_max':
-            case 'max_file_size':
-                $convertedItem[$field] = ('' === $data) ? null : (float) $data;
-                break;
-            case 'sort_order':
-            case 'max_characters':
-            case 'minimum_input_length':
-                $convertedItem[$field] = ('' === $data) ? null : (int) $data;
-                break;
-            case 'options':
-            case 'available_locales':
-                $convertedItem[$field] = ('' === $data) ? [] : explode(',', $data);
-                break;
-            case 'date_min':
-            case 'date_max':
-            case 'reference_data_name':
-                $convertedItem[$field] = ('' === $data) ? null : $data;
-                break;
-            default:
-                $convertedItem[$field] = (string) $data;
-        }
+        $convertedItem[$field] = (string) $data;
 
         return $convertedItem;
     }
