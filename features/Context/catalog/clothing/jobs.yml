@@ -189,6 +189,14 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/published-product.csv
+            filters:
+                data: {}
+                structure:
+                    scope: mobile
+                    locales:
+                        - de_DE
+                        - en_US
+                        - fr_FR
     xlsx_clothing_mobile_published_product_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_published_product_export
@@ -197,7 +205,15 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath: /tmp/published-product.csv
+            filePath: /tmp/published-product.xlsx
+            filters:
+                data: {}
+                structure:
+                    scope: mobile
+                    locales:
+                        - de_DE
+                        - en_US
+                        - fr_FR
     csv_clothing_product_proposal_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_proposal_import

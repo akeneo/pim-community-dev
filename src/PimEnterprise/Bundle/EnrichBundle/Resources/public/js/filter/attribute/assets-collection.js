@@ -9,7 +9,6 @@ define([
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',
-    'text!pim/template/filter/attribute/select',
     'jquery.select2'
 ], function (
     $,
@@ -19,53 +18,44 @@ define([
     SelectFilter,
     FetcherRegistry,
     UserContext,
-    i18n,
-    template
+    i18n
 ) {
     return SelectFilter.extend({
         /**
          * {@inheritdoc}
          */
         getSelect2Options: function (attribute) {
-            return FetcherRegistry.getFetcher(this.config.fetcherCode).fetchAll()
-                .then(function (config) {
-                    return Routing.generate(this.config.url);
-                }.bind(this))
-                .then(function (choiceUrl) {
-                    return {
-                        ajax: {
-                            url: choiceUrl,
-                            cache: true,
-                            data: function (term) {
-                                return {
-                                    search: term,
-                                    options: {
-                                        locale: UserContext.get('uiLocale')
-                                    }
-                                };
-                            },
-                            results: function (data) {
-                                return this.parseAssetResponse(data);
-                            }.bind(this)
-                        },
-                        initSelection: function (element, callback) {
-                            if (null === this.choicePromise) {
-                                this.choicePromise = $.get(choiceUrl);
+            var choiceUrl = this.getChoiceUrl(attribute);
+
+            return {
+                ajax: {
+                    url: choiceUrl,
+                    cache: true,
+                    data: function (term) {
+                        return {
+                            search: term,
+                            options: {
+                                locale: UserContext.get('uiLocale')
                             }
+                        };
+                    },
+                    results: function (data) {
+                        return this.parseAssetResponse(data);
+                    }.bind(this)
+                },
+                initSelection: function (element, callback) {
+                    this.getChoices(attribute).then(function (response) {
+                        response = this.parseAssetResponse(response);
+                        var results = response.results;
 
-                            this.choicePromise.then(function (response) {
-                                var response = this.parseAssetResponse(response);
-                                var results = response.results;
-
-                                var choices = _.map($(element).val().split(','), function (choice) {
-                                    return _.findWhere(results, {id: choice});
-                                });
-                                callback(choices);
-                            }.bind(this));
-                        }.bind(this),
-                        multiple: true
-                    };
-                }.bind(this));
+                        var choices = _.map($(element).val().split(','), function (choice) {
+                            return _.findWhere(results, {id: choice});
+                        });
+                        callback(choices);
+                    }.bind(this));
+                }.bind(this),
+                multiple: true
+            };
         },
 
         /**
@@ -76,6 +66,22 @@ define([
         },
 
         /**
+         * Clean invalid values by removing possibly non-existent options coming from database.
+         * This method returns a promise which, once resolved, should return the attribute.
+         *
+         * @param {string} attribute
+         *
+         * @returns {Promise}
+         */
+        cleanInvalidValues: function (attribute, currentValues) {
+            return this.getChoices(attribute).then(function (response) {
+                var possibleValues = _.pluck(response, 'code');
+                currentValues      = undefined !== currentValues ? currentValues : [];
+
+                return _.intersection(currentValues, possibleValues);
+            }.bind(this));
+        },
+        /**
          * Parses the normalized asset containing all information to keep the information needed for the select2
          *
          * @param {array} assets
@@ -85,7 +91,7 @@ define([
                 results: _.map(assets, function (asset) {
                     return {
                         id: asset.code,
-                        text: '[' + asset.code + ']'
+                        text: i18n.getLabel([], UserContext.get('uiLocale'), asset.code)
                     };
                 }),
                 more: 0 !== assets.length

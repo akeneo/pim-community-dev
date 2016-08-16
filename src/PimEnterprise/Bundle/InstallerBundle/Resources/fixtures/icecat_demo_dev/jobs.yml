@@ -78,6 +78,14 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/published-product.csv
+            filters:
+                data: {}
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - fr_FR
+                        - en_US
+                        - de_DE
     csv_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
@@ -489,6 +497,14 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/published-product.xlsx
+            filters:
+                data: {}
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - fr_FR
+                        - en_US
+                        - de_DE
     xlsx_product_quick_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_quick_export

@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\UIBundle\Controller;
 
 use Pim\Bundle\UIBundle\Controller\AjaxOptionController as BaseAjaxOptionController;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -29,12 +30,16 @@ class AjaxOptionController extends BaseAjaxOptionController
     protected $userContext;
 
     /**
-     * @param RegistryInterface $doctrine
-     * @param UserContext       $userContext
+     * @param RegistryInterface              $doctrine
+     * @param ConfigurationRegistryInterface $referenceDataRegistry
+     * @param UserContext                    $userContext
      */
-    public function __construct(RegistryInterface $doctrine, UserContext $userContext)
-    {
-        parent::__construct($doctrine);
+    public function __construct(
+        RegistryInterface $doctrine,
+        ConfigurationRegistryInterface $referenceDataRegistry,
+        UserContext $userContext
+    ) {
+        parent::__construct($doctrine, $referenceDataRegistry);
 
         $this->userContext = $userContext;
     }
@@ -44,9 +49,16 @@ class AjaxOptionController extends BaseAjaxOptionController
      */
     public function listAction(Request $request)
     {
-        $query      = $request->query;
-        $search     = $query->get('search');
-        $repository = $this->doctrine->getRepository($query->get('class'));
+        $query = $request->query;
+        $search = $query->get('search');
+        $referenceDataName = $query->get('referenceDataName');
+        $class = $query->get('class');
+
+        if (null !== $referenceDataName) {
+            $class = $this->registry->get($referenceDataName)->getClass();
+        }
+
+        $repository = $this->doctrine->getRepository($class);
 
         if ($repository instanceof AssetRepositoryInterface) {
             $grantedCategories = $this->userContext->getGrantedCategories();
