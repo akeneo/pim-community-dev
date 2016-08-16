@@ -55,25 +55,15 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
      */
     public function remove($object, array $options = [])
     {
-        if (!$object instanceof $this->removedClass) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "%s", "%s" provided.',
-                    $this->removedClass,
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
+        $this->validateObject($object);
 
         $options  = $this->optionsResolver->resolveRemoveOptions($options);
         $objectId = $object->getId();
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $objectId, $options));
 
         $this->objectManager->remove($object);
-
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
+        $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_REMOVE, new RemoveEvent($object, $objectId, $options));
     }
@@ -88,15 +78,36 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
         }
 
         $allOptions = $this->optionsResolver->resolveRemoveAllOptions($options);
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
+        $itemOptions  = $this->optionsResolver->resolveRemoveOptions($allOptions);
 
         foreach ($objects as $object) {
-            $this->remove($object, $itemOptions);
+            $this->validateObject($object);
+
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $object->getId(), $itemOptions));
+
+            $this->objectManager->remove($object);
         }
 
-        if (true === $allOptions['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
+
+        foreach ($objects as $object) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_REMOVE, new RemoveEvent($object, $object->getId(), $itemOptions));
+        }
+    }
+
+    /**
+     * @param $object
+     */
+    protected function validateObject($object)
+    {
+        if (!$object instanceof $this->removedClass) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "%s", "%s" provided.',
+                    $this->removedClass,
+                    ClassUtils::getClass($object)
+                )
+            );
         }
     }
 }

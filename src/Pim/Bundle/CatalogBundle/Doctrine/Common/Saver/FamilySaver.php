@@ -45,11 +45,12 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         CompletenessManager $completenessManager,
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->objectManager       = $objectManager;
+    )
+    {
+        $this->objectManager = $objectManager;
         $this->completenessManager = $completenessManager;
-        $this->optionsResolver     = $optionsResolver;
-        $this->eventDispatcher     = $eventDispatcher;
+        $this->optionsResolver = $optionsResolver;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -57,14 +58,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
      */
     public function save($family, array $options = [])
     {
-        if (!$family instanceof FamilyInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\FamilyInterface", "%s" provided.',
-                    ClassUtils::getClass($family)
-                )
-            );
-        }
+        $this->validateFamily($family);
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
@@ -72,15 +66,11 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->persist($family);
 
-        if (true === $options['schedule']) {
-            $this->completenessManager->scheduleForFamily($family);
-        }
+        $this->completenessManager->scheduleForFamily($family);
 
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
 
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family));
-        }
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family));
     }
 
     /**
@@ -92,14 +82,18 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($families));
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
-
         foreach ($families as $family) {
-            $this->save($family, $itemOptions);
+            $this->validateFamily($family);
+
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family));
+
+            $this->objectManager->persist($family);
+
+            $this->completenessManager->scheduleForFamily($family);
         }
 
         $this->objectManager->flush();
@@ -109,5 +103,20 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($families));
+    }
+
+    /**
+     * @param $family
+     */
+    protected function validateFamily($family)
+    {
+        if (!$family instanceof FamilyInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "Pim\Component\Catalog\Model\FamilyInterface", "%s" provided.',
+                    ClassUtils::getClass($family)
+                )
+            );
+        }
     }
 }

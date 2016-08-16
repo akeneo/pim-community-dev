@@ -55,15 +55,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof $this->savedClass) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "%s", "%s" provided.',
-                    $this->savedClass,
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
+        $this->validateObject($object);
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
@@ -71,11 +63,9 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->persist($object);
 
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
 
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
-        }
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
     }
 
     /**
@@ -88,24 +78,41 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         }
 
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $allOptions));
 
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
+        $itemOptions = $this->optionsResolver->resolveSaveOptions($allOptions);
 
         foreach ($objects as $object) {
-            $this->save($object, $itemOptions);
+            $this->validateObject($object);
+
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $itemOptions));
+
+            $this->objectManager->persist($object);
         }
 
-        if (true === $allOptions['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
 
-            foreach ($objects as $object) {
-                $itemOptions = $this->optionsResolver->resolveSaveOptions($allOptions);
-                $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $itemOptions));
-            }
+        foreach ($objects as $object) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $itemOptions));
+        }
 
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $allOptions));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $allOptions));
+    }
+
+    /**
+     * @param $object
+     */
+    protected function validateObject($object)
+    {
+        if (!$object instanceof $this->savedClass) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "%s", "%s" provided.',
+                    $this->savedClass,
+                    ClassUtils::getClass($object)
+                )
+            );
         }
     }
 }
