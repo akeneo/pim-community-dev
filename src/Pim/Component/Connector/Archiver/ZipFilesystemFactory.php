@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Filesystem;
+namespace Pim\Component\Connector\Archiver;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;

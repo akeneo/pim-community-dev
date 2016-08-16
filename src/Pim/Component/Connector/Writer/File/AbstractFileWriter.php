@@ -6,7 +6,6 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Abstract file writer to handle file naming and configuration-related logic.
@@ -18,27 +17,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
-    /** @var OptionsResolver */
-    protected $filePathResolver;
-
     /** @var StepExecution */
     protected $stepExecution;
-
-    /** @var array */
-    protected $filePathResolverOptions;
 
     /** @var Filesystem */
     protected $localFs;
 
     public function __construct()
     {
-        $this->filePathResolver = new OptionsResolver();
-        $this->filePathResolver->setRequired('parameters');
-        $this->filePathResolver->setAllowedTypes('parameters', 'array');
-
-        $this->filePathResolverOptions = [
-            'parameters' => ['%datetime%' => date('Y-m-d_H:i:s')]
-        ];
         $this->localFs = new Filesystem();
     }
 
@@ -50,18 +36,8 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
     public function getPath()
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $filePath = $parameters->get('filePath');
 
-        if ($parameters->has('mainContext')) {
-            $mainContext = $parameters->get('mainContext');
-            foreach ($mainContext as $key => $value) {
-                $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
-            }
-        }
-
-        $options = $this->filePathResolver->resolve($this->filePathResolverOptions);
-
-        return strtr($filePath, $options['parameters']);
+        return $parameters->get('filePath');
     }
 
     /**

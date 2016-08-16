@@ -1,7 +1,7 @@
 parameters:
     pim_connector.event_listener.archivist.class:                 Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist
     pim_connector.event_listener.invalid_items_collector.class:   Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector
-    pim_connector.factory.zip_filesystem.class:                   Pim\Component\Connector\Filesystem\ZipFilesystemFactory
+    pim_connector.factory.zip_filesystem.class:                   Pim\Component\Connector\Archiver\ZipFilesystemFactory
     pim_connector.archiver.file_reader_archiver.class:            Pim\Component\Connector\Archiver\FileReaderArchiver
     pim_connector.archiver.file_writer_archiver.class:            Pim\Component\Connector\Archiver\FileWriterArchiver
     pim_connector.archiver.archivable_file_writer_archiver.class: Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver

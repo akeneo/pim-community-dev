@@ -442,7 +442,7 @@ abstract class AbstractAttribute implements AttributeInterface
         if ($this->isScopable()) {
             $groups[] = 'scopable';
         }
-        if ($this->isScopable()) {
+        if ($this->isLocalizable()) {
             $groups[] = 'localizable';
         }
         if ($rule = $this->getValidationRule()) {

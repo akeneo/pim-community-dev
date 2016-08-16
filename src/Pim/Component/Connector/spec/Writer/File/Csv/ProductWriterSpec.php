@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Connector\Writer\File\Csv;
 
+use Akeneo\Component\Batch\Item\ExecutionContext;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -59,13 +61,15 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . 'product.csv');
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
@@ -119,7 +123,8 @@ class ProductWriterSpec extends ObjectBehavior
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
-                            'filePath' => 'a/b/c/d/it_s_the_filename.jpg',
+                            // the file paths are resolved before the conversion to the standard format
+                            'filePath' => 'files/jackets/media/it\'s the filename.jpg',
                         ]
                     ]
                 ]
@@ -136,7 +141,7 @@ class ProductWriterSpec extends ObjectBehavior
             'description-en_US-mobile'    => 'Simple description',
             'description-fr_FR-ecommerce' => 'Une description merveilleuse...',
             'description-fr_FR-mobile'    => 'Une simple description',
-            'media'                       => 'a/b/c/d/it_s_the_filename.jpg',
+            'media'                       => 'files/jackets/media/it\'s the filename.jpg',
         ];
 
         $productStandard2 = [
@@ -175,11 +180,14 @@ class ProductWriterSpec extends ObjectBehavior
 
         $items = [$productStandard1, $productStandard2];
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('csv_product_export');
-        $productPathMedia1 = $this->directory . 'csv_product_export/100/files/jackets/media/';
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
+
+        $productPathMedia1 = $this->directory . 'files/jackets/media/';
         $originalFilename = "it's the filename.jpg";
 
         $this->filesystem->mkdir($productPathMedia1);
@@ -222,13 +230,16 @@ class ProductWriterSpec extends ObjectBehavior
         $bufferFactory,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . 'product.csv');
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
@@ -253,8 +264,8 @@ class ProductWriterSpec extends ObjectBehavior
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
-                            'filePath' => 'a/b/c/d/it_s_the_filename.jpg',
-                        ]
+                            // the file paths are resolved before the conversion to the standard format
+                            'filePath' => 'files/jackets/media/it\'s the filename.jpg',                        ]
                     ]
                 ]
             ]
@@ -271,6 +282,9 @@ class ProductWriterSpec extends ObjectBehavior
         ];
 
         $items = [$productStandard];
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 
@@ -292,18 +306,24 @@ class ProductWriterSpec extends ObjectBehavior
         $flusher,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
@@ -315,17 +335,5 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->flush();
-    }
-
-    function it_builds_the_path(StepExecution $stepExecution, JobParameters $jobParameters)
-    {
-        $options = ['date' => '2015-01-01'];
-        $this->setStepExecution($stepExecution);
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('mainContext')->willReturn(true);
-        $jobParameters->get('mainContext')->willReturn($options);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'product_%date%.csv');
-
-        $this->getPath()->shouldReturn($this->directory . 'product_2015-01-01.csv');
     }
 }

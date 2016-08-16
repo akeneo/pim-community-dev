@@ -22,7 +22,7 @@ Feature: Update user preferences
     And I confirm the deletion
     And I edit the "Julia" user
     And I visit the "Additional" tab
-    Then I should see the text "Default tree 2014 collection"
+    Then I should see the text "Default tree (required) 2014 collection"
 
   Scenario: Successfully delete a channel used by a user
     Given I edit the "Peter" user
@@ -34,7 +34,7 @@ Feature: Update user preferences
     And I confirm the deletion
     And I edit the "Peter" user
     And I visit the "Additional" tab
-    Then I should see the text "Catalog scope Ecommerce"
+    Then I should see the text "Catalog scope (required) Ecommerce"
 
   Scenario: Successfully disable a locale used by a user
     Given I edit the "Julia" user
@@ -51,4 +51,4 @@ Feature: Update user preferences
     And I confirm the deletion
     And I edit the "Julia" user
     And I visit the "Additional" tab
-    Then I should see the text "Catalog locale de_DE"
+    Then I should see the text "Catalog locale (required) de_DE"

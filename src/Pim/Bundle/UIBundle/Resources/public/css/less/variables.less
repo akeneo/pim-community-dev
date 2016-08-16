@@ -8,7 +8,9 @@
 @inputBorderRadius:   3px;
 @mediumScreen:        1340px;
 @buttonHeight:        28px;
-@uploadZoneHeight:    80px;
+@uploadZoneHeight:    100px;
+@max-field-width:     500px;
+@min-field-width:     300px;
 
 // Font sizes
 @lato-coeff: 1.011; // Lato font is smaller than previous one (Helvetica)
@@ -19,7 +21,6 @@
 @font-size-27: 27px * @lato-coeff;
 @font-size-26: 26px * @lato-coeff;
 @font-size-24: 24px * @lato-coeff;
-@font-size-22: 22px * @lato-coeff;
 @font-size-21: 21px * @lato-coeff;
 @font-size-20: 20px * @lato-coeff;
 @font-size-19: 19px * @lato-coeff;
@@ -60,6 +61,7 @@
 
 // Reds
 @red:        #d36050;
+@redLight:   lighten(@red, 10%); // #dd8579
 @redLighter: lighten(@red, 30%); // #f2cfca
 @redDark:    darken(@red, 10%);  // #c04230
 @redDarker:  darken(@red, 20%);  // #973426
@@ -78,6 +80,7 @@
 
 // Yellows
 @yellow:        #f8b43f;
+@yellowLight:   lighten(@yellow, 10%); // #fac770
 @yellowLighter: lighten(@yellow, 30%); // #fdeed3
 @yellowDark:    darken(@yellow, 10%);  // #f6a10e
 @yellowDarker:  darken(@yellow, 20%);  // #ca8207

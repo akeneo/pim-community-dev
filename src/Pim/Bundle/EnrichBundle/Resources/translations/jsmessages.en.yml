@@ -246,6 +246,7 @@ pim_enrich:
         not_allowed: You are not allowed to access this page
         error_occured: An error occured during the loading of the page
     form:
+        required: (required)
         product:
             tab:
                 associations:
@@ -347,10 +348,10 @@ pim_enrich:
                     title: Attributes
             filter:
                 channel:
-                    title: Channel (required)
+                    title: Channel
                     help: The channel you want to export
                 locales:
-                    title: Locales (required)
+                    title: Locales
                     help: The locales you want to export
                 attributes:
                     title: Attributes

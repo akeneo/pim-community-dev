@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Connector\Writer\File\Csv;
 
+use Akeneo\Component\Batch\Item\ExecutionContext;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -59,13 +61,14 @@ class VariantGroupWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.csv');
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
@@ -85,7 +88,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
                         'locale' => null,
                         'scope'  => null,
                         'data' => [
-                            'filePath' => 'a/b/c/d/it_s_the_filename.jpg',
+                            'filePath' => 'files/jackets/media/it\'s the filename.jpg',
                         ]
                     ]
                 ]
@@ -98,7 +101,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
             'type'        => 'variant',
             'label-en_US' => 'Jacket',
             'label-en_GB' => 'Jacket',
-            'media'       => 'files/jackets/media/it\'s the filaname.jpg'
+            'media'       => 'files/jackets/media/it\'s the filename.jpg'
         ];
 
         $variantStandard2 = [
@@ -136,7 +139,11 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('csv_variant_group_export');
-        $variantPathMedia1 = $this->directory . 'csv_variant_group_export/100/files/jackets/media/';
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
+
+        $variantPathMedia1 = $this->directory . 'files/jackets/media/';
         $originalFilename = "it's the filename.jpg";
 
         $this->filesystem->mkdir($variantPathMedia1);
@@ -174,13 +181,16 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $bufferFactory,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.csv');
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
@@ -213,10 +223,13 @@ class VariantGroupWriterSpec extends ObjectBehavior
             'type'        => 'variant',
             'label-en_US' => 'Jacket',
             'label-en_GB' => 'Jacket',
-            'media'       => 'files/jackets/media/it\'s the filaname.jpg'
+            'media'       => 'files/jackets/media/it\'s the filename.jpg'
         ];
 
         $items = [$variantStandard1];
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn(null);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 
@@ -238,18 +251,24 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $flusher,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
@@ -261,17 +280,5 @@ class VariantGroupWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->flush();
-    }
-
-    function it_builds_the_path(StepExecution $stepExecution, JobParameters $jobParameters)
-    {
-        $options = ['date' => '2015-01-01'];
-        $this->setStepExecution($stepExecution);
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('mainContext')->willReturn(true);
-        $jobParameters->get('mainContext')->willReturn($options);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group_%date%.csv');
-
-        $this->getPath()->shouldReturn($this->directory . 'variant_group_2015-01-01.csv');
     }
 }

@@ -1,7 +1,8 @@
 @import 'less/variables';
 @import 'less/mixins';
 
-.navbar-extra .btn+.btn {
+
+.navbar-extra .btn + .btn {
   margin-left: 8px;
 }
 
@@ -39,7 +40,7 @@
     height: 28px;
 
     &.icons-holder-text {
-      padding: 0 10px 0 40px;
+      padding: 0 10px 0 38px;
       i {
         width: 28px;
         height: 28px;
@@ -66,11 +67,19 @@
     }
   }
 
-  &:hover, &:active, &:focus{
+  &:focus {
+    background-color: @akeneoGreyLighter;
+    color: @gray;
+  }
+
+  &:focus, &:hover, &:active {
     outline: none;
     background-image: none;
     border: none;
     box-shadow: none;
+  }
+
+  &:hover, &:active {
     background-color: @akeneoGreyLight;
   }
 }
@@ -90,6 +99,16 @@
 
   &:hover {
     background-color: @greenDark;
+  }
+
+  &:focus {
+    color: white;
+  }
+
+  &.disabled {
+    &:hover, &.icons-holder-text i {
+      background-color: @green;
+    }
   }
 }
 
@@ -242,6 +261,11 @@
     background-color: @akeneoGreyLight;
   }
 
+  &.disabled {
+    &:hover, &.icons-holder-text i {
+      background-color: @akeneoGreyLighter;
+    }
+  }
 }
 
 .btn.back-link {
@@ -338,6 +362,10 @@
       box-shadow: none;
       background-color: darken(@white, 10%);
     }
+  }
+
+  label {
+    font-weight: normal;
   }
 }
 

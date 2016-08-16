@@ -149,12 +149,16 @@ class GroupSaverSpec extends ObjectBehavior
     }
 
     function it_handles_media_values_of_variant_group_product_templates(
+        $optionsResolver,
         $templateMediaManager,
         $eventDispatcher,
         GroupInterface $group,
         GroupType $type,
         ProductTemplateInterface $template
     ) {
+        $optionsResolver->resolveSaveOptions(Argument::any())
+            ->willReturn(['flush' => true, 'copy_values_to_products' => false]);
+
         $group->getProducts()->willReturn(new ArrayCollection([]));
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');

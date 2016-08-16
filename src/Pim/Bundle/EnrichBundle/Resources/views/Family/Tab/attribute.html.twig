@@ -1,10 +1,13 @@
-<div class="tab-pane tab-attribute {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+<div class="tabsection tab-pane tab-attribute {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
     {% if elements is not defined %}
         {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
     {% endif %}
-    <div class="tab-content">
-        <div id="attribute-buttons"></div>
-
+    <div class="tabsection-title">
+        <div class="pull-right">
+            <div id="attribute-buttons"></div>
+        </div>
+    </div>
+    <div class="tabsection-content tab-content">
         {% set columnWidth = 85/(channels|length) %}
 
         <table class="table groups">

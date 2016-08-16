@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Filesystem;
+namespace spec\Pim\Component\Connector\Archiver;
 
 use PhpSpec\ObjectBehavior;
 

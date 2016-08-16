@@ -1328,6 +1328,24 @@ class WebUser extends RawMinkContext
     /**
      * @param string $button
      *
+     * @throws TimeoutException
+     *
+     * @Given /^The button "([^"]*)" should be disabled$/
+     */
+    public function theButtonShouldBeDisabled($button)
+    {
+        $buttonNode = $this->spin(function () use ($button) {
+            return $this->getCurrentPage()->getButton($button);
+        }, sprintf("Can not find any '%s' button", $button));
+
+        $this->spin(function () use ($buttonNode) {
+            return $buttonNode->hasClass('disabled');
+        }, sprintf("The button '%s' is not disabled", $button));
+    }
+
+    /**
+     * @param string $button
+     *
      * @Given /^I should not see the "([^"]*)" button$/
      */
     public function iShouldNotSeeTheButton($button)
@@ -1973,7 +1991,7 @@ class WebUser extends RawMinkContext
     public function iShouldSeeFields($groupField, TableNode $fields)
     {
         foreach ($fields->getRows() as $data) {
-            $this->getCurrentPage()->findFieldInAccordion($groupField, $data[0]);
+            $this->getCurrentPage()->findFieldInTabSection($groupField, $data[0]);
         }
     }
 

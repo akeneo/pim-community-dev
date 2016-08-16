@@ -22,6 +22,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ProductExportController
 {
+    const DATETIME_FORMAT = 'Y-m-d_H:i:s';
+
     /** @var Request */
     protected $request;
 
@@ -87,13 +89,10 @@ class ProductExportController
 
         $filters       = $this->gridFilterAdapter->adapt($this->request);
         $rawParameters = $jobInstance->getRawParameters();
-        $mainContext   = $this->getContextParameters();
+        $contextParameters = $this->getContextParameters();
+        $rawParameters['filePath'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
+        $dynamicConfiguration = $contextParameters + ['filters' => $filters];
 
-        $dynamicConfiguration = [
-            'filters'     => $filters,
-            'mainContext' => $mainContext
-        ];
-        
         if ($displayedColumnsOnly) {
             $gridName = (null !== $this->request->get('gridName')) ? $this->request->get('gridName') : 'product-grid';
             if (isset($this->request->get($gridName)['_parameters'])) {
@@ -163,5 +162,23 @@ class ProductExportController
         }
 
         return $contextParams;
+    }
+
+    /**
+     * Build file path to replace pattern like %locale%, %scope% by real data
+     *
+     * @param string $filePath
+     * @param array  $contextParameters
+     *
+     * @return string
+     */
+    protected function buildFilePath($filePath, array $contextParameters)
+    {
+        $data = ['%datetime%' => date(static::DATETIME_FORMAT)];
+        foreach ($contextParameters as $key => $value) {
+            $data['%' . $key . '%'] = $value;
+        }
+
+        return strtr($filePath, $data);
     }
 }

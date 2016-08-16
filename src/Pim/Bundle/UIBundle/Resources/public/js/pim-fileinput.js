@@ -20,12 +20,6 @@ define(
                 var $removeCheckbox = $input.siblings('input[type="checkbox"]');
                 var $preview        = $info.find('.upload-preview');
 
-                if ($preview.prop('tagName').toLowerCase() !== 'i') {
-                    var iconClass = $zone.hasClass('image') ? 'icon-camera-retro' : 'icon-file';
-                    $preview.replaceWith($('<i>', { 'class': iconClass + ' upload-preview'}));
-                    $preview = $info.find('.upload-preview');
-                }
-
                 if (filename) {
                     var title = filename.length > maxFilenameLength ?
                         filename.substring(0, maxFilenameLength - 3) + '...' :

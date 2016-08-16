@@ -190,55 +190,78 @@ See the documentation [here](http://docs.akeneo.com/latest/reference/import_expo
 
 ## Update dependencies and configuration
 
-Download the latest [PIM community standard](http://www.akeneo.com/download/) and extract it:
+1. Download the latest [PIM community standard](http://www.akeneo.com/download/) and extract it:
 
-```
- wget http://www.akeneo.com/pim-community-standard-v1.6-latest.tar.gz
- tar -zxf pim-community-standard-v1.6-latest.tar.gz
- cd pim-community-standard-v1.6.*/
-```
+    ```
+     wget http://www.akeneo.com/pim-community-standard-v1.6-latest.tar.gz
+     tar -zxf pim-community-standard-v1.6-latest.tar.gz
+     cd pim-community-standard-v1.6.*/
+    ```
 
-Copy the following files to your PIM installation:
+2. Copy the following files to your PIM installation:
 
-```
- export PIM_DIR=/path/to/your/pim/installation
- cp app/SymfonyRequirements.php $PIM_DIR/app
- cp app/config/config.yml $PIM_DIR/app/config/
- cp composer.json $PIM_DIR/
-```
+    ```
+     export PIM_DIR=/path/to/your/pim/installation
+     cp app/SymfonyRequirements.php $PIM_DIR/app
+     cp app/SymfonyRequirements.php $PIM_DIR/app
+     cp app/config/config.yml $PIM_DIR/app/config/ should be cp app/config/pim_parameters.yml $PIM_DIR/app/config ?
+     cp composer.json $PIM_DIR/
+    ```
 
-**In case your products are stored in Mongo**, don't forget to re-add the mongo dependencies to your *composer.json*:
+3. Update your **config.yml**
 
-```
- "doctrine/mongodb-odm-bundle": "3.0.1"
-```
+    * Remove the configuration of `CatalogBundle` from this file (config tree :`pim_catalog`).
+    * Update the default locale from `en_US` to `en`
 
-And don't forget to add your own dependencies to your *composer.json* in case you have some.
+4. Update your **app/AppKernel.php**:
 
-Merge the following files into your PIM installation:
- - *app/AppKernel.php*: TODO
- - *app/config/routing.yml*: TODO
- - *app/config/config.yml*: TODO
+    * Remove the following bundles: 
+        - `Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle`
+        - `Pim\Bundle\TransformBundle\PimTransformBundle`
+        - `Nelmio\ApiDocBundle\NelmioApiDocBundle`
+        
+5. Update your **app/config/routing.yml**: 
 
-Then remove your old upgrades folder:
-```
- rm upgrades/ -rf
-```
+    * Remove the route: `nelmio_api_doc`
 
-Now you're ready to update your dependencies:
+6. Then remove your old upgrades folder:
+    ```
+     rm upgrades/ -rf
+    ```
 
-```
- cd $PIM_DIR
- composer update
-```
+7. Now you're ready to update your dependencies:
 
-This step will also copy the upgrades folder from `vendor/akeneo/pim-community-dev/` to your Pim project root to allow you to migrate.
+    * **Caution**, don't forget to re-add your own dependencies to your *composer.json* in case you have some:
+        
+        ```
+        "require": {
+            "your/dependencies": "version",
+            "your/other-dependencies": "version",
+        }
+        ```
+        
+        Especially if you store your product in Mongo, don't forget to add `doctrine/mongodb-odm-bundle`:
+        
+        ```
+        "require": {
+            "doctrine/mongodb-odm-bundle": "3.2.0"
+        }
+        ```
+    
+    * Then run the command to update your dependencies:
+    
+        ```
+         cd $PIM_DIR
+         composer update
+        ```
 
-Then you can migrate your database using:
+        This step will also copy the upgrades folder from `vendor/akeneo/pim-community-dev/` to your Pim project root to allow you to migrate.
 
-```
- php app/console doctrine:migration:migrate
-```
+8. Then you can migrate your database using:
+
+    ```
+     php app/console doctrine:migration:migrate
+    ```
 
 ## Domain layer extraction
 

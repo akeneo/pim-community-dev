@@ -132,7 +132,7 @@
             {% if form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode %}
                 <input type="checkbox" class="comparisonSelection exclude" />
             {% else %}
-                {% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label }}
+                {{ label }}{% if required and not isRadioLabel %} <em>{{ 'required'|trans }}</em>{% endif %}
             {% endif %}
         </label>
     {% endif %}
@@ -190,25 +190,15 @@
 
 {% block pim_translatable_field_row %}
     {{ form_errors(form) }}
-    <table class="table table-condensed">
-        <thead>
-            <tr>
-                {% for translation in form %}
-                    <th>{{ form_label(translation) }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                {% for translation in form %}
-                    <td>
-                        {{ form_errors(translation) }}
-                        {{ form_widget(translation) }}
-                    </td>
-                {% endfor %}
-            </tr>
-        </tbody>
-    </table>
+    {% for translation in form %}
+    <div class="control-group">
+        {{ form_label(translation) }}
+        <div class="controls">
+            {{ form_errors(translation) }}
+            {{ form_widget(translation) }}
+        </div>
+    </div>
+    {% endfor %}
 {% endblock %}
 
 {% block pim_enrich_media_row %}
@@ -216,29 +206,29 @@
 
     {% set empty = not form.vars.value or not form.vars.value.key %}
     {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
-        <div class="control-group">
+        <div class="control-group upload-zone-container">
             {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.uploadedFile.vars.id} }) }}
             <div class="controls">
                 <label class="upload-zone file{% if empty %} empty{% endif %}{% if disabled %} disabled{% endif %}">
+                    {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
+                        <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}{% if disabled %} disabled{% endif %}">
+                            <i class="icon-trash"></i>
+                        </a>
+                    {% endif %}
                     <div class="upload-info">
                         {% if not empty %}
                             <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
-                                <i class="icon-file upload-preview"></i>
+                                <img src="/bundles/pimui/images/upload.png" alt="upload icon" class="upload-preview">
                             </a>
                             {% set filename = form.vars.value.originalFilename %}
                             {% if filename|length > 20 %}
                                 {% set filename = filename|slice(0, 17) ~ '...' %}
                             {% endif %}
                         {% else %}
-                            <i class="icon-file upload-preview empty"></i>
+                            <img src="/bundles/pimui/images/upload.png" alt="upload icon" class="upload-preview">
                         {% endif %}
-                        <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ filename }}{% endif %}</span>
+                        <span class="upload-filename" data-empty-title="{{ 'Drag and drop a file or click here'|trans }}">{% if empty %}{{ 'Drag and drop a file or click here'|trans }}{% else %}{{ filename }}{% endif %}</span>
                     </div>
-                    {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
-                        <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}{% if disabled %} disabled{% endif %}">
-                            <i class="icon-trash"></i>
-                        </a>
-                    {% endif %}
                     {% if empty %}
                         {{ form_widget(form.uploadedFile) }}
                     {% else %}

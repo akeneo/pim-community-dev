@@ -48,7 +48,7 @@ class WriterSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn(true);
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
 
         $groups = [
             [
@@ -122,7 +122,7 @@ class WriterSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('linesPerFile')->willReturn(2);
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 

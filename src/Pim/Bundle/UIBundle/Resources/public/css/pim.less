@@ -54,6 +54,7 @@ a:focus {
   background-color: @akeneoLight;
   color: @akeneoDarkBlue;
 }
+
 table.grid {
   margin-bottom: 20px;
 }
@@ -176,9 +177,33 @@ a.back-link i {
   padding-left: 5px;
 }
 
-/** Dashboard ********************************************************************************************************/
-hr.small {
-    margin: 4px 0;
+table.job-execution {
+  tr.error > td, tr.warning > td {
+    background: none;
+    border-top: none;
+    padding: 0 20px 10px;
+
+    & > div {
+      .border-radius(4px);
+      padding: 10px;
+      border-width: 1px;
+      border-style: solid;
+    }
+  }
+
+  tr.error > td > div {
+    background: @redLighter;
+    border-color: @redLight;
+  }
+
+  tr.warning > td > div {
+    background: @yellowLighter;
+    border-color: @yellowLight;
+  }
+
+  table.table-vertically-condensed {
+    width: 100%;
+  }
 }
 
 /** widgets **********************************************************************************************************/
@@ -279,7 +304,7 @@ span.link-label {
   .indicator {
     position: absolute;
     text-align: center;
-    right: 1px;
+    right: -3px;
     top: -7px;
 
     .badge-square {
@@ -491,9 +516,6 @@ body {
   min-height: 600px;
 }
 
-@max-field-width: 500px;
-@min-field-width: 300px;
-
 header.tab-header {
   min-height: 44px;
   border-left: none;
@@ -647,12 +669,13 @@ h3.tab-header {
       .flex();
 
       & > .tab-pane {
-        padding-top: 15px;
-        padding-right: 20px;
-        margin-left: 20px;
         box-sizing: border-box;
         display: block;
         overflow: auto;
+
+        &.object-values {
+          padding: 15px 20px;
+        }
       }
 
       & > .tab-pane.association-type {
@@ -1627,6 +1650,10 @@ h3.tab-header {
   .select2-container {
     min-width: 300px;
   }
+
+  .tab-pane {
+    padding: 10px 20px;
+  }
 }
 
 .scopable-input .note-editor {
@@ -1648,8 +1675,9 @@ h3.tab-header {
 
 .input-like {
   padding: 0 3px 10px 3px;
-  width: 300px;
+  width: @max-field-width;
   box-sizing: content-box;
+  font-size: @font-size-12;
 
   &.disabled {
     background-color: @color-disabled;
@@ -1676,10 +1704,6 @@ h3.tab-header {
 
 [data-type="pim-filter-attribute-metric"] .filter-input,
 [data-type="pim-filter-attribute-price-collection"] .filter-input {
-  .operator {
-    width: 100px;
-  }
-
   .value {
     width: 80px;
   }
@@ -1690,9 +1714,9 @@ h3.tab-header {
 }
 
 .attributes .input-like, [data-type="pim-filter-product-category"] .filter-input .input-like {
-    padding: 2px 2px 2px 0;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
+  padding: 2px 2px 2px 0;
+  border: 1px solid @color-ddd;
+  box-sizing: border-box;
 }
 
 .attributes .input-like {
@@ -1704,20 +1728,33 @@ h3.tab-header {
 [data-type="pim-filter-attribute-string"] .filter-input,
 [data-type="pim-filter-attribute-media"] .filter-input,
 [data-type="pim-filter-attribute-number"] .filter-input,
-[data-type="pim-filter-attribute-date"] .filter-input {
+[data-type="pim-filter-attribute-date"] .filter-input,
+[data-type="pim-filter-attribute-metric"] .filter-input,
+[data-type="pim-filter-attribute-price-collection"] .filter-input {
+  @operator-width: 100px;
   .operator {
-    width: 100px;
+    width: @operator-width;
   }
 
-  .value {
-    width: 197px;
+  .operator ~ input[type="text"],
+  .operator ~ input[type="password"],
+  .operator ~ input[type="date"],
+  .operator ~ input[type="number"],
+  .operator ~ input[type="email"],
+  .operator ~ input[type="url"],
+  .operator ~ input[type="search"],
+  .operator ~ .start-date-wrapper input[type="text"],
+  .operator + select + .select2-container {
+    width: @max-field-width - @operator-width;
   }
 }
 
 .structure-filters {
   .attributes {
     .controls {
-      display: flex;
+      .flex-space-between {
+        display: inline-flex;
+      }
     }
   }
 

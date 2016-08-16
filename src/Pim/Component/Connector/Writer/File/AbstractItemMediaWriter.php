@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -13,7 +14,6 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -44,14 +44,8 @@ abstract class AbstractItemMediaWriter implements
     /** @var string[] */
     protected $mediaAttributeTypes;
 
-    /** @var OptionsResolver */
-    protected $filePathResolver;
-
     /** @var StepExecution */
     protected $stepExecution;
-
-    /** @var array */
-    protected $filePathResolverOptions;
 
     /** @var Filesystem */
     protected $localFs;
@@ -85,14 +79,6 @@ abstract class AbstractItemMediaWriter implements
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->fileExporterPath = $fileExporterPath;
 
-        $this->filePathResolver = new OptionsResolver();
-        $this->filePathResolver->setRequired('parameters');
-        $this->filePathResolver->setAllowedTypes('parameters', 'array');
-
-        $this->filePathResolverOptions = [
-            'parameters' => ['%datetime%' => date('Y-m-d_H:i:s')]
-        ];
-
         $this->localFs = new Filesystem();
     }
 
@@ -120,9 +106,11 @@ abstract class AbstractItemMediaWriter implements
         $converterOptions = $this->getConverterOptions($parameters);
 
         $flatItems = [];
+        $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
+            ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+
         foreach ($items as $item) {
             if ($parameters->has('with_media') && $parameters->get('with_media')) {
-                $directory = $this->getWorkingDirectory($parameters->get('filePath'));
                 $item = $this->resolveMediaPaths($item, $directory);
             }
 
@@ -153,6 +141,8 @@ abstract class AbstractItemMediaWriter implements
         foreach ($writtenFiles as $writtenFile) {
             $this->writtenFiles[$writtenFile] = basename($writtenFile);
         }
+
+        $this->exportMedias();
     }
 
     /**
@@ -163,18 +153,8 @@ abstract class AbstractItemMediaWriter implements
     public function getPath()
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $filePath = $parameters->get('filePath');
 
-        if ($parameters->has('mainContext')) {
-            $mainContext = $parameters->get('mainContext');
-            foreach ($mainContext as $key => $value) {
-                $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
-            }
-        }
-
-        $options = $this->filePathResolver->resolve($this->filePathResolverOptions);
-
-        return strtr($filePath, $options['parameters']);
+        return $parameters->get('filePath');
     }
 
     /**
@@ -301,30 +281,36 @@ abstract class AbstractItemMediaWriter implements
             $options['date_format'] = $parameters->get('dateFormat');
         }
 
-        if ($parameters->has('mainContext') && isset($parameters->get('mainContext')['ui_locale'])) {
-            $options['locale'] = $parameters->get('mainContext')['ui_locale'];
+        if ($parameters->has('ui_locale')) {
+            $options['locale'] = $parameters->get('ui_locale');
         }
 
         return $options;
     }
 
     /**
-     * Build path of the working directory to import media in a specific directory.
-     * Will be extracted with TIP-539
+     * Export medias from the working directory to the output expected directory.
      *
-     * @param string $filePath
+     * Basically, we first remove the content of /path/where/my/user/expects/the/export/files/.
+     * (This path can exist of an export was launched previously)
      *
-     * @return string
+     * Then we copy /path/of/the/working/directory/files/ to /path/where/my/user/expects/the/export/files/.
      */
-    protected function getWorkingDirectory($filePath)
+    protected function exportMedias()
     {
-        $jobExecution = $this->stepExecution->getJobExecution();
+        $outputDirectory = dirname($this->getPath());
+        $workingDirectory = $this->stepExecution->getJobExecution()->getExecutionContext()
+            ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
-        return dirname($filePath)
-               . DIRECTORY_SEPARATOR
-               . $jobExecution->getJobInstance()->getCode()
-               . DIRECTORY_SEPARATOR
-               . $jobExecution->getId()
-               . DIRECTORY_SEPARATOR;
+        $outputFilesDirectory = $outputDirectory . DIRECTORY_SEPARATOR . 'files';
+        $workingFilesDirectory = $workingDirectory . 'files';
+
+        if ($this->localFs->exists($outputFilesDirectory)) {
+            $this->localFs->remove($outputFilesDirectory);
+        }
+
+        if ($this->localFs->exists($workingFilesDirectory)) {
+            $this->localFs->mirror($workingFilesDirectory, $outputFilesDirectory);
+        }
     }
 }

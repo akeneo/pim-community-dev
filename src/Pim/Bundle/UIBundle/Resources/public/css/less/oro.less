@@ -110,49 +110,74 @@ a:focus {
 }
 
 .btn-group+.btn-group { margin-left:8px; }
-.btn-group > .dropdown-menu li a {
-  padding-top:1px;
-  padding-bottom:1px;
+
+.btn-group > .dropdown-menu li a, .btn-group > .dropdown-menu li button {
+  padding: 1px 20px;
   font-size: @font-size-12;
-  color:@bodyColor;
-  text-shadow:none !important;
+  color: @bodyColor;
+  text-shadow: none !important;
+  background: @white;
+  text-align: left;
+  width: 100%;
+  border: none;
   &:hover {
-    color: @white;
+    background: @akeneoGreySuperLight;
   }
 }
 
 // Bootstrap - Form
-label, input, button, select, textarea { font-size: @font-size-13;}
+label, input, button, select, textarea {
+  font-size: @font-size-12;
+}
+
 .form-horizontal .control-label {
-  font-size: @font-size-13;
+  font-size: @font-size-12;
   text-align:left;
   line-height:1.2em;
 }
 .control-group .controls p.control-label{
   width: auto;
 }
+
 .form-horizontal {
   .control-group {
+    & + .control-group {
+      padding-top: 5px;
+    }
+
     label.control-label {
-      float:left;
-      width:160px;
-      padding-top:5px;
-      color: @color-777;
-      font-weight: normal;
-      font-size: @font-size-13;
-      text-align:right;
+      box-sizing: border-box;
+      display: block;
+      height: 20px;
+      line-height: 20px;
+      margin-bottom: 5px;
+      width: 100%;
+      -webkit-box-flex: 1;
+      padding-top: 0;
+
       &:after {
         content:":";
       }
     }
+
     .controls {
-      margin-left:170px;
-      .control-label {
-        width: auto;
+      margin-left: 0;
+
+      input[type="text"],
+      input[type="password"],
+      input[type="date"],
+      input[type="number"],
+      input[type="email"],
+      input[type="url"],
+      input[type="search"],
+      textarea {
+        width: @max-field-width;
+        font-size: @font-size-12;
       }
     }
   }
 }
+
 input[type='checkbox'] + label { margin-bottom:2px; }
 textarea,
 input[type="text"],
@@ -165,7 +190,7 @@ input[type="search"],
 select {
   border-color:@color-ddd;
   color:@grayDark;
-  font-size: @font-size-13;
+  font-size: @font-size-12;
 }
 .btn-group > .btn:last-child,
 .btn-group > .dropdown-toggle {
@@ -372,7 +397,7 @@ select {
   display: inline-block;
   vertical-align: top;
   padding: 0 5px;
-  line-height: 32px;
+  line-height: 26px;
 }
 .grid-toolbar {
   /* FE */
@@ -608,10 +633,18 @@ select {
   clear: both;
   display: block;
 }
+.sub-title a {
+  color: @akeneoPurple;
+}
 
-.sub-title a { color:@akeneoPurple; }
+.navbar-content .customer-info {
+  .sub-title {
+    float: none;
+  }
+}
+
 .customer-info {
-  padding-left: 76px;
+  padding-left: 60px;
   padding-bottom: 0;
   line-height: 18px;
   .sub-title {
@@ -729,9 +762,7 @@ select {
 
 label.required em,
 .form-horizontal label.required em {
-  padding: 0 3px;
-  color: @redDarker;
-  font-size: @font-size-15;
+  font-style: normal;
 }
 
 input, textarea { width:280px; }
@@ -745,18 +776,8 @@ textarea {
   display: none;
 }
 .scrollspy-title {
-  border:1px solid @grayLighter;
-  border-width:1px 0;
-  margin: 0 0 0 -20px;
-  color:lighten(@bodyColor,20%);
-  font-size: @font-size-13;
-  font-weight:normal;
-  text-shadow:0 1px 0 @white;
-  line-height:18px;
-  padding: 10px;
-}
-.scrollspy-nav-target {
-  height: 20px;
+  line-height: 18px;
+  padding: 10px 20px;
 }
 .oro-clearfix-width:after,
 .oro-clearfix:after {
@@ -897,9 +918,6 @@ select {
 
 .responsive-section .inner-grid {
   margin:-20px -20px 20px -20px;
-}
-.layout-content .responsive-section {
-  padding: 0 0 35px;
 }
 .container-fluid > .responsive-section .scrollspy-title {
   margin-left:0;
