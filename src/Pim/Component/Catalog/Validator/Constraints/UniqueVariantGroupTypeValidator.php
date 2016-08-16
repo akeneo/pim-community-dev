@@ -16,15 +16,15 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class UniqueVariantGroupTypeValidator extends ConstraintValidator
 {
-    /** @var GroupTypeRepositoryInterface $repository */
-    protected $repository;
+    /** @var GroupTypeRepositoryInterface $groupTypeRepository */
+    protected $groupTypeRepository;
 
     /**
-     * @param GroupTypeRepositoryInterface $repository
+     * @param GroupTypeRepositoryInterface $groupTypeRepository
      */
-    public function __construct(GroupTypeRepositoryInterface $repository)
+    public function __construct(GroupTypeRepositoryInterface $groupTypeRepository)
     {
-        $this->repository = $repository;
+        $this->groupTypeRepository = $groupTypeRepository;
     }
 
     /**
@@ -36,9 +36,9 @@ class UniqueVariantGroupTypeValidator extends ConstraintValidator
     public function validate($groupType, Constraint $constraint)
     {
         if ($groupType->isVariant()) {
-            $variantGroupType = $this->repository->getVariantGroupType();
+            $variantGroupType = $this->groupTypeRepository->getVariantGroupType();
 
-            if ($variantGroupType && $variantGroupType->getId() !== $groupType->getId()) {
+            if (null !== $variantGroupType && $variantGroupType->getId() !== $groupType->getId()) {
                 $this->context->buildViolation($constraint->message)->addViolation();
             }
         }
