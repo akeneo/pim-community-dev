@@ -52,6 +52,7 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $value = floatval($value);
 
         $this->applyFilter($operator, $value, $field);
 
