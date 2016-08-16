@@ -11,7 +11,7 @@ class OroUIExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testLoad()
     {
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $this->container = $this->createMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 
         $this->container->expects($this->once())
             ->method('getParameter')

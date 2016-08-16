@@ -12,18 +12,18 @@ class AclVoterTest extends \PHPUnit_Framework_TestCase
         $selector = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector')
             ->disableOriginalConstructor()
             ->getMock();
-        $permissionMap = $this->getMock('Symfony\Component\Security\Acl\Permission\PermissionMapInterface');
+        $permissionMap = $this->createMock('Symfony\Component\Security\Acl\Permission\PermissionMapInterface');
         $voter = new AclVoter(
-            $this->getMock('Symfony\Component\Security\Acl\Model\AclProviderInterface'),
-            $this->getMock('Symfony\Component\Security\Acl\Model\ObjectIdentityRetrievalStrategyInterface'),
-            $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityRetrievalStrategyInterface'),
+            $this->createMock('Symfony\Component\Security\Acl\Model\AclProviderInterface'),
+            $this->createMock('Symfony\Component\Security\Acl\Model\ObjectIdentityRetrievalStrategyInterface'),
+            $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityRetrievalStrategyInterface'),
             $permissionMap
         );
         $voter->setAclExtensionSelector($selector);
 
-        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $object = new \stdClass();
-        $extension = $this->getMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface');
+        $extension = $this->createMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface');
         $extension->expects($this->once())
             ->method('getAccessLevel')
             ->with($this->equalTo(1))

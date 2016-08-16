@@ -40,10 +40,10 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         }
 
         $ef = new EncoderFactory([static::USER_CLASS => new MessageDigestPasswordEncoder('sha512')]);
-        $class = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
+        $class = $this->createMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
 
-        $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $this->repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $this->om = $this->createMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
 
         $this->om
             ->expects($this->any())

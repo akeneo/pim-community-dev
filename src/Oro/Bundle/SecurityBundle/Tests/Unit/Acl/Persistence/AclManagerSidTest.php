@@ -37,7 +37,7 @@ class AclManagerSidTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateSid()
     {
-        $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $sid = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $this->aclProvider->expects($this->once())
             ->method('updateSecurityIdentity')
             ->with($this->identicalTo($sid), $this->equalTo('old'));
@@ -47,7 +47,7 @@ class AclManagerSidTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteSid()
     {
-        $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $sid = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $this->aclProvider->expects($this->once())
             ->method('deleteSecurityIdentity')
             ->with($this->identicalTo($sid));

@@ -56,7 +56,7 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
         $fileName = md5(time()) . '.jpg';
         $uploadDir = 'uploads/post-remove-test';
 
-        $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
+        $entity = $this->createMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
         $this->assertImageRemoveConditions($entity, $fileName, $uploadDir);
 
         $this->getSubscriber()->postRemove($this->getEvent($entity));
@@ -78,7 +78,7 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testPrePersist()
     {
-        $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
+        $entity = $this->createMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
         $this->assertImageUpdate($entity);
 
         $this->getSubscriber()->prePersist($this->getEvent($entity));
@@ -108,7 +108,7 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
         $fileName = md5(time()) . '.jpg';
         $uploadDir = 'uploads/pre-update-test';
 
-        $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
+        $entity = $this->createMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
         $this->assertImageRemoveConditions($entity, $fileName, $uploadDir);
         $this->assertImageUpdate($entity);
 
@@ -140,7 +140,7 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testHandleImageUploadNoImage()
     {
-        $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
+        $entity = $this->createMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
         $entity->expects($this->never())
             ->method('getUploadDir');
         $entity->expects($this->exactly(2))
@@ -155,7 +155,7 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPostUpdate()
     {
         $uploadDir = 'uploads/image-upload-test';
-        $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
+        $entity = $this->createMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
         $this->assertImageUploadPreconditions($entity, $uploadDir);
         $this->getSubscriber()->postUpdate($this->getEvent($entity));
         $this->assertFileExists($this->getUploadRootDir() . DIRECTORY_SEPARATOR . $uploadDir);
@@ -164,7 +164,7 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPostPersist()
     {
         $uploadDir = 'uploads/image-upload-test';
-        $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
+        $entity = $this->createMock('Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface');
         $this->assertImageUploadPreconditions($entity, $uploadDir);
         $this->getSubscriber()->postPersist($this->getEvent($entity));
         $this->assertFileExists($this->getUploadRootDir() . DIRECTORY_SEPARATOR . $uploadDir);

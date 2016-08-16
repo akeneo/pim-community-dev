@@ -29,11 +29,11 @@ class NavigationMostviewedBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
+        $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->factory = $this->getMock('Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory');
+        $this->factory = $this->createMock('Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory');
 
         $this->builder = new NavigationMostviewedBuilder($this->tokenStorage, $this->em, $this->factory);
     }
@@ -51,7 +51,7 @@ class NavigationMostviewedBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue($userId));
 
-        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $token->expects($this->once())
             ->method('getUser')
             ->will($this->returnValue($user));
@@ -60,7 +60,7 @@ class NavigationMostviewedBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getToken')
             ->will($this->returnValue($token));
 
-        $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface');
+        $item = $this->createMock('Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface');
         $this->factory->expects($this->once())
             ->method('createItem')
             ->with($type, [])

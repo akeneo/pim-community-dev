@@ -27,7 +27,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $this->eventDispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcher');
         $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()->getMock();
     }

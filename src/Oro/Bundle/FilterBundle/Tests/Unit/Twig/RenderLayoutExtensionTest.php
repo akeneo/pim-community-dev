@@ -109,7 +109,7 @@ class RenderLayoutExtensionTest extends AbstractExtensionTestCase
                 ->will($this->returnValue(self::TEST_BLOCK_HTML));
         }
 
-        $environment = $this->getMock('\Twig_Environment', ['loadTemplate']);
+        $environment = $this->createMock('\Twig_Environment', ['loadTemplate']);
         $environment->expects($this->any())
             ->method('loadTemplate')
             ->with(self::TEST_TEMPLATE_NAME)

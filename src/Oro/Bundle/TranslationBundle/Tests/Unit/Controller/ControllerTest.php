@@ -71,7 +71,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderJsTranslationContent($params, $expected)
     {
-        $templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
+        $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
         $templating
             ->expects($this->any())
             ->method('render')

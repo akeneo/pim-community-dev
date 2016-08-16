@@ -33,7 +33,7 @@ class TranslationExtractorTest extends \PHPUnit_Framework_TestCase
         $route = $this->getMockBuilder('Symfony\Component\Routing\Route')
             ->disableOriginalConstructor()
             ->getMock();
-        $routeCollection = $this->getMock('Symfony\Component\Routing\RouteCollection');
+        $routeCollection = $this->createMock('Symfony\Component\Routing\RouteCollection');
         $routeCollection
             ->expects($this->once())
             ->method('all')

@@ -8,7 +8,7 @@ class PinbarTabTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetMaximizedNotEmpty()
     {
-        $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
+        $item = $this->createMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
 
         $pinbarTab = new PinbarTab();
         $pinbarTab->setItem($item);
@@ -19,7 +19,7 @@ class PinbarTabTest extends \PHPUnit_Framework_TestCase
 
     public function testSetMaximizedEmpty()
     {
-        $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
+        $item = $this->createMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
 
         $pinbarTab = new PinbarTab();
         $pinbarTab->setItem($item);
@@ -30,7 +30,7 @@ class PinbarTabTest extends \PHPUnit_Framework_TestCase
 
     public function testSetGet()
     {
-        $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
+        $item = $this->createMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
 
         $pinbarTab = new PinbarTab();
         $pinbarTab->setItem($item);
@@ -40,7 +40,7 @@ class PinbarTabTest extends \PHPUnit_Framework_TestCase
 
     public function testDoPrePersist()
     {
-        $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
+        $item = $this->createMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
 
         $pinbarTab = new PinbarTab();
         $pinbarTab->setItem($item);
@@ -52,7 +52,7 @@ class PinbarTabTest extends \PHPUnit_Framework_TestCase
     public function testSetValues()
     {
         $values = ['maximized' => '2022-02-02 22:22:22', 'url' => '/'];
-        $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
+        $item = $this->createMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
         $item->expects($this->once())
             ->method('setValues')
             ->with($values);
@@ -70,8 +70,8 @@ class PinbarTabTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUser()
     {
-        $user = $this->getMock('stdClass');
-        $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
+        $user = $this->createMock('stdClass');
+        $item = $this->createMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
         $item->expects($this->once())
             ->method('getUser')
             ->will($this->returnValue($user));

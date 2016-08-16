@@ -241,7 +241,7 @@
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="henrikbjorn/phpspec-code-coverage" />
-            <arg value="1.0.*@dev" />
+            <arg value="3.0.*@dev" />
         </exec>
 
         <!--

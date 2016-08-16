@@ -16,7 +16,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->acl = $this->getMock('Symfony\Component\Security\Acl\Model\MutableAclInterface');
+        $this->acl = $this->createMock('Symfony\Component\Security\Acl\Model\MutableAclInterface');
         $this->manipulator = new AceManipulationHelper();
     }
 
@@ -26,20 +26,20 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetPermissionShouldCallUpdateAceForAce3($type, $field)
     {
-        $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $sid = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $replace = true;
         $granting = true;
         $mask = 123;
         $strategy = 'any';
 
-        $aceSid1 = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $aceSid1 = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $aceGranting1 = $granting;
         $aceMask1 = $mask;
         $aceStrategy1 = $strategy;
 
-        $aceSid2 = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $aceSid2 = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
 
-        $aceSid3 = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $aceSid3 = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $aceGranting3 = $granting;
         $aceMask3 = 789;
         $aceStrategy3 = $strategy;
@@ -116,15 +116,15 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetPermissionShouldCallInsertAce($type, $field)
     {
-        $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $sid = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $replace = false;
         $granting = true;
         $mask = 123;
         $strategy = 'any';
 
-        $aceSid1 = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $aceSid1 = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
 
-        $aceSid2 = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $aceSid2 = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $aceGranting2 = $granting;
         $aceMask2 = $mask;
         $aceStrategy2 = 'all';
@@ -199,19 +199,19 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeletePermission($type, $field)
     {
-        $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $sid = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $granting = true;
         $mask = 123;
         $strategy = 'any';
 
-        $aceSid1 = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $aceSid1 = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $aceGranting1 = true;
         $aceMask1 = 123;
         $aceStrategy1 = 'equal';
 
-        $aceSid2 = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $aceSid2 = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
 
-        $aceSid3 = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $aceSid3 = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $aceGranting3 = $granting;
         $aceMask3 = $mask;
         $aceStrategy3 = $strategy;
@@ -268,10 +268,10 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeleteAllPermissions($type, $field)
     {
-        $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $sid = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
 
-        $aceSid1 = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
-        $aceSid2 = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $aceSid1 = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $aceSid2 = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $ace1 = $this->getAce($aceSid1);
         $ace2 = $this->getAce($aceSid2);
 
@@ -340,7 +340,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
     public function testInsertAce($type, $field)
     {
         $index = 1;
-        $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $sid = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $granting = true;
         $mask = 123;
         $strategy = 'any';
@@ -444,7 +444,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
         $getMaskCallCount = 1,
         $getStrategyCallCount = 1
     ) {
-        $ace = $this->getMock('Symfony\Component\Security\Acl\Model\EntryInterface');
+        $ace = $this->createMock('Symfony\Component\Security\Acl\Model\EntryInterface');
         $ace->expects($this->once())
             ->method('getSecurityIdentity')
             ->will($this->returnValue($sid));

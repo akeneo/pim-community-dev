@@ -42,7 +42,7 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->router = $this->getMock('Symfony\Component\Routing\RouterInterface');
+        $this->router = $this->createMock('Symfony\Component\Routing\RouterInterface');
         $this->router->expects($this->any())
             ->method('generate')
             ->will(

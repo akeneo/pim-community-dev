@@ -29,11 +29,11 @@ class HistoryItemBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
+        $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->factory = $this->getMock('Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory');
+        $this->factory = $this->createMock('Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory');
         $this->builder = new HistoryItemBuilder($this->em, $this->factory);
     }
 
@@ -42,7 +42,7 @@ class HistoryItemBuilderTest extends \PHPUnit_Framework_TestCase
         $itemBuilder = $this->builder;
 
         //$user = $this->tokenStorage->getToken()->getUser();
-        $user = $this->getMock('\Pim\Bundle\UserBundle\Entity\UserInterface');
+        $user = $this->createMock('\Pim\Bundle\UserBundle\Entity\UserInterface');
         $params = [
             'title' => 'kldfjs;jasf',
             'url'   => 'some url',

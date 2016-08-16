@@ -151,7 +151,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     private function getProductValueMock($attribute, $locale)
     {
-        $value = $this->getMock('Pim\Component\Catalog\Model\ProductValue');
+        $value = $this->createMock('Pim\Component\Catalog\Model\ProductValue');
 
         $value->expects($this->any())
             ->method('getAttribute')
@@ -171,7 +171,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     private function getAttributeMock($localizable = true)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
+        $attribute = $this->createMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
             ->method('isLocalizable')

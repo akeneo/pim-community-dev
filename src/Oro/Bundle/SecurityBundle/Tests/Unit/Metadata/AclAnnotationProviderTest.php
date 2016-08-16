@@ -28,7 +28,7 @@ class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
             true,
             ['fetch', 'save', 'delete', 'deleteAll']
         );
-        $this->loader = $this->getMock('Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoaderInterface');
+        $this->loader = $this->createMock('Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoaderInterface');
         $this->provider = new AclAnnotationProvider($this->cache);
         $this->provider->addLoader($this->loader);
     }

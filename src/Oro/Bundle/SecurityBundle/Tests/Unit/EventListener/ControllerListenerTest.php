@@ -36,8 +36,8 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $logger = $this->getMock('Psr\Log\LoggerInterface');
-        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
+        $logger = $this->createMock('Psr\Log\LoggerInterface');
+        $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
         $this->annotationProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider')
             ->disableOriginalConstructor()
             ->getMock();
@@ -61,7 +61,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     public function testInterceptWithNoAnnotation()
     {
         $event = new FilterControllerEvent(
-            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
@@ -90,7 +90,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     public function testInterceptAccessGranted()
     {
         $event = new FilterControllerEvent(
-            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
@@ -138,7 +138,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     public function testInterceptAccessGrantedWithIgnoreClassAcl()
     {
         $event = new FilterControllerEvent(
-            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
@@ -171,7 +171,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     public function testInterceptAccessGrantedWithoutClassAcl()
     {
         $event = new FilterControllerEvent(
-            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
@@ -211,7 +211,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     public function testInterceptAccessGrantedByClassAcl()
     {
         $event = new FilterControllerEvent(
-            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
@@ -252,7 +252,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     public function testInterceptAccessDeniedByClassAcl()
     {
         $event = new FilterControllerEvent(
-            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
@@ -303,7 +303,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     public function testInterceptAccessDeniedByMethodAcl()
     {
         $event = new FilterControllerEvent(
-            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
@@ -339,7 +339,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     public function testInterceptAccessDenied()
     {
         $event = new FilterControllerEvent(
-            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
@@ -371,7 +371,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     public function testInterceptAccessDeniedForInternalAction()
     {
         $event = new FilterControllerEvent(
-            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::SUB_REQUEST
