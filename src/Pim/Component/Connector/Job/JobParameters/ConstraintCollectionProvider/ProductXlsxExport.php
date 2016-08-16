@@ -4,12 +4,12 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Symfony\Component\Validator\Constraints\Choice;
+use Pim\Component\Connector\Validator\Constraints\Channel;
+use Pim\Component\Connector\Validator\Constraints\FilterData;
+use Pim\Component\Connector\Validator\Constraints\FilterStructureAttribute;
+use Pim\Component\Connector\Validator\Constraints\FilterStructureLocale;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\DateTime;
-use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -46,7 +46,26 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank();
         $constraintFields['dateFormat'] = new NotBlank();
-        $constraintFields['filters'] = [];
+        $constraintFields['filters'] = [new FilterData(), new Collection(
+            [
+                'fields' => [
+                    'structure' => [
+                        new FilterStructureLocale(),
+                        new Collection(
+                            [
+                                'fields' => [
+                                    'locales'    => new NotBlank(),
+                                    'scope'      => new Channel(),
+                                    'attributes' => new FilterStructureAttribute(),
+                                ],
+                                'allowMissingFields' => true,
+                            ]
+                        ),
+                    ],
+                ],
+                'allowExtraFields' => true,
+            ]
+        )];
         $constraintFields['with_media'] = new Type('bool');
 
         return new Collection(['fields' => $constraintFields]);

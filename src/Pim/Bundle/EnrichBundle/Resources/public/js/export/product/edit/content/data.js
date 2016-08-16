@@ -51,7 +51,11 @@ define(
                     }.bind(this));
                 }.bind(this));
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render.bind(this));
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:entity:post_update',
+                    this.render.bind(this)
+                );
 
                 this.filterViews = {};
 

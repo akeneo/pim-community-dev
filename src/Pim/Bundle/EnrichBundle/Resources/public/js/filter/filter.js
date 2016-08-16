@@ -254,7 +254,7 @@ define([
         /**
          * Adds an extension element to this filter.
          *
-         * @param {string} position 'label' or 'after-input'
+         * @param {string} position 'label', 'after-input' or 'below-input'
          * @param {string} code
          * @param {Object} element
          */
