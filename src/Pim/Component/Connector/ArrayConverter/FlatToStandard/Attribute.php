@@ -62,44 +62,30 @@ class Attribute implements ArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        }
-
-        elseif ($field === 'type') {
+        } elseif ($field === 'type') {
             $convertedItem['attribute_type'] = $data;
-        }
-
-        elseif ($field === 'number_min' ||
+        } elseif ($field === 'number_min' ||
             $field === 'number_max' ||
             $field === 'max_file_size'
         ) {
             $convertedItem[$field] = ('' === $data) ? null : (float) $data;
-        }
-
-        elseif ($field === 'sort_order' ||
+        } elseif ($field === 'sort_order' ||
             $field === 'max_characters' ||
             $field === 'minimum_input_length'
         ) {
             $convertedItem[$field] = ('' === $data) ? null : (int) $data;
-        }
-
-        elseif ($field === 'options' ||
+        } elseif ($field === 'options' ||
             $field === 'available_locales'
         ) {
             $convertedItem[$field] = ('' === $data) ? [] : explode(',', $data);
-        }
-
-        elseif ($field === 'date_min' ||
+        } elseif ($field === 'date_min' ||
             $field === 'date_max' ||
             $field === 'reference_data_name'
         ) {
             $convertedItem[$field] = ('' === $data) ? null : $data;
-        }
-
-        elseif (in_array($field, $booleanFields, true)) {
+        } elseif (in_array($field, $booleanFields, true)) {
             $convertedItem[$field] = (bool) $data;
-        }
-
-        else {
+        } else {
             $convertedItem[$field] = (string) $data;
         }
 
