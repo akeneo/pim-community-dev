@@ -37,6 +37,7 @@ Feature: Export products according to image media attribute
     And I visit the "Content" tab
     When I add available attributes Image
     And I filter by "image" with operator "Contains" and value "KRS-1"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     Then I should not see the text "There are unsaved changes"
     When I am on the "ecommerce_product_export" export job page
@@ -57,6 +58,7 @@ Feature: Export products according to image media attribute
     And I visit the "Content" tab
     When I add available attributes Image
     And I filter by "image" with operator "Is empty" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     Then I should not see the text "There are unsaved changes"
     When I am on the "ecommerce_product_export" export job page

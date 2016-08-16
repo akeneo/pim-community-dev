@@ -245,7 +245,7 @@ Feature: Export products
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
     And the following job "tablet_product_export" configuration:
-      | filters | {"structure":{"locales":["en_US","fr_FR"],"scope":"tablet","attributes":["price","size","color","cost","description","name","image","release_date","weight"]}, "data": []} |
+      | filters | {"structure":{"locales":["en_US"],"scope":"tablet","attributes":["price","size","color","cost","description","name","image","release_date","weight"]}, "data": []} |
     And the following products:
       | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
       | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |
@@ -288,7 +288,7 @@ Feature: Export products
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
     And the following job "tablet_product_export" configuration:
-      | filters | {"structure":{"locales":["en_US","fr_FR"],"scope":"tablet","attributes":["sku"]}, "data": []} |
+      | filters | {"structure":{"locales":["en_US"],"scope":"tablet","attributes":["sku"]}, "data": []} |
     And the following products:
       | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
       | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |

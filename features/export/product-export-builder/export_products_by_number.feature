@@ -23,6 +23,7 @@ Feature: Export product by attribute number
     And I visit the "Content" tab
     And I add available attributes Number in stock
     And I filter by "number_in_stock" with operator "Is empty" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I visit the "Content" tab
@@ -42,6 +43,7 @@ Feature: Export product by attribute number
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Number in stock
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I filter by "number_in_stock" with operator "Greater than" and value "12000"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
@@ -63,6 +65,7 @@ Feature: Export product by attribute number
     And I visit the "Content" tab
     And I add available attributes Number in stock
     And I filter by "number_in_stock" with operator "Is not empty" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I visit the "Content" tab

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\EnrichBundle\Twig\CategoryExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,11 +51,18 @@ class CategoryController
             return new JsonResponse(null, 404);
         }
 
-        $categories = $this->repository->getCategoriesByCodes($request->get('selected', []));
-        $tree = $this->twigExtension->listCategoriesResponse(
-            $this->repository->getFilledTree($parent, $categories),
-            $categories
-        );
+        $selectedCategories = $this->repository->getCategoriesByCodes($request->get('selected', []));
+        if (0 !== $selectedCategories->count()) {
+            $tree = $this->twigExtension->listCategoriesResponse(
+                $this->repository->getFilledTree($parent, $selectedCategories),
+                $selectedCategories
+            );
+        } else {
+            $tree = $this->twigExtension->listCategoriesResponse(
+                $this->repository->getFilledTree($parent, new ArrayCollection([$parent])),
+                new ArrayCollection()
+            );
+        }
 
         // Returns only children of the given category without the node itself
         if (!empty($tree)) {

@@ -266,12 +266,6 @@ class MetricFilterSpec extends ObjectBehavior
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
-        $value = ['data' => '42', 'unit' => 'foo'];
-        $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected('metric_code', 'data', 'filter', 'metric', 'string')
-        )
-            ->during('addAttributeFilter', [$attribute, '=', $value]);
-
         $value = ['data' => 132, 'unit' => 42];
         $this->shouldThrow(
             InvalidArgumentException::arrayStringKeyExpected('metric_code', 'unit', 'filter', 'metric', 'integer')

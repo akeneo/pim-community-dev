@@ -23,6 +23,7 @@ Feature: Export product by attribute date
     And I visit the "Content" tab
     And I add available attributes Destocking date
     And I filter by "destocking_date" with operator "Is empty" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I visit the "Content" tab
@@ -43,6 +44,7 @@ Feature: Export product by attribute date
     And I visit the "Content" tab
     And I add available attributes Destocking date
     And I filter by "destocking_date" with operator "Greater than" and value "08/13/2015"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I visit the "Content" tab
@@ -64,6 +66,7 @@ Feature: Export product by attribute date
     And I visit the "Content" tab
     And I add available attributes Destocking date
     And I filter by "destocking_date" with operator "Between" and value "08/13/2014 and 09/01/2017"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I visit the "Content" tab

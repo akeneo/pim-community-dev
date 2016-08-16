@@ -69,7 +69,8 @@ define(
                             'pim_enrich.export.product.filter.attributes.label',
                             {count: attributes.length},
                             attributes.length
-                        )
+                        ),
+                        errors: this.getParent().getValidationErrorsForField('attributes')
                     })
                 );
 

@@ -62,9 +62,6 @@ extensions:
                 -
                     field: categories
                     view: pim-filter-product-category
-                -
-                    field: identifier
-                    view: pim-filter-product-identifier
 
     pim-product-export-show-content-default-attribute-filters:
         module: pim/export/product/edit/content/data/default-attribute-filters
@@ -87,7 +84,7 @@ filters:
         pim_catalog_textarea:
             view: pim-filter-attribute-string
         pim_catalog_identifier:
-            view: pim-filter-product-identifier
+            view: pim-filter-attribute-identifier
         pim_catalog_metric:
             view: pim-filter-attribute-metric
         pim_catalog_price_collection:

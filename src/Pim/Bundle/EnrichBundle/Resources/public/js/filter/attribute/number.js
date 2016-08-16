@@ -91,10 +91,7 @@ define([
             var value = null;
 
             if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) {
-                value = this.$('[name="filter-value"]').val();
-                if ('' !== value) {
-                    value = Number(value);
-                }
+                value = this.$('[name="filter-value"]').val().trim();
             }
 
             this.setData({

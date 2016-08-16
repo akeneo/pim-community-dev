@@ -40,6 +40,9 @@ define([
             if (undefined === this.getOperator()) {
                 this.setOperator(_.first(this.config.operators));
             }
+            if (undefined === this.getValue()) {
+                this.setValue(100);
+            }
 
             return this.template({
                 isEditable: this.isEditable(),
@@ -61,7 +64,7 @@ define([
          * {@inheritdoc}
          */
         isEmpty: function () {
-            return 'ALL' === this.getOperator();
+            return false;
         },
 
         /**
