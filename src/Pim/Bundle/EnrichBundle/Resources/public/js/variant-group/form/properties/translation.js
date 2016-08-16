@@ -20,7 +20,7 @@ define([
         template
     ) {
         return BaseForm.extend({
-            className: 'accordion-group translation-container',
+            className: 'tabsection translation-container',
             template: _.template(template),
             events: {
                 'change .label-field': 'updateModel'

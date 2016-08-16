@@ -11,8 +11,7 @@ define([
         module,
         Routing
     ) {
-        return _.extend(BaseSaver, {
-
+        return _.extend({}, BaseSaver, {
             /**
              * {@inheritdoc}
              */

@@ -1966,6 +1966,10 @@ table {
   border-top: 1px solid @color-ddd;
 }
 
+.table > tbody > tr:last-child > td {
+  border-bottom: 1px solid @color-ddd;
+}
+
 .table th {
   font-weight: bold;
 }
@@ -2091,7 +2095,7 @@ table {
 
 .table-striped tbody > tr:nth-child(odd) > td,
 .table-striped tbody > tr:nth-child(odd) > th {
-  background-color: #f9f9f9;
+  background-color: @akeneoLight;
 }
 
 .table-hover tbody tr:hover > td,

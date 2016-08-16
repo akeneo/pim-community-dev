@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\NormalizedDataQu
 class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 {
     /** @var array */
-    protected $queryGenerator = [];
+    protected $queryGenerators = [];
 
     /**
      * Scheduled queries to apply

@@ -1,3 +1,11 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5767: Issue with filter "in list" when SKU contains dashes (-)
+
+# 1.5.7 (2016-07-19)
+
 # 1.5.6 (2016-07-06)
 
 ## Bug fixes

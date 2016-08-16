@@ -163,3 +163,8 @@ Feature: Editing attribute values of a variant group also updates products
     When I am on the "boot" product page
     And I visit the "Media" group
     Then I should see the text "SNKRS-1R.png"
+
+  Scenario: Successfully see a warning message on page exit
+    When I add available attribute Handmade
+    And I click back to grid
+    Then I should see the text "You will lose changes to the Variant group if you leave the page"

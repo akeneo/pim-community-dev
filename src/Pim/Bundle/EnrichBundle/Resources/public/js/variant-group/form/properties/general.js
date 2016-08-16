@@ -23,7 +23,7 @@ define([
         template
     ) {
         return BaseForm.extend({
-            className: 'accordion-group',
+            className: 'tabsection',
             template: _.template(template),
 
             /**
