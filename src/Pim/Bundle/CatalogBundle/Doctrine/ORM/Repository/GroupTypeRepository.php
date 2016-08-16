@@ -105,13 +105,12 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
      */
     public function getVariantGroupType()
     {
-        $groupType = $this
+        $query = $this
             ->createQueryBuilder('group_type')
             ->andWhere('group_type.variant = 1')
             ->getQuery()
-            ->getOneOrNullResult()
         ;
 
-        return $groupType;
+        return $query->getOneOrNullResult();
     }
 }
