@@ -294,6 +294,7 @@ Please execute the following commands in your project folder to update the refer
     find ./src -type f -print0 | xargs -0 sed -i 's/pim_catalog\.doctrine\.smart_manager_registry/akeneo_storage_utils\.doctrine\.smart_manager_registry/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/pim_catalog\.doctrine\.table_name_builder/akeneo_storage_utils\.doctrine\.table_name_builder/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/pim_catalog\.factory\.referenced_collection/akeneo_storage_utils\.factory\.referenced_collection/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pim_catalog\.saver\.base_options_resolver/akeneo_storage_utils\.saver\.base_options_resolver/g'
 ```
 
 #### Update references to moved `PimEnterprise\Component\Catalog` business classes
