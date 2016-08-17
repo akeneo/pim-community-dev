@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -75,8 +76,12 @@ class StepExecutionSpec extends ObjectBehavior
         $this->getSummaryInfo('counter')->shouldReturn(4);
     }
 
-    function it_is_displayable()
+    function it_is_displayable($jobExecution, JobInstance $jobInstance)
     {
-        $this->__toString()->shouldReturn('id=0, name=[myStepName], status=[2], exitCode=[EXECUTING], exitDescription=[]');
+        $jobExecution->addStepExecution($this)->shouldBeCalled();
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getCode()->willReturn('myJobCode');
+
+        $this->__toString()->shouldReturn('id=0, job=[myJobCode], name=[myStepName], status=[2], exitCode=[EXECUTING], exitDescription=[]');
     }
 }
