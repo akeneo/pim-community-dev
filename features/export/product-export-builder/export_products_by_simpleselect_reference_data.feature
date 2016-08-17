@@ -11,10 +11,10 @@ Feature: Export products according to simple select reference data values
       | color | red   | Red   |
       | color | green | Green |
     And the following products:
-      | sku    | family | name-en_US | heel_color |
-      | HEEL-1 | heels  | The heel 1 | red        |
-      | HEEL-2 | heels  | The heel 2 | green      |
-      | HEEL-3 | heels  | The heel 3 |            |
+      | sku    | family | name-en_US | heel_color | categories      |
+      | HEEL-1 | heels  | The heel 1 | red        | 2014_collection |
+      | HEEL-2 | heels  | The heel 2 | green      | 2014_collection |
+      | HEEL-3 | heels  | The heel 3 |            | 2014_collection |
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/footwear_product_export.csv |
 

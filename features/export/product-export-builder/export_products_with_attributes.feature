@@ -7,9 +7,9 @@ Feature: Export products with only selected attributes
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-      | sku    | family | name-en_US | weather_conditions |
-      | BOOT-1 | boots  | The boot 1 |                    |
-      | BOOT-2 | boots  | The boot 2 | dry                |
+      | sku    | family | name-en_US | weather_conditions | categories      |
+      | BOOT-1 | boots  | The boot 1 |                    | 2014_collection |
+      | BOOT-2 | boots  | The boot 2 | dry                | 2014_collection |
     And I am logged in as "Julia"
 
   Scenario: Export products by selecting only one attribute
@@ -31,6 +31,7 @@ Feature: Export products with only selected attributes
       | filePath | %tmp%/product_export/product_export.csv                                                              |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I select the following attributes to export weather_conditions
     And I press the "Save" button
     And I launch the export job
@@ -47,6 +48,7 @@ Feature: Export products with only selected attributes
       | filePath | %tmp%/product_export/product_export.csv                                                              |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I select the following attributes to export weather_conditions and lace_color
     And I press the "Save" button
     And I launch the export job
@@ -63,6 +65,7 @@ Feature: Export products with only selected attributes
       | filePath | %tmp%/product_export/product_export.csv                                                              |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I select no attribute to export
     And I press the "Save" button
     And I launch the export job
