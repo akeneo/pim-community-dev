@@ -11,7 +11,12 @@
 - [Migrate your custom code](#migrate-your-custom-code)
   - [Global updates for any projects](#global-updates-for-any-projects)
     - [Update references to moved `Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType` constants](#update-references-to-moved-pim%5Cbundle%5Ccatalogbundle%5Cattributetype%5Cabstractattributetype-constants)
-    - [Update references to moved `Pim\Component\Catalog business` classes](#update-references-to-moved-pim%5Ccomponent%5Ccatalog-business-classes)
+    - [Update references to moved `Pim\Component\Catalog` business classes](#update-references-to-moved-pim%5Ccomponent%5Ccatalog-business-classes)
+    - [Update references to moved `PimEnterprise\Component\Catalog` business classes](#update-references-to-moved-pimenterprise%5Ccomponent%5Ccatalog-business-classes)
+    - [Update references to moved `PimEnterprise\Component\Security` business classes](#update-references-to-moved-pimenterprise%5Ccomponent%5Csecurity-business-classes)
+    - [Update references to moved `PimEnterprise\Component\Workflow` business classes](#update-references-to-moved-pimenterprise%5Ccomponent%5Cworkflow-business-classes)
+    - [Update references to moved `PimEnterprise\Component\ProductAsset` business classes](#update-references-to-moved-pimenterprise%5Ccomponent%5Cproductasset-business-classes)
+    - [Update references to renamed `PimEnterprise\Component\CatalogRule` services](#update-references-to-renamed-pimenterprise%5Ccomponent%5Ccatalogrule-services)
   - [Updates for projects customizing Import / Export](#updates-for-projects-customizing-import--export)
     - [Remove the reference to the removed `Akeneo\Bundle\BatchBundle\Connector\Connector` class](#remove-the-reference-to-the-removed-akeneo%5Cbundle%5Cbatchbundle%5Cconnector%5Cconnector-class)
     - [Update references to the deprecated and removed `TransformBundle` classes](#update-references-to-the-deprecated-and-removed-transformbundle-classes)
@@ -36,6 +41,10 @@
 
 > Please check you're using Akeneo PIM v1.5
 
+> We're assuming that you created your project from the standard distribution
+
+> This documentation helps to migrate project based on Community Edition and Enterprise Edition
+
 > Please perform a backup of your database before proceeding to the migration. You can use tools like [mysqldump](http://dev.mysql.com/doc/refman/5.1/en/mysqldump.html) and [mongodump](http://docs.mongodb.org/manual/reference/program/mongodump/).
 
 > Please perform a backup of your codebase if you don't use any VCS (Version Control System).
@@ -54,13 +63,23 @@ This support introduces a new constraint, the minimum version of PHP for Akeneo 
 
 ## Migrate your standard project
 
-1. Download the latest [PIM community standard](http://www.akeneo.com/download/) and extract it:
+1. Download and extract the latest standard archive,
+
+    * For the **Community Edition**, download from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
 
     ```
      wget http://www.akeneo.com/pim-community-standard-v1.6-latest.tar.gz
      tar -zxf pim-community-standard-v1.6-latest.tar.gz
      cd pim-community-standard-v1.6.*/
     ```
+
+    * For the **Enterprise Edition**, download the archive from the Partner Portal and extract:
+
+    ```
+     tar -zxf pim-enterprise-standard.tar.gz
+     cd pim-enterprise-standard/
+    ```
+
 
 2. Copy the following files to your PIM installation:
 
@@ -76,6 +95,25 @@ This support introduces a new constraint, the minimum version of PHP for Akeneo 
 
     * Remove the configuration of `CatalogBundle` from this file (config tree :`pim_catalog`).
     * Update the default locale from `en_US` to `en`
+    * In the **Enterprise Edition**, the ProductValue model has been moved into the catalog component and require to change the following configuration :
+
+        v1.5
+        ```
+        akeneo_storage_utils:
+            mapping_overrides:
+                -
+                    original: Pim\Component\Catalog\Model\ProductValue
+                    override: PimEnterprise\Bundle\CatalogBundle\Model\ProductValue
+        ```
+
+        v1.6
+        ```
+        akeneo_storage_utils:
+            mapping_overrides:
+                -
+                    original: Pim\Component\Catalog\Model\ProductValue
+                    override: PimEnterprise\Component\Catalog\Model\ProductValue
+        ```
 
 4. Update your **app/AppKernel.php**:
 
@@ -83,6 +121,9 @@ This support introduces a new constraint, the minimum version of PHP for Akeneo 
         - `Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle`
         - `Pim\Bundle\TransformBundle\PimTransformBundle`
         - `Nelmio\ApiDocBundle\NelmioApiDocBundle`
+
+    * In Enterprise Edition, you need to add the following bundle:
+        - `PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle` to `getPimEnterpriseBundles`
 
 5. Update your **app/config/routing.yml**:
 
@@ -216,7 +257,7 @@ To detect the files impacted by this change, you can execute the following comma
 ```
 Then you can replace these uses of `Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType` by `Pim\Component\Catalog\AttributeTypes`.
 
-#### Update references to moved `Pim\Component\Catalog business` classes
+#### Update references to moved `Pim\Component\Catalog` business classes
 
 To clean the code API, we've continued our effort to extract PIM business classes from the Catalog Bundle to the Catalog component.
 
@@ -251,6 +292,76 @@ Please execute the following command in your project folder to update the refere
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\JobInstanceNormalizer/Akeneo\\Component\\Batch\\Normalizer\\Structured\\JobInstanceNormalizer/g'
 ```
 
+#### Update references to moved `PimEnterprise\Component\Catalog` business classes
+
+In the **Enterprise Edition**, several Catalog classes have been extracted in a component.
+
+Please execute the following command in your project folder to update the reference you may have on these classes:
+
+```
+find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Model/PimEnterprise\\Component\\Catalog\\Model/g'
+```
+
+#### Update references to moved `PimEnterprise\Component\Security` business classes
+
+In the **Enterprise Edition**, several Security classes have been extracted in a component.
+
+Please execute the following command in your project folder to update the reference you may have on these classes:
+
+```
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\SecurityBundle\\Model/PimEnterprise\\Component\\Security\\Model/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\SecurityBundle\\Entity\\Repository\\AccessRepositoryInterface/PimEnterprise\\Component\\Security\\Repository\\AccessRepositoryInterface/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\SecurityBundle\\Attributes/PimEnterprise\\Component\\Security\\Attributes/g'
+```
+
+#### Update references to moved `PimEnterprise\Component\Workflow` business classes
+
+In the **Enterprise Edition**, several Workflow classes have been extracted in a component.
+
+Please execute the following command in your project folder to update the reference you may have on these classes:
+
+```
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Model/PimEnterprise\\Component\\Workflow\\Model/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Builder\\ProductDraftBuilderInterface/PimEnterprise\\Component\\Workflow\\Builder\\ProductDraftBuilderInterface/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Event\\ProductDraftEvents/PimEnterprise\\Component\\Workflow\\Event\\ProductDraftEvents/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Event\\PublishedProductEvent/PimEnterprise\\Component\\Workflow\\Event\\PublishedProductEvent/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Event\\PublishedProductEvents/PimEnterprise\\Component\\Workflow\\Event\\PublishedProductEvents/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Factory/PimEnterprise\\Component\\Workflow\\Factory/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Normalizer/PimEnterprise\\Component\\Workflow\\Normalizer/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Applier/PimEnterprise\\Component\\Workflow\\Applier/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Repository/PimEnterprise\\Component\\Workflow\\Repository/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Helper\\SortProductValuesHelper/PimEnterprise\\Bundle\\WorkflowBundle\\Twig\\SortProductValuesHelper/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Publisher/PimEnterprise\\Component\\Workflow\\Publisher/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Connector\\Tasklet/PimEnterprise\\Component\\Workflow\\Connector\\Tasklet/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Workflow\\Connector\\ArrayConverter\\FlatToStandard\\ProductDraft/PimEnterprise\\Component\\Workflow\\Connector\\ArrayConverter\\FlatToStandard\\ProductDraftChanges/g'
+```
+
+#### Update references to moved `PimEnterprise\Component\ProductAsset` business classes
+
+In the **Enterprise Edition**, several ProductAsset classes have been extracted in a component.
+
+Please execute the following command in your project folder to update the reference you may have on these classes:
+
+```
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Connector\\ArrayConverter\\FlatToStandard\\Tag/PimEnterprise\\Component\\ProductAsset\\Connector\\ArrayConverter\\FlatToStandard\\Tags/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_product_asset\.array_converter.flat_to_standard.tag/pimee_product_asset.array_converter.flat_to_standard.tags/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_product_asset\.reader\.orm\.asset/pimee_product_asset\.reader\.database\.asset/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_product_asset\.reader\.orm\.csv_channel_configuration/pimee_product_asset\.reader\.database\.channel_configuration/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_product_asset\.reader\.orm\.variation/pimee_product_asset\.reader\.database\.variation/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Connector\\Reader\\Doctrine\\AssetCategoryReader/PimEnterprise\\Component\\ProductAsset\\Connector\\Reader\\Database\\AssetCategoryReader/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_connector\.reader\.file\.yaml_channel_configuration/pimee_product_asset\.reader\.file\.yaml_channel_configuration/g'
+```
+
+#### Update references to renamed `PimEnterprise\Component\CatalogRule` services
+
+In the **Enterprise Edition**, a CatalogRule service have been renamed in a component.
+
+Please execute the following command in your project folder to update the reference you may have on these services:
+
+```
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_catalog_rule\.reader\.doctrine\.rule_definition/pimee_catalog_rule\.reader\.database\.rule_definition/g'
+```
+
 ### Updates for projects customizing Import / Export
 
 #### Remove the reference to the removed `Akeneo\Bundle\BatchBundle\Connector\Connector` class
@@ -264,7 +375,8 @@ To detect the files impacted by this change, you can execute the following comma
     grep -rl 'Akeneo\\Bundle\\BatchBundle\\Connector\\Connector' src/*
 ```
 
-Before:
+v1.5
+
 ```
 namespace Acme\Bundle\MyBundle;
 
@@ -273,7 +385,8 @@ use Akeneo\Bundle\BatchBundle\Connector\Connector;
 class AcmeMyBundle extends Connector
 ```
 
-After:
+v1.6
+
 ```
 namespace Acme\Bundle\MyBundle;
 
@@ -422,7 +535,7 @@ This change,
 - Remove the need of systematic Step + StepElement, a custom Step can now embed its own logic
 - Remove magic by using a standard Symfony way to declare services
 
-Before the v1.6, the batch_jobs.yml contains,
+In v1.5, the batch_jobs.yml contains,
 ```
 connector:
     name: Akeneo CSV Connector
@@ -441,7 +554,7 @@ connector:
                         writer:    pim_connector.writer.doctrine.attribute
 ```
 
-With the v1.6, we declare a standard "jobs.yml" services file,
+In v1.6, we declare a standard "jobs.yml" services file,
 ```
 parameters:
     pim_connector.connector_name.csv: 'Akeneo CSV Connector'
@@ -463,7 +576,7 @@ services:
             - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
 ```
 
-With the v1.6, we also declare a standard "steps.yml" services file,
+In v1.6, we also declare a standard "steps.yml" services file,
 ```
 parameters:
     pim_connector.step.validator.class: Pim\Component\Connector\Step\ValidatorStep
@@ -522,7 +635,7 @@ To detect your classes impacted by this change, you can execute the following co
     grep -rl 'AbstractConfigurableStepElement' src/*
 ```
 
-Before:
+v1.5
 ```
 namespace Acme\Bundle\MyBundle\Processor;
 
@@ -532,7 +645,7 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 class MyFamilyProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 ```
 
-After:
+v1.6
 ```
 namespace Acme\Bundle\MyBundle\Processor;
 
@@ -754,8 +867,7 @@ When running a job, the JobParameters is configured, validated and injected in t
 
 When a StepElement is StepExecutionAware, the StepExecution is injected and allows to access to the JobParameters (though the JobExecution).
 
-Before the 1.6,
-
+v1.5
 ```
 class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
@@ -769,8 +881,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
 }
 ```
 
-In the 1.6,
-
+v1.6
 ```
 class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
@@ -818,7 +929,7 @@ batch_jobs.csv_product_export.export.label: "Product export step"
 
 With the introduction of the ExportBuilder feature in the 1.6, a product export runtime parameters have a different format.
 
-**Before 1.6:**
+v1.5
 ```
 csv_product_export:
     connector: Akeneo CSV Connector
@@ -834,7 +945,7 @@ csv_product_export:
         decimalSeparator: .
 ```
 
-**Since 1.6:**
+v1.6
 ```
 csv_product_export:
     connector: Akeneo CSV Connector
@@ -869,7 +980,7 @@ In case you have custom export products using the native processor, you may need
 
 #### Update the mass edit actions services
 
-In 1.5 and before mass edit actions could be declared like this:
+In v1.5, mass edit actions could be declared like this:
 ```
 my_bundle.mass_edit_action.my_action:
     public: false
@@ -916,7 +1027,7 @@ To detect the files impacted by this change, you can execute the following comma
     grep -rl 'Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\AbstractProcessor' src/*
 ```
 
-Before,
+v1.5
 ```
 class MyProcessorProcessor extends AbstractProcessor
 {
@@ -934,8 +1045,7 @@ class MyProcessorProcessor extends AbstractProcessor
  }
 ```
 
-After,
-
+v1.6
 ```
 class MyProcessorProcessor extends AbstractProcessor
 {
