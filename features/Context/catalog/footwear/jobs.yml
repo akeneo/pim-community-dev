@@ -491,6 +491,7 @@ jobs:
         configuration:
             withHeader: true
             filePath: /tmp/channel.xlsx
+            linesPerFile: 10000
     xlsx_footwear_currency_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_currency_export
@@ -499,6 +500,7 @@ jobs:
         configuration:
             withHeader: true
             filePath: /tmp/currency.xlsx
+            linesPerFile: 10000
     xlsx_footwear_locale_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_locale_export
@@ -507,6 +509,7 @@ jobs:
         configuration:
             withHeader: true
             filePath: /tmp/locale.xlsx
+            linesPerFile: 10000
     xlsx_footwear_group_type_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_type_export
@@ -515,6 +518,7 @@ jobs:
         configuration:
             withHeader: true
             filePath: /tmp/group_type.xlsx
+            linesPerFile: 10000
     xlsx_footwear_attribute_group_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_attribute_group_export
@@ -523,6 +527,7 @@ jobs:
         configuration:
             withHeader: true
             filePath: /tmp/attribute_group.xlsx
+            linesPerFile: 10000
     csv_product_grid_context_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_grid_context_quick_export
