@@ -60,6 +60,20 @@ define([
         /**
          * {@inheritdoc}
          */
+        getTemplateContext: function () {
+            if (undefined === this.getOperator()) {
+                this.setOperator(_.first(this.config.operators));
+            }
+            if (undefined === this.getValue()) {
+                this.setValue(100, {silent: false});
+            }
+
+            return BaseFilter.prototype.getTemplateContext.apply(this, arguments);
+        },
+
+        /**
+         * {@inheritdoc}
+         */
         isEmpty: function () {
             return false;
         },
