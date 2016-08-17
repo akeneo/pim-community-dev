@@ -7,10 +7,10 @@ Feature: Export products according to multi select reference data values
   Background:
     Given the "footwear" catalog configuration
     And the following products:
-      | sku    | family | name-en_US | manufacturer |
-      | BOOT-1 | boots  | The boot 1 | Nike         |
-      | BOOT-2 | boots  | The boot 2 | Converse     |
-      | BOOT-3 | boots  | The boot 3 |              |
+      | sku    | family | name-en_US | manufacturer | categories      |
+      | BOOT-1 | boots  | The boot 1 | Nike         | 2014_collection |
+      | BOOT-2 | boots  | The boot 2 | Converse     | 2014_collection |
+      | BOOT-3 | boots  | The boot 3 |              | 2014_collection |
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/footwear_product_export.csv |
 
