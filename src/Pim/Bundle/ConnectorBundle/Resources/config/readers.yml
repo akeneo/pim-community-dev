@@ -123,7 +123,10 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.association_type'
 
     pim_connector.reader.file.csv_family:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family'
 
     pim_connector.reader.file.csv_association:
         class: '%pim_connector.reader.file.csv_association.class%'

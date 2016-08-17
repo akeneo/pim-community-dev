@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Normalizer\Flat;
+namespace Pim\Component\Catalog\Normalizer\Structured;
 
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -18,7 +18,7 @@ class GroupTypeNormalizer implements NormalizerInterface
     protected $transNormalizer;
 
     /** @var string[] */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * @param NormalizerInterface $transNormalizer
