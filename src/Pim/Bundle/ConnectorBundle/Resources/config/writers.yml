@@ -233,35 +233,35 @@ services:
     pim_connector.writer.file.csv_channel:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
-            - '@pim_connector.array_converter.standard_to_flat.csv_channel'
+            - '@pim_connector.array_converter.standard_to_flat.channel'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.csv_locale:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
-            - '@pim_connector.array_converter.standard_to_flat.csv_locale'
+            - '@pim_connector.array_converter.standard_to_flat.locale'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.csv_attribute_group:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
-            - '@pim_connector.array_converter.standard_to_flat.csv_attribute_group'
+            - '@pim_connector.array_converter.standard_to_flat.attribute_group'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.csv_currency:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
-            - '@pim_connector.array_converter.standard_to_flat.csv_currency'
+            - '@pim_connector.array_converter.standard_to_flat.currency'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.csv_group_type:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
-            - '@pim_connector.array_converter.standard_to_flat.csv_group_type'
+            - '@pim_connector.array_converter.standard_to_flat.group_type'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
@@ -338,35 +338,35 @@ services:
     pim_connector.writer.file.xlsx_channel:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
-             - '@pim_connector.array_converter.standard_to_flat.xlsx_channel'
+             - '@pim_connector.array_converter.standard_to_flat.channel'
              - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_locale:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
-             - '@pim_connector.array_converter.standard_to_flat.xlsx_locale'
+             - '@pim_connector.array_converter.standard_to_flat.locale'
              - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_attribute_group:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
-             - '@pim_connector.array_converter.standard_to_flat.xlsx_attribute_group'
+             - '@pim_connector.array_converter.standard_to_flat.attribute_group'
              - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_currency:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
-             - '@pim_connector.array_converter.standard_to_flat.xlsx_currency'
+             - '@pim_connector.array_converter.standard_to_flat.currency'
              - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_group_type:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
-             - '@pim_connector.array_converter.standard_to_flat.xlsx_group_type'
+             - '@pim_connector.array_converter.standard_to_flat.group_type'
              - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 

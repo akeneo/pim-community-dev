@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Normalizer\Flat;
+namespace Pim\Component\Catalog\Normalizer\Structured;
 
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class CurrencyNormalizer implements NormalizerInterface
 {
     /** @var string[] */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * {@inheritdoc}
