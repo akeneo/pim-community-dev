@@ -62,8 +62,22 @@ define([
         /**
          * {@inheritdoc}
          */
+        getTemplateContext: function () {
+            if (undefined === this.getOperator()) {
+                this.setOperator('=');
+            }
+            if (undefined === this.getValue()) {
+                this.setValue(true, {silent: false});
+            }
+
+            return BaseFilter.prototype.getTemplateContext.apply(this, arguments);
+        },
+
+        /**
+         * {@inheritdoc}
+         */
         isEmpty: function () {
-            return null === this.getValue();
+            return false;
         },
 
         /**
@@ -72,12 +86,11 @@ define([
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
 
-            this.setData({
-                operator: '=',
-                value: 'all' === value ?
-                    null :
-                    'enabled' === value
-            });
+            if ('all' === value) {
+                this.setData({operator: 'ALL', value: null});
+            } else {
+                this.setData({operator: '=', value: 'enabled' === value});
+            }
         }
     });
 });
