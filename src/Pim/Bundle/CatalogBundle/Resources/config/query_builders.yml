@@ -7,6 +7,7 @@ parameters:
     pim_catalog.query.filter.attribute_dumper.class:            Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\AttributeFilterDumper
     pim_catalog.doctrine.query.filter.category.class:           Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter
     pim_catalog.doctrine.query.filter.object_id_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
+    pim_catalog.doctrine.query.filter.dummy.class:              Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\DummyFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -59,6 +60,15 @@ services:
             - '@pim_catalog.doctrine.query.filter.object_id_resolver'
             - ['categories.id', 'categories.code']
             - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.dummy:
+        class: '%pim_catalog.doctrine.query.filter.dummy.class%'
+        arguments:
+            - []
+            - ['enabled', 'completeness']
+            - ['ALL']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
