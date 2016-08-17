@@ -12,7 +12,7 @@ extensions:
         config:
             operators:
                 - ">="
-                - "<="
+                - ALL
                 - GREATER OR EQUALS THAN ON ALL LOCALES
                 - LOWER THAN ON ALL LOCALES
 
