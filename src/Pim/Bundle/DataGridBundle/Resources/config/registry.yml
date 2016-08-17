@@ -4,7 +4,3 @@ parameters:
 services:
     pim_datagrid.datagrid.configuration.product.configuration_registry:
         class: '%pim_datagrid.datagrid.configuration.product.configuration_registry.class%'
-
-    # deprecated, will be removed in 1.6, please use pim_datagrid.datagrid.configuration.product.configuration_registry
-    pim_datagrid.datagrid.product.configuration_registry:
-        alias: pim_datagrid.datagrid.configuration.product.configuration_registry
