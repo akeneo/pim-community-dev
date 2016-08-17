@@ -197,7 +197,8 @@ class LoggerSubscriber implements EventSubscriberInterface
 
         $this->logger->error(
             sprintf(
-                'Encountered an error executing the step: %s',
+                'Encountered an error executing the step "%s": %s',
+                $stepExecution,
                 implode(
                     ', ',
                     array_map(
