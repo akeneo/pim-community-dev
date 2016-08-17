@@ -416,3 +416,6 @@
 - Remove the class `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner`, logic moved in `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredVariantGroupProductReader`.
 - Fifth argument of the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` is now mandatory.
 - Remove the deprecated interface `Akeneo\Bundle\BatchBundle\ItemUploadedFileAwareInterface`
+- Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister`
+- Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister`
+- Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingMassPersister`

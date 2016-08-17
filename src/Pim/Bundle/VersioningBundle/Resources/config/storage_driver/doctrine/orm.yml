@@ -1,6 +1,5 @@
 parameters:
     pim_versioning.repository.version.class:                  Pim\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
-    pim_versioning.doctrine.orm.pending_mass_persister.class: Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingMassPersister
     pim_versioning.doctrine.query.cursor.class:               Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor
     pim_versioning.doctrine.cursor_factory.version.class:     Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory
     pim_versioning.factory.version_cursor.page_size:          1000

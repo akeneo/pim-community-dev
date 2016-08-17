@@ -4,7 +4,6 @@ parameters:
     pim_versioning.event_subscriber.mongodb.product_addversion.class: Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber
     pim_versioning.doctrine.mongodb.bulk_saver.version.class:         Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver
     pim_versioning.doctrine.mongodb.bulk_builder.version.class:       Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\BulkVersionBuilder
-    pim_versioning.doctrine.mongodb.pending_mass_persister.class:     Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister
 
 services:
     pim_versioning.repository.version:
@@ -31,17 +30,6 @@ services:
             - '@pim_versioning.serializer'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
-
-    # deprecated Will be removed in 1.6
-    pim_versioning.doctrine.mongodb.pending_mass_persister:
-        class: '%pim_versioning.doctrine.mongodb.pending_mass_persister.class%'
-        arguments:
-            - '@pim_versioning.builder.version'
-            - '@pim_versioning.manager.version'
-            - '@pim_versioning.context.version'
-            - '@pim_serializer'
-            - '%pim_versioning.entity.version.class%'
-            - '@doctrine.odm.mongodb.document_manager'
 
     pim_versioning.doctrine.mongodb.bulk_saver.version:
         class: '%pim_versioning.doctrine.mongodb.bulk_saver.version.class%'
