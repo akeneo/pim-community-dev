@@ -552,11 +552,12 @@ class StepExecution
      */
     public function __toString()
     {
-        $summary = 'id=%d, name=[%s], status=[%s], exitCode=[%s], exitDescription=[%s]';
+        $summary = 'id=%d, job=[%s], name=[%s], status=[%s], exitCode=[%s], exitDescription=[%s]';
 
         return sprintf(
             $summary,
             $this->id,
+            $this->jobExecution->getJobInstance()->getCode(),
             $this->stepName,
             $this->status,
             $this->exitCode,
