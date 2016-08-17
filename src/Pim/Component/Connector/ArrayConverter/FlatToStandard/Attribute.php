@@ -58,39 +58,35 @@ class Attribute implements ArrayConverterInterface
      */
     protected function convertFields($field, $booleanFields, $data, $convertedItem)
     {
-        switch ($field) {
-            case false !== strpos($field, 'label-', 0):
-                $labelTokens = explode('-', $field);
-                $labelLocale = $labelTokens[1];
-                $convertedItem['labels'][$labelLocale] = $data;
-                break;
-            case 'type':
-                $convertedItem['attribute_type'] = $data;
-                break;
-            case 'number_min':
-            case 'number_max':
-            case 'max_file_size':
-                $convertedItem[$field] = ('' === $data) ? null : (float) $data;
-                break;
-            case 'sort_order':
-            case 'max_characters':
-            case 'minimum_input_length':
-                $convertedItem[$field] = ('' === $data) ? null : (int) $data;
-                break;
-            case 'options':
-            case 'available_locales':
-                $convertedItem[$field] = ('' === $data) ? [] : explode(',', $data);
-                break;
-            case in_array($field, $booleanFields):
-                $convertedItem[$field] = (bool) $data;
-                break;
-            case 'date_min':
-            case 'date_max':
-            case 'reference_data_name':
-                $convertedItem[$field] = ('' === $data) ? null : $data;
-                break;
-            default:
-                $convertedItem[$field] = (string) $data;
+        if (false !== strpos($field, 'label-', 0)) {
+            $labelTokens = explode('-', $field);
+            $labelLocale = $labelTokens[1];
+            $convertedItem['labels'][$labelLocale] = $data;
+        } elseif ($field === 'type') {
+            $convertedItem['attribute_type'] = $data;
+        } elseif ($field === 'number_min' ||
+            $field === 'number_max' ||
+            $field === 'max_file_size'
+        ) {
+            $convertedItem[$field] = ('' === $data) ? null : (float) $data;
+        } elseif ($field === 'sort_order' ||
+            $field === 'max_characters' ||
+            $field === 'minimum_input_length'
+        ) {
+            $convertedItem[$field] = ('' === $data) ? null : (int) $data;
+        } elseif ($field === 'options' ||
+            $field === 'available_locales'
+        ) {
+            $convertedItem[$field] = ('' === $data) ? [] : explode(',', $data);
+        } elseif ($field === 'date_min' ||
+            $field === 'date_max' ||
+            $field === 'reference_data_name'
+        ) {
+            $convertedItem[$field] = ('' === $data) ? null : $data;
+        } elseif (in_array($field, $booleanFields, true)) {
+            $convertedItem[$field] = (bool) $data;
+        } else {
+            $convertedItem[$field] = (string) $data;
         }
 
         return $convertedItem;
