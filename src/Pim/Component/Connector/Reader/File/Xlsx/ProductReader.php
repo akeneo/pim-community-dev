@@ -30,14 +30,16 @@ class ProductReader extends Reader implements
     /**
      * @param FileIteratorFactory     $fileIteratorFactory
      * @param ArrayConverterInterface $converter
+     * @param array                   $options
      * @param MediaPathTransformer    $mediaPathTransformer
      */
     public function __construct(
         FileIteratorFactory $fileIteratorFactory,
         ArrayConverterInterface $converter,
-        MediaPathTransformer $mediaPathTransformer
+        MediaPathTransformer $mediaPathTransformer,
+        array $options = []
     ) {
-        parent::__construct($fileIteratorFactory, $converter);
+        parent::__construct($fileIteratorFactory, $converter, $options);
 
         $this->mediaPathTransformer = $mediaPathTransformer;
     }

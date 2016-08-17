@@ -43,8 +43,10 @@ class ReaderSpec extends ObjectBehavior
         ];
 
         $fileIteratorFactory->create($filePath, [
-            'fieldDelimiter' => ';',
-            'fieldEnclosure' => '"',
+            'reader_options' => [
+                'fieldDelimiter' => ';',
+                'fieldEnclosure' => '"',
+            ]
         ])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name']);
@@ -81,8 +83,10 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
 
         $fileIteratorFactory->create($filePath, [
-            'fieldDelimiter' => ';',
-            'fieldEnclosure' => '"',
+            'reader_options' => [
+                'fieldDelimiter' => ';',
+                'fieldEnclosure' => '"',
+            ]
         ])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name']);

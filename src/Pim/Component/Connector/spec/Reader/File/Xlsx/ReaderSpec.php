@@ -44,7 +44,7 @@ class ReaderSpec extends ObjectBehavior
             'name' => 'door',
         ];
 
-        $fileIteratorFactory->create($filePath)->willReturn($fileIterator);
+        $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name']);
         $fileIterator->rewind()->shouldBeCalled();
@@ -81,7 +81,7 @@ class ReaderSpec extends ObjectBehavior
 
         $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
 
-        $fileIteratorFactory->create($filePath)->willReturn($fileIterator);
+        $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name']);
         $fileIterator->rewind()->shouldBeCalled();

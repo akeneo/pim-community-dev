@@ -66,7 +66,9 @@ class FileIterator implements FileIteratorInterface
         }
 
         $this->reader = ReaderFactory::create($type);
-        $this->setReaderOptions($options);
+        if (isset($options['reader_options'])) {
+            $this->setReaderOptions($options['reader_options']);
+        }
         $this->reader->open($this->filePath);
         $this->reader->getSheetIterator()->rewind();
 
@@ -207,13 +209,13 @@ class FileIterator implements FileIteratorInterface
     /**
      * Add options to Spout reader
      *
-     * @param array $options
+     * @param array $readerOptions
      *
      * @throws \InvalidArgumentException
      */
-    protected function setReaderOptions(array $options = [])
+    protected function setReaderOptions(array $readerOptions = [])
     {
-        foreach ($options as $name => $option) {
+        foreach ($readerOptions as $name => $option) {
             $setter = 'set' . ucfirst($name);
             if (method_exists($this->reader, $setter)) {
                 $this->reader->$setter($option);
