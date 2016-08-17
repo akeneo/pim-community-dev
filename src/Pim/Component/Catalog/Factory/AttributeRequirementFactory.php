@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Factory;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
