@@ -290,6 +290,9 @@ Please execute the following commands in your project folder to update the refer
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Denormalizer\\Structured\\ProductValue\\ReferenceDataDenormalizer/Pim\\Component\\ReferenceData\\Denormalizer\\Structured\\ProductValue\\ReferenceDataDenormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Denormalizer\\Structured\\ProductValue\\ReferenceDataCollectionDenormalizer/Pim\\Component\\ReferenceData\\Denormalizer\\Structured\\ProductValue\\ReferenceDataCollectionDenormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\JobInstanceNormalizer/Akeneo\\Component\\Batch\\Normalizer\\Structured\\JobInstanceNormalizer/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pim_catalog\.event_subscriber\.resolve_target_repository/akeneo_storage_utils\.event_subscriber\.resolve_target_repository/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pim_catalog\.doctrine\.smart_manager_registry/akeneo_storage_utils\.doctrine\.smart_manager_registry/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pim_catalog\.doctrine\.table_name_builder/akeneo_storage_utils\.doctrine\.table_name_builder/g'
 ```
 
 #### Update references to moved `PimEnterprise\Component\Catalog` business classes

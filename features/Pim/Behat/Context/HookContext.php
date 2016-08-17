@@ -285,6 +285,6 @@ class HookContext extends PimContext
      */
     private function getSmartRegistry()
     {
-        return $this->getService('pim_catalog.doctrine.smart_manager_registry');
+        return $this->getService('akeneo_storage_utils.doctrine.smart_manager_registry');
     }
 }
