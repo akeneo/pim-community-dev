@@ -28,23 +28,15 @@ define([
          * {@inherit}
          */
         configure: function () {
-            this.on('channel:update:after', this.channelUpdated.bind(this));
-
-            return BaseFilter.prototype.configure.apply(this, arguments);
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        getTemplateContext: function () {
-            return $.when(
-                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                this.getCurrentChannel()
-            ).then(function (templateContext, channel) {
-                return _.extend({}, templateContext, {
-                    channel: channel
-                });
+            this.listenTo(this, 'channel:update:after', this.channelUpdated.bind(this));
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode() + '.code', operator: 'IN CHILDREN', value: []});
             }.bind(this));
+
+            return $.when(
+                fetcherRegistry.getFetcher('channel').fetchAll(),
+                BaseFilter.prototype.configure.apply(this, arguments)
+            );
         },
 
         /**
@@ -53,12 +45,8 @@ define([
          * @return {String}
          */
         renderInput: function (templateContext) {
-            if (undefined === this.getValue() ||
-                'IN CHILDREN' === this.getOperator()) {
-                this.setDefaultValues(templateContext.channel);
-            }
-
             var categoryCount = 'IN CHILDREN' === this.getOperator() ? 0 : this.getValue().length;
+
             return this.template({
                 isEditable: this.isEditable(),
                 titleEdit: __('pim_connector.export.categories.selector.title'),
@@ -78,6 +66,22 @@ define([
         channelUpdated: function () {
             this.getCurrentChannel().then(function (channel) {
                 this.setDefaultValues(channel);
+            }.bind(this));
+        },
+
+        /**
+         * {@inherit}
+         */
+        getTemplateContext: function () {
+            return $.when(
+                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
+                this.getCurrentChannel()
+            ).then(function (templateContext, channel) {
+                if ('IN CHILDREN' === this.getOperator()) {
+                    this.setDefaultValues(channel);
+                }
+
+                return templateContext;
             }.bind(this));
         },
 
@@ -134,19 +138,6 @@ define([
          */
         isEmpty: function () {
             return false;
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        getField: function () {
-            var fieldName = BaseFilter.prototype.getField.apply(this, arguments);
-
-            if (-1 === fieldName.indexOf('.code')) {
-                fieldName += '.code';
-            }
-
-            return fieldName;
         },
 
         /**

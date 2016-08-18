@@ -22,18 +22,22 @@ define([
         },
 
         /**
+         * {@inherit}
+         */
+        configure: function () {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode(), operator: '=', value: true});
+            });
+
+            return BaseFilter.prototype.configure.apply(this, arguments);
+        },
+
+        /**
          * Returns rendered input.
          *
          * @return {String}
          */
         renderInput: function () {
-            if (undefined === this.getValue()) {
-                this.setValue(true);
-            }
-            if (undefined === this.getOperator()) {
-                this.setOperator('=');
-            }
-
             return this.template({
                 isEditable: this.isEditable(),
                 labels: {

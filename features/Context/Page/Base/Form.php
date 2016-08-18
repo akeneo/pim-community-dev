@@ -97,7 +97,11 @@ class Form extends Base
             return null === $loading || !$loading->isVisible();
         }, sprintf('Could not visit tab %s because of loading wrapper', $tab));
 
-        $tabDom->click();
+        $this->spin(function () use ($tabDom) {
+            $tabDom->click();
+
+            return true;
+        }, sprintf('Cannot switch to the tab %s', $tab));
     }
 
     /**

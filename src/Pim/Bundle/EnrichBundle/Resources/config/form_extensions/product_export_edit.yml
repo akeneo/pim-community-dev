@@ -73,7 +73,7 @@ extensions:
         targetZone: headings
 
 filters:
-    pim-product-export-edit-content:
+    product-export-builder:
         pim_catalog_boolean:
             view: pim-filter-attribute-boolean
         pim_catalog_text:
