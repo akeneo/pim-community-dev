@@ -50,6 +50,12 @@ class PimRequirements extends OroRequirements
             'Make sure the <strong>exec()</strong> function is not disabled in php.ini'
         );
 
+        $this->addPimRequirement(
+            function_exists('apcu_store'),
+            'Extension php5-apcu should be installed',
+            'Install and enable <strong>php5-apcu</strong>'
+        );
+
         // Check directories
         foreach ($directoriesToCheck as $directoryToCheck) {
             $this->addPimRequirement(
