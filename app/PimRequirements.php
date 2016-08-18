@@ -50,6 +50,12 @@ class PimRequirements extends OroRequirements
         );
 
         $this->addPimRequirement(
+            function_exists('apcu_store'),
+            'Extension php5-apcu should be installed',
+            'Install and enable <strong>php5-apcu</strong>'
+        );
+
+        $this->addPimRequirement(
             $this->isConvertInstalled(),
             'The convert tool should be installed in order to transform images of the PAM',
             'Make sure to install <strong>Image Magick</strong> command line tool <strong>convert</strong>'
