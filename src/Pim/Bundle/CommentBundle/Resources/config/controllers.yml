@@ -7,6 +7,6 @@ services:
         class: '%pim_comment.controller.comment.class%'
         arguments:
             - '@security.token_storage'
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '@pim_comment.remover.comment'
             - '%pim_comment.entity.comment.class%'

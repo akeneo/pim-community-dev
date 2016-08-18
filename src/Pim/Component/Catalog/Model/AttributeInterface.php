@@ -114,7 +114,7 @@ interface AttributeInterface extends
     /**
      * Get available locales
      *
-     * @deprecated will be removed in 1.6, use getLocaleSpecificCodes
+     * @deprecated will be removed in 1.7, use getLocaleSpecificCodes
      *
      * @return ArrayCollection|null
      */

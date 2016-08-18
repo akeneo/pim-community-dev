@@ -4,7 +4,6 @@ namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
@@ -24,7 +23,7 @@ interface FamilyRepositoryInterface extends
      * @param bool   $inset
      * @param mixed  $values
      *
-     * @deprecated will be removed in 1.6
+     * @deprecated will be removed in 1.7
      */
     public function applyMassActionParameters($qb, $inset, $values);
 

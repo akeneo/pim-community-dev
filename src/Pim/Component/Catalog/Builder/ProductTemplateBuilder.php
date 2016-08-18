@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Builder;
 
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -26,9 +25,6 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
 
     /** @var ProductBuilderInterface */
     protected $productBuilder;
-
-    /** @var LocaleResolver */
-    protected $localeResolver;
 
     /** @var string */
     protected $productTemplateClass;

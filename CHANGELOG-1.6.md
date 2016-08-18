@@ -394,6 +394,7 @@
 - Add `getAttributeFilters()` and `getFieldFilters()` to `Pim\Component\Catalog\Query\Filter\FilterRegistryInterface`
 - Rename method `getAlias` to `getJobName` in `Akeneo\Component\Batch\Model\JobInstance`
 - Rename method `setAlias` to `setJobName` in `Akeneo\Component\Batch\Model\JobInstance`
+- Remove methods `getJob` and `setJob` in `Akeneo\Component\Batch\Model\JobInstance`
 - Remove `Pim\Bundle\EnrichBundle\Controller\MassEditActionController` and replaced it by `Pim\Bundle\EnrichBundle\Controller\MassEdit\ProductController`, `Pim\Bundle\EnrichBundle\Controller\MassEdit\FamilyController`
 - Add string parameter `$formName` to `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
 - Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface` and deleted from all classes implementing the interface
@@ -414,3 +415,7 @@
 - Remove the class `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader`, use `Pim\Component\Connector\Reader\Database\ProductReader` instead.
 - Remove the class `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner`, logic moved in `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredVariantGroupProductReader`.
 - Fifth argument of the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` is now mandatory.
+- Remove the deprecated interface `Akeneo\Bundle\BatchBundle\ItemUploadedFileAwareInterface`
+- Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister`
+- Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister`
+- Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingMassPersister`

@@ -21,8 +21,41 @@ define(
     ) {
         return BaseForm.extend({
             className: 'structure-filters',
-
+            errors: [],
             template: _.template(template),
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:export:validation_error',
+                    this.setValidationErrors.bind(this)
+                );
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            setValidationErrors: function (errors) {
+                this.errors = errors;
+            },
+
+            /**
+             * Get the validtion errors for the given field
+             *
+             * @param {string} field
+             *
+             * @return {mixed}
+             */
+            getValidationErrorsForField: function (field) {
+                return (
+                    _.has(this.errors, 'structure') &&
+                    _.has(this.errors.structure, field)
+                ) ?
+                    this.errors.structure[field] :
+                    [];
+            },
 
             /**
              * Renders this view.

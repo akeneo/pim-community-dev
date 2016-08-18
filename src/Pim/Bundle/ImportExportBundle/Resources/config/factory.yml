@@ -2,10 +2,6 @@ parameters:
     pim_import_export.factory.job_notification.class: Pim\Bundle\ImportExportBundle\Factory\NotificationFactory
 
 services:
-    # deprecated: will be removed in 1.6
-    pim_import_export.factory.job_instance:
-        alias: akeneo_batch.job_instance_factory
-
     pim_import_export.factory.job_notification:
         class: '%pim_import_export.factory.job_notification.class%'
         arguments:

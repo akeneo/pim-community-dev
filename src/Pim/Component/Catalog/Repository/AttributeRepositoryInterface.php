@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -34,7 +33,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Find all attributes that belongs to the default group
      *
-     * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.6
+     * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.7
      *
      * @return AttributeInterface[]
      */

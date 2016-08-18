@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Query;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -179,7 +178,6 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             ->setDefined(['context'])
             ->setDefaults([
                 'context'  => [],
-//                'operator' => Operators::EQUALS
             ]);
     }
 }

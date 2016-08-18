@@ -67,7 +67,7 @@ class FamilyFactorySpec extends ObjectBehavior
             ->willReturn($ecommerceRequirement)
             ->shouldBeCalled();
 
-        $family = $this->createFamily();
+        $family = $this->create();
         $family->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\FamilyInterface');
         $family->getAttributes()->shouldHaveCount(1);
         $family->getAttributes()->first()->shouldBeEqualTo($identifierAttribute);
