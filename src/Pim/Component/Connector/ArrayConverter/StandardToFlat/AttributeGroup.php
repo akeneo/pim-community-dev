@@ -19,7 +19,7 @@ class AttributeGroup extends AbstractSimpleArrayConverter implements ArrayConver
     protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
         switch ($property) {
-            case 'label':
+            case 'labels':
                 foreach ($data as $localeCode => $label) {
                     $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
