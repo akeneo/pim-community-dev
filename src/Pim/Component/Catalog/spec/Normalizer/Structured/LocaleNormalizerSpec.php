@@ -8,28 +8,25 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 
 class LocaleNormalizerSpec extends ObjectBehavior
 {
-    function let(LocaleHelper $localeHelper)
+    function it_is_a_normalizer()
     {
-        $this->beConstructedWith($localeHelper);
+        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_locales(LocaleInterface $en)
+
+    function it_supports_locales(LocaleInterface $locale)
     {
-        $this->supportsNormalization($en, 'internal_api')->shouldReturn(true);
+        $this->supportsNormalization($locale, 'csv')->shouldBe(false);
+        $this->supportsNormalization($locale, 'json')->shouldBe(true);
+        $this->supportsNormalization($locale, 'xml')->shouldBe(true);
     }
 
-    function it_normalizes_locales($localeHelper, LocaleInterface $en)
+    function it_normalizes_locales(LocaleInterface $locale)
     {
-        $en->getCode()->willReturn('en_US');
-        $localeHelper->getLocaleLabel('en_US')->willReturn('English (America)');
-        $localeHelper->getDisplayRegion('en_US')->willReturn('America');
-        $localeHelper->getDisplayLanguage('en_US')->willReturn('English');
+        $locale->getCode()->willReturn('en_US');
 
-        $this->normalize($en, 'internal_api')->shouldReturn([
-            'code'     => 'en_US',
-            'label'    => 'English (America)',
-            'region'   => 'America',
-            'language' => 'English'
+        $this->normalize($locale, 'json')->shouldReturn([
+            'code' => 'en_US',
         ]);
     }
 }
