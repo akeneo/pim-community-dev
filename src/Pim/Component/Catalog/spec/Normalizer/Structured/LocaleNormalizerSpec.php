@@ -13,7 +13,6 @@ class LocaleNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-
     function it_supports_locales(LocaleInterface $locale)
     {
         $this->supportsNormalization($locale, 'csv')->shouldBe(false);
