@@ -22,6 +22,14 @@ define([
         removable: false,
         filterTemplate: _.template(filterTemplate),
 
+        configure: function () {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode()});
+            }.bind(this));
+
+            return BaseForm.prototype.configure.apply(this, arguments)
+        },
+
         /**
          * Sets the parentForm code on which this filter operates.
          *
@@ -38,6 +46,24 @@ define([
          */
         getParentForm: function () {
             return this.parentForm;
+        },
+
+        /**
+         * Sets the code
+         *
+         * @param {string} code
+         */
+        setCode: function (code) {
+            this.code = code;
+        },
+
+        /**
+         * Gets the code
+         *
+         * @return {string}
+         */
+        getCode: function () {
+            return this.code;
         },
 
         /**

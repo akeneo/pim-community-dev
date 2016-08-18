@@ -55,6 +55,17 @@ define([
         },
 
         /**
+         * {@inheritdoc}
+         */
+        configure: function () {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode(), operator: _.first(_.values(this.config.operators))});
+            }.bind(this));
+
+            return BaseFilter.prototype.configure.apply(this, arguments)
+        },
+
+        /**
          * {@inherit}
          */
         isEmpty: function () {
@@ -109,9 +120,6 @@ define([
                 startValue = this.formatDate(value[0], this.modelDateFormat, dateFormat);
                 endValue = this.formatDate(value[1], this.modelDateFormat, dateFormat);
             }
-            if (undefined === this.getOperator()) {
-                this.setOperator(_.first(_.values(this.config.operators)));
-            }
 
             return this.template({
                 isEditable: this.isEditable(),
@@ -133,7 +141,7 @@ define([
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
                 FetcherRegistry
                     .getFetcher('attribute')
-                    .fetch(this.getField())
+                    .fetch(this.getCode())
             ).then(function (templateContext, attribute) {
                 return _.extend({}, templateContext, {
                     label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code)
