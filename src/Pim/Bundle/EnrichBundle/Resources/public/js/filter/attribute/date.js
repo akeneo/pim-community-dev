@@ -180,6 +180,8 @@ define([
                 operator: operator,
                 value: value
             });
+
+            this.render();
         },
 
         /**
