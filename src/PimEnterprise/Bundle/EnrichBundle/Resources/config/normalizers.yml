@@ -14,7 +14,7 @@ services:
     pimee_enrich.serializer.normalizer.rule_relation:
         class: '%pimee_enrich.serializer.normalizer.rule_relation.class%'
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 100 }
 
