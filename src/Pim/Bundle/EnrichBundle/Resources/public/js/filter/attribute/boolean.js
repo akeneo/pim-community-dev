@@ -42,7 +42,7 @@ define([
                 _.defaults(data, {field: this.getCode(), operator: '=', value: true});
             }.bind(this));
 
-            return BaseFilter.prototype.configure.apply(this, arguments)
+            return BaseFilter.prototype.configure.apply(this, arguments);
         },
 
         /**

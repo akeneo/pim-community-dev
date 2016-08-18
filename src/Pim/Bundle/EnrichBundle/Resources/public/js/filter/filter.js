@@ -27,7 +27,7 @@ define([
                 _.defaults(data, {field: this.getCode()});
             }.bind(this));
 
-            return BaseForm.prototype.configure.apply(this, arguments)
+            return BaseForm.prototype.configure.apply(this, arguments);
         },
 
         /**

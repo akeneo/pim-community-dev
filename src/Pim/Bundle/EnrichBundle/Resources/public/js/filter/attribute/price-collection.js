@@ -49,7 +49,7 @@ define([
                 }
             }.bind(this));
 
-            return BaseFilter.prototype.configure.apply(this, arguments)
+            return BaseFilter.prototype.configure.apply(this, arguments);
         },
 
         /**

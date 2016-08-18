@@ -62,7 +62,7 @@ define([
                 _.defaults(data, {field: this.getCode(), operator: _.first(_.values(this.config.operators))});
             }.bind(this));
 
-            return BaseFilter.prototype.configure.apply(this, arguments)
+            return BaseFilter.prototype.configure.apply(this, arguments);
         },
 
         /**
