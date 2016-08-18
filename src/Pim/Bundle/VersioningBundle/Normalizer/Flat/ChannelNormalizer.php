@@ -30,7 +30,6 @@ class ChannelNormalizer extends BaseNormalizer
             'currencies' => $this->normalizeCurrencies($object),
             'locales'    => $this->normalizeLocales($object),
             'tree'       => $this->normalizeCategoryTree($object),
-            'color'      => $object->getColor(),
         ];
     }
 
