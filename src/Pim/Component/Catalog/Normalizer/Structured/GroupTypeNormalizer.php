@@ -15,17 +15,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class GroupTypeNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
-    protected $transNormalizer;
+    protected $normalizer;
 
     /** @var string[] */
     protected $supportedFormats = ['json', 'xml'];
 
     /**
-     * @param NormalizerInterface $transNormalizer
+     * @param NormalizerInterface $normalizer
      */
-    public function __construct(NormalizerInterface $transNormalizer)
+    public function __construct(NormalizerInterface $normalizer)
     {
-        $this->transNormalizer = $transNormalizer;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -35,8 +35,8 @@ class GroupTypeNormalizer implements NormalizerInterface
     {
         return [
             'code'       => $groupType->getCode(),
-            'is_variant' => (int) $groupType->isVariant(),
-        ] + $this->transNormalizer->normalize($groupType, $format, $context);
+            'is_variant' => $groupType->isVariant(),
+        ] + $this->normalizer->normalize($groupType, $format, $context);
     }
 
     /**
