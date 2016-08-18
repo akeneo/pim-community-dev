@@ -103,13 +103,15 @@ define(
              * @return {Promise}
              */
             buildFilterView: function (filterConfig) {
-                return formBuilder.build(filterConfig.view).then(function (filterView) {
+                return formBuilder.buildForm(filterConfig.view).then(function (filterView) {
                     filterView.setRemovable(filterConfig.isRemovable);
                     filterView.setType(filterConfig.view);
                     filterView.setParentForm(this);
                     filterView.setCode(filterConfig.field);
 
-                    return filterView;
+                    return filterView.configure().then(function () {
+                        return filterView;
+                    });
                 }.bind(this));
             },
 

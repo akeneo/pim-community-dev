@@ -54,7 +54,7 @@ define([
          * @param {string} code
          */
         setCode: function (code) {
-            this.code = code;
+            this.filterCode = code;
         },
 
         /**
@@ -63,7 +63,7 @@ define([
          * @return {string}
          */
         getCode: function () {
-            return this.code;
+            return this.filterCode;
         },
 
         /**
