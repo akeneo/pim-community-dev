@@ -92,49 +92,17 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($group, array $options = [])
     {
-        if (!$group instanceof GroupInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
-                    ClassUtils::getClass($group)
-                )
-            );
-        }
+        $this->validateGroup($group);
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group));
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
-        $context = $this->productClassName;
-        $this->versionContext->addContextInfo(
-            sprintf('Comes from variant group %s', $group->getCode()),
-            $context
-        );
+        $this->persistGroup($group, $options);
 
-        if ($group->getType()->isVariant()) {
-            $template = $group->getProductTemplate();
-            if (null !== $template) {
-                $this->templateMediaManager->handleProductTemplateMedia($template);
-            }
-        }
+        $this->objectManager->flush();
 
-        $this->objectManager->persist($group);
-
-        $this->saveAssociatedProducts($group);
-
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-
-        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
-            $this->copyVariantGroupValues($group);
-        }
-
-        $this->versionContext->unsetContextInfo($context);
-
-        if (true === $options['flush']) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
-        }
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
     }
 
     /**
@@ -148,21 +116,23 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups));
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
+        $options = $this->optionsResolver->resolveSaveAllOptions($options);
 
         foreach ($groups as $group) {
-            $this->save($group, $itemOptions);
+            $this->validateGroup($group);
+
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
+
+            $this->persistGroup($group, $options);
         }
 
         $this->objectManager->flush();
 
         foreach ($groups as $group) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups, $options));
     }
 
     /**
@@ -206,5 +176,50 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         if (!empty($productsToUpdate)) {
             $this->productSaver->saveAll($productsToUpdate);
         }
+    }
+
+    /**
+     * @param $group
+     */
+    protected function validateGroup($group)
+    {
+        if (!$group instanceof GroupInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
+                    ClassUtils::getClass($group)
+                )
+            );
+        }
+    }
+
+    /**
+     * @param       $group
+     * @param array $options
+     */
+    protected function persistGroup($group, array $options)
+    {
+        $context = $this->productClassName;
+        $this->versionContext->addContextInfo(
+            sprintf('Comes from variant group %s', $group->getCode()),
+            $context
+        );
+
+        if ($group->getType()->isVariant()) {
+            $template = $group->getProductTemplate();
+            if (null !== $template) {
+                $this->templateMediaManager->handleProductTemplateMedia($template);
+            }
+        }
+
+        $this->objectManager->persist($group);
+
+        $this->saveAssociatedProducts($group);
+
+        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
+            $this->copyVariantGroupValues($group);
+        }
+
+        $this->versionContext->unsetContextInfo($context);
     }
 }

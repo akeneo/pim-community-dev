@@ -4,10 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver as BaseProductSaver;
@@ -60,7 +58,6 @@ class ProductSaver extends BaseProductSaver
     public function __construct(
         DocumentManager $documentManager,
         CompletenessManager $completenessManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         BulkVersionBuilderInterface $bulkVersionBuilder,
         BulkSaverInterface $versionSaver,
@@ -69,7 +66,7 @@ class ProductSaver extends BaseProductSaver
         $productClass,
         $databaseName
     ) {
-        parent::__construct($documentManager, $completenessManager, $optionsResolver, $eventDispatcher);
+        parent::__construct($documentManager, $completenessManager, $eventDispatcher);
 
         $this->bulkVersionBuilder = $bulkVersionBuilder;
         $this->versionSaver       = $versionSaver;
@@ -92,10 +89,7 @@ class ProductSaver extends BaseProductSaver
             return;
         }
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $itemOptions = $this->optionsResolver->resolveSaveOptions($allOptions);
-
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $allOptions));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
         $productsToInsert = [];
         $productsToUpdate = [];
@@ -108,7 +102,7 @@ class ProductSaver extends BaseProductSaver
                 $productsToUpdate[] = $product;
             }
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $itemOptions));
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
         }
 
         $insertDocs = $this->getDocsFromProducts($productsToInsert);
@@ -125,13 +119,13 @@ class ProductSaver extends BaseProductSaver
         foreach ($products as $product) {
             $this->completenessManager->generateMissingForProduct($product);
 
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $itemOptions));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
         }
 
         $versions = $this->bulkVersionBuilder->buildVersions($products);
         $this->versionSaver->saveAll($versions);
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $allOptions));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
     }
 
     /**
