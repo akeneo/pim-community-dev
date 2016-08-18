@@ -24,7 +24,7 @@ class CurrencyNormalizer implements NormalizerInterface
     {
         return [
             'code'      => $currency->getCode(),
-            'activated' => (int) $currency->isActivated(),
+            'activated' => $currency->isActivated(),
         ];
     }
 
