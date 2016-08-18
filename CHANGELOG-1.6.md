@@ -1,3 +1,12 @@
+# 1.6.x
+
+## Functional improvements
+
+- PIM-5701: Add CSV and XLSX import jobs for currencies, channels, locales, group types and attribute groups
+- PIM-5705: Add CSV and XLSX export jobs for currencies, channels, locales, group types and attribute groups
+
+## Bug fixes
+
 # 1.6.0-ALPHA1 (2016-08-01)
 
 ## Bug fixes

@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Normalizer\Structured\AttributeGroupNormalizer as Base
 class AttributeGroupNormalizer extends BaseNormalizer
 {
     /** @var string[] */
-    protected $supportedFormats = ['csv'];
+    protected $supportedFormats = ['csv', 'flat'];
 
     /**
      * {@inheritdoc}
@@ -23,6 +23,7 @@ class AttributeGroupNormalizer extends BaseNormalizer
     {
         $data = parent::normalize($object, $format, $context);
 
+        asort($data['attributes']);
         $data['attributes'] = implode(',', $data['attributes']);
 
         return $data;

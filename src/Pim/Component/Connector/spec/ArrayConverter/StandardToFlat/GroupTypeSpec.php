@@ -18,7 +18,7 @@ class GroupTypeSpec extends ObjectBehavior
         $item = [
             'code'       => 'VARIANT',
             'is_variant' => true,
-            'label'      => [
+            'labels'      => [
                 'en_US' => 'variant',
                 'fr_FR' => 'variantes',
             ]

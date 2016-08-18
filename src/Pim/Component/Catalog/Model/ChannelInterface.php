@@ -75,6 +75,13 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface, Cho
     public function removeCurrency(CurrencyInterface $currency);
 
     /**
+     * @param CurrencyInterface $currency
+     *
+     * @return boolean
+     */
+    public function hasCurrency(CurrencyInterface $currency);
+
+    /**
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getLocales();

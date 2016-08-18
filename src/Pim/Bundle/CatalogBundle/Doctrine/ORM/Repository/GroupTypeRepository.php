@@ -21,8 +21,7 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
     public function getAllGroupsExceptVariantQB()
     {
         $qb = $this->createQueryBuilder('group_type')
-            ->andWhere('group_type.code != :variant')
-            ->setParameter('variant', 'VARIANT')
+            ->andWhere('group_type.variant = 0')
             ->addOrderBy('group_type.code', 'ASC');
 
         return $qb;
@@ -99,5 +98,19 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
             ->getQuery();
 
         return array_keys($query->getArrayResult());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVariantGroupType()
+    {
+        $query = $this
+            ->createQueryBuilder('group_type')
+            ->andWhere('group_type.variant = 1')
+            ->getQuery()
+        ;
+
+        return $query->getOneOrNullResult();
     }
 }
