@@ -24,6 +24,5 @@ class AcmeAppExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('entities.yml');
         $loader->load('savers.yml');
-        $loader->load('listeners.yml');
     }
 }
