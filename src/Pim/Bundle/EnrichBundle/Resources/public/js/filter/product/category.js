@@ -44,7 +44,7 @@ define([
          *
          * @return {String}
          */
-        renderInput: function (templateContext) {
+        renderInput: function () {
             var categoryCount = 'IN CHILDREN' === this.getOperator() ? 0 : this.getValue().length;
 
             return this.template({

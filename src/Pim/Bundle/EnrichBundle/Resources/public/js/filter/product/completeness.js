@@ -31,7 +31,6 @@ define([
                 _.defaults(data, {field: this.getCode(), operator: '>=', value: 100});
             }.bind(this));
 
-
             return BaseFilter.prototype.configure.apply(this, arguments);
         },
 
@@ -55,20 +54,6 @@ define([
          */
         postRender: function () {
             this.$('[name="filter-operator"]').select2({minimumResultsForSearch: -1});
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        getTemplateContext: function () {
-            if (undefined === this.getOperator()) {
-                this.setOperator(_.first(this.config.operators));
-            }
-            if (undefined === this.getValue()) {
-                this.setValue(100, {silent: false});
-            }
-
-            return BaseFilter.prototype.getTemplateContext.apply(this, arguments);
         },
 
         /**
