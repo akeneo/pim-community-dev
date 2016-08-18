@@ -82,3 +82,19 @@ Feature: Export products according to a completeness policy
       complete;default;1;localized;;Complete;Complete
       empty;default;1;localized;;;
       """
+
+  Scenario: Export products with operator ALL on completeness
+    And I am on the "csv_product_export" export job edit page
+    And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
+    And I press the "Save" button
+    When I launch the export job
+    And I wait for the "csv_product_export" job to finish
+    Then exported file of "csv_product_export" should contain:
+      """
+      sku;categories;enabled;family;groups;name-en_US;name-fr_FR
+      french;default;1;localized;;;French
+      english;default;1;localized;;English;
+      complete;default;1;localized;;Complete;Complete
+      empty;default;1;localized;;;
+      """
