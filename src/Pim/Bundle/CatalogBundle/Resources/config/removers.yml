@@ -7,7 +7,6 @@ services:
         class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_catalog.entity.group_type.class%'
 
@@ -15,7 +14,6 @@ services:
         class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_catalog.entity.channel.class%'
 
@@ -23,7 +21,6 @@ services:
         class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_catalog.entity.product.class%'
 
@@ -31,7 +28,6 @@ services:
         class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_catalog.entity.association_type.class%'
 
@@ -39,7 +35,6 @@ services:
         class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_catalog.entity.attribute_group.class%'
 
@@ -47,7 +42,6 @@ services:
         class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_catalog.entity.attribute.class%'
 
@@ -55,7 +49,6 @@ services:
         class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_catalog.entity.attribute_option.class%'
 
@@ -63,7 +56,6 @@ services:
         class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_catalog.entity.category.class%'
 
@@ -71,7 +63,6 @@ services:
         class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_catalog.entity.family.class%'
 
@@ -79,7 +70,6 @@ services:
         class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_catalog.entity.group.class%'
 

@@ -28,28 +28,22 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     /** @var CompletenessManager */
     protected $completenessManager;
 
-    /** @var SavingOptionsResolverInterface */
-    protected $optionsResolver;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
      * @param ObjectManager                  $objectManager
      * @param CompletenessManager            $completenessManager
-     * @param SavingOptionsResolverInterface $optionsResolver
      * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     )
     {
         $this->objectManager = $objectManager;
         $this->completenessManager = $completenessManager;
-        $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -60,9 +54,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateFamily($family);
 
-        $options = $this->optionsResolver->resolveSaveOptions($options);
-
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family, $options));
 
         $this->objectManager->persist($family);
 
@@ -70,7 +62,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family, $options));
     }
 
     /**
@@ -82,14 +74,12 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($families));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($families, $options));
 
         foreach ($families as $family) {
             $this->validateFamily($family);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family));
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family, $options));
 
             $this->objectManager->persist($family);
 
@@ -99,10 +89,10 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($families as $family) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($families));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($families, $options));
     }
 
     /**

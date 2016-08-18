@@ -16,10 +16,9 @@ class ProductSaverSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
-        ProductSavingOptionsResolver $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($objectManager, $completenessManager, $optionsResolver, $eventDispatcher);
+        $this->beConstructedWith($objectManager, $completenessManager, $eventDispatcher);
     }
 
     function it_is_a_saver()
@@ -32,16 +31,12 @@ class ProductSaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
-    function it_persists_flushes_and_schedule_completeness_of_products_in_database(
+    function it_saves_a_product_and_schedule_completeness_in_database(
         $objectManager,
         $completenessManager,
-        $optionsResolver,
         $eventDispatcher,
         ProductInterface $product
     ) {
-        $optionsResolver->resolveSaveOptions(['flush' => true])
-            ->shouldBeCalled()
-            ->willReturn(['flush' => true]);
         $objectManager->persist($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $completenessManager->schedule($product)->shouldBeCalled();
@@ -50,7 +45,34 @@ class ProductSaverSpec extends ObjectBehavior
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
-        $this->save($product, ['flush' => true]);
+        $this->save($product);
+    }
+
+    function it_saves_multiple_products_and_schedule_completeness_in_database(
+        $objectManager,
+        $completenessManager,
+        $eventDispatcher,
+        ProductInterface $product1,
+        ProductInterface $product2
+    ) {
+        $objectManager->persist($product1)->shouldBeCalled();
+        $objectManager->persist($product2)->shouldBeCalled();
+
+        $objectManager->flush()->shouldBeCalled();
+
+        $completenessManager->schedule($product1)->shouldBeCalled();
+        $completenessManager->schedule($product2)->shouldBeCalled();
+
+        $completenessManager->generateMissingForProduct($product1)->shouldBeCalled();
+        $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+
+        $this->saveAll([$product1, $product2]);
     }
 
     function it_throws_an_exception_when_try_to_save_something_else_than_a_product(
@@ -61,6 +83,6 @@ class ProductSaverSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new \InvalidArgumentException('Expects a Pim\Component\Catalog\Model\ProductInterface, "stdClass" provided'))
-            ->duringSave($otherObject, ['flush' => false]);
+            ->duringSave($otherObject);
     }
 }

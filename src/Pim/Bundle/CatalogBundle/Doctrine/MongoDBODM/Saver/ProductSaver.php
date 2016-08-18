@@ -92,8 +92,10 @@ class ProductSaver extends BaseProductSaver
             return;
         }
 
-        $options = $this->optionsResolver->resolveSaveAllOptions($options);
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+        $itemOptions = $this->optionsResolver->resolveSaveOptions($allOptions);
+
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $allOptions));
 
         $productsToInsert = [];
         $productsToUpdate = [];
@@ -106,7 +108,7 @@ class ProductSaver extends BaseProductSaver
                 $productsToUpdate[] = $product;
             }
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $itemOptions));
         }
 
         $insertDocs = $this->getDocsFromProducts($productsToInsert);
@@ -123,13 +125,13 @@ class ProductSaver extends BaseProductSaver
         foreach ($products as $product) {
             $this->completenessManager->generateMissingForProduct($product);
 
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $itemOptions));
         }
 
         $versions = $this->bulkVersionBuilder->buildVersions($products);
         $this->versionSaver->saveAll($versions);
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $allOptions));
     }
 
     /**

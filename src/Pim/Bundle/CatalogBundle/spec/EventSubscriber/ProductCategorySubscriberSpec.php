@@ -48,10 +48,9 @@ class ProductCategorySubscriberSpec extends ObjectBehavior
 
     function it_applies_on_related_products($saver, RemoveEvent $event, CategoryInterface $object, ProductInterface $product)
     {
-        $saver->saveAll([$product], ['flush' => 'expected_flush_value'])->shouldBeCalled();
+        $saver->saveAll([$product])->shouldBeCalled();
 
         $event->getSubject()->willReturn($object);
-        $event->getArgument('flush')->willReturn('expected_flush_value');
         $object->getProducts()->willReturn([$product]);
 
         $product->removeCategory($object)->shouldBeCalled();

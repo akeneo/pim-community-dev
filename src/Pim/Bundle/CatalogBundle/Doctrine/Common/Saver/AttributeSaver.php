@@ -24,24 +24,18 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var SavingOptionsResolverInterface */
-    protected $optionsResolver;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
      * @param ObjectManager                  $objectManager
-     * @param SavingOptionsResolverInterface $optionsResolver
      * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(
         ObjectManager $objectManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager   = $objectManager;
-        $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -52,15 +46,13 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateAttribute($attribute);
 
-        $options = $this->optionsResolver->resolveSaveOptions($options);
-
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute, $options));
 
         $this->objectManager->persist($attribute);
 
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute, $options));
     }
 
     /**
@@ -72,14 +64,12 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($attributes));
-
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($attributes, $options));
 
         foreach ($attributes as $attribute) {
             $this->validateAttribute($attribute);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute));
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute, $options));
 
             $this->objectManager->persist($attribute);
         }
@@ -87,10 +77,10 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($attributes as $attribute) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($attributes));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($attributes, $options));
     }
 
     /**

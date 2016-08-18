@@ -4,7 +4,6 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
@@ -23,9 +22,6 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var SavingOptionsResolverInterface */
-    protected $optionsResolver;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -34,18 +30,15 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * @param ObjectManager                  $objectManager
-     * @param SavingOptionsResolverInterface $optionsResolver
      * @param EventDispatcherInterface       $eventDispatcher
      * @param string                         $savedClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         $savedClass
     ) {
         $this->objectManager   = $objectManager;
-        $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
         $this->savedClass      = $savedClass;
     }
@@ -56,8 +49,6 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
     public function save($object, array $options = [])
     {
         $this->validateObject($object);
-
-        $options = $this->optionsResolver->resolveSaveOptions($options);
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $options));
 
@@ -77,16 +68,13 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $options));
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $allOptions));
-
-        $itemOptions = $this->optionsResolver->resolveSaveOptions($allOptions);
 
         foreach ($objects as $object) {
             $this->validateObject($object);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $itemOptions));
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $options));
 
             $this->objectManager->persist($object);
         }
@@ -94,10 +82,10 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($objects as $object) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $itemOptions));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $allOptions));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $options));
     }
 
     /**
