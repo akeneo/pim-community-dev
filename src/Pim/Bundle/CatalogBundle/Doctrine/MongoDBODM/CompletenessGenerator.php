@@ -66,10 +66,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     public function generateMissingForProduct(ProductInterface $product)
     {
         $this->generate($product);
-
-        if ($this->documentManager->contains($product)) {
-            $this->documentManager->refresh($product);
-        }
     }
 
     /**
