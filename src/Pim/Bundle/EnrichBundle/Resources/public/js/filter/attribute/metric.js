@@ -45,12 +45,14 @@ define([
                 BaseFilter.prototype.configure.apply(this, arguments)
             ).then(function (attribute) {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-                    if (undefined === data.data) {
-                        data.data = '';
-                    }
-                    if (undefined === data.unit) {
-                        data.unit = attribute.default_metric_unit;
-                    }
+                    _.defaults(data, {
+                        field: this.getCode(),
+                        operator: _.first(_.values(this.config.operators)),
+                        value: {
+                            data: '',
+                            unit: attribute.default_metric_unit
+                        }
+                    });
                 }.bind(this));
             });
         },

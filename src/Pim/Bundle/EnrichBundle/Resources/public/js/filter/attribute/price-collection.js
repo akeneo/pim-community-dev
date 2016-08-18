@@ -41,12 +41,14 @@ define([
          */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-                if (undefined === data.data) {
-                    data.data = '';
-                }
-                if (undefined === data.currency) {
-                    data.currency = '';
-                }
+                _.defaults(data, {
+                    field: this.getCode(),
+                    operator: _.first(_.values(this.config.operators)),
+                    value: {
+                        data: '',
+                        currency: ''
+                    }
+                });
             }.bind(this));
 
             return BaseFilter.prototype.configure.apply(this, arguments);
