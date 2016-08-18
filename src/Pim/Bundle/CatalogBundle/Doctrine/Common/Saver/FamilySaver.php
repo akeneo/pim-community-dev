@@ -39,8 +39,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->objectManager = $objectManager;
         $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
