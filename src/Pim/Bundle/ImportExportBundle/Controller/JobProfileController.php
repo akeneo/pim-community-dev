@@ -20,11 +20,13 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -279,12 +281,26 @@ class JobProfileController
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EDIT, new GenericEvent($jobInstance));
         $job = $this->jobRegistry->get($jobInstance->getJobName());
 
+        $errors = [];
+        $accessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
+        foreach ($form->getErrors() as $error) {
+            if (0 === strpos($error->getCause()->getPropertyPath(), 'children[parameters].children[filters].data')) {
+                $propertyPath = substr(
+                    $error->getCause()->getPropertyPath(),
+                    strlen('children[parameters].children[filters].data')
+                );
+
+                $accessor->setValue($errors, $propertyPath, $error->getMessage());
+            }
+        }
+
         return $this->templating->renderResponse(
             $this->jobTemplateProvider->getEditTemplate($jobInstance),
             [
                 'jobInstance' => $jobInstance,
                 'job'         => $job,
                 'form'        => $form->createView(),
+                'errors'      => $errors,
             ]
         );
     }

@@ -138,7 +138,7 @@ class RefreshCommand extends ContainerAwareCommand
     {
         return $this
             ->getContainer()
-            ->get('pim_catalog.doctrine.smart_manager_registry')
+            ->get('akeneo_storage_utils.doctrine.smart_manager_registry')
             ->getManagerForClass($this->getVersionClass());
     }
 

@@ -140,4 +140,20 @@ class AttributeSpec extends ObjectBehavior
             'number_max'     => 15.0,
         ]);
     }
+
+    function it_does_not_convert_empty_keys()
+    {
+        $item = [
+            '' => 'foo',
+            0 => 'bar',
+        ];
+
+        $result = [
+            'labels' => [],
+            '' => 'foo',
+            0 => 'bar',
+        ];
+
+        $this->convert($item)->shouldReturn($result);
+    }
 }

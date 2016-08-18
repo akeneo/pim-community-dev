@@ -40,8 +40,10 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
         $delimiter = $jobParameters->get('delimiter');
         $enclosure = $jobParameters->get('enclosure');
         $fileIterator = $this->fileIteratorFactory->create($filePath, [
-            'fieldDelimiter' => $delimiter,
-            'fieldEnclosure' => $enclosure
+            'reader_options' => [
+                'fieldDelimiter' => $delimiter,
+                'fieldEnclosure' => $enclosure,
+            ]
         ]);
         $fileIterator->rewind();
 

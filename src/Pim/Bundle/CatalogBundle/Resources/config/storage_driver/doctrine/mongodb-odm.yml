@@ -94,7 +94,7 @@ services:
     pim_catalog.doctrine.index_creator:
         class: '%pim_catalog.doctrine.index_creator.class%'
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '@pim_catalog.doctrine.naming_utility'
             - '%pim_catalog.entity.product.class%'
             - '@logger'
@@ -103,7 +103,7 @@ services:
     pim_catalog.doctrine.naming_utility:
         class: '%pim_catalog.doctrine.naming_utility.class%'
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '%pim_catalog.entity.channel.class%'
             - '%pim_catalog.entity.locale.class%'
             - '%pim_catalog.entity.attribute.class%'
@@ -112,7 +112,7 @@ services:
     pim_catalog.doctrine.index_purger:
         class: '%pim_catalog.doctrine.index_purger.class%'
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '%pim_catalog.entity.product.class%'
 
     # Normalizers from Object to MongoDB normalizedData
@@ -192,7 +192,7 @@ services:
         class: '%pim_catalog.mongodb.normalizer.document.product_value.class%'
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
@@ -291,9 +291,6 @@ services:
     pim_catalog.repository.association:
         alias: pim_catalog.repository.product
 
-    pim_catalog.doctrine.smart_manager_registry:
-        alias: akeneo_storage_utils.doctrine.smart_manager_registry
-
     pim_catalog.saver.product:
         class: '%pim_catalog.saver.product.class%'
         arguments:
@@ -318,7 +315,7 @@ services:
     pim_catalog.event_subscriber.mongodb.update_normalized_product_data:
         class: '%pim_catalog.event_subscriber.mongodb.update_normalized_product_data.class%'
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '%pim_catalog.entity.product.class%'
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
@@ -326,7 +323,7 @@ services:
     pim_catalog.event_subscriber.mongodb.product_related_entity_removal:
         class: '%pim_catalog.event_subscriber.mongodb.product_related_entity_removal.class%'
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '%pim_catalog.entity.product.class%'
         tags:
             - { name: doctrine.event_subscriber, priority: 100 }
@@ -342,7 +339,7 @@ services:
     pim_catalog.event_subscriber.mongodb.set_products:
         class: '%pim_catalog.event_subscriber.mongodb.set_products.class%'
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '%pim_catalog.entity.product.class%'
             -
                 - { class: '%pim_catalog.entity.group.class%', property: groupIds }

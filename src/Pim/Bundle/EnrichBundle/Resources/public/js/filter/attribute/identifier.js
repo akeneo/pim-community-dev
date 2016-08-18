@@ -1,6 +1,7 @@
 'use strict';
 
 define([
+    'jquery',
     'underscore',
     'oro/translator',
     'pim/filter/filter',
@@ -10,6 +11,7 @@ define([
     'text!pim/template/filter/product/identifier',
     'jquery.select2'
 ], function (
+    $,
     _,
     __,
     BaseFilter,
@@ -59,13 +61,13 @@ define([
         getTemplateContext: function () {
             return FetcherRegistry
                 .getFetcher('attribute')
-                .getIdentifierAttribute()
-                .then(function (identifier) {
+                .fetch(this.getField())
+                .then(function (attribute) {
                     return {
                         label: i18n.getLabel(
-                            identifier.labels,
+                            attribute.labels,
                             UserContext.get('catalogLocale'),
-                            identifier.code
+                            this.getField()
                         ),
                         removable: false
                     };

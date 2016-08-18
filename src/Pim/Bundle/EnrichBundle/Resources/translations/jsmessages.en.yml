@@ -397,7 +397,7 @@ pim_enrich:
                     title: Completeness
                     help: The completeness of the products you want to export
                     operators:
-                        ALL: No condition on completeness
+                        "<=": No condition on completeness
                         ">=": Complete on at least one selected locale
                         "GREATER OR EQUALS THAN ON ALL LOCALES": Complete on all selected locales
                         LOWER THAN ON ALL LOCALES: Not complete on all selected locales

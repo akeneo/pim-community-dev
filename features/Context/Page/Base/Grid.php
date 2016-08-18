@@ -97,7 +97,7 @@ class Grid extends Index
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\UpdatedDecorator',
         ],
-        'pim-filter-product-identifier' => [
+        'pim-filter-attribute-identifier' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\IdentifierDecorator',
         ],

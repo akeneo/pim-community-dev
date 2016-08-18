@@ -36,14 +36,22 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
     /** @var StepExecution */
     protected $stepExecution;
 
+    /** @var array */
+    protected $options;
+
     /**
      * @param FileIteratorFactory     $fileIteratorFactory
      * @param ArrayConverterInterface $converter
+     * @param array                   $options
      */
-    public function __construct(FileIteratorFactory $fileIteratorFactory, ArrayConverterInterface $converter)
-    {
+    public function __construct(
+        FileIteratorFactory $fileIteratorFactory,
+        ArrayConverterInterface $converter,
+        array $options = []
+    ) {
         $this->fileIteratorFactory = $fileIteratorFactory;
         $this->converter           = $converter;
+        $this->options             = $options;
     }
 
     /**
@@ -57,10 +65,16 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
             $filePath = $jobParameters->get('filePath');
             $delimiter = $jobParameters->get('delimiter');
             $enclosure = $jobParameters->get('enclosure');
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath, [
-                'fieldDelimiter' => $delimiter,
-                'fieldEnclosure' => $enclosure
-            ]);
+            $defaultOptions = [
+                'reader_options' => [
+                    'fieldDelimiter' => $delimiter,
+                    'fieldEnclosure' => $enclosure,
+                ],
+            ];
+            $this->fileIterator = $this->fileIteratorFactory->create(
+                $filePath,
+                array_merge($defaultOptions, $this->options)
+            );
             $this->fileIterator->rewind();
         }
 

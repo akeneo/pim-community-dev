@@ -10,7 +10,9 @@ class FileIteratorSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith('csv', $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv', [
-            'fieldDelimiter' => ';'
+            'reader_options' => [
+                'fieldDelimiter' => ';'
+            ]
         ]);
     }
 
@@ -51,7 +53,9 @@ Est'
     function it_gets_current_row_from_an_archive()
     {
         $this->beConstructedWith('csv', $this->getPath() . DIRECTORY_SEPARATOR  . 'caterpillar_import.zip', [
-            'fieldDelimiter' => ';'
+            'reader_options' => [
+                'fieldDelimiter' => ';'
+            ]
         ]);
 
         $this->rewind();

@@ -11,22 +11,20 @@ Feature: Export products according to multi select reference data values
       | BOOT-1 | boots  | The boot 1 | Nike         |
       | BOOT-2 | boots  | The boot 2 | Converse     |
       | BOOT-3 | boots  | The boot 3 |              |
-    And the following jobs:
-      | connector            | type   | alias              | code               | label              |
-      | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
-    And the following job "csv_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+    And the following job "csv_footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/footwear_product_export.csv |
 
   Scenario: Export only the product values with selected reference data value
     Given I am logged in as "Julia"
-    And I am on the "csv_product_export" export job edit page
+    And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Manufacturer
     And I filter by "manufacturer.code" with operator "In list" and value "Nike"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     When I launch the export job
-    And I wait for the "csv_product_export" job to finish
-    Then exported file of "csv_product_export" should contain:
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
       """
       sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
       BOOT-1;;;;1;boots;;;Nike;"The boot 1";;;;;;;
@@ -34,14 +32,15 @@ Feature: Export products according to multi select reference data values
 
   Scenario: Export only the product values with selected reference data values
     Given I am logged in as "Julia"
-    And I am on the "csv_product_export" export job edit page
+    And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Manufacturer
     And I filter by "manufacturer.code" with operator "In list" and value "Nike,Converse"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     When I launch the export job
-    And I wait for the "csv_product_export" job to finish
-    Then exported file of "csv_product_export" should contain:
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
       """
       sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
       BOOT-1;;;;1;boots;;;Nike;"The boot 1";;;;;;;
@@ -50,14 +49,15 @@ Feature: Export products according to multi select reference data values
 
   Scenario: Export only the product values without reference data values
     Given I am logged in as "Julia"
-    And I am on the "csv_product_export" export job edit page
+    And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Manufacturer
     And I filter by "manufacturer.code" with operator "Is empty" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     When I launch the export job
-    And I wait for the "csv_product_export" job to finish
-    Then exported file of "csv_product_export" should contain:
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
       """
       sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
       BOOT-3;;;;1;boots;;;;"The boot 3";;;;;;;
@@ -65,17 +65,41 @@ Feature: Export products according to multi select reference data values
 
   Scenario: Export all the product values when no reference data is provided with operator IN LIST
     Given I am logged in as "Julia"
-    And I am on the "csv_product_export" export job edit page
+    And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Manufacturer
     And I filter by "manufacturer.code" with operator "In list" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     When I launch the export job
-    And I wait for the "csv_product_export" job to finish
-    Then exported file of "csv_product_export" should contain:
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
      """
      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
      BOOT-1;;;;1;boots;;;Nike;"The boot 1";;;;;;;
      BOOT-2;;;;1;boots;;;Converse;"The boot 2";;;;;;;
      BOOT-3;;;;1;boots;;;;"The boot 3";;;;;;;
      """
+
+  Scenario: Don't raise error if an option isn't available anymore on the product export builder
+    Given I am logged in as "Julia"
+    And I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I add available attributes Manufacturer
+    And I filter by "manufacturer.code" with operator "In list" and value "Nike,Converse"
+    And I press the "Save" button
+    And I edit the "manufacturer" attribute
+    And I visit the "Values" tab
+    And I remove the "Nike" option
+    And I confirm the deletion
+    And I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
+    And I press the "Save" button
+    When I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
+      """
+      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+      BOOT-2;;;;1;boots;;;Converse;"The boot 2";;;;;;;
+      """
