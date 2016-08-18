@@ -27,6 +27,11 @@ services:
                 - 'csv_association_type_export'
                 - 'csv_attribute_option_export'
                 - 'csv_category_export'
+                - 'csv_channel_export'
+                - 'csv_locale_export'
+                - 'csv_attribute_group_export'
+                - 'csv_currency_export'
+                - 'csv_group_type_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -40,6 +45,11 @@ services:
                 - 'xlsx_association_type_export'
                 - 'xlsx_attribute_option_export'
                 - 'xlsx_category_export'
+                - 'xlsx_channel_export'
+                - 'xlsx_locale_export'
+                - 'xlsx_attribute_group_export'
+                - 'xlsx_currency_export'
+                - 'xlsx_group_type_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -90,6 +100,11 @@ services:
                 - 'csv_association_type_import'
                 - 'csv_attribute_option_import'
                 - 'csv_category_import'
+                - 'csv_channel_import'
+                - 'csv_locale_import'
+                - 'csv_attribute_group_import'
+                - 'csv_currency_import'
+                - 'csv_group_type_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -103,6 +118,11 @@ services:
                 - 'xlsx_association_type_import'
                 - 'xlsx_attribute_option_import'
                 - 'xlsx_category_import'
+                - 'xlsx_channel_import'
+                - 'xlsx_locale_import'
+                - 'xlsx_attribute_group_import'
+                - 'xlsx_currency_import'
+                - 'xlsx_group_type_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
