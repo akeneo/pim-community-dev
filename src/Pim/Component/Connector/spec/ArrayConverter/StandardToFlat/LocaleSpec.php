@@ -6,27 +6,21 @@ use PhpSpec\ObjectBehavior;
 
 class LocaleSpec extends ObjectBehavior
 {
+    function it_is_an_array_converter()
+    {
+        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\ArrayConverterInterface');
+    }
+
     function it_converts_from_standard_to_flat_format()
     {
         $expected = [
-            'code'       => 'tavern',
-            'label'      => 'Tavern',
-            'locales'    => '',
-            'currencies' => 'GLD,PST',
-            'tree'       => 'master_catalog',
-            'color'      => 'orange'
+            'code'      => 'en',
+            'activated' => "1",
         ];
 
         $item = [
-            'code'       => 'tavern',
-            'label'      => 'Tavern',
-            'locales'    => [],
-            'currencies' => [
-                'GLD',
-                'PST'
-            ],
-            'tree'       => 'master_catalog',
-            'color'      => 'orange'
+            'code'      => 'en',
+            'activated' => true,
         ];
 
         $this->convert($item)->shouldReturn($expected);
