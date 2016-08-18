@@ -38,7 +38,6 @@ class ChannelNormalizerSpec extends ObjectBehavior
     ) {
         $channel->getCode()->willReturn('ecommerce');
         $channel->getLabel()->willReturn('Ecommerce');
-        $channel->getColor()->willReturn('red');
         $channel->getCurrencies()->willReturn([$eur, $usd]);
         $eur->getCode()->willReturn('EUR');
         $usd->getCode()->willReturn('USD');
@@ -61,7 +60,6 @@ class ChannelNormalizerSpec extends ObjectBehavior
                 'currencies' => 'EUR,USD',
                 'locales'    => 'en_US,fr_FR',
                 'tree'       => 'Master catalog',
-                'color'      => 'red',
             ]
         );
     }

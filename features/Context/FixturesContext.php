@@ -453,7 +453,6 @@ class FixturesContext extends BaseFixturesContext
             $channel = $this->getChannel($data['code']);
 
             assertEquals($data['label'], $channel->getLabel());
-            assertEquals($data['color'], $channel->getColor());
             assertEquals($data['tree'], $channel->getCategory()->getCode());
 
             $locales = $channel->getLocaleCodes();
