@@ -67,9 +67,13 @@ define(
              */
             addFilters: function (fieldCodes) {
                 // We pre-fetch the attributes to add to avoid multiple http requests
-                return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(fieldCodes).then(function () {
-                    return $.when.apply($, _.map(fieldCodes, this.addFilter.bind(this)));
-                }.bind(this));
+                return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(fieldCodes)
+                    .then(function () {
+                        return $.when.apply($, _.map(fieldCodes, this.addFilter.bind(this)));
+                    }.bind(this))
+                    .then(function () {
+                        this.updateFiltersData(_.extend({}, this.getFormData().data));
+                    }.bind(this));
             },
 
             /**
@@ -148,7 +152,6 @@ define(
                 this.$el.html(this.template({__: __}));
 
                 this.addExistingFilters().then(function () {
-                    this.updateFiltersData(_.extend({}, this.getFormData().data));
                     var filtersContainer = this.$('.filters').empty();
                     _.each(this.filterViews, function (filterView) {
                         filtersContainer.append(filterView.render().$el);
