@@ -54,7 +54,7 @@ define([
                         }
                     });
                 }.bind(this));
-            });
+            }.bind(this));
         },
 
         /**
@@ -91,6 +91,7 @@ define([
         getTemplateContext: function () {
             return $.when(
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
+                FetcherRegistry.getFetcher('attribute').fetch(this.getCode()),
                 FetcherRegistry.getFetcher('measure').fetchAll()
             ).then(function (templateContext, attribute, measures) {
                 return _.extend({}, templateContext, {
