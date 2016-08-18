@@ -47,16 +47,6 @@ class FamilyFactory implements SimpleFactoryInterface
     }
 
     /**
-     * @deprecated Will be removed in 1.6 use create instead
-     *
-     * @return FamilyInterface
-     */
-    public function createFamily()
-    {
-        return $this->create();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function create()

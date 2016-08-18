@@ -139,7 +139,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function getSmartRegistry()
     {
-        return $this->getContainer()->get('pim_catalog.doctrine.smart_manager_registry');
+        return $this->getContainer()->get('akeneo_storage_utils.doctrine.smart_manager_registry');
     }
 
     /**

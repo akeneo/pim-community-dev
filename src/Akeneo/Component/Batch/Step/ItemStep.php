@@ -164,16 +164,6 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * @deprecated will be removed in 1.7
-     *
-     * @return array
-     */
-    public function getConfigurableStepElements()
-    {
-        return $this->getStepElements();
-    }
-
-    /**
      * @param mixed $readItem
      *
      * @return mixed processed item

@@ -83,7 +83,7 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
      *
      * This method should be removed when boolean attribute will be rework to support 3 states: true/false/null
      *
-     * @deprecated will be removed in 1.6
+     * @deprecated will be removed in 1.7
      *
      * @param ProductInterface   $product    product to update
      * @param AttributeInterface $attribute  attribute
