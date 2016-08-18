@@ -3,7 +3,6 @@ services:
         class: '%akeneo_storage_utils.saver.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
             - '%acme_app.entity.color.class%'
 
@@ -11,6 +10,5 @@ services:
         class: '%akeneo_storage_utils.saver.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
             - '%acme_app.entity.fabric.class%'

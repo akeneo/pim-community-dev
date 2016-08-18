@@ -299,7 +299,6 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.manager.completeness'
-            - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
             - '@pim_versioning.doctrine.mongodb.bulk_builder.version'
             - '@pim_versioning.doctrine.mongodb.bulk_saver.version'

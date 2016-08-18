@@ -3,7 +3,6 @@ services:
         class: '%akeneo_storage_utils.saver.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_user.entity.role.class%'
 
@@ -11,7 +10,6 @@ services:
         class: '%akeneo_storage_utils.saver.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_user.entity.group.class%'
 
@@ -19,6 +17,5 @@ services:
         class: '%akeneo_storage_utils.saver.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
             - '%pim_user.entity.user.class%'
