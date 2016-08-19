@@ -14,19 +14,15 @@ class ValueConverterRegistry implements ValueConverterRegistryInterface
     /** @var ValueConverterInterface[] */
     protected $converters = [];
 
+    /** @var ValueConverterInterface[] */
+    protected $convertersByAttributeType = [];
+
     /**
      * {@inheritdoc}
      */
-    public function register(ValueConverterInterface $converter, $priority)
+    public function register(ValueConverterInterface $converter)
     {
-        $priority = (int)$priority;
-        if (!isset($this->converters[$priority])) {
-            $this->converters[$priority] = $converter;
-        } else {
-            $this->register($converter, ++$priority);
-        }
-
-        ksort($this->converters);
+        $this->converters[] = $converter;
 
         return $this;
     }
@@ -36,8 +32,14 @@ class ValueConverterRegistry implements ValueConverterRegistryInterface
      */
     public function getConverter($attributeType)
     {
+        if (isset($this->convertersByAttributeType[$attributeType])) {
+            return $this->convertersByAttributeType[$attributeType];
+        }
+
         foreach ($this->converters as $converter) {
             if ($converter->supportsField($attributeType)) {
+                $this->convertersByAttributeType[$attributeType] = $converter;
+
                 return $converter;
             }
         }
