@@ -237,7 +237,7 @@ define(
              */
             updateFiltersData: function (data) {
                 _.each(this.filterViews, function (filterView) {
-                    var filterData = _.findWhere(data, {field: filterView.getCode()});
+                    var filterData = _.findWhere(data, {field: filterView.getField()});
                     filterData = filterData || {};
                     filterView.trigger('pim_enrich:form:entity:pre_update', filterData);
                     filterView.setData(filterData, {silent: true});
