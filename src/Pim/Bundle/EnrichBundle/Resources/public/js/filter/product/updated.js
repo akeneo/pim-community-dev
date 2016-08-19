@@ -104,7 +104,7 @@ define([
             updateState: function () {
                 this.$('.date-wrapper:first').datetimepicker('hide');
 
-                var oldOperator = this.getFormData().operator;
+                var oldOperator = this.getOperator();
 
                 var value    = this.$('[name="filter-value"]').val();
                 var operator = this.$('[name="filter-operator"]').val();

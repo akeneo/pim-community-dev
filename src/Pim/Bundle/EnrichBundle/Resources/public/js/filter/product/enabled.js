@@ -73,9 +73,9 @@ define([
             var value = this.$('[name="filter-value"]').val();
 
             if ('all' === value) {
-                this.setData({operator: 'ALL', value: null});
+                this.setData({field: this.getField(), operator: 'ALL', value: null});
             } else {
-                this.setData({operator: '=', value: 'enabled' === value});
+                this.setData({field: this.getField(), operator: '=', value: 'enabled' === value});
             }
         }
     });
