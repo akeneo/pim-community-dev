@@ -3,17 +3,18 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -21,10 +22,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class DelegatingProductSaverSpec extends ObjectBehavior
 {
     function let(
-        SaverInterface $workingCopySaver,
-        SaverInterface $draftSaver,
         ObjectManager $objectManager,
-        ProductSavingOptionsResolver $optionsResolver,
+        CompletenessManager $completenessManager,
+        EventDispatcherInterface $eventDispatcher,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftBuilderInterface $productDraftBuilder,
         TokenStorageInterface $tokenStorage,
@@ -32,10 +32,9 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         RemoverInterface $productDraftRemover
     ) {
         $this->beConstructedWith(
-            $workingCopySaver,
-            $draftSaver,
             $objectManager,
-            $optionsResolver,
+            $completenessManager,
+            $eventDispatcher,
             $authorizationChecker,
             $productDraftBuilder,
             $tokenStorage,
@@ -54,48 +53,53 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
-    function it_delegates_to_working_copy_saver_when_user_is_the_owner(
-        $optionsResolver,
+    function it_saves_the_product_when_user_is_the_owner(
+        $objectManager,
+        $completenessManager,
+        $eventDispatcher,
         $authorizationChecker,
-        $workingCopySaver,
         $tokenStorage,
         ProductInterface $product
     ) {
-        $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
-
         $product->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(true);
         $tokenStorage->getToken()->willReturn('token');
 
-        $workingCopySaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled();
+        $objectManager->persist($product)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+        $completenessManager->schedule($product)->shouldBeCalled();
+        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
-        $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
+        $this->save($product);
     }
 
-    function it_delegates_to_working_copy_saver_when_user_is_not_the_owner_and_product_not_exists(
-        $optionsResolver,
-        $workingCopySaver,
+    function it_saves_the_product_when_user_is_not_the_owner_and_product_not_exists(
+        $objectManager,
+        $completenessManager,
+        $eventDispatcher,
         ProductInterface $product
     ) {
-        $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
-
         $product->getId()->willReturn(null);
 
-        $workingCopySaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled();
+        $objectManager->persist($product)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+        $completenessManager->schedule($product)->shouldBeCalled();
+        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
-        $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
+        $this->save($product);
     }
 
-    function it_delegates_to_draft_saver_when_user_is_not_the_owner_and_product_exists_without_changes(
-        $optionsResolver,
+    function it_remove_the_existing_product_draft_when_user_is_not_the_owner_and_product_exists_without_changes_anymore(
+        $objectManager,
         $authorizationChecker,
         $productDraftBuilder,
-        $draftSaver,
         $tokenStorage,
         $productDraftRepo,
         $productDraftRemover,
@@ -104,9 +108,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
-        $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
-
         $product->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(false);
@@ -122,16 +123,16 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $productDraftRepo->findUserProductDraft($product, 'username')->willReturn($productDraft);
         $productDraftRemover->remove($productDraft)->shouldBeCalled();
 
-        $draftSaver->save()->shouldNotBeCalled();
+        $objectManager->persist(Argument::any())->shouldNotBeCalled();
+        $objectManager->flush()->shouldNotBeCalled();
 
-        $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
+        $this->save($product);
     }
 
-    function it_does_not_remove_draft_when_user_is_not_the_owner_and_product_exists_without_changes_but_the_draft_does_not_exists(
-        $optionsResolver,
+    function it_does_not_remove_any_product_draft_when_user_is_not_the_owner_and_product_exists_without_changes_but_the_draft_does_not_exists(
+        $objectManager,
         $authorizationChecker,
         $productDraftBuilder,
-        $draftSaver,
         $tokenStorage,
         $productDraftRepo,
         $productDraftRemover,
@@ -139,9 +140,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
-        $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
-
         $product->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(false);
@@ -157,26 +155,23 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $productDraftRepo->findUserProductDraft($product, 'username')->willReturn();
         $productDraftRemover->remove(Argument::any())->shouldNotBeCalled();
 
-        $draftSaver->save()->shouldNotBeCalled();
+        $objectManager->persist(Argument::any())->shouldNotBeCalled();
+        $objectManager->flush()->shouldNotBeCalled();
 
-        $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
+        $this->save($product);
     }
 
-    function it_delegates_to_draft_saver_when_user_is_not_the_owner_and_product_exists_with_changes(
-        $optionsResolver,
+    function it_saves_the_product_draft_when_user_is_not_the_owner_and_product_exists_with_changes(
+        $objectManager,
+        $eventDispatcher,
         $authorizationChecker,
         $productDraftBuilder,
-        $draftSaver,
         $tokenStorage,
         ProductInterface $product,
         ProductDraftInterface $productDraft,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
-        $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled()
-            ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
-
         $product->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->shouldBeCalled()
@@ -189,26 +184,74 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             ->willReturn($productDraft)
             ->shouldBeCalled();
 
-        $draftSaver->save($productDraft, ['recalculate' => true, 'flush' => true, 'schedule' => true])->shouldBeCalled();
+        $objectManager->persist($productDraft)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
-        $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
+        $objectManager->refresh($product)->shouldBeCalled();
+
+        $this->save($product);
     }
 
-    function it_delegates_to_working_copy_saver_when_there_is_no_token_generated(
-        $optionsResolver,
-        $workingCopySaver,
+    function it_saves_the_product_when_there_is_no_token_generated(
+        $objectManager,
+        $completenessManager,
+        $eventDispatcher,
         $tokenStorage,
         ProductInterface $product
     ) {
-        $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
-
         $product->getId()->willReturn(42);
         $tokenStorage->getToken()->willReturn(null);
 
-        $workingCopySaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled();
+        $objectManager->persist($product)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+        $completenessManager->schedule($product)->shouldBeCalled();
+        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
-        $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
+        $this->save($product);
+    }
+
+    function it_saves_several_product_and_product_drafts_depending_on_user_ownership(
+        $objectManager,
+        $completenessManager,
+        $eventDispatcher,
+        $authorizationChecker,
+        $productDraftBuilder,
+        $tokenStorage,
+        ProductInterface $ownedProduct,
+        ProductInterface $notOwnedProduct,
+        ProductDraftInterface $productDraft,
+        UsernamePasswordToken $token,
+        UserInterface $user
+    ) {
+        $ownedProduct->getId()->willReturn(42);
+        $authorizationChecker->isGranted(Attributes::OWN, $ownedProduct)
+            ->willReturn(true);
+        $user->getUsername()->willReturn('username');
+        $token->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+
+        $objectManager->persist($ownedProduct)->shouldBeCalled();
+        $completenessManager->schedule($ownedProduct)->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+
+        $notOwnedProduct->getId()->willReturn(43);
+        $authorizationChecker->isGranted(Attributes::OWN, $notOwnedProduct)
+            ->shouldBeCalled()
+            ->willReturn(false);
+        $productDraftBuilder->build($notOwnedProduct, 'username')
+            ->willReturn($productDraft)
+            ->shouldBeCalled();
+        $objectManager->persist($productDraft)->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+
+        $objectManager->flush()->shouldBeCalledTimes(1);
+
+        $this->saveAll([$ownedProduct, $notOwnedProduct]);
     }
 }
