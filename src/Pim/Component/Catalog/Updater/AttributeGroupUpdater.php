@@ -8,6 +8,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Manager\AttributeGroupManager;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface;
 
 /**
  * Updates an attribute group
@@ -25,8 +26,6 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     protected $attributeGroupManager;
 
     /**
-     * AttributeGroupUpdater constructor.
-     *
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param AttributeGroupManager                 $attributeGroupManager
      */
