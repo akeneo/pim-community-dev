@@ -16,7 +16,7 @@ Feature: Export channels
     And I should see "Written 2"
     And exported file of "csv_footwear_channel_export" should contain:
     """
-    code;label;color;currencies;locales;tree
-    tablet;Tablet;;EUR,USD;en_US;2014_collection
+    code;label;conversion_units;currencies;locales;tree
     mobile;Mobile;;EUR;en_US;2014_collection
+    tablet;Tablet;;USD,EUR;en_US;2014_collection
     """

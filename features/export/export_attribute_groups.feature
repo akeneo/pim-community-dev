@@ -17,10 +17,10 @@ Feature: Export attribute groups
     And exported file of "csv_footwear_attribute_group_export" should contain:
     """
     code;label-en_US;attributes;sort_order
-    info;"Product information";description,length,manufacturer,name,sku,volume,weather_conditions,weight;1
-    marketing;Marketing;price,rate_sale,rating;2
+    info;"Product information";sku,name,manufacturer,weather_conditions,description,length,volume,weight;1
+    marketing;Marketing;price,rating,rate_sale;2
     sizes;Sizes;size;3
     colors;Colors;color,lace_color;4
     media;Media;side_view,top_view;5
-    other;Other;123,cap_color,comment,destocking_date,handmade,heel_color,lace_fabric,number_in_stock,sole_color,sole_fabric;100
+    other;Other;comment,number_in_stock,destocking_date,handmade,heel_color,sole_color,cap_color,sole_fabric,lace_fabric,123;100
     """

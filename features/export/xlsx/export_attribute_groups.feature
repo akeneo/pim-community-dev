@@ -13,13 +13,13 @@ Feature: Export attribute groups
     And I launch the export job
     And I wait for the "xlsx_footwear_attribute_group_export" job to finish
     Then exported xlsx file of "xlsx_footwear_attribute_group_export" should contain:
-      | code      | label-en_US         | attributes                                                                                                   | sort_order |
-      | info      | Product information | description,length,manufacturer,name,sku,volume,weather_conditions,weight                                    | 1 |
-      | marketing | Marketing           | price,rate_sale,rating                                                                                       | 2 |
-      | sizes     | Sizes               | size                                                                                                         | 3 |
-      | colors    | Colors              | color,lace_color                                                                                             | 4 |
-      | media     | Media               | side_view,top_view                                                                                           | 5 |
-      | other     | Other               | 123,cap_color,comment,destocking_date,handmade,heel_color,lace_fabric,number_in_stock,sole_color,sole_fabric | 100 |
+      | code      | label-en_US | attributes                                                                                                   | sort_order          |
+      | info      | 1           | sku,name,manufacturer,weather_conditions,description,length,volume,weight                                    | Product information |
+      | marketing | 2           | price,rating,rate_sale                                                                                       | Marketing           |
+      | sizes     | 3           | size                                                                                                         | Sizes               |
+      | colors    | 4           | color,lace_color                                                                                             | Colors              |
+      | media     | 5           | side_view,top_view                                                                                           | Media               |
+      | other     | 100         | comment,number_in_stock,destocking_date,handmade,heel_color,sole_color,cap_color,sole_fabric,lace_fabric,123 | Other               |
 
   Scenario: Successfully export attribute groups in xlsx without headers:
     Given an "footwear" catalog configuration
@@ -31,9 +31,9 @@ Feature: Export attribute groups
     And I launch the export job
     And I wait for the "xlsx_footwear_attribute_group_export" job to finish
     Then exported xlsx file of "xlsx_footwear_attribute_group_export" should contain:
-      | info      | 1   | description,length,manufacturer,name,sku,volume,weather_conditions,weight                                    | Product information |
-      | marketing | 2   | price,rate_sale,rating                                                                                       | Marketing           |
+      | info      | 1   | sku,name,manufacturer,weather_conditions,description,length,volume,weight                                    | Product information |
+      | marketing | 2   | price,rating,rate_sale                                                                                      | Marketing           |
       | sizes     | 3   | size                                                                                                         | Sizes               |
       | colors    | 4   | color,lace_color                                                                                             | Colors              |
       | media     | 5   | side_view,top_view                                                                                           | Media               |
-      | other     | 100 | 123,cap_color,comment,destocking_date,handmade,heel_color,lace_fabric,number_in_stock,sole_color,sole_fabric | Other               |
+      | other     | 100 | comment,number_in_stock,destocking_date,handmade,heel_color,sole_color,cap_color,sole_fabric,lace_fabric,123 | Other               |
