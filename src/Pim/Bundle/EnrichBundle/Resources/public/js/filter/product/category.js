@@ -66,6 +66,7 @@ define([
         channelUpdated: function () {
             this.getCurrentChannel().then(function (channel) {
                 this.setDefaultValues(channel);
+                this.render();
             }.bind(this));
         },
 
@@ -130,6 +131,7 @@ define([
                 modal.close();
                 modal.remove();
                 tree.remove();
+                this.render();
             }.bind(this));
         },
 
