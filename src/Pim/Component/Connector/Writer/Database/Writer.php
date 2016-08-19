@@ -43,9 +43,9 @@ class Writer implements ItemWriterInterface, StepExecutionAwareInterface
      */
     public function write(array $objects)
     {
+        $this->incrementCount($objects);
         $this->bulkSaver->saveAll($objects);
         $this->bulkDetacher->detachAll($objects);
-        $this->incrementCount($objects);
     }
 
     /**
