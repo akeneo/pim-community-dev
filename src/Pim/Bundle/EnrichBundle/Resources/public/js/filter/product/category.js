@@ -33,10 +33,7 @@ define([
                 _.defaults(data, {field: this.getCode() + '.code', operator: 'IN CHILDREN', value: []});
             }.bind(this));
 
-            return $.when(
-                fetcherRegistry.getFetcher('channel').fetchAll(),
-                BaseFilter.prototype.configure.apply(this, arguments)
-            );
+            return BaseFilter.prototype.configure.apply(this, arguments);
         },
 
         /**

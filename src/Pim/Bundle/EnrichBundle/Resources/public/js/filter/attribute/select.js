@@ -170,6 +170,7 @@ define([
                 multiple: true
             };
         },
+
         /**
          * Return the select choice promise which, once resolved, return all possible choices
          * for the given select attribute.

@@ -100,7 +100,7 @@ class Form extends Base
         $this->spin(function () use ($tabDom) {
             $tabDom->click();
 
-            return true;
+            return $tabDom->getParent()->hasClass('active');
         }, sprintf('Cannot switch to the tab %s', $tab));
     }
 

@@ -93,7 +93,7 @@ define([
          * {@inherit}
          */
         updateState: function () {
-            var value = this.$('[name="filter-value"]').val();
+            var value    = this.$('[name="filter-value"]').val();
             var operator = this.$('[name="filter-operator"]').val();
 
             this.setData({
