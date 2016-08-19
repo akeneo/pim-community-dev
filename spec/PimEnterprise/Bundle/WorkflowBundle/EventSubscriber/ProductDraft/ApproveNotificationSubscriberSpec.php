@@ -124,8 +124,7 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         ProductValueInterface $identifier,
         AttributeInterface $attribute,
-        NotificationInterface $notification,
-        ProductValueInterface $identifier
+        NotificationInterface $notification
     ) {
         $context->getCurrentLocaleCode()->willReturn(Argument::any());
         $values = [

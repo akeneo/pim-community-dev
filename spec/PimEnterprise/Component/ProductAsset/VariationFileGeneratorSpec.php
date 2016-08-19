@@ -39,7 +39,6 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         ReferenceInterface $reference,
         VariationInterface $variation,
         FileInfoInterface $sourceFileInfo,
-        VariationInterface $variation,
         Filesystem $filesystem,
         LocaleInterface $en_US
     ) {

@@ -18,8 +18,7 @@ class UploadCheckerSpec extends ObjectBehavior
         AssetRepositoryInterface $assetRepo,
         LocaleRepositoryInterface $localeRepository,
         LocaleInterface $localeEn,
-        LocaleInterface $localeFr,
-        LocaleRepositoryInterface $localeRepository
+        LocaleInterface $localeFr
     ) {
         $localeEn->getCode()->willReturn('en_US');
         $localeFr->getCode()->willReturn('fr_FR');
