@@ -132,6 +132,16 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    csv_attribute_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_export
+        label:     Demo CSV attribute export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/attribute.csv
     csv_attribute_option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
