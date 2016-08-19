@@ -402,7 +402,7 @@ class ProductAssetController extends Controller
 
         try {
             $this->assetFilesUpdater->deleteVariationFile($variation);
-            $this->variationSaver->save($variation, ['schedule' => true]);
+            $this->variationSaver->save($variation);
             $this->addFlashMessage('success', 'pimee_product_asset.enrich_variation.flash.delete.success');
         } catch (\Exception $e) {
             $this->addFlashMessage('error', 'pimee_product_asset.enrich_variation.flash.delete.error');
@@ -437,7 +437,7 @@ class ProductAssetController extends Controller
 
         try {
             $this->assetFilesUpdater->resetVariationFile($variation);
-            $this->variationSaver->save($variation, ['schedule' => true]);
+            $this->variationSaver->save($variation);
             $event = $this->eventDispatcher->dispatch(
                 AssetEvent::POST_UPLOAD_FILES,
                 new AssetEvent($asset)
@@ -476,7 +476,7 @@ class ProductAssetController extends Controller
 
         try {
             $this->assetFilesUpdater->resetAllVariationsFiles($reference, true);
-            $this->assetSaver->save($asset, ['schedule' => true]);
+            $this->assetSaver->save($asset);
             $event = $this->eventDispatcher->dispatch(
                 AssetEvent::POST_UPLOAD_FILES,
                 new AssetEvent($asset)
@@ -671,7 +671,7 @@ class ProductAssetController extends Controller
         if ($assetForm->isValid()) {
             try {
                 $this->assetFilesUpdater->updateAssetFiles($productAsset);
-                $this->assetSaver->save($productAsset, ['schedule' => true]);
+                $this->assetSaver->save($productAsset);
                 $event = $this->eventDispatcher->dispatch(
                     AssetEvent::POST_UPLOAD_FILES,
                     new AssetEvent($productAsset)
