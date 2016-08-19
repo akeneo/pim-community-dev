@@ -337,9 +337,12 @@ class Product implements ArrayConverterInterface
             $this->getOptionalAssociationFields()
         );
 
+        // index $optionalFields by keys to improve performances
+        $optionalFields = array_combine($optionalFields, $optionalFields);
         $unknownFields = [];
+
         foreach (array_keys($item) as $field) {
-            if (!in_array($field, $optionalFields)) {
+            if (!isset($optionalFields[$field])) {
                 $unknownFields[] = $field;
             }
         }
