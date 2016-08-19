@@ -122,6 +122,7 @@ define([
                 }
 
                 this.setData({
+                    field: this.getField(),
                     operator: operator,
                     value: value
                 });
