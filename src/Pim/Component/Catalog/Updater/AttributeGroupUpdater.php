@@ -84,7 +84,6 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
         } elseif ('sort_order' == $field) {
             $attributeGroup->setSortOrder($data);
         } elseif ('attributes' == $field) {
-
             $attributes = $attributeGroup->getAttributes();
             foreach ($attributes as $attribute) {
                 $this->attributeGroupManager->removeAttribute($attributeGroup, $attribute);
