@@ -223,19 +223,6 @@ define([
 
                 return _.intersection(currentValues, possibleValues);
             }.bind(this));
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        getField: function () {
-            var fieldName = BaseFilter.prototype.getField.apply(this, arguments);
-
-            if (-1 === fieldName.indexOf('.code')) {
-                fieldName += '.code';
-            }
-
-            return fieldName;
         }
     });
 });
