@@ -25,7 +25,7 @@ services:
         class: '%pimee_product_asset.saver.reference.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.completeness_options_resolver'
+            - '@event_dispatcher'
             - '@pim_catalog.doctrine.completeness_generator'
 
     pimee_product_asset.saver.variation:
