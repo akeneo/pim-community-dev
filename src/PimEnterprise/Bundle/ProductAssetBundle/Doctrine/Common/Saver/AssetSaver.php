@@ -88,7 +88,7 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($asset, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($asset, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($assets, $options));
     }
 
     /**

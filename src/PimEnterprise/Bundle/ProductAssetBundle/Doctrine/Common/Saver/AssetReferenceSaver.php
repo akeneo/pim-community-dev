@@ -57,7 +57,7 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($reference, array $options = [])
     {
-        $this->validateAssetReference($reference);
+        $this->validateReference($reference);
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($reference, $options));
 
@@ -78,7 +78,7 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
     {
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($references, $options));
         foreach ($references as $reference) {
-            $this->validateAssetReference($reference);
+            $this->validateReference($reference);
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($reference, $options));
             $this->objectManager->persist($reference);
         }
@@ -87,7 +87,7 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
         foreach ($references as $reference) {
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($reference, $options));
         }
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($reference, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($references, $options));
     }
 
     /**
@@ -95,7 +95,7 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
      *
      * @throws \InvalidArgumentException
      */
-    protected function validateAssetReference($reference)
+    protected function validateReference($reference)
     {
         if (!$reference instanceof ReferenceInterface) {
             throw new \InvalidArgumentException(
