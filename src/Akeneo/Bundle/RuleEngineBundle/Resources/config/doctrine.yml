@@ -11,9 +11,8 @@ services:
             - '%akeneo_rule_engine.model.rule_definition.class%'
 
     akeneo_rule_engine.remover.rule_definition:
-        class: '%pim_catalog.remover.base.class%'
+        class: '%akeneo_storage_utils.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%akeneo_rule_engine.model.rule_definition.class%'
