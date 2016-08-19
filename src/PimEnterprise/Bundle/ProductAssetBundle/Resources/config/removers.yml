@@ -27,6 +27,5 @@ services:
         class:  '%pimee_product_asset.remover.category_asset.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '@pimee_product_asset.saver.asset'

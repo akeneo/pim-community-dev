@@ -367,7 +367,7 @@ class ProductAssetController extends Controller
 
         try {
             $this->assetFilesUpdater->deleteReferenceFile($reference);
-            $this->referenceSaver->save($reference, ['schedule' => false]);
+            $this->referenceSaver->save($reference);
             $this->addFlashMessage('success', 'pimee_product_asset.enrich_reference.flash.delete.success');
         } catch (\Exception $e) {
             $this->addFlashMessage('error', 'pimee_product_asset.enrich_reference.flash.delete.error');
