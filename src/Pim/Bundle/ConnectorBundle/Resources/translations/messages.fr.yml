@@ -54,45 +54,6 @@ pim_connector:
       help: La locale que vous souhaitez exporter
       validation:
         not_blank: Une locale doit être sélectionnée, veuillez choisir une locale à exporter.
-    status:
-      label: Statut
-      help: Le statut des produits que vous souhaitez exporter
-      choice:
-        enabled: Activé
-        disabled: Désactivé
-        all: Tous
-    completeness:
-      label: Complétude
-      help: La complétude des produits que vous souhaitez exporter
-      choice:
-        at_least_one_complete: Complet sur au moins une locale sélectionnée
-        all_complete: Complet sur toutes les locales sélectionnées
-        all_incomplete: Non complet sur toutes les locales sélectionnées
-        all: Pas de condition de complétude
-    product_identifier:
-      label: Identifiants de produits
-      help: Les produits à exporter
-      placeholder: Ajouter vos identifiants produit
-    categories:
-      label: Catégories
-      help: Les catégories des produits que vous souhaitez exporter
-    updated:
-      updated_since_strategy:
-        label: Condition de date de mise à jour
-        help: La condition sur la date de mise à jour des produits que vous voulez exporter
-        choice:
-          since_n_days: Produits mis à jours depuis les derniers n jours
-          since_date: Produits mis à jours depuis une date définie
-          last_export: Produits mis à jour depuis le dernier export
-          all: Pas de condition de date
-      updated_since_date:
-        placeholder: Choisissez la date
-        error: La date ne doit pas être vide.
-      updated_since_n_days:
-        error: Cette valeur ne doit pas être vide.
-      last_execution:
-        none: "Ce job n'a jamais été exporté"
-        last: 'Dernier export : %date%'
     decimalSeparator:
       label: Séparateur de décimales
       help: Détermine le séparateur de décimale

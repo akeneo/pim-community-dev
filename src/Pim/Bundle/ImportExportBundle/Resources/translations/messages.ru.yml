@@ -74,7 +74,6 @@ btn:
   create:
     export profile: Создать профиль экспорта
     import profile: Создать профиль импорта
-Upload and import: Загрузить и импортировать
 confirmation:
   remove:
     export profile: 'Вы уверены, что хотите удалить профиль экспорта "%name%"?'

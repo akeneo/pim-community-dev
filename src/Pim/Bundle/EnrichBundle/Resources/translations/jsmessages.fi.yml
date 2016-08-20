@@ -321,7 +321,10 @@ pim_enrich:
           title: Attribuutit
       filter:
         channel:
+          title: Kanava
           help: Kanava, jonka haluat viedä
+        locales:
+          title: Alueet
         attributes:
           title: Attribuutit
           edit: Muokkaa
@@ -336,8 +339,6 @@ pim_enrich:
           title: Perhe
           operators:
             IN: Luettelossa
-        updated:
-          title: Päivitetty
         enabled:
           title: Status
           value:
@@ -348,11 +349,6 @@ pim_enrich:
           title: Valmistumisaste
         metric:
           operators:
-            =: '='
-            >=: '>='
-            >: '>'
-            <=: '<='
-            <: '<'
             EMPTY: Tyhjä
         string:
           operators:
@@ -360,11 +356,6 @@ pim_enrich:
             EMPTY: Tyhjä
         price-collection:
           operators:
-            =: '='
-            >=: '>='
-            <=: '<='
-            >: '>'
-            <: '<'
             EMPTY: Tyhjä
         multi_select:
           operators:
