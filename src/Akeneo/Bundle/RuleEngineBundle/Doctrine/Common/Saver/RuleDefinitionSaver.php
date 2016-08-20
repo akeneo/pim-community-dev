@@ -16,7 +16,6 @@ use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,8 +30,8 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var SavingOptionsResolverInterface */
-    protected $optionsResolver;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var string */
     protected $ruleDefinitionClass;
@@ -41,18 +40,15 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
      * Constructor
      *
      * @param ObjectManager                  $objectManager
-     * @param SavingOptionsResolverInterface $optionsResolver
      * @param EventDispatcherInterface       $eventDispatcher
      * @param string                         $ruleDefinitionClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         $ruleDefinitionClass
     ) {
         $this->objectManager       = $objectManager;
-        $this->optionsResolver     = $optionsResolver;
         $this->eventDispatcher     = $eventDispatcher;
         $this->ruleDefinitionClass = $ruleDefinitionClass;
     }
@@ -61,6 +57,38 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
      * {@inheritdoc}
      */
     public function save($ruleDefinition, array $options = [])
+    {
+        $this->validateRuleDefinition($ruleDefinition);
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($ruleDefinition));
+        $this->objectManager->persist($ruleDefinition);
+        $this->objectManager->flush();
+        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($ruleDefinition));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $ruleDefinitions, array $options = [])
+    {
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE_ALL, new BulkRuleEvent($ruleDefinitions));
+        foreach ($ruleDefinitions as $ruleDefinition) {
+            $this->validateRuleDefinition($ruleDefinition);
+            $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($ruleDefinition));
+            $this->objectManager->persist($ruleDefinition);
+        }
+        $this->objectManager->flush();
+        foreach ($ruleDefinitions as $ruleDefinition) {
+            $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($ruleDefinition));
+        }
+        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE_ALL, new BulkRuleEvent($ruleDefinitions));
+    }
+
+    /**
+     * @param object $ruleDefinition
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateRuleDefinition($ruleDefinition)
     {
         if (!$ruleDefinition instanceof $this->ruleDefinitionClass) {
             throw new \InvalidArgumentException(
@@ -72,33 +100,5 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($ruleDefinition));
-
-        $options = $this->optionsResolver->resolveSaveOptions($options);
-        $this->objectManager->persist($ruleDefinition);
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-
-        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($ruleDefinition));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveAll(array $ruleDefinitions, array $options = [])
-    {
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE_ALL, new BulkRuleEvent($ruleDefinitions));
-
-        $options = $this->optionsResolver->resolveSaveAllOptions($options);
-        foreach ($ruleDefinitions as $ruleDefinition) {
-            $this->save($ruleDefinition, ['flush' => false]);
-        }
-
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-
-        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE_ALL, new BulkRuleEvent($ruleDefinitions));
     }
 }

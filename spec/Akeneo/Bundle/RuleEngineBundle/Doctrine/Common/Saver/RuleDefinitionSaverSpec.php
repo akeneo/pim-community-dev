@@ -13,12 +13,10 @@ class RuleDefinitionSaverSpec extends ObjectBehavior
 {
     function let(
         EntityManager $entityManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
             $entityManager,
-            $optionsResolver,
             $eventDispatcher,
             'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition'
         );
@@ -30,29 +28,17 @@ class RuleDefinitionSaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
-    function it_saves_a_rule_object($entityManager, $optionsResolver)
+    function it_saves_a_rule_object($entityManager)
     {
         $rule = new RuleDefinition();
-        $optionsResolver->resolveSaveOptions([])
-            ->shouldBeCalled()
-            ->willReturn(['flush' => true]);
-
         $entityManager->persist($rule)->shouldBeCalled();
         $entityManager->flush()->shouldBeCalled();
 
         $this->save($rule);
     }
 
-    function it_saves_multiple_rule_objects($entityManager, $optionsResolver)
+    function it_saves_multiple_rule_objects($entityManager)
     {
-        $optionsResolver->resolveSaveAllOptions([])
-            ->shouldBeCalled()
-            ->willReturn(['flush' => true]);
-
-        $optionsResolver->resolveSaveOptions(['flush' => false])
-            ->shouldBeCalledTimes(2)
-            ->willReturn(['flush' => false]);
-
         $rule1 = new RuleDefinition();
         $rule2 = new RuleDefinition();
         $rules = [$rule1, $rule2];

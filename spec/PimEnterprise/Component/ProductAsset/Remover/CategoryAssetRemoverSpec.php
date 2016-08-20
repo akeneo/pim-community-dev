@@ -2,7 +2,6 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Remover;
 
-use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -16,11 +15,10 @@ class CategoryAssetRemoverSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
-        RemovingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         BulkSaverInterface $assetSaver
     ) {
-        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher, $assetSaver);
+        $this->beConstructedWith($objectManager, $eventDispatcher, $assetSaver);
     }
 
     function it_is_a_remover()
@@ -31,13 +29,11 @@ class CategoryAssetRemoverSpec extends ObjectBehavior
     function it_dispatches_an_event_when_removing_a_category(
         $eventDispatcher,
         $objectManager,
-        $optionsResolver,
         $assetSaver,
         CategoryInterface $category,
         AssetInterface $asset1,
         AssetInterface $asset2
     ) {
-        $optionsResolver->resolveRemoveOptions(['flush' => true])->willReturn(['flush' => true]);
         $category->getId()->willReturn(12);
         $category->isRoot()->willReturn(false);
         $category->getAssets()->willReturn([$asset1, $asset2]);
@@ -57,14 +53,10 @@ class CategoryAssetRemoverSpec extends ObjectBehavior
             Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
-        $assetSaver->saveAll(
-            [$asset1, $asset2],
-            [
-                'flush' => true,
-            ]
-        )->shouldBeCalled();
+        $assetSaver->saveAll([$asset1, $asset2])->shouldBeCalled();
 
-        $this->remove($category, ['flush' => true]);
+        $this->remove($category);
+        $objectManager->flush()->shouldBeCalled();
     }
 
     function it_dispatches_an_event_when_removing_a_tree(
@@ -82,13 +74,14 @@ class CategoryAssetRemoverSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $objectManager->remove($tree)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
             CategoryAssetEvents::POST_REMOVE_TREE,
             Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
-        $this->remove($tree, ['flush' => true]);
+        $this->remove($tree);
     }
 
     function it_throws_exception_when_remove_anything_else_than_a_category()

@@ -13,11 +13,13 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Saver for an asset reference
@@ -29,24 +31,24 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var SavingOptionsResolverInterface */
-    protected $optionsResolver;
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /** @var CompletenessGeneratorInterface */
     protected $compGenerator;
 
     /**
      * @param ObjectManager                  $objectManager
-     * @param SavingOptionsResolverInterface $optionsResolver
+     * @param EventDispatcherInterface       $eventDispatcher
      * @param CompletenessGeneratorInterface $compGenerator
      */
     public function __construct(
         ObjectManager $objectManager,
-        SavingOptionsResolverInterface $optionsResolver,
+        EventDispatcherInterface $eventDispatcher,
         CompletenessGeneratorInterface $compGenerator
     ) {
         $this->objectManager   = $objectManager;
-        $this->optionsResolver = $optionsResolver;
+        $this->eventDispatcher = $eventDispatcher;
         $this->compGenerator   = $compGenerator;
     }
 
@@ -55,25 +57,15 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($reference, array $options = [])
     {
-        if (!$reference instanceof ReferenceInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "PimEnterprise\Component\ProductAsset\Model\ReferenceInterface", "%s" provided.',
-                    ClassUtils::getClass($reference)
-                )
-            );
-        }
+        $this->validateReference($reference);
 
-        $options = $this->optionsResolver->resolveSaveOptions($options);
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($reference, $options));
+
         $this->objectManager->persist($reference);
+        $this->objectManager->flush();
+        $this->compGenerator->scheduleForAsset($reference->getAsset());
 
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-
-        if (true === $options['schedule']) {
-            $this->compGenerator->scheduleForAsset($reference->getAsset());
-        }
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($reference, $options));
     }
 
     /**
@@ -84,15 +76,34 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
      */
     public function saveAll(array $references, array $options = [])
     {
-        $options = [
-            'flush'    => false,
-            'schedule' => false,
-        ];
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($references, $options));
+        foreach ($references as $reference) {
+            $this->validateReference($reference);
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($reference, $options));
+            $this->objectManager->persist($reference);
+        }
+        $this->objectManager->flush();
 
         foreach ($references as $reference) {
-            $this->save($reference, $options);
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($reference, $options));
         }
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($references, $options));
+    }
 
-        $this->objectManager->flush();
+    /**
+     * @param object $reference
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateReference($reference)
+    {
+        if (!$reference instanceof ReferenceInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "PimEnterprise\Component\ProductAsset\Model\ReferenceInterface", "%s" provided.',
+                    ClassUtils::getClass($reference)
+                )
+            );
+        }
     }
 }

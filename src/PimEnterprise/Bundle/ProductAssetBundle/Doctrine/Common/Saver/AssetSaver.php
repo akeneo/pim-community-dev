@@ -13,11 +13,13 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Saver for an asset
@@ -29,24 +31,24 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var SavingOptionsResolverInterface */
-    protected $optionsResolver;
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /** @var CompletenessGeneratorInterface */
     protected $compGenerator;
 
     /**
      * @param ObjectManager                  $objectManager
-     * @param SavingOptionsResolverInterface $optionsResolver
+     * @param EventDispatcherInterface       $eventDispatcher
      * @param CompletenessGeneratorInterface $compGenerator
      */
     public function __construct(
         ObjectManager $objectManager,
-        SavingOptionsResolverInterface $optionsResolver,
+        EventDispatcherInterface $eventDispatcher,
         CompletenessGeneratorInterface $compGenerator
     ) {
         $this->objectManager   = $objectManager;
-        $this->optionsResolver = $optionsResolver;
+        $this->eventDispatcher = $eventDispatcher;
         $this->compGenerator   = $compGenerator;
     }
 
@@ -54,6 +56,47 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
      * {@inheritdoc}
      */
     public function save($asset, array $options = [])
+    {
+        $this->validateAsset($asset);
+
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($asset, $options));
+
+        $this->objectManager->persist($asset);
+        $this->objectManager->flush();
+        $this->compGenerator->scheduleForAsset($asset);
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($asset, $options));
+    }
+
+    /**
+     * @param AssetInterface[] $assets
+     * @param array            $options
+     */
+    public function saveAll(array $assets, array $options = [])
+    {
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($assets, $options));
+
+        foreach ($assets as $asset) {
+            $this->validateAsset($asset);
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($asset, $options));
+            $this->objectManager->persist($asset);
+        }
+
+        $this->objectManager->flush();
+
+        foreach ($assets as $asset) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($asset, $options));
+        }
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($assets, $options));
+    }
+
+    /**
+     * @param object $asset
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateAsset($asset)
     {
         if (!$asset instanceof AssetInterface) {
             throw new \InvalidArgumentException(
@@ -63,34 +106,5 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
                 )
             );
         }
-
-        $options = $this->optionsResolver->resolveSaveOptions($options);
-        $this->objectManager->persist($asset);
-
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-
-        if (true === $options['schedule']) {
-            $this->compGenerator->scheduleForAsset($asset);
-        }
-    }
-
-    /**
-     * @param AssetInterface[] $assets
-     * @param array            $options
-     */
-    public function saveAll(array $assets, array $options = [])
-    {
-        $options = [
-            'flush'    => false,
-            'schedule' => false,
-        ];
-
-        foreach ($assets as $asset) {
-            $this->save($asset, $options);
-        }
-
-        $this->objectManager->flush();
     }
 }

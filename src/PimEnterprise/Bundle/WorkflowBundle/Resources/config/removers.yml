@@ -1,8 +1,7 @@
 services:
     pimee_workflow.remover.product_draft:
-        class: '%pim_catalog.remover.base.class%'
+        class: '%akeneo_storage_utils.remover.base.class%'
         arguments:
             - '@pimee_workflow.object_manager.product_draft'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pimee_workflow.model.product_draft.class%'

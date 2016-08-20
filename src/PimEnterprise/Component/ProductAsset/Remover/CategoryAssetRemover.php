@@ -13,7 +13,6 @@ namespace PimEnterprise\Component\ProductAsset\Remover;
 
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
@@ -31,9 +30,6 @@ class CategoryAssetRemover implements RemoverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var RemovingOptionsResolverInterface */
-    protected $optionsResolver;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -42,18 +38,15 @@ class CategoryAssetRemover implements RemoverInterface
 
     /**
      * @param ObjectManager                    $objectManager
-     * @param RemovingOptionsResolverInterface $optionsResolver
      * @param EventDispatcherInterface         $eventDispatcher
      * @param BulkSaverInterface               $assetSaver
      */
     public function __construct(
         ObjectManager $objectManager,
-        RemovingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         BulkSaverInterface $assetSaver
     ) {
         $this->objectManager   = $objectManager;
-        $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
         $this->assetSaver      = $assetSaver;
     }
@@ -73,13 +66,11 @@ class CategoryAssetRemover implements RemoverInterface
             );
         }
 
-        $options = $this->optionsResolver->resolveRemoveOptions($options);
-
         $categoryId = $category->getId();
         $eventName = $category->isRoot() ?
             CategoryAssetEvents::PRE_REMOVE_TREE :
             CategoryAssetEvents::PRE_REMOVE_CATEGORY;
-        $this->eventDispatcher->dispatch($eventName, new RemoveEvent($category, $categoryId));
+        $this->eventDispatcher->dispatch($eventName, new RemoveEvent($category, $categoryId, $options));
 
         $assetsToUpdate = [];
         $assets = $category->getAssets();
@@ -91,22 +82,15 @@ class CategoryAssetRemover implements RemoverInterface
         }
 
         $this->objectManager->remove($category);
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
+        $this->objectManager->flush();
 
         if (count($assetsToUpdate) > 0) {
-            $this->assetSaver->saveAll(
-                $assetsToUpdate,
-                [
-                    'flush' => $options['flush'],
-                ]
-            );
+            $this->assetSaver->saveAll($assetsToUpdate);
         }
 
         $eventName = $category->isRoot() ?
             CategoryAssetEvents::POST_REMOVE_TREE :
             CategoryAssetEvents::POST_REMOVE_CATEGORY;
-        $this->eventDispatcher->dispatch($eventName, new RemoveEvent($category, $categoryId));
+        $this->eventDispatcher->dispatch($eventName, new RemoveEvent($category, $categoryId, $options));
     }
 }

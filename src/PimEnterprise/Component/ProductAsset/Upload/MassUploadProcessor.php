@@ -132,7 +132,7 @@ class MassUploadProcessor
                 }
 
                 $this->filesUpdater->resetAllVariationsFiles($asset->getReference($locale), true);
-                $this->assetSaver->save($asset, ['flush' => true, 'schedule' => true]);
+                $this->assetSaver->save($asset);
 
                 $event = $this->eventDispatcher->dispatch(
                     AssetEvent::POST_UPLOAD_FILES,

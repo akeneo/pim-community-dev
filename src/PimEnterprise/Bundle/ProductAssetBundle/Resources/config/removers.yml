@@ -3,18 +3,16 @@ parameters:
 
 services:
     pimee_product_asset.remover.variation:
-        class: '%pim_catalog.remover.base.class%'
+        class: '%akeneo_storage_utils.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pimee_product_asset.model.variation.class%'
 
     pimee_product_asset.remover.channel_configuration:
-        class: '%pim_catalog.remover.base.class%'
+        class: '%akeneo_storage_utils.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pimee_product_asset.model.channel_variations_configuration.class%'
 
@@ -22,7 +20,6 @@ services:
         class:  '%akeneo_storage_utils.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '%pimee_product_asset.model.asset.class%'
 
@@ -30,6 +27,5 @@ services:
         class:  '%pimee_product_asset.remover.category_asset.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - '@pimee_product_asset.saver.asset'

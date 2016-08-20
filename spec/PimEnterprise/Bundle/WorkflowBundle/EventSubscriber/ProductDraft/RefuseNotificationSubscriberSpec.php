@@ -121,7 +121,6 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
-        ProductValueInterface $identifier,
         NotificationInterface $notification,
         ProductValueInterface $identifier
     ) {
