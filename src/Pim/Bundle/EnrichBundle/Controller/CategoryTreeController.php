@@ -361,7 +361,7 @@ class CategoryTreeController extends Controller
         $parent   = $category->getParent();
         $params   = (null !== $parent) ? ['node' => $parent->getId()] : [];
 
-        $this->categoryRemover->remove($category, ['flush' => true]);
+        $this->categoryRemover->remove($category);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

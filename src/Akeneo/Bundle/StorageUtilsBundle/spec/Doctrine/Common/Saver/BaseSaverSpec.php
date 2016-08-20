@@ -12,9 +12,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BaseSaverSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, SavingOptionsResolverInterface $optionsResolver, EventDispatcherInterface $eventDispatcher)
+    function let(ObjectManager $objectManager, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher, 'Pim\Component\Catalog\Model\GroupTypeInterface');
+        $this->beConstructedWith($objectManager, $eventDispatcher, 'Pim\Component\Catalog\Model\GroupTypeInterface');
     }
 
     function it_is_a_saver()
@@ -23,12 +23,8 @@ class BaseSaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
-    function it_persists_the_object_and_flushes_the_unit_of_work($objectManager, $optionsResolver, $eventDispatcher, GroupTypeInterface $type)
+    function it_persists_the_object_and_flushes_the_unit_of_work($objectManager, $eventDispatcher, GroupTypeInterface $type)
     {
-        $optionsResolver->resolveSaveOptions([])
-            ->shouldBeCalled()
-            ->willReturn(['flush' => true]);
-
         $objectManager->persist($type)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
@@ -38,20 +34,8 @@ class BaseSaverSpec extends ObjectBehavior
         $this->save($type);
     }
 
-    function it_persists_the_objects_and_flushes_the_unit_of_work($objectManager, $optionsResolver, $eventDispatcher, GroupTypeInterface $type1, GroupTypeInterface $type2)
+    function it_persists_the_objects_and_flushes_the_unit_of_work($objectManager, $eventDispatcher, GroupTypeInterface $type1, GroupTypeInterface $type2)
     {
-        $optionsResolver->resolveSaveAllOptions([])
-            ->shouldBeCalled()
-            ->willReturn(['flush' => true]);
-
-        $optionsResolver->resolveSaveOptions(['flush' => false])
-            ->shouldBeCalledTimes(2)
-            ->willReturn(['flush' => false]);
-
-        $optionsResolver->resolveSaveOptions(['flush' => true])
-            ->shouldBeCalledTimes(2)
-            ->willReturn(['flush' => true]);
-
         $objectManager->persist($type1)->shouldBeCalled();
         $objectManager->persist($type2)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
@@ -64,47 +48,8 @@ class BaseSaverSpec extends ObjectBehavior
         $this->saveAll([$type1, $type2]);
     }
 
-    function it_persists_the_object_and_does_not_flush($objectManager, $optionsResolver, $eventDispatcher, GroupTypeInterface $type)
+    function it_throws_exception_when_save_anything_else_than_the_expected_class()
     {
-        $optionsResolver->resolveSaveOptions(['flush' => false])
-            ->shouldBeCalled()
-            ->willReturn(['flush' => false]);
-
-        $objectManager->persist($type)->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $objectManager->flush()->shouldNotBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldNotBeCalled();
-        $this->save($type, ['flush' => false]);
-    }
-
-    function it_persists_the_objects_and_does_not_flush($objectManager, $optionsResolver, $eventDispatcher, GroupTypeInterface $type1, GroupTypeInterface $type2)
-    {
-        $optionsResolver->resolveSaveAllOptions(['flush' => false])
-            ->shouldBeCalled()
-            ->willReturn(['flush' => false]);
-
-        $optionsResolver->resolveSaveOptions(['flush' => false])
-            ->shouldBeCalledTimes(2)
-            ->willReturn(['flush' => false]);
-
-        $objectManager->persist($type1)->shouldBeCalled();
-        $objectManager->persist($type2)->shouldBeCalled();
-        $objectManager->flush()->shouldNotBeCalled();
-
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldNotBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldNotBeCalled();
-
-        $this->saveAll([$type1, $type2], ['flush' => false]);
-    }
-
-    function it_throws_exception_when_save_anything_else_than_the_expected_class($optionsResolver)
-    {
-        $optionsResolver->resolveSaveAllOptions(Argument::any())
-            ->shouldBeCalled()
-            ->willReturn(['flush' => false]);
-
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
