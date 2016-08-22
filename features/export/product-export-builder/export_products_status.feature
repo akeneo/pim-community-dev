@@ -57,7 +57,7 @@ Feature: Export products according to their statuses
     """
 
   Scenario: Export products with operator ALL on statuses
-    And I am on the "csv_footwear_product_export" export job edit page
+    Given I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I filter by "enabled" with operator "" and value "All"
     And I press the "Save" button
@@ -66,7 +66,7 @@ Feature: Export products according to their statuses
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
       """
-    sku;categories;enabled;family;groups;name-en_US
-    SNKRS-1B;summer_collection;1;rangers;;Black rangers
-    SNKRS-1R;summer_collection;0;rangers;;Black rangers
+      sku;categories;enabled;family;groups;name-en_US
+      SNKRS-1B;summer_collection;1;rangers;;Black rangers
+      SNKRS-1R;summer_collection;0;rangers;;Black rangers
       """

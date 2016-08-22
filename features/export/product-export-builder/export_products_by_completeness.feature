@@ -84,7 +84,7 @@ Feature: Export products according to a completeness policy
       """
 
   Scenario: Export products with operator ALL on completeness
-    And I am on the "csv_product_export" export job edit page
+    Given I am on the "csv_product_export" export job edit page
     And I visit the "Content" tab
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
