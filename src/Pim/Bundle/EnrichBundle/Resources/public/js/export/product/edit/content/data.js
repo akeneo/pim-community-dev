@@ -111,7 +111,7 @@ define(
 
                     return filterView.configure().then(function () {
                         var data = {};
-                        filterView.trigger('pim_enrich:form:entity:pre_update', data );
+                        filterView.trigger('pim_enrich:form:entity:pre_update', data);
                         filterView.setData(data, {silent: true});
 
                         return filterView;
