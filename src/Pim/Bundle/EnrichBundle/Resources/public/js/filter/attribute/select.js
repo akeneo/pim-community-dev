@@ -214,6 +214,7 @@ define([
          * This method returns a promise which, once resolved, should return the attribute.
          *
          * @param {string} attribute
+         * @param {array} currentValues
          *
          * @returns {Promise}
          */
