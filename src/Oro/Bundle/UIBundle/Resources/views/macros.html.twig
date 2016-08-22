@@ -231,7 +231,7 @@
             <div class="row-fluid" style="width: auto;">
                 <ul class="nav">
                     {% for navElement in dataBlocks %}
-                        <li {% if navElement.class is defined %}class="{{ navElement.class }}"{% endif %}><a href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a></li>
+                        <li {% if navElement.class is defined %}class="{{ navElement.class }} tab-scrollable"{% endif %}><a href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
