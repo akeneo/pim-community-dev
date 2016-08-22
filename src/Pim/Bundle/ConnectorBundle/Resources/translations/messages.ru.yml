@@ -46,16 +46,6 @@ pim_connector:
       help: Канал, который вы хотите экспортировать
     locales:
       label: Локали
-    status:
-      label: Статус
-      choice:
-        enabled: Включено
-        disabled: Отключено
-        all: Все
-    completeness:
-      label: Завершенность
-    categories:
-      label: Категории
     decimalSeparator:
       label: Десятичный разделитель
       help: Введите десятичный разделитель

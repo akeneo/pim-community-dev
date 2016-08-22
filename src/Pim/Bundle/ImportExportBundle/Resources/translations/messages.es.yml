@@ -92,7 +92,6 @@ btn:
   create:
     export profile: crear perfil exportador
     import profile: crear Perfil de importación
-Upload and import: Cargar e Importar
 Upload and import now: Subir e importar ahora
 import now: Importar ahora
 export now: Exportar Ahora
