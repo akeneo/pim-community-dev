@@ -82,7 +82,9 @@ define(
              * @param {string} fieldCode
              */
             addFilter: function (fieldCode) {
-                return this.getFilterConfig(fieldCode)
+                var deferred = $.Deferred();
+
+                this.getFilterConfig(fieldCode)
                     .then(this.buildFilterView.bind(this))
                     .then(function (filterView) {
                         this.listenTo(filterView, 'pim_enrich:form:entity:post_update', this.updateModel.bind(this));
@@ -92,7 +94,12 @@ define(
                         }.bind(this));
 
                         this.filterViews.push(filterView);
-                    }.bind(this));
+                    }.bind(this))
+                    .always(function () {
+                        deferred.resolve();
+                    });
+
+                return deferred.promise();
             },
 
             /**
