@@ -145,7 +145,8 @@ define([
          * @return {Promise}
          */
         getCurrentChannel: function () {
-            return fetcherRegistry.getFetcher('channel').fetch(this.getParentForm().getFormData().structure.scope);
+            return fetcherRegistry.getFetcher('channel')
+                .fetch(this.getParentForm().getFormData().structure.scope);
         },
 
         /**
@@ -154,13 +155,15 @@ define([
          * @param {object} channel
          */
         setDefaultValues: function (channel) {
-            var silent = this.getOperator() === 'IN CHILDREN' && _.isEqual(this.getValue(), [channel.category.code]);
+            if (this.getOperator() === 'IN CHILDREN' && _.isEqual(this.getValue(), [channel.category.code])) {
+                return;
+            }
 
             this.setData({
                 field: this.getField(),
                 operator: 'IN CHILDREN',
                 value: [channel.category.code]
-            }, {silent: silent});
+            });
         }
     });
 });
