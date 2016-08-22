@@ -85,14 +85,23 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * Generate completeness for product where it's missing,
-     * applying the criteria if provided to reduce the product set
+     * applying the criteria if provided to reduce the product set.
+     *
+     * If the completeness is being calculated for only one product, we
+     * do not create the missing_completeness temporary table.
+     * This allows to drastically reduce the IO waits on non SSD disks.
+     *
+     * For completeness recalculation of channels or families, we keep
+     * the temporary table to reduce the amount of memory used.
      *
      * @param array $criteria
      */
     protected function generate(array $criteria = [])
     {
         $this->prepareCompletePrices($criteria);
-        $this->prepareMissingCompletenesses($criteria);
+        if (!isset($criteria['productId'])) {
+            $this->prepareMissingCompletenesses($criteria);
+        }
 
         $sql = $this->getInsertCompletenessSQL($criteria);
 
@@ -216,7 +225,7 @@ COMPLETE_PRICES_SQL;
     protected function getMissingCompletenessesSQL()
     {
         return <<<MISSING_SQL
-            SELECT l.id AS locale_id, c.id AS channel_id, p.id AS product_id
+            (SELECT l.id AS locale_id, c.id AS channel_id, p.id AS product_id
             FROM
                 (SELECT c.id, r.family_id
                 FROM pim_catalog_attribute_requirement r
@@ -229,7 +238,7 @@ COMPLETE_PRICES_SQL;
                 ON co.product_id = p.id
                 AND co.channel_id = c.id
                 AND co.locale_id = l.id
-            WHERE co.id IS NULL
+            WHERE co.id IS NULL)
 MISSING_SQL;
     }
 
@@ -263,15 +272,19 @@ MISSING_SQL;
     /**
      * Get the sql query to insert completeness
      *
+     * @param array
+     *
      * @return string
      */
-    protected function getInsertCompletenessSQL()
+    protected function getInsertCompletenessSQL(array $criteria)
     {
         $sql = $this->getMainSqlPart();
 
-        $sql = strtr($sql, $this->getQueryPartReplacements());
+        $sql = strtr($sql, $this->getQueryPartReplacements($criteria));
+        $sql = $this->applyCriteria($sql, $criteria);
+        $sql = $this->applyTableNames($sql);
 
-        return $this->applyTableNames($sql);
+        return $sql;
     }
 
     /**
@@ -321,7 +334,7 @@ MISSING_SQL;
                         AND (al.locale_id = l.id OR al.locale_id IS NULL)
                 ) AS required_count
 
-            FROM missing_completeness m
+            FROM %missing_completeness% AS m
             JOIN pim_catalog_channel c ON c.id = m.channel_id
             JOIN pim_catalog_locale l ON l.id = m.locale_id
             JOIN %product_table% p ON p.id = m.product_id
@@ -347,17 +360,24 @@ MAIN_SQL;
 
     /**
      * Returns an array of replacements for some part of the query
-     * Essentially joins
+     * Essentially joins. If the completeness is being calculated for only one product, we
+     * do not create the missing_completeness temporary table.
+     *
+     * @param array $criteria
      *
      * @return array
      */
-    protected function getQueryPartReplacements()
+    protected function getQueryPartReplacements(array $criteria)
     {
         return [
             '%product_value_conditions%' => implode(' OR ', $this->getProductValueConditions()),
             '%product_value_joins%'      => implode(' ', $this->getProductValueJoins()),
             '%extra_joins%'              => implode(' ', $this->getExtraJoins()),
             '%extra_conditions%'         => implode(' ', $this->getExtraConditions()),
+            '%missing_completeness%'     =>
+                isset($criteria['productId']) ?
+                    $this->getMissingCompletenessesSQL() :
+                    self::MISSING_TABLE
         ];
     }
 
