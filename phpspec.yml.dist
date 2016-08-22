@@ -1,0 +1,3 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+extensions:
+    Akeneo\SkipExampleExtension: ~
