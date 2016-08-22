@@ -63,7 +63,7 @@ define(
             /**
              * Add a collection of filters
              *
-             * @param {[type]} fieldCodes [description]
+             * @param {array} fieldCodes Can be attributes or product field codes
              */
             addFilters: function (fieldCodes) {
                 // We pre-fetch the attributes to add to avoid multiple http requests
