@@ -16,10 +16,9 @@ class FamilySaverSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
-        CompletenessSavingOptionsResolver $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($objectManager, $completenessManager, $optionsResolver, $eventDispatcher);
+        $this->beConstructedWith($objectManager, $completenessManager, $eventDispatcher);
     }
 
     function it_is_a_saver()
@@ -27,52 +26,44 @@ class FamilySaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
-    function it_saves_a_family_and_flushes_by_default($objectManager, $optionsResolver, $eventDispatcher, FamilyInterface $family)
+    function it_saves_a_family($objectManager, $eventDispatcher, FamilyInterface $family)
     {
         $family->getCode()->willReturn('my_code');
-        $optionsResolver->resolveSaveOptions([])
-            ->shouldBeCalled()
-            ->willReturn(['flush' => true, 'schedule' => true]);
+
         $objectManager->persist($family)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
         $this->save($family);
     }
 
-    function it_saves_a_family_and_does_not_flushes($objectManager, $optionsResolver, $eventDispatcher, FamilyInterface $family)
-    {
-        $family->getCode()->willReturn('my_code');
-        $optionsResolver->resolveSaveOptions(['flush' => false])
-            ->shouldBeCalled()
-            ->willReturn(['flush' => false, 'schedule' => true]);
-        $objectManager->persist($family)->shouldBeCalled();
-        $objectManager->flush()->shouldNotBeCalled();
-
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldNotBeCalled();
-        $this->save($family, ['flush' => false]);
-    }
-
-    function it_saves_a_family_and_does_not_schedule(
+    function it_saves_multiple_family(
         $completenessManager,
-        $optionsResolver,
         $objectManager,
         $eventDispatcher,
-        FamilyInterface $family
+        FamilyInterface $family1,
+        FamilyInterface $family2
     ) {
-        $family->getCode()->willReturn('my_code');
-        $optionsResolver->resolveSaveOptions(['schedule' => false])
-            ->shouldBeCalled()
-            ->willReturn(['flush' => true, 'schedule' => false]);
-        $objectManager->persist($family)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
-        $completenessManager->scheduleForFamily($family)->shouldNotBeCalled($family);
+        $family1->getCode()->willReturn('my_code1');
+        $family1->getCode()->willReturn('my_code2');
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
-        $this->save($family, ['schedule' => false]);
+        $objectManager->persist($family1)->shouldBeCalled();
+        $objectManager->persist($family2)->shouldBeCalled();
+
+        $completenessManager->scheduleForFamily($family1)->shouldBeCalled($family1);
+        $completenessManager->scheduleForFamily($family2)->shouldBeCalled($family2);
+
+        $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+
+        $this->saveAll([$family1, $family2]);
     }
 
     function it_throws_exception_when_save_anything_else_than_a_group()

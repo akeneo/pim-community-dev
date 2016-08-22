@@ -25,7 +25,6 @@ class ProductSaverSpec extends ObjectBehavior
     function let(
         DocumentManager $documentManager,
         CompletenessManager $completenessManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         BulkVersionBuilderInterface $bulkVersionBuilder,
         BulkSaverInterface $versionSaver,
@@ -36,7 +35,6 @@ class ProductSaverSpec extends ObjectBehavior
         $this->beConstructedWith(
             $documentManager,
             $completenessManager,
-            $optionsResolver,
             $eventDispatcher,
             $bulkVersionBuilder,
             $versionSaver,
@@ -50,8 +48,6 @@ class ProductSaverSpec extends ObjectBehavior
         $collection->getName()->willReturn('pim_catalog_product');
 
         $bulkVersionBuilder->buildVersions(Argument::any())->willReturn([]);
-
-        $optionsResolver->resolveSaveAllOptions(Argument::any())->willReturn(['flush' => true]);
     }
 
     function it_is_a_saver()

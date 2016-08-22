@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
@@ -24,24 +23,18 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var SavingOptionsResolverInterface */
-    protected $optionsResolver;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
      * @param ObjectManager                  $objectManager
-     * @param SavingOptionsResolverInterface $optionsResolver
      * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(
         ObjectManager $objectManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager   = $objectManager;
-        $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -50,26 +43,15 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($attribute, array $options = [])
     {
-        if (!$attribute instanceof AttributeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\AttributeInterface", "%s" provided.',
-                    ClassUtils::getClass($attribute)
-                )
-            );
-        }
+        $this->validateAttribute($attribute);
 
-        $options = $this->optionsResolver->resolveSaveOptions($options);
-
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute, $options));
 
         $this->objectManager->persist($attribute);
 
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
 
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute));
-        }
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute, $options));
     }
 
     /**
@@ -81,22 +63,37 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($attributes));
-
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($attributes, $options));
 
         foreach ($attributes as $attribute) {
-            $this->save($attribute, $itemOptions);
+            $this->validateAttribute($attribute);
+
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute, $options));
+
+            $this->objectManager->persist($attribute);
         }
 
         $this->objectManager->flush();
 
         foreach ($attributes as $attribute) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($attributes));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($attributes, $options));
+    }
+
+    /**
+     * @param $attribute
+     */
+    protected function validateAttribute($attribute)
+    {
+        if (!$attribute instanceof AttributeInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "Pim\Component\Catalog\Model\AttributeInterface", "%s" provided.',
+                    ClassUtils::getClass($attribute)
+                )
+            );
+        }
     }
 }

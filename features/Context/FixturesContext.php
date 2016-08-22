@@ -1554,7 +1554,7 @@ class FixturesContext extends BaseFixturesContext
 
         foreach ($familiesToPersist as $family) {
             $this->validate($family);
-            $this->getContainer()->get('pim_catalog.saver.family')->save($family);
+            $this->getFamilySaver()->save($family);
         }
 
         return $attribute;

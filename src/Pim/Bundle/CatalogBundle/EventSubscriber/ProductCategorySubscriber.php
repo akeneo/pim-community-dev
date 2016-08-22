@@ -55,7 +55,7 @@ class ProductCategorySubscriber implements EventSubscriberInterface
         }
 
         if (count($productsToUpdate) > 0) {
-            $this->saver->saveAll($productsToUpdate, ['flush'=> $event->getArgument('flush')]);
+            $this->saver->saveAll($productsToUpdate);
         }
     }
 }

@@ -2,14 +2,19 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Doctrine\Common\Cache\ApcCache;
+use Doctrine\Common\Cache\ApcuCache;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\Cache;
 
 /**
- * Proxy for ApcCache in http mode and ArrayCache in command line mode
+ * Proxy for ApcuCache with a fall back on ArrayCache when using cli mode.
  *
- * This class replaces Doctrine\Common\Cache\ApcCache in the configuration
+ * In http mode, apc is enabled by default.
+ *
+ * In command line mode, apc is disabled by default, we advise to enable it with the option apc.enable_cli=1.
+ *
+ * This class replaces Doctrine\Common\Cache\ApcCache in the configuration, defined in doctrine/doctrine-bundle with
+ * the parameter "doctrine.orm.cache.apc.class"
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -17,19 +22,14 @@ use Doctrine\Common\Cache\Cache;
  */
 class ArrayApcCache implements Cache
 {
-    /**
-     * @var Cache
-     */
+    /** @var Cache */
     protected $cache;
 
-    /**
-     * Constructor
-     */
+    /** Constructor */
     public function __construct()
     {
-        $this->cache = ('cli' === php_sapi_name())
-            ? new ArrayCache()
-            : new ApcCache();
+        $cliModeWithDisabledApc = ('cli' === php_sapi_name() && ini_get('apc.enable_cli') !== '1');
+        $this->cache = $cliModeWithDisabledApc ? new ArrayCache() : new ApcuCache();
     }
 
     /**

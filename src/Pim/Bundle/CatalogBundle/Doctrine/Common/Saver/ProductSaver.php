@@ -28,27 +28,21 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /** @var CompletenessManager */
     protected $completenessManager;
 
-    /** @var SavingOptionsResolverInterface */
-    protected $optionsResolver;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
      * @param ObjectManager                  $om
      * @param CompletenessManager            $completenessManager
-     * @param SavingOptionsResolverInterface $optionsResolver
      * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(
         ObjectManager $om,
         CompletenessManager $completenessManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager       = $om;
         $this->completenessManager = $completenessManager;
-        $this->optionsResolver     = $optionsResolver;
         $this->eventDispatcher     = $eventDispatcher;
     }
 
@@ -57,28 +51,18 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($product, array $options = [])
     {
-        if (!$product instanceof ProductInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Component\Catalog\Model\ProductInterface, "%s" provided',
-                    ClassUtils::getClass($product)
-                )
-            );
-        }
-
-        $options = $this->optionsResolver->resolveSaveOptions($options);
+        $this->validateProduct($product);
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
         $this->completenessManager->schedule($product);
+
         $this->objectManager->persist($product);
+        $this->objectManager->flush();
 
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-            $this->completenessManager->generateMissingForProduct($product);
+        $this->completenessManager->generateMissingForProduct($product);
 
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
-        }
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
     }
 
     /**
@@ -90,14 +74,16 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
-
         foreach ($products as $product) {
-            $this->save($product, $itemOptions);
+            $this->validateProduct($product);
+
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
+
+            $this->completenessManager->schedule($product);
+
+            $this->objectManager->persist($product);
         }
 
         $this->objectManager->flush();
@@ -105,10 +91,24 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         foreach ($products as $product) {
             $this->completenessManager->generateMissingForProduct($product);
 
-            $productOptions = $this->optionsResolver->resolveSaveOptions($allOptions);
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $productOptions));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $allOptions));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
+    }
+
+    /**
+     * @param $product
+     */
+    protected function validateProduct($product)
+    {
+        if (!$product instanceof ProductInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Pim\Component\Catalog\Model\ProductInterface, "%s" provided',
+                    ClassUtils::getClass($product)
+                )
+            );
+        }
     }
 }

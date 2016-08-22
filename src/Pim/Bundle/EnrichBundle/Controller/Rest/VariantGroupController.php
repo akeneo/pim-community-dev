@@ -149,7 +149,7 @@ class VariantGroupController
     {
         $variantGroup = $this->repository->findOneByIdentifier($code);
         if (null === $variantGroup) {
-            throw new NotFoundHttpException(sprintf('Variant group with id "%s" not found', $id));
+            throw new NotFoundHttpException(sprintf('Variant group with code "%s" not found', $code));
         }
 
         $data = json_decode($request->getContent(), true);
@@ -173,7 +173,6 @@ class VariantGroupController
         }
 
         $this->saver->save($variantGroup, [
-            'flush'                   => true,
             'copy_values_to_products' => true
         ]);
 
@@ -197,7 +196,7 @@ class VariantGroupController
     {
         $variantGroup = $this->repository->findOneByIdentifier($code);
         if (null === $variantGroup) {
-            throw new NotFoundHttpException(sprintf('Variant group with id "%s" not found', $id));
+            throw new NotFoundHttpException(sprintf('Variant group with code "%s" not found', $code));
         }
 
         $this->remover->remove($variantGroup);

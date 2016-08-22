@@ -42,9 +42,6 @@ class BaseRemovingOptionsResolver implements RemovingOptionsResolverInterface
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefined(['flush'])
-            ->setAllowedTypes('flush', 'bool')
-            ->setDefaults(['flush' => true]);
 
         return $resolver;
     }
