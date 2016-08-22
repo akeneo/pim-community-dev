@@ -457,3 +457,10 @@
 - Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister`
 - Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister`
 - Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingMassPersister`
+- Remove argument `Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface` from `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover`
+- Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver`
+- Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `CatalogBundle\Doctrine\Common\Saver\AttributeSaver`
+- Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `CatalogBundle\Doctrine\Common\Saver\FamilySaver`
+- Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `CatalogBundle\Doctrine\Common\Saver\ProductSaver`
+- Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `CatalogBundle\Doctrine\MongoDBODM\Saver\ProductSaver`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver`
