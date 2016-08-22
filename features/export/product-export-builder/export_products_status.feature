@@ -61,6 +61,7 @@ Feature: Export products according to their statuses
     And I visit the "Content" tab
     And I filter by "enabled" with operator "" and value "All"
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:

@@ -22,6 +22,7 @@ Feature: Export products according to multi select reference data values
     And I filter by "manufacturer.code" with operator "In list" and value "Nike"
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -38,6 +39,7 @@ Feature: Export products according to multi select reference data values
     And I filter by "manufacturer.code" with operator "In list" and value "Nike,Converse"
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -55,6 +57,7 @@ Feature: Export products according to multi select reference data values
     And I filter by "manufacturer.code" with operator "Is empty" and value ""
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -71,6 +74,7 @@ Feature: Export products according to multi select reference data values
     And I filter by "manufacturer.code" with operator "In list" and value ""
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -88,6 +92,7 @@ Feature: Export products according to multi select reference data values
     And I add available attributes Manufacturer
     And I filter by "manufacturer.code" with operator "In list" and value "Nike,Converse"
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     And I edit the "manufacturer" attribute
     And I visit the "Values" tab
     And I remove the "Nike" option
@@ -96,6 +101,7 @@ Feature: Export products according to multi select reference data values
     And I visit the "Content" tab
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:

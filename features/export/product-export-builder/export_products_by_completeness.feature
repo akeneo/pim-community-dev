@@ -88,6 +88,7 @@ Feature: Export products according to a completeness policy
     And I visit the "Content" tab
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_product_export" job to finish
     Then exported file of "csv_product_export" should contain:

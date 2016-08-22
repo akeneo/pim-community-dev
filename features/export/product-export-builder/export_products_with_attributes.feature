@@ -34,6 +34,7 @@ Feature: Export products with only selected attributes
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I select the following attributes to export weather_conditions
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -51,6 +52,7 @@ Feature: Export products with only selected attributes
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I select the following attributes to export weather_conditions and lace_color
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -68,6 +70,7 @@ Feature: Export products with only selected attributes
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I select no attribute to export
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:

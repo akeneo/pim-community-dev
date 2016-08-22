@@ -1618,7 +1618,6 @@ class WebUser extends RawMinkContext
             }
 
             $log = $jobExecution->getLogFile();
-
             if (is_file($log)) {
                 $dir = getenv('WORKSPACE');
                 $id  = getenv('BUILD_ID');
