@@ -98,8 +98,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function generate(array $criteria = [])
     {
-        $this->prepareCompletePrices($criteria);
         if (!isset($criteria['productId'])) {
+            $this->prepareCompletePrices($criteria);
             $this->prepareMissingCompletenesses($criteria);
         }
 
@@ -190,7 +190,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected function getCompletePricesSQL()
     {
         return <<<COMPLETE_PRICES_SQL
-            SELECT l.id AS locale_id, c.id AS channel_id, v.id AS value_id
+            (SELECT l.id AS locale_id, c.id AS channel_id, v.id AS value_id
                 FROM pim_catalog_attribute_requirement r
                 JOIN %attribute_table% att ON att.id = r.attribute_id AND att.backend_type = "prices"
                 JOIN pim_catalog_channel c ON c.id = r.channel_id %channel_conditions%
@@ -208,7 +208,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     ON price.value_id = v.id
                     AND price.currency_code = cur.code
                 GROUP BY l.id, c.id, v.id
-                HAVING COUNT(price.data) = COUNT(ccur.currency_id)
+                HAVING COUNT(price.data) = COUNT(ccur.currency_id))
 COMPLETE_PRICES_SQL;
     }
 
@@ -345,11 +345,16 @@ MISSING_SQL;
                 AND v.entity_id = p.id
             %product_value_joins%
             %extra_joins%
+            LEFT JOIN %complete_price% AS cp
+                ON cp.value_id = v.id
+                AND cp.channel_id = c.id
+                AND cp.locale_id = l.id
             LEFT JOIN pim_catalog_attribute_locale al ON al.attribute_id = v.attribute_id
 
             WHERE (
                 %product_value_conditions%
                 %extra_conditions%
+                OR cp.value_id IS NOT NULL
             )
             AND (al.locale_id = l.id OR al.locale_id IS NULL)
             AND r.required = true
@@ -374,10 +379,12 @@ MAIN_SQL;
             '%product_value_joins%'      => implode(' ', $this->getProductValueJoins()),
             '%extra_joins%'              => implode(' ', $this->getExtraJoins()),
             '%extra_conditions%'         => implode(' ', $this->getExtraConditions()),
-            '%missing_completeness%'     =>
-                isset($criteria['productId']) ?
+            '%missing_completeness%'     => isset($criteria['productId']) ?
                     $this->getMissingCompletenessesSQL() :
-                    self::MISSING_TABLE
+                    self::MISSING_TABLE,
+            '%complete_price%'           => isset($criteria['productId']) ?
+                    $this->getCompletePricesSQL() :
+                    self::COMPLETE_PRICES_TABLE,
         ];
     }
 
@@ -705,14 +712,7 @@ SQL;
      */
     protected function getExtraJoins()
     {
-        $pricesJoin = 'LEFT JOIN %s AS complete_price
-            ON complete_price.value_id = v.id
-            AND complete_price.channel_id = c.id
-            AND complete_price.locale_id = l.id';
-
-        $pricesJoin = sprintf($pricesJoin, static::COMPLETE_PRICES_TABLE);
-
-        return [$pricesJoin];
+        return [];
     }
 
     /**
@@ -720,8 +720,6 @@ SQL;
      */
     protected function getExtraConditions()
     {
-        $pricesConditions = sprintf('OR %s.value_id IS NOT NULL', static::COMPLETE_PRICES_TABLE);
-
-        return [$pricesConditions];
+        return [];
     }
 }
