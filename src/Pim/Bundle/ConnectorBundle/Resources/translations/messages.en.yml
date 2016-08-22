@@ -289,37 +289,37 @@ batch_jobs:
         label: Association type export in XLSX
         export.label: Association type export in XLSX
     xlsx_channel_export:
-        label: Channel export in CSV
+        label: Channel export in XLSX
         export.label: Channel export
     xlsx_locale_export:
-        label: Locale export in CSV
+        label: Locale export in XLSX
         export.label: Locale export
     xlsx_attribute_group_export:
-        label: Attribute group export in CSV
+        label: Attribute group export in XLSX
         export.label: Attribute group export
     xlsx_currency_export:
-        label: Currency export in CSV
+        label: Currency export in XLSX
         export.label: Currency export
     xlsx_group_type_export:
-        label: Group type export in CSV
+        label: Group type export in XLSX
         export.label: Group type export
     xlsx_channel_import:
-        label: Channel import in CSV
+        label: Channel import in XLSX
         validation.label: File validation
         import.label: Channel import
     xlsx_locale_import:
-        label: Locale import in CSV
+        label: Locale import in XLSX
         validation.label: File validation
         import.label: Locale import
     xlsx_attribute_group_import:
-        label: Attribute group import in CSV
+        label: Attribute group import in XLSX
         validation.label: File validation
         import.label: Attribute group import
     xlsx_currency_import:
-        label: Currency import in CSV
+        label: Currency import in XLSX
         validation.label: File validation
         import.label: Currency import
     xlsx_group_type_import:
-        label: Group type import in CSV
+        label: Group type import in XLSX
         validation.label: File validation
         import.label: Group type import
