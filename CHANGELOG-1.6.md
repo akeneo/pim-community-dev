@@ -64,8 +64,8 @@
 - Change constructor of `Pim\Component\Catalog\Normalizer\Structured\ProductValueNormalizer`. Remove argument `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface`
 - Add method `convertToLocalizedFormats` to `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
 - Remove `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`. Please use `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductProcessor`
-- Change constructor or `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
-- Change constructor or `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
 - Change constructor of `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`. Remove second argument `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` and replace fourth and fifth argument by `Pim\Component\Connector\Processor\BulkMediaFetcher` and `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Move `Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass` to `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass`
 - Move `Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector` to `Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector`
@@ -214,7 +214,7 @@
 - Change constructor of `Pim\Bundle\CatalogBundle\Factory\FamilyFactory` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\CatalogBundle\Manager\ChannelManager` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor` replace `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\CompletenessController` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\CompletenessController` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`, add `Doctrine\Common\Persistence\ObjectManager` and the parameter `pim_catalog_product_storage_driver` (string).
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\ProductTemplateType` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
