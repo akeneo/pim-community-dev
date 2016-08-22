@@ -41,7 +41,7 @@ define([
          */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-                _.defaults(data, {field: this.getCode(), value: '', _.first(this.config.operators)});
+                _.defaults(data, {field: this.getCode(), value: '', operator: _.first(this.config.operators)});
             }.bind(this));
 
             return BaseFilter.prototype.configure.apply(this, arguments);
