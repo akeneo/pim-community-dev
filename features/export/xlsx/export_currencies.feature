@@ -23,7 +23,7 @@ Feature: Export currencies
       | AOK  | 0         |
       | AON  | 0         |
       | AOR  | 0         |
-      | ARM  | 1         |
+      | ARM  | 0         |
       | ARP  | 0         |
       | ARL  | 0         |
       | ATS  | 0         |
@@ -135,7 +135,7 @@ Feature: Export currencies
       | AOK | 0 |
       | AON | 0 |
       | AOR | 0 |
-      | ARM | 1 |
+      | ARM | 0 |
       | ARP | 0 |
       | ARL | 0 |
       | ATS | 0 |

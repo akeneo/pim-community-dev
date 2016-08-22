@@ -59,7 +59,7 @@ class ChannelNormalizerSpec extends ObjectBehavior
                 'label'      => 'Ecommerce',
                 'currencies' => 'EUR,USD',
                 'locales'    => 'en_US,fr_FR',
-                'tree'       => 'Master catalog',
+                'category'   => 'Master catalog',
             ]
         );
     }
