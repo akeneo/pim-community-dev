@@ -6,28 +6,112 @@
 
 ## Functional improvements
 
-- PIM-5096: Adds XLSX quick export to the product grid and published product grid
-- PIM-5356: Add the following XLSX job export: assets, asset categories and asset variations
-- PIM-5640: Locale and attribute group permissions are now applied on quick export content
-- PIM-5357: Add the following XLSX job import: assets and asset categories
-- PIM-5582: Read only attribute
-- PIM-5427: Add possibility to filter by families for product export
-- PIM-5431: Export the products updated since a defined date
-- PIM-5665: Add "remove" action in rule engine
-- PIM-5757: Add delete bulk action on the rules datagrid
+### Improve Rules Engine
+
+- PIM-5665: As Peter, I would like to remove products from categories using rules (mass edit, add "remove" action in rule engine)
+- PIM-5742: Improve the products save for mass operations, I would like to have the completeness and rules calculated directly
+- PIM-5577: As Julia, when I save several products, I would like to have the completeness and rules calculated directly	
+- PIM-5757: As Peter, I would like to make bulk actions on the rules (dd delete bulk action on the rules datagrid)
+- PIM-5813: As Peter, I would like to launch manually 1 or all rules from the UI (add the possibility to launch the rules from the UI)
+- PIM-5860: As Peter, I would like to launch manually a selection of rules (add the execute mass action on rules)
+- PIM-5364: As Mary, when I mass edit my products, I would like to have the rules executed
+- PIM-5582: As Peter, I would like to define that an attribute cannot be updated by screen(rRead only attribute)
+- PIM-5533: As Peter, I would like to refine the rules conditions with NOT EMPTY conditions
+- PIM-5365: As Peter, I would like to define a rule with opposite conditions (NOT IN, !=) to the action
+- PIM-5363: As Peter, when I make a product import, I would like to have the rules calculated
+- PIM-5455: As Peter, when I define a rule, I would like to know the number of products impacted by the rule
+- PIM-5892: Change warning message when executing all rules from the UI
+
+### Improve Asset Manager 
+
+- PIM-5488: As Pamela, I would like to move the assets in the trees (add a bulk action on the product assets grid, to move them in categories)
+- PIM-5489: As Pamela, I would like to mass add tags for a selection of assets (add a bulk action on the product assets grid, to add tags on assets)
+- PIM-5490: As Pamela, I would like to mass delete assets (add delete bulk action on the product assets grid)
 - PIM-5530: Change the label and the position of the button "Schedule" in "Upload assets" screen
-- PIM-5488: Add a bulk action on the product assets grid, to move them in categories
-- PIM-5489: Add a bulk action on the product assets grid, to add tags on assets
-- PIM-5813: Add the possibility to launch the rules from the UI
-- PIM-5860: Add the execute mass action on rules
-- PIM-5490: Add delete bulk action on the product assets grid
+- PIM-5778 [Cookbook] How to automate assets mass import using the existing `pim:product-asset:mass-upload`
+
+### Support Excel Files
+
+- PIM-5645: As Peter, I would like to have a dedicated connector for Excel files
+- PIM-5435: As Mary, I would like to import and export products with Excel files
+- PIM-5100: As Peter, I would like to export variant groups and groups in Excel files
+- PIM-5095: As Peter, I would like to import variant groups and groups with Excel files
+- PIM-5099: As Peter, I would like to export the catalog structure in Excel files
+- PIM-5097: As Peter, I would like to import the catalog structure in Excel files
+- PIM-5098: As Mary, I would like to export products and published products in Excel files
+- PIM-5096: As Mary, I would like to quick export products and published products in Excel files
+- PIM-5094: As Mary, I would like to download the invalid data in Excel files
+- PIM-5093: As Mary, I would like to import products and products proposal with Excel files
+- PIM-5692: As Mary, I would like to import localized Excel files
+- PIM-5641: As Mary, I would like to define a limit number of lines for the Excel files in order to manage them easily in Excel
+- PIM-5612: As Peter, I would like to know the Excel versions supported by our Excel connector
+- PIM-5357: Add the following XLSX job import: assets and asset categories
+- PIM-5356: Add the following XLSX job export: assets, asset categories and asset variations
+- PIM-5099: The catalog structure can now be exported in XLSX format (families, attributes, attribute options, association types and categories)
+- PIM-5097: The catalog structure can now be imported in XLSX format (families, attributes, attribute options, association types and categories)
+
+### Export Builder
+
+- PIM-5833: As Peter, I would like to choose for which categories the products are exported - Back End
+- PIM-5653: As Filips, I would like to export products and configure the filters with Product QUery Builder
+- PIM-5112: As Peter, I would like to export only the products updated since the last export
+- PIM-5657: As Peter, I would like to configure my product export profiles in few tabs
+- PIM-5809: [Spike] Export builder (ajaxification)
+- PIM-5145: As Peter, I would like to choose for which locales the products are exported
+- PIM-5426: As Peter, I would like to filter on the completeness to export products
+- PIM-5427: As Peter, I would like to filter on the family to export products
+- PIM-5431: As Peter, I would like to export the products updated since a defined date
+- PIM-5428: As Peter, I would like to filter on the status to export products
+- PIM-5421: As Peter, I would like to choose for which categories the products are exported - Front End Revamp
+- PIM-5633: As Peter, I would like to filter on a list of product identifiers to export products
+- PIM-5110: As Peter, I would like to choose if the products images and files have to be exported
+- PIM-5432: As Peter, I would like to export the products updated since the last n days
+- PIM-5109: As Peter, I would like to choose the products attributes to export
+- PIM-5634: As Peter, I would like to filter on a list attribute to export products
+- PIM-5635: As Peter, I would like to filter on all attributes types to export products
+
+### User Productivity
+
+- PIM-5602: As Mary, I would like to move products from a category to another category (mass edit)
+- PIM-5604: As Mary, I would like to remove products from a category (mass edit)
+- PIM-5592: As Mary, when I enrich a product and come back to the grid, I would like to keep the page number of the grid
+- PIM-5743: As Peter, I would like to export / import the attributes with all their properties
+- PIM-5600: As Mary, I would like to quick export only the columns, locale and channel of the grid
+- PIM-5664: As Peter, I would like to purge my job execution history
+- PIM-5761: Remove the useless color property in the channel edit form
+- PIM-5681: As Peter, I would like to purge my entities history, introduce a new command to purge entity versions stored in the PIM (see pim:versioning:purge command)
+- PIM-5647: As Mary, when I load the PEF, I don't want to have a blank screen
+- PIM-5593: As Julia, when I add an association to a product, I would like to keep my context in the grid
+- PIM-5624: As Julia, when I come back to a grid, I would like to keep the page number of the grid
+- PIM-5657: It is now possible to add custom tabs within the job profile and edit pages
+- PIM-5700: Move the channel our of the association grid filter
+- PIM-5594: As Julia, when I edit in sequential some products, I would like to keep the completeness panel displayed
+- PIM-5781: Add new data on the "system information" screen (data volumetry, information about the operating system)
+- PIM-5736: As Mary, I would like to have different bulk actions to facilitate the use
+- PIM-5640: As Mary, I would like that my permissions are taken into account if I quick export products (locale and attribute group permissions are now applied on quick export content)
 
 ## Technical improvements
 
+- PIM-5589: Introduce a channels, attribute groups, group types, locales and currencies import using the new import system introduced in v1.4
+- PIM-5589: Introduce a SimpleFactoryInterface to create simple entities
 - PIM-5589: Introduce a channels, attribute groups, group types, currencies, locale accesses, asset category accesses, product category accesses, attribute group accesses and job profile accesses import using the new import system introduced in v1.4
-- PIM-5645: Introduces the new Akeneo XLSX Connector
-- TIP-342: Be able to launch mass edit processes without having to previously store a JobConfiguration and only rely on dynamic configuration
-- PIM-5577: The completeness is now calculated every time a product is saved, ie during mass edit, rule execution, product import and on edit/save of variant groups.
+- PIM-5594: Panel state is now stored in the session storage
+- PIM-5645: Bath jobs configuration files can now also be loaded when contained in a folder named 'batch_jobs'. Introduces the new Akeneo Product XLSX Connector
+- TIP-342: be able to launch mass edit processes without having to previously store a JobConfiguration and only rely on dynamic configuration
+- PIM-5577: The completeness is now calculated every time a product is saved, ie during mass edit, product import and on edit/save of variant groups.
+- Call validation in the controller when adding/removing attributes to the family.
+- Simplify installation process and the loading of catalogs in Behat by using the import system and `akeneo:batch:job` commands.
+- PIM-5653: When using the Product Query Builder, it is now possible to filter on completeness without specifying a locale. Products with a matching completeness for at least one of the locales of the scope will be selected.
+- PIM-5653: Introduce a new storage-agnostic Product Reader using the PQB
+- PIM-5742: Schedule completeness for ORM is now performed directly through SQL
+- Integrates the AkeneoMeasureBundle in our main repository
+- TIP-245: Add datetime filters in the Product Query Builder, allowing to select products on "created at" and "updated at" fields.
+- PIM-5657: Introduce a `JobTemplateProvider` that holds the job template codes to use for creating, showing, editing job profiles. The provider uses configuration files in order to retrieve overridden templates for specific job names
+- TIP-458: Move the Converters from Processors to Readers. Now, all the readers return a standard format as output, and all the processors get a standard format as input.
+- TIP-459: Standardize the denormalization Processors, to use SimpleProcessor in most of the cases.
+- TIP-255: Allow to select PQB filter on supported operator, to add new operators easily on existing fields/attribute types
+- PIM-5781: Introduce a new command to get system information from the command line
+- TIP-535: Remove the flush option from SaverInterface, BulkSaverInterface, RemoverInterface, BulkRemoverInterface, thank you @iulyanp!
 
 ## BC breaks
 
