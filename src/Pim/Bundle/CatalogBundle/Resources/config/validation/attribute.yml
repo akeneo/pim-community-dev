@@ -21,6 +21,9 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - pim_catalog_number
                 - pim_catalog_price_collection
                 - pim_catalog_metric
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\NotBlankProperties:
+            properties:
+                - reference_data_name
     properties:
         attributeType:
             - NotBlank: ~
@@ -82,7 +85,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_price_collection
                     - pim_catalog_multiselect
                     - pim_catalog_simpleselect
-
                     - pim_catalog_file
                     - pim_catalog_image
                     - pim_catalog_boolean
