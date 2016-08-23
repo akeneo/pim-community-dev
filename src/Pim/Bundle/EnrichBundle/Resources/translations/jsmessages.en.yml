@@ -104,13 +104,13 @@ pim:
         mass_action:
             quick_export:
                 csv_all: CSV (All attributes)
-                csv_grid_context: CSV (Current view)
-                xlsx_all: Excel (All attributes)
-                xlsx_grid_context: Excel (Current view)
-            delete: Delete
-            mass_edit: Mass Edit
-            category_edit: Category Edit
-            sequential_edit: Sequential Edit
+                csv_grid_context: CSV (Grid context)
+                xlsx_all: XLSX (All attributes)
+                xlsx_grid_context: XLSX (Grid context)
+            delete: Delete products
+            mass_edit: Change product information
+            category_edit: Move products in categories
+            sequential_edit: Edit products sequentially
 
 # Jstree context menu actions
 jstree.create: Create
