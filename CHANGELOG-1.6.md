@@ -1,7 +1,21 @@
+# 1.6.x
+
+## Bug fixes
+
+# 1.6.0-ALPHA2 (2016-08-23)
+
+## Bug fixes
+
+- PIM-5915: Fix the import of localizable and scopable variant group attributes
+- PIM-5929: Fix the validation issue indicator appearance on form tabs
+
 # 1.6.0-ALPHA1 (2016-08-01)
 
 ## Bug fixes
 
+- PIM-5854: The family code is not displayed at all in the product grid when no family labels
+- PIM-5888: Fix an outline glitch on some buttons
+- PIM-5869: Allow any codes to be used for attributes
 - PIM-5434: When no access to any category, I can't edit my profile
 
 ## Functional improvements
