@@ -341,9 +341,9 @@ pim_enrich:
     export:
         product:
             data:
-                title: Data filters
+                title: Filter the products
             structure:
-                title: Structure filters
+                title: Filter the data
                 attributes:
                     title: Attributes
             filter:
