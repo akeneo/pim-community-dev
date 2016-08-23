@@ -60,6 +60,7 @@
 
 ## BC breaks
 
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver`. Add `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`.
 - Remove services `pim_serializer.normalizer.flat.*`, `pim_serializer.denormalizer.flat.*` and `pim_reference_data.denormalizer.flat.`
 - Change constructor of `Pim\Component\Catalog\Normalizer\Structured\ProductValueNormalizer`. Remove argument `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface`
 - Add method `convertToLocalizedFormats` to `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`

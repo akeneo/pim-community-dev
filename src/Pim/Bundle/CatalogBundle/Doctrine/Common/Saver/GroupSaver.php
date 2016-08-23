@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
@@ -12,7 +13,6 @@ use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
 use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,6 +51,9 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /** @var ProductQueryBuilderFactoryInterface */
     protected $productQueryBuilderFactory;
 
+    /** @var BulkObjectDetacherInterface */
+    protected $detacher;
+
     /** @var string */
     protected $productClassName;
 
@@ -63,6 +66,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      * @param SavingOptionsResolverInterface      $optionsResolver
      * @param EventDispatcherInterface            $eventDispatcher
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+     * @param BulkObjectDetacherInterface         $detacher
      * @param string                              $productClassName
      */
     public function __construct(
@@ -74,6 +78,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        BulkObjectDetacherInterface $detacher,
         $productClassName
     ) {
         $this->objectManager              = $objectManager;
@@ -84,6 +89,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $this->optionsResolver            = $optionsResolver;
         $this->eventDispatcher            = $eventDispatcher;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        $this->detacher                   = $detacher;
         $this->productClassName           = $productClassName;
     }
 
@@ -218,6 +224,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
             $this->copyVariantGroupValues($group);
+            $this->detacher->detachAll($group->getProducts()->toArray());
         }
 
         $this->versionContext->unsetContextInfo($context);
