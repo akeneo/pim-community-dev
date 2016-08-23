@@ -104,9 +104,9 @@ pim:
         mass_action:
             quick_export:
                 csv_all: CSV (All attributes)
-                csv_grid_context: CSV (Grid context)
-                xlsx_all: XLSX (All attributes)
-                xlsx_grid_context: XLSX (Grid context)
+                csv_grid_context: CSV (Current view)
+                xlsx_all: Excel (All attributes)
+                xlsx_grid_context: Excel (Current view)
             delete: Delete
             mass_edit: Mass Edit
             category_edit: Category Edit
