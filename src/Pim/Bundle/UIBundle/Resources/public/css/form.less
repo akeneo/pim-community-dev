@@ -17,8 +17,21 @@
   &.active a {
     border-bottom: 3px solid @textColor + #111;
   }
-  &:not(.active) a.error {
-    border-bottom: 3px solid @redDark;
+  a.error {
+    border-bottom: none;
+    color: @redDark;
+    font-weight: bold;
+    &:before {
+      display: inline-block;
+      margin-right: 5px;
+      font-family: 'FontAwesome';
+      font-style: normal;
+      text-decoration: inherit;
+      -webkit-font-smoothing: antialiased;
+      content: "\f06a";
+      text-indent: 0;
+      speak: none;
+    }
   }
 }
 
