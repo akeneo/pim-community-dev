@@ -7,10 +7,10 @@ Feature: Export products according to multi select reference data values
   Background:
     Given the "clothing" catalog configuration
     And the following products:
-      | sku     | front_view |
-      | shirt-1 | akene      |
-      | shirt-2 | dog        |
-      | shirt-3 |            |
+      | sku     | front_view | categories      |
+      | shirt-1 | akene      | 2014_collection |
+      | shirt-2 | dog        | 2014_collection |
+      | shirt-3 |            | 2014_collection |
     And the following jobs:
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
@@ -18,8 +18,6 @@ Feature: Export products according to multi select reference data values
       | filePath | %tmp%/product_export/product_export.csv |
       | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "tablet"},"data":[]} |
 
-  # default value to fix
-  @skip
   Scenario: Export only the product values with selected reference data value
     Given I am logged in as "Julia"
     And I am on the "csv_product_export" export job edit page
@@ -36,8 +34,6 @@ Feature: Export products according to multi select reference data values
       shirt-1;;1;;akene;
       """
 
-  # default value to fix
-  @skip
   Scenario: Export only the product values with selected reference data values
     Given I am logged in as "Julia"
     And I am on the "csv_product_export" export job edit page
@@ -55,8 +51,6 @@ Feature: Export products according to multi select reference data values
       shirt-2;;1;;dog;
       """
 
-  # default value to fix
-  @skip
   Scenario: Export only the product values without reference data values
     Given I am logged in as "Julia"
     And I am on the "csv_product_export" export job edit page
@@ -73,8 +67,6 @@ Feature: Export products according to multi select reference data values
       shirt-3;;1;;;
       """
 
-  # default value to fix
-  @skip
   Scenario: Export all the product values when no reference data is provided with operator IN LIST
     Given I am logged in as "Julia"
     And I am on the "csv_product_export" export job edit page
