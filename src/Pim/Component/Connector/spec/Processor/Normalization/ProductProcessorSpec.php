@@ -63,11 +63,14 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $mediaFetcher,
         $productBuilder,
+        $attributeRepository,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
         $jobParameters->get('filters')->willReturn(
@@ -85,7 +88,34 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
 
-        $productStandard = [
+        $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
+            ->willReturn([
+                'enabled'    => true,
+                'categories' => ['cat1', 'cat2'],
+                'values' => [
+                    'picture' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => 'a/b/c/d/e/f/little_cat.jpg'
+                        ]
+                    ],
+                    'size' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => 'M'
+                        ]
+                    ]
+                ]
+            ]);
+
+        $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
+        $mediaFetcher->getErrors()->shouldNotBeCalled();
+
+        $detacher->detach($product)->shouldBeCalled();
+
+        $this->process($product)->shouldReturn([
             'enabled'    => true,
             'categories' => ['cat1', 'cat2'],
             'values' => [
@@ -97,17 +127,7 @@ class ProductProcessorSpec extends ObjectBehavior
                     ]
                 ]
             ]
-        ];
-
-        $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
-            ->willReturn($productStandard);
-
-        $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
-        $mediaFetcher->getErrors()->shouldNotBeCalled();
-
-        $this->process($product)->shouldReturn($productStandard);
-
-        $detacher->detach($product)->shouldBeCalled();
+        ]);
     }
 
     function it_processes_a_product_with_several_media(

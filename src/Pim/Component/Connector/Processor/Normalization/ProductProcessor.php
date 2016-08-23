@@ -98,6 +98,15 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
                 ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
             $this->fetchMedia($product, $directory);
+        } else {
+            $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
+            $productStandard['values'] = array_filter(
+                $productStandard['values'],
+                function ($attributeCode) use ($mediaAttributes) {
+                    return !in_array($attributeCode, $mediaAttributes);
+                },
+                ARRAY_FILTER_USE_KEY
+            );
         }
 
         $this->detacher->detach($product);
@@ -177,6 +186,6 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     protected function areAttributesToFilter(JobParameters $parameters)
     {
         return isset($parameters->get('filters')['structure']['attributes'])
-            && !empty($parameters->get('filters')['structure']['attributes']);
+        && !empty($parameters->get('filters')['structure']['attributes']);
     }
 }
