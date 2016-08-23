@@ -98,6 +98,7 @@ abstract class AbstractMassEditController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $queryParams += ['operationAlias' => $data['operationAlias']];
+                $queryParams += ['operationGroup' => $operationGroup];
 
                 $configureRoute = $this
                     ->router
@@ -235,6 +236,7 @@ abstract class AbstractMassEditController
             'filters'    => json_encode($params['filters']),
             'dataLocale' => $request->get('dataLocale', null),
             'itemsCount' => $request->get('itemsCount'),
+            'operationGroup' => $request->get('operationGroup')
         ]);
 
         return $params;
