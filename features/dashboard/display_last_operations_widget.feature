@@ -36,3 +36,10 @@ Feature: Display last operations widget
     Then I should see the "Refresh" button
     And I should see the "Reset" button
     And I should see the columns Type, Job, User, Status and Started at
+
+  Scenario: Show job tracker
+    Given a "footwear" catalog configuration
+    And I am logged in as "Mary"
+    When I am on the dashboard page
+    And I follow "Show job tracker"
+    Then I should be redirected on the job tracker page

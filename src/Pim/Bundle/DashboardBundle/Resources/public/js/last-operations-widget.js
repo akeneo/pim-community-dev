@@ -5,18 +5,13 @@ define(
         'routing',
         'oro/navigation',
         'pim/dashboard/abstract-widget',
-        'text!pim/dashboard/template/last-operations-widget'
+        'text!pim/dashboard/template/last-operations-widget',
+        'text!pim/dashboard/template/view-all-btn'
     ],
-    function ($, _, Routing, Navigation, AbstractWidget, template) {
+    function ($, _, Routing, Navigation, AbstractWidget, template, viewAllBtnTemplate) {
         'use strict';
 
         return AbstractWidget.extend({
-            tagName: 'table',
-
-            id: 'last-operations-widget',
-
-            className: 'table table-condensed table-light groups unspaced',
-
             labelClasses: {
                 1: 'success',
                 3: 'info',
@@ -27,34 +22,42 @@ define(
                 8: 'inverse'
             },
 
+            viewAllTitle: 'Show job tracker',
+
             options: {
                 contentLoaded: false
             },
 
             template: _.template(template),
 
+            jobTrackerBtnTemplate: _.template(viewAllBtnTemplate),
+
             events: {
-                'click a.btn': 'followLink',
-                'click a#btn-show-list': 'showList'
+                'click .show-details-btn': 'showOperationDetails'
             },
 
-            followLink: function (e) {
-                e.preventDefault();
+            /**
+             * Redirect to the clicked operation page
+             *
+             * @param {Object} event
+             */
+            showOperationDetails: function (event) {
+                event.preventDefault();
                 var route;
-                var operationType = $(e.currentTarget).data('operation-type');
+                var operationType = $(event.currentTarget).data('operation-type');
 
                 switch (operationType) {
                     case 'mass_edit':
                     case 'quick_export':
                         route = Routing.generate(
                             'pim_enrich_job_tracker_show',
-                            { id: $(e.currentTarget).data('id') }
+                            { id: $(event.currentTarget).data('id') }
                         );
                         break;
                     default:
                         route = Routing.generate(
                             'pim_importexport_' + operationType + '_execution_show',
-                            { id: $(e.currentTarget).data('id') }
+                            { id: $(event.currentTarget).data('id') }
                         );
                         break;
                 }
@@ -62,12 +65,62 @@ define(
                 Navigation.getInstance().setLocation(route);
             },
 
-            showList: function (e) {
-                e.preventDefault();
+            /**
+             * Call when user clicks on the show job tracker button. Redirect to the Job tracker.
+             *
+             * @param {Object} event
+             */
+            showTracker: function (event) {
+                event.preventDefault();
 
                 Navigation.getInstance().setLocation(Routing.generate('pim_enrich_job_tracker_index'));
             },
 
+            /**
+             * {@inheritdoc}
+             */
+            setElement: function () {
+                AbstractWidget.prototype.setElement.apply(this, arguments);
+
+                this._addShowTrackerBtn();
+
+                return this;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            _afterLoad: function () {
+                AbstractWidget.prototype._afterLoad.apply(this, arguments);
+
+                var $btn = this._getViewAllBtn();
+
+                if (_.isEmpty(this.data)) {
+                    $btn.hide();
+                } else {
+                    $btn.show();
+                }
+            },
+
+            /**
+             * Add the button which show the job tracker
+             */
+            _addShowTrackerBtn: function () {
+                var $btn = this._getViewAllBtn();
+
+                if (0 < $btn.length) {
+                    return;
+                }
+
+                var $jobTrackerBtn = $(this.jobTrackerBtnTemplate({ title: this.viewAllTitle }));
+
+                this.$el.parent().siblings('.widget-header').append($jobTrackerBtn);
+                $jobTrackerBtn.on('click', this.showTracker.bind(this));
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             _processResponse: function (data) {
                 this.options.contentLoaded = true;
 
@@ -80,6 +133,15 @@ define(
                 }, this);
 
                 return data;
+            },
+
+            /**
+             * Returns the view all button
+             *
+             * @return {jQuery}
+             */
+            _getViewAllBtn: function () {
+                return $('.view-all-btn[title="' + this.viewAllTitle + '"]');
             }
         });
     }
