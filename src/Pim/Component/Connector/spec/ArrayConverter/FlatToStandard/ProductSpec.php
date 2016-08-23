@@ -53,22 +53,45 @@ class ProductSpec extends ObjectBehavior
         AttributeInterface $attribute3,
         AttributeInterface $attribute4,
         AttributeInterface $attribute5,
+        AttributeInterface $attribute6,
+        AttributeInterface $attribute7,
         ValueConverterInterface $converter
     ) {
         $item = [
             'sku'                    => '1069978',
+            '7'                      => 'foo',
             'categories'             => 'audio_video_sales,loudspeakers,sony',
             'enabled'                => '1',
             'name'                   => 'Sony SRS-BTV25',
             'release_date-ecommerce' => '2011-08-21',
+            'release_date-print'     => '2011-07-15',
+            'price-EUR'              => '15',
+            'price-USD'              => '10',
+            'X_SELL-groups'          => 'group-A',
+            'X_SELL-products'        => 'sku-A, sku-B'
+        ];
+
+        $itemMerged = [
+            'sku'                    => '1069978',
+            '7'                      => 'foo',
+            'categories'             => 'audio_video_sales,loudspeakers,sony',
+            'enabled'                => '1',
+            'name'                   => 'Sony SRS-BTV25',
+            'release_date-ecommerce' => '2011-08-21',
+            'release_date-print'     => '2011-07-15',
+            'price'                  => '15 EUR, 10 USD',
+            'X_SELL-groups'          => 'group-A',
+            'X_SELL-products'        => 'sku-A, sku-B'
         ];
 
         $columnsMapper->map($item)->willReturn($item);
 
-        $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku', 'name', 'release_date-ecommerce']);
-        $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
+        $attrColumnsResolver->resolveAttributeColumns()->willReturn(
+            ['sku', 'name', 'release_date-ecommerce', 'release_date-print', 7, 'price', 'price-EUR', 'price-USD']
+        );
+        $assocColumnsResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'X_SELL-products']);
 
-        $columnsMerger->merge($item)->willReturn($item);
+        $columnsMerger->merge($item)->willReturn($itemMerged);
 
         $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
@@ -77,11 +100,22 @@ class ProductSpec extends ObjectBehavior
         $fieldConverter->supportsColumn('enabled')->willReturn(true);
         $fieldConverter->supportsColumn('name')->willReturn(false);
         $fieldConverter->supportsColumn('release_date-ecommerce')->willReturn(false);
+        $fieldConverter->supportsColumn('release_date-print')->willReturn(false);
+        $fieldConverter->supportsColumn('7')->willReturn(false);
+        $fieldConverter->supportsColumn('price')->willReturn(false);
+        $fieldConverter->supportsColumn('X_SELL-groups')->willReturn(true);
+        $fieldConverter->supportsColumn('X_SELL-products')->willReturn(true);
 
         $fieldConverter->convert('categories', 'audio_video_sales,loudspeakers,sony')->willReturn(
             ['categories' => ['audio_video_sales', 'loudspeakers', 'sony']]
         );
         $fieldConverter->convert('enabled', '1')->willReturn(['enabled' => true]);
+        $fieldConverter->convert('X_SELL-groups', 'group-A')->willReturn(
+            ['associations' => ['X_SELL' => ['groups' => ['group-A']]]]
+        );
+        $fieldConverter->convert('X_SELL-products', 'sku-A, sku-B')->willReturn(
+            ['associations' => ['X_SELL' => ['products' => ['sku-A', 'sku-B']]]]
+        );
 
         $converterRegistry->getConverter(Argument::any())->willReturn($converter);
 
@@ -89,15 +123,24 @@ class ProductSpec extends ObjectBehavior
         $attribute2->getAttributeType()->willReturn('categories');
         $attribute3->getAttributeType()->willReturn('enabled');
         $attribute4->getAttributeType()->willReturn('name');
-        $attribute5->getAttributeType()->willReturn('release_date-ecommerce');
+        $attribute5->getAttributeType()->willReturn('release_date');
+        $attribute6->getAttributeType()->willReturn('7');
+        $attribute7->getAttributeType()->willReturn('price');
 
         $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute1]);
         $fieldExtractor->extractColumnInfo('categories')->willReturn(['attribute' => $attribute2]);
         $fieldExtractor->extractColumnInfo('enabled')->willReturn(['attribute' => $attribute3]);
         $fieldExtractor->extractColumnInfo('name')->willReturn(['attribute' => $attribute4]);
-        $fieldExtractor->extractColumnInfo('release_date-ecommerce')->willReturn(
-            ['attribute' => $attribute5]
-        );
+        $fieldExtractor->extractColumnInfo('release_date-ecommerce')->willReturn([
+            'attribute' => $attribute5,
+            'scope_code' => 'ecommerce'
+        ]);
+        $fieldExtractor->extractColumnInfo('release_date-print')->willReturn([
+            'attribute' => $attribute5,
+            'scope_code' => 'print'
+        ]);
+        $fieldExtractor->extractColumnInfo('7')->willReturn(['attribute' => $attribute6]);
+        $fieldExtractor->extractColumnInfo('price')->willReturn(['attribute' => $attribute7]);
 
         $converter->convert(['attribute' => $attribute1], '1069978')->willReturn(
             [
@@ -123,14 +166,43 @@ class ProductSpec extends ObjectBehavior
                 ]
             ]
         );
-        $converter->convert(['attribute' => $attribute5], '2011-08-21')->willReturn(
+        $converter->convert(['attribute' => $attribute5, 'scope_code' => 'ecommerce'], '2011-08-21')->willReturn(
             [
-                'release_date-ecommerce' => [
+                'release_date' => [
                     [
                         'locale' => '',
                         'scope'  => 'ecommerce',
                         'data'   => '2011-08-21'
                     ]
+                ]
+            ]
+        );
+        $converter->convert(['attribute' => $attribute5, 'scope_code' => 'print'], '2011-07-15')->willReturn(
+            [
+                'release_date' => [
+                    [
+                        'locale' => '',
+                        'scope'  => 'print',
+                        'data'   => '2011-07-15'
+                    ]
+                ]
+            ]
+        );
+        $converter->convert(['attribute' => $attribute6], 'foo')->willReturn(
+            [
+                7 => [
+                        'locale' => '',
+                        'scope'  => '',
+                        'data'   => 'foo'
+                ]
+            ]
+        );
+        $converter->convert(['attribute' => $attribute7], '15 EUR, 10 USD')->willReturn(
+            [
+                'price' => [
+                        'locale' => '',
+                        'scope'  => '',
+                        'data'   => [['data' => 15, 'currency' => 'EUR'], ['data' => 10, 'currency' => 'USD']]
                 ]
             ]
         );
@@ -141,6 +213,11 @@ class ProductSpec extends ObjectBehavior
                 'scope'  => '',
                 'data'   => 1069978,
             ],
+            7                        => [
+                'locale' => '',
+                'scope'  => '',
+                'data'   => 'foo',
+            ],
             'categories'             => ['audio_video_sales', 'loudspeakers', 'sony'],
             'enabled'                => true,
             'name'                   => [
@@ -150,12 +227,29 @@ class ProductSpec extends ObjectBehavior
                     'data'   => 'Sony SRS-BTV25',
                 ]
             ],
-            'release_date-ecommerce' => [
+            'release_date' => [
                 [
                     'locale' => '',
                     'scope'  => 'ecommerce',
                     'data'   => '2011-08-21'
-                ]
+                ],
+                [
+                    'locale' => '',
+                    'scope'  => 'print',
+                    'data'   => '2011-07-15'
+                ],
+
+            ],
+            'price' => [
+                'locale' => '',
+                'scope'  => '',
+                'data'   => [['data' => 15, 'currency' => 'EUR'], ['data' => 10, 'currency' => 'USD']]
+            ],
+            'associations' => [
+                'X_SELL' => [
+                    'groups' => ['group-A'],
+                    'products' => ['sku-A', 'sku-B'],
+                ],
             ]
         ];
 
