@@ -349,15 +349,15 @@ pim_enrich:
             filter:
                 channel:
                     title: Channel
-                    help: The channel you want to export
+                    help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
                 locales:
                     title: Locales
-                    help: The locales you want to export
+                    help: The locales defines the localized product values to export. Ex:only product information in French.
                 attributes:
                     title: Attributes
                     edit: Edit
                     label: "{0} All attributes|{1} One attribute selected|]1,Inf[ {{ count }} attributes selected"
-                    help: The categories of the products you want to export
+                    help: Select the product information to export. Ex:only the technical attributes.
                     empty: All attributes will be exported
                     modal:
                         apply: Apply
@@ -372,7 +372,7 @@ pim_enrich:
                     empty_selection: All attributes will be exported
                 family:
                     title: Family
-                    help: The families you want to export
+                    help: Select the products to export by their family. Ex: Export only the shoes and dresses.
                     operators:
                         IN: In list
                         "NOT IN": Not in list
@@ -388,14 +388,14 @@ pim_enrich:
                         "SINCE LAST JOB": Updated products since last export
                 enabled:
                     title: Status
-                    help: The status of the products you want to export
+                    help: Select the products to export by their status. Ex: Export products whatsoever their status.
                     value:
                         all: All
                         enabled: Enabled
                         disabled: Disabled
                 completeness:
                     title: Completeness
-                    help: The completeness of the products you want to export
+                    help: Select the products to export by their completeness.
                     operators:
                         ALL: No condition on completeness
                         ">=": Complete on at least one selected locale
@@ -404,7 +404,7 @@ pim_enrich:
                     empty_selection: Select a family
                 category:
                     title: Category
-                    help: The categories of the products you want to export
+                    help: Use the product categories in the tree (defined by the channel above) to select the products to export
                 identifier:
                     title: Identifier
                     help: Identifiers of products you want to export separated by commas, spaces or line breaks
