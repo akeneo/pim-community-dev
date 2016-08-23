@@ -40,3 +40,9 @@ Feature: Display proposal widget
     And the grid should contain 1 elements
     And I should see entity my-jacket
     And I should see the text "Sandra"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5934
+  Scenario: Successfully go to the proposal view
+    Given I am on the dashboard page
+    When I follow "View all proposals"
+    Then I should be on the proposals index page

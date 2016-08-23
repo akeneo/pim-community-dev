@@ -6,4 +6,3 @@ pimee_dashboard:
             product: Product
             review:  Review
             empty:   No proposals to review
-            view_all: View all
