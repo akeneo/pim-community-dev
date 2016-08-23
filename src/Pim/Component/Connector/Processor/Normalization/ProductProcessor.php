@@ -186,6 +186,6 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     protected function areAttributesToFilter(JobParameters $parameters)
     {
         return isset($parameters->get('filters')['structure']['attributes'])
-        && !empty($parameters->get('filters')['structure']['attributes']);
+            && !empty($parameters->get('filters')['structure']['attributes']);
     }
 }
