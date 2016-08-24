@@ -6,6 +6,7 @@
 - PIM-5888: Fix an outline glitch on some buttons
 - PIM-5869: Allow any codes to be used for attributes
 - PIM-5915: Fix the import of localizable and scopable variant group attributes
+- PIM-5852: Fix sort order overwriting when importing existing attribute options without sort order column
 
 ## Functional improvements
 
