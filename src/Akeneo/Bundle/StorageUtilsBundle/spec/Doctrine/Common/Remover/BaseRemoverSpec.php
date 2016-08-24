@@ -5,14 +5,17 @@ namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BaseRemoverSpec extends ObjectBehavior
 {
     function let(ObjectManager $objectManager, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($objectManager, $eventDispatcher, 'Pim\Component\Catalog\Model\GroupTypeInterface');
+        $this->beConstructedWith(
+            $objectManager,
+            $eventDispatcher,
+            'spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\ModelToRemove'
+        );
     }
 
     function it_is_a_remover()
@@ -21,14 +24,14 @@ class BaseRemoverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface');
     }
 
-    function it_removes_the_object_and_flushes_the_unit_of_work($objectManager, GroupTypeInterface $type)
+    function it_removes_the_object_and_flushes_the_unit_of_work($objectManager, ModelToRemove $type)
     {
         $objectManager->remove($type)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $this->remove($type);
     }
 
-    function it_removes_the_objects_and_flushes_the_unit_of_work($objectManager, GroupTypeInterface $type1, GroupTypeInterface $type2)
+    function it_removes_the_objects_and_flushes_the_unit_of_work($objectManager, ModelToRemove $type1, ModelToRemove $type2)
     {
         $objectManager->remove($type1)->shouldBeCalled();
         $objectManager->remove($type2)->shouldBeCalled();
@@ -41,11 +44,17 @@ class BaseRemoverSpec extends ObjectBehavior
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
-                'Expects a "Pim\Component\Catalog\Model\GroupTypeInterface", "%s" provided.',
+                'Expects a "spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\ModelToRemove", "%s" provided.',
                 get_class($anythingElse)
             )
         );
         $this->shouldThrow($exception)->during('remove', [$anythingElse]);
         $this->shouldThrow($exception)->during('removeAll', [[$anythingElse, $anythingElse]]);
+    }
+}
+
+class ModelToRemove {
+    public function getId() {
+        return 42;
     }
 }
