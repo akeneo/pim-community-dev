@@ -466,6 +466,17 @@ class FixturesContext extends BaseFixturesContext
             }
             asort($currencyCodes);
             assertEquals($data['currencies'], implode(',', $currencyCodes));
+
+            if ('' !== $data['conversion_units']) {
+                $units = explode(',', $data['conversion_units']);
+                $formattedUnits = [];
+                foreach ($units as $unit) {
+                    list($key, $value) = explode(':', trim($unit));
+                    $formattedUnits[trim($key)] = trim($value);
+                }
+
+                assertEquals($formattedUnits, $channel->getConversionUnits());
+            }
         }
     }
 
@@ -1731,7 +1742,6 @@ class FixturesContext extends BaseFixturesContext
         $data = array_merge(
             [
                 'label'      => null,
-                'color'      => null,
                 'currencies' => null,
                 'locales'    => null,
                 'tree'       => null,
@@ -1745,11 +1755,11 @@ class FixturesContext extends BaseFixturesContext
         $channel->setLabel($data['label']);
 
         foreach ($this->listToArray($data['currencies']) as $currencyCode) {
-            $channel->addCurrency($this->getCurrency($currencyCode));
+            $channel->addCurrency($this->getCurrency(['code' => explode(',', $currencyCode)]));
         }
 
         foreach ($this->listToArray($data['locales']) as $localeCode) {
-            $channel->addLocale($this->getLocale($localeCode));
+            $channel->addLocale($this->getLocale(['code' => explode(',', $localeCode)]));
         }
 
         if ($data['tree']) {

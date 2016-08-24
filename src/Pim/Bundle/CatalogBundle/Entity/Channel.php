@@ -134,6 +134,22 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
+    public function setCurrencies(array $currencies)
+    {
+        foreach ($this->currencies as $currency) {
+            if (!in_array($currency, $currencies)) {
+                $this->removeCurrency($currency);
+            }
+        }
+
+        foreach ($currencies as $currency) {
+            $this->addCurrency($currency);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addCurrency(CurrencyInterface $currency)
     {
         if (!$this->hasCurrency($currency)) {
@@ -171,6 +187,22 @@ class Channel implements ChannelInterface
                 return $locale->getCode();
             }
         )->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocales(array $locales)
+    {
+        foreach ($this->locales as $locale) {
+            if (!in_array($locale, $locales)) {
+                $this->removeLocale($locale);
+            }
+        }
+
+        foreach ($locales as $locale) {
+            $this->addLocale($locale);
+        }
     }
 
     /**

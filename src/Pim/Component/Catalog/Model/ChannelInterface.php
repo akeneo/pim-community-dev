@@ -61,6 +61,11 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface, Cho
     public function getCurrencies();
 
     /**
+     * @param array $currencies
+     */
+    public function setCurrencies(array $currencies);
+
+    /**
      * @param CurrencyInterface $currency
      *
      * @return ChannelInterface
@@ -85,6 +90,11 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface, Cho
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getLocales();
+
+    /**
+     * @param array $locales
+     */
+    public function setLocales(array $locales);
 
     /**
      * @param LocaleInterface $locale
