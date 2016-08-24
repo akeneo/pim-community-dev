@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-5767: Issue with filter "in list" when SKU contains dashes (-)
+- PIM-5896: Fix reference data name validation when creating a reference data simple/multi-select attribute
 
 ## Technical improvements
 
