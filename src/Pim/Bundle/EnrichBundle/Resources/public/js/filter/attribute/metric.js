@@ -82,11 +82,10 @@ define([
         getTemplateContext: function () {
             return $.when(
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('attribute').fetch(this.getCode()),
                 FetcherRegistry.getFetcher('measure').fetchAll()
-            ).then(function (templateContext, attribute, measures) {
+            ).then(function (templateContext, measures) {
                 return _.extend({}, templateContext, {
-                    units: measures[attribute.metric_family]
+                    units: measures[templateContext.attribute.metric_family]
                 });
             }.bind(this));
         },

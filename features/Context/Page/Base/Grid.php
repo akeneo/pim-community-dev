@@ -81,59 +81,59 @@ class Grid extends Index
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Grid\Filter\StringDecorator',
         ],
-        'pim-filter-product-enabled' => [
+        'akeneo-product-enabled-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
         ],
-        'pim-filter-product-family' => [
+        'akeneo-product-family-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
         ],
-        'pim-filter-product-completeness' => [
+        'akeneo-product-completeness-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
         ],
-        'pim-filter-product-updated' => [
+        'akeneo-product-updated-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\UpdatedDecorator',
         ],
-        'pim-filter-attribute-identifier' => [
+        'akeneo-attribute-identifier-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\IdentifierDecorator',
         ],
-        'pim-filter-attribute-boolean' => [
+        'akeneo-attribute-boolean-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\BooleanDecorator',
         ],
-        'pim-filter-attribute-metric' => [
+        'akeneo-attribute-metric-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\MetricDecorator',
         ],
-        'pim-filter-attribute-number' => [
+        'akeneo-attribute-number-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\NumberDecorator',
         ],
-        'pim-filter-attribute-string' => [
+        'akeneo-attribute-string-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\StringDecorator',
         ],
-        'pim-filter-attribute-date' => [
+        'akeneo-attribute-date-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\DateDecorator'
         ],
-        'pim-filter-attribute-price-collection' => [
+        'akeneo-attribute-price-collection-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\PriceDecorator',
         ],
-        'pim-filter-attribute-select-reference-data' => [
+        'akeneo-attribute-select-reference-data-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
         ],
-        'pim-filter-attribute-select' => [
+        'akeneo-attribute-select-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
         ],
-        'pim-filter-attribute-media' => [
+        'akeneo-attribute-media-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\MediaDecorator',
         ]

@@ -64,7 +64,7 @@ class AttributeNormalizer implements NormalizerInterface
             'wysiwyg_enabled'       => $attribute->isWysiwygEnabled(),
             'empty_value'           => $this->emptyValueProvider->getEmptyValue($attribute),
             'field_type'            => $this->fieldProvider->getField($attribute),
-            'filter_type'           => $this->filterProvider->getFilters($attribute),
+            'filter_types'          => $this->filterProvider->getFilters($attribute),
             'is_locale_specific'    => (int) $attribute->isLocaleSpecific(),
             'locale_specific_codes' => $attribute->getLocaleSpecificCodes(),
             'max_characters'        => $attribute->getMaxCharacters(),

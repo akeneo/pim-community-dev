@@ -141,10 +141,14 @@ define(
                 }
 
                 return fetcherRegistry.getFetcher('attribute').fetch(fieldCode)
-                    .then(function (attribute, config) {
+                    .then(function (attribute) {
                         return {
                             field: attribute.code,
-                            view: attribute['filter_type']['product-export-builder'],
+                            /* jshint sub:true */
+                            /* jscs:disable requireDotNotation */
+                            view: attribute['filter_types']['product-export-builder'],
+                            /* jscs:enable requireDotNotation */
+                            /* jshint sub:false */
                             isRemovable: true
                         };
                     });
