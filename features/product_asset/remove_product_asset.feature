@@ -39,7 +39,8 @@ Feature: Remove product assets
     And I check the row "akene"
     And I confirm the asset modification
     And I save the product
-    And I publish the product "shirt"
+    And I press the "Publish" button
+    And I confirm the publishing
     When I am on the "chicagoskyline" asset page
     And I press the "Delete" button
     Then I should see "Delete confirmation"
