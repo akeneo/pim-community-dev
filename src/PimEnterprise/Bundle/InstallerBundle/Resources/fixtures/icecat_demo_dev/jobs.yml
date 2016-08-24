@@ -759,6 +759,7 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+            filePath:      /tmp/currency.csv
     csv_channel_import:
         connector: Akeneo CSV Connector
         alias:     csv_channel_import
@@ -769,6 +770,7 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+            filePath:      /tmp/channel.csv
     csv_locale_import:
         connector: Akeneo CSV Connector
         alias:     csv_locale_import
@@ -779,26 +781,29 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+            filePath:      /tmp/locale.csv
     csv_group_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_type_import
-        label:     Demo CSV group_type import
+        label:     Demo CSV group type import
         type:      import
         configuration:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+            filePath:      /tmp/group_type.csv
     csv_attribute_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_group_import
-        label:     Demo CSV attribute_group import
+        label:     Demo CSV attribute group import
         type:      import
         configuration:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+            filePath:      /tmp/attribute_group.csv
     xlsx_association_type_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_association_type_export
@@ -852,6 +857,7 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
+            filePath: /tmp/currency.xlsx
     xlsx_channel_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_channel_import
@@ -859,6 +865,7 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
+            filePath: /tmp/channel.xlsx
     xlsx_locale_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_locale_import
@@ -866,20 +873,23 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
+            filePath: /tmp/locale.xlsx
     xlsx_group_type_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_type_import
-        label:     Demo XLSX group_type import
+        label:     Demo XLSX group type import
         type:      import
         configuration:
             uploadAllowed: true
+            filePath: /tmp/group_type.xlsx
     xlsx_attribute_group_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_attribute_group_import
-        label:     Demo XLSX attribute_group import
+        label:     Demo XLSX attribute group import
         type:      import
         configuration:
             uploadAllowed: true
+            filePath: /tmp/attribute_group.xlsx
     xlsx_channel_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_channel_export
