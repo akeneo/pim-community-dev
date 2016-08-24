@@ -17,6 +17,7 @@
 - PIM-5888: Fix an outline glitch on some buttons
 - PIM-5869: Allow any codes to be used for attributes
 - PIM-5434: When no access to any category, I can't edit my profile
+- PIM-5936: Fix the published indicator display in the history panel
 
 ## Functional improvements
 
