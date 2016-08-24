@@ -1,0 +1,5 @@
+suites:
+    default:
+        namespace: Akeneo\Bundle\StorageUtilsBundle
+        psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
+        src_path: .
