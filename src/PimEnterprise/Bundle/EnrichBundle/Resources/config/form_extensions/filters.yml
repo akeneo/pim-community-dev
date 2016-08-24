@@ -1,8 +1,0 @@
-extensions:
-    pimee-filter-attribute-assets-collection:
-        module: pimee/filter/attribute/assets-collection
-        config:
-            url: pimee_product_asset_rest_index
-            operators:
-                - IN
-                - EMPTY
