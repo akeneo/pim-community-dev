@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Connector\Reader\File;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 class FileIteratorSpec extends ObjectBehavior
 {
@@ -14,6 +15,16 @@ class FileIteratorSpec extends ObjectBehavior
                 'fieldDelimiter' => ';'
             ]
         ]);
+    }
+
+    function it_throws_exception_with_invalid_filename()
+    {
+        $this->beConstructedWith('csv', $this->getPath() . DIRECTORY_SEPARATOR  . 'unknown_file.csv', [
+            'reader_options' => [
+                'fieldDelimiter' => ';'
+            ]
+        ]);
+        $this->shouldThrow(FileNotFoundException::class)->duringInstantiation();
     }
 
     function it_gets_current_row()

@@ -146,7 +146,9 @@ class FileIterator implements FileIteratorInterface
      */
     public function __destruct()
     {
-        $this->reader->close();
+        if (null !== $this->reader) {
+            $this->reader->close();
+        }
 
         if (null !== $this->archivePath) {
             $fileSystem = new Filesystem();
