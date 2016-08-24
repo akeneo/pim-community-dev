@@ -251,8 +251,8 @@ class Product implements ArrayConverterInterface
                 $value = $this->convertValue($column, $value);
             }
 
-            if (null !== $value) {
-                $convertedItem = $this->mergeValueToResult($convertedItem, $value);
+            if (!empty($value)) {
+                $convertedItem = $this->mergeValueToItem($convertedItem, $value);
             }
         }
 
@@ -292,24 +292,24 @@ class Product implements ArrayConverterInterface
     }
 
     /**
-     * Merge the structured value inside the passed collection
+     * Merge the structured value inside the passed item
      *
-     * @param array $collection The collection in which we add the element
-     * @param array $value      The structured value to add to the collection
+     * @param array $item   The item in which we add the element
+     * @param array $value  The structured value to add to the collection
      *
      * @return array
      */
-    protected function mergeValueToResult(array $collection, array $value)
+    protected function mergeValueToItem(array $item, array $value)
     {
         foreach ($value as $code => $data) {
-            if (array_key_exists($code, $collection)) {
-                $collection[$code] = array_merge_recursive($collection[$code], $data);
+            if (array_key_exists($code, $item)) {
+                $item[$code] = array_merge_recursive($item[$code], $data);
             } else {
-                $collection[$code] = $data;
+                $item[$code] = $data;
             }
         }
 
-        return $collection;
+        return $item;
     }
 
     /**
