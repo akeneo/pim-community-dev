@@ -30,15 +30,6 @@ define([
         /**
          * {@inheritdoc}
          */
-        initialize: function (config) {
-            this.config = config.config;
-
-            return BaseFilter.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
-         * {@inheritdoc}
-         */
         configure: function () {
             return $.when(
                 FetcherRegistry.getFetcher('attribute').fetch(this.getCode()),
@@ -95,7 +86,6 @@ define([
                 FetcherRegistry.getFetcher('measure').fetchAll()
             ).then(function (templateContext, attribute, measures) {
                 return _.extend({}, templateContext, {
-                    label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
                     units: measures[attribute.metric_family]
                 });
             }.bind(this));

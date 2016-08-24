@@ -46,15 +46,6 @@ define([
         modelDateFormat: 'yyyy-MM-dd',
 
         /**
-         * {@inherit}
-         */
-        initialize: function (config) {
-            this.config = config.config;
-
-            return BaseFilter.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
          * {@inheritdoc}
          */
         configure: function () {
@@ -134,19 +125,17 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         getTemplateContext: function () {
             return $.when(
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry
-                    .getFetcher('attribute')
-                    .fetch(this.getCode())
+                FetcherRegistry.getFetcher('attribute').fetch(this.getCode())
             ).then(function (templateContext, attribute) {
                 return _.extend({}, templateContext, {
                     label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code)
                 });
-            });
+            }.bind(this));
         },
 
         /**

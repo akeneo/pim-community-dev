@@ -57,10 +57,6 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
         foreach ($attributeFields as $attributeType => $module) {
             $providerDefinition->addMethodCall('addAttributeField', [$attributeType, $module]);
         }
-
-        foreach ($filters as $filter => $module) {
-            $providerDefinition->addMethodCall('addFilter', [$filter, $module]);
-        }
     }
 
     /**

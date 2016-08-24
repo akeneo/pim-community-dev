@@ -49,19 +49,19 @@ extensions:
             filters:
                 -
                     field: family
-                    view: pim-filter-product-family
+                    view: akeneo-product-family-filter
                 -
                     field: enabled
-                    view: pim-filter-product-enabled
+                    view: akeneo-product-enabled-filter
                 -
                     field: completeness
-                    view: pim-filter-product-completeness
+                    view: akeneo-product-completeness-filter
                 -
                     field: updated
-                    view: pim-filter-product-updated
+                    view: akeneo-product-updated-filter
                 -
                     field: categories
-                    view: pim-filter-product-category
+                    view: akeneo-product-category-filter
 
     pim-product-export-show-content-default-attribute-filters:
         module: pim/export/product/edit/content/data/default-attribute-filters

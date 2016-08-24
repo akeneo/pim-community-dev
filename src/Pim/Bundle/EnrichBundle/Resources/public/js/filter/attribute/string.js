@@ -28,15 +28,6 @@ define([
         },
 
         /**
-         * {@inherit}
-         */
-        initialize: function (config) {
-            this.config = config.config;
-
-            return BaseFilter.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
          * {@inheritdoc}
          */
         configure: function () {
@@ -73,20 +64,6 @@ define([
          */
         postRender: function () {
             this.$('.operator').select2({minimumResultsForSearch: -1});
-        },
-
-        /**
-         * {@inherit}
-         */
-        getTemplateContext: function () {
-            return $.when(
-                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('attribute').fetch(this.getCode())
-            ).then(function (templateContext, attribute) {
-                return _.extend({}, templateContext, {
-                    label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code)
-                });
-            }.bind(this));
         },
 
         /**
