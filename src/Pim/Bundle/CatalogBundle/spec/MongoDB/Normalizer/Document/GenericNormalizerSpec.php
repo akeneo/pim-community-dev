@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
  */
 class GenericNormalizerSpec extends ObjectBehavior
 {
-    function it_is_a_normalizer()
+    function it_is_a_normalizer(\MongoId $id)
     {
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }

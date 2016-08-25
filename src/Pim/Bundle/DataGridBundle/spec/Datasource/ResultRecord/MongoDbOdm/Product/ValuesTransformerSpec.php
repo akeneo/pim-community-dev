@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ValuesTransformerSpec extends ObjectBehavior
 {
-    function it_filters_values_by_locale_and_scope_when_it_transforms_result()
+    function it_filters_values_by_locale_and_scope_when_it_transforms_result(\MongoId $id)
     {
         $locale = 'fr_FR';
         $scope = 'print';

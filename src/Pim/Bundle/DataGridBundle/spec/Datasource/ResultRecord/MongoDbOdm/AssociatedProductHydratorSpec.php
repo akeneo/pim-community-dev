@@ -14,7 +14,7 @@ use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 
 /**
- * @require Doctrine\ODM\MongoDB\Query\Builder
+ * @require \MongoId
  */
 class AssociatedProductHydratorSpec extends ObjectBehavior
 {
@@ -46,7 +46,8 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
         ArrayIterator $productsIterator,
         ArrayCollection $associationsCollection,
         ArrayIterator $associationsIterator,
-        ArrayIterator $arrayIterator
+        ArrayIterator $arrayIterator,
+        \MongoId $id
     ) {
         $product->getId()->willReturn('110ae6b98ead0ee8778b46bb');
 

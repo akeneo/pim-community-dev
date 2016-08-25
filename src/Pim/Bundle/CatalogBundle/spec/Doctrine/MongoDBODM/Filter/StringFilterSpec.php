@@ -14,7 +14,7 @@ use Prophecy\Argument;
  */
 class StringFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb, AttributeValidatorHelper $attrValidatorHelper)
+    function let(Builder $qb, AttributeValidatorHelper $attrValidatorHelper, \MongoRegex $regex)
     {
         $this->beConstructedWith(
             $attrValidatorHelper,

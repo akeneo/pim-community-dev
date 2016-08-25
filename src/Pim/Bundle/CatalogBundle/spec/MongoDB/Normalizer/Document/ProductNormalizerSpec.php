@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(MongoObjectsFactory $mongoFactory, SerializerInterface $serializer)
+    function let(MongoObjectsFactory $mongoFactory, SerializerInterface $serializer, \MongoId $id)
     {
         $this->beConstructedWith($mongoFactory);
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');

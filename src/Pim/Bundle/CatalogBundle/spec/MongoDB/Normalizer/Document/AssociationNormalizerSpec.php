@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class AssociationNormalizerSpec extends ObjectBehavior
 {
-    function let(MongoObjectsFactory $mongoFactory)
+    function let(MongoObjectsFactory $mongoFactory, \MongoId $id)
     {
         $this->beConstructedWith($mongoFactory);
     }
