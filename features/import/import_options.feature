@@ -171,3 +171,43 @@ Feature: Import options
       | brand     | TimberLand  | TimberLand  |
       | brand     | Nike        | Nike        |
       | brand     | Caterpillar | Caterpillar |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5852
+  Scenario: Does not overwrite sort order values when importing existing options
+    Given the "footwear" catalog configuration
+    And the following attributes:
+      | code  | label | type         |
+      | brand | Brand | simpleselect |
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      attribute;code;label-en_US;sort_order
+      brand;Converse;Converse;1
+      brand;TimberLand;TimberLand;2
+      brand;Nike;Nike;3
+      brand;Caterpillar;Caterpillar;4
+      """
+    And the following job "csv_footwear_option_import" configuration:
+      | filePath | %file to import% |
+    And I am on the "csv_footwear_option_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_option_import" job to finish
+    And the following CSV file to import:
+      """
+      attribute;code;label-en_US
+      brand;Caterpillar;Caterpillar
+      brand;Nike;Nike
+      brand;TimberLand;TimberLand
+      brand;Converse;Converse
+      """
+    And the following job "csv_footwear_option_import" configuration:
+      | filePath | %file to import% |
+    And I am on the "csv_footwear_option_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_option_import" job to finish
+    Then there should be the following options:
+      | attribute | code        | label-en_US | sort_order |
+      | brand     | Converse    | Converse    | 1          |
+      | brand     | TimberLand  | TimberLand  | 2          |
+      | brand     | Nike        | Nike        | 3          |
+      | brand     | Caterpillar | Caterpillar | 4          |

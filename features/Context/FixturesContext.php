@@ -456,6 +456,10 @@ class FixturesContext extends BaseFixturesContext
             );
             $option->setLocale('en_US');
             assertEquals($data['label-en_US'], (string) $option);
+
+            if (isset($data['sort_order'])) {
+                assertEquals($data['sort_order'], (string) $option->getSortOrder());
+            }
         }
     }
 
