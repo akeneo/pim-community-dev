@@ -31,7 +31,6 @@ class AssociationColumnsResolver
     public function __construct(AssociationTypeRepositoryInterface $repository)
     {
         $this->assocTypeRepository = $repository;
-        $this->assocFieldsCache    = [];
     }
 
     /**
@@ -41,7 +40,7 @@ class AssociationColumnsResolver
      */
     public function resolveAssociationColumns()
     {
-        if (empty($this->assocFieldsCache)) {
+        if (null === $this->assocFieldsCache) {
             $fieldNames = [];
             $assocTypes = $this->assocTypeRepository->findAll();
             foreach ($assocTypes as $assocType) {
