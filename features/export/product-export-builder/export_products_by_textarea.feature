@@ -148,3 +148,16 @@ Feature: Export products according to textarea attribute filter
     sku;categories;enabled;family;groups;description-en_US-mobile
     SNKRS-1N;summer_collection;1;rangers;;
     """
+
+  Scenario: Toggle text input when operator doesn't need it
+    Given the following job "csv_footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv |
+    And I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I add available attributes Description
+    When I filter by "description" with operator "Contains" and value "Ranger"
+    Then I should see the input filter for "description"
+    When I filter by "description" with operator "Is empty" and value ""
+    Then I should not see the input filter for "description"
+    When I filter by "description" with operator "Is not empty" and value ""
+    Then I should not see the input filter for "description"
