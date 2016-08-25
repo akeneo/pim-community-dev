@@ -15,21 +15,30 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  */
 class JobNameVisibilityChecker implements VisibilityCheckerInterface
 {
+    /** @var string[] */
+    protected $jobNames = [];
+
+    /**
+     * Adds a job name as visible
+     *
+     * @param string $jobName
+     */
+    public function addJobName($jobName)
+    {
+        $this->jobNames[] = $jobName;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function isVisible(array $config = [], array $context = [])
     {
-        if (!isset($config['job_names'])) {
-            throw new \InvalidArgumentException('The "job_names" should be provided in the configuration.');
-        }
-
         if (!isset($context['jobInstance'])) {
             throw new \InvalidArgumentException('A "jobInstance" should be provided in the context.');
         }
 
         $jobInstance = $context['jobInstance'];
 
-        return in_array($jobInstance->getJobName(), $config['job_names']);
+        return in_array($jobInstance->getJobName(), $this->jobNames);
     }
 }
