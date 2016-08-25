@@ -9,7 +9,7 @@ Feature: Display proposal widget
     And I am logged in as "Julia"
     When I am on the dashboard page
     Then I should see the text "Proposals to review"
-    Then I should see the text "No proposals to review"
+    And I should see the text "No proposals to review"
 
   @javascript
   Scenario: Successfully display all proposals that I can review
@@ -26,7 +26,7 @@ Feature: Display proposal widget
     And I am logged in as "Julia"
     When I am on the dashboard page
     Then I should see the text "Proposals to review"
-    Then I should see the following proposals on the widget:
+    And I should see the following proposals on the widget:
       | product   | author     |
       | my-jacket | Mary Smith |
 
@@ -51,7 +51,7 @@ Feature: Display proposal widget
     And I am logged in as "Julia"
     And I go to the dashboard page
     Then I should see the text "Proposals to review"
-    Then I should see the following proposals on the widget:
+    And I should see the following proposals on the widget:
       | product      | author     |
       | my-tee-shirt | Mary Smith |
 
@@ -67,13 +67,13 @@ Feature: Display proposal widget
       | my-jacket | john   | in progress | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change2"}]}} |
     And I am logged in as "Peter"
     When I am on the "jackets" category page
-    When I press the "Delete" button
+    And I press the "Delete" button
     And I confirm the deletion
     And I logout
     And I am logged in as "Julia"
-    When I go to the dashboard page
+    And I go to the dashboard page
     Then I should see the text "Proposals to review"
-    Then I should see the text "No proposals to review"
+    And I should see the text "No proposals to review"
 
   Scenario: Successfully hide the widget if the current user is not the owner of any categories
     Given the "default" catalog configuration
