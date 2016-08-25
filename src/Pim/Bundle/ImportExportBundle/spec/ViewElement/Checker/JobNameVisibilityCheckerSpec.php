@@ -18,26 +18,21 @@ class JobNameVisibilityCheckerSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface');
     }
 
-    function it_requires_the_property_in_the_configuration()
-    {
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The "job_names" should be provided in the configuration.'))
-            ->duringIsVisible();
-    }
-
     function it_checks_if_the_given_job_code_exists_in_the_context(JobInstance $jobInstance)
     {
+        $this->addJobName('a_job_code');
+
         $jobInstance->getJobName()->willReturn('a_job_code');
-        $this->isVisible(['job_names' => ['a_job_code']], ['jobInstance' => $jobInstance])->shouldReturn(true);
+        $this->isVisible([], ['jobInstance' => $jobInstance])->shouldReturn(true);
 
         $jobInstance->getJobName()->willReturn('another_job_code');
-        $this->isVisible(['job_names' => ['a_job_code']], ['jobInstance' => $jobInstance])->shouldReturn(false);
+        $this->isVisible([], ['jobInstance' => $jobInstance])->shouldReturn(false);
     }
 
     function it_thows_exception_if_no_job_instance_is_provided()
     {
         $this
             ->shouldThrow('\InvalidArgumentException')
-            ->duringIsVisible([['job_names' => ['a_job_code']], ['jobInstance' => null]]);
+            ->duringIsVisible([[], ['jobInstance' => null]]);
     }
 }

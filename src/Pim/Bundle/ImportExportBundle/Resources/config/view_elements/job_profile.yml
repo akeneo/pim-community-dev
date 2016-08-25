@@ -57,7 +57,7 @@ services:
            - 'pim_import_export.job_profile.tab.job_content'
            - '%pim_import_export.view_element.job_profile.tab.job_content.template%'
        calls:
-           - [ addVisibilityChecker, ['@pim_import_export.view_element.visibility_checker.job_name', {job_names: ['csv_product_export', 'csv_published_product_export', 'xlsx_product_export', 'xlsx_published_product_export']}] ]
+           - [ addVisibilityChecker, ['@pim_import_export.view_element.visibility_checker.job_name'] ]
        tags:
            - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.export, position: 100 }
 
@@ -86,7 +86,7 @@ services:
            - 'pim_import_export.job_profile.tab.job_content'
            - '%pim_import_export.view_element.job_profile.tab.job_content.template%'
        calls:
-           - [ addVisibilityChecker, ['@pim_import_export.view_element.visibility_checker.job_name', {job_names: ['csv_product_export', 'csv_published_product_export', 'xlsx_product_export', 'xlsx_published_product_export']}] ]
+           - [ addVisibilityChecker, ['@pim_import_export.view_element.visibility_checker.job_name'] ]
        tags:
            - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.export.form_tab, position: 100 }
 
