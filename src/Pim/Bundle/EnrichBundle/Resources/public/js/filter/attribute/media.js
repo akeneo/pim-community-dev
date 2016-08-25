@@ -30,15 +30,6 @@ define([
         /**
          * {@inheritdoc}
          */
-        initialize: function (config) {
-            this.config = config.config;
-
-            return BaseFilter.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
-         * {@inheritdoc}
-         */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
                 _.defaults(data, {field: this.getCode(), value: '', operator: _.first(this.config.operators)});
@@ -73,20 +64,6 @@ define([
          */
         postRender: function () {
             this.$('.operator').select2({minimumResultsForSearch: -1});
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        getTemplateContext: function () {
-            return $.when(
-                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('attribute').fetch(this.getCode())
-            ).then(function (templateContext, attribute) {
-                return _.extend({}, templateContext, {
-                    label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code)
-                });
-            }.bind(this));
         },
 
         /**

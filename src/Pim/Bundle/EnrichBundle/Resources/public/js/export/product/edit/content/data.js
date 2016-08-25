@@ -15,7 +15,6 @@ define(
         'text!pim/template/export/product/edit/content/data',
         'pim/form',
         'pim/fetcher-registry',
-        'pim/form-config-provider',
         'pim/form-builder'
     ],
     function (
@@ -25,7 +24,6 @@ define(
         template,
         BaseForm,
         fetcherRegistry,
-        configProvider,
         formBuilder
     ) {
         return BaseForm.extend({
@@ -142,16 +140,18 @@ define(
                     return $.Deferred().resolve(filterConfig).promise();
                 }
 
-                return $.when(
-                    fetcherRegistry.getFetcher('attribute').fetch(fieldCode),
-                    configProvider.getFilters('product-export-builder')
-                ).then(function (attribute, config) {
-                    return {
-                        field: attribute.code,
-                        view: config[attribute.type].view,
-                        isRemovable: true
-                    };
-                });
+                return fetcherRegistry.getFetcher('attribute').fetch(fieldCode)
+                    .then(function (attribute) {
+                        return {
+                            field: attribute.code,
+                            /* jshint sub:true */
+                            /* jscs:disable requireDotNotation */
+                            view: attribute['filter_types']['product-export-builder'],
+                            /* jscs:enable requireDotNotation */
+                            /* jshint sub:false */
+                            isRemovable: true
+                        };
+                    });
             },
 
             /**

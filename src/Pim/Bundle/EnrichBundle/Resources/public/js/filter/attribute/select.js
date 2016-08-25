@@ -33,8 +33,7 @@ define([
         /**
          * {@inheritdoc}
          */
-        initialize: function (config) {
-            this.config        = config.config;
+        initialize: function () {
             this.choicePromise = null;
 
             return BaseFilter.prototype.initialize.apply(this, arguments);

@@ -95,21 +95,4 @@ class FormExtensionProvider
     {
         return $this->attributeFields;
     }
-
-    /**
-     * @param string $filter
-     * @param string $config
-     */
-    public function addFilter($filter, $config)
-    {
-        $this->filters[$filter] = $config;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFilters()
-    {
-        return $this->filters;
-    }
 }

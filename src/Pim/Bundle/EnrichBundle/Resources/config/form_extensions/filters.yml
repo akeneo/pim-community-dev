@@ -1,13 +1,13 @@
 extensions:
-    pim-filter-text:
+    akeneo-text-filter:
         module: pim/filter/text
 
-    pim-filter-product-family:
+    akeneo-product-family-filter:
         module: pim/filter/product/family
         config:
             url: pim_enrich_family_rest_index
 
-    pim-filter-product-completeness:
+    akeneo-product-completeness-filter:
         module: pim/filter/product/completeness
         config:
             operators:
@@ -16,13 +16,13 @@ extensions:
                 - GREATER OR EQUALS THAN ON ALL LOCALES
                 - LOWER THAN ON ALL LOCALES
 
-    pim-filter-product-category:
+    akeneo-product-category-filter:
         module: pim/filter/product/category
 
-    pim-filter-product-enabled:
+    akeneo-product-enabled-filter:
         module: pim/filter/product/enabled
 
-    pim-filter-product-updated:
+    akeneo-product-updated-filter:
         module: pim/filter/product/updated
         config:
             operators:
@@ -31,13 +31,13 @@ extensions:
                 - ">"
                 - SINCE LAST JOB
 
-    pim-filter-attribute-identifier:
+    akeneo-attribute-identifier-filter:
         module: pim/filter/attribute/identifier
 
-    pim-filter-attribute-boolean:
+    akeneo-attribute-boolean-filter:
         module: pim/filter/attribute/boolean
 
-    pim-filter-attribute-metric:
+    akeneo-attribute-metric-filter:
         module: pim/filter/attribute/metric
         config:
             operators:
@@ -50,7 +50,7 @@ extensions:
                 - EMPTY
                 - NOT EMPTY
 
-    pim-filter-attribute-number:
+    akeneo-attribute-number-filter:
         module: pim/filter/attribute/number
         config:
             operators:
@@ -63,7 +63,7 @@ extensions:
                 - EMPTY
                 - NOT EMPTY
 
-    pim-filter-attribute-price-collection:
+    akeneo-attribute-price-collection-filter:
         module: pim/filter/attribute/price-collection
         config:
             operators:
@@ -76,7 +76,7 @@ extensions:
                 - EMPTY
                 - NOT EMPTY
 
-    pim-filter-attribute-string:
+    akeneo-attribute-string-filter:
         module: pim/filter/attribute/string
         config:
             operators:
@@ -88,7 +88,7 @@ extensions:
                 - EMPTY
                 - NOT EMPTY
 
-    pim-filter-attribute-select:
+    akeneo-attribute-select-filter:
         module: pim/filter/attribute/select
         config:
             url: pim_ui_ajaxentity_list
@@ -98,7 +98,7 @@ extensions:
                 - EMPTY
                 - NOT EMPTY
 
-    pim-filter-attribute-select-reference-data:
+    akeneo-attribute-select-reference-data-filter:
         module: pim/filter/attribute/select
         config:
             url: pim_ui_ajaxentity_list
@@ -107,7 +107,7 @@ extensions:
                 - EMPTY
                 - NOT EMPTY
 
-    pim-filter-attribute-media:
+    akeneo-attribute-media-filter:
         module:  pim/filter/attribute/media
         config:
             operators:
@@ -118,7 +118,7 @@ extensions:
                 - ENDS WITH
                 - EMPTY
 
-    pim-filter-attribute-date:
+    akeneo-attribute-date-filter:
         module: pim/filter/attribute/date
         config:
             operators:

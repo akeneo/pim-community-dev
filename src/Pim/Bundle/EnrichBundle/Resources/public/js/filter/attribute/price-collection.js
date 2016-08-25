@@ -30,15 +30,6 @@ define([
         /**
          * {@inheritdoc}
          */
-        initialize: function (config) {
-            this.config = config.config;
-
-            return BaseFilter.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
-         * {@inheritdoc}
-         */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
                 _.defaults(data, {
@@ -88,11 +79,9 @@ define([
         getTemplateContext: function () {
             return $.when(
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('attribute').fetch(this.getCode()),
                 FetcherRegistry.getFetcher('currency').fetchAll()
-            ).then(function (templateContext, attribute, currencies) {
+            ).then(function (templateContext, currencies) {
                 return _.extend({}, templateContext, {
-                    label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
                     currencies: currencies
                 });
             }.bind(this));
