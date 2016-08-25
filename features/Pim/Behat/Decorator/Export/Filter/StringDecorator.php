@@ -3,6 +3,7 @@
 namespace Pim\Behat\Decorator\Export\Filter;
 
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Pim\Behat\Decorator\ElementDecorator;
 
 class StringDecorator extends ElementDecorator
@@ -40,5 +41,23 @@ class StringDecorator extends ElementDecorator
                 )
             );
         }
+    }
+
+    /**
+     * Return whether this filter input value is visible
+     *
+     * @return bool
+     */
+    public function isInputValueVisible()
+    {
+        try {
+            $filterInput = $this->spin(function () {
+                return $this->find('css', '[name="filter-value"]');
+            }, 'Cannot find the filter-value input');
+        } catch (TimeoutException $exception) {
+            return false;
+        }
+
+        return $filterInput && $filterInput->isVisible();
     }
 }

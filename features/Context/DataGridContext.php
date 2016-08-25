@@ -691,6 +691,30 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should( not)? see the input filter for "([^"]*)"$/
+     *
+     * @param boolean $not
+     * @param string  $filterName
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeTheInputFilterFor($not, $filterName)
+    {
+        $filter = $this->datagrid->getFilter($filterName);
+        $inputVisible = $filter->isInputValueVisible();
+
+        if (('' !== $not && false !== $inputVisible) || ('' === $not && false === $inputVisible)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Input for filter "%s" should%s be visible.',
+                    $filterName,
+                    $not
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $optionNames
      * @param string $filterName
      *
