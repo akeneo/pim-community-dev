@@ -1,4 +1,4 @@
 filters:
-    pim-product-export-edit-content:
+    product-export-builder:
         pim_assets_collection:
             view: pimee-filter-attribute-assets-collection
