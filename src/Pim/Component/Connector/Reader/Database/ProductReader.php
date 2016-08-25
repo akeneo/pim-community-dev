@@ -163,6 +163,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     protected function getProductsCursor(array $filters, ChannelInterface $channel = null)
     {
         $options = ['filters' => $filters];
+
         if (null !== $channel) {
             $options['default_scope'] = $channel->getCode();
         }

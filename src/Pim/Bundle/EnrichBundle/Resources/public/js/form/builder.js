@@ -44,7 +44,9 @@ define(
                         return form;
                     });
                 });
-            }
+            },
+
+            buildForm: buildForm
         };
     }
 );

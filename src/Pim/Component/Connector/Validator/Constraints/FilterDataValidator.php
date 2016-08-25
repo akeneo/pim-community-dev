@@ -58,6 +58,9 @@ class FilterDataValidator extends ConstraintValidator
                     )
                     ->atPath(sprintf('[data][%s][%d]', $data['field'], 0))
                     ->addViolation();
+            } catch (\LogicException $exception) {
+                $this->context->buildViolation(sprintf('Missing attribute %s', $data['field']))
+                    ->addViolation();
             }
         }
     }

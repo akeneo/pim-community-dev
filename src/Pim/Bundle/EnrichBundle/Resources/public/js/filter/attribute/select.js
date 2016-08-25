@@ -43,6 +43,17 @@ define([
         /**
          * {@inheritdoc}
          */
+        configure: function () {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode() + '.code'});
+            }.bind(this));
+
+            return BaseFilter.prototype.configure.apply(this, arguments);
+        },
+
+        /**
+         * {@inheritdoc}
+         */
         isEmpty: function () {
             return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
                 (undefined === this.getValue() || _.isEmpty(this.getValue()));
@@ -83,9 +94,9 @@ define([
          * {@inheritdoc}
          */
         getTemplateContext: function () {
-            var field = this.getField().replace(/\.code$/, '');
-
-            return FetcherRegistry.getFetcher('attribute').fetch(field)
+            return FetcherRegistry
+                .getFetcher('attribute')
+                .fetch(this.getCode())
                 .then(function (attribute) {
                     return this.cleanInvalidValues(attribute, this.getValue()).then(function (cleanedValues) {
                         if (!_.isEqual(this.getValue(), cleanedValues)) {
@@ -203,6 +214,7 @@ define([
          * This method returns a promise which, once resolved, should return the attribute.
          *
          * @param {string} attribute
+         * @param {array} currentValues
          *
          * @returns {Promise}
          */
@@ -213,19 +225,6 @@ define([
 
                 return _.intersection(currentValues, possibleValues);
             }.bind(this));
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        getField: function () {
-            var fieldName = BaseFilter.prototype.getField.apply(this, arguments);
-
-            if (-1 === fieldName.indexOf('.code')) {
-                fieldName += '.code';
-            }
-
-            return fieldName;
         }
     });
 });

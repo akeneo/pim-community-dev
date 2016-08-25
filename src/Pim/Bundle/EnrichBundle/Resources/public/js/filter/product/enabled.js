@@ -22,18 +22,22 @@ define([
         },
 
         /**
+         * {@inherit}
+         */
+        configure: function () {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode(), operator: '=', value: true});
+            }.bind(this));
+
+            return BaseFilter.prototype.configure.apply(this, arguments);
+        },
+
+        /**
          * Returns rendered input.
          *
          * @return {String}
          */
         renderInput: function () {
-            if (undefined === this.getValue()) {
-                this.setValue(true);
-            }
-            if (undefined === this.getOperator()) {
-                this.setOperator('=');
-            }
-
             return this.template({
                 isEditable: this.isEditable(),
                 labels: {
@@ -59,7 +63,7 @@ define([
          * {@inheritdoc}
          */
         isEmpty: function () {
-            return null === this.getValue();
+            return false;
         },
 
         /**
@@ -68,12 +72,11 @@ define([
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
 
-            this.setData({
-                operator: '=',
-                value: 'all' === value ?
-                    null :
-                    'enabled' === value
-            });
+            if ('all' === value) {
+                this.setData({field: this.getField(), operator: 'ALL', value: null});
+            } else {
+                this.setData({field: this.getField(), operator: '=', value: 'enabled' === value});
+            }
         }
     });
 });

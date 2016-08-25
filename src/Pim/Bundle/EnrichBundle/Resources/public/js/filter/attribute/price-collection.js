@@ -39,6 +39,24 @@ define([
         /**
          * {@inheritdoc}
          */
+        configure: function () {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {
+                    field: this.getCode(),
+                    operator: _.first(_.values(this.config.operators)),
+                    value: {
+                        data: '',
+                        currency: ''
+                    }
+                });
+            }.bind(this));
+
+            return BaseFilter.prototype.configure.apply(this, arguments);
+        },
+
+        /**
+         * {@inheritdoc}
+         */
         isEmpty: function () {
             return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
                 (undefined === this.getValue() || undefined === this.getValue().data || '' === this.getValue().data);
@@ -48,18 +66,9 @@ define([
          * {@inheritdoc}
          */
         renderInput: function (templateContext) {
-            var value = this.getValue();
-
-            if (undefined === value || undefined === value.data) {
-                value = {
-                    data: '',
-                    currency: ''
-                };
-            }
-
             return this.template(_.extend({}, templateContext, {
                 __: __,
-                value: value,
+                value: this.getValue(),
                 field: this.getField(),
                 operator: this.getOperator(),
                 operators: this.config.operators
@@ -79,7 +88,7 @@ define([
         getTemplateContext: function () {
             return $.when(
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('attribute').fetch(this.getField()),
+                FetcherRegistry.getFetcher('attribute').fetch(this.getCode()),
                 FetcherRegistry.getFetcher('currency').fetchAll()
             ).then(function (templateContext, attribute, currencies) {
                 return _.extend({}, templateContext, {

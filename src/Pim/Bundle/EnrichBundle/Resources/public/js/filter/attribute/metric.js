@@ -39,6 +39,27 @@ define([
         /**
          * {@inheritdoc}
          */
+        configure: function () {
+            return $.when(
+                FetcherRegistry.getFetcher('attribute').fetch(this.getCode()),
+                BaseFilter.prototype.configure.apply(this, arguments)
+            ).then(function (attribute) {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                    _.defaults(data, {
+                        field: this.getCode(),
+                        operator: _.first(_.values(this.config.operators)),
+                        value: {
+                            data: '',
+                            unit: attribute.default_metric_unit
+                        }
+                    });
+                }.bind(this));
+            }.bind(this));
+        },
+
+        /**
+         * {@inheritdoc}
+         */
         isEmpty: function () {
             return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
                 (undefined === this.getValue() || undefined === this.getValue().data || '' === this.getValue().data);
@@ -48,18 +69,9 @@ define([
          * {@inheritdoc}
          */
         renderInput: function (templateContext) {
-            var value = this.getValue();
-
-            if (undefined === value || undefined === value.data) {
-                value = {
-                    data: '',
-                    unit: templateContext.defaultMetricUnit
-                };
-            }
-
             return this.template(_.extend({}, templateContext, {
                 __: __,
-                value: value,
+                value: this.getValue(),
                 field: this.getField(),
                 operator: this.getOperator(),
                 operators: this.config.operators
@@ -79,13 +91,12 @@ define([
         getTemplateContext: function () {
             return $.when(
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('attribute').fetch(this.getField()),
+                FetcherRegistry.getFetcher('attribute').fetch(this.getCode()),
                 FetcherRegistry.getFetcher('measure').fetchAll()
             ).then(function (templateContext, attribute, measures) {
                 return _.extend({}, templateContext, {
                     label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
-                    units: measures[attribute.metric_family],
-                    defaultMetricUnit: attribute.default_metric_unit
+                    units: measures[attribute.metric_family]
                 });
             }.bind(this));
         },

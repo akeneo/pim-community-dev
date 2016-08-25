@@ -84,10 +84,8 @@ define([
          * {@inheritdoc}
          */
         renderElements: function () {
-            var attributeCode = this.getField().replace(/\.code/, '');
-
             FetcherRegistry.getFetcher('attribute')
-                .fetch(attributeCode)
+                .fetch(this.getCode())
                 .then(function (attribute) {
                     if (this.isEditable()) {
                         this.addContextDropdowns(attribute);
@@ -127,7 +125,8 @@ define([
                     scopeSwitcher,
                     'pim_enrich:form:scope_switcher:change',
                     function (scopeEvent) {
-                        this.setScope(scopeEvent.scopeCode);
+                        this.setScope(scopeEvent.scopeCode, {silent: true});
+                        this.trigger('pim_enrich:form:entity:post_update');
                     }.bind(this)
                 );
 
@@ -153,7 +152,8 @@ define([
                     localeSwitcher,
                     'pim_enrich:form:locale_switcher:change',
                     function (localeEvent) {
-                        this.setLocale(localeEvent.localeCode);
+                        this.setLocale(localeEvent.localeCode, {silent: true});
+                        this.trigger('pim_enrich:form:entity:post_update');
                     }.bind(this)
                 );
 

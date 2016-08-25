@@ -76,6 +76,7 @@ class JobContext extends PimContext
      */
     public function iExecuteTheJob($type)
     {
+        $this->wait();
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
     }
 
