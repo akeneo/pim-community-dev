@@ -11,7 +11,9 @@
 
 namespace PimEnterprise\Bundle\ImportExportBundle;
 
+use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobNameVisibilityCheckerPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Enterprise import export bundle overriden
@@ -20,6 +22,18 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimEnterpriseImportExportBundle extends Bundle
 {
+
+    public function build(ContainerBuilder $container)
+    {
+        $container
+            ->addCompilerPass(new RegisterJobNameVisibilityCheckerPass(
+                [
+                    'pimee_workflow.job_name.csv_published_product_export',
+                    'pimee_workflow.job_name.xlsx_published_product_export'
+                ]
+            ));
+    }
+
     /**
      * {@inheritdoc}
      */
