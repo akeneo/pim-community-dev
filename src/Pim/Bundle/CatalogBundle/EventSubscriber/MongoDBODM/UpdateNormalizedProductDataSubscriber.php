@@ -41,7 +41,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
     public function __construct(CommandLauncher $commandLauncher, $logFile)
     {
         $this->commandLauncher = $commandLauncher;
-        $this->logFile         = $logFile;
+        $this->logFile = $logFile;
     }
 
     /**
