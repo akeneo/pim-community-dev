@@ -22,7 +22,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class PimEnterpriseImportExportBundle extends Bundle
 {
-
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         $container
