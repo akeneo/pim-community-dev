@@ -15,6 +15,7 @@ use Prophecy\Promise\ReturnPromise;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
+ * @require \MongoId
  */
 class AssociatedProductHydratorSpec extends ObjectBehavior
 {
