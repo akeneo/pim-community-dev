@@ -68,4 +68,42 @@ class AttributeConverterSpec extends ObjectBehavior
             ->shouldReturn(['number' => [['data' => '10.45']]]);
         $this->getViolations()->shouldHaveCount(1);
     }
+
+    function it_converts_to_localized_format_a_number($localizerRegistry, $attributeRepository, LocalizerInterface $localizer)
+    {
+        $options = ['decimal_separator' => ','];
+        $attributeRepository->getAttributeTypeByCodes(['number'])->willReturn(['number' => 'pim_number']);
+        $localizerRegistry->getLocalizer('pim_number')->willReturn($localizer);
+        $localizer->supports('pim_number')->willReturn(true);
+        $localizer->localize(10.45, $options)->willReturn('10,45');
+
+        $this->convertToLocalizedFormats(['number' => [['data' => 10.45]]], $options)
+            ->shouldReturn(['number' => [['data' => '10,45']]]);
+    }
+
+    function it_converts_to_localized_format_a_date($localizerRegistry, $attributeRepository, LocalizerInterface $localizer)
+    {
+        $options = ['date_format' => 'dd-mm-yyyy'];
+        $attributeRepository->getAttributeTypeByCodes(['date'])->willReturn(['date' => 'pim_date']);
+        $localizerRegistry->getLocalizer('pim_date')->willReturn($localizer);
+        $localizer->supports('pim_date')->willReturn(true);
+        $localizer->localize('2015/12/31', $options)->willReturn('31-12-2015');
+
+        $this->convertToLocalizedFormats(['date' => [['data' => '2015/12/31']]], $options)
+            ->shouldReturn(['date' => [['data' => '31-12-2015']]]);
+    }
+
+    function it_does_not_convert_to_localized_format_a_product_field(
+        $localizerRegistry,
+        $attributeRepository,
+        LocalizerInterface $localizer
+    ) {
+        $options = ['decimal_separator' => ','];
+        $attributeRepository->getAttributeTypeByCodes(['family'])->willReturn([]);
+        $localizerRegistry->getLocalizer('pim_family')->willReturn($localizer);
+        $localizer->supports('pim_family')->willReturn(false);
+
+        $this->convertToLocalizedFormats(['family' => [['data' => 'boots']]], $options)
+            ->shouldReturn(['family' => [['data' => 'boots']]]);
+    }
 }

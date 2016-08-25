@@ -128,10 +128,11 @@ class AttributeConverter implements AttributeConverterInterface
      */
     public function convertToLocalizedFormats(array $items, array $options = [])
     {
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($items));
+
         foreach ($items as $code => $item) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
-            if (null !== $attribute) {
-                $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());
+            if (isset($attributeTypes[$code])) {
+                $localizer = $this->localizerRegistry->getLocalizer($attributeTypes[$code]);
 
                 if (null !== $localizer) {
                     foreach ($item as $index => $data) {
