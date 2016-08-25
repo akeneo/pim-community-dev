@@ -26,6 +26,8 @@ class PimImportExportBundle extends Bundle
         $container
             ->addCompilerPass(new RegisterJobTemplatePass())
             ->addCompilerPass(new RegisterJobParametersFormsOptionsPass(new ReferenceFactory()))
-            ->addCompilerPass(new RegisterJobNameVisibilityCheckerPass(['csv_product_export', 'xlsx_product_export']));
+            ->addCompilerPass(new RegisterJobNameVisibilityCheckerPass(
+                ['pim_connector.job_name.csv_product_export', 'pim_connector.job_name.xlsx_product_export']
+            ));
     }
 }

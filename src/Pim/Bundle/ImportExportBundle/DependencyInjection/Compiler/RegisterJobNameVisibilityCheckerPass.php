@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * This compiler pass allows you to add job name to the visibility checker
+ * This compiler pass allows you to add job name or its parameter to the visibility checker
  * It is reusable in an extension or a project
  *
  * @author    Romain Monceau <romain@akeneo.com>
@@ -40,6 +40,9 @@ class RegisterJobNameVisibilityCheckerPass implements CompilerPassInterface
 
         $providerDefinition = $container->getDefinition(static::VISIBILITY_CHECKER_ID);
         foreach ($this->jobNames as $jobName) {
+            if ($container->hasParameter($jobName)) {
+                $jobName = $container->getParameter($jobName);
+            }
             $providerDefinition->addMethodCall('addJobName', [$jobName]);
         }
     }
