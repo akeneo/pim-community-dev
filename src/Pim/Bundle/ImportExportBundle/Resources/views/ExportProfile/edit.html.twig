@@ -2,6 +2,8 @@
 
 {% set actionRoute = path('pim_importexport_export_profile_edit', { 'id': form.vars.value.id }) %}
 
+{% set showRoute = path('pim_importexport_export_profile_show', { 'id': form.vars.value.id }) %}
+
 {% set entityName = 'export profile' %}
 {% set title = (entityName ~'.edit')|trans ~ ' - ' ~ form.vars.value.label %}
 {% set viewElementsAliases = form.vars.id ~ '.export.form_tab' %}
