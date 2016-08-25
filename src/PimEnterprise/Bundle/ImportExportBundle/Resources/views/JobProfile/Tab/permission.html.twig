@@ -25,7 +25,7 @@
                 });
     </script>
 
-    <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane">
+    <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}">
         {{ elements.tabSections( { '': form_widget(form.permissions) }, 1, false, 'permission' ) }}
     </div>
 {% endif %}
