@@ -247,7 +247,7 @@ class ProductSpec extends ObjectBehavior
             ],
             'associations' => [
                 'X_SELL' => [
-                    'groups' => ['group-A'],
+                    'groups'   => ['group-A'],
                     'products' => ['sku-A', 'sku-B'],
                 ],
             ]

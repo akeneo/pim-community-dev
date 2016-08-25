@@ -272,7 +272,7 @@ MISSING_SQL;
     /**
      * Get the sql query to insert completeness
      *
-     * @param array
+     * @param array $criteria
      *
      * @return string
      */

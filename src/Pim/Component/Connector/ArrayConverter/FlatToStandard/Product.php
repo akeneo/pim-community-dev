@@ -295,7 +295,7 @@ class Product implements ArrayConverterInterface
      * Merge the structured value inside the passed item
      *
      * @param array $item   The item in which we add the element
-     * @param array $value  The structured value to add to the collection
+     * @param array $value  The structured value to add to the item
      *
      * @return array
      */
