@@ -1,7 +1,6 @@
 language: php
 php:
     - "7.0"
-    - "7.1"
 
 # Allow to use container infrastructure
 sudo: false
@@ -11,19 +10,13 @@ cache:
     - $HOME/.composer/cache/files
 
 before_install:
-    - if [ "$TRAVIS_PHP_VERSION" != "7.1" ]; then
-        phpenv config-rm xdebug.ini;
-      fi;
+    - phpenv config-rm xdebug.ini
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - composer self-update --no-interaction
-    - if [ "$TRAVIS_PHP_VERSION" >= "7.0" ]; then
-        pecl install mongodb;
-      fi;
+    - pecl install mongodb
 install:
     - composer update --prefer-dist --no-interaction --ignore-platform-reqs
-    - if [ "$TRAVIS_PHP_VERSION" >= "7.0" ]; then
-        composer require alcaeus/mongo-php-adapter --ignore-platform-reqs;
-      fi;
+    - composer require alcaeus/mongo-php-adapter --ignore-platform-reqs
     - ./app/console oro:requirejs:generate-config
     - ./app/console assets:install
     - npm install -g grunt-cli
@@ -38,8 +31,3 @@ script:
 
 notifications:
   slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo
-
-matrix:
-  allow_failures:
-    - php: "7.1"
-
