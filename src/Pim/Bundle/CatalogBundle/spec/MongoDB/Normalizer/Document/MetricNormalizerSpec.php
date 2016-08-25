@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\Metric;
  */
 class MetricNormalizerSpec extends ObjectBehavior
 {
-    function let(MongoObjectsFactory $mongoFactory, MeasureConverter $converter, MeasureManager $manager)
+    function let(MongoObjectsFactory $mongoFactory, MeasureConverter $converter, MeasureManager $manager, \MongoId $id)
     {
         $this->beConstructedWith($mongoFactory, $converter, $manager);
     }

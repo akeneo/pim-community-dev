@@ -26,7 +26,7 @@ use Prophecy\Argument;
  */
 class ProductRepositorySpec extends ObjectBehavior
 {
-    function let(DocumentManager $dm, UnitOfWork $uow, ClassMetadata $class)
+    function let(DocumentManager $dm, UnitOfWork $uow, ClassMetadata $class, \MongoId $id)
     {
         $class->name = 'foobar';
         $this->beConstructedWith($dm, $uow, $class);

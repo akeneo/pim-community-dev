@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\ProductPrice;
  */
 class ProductPriceNormalizerSpec extends ObjectBehavior
 {
-    function let(MongoObjectsFactory $mongoFactory)
+    function let(MongoObjectsFactory $mongoFactory, \MongoId $id)
     {
         $this->beConstructedWith($mongoFactory);
     }

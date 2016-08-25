@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
  */
 class DateTimeNormalizerSpec extends ObjectBehavior
 {
-    function let(MongoObjectsFactory $mongoFactory)
+    function let(MongoObjectsFactory $mongoFactory, \MongoId $id)
     {
         $this->beConstructedWith($mongoFactory);
     }
