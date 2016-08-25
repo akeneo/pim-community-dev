@@ -53,7 +53,7 @@ interface ProductInterface extends
     /**
      * Get values
      *
-     * @return ArrayCollection
+     * @return ArrayCollection | ProductValueInterface[]
      */
     public function getValues();
 

@@ -23,7 +23,7 @@ composer.phar
 /cov
 bin
 behat.yml
-phpspec.yml
+/phpspec.yml
 web/uploads/*
 web/uploads_test/*
 web/log

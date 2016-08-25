@@ -16,7 +16,7 @@ define(
                 header: '',
                 height: 175,
                 minWidth: 225,
-                classes: 'pimmultiselect',
+                classes: 'pimmultiselect pimmultiselect_' + elementId,
                 position: {
                     my: 'right top',
                     at: 'right bottom',
@@ -33,7 +33,7 @@ define(
                 placeholder: opts.placeholder
             });
 
-            var $menu = $('.ui-multiselect-menu.pimmultiselect').appendTo($('#container'));
+            var $menu = $('.ui-multiselect-menu.pimmultiselect_' + elementId).appendTo($('#container'));
             var saveButton = $el.attr('data-save-button');
             var target = $el.attr('data-target');
 
@@ -46,7 +46,7 @@ define(
                 }
             }).appendTo(footerContainer);
 
-            var $openButton = $('button.pimmultiselect').addClass('btn btn-group');
+            var $openButton = $el.find('button.pimmultiselect').addClass('btn btn-group');
             $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style');
             if (target) {
                 $openButton.prependTo($(target));

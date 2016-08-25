@@ -1,0 +1,5 @@
+suites:
+    default:
+        namespace: Akeneo\Component\Batch
+        psr4_prefix: Akeneo\Component\Batch
+        src_path: .
