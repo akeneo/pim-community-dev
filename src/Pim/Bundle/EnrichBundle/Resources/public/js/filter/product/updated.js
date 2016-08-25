@@ -1,6 +1,7 @@
 'use strict';
 
 define([
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/filter/filter',
@@ -13,6 +14,7 @@ define([
         'datepicker',
         'pim/date-context'
     ], function (
+        $,
         _,
         __,
         BaseFilter,
@@ -29,8 +31,18 @@ define([
             shortname: 'updated',
             template: _.template(template),
             events: {
-                'change [name="filter-operator"], [name="filter-value"]': 'updateState'
+                'change [name="filter-operator"], [name="filter-value-updated"]': 'updateState'
             },
+
+            /* Date widget options */
+            datetimepickerOptions: {
+                format: DateContext.get('date').format,
+                defaultFormat: DateContext.get('date').defaultFormat,
+                language: DateContext.get('language')
+            },
+
+            /* Model date format */
+            modelDateFormat: 'yyyy-MM-dd HH:mm:ss',
 
             /**
              * Initializes configuration.
@@ -60,12 +72,19 @@ define([
              * @return {String}
              */
             renderInput: function () {
+                var value    = this.getValue();
+                var operator = this.getOperator();
+
+                if ('SINCE LAST JOB' !== operator && 'SINCE LAST N DAYS' !== operator) {
+                    value = this.formatDate(value, this.modelDateFormat, DateContext.get('date').format);
+                }
+
                 return this.template({
                     isEditable: this.isEditable(),
                     __: __,
                     field: this.getField(),
-                    operator: this.getOperator(),
-                    value: this.getValue(),
+                    operator: operator,
+                    value: value,
                     operatorChoices: this.config.operators
                 });
             },
@@ -78,14 +97,7 @@ define([
 
                 if ('>' === this.getOperator()) {
                     Datepicker
-                        .init(
-                            this.$('.date-wrapper:first'),
-                            {
-                                format: 'yyyy-MM-dd',
-                                defaultFormat: 'yyyy-MM-dd',
-                                language: DateContext.get('language')
-                            }
-                        )
+                        .init(this.$('.date-wrapper:first'), this.datetimepickerOptions)
                         .on('changeDate', this.updateState.bind(this));
                 }
             },
@@ -105,19 +117,16 @@ define([
                 this.$('.date-wrapper:first').datetimepicker('hide');
 
                 var oldOperator = this.getOperator();
-
-                var value    = this.$('[name="filter-value"]').val();
-                var operator = this.$('[name="filter-operator"]').val();
-
-                if ('>' === operator) {
-                    value = value + ' 00:00:00';
-                }
+                var value       = this.$('[name="filter-value-updated"]').val();
+                var operator    = this.$('[name="filter-operator"]').val();
 
                 if (operator !== oldOperator) {
                     value = '';
                 }
 
-                if ('SINCE LAST JOB' === operator) {
+                if ('SINCE LAST JOB' !== operator && 'SINCE LAST N DAYS' !== operator) {
+                    value = this.formatDate(value, DateContext.get('date').format, this.modelDateFormat);
+                } else {
                     value = this.getParentForm().getFormData().jobCode;
                 }
 
@@ -128,6 +137,32 @@ define([
                 });
 
                 this.render();
+            },
+
+            /**
+             * Format a date according to specified format.
+             * It instantiates a datepicker on-the-fly to perform the conversion. Not possible to use the "real" ones since
+             * we need to format a date even when the UI is not initialized yet.
+             *
+             * @param {String} date
+             * @param {String} fromFormat
+             * @param {String} toFormat
+             *
+             * @return {String}
+             */
+            formatDate: function (date, fromFormat, toFormat) {
+                if (_.isArray(date) || _.isEmpty(date)) {
+                    return null;
+                }
+
+                var options        = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
+                var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
+
+                fakeDatepicker.setValue(date);
+                fakeDatepicker.format = toFormat;
+                fakeDatepicker._compileFormat();
+
+                return fakeDatepicker.formatDate(fakeDatepicker.getDate());
             }
         });
     });
