@@ -25,9 +25,9 @@ class AssetCollectionFilterProvider implements FilterProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFilter($attribute)
+    public function getFilters($attribute)
     {
-        return ['product-export-builder' => 'akeneo-attribute-select-reference-data-filter'];
+        return ['product-export-builder' => 'akeneo-attribute-assets-collection-filter'];
     }
 
     /**
