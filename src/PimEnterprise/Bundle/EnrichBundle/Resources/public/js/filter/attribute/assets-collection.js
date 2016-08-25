@@ -62,7 +62,7 @@ define([
          * {@inheritdoc}
          */
         getType: function () {
-            return 'pim-filter-attribute-select-reference-data';
+            return 'akeneo-attribute-select-reference-data-filter';
         },
 
         /**
