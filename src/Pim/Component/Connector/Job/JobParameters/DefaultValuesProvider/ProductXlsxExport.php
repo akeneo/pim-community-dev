@@ -5,6 +5,9 @@ namespace Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * DefaultParameters for product XLSX export
@@ -18,16 +21,30 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
     /** @var DefaultValuesProviderInterface */
     protected $simpleProvider;
 
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /** @var array */
     protected $supportedJobNames;
 
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
+     * @param ChannelRepositoryInterface     $channelRepository
+     * @param LocaleRepositoryInterface      $localeRepository
      * @param array                          $supportedJobNames
      */
-    public function __construct(DefaultValuesProviderInterface $simpleProvider, array $supportedJobNames)
-    {
-        $this->simpleProvider = $simpleProvider;
+    public function __construct(
+        DefaultValuesProviderInterface $simpleProvider,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        array $supportedJobNames
+    ) {
+        $this->simpleProvider    = $simpleProvider;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository  = $localeRepository;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -39,9 +56,35 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
-        $parameters['linesPerFile'] = 10000;
-        $parameters['filters'] = ['data' => [], 'structure' => []];
         $parameters['with_media'] = true;
+        $parameters['filePath'] = sys_get_temp_dir() . 'csv_products_export.xlsx';
+        $parameters['linesPerFile'] = 10000;
+
+        $defaultChannel = $this->channelRepository->getFullChannels()[0];
+        $defaultLocaleCode = $this->localeRepository->getActivatedLocaleCodes()[0];
+        $parameters['filters'] = [
+            'data'      => [
+                [
+                    'field'    => 'enabled',
+                    'operator' => Operators::EQUALS,
+                    'value'    => true,
+                ],
+                [
+                    'field'    => 'completeness',
+                    'operator' => Operators::GREATER_OR_EQUAL_THAN,
+                    'value'    => 100,
+                ],
+                [
+                    'field'    => 'categories.code',
+                    'operator' => Operators::IN_CHILDREN_LIST,
+                    'value'    => []
+                ]
+            ],
+            'structure' => [
+                'scope'   => $defaultChannel->getCode(),
+                'locales' => [$defaultLocaleCode],
+            ],
+        ];
 
         return $parameters;
     }

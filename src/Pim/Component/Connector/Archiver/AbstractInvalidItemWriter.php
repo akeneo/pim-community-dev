@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Archiver;
 use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
@@ -36,28 +37,33 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
 
+    /** @var DefaultValuesProviderInterface */
+    protected $defaultValuesProvider;
+
     /** @var int */
     protected $batchSize = 100;
 
-
     /**
-     * @param InvalidItemsCollector $collector
-     * @param ItemWriterInterface   $writer
-     * @param FileIteratorFactory   $fileIteratorFactory
-     * @param Filesystem Filesystem $filesystem
-     * @param string                $invalidItemFileFormat
+     * @param InvalidItemsCollector          $collector
+     * @param ItemWriterInterface            $writer
+     * @param FileIteratorFactory            $fileIteratorFactory
+     * @param Filesystem                     $filesystem
+     * @param DefaultValuesProviderInterface $defaultValuesProvider
+     * @param string                         $invalidItemFileFormat
      */
     public function __construct(
         InvalidItemsCollector $collector,
         ItemWriterInterface $writer,
         FileIteratorFactory $fileIteratorFactory,
         Filesystem $filesystem,
+        DefaultValuesProviderInterface $defaultValuesProvider,
         $invalidItemFileFormat
     ) {
         $this->collector = $collector;
         $this->writer = $writer;
         $this->fileIteratorFactory = $fileIteratorFactory;
         $this->filesystem = $filesystem;
+        $this->defaultValuesProvider = $defaultValuesProvider;
         $this->invalidItemFileFormat = $invalidItemFileFormat;
     }
 

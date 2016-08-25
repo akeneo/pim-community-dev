@@ -22,20 +22,20 @@ Feature: Edit an import
     Given I am on the "csv_footwear_product_import" import job edit page
     Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
     When I fill in the following information:
-      | File               | file.csv   |
-      | Delimiter          | \|         |
-      | Enclosure          | '          |
-      | Escape             | \\         |
-      | Categories column  | cat        |
-      | Family column      | fam        |
-      | Groups column      | grp        |
-      | Decimal separator  | .          |
-      | Date format        | yyyy-MM-dd |
+      | File              | /tmp/file.csv |
+      | Delimiter         | \|            |
+      | Enclosure         | '             |
+      | Escape            | \\            |
+      | Categories column | cat           |
+      | Family column     | fam           |
+      | Groups column     | grp           |
+      | Decimal separator | .             |
+      | Date format       | yyyy-MM-dd    |
     And I uncheck the "Allow file upload" switch
     And I uncheck the "Enable the product" switch
     And I uncheck the "Real time history update" switch
     And I press the "Save" button
-    Then I should see the text "File file.csv"
+    Then I should see the text "File /tmp/file.csv"
     And I should see "Allow file upload No"
     And I should see "Delimiter |"
     And I should see "Enclosure '"

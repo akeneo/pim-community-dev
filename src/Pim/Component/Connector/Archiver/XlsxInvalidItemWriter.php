@@ -46,8 +46,7 @@ class XlsxInvalidItemWriter extends AbstractInvalidItemWriter
         $fileKey = strtr($this->getRelativeArchivePath($jobExecution), ['%filename%' => 'invalid_items.xlsx']);
         $this->filesystem->put($fileKey, '');
 
-        $provider = new ProductXlsxExport(new SimpleXlsxExport([]), []);
-        $writeParams = $provider->getDefaultValues();
+        $writeParams = $this->defaultValuesProvider->getDefaultValues();
         $writeParams['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $fileKey;
         $writeParams['withHeader'] = true;
 

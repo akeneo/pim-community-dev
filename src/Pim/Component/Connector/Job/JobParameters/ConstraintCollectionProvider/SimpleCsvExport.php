@@ -38,32 +38,39 @@ class SimpleCsvExport implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'filePath' => [
-                        new NotBlank(['groups' => 'Execution']),
-                        new WritableDirectory(['groups' => 'Execution'])
+                    'filePath'   => [
+                        new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
+                        new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
                     ],
-                    'delimiter' => [
-                        new NotBlank(),
+                    'delimiter'  => [
+                        new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
                         new Choice(
                             [
                                 'choices' => [",", ";", "|"],
-                                'message' => 'The value must be one of , or ; or |'
+                                'message' => 'The value must be one of , or ; or |',
+                                'groups'  => ['Default', 'FileConfiguration'],
                             ]
-                        )
+                        ),
                     ],
-                    'enclosure' => [
+                    'enclosure'  => [
                         [
-                            new NotBlank(),
+                            new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
                             new Choice(
                                 [
                                     'choices' => ['"', "'"],
-                                    'message' => 'The value must be one of " or \''
+                                    'message' => 'The value must be one of " or \'',
+                                    'groups'  => ['Default', 'FileConfiguration'],
                                 ]
-                            )
-                        ]
+                            ),
+                        ],
                     ],
-                    'withHeader' => new Type('bool'),
-                ]
+                    'withHeader' => new Type(
+                        [
+                            'type'   => 'bool',
+                            'groups' => ['Default', 'FileConfiguration'],
+                        ]
+                    ),
+                ],
             ]
         );
     }

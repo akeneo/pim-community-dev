@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobRegistry;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\DataTransformer\ConfigurationToJobParametersTransformer;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber;
@@ -11,6 +12,7 @@ use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -40,22 +42,28 @@ class JobInstanceFormType extends AbstractType
     /** @var JobParametersFactory */
     protected $jobParametersFactory;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
      * @param JobRegistry             $jobRegistry
      * @param TranslatorInterface     $translator
      * @param TranslatedLabelProvider $jobLabelProvider
      * @param JobParametersFactory    $jobParametersFactory
+     * @param SecurityFacade          $securityFacade
      */
     public function __construct(
         JobRegistry $jobRegistry,
         TranslatorInterface $translator,
         TranslatedLabelProvider $jobLabelProvider,
-        JobParametersFactory $jobParametersFactory
+        JobParametersFactory $jobParametersFactory,
+        SecurityFacade $securityFacade
     ) {
         $this->jobRegistry          = $jobRegistry;
         $this->translator           = $translator;
         $this->jobLabelProvider     = $jobLabelProvider;
         $this->jobParametersFactory = $jobParametersFactory;
+        $this->securityFacade       = $securityFacade;
     }
 
     /**
@@ -107,6 +115,26 @@ class JobInstanceFormType extends AbstractType
     public function addEventSubscriber(EventSubscriberInterface $subscriber)
     {
         $this->subscribers[] = $subscriber;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $validationGroups = ['Default'];
+
+        if ($this->securityFacade->isGranted('pim_importexport_export_profile_property_edit')) {
+            $validationGroups = array_merge($validationGroups, ['FileConfiguration']);
+        }
+
+        if ($this->securityFacade->isGranted('pim_importexport_export_profile_content_edit')) {
+            $validationGroups = array_merge($validationGroups, ['DataFilters']);
+        }
+
+        $resolver->setDefaults([
+            'validation_groups' => $validationGroups
+        ]);
     }
 
     /**
