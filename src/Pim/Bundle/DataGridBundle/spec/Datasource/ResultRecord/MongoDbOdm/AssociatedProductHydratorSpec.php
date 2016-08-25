@@ -15,7 +15,6 @@ use Prophecy\Promise\ReturnPromise;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
- * @require \MongoId
  */
 class AssociatedProductHydratorSpec extends ObjectBehavior
 {
@@ -125,7 +124,8 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
             'skip'   => 0,
             'query'  => [
                 '_id' => [
-                    '$ne' => new \MongoId('110ae6b98ead0ee8778b46bb'),
+                    '$ne' => class_exists('MongoId', false) ?
+                        new \MongoId('110ae6b98ead0ee8778b46bb') : new \MongoDB\BSON\ObjectID('110ae6b98ead0ee8778b46bb'),
                 ],
             ],
             'newObj' => [],
@@ -134,7 +134,10 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
         $query->getQuery()->willReturn($queryDefinition);
 
         $fixture = [
-            '_id'            => new \MongoId('550ae6b98ead0ee8778b46bb'),
+            '_id'            => class_exists('MongoId', false) ?
+                new \MongoId('550ae6b98ead0ee8778b46bb') : new \MongoDB\BSON\ObjectID('550ae6b98ead0ee8778b46bb'),
+
+
             'normalizedData' => [],
             'sku'            => [
                 'attribute' => ['code' => 'sku', 'attributeType' => 'text', 'backendType' => 'text'],
