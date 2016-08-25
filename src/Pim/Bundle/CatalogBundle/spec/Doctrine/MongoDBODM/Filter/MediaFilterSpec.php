@@ -14,7 +14,7 @@ use Prophecy\Argument;
  */
 class MediaFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb, AttributeInterface $image, AttributeValidatorHelper $attrValidatorHelper)
+    function let(Builder $qb, AttributeInterface $image, AttributeValidatorHelper $attrValidatorHelper, \MongoRegex $regex)
     {
         $this->beConstructedWith(
             $attrValidatorHelper,
