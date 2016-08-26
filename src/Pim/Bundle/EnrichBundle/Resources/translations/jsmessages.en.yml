@@ -406,6 +406,7 @@ pim_enrich:
                     title: Category
                     help: The categories of the products you want to export
                 identifier:
+                    title: Identifier
                     help: Identifiers of products you want to export separated by commas, spaces or line breaks
                 metric:
                     operators:
