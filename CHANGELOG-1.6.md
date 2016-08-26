@@ -2,6 +2,8 @@
 
 ## Bug fixes
 
+- PIM-5798: Fix default file path value for product exports jobs
+
 # 1.6.0-RC1 (2016-08-29)
 
 ## Bug fixes
