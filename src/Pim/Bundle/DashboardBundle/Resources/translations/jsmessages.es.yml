@@ -12,3 +12,5 @@ pim_dashboard:
         export: Exportar
         mass_edit: Edición en masa
         quick_export: Exportación rápida
+    header:
+      view_all: Ver todo

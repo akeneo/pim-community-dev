@@ -14,3 +14,5 @@ pim_dashboard:
         quick_export: Export rapide
     completeness:
       load_more: Charger plus...
+    header:
+      view_all: Tout voir
