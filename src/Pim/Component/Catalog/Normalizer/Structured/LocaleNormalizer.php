@@ -22,7 +22,10 @@ class LocaleNormalizer implements NormalizerInterface
      */
     public function normalize($locale, $format = null, array $context = [])
     {
-        return ['code' => $locale->getCode()];
+        return [
+            'code'      => $locale->getCode(),
+            'activated' => $locale->isActivated()
+        ];
     }
 
     /**

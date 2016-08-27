@@ -10,7 +10,7 @@ Feature: Import locales
     And the following CSV file to import:
       """
       code
-      ru_MO
+      fr_FR,1
       """
     And the following job "csv_footwear_locale_import" configuration:
       | filePath | %file to import% |
@@ -18,5 +18,5 @@ Feature: Import locales
     And I launch the import job
     And I wait for the "csv_footwear_locale_import" job to finish
     Then there should be the following locales:
-      | code |
-      | ru_MO  |
+      | code   | activated |
+      | fr_FR  | 1         |
