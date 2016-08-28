@@ -3,7 +3,6 @@
 namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Manager\AttributeGroupManager;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
@@ -15,7 +14,10 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $attributeRepository,
         AttributeGroupManager $attributeGroupManager
     ) {
-        $this->beConstructedWith($attributeRepository, $attributeGroupManager);
+        $this->beConstructedWith(
+            $attributeRepository,
+            $attributeGroupManager
+        );
     }
 
     function it_is_initializable()
@@ -44,9 +46,9 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
         $attributeRepository,
         $attributeGroupManager,
         AttributeGroupInterface $attributeGroup,
-        AttributeInterface $oldAttribute,
         AttributeInterface $attributeSize,
-        AttributeInterface $attributeMainColor
+        AttributeInterface $attributeMainColor,
+        AttributeInterface $sku
     ) {
         $values = [
             'code'       => 'sizes',
@@ -58,10 +60,10 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
             ]
         ];
 
+        $attributeGroup->getAttributes()->willReturn([$sku]);
+
         $attributeGroup->setCode('sizes')->shouldBeCalled();
         $attributeGroup->setSortOrder(1)->shouldBeCalled();
-        $attributeGroup->getAttributes()->willReturn([$oldAttribute]);
-        $attributeGroupManager->removeAttribute($attributeGroup, $oldAttribute)->shouldBeCalled();
 
         $attributeRepository->findOneByIdentifier('size')->willReturn($attributeSize);
         $attributeRepository->findOneByIdentifier('main_color')->willReturn($attributeMainColor);
@@ -74,20 +76,23 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
         $attributeGroup->setLabel('Sizes')->shouldBeCalled();
         $attributeGroup->setLabel('Tailles')->shouldBeCalled();
 
+        $attributeGroupManager->removeAttribute($attributeGroup, $sku)->shouldBeCalled();
+
         $this->update($attributeGroup, $values, []);
     }
 
     function it_throws_an_exception_if_attribute_not_found(
         $attributeRepository,
-        AttributeGroupInterface $attributeGroupInterface
+        AttributeGroupInterface $attributeGroup
     ) {
         $values = [
             'attributes' => ['foo'],
         ];
 
+        $attributeGroup->getAttributes()->willReturn([]);
+
         $attributeRepository->findOneByIdentifier('foo')->willReturn(null);
-        $attributeGroupInterface->getAttributes()->willReturn([]);
         $this->shouldThrow(new \InvalidArgumentException('Attribute with "foo" code does not exist'))
-            ->during('update', [$attributeGroupInterface, $values]);
+            ->during('update', [$attributeGroup, $values]);
     }
 }

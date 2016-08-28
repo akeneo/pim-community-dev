@@ -8,7 +8,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Manager\AttributeGroupManager;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface;
 
 /**
  * Updates an attribute group
@@ -27,7 +26,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
 
     /**
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     * @param AttributeGroupManager                 $attributeGroupManager
+     * @param AttributeGroupManager $attributeGroupManager
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
@@ -83,21 +82,19 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
         } elseif ('sort_order' == $field) {
             $attributeGroup->setSortOrder($data);
         } elseif ('attributes' == $field) {
-            $attributes = $attributeGroup->getAttributes();
-            foreach ($attributes as $attribute) {
+            foreach ($attributeGroup->getAttributes() as $attribute) {
                 $this->attributeGroupManager->removeAttribute($attributeGroup, $attribute);
             }
 
             foreach ($data as $attributeCode) {
                 $attribute = $this->findAttribute($attributeCode);
-                if (null !== $attribute) {
-                    $attributeGroup->addAttribute($attribute);
-                } else {
+                if (null === $attribute) {
                     throw new \InvalidArgumentException(sprintf(
                         'Attribute with "%s" code does not exist',
                         $attributeCode
                     ));
                 }
+                $attributeGroup->addAttribute($attribute);
             }
         } elseif ('label' == $field) {
             foreach ($data as $locale => $label) {

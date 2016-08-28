@@ -36,6 +36,7 @@ Feature: Import attribute groups
     And I launch the import job
     And I wait for the "csv_footwear_attribute_group_import" job to finish
     Then there should be the following attribute groups:
-      | code          | label-en_US   | attributes                           | sort_order |
-      | manufacturing | Manufacturing | lace_fabric,manufacturer,sole_fabric | 6          |
-      | marketing     | Marketing     | sku                                  | 10         |
+      | code          | label-en_US   | attributes                                                                                                  | sort_order |
+      | manufacturing | Manufacturing | lace_fabric,manufacturer,sole_fabric                                                                        | 6          |
+      | marketing     | Marketing     | sku                                                                                                         | 10         |
+      | other         | Other         | 123,cap_color,comment,destocking_date,handmade,heel_color,number_in_stock,price,rate_sale,rating,sole_color | 100        |

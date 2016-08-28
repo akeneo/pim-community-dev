@@ -175,10 +175,8 @@ class AttributeGroup implements AttributeGroupInterface
      */
     public function addAttribute(AttributeInterface $attribute)
     {
-        if (!$this->hasAttribute($attribute)) {
-            $this->attributes[] = $attribute;
-            $attribute->setGroup($this);
-        }
+        $this->attributes[] = $attribute;
+        $attribute->setGroup($this);
 
         return $this;
     }
