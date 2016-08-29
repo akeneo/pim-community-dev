@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- TIP-307: Fix issues with Mongo 2.6
+
 # 1.5.8 (2016-08-25)
 
 ## Bug fixes
