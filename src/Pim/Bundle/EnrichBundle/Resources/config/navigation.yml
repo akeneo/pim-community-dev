@@ -112,7 +112,6 @@ oro_menu_config:
                         pim_enrich_categorytree: ~
                         pim_enrich_variant_group: ~
                         pim_enrich_group: ~
-
                 pim_configuration_tab:
                     children:
                         pim_enrich_attributegroup: ~

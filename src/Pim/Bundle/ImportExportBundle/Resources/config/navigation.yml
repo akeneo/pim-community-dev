@@ -18,6 +18,7 @@ oro_menu_config:
             aclResourceId: pim_importexport_import_profile_index
             extras:
                 routes: ['/^pim_importexport_import_profile_\w+$/']
+                position: 10
         pim_ie_export:
             label: pim_menu.item.export_profile
             route: pim_importexport_export_profile_index
@@ -30,6 +31,7 @@ oro_menu_config:
             aclResourceId: pim_importexport_import_execution_index
             extras:
                 routes: ['/^pim_importexport_import_execution_\w+$/']
+                position: 30
         pim_report_export:
             label: pim_menu.item.export_history
             route: pim_importexport_export_execution_index
