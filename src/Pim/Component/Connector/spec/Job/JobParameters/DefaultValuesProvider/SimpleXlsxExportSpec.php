@@ -22,7 +22,7 @@ class SimpleXlsxExportSpec extends ObjectBehavior
     {
         $this->getDefaultValues()->shouldReturn(
             [
-                'filePath'     => null,
+                'filePath'     => '/tmp/export %job_label% %datetime%.xlsx',
                 'withHeader'   => true,
                 'linesPerFile' => 10000
             ]

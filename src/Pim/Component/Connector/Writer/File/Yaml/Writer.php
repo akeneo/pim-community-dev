@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -25,11 +26,12 @@ class Writer extends AbstractFileWriter implements
     protected $header;
 
     /**
-     * @param string $header
+     * @param FileExporterPathGeneratorInterface $filePathGenerator
+     * @param string                             $header
      */
-    public function __construct($header = null)
+    public function __construct(FileExporterPathGeneratorInterface $filePathGenerator, $header = null)
     {
-        parent::__construct();
+        parent::__construct($filePathGenerator);
 
         $this->header = $header;
     }

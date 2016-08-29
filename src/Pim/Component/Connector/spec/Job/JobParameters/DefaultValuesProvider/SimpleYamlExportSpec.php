@@ -22,7 +22,7 @@ class SimpleYamlExportSpec extends ObjectBehavior
     {
         $this->getDefaultValues()->shouldReturn(
             [
-                'filePath'     => null,
+                'filePath'     => '/tmp/export %job_label% %datetime%.yml',
             ]
         );
     }

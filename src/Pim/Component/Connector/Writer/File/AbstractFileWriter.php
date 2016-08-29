@@ -23,8 +23,18 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
     /** @var Filesystem */
     protected $localFs;
 
-    public function __construct()
+    /** @var FileExporterPathGeneratorInterface */
+    protected $filePathGenerator;
+
+    /** @var string Datetime format for the file path placeholder */
+    protected $datetimeFormat = 'Y-m-d H-i-s';
+
+    /**
+     * @param FileExporterPathGeneratorInterface $filePathGenerator
+     */
+    public function __construct(FileExporterPathGeneratorInterface $filePathGenerator)
     {
+        $this->filePathGenerator = $filePathGenerator;
         $this->localFs = new Filesystem();
     }
 
@@ -36,8 +46,18 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
     public function getPath()
     {
         $parameters = $this->stepExecution->getJobParameters();
+        $filePath = $parameters->get('filePath');
+        $resolvedFilePath = $this->filePathGenerator->generate(
+            $filePath,
+            [
+                'parameters' => [
+                    '%datetime%'  => date($this->datetimeFormat),
+                    '%job_label%' => $this->stepExecution->getJobExecution()->getJobInstance()->getLabel()
+                ]
+            ]
+        );
 
-        return $parameters->get('filePath');
+        return $resolvedFilePath;
     }
 
     /**

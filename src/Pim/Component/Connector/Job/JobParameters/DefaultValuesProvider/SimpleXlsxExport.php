@@ -31,7 +31,7 @@ class SimpleXlsxExport implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         return [
-            'filePath'     => null,
+            'filePath'     => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export %job_label% %datetime%.xlsx',
             'withHeader'   => true,
             'linesPerFile' => 10000,
         ];

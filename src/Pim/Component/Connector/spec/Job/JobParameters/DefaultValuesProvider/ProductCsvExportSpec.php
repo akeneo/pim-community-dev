@@ -57,7 +57,6 @@ class ProductCsvExportSpec extends ObjectBehavior
                 return true === $parameters['decoratedParam'] &&
                     '.' === $parameters['decimalSeparator'] &&
                     'yyyy-MM-dd' === $parameters['dateFormat'] &&
-                    is_string($parameters['filePath']) &&
                     true === $parameters['with_media'] &&
                     is_array($parameters['filters']) &&
                     is_array($parameters['filters']['data']) &&

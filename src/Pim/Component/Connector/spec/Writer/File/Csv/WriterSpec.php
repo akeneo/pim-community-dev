@@ -3,11 +3,13 @@
 namespace spec\Pim\Component\Connector\Writer\File\Csv;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
@@ -22,9 +24,10 @@ class WriterSpec extends ObjectBehavior
     function let(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        FileExporterPathGeneratorInterface $filePathGenerator
     ) {
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher);
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $filePathGenerator);
     }
 
     function it_is_a_writer()
@@ -35,15 +38,25 @@ class WriterSpec extends ObjectBehavior
     function it_prepares_the_export(
         $arrayConverter,
         $bufferFactory,
+        $filePathGenerator,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('job_label');
+        $jobParameters->get('filePath')->willReturn('my/file/path/%job_label% %datetime%.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->get('withHeader')->willReturn(true);
+
+        $filePathGenerator
+            ->generate('my/file/path/%job_label% %datetime%.csv', Argument::Type('array'))
+            ->willReturn('my/file/path/job_label 2016-08-13 14-00-00.csv');
 
         $groups = [
             [
@@ -107,9 +120,12 @@ class WriterSpec extends ObjectBehavior
     function it_writes_the_csv_file(
         $bufferFactory,
         $flusher,
+        $filePathGenerator,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
     ) {
         $this->setStepExecution($stepExecution);
 
@@ -119,8 +135,15 @@ class WriterSpec extends ObjectBehavior
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->get('filePath')->willReturn('my/file/path/%job_label% %datetime%.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('job_label');
+
+        $filePathGenerator
+            ->generate('my/file/path/%job_label% %datetime%.csv', Argument::Type('array'))
+            ->willReturn('my/file/path/job_label 2016-08-13 14-00-00.csv');
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 
