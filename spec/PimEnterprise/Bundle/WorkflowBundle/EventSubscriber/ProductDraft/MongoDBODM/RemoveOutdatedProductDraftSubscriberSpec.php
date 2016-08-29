@@ -54,18 +54,17 @@ class RemoveOutdatedProductDraftSubscriberSpec extends ObjectBehavior
         $this->removeDraftsByProduct($event);
     }
 
-    function it_removed_drafts_for_a_product_on_many_products(
+    function it_removed_drafts_for_many_products(
         $productDraftRepo,
         $remover,
         RemoveEvent $event,
         ProductDraftInterface $draftMary,
         ProductDraftInterface $draftSandra
     ) {
-        $event->getSubject()->willReturn(['568bf91fb392ea7a648b4567', '468bf91fb392ea7a648b4567']);
+        $event->getSubject()->willReturn(['568bf91fb392ea7a648b4567']);
 
         $drafts = [$draftMary, $draftSandra];
         $productDraftRepo->findBy(['product.$id' => new \MongoId('568bf91fb392ea7a648b4567')])->willReturn($drafts);
-        $productDraftRepo->findBy(['product.$id' => new \MongoId('468bf91fb392ea7a648b4567')])->willReturn(null);
         $remover->removeAll($drafts)->shouldBeCalled();
 
         $this->removeDraftsByProducts($event);
