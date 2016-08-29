@@ -23,12 +23,13 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     protected $entityName;
 
     /**
-     * @param ObjectManager $entityManager
-     * @param string $entityName
+     * @param EntityManagerInterface $entityManager
+     * @param string                 $entityName
      */
     public function __construct(EntityManagerInterface $entityManager, $entityName)
     {
         $this->entityManager = $entityManager;
+        $this->entityName = $entityName;
         $this->entityName    = $entityName;
     }
 
@@ -40,7 +41,6 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     public function findBySearch($search = null, array $options = [])
     {
         $qb = $this->entityManager->createQueryBuilder();
-
         $qb->select('o')
             ->addSelect('v')
             ->from($this->entityName, 'o')

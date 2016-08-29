@@ -70,6 +70,7 @@ define(
              */
             postRender: function () {
                 this.$('[data-toggle="tooltip"]').tooltip();
+                this.choicePromise = null;
                 this.getChoiceUrl().then(function (choiceUrl) {
                     var options = {
                         ajax: {
