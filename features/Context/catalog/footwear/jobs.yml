@@ -27,7 +27,19 @@ jobs:
             withHeader: true
             filePath: /tmp/products.csv
             filters:
-                data: {}
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['2014_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
                 structure:
                     scope: mobile
                     locales:
