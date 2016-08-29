@@ -17,7 +17,7 @@ Feature: Apply a mass action on all entities
   Scenario: Edit common attributes of all products
     When I am on the products page
     And I select all entities
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I press the "Back" button
     And I choose the "Edit common attributes" operation
@@ -40,7 +40,7 @@ Feature: Apply a mass action on all entities
     And I filter by "scope" with operator "" and value "Mobile"
     And I filter by "completeness" with operator "" and value "yes"
     When I select all entities
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change the family of products" operation
     And I press the "Back" button
     And I choose the "Change the family of products" operation
@@ -60,7 +60,7 @@ Feature: Apply a mass action on all entities
     When I am on the families page
     And I filter by "label" with operator "contains" and value "blocks"
     And I select all entities
-    And I press the "Mass Edit" button
+    And I press the "Change product information" button
     And I choose the "Set attribute requirements" operation
     And I display the Length attribute
     And I switch the attribute "Length" requirement in channel "Mobile"
@@ -74,7 +74,7 @@ Feature: Apply a mass action on all entities
     Given I am on the products page
     And I select all entities
     And I unselect row mega_boots
-    When I press "Mass Edit" on the "Bulk Actions" dropdown button
+    When I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change status (enable / disable)" operation
     And I press the "Back" button
     And I choose the "Change status (enable / disable)" operation

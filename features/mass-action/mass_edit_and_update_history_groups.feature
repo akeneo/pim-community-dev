@@ -33,8 +33,8 @@ Feature: Update product history when mass editing products
     And I save the product
     And I am on the products page
     And I select rows boots, sandals and sneakers
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
-    
+    And I press "Change product information" on the "Bulk Actions" dropdown button
+
   Scenario: Display history when adding products to groups
     Given I choose the "Add to groups" operation
     And I check "Similar boots"
