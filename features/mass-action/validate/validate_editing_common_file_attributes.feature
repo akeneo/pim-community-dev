@@ -42,7 +42,7 @@ Feature: Validate editing common file attributes of multiple products
 
   Scenario: Successfully mass edit a file attribute
     Given I select rows boots and sneakers
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the File attribute
     And I attach file "bic-core-148.gif" to "File"
@@ -50,7 +50,7 @@ Feature: Validate editing common file attributes of multiple products
     Then the file "file" of products boots and sneakers should be "bic-core-148.gif"
     When I am on the products page
     And I select rows boots, sandals and sneakers
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the File attribute
     And I move on to the next step
@@ -58,7 +58,7 @@ Feature: Validate editing common file attributes of multiple products
     Then the file "file" of products boots, sandals and sneakers should be ""
     When I am on the products page
     And I select rows boots, sandals and sneakers
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the File attribute
     And I attach file "akeneo.txt" to "File"

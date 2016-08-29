@@ -52,5 +52,5 @@ Feature: Browse families
     When I sort by "family" value ascending
     Then the rows should be sorted ascending by family
     When I select rows caterpillar and dr-martens
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     Then I should see "Mass Edit (2 products)"
