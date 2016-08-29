@@ -2,6 +2,10 @@
 
 ## Bug fixes
 
+# 1.6.0-RC1 (2016-08-29)
+
+## Bug fixes
+
 - #4879: Fix collision when using several popins on the same page, cheers @dimitri-koenig!
 - PIM-5928: Export products without media
 
