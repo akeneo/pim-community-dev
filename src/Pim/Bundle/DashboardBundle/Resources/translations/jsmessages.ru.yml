@@ -6,7 +6,7 @@ pim_dashboard:
       date: Дата
       type: Тип
       profile name: Имя профиля
-      details: Подробности
+      details: Подробно
       job_type:
         import: Импорт
         export: Экспорт

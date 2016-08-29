@@ -11,9 +11,9 @@ Your local changes will be lost. Are you sure you want to refresh grid?: As suas
 Reset Confirmation: Confirmação de Reset
 Your local changes will be lost. Are you sure you want to reset grid?: Suas alterações locais serão perdidas. Tem a certeza de que deseja atualizar a grelha?
 Confirmation: Confirmação
-edit: Editar
+edit: editar
 copy: copiar
-remove: Remover
+remove: remover
 Status: Estado
 All: Tudo
 Per page: Por página
@@ -44,7 +44,7 @@ pim.grid.choice_filter:
   label_empty: está vazio
   label_in_list: na lista
 Available Columns: Colunas disponíveis
-datagrid_view.columns.min_message: Você deve selecionar pelo menos uma coluna da grelha para exibir
+datagrid_view.columns.min_message: Deve selecionar pelo menos uma coluna da grelha para exibir
 pim_datagrid:
   column_configurator:
     label: Colunas
@@ -65,6 +65,6 @@ pim.grid.action.launch.title: Iniciar
 pim.grid.action.show.title: Mostrar
 Please select view: Por favor, escolha uma vista
 Loading...: A carregar...
-View: Vista
+View: Ver
 from: desde
 to: até
