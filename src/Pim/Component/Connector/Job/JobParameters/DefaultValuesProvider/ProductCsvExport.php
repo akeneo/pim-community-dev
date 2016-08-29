@@ -57,7 +57,12 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['with_media'] = true;
-        $parameters['filePath'] = sys_get_temp_dir() . 'csv_products_export.csv';
+
+        $basePath = sys_get_temp_dir();
+        if (DIRECTORY_SEPARATOR !== substr($basePath, -1)) {
+            $basePath = $basePath . DIRECTORY_SEPARATOR;
+        }
+        $parameters['filePath'] = $basePath . 'csv_products_export.csv';
 
         $defaultChannel = $this->channelRepository->getFullChannels()[0];
         $defaultLocaleCode = $this->localeRepository->getActivatedLocaleCodes()[0];
