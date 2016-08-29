@@ -12,7 +12,7 @@ Feature: Datagrid views
       | black-sneakers  | sneakers |
       | black-boots     | boots    |
     And I am logged in as "Mary"
-    And I am on the published page
+    And I am on the published products page
 
   Scenario: Successfully choose my default published view
     Given I filter by "family" with operator "in list" and value "Sneakers"
@@ -31,11 +31,11 @@ Feature: Datagrid views
     Then I should not see the text "There are unsaved changes."
     When I logout
     And I am logged in as "Julia"
-    And I am on the published index page
+    And I am on the published products page
     Then I should see published products black-boots, purple-sneakers and black-sneakers
     When I logout
     And I am logged in as "Mary"
-    And I am on the published index page
+    And I am on the published products page
     Then I should see the text "Views Sneakers only"
     And I should see published products purple-sneakers and black-sneakers
     But I should not see product black-boots

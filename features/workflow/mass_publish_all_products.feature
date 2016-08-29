@@ -43,7 +43,7 @@ Feature: Publish many products at once
     When I choose the "Publish products" operation
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
-    And I am on the published index page
+    And I am on the published products page
     And I should see product unionjack
     Then the row "unionjack" should contain:
       | column   | value |

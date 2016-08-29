@@ -2,7 +2,8 @@
 
 ## Bug fixes
 
-- PIM-5782: add right filtering on locales for export builder
+- PIM-5782: Add right filtering on locales for export builder
+- PIM-5949: Fix scope and locale switches on published product edit form
 
 # 1.6.O (2016-08-30)
 

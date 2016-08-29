@@ -14,13 +14,13 @@ use PimEnterprise\Component\ProductAsset\Model\Category;
 class EnterpriseNavigationContext extends BaseNavigationContext
 {
     protected $enterprisePageMapping = [
-        'published'         => 'Published index',
-        'proposals'         => 'Proposal index',
-        'rules'             => 'Rule index',
-        'assets'            => 'Asset index',
-        'asset edit'        => 'Asset edit',
-        'asset mass upload' => 'Asset massUpload',
-        'assets categories' => 'Asset Category tree index',
+        'published products' => 'PublishedProduct index',
+        'proposals'          => 'Proposal index',
+        'rules'              => 'Rule index',
+        'assets'             => 'Asset index',
+        'asset edit'         => 'Asset edit',
+        'asset mass upload'  => 'Asset massUpload',
+        'assets categories'  => 'Asset Category tree index',
     ];
 
     /**
@@ -36,7 +36,7 @@ class EnterpriseNavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnThePublishedProductsPage()
     {
-        $expectedAddress = $this->getPage('Published index')->getUrl();
+        $expectedAddress = $this->getPage('PublishedProduct index')->getUrl();
         $this->assertAddress($expectedAddress);
     }
 

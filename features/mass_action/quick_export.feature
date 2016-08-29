@@ -15,7 +15,7 @@ Feature: Quick export many published products from datagrid
     And I am logged in as "Julia"
 
   Scenario: Successfully quick export published products in CSV
-    Given I am on the published page
+    Given I am on the published products page
     And I select rows boots, sneakers, sandals, pump
     Then I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_published_product_quick_export" quick export to finish
@@ -37,7 +37,7 @@ Feature: Quick export many published products from datagrid
     """
 
   Scenario: Successfully quick export published products in XLSX
-    Given I am on the published page
+    Given I am on the published products page
     And I select rows boots, sneakers, sandals, pump
     Then I press "XLSX (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "xlsx_published_product_quick_export" quick export to finish

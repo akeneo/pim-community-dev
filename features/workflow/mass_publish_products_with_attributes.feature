@@ -54,7 +54,7 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
-    And I am on the published index page
+    And I am on the published products page
     Then the grid should contain 2 elements
     And I should see product my-jacket and my-shoes
     And I am on the "my-jacket" published show page
