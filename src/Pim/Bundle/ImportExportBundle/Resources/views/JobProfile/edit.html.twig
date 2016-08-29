@@ -1,9 +1,7 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-{% set title =  (entityName ~ '.edit')|trans ~ ' - ' ~ jobInstance.label ~ ' [' ~ jobInstance.code ~ ']'  %}
 
 {% block content %}
-
     {{ form_start(form, {
         'action': actionRoute,
         'attr': {
@@ -12,31 +10,9 @@
         }
     }) }}
 
-        {% set left %}
-            <ul class="inline">
-                <li>{{ 'Job'|trans }}: {{ job.name|trans }}</li>
-                <li>{{ 'Connector'|trans }}: {{ jobInstance.connector|trans }}</li>
-            </ul>
-        {% endset %}
+    {% include 'PimImportExportBundle:JobProfile:_edit_headers.html.twig' with {'form': form} %}
 
-        {% set titleButtons %}
-            {{ elements.backLink(showRoute, 'btn.back') }}
-        {% endset %}
-
-        {% set buttons %}
-            {{ elements.deleteLink(removeRoute, removeAcl, indexRoute, removeMessage, removeSuccessMessage) }}
-            {{ elements.submitBtn('', 'ok') }}
-        {% endset %}
-
-        {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id), titleButtons) }}
-
-        {{ elements.form_navbar(view_element_aliases(viewElementsAliases)) }}
-
-        <div class="row-fluid tab-content">
-
-            {{ view_elements(viewElementsAliases) }}
-
-       </div>
+    {% include 'PimImportExportBundle:JobProfile:_form.html.twig' %}
 
     {{ form_end(form) }}
 {% endblock %}
