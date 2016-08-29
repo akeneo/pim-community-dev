@@ -728,7 +728,7 @@ In the v1.6, these 3 different concerns have been extracted to be able to provid
 
 You need to define a `DefaultValuesProviderInterface` and a `ConstraintCollectionProviderInterface` to be able to run your Job.
 
-You'll find an example in the doc  https://docs.akeneo.com/master/cookbook/import_export/create-connector.html#configure-our-jobparameters
+You'll find an example in the doc  https://docs.akeneo.com/1.6/cookbook/import_export/create-connector.html#configure-our-jobparameters
 
 Case 1 - You wrote a custom import (or export) which uses the same parameters as a default import (or export).
 
@@ -827,7 +827,7 @@ If your Job needs to be configured through the UI, you also need to define a `Fo
 
 This class will allow to provide the configuration for each form field.
 
-You'll find an example in the doc https://docs.akeneo.com/master/cookbook/import_export/create-connector.html#configure-the-ui-for-our-jobparameters
+You'll find an example in the doc https://docs.akeneo.com/1.6/cookbook/import_export/create-connector.html#configure-the-ui-for-our-jobparameters
 
 You can follow the strategy described in the previous chapter, for instance, re-use existing classes for the case 1:
 
@@ -1000,7 +1000,7 @@ Go to the role profile and activate the following permissions situated in the "P
 - "Show an export profile content"
 - "Edit an export profile content"
 
-If you want to display the "Content" tab for you custom product export job profiles, you can follow the cookbook "Configure the job profile" in the documentation (https://docs.akeneo.com/master/cookbook/import_export/create-custom-step.html#configure-the-job-profile).
+If you want to display the "Content" tab for you custom product export job profiles, you can follow the cookbook "Configure the job profile" in the documentation (https://docs.akeneo.com/1.6/cookbook/import_export/create-custom-step.html#configure-the-job-profile).
 
 ### Updates for projects adding custom Mass Edit Action
 
