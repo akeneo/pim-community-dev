@@ -93,9 +93,6 @@ pim:
     mass_action:
       quick_export:
         csv_all: CSV (Все атрибуты)
-      delete: Удалить
-      mass_edit: Массовое редактирование
-      sequential_edit: Последовательное редактирование
 jstree.create: Создать
 switch_on: Да
 switch_off: Нет
@@ -318,7 +315,6 @@ pim_enrich:
       filter:
         channel:
           title: Канал
-          help: Канал, который вы хотите экспортировать
         locales:
           title: Локали
         attributes:
@@ -343,6 +339,8 @@ pim_enrich:
             disabled: Отключено
         completeness:
           title: Завершенность
+        identifier:
+          title: Идентификатор
         metric:
           operators:
             EMPTY: Пусто

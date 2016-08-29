@@ -43,6 +43,7 @@ pim_connector:
       help: Définit si la première ligne du fichier contient les libellés des colonnes
     with_media:
       label: Exporter les fichiers et images
+      help: Exporter (ou pas) des fichiers produits et images
     filePath:
       label: Chemin du fichier
       help: Emplacement du fichier généré sur le serveur

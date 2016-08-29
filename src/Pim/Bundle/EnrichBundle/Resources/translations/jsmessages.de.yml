@@ -93,9 +93,6 @@ pim:
     mass_action:
       quick_export:
         csv_all: CSV (alle Attribute)
-      delete: Löschen
-      mass_edit: Massenbearbeitung
-      sequential_edit: Sequentielles Bearbeiten
 jstree.create: Anlegen
 switch_on: Ja
 switch_off: Nein
@@ -322,7 +319,6 @@ pim_enrich:
       filter:
         channel:
           title: Ausgabekanal
-          help: Der Ausgabekanal, den Sie exportieren möchten
         locales:
           title: Gebietsschemata
         attributes:
@@ -347,6 +343,8 @@ pim_enrich:
             disabled: Deaktiviert
         completeness:
           title: Vollständigkeit
+        identifier:
+          title: Kennung
         metric:
           operators:
             EMPTY: Ist leer
