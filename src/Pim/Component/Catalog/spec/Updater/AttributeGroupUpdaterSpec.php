@@ -4,19 +4,19 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Manager\AttributeGroupManager;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 
 class AttributeGroupUpdaterSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        AttributeGroupManager $attributeGroupManager
+        AttributeGroupRepositoryInterface $attributeGroupRepository
     ) {
         $this->beConstructedWith(
             $attributeRepository,
-            $attributeGroupManager
+            $attributeGroupRepository
         );
     }
 
@@ -44,10 +44,11 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
 
     function it_updates_an_attribute_group(
         $attributeRepository,
-        $attributeGroupManager,
+        $attributeGroupRepository,
         AttributeGroupInterface $attributeGroup,
-        AttributeInterface $attributeSize,
-        AttributeInterface $attributeMainColor,
+        AttributeGroupInterface $defaultGroup,
+        AttributeInterface $size,
+        AttributeInterface $mainColor,
         AttributeInterface $sku
     ) {
         $values = [
@@ -60,23 +61,27 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
             ]
         ];
 
-        $attributeGroup->getAttributes()->willReturn([$sku]);
+        $attributeGroup->getCode()->willReturn('sizes');
 
         $attributeGroup->setCode('sizes')->shouldBeCalled();
         $attributeGroup->setSortOrder(1)->shouldBeCalled();
 
-        $attributeRepository->findOneByIdentifier('size')->willReturn($attributeSize);
-        $attributeRepository->findOneByIdentifier('main_color')->willReturn($attributeMainColor);
+        $sku->getCode()->willReturn('sku');
+        $size->getCode()->willReturn('size');
+        $attributeGroup->getAttributes()->willReturn([$sku, $size]);
+        $attributeGroupRepository->findDefaultAttributeGroup()->willReturn($defaultGroup);
 
-        $attributeGroup->addAttribute($attributeSize)->shouldBeCalled();
-        $attributeGroup->addAttribute($attributeMainColor)->shouldBeCalled();
+        $defaultGroup->addAttribute($sku)->shouldBeCalled();
+
+        $attributeRepository->findOneByIdentifier('size')->willReturn($size);
+        $attributeRepository->findOneByIdentifier('main_color')->willReturn($mainColor);
+        $attributeGroup->addAttribute($size)->shouldBeCalled();
+        $attributeGroup->addAttribute($mainColor)->shouldBeCalled();
 
         $attributeGroup->setLocale('en_US')->shouldBeCalled();
         $attributeGroup->setLocale('fr_FR')->shouldBeCalled();
         $attributeGroup->setLabel('Sizes')->shouldBeCalled();
         $attributeGroup->setLabel('Tailles')->shouldBeCalled();
-
-        $attributeGroupManager->removeAttribute($attributeGroup, $sku)->shouldBeCalled();
 
         $this->update($attributeGroup, $values, []);
     }
@@ -89,10 +94,43 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
             'attributes' => ['foo'],
         ];
 
+        $attributeGroup->getCode()->willReturn('sizes');
+
         $attributeGroup->getAttributes()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('foo')->willReturn(null);
         $this->shouldThrow(new \InvalidArgumentException('Attribute with "foo" code does not exist'))
             ->during('update', [$attributeGroup, $values]);
+    }
+
+    function it_does_not_update_attributes_from_the_default_group(
+        $attributeGroupRepository,
+        AttributeGroupInterface $attributeGroup
+    ) {
+        $values = [
+            'code' => 'other',
+            'sort_order' => 1,
+            'attributes' => ['foo'],
+            'label' => [
+                'en_US' => 'Other',
+                'fr_FR' => 'Autre'
+            ]
+        ];
+
+        $attributeGroup->getCode()->willReturn('other');
+
+        $attributeGroup->setCode('other')->shouldBeCalled();
+        $attributeGroup->setSortOrder(1)->shouldBeCalled();
+
+        $attributeGroup->setLocale('en_US')->shouldBeCalled();
+        $attributeGroup->setLocale('fr_FR')->shouldBeCalled();
+        $attributeGroup->setLabel('Other')->shouldBeCalled();
+        $attributeGroup->setLabel('Autre')->shouldBeCalled();
+
+
+        $attributeGroupRepository->findDefaultAttributeGroup()->shouldNotBeCalled();
+        $attributeGroup->getAttributes()->shouldNotBeCalled();
+
+        $this->update($attributeGroup, $values, []);
     }
 }
