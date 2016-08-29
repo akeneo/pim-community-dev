@@ -60,7 +60,7 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters['linesPerFile'] = 10000;
 
         $basePath = sys_get_temp_dir();
-        if (substr($basePath, -1) !== DIRECTORY_SEPARATOR) {
+        if (DIRECTORY_SEPARATOR !== substr($basePath, -1)) {
             $basePath = $basePath . DIRECTORY_SEPARATOR;
         }
         $parameters['filePath'] = $basePath . 'xlsx_products_export.xlsx';

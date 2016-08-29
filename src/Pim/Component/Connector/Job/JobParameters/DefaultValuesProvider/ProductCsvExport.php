@@ -59,7 +59,7 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters['with_media'] = true;
 
         $basePath = sys_get_temp_dir();
-        if (substr($basePath, -1) !== DIRECTORY_SEPARATOR) {
+        if (DIRECTORY_SEPARATOR !== substr($basePath, -1)) {
             $basePath = $basePath . DIRECTORY_SEPARATOR;
         }
         $parameters['filePath'] = $basePath . 'csv_products_export.csv';
