@@ -24,7 +24,7 @@ Feature: Publish many products at once
     Then the grid should contain 0 elements
     When I am on the products page
     And I select rows red-heels, blue-sneakers and yellow-sneakers
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Publish products" operation
     And I should see "The 3 selected products will be published"
     And I move on to the next step

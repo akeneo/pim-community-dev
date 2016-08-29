@@ -17,7 +17,7 @@ Feature: Unpublish many products at once
     Given I am logged in as "Julia"
     And I am on the published page
     And I select rows unionjack and jackadi
-    And I press the "Mass Edit" button
+    And I press the "Change product information" button
     When I choose the "Unpublish products" operation
     Then I should see "The 2 selected products will be unpublished"
     And I move on to the next step
@@ -30,7 +30,7 @@ Feature: Unpublish many products at once
     Given I am logged in as "Julia"
     And I am on the published page
     And I select rows unionjack, jackadi and teafortwo
-    And I press the "Mass Edit" button
+    And I press the "Change product information" button
     When I choose the "Unpublish products" operation
     And I move on to the next step
     And I wait for the "unpublish" mass-edit job to finish
@@ -44,7 +44,7 @@ Feature: Unpublish many products at once
     Given I am logged in as "Mary"
     And I am on the published page
     And I select rows unionjack, jackadi and teafortwo
-    And I press the "Mass Edit" button
+    And I press the "Change product information" button
     When I choose the "Unpublish products" operation
     And I move on to the next step
     And I wait for the "unpublish" mass-edit job to finish
