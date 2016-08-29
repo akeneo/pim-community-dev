@@ -39,8 +39,8 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
      */
     public function __construct(TokenStorageInterface $tokenStorage, NotifierInterface $notifier, $notificationClass)
     {
-        $this->tokenStorage      = $tokenStorage;
-        $this->notifier          = $notifier;
+        $this->tokenStorage = $tokenStorage;
+        $this->notifier = $notifier;
         $this->notificationClass = $notificationClass;
     }
 
@@ -62,7 +62,7 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     public function afterJobExecution(GenericEvent $event)
     {
         $rules = $event->getSubject();
-        $user  = $this->getUser();
+        $user = $this->getUser();
 
         if (null === $user || 0 === count($rules)) {
             return;

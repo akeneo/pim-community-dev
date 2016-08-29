@@ -38,7 +38,7 @@ class JobProfileAccessUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $jobRepository
     ) {
         $this->groupRepository = $groupRepository;
-        $this->jobRepository   = $jobRepository;
+        $this->jobRepository = $jobRepository;
     }
 
     /**

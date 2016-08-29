@@ -88,14 +88,14 @@ class PublishedProductController
         ChannelRepositoryInterface $channelRepository,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->request              = $request;
-        $this->router               = $router;
-        $this->templating           = $templating;
-        $this->translator           = $translator;
-        $this->userContext          = $userContext;
-        $this->manager              = $manager;
-        $this->completenessManager  = $completenessManager;
-        $this->channelRepository    = $channelRepository;
+        $this->request = $request;
+        $this->router = $router;
+        $this->templating = $templating;
+        $this->translator = $translator;
+        $this->userContext = $userContext;
+        $this->manager = $manager;
+        $this->completenessManager = $completenessManager;
+        $this->channelRepository = $channelRepository;
         $this->authorizationChecker = $authorizationChecker;
     }
 

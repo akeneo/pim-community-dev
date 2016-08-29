@@ -57,7 +57,7 @@ class ProductController extends BaseController
         parent::__construct($productRepository, $rendererRegistry);
 
         $this->authorizationChecker = $authorizationChecker;
-        $this->userContext          = $userContext;
+        $this->userContext = $userContext;
     }
 
     /**

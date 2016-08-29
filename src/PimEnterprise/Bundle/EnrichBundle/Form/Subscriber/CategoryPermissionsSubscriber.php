@@ -42,7 +42,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
      */
     public function __construct(CategoryAccessManager $accessManager, SecurityFacade $securityFacade)
     {
-        $this->accessManager  = $accessManager;
+        $this->accessManager = $accessManager;
         $this->securityFacade = $securityFacade;
     }
 
@@ -141,10 +141,10 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
 
         if (isset($this->previousRoles['own'])) {
             $currentRoles['own'] = ($ownRoles instanceof ArrayCollection) ? $ownRoles->toArray() : $ownRoles;
-            $addedOwnRoles       = array_diff($currentRoles['own'], $this->previousRoles['own']);
-            $removedOwnRoles     = array_diff($this->previousRoles['own'], $currentRoles['own']);
+            $addedOwnRoles = array_diff($currentRoles['own'], $this->previousRoles['own']);
+            $removedOwnRoles = array_diff($this->previousRoles['own'], $currentRoles['own']);
         } else {
-            $addedOwnRoles   = [];
+            $addedOwnRoles = [];
             $removedOwnRoles = [];
         }
 

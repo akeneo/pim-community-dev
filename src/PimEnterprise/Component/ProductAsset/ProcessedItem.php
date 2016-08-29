@@ -30,7 +30,7 @@ class ProcessedItem
     const STATE_SUCCESS = 'success';
 
     /** @staticvar string */
-    const STATE_ERROR   = 'error';
+    const STATE_ERROR = 'error';
 
     /** @staticvar string */
     const STATE_SKIPPED = 'skipped';
@@ -55,9 +55,9 @@ class ProcessedItem
      */
     public function __construct($item, $state, $reason = null, \Exception $e = null)
     {
-        $this->item      = $item;
-        $this->state     = $state;
-        $this->reason    = $reason;
+        $this->item = $item;
+        $this->state = $state;
+        $this->reason = $reason;
         $this->exception = $e;
     }
 

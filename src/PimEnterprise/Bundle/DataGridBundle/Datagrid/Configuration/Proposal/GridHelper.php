@@ -63,12 +63,12 @@ class GridHelper
         ProductDraftGrantedAttributeProvider $attributeProvider,
         ProductDraftChangesPermissionHelper $permissionHelper
     ) {
-        $this->draftRepository      = $draftRepository;
+        $this->draftRepository = $draftRepository;
         $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage         = $tokenStorage;
-        $this->requestStack         = $requestStack;
-        $this->attributeProvider    = $attributeProvider;
-        $this->permissionHelper     = $permissionHelper;
+        $this->tokenStorage = $tokenStorage;
+        $this->requestStack = $requestStack;
+        $this->attributeProvider = $attributeProvider;
+        $this->permissionHelper = $permissionHelper;
     }
 
     /**
@@ -155,7 +155,7 @@ class GridHelper
      */
     protected function getGroupedAttributeChoices(array $attributes)
     {
-        $groups  = $this->getGroupCodesByLabels($attributes);
+        $groups = $this->getGroupCodesByLabels($attributes);
         $choices = [];
 
         foreach ($attributes as $attribute) {

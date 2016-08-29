@@ -41,7 +41,7 @@ class AssetsCollectionProperty extends TwigProperty
         parent::__construct($environment);
 
         $this->paramsExtractor = $paramsExtractor;
-        $this->userContext     = $userContext;
+        $this->userContext = $userContext;
     }
 
     /**

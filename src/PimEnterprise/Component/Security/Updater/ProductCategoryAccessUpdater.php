@@ -37,7 +37,7 @@ class ProductCategoryAccessUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $groupRepository,
         IdentifiableObjectRepositoryInterface $productRepository
     ) {
-        $this->groupRepository   = $groupRepository;
+        $this->groupRepository = $groupRepository;
         $this->productRepository = $productRepository;
     }
 

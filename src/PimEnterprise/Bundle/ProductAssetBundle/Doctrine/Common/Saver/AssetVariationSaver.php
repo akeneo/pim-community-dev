@@ -47,9 +47,9 @@ class AssetVariationSaver implements SaverInterface, BulkSaverInterface
         EventDispatcherInterface $eventDispatcher,
         CompletenessGeneratorInterface $compGenerator
     ) {
-        $this->objectManager   = $objectManager;
+        $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->compGenerator   = $compGenerator;
+        $this->compGenerator = $compGenerator;
     }
 
     /**

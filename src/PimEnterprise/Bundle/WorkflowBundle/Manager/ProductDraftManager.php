@@ -84,15 +84,15 @@ class ProductDraftManager
         RemoverInterface $productDraftRemover,
         CollectionFilterInterface $valuesFilter
     ) {
-        $this->workingCopySaver    = $workingCopySaver;
-        $this->userContext         = $userContext;
-        $this->factory             = $factory;
-        $this->repository          = $repository;
-        $this->applier             = $applier;
-        $this->dispatcher          = $dispatcher;
-        $this->productDraftSaver   = $productDraftSaver;
+        $this->workingCopySaver = $workingCopySaver;
+        $this->userContext = $userContext;
+        $this->factory = $factory;
+        $this->repository = $repository;
+        $this->applier = $applier;
+        $this->dispatcher = $dispatcher;
+        $this->productDraftSaver = $productDraftSaver;
         $this->productDraftRemover = $productDraftRemover;
-        $this->valuesFilter        = $valuesFilter;
+        $this->valuesFilter = $valuesFilter;
     }
 
     /**

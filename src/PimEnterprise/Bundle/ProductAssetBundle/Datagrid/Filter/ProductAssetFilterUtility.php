@@ -35,7 +35,7 @@ class ProductAssetFilterUtility extends BaseFilterUtility implements TagFilterAw
      */
     public function __construct(AssetRepositoryInterface $repository, CategoryFilter $categoryFilter)
     {
-        $this->repository     = $repository;
+        $this->repository = $repository;
         $this->categoryFilter = $categoryFilter;
     }
 

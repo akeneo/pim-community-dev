@@ -49,9 +49,9 @@ class ProductsSaver
         VersionContext $versionContext,
         TranslatorInterface $translator
     ) {
-        $this->productSaver   = $productSaver;
+        $this->productSaver = $productSaver;
         $this->versionManager = $versionManager;
-        $this->translator     = $translator;
+        $this->translator = $translator;
         $this->versionContext = $versionContext;
     }
 

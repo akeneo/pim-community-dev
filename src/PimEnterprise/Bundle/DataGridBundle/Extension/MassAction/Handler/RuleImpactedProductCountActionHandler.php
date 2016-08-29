@@ -38,7 +38,7 @@ class RuleImpactedProductCountActionHandler implements MassActionHandlerInterfac
      */
     public function __construct(HydratorInterface $hydrator, EventDispatcherInterface $eventDispatcher)
     {
-        $this->hydrator        = $hydrator;
+        $this->hydrator = $hydrator;
         $this->eventDispatcher = $eventDispatcher;
     }
 

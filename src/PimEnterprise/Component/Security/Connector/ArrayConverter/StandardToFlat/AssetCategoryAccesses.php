@@ -58,7 +58,7 @@ class AssetCategoryAccesses implements ArrayConverterInterface
 
         $viewItems = [];
         $editItems = [];
-        $ownItems  = [];
+        $ownItems = [];
 
         foreach ($item as $groupPermission) {
             if (true === $groupPermission['view_items']) {
@@ -76,7 +76,7 @@ class AssetCategoryAccesses implements ArrayConverterInterface
 
         $convertedItem['view_items'] = implode(',', $viewItems);
         $convertedItem['edit_items'] = implode(',', $editItems);
-        $convertedItem['own_items']  = implode(',', $ownItems);
+        $convertedItem['own_items'] = implode(',', $ownItems);
 
         return $convertedItem;
     }

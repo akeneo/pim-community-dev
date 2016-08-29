@@ -62,11 +62,11 @@ class ProposalWidget implements WidgetInterface
         RouterInterface $router
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->repository           = $ownershipRepository;
-        $this->userManager          = $userManager;
-        $this->tokenStorage         = $tokenStorage;
-        $this->presenter            = $presenter;
-        $this->router               = $router;
+        $this->repository = $ownershipRepository;
+        $this->userManager = $userManager;
+        $this->tokenStorage = $tokenStorage;
+        $this->presenter = $presenter;
+        $this->router = $router;
     }
 
     /**

@@ -34,7 +34,7 @@ class GroupProductValuesExtension extends \Twig_Extension
     public function __construct(FilterProductValuesHelper $filterHelper, SortProductValuesHelper $sortHelper)
     {
         $this->filterHelper = $filterHelper;
-        $this->sortHelper   = $sortHelper;
+        $this->sortHelper = $sortHelper;
     }
 
     /**

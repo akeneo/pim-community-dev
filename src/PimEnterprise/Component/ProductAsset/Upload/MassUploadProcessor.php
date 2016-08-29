@@ -94,16 +94,16 @@ class MassUploadProcessor
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator
     ) {
-        $this->uploadChecker    = $uploadChecker;
-        $this->importer         = $importer;
-        $this->assetFactory     = $assetFactory;
-        $this->assetRepository  = $assetRepository;
-        $this->assetSaver       = $assetSaver;
-        $this->filesUpdater     = $filesUpdater;
-        $this->fileStorer       = $fileStorer;
+        $this->uploadChecker = $uploadChecker;
+        $this->importer = $importer;
+        $this->assetFactory = $assetFactory;
+        $this->assetRepository = $assetRepository;
+        $this->assetSaver = $assetSaver;
+        $this->filesUpdater = $filesUpdater;
+        $this->fileStorer = $fileStorer;
         $this->localeRepository = $localeRepository;
-        $this->eventDispatcher  = $eventDispatcher;
-        $this->translator       = $translator;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->translator = $translator;
     }
 
     /**
@@ -121,7 +121,7 @@ class MassUploadProcessor
 
         foreach ($importedFiles as $file) {
             try {
-                $asset  = $this->applyImportedUpload($file);
+                $asset = $this->applyImportedUpload($file);
                 $reason = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
 
                 $parsedFilename = $this->uploadChecker->getParsedFilename($file->getFilename());
@@ -201,7 +201,7 @@ class MassUploadProcessor
     protected function retrieveGenerationEventErrors(AssetEvent $event)
     {
         $errors = [];
-        $items  = $event->getProcessedList();
+        $items = $event->getProcessedList();
 
         foreach ($items->getItemsInState(ProcessedItem::STATE_ERROR) as $item) {
             $parameters = ['%channel%' => $item->getItem()->getChannel()->getCode()];

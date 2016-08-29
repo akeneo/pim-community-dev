@@ -53,9 +53,9 @@ class ProductRuleSelector implements SelectorInterface
         $subjectSetClass
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->repo                = $repo;
-        $this->eventDispatcher     = $eventDispatcher;
-        $this->subjectSetClass     = $subjectSetClass;
+        $this->repo = $repo;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->subjectSetClass = $subjectSetClass;
     }
 
     /**

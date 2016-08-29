@@ -41,7 +41,7 @@ class GenerateVariationFileCommand extends AbstractGenerationVariationFileComman
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $asset   = $this->retrieveAsset($input->getArgument('asset'));
+            $asset = $this->retrieveAsset($input->getArgument('asset'));
             $channel = $this->retrieveChannel($input->getArgument('channel'));
 
             $locale = null;

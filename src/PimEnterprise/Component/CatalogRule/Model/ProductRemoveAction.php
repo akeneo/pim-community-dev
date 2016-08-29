@@ -30,8 +30,8 @@ class ProductRemoveAction implements ProductRemoveActionInterface
      */
     public function __construct(array $data)
     {
-        $this->field   = isset($data['field']) ? $data['field'] : null;
-        $this->items   = isset($data['items']) ? $data['items'] : [];
+        $this->field = isset($data['field']) ? $data['field'] : null;
+        $this->items = isset($data['items']) ? $data['items'] : [];
         $this->options = [
             'locale' => isset($data['locale']) ? $data['locale'] : null,
             'scope'  => isset($data['scope']) ? $data['scope'] : null

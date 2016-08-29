@@ -55,9 +55,9 @@ class PublishedProductController
         NormalizerInterface $productNormalizer
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->manager              = $manager;
-        $this->userContext          = $userContext;
-        $this->productNormalizer    = $productNormalizer;
+        $this->manager = $manager;
+        $this->userContext = $userContext;
+        $this->productNormalizer = $productNormalizer;
     }
 
     /**
@@ -70,8 +70,8 @@ class PublishedProductController
     public function getAction($id)
     {
         $publishedProduct = $this->findPublishedOr404($id);
-        $channels         = array_keys($this->userContext->getChannelChoicesWithUserChannel());
-        $locales          = $this->userContext->getUserLocaleCodes();
+        $channels = array_keys($this->userContext->getChannelChoicesWithUserChannel());
+        $locales = $this->userContext->getUserLocaleCodes();
 
         return new JsonResponse(
             $this->productNormalizer->normalize(

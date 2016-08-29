@@ -56,11 +56,11 @@ class ProductReverter
         ValidatorInterface $validator,
         TranslatorInterface $translator
     ) {
-        $this->registry     = $registry;
+        $this->registry = $registry;
         $this->denormalizer = $denormalizer;
         $this->productSaver = $productSaver;
-        $this->validator    = $validator;
-        $this->translator   = $translator;
+        $this->validator = $validator;
+        $this->translator = $translator;
     }
 
     /**
@@ -72,8 +72,8 @@ class ProductReverter
      */
     public function revert(Version $version)
     {
-        $class      = $version->getResourceName();
-        $data       = $version->getSnapshot();
+        $class = $version->getResourceName();
+        $data = $version->getSnapshot();
         $resourceId = $version->getResourceId();
 
         $currentObject = $this->registry->getRepository($class)->find($resourceId);

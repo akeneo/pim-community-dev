@@ -33,7 +33,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class RuleController
 {
     const MASS_RULE_IMPACTED_PRODUCTS = 'rule_impacted_product_count';
-    const RUN_COMMAND                 = 'akeneo:rule:run --username=%s';
+    const RUN_COMMAND = 'akeneo:rule:run --username=%s';
 
     /** @var RuleDefinitionRepositoryInterface */
     protected $repository;
@@ -74,13 +74,13 @@ class RuleController
         OroToPimGridFilterAdapter $gridFilterAdapter,
         CommandLauncher $commandLauncher
     ) {
-        $this->repository        = $repository;
-        $this->remover           = $remover;
-        $this->tokenStorage      = $tokenStorage;
+        $this->repository = $repository;
+        $this->remover = $remover;
+        $this->tokenStorage = $tokenStorage;
         $this->simpleJobLauncher = $simpleJobLauncher;
-        $this->jobInstanceRepo   = $jobInstanceRepo;
+        $this->jobInstanceRepo = $jobInstanceRepo;
         $this->gridFilterAdapter = $gridFilterAdapter;
-        $this->commandLauncher   = $commandLauncher;
+        $this->commandLauncher = $commandLauncher;
     }
 
     /**
@@ -134,8 +134,8 @@ class RuleController
     public function massImpactedProductCountAction(Request $request)
     {
         $request->request->add(['actionName' => 'massImpactedProductCount']);
-        $params        = $this->gridFilterAdapter->adapt($request);
-        $jobInstance   = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
+        $params = $this->gridFilterAdapter->adapt($request);
+        $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
         $configuration = ['ruleIds' => $params['values']];
 
         $this->simpleJobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);

@@ -34,7 +34,7 @@ class SimpleList extends \Diff_Renderer_Html_Array
                 $after = $change['changed']['lines'];
 
                 $result['before'][] = is_array($before) ? implode(', ', $before) : $before;
-                $result['after'][]  = is_array($after) ? implode(', ', $after) : $after;
+                $result['after'][] = is_array($after) ? implode(', ', $after) : $after;
             }
         }
 

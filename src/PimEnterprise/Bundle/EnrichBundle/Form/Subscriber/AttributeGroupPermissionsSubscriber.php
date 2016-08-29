@@ -39,7 +39,7 @@ class AttributeGroupPermissionsSubscriber implements EventSubscriberInterface
      */
     public function __construct(AttributeGroupAccessManager $accessManager, SecurityFacade $securityFacade)
     {
-        $this->accessManager  = $accessManager;
+        $this->accessManager = $accessManager;
         $this->securityFacade = $securityFacade;
     }
 

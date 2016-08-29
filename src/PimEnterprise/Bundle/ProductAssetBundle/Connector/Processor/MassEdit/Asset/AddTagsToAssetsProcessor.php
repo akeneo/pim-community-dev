@@ -40,7 +40,7 @@ class AddTagsToAssetsProcessor extends AbstractProcessor
         ValidatorInterface $validator
     ) {
         $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->validator = $validator;
     }
 
     /**

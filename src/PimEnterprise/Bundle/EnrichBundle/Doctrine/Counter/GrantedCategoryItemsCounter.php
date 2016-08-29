@@ -52,9 +52,9 @@ class GrantedCategoryItemsCounter extends CategoryItemsCounter
     ) {
         parent::__construct($itemRepository, $categoryRepository);
 
-        $this->categoryAccessRepo   = $categoryAccessRepo;
+        $this->categoryAccessRepo = $categoryAccessRepo;
         $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage         = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**

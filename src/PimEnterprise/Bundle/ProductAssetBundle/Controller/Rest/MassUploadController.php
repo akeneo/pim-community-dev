@@ -75,12 +75,12 @@ class MassUploadController
         $tmpStorageDir
     ) {
         $this->assetRepository = $assetRepository;
-        $this->uploadChecker   = $uploadChecker;
-        $this->importer        = $importer;
-        $this->tokenStorage    = $tokenStorage;
-        $this->jobLauncher     = $jobLauncher;
+        $this->uploadChecker = $uploadChecker;
+        $this->importer = $importer;
+        $this->tokenStorage = $tokenStorage;
+        $this->jobLauncher = $jobLauncher;
         $this->jobInstanceRepo = $jobInstanceRepository;
-        $this->tmpStorageDir   = $tmpStorageDir;
+        $this->tmpStorageDir = $tmpStorageDir;
     }
 
     /**
@@ -94,7 +94,7 @@ class MassUploadController
      */
     public function verifyAction($filename)
     {
-        $response      = new JsonResponse();
+        $response = new JsonResponse();
         $uploadContext = $this->getUploadContext();
 
         try {
@@ -127,15 +127,15 @@ class MassUploadController
     public function uploadAction(Request $request)
     {
         $response = new JsonResponse();
-        $files    = $request->files;
+        $files = $request->files;
         $uploaded = null;
 
         if ($files->count() > 0) {
-            $file             = $files->getIterator()->current();
+            $file = $files->getIterator()->current();
             $originalFilename = $file->getClientOriginalName();
-            $parsedFilename   = $this->uploadChecker->getParsedFilename($originalFilename);
-            $targetDir        = $this->getUploadContext()->getTemporaryUploadDirectory();
-            $uploaded         = $file->move($targetDir, $parsedFilename->getRawFilename());
+            $parsedFilename = $this->uploadChecker->getParsedFilename($originalFilename);
+            $targetDir = $this->getUploadContext()->getTemporaryUploadDirectory();
+            $uploaded = $file->move($targetDir, $parsedFilename->getRawFilename());
         }
 
         if (null === $uploaded) {
@@ -181,9 +181,9 @@ class MassUploadController
      */
     public function listAction()
     {
-        $uploadContext      = $this->getUploadContext();
+        $uploadContext = $this->getUploadContext();
         $tmpUploadDirectory = $uploadContext->getTemporaryUploadDirectory();
-        $files              = [];
+        $files = [];
 
         if (is_dir($tmpUploadDirectory)) {
             $storedFiles = array_diff(scandir($tmpUploadDirectory), ['.', '..']);
@@ -193,7 +193,7 @@ class MassUploadController
             foreach ($storedFiles as $file) {
                 $filePath = $uploadContext->getTemporaryUploadDirectory() . DIRECTORY_SEPARATOR . $file;
                 $mimeType = $mimeTypeGuesser->guess($filePath);
-                $files[]  = [
+                $files[] = [
                     'name' => $file,
                     'type' => $mimeType,
                     'size' => filesize($filePath),
@@ -213,7 +213,7 @@ class MassUploadController
      */
     public function importAction()
     {
-        $result      = $this->importer->import($this->getUploadContext());
+        $result = $this->importer->import($this->getUploadContext());
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload');
 
         $jobExecution = $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser());

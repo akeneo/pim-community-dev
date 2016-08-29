@@ -66,10 +66,10 @@ class ProductDraftChangesExtension extends \Twig_Extension
         AttributeFactory $attributeFactory
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->renderer            = $renderer;
-        $this->translator          = $translator;
-        $this->productBuilder      = $productBuilder;
-        $this->attributeFactory    = $attributeFactory;
+        $this->renderer = $renderer;
+        $this->translator = $translator;
+        $this->productBuilder = $productBuilder;
+        $this->attributeFactory = $attributeFactory;
     }
 
     /**

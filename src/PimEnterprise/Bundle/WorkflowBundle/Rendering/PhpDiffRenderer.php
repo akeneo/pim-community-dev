@@ -28,7 +28,7 @@ class PhpDiffRenderer implements RendererInterface
     public function __construct(\Diff_Renderer_Html_Array $renderer, DiffFactory $factory)
     {
         $this->renderer = $renderer;
-        $this->factory  = $factory;
+        $this->factory = $factory;
     }
 
     /**

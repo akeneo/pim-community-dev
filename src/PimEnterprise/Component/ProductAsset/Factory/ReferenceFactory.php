@@ -42,8 +42,8 @@ class ReferenceFactory
         $referenceClass
     ) {
         $this->channelRepository = $channelRepository;
-        $this->variationFactory  = $variationFactory;
-        $this->referenceClass    = $referenceClass;
+        $this->variationFactory = $variationFactory;
+        $this->referenceClass = $referenceClass;
     }
 
     /**

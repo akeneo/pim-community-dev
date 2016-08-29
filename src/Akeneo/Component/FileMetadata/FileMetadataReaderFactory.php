@@ -35,7 +35,7 @@ class FileMetadataReaderFactory implements FileMetadataReaderFactoryInterface
         AdapterRegistry $registry,
         $metadataReaderClass = 'Akeneo\Component\FileMetadata\FileMetadataReader'
     ) {
-        $this->registry            = $registry;
+        $this->registry = $registry;
         $this->metadataReaderClass = $metadataReaderClass;
     }
 

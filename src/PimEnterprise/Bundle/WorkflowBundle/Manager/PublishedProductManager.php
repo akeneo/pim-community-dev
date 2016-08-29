@@ -69,13 +69,13 @@ class PublishedProductManager
         UnpublisherInterface $unpublisher,
         ObjectManager $objectManager
     ) {
-        $this->productRepository   = $productRepository;
-        $this->repository          = $repository;
+        $this->productRepository = $productRepository;
+        $this->repository = $repository;
         $this->attributeRepository = $attributeRepository;
-        $this->eventDispatcher     = $eventDispatcher;
-        $this->publisher           = $publisher;
-        $this->unpublisher         = $unpublisher;
-        $this->objectManager       = $objectManager;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->publisher = $publisher;
+        $this->unpublisher = $unpublisher;
+        $this->objectManager = $objectManager;
     }
 
     /**

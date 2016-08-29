@@ -37,7 +37,7 @@ class CategoryVoter implements VoterInterface
     public function __construct(CategoryAccessManager $accessManager, $className)
     {
         $this->accessManager = $accessManager;
-        $this->className     = $className;
+        $this->className = $className;
     }
 
     /**

@@ -40,7 +40,7 @@ class UploadChecker implements UploadCheckerInterface
         LocaleRepositoryInterface $localeRepository
     ) {
         $this->assetRepository = $assetRepository;
-        $this->locales         = $localeRepository->findAll();
+        $this->locales = $localeRepository->findAll();
     }
 
     /**

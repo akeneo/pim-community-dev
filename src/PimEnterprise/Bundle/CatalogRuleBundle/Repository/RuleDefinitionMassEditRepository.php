@@ -31,7 +31,7 @@ class RuleDefinitionMassEditRepository implements MassActionRepositoryInterface
      */
     public function __construct(EntityManager $em, $entityName)
     {
-        $this->em         = $em;
+        $this->em = $em;
         $this->entityName = $entityName;
     }
 

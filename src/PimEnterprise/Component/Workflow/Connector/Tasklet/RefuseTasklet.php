@@ -34,7 +34,7 @@ class RefuseTasklet extends AbstractReviewTasklet
 
         $jobParameters = $this->stepExecution->getJobParameters();
         $productDrafts = $this->draftRepository->findByIds($jobParameters->get('draftIds'));
-        $context       = ['comment' => $jobParameters->get('comment')];
+        $context = ['comment' => $jobParameters->get('comment')];
 
         $this->processDrafts($productDrafts, $context);
     }

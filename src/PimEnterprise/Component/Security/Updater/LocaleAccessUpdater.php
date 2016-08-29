@@ -37,7 +37,7 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $groupRepository,
         IdentifiableObjectRepositoryInterface $localeRepository
     ) {
-        $this->groupRepository  = $groupRepository;
+        $this->groupRepository = $groupRepository;
         $this->localeRepository = $localeRepository;
     }
 

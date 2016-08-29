@@ -58,9 +58,9 @@ class ThumbnailProperty extends TwigProperty
     ) {
         parent::__construct($environment);
 
-        $this->paramsExtractor   = $paramsExtractor;
-        $this->userContext       = $userContext;
-        $this->localeRepository  = $localeRepository;
+        $this->paramsExtractor = $paramsExtractor;
+        $this->userContext = $userContext;
+        $this->localeRepository = $localeRepository;
         $this->channelRepository = $channelRepository;
     }
 
@@ -86,9 +86,9 @@ class ThumbnailProperty extends TwigProperty
     protected function getRawValue(ResultRecordInterface $record)
     {
         $fileInfo = null;
-        $locale   = $this->getCurrentLocale();
-        $channel  = $this->getCurrentChannel();
-        $entity   = $record->getRootEntity();
+        $locale = $this->getCurrentLocale();
+        $channel = $this->getCurrentChannel();
+        $entity = $record->getRootEntity();
         if (null === $entity) {
             return null;
         }

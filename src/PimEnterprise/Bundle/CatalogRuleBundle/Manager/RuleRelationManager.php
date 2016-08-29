@@ -58,11 +58,11 @@ class RuleRelationManager
         $attributeClass,
         $categoryClass
     ) {
-        $this->ruleRelationRepo    = $ruleRelationRepo;
+        $this->ruleRelationRepo = $ruleRelationRepo;
         $this->attributeRepository = $attributeRepository;
-        $this->categoryRepository  = $categoryRepository;
-        $this->attributeClass      = $attributeClass;
-        $this->categoryClass       = $categoryClass;
+        $this->categoryRepository = $categoryRepository;
+        $this->attributeClass = $attributeClass;
+        $this->categoryClass = $categoryClass;
     }
 
     /**

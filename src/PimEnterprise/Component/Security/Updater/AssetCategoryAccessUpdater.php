@@ -37,7 +37,7 @@ class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $groupRepository,
         IdentifiableObjectRepositoryInterface $categoryRepository
     ) {
-        $this->groupRepository    = $groupRepository;
+        $this->groupRepository = $groupRepository;
         $this->categoryRepository = $categoryRepository;
     }
 

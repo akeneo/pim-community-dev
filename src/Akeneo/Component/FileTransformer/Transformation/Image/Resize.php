@@ -40,9 +40,9 @@ class Resize extends AbstractTransformation
             'image/png'
         ]
     ) {
-        $this->optionsResolver    = $optionsResolver;
+        $this->optionsResolver = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;
-        $this->launcher           = $launcher;
+        $this->launcher = $launcher;
     }
 
     /**
@@ -59,7 +59,7 @@ class Resize extends AbstractTransformation
         $options = $this->optionsResolver->resolve($options);
 
         $imagine = new Imagine();
-        $image   = $imagine->open($file->getPathname());
+        $image = $imagine->open($file->getPathname());
 
         if ($options['width'] > $image->getSize()->getWidth()) {
             throw new ImageWidthException($file->getPathname(), $this->getName());

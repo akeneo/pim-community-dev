@@ -78,12 +78,12 @@ abstract class AbstractReviewTasklet implements TaskletInterface
         TokenStorageInterface $tokenStorage,
         ProductDraftChangesPermissionHelper $permissionHelper
     ) {
-        $this->draftRepository      = $draftRepository;
-        $this->productDraftManager  = $productDraftManager;
-        $this->userProvider         = $userProvider;
+        $this->draftRepository = $draftRepository;
+        $this->productDraftManager = $productDraftManager;
+        $this->userProvider = $userProvider;
         $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage         = $tokenStorage;
-        $this->permissionHelper     = $permissionHelper;
+        $this->tokenStorage = $tokenStorage;
+        $this->permissionHelper = $permissionHelper;
     }
 
     /**

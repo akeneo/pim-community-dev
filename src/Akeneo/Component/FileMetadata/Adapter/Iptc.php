@@ -32,7 +32,7 @@ class Iptc extends AbstractAdapter
      */
     public function __construct(array $mimeTypes = ['image/jpeg', 'image/tiff', 'image/png'])
     {
-        $this->mimeTypes   = $mimeTypes;
+        $this->mimeTypes = $mimeTypes;
         $this->iptcHeaders = $this->getDefaultIptcHeaders();
     }
 

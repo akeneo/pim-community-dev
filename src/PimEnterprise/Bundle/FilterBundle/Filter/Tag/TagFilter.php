@@ -34,7 +34,7 @@ class TagFilter extends AjaxChoiceFilter
     public function apply(FilterDatasourceAdapterInterface $dataSource, $data)
     {
         $filterColumn = $this->get(FilterUtility::DATA_NAME_KEY);
-        $operator     = $this->getOperator($data['type']);
+        $operator = $this->getOperator($data['type']);
 
         $this->util->applyTagFilter($dataSource, $filterColumn, $operator, $data['value']);
 

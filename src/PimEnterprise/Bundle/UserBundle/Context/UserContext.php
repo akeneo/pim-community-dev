@@ -75,8 +75,8 @@ class UserContext extends BaseUserContext
         );
 
         $this->authorizationChecker = $authorizationChecker;
-        $this->categoryAccessRepo   = $categoryAccessRepo;
-        $this->treeOptionKey        = $treeOptionKey;
+        $this->categoryAccessRepo = $categoryAccessRepo;
+        $this->treeOptionKey = $treeOptionKey;
     }
 
     /**

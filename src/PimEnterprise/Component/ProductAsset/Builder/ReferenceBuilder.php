@@ -36,7 +36,7 @@ class ReferenceBuilder implements ReferenceBuilderInterface
         $referenceClass = 'PimEnterprise\Component\ProductAsset\Model\Reference'
     ) {
         $this->localeRepository = $localeRepository;
-        $this->referenceClass   = $referenceClass;
+        $this->referenceClass = $referenceClass;
     }
 
     /**
@@ -45,7 +45,7 @@ class ReferenceBuilder implements ReferenceBuilderInterface
     public function buildAllLocalized(AssetInterface $asset)
     {
         $references = [];
-        $locales    = $this->localeRepository->getActivatedLocales();
+        $locales = $this->localeRepository->getActivatedLocales();
 
         foreach ($locales as $locale) {
             $references[] = $this->buildOne($asset, $locale);
@@ -60,7 +60,7 @@ class ReferenceBuilder implements ReferenceBuilderInterface
     public function buildMissingLocalized(AssetInterface $asset)
     {
         $references = [];
-        $locales    = $this->localeRepository->getActivatedLocales();
+        $locales = $this->localeRepository->getActivatedLocales();
 
         foreach ($locales as $locale) {
             if (!$asset->hasReference($locale)) {

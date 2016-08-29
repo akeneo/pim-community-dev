@@ -40,9 +40,9 @@ class Scale extends AbstractTransformation
             'image/png'
         ]
     ) {
-        $this->optionsResolver    = $optionsResolver;
+        $this->optionsResolver = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;
-        $this->launcher           = $launcher;
+        $this->launcher = $launcher;
     }
 
     /**
@@ -60,10 +60,10 @@ class Scale extends AbstractTransformation
         $options = $this->optionsResolver->resolve($options);
 
         $imagine = new Imagine();
-        $image   = $imagine->open($file->getPathname());
-        $ratio   = $options['ratio'];
-        $width   = $options['width'];
-        $height  = $options['height'];
+        $image = $imagine->open($file->getPathname());
+        $ratio = $options['ratio'];
+        $width = $options['width'];
+        $height = $options['height'];
 
         if (null !== $ratio) {
             $command = sprintf('-scale %d%%', $ratio);

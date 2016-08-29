@@ -64,12 +64,12 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $productDraftRepo
     ) {
-        $this->objectManager       = $objectManager;
-        $this->normalizer          = $normalizer;
-        $this->comparatorRegistry  = $comparatorRegistry;
+        $this->objectManager = $objectManager;
+        $this->normalizer = $normalizer;
+        $this->comparatorRegistry = $comparatorRegistry;
         $this->attributeRepository = $attributeRepository;
-        $this->factory             = $factory;
-        $this->productDraftRepo    = $productDraftRepo;
+        $this->factory = $factory;
+        $this->productDraftRepo = $productDraftRepo;
     }
 
     /**
@@ -77,7 +77,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     public function build(ProductInterface $product, $username)
     {
-        $newValues      = $this->normalizer->normalize($product->getValues(), 'json', ['entity' => 'product']);
+        $newValues = $this->normalizer->normalize($product->getValues(), 'json', ['entity' => 'product']);
         $originalValues = $this->getOriginalValues($product);
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($newValues));
 
@@ -141,7 +141,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             $originalValues = new ArrayCollection();
             foreach ($product->getValues() as $value) {
                 if (null !== $value->getId()) {
-                    $id    = $value->getId();
+                    $id = $value->getId();
                     $class = ClassUtils::getClass($value);
                     $this->objectManager->detach($value);
 
