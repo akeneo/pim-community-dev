@@ -531,7 +531,7 @@ Default metric unit: Единица измерения по умолчанию
 Max file size: Максимальный размер файла (МБ)
 Allowed extensions: Допустимые расширения
 None: Нет
-E-mail: Адрес электронной почты
+E-mail: E-mail
 URL: URL
 Regular expression: Регулярное выражение
 Minimum input length: Минимальная длина ввода
@@ -583,13 +583,13 @@ pim_catalog_text: Текст
 pim_catalog_textarea: Текст
 pim_catalog_number: Число
 pim_catalog_price_collection: Цена
-pim_catalog_multiselect: Множественный раскрывающийся список
-pim_catalog_simpleselect: Простой раскрывающийся список
+pim_catalog_multiselect: Множественный выбор
+pim_catalog_simpleselect: Простой выбор
 pim_catalog_file: Файл
 pim_catalog_image: Изображение
 pim_catalog_boolean: Да/Нет
 pim_catalog_date: Дата
-pim_catalog_metric: Единица измерения
+pim_catalog_metric: Метрическая
 Activated: Активированный
 Disable: Отключить
 pim_enrich.mass_edit_action:

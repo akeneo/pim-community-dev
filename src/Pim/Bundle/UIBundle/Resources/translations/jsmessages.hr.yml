@@ -1,0 +1,7 @@
+oro_config:
+  form:
+    config:
+      group:
+        notification:
+          title: Obavijesti
+          system_notification: Obavijesti o novoj inačici
