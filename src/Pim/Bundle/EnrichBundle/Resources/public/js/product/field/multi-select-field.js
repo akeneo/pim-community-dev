@@ -17,9 +17,10 @@ define(
         'pim/attribute-option/create',
         'pim/security-context',
         'pim/initselect2',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/i18n'
     ],
-    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2, UserContext) {
+    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2, UserContext, i18n) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             choicePromise: null,
@@ -73,17 +74,30 @@ define(
                 this.getChoiceUrl().then(function (choiceUrl) {
                     var options = {
                         ajax: {
-                            url: choiceUrl,
+                            url: Routing.generate('pim_enrich_attributeoption_get', {identifier: this.attribute.id}),
+                            quietMillis: 250,
                             cache: true,
-                            data: function (term) {
+                            data: function (term, page) {
                                 return {
                                     search: term,
                                     options: {
-                                        locale: UserContext.get('catalogLocale')
+                                        limit: 20,
+                                        page: page
                                     }
                                 };
-                            },
-                            results: function (data) {
+                            }.bind(this),
+                            results: function (response) {
+                                var data = {
+                                    more: 20 === _.keys(response).length,
+                                    results: []
+                                };
+                                _.each(response, function (value) {
+                                    data.results.push({
+                                        id: value.code,
+                                        text: i18n.getLabel(value.labels, UserContext.get('catalogLocale'), value.code)
+                                    });
+                                });
+
                                 return data;
                             }
                         },
@@ -92,10 +106,19 @@ define(
                                 this.choicePromise = $.get(choiceUrl);
                             }
 
-                            this.choicePromise.then(function (response) {
-                                var results = response.results;
+                            this.choicePromise.then(function (results) {
                                 var choices = _.map($(element).val().split(','), function (choice) {
-                                    return _.findWhere(results, {id: choice});
+                                    var option = _.findWhere(results, {code: choice});
+                                    if (option) {
+                                        return {
+                                            id: option.code,
+                                            text: i18n.getLabel(
+                                                option.labels,
+                                                UserContext.get('catalogLocale'),
+                                                option.code
+                                            )
+                                        };
+                                    }
                                 });
                                 callback(choices);
                             });
@@ -115,12 +138,12 @@ define(
             getChoiceUrl: function () {
                 return $.Deferred().resolve(
                     Routing.generate(
-                        'pim_ui_ajaxentity_list',
+                        'pim_enrich_attributeoption_get',
                         {
-                            'class': 'PimCatalogBundle:AttributeOption',
-                            'dataLocale': this.context.locale,
-                            'collectionId': this.attribute.id,
-                            'options': {'type': 'code'}
+                            identifier: this.attribute.id,
+                            options: {
+                                identifiers: this.model.attributes.values[0].data
+                            }
                         }
                     )
                 ).promise();
