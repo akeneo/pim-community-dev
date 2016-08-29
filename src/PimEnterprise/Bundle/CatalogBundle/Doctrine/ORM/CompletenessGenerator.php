@@ -103,25 +103,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
-        $selectSql = 'SELECT av.value_id,
-            IF (r.locale_id IS NOT NULL, r.locale_id, cl.locale_id) AS locale_id,
-            v.channel_id
-
-            FROM pim_catalog_product_value_asset av
-            JOIN pim_catalog_product_value pv ON av.value_id = pv.id
-            JOIN %missing_completeness_table% missing ON missing.product_id = pv.entity_id
-            JOIN pimee_product_asset_asset a ON av.asset_id = a.id
-            JOIN pimee_product_asset_reference r ON r.asset_id = a.id
-            JOIN pimee_product_asset_variation v ON v.reference_id = r.id
-            LEFT JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id AND r.locale_id IS NULL
-
-            WHERE 1 = 1
-            %product_value_conditions%
-
-            GROUP BY value_id, locale_id, channel_id
-
-            HAVING COUNT(v.file_info_id) > 0';
-
+        $selectSql = $this->getCompleteAssetsSQL();
         $selectSql = $this->applyTableNames($selectSql);
         $selectSql = $this->applyCriteria($selectSql, $criteria);
 
@@ -234,5 +216,33 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         $extraConditions  = array_merge(parent::getExtraConditions(), [$assetsConditions]);
 
         return $extraConditions;
+    }
+
+    /**
+     * Provide the SQL that allows to find complete assets.
+     *
+     * An assets collection is complete on a locale/channel
+     * if there is at least one variation file for the locale/channel tuple.
+     *
+     * @return string
+     */
+    protected function getCompleteAssetsSQL()
+    {
+        return <<<COMPLETE_ASSETS_SQL
+            (SELECT av.value_id,
+                IF (r.locale_id IS NOT NULL, r.locale_id, cl.locale_id) AS locale_id,
+                v.channel_id
+            FROM pim_catalog_product_value_asset av
+            JOIN pim_catalog_product_value pv ON av.value_id = pv.id
+            JOIN %missing_completeness_table% missing ON missing.product_id = pv.entity_id
+            JOIN pimee_product_asset_asset a ON av.asset_id = a.id
+            JOIN pimee_product_asset_reference r ON r.asset_id = a.id
+            JOIN pimee_product_asset_variation v ON v.reference_id = r.id
+            LEFT JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id AND r.locale_id IS NULL
+            WHERE 1 = 1
+                %product_value_conditions%
+            GROUP BY value_id, locale_id, channel_id
+            HAVING COUNT(v.file_info_id) > 0)
+COMPLETE_ASSETS_SQL;
     }
 }
