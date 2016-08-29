@@ -112,7 +112,7 @@ pimee_enrich:
   asset_transformation:
     not_found: Keine Umwandlung gefunden
     title:
-      transformation: Transformation
+      transformation: Umwandlung
       options: Optionen
     colorspace:
       title: Farbraum
