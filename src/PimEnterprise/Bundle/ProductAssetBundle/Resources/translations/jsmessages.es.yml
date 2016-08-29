@@ -25,11 +25,9 @@ pimee_product_asset:
   mass_upload:
     menu: Cargar recursos
     btn:
-      add_files: Agregar ficheros
-      cancel: Cancelar carga
       delete: Eliminar
       import: Importar
-      start: Comenzar la carga
+      upload: Cargar
     success:
       new: Un nuevo recurso será creado
       canceled: Carga cancelada con éxito
@@ -52,7 +50,7 @@ pimee_product_asset:
       actions: acciones
     action:
       cancel: Cancelar
-      delete: Eliminar
+      remove: Quitar
     status:
       added: Agregar
       queued: En espera

@@ -3,4 +3,4 @@ pimee_product_asset:
     btn:
       import: Импорт
     action:
-      delete: Удалить
+      remove: Удалить

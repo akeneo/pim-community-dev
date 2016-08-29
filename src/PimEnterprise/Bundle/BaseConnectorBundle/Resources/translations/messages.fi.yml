@@ -1,0 +1,5 @@
+pimee_base_connector:
+  jobs:
+    csv_published_product_export:
+      title: Julkaistun tuotteen vienti CSV-muodossa
+      export.title: Julkaistun tuotteen vienti

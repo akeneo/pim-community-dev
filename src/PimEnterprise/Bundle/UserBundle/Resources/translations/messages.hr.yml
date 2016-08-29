@@ -1,0 +1,5 @@
+user:
+  proposals:
+    notifications:
+      "yes": true
+      "no": false

@@ -14,7 +14,7 @@ pimee_catalog_rule:
           count: '{0,1}%count% produit impacté|]1,Inf[%count% produits impactés'
           no_yet_calculated: Pas encore calculé
       mass_edit_action:
-        impacted_product_count: Calculer les produits correspondants
+        impacted_product_count: Calculer les produits impactés
         execute: Exécuter les règles sélectionnées
         delete: Supprimer les règles sélectionnées
   actions:
@@ -83,7 +83,7 @@ pimee_catalog_rule:
       launched: "L'exécution des règles a été lancée. Vous serez notifié lorsque la modification sera terminée."
     mass_edit_rule:
       success: Calcul des produits impactés par les règles terminé
-      error: Une erreur que s’est produite lors du calcul des produits correspondants aux règles
+      error: Une erreur que s’est produite lors du calcul des produits impactés par les règles
   popin:
     execute_rules:
       confirm_title: "Confirmation de l'exécution"
