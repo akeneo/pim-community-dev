@@ -73,10 +73,12 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
      */
     protected function generate(array $criteria = [])
     {
-        $this->prepareMissingCompletenesses($criteria);
+        if (!isset($criteria['productId'])) {
+            $this->prepareMissingCompletenesses($criteria);
 
-        $this->prepareCompletePrices($criteria);
-        $this->prepareCompleteAssets($criteria);
+            $this->prepareCompletePrices($criteria);
+            $this->prepareCompleteAssets($criteria);
+        }
 
         $sql = $this->getInsertCompletenessSQL($criteria);
 
@@ -179,28 +181,31 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
     /**
      * {@inheritdoc}
      */
-    protected function getExtraJoins()
+    protected function getExtraJoins(array $criteria)
     {
+        $completeAssetTable = isset($criteria['productId']) ?
+            $this->getCompleteAssetsSQL() :
+            self::COMPLETE_ASSETS_TABLE;
+
         $assetsJoin = 'LEFT JOIN %s AS complete_asset
             ON complete_asset.value_id = v.id
             AND complete_asset.channel_id = c.id
             AND complete_asset.locale_id = l.id';
 
-        $assetsJoin = sprintf($assetsJoin, static::COMPLETE_ASSETS_TABLE);
-        $extraJoins = array_merge(parent::getExtraJoins(), [$assetsJoin]);
+        $assetsJoin = sprintf($assetsJoin, $completeAssetTable);
 
-        return $extraJoins;
+        return array_merge(parent::getExtraJoins($criteria), [$assetsJoin]);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getExtraConditions()
+    protected function getExtraConditions(array $criteria)
     {
-        $assetsConditions = sprintf('OR %s.value_id IS NOT NULL', static::COMPLETE_ASSETS_TABLE);
-        $extraConditions  = array_merge(parent::getExtraConditions(), [$assetsConditions]);
-
-        return $extraConditions;
+        return array_merge(
+            parent::getExtraConditions($criteria),
+            ['OR complete_asset.value_id IS NOT NULL']
+        );
     }
 
     /**
