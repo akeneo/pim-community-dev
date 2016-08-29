@@ -137,22 +137,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
 
         return $sql;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyTableNames($sql)
-    {
-        $sql = parent::applyTableNames($sql);
-
-        return strtr(
-            $sql,
-            [
-                '%missing_completeness_table%' => self::MISSING_TABLE,
-            ]
-        );
-    }
-
+    
     /**
      * Overrided method to exclude assets from automatic mapping
      *
@@ -234,7 +219,6 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
                 v.channel_id
             FROM pim_catalog_product_value_asset av
             JOIN pim_catalog_product_value pv ON av.value_id = pv.id
-            JOIN %missing_completeness_table% missing ON missing.product_id = pv.entity_id
             JOIN pimee_product_asset_asset a ON av.asset_id = a.id
             JOIN pimee_product_asset_reference r ON r.asset_id = a.id
             JOIN pimee_product_asset_variation v ON v.reference_id = r.id
