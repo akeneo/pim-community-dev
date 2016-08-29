@@ -58,12 +58,12 @@ class FamilyUpdater implements ObjectUpdaterInterface
         AttributeRequirementFactory $attrRequiFactory,
         AttributeRequirementRepositoryInterface $requirementRepo
     ) {
-        $this->accessor            = PropertyAccess::createPropertyAccessor();
-        $this->familyRepository    = $familyRepository;
+        $this->accessor = PropertyAccess::createPropertyAccessor();
+        $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->channelRepository   = $channelRepository;
-        $this->attrRequiFactory    = $attrRequiFactory;
-        $this->requirementRepo     = $requirementRepo;
+        $this->channelRepository = $channelRepository;
+        $this->attrRequiFactory = $attrRequiFactory;
+        $this->requirementRepo = $requirementRepo;
     }
 
     /**
@@ -180,7 +180,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
         array $attributeCodes,
         $channelCode
     ) {
-        $requirements  = [];
+        $requirements = [];
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             if (null === $attribute) {

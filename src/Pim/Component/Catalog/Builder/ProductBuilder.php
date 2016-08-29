@@ -76,15 +76,15 @@ class ProductBuilder implements ProductBuilderInterface
         array $classes
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->familyRepository    = $familyRepository;
-        $this->currencyRepository  = $currencyRepository;
+        $this->familyRepository = $familyRepository;
+        $this->currencyRepository = $currencyRepository;
         $this->assocTypeRepository = $assocTypeRepository;
-        $this->eventDispatcher     = $eventDispatcher;
-        $this->valuesResolver      = $valuesResolver;
-        $this->productClass        = $classes['product'];
-        $this->productValueClass   = $classes['product_value'];
-        $this->productPriceClass   = $classes['product_price'];
-        $this->associationClass    = $classes['association'];
+        $this->eventDispatcher = $eventDispatcher;
+        $this->valuesResolver = $valuesResolver;
+        $this->productClass = $classes['product'];
+        $this->productValueClass = $classes['product_value'];
+        $this->productPriceClass = $classes['product_price'];
+        $this->associationClass = $classes['association'];
     }
 
     /**
@@ -117,7 +117,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function addMissingProductValues(ProductInterface $product, array $channels = null, array $locales = null)
     {
-        $attributes     = $this->getExpectedAttributes($product);
+        $attributes = $this->getExpectedAttributes($product);
         $requiredValues = $this->valuesResolver->resolveEligibleValues($attributes, $channels, $locales);
         $existingValues = $this->getExistingValues($product);
 

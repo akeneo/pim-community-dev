@@ -31,7 +31,7 @@ class AttributeOption implements ArrayConverterInterface
         FieldsRequirementChecker $fieldChecker
     ) {
         $this->localeRepository = $localeRepository;
-        $this->fieldChecker     = $fieldChecker;
+        $this->fieldChecker = $fieldChecker;
     }
 
     /**

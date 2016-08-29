@@ -48,9 +48,9 @@ class Processor extends AbstractProcessor implements ItemProcessorInterface, Ste
     ) {
         parent::__construct($repository);
 
-        $this->factory        = $factory;
-        $this->updater        = $updater;
-        $this->validator      = $validator;
+        $this->factory = $factory;
+        $this->updater = $updater;
+        $this->validator = $validator;
         $this->objectDetacher = $objectDetacher;
     }
 

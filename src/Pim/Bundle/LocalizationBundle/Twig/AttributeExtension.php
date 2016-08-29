@@ -33,9 +33,9 @@ class AttributeExtension extends \Twig_Extension
         PresenterInterface $datetimePresenter,
         LocaleResolver $localeResolver
     ) {
-        $this->datePresenter     = $datePresenter;
+        $this->datePresenter = $datePresenter;
         $this->datetimePresenter = $datetimePresenter;
-        $this->localeResolver    = $localeResolver;
+        $this->localeResolver = $localeResolver;
     }
 
     /**

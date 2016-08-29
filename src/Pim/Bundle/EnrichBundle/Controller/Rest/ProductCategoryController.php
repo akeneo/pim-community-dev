@@ -32,7 +32,7 @@ class ProductCategoryController
         ProductRepositoryInterface $productRepository,
         ProductCategoryRepositoryInterface $productCategoryRepository
     ) {
-        $this->productRepository         = $productRepository;
+        $this->productRepository = $productRepository;
         $this->productCategoryRepository = $productCategoryRepository;
     }
 
@@ -48,9 +48,9 @@ class ProductCategoryController
     public function listAction($id)
     {
         $product = $this->findProductOr404($id);
-        $trees   = $this->productCategoryRepository->getItemCountByTree($product);
+        $trees = $this->productCategoryRepository->getItemCountByTree($product);
 
-        $result['trees']      = $this->buildTrees($trees);
+        $result['trees'] = $this->buildTrees($trees);
         $result['categories'] = $this->buildCategories($product);
 
         return new JsonResponse($result);

@@ -28,7 +28,7 @@ class VersionBuilder
      */
     public function __construct(NormalizerInterface $normalizer, VersionFactory $versionFactory)
     {
-        $this->normalizer     = $normalizer;
+        $this->normalizer = $normalizer;
         $this->versionFactory = $versionFactory;
     }
 
@@ -45,10 +45,10 @@ class VersionBuilder
     public function buildVersion($versionable, $author, Version $previousVersion = null, $context = null)
     {
         $resourceName = ClassUtils::getClass($versionable);
-        $resourceId   = $versionable->getId();
+        $resourceId = $versionable->getId();
 
         $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
-        $oldSnapshot   = $previousVersion ? $previousVersion->getSnapshot() : [];
+        $oldSnapshot = $previousVersion ? $previousVersion->getSnapshot() : [];
 
         // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
         $snapshot = $this->normalizer->normalize($versionable, 'csv', ['versioning' => true]);
@@ -97,11 +97,11 @@ class VersionBuilder
     public function buildPendingVersion(Version $pending, Version $previousVersion = null)
     {
         $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
-        $oldSnapshot   = $previousVersion ? $previousVersion->getSnapshot() : [];
+        $oldSnapshot = $previousVersion ? $previousVersion->getSnapshot() : [];
 
         $modification = $pending->getChangeset();
-        $snapshot     = $modification + $oldSnapshot;
-        $changeset    = $this->buildChangeset($oldSnapshot, $snapshot);
+        $snapshot = $modification + $oldSnapshot;
+        $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
 
         $pending->setVersion($versionNumber)
             ->setSnapshot($snapshot)

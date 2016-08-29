@@ -93,8 +93,8 @@ class CsvEncoder implements EncoderInterface
         }
         $this->firstExecution = false;
 
-        $this->delimiter  = is_string($context['delimiter']) ? $context['delimiter'] : ';';
-        $this->enclosure  = is_string($context['enclosure']) ? $context['enclosure'] : '"';
+        $this->delimiter = is_string($context['delimiter']) ? $context['delimiter'] : ';';
+        $this->enclosure = is_string($context['enclosure']) ? $context['enclosure'] : '"';
         $this->withHeader = is_bool($context['withHeader']) ? $context['withHeader'] : false;
     }
 

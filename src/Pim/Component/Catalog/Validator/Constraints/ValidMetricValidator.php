@@ -46,22 +46,22 @@ class ValidMetricValidator extends ConstraintValidator
     {
         if ($object instanceof AttributeInterface) {
             $familyProperty = 'metricFamily';
-            $unitProperty   = 'defaultMetricUnit';
+            $unitProperty = 'defaultMetricUnit';
         } elseif ($object instanceof MetricInterface && null !== $object->getData()) {
             $familyProperty = 'family';
-            $unitProperty   = 'unit';
+            $unitProperty = 'unit';
         } elseif ($object instanceof ProductValueInterface && null !== $object->getMetric()
             && (null !== $object->getMetric()->getUnit() || null !== $object->getMetric()->getData())
         ) {
             $object = $object->getMetric();
             $familyProperty = 'family';
-            $unitProperty   = 'unit';
+            $unitProperty = 'unit';
         } else {
             return;
         }
 
         $family = $this->propertyAccessor->getValue($object, $familyProperty);
-        $unit   = $this->propertyAccessor->getValue($object, $unitProperty);
+        $unit = $this->propertyAccessor->getValue($object, $unitProperty);
 
         if (!array_key_exists($family, $this->measures)) {
             $this->context->buildViolation($constraint->familyMessage)

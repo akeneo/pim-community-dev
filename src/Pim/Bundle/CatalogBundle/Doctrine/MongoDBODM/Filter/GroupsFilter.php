@@ -29,8 +29,8 @@ class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->objectIdResolver   = $objectIdResolver;
-        $this->supportedFields    = $supportedFields;
+        $this->objectIdResolver = $objectIdResolver;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 

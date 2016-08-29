@@ -28,9 +28,9 @@ class PathGeneratorSpec extends ObjectBehavior
     {
         return [
             'beValidPathInfo' => function ($subject, $expectedFilename) {
-                $uuid     = $subject['uuid'];
+                $uuid = $subject['uuid'];
                 $filename = $subject['file_name'];
-                $path     = $subject['path'];
+                $path = $subject['path'];
                 $pathname = $subject['path_name'];
 
                 return 40 === strlen($uuid) &&

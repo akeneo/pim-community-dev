@@ -34,7 +34,7 @@ class ProductAssociationWriter implements ItemWriterInterface, StepExecutionAwar
         BulkSaverInterface $bulkSaver,
         BulkObjectDetacherInterface $bulkDetacher
     ) {
-        $this->bulkSaver    = $bulkSaver;
+        $this->bulkSaver = $bulkSaver;
         $this->bulkDetacher = $bulkDetacher;
     }
 

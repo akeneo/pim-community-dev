@@ -40,8 +40,8 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
         BulkSaverInterface $saver,
         CompletenessGeneratorInterface $completeness
     ) {
-        $this->repository   = $repository;
-        $this->saver        = $saver;
+        $this->repository = $repository;
+        $this->saver = $saver;
         $this->completeness = $completeness;
     }
 
@@ -67,7 +67,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $locales        = $channel->getLocales();
+        $locales = $channel->getLocales();
         $updatedLocales = [];
 
         foreach ($locales as $locale) {
@@ -91,8 +91,8 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $oldLocales     = $this->repository->getDeletedLocalesForChannel($channel);
-        $newLocales     = $channel->getLocales();
+        $oldLocales = $this->repository->getDeletedLocalesForChannel($channel);
+        $newLocales = $channel->getLocales();
         $updatedLocales = [];
 
         foreach ($oldLocales as $locale) {

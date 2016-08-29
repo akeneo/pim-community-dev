@@ -59,12 +59,12 @@ class CompletenessManager
         ProductValueCompleteCheckerInterface $valueCompleteChecker,
         $class
     ) {
-        $this->familyRepository     = $familyRepository;
-        $this->channelRepository    = $channelRepository;
-        $this->localeRepository     = $localeRepository;
-        $this->generator            = $generator;
+        $this->familyRepository = $familyRepository;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
+        $this->generator = $generator;
         $this->valueCompleteChecker = $valueCompleteChecker;
-        $this->class                = $class;
+        $this->class = $class;
     }
 
     /**
@@ -166,7 +166,7 @@ class CompletenessManager
         };
 
         $channelCodes = $getCodes($channels);
-        $localeCodes  = $getCodes($locales);
+        $localeCodes = $getCodes($locales);
 
         sort($channelCodes);
         $channelTemplate = [
@@ -215,7 +215,7 @@ class CompletenessManager
     ) {
         $allCompletenesses = $product->getCompletenesses();
         foreach ($allCompletenesses as $completeness) {
-            $locale  = $completeness->getLocale();
+            $locale = $completeness->getLocale();
             $channel = $completeness->getChannel();
 
             $compLocaleCode = $locale->getCode();
@@ -260,10 +260,10 @@ class CompletenessManager
         array $locales
     ) {
         $attribute = $requirement->getAttribute();
-        $channel   = $requirement->getChannel();
+        $channel = $requirement->getChannel();
         foreach ($locales as $locale) {
-            $localeCode   = $locale->getCode();
-            $valueCode    = $this->getValueCode($attribute, $localeCode, $channel->getCode());
+            $localeCode = $locale->getCode();
+            $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
             $productValue = isset($productValues[$valueCode]) ? $productValues[$valueCode] : null;
             $isIncomplete = (null !== $productValue) &&
                 $this->valueCompleteChecker->supportsValue($productValue) &&

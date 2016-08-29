@@ -15,12 +15,12 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class ActionExtension extends AbstractExtension
 {
-    const METADATA_ACTION_KEY               = 'rowActions';
+    const METADATA_ACTION_KEY = 'rowActions';
     const METADATA_ACTION_CONFIGURATION_KEY = 'action_configuration';
 
-    const ACTION_KEY               = 'actions';
+    const ACTION_KEY = 'actions';
     const ACTION_CONFIGURATION_KEY = 'action_configuration';
-    const ACTION_TYPE_KEY          = 'type';
+    const ACTION_TYPE_KEY = 'type';
 
     /** @var ContainerInterface */
     protected $container;
@@ -42,9 +42,9 @@ class ActionExtension extends AbstractExtension
         SecurityFacade $securityFacade,
         TranslatorInterface $translator
     ) {
-        $this->container      = $container;
+        $this->container = $container;
         $this->securityFacade = $securityFacade;
-        $this->translator     = $translator;
+        $this->translator = $translator;
     }
 
     /**
@@ -99,12 +99,12 @@ class ActionExtension extends AbstractExtension
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         $actionsMetadata = [];
-        $actions         = $config->offsetGetOr(static::ACTION_KEY, []);
+        $actions = $config->offsetGetOr(static::ACTION_KEY, []);
 
         foreach ($actions as $name => $action) {
             $action = $this->getActionObject($name, $action);
             if ($action !== false) {
-                $metadata          = $action->getOptions()->toArray([], static::$excludeParams);
+                $metadata = $action->getOptions()->toArray([], static::$excludeParams);
                 $metadata['label'] = isset($metadata['label'])
                     ? $this->translator->trans($metadata['label']) : null;
 

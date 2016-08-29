@@ -30,7 +30,7 @@ class ChannelController
         NormalizerInterface $normalizer
     ) {
         $this->channelRepository = $channelRepository;
-        $this->normalizer        = $normalizer;
+        $this->normalizer = $normalizer;
     }
 
     /**

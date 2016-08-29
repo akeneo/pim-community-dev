@@ -75,7 +75,7 @@ class GroupNormalizer implements NormalizerInterface
         }
 
         $firstVersion = $this->versionManager->getOldestLogEntry($group);
-        $lastVersion  = $this->versionManager->getNewestLogEntry($group);
+        $lastVersion = $this->versionManager->getNewestLogEntry($group);
 
         $firstVersion = null !== $firstVersion ?
             $this->versionNormalizer->normalize($firstVersion, 'internal_api') :

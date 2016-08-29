@@ -11,8 +11,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class FilterType extends AbstractType
 {
-    const NAME         = 'oro_type_filter';
-    const TYPE_EMPTY   = 'empty';
+    const NAME = 'oro_type_filter';
+    const TYPE_EMPTY = 'empty';
     const TYPE_IN_LIST = 'in';
 
     /**
@@ -94,10 +94,10 @@ class FilterType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $children                     = $form->all();
-        $view->vars['value']['type']  = $children['type']->getViewData();
+        $children = $form->all();
+        $view->vars['value']['type'] = $children['type']->getViewData();
         $view->vars['value']['value'] = $children['value']->getViewData();
-        $view->vars['show_filter']    = $options['show_filter'];
+        $view->vars['show_filter'] = $options['show_filter'];
     }
 
     /**

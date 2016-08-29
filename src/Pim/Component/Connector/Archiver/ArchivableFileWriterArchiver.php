@@ -34,7 +34,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function __construct(ZipFilesystemFactory $factory, Filesystem $filesystem, JobRegistry $jobRegistry)
     {
-        $this->factory    = $factory;
+        $this->factory = $factory;
         $this->filesystem = $filesystem;
         $this->jobRegistry = $jobRegistry;
     }

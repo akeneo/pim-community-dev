@@ -31,7 +31,7 @@ class OrmSorterExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $columns      = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
+        $columns = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
         $isApplicable = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) === OrmDatasource::TYPE
             && is_array($columns);
 
@@ -54,7 +54,7 @@ class OrmSorterExtension extends AbstractExtension
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
-        $sorters   = $this->getSortersToApply($config);
+        $sorters = $this->getSortersToApply($config);
         $multisort = $config->offsetGetByPath(Configuration::MULTISORT_PATH, false);
         foreach ($sorters as $definition) {
             list($direction, $sorter) = $definition;
@@ -76,7 +76,7 @@ class OrmSorterExtension extends AbstractExtension
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         $multisort = $config->offsetGetByPath(Configuration::MULTISORT_PATH, false);
-        $sorters   = $this->getSorters($config);
+        $sorters = $this->getSorters($config);
 
         $proceed = [];
         foreach ($data->offsetGetOr('columns', []) as $key => $column) {
@@ -96,7 +96,7 @@ class OrmSorterExtension extends AbstractExtension
         $data->offsetAddToArray(MetadataObject::OPTIONS_KEY, ['multipleSorting' => $multisort]);
 
         $sortersState = $data->offsetGetByPath('[state][sorters]', []);
-        $sorters      = $this->getSortersToApply($config);
+        $sorters = $this->getSortersToApply($config);
         foreach ($sorters as $column => $definition) {
             list($direction) = $definition;
             $sortersState[$column] = $this->normalizeDirection($direction);
@@ -126,7 +126,7 @@ class OrmSorterExtension extends AbstractExtension
         $sorters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         foreach ($sorters as $name => $definition) {
-            $definition     = is_array($definition) ? $definition : [];
+            $definition = is_array($definition) ? $definition : [];
             $sorters[$name] = $definition;
         }
 
@@ -147,20 +147,20 @@ class OrmSorterExtension extends AbstractExtension
         $sorters = $this->getSorters($config);
 
         $defaultSorters = $config->offsetGetByPath(Configuration::DEFAULT_SORTERS_PATH, []);
-        $sortBy         = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ? : $defaultSorters;
+        $sortBy = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ? : $defaultSorters;
 
         // if default sorter was not specified, just take first sortable column
         if (!$sortBy && $sorters) {
-            $names           = array_keys($sorters);
+            $names = array_keys($sorters);
             $firstSorterName = reset($names);
-            $sortBy          = [$firstSorterName => self::DIRECTION_ASC];
+            $sortBy = [$firstSorterName => self::DIRECTION_ASC];
         }
 
         foreach ($sortBy as $column => $direction) {
             $sorter = isset($sorters[$column]) ? $sorters[$column] : false;
 
             if ($sorter !== false) {
-                $direction       = $this->normalizeDirection($direction);
+                $direction = $this->normalizeDirection($direction);
                 $result[$column] = [$direction, $sorter];
             }
         }

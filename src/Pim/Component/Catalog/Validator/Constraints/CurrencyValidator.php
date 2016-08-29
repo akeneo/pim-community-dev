@@ -31,7 +31,7 @@ class CurrencyValidator extends ConstraintValidator
     public function __construct(CurrencyRepositoryInterface $currencyRepository)
     {
         $this->currencyRepository = $currencyRepository;
-        $this->currencyCodes      = [];
+        $this->currencyCodes = [];
     }
 
     /**

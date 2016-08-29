@@ -41,9 +41,9 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectManager       = $om;
+        $this->objectManager = $om;
         $this->completenessManager = $completenessManager;
-        $this->eventDispatcher     = $eventDispatcher;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

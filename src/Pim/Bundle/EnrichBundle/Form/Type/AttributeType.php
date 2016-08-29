@@ -49,11 +49,11 @@ class AttributeType extends AbstractType
         $attributeClass,
         $attributeGroupClass
     ) {
-        $this->registry             = $registry;
-        $this->subscriber           = $subscriber;
-        $this->attributeClass       = $attributeClass;
+        $this->registry = $registry;
+        $this->subscriber = $subscriber;
+        $this->attributeClass = $attributeClass;
         $this->attributeTranslation = $attributeTranslation;
-        $this->attributeGroupClass  = $attributeGroupClass;
+        $this->attributeGroupClass = $attributeGroupClass;
     }
 
     /**

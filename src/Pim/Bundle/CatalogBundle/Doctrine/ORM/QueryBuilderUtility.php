@@ -22,8 +22,8 @@ class QueryBuilderUtility
      */
     public static function removeExtraParameters(QueryBuilder $qb)
     {
-        $parameters    = $qb->getParameters();
-        $dql           = $qb->getDQL();
+        $parameters = $qb->getParameters();
+        $dql = $qb->getDQL();
         foreach ($parameters as $parameter) {
             if (strpos($dql, ':'.$parameter->getName()) === false) {
                 $parameters->removeElement($parameter);
@@ -46,10 +46,10 @@ class QueryBuilderUtility
         $productMetadata = $em->getClassMetadata($entityName);
 
         $categoryMapping = $productMetadata->getAssociationMapping('categories');
-        $familyMapping   = $productMetadata->getAssociationMapping('family');
+        $familyMapping = $productMetadata->getAssociationMapping('family');
         $valueMetadata = self::getProductValueMetadata($em, $entityName);
 
-        $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
+        $attributeMapping = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $em->getClassMetadata($attributeMapping['targetEntity']);
 
         $familyMetadata = $em->getClassMetadata($familyMapping['targetEntity']);
@@ -80,7 +80,7 @@ class QueryBuilderUtility
     public static function getProductValueMetadata(EntityManager $em, $entityName)
     {
         $productMetadata = $em->getClassMetadata($entityName);
-        $valueMapping  = $productMetadata->getAssociationMapping('values');
+        $valueMapping = $productMetadata->getAssociationMapping('values');
 
         return $em->getClassMetadata($valueMapping['targetEntity']);
     }

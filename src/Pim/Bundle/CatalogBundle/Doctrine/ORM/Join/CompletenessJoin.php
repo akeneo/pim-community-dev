@@ -35,11 +35,11 @@ class CompletenessJoin
      */
     public function addJoins($completenessAlias, $locale, $scope)
     {
-        $rootAlias         = $this->qb->getRootAliases()[0];
-        $localeAlias       = $completenessAlias.'Locale';
-        $channelAlias      = $completenessAlias.'Channel';
+        $rootAlias = $this->qb->getRootAliases()[0];
+        $localeAlias = $completenessAlias.'Locale';
+        $channelAlias = $completenessAlias.'Channel';
 
-        $rootEntity          = $this->qb->getRootEntities()[0];
+        $rootEntity = $this->qb->getRootEntities()[0];
         $completenessMapping = $this->qb->getEntityManager()
             ->getClassMetadata($rootEntity)
             ->getAssociationMapping('completenesses');

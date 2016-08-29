@@ -36,7 +36,7 @@ class FieldFilterDumper implements DumperInterface
 
         $rows = [];
         foreach ($this->registry->getFieldFilters() as $filter) {
-            $class     = get_class($filter);
+            $class = get_class($filter);
             $operators = implode(', ', $filter->getOperators());
             foreach ($filter->getFields() as $field) {
                 $rows[] = [$field, $operators, $class];

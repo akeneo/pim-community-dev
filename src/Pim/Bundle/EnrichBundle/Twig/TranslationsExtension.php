@@ -37,8 +37,8 @@ class TranslationsExtension extends \Twig_Extension
         $asseticRoot
     ) {
         $this->commandLauncher = $commandLauncher;
-        $this->requestStack    = $requestStack;
-        $this->asseticRoot     = $asseticRoot;
+        $this->requestStack = $requestStack;
+        $this->asseticRoot = $asseticRoot;
     }
 
     /**

@@ -65,8 +65,8 @@ class IsAssociatedFilter extends BooleanFilter
         }
 
         $associationType = $this->getAssociationType();
-        $product         = $this->getCurrentProduct();
-        $productIds      = $this->getAssociatedProductIds($product, $associationType);
+        $product = $this->getCurrentProduct();
+        $productIds = $this->getAssociatedProductIds($product, $associationType);
         $operator = ($data['value'] === BooleanFilterType::TYPE_YES) ? 'IN' : 'NOT IN';
 
         $this->util->applyFilter($ds, 'id', $operator, $productIds);
@@ -117,7 +117,7 @@ class IsAssociatedFilter extends BooleanFilter
      */
     protected function getAssociatedProductIds(ProductInterface $product, AssociationTypeInterface $type)
     {
-        $productIds  = [];
+        $productIds = [];
         $association = $product->getAssociationForType($type);
 
         if ($association) {

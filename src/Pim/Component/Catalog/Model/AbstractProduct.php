@@ -84,10 +84,10 @@ abstract class AbstractProduct implements ProductInterface
     public function __construct()
     {
         $this->values = new ArrayCollection();
-        $this->categories     = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
-        $this->groups         = new ArrayCollection();
-        $this->associations   = new ArrayCollection();
+        $this->groups = new ArrayCollection();
+        $this->associations = new ArrayCollection();
     }
 
     /**

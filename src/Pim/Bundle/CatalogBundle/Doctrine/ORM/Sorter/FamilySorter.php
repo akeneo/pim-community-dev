@@ -40,10 +40,10 @@ class FamilySorter implements FieldSorterInterface
     {
         $rootAlias = $this->qb->getRootAlias();
 
-        $prefix    = 'sorter';
-        $field     = $prefix.'familyLabel';
-        $family    = $prefix.'family';
-        $trans     = $prefix.'familyTranslations';
+        $prefix = 'sorter';
+        $field = $prefix.'familyLabel';
+        $family = $prefix.'family';
+        $trans = $prefix.'familyTranslations';
 
         $this->qb
             ->leftJoin($rootAlias.'.family', $family)

@@ -22,7 +22,7 @@ class VersionProvider implements VersionProviderInterface
      */
     public function __construct($versionClass)
     {
-        $versionClass  = new \ReflectionClass($versionClass);
+        $versionClass = new \ReflectionClass($versionClass);
         $this->version = $versionClass->getConstant('VERSION');
         $this->edition = $versionClass->getConstant('EDITION');
     }

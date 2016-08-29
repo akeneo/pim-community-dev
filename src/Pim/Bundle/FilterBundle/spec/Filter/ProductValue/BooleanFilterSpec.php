@@ -93,14 +93,14 @@ class BooleanFilterSpec extends ObjectBehavior
         $formBuilder->get('type')->willReturn($typeFormBuilder);
         $typeFormBuilder->getOption('choices')->willReturn([$noChoice, $yesChoice]);
         $formView->children = ['value' => $fieldView, 'type' => $typeView];
-        $formView->vars     = ['populate_default' => true];
-        $fieldView->vars    = ['multiple' => true, 'choices' => [$yesChoice, $noChoice]];
-        $typeView->vars     = ['choices' => [$maybeChoice]];
+        $formView->vars = ['populate_default' => true];
+        $fieldView->vars = ['multiple' => true, 'choices' => [$yesChoice, $noChoice]];
+        $typeView->vars = ['choices' => [$maybeChoice]];
 
         $yesChoice->label = 'Yes';
         $yesChoice->value = 1;
-        $noChoice->label  = 'No';
-        $noChoice->value  = 0;
+        $noChoice->label = 'No';
+        $noChoice->value = 0;
 
         $this->getMetadata()->shouldReturn(
             [

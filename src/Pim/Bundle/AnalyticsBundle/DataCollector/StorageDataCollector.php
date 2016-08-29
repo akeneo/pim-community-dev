@@ -35,8 +35,8 @@ class StorageDataCollector implements DataCollectorInterface
     public function __construct($catalogStorage, $mongoServer = null, $mongoDatabase = null)
     {
         $this->catalogStorage = $catalogStorage;
-        $this->mongoServer    = $mongoServer;
-        $this->mongoDatabase  = $mongoDatabase;
+        $this->mongoServer = $mongoServer;
+        $this->mongoDatabase = $mongoDatabase;
     }
 
     /**

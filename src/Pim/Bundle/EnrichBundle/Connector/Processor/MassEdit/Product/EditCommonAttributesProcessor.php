@@ -47,10 +47,10 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         ObjectUpdaterInterface $productUpdater,
         ObjectDetacherInterface $productDetacher
     ) {
-        $this->validator         = $validator;
+        $this->validator = $validator;
         $this->productRepository = $productRepository;
-        $this->productUpdater    = $productUpdater;
-        $this->productDetacher   = $productDetacher;
+        $this->productUpdater = $productUpdater;
+        $this->productDetacher = $productDetacher;
     }
 
     /**

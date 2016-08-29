@@ -43,7 +43,7 @@ class MetricPresenter extends NumberPresenter
         }
 
         $amount = isset($value['data']) ? parent::present($value['data'], $options) : null;
-        $unit   = isset($value['unit'])
+        $unit = isset($value['unit'])
             ? $this->translatorProxy->trans($value['unit'], ['domain' => 'measures'])
             : null;
 

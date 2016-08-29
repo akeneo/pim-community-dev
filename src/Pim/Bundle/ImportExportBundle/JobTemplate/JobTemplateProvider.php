@@ -17,10 +17,10 @@ class JobTemplateProvider implements JobTemplateProviderInterface
     const DEFAULT_CREATE_TEMPLATE = 'PimImportExportBundle:%sProfile:create.html.twig';
 
     /** @staticvar string */
-    const DEFAULT_SHOW_TEMPLATE   = 'PimImportExportBundle:%sProfile:show.html.twig';
+    const DEFAULT_SHOW_TEMPLATE = 'PimImportExportBundle:%sProfile:show.html.twig';
 
     /** @staticvar string */
-    const DEFAULT_EDIT_TEMPLATE   = 'PimImportExportBundle:%sProfile:edit.html.twig';
+    const DEFAULT_EDIT_TEMPLATE = 'PimImportExportBundle:%sProfile:edit.html.twig';
 
     /** @var array */
     protected $jobTemplates = [];

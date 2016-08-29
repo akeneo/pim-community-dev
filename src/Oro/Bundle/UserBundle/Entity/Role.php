@@ -49,7 +49,7 @@ class Role extends BaseRole
      */
     public function __construct($role = '')
     {
-        $this->role  = $role;
+        $this->role = $role;
         $this->label = $role;
     }
 

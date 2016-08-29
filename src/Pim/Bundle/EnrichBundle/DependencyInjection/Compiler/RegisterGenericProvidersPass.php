@@ -36,7 +36,7 @@ class RegisterGenericProvidersPass implements CompilerPassInterface
      */
     public function __construct(ReferenceFactory $factory, $providerType)
     {
-        $this->factory      = $factory;
+        $this->factory = $factory;
         $this->providerType = $providerType;
     }
 

@@ -63,14 +63,14 @@ class ProductPdfRenderer implements RendererInterface
         $uploadDirectory,
         $customFont = null
     ) {
-        $this->templating      = $templating;
-        $this->template        = $template;
-        $this->pdfBuilder      = $pdfBuilder;
+        $this->templating = $templating;
+        $this->template = $template;
+        $this->pdfBuilder = $pdfBuilder;
         $this->uploadDirectory = $uploadDirectory;
-        $this->customFont      = $customFont;
-        $this->dataManager     = $dataManager;
-        $this->cacheManager    = $cacheManager;
-        $this->filterManager   = $filterManager;
+        $this->customFont = $customFont;
+        $this->dataManager = $dataManager;
+        $this->cacheManager = $cacheManager;
+        $this->filterManager = $filterManager;
     }
 
     /**
@@ -182,7 +182,7 @@ class ProductPdfRenderer implements RendererInterface
         foreach ($imageAttributes as $attribute) {
             $media = $product->getValue($attribute->getCode(), $locale, $scope)->getMedia();
             if (null !== $media && null !== $media->getKey()) {
-                $path   = $media->getKey();
+                $path = $media->getKey();
                 $filter = 'thumbnail';
                 if (!$this->cacheManager->isStored($path, $filter)) {
                     $binary = $this->dataManager->find($filter, $path);

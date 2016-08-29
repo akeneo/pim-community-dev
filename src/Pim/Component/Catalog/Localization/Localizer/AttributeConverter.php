@@ -33,7 +33,7 @@ class AttributeConverter implements AttributeConverterInterface
         LocalizerRegistryInterface $localizerRegistry,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->localizerRegistry   = $localizerRegistry;
+        $this->localizerRegistry = $localizerRegistry;
         $this->attributeRepository = $attributeRepository;
     }
 

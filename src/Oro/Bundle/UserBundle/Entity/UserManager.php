@@ -39,8 +39,8 @@ class UserManager implements UserProviderInterface
      */
     public function __construct($class, ObjectManager $om, EncoderFactoryInterface $encoderFactory)
     {
-        $this->class          = $class;
-        $this->om             = $om;
+        $this->class = $class;
+        $this->om = $om;
         $this->encoderFactory = $encoderFactory;
     }
 

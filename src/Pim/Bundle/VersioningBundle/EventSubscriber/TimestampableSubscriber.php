@@ -48,8 +48,8 @@ class TimestampableSubscriber implements EventSubscriber
             return;
         }
 
-        $relatedManager  = $this->registry->getManagerForClass($version->getResourceName());
-        $metadata        = $relatedManager->getClassMetadata($version->getResourceName());
+        $relatedManager = $this->registry->getManagerForClass($version->getResourceName());
+        $metadata = $relatedManager->getClassMetadata($version->getResourceName());
         $haveToBeUpdated = $metadata->getReflectionClass()
             ->implementsInterface('Pim\Component\Catalog\Model\TimestampableInterface');
 

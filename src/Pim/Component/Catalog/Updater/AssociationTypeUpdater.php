@@ -29,7 +29,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
      */
     public function __construct(IdentifiableObjectRepositoryInterface $assocTypeRepository)
     {
-        $this->accessor                  = PropertyAccess::createPropertyAccessor();
+        $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->associationTypeRepository = $assocTypeRepository;
     }
 

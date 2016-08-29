@@ -132,7 +132,7 @@ class EntitiesTypeSubscriber implements EventSubscriber
      */
     public function preFlush(PreFlushEventArgs $args)
     {
-        $dm  = $args->getDocumentManager();
+        $dm = $args->getDocumentManager();
         $uow = $dm->getUnitOfWork();
         foreach ($uow->getScheduledDocumentUpdates() as $document) {
             $metadata = $dm->getClassMetadata(get_class($document));

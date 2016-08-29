@@ -49,7 +49,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function computeNbResult()
     {
-        $qb    = clone $this->getQueryBuilder();
+        $qb = clone $this->getQueryBuilder();
         $query = $qb->setFirstResult(null)
             ->setMaxResults(null)
             ->resetDQLPart('orderBy')
