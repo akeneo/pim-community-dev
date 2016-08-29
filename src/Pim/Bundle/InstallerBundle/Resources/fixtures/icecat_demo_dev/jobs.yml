@@ -29,7 +29,19 @@ jobs:
             filePath:   /tmp/product.csv
             decimalSeparator: .
             filters:
-                data: []
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['master']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
                 structure:
                     scope: mobile
                     locales:
@@ -246,7 +258,19 @@ jobs:
             linesPerFile: 10000
             filePath:   /tmp/product.xlsx
             filters:
-                data: []
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['master']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
                 structure:
                     scope: mobile
                     locales:
