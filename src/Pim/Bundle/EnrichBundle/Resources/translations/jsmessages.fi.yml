@@ -207,7 +207,7 @@ pim_enrich:
             add: Lisää
             add_attributes: Lisää attribuutteja
           info:
-            search_attributes: Haku
+            search_attributes: Etsi
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
             attributes_selected: '{{ attributeCount }} attribuuttia valittu'
         categories:

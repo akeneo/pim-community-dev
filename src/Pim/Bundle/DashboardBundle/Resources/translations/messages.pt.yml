@@ -15,6 +15,7 @@ pim_dashboard:
       title: Últimas operações
       empty: Nenhuma operação encontrada
       status: Estado
+      date: Data
       type: Tipo
       profile name: Nome do Perfil
       details: Detalhes
