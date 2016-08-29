@@ -33,23 +33,27 @@ class Channel implements ArrayConverterInterface
      *
      * Before:
      * [
-     *      'code'         => 'ecommerce',
-     *      'label'        => 'Ecommerce',
-     *      'locales'      => 'en_US,fr_FR',
-     *      'currencies'   => 'EUR,USD',
-     *      'tree'         => 'master_catalog',
-     *      'color'        => 'orange'
+     *      'code'             => 'ecommerce',
+     *      'label'            => 'Ecommerce',
+     *      'locales'          => 'en_US,fr_FR',
+     *      'currencies'       => 'EUR,USD',
+     *      'tree'             => 'master_catalog',
+     *      'conversion_units' => 'weight: GRAM,maximum_scan_size:KILOMETER, display_diagonal:DEKAMETER, viewing_area: DEKAMETER'
      * ]
      *
      * After:
      * [
-     *     'code'   => 'ecommerce',
-     *     'label'  => 'Ecommerce',
-     *     'locales'    => ['en_US', 'fr_FR'],
-     *     'currencies' => ['EUR', 'USD'],
-     *     'tree'       => 'master_catalog',
-     *     'color'      => 'orange'
-     * ]
+     *     'code'             => 'ecommerce',
+     *     'label'            => 'Ecommerce',
+     *     'locales'          => ['en_US', 'fr_FR'],
+     *     'currencies'       => ['EUR', 'USD'],
+     *     'tree'             => 'master_catalog',
+     *     'conversion_units' => [
+     *          'weight' => 'GRAM',
+     *          'maximum_scan_size' => 'KILOMETER',
+     *          'display_diagonal' => 'DEKAMETER',
+     *          'viewing_area' => 'DEKAMETER'
+     *      ]
      */
     public function convert(array $item, array $options = [])
     {
@@ -73,12 +77,37 @@ class Channel implements ArrayConverterInterface
      */
     protected function convertField(array $convertedItem, $field, $data)
     {
-        if (in_array($field, ['code', 'color', 'tree', 'label'])) {
-            $convertedItem[$field] = $data;
-        } else {
-            $convertedItem[$field] = explode(',', $data);
+        switch ($field) {
+            case 'locales':
+            case 'currencies':
+                $convertedItem[$field] = explode(',', $data);
+                break;
+            case 'conversion_units':
+                $convertedItem[$field] = $this->convertUnits($data);
+                break;
+            default:
+                $convertedItem[$field] = $data;
+                break;
         }
 
         return $convertedItem;
+    }
+
+    /**
+     * @param array $flatUnits
+     *
+     * @return array
+     */
+    protected function convertUnits($flatUnits)
+    {
+        $units = explode(',', $flatUnits);
+
+        $formattedUnits = [];
+        foreach ($units as $unit) {
+            list($key, $value) = explode(':', trim($unit));
+            $formattedUnits[trim($key)] = trim($value);
+        }
+
+        return $formattedUnits;
     }
 }

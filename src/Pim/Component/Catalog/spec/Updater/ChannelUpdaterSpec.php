@@ -59,6 +59,9 @@ class ChannelUpdaterSpec extends ObjectBehavior
             'locales'    => ['en_US', 'fr_FR'],
             'currencies' => ['EUR', 'USD'],
             'tree'       => 'master_catalog',
+            'conversion_units' => [
+                'weight' => 'GRAM'
+            ],
         ];
 
         $channel->setCode('ecommerce')->shouldBeCalled();
@@ -68,14 +71,16 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $channel->setCategory($tree)->shouldBeCalled();
 
         $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
-        $channel->addLocale($enUS)->shouldBeCalled();
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
-        $channel->addLocale($frFR)->shouldBeCalled();
+        $channel->setLocales([$enUS, $frFR])->shouldBeCalled();
 
         $currencyRepository->findOneByIdentifier('EUR')->willReturn($eur);
-        $channel->addCurrency($eur)->shouldBeCalled();
         $currencyRepository->findOneByIdentifier('USD')->willReturn($usd);
-        $channel->addCurrency($usd)->shouldBeCalled();
+        $channel->setCurrencies([$eur, $usd])->shouldBeCalled();
+
+        $channel->setConversionUnits([
+            'weight' => 'GRAM'
+        ])->shouldBeCalled();
 
         $this->update($channel, $values, []);
     }

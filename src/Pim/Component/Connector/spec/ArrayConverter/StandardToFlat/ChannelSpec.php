@@ -25,7 +25,7 @@ class ChannelSpec extends ObjectBehavior
                 'GLD',
                 'PST'
             ],
-            'tree'       => 'master_catalog',
+            'category'   => ['code' => 'master_catalog'],
             'color'      => 'orange'
         ];
 

@@ -431,3 +431,183 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/association_type.xlsx
+    csv_channel_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_channel_export
+        label:     Demo CSV channel export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/channel.csv
+    csv_currency_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_currency_export
+        label:     Demo CSV currency export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/currency.csv
+    csv_locale_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_locale_export
+        label:     Demo CSV locale export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/locale.csv
+    csv_group_type_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_type_export
+        label:     Demo CSV group type export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/group_type.csv
+    csv_attribute_group_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_group_export
+        label:     Demo CSV attribute group export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/attribute_group.csv
+    csv_currency_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_currency_import
+        label:     Demo CSV currency import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_channel_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_channel_import
+        label:     Demo CSV channel import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_locale_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_locale_import
+        label:     Demo CSV locale import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_group_type_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_type_import
+        label:     Demo CSV group_type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_attribute_group_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_group_import
+        label:     Demo CSV attribute_group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    xlsx_currency_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_currency_import
+        label:     Demo XLSX currency import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_channel_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_channel_import
+        label:     Demo XLSX channel import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_locale_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_locale_import
+        label:     Demo XLSX locale import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_group_type_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_type_import
+        label:     Demo XLSX group_type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_attribute_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_group_import
+        label:     Demo XLSX attribute_group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_channel_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_channel_export
+        label:     Demo XLSX channel export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/channel.xlsx
+            linesPerFile: 10000
+    xlsx_currency_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_currency_export
+        label:     Demo XLSX currency export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/currency.xlsx
+            linesPerFile: 10000
+    xlsx_locale_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_locale_export
+        label:     Demo XLSX locale export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/locale.xlsx
+            linesPerFile: 10000
+    xlsx_group_type_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_type_export
+        label:     Demo XLSX group type export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/group_type.xlsx
+            linesPerFile: 10000
+    xlsx_attribute_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_group_export
+        label:     Demo XLSX attribute group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/attribute_group.xlsx
+            linesPerFile: 10000

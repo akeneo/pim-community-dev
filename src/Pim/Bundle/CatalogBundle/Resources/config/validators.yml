@@ -17,6 +17,7 @@ parameters:
     pim_catalog.validator.constraint.localizable_value.class:              Pim\Component\Catalog\Validator\Constraints\LocalizableValueValidator
     pim_catalog.validator.constraint.attribute_type_for_option.class:      Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOptionValidator
     pim_catalog.validator.constraint.is_reference_data_configured.class:   Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfiguredValidator
+    pim_catalog.validator.constraint.unique_variant_group_type.class:      Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupTypeValidator
     pim_catalog.validator.constraint_guesser.chained.class:                Pim\Component\Catalog\Validator\ChainedAttributeConstraintGuesser
     pim_catalog.validator.constraint_guesser.email.class:                  Pim\Component\Catalog\Validator\ConstraintGuesser\EmailGuesser
     pim_catalog.validator.constraint_guesser.file.class:                   Pim\Component\Catalog\Validator\ConstraintGuesser\FileGuesser
@@ -290,3 +291,10 @@ services:
             - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
             - '@validator.validator_factory'
             - []
+
+    pim_catalog.validator.constraint.unique_variant_group_type:
+        class: '%pim_catalog.validator.constraint.unique_variant_group_type.class%'
+        arguments:
+            - '@pim_catalog.repository.group_type'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_variant_group_type_validator }
