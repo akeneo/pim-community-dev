@@ -121,7 +121,7 @@ class IndexCreator
      *
      * @param LocaleInterface $locale
      */
-    public function ensureIndexesFromLocale(LocaleInterface $locale)
+    public function ensureIndexesFromLocale()
     {
         $completenessFields = $this->getCompletenessNormFields();
         $this->ensureIndexes($completenessFields);
@@ -141,7 +141,7 @@ class IndexCreator
      *
      * @param CurrencyInterface $currency
      */
-    public function ensureIndexesFromCurrency(CurrencyInterface $currency)
+    public function ensureIndexesFromCurrency()
     {
         $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
