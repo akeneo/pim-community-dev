@@ -1,7 +1,7 @@
 btn:
   post: Добавить новый комментарий
   reply: Ответить
-  cancel: Отменить
+  cancel: Отмена
 confirmation:
   remove:
     comment: Вы уверены, что хотите удалить комментарий?

@@ -66,7 +66,11 @@ pim_importexport:
       edit: "Modifier un profil d'export"
       remove: "Supprimer un profil d'export"
       launch: "Lancer un profil d'export"
+      property_edit: "Editer les propriétés générales d'un profil d'export"
+      property_show: "Montrer les propriétés générales d'un profil d'export"
       history: "Afficher l'historique du profil d'export"
+      content_edit: "Editer le contenu d'un profil d'export"
+      content_show: "Montrer le contenu d'un profil d'export"
     import_profile:
       index: "Visualiser la liste des profils d'import"
       create: "Créer un profil d'import"
@@ -149,7 +153,7 @@ Status: Statut
 Summary: Résumé
 Start: Début
 End: Fin
-set_attribute_requirements: "Configurer les exigences d'attributs de familles"
+set_attribute_requirements: Choisir les attributs requis
 COMPLETED: TERMINÉ
 STARTING: DÉMARRAGE EN COURS
 STARTED: DÉMARRÉ

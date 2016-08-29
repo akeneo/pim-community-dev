@@ -104,19 +104,9 @@ pim_connector:
     dateFormat:
       label: Формат даты
 job_execution.summary:
-  read: прочитано
   read_lines: прочитанных строк
-  write: записано
-  skip: пропущено
-  create: создано
   process: обработано
-  update_products: обновленных продуктов
   process_products: обработанных продуктов
-  skip_products: пропущенных продуктов
-  displayed: первые предупреждения отображены
-  charset_validator:
-    title: 'Кодировка файла:'
-    skipped: пропущено, расширение из белого списка
   product_skipped_no_diff: пропущен продукт (без разницы)
 batch_jobs:
   csv_product_export:

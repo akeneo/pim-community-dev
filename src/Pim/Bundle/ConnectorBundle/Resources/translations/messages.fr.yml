@@ -43,6 +43,7 @@ pim_connector:
       help: Définit si la première ligne du fichier contient les libellés des colonnes
     with_media:
       label: Exporter les fichiers et images
+      help: Exporter (ou pas) des fichiers produits et images
     filePath:
       label: Chemin du fichier
       help: Emplacement du fichier généré sur le serveur
@@ -127,8 +128,8 @@ job_execution.summary:
   skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:
-    title: 'Encodage du fichier:'
-    skipped: ignoré, extension dans la liste blanche
+    title: 'Encodage du fichier :'
+    skipped: Ignoré, extension dans la liste blanche
   product_skipped_no_diff: produit ignoré (aucune différence)
 batch_jobs:
   csv_product_export:
