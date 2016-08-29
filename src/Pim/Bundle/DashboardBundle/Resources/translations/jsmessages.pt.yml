@@ -3,6 +3,7 @@ pim_dashboard:
     last_operations:
       empty: Nenhuma operação encontrada
       status: Estado
+      date: Data
       type: Tipo
       profile name: Nome do Perfil
       details: Detalhes

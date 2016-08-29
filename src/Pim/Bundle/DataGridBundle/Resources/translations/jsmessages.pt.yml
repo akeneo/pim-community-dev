@@ -47,6 +47,7 @@ pim_datagrid:
     label: Colunas
     title: Seleção de colunas
     all_groups: Todos os grupos
+    search: Pesquisar
     clear: Limpar
     apply: Aplicar
     cancel: Cancelar
