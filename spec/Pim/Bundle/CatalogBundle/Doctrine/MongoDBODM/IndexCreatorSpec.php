@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -312,9 +313,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_attribute_indexes_when_saving_filterable_scopable_attribute(
         $namingUtility,
         $collection,
-        AttributeInterface $title,
-        ChannelInterface $ecommerce,
-        ChannelInterface $mobile
+        AttributeInterface $title
     ) {
         $title->getCode()->willReturn('title');
         $title->getBackendType()->willReturn('varchar');
@@ -368,7 +367,6 @@ class IndexCreatorSpec extends ObjectBehavior
     }
 
     function it_generates_attribute_indexes_when_saving_filterable_scopable_and_localizable_attribute(
-        $collection,
         $namingUtility,
         AttributeInterface $description
     ) {
@@ -492,6 +490,42 @@ class IndexCreatorSpec extends ObjectBehavior
             ->shouldBeCalled();
         $collection
             ->ensureIndex(['normalizedData.description' => 1], $indexOptions)
+            ->shouldBeCalled();
+
+        $this->ensureAttributesIndexes();
+    }
+
+    function it_generates_hashed_indexes_for_text_attribute(
+        $namingUtility,
+        $collection,
+        $managerRegistry,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $name,
+        AttributeInterface $description
+    ) {
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
+
+        $managerRegistry->getRepository('Attribute')->willReturn($attributeRepository);
+        $attributeRepository
+            ->findBy(['useableAsGridFilter' => true], ['created' => 'ASC'], 64)
+            ->willReturn([$name, $description]);
+        $name->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
+        $description->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_TEXT);
+
+        $namingUtility->getAttributeNormFields($name)->willReturn(['normalizedData.name']);
+        $namingUtility->getAttributeNormFields($description)->willReturn(['normalizedData.description']);
+
+        $indexOptions = [
+            'background' => true,
+            'w'          => 0
+        ];
+
+        $collection
+            ->ensureIndex(['normalizedData.name' => 1], $indexOptions)
+            ->shouldBeCalled();
+        $collection
+            ->ensureIndex(['normalizedData.description' => 'hashed'], $indexOptions)
             ->shouldBeCalled();
 
         $this->ensureAttributesIndexes();
