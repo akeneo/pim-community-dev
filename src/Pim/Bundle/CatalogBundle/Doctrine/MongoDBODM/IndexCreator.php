@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
@@ -22,6 +23,12 @@ class IndexCreator
 {
     /** @staticvar int 64 is the MongoDB limit for indexes (not configurable) */
     const MONGODB_INDEXES_LIMIT = 64;
+
+    /** @staticvar int the default MongoDB index type */
+    const ASCENDANT_INDEX_TYPE = 1;
+
+    /** @staticvar string the hash MongoDB index type */
+    const HASHED_INDEX_TYPE = 'hashed';
 
     /** @var ManagerRegistry */
     protected $managerRegistry;
@@ -69,17 +76,18 @@ class IndexCreator
     public function ensureIndexesFromAttribute(AttributeInterface $attribute)
     {
         $attributeFields = $this->namingUtility->getAttributeNormFields($attribute);
-
         switch ($attribute->getBackendType()) {
-            case "prices":
+            case AbstractAttributeType::BACKEND_TYPE_PRICE:
                 $attributeFields = $this->addFieldsFromPrices($attributeFields);
                 break;
-            case "option":
-            case "options":
+            case AbstractAttributeType::BACKEND_TYPE_OPTION:
+            case AbstractAttributeType::BACKEND_TYPE_OPTIONS:
                 $attributeFields = $this->addFieldsFromOption($attributeFields);
                 break;
         }
-        $this->ensureIndexes($attributeFields);
+
+        $indexType = $this->getIndexTypeFromAttribute($attribute);
+        $this->ensureIndexes($attributeFields, $indexType);
     }
 
     /**
@@ -111,7 +119,7 @@ class IndexCreator
      *
      * @param LocaleInterface $locale
      */
-    public function ensureIndexesFromLocale(LocaleInterface $locale)
+    public function ensureIndexesFromLocale()
     {
         $completenessFields = $this->getCompletenessNormFields();
         $this->ensureIndexes($completenessFields);
@@ -130,7 +138,7 @@ class IndexCreator
      *
      * @param CurrencyInterface $currency
      */
-    public function ensureIndexesFromCurrency(CurrencyInterface $currency)
+    public function ensureIndexesFromCurrency()
     {
         $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
@@ -251,12 +259,17 @@ class IndexCreator
 
     /**
      * Ensure indexes on the provided field names.
-     * Indexed are created in background and the PHP process does not
-     * wait for the completion of the index creation (w at 0)
      *
-     * @param array $fields
+     * Indexes are created in background and the PHP process does not wait for the completion of the index creation
+     * (w at 0)
+     *
+     * Index can be ascendant (1 by default) or "hashed" in case of long text to avoid the index key limit issue
+     * enforced in Mongo 2.6 (cf https://docs.mongodb.com/manual/reference/limits/#Index-Key-Limit)
+     *
+     * @param array      $fields
+     * @param int|string $indexType
      */
-    protected function ensureIndexes(array $fields)
+    protected function ensureIndexes(array $fields, $indexType = self::ASCENDANT_INDEX_TYPE)
     {
         $collection = $this->getCollection();
         $preNbIndexes = count($collection->getIndexInfo());
@@ -275,7 +288,7 @@ class IndexCreator
 
         foreach ($fields as $field) {
             $collection->ensureIndex(
-                [$field => 1],
+                [$field => $indexType],
                 $indexOptions
             );
         }
@@ -291,5 +304,16 @@ class IndexCreator
         $documentManager = $this->managerRegistry->getManagerForClass($this->productClass);
 
         return $documentManager->getDocumentCollection($this->productClass);
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return int|string
+     */
+    protected function getIndexTypeFromAttribute(AttributeInterface $attribute)
+    {
+        return (AbstractAttributeType::BACKEND_TYPE_TEXT === $attribute->getBackendType()) ?
+            self::HASHED_INDEX_TYPE : self::ASCENDANT_INDEX_TYPE;
     }
 }
