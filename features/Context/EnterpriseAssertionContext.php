@@ -80,7 +80,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     {
         $baksetItem = $this->getAssetBasketItem($code);
         $thumbnail  = $this->spin(function () use ($baksetItem) {
-             return $baksetItem->find('css', '.asset-thumbnail');
+            return $baksetItem->find('css', '.asset-thumbnail');
         }, 'Impossible to find the thumbnail');
 
         $this->checkThumbnailUrlForContext($thumbnail, $code, $channelCode, $localeCode);

@@ -129,7 +129,7 @@ define(
              *
              * @return {jQuery}
              */
-            _getViewAllBtn: function() {
+            _getViewAllBtn: function () {
                 return $('.view-all-btn[title="' + this.viewAllTitle + '"]');
             }
         });
