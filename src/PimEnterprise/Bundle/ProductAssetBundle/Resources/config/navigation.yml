@@ -21,7 +21,7 @@ oro_menu_config:
             aclResourceId: pimee_product_asset_mass_upload
             extras:
                 routes: ['/^pimee_product_asset_mass_upload$/']
-                position: 10
+                position: 20
 
     tree:
         application_menu:
