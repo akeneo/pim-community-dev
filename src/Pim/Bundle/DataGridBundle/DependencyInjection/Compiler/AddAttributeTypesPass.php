@@ -34,7 +34,7 @@ class AddAttributeTypesPass implements CompilerPassInterface
                     return strpos($paramKey, self::PARAM_PREFIX) === 0;
                 }
             );
-            $parameters     = array_intersect_key($allParameters, array_flip($parameterKeys));
+            $parameters = array_intersect_key($allParameters, array_flip($parameterKeys));
             $configurations = [];
             foreach ($parameters as $key => $configuration) {
                 $configurations[str_replace(self::PARAM_PREFIX, '', $key)] = $configuration;

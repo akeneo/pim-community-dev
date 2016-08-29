@@ -34,7 +34,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         parent::__construct($attrValidatorHelper);
 
         $this->attrOptionRepository = $attrOptionRepository;
-        $this->supportedTypes       = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**

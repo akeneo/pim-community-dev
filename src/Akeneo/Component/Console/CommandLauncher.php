@@ -27,7 +27,7 @@ class CommandLauncher
      */
     public function __construct($rootDir, $environment)
     {
-        $this->rootDir     = $rootDir;
+        $this->rootDir = $rootDir;
         $this->environment = $environment;
     }
 
@@ -67,7 +67,7 @@ class CommandLauncher
      */
     public function executeBackground($command, $logfile = null)
     {
-        $cmd  = $this->buildCommandString($command);
+        $cmd = $this->buildCommandString($command);
         if (null === $logfile) {
             $logfile = sprintf('%s/logs/command_execute.log', $this->rootDir);
         }
@@ -86,7 +86,7 @@ class CommandLauncher
      */
     public function executeForeground($command)
     {
-        $cmd    = $this->buildCommandString($command);
+        $cmd = $this->buildCommandString($command);
         $output = [];
         $status = null;
 

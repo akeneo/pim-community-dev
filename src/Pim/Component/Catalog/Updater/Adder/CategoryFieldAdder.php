@@ -27,7 +27,7 @@ class CategoryFieldAdder extends AbstractFieldAdder
         array $supportedFields
     ) {
         $this->categoryRepository = $categoryRepository;
-        $this->supportedFields    = $supportedFields;
+        $this->supportedFields = $supportedFields;
     }
 
     /**

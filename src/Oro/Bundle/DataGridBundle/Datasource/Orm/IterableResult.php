@@ -19,7 +19,7 @@ class IterableResult extends BufferedQueryResultIterator implements IterableResu
         parent::next();
 
         if (null !== $this->current) {
-            $result        = new ResultRecord($this->current);
+            $result = new ResultRecord($this->current);
             $this->current = $result;
         }
     }

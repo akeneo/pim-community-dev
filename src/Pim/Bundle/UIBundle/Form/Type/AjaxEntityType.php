@@ -57,9 +57,9 @@ class AjaxEntityType extends AbstractType
         TransformerFactoryInterface $transformerFactory,
         UserContext $userContext
     ) {
-        $this->router             = $router;
+        $this->router = $router;
         $this->transformerFactory = $transformerFactory;
-        $this->userContext        = $userContext;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -134,7 +134,7 @@ class AjaxEntityType extends AbstractType
         if ($options['multiple']) {
             $view->vars['attr']['data-multiple'] = 'multiple';
         }
-        $view->vars['attr']['class'] =  'pim-ajax-entity' .
+        $view->vars['attr']['class'] = 'pim-ajax-entity' .
             (isset($view->vars['attr']['class']) ? ' ' .  $view->vars['attr']['class'] : '');
 
         $view->vars['attr']['data-url'] = $options['url'];
@@ -174,11 +174,11 @@ class AjaxEntityType extends AbstractType
      */
     protected function getRouteParameters(Options $options)
     {
-        $parameters                 = $options['route_parameters'];
-        $parameters['class']        = $options['class'];
-        $parameters['dataLocale']   = $options['locale'];
+        $parameters = $options['route_parameters'];
+        $parameters['class'] = $options['class'];
+        $parameters['dataLocale'] = $options['locale'];
         $parameters['collectionId'] = $options['collection_id'];
-        $parameters['isCreatable']  = $options['is_creatable'];
+        $parameters['isCreatable'] = $options['is_creatable'];
 
         return $parameters;
     }

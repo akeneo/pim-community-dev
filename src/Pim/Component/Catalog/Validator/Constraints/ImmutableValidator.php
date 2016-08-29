@@ -41,13 +41,13 @@ class ImmutableValidator extends ConstraintValidator
     public function validate($entity, Constraint $constraint)
     {
         $originalData = $this->em->getUnitOfWork()->getOriginalEntityData($entity);
-        $accessor     = PropertyAccess::createPropertyAccessor();
+        $accessor = PropertyAccess::createPropertyAccessor();
 
         foreach ($constraint->properties as $property) {
             $originalValue = $accessor->getValue($originalData, sprintf('[%s]', $property));
             if (null !== $originalValue) {
-                $newValue          = $accessor->getValue($entity, $property);
-                $isDifferent       = $originalValue !== $newValue;
+                $newValue = $accessor->getValue($entity, $property);
+                $isDifferent = $originalValue !== $newValue;
                 $isDirtyCollection = ($newValue instanceof PersistentCollection && $newValue->isDirty());
                 if ($isDifferent || $isDirtyCollection) {
                     $this->context->buildViolation($constraint->message)

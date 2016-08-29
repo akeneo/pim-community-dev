@@ -28,7 +28,7 @@ class ChangeFamilyType extends AbstractType
      */
     public function __construct($dataClass, FamilyRepositoryInterface $familyRepository)
     {
-        $this->dataClass        = $dataClass;
+        $this->dataClass = $dataClass;
         $this->familyRepository = $familyRepository;
     }
 

@@ -62,7 +62,7 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
      */
     protected function checkCollectionFieldMapping($field)
     {
-        $metadata     = $this->om->getClassMetadata($this->productValueClass);
+        $metadata = $this->om->getClassMetadata($this->productValueClass);
         $fieldMapping = $metadata->getFieldMapping($field);
 
         if (!isset($fieldMapping['idsField'])) {
@@ -75,7 +75,7 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
             return false;
         }
 
-        $collectionField        = $fieldMapping['idsField'];
+        $collectionField = $fieldMapping['idsField'];
         $collectionFieldMapping = $metadata->getFieldMapping($collectionField);
 
         if (!isset($collectionFieldMapping['type']) || 'collection' !== $collectionFieldMapping['type']) {
@@ -100,7 +100,7 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
     protected function checkFieldMapping($field, $referenceDataType)
     {
         $expectedType = ConfigurationInterface::TYPE_MULTI === $referenceDataType ? 'entities' : 'entity';
-        $metadata     = $this->om->getClassMetadata($this->productValueClass);
+        $metadata = $this->om->getClassMetadata($this->productValueClass);
         $fieldMapping = $metadata->getFieldMapping($field);
 
         if (!isset($fieldMapping['type']) ||

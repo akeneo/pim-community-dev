@@ -10,16 +10,16 @@ use Symfony\Component\Yaml\Yaml;
 
 class ConfigurationPass implements CompilerPassInterface
 {
-    const BUILDER_SERVICE_ID        = 'oro_datagrid.datagrid.builder';
-    const PROVIDER_SERVICE_ID       = 'oro_datagrid.configuration.provider';
+    const BUILDER_SERVICE_ID = 'oro_datagrid.datagrid.builder';
+    const PROVIDER_SERVICE_ID = 'oro_datagrid.configuration.provider';
     const CHAIN_PROVIDER_SERVICE_ID = 'oro_datagrid.configuration.provider.chain';
 
-    const SOURCE_TAG_NAME    = 'oro_datagrid.datasource';
+    const SOURCE_TAG_NAME = 'oro_datagrid.datasource';
     const EXTENSION_TAG_NAME = 'oro_datagrid.extension';
-    const PROVIDER_TAG_NAME  = 'oro_datagrid.configuration.provider';
+    const PROVIDER_TAG_NAME = 'oro_datagrid.configuration.provider';
 
     const CONFIG_FILE_NAME = 'datagrid.yml';
-    const ROOT_PARAMETER   = 'datagrid';
+    const ROOT_PARAMETER = 'datagrid';
 
     /**
      * {@inheritDoc}
@@ -42,7 +42,7 @@ class ConfigurationPass implements CompilerPassInterface
             $config = [];
             foreach ($container->getParameter('kernel.bundles') as $bundle) {
                 $reflection = new \ReflectionClass($bundle);
-                $file       = dirname($reflection->getFilename()) . '/Resources/config/' . self::CONFIG_FILE_NAME;
+                $file = dirname($reflection->getFilename()) . '/Resources/config/' . self::CONFIG_FILE_NAME;
                 if (is_file($file)) {
                     $bundleConfig = Yaml::parse(file_get_contents(realpath($file)));
                     if (isset($bundleConfig[self::ROOT_PARAMETER]) && is_array($bundleConfig[self::ROOT_PARAMETER])) {

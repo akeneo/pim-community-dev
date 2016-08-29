@@ -53,9 +53,9 @@ class AddToVariantGroupType extends AbstractType
         $dataClass
     ) {
         $this->prodMassActionRepo = $prodMassActionRepo;
-        $this->groupClassName     = $groupClassName;
-        $this->dataClass          = $dataClass;
-        $this->groupRepository    = $groupRepository;
+        $this->groupClassName = $groupClassName;
+        $this->dataClass = $dataClass;
+        $this->groupRepository = $groupRepository;
 
         $this->skippedObjects = [];
     }

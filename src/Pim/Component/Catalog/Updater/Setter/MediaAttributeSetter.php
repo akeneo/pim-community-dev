@@ -44,8 +44,8 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
 
-        $this->storer         = $storer;
-        $this->repository     = $repository;
+        $this->storer = $storer;
+        $this->repository = $repository;
         $this->supportedTypes = $supportedTypes;
     }
 

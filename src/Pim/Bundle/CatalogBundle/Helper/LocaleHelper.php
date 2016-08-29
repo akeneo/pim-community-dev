@@ -33,7 +33,7 @@ class LocaleHelper
      */
     public function __construct(UserContext $userContext, LocaleRepositoryInterface $localeRepository)
     {
-        $this->userContext   = $userContext;
+        $this->userContext = $userContext;
         $this->localeRepository = $localeRepository;
     }
 
@@ -164,7 +164,7 @@ class LocaleHelper
      */
     public function getActivatedLocaleChoices()
     {
-        $translateIn  = $this->getCurrentLocaleCode();
+        $translateIn = $this->getCurrentLocaleCode();
         $activeCodes = $this->localeRepository->getActivatedLocaleCodes();
 
         $results = [];

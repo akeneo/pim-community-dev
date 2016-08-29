@@ -30,7 +30,7 @@ class AssociationTypeController
         NormalizerInterface $normalizer
     ) {
         $this->associationTypeRepo = $associationTypeRepo;
-        $this->normalizer          = $normalizer;
+        $this->normalizer = $normalizer;
     }
 
     /**

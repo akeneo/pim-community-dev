@@ -40,10 +40,10 @@ class ProductTemplateApplier implements ProductTemplateApplierInterface
         ObjectDetacherInterface $productDetacher,
         BulkSaverInterface $productSaver
     ) {
-        $this->templateUpdater  = $templateUpdater;
+        $this->templateUpdater = $templateUpdater;
         $this->productValidator = $productValidator;
-        $this->productDetacher  = $productDetacher;
-        $this->productSaver     = $productSaver;
+        $this->productDetacher = $productDetacher;
+        $this->productSaver = $productSaver;
     }
 
     /**
@@ -55,7 +55,7 @@ class ProductTemplateApplier implements ProductTemplateApplierInterface
 
         $results = $this->validateProducts($products);
         $validProducts = $results['products'];
-        $violations    = $results['violations'];
+        $violations = $results['violations'];
 
         $this->productSaver->saveAll($validProducts);
 

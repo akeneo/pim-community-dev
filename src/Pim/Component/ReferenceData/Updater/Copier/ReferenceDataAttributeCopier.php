@@ -33,7 +33,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
         $this->supportedFromTypes = $supportedFromTypes;
-        $this->supportedToTypes   = $supportedToTypes;
+        $this->supportedToTypes = $supportedToTypes;
     }
 
     /**
@@ -46,11 +46,11 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         AttributeInterface $toAttribute,
         array $options = []
     ) {
-        $options    = $this->resolver->resolve($options);
+        $options = $this->resolver->resolve($options);
         $fromLocale = $options['from_locale'];
-        $toLocale   = $options['to_locale'];
-        $fromScope  = $options['from_scope'];
-        $toScope    = $options['to_scope'];
+        $toLocale = $options['to_locale'];
+        $fromScope = $options['from_scope'];
+        $toScope = $options['to_scope'];
 
         $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'reference data');
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'reference data');
@@ -72,8 +72,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
      */
     public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
-        $supportsFrom  = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo    = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
+        $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
         $referenceData = ($fromAttribute->getReferenceDataName() === $toAttribute->getReferenceDataName());
 
         return $supportsFrom && $supportsTo && $referenceData;

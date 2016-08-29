@@ -44,8 +44,8 @@ class ProductValuesDenormalizer implements DenormalizerInterface
         $valueClass
     ) {
         $this->valueDenormalizer = $valueDenormalizer;
-        $this->fieldExtractor  = $fieldExtractor;
-        $this->valueClass        = $valueClass;
+        $this->fieldExtractor = $fieldExtractor;
+        $this->valueClass = $valueClass;
     }
 
     /**

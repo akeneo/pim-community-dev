@@ -28,7 +28,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
      */
     public function __construct(EntityManager $em, $entityName)
     {
-        $this->em         = $em;
+        $this->em = $em;
         $this->entityName = $entityName;
     }
 

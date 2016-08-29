@@ -8,11 +8,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    const DEFAULT_TYPE          = 'field';
+    const DEFAULT_TYPE = 'field';
     const DEFAULT_FRONTEND_TYPE = PropertyInterface::TYPE_STRING;
 
-    const TYPE_KEY       = 'type';
-    const COLUMNS_KEY    = 'columns';
+    const TYPE_KEY = 'type';
+    const COLUMNS_KEY = 'columns';
     const PROPERTIES_KEY = 'properties';
 
     /** @var array */
@@ -27,7 +27,7 @@ class Configuration implements ConfigurationInterface
     public function __construct($types, $root)
     {
         $this->types = $types;
-        $this->root  = $root;
+        $this->root = $root;
     }
 
     /**

@@ -126,23 +126,23 @@ class FamilyController
         $attributeClass,
         $familyClass
     ) {
-        $this->request           = $request;
-        $this->templating        = $templating;
-        $this->router            = $router;
-        $this->formFactory       = $formFactory;
-        $this->translator        = $translator;
-        $this->doctrine          = $doctrine;
+        $this->request = $request;
+        $this->templating = $templating;
+        $this->router = $router;
+        $this->formFactory = $formFactory;
+        $this->translator = $translator;
+        $this->doctrine = $doctrine;
         $this->channelRepository = $channelRepository;
-        $this->familyFactory     = $familyFactory;
-        $this->familyHandler     = $familyHandler;
-        $this->familyForm        = $familyForm;
-        $this->attributeClass    = $attributeClass;
-        $this->familySaver       = $familySaver;
-        $this->familyRemover     = $familyRemover;
-        $this->familyClass       = $familyClass;
-        $this->attributeRepo     = $attributeRepo;
-        $this->familyRepository  = $familyRepository;
-        $this->validator         = $validator;
+        $this->familyFactory = $familyFactory;
+        $this->familyHandler = $familyHandler;
+        $this->familyForm = $familyForm;
+        $this->attributeClass = $attributeClass;
+        $this->familySaver = $familySaver;
+        $this->familyRemover = $familyRemover;
+        $this->familyClass = $familyClass;
+        $this->attributeRepo = $attributeRepo;
+        $this->familyRepository = $familyRepository;
+        $this->validator = $validator;
     }
 
     /**
@@ -290,7 +290,7 @@ class FamilyController
         }
 
         $availableAttributes = new AvailableAttributes();
-        $attributesForm      = $this->getAvailableAttributesForm(
+        $attributesForm = $this->getAvailableAttributesForm(
             $family->getAttributes()->toArray(),
             $availableAttributes
         );

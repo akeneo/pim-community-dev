@@ -55,10 +55,10 @@ class ChannelType extends AbstractType
         $dataClass
     ) {
         $this->localeRepository = $localeRepository;
-        $this->localeHelper     = $localeHelper;
+        $this->localeHelper = $localeHelper;
         $this->categoryProvider = $categoryProvider;
-        $this->categoryClass    = $categoryClass;
-        $this->dataClass        = $dataClass;
+        $this->categoryClass = $categoryClass;
+        $this->dataClass = $dataClass;
     }
 
     /**

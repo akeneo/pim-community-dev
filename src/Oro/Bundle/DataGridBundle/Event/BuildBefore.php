@@ -26,7 +26,7 @@ class BuildBefore extends Event implements GridEventInterface
     public function __construct(DatagridInterface $datagrid, DatagridConfiguration $config)
     {
         $this->datagrid = $datagrid;
-        $this->config   = $config;
+        $this->config = $config;
     }
 
     /**

@@ -40,5 +40,5 @@ interface PowerFamilyInterface
     /**
      * @staticvar string
      */
-    const WATT     = 'WATT';
+    const WATT = 'WATT';
 }

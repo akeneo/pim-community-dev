@@ -48,10 +48,10 @@ class JobParametersType extends AbstractType implements DataMapperInterface
         JobRegistry $jobRegistry,
         $jobParamsClass
     ) {
-        $this->configProviderRegistry     = $configProviderRegistry;
+        $this->configProviderRegistry = $configProviderRegistry;
         $this->constraintProviderRegistry = $constraintProviderRegistry;
-        $this->jobRegistry                = $jobRegistry;
-        $this->jobParamsClass             = $jobParamsClass;
+        $this->jobRegistry = $jobRegistry;
+        $this->jobParamsClass = $jobParamsClass;
     }
 
     /**
@@ -64,18 +64,18 @@ class JobParametersType extends AbstractType implements DataMapperInterface
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($factory) {
-                $form   = $event->getForm();
+                $form = $event->getForm();
                 $jobInstance = $form->getRoot()->getData();
                 if (null === $jobInstance->getId()) {
                     return;
                 }
 
-                $job                   = $this->jobRegistry->get($jobInstance->getJobName());
-                $configProvider        = $this->configProviderRegistry->get($job);
-                $configs               = $configProvider->getFormConfiguration();
-                $constraintProvider    = $this->constraintProviderRegistry->get($job);
+                $job = $this->jobRegistry->get($jobInstance->getJobName());
+                $configProvider = $this->configProviderRegistry->get($job);
+                $configs = $configProvider->getFormConfiguration();
+                $constraintProvider = $this->constraintProviderRegistry->get($job);
                 $constraintsCollection = $constraintProvider->getConstraintCollection();
-                $fieldConstraints      = $constraintsCollection->fields;
+                $fieldConstraints = $constraintsCollection->fields;
 
                 foreach ($configs as $parameter => $config) {
                     if (isset($config['system']) && true === $config['system']) {
@@ -114,9 +114,9 @@ class JobParametersType extends AbstractType implements DataMapperInterface
                 if (null === $jobInstance->getId()) {
                     return;
                 }
-                $job            = $this->jobRegistry->get($jobInstance->getJobName());
+                $job = $this->jobRegistry->get($jobInstance->getJobName());
                 $configProvider = $this->configProviderRegistry->get($job);
-                $configs        = $configProvider->getFormConfiguration();
+                $configs = $configProvider->getFormConfiguration();
 
                 $data = $event->getData();
 

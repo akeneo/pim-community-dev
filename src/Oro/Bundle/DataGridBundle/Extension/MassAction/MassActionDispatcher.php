@@ -31,8 +31,8 @@ class MassActionDispatcher
 
     public function __construct(ContainerInterface $container, Manager $manager, RequestParameters $requestParams)
     {
-        $this->container     = $container;
-        $this->manager       = $manager;
+        $this->container = $container;
+        $this->manager = $manager;
         $this->requestParams = $requestParams;
     }
 
@@ -74,11 +74,11 @@ class MassActionDispatcher
         $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
 
         // create mediator
-        $massAction     = $this->getMassActionByName($actionName, $datagrid);
-        $identifier     = $this->getIdentifierField($massAction);
-        $qb             = $this->getDatagridQuery($datagrid, $identifier, $inset, $values);
+        $massAction = $this->getMassActionByName($actionName, $datagrid);
+        $identifier = $this->getIdentifierField($massAction);
+        $qb = $this->getDatagridQuery($datagrid, $identifier, $inset, $values);
         $resultIterator = $this->getResultIterator($qb);
-        $mediator       = new MassActionMediator($massAction, $datagrid, $resultIterator, $data);
+        $mediator = new MassActionMediator($massAction, $datagrid, $resultIterator, $data);
 
         // perform mass action
         $handle = $this->getMassActionHandler($massAction);

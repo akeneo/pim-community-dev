@@ -34,7 +34,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     public function __construct(FilterManager $filterManager, CacheManager $cacheManager, array $defaultImages)
     {
         $this->filterManager = $filterManager;
-        $this->cacheManager  = $cacheManager;
+        $this->cacheManager = $cacheManager;
 
         $resolver = new OptionsResolver();
         $this->configureDefaultImagesOptions($resolver);

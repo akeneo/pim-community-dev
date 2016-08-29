@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 class AssociationColumnsResolver
 {
     /** @var string */
-    const GROUP_ASSOCIATION_SUFFIX   = '-groups';
+    const GROUP_ASSOCIATION_SUFFIX = '-groups';
 
     /** @var string */
     const PRODUCT_ASSOCIATION_SUFFIX = '-products';

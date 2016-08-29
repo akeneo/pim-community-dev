@@ -36,7 +36,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         LocaleProviderInterface $localeProvider,
         TranslatedLabelsProviderInterface $categoryRepository
     ) {
-        $this->localeProvider     = $localeProvider;
+        $this->localeProvider = $localeProvider;
         $this->categoryRepository = $categoryRepository;
     }
 

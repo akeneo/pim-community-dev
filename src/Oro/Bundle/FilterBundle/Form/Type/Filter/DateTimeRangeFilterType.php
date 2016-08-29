@@ -11,9 +11,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class DateTimeRangeFilterType extends AbstractType
 {
-    const TYPE_BETWEEN     = DateRangeFilterType::TYPE_BETWEEN;
+    const TYPE_BETWEEN = DateRangeFilterType::TYPE_BETWEEN;
     const TYPE_NOT_BETWEEN = DateRangeFilterType::TYPE_NOT_BETWEEN;
-    const NAME             = 'oro_type_datetime_range_filter';
+    const NAME = 'oro_type_datetime_range_filter';
 
     /**
      * @var TranslatorInterface
@@ -63,7 +63,7 @@ class DateTimeRangeFilterType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $widgetOptions                = ['firstDay' => 0];
+        $widgetOptions = ['firstDay' => 0];
         $view->vars['widget_options'] = array_merge($widgetOptions, $options['widget_options']);
     }
 }

@@ -32,7 +32,7 @@ abstract class AbstractUserHandler
      */
     public function __construct(FormInterface $form, Request $request, UserManager $manager)
     {
-        $this->form    = $form;
+        $this->form = $form;
         $this->request = $request;
         $this->manager = $manager;
     }

@@ -66,13 +66,13 @@ class CompletenessController
         $storageDriver
     ) {
         $this->completenessManager = $completenessManager;
-        $this->productRepository   = $productRepository;
-        $this->channelRepository   = $channelRepository;
-        $this->userContext         = $userContext;
-        $this->compNormalizer      = $compNormalizer;
-        $this->collectionFilter    = $collectionFilter;
-        $this->productManager      = $productManager;
-        $this->storageDriver       = $storageDriver;
+        $this->productRepository = $productRepository;
+        $this->channelRepository = $channelRepository;
+        $this->userContext = $userContext;
+        $this->compNormalizer = $compNormalizer;
+        $this->collectionFilter = $collectionFilter;
+        $this->productManager = $productManager;
+        $this->storageDriver = $storageDriver;
     }
 
     /**
@@ -98,7 +98,7 @@ class CompletenessController
         }
 
         $channels = $this->channelRepository->getFullChannels();
-        $locales  = $this->userContext->getUserLocales();
+        $locales = $this->userContext->getUserLocales();
 
         $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
 

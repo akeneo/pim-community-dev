@@ -37,8 +37,8 @@ class AjaxReferenceDataTransformer implements DataTransformerInterface
         array $options
     ) {
         $this->repository = $repository;
-        $this->renderer   = $renderer;
-        $this->options    = $options;
+        $this->renderer = $renderer;
+        $this->options = $options;
     }
 
     /**

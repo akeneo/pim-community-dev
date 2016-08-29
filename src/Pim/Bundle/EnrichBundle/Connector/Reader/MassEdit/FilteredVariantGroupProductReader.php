@@ -80,11 +80,11 @@ class FilteredVariantGroupProductReader extends ProductReader
             $generateCompleteness
         );
 
-        $this->paginatorFactory  = $paginatorFactory;
-        $this->objectDetacher    = $objectDetacher;
-        $this->groupRepository   = $groupRepository;
+        $this->paginatorFactory = $paginatorFactory;
+        $this->objectDetacher = $objectDetacher;
+        $this->groupRepository = $groupRepository;
         $this->productRepository = $productRepository;
-        $this->translator        = $translator;
+        $this->translator = $translator;
     }
 
     /**

@@ -9,9 +9,9 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_DATASOURCE_TYPE = 'array';
-    const TEST_DATAGRID_NAME   = 'testGrid';
-    const TEST_ACL_NAME        = 'testACL';
-    const TEST_ACL_DESCRIPTOR  = 'testACLDescriptor';
+    const TEST_DATAGRID_NAME = 'testGrid';
+    const TEST_ACL_NAME = 'testACL';
+    const TEST_ACL_DESCRIPTOR = 'testACLDescriptor';
 
     const DEFAULT_DATAGRID_CLASS = 'Oro\Bundle\DataGridBundle\Datagrid\Datagrid';
     const DEFAULT_ACCEPTOR_CLASS = 'Oro\Bundle\DataGridBundle\Extension\Acceptor';
@@ -28,7 +28,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
-        $this->securityFacade  = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()->getMock();
     }
 
@@ -40,8 +40,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testRegisterExtensions()
     {
-        $builder  = $this->getBuilderMock();
-        $extMock  = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface');
+        $builder = $this->getBuilderMock();
+        $extMock = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface');
         $ext2Mock = clone $extMock;
         $ext3Mock = clone $extMock;
 
@@ -55,7 +55,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testRegisterDatasource()
     {
-        $builder        = $this->getBuilderMock();
+        $builder = $this->getBuilderMock();
         $datasourceMock = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface');
 
         $builder->registerDatasource(self::TEST_DATASOURCE_TYPE, $datasourceMock);
@@ -102,7 +102,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function buildProvider()
     {
         $stubDatagridClass = 'Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\DatagridClass';
-        $baseEventList     = [
+        $baseEventList = [
             ['oro_datagrid.datgrid.build.before', 'Oro\Bundle\DataGridBundle\Event\BuildBefore'],
             [
                 sprintf('oro_datagrid.datgrid.build.before.%s', self::TEST_DATAGRID_NAME),
@@ -115,8 +115,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $extToAdd    = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface');
-        $extToAdd2   = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface');
+        $extToAdd = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface');
+        $extToAdd2 = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface');
         $extNotToAdd = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface');
 
         $extToAdd->expects($this->any())->method('isApplicable')->will($this->returnValue(true));
@@ -173,7 +173,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $processCallExpects = 0
     ) {
         $builder = $this->getBuilderMock(['isResourceGranted']);
-        $grid    = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface');
+        $grid = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface');
 
         foreach ($datasources as $type => $obj) {
             $builder->registerDatasource($type, $obj);

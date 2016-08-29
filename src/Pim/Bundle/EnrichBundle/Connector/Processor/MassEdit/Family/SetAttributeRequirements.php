@@ -38,8 +38,8 @@ class SetAttributeRequirements extends AbstractProcessor
         AttributeRequirementFactory $factory
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->channelRepository   = $channelRepository;
-        $this->factory             = $factory;
+        $this->channelRepository = $channelRepository;
+        $this->factory = $factory;
     }
 
     /**

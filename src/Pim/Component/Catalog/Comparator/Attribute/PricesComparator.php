@@ -37,7 +37,7 @@ class PricesComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        $default   = ['locale' => null, 'scope' => null, 'data' => []];
+        $default = ['locale' => null, 'scope' => null, 'data' => []];
         $originals = array_merge($default, $originals);
 
         $originalPrices = [];

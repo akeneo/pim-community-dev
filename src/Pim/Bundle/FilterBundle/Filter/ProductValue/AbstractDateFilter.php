@@ -28,8 +28,8 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
         }
 
         $dateStartValue = $data['date_start'];
-        $dateEndValue   = $data['date_end'];
-        $type           = $data['type'];
+        $dateEndValue = $data['date_end'];
+        $type = $data['type'];
 
         $this->applyFilterByAttributeDependingOnType(
             $type,

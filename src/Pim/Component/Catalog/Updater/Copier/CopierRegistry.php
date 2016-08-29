@@ -52,7 +52,7 @@ class CopierRegistry implements CopierRegistryInterface
     public function getCopier($fromProperty, $toProperty)
     {
         $fromAttribute = $this->getAttribute($fromProperty);
-        $toAttribute   = $this->getAttribute($toProperty);
+        $toAttribute = $this->getAttribute($toProperty);
         if (null !== $fromAttribute && null !== $toAttribute) {
             $copier = $this->getAttributeCopier($fromAttribute, $toAttribute);
         } else {

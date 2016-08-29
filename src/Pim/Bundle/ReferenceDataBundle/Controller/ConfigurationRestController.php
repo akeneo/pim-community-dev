@@ -27,7 +27,7 @@ class ConfigurationRestController
      */
     public function __construct(ConfigurationRegistryInterface $registry, NormalizerInterface $normalizer)
     {
-        $this->registry   = $registry;
+        $this->registry = $registry;
         $this->normalizer = $normalizer;
     }
 

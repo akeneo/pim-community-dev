@@ -8,12 +8,12 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class TextFilterType extends AbstractType
 {
-    const TYPE_CONTAINS     = 1;
+    const TYPE_CONTAINS = 1;
     const TYPE_NOT_CONTAINS = 2;
-    const TYPE_EQUAL        = 3;
-    const TYPE_STARTS_WITH  = 4;
-    const TYPE_ENDS_WITH    = 5;
-    const NAME              = 'oro_type_text_filter';
+    const TYPE_EQUAL = 3;
+    const TYPE_STARTS_WITH = 4;
+    const TYPE_ENDS_WITH = 5;
+    const NAME = 'oro_type_text_filter';
 
     /**
      * @var TranslatorInterface

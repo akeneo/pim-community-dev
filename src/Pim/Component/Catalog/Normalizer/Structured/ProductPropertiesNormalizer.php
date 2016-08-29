@@ -71,12 +71,12 @@ class ProductPropertiesNormalizer implements NormalizerInterface
             $data['resource'] = $context['resource'];
         }
 
-        $data[self::FIELD_FAMILY]        = null !== $product->getFamily() ? $product->getFamily()->getCode() : null;
-        $data[self::FIELD_GROUPS]        = $this->getGroups($product);
+        $data[self::FIELD_FAMILY] = null !== $product->getFamily() ? $product->getFamily()->getCode() : null;
+        $data[self::FIELD_GROUPS] = $this->getGroups($product);
         $data[self::FIELD_VARIANT_GROUP] = null !== $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
-        $data[self::FIELD_CATEGORY]      = $product->getCategoryCodes();
-        $data[self::FIELD_ENABLED]       = $product->isEnabled();
-        $data[self::FIELD_VALUES]        = $this->normalizeValues($product->getValues(), $format, $context);
+        $data[self::FIELD_CATEGORY] = $product->getCategoryCodes();
+        $data[self::FIELD_ENABLED] = $product->isEnabled();
+        $data[self::FIELD_VALUES] = $this->normalizeValues($product->getValues(), $format, $context);
 
         return $data;
     }

@@ -19,7 +19,7 @@ interface PressureFamilyInterface
     /**
      * @staticvar string
      */
-    const PASCAL      = 'PASCAL';
+    const PASCAL = 'PASCAL';
 
     /**
      * @staticvar string
@@ -29,25 +29,25 @@ interface PressureFamilyInterface
     /**
      * @staticvar string
      */
-    const MMHG        = 'MMHG';
+    const MMHG = 'MMHG';
 
     /**
      * @staticvar string
      */
-    const ATM         = 'ATM';
+    const ATM = 'ATM';
 
     /**
      * @staticvar string
      */
-    const BAR         = 'BAR';
+    const BAR = 'BAR';
 
     /**
      * @staticvar string
      */
-    const MILLIBAR    = 'MILLIBAR';
+    const MILLIBAR = 'MILLIBAR';
 
     /**
      * @staticvar string
      */
-    const TORR        = 'TORR';
+    const TORR = 'TORR';
 }

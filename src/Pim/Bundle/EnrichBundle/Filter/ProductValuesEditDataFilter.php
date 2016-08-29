@@ -54,10 +54,10 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
         LocaleRepositoryInterface $localeRepository,
         ChannelRepositoryInterface $channelRepository
     ) {
-        $this->objectFilter        = $objectFilter;
+        $this->objectFilter = $objectFilter;
         $this->attributeRepository = $attributeRepository;
-        $this->localeRepository    = $localeRepository;
-        $this->channelRepository   = $channelRepository;
+        $this->localeRepository = $localeRepository;
+        $this->channelRepository = $channelRepository;
     }
 
     /**

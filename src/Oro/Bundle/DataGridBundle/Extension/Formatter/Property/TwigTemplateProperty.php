@@ -6,7 +6,7 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class TwigTemplateProperty extends AbstractProperty
 {
-    const CONTEXT_KEY  = 'context';
+    const CONTEXT_KEY = 'context';
     const TEMPLATE_KEY = 'template';
 
     /** @var array */

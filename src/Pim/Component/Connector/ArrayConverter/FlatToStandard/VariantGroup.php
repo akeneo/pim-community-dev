@@ -41,10 +41,10 @@ class VariantGroup implements ArrayConverterInterface
         Product $productConverter,
         FieldsRequirementChecker $fieldChecker
     ) {
-        $this->localeRepository    = $localeRepository;
+        $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->productConverter    = $productConverter;
-        $this->fieldChecker        = $fieldChecker;
+        $this->productConverter = $productConverter;
+        $this->fieldChecker = $fieldChecker;
     }
 
     /**

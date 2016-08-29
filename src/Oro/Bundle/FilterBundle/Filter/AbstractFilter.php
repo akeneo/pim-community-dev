@@ -37,7 +37,7 @@ abstract class AbstractFilter implements FilterInterface
     public function __construct(FormFactoryInterface $factory, FilterUtility $util)
     {
         $this->formFactory = $factory;
-        $this->util        = $util;
+        $this->util = $util;
     }
 
     /**
@@ -45,7 +45,7 @@ abstract class AbstractFilter implements FilterInterface
      */
     public function init($name, array $params)
     {
-        $this->name   = $name;
+        $this->name = $name;
         $this->params = $params;
     }
 
@@ -191,7 +191,7 @@ abstract class AbstractFilter implements FilterInterface
      */
     protected function mapParams($params)
     {
-        $keys     = [];
+        $keys = [];
         $paramMap = $this->util->getParamMap();
         foreach (array_keys($params) as $key) {
             if (isset($paramMap[$key])) {

@@ -33,17 +33,17 @@ class BindAssociationTargetsSubscriber implements EventSubscriberInterface
      */
     public function submit(FormEvent $event)
     {
-        $form         = $event->getForm();
+        $form = $event->getForm();
         $associations = $event->getData();
 
         for ($count = $form->count(), $i = 0; $count > $i; $i++) {
             $child = $form->get($i);
 
             $associationType = $child->get('associationType')->getData();
-            $appendProducts  = $child->get('appendProducts')->getData();
-            $removeProducts  = $child->get('removeProducts')->getData();
-            $appendGroups    = $child->get('appendGroups')->getData();
-            $removeGroups    = $child->get('removeGroups')->getData();
+            $appendProducts = $child->get('appendProducts')->getData();
+            $removeProducts = $child->get('removeProducts')->getData();
+            $appendGroups = $child->get('appendGroups')->getData();
+            $removeGroups = $child->get('removeGroups')->getData();
 
             $association = $associations->filter(
                 function ($association) use ($associationType) {

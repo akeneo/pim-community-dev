@@ -25,7 +25,7 @@ class LocaleResolver
      */
     public function __construct(RequestStack $requestStack, $defaultLocale)
     {
-        $this->requestStack  = $requestStack;
+        $this->requestStack = $requestStack;
         $this->defaultLocale = $defaultLocale;
     }
 

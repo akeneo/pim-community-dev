@@ -39,9 +39,9 @@ class AssociationFieldAdder extends AbstractFieldAdder
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
-        $this->groupRepository   = $groupRepository;
-        $this->productBuilder    = $productBuilder;
-        $this->supportedFields   = $supportedFields;
+        $this->groupRepository = $groupRepository;
+        $this->productBuilder = $productBuilder;
+        $this->supportedFields = $supportedFields;
     }
 
     /**

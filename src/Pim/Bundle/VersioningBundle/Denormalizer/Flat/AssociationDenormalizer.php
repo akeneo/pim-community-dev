@@ -42,8 +42,8 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
         parent::__construct($managerRegistry, $entityClass);
 
         $this->assocTypeClass = $assocTypeClass;
-        $this->productClass   = $productClass;
-        $this->groupClass     = $groupClass;
+        $this->productClass = $productClass;
+        $this->groupClass = $groupClass;
     }
 
     /**

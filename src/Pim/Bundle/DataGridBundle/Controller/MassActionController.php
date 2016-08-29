@@ -31,7 +31,7 @@ class MassActionController
      */
     public function __construct(Request $request, MassActionDispatcher $massActionDispatcher)
     {
-        $this->request              = $request;
+        $this->request = $request;
         $this->massActionDispatcher = $massActionDispatcher;
     }
 

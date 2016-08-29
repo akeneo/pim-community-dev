@@ -50,7 +50,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
     {
         $this->converter = $converter;
         $this->codeField = $codeField;
-        $this->multiple  = $multiple;
+        $this->multiple = $multiple;
     }
 
     /**

@@ -37,7 +37,7 @@ class AddProductToVariantGroupProcessor extends AbstractProcessor
         GroupRepositoryInterface $groupRepository,
         ProductTemplateUpdaterInterface $templateUpdater
     ) {
-        $this->validator       = $validator;
+        $this->validator = $validator;
         $this->groupRepository = $groupRepository;
         $this->templateUpdater = $templateUpdater;
     }

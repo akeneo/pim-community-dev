@@ -33,7 +33,7 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
     public function __construct(PresenterInterface $datetimePresenter, LocaleResolver $localeResolver)
     {
         $this->datetimePresenter = $datetimePresenter;
-        $this->localeResolver    = $localeResolver;
+        $this->localeResolver = $localeResolver;
     }
 
     /**

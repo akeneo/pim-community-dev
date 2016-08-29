@@ -149,8 +149,8 @@ class SystemAwareResolver implements ContainerAwareInterface
     protected function executeMethod($expression, array $optionsArguments = [])
     {
         preg_match(static::SERVICE_METHOD, $expression, $matches);
-        $service   = $matches[1];
-        $method    = $matches[2];
+        $service = $matches[1];
+        $method = $matches[2];
         $arguments = [];
 
         if (isset($matches[4]) && !empty($matches[4])) {

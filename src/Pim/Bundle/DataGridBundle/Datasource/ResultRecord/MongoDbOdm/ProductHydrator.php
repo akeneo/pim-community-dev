@@ -25,14 +25,14 @@ class ProductHydrator implements HydratorInterface
      */
     public function hydrate($qb, array $options = [])
     {
-        $locale  = $options['locale_code'];
-        $scope   = $options['scope_code'];
-        $config  = $options['attributes_configuration'];
+        $locale = $options['locale_code'];
+        $scope = $options['scope_code'];
+        $config = $options['attributes_configuration'];
         $groupId = $options['current_group_id'];
         $associationTypeId = $options['association_type_id'];
-        $currentProduct    = $options['current_product'];
+        $currentProduct = $options['current_product'];
 
-        $query   = $qb->hydrate(false)->getQuery();
+        $query = $qb->hydrate(false)->getQuery();
         $results = $query->execute();
 
         $attributes = [];
@@ -44,9 +44,9 @@ class ProductHydrator implements HydratorInterface
         $fieldsTransformer = new FieldsTransformer();
         $valuesTransformer = new ValuesTransformer();
         $familyTransformer = new FamilyTransformer();
-        $complTransformer  = new CompletenessTransformer();
+        $complTransformer = new CompletenessTransformer();
         $groupsTransformer = new GroupsTransformer();
-        $assocTransformer  = new AssociationTransformer();
+        $assocTransformer = new AssociationTransformer();
 
         foreach ($results as $result) {
             $result = $fieldsTransformer->transform($result, $locale);

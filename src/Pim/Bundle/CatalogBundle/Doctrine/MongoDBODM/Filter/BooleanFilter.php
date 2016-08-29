@@ -36,8 +36,8 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedFields     = $supportedFields;
-        $this->supportedOperators  = $supportedOperators;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

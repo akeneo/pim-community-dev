@@ -33,10 +33,10 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedFields         = $supportedFields;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -61,7 +61,7 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
             );
         }
 
-        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);

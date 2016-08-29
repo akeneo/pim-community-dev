@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 
 class VoterVisibilityCheckerSpec extends ObjectBehavior
 {
-    const OWN  = 'OWN';
+    const OWN = 'OWN';
     const VIEW = 'VIEW';
 
     function let(SecurityFacade $securityFacade)
