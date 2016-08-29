@@ -72,14 +72,14 @@ class GroupController
         GroupFactory $groupFactory,
         RemoverInterface $groupRemover
     ) {
-        $this->request             = $request;
-        $this->templating          = $templating;
-        $this->router              = $router;
+        $this->request = $request;
+        $this->templating = $templating;
+        $this->router = $router;
         $this->groupTypeRepository = $groupTypeRepository;
-        $this->groupHandler        = $groupHandler;
-        $this->groupForm           = $groupForm;
-        $this->groupFactory        = $groupFactory;
-        $this->groupRemover        = $groupRemover;
+        $this->groupHandler = $groupHandler;
+        $this->groupForm = $groupForm;
+        $this->groupFactory = $groupFactory;
+        $this->groupRemover = $groupRemover;
     }
 
     /**

@@ -26,9 +26,9 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');
         }
 
-        $ef         = new EncoderFactory([static::USER_CLASS => new MessageDigestPasswordEncoder('sha512')]);
-        $class      = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
-        $om         = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $ef = new EncoderFactory([static::USER_CLASS => new MessageDigestPasswordEncoder('sha512')]);
+        $class = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
+        $om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
 
         $om->expects($this->any())

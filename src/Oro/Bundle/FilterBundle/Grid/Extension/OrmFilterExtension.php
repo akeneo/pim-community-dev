@@ -66,7 +66,7 @@ class OrmFilterExtension extends AbstractExtension
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
         $filters = $this->getFiltersToApply($config);
-        $values  = $this->getValuesToApply($config);
+        $values = $this->getValuesToApply($config);
         $datasourceAdapter = new OrmFilterDatasourceAdapter($datasource->getQueryBuilder());
 
         foreach ($filters as $filter) {
@@ -90,11 +90,11 @@ class OrmFilterExtension extends AbstractExtension
      */
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
-        $filtersState    = $data->offsetGetByPath('[state][filters]', []);
+        $filtersState = $data->offsetGetByPath('[state][filters]', []);
         $filtersMetaData = [];
 
         $filters = $this->getFiltersToApply($config);
-        $values  = $this->getValuesToApply($config);
+        $values = $this->getValuesToApply($config);
 
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
@@ -110,7 +110,7 @@ class OrmFilterExtension extends AbstractExtension
                 }
             }
 
-            $metadata          = $filter->getMetadata();
+            $metadata = $filter->getMetadata();
             $filtersMetaData[] = array_merge(
                 $metadata,
                 ['label' => $this->translator->trans($metadata['label'])]
@@ -146,7 +146,7 @@ class OrmFilterExtension extends AbstractExtension
      */
     protected function getFiltersToApply(DatagridConfiguration $config)
     {
-        $filters       = [];
+        $filters = [];
         $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         foreach ($filtersConfig as $column => $filter) {
@@ -176,7 +176,7 @@ class OrmFilterExtension extends AbstractExtension
         $filters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         $defaultFilters = $config->offsetGetByPath(Configuration::DEFAULT_FILTERS_PATH, []);
-        $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ? : $defaultFilters;
+        $filterBy = $this->requestParams->get(self::FILTER_ROOT_PARAM) ? : $defaultFilters;
 
         foreach ($filterBy as $column => $value) {
             if (isset($filters[$column])) {

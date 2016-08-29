@@ -32,7 +32,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields    = $supportedFields;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -68,8 +68,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
     protected function applyFilter($operator, $value, $locale = null, $scope = null)
     {
         $joinAlias = $this->getUniqueAlias('filterCompleteness');
-        $field     = $joinAlias . '.ratio';
-        $util      = new CompletenessJoin($this->qb);
+        $field = $joinAlias . '.ratio';
+        $util = new CompletenessJoin($this->qb);
         $util->addJoins($joinAlias, $locale, $scope);
 
         $this->qb->andWhere($this->prepareCriteriaCondition($field, $operator, $value));

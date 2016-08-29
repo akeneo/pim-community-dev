@@ -76,7 +76,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     public function process($product)
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $structure =  $parameters->get('filters')['structure'];
+        $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
         $this->productBuilder->addMissingProductValues($product, [$channel], $channel->getLocales()->toArray());
 

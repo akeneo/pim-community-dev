@@ -9,7 +9,6 @@ return [
     '-trim_array_spaces',
     '-operators_spaces',
     '-unary_operators_spaces',
-    '-unalign_equals',
     '-unalign_double_arrow',
     'align_double_arrow',
     'newline_after_open_tag',

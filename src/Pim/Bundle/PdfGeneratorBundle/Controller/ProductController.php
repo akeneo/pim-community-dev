@@ -33,7 +33,7 @@ class ProductController
     public function __construct(ProductRepositoryInterface $productRepository, RendererRegistry $rendererRegistry)
     {
         $this->productRepository = $productRepository;
-        $this->rendererRegistry  = $rendererRegistry;
+        $this->rendererRegistry = $rendererRegistry;
     }
 
     /**
@@ -50,7 +50,7 @@ class ProductController
      */
     public function downloadPdfAction(Request $request, $id)
     {
-        $product       = $this->findProductOr404($id);
+        $product = $this->findProductOr404($id);
         $renderingDate = new \DateTime('now');
 
         try {

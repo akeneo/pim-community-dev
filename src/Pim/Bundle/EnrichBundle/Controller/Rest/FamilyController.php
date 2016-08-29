@@ -37,8 +37,8 @@ class FamilyController
         NormalizerInterface $normalizer,
         FamilySearchableRepository $familySearchableRepo
     ) {
-        $this->familyRepository     = $familyRepository;
-        $this->normalizer           = $normalizer;
+        $this->familyRepository = $familyRepository;
+        $this->normalizer = $normalizer;
         $this->familySearchableRepo = $familySearchableRepo;
     }
 

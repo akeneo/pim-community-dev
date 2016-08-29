@@ -66,7 +66,7 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
         $writeParams['withHeader'] = true;
 
         $writeJobParameters = new JobParameters($writeParams);
-        $writeJobExecution  = new JobExecution();
+        $writeJobExecution = new JobExecution();
         $writeJobExecution->setJobParameters($writeJobParameters);
 
         $stepExecution = new StepExecution('processor', $writeJobExecution);

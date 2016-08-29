@@ -71,13 +71,13 @@ class ChannelController
         BulkSaverInterface $localeSaver,
         ChannelRepositoryInterface $channelRepository
     ) {
-        $this->request           = $request;
-        $this->router            = $router;
-        $this->translator        = $translator;
-        $this->channelForm       = $channelForm;
-        $this->channelHandler    = $channelHandler;
-        $this->channelRemover    = $channelRemover;
-        $this->localeSaver       = $localeSaver;
+        $this->request = $request;
+        $this->router = $router;
+        $this->translator = $translator;
+        $this->channelForm = $channelForm;
+        $this->channelHandler = $channelHandler;
+        $this->channelRemover = $channelRemover;
+        $this->localeSaver = $localeSaver;
         $this->channelRepository = $channelRepository;
     }
 

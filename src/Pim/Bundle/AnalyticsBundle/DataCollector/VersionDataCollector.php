@@ -44,10 +44,10 @@ class VersionDataCollector implements DataCollectorInterface
         $environment,
         $installTime
     ) {
-        $this->requestStack    = $requestStack;
+        $this->requestStack = $requestStack;
         $this->versionProvider = $versionProvider;
-        $this->environment     = $environment;
-        $this->installTime     = $installTime;
+        $this->environment = $environment;
+        $this->installTime = $installTime;
     }
 
     /**

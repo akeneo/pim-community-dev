@@ -44,7 +44,7 @@ class BindGroupProductsSubscriber implements EventSubscriberInterface
      */
     public function submit(FormEvent $event)
     {
-        $form  = $event->getForm();
+        $form = $event->getForm();
         $group = $event->getData();
 
         $appendProducts = $form->get('appendProducts')->getData();

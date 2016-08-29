@@ -48,7 +48,7 @@ class AddProductVersionSubscriber implements EventSubscriber
         NormalizerInterface $normalizer
     ) {
         $this->versionManager = $versionManager;
-        $this->normalizer     = $normalizer;
+        $this->normalizer = $normalizer;
         $this->versionContext = $versionContext;
     }
 

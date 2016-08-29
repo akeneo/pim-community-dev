@@ -68,9 +68,9 @@ class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
 
         $mapping = [];
         foreach (array_keys($repositoryIds) as $repositoryId) {
-            $repositoryDef   = $container->getDefinition($repositoryId);
+            $repositoryDef = $container->getDefinition($repositoryId);
             $repositoryClass = $this->resolveParameter($container, $repositoryDef->getClass());
-            $entityClass     = $this->resolveParameter($container, current($repositoryDef->getArguments()));
+            $entityClass = $this->resolveParameter($container, current($repositoryDef->getArguments()));
 
             $mapping[$repositoryClass] = $entityClass;
         }

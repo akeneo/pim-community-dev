@@ -23,7 +23,7 @@ class ProductValueChannelFilter extends AbstractFilter implements CollectionFilt
         }
 
         $channelCodes = isset($options['channels']) ? $options['channels'] : [];
-        $attribute    = $productValue->getAttribute();
+        $attribute = $productValue->getAttribute();
 
         return !empty($channelCodes) &&
             $attribute->isScopable() &&

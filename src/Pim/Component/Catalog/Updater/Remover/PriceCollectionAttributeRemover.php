@@ -33,7 +33,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         parent::__construct($attrValidatorHelper);
 
         $this->currencyRepository = $currencyRepository;
-        $this->supportedTypes     = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**

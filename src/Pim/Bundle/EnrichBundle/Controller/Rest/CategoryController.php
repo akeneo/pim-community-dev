@@ -31,7 +31,7 @@ class CategoryController
      */
     public function __construct(CategoryRepositoryInterface $repository, CategoryExtension $twigExtension)
     {
-        $this->repository    = $repository;
+        $this->repository = $repository;
         $this->twigExtension = $twigExtension;
     }
 

@@ -93,7 +93,7 @@ class ReferenceDataSelector implements SelectorInterface
     protected function getQbJoins(QueryBuilder $qb)
     {
         $qbJoin = [];
-        $joins  = $qb->getDQLPart('join');
+        $joins = $qb->getDQLPart('join');
         $rootAlias = current($qb->getRootAliases());
         if (isset($joins[$rootAlias])) {
             foreach ($joins[$rootAlias] as $join) {

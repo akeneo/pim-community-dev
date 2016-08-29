@@ -36,7 +36,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
         parent::__construct($productBuilder, $attrValidatorHelper);
 
         $this->currencyRepository = $currencyRepository;
-        $this->supportedTypes     = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**

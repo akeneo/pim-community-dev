@@ -35,7 +35,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
         NotifierInterface $notifier
     ) {
         $this->factoryRegistry = $factoryRegistry;
-        $this->notifier        = $notifier;
+        $this->notifier = $notifier;
     }
 
     /**
@@ -56,7 +56,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
     public function afterJobExecution(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
-        $user         = $jobExecution->getUser();
+        $user = $jobExecution->getUser();
 
         if (null === $user) {
             return;
@@ -77,7 +77,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
      */
     protected function createNotification(JobExecution $jobExecution)
     {
-        $type    = $jobExecution->getJobInstance()->getType();
+        $type = $jobExecution->getJobInstance()->getType();
         $factory = $this->factoryRegistry->get($type);
 
         if (null === $factory) {

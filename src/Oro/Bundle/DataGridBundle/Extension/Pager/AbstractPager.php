@@ -62,7 +62,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
             $nb_links = $this->getMaxPageLinks();
         }
         $links = [];
-        $tmp   = $this->page - floor($nb_links / 2);
+        $tmp = $this->page - floor($nb_links / 2);
         $check = $this->lastPage - $nb_links + 1;
 
         $limit = 1;
@@ -334,7 +334,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
         } else {
             if ($max == 0) {
                 $this->maxPerPage = 0;
-                $this->page       = 0;
+                $this->page = 0;
             } else {
                 $this->maxPerPage = 1;
                 if ($this->page == 0) {
@@ -399,7 +399,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      */
     protected function initializeIterator()
     {
-        $this->results        = $this->getResults();
+        $this->results = $this->getResults();
         $this->resultsCounter = count($this->results);
     }
 
@@ -418,7 +418,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      */
     protected function resetIterator()
     {
-        $this->results        = null;
+        $this->results = null;
         $this->resultsCounter = 0;
     }
 

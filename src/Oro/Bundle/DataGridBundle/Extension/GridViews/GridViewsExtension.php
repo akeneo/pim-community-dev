@@ -10,7 +10,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
 class GridViewsExtension extends AbstractExtension
 {
-    const VIEWS_LIST_KEY  = 'views_list';
+    const VIEWS_LIST_KEY = 'views_list';
     const VIEWS_PARAM_KEY = 'view';
 
     /**
@@ -39,7 +39,7 @@ class GridViewsExtension extends AbstractExtension
      */
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
-        $params      = $this->getRequestParams()->get(RequestParameters::ADDITIONAL_PARAMETERS);
+        $params = $this->getRequestParams()->get(RequestParameters::ADDITIONAL_PARAMETERS);
         $currentView = isset($params[self::VIEWS_PARAM_KEY]) ? $params[self::VIEWS_PARAM_KEY] : null;
         $data->offsetAddToArray('state', ['gridView' => $currentView]);
 

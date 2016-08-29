@@ -34,9 +34,9 @@ class InvalidItemEvent extends Event implements EventInterface
      */
     public function __construct(InvalidItemInterface $item, $class, $reason, array $reasonParameters)
     {
-        $this->item             = $item;
-        $this->class            = $class;
-        $this->reason           = $reason;
+        $this->item = $item;
+        $this->class = $class;
+        $this->reason = $reason;
         $this->reasonParameters = $reasonParameters;
     }
 

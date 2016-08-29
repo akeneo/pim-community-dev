@@ -36,9 +36,9 @@ class DatagridFilterChoiceType extends AbstractType
      */
     public function __construct(Manager $manager, FiltersConfigurator $configurator, $datagrid)
     {
-        $this->manager      = $manager;
+        $this->manager = $manager;
         $this->configurator = $configurator;
-        $this->datagrid     = $datagrid;
+        $this->datagrid = $datagrid;
     }
 
     /**
@@ -50,11 +50,11 @@ class DatagridFilterChoiceType extends AbstractType
         $this->configurator->configure($configuration);
 
         $attributes = $configuration->offsetGetByPath('[filters][columns]');
-        $configs    = $configuration->offsetGetByPath(sprintf(
+        $configs = $configuration->offsetGetByPath(sprintf(
             ConfiguratorInterface::SOURCE_PATH,
             ConfiguratorInterface::USEABLE_ATTRIBUTES_KEY
         ));
-        $choices    = [];
+        $choices = [];
 
         foreach ($attributes as $code => $filter) {
             if (in_array($code, $this->disallowed)) {

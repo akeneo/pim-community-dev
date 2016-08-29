@@ -40,7 +40,7 @@ class GroupsFilter extends AjaxChoiceFilter
         parent::__construct($factory, $util);
 
         $this->userContext = $userContext;
-        $this->groupClass  = $groupClass;
+        $this->groupClass = $groupClass;
     }
 
     /**

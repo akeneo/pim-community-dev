@@ -46,7 +46,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->registry = $registry;
         $this->idsResolver = $idsResolver;
-        $this->supportedOperators  = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

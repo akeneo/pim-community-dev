@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidNumberRange extends Constraint
 {
-    public $message              = 'The max number must be greater than the min number';
+    public $message = 'The max number must be greater than the min number';
     public $invalidNumberMessage = 'This number is not valid';
 
     /**

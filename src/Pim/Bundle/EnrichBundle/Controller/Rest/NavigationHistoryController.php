@@ -44,9 +44,9 @@ class NavigationHistoryController
         SaverInterface $saver
     ) {
         $this->tokenStorage = $tokenStorage;
-        $this->repository   = $repository;
-        $this->itemFactory  = $itemFactory;
-        $this->saver        = $saver;
+        $this->repository = $repository;
+        $this->itemFactory = $itemFactory;
+        $this->saver = $saver;
     }
 
     /**

@@ -28,7 +28,7 @@ class AttributeExtension extends \Twig_Extension
      */
     public function __construct(array $icons, IdentifiableObjectRepositoryInterface $attributeRepository)
     {
-        $this->icons               = $icons;
+        $this->icons = $icons;
         $this->attributeRepository = $attributeRepository;
     }
 
