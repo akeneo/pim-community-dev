@@ -96,6 +96,32 @@ datagrid:
             quick_export:
                 label: pim_datagrid.mass_action_group.quick_export.label
         mass_actions:
+            mass_edit:
+                type: edit
+                acl_resource: pim_enrich_mass_edit
+                label: pim.grid.mass_action.mass_edit
+                handler: product_mass_edit
+                route: pim_enrich_mass_edit_product_action_choose
+                launcherOptions:
+                    group: bulk_actions
+            sequential_edit:
+                type: edit
+                acl_resource: pim_enrich_product_edit_attributes
+                label: pim.grid.mass_action.sequential_edit
+                handler: sequential_edit
+                route: pim_enrich_mass_edit_action_sequential_edit
+                launcherOptions:
+                    group: bulk_actions
+            category_edit:
+                type: edit
+                acl_resource: pim_enrich_mass_edit
+                label: pim.grid.mass_action.category_edit
+                handler: product_mass_edit
+                route: pim_enrich_mass_edit_product_action_choose
+                route_parameters:
+                    operationGroup: category-edit
+                launcherOptions:
+                    group: bulk_actions
             delete:
                 type: delete
                 label: pim.grid.mass_action.delete
@@ -109,32 +135,6 @@ datagrid:
                     success: pim_datagrid.mass_action.delete.success
                     error: pim_datagrid.mass_action.delete.error
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
-                launcherOptions:
-                    group: bulk_actions
-            mass_edit:
-                type: edit
-                acl_resource: pim_enrich_mass_edit
-                label: pim.grid.mass_action.mass_edit
-                handler: product_mass_edit
-                route: pim_enrich_mass_edit_product_action_choose
-                launcherOptions:
-                    group: bulk_actions
-            category_edit:
-                type: edit
-                acl_resource: pim_enrich_mass_edit
-                label: pim.grid.mass_action.category_edit
-                handler: product_mass_edit
-                route: pim_enrich_mass_edit_product_action_choose
-                route_parameters:
-                    operationGroup: category-edit
-                launcherOptions:
-                    group: bulk_actions
-            sequential_edit:
-                type: edit
-                acl_resource: pim_enrich_product_edit_attributes
-                label: pim.grid.mass_action.sequential_edit
-                handler: sequential_edit
-                route: pim_enrich_mass_edit_action_sequential_edit
                 launcherOptions:
                     group: bulk_actions
             quick_export_grid_context_xlsx:
