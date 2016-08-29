@@ -44,29 +44,42 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
     {
         $baseConstraint = $this->simpleProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
-        $constraintFields['decimalSeparator'] = new NotBlank();
-        $constraintFields['dateFormat'] = new NotBlank();
-        $constraintFields['filters'] = [new FilterData(), new Collection(
+        $constraintFields['decimalSeparator'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
+        $constraintFields['dateFormat'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
+        $constraintFields['with_media'] = new Type(
             [
-                'fields' => [
-                    'structure' => [
-                        new FilterStructureLocale(),
-                        new Collection(
-                            [
-                                'fields' => [
-                                    'locales'    => new NotBlank(),
-                                    'scope'      => new Channel(),
-                                    'attributes' => new FilterStructureAttribute(),
-                                ],
-                                'allowMissingFields' => true,
-                            ]
-                        ),
-                    ],
-                ],
-                'allowExtraFields' => true,
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
             ]
-        )];
-        $constraintFields['with_media'] = new Type('bool');
+        );
+        $constraintFields['filters'] = [
+            new FilterData(['groups' => ['Default', 'DataFilters']]),
+            new Collection(
+                [
+                    'fields'           => [
+                        'structure' => [
+                            new FilterStructureLocale(['groups' => ['Default', 'DataFilters']]),
+                            new Collection(
+                                [
+                                    'fields'             => [
+                                        'locales'    => new NotBlank(['groups' => ['Default', 'DataFilters']]),
+                                        'scope'      => new Channel(['groups' => ['Default', 'DataFilters']]),
+                                        'attributes' => new FilterStructureAttribute([
+                                            'groups' => [
+                                                'Default',
+                                                'DataFilters',
+                                            ],
+                                        ]),
+                                    ],
+                                    'allowMissingFields' => true,
+                                ]
+                            ),
+                        ],
+                    ],
+                    'allowExtraFields' => true,
+                ]
+            )
+        ];
 
         return new Collection(['fields' => $constraintFields]);
     }

@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -214,4 +215,82 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(new \InvalidArgumentException('Attributes: This property cannot be changed.'))
             ->during('update', [$variantGroup, $values, []]);
     }
+
+    function it_merges_original_and_new_values(
+        GroupInterface $variantGroup,
+        ProductTemplateInterface $template,
+        ProductBuilderInterface $productBuilder,
+        ProductInterface $product,
+        ProductValueInterface $identifier,
+        ArrayCollection $values,
+        \Iterator $valuesIterator
+    ) {
+        $originalValues = [
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => 'ecommerce',
+                    'data'   => 'original description en_US'
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'scope'  => 'ecommerce',
+                    'data'   => 'original description de_DE'
+                ]
+            ]
+        ];
+
+        $newValues = [
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => 'ecommerce',
+                    'data'   => 'new description en_US'
+                ],
+                [
+                    'locale' => 'fr_FR',
+                    'scope'  => 'ecommerce',
+                    'data'   => 'new description fr_FR'
+                ]
+
+            ]
+        ];
+
+        $expectedValues = [
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => 'ecommerce',
+                    'data'   => 'new description en_US'
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'scope'  => 'ecommerce',
+                    'data'   => 'original description de_DE'
+                ],
+                [
+                    'locale' => 'fr_FR',
+                    'scope'  => 'ecommerce',
+                    'data'   => 'new description fr_FR'
+                ]
+            ]
+        ];
+
+        $variantGroup->getProductTemplate()->willReturn($template);
+        $template->getValuesData()->willReturn($originalValues);
+
+        $productBuilder->createProduct()->willReturn($product);
+        $product->getValues()->willReturn($values);
+        $product->getIdentifier()->willReturn($identifier);
+        $values->removeElement($identifier)->shouldBeCalled();
+
+        $values->getIterator()->willReturn($valuesIterator);
+
+        $template->setValues($values)->shouldBeCalled();
+        $template->setValuesData($expectedValues)->shouldBeCalled();
+        $variantGroup->setProductTemplate($template)->shouldBeCalled();
+
+        $this->setValues($variantGroup, $newValues);
+    }
+
 }

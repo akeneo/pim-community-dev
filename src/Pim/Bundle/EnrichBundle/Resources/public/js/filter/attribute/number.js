@@ -28,12 +28,14 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
-        initialize: function (config) {
-            this.config = config.config;
+        configure: function () {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode(), operator: _.first(_.values(this.config.operators))});
+            }.bind(this));
 
-            return BaseFilter.prototype.initialize.apply(this, arguments);
+            return BaseFilter.prototype.configure.apply(this, arguments);
         },
 
         /**
@@ -48,10 +50,6 @@ define([
          * {@inherit}
          */
         renderInput: function (templateContext) {
-            if (undefined === this.getOperator()) {
-                this.setOperator(_.first(_.values(this.config.operators)));
-            }
-
             return this.template(_.extend({}, templateContext, {
                 __: __,
                 shortName: this.shortname,
@@ -67,20 +65,6 @@ define([
          */
         postRender: function () {
             this.$('.operator').select2({minimumResultsForSearch: -1});
-        },
-
-        /**
-         * {@inherit}
-         */
-        getTemplateContext: function () {
-            return $.when(
-                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('attribute').fetch(this.getField())
-            ).then(function (templateContext, attribute) {
-                return _.extend({}, templateContext, {
-                    label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code)
-                });
-            }.bind(this));
         },
 
         /**

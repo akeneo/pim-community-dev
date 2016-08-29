@@ -30,15 +30,6 @@ define([
         /**
          * {@inheritdoc}
          */
-        initialize: function (config) {
-            this.config = config.config;
-
-            return BaseFilter.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
-         * {@inheritdoc}
-         */
         isEmpty: function () {
             return _.isEmpty(this.getValue());
         },
@@ -59,18 +50,11 @@ define([
          * {@inheritdoc}
          */
         getTemplateContext: function () {
-            return FetcherRegistry
-                .getFetcher('attribute')
-                .fetch(this.getField())
-                .then(function (attribute) {
-                    return {
-                        label: i18n.getLabel(
-                            attribute.labels,
-                            UserContext.get('catalogLocale'),
-                            this.getField()
-                        ),
+            return BaseFilter.prototype.getTemplateContext.apply(this, arguments)
+                .then(function (templateContext) {
+                    return _.extend({}, templateContext, {
                         removable: false
-                    };
+                    });
                 }.bind(this));
         },
 

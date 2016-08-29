@@ -177,38 +177,5 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         $visited[$oid] = $document;
 
         $documentManager->detach($document);
-
-        $this->cascadeDetach($document, $visited);
-    }
-
-    /**
-     * Cascade detach objects to overcome MongoDB detach
-     * cascade bug on MongoDB ODM BETA12.
-     * See https://github.com/doctrine/mongodb-odm/pull/979.
-     *
-     * @param mixed $object
-     * @param array $visited Prevents infinite recursion
-     */
-    protected function cascadeDetach($document, array &$visited)
-    {
-        $documentManager = $this->getObjectManager($document);
-
-        $class = $documentManager->getClassMetadata(ClassUtils::getClass($document));
-        foreach ($class->fieldMappings as $mapping) {
-            if (!$mapping['isCascadeDetach']) {
-                continue;
-            }
-            $relatedDocuments = $class->reflFields[$mapping['fieldName']]->getValue($document);
-            if (($relatedDocuments instanceof Collection || is_array($relatedDocuments))) {
-                if ($relatedDocuments instanceof PersistentCollection) {
-                    $relatedDocuments = $relatedDocuments->unwrap();
-                }
-                foreach ($relatedDocuments as $relatedDocument) {
-                    $this->doDetach($relatedDocument, $visited);
-                }
-            } elseif ($relatedDocuments !== null) {
-                $this->doDetach($relatedDocuments, $visited);
-            }
-        }
     }
 }

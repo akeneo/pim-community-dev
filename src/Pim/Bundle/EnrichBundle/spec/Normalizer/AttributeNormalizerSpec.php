@@ -3,8 +3,9 @@
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
+use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
+use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,15 +15,17 @@ class AttributeNormalizerSpec extends ObjectBehavior
     public function let(
         NormalizerInterface $normalizer,
         FieldProviderInterface $fieldProvider,
-        EmptyValueProviderInterface $emptyValueProvider
+        EmptyValueProviderInterface $emptyValueProvider,
+        FilterProviderInterface $filterProvider
     ) {
-        $this->beConstructedWith($normalizer, $fieldProvider, $emptyValueProvider);
+        $this->beConstructedWith($normalizer, $fieldProvider, $emptyValueProvider, $filterProvider);
     }
 
     function it_normalizes_attribute(
         $normalizer,
         $fieldProvider,
         $emptyValueProvider,
+        $filterProvider,
         AttributeInterface $price
     ) {
         $normalizer->normalize($price, 'json', [])->willReturn(['code' => 'price']);
@@ -48,6 +51,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $price->getGroup()->willReturn(null);
 
         $fieldProvider->getField($price)->willReturn('akeneo-text-field');
+        $filterProvider->getFilters($price)->willReturn(['product-export-builder' => 'akeneo-attribute-string-filter']);
         $emptyValueProvider->getEmptyValue($price)->willReturn([]);
 
         $this->normalize($price, 'internal_api', [])->shouldReturn(
@@ -57,6 +61,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'wysiwyg_enabled'       => false,
                 'empty_value'           => [],
                 'field_type'            => 'akeneo-text-field',
+                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'    => 0,
                 'locale_specific_codes' => [],
                 'max_characters'        => '',
@@ -82,6 +87,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $normalizer,
         $fieldProvider,
         $emptyValueProvider,
+        $filterProvider,
         AttributeInterface $attribute,
         GroupInterface $group
     ) {
@@ -108,6 +114,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getGroup()->willReturn(null);
 
         $fieldProvider->getField($attribute)->willReturn('akeneo-text-field');
+        $filterProvider->getFilters($attribute)->willReturn(['product-export-builder' => 'akeneo-attribute-string-filter']);
         $emptyValueProvider->getEmptyValue($attribute)->willReturn([]);
 
         $this->normalize($attribute, 'internal_api', [])->shouldReturn(
@@ -117,6 +124,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'wysiwyg_enabled'       => true,
                 'empty_value'           => [],
                 'field_type'            => 'akeneo-text-field',
+                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'    => 0,
                 'locale_specific_codes' => [],
                 'max_characters'        => '2048',
@@ -149,6 +157,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'wysiwyg_enabled'       => true,
                 'empty_value'           => [],
                 'field_type'            => 'akeneo-text-field',
+                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'    => 0,
                 'locale_specific_codes' => [],
                 'max_characters'        => '2048',
@@ -181,6 +190,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'wysiwyg_enabled'       => false,
                 'empty_value'           => [],
                 'field_type'            => 'akeneo-text-field',
+                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'    => 0,
                 'locale_specific_codes' => [],
                 'max_characters'        => '2048',
@@ -213,6 +223,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'wysiwyg_enabled'       => false,
                 'empty_value'           => [],
                 'field_type'            => 'akeneo-text-field',
+                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'    => 0,
                 'locale_specific_codes' => [],
                 'max_characters'        => '2048',
@@ -246,6 +257,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'wysiwyg_enabled'       => false,
                 'empty_value'           => [],
                 'field_type'            => 'akeneo-text-field',
+                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'    => 0,
                 'locale_specific_codes' => [],
                 'max_characters'        => '2048',
@@ -285,6 +297,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'wysiwyg_enabled'       => false,
                 'empty_value'           => [],
                 'field_type'            => 'akeneo-text-field',
+                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'    => 0,
                 'locale_specific_codes' => [],
                 'max_characters'        => '2048',

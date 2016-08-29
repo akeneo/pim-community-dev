@@ -220,7 +220,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     {
         $template = $this->getProductTemplate($variantGroup);
         $originalValues = $template->getValuesData();
-        $mergedValuesData = array_replace($originalValues, $newValues);
+        $mergedValuesData = $this->mergeValues($originalValues, $newValues);
+
         $mergedValues = $this->transformArrayToValues($mergedValuesData);
         $mergedValuesData = $this->replaceMediaLocalPathsByStoredPaths($mergedValues, $mergedValuesData);
 
@@ -228,6 +229,93 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         $template->setValuesData($mergedValuesData);
 
         $variantGroup->setProductTemplate($template);
+    }
+
+    /**
+     * Merge original and new values (keep original values when they are missing in the new values)
+     * Iterate on every new attribute and then on every localized and/or scoped value to compare it
+     * with the original values.
+     *
+     * Example :
+     *
+     * Given $originalValues =
+     *     "description": [
+     *          {
+     *              "locale": "fr_FR",
+     *              "scope": "ecommerce",
+     *              "data": "original description fr_FR",
+     *          },
+     *          {
+     *              "locale": "en_US",
+     *              "scope": "ecommerce",
+     *              "data": "original descriptionen_US",
+     *          }
+     *      ]
+     *
+     * And $newValues =
+     *     "description": [
+     *          {
+     *              "locale": "de_DE",
+     *              "scope": "ecommerce",
+     *              "data": "new description fr_FR",
+     *          },
+     *          {
+     *              "locale": "en_US",
+     *              "scope": "ecommerce",
+     *              "data": "new descriptionen_US",
+     *          }
+     *      ]
+     *
+     * Then $mergedValues will be =
+     *     "description": [
+     *          {
+     *              "locale": "fr_FR",
+     *              "scope": "ecommerce",
+     *              "data": "original description fr_FR",
+     *          },
+     *          {
+     *              "locale": "de_DE",
+     *              "scope": "ecommerce",
+     *              "data": "new description fr_FR",
+     *          },
+     *          {
+     *              "locale": "en_US",
+     *              "scope": "ecommerce",
+     *              "data": "new descriptionen_US",
+     *          }
+     *      ]
+     *
+     * @param  array $originalValues
+     * @param  array $newValues
+     *
+     * @return array
+     */
+    protected function mergeValues(array $originalValues, array $newValues)
+    {
+        $mergedValues = $originalValues;
+
+        foreach ($newValues as $newValueCode => $newValueArray) {
+            foreach ($newValueArray as $newValue) {
+                $originalValueFound = false;
+
+                if (isset($originalValues[$newValueCode])) {
+                    foreach ($originalValues[$newValueCode] as $originalValueIndex => $originalValue) {
+                        if ($newValue['locale'] === $originalValue['locale'] &&
+                            $newValue['scope'] === $originalValue['scope']
+                        ) {
+                            $originalValueFound = true;
+                            $mergedValues[$newValueCode][$originalValueIndex]['data'] = $newValue['data'];
+                        }
+                    }
+                }
+
+                if (!$originalValueFound) {
+                    $mergedValues[$newValueCode][] = $newValue;
+                }
+            }
+        }
+
+        return $mergedValues;
     }
 
     /**

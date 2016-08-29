@@ -1,0 +1,5 @@
+suites:
+    default:
+        namespace: Akeneo\Bundle\MeasureBundle
+        psr4_prefix: Akeneo\Bundle\MeasureBundle
+        src_path: .

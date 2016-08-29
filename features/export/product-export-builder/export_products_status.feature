@@ -55,3 +55,18 @@ Feature: Export products according to their statuses
     SNKRS-1B;summer_collection;1;rangers;;Black rangers
     SNKRS-1R;summer_collection;0;rangers;;Black rangers
     """
+
+  Scenario: Export products with operator ALL on statuses
+    Given I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I filter by "enabled" with operator "" and value "All"
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
+    When I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
+      """
+      sku;categories;enabled;family;groups;name-en_US
+      SNKRS-1B;summer_collection;1;rangers;;Black rangers
+      SNKRS-1R;summer_collection;0;rangers;;Black rangers
+      """

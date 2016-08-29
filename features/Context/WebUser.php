@@ -1613,8 +1613,11 @@ class WebUser extends RawMinkContext
         } catch (BehaviorException $e) {
             $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
             $jobExecution = $jobInstance->getJobExecutions()->first();
-            $log          = $jobExecution->getLogFile();
+            if (false === $jobExecution) {
+                throw new \Exception('No job execution found');
+            }
 
+            $log = $jobExecution->getLogFile();
             if (is_file($log)) {
                 $dir = getenv('WORKSPACE');
                 $id  = getenv('BUILD_ID');

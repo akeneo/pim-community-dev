@@ -98,6 +98,7 @@ abstract class AbstractMassEditController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $queryParams += ['operationAlias' => $data['operationAlias']];
+                $queryParams += ['operationGroup' => $operationGroup];
 
                 $configureRoute = $this
                     ->router
@@ -229,12 +230,13 @@ abstract class AbstractMassEditController
             ->parse($request);
 
         $params = array_merge($params, [
-            'gridName'   => $request->get('gridName'),
-            'actionName' => $request->get('actionName'),
-            'values'     => implode(',', $params['values']),
-            'filters'    => json_encode($params['filters']),
-            'dataLocale' => $request->get('dataLocale', null),
-            'itemsCount' => $request->get('itemsCount'),
+            'gridName'       => $request->get('gridName'),
+            'actionName'     => $request->get('actionName'),
+            'values'         => implode(',', $params['values']),
+            'filters'        => json_encode($params['filters']),
+            'dataLocale'     => $request->get('dataLocale', null),
+            'itemsCount'     => $request->get('itemsCount'),
+            'operationGroup' => $request->get('operationGroup')
         ]);
 
         return $params;

@@ -46,23 +46,18 @@ class RegisterFlatToStandardConverterPass implements CompilerPassInterface
         $converters = $container->findTaggedServiceIds(static::CONVERTER_TAG);
 
         foreach ($converters as $serviceId => $tags) {
-            $this->registerConverter($registry, $serviceId, $tags);
+            foreach ($tags as $tag) {
+                $priority = isset($tag['priority']) ? $tag['priority'] : static::DEFAULT_PRIORITY;
+                $services[$priority][] = $serviceId;
+            }
         }
-    }
 
-    /**
-     * @param Definition $registry
-     * @param string     $serviceId
-     * @param string[]   $tags
-     */
-    protected function registerConverter(Definition $registry, $serviceId, $tags)
-    {
-        foreach ($tags as $tag) {
-            $priority = isset($tag['priority']) ? (int)$tag['priority'] : static::DEFAULT_PRIORITY;
-            $registry->addMethodCall(
-                'register',
-                [new Reference($serviceId), $priority]
-            );
+        ksort($services);
+
+        foreach ($services as $priority => $serviceIds) {
+            foreach ($serviceIds as $serviceId) {
+                $registry->addMethodCall('register', [new Reference($serviceId)]);
+            }
         }
     }
 }

@@ -39,19 +39,19 @@ extensions:
             filters:
                 -
                     field: family
-                    view: pim-filter-product-family
+                    view: akeneo-product-family-filter
                 -
                     field: enabled
-                    view: pim-filter-product-enabled
+                    view: akeneo-product-enabled-filter
                 -
                     field: completeness
-                    view: pim-filter-product-completeness
+                    view: akeneo-product-completeness-filter
                 -
                     field: updated
-                    view: pim-filter-product-updated
+                    view: akeneo-product-updated-filter
                 -
                     field: categories
-                    view: pim-filter-product-category
+                    view: akeneo-product-category-filter
 
     pim-product-export-edit-content-default-attribute-filters:
         module: pim/export/product/edit/content/data/default-attribute-filters
@@ -71,34 +71,3 @@ extensions:
         module: pim/export/product/edit/content/data/add-filter
         parent: pim-product-export-edit-content-data
         targetZone: headings
-
-filters:
-    pim-product-export-edit-content:
-        pim_catalog_boolean:
-            view: pim-filter-attribute-boolean
-        pim_catalog_text:
-            view: pim-filter-attribute-string
-        pim_catalog_number:
-             view: pim-filter-attribute-number
-        pim_catalog_textarea:
-            view: pim-filter-attribute-string
-        pim_catalog_identifier:
-            view: pim-filter-attribute-identifier
-        pim_catalog_metric:
-            view: pim-filter-attribute-metric
-        pim_catalog_price_collection:
-            view: pim-filter-attribute-price-collection
-        pim_catalog_image:
-            view: pim-filter-attribute-media
-        pim_catalog_file:
-            view: pim-filter-attribute-media
-        pim_catalog_multiselect:
-            view: pim-filter-attribute-select
-        pim_catalog_simpleselect:
-            view: pim-filter-attribute-select
-        pim_catalog_date:
-            view: pim-filter-attribute-date
-        pim_reference_data_simpleselect:
-            view: pim-filter-attribute-select-reference-data
-        pim_reference_data_multiselect:
-            view: pim-filter-attribute-select-reference-data

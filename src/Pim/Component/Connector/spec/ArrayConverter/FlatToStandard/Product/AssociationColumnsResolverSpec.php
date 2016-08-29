@@ -30,4 +30,11 @@ class AssociationColumnsResolverSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_caches_the_associations_even_without_results($assocTypeRepo)
+    {
+        $assocTypeRepo->findAll()->willReturn([])->shouldBeCalledTimes(1);
+        $this->resolveAssociationColumns()->shouldReturn([]);
+        $this->resolveAssociationColumns()->shouldReturn([]);
+    }
 }

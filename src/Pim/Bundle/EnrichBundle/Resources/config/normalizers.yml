@@ -98,6 +98,7 @@ services:
             - '@pim_serializer'
             - '@pim_enrich.provider.field.chained'
             - '@pim_enrich.provider.empty_value.chained'
+            - '@pim_enrich.provider.filter.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

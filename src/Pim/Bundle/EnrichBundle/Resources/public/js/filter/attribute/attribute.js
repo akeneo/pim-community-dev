@@ -15,6 +15,7 @@ define([
     'pim/filter/filter',
     'pim/fetcher-registry',
     'pim/i18n',
+    'pim/user-context',
     'pim/product-edit-form/scope-switcher',
     'pim/product-edit-form/locale-switcher'
 ], function (
@@ -24,10 +25,22 @@ define([
     BaseFilter,
     FetcherRegistry,
     i18n,
+    UserContext,
     ScopeSwitcher,
     LocaleSwitcher
 ) {
     return BaseFilter.extend({
+        /**
+         * {@inherit}
+         */
+        initialize: function (config) {
+            if (config.config) {
+                this.config = config.config;
+            }
+
+            return BaseFilter.prototype.initialize.apply(this, arguments);
+        },
+
         /**
          * Sets the scope code on which this filter operates.
          *
@@ -84,10 +97,8 @@ define([
          * {@inheritdoc}
          */
         renderElements: function () {
-            var attributeCode = this.getField().replace(/\.code/, '');
-
             FetcherRegistry.getFetcher('attribute')
-                .fetch(attributeCode)
+                .fetch(this.getCode())
                 .then(function (attribute) {
                     if (this.isEditable()) {
                         this.addContextDropdowns(attribute);
@@ -127,7 +138,8 @@ define([
                     scopeSwitcher,
                     'pim_enrich:form:scope_switcher:change',
                     function (scopeEvent) {
-                        this.setScope(scopeEvent.scopeCode);
+                        this.setScope(scopeEvent.scopeCode, {silent: true});
+                        this.trigger('pim_enrich:form:entity:post_update');
                     }.bind(this)
                 );
 
@@ -153,7 +165,8 @@ define([
                     localeSwitcher,
                     'pim_enrich:form:locale_switcher:change',
                     function (localeEvent) {
-                        this.setLocale(localeEvent.localeCode);
+                        this.setLocale(localeEvent.localeCode, {silent: true});
+                        this.trigger('pim_enrich:form:entity:post_update');
                     }.bind(this)
                 );
 
@@ -165,6 +178,21 @@ define([
                 'filter-context',
                 container
             );
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        getTemplateContext: function () {
+            return $.when(
+                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
+                FetcherRegistry.getFetcher('attribute').fetch(this.getCode())
+            ).then(function (templateContext, attribute) {
+                return _.extend({}, templateContext, {
+                    label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
+                    attribute: attribute
+                });
+            }.bind(this));
         },
 
         /**

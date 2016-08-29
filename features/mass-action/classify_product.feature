@@ -18,6 +18,8 @@ Feature: Classify many products at once
     Given I select rows bigfoot and horseshoe
     And I press "Category Edit" on the "Bulk Actions" dropdown button
     And I choose the "Classify products in categories" operation
+    And I press the "Back" button
+    And I choose the "Classify products in categories" operation
     And I press the "2014 collection" button
     And I expand the "2014_collection" category
     And I click on the "winter_collection" category
@@ -31,6 +33,8 @@ Feature: Classify many products at once
   Scenario: Move several products to categories at once
     Given I select rows bigfoot and horseshoe
     And I press "Category Edit" on the "Bulk Actions" dropdown button
+    And I choose the "Move products to categories" operation
+    And I press the "Back" button
     And I choose the "Move products to categories" operation
     And I select the "2014 collection" tree
     And I expand the "2014_collection" category

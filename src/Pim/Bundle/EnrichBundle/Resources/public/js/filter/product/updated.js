@@ -44,15 +44,22 @@ define([
             },
 
             /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                    _.defaults(data, {field: this.getCode(), operator: _.first(_.values(this.config.operators))});
+                }.bind(this));
+
+                return BaseFilter.prototype.configure.apply(this, arguments);
+            },
+
+            /**
              * Returns rendered input.
              *
              * @return {String}
              */
             renderInput: function () {
-                if (undefined === this.getOperator()) {
-                    this.setOperator(_.first(_.values(this.config.operators)));
-                }
-
                 return this.template({
                     isEditable: this.isEditable(),
                     __: __,
@@ -87,7 +94,7 @@ define([
              * {@inheritdoc}
              */
             isEmpty: function () {
-                return 'ALL' === this.getOperator();
+                return !this.getOperator() || 'ALL' === this.getOperator();
             },
 
             /**
@@ -97,7 +104,7 @@ define([
             updateState: function () {
                 this.$('.date-wrapper:first').datetimepicker('hide');
 
-                var oldOperator = this.getFormData().operator;
+                var oldOperator = this.getOperator();
 
                 var value    = this.$('[name="filter-value"]').val();
                 var operator = this.$('[name="filter-operator"]').val();
@@ -115,9 +122,12 @@ define([
                 }
 
                 this.setData({
+                    field: this.getField(),
                     operator: operator,
                     value: value
                 });
+
+                this.render();
             }
         });
     });

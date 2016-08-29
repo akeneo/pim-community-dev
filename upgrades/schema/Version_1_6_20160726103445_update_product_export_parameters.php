@@ -53,7 +53,23 @@ class Version_1_6_20160726103445_update_product_export_parameters extends Abstra
                 }
 
                 $parameters['filters'] = [
-                    'data'      => [],
+                    'data' => [
+                        [
+                            'field'    => 'enabled',
+                            'operator' => '=',
+                            'value'    => true
+                        ],
+                        [
+                            'field'    => 'categories.code',
+                            'operator' => 'IN CHILDREN',
+                            'value'    => [$channel->getCategory()->getCode()]
+                        ],
+                        [
+                            'field'    => 'completeness',
+                            'operator' => '>=',
+                            'value'    => 100
+                        ]
+                    ],
                     'structure' => [
                         'scope'   => $channel->getCode(),
                         'locales' => $localeCodes

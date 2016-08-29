@@ -34,7 +34,7 @@
         "symfony/swiftmailer-bundle": "2.3.8"
     },
     "require-dev": {
-        "phpspec/phpspec": "2.5.*"
+        "phpspec/phpspec": "3.0.0"
     },
     "config": {
         "bin-dir": "bin"

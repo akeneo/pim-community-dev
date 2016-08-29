@@ -37,14 +37,20 @@ define([
         /**
          * {@inheritdoc}
          */
-        renderInput: function (templateContext) {
-            var value = this.getValue();
-            if (undefined === value) {
-                value = true;
-            }
+        configure: function () {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode(), operator: '=', value: true});
+            }.bind(this));
 
+            return BaseFilter.prototype.configure.apply(this, arguments);
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        renderInput: function (templateContext) {
             return this.template(_.extend({}, templateContext, {
-                value: value,
+                value: this.getValue(),
                 field: this.getField(),
                 labels: {
                     on: __('switch_on'),
@@ -58,20 +64,6 @@ define([
          */
         postRender: function () {
             this.$('.switch').bootstrapSwitch();
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        getTemplateContext: function () {
-            return $.when(
-                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('attribute').fetch(this.getField())
-            ).then(function (templateContext, attribute) {
-                return _.extend({}, templateContext, {
-                    label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code)
-                });
-            }.bind(this));
         },
 
         /**

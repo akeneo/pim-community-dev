@@ -27,6 +27,9 @@ define([
          */
         configure: function () {
             this.on('locales:update:after', this.updateState.bind(this));
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode(), operator: _.first(this.config.operators), value: 100});
+            }.bind(this));
 
             return BaseFilter.prototype.configure.apply(this, arguments);
         },
@@ -37,13 +40,6 @@ define([
          * @return {String}
          */
         renderInput: function () {
-            if (undefined === this.getOperator()) {
-                this.setOperator(_.first(this.config.operators));
-            }
-            if (undefined === this.getValue()) {
-                this.setValue(100);
-            }
-
             return this.template({
                 isEditable: this.isEditable(),
                 __: __,
@@ -72,6 +68,7 @@ define([
          */
         updateState: function () {
             this.setData({
+                field: this.getField(),
                 operator: this.$('[name="filter-operator"]').val(),
                 value: 100,
                 context: {'locales': this.getParentForm().getFormData().structure.locales}

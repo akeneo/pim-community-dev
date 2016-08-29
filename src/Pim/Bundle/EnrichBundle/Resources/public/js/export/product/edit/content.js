@@ -35,6 +35,7 @@ define(
             configure: function () {
                 this.unbindEvents();
                 Backbone.Router.prototype.once('route', this.unbindEvents);
+                FetcherRegistry.clearAll();
 
                 if (_.has(module.config(), 'forwarded-events')) {
                     this.forwardMediatorEvents(module.config()['forwarded-events']);

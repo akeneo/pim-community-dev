@@ -87,4 +87,29 @@ class AttributeOptionSpec extends ObjectBehavior
                 ]
             );
     }
+
+    function it_converts_an_item_without_adding_a_sort_order_value($localeRepository)
+    {
+        $localeRepository->getActivatedLocaleCodes()->willReturn(['de_DE', 'en_US', 'fr_FR']);
+
+        $this->convert(
+            [
+                'attribute'   => 'maximum_print_size',
+                'code'        => '210_x_1219_mm',
+                'label-de_DE' => '210 x 1219 mm',
+                'label-en_US' => '210 x 1219 mm',
+                'label-fr_FR' => '210 x 1219 mm'
+            ]
+        )->shouldReturn(
+            [
+                'labels' => [
+                    'de_DE' => '210 x 1219 mm',
+                    'en_US' => '210 x 1219 mm',
+                    'fr_FR' => '210 x 1219 mm'
+                ],
+                'attribute'   => 'maximum_print_size',
+                'code'        => '210_x_1219_mm'
+            ]
+        );
+    }
 }

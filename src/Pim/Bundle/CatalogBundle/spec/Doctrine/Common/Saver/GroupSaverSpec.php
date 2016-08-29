@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
@@ -12,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
 use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
@@ -31,7 +31,8 @@ class GroupSaverSpec extends ObjectBehavior
         SavingOptionsResolverInterface $optionsResolver,
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher,
-        ProductQueryBuilderFactoryInterface $pqbFactory
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        BulkObjectDetacherInterface $detacher
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -42,6 +43,7 @@ class GroupSaverSpec extends ObjectBehavior
             $optionsResolver,
             $eventDispatcher,
             $pqbFactory,
+            $detacher,
             'Pim\Bundle\CatalogBundle\Model'
         );
     }
@@ -180,6 +182,7 @@ class GroupSaverSpec extends ObjectBehavior
         $objectManager,
         $templateApplier,
         $eventDispatcher,
+        $detacher,
         GroupInterface $group,
         GroupType $type,
         ProductInterface $product,
@@ -206,6 +209,8 @@ class GroupSaverSpec extends ObjectBehavior
         $templateApplier
             ->apply($template, [$product])
             ->shouldBeCalled();
+
+        $detacher->detachAll([$product])->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();

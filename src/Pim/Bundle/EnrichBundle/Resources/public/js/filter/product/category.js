@@ -1,15 +1,17 @@
 'use strict';
 
 define([
+    'jquery',
     'underscore',
     'oro/translator',
     'backbone',
     'pim/filter/filter',
     'routing',
     'pim/filter/product/category/selector',
+    'pim/fetcher-registry',
     'text!pim/template/filter/product/category',
     'jquery.select2'
-], function (_, __, Backbone, BaseFilter, Routing, CategoryTree, template) {
+], function ($, _, __, Backbone, BaseFilter, Routing, CategoryTree, fetcherRegistry, template) {
     var TreeModal = Backbone.BootstrapModal.extend({
         className: 'modal jstree-modal'
     });
@@ -26,7 +28,10 @@ define([
          * {@inherit}
          */
         configure: function () {
-            this.on('channel:update:after', this.channelUpdated.bind(this));
+            this.listenTo(this, 'channel:update:after', this.channelUpdated.bind(this));
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode() + '.code', operator: 'IN CHILDREN', value: []});
+            }.bind(this));
 
             return BaseFilter.prototype.configure.apply(this, arguments);
         },
@@ -37,9 +42,7 @@ define([
          * @return {String}
          */
         renderInput: function () {
-            if (undefined === this.getValue()) {
-                this.setValue([]);
-            }
+            var categoryCount = 'IN CHILDREN' === this.getOperator() ? 0 : this.getValue().length;
 
             return this.template({
                 isEditable: this.isEditable(),
@@ -47,8 +50,8 @@ define([
                 labelEdit: __('pim_connector.export.categories.selector.edit'),
                 labelInfo: __(
                     'pim_connector.export.categories.selector.label',
-                    {count: this.getValue().length},
-                    this.getValue().length
+                    {count: categoryCount},
+                    categoryCount
                 ),
                 value: this.getValue()
             });
@@ -58,8 +61,26 @@ define([
          * Resets selection after channel has been modified then re-renders the view.
          */
         channelUpdated: function () {
-            this.setValue([], {silent: false});
-            this.render();
+            this.getCurrentChannel().then(function (channel) {
+                this.setDefaultValues(channel);
+                this.render();
+            }.bind(this));
+        },
+
+        /**
+         * {@inherit}
+         */
+        getTemplateContext: function () {
+            return $.when(
+                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
+                this.getCurrentChannel()
+            ).then(function (templateContext, channel) {
+                if ('IN CHILDREN' === this.getOperator()) {
+                    this.setDefaultValues(channel);
+                }
+
+                return templateContext;
+            }.bind(this));
         },
 
         /**
@@ -78,8 +99,8 @@ define([
             var tree = new CategoryTree({
                 el: modal.$el.find('.modal-body'),
                 attributes: {
-                    'channel': this.getParentForm().getFormData().structure.scope,
-                    'categories': this.getValue()
+                    channel: this.getParentForm().getFormData().structure.scope,
+                    categories: 'IN CHILDREN' === this.getOperator() ? [] : this.getValue()
                 }
             });
 
@@ -92,15 +113,22 @@ define([
             });
 
             modal.on('ok', function () {
-                this.setData({
-                    field: this.getField(),
-                    operator: 'IN',
-                    value: tree.attributes.categories
-                });
+                if (_.isEmpty(tree.attributes.categories)) {
+                    this.getCurrentChannel().then(function (channel) {
+                        this.setDefaultValues(channel);
+                    }.bind(this));
+                } else {
+                    this.setData({
+                        field: this.getField(),
+                        operator: 'IN',
+                        value: tree.attributes.categories
+                    });
+                }
 
                 modal.close();
                 modal.remove();
                 tree.remove();
+                this.render();
             }.bind(this));
         },
 
@@ -108,20 +136,34 @@ define([
          * {@inheritdoc}
          */
         isEmpty: function () {
-            return _.isEmpty(this.getValue()) || '' === this.getOperator();
+            return false;
         },
 
         /**
-         * {@inheritdoc}
+         * Get the current selected channel
+         *
+         * @return {Promise}
          */
-        getField: function () {
-            var fieldName = BaseFilter.prototype.getField.apply(this, arguments);
+        getCurrentChannel: function () {
+            return fetcherRegistry.getFetcher('channel')
+                .fetch(this.getParentForm().getFormData().structure.scope);
+        },
 
-            if (-1 === fieldName.indexOf('.code')) {
-                fieldName += '.code';
+        /**
+         * Set the default values for the filter
+         *
+         * @param {object} channel
+         */
+        setDefaultValues: function (channel) {
+            if (this.getOperator() === 'IN CHILDREN' && _.isEqual(this.getValue(), [channel.category.code])) {
+                return;
             }
 
-            return fieldName;
+            this.setData({
+                field: this.getField(),
+                operator: 'IN CHILDREN',
+                value: [channel.category.code]
+            });
         }
     });
 });

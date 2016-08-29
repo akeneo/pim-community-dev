@@ -120,10 +120,8 @@ class JobParametersType extends AbstractType implements DataMapperInterface
 
                 $data = $event->getData();
 
-                foreach (array_keys($configs) as $parameter) {
-                    if ('filters' === $parameter) {
-                        $data[$parameter] = json_decode($data[$parameter], true);
-                    }
+                if (isset($configs['filters']) && isset($data['filters'])) {
+                    $data['filters'] = json_decode($data['filters'], true);
                 }
 
                 $event->setData($data);

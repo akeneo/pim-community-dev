@@ -61,8 +61,7 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
         $fileKey = strtr($this->getRelativeArchivePath($jobExecution), ['%filename%' => 'invalid_items.csv']);
         $this->filesystem->put($fileKey, '');
 
-        $provider = new ProductCsvExport(new SimpleCsvExport([]), []);
-        $writeParams = $provider->getDefaultValues();
+        $writeParams = $this->defaultValuesProvider->getDefaultValues();
         $writeParams['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $fileKey;
         $writeParams['withHeader'] = true;
 

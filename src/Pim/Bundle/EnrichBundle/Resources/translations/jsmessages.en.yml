@@ -397,7 +397,7 @@ pim_enrich:
                     title: Completeness
                     help: The completeness of the products you want to export
                     operators:
-                        "<=": No condition on completeness
+                        ALL: No condition on completeness
                         ">=": Complete on at least one selected locale
                         "GREATER OR EQUALS THAN ON ALL LOCALES": Complete on all selected locales
                         LOWER THAN ON ALL LOCALES: Not complete on all selected locales
@@ -406,6 +406,7 @@ pim_enrich:
                     title: Category
                     help: The categories of the products you want to export
                 identifier:
+                    title: Identifier
                     help: Identifiers of products you want to export separated by commas, spaces or line breaks
                 metric:
                     operators:

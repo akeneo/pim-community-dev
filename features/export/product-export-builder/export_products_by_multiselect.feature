@@ -7,14 +7,14 @@ Feature: Export products according to multi select reference data values
   Background:
     Given the "footwear" catalog configuration
     And the following products:
-      | sku    | family | name-en_US | weather_conditions |
-      | BOOT-1 | boots  | The boot 1 |                    |
-      | BOOT-2 | boots  | The boot 2 | dry                |
-      | BOOT-3 | boots  | The boot 3 | dry, wet           |
-      | BOOT-4 | boots  | The boot 4 | snowy              |
-      | BOOT-5 | boots  | The boot 5 | snowy              |
-      | BOOT-6 | boots  | The boot 6 | cold               |
-      | BOOT-7 | boots  | The boot 7 |                    |
+      | sku    | family | name-en_US | weather_conditions | categories      |
+      | BOOT-1 | boots  | The boot 1 |                    | 2014_collection |
+      | BOOT-2 | boots  | The boot 2 | dry                | 2014_collection |
+      | BOOT-3 | boots  | The boot 3 | dry, wet           | 2014_collection |
+      | BOOT-4 | boots  | The boot 4 | snowy              | 2014_collection |
+      | BOOT-5 | boots  | The boot 5 | snowy              | 2014_collection |
+      | BOOT-6 | boots  | The boot 6 | cold               | 2014_collection |
+      | BOOT-7 | boots  | The boot 7 |                    | 2014_collection |
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/footwear_product_export.csv |
 
@@ -26,6 +26,7 @@ Feature: Export products according to multi select reference data values
     And I filter by "weather_conditions.code" with operator "In list" and value "Dry"
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -43,6 +44,7 @@ Feature: Export products according to multi select reference data values
     And I filter by "weather_conditions.code" with operator "In list" and value "Dry,Cold"
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -61,6 +63,7 @@ Feature: Export products according to multi select reference data values
     And I filter by "weather_conditions.code" with operator "Is empty" and value ""
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -78,6 +81,7 @@ Feature: Export products according to multi select reference data values
     And I filter by "weather_conditions.code" with operator "In list" and value ""
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:

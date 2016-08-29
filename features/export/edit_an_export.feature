@@ -21,11 +21,11 @@ Feature: Edit an export
     Given I am on the "csv_footwear_product_export" export job edit page
     Then I should see the Delimiter, Enclosure, With header, File path and Decimal separator fields
     And I fill in the following information:
-      | Delimiter         | \|         |
-      | Enclosure         | '          |
-      | File path         | file.csv   |
-      | Decimal separator | ,          |
-      | Date format       | yyyy-MM-dd |
+      | Delimiter         | \|            |
+      | Enclosure         | '             |
+      | File path         | /tmp/file.csv |
+      | Decimal separator | ,             |
+      | Date format       | yyyy-MM-dd    |
     And I uncheck the "With header" switch
     When I visit the "Content" tab
     Then I should see the Channel, Locales fields
@@ -36,8 +36,9 @@ Feature: Edit an export
     And I filter by "family.code" with operator "" and value "Boots"
     And I filter by "completeness" with operator "Not complete on all selected locales" and value ""
     And I filter by "sku" with operator "" and value "identifier1 identifier2,identifier3 ,identifier4"
-    When I press the "Save" button
-    Then I should see the text "File path file.csv"
+    Then I press the "Save" button
+    When I visit the "General" tab
+    Then I should see the text "File path /tmp/file.csv"
     And I should see the text "Delimiter |"
     And I should see the text "Enclosure '"
     And I should see the text "With header No"

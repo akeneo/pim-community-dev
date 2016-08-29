@@ -1,3 +1,17 @@
+# 1.6.x
+
+## Bug fixes
+
+- #4879: Fix collision when using several popins on the same page, cheers @dimitri-koenig!
+- PIM-5928: Export products without media
+
+# 1.6.0-ALPHA2 (2016-08-23)
+
+## Bug fixes
+
+- PIM-5915: Fix the import of localizable and scopable variant group attributes
+- PIM-5929: Fix the validation issue indicator appearance on form tabs
+
 # 1.6.0-ALPHA1 (2016-08-01)
 
 ## Bug fixes
@@ -5,36 +19,76 @@
 - PIM-5854: The family code is not displayed at all in the product grid when no family labels
 - PIM-5888: Fix an outline glitch on some buttons
 - PIM-5869: Allow any codes to be used for attributes
+- PIM-5915: Fix the import of localizable and scopable variant group attributes
+- PIM-5852: Fix sort order overwriting when importing existing attribute options without sort order column
+- PIM-5852: Fix sort order overwriting when importing existing attribute options without sort order column
 
 ## Functional improvements
 
-- PIM-5664: It is now possible to purge jobs executions history
-- PIM-5592: The product grid keeps the page number when you go back to it
-- PIM-5096: Introduce the XLSX quick export
-- PIM-5593: The context is now kept in the associations tab of the product edit form
+### Support Excel Files
+
+- PIM-5645: As Peter, I would like to have a dedicated connector for Excel files
+- PIM-5435: As Mary, I would like to import and export products with Excel files
+- PIM-5100: As Peter, I would like to export variant groups and groups in Excel files
+- PIM-5095: As Peter, I would like to import variant groups and groups with Excel files
+- PIM-5099: As Peter, I would like to export the catalog structure in Excel files
+- PIM-5097: As Peter, I would like to import the catalog structure in Excel files
+- PIM-5098: As Mary, I would like to export products in Excel files
+- PIM-5096: As Mary, I would like to quick export products in Excel files
+- PIM-5094: As Mary, I would like to download the invalid data in Excel files
+- PIM-5093: As Mary, I would like to import products with Excel files
+- PIM-5692: As Mary, I would like to import localized Excel files
+- PIM-5641: As Mary, I would like to define a limit number of lines for the Excel files in order to manage them easily in Excel
+- PIM-5612: As Peter, I would like to know the Excel versions supported by our Excel connector
+
+###  Export Builder
+
+- PIM-5833: As Peter, I would like to choose for which categories the products are exported - Back End
+- PIM-5653: As Filips, I would like to export products and configure the filters with Product QUery Builder
+- PIM-5112: As Peter, I would like to export only the products updated since the last export
+- PIM-5657: As Peter, I would like to configure my product export profiles in few tabs
+- PIM-5809: [Spike] Export builder (ajaxification)
+- PIM-5145: As Peter, I would like to choose for which locales the products are exported
+- PIM-5426: As Peter, I would like to filter on the completeness to export products
+- PIM-5427: As Peter, I would like to filter on the family to export products
+- PIM-5431: As Peter, I would like to export the products updated since a defined date
+- PIM-5428: As Peter, I would like to filter on the status to export products
+- PIM-5421: As Peter, I would like to choose for which categories the products are exported - Front End Revamp
+- PIM-5633: As Peter, I would like to filter on a list of product identifiers to export products
+- PIM-5110: As Peter, I would like to choose if the products images and files have to be exported
+- PIM-5432: As Peter, I would like to export the products updated since the last n days
+- PIM-5109: As Peter, I would like to choose the products attributes to export
+- PIM-5634: As Peter, I would like to filter on a list attribute to export products
+- PIM-5635: As Peter, I would like to filter on all attributes types to export products
+- PIM-5798: As Peter, I would like to manage permission on "Content" tab
+
+### User Productivity
+
+- PIM-5602: As Mary, I would like to move products from a category to another category (mass edit)
+- PIM-5604: As Mary, I would like to remove products from a category (mass edit)
+- PIM-5592: As Mary, when I enrich a product and come back to the grid, I would like to keep the page number of the grid
+- PIM-5743: As Peter, I would like to export / import the attributes with all their properties
+- PIM-5600: As Mary, I would like to quick export only the columns, locale and channel of the grid
+- PIM-5664: As Peter, I would like to purge my job execution history
+- PIM-5761: Remove the useless color property in the channel edit form
+- PIM-5681: As Peter, I would like to purge my entities history, introduce a new command to purge entity versions stored in the PIM (see pim:versioning:purge command)
+- PIM-5647: As Mary, when I load the PEF, I don't want to have a blank screen
+- PIM-5593: As Julia, when I add an association to a product, I would like to keep my context in the grid
+- PIM-5624: As Julia, when I come back to a grid, I would like to keep the page number of the grid
 - PIM-5099: The catalog structure can now be exported in XLSX format (families, attributes, attribute options, association types and categories)
 - PIM-5097: The catalog structure can now be imported in XLSX format (families, attributes, attribute options, association types and categories)
 - PIM-5657: It is now possible to add custom tabs within the job profile and edit pages
-- PIM-5427: Add possibility to filter by families for product export
-- PIM-5427: It is now possible to filter by families for product export
-- PIM-5145: It is now possible to filter product exports by locale
-- PIM-5426: It is now possible to filter product exports by completeness
-- PIM-5833: It is now possible to filter product exports by categories
-- PIM-5600: Introduce the product quick export with grid context in CSV and XLSX (exports selected products with a channel, a local and the shown columns)
-- PIM-5761: The channel no more contains any color information as it was not used anymore in the UI.
-- PIM-5431: Export the products updated since a defined date
-- PIM-5602: Introduce "move to categories" action in products mass edit
-- PIM-5432: Export the products updated for a period
-- PIM-5633: Export products by identifiers
-- PIM-5604: Introduce "remove from categories" action in products mass edit
-- PIM-5681: Introduce a new command to purge entity versions stored in the PIM (see pim:versioning:purge command)
+- PIM-5700: Move the channel our of the association grid filter
+- PIM-5594: As Julia, when I edit in sequential some products, I would like to keep the completeness panel displayed
 - PIM-5781: Add new data on the "system information" screen (data volumetry, information about the operating system)
-- PIM-5110: Add product export configuration to customize product media export policy
-- PIM-5494: Add export invalid item in xslx
+- PIM-5736: As Mary, I would like to have different bulk actions to facilitate the use
+- PIM-5742: Improve the products save for mass operations, I would like to have the completeness and rules calculated directly
+- PIM-5577: As Julia, when I save several products, I would like to have the completeness and rules calculated directly
 
 ## Scalability improvements
 
 - PIM-5542: Optimize the Family normalization
+- PIM-5401: Revamp the Variant Group Form to use the Product Edit Form System and supports thousands of attributes in the selection popin
 
 ## Technical improvements
 
@@ -56,15 +110,17 @@
 - TIP-459: Standardize the denormalization Processors, to use SimpleProcessor in most of the cases.
 - TIP-255: Allow to select PQB filter on supported operator, to add new operators easily on existing fields/attribute types
 - PIM-5781: Introduce a new command to get system information from the command line
+- TIP-535: Remove the flush option from SaverInterface, BulkSaverInterface, RemoverInterface, BulkRemoverInterface, thank you @iulyanp!
 
 ## BC breaks
 
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver`. Add `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`.
 - Remove services `pim_serializer.normalizer.flat.*`, `pim_serializer.denormalizer.flat.*` and `pim_reference_data.denormalizer.flat.`
 - Change constructor of `Pim\Component\Catalog\Normalizer\Structured\ProductValueNormalizer`. Remove argument `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface`
 - Add method `convertToLocalizedFormats` to `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
 - Remove `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`. Please use `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductProcessor`
-- Change constructor or `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
-- Change constructor or `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
 - Change constructor of `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`. Remove second argument `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` and replace fourth and fifth argument by `Pim\Component\Connector\Processor\BulkMediaFetcher` and `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Move `Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass` to `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass`
 - Move `Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector` to `Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector`
@@ -213,7 +269,7 @@
 - Change constructor of `Pim\Bundle\CatalogBundle\Factory\FamilyFactory` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\CatalogBundle\Manager\ChannelManager` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor` replace `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\CompletenessController` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\CompletenessController` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`, add `Doctrine\Common\Persistence\ObjectManager` and the parameter `pim_catalog_product_storage_driver` (string).
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\ProductTemplateType` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
@@ -419,3 +475,11 @@
 - Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister`
 - Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister`
 - Remove deprecated classes `Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingMassPersister`
+- Remove argument `Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface` from `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover`
+- Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver`
+- Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `CatalogBundle\Doctrine\Common\Saver\AttributeSaver`
+- Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `CatalogBundle\Doctrine\Common\Saver\FamilySaver`
+- Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `CatalogBundle\Doctrine\Common\Saver\ProductSaver`
+- Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `CatalogBundle\Doctrine\MongoDBODM\Saver\ProductSaver`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver`
+- Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`, add `Oro\Bundle\SecurityBundle\SecurityFacade` as last parameter
