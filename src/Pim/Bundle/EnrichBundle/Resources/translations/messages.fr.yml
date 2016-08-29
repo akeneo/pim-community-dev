@@ -287,7 +287,7 @@ switch_on: Oui
 switch_off: Non
 Close: Fermer
 Choose a color: Choisir une couleur
-Search: Rechercher
+Search: Recherche
 Choose the attribute type: "Choisissez le type d'attribut"
 Choose the attribute group: "Choisissez le groupe d'attributs"
 Drop a file or click here: Déposez un fichier ou cliquez ici
@@ -385,7 +385,7 @@ pim_catalog_file: Fichier
 pim_catalog_image: Image
 pim_catalog_boolean: Oui/Non
 pim_catalog_date: Date
-pim_catalog_metric: Métrique
+pim_catalog_metric: Unité de mesure
 Activated: Activé
 Disable: Désactiver
 pim_enrich.mass_edit_action:

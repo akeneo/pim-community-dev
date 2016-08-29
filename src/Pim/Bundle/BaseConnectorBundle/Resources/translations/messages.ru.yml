@@ -45,18 +45,18 @@ pim_base_connector:
       import.title: Импорт группы
   steps:
     dummy_reader.title: Заглушка
-    product_reader.title: Извелечение продукта
+    product_reader.title: Извелечение продуктов
     entity_reader.title: Извлечение объектов
     csv_reader:
-      title: CSV
+      title: Считыватель из CSV
       invalid_item_columns_count: 'Ожидается получить %totalColumnsCount% колонок, но было передано %itemColumnsCount% в %csvPath%:%lineno%'
-    csv_product_reader.title: Разбор продуктов CSV
-    csv_category_reader.title: Разбор категорий CSV
+    csv_product_reader.title: Считыватель продуктов из CSV
+    csv_category_reader.title: Считыватель категорий из CSV
     dummy_processor.title: Заглушка
     product_processor.title: Создание продукта
-    category_processor.title: Создание категории
-    association_processor.title: Создание ассоциации
-    group_processor.title: Создание группы
+    category_processor.title: Создание категорий
+    association_processor.title: Создание ассоциаций
+    group_processor.title: Создание групп
     attribute_processor.title: Создание атрибутов
     attribute_option_processor.title: Создание выборов атрибутов
     heterogeneous_processor.title: Сериализатор продукта в CSV
@@ -64,17 +64,17 @@ pim_base_connector:
     transformer_processor.title: Преобразование
     dummy_writer.title: Заглушка
     file_writer.title: Вывод в файл
-    product_writer.title: Хранилище продукта
-    category_writer.title: Хранилище категории
+    product_writer.title: Хранилище продуктов
+    category_writer.title: Хранилище категорий
     writer.title: Хранилище объектов
-    csv_writer.title: Записыватель Csv
+    csv_writer.title: Записыватель CSV
   export:
     delimiter:
       label: Разделитель
       help: Символ, используемый как разделитель полей
     enclosure:
       label: Символ обрамления
-      help: Символ, используемый для обрамления поля
+      help: Символ, используемый для обрамления полей
     withHeader:
       label: Включая заголовки
       help: Добавлять строку с заголовками
@@ -107,7 +107,7 @@ pim_base_connector:
       help: Символ, используемый как разделитель полей
     enclosure:
       label: Символ обрамления
-      help: Символ, используемый для обрамления поля
+      help: Символ, используемый для обрамления полей
     escape:
       label: Экранирование
       help: Символ, используемый для экранирования
