@@ -39,7 +39,19 @@ jobs:
             withHeader: true
             filePath: /tmp/products.csv
             filters:
-                data: {}
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['2014_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
                 structure:
                     scope: ecommerce
                     locales:
@@ -58,7 +70,19 @@ jobs:
             withHeader: true
             filePath: /tmp/products.csv
             filters:
-                data: {}
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['2013_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
                 structure:
                     scope: tablet
                     locales:
@@ -74,7 +98,19 @@ jobs:
             linesPerFile: 10000
             withHeader: true
             filters:
-                data: {}
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['2013_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
                 structure:
                     scope: tablet
                     locales:
@@ -91,7 +127,19 @@ jobs:
             withHeader: true
             filePath: /tmp/products.csv
             filters:
-                data: {}
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['2015_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
                 structure:
                     scope: print
                     locales:

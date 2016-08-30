@@ -18,6 +18,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -410,6 +411,111 @@ class FixturesContext extends BaseFixturesContext
             assertEquals($data['requirements-mobile'], $requirement['requirements-mobile']);
             assertEquals($data['requirements-tablet'], $requirement['requirements-tablet']);
             assertEquals($data['label-en_US'], $family->getTranslation('en_US')->getLabel());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following currencies:$/
+     */
+    public function thereShouldBeTheFollowingCurrencies(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $currency = $this->getCurrency($data['code']);
+
+            assertEquals($data['activated'], (int)$currency->isActivated());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following locales:$/
+     */
+    public function thereShouldBeTheFollowingLocales(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $locale = $this->getLocale($data['code']);
+
+            assertNotNull($locale);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following channels:$/
+     */
+    public function thereShouldBeTheFollowingChannels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $channel = $this->getChannel($data['code']);
+
+            assertEquals($data['label'], $channel->getLabel());
+            assertEquals($data['tree'], $channel->getCategory()->getCode());
+
+            $locales = $channel->getLocaleCodes();
+            asort($locales);
+            assertEquals($data['locales'], implode(',', $locales));
+
+            $currencies = $channel->getCurrencies();
+            $currencyCodes = [];
+            foreach ($currencies as $currency) {
+                $currencyCodes[] = $currency->getCode();
+            }
+            asort($currencyCodes);
+            assertEquals($data['currencies'], implode(',', $currencyCodes));
+
+            if ('' !== $data['conversion_units']) {
+                $units = explode(',', $data['conversion_units']);
+                $formattedUnits = [];
+                foreach ($units as $unit) {
+                    list($key, $value) = explode(':', trim($unit));
+                    $formattedUnits[trim($key)] = trim($value);
+                }
+
+                assertEquals($formattedUnits, $channel->getConversionUnits());
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following group types:$/
+     */
+    public function thereShouldBeTheFollowingGroupTypes(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $groupType = $this->getGroupType($data['code']);
+
+            assertEquals($data['label-en_US'], $groupType->getTranslation('en_US')->getLabel());
+            assertEquals($data['is_variant'], (int)$groupType->isVariant());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following attribute groups:$/
+     */
+    public function thereShouldBeTheFollowingAttributeGroups(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            /** @var AttributeGroup $group */
+            $group = $this->getAttributeGroup($data['code']);
+
+            assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
+            assertEquals($data['sort_order'], $group->getSortOrder());
+
+            $attributes = $group->getAttributes();
+            $codes = [];
+            foreach ($attributes as $attribute) {
+                $codes[] = $attribute->getCode();
+            }
+            asort($codes);
+            assertEquals($data['attributes'], implode(',', $codes));
         }
     }
 
@@ -1640,7 +1746,6 @@ class FixturesContext extends BaseFixturesContext
         $data = array_merge(
             [
                 'label'      => null,
-                'color'      => null,
                 'currencies' => null,
                 'locales'    => null,
                 'tree'       => null,
@@ -1654,11 +1759,11 @@ class FixturesContext extends BaseFixturesContext
         $channel->setLabel($data['label']);
 
         foreach ($this->listToArray($data['currencies']) as $currencyCode) {
-            $channel->addCurrency($this->getCurrency($currencyCode));
+            $channel->addCurrency($this->getCurrency(['code' => explode(',', $currencyCode)]));
         }
 
         foreach ($this->listToArray($data['locales']) as $localeCode) {
-            $channel->addLocale($this->getLocale($localeCode));
+            $channel->addLocale($this->getLocale(['code' => explode(',', $localeCode)]));
         }
 
         if ($data['tree']) {

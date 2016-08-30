@@ -20,7 +20,7 @@ class AttributeGroupSpec extends ObjectBehavior
             'code'       => 'potions',
             'sort_order' => 1,
             'attributes' => ['color', 'components'],
-            'label'      => [
+            'labels'      => [
                 'en_US' => 'The potions',
                 'fr_FR' => 'Les potions'
             ]

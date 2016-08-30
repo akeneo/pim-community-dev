@@ -10,7 +10,7 @@ Feature: Mass Edit Families
     And I am on the families page
     # These families don't have attribute Length
     When I select rows boots, sneakers and sandals
-    And I press the "Mass Edit" button
+    And I press the "Change product information" button
     And I choose the "Set attribute requirements" operation
     And I display the Length attribute
     And I switch the attribute "Length" requirement in channel "Mobile"
@@ -29,7 +29,7 @@ Feature: Mass Edit Families
     And I am on the families page
     # These families already have attribute Name
     When I select rows boots, sneakers and sandals
-    And I press the "Mass Edit" button
+    And I press the "Change product information" button
     And I choose the "Set attribute requirements" operation
     And I display the Name attribute
     And I switch the attribute "Name" requirement in channel "Mobile"
@@ -47,7 +47,7 @@ Feature: Mass Edit Families
     And I am logged in as "Julia"
     And I am on the families page
     When I select rows boots, sneakers and sandals
-    And I press the "Mass Edit" button
+    And I press the "Change product information" button
     And I press the "Cancel" button
     Then I should be on the families page
 
@@ -70,7 +70,7 @@ Feature: Mass Edit Families
     And I am on the families page
     When I change the page size to 25
     And I select rows first, second, third, fourth, fifth, sixth, seventh, eigth, ninth, tenth and eleventh
-    And I press the "Mass Edit" button
+    And I press the "Change product information" button
     Then I should see "Mass Edit (11 families)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4203
@@ -80,5 +80,5 @@ Feature: Mass Edit Families
     And I am on the families page
     When I sort by "label" value ascending
     And I select rows boots, sneakers and sandals
-    And I press the "Mass Edit" button
+    And I press the "Change product information" button
     Then I should see "Mass Edit (3 families)"

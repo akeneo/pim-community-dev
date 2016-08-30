@@ -10,6 +10,7 @@ Feature: View an export detail page
 
   Scenario: Successfully display the export information
     Given I am on the exports page
+    And I change the page size to 50
     When I click on the "csv_footwear_product_export" row
     Then I should be on the "csv_footwear_product_export" export job page
     And I should see "Export profile - CSV footwear product export"

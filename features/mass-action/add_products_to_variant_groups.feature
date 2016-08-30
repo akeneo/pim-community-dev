@@ -14,7 +14,7 @@ Feature: Add products to variant group via a form
     And I am logged in as "Julia"
     And I am on the products page
     Given I select rows kickers, hiking_shoes
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     And I select the "Caterpillar boots" variant group
     And I move on to the next step

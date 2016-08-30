@@ -45,7 +45,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
     {
         return [
             'code'       => $object->getCode(),
-            'sortOrder'  => $object->getSortOrder(),
+            'sort_order' => $object->getSortOrder(),
             'attributes' => $this->attributeRepository->getAttributeCodesByGroup($object),
         ] + $this->transNormalizer->normalize($object, $format, $context);
     }

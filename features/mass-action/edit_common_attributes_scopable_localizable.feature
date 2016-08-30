@@ -17,7 +17,7 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully mass edit scoped product values
     Given I filter by "scope" with operator "equals" and value "Print"
     And I select rows black_jacket and white_jacket
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should see the text "The selected product's attributes will be edited with the following data for the locale English (United States) and the channel Print, chosen in the products grid."
     When I display the Customer rating attribute
@@ -34,7 +34,7 @@ Feature: Edit common attributes of many products at once
     Given I switch the locale to "de_DE"
     And I filter by "scope" with operator "equals" and value "Ecommerce"
     And I select rows black_jacket and white_jacket
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should see the text "The selected product's attributes will be edited with the following data for the locale German (Germany) and the channel Ecommerce, chosen in the products grid."
     When I display the Name attribute

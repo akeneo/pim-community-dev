@@ -239,6 +239,36 @@ services:
             - '@pim_serializer.normalizer.association_type'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
+    pim_connector.processor.normalization.channel:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_serializer.normalizer.channel'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.locale:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_serializer.normalizer.locale'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.attribute_group:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_serializer.normalizer.attribute_group'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.currency:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_serializer.normalizer.currency'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.group_type:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_serializer.normalizer.group_type'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
     # Medias fetcher
     pim_connector.processor.bulk_media_fetcher:
         class: '%pim_connector.processor.bulk_media_fetcher.class%'

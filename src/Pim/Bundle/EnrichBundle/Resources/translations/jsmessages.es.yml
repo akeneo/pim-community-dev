@@ -98,10 +98,6 @@ pim:
         csv_grid_context: CSV (contexto de la grilla)
         xlsx_all: XLSX (todos los atributos)
         xlsx_grid_context: XLSX (contexto de la grilla)
-      delete: Eliminar
-      mass_edit: Edición en masa
-      category_edit: Editar categorías
-      sequential_edit: Edición secuencial
 jstree.create: Crear
 switch_on: Sí
 switch_off: 'No'
@@ -329,23 +325,17 @@ pim_enrich:
             no_available_attributes: No hay más atributos para agregar
   export:
     product:
-      data:
-        title: Filtros de datos
       structure:
-        title: Filtros de estructura
         attributes:
           title: Atributos
       filter:
         channel:
           title: Canal
-          help: El canal que desea exportar
         locales:
           title: Idiomas
-          help: Los locales que desea exportar
         attributes:
           title: Atributos
           edit: Editar
-          help: Categorías de productos que desea exportar
           modal:
             apply: Aplicar
             cancel: Cancelar
@@ -355,7 +345,6 @@ pim_enrich:
           all_group: Todos los grupos
         family:
           title: Familia
-          help: Las familias que desea importar
           operators:
             IN: En la lista
             NOT IN: No figura en la lista
@@ -368,14 +357,12 @@ pim_enrich:
             SINCE LAST JOB: Productos actualizados desde la última exportación
         enabled:
           title: Estado
-          help: El estado de los productos que desea exportar
           value:
             all: Todos
             enabled: Habilitado
             disabled: Inhabilitado
         completeness:
           title: Completitud
-          help: La completitud de los productos que desea exportar
           operators:
             >=: Completo en al menos un local seleccionado
             GREATER OR EQUALS THAN ON ALL LOCALES: Completo en todos los locales seleccionados
@@ -383,8 +370,8 @@ pim_enrich:
           empty_selection: Seleccionar una familia
         category:
           title: Categoría
-          help: Categorías de productos que desea exportar
         identifier:
+          title: Identificador
           help: Los identificadores de productos que desea exportar separados por comas, espacios o saltos de línea
         metric:
           operators:

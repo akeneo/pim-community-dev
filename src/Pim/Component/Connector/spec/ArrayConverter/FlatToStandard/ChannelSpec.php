@@ -27,7 +27,7 @@ class ChannelSpec extends ObjectBehavior
             'locales'    => 'en_US,fr_FR',
             'currencies' => 'EUR,USD',
             'tree'       => 'master_catalog',
-            'color'      => 'orange'
+            'conversion_units' => 'weight: GRAM,maximum_scan_size:KILOMETER, display_diagonal:DEKAMETER, viewing_area: DEKAMETER'
         ];
 
         $result = [
@@ -36,7 +36,12 @@ class ChannelSpec extends ObjectBehavior
             'locales'    => ['en_US', 'fr_FR'],
             'currencies' => ['EUR', 'USD'],
             'tree'       => 'master_catalog',
-            'color'      => 'orange'
+            'conversion_units' => [
+                'weight' => 'GRAM',
+                'maximum_scan_size' => 'KILOMETER',
+                'display_diagonal' => 'DEKAMETER',
+                'viewing_area' => 'DEKAMETER'
+            ]
         ];
 
         $this->convert($item)->shouldReturn($result);

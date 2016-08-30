@@ -7,7 +7,6 @@ use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Context\Spin\TimeoutException;
 
 /**
  * Basic form page
@@ -75,17 +74,7 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $tabs = $this->spin(function () {
-            $tabs = $this->find('css', $this->elements['Tabs']['css']);
-            if (null === $tabs) {
-                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
-            }
-            if (null === $tabs) {
-                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
-            }
-
-            return $tabs;
-        }, sprintf('Cannot find "%s" tab', $tab));
+        $tabs = $this->getPageTabs();
 
         $tabDom = $this->spin(function () use ($tabs, $tab) {
             return $tabs->findLink($tab);
@@ -131,9 +120,11 @@ class Form extends Base
      */
     public function getFormTab($tab)
     {
+        $tabs = $this->getPageTabs();
+
         try {
-            $node = $this->spin(function () use ($tab) {
-                return $this->getElement('Form tabs')->find('css', sprintf('a:contains("%s")', $tab));
+            $node = $this->spin(function () use ($tabs, $tab) {
+                return $tabs->find('css', sprintf('a:contains("%s")', $tab));
             }, sprintf('Cannot find form tab "%s"', $tab));
         } catch (\Exception $e) {
             $node = null;
@@ -849,5 +840,25 @@ class Form extends Base
 
         $field = $this->findPriceField($label->labelContent, $label->subLabelContent);
         $field->setValue($value);
+    }
+
+    /**
+     * Returns the tabs of the current page, if any.
+     *
+     * @return NodeElement
+     */
+    protected function getPageTabs()
+    {
+        return $this->spin(function () {
+            $tabs = $this->find('css', $this->elements['Tabs']['css']);
+            if (null === $tabs) {
+                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
+            }
+            if (null === $tabs) {
+                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
+            }
+
+            return $tabs;
+        }, 'Cannot find any tabs in this page');
     }
 }

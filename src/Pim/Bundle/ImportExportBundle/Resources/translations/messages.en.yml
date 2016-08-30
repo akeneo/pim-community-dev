@@ -3,6 +3,9 @@ Job: Job
 Connector: Connector
 
 pim_import_export:
+    job: Job
+    connector: Connector
+
     ## Job status
     status:
         0: Ready
