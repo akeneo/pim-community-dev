@@ -13,14 +13,14 @@ Feature: Display localizable and scopable attributes
 
   @javascript @info https://akeneo.atlassian.net/browse/PIM-5949
   Scenario: Successfully change locale
-    Given I show the "black_jacket" Published
+    Given I show the "black_jacket" Published Product
     Then I should see the text "A black jacket"
     When I switch the locale to "de_DE"
     Then I should see the text "Eine schwarze Jacke"
 
   @javascript @info https://akeneo.atlassian.net/browse/PIM-5949
   Scenario: Successfully change scope
-    Given I show the "black_jacket" Published
+    Given I show the "black_jacket" Published Product
     And I visit the "Sales" group
     When I switch the scope to "ecommerce"
     Then I should see the text "1 star"

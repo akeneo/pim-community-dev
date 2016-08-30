@@ -39,4 +39,4 @@ Feature: Unpublish many products at once
     And I press the "Change product information" button
     When I choose the "Unpublish products" operation
     Then I move on to the next step
-    Then I should be redirected on the published page
+    Then I should be redirected on the published products page

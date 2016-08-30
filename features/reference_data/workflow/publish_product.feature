@@ -43,7 +43,7 @@ Feature: Publish a product
     When I am on the published products page
     Then the grid should contain 1 elements
     And I should see product red-heels
-    When I am on the "red-heels" published show page
+    When I am on the "red-heels" published product show page
     And I visit the "Other" group
     Then I should see the text "[red]"
     And I should see the text "[spandex]"

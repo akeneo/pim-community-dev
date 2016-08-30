@@ -57,7 +57,7 @@ Feature: Publish many products at once
     And I am on the published products page
     Then the grid should contain 2 elements
     And I should see product my-jacket and my-shoes
-    And I am on the "my-jacket" published show page
+    And I am on the "my-jacket" published product show page
     And I should see "Release"
     And I should see "February 02, 2013"
     And I should see "Available"
@@ -67,7 +67,7 @@ Feature: Publish many products at once
     And I should see "9"
     And I should see "Customs"
     Then I should see "100.00 EUR"
-    And I am on the "my-shoes" published show page
+    And I am on the "my-shoes" published product show page
     And I should see "Release"
     And I should see "February 03, 2013"
     And I should see "Available"

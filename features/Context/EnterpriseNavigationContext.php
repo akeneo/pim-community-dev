@@ -15,6 +15,7 @@ class EnterpriseNavigationContext extends BaseNavigationContext
 {
     protected $enterprisePageMapping = [
         'published products' => 'PublishedProduct index',
+        'Mass_upload show'   => 'MassUpload show',
         'proposals'          => 'Proposal index',
         'rules'              => 'Rule index',
         'assets'             => 'Asset index',

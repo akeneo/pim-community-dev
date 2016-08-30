@@ -17,14 +17,14 @@ Feature: Show localized attributes in published products form
 
   Scenario: Successfully show English format numbers for English UI
     Given I am logged in as "Julia"
-    When I show the "sandals" published
+    When I show the "sandals" published product
     Then the field decimal_price should contain "10.12"
     And the field decimal_number should contain "12.1234"
     And the field decimal_metric should contain "10.3456"
 
   Scenario: Successfully show French format numbers for French UI
     Given I am logged in as "Julien"
-    When I show the "sandals" published
+    When I show the "sandals" published product
     Then the field decimal_price should contain "10,12"
     And the field decimal_number should contain "12,1234"
     And the field decimal_metric should contain "10,3456"
