@@ -25,11 +25,9 @@ pimee_product_asset:
   mass_upload:
     menu: Tuo resursseja
     btn:
-      add_files: Lisää tiedostoja
-      cancel: Peruuta lataaminen
       delete: Poista
       import: Tuonti
-      start: Aloita lataus
+      upload: Tuo
     success:
       new: Uusi resurssi luodaan
       canceled: Tuonti onnistuneesti keskeytetty
@@ -52,7 +50,7 @@ pimee_product_asset:
       actions: toiminnot
     action:
       cancel: Peruuta
-      delete: Poista
+      remove: Poista
     status:
       added: Lisätty
       queued: Jonossa
