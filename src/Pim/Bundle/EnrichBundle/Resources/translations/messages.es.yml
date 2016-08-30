@@ -600,7 +600,7 @@ Default metric unit: Unidad métrica predeterminada
 Max file size: Tamaño máximo de archivo (MB)
 Allowed extensions: Extensiones permitidas
 None: Ninguno
-E-mail: E-mail
+E-mail: Correo electrónico
 URL: URL
 Regular expression: Expresión regular
 Minimum input length: Longitud mínima de entrada
@@ -657,9 +657,9 @@ pim_catalog_text: Texto
 pim_catalog_textarea: Área de Texto
 pim_catalog_number: Número
 pim_catalog_price_collection: Precio
-pim_catalog_multiselect: Selección múltiple
-pim_catalog_simpleselect: Selección simple
-pim_catalog_file: Fichero
+pim_catalog_multiselect: Selección multiple
+pim_catalog_simpleselect: Seleccione simple
+pim_catalog_file: Archivo
 pim_catalog_image: Imagen
 pim_catalog_boolean: Si/No
 pim_catalog_date: Fecha

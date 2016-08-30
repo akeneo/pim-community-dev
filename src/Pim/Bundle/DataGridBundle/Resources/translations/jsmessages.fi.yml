@@ -50,7 +50,7 @@ pim_datagrid:
     label: Sarakkeet
     title: Sarakkeen valitseminen
     all_groups: Kaikki ryhmät
-    search: Haku
+    search: Etsi
     clear: Tyhjennä
     apply: Valitse
     cancel: Peruuta
