@@ -33,15 +33,15 @@ class SimpleYamlImport implements FormConfigurationProviderInterface
         return [
             'filePath' => [
                 'options' => [
-                    'label' => 'pim_connector.import.filePath.label',
-                    'help'  => 'pim_connector.import.filePath.help'
+                    'label' => 'pim_connector.import.yml.filePath.label',
+                    'help'  => 'pim_connector.import.yml.filePath.help'
                 ]
             ],
             'uploadAllowed' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.import.uploadAllowed.label',
-                    'help'  => 'pim_connector.import.uploadAllowed.help'
+                    'label' => 'pim_connector.import.yml.uploadAllowed.label',
+                    'help'  => 'pim_connector.import.yml.uploadAllowed.help'
                 ]
             ],
         ];

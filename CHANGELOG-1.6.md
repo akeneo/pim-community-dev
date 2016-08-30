@@ -8,6 +8,7 @@
 - PIM-5940: Add a flash message in case of product export builder error
 - PIM-5922: Fix the scope switcher in variant group page grid
 - PIM-5959: Change wording of XLSX to Excel on mass actions
+- PIM-5938: Fix typos in import/export tooltips
 
 # 1.6.0 (2016-08-30)
 
