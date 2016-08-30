@@ -1,0 +1,11 @@
+services:
+    acme_xml_connector.step.xml_product_import.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@acme_xml_connector.reader.file.xml_product'
+            - '@pim_connector.processor.denormalization.product'
+            - '@pim_connector.writer.database.product'
+            - 10

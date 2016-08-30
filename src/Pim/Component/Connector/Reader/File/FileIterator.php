@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Reader\File;
 
+use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Common\Type;
@@ -102,7 +103,8 @@ class FileIterator implements FileIteratorInterface
             return null;
         }
 
-        return $data;
+//        return $data;
+        return $this->arrayToDict($data);
     }
 
     /**
@@ -165,6 +167,14 @@ class FileIterator implements FileIteratorInterface
         return $this->headers;
     }
 
+    protected function arrayToDict($elem)
+    {
+        if (count($this->headers) !== count($elem)) {
+            throw new FileIteratorException('Item cannot be loaded properly', $elem);
+        }
+
+        return array_combine($this->headers, $elem);
+    }
     /**
      * Extract the zip archive to be imported
      *
