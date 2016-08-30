@@ -78,7 +78,7 @@ Feature: Export products according to a locale policy
       | filters | {"structure": {"locales": ["fr_FR"], "scope": "mobile"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
     And I am on the "csv_product_export" export job edit page
     When I visit the "Content" tab
-    Then I should see the text "fr_FR"
+    Then I should see the text "French (France)"
     When I fill in the following information:
       | Channel | E-Commerce |
-    Then I should see the text "fr_FR en_US"
+    Then I should see the text "French (France) English (United States)"

@@ -40,7 +40,7 @@ class ChannelController
     {
         $channels = $this->channelRepository->findAll();
 
-        $normalizedChannels = $this->normalizer->normalize($channels, 'json');
+        $normalizedChannels = $this->normalizer->normalize($channels, 'internal_api');
 
         return new JsonResponse($normalizedChannels);
     }
