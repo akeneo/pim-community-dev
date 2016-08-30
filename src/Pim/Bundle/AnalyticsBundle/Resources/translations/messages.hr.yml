@@ -1,0 +1,24 @@
+pim_analytics:
+  new_patch_available: Dostupna je nova zakrpa
+  system_config:
+    group:
+      notification.title: Obavijesti
+      version_update.title: Ažuriranja inačice
+    form:
+      version_update.label: Obavijesti o novoj inačici
+      version_update.tooltip: Pošaljite upit na udaljeni poslužitelj za dohvaćanje informacija o objavljenim novim zakrpama
+  system_info:
+    title: Informacije o sustavu
+    download: TXT
+  info_type:
+    pim_edition: Izdanje
+    pim_storage_driver: Pohrana
+    pim_environment: Okruženje
+    pim_install_time: Datum instalacije
+    registered_bundles: Registrirani paketi
+  acl:
+    system_info:
+      index: Informacije o sustavu
+pim_menu:
+  item:
+    system_info: Informacije o sustavu
