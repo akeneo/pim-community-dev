@@ -1,59 +1,79 @@
 job_profile;execute_job_profile;edit_job_profile;
-csv_footwear_association_type_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_attribute_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_group_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_variant_group_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_option_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_product_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_family_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_association_type_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_attribute_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_category_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_option_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_product_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_footwear_family_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-add_product_value;IT support,Manager,Redactor;
-add_product_value_with_permission;IT support,Manager,Redactor;
-add_product_value_with_permission_and_rules;IT support,Manager,Redactor;
-update_product_value;IT support,Manager,Redactor;
-update_product_value_with_permission;IT support,Manager,Redactor;
-update_product_value_with_permission_and_rules;IT support,Manager,Redactor;
-remove_product_value;IT support,Manager,Redactor;
-remove_product_value_with_permission;IT support,Manager,Redactor;
-remove_product_value_with_permission_and_rules;IT support,Manager,Redactor;
-publish_product;IT support,Manager,Redactor;
-unpublish_product;IT support,Manager,Redactor;
-edit_common_attributes;IT support,Manager,Redactor;
-edit_common_attributes_with_permission;IT support,Manager,Redactor;
-edit_common_attributes_with_permission_and_rules;IT support,Manager,Redactor;
-add_to_variant_group;IT support,Manager,Redactor;
-add_to_variant_group_with_rules;IT support,Manager,Redactor;
-set_attribute_requirements;IT support,Manager,Redactor;
-csv_product_quick_export;IT support,Manager,Redactor;
-csv_published_product_quick_export;IT support,Manager,Redactor;
+csv_footwear_association_type_export;All;All;
+csv_footwear_attribute_export;All;All;
+csv_footwear_category_export;All;All;
+csv_footwear_group_export;All;All;
+csv_footwear_variant_group_export;All;All;
+csv_footwear_option_export;All;All;
+csv_footwear_product_export;All;All;
+csv_footwear_family_export;All;All;
+csv_footwear_association_type_import;All;All;
+csv_footwear_attribute_import;All;All;
+csv_footwear_category_import;All;All;
+csv_footwear_group_import;All;All;
+csv_footwear_variant_group_import;All;All;
+csv_footwear_option_import;All;All;
+csv_footwear_product_import;All;All;
+csv_footwear_family_import;All;All;
+add_product_value;All;
+add_product_value_with_permission;All;
+add_product_value_with_permission_and_rules;All;
+update_product_value;All;
+update_product_value_with_permission;All;
+update_product_value_with_permission_and_rules;All;
+remove_product_value;All;
+remove_product_value_with_permission;All;
+remove_product_value_with_permission_and_rules;All;
+publish_product;All;
+unpublish_product;All;
+edit_common_attributes;All;
+edit_common_attributes_with_permission;All;
+edit_common_attributes_with_permission_and_rules;All;
+add_to_variant_group;All;
+add_to_variant_group_with_rules;All;
+set_attribute_requirements;All;
+csv_product_quick_export;All;
+csv_published_product_quick_export;All;
 rule_impacted_product_count;All;
-xlsx_footwear_product_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_product_import_fr;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_category_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_association_type_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_attribute_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_option_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_family_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_product_quick_export;IT support,Manager,Redactor;
-xlsx_published_product_quick_export;IT support,Manager,Redactor;
-xlsx_footwear_association_type_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_attribute_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_option_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-xlsx_footwear_family_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
-csv_product_grid_context_quick_export;IT support,Manager,Redactor;
-csv_published_product_grid_context_quick_export;IT support,Manager,Redactor;
-xlsx_product_grid_context_quick_export;IT support,Manager,Redactor;
-xlsx_published_product_grid_context_quick_export;IT support,Manager,Redactor;
+xlsx_footwear_product_import;All;All;
+xlsx_footwear_product_import_fr;All;All;
+xlsx_footwear_group_import;All;All;
+xlsx_footwear_variant_group_import;All;All;
+xlsx_footwear_category_import;All;All;
+xlsx_footwear_association_type_import;All;All;
+xlsx_footwear_attribute_import;All;All;
+xlsx_footwear_option_import;All;All;
+xlsx_footwear_family_import;All;All;
+xlsx_product_quick_export;All;
+xlsx_published_product_quick_export;All;
+xlsx_footwear_association_type_export;All;All;
+xlsx_footwear_attribute_export;All;All;
+xlsx_footwear_category_export;All;All;
+xlsx_footwear_option_export;All;All;
+xlsx_footwear_family_export;All;All;
+csv_product_grid_context_quick_export;All;
+csv_published_product_grid_context_quick_export;All;
+xlsx_product_grid_context_quick_export;All;
+xlsx_published_product_grid_context_quick_export;All;
 classify_assets;All;
 add_tags_to_assets;All;
+csv_footwear_currency_export;All;All
+csv_footwear_channel_export;All;All
+csv_footwear_locale_export;All;All
+csv_footwear_group_type_export;All;All
+csv_footwear_attribute_group_export;All;All
+csv_footwear_currency_import;All;All
+csv_footwear_channel_import;All;All
+csv_footwear_locale_import;All;All
+csv_footwear_group_type_import;All;All
+csv_footwear_attribute_group_import;All;All
+xlsx_footwear_currency_import;All;All
+xlsx_footwear_channel_import;All;All
+xlsx_footwear_locale_import;All;All
+xlsx_footwear_group_type_import;All;All
+xlsx_footwear_attribute_group_import;All;All
+xlsx_footwear_channel_export;All;All
+xlsx_footwear_currency_export;All;All
+xlsx_footwear_locale_export;All;All
+xlsx_footwear_group_type_export;All;All
+xlsx_footwear_attribute_group_export;All;All

@@ -25,11 +25,10 @@ pimee_product_asset:
   mass_upload:
     menu: Télécharger les ressources
     btn:
-      add_files: Ajouter des fichiers
-      cancel: Annuler le téléchargement
+      remove_all_files: Supprimer tous les fichiers
       delete: Supprimer
       import: Import
-      start: Démarrer le téléchargement
+      upload: Télécharger
     success:
       new: Une nouvelle ressource sera créée
       imported: Fichiers importés pour le traitement des ressources
@@ -55,13 +54,14 @@ pimee_product_asset:
       actions: actions
     action:
       cancel: Annuler
-      delete: Supprimer
+      remove: Supprimer
     status:
       added: Ajouté
       queued: En attente
       uploading: Transfert en cours
       error: Erreur
       success: Succès
+    drag_and_drop: Glissez déposez vos ressources ou cliquez ici
   datagrid:
     mass_action:
       delete:

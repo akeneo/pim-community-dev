@@ -9,10 +9,8 @@ pimee_catalog_rule:
         conditions: Condição
         actions: Ação
         impacted_product_count:
-          label: Produtos afectados
           no_yet_calculated: Ainda não calculado
       mass_edit_action:
-        impacted_product_count: Calcular os produtos afectados
         delete: Eliminar as regras selecionadas
   actions:
     type:

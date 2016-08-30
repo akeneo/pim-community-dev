@@ -15,4 +15,4 @@ pimee_product_asset:
       import: Importação
     action:
       cancel: Cancelar
-      delete: Eliminar
+      remove: Remover

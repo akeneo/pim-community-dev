@@ -9,7 +9,6 @@ pimee_catalog_rule:
         conditions: Bedingung
         actions: Aktion
         impacted_product_count:
-          label: Übereinstimmende Produkte
           no_yet_calculated: Noch nicht berechnet
   actions:
     type:
@@ -67,9 +66,6 @@ pimee_catalog_rule:
     rule_definition_processor.title: Produktimport-Regeln Processor
     product_rule_definition_writer.title: Produktimport-Regeln Writer
     rules_execution.title: Regel-Ausführung
-  notification:
-    mass_edit_rule:
-      success: Berechnung der übereinstimmenden Produkte für die Regeln abgeschlossen
 rule: Regeleinstellungen
 mass_edit_rule: Regeleinstellungen
 job_execution.summary.rule_calculated: Anzahl der Regeln

@@ -25,11 +25,9 @@ pimee_product_asset:
   mass_upload:
     menu: Assets hochladen
     btn:
-      add_files: Dateien hinzufügen
-      cancel: Upload abbrechen
       delete: Löschen
       import: Import
-      start: Upload starten
+      upload: Hochladen
     success:
       new: Ein neues Asset wird erstellt
       canceled: Upload erfolgreich abgebrochen
@@ -52,7 +50,7 @@ pimee_product_asset:
       actions: Aktionen
     action:
       cancel: Abbrechen
-      delete: Löschen
+      remove: Entfernen
     status:
       added: Hinzugefügt
       queued: In Warteschlange

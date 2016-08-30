@@ -71,7 +71,19 @@ jobs:
             withHeader: true
             filePath: /tmp/product.csv
             filters:
-                data: {}
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['2014_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
                 structure:
                     scope: mobile
                     locales:
@@ -190,7 +202,19 @@ jobs:
             withHeader: true
             filePath: /tmp/published-product.csv
             filters:
-                data: {}
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['2014_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
                 structure:
                     scope: mobile
                     locales:
@@ -207,7 +231,19 @@ jobs:
             linesPerFile: 10000
             filePath: /tmp/published-product.xlsx
             filters:
-                data: {}
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['2014_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
                 structure:
                     scope: mobile
                     locales:
