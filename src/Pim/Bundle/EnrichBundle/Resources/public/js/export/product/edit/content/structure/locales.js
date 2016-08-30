@@ -159,7 +159,7 @@ define(
                 return fetcherRegistry.getFetcher('channel')
                     .fetch(this.getCurrentScope())
                     .then(function (scope) {
-                        this.setLocales(scope.locales);
+                        this.setLocales(_.pluck(scope.locales, 'code'));
                     }.bind(this));
             },
 

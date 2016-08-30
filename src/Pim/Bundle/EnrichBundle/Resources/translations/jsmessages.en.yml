@@ -73,6 +73,8 @@ error:
         attribute_option: Error during deletion of the attribute option
     saving:
         attribute_option: Cannot save attribute option
+        export_profile: Cannot save export profile. Please check that all filters are well filled
+
 alert:
     attribute_option:
         error_occured_during_submission: An error occured during the form submission on the server

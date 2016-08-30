@@ -56,7 +56,7 @@ define(
              * @returns {boolean}
              */
             channelHasLocale: function (channel, locale) {
-                return _.contains(channel.locales, locale);
+                return _.contains(_.pluck(channel.locales, 'code'), locale);
             },
 
             /**

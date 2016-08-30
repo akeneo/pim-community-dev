@@ -47,7 +47,7 @@ Feature: Edit an export
     When I visit the "Content" tab
     Then I should see the text "Channel (required) Tablet"
     And I should see the text "Status disabled"
-    And I should see the text "en_US"
+    And I should see the text "English (United States)"
     And I should see the text "Boots"
     And I should see the text "Not complete on all selected locales"
     And I should see the text "identifier1, identifier2, identifier3, identifier4"
