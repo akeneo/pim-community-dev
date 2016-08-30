@@ -51,7 +51,7 @@ pim_datagrid:
     label: Colonnes
     title: Sélection de colonnes
     all_groups: Tous les groupes
-    search: Rechercher
+    search: Recherche
     clear: Réinitialiser
     displayed_columns: Colonnes affichées
     apply: Appliquer
