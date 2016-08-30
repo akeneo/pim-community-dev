@@ -36,7 +36,7 @@ class ContentDenormalizer implements DenormalizerInterface, ChainedDenormalizerA
      */
     public function __construct($ruleClass, $conditionClass)
     {
-        $this->ruleClass      = $ruleClass;
+        $this->ruleClass = $ruleClass;
         $this->conditionClass = $conditionClass;
     }
 

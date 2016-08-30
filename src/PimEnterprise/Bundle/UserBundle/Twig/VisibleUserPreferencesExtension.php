@@ -75,7 +75,7 @@ class VisibleUserPreferencesExtension extends \Twig_Extension
     public function isProposalStateFieldVisible(UserInterface $user)
     {
         $editableCategories = $this->categoryAccessRepo->getGrantedCategoryCodes($user, Attributes::EDIT_ITEMS);
-        $ownedCategories    = $this->categoryAccessRepo->getGrantedCategoryCodes($user, Attributes::OWN_PRODUCTS);
+        $ownedCategories = $this->categoryAccessRepo->getGrantedCategoryCodes($user, Attributes::OWN_PRODUCTS);
 
         $editableButNotOwned = array_diff($editableCategories, $ownedCategories);
 

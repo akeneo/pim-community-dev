@@ -45,8 +45,8 @@ class PropertyActionValidator extends ConstraintValidator
         ProductBuilderInterface $productBuilder,
         ValidatorInterface $validator
     ) {
-        $this->applierRegistry  = $applierRegistry;
-        $this->productBuilder   = $productBuilder;
+        $this->applierRegistry = $applierRegistry;
+        $this->productBuilder = $productBuilder;
         $this->productValidator = $validator;
     }
 

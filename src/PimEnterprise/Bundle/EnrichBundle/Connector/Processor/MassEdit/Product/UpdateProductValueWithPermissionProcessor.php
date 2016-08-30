@@ -55,8 +55,8 @@ class UpdateProductValueWithPermissionProcessor extends BaseProcessor
         parent::__construct($propertySetter, $validator);
 
         $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage         = $tokenStorage;
-        $this->userManager          = $userManager;
+        $this->tokenStorage = $tokenStorage;
+        $this->userManager = $userManager;
     }
 
     /**

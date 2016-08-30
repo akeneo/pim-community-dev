@@ -35,7 +35,7 @@ class MissingVariationsEventSubscriber implements EventSubscriberInterface
     public function __construct(VariationsCollectionFilesGeneratorInterface $generator, AssetFinderInterface $finder)
     {
         $this->generator = $generator;
-        $this->finder    = $finder;
+        $this->finder = $finder;
     }
 
     /**
@@ -59,7 +59,7 @@ class MissingVariationsEventSubscriber implements EventSubscriberInterface
     public function onAssetFilesUploaded(AssetEvent $event)
     {
         $variations = $this->finder->retrieveVariationsNotGenerated($event->getSubject());
-        $processed  = $this->generator->generate($variations, true);
+        $processed = $this->generator->generate($variations, true);
 
         $event->setProcessedList($processed);
 

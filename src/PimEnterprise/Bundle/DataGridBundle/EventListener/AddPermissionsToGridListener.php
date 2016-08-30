@@ -42,8 +42,8 @@ class AddPermissionsToGridListener
         $accessLevel
     ) {
         $this->accessRepository = $accessRepository;
-        $this->tokenStorage     = $tokenStorage;
-        $this->accessLevel      = $accessLevel;
+        $this->tokenStorage = $tokenStorage;
+        $this->accessLevel = $accessLevel;
     }
 
     /**
@@ -56,7 +56,7 @@ class AddPermissionsToGridListener
         $datasource = $event->getDatagrid()->getDatasource();
 
         // Prepare subquery
-        $user  = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $subQB = $this->accessRepository->getGrantedEntitiesQB($user, $this->accessLevel);
 
         $datasource->getRepository()->addGridAccessQB(

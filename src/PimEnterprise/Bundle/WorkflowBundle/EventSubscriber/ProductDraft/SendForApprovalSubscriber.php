@@ -59,10 +59,10 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
         UsersToNotifyProvider $usersProvider,
         SimpleFactoryInterface $notificationFactory
     ) {
-        $this->notifier            = $notifier;
-        $this->userRepository      = $userRepository;
+        $this->notifier = $notifier;
+        $this->userRepository = $userRepository;
         $this->ownerGroupsProvider = $ownerGroupsProvider;
-        $this->usersProvider       = $usersProvider;
+        $this->usersProvider = $usersProvider;
         $this->notificationFactory = $notificationFactory;
     }
 
@@ -83,8 +83,8 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
      */
     public function sendNotificationToOwners(GenericEvent $event)
     {
-        $productDraft  = $event->getSubject();
-        $product       = $productDraft->getProduct();
+        $productDraft = $event->getSubject();
+        $product = $productDraft->getProduct();
 
         $usersToNotify = $this->usersProvider->getUsersToNotify(
             $this->ownerGroupsProvider->getOwnerGroupIds($product)

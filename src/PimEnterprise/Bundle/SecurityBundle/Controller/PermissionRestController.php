@@ -51,9 +51,9 @@ class PermissionRestController
         UserContext $userContext
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->attributeGroupRepo   = $attributeGroupRepo;
-        $this->categoryAccessRepo   = $categoryAccessRepo;
-        $this->userContext          = $userContext;
+        $this->attributeGroupRepo = $attributeGroupRepo;
+        $this->categoryAccessRepo = $categoryAccessRepo;
+        $this->userContext = $userContext;
     }
 
     /**

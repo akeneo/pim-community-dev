@@ -38,8 +38,8 @@ class AssetType extends AbstractType
      */
     public function __construct($entityClass, $tagClass, $categoryClass)
     {
-        $this->entityClass   = $entityClass;
-        $this->tagClass      = $tagClass;
+        $this->entityClass = $entityClass;
+        $this->tagClass = $tagClass;
         $this->categoryClass = $categoryClass;
     }
 

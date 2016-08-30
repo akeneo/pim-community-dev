@@ -29,7 +29,7 @@ class VersionNormalizer implements NormalizerInterface
         PublishedProductRepositoryInterface $repository
     ) {
         $this->versionNormalizer = $versionNormalizer;
-        $this->repository        = $repository;
+        $this->repository = $repository;
     }
 
     /**

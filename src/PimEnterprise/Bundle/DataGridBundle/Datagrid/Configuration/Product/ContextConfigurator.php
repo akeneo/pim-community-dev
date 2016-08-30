@@ -89,7 +89,7 @@ class ContextConfigurator extends BaseContextConfigurator
      */
     protected function getAttributeIds($attributeCodes = null)
     {
-        $groupIds     = $this->getGrantedGroupIds();
+        $groupIds = $this->getGrantedGroupIds();
         $attributeIds = $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes, $groupIds);
 
         return $attributeIds;

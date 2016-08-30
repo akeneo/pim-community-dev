@@ -51,9 +51,9 @@ class CategoryManager
         CategoryAccessRepository $categoryAccessRepo,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->categoryAccessRepo   = $categoryAccessRepo;
+        $this->categoryAccessRepo = $categoryAccessRepo;
         $this->authorizationChecker = $authorizationChecker;
-        $this->categoryRepository   = $categoryRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -107,7 +107,7 @@ class CategoryManager
     protected function filterGrantedFilledTree(&$filledTree)
     {
         foreach ($filledTree as $categoryIdx => &$categoryData) {
-            $isLeaf   = is_object($categoryData);
+            $isLeaf = is_object($categoryData);
             $category = $isLeaf ? $categoryData : $categoryData['item'];
 
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {

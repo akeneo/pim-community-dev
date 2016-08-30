@@ -37,7 +37,7 @@ class AddOwnerGroupsParameterSubscriber implements EventSubscriberInterface
      */
     public function __construct(CategoryAccessRepository $repository, UserContext $userContext)
     {
-        $this->repository  = $repository;
+        $this->repository = $repository;
         $this->userContext = $userContext;
     }
 

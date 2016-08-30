@@ -67,7 +67,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
             return 0;
         }
 
-        $generator     = $this->getVariationsCollectionFileGenerator();
+        $generator = $this->getVariationsCollectionFileGenerator();
         $processedList = $generator->generate($missingVariations, true);
 
         $processedAssets = [];

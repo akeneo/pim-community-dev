@@ -55,11 +55,11 @@ class ProductController
         TokenStorageInterface $tokenStorage,
         ObjectFilterInterface $objectFilter
     ) {
-        $this->repository        = $repository;
+        $this->repository = $repository;
         $this->productRepository = $productRepository;
-        $this->normalizer        = $normalizer;
-        $this->tokenStorage      = $tokenStorage;
-        $this->objectFilter      = $objectFilter;
+        $this->normalizer = $normalizer;
+        $this->tokenStorage = $tokenStorage;
+        $this->objectFilter = $objectFilter;
     }
 
     /**

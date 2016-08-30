@@ -41,7 +41,7 @@ class ProductSubscriber implements EventSubscriberInterface
     public function __construct(AuthorizationCheckerInterface $authorizationChecker, UserContext $userContext)
     {
         $this->authorizationChecker = $authorizationChecker;
-        $this->userContext          = $userContext;
+        $this->userContext = $userContext;
     }
 
     /**

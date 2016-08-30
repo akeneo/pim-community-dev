@@ -39,7 +39,7 @@ class AssetContextConfigurator implements ConfiguratorInterface
     public function __construct(RequestParametersExtractorInterface $paramsExtractor, UserContext $userContext)
     {
         $this->paramsExtractor = $paramsExtractor;
-        $this->userContext     = $userContext;
+        $this->userContext = $userContext;
     }
 
     /**

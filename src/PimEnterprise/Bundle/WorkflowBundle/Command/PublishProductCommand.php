@@ -36,7 +36,7 @@ class PublishProductCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $identifier = $input->getArgument('identifier');
-        $product    = $this->getProduct($identifier);
+        $product = $this->getProduct($identifier);
 
         if (null === $product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found<error>', $identifier));

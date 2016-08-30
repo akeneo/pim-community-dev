@@ -34,7 +34,7 @@ class AddTags extends AbstractMassEditOperation
     public function __construct($jobInstanceCode, $formType)
     {
         $this->jobInstanceCode = $jobInstanceCode;
-        $this->formType        = $formType;
+        $this->formType = $formType;
     }
 
     /**

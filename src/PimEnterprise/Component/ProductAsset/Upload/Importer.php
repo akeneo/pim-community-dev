@@ -49,8 +49,8 @@ class Importer implements ImporterInterface
      */
     public function import(UploadContext $uploadContext)
     {
-        $files           = [];
-        $fileSystem      = new Filesystem();
+        $files = [];
+        $fileSystem = new Filesystem();
         $uploadDirectory = $uploadContext->getTemporaryUploadDirectory();
         $importDirectory = $uploadContext->getTemporaryImportDirectory();
 
@@ -67,10 +67,10 @@ class Importer implements ImporterInterface
             ];
             if (!$this->isValidImportedFilename($storedFiles, $file)) {
                 $result['error'] = UploadMessages::ERROR_CONFLICTS;
-                $files[]         = $result;
+                $files[] = $result;
             } else {
                 $filePath = $uploadDirectory . DIRECTORY_SEPARATOR . $file;
-                $newPath  = $importDirectory . DIRECTORY_SEPARATOR . $file;
+                $newPath = $importDirectory . DIRECTORY_SEPARATOR . $file;
                 $fileSystem->rename($filePath, $newPath);
                 $files[] = $result;
             }
@@ -84,7 +84,7 @@ class Importer implements ImporterInterface
      */
     public function getImportedFiles(UploadContext $uploadContext)
     {
-        $importDir    = $uploadContext->getTemporaryImportDirectory();
+        $importDir = $uploadContext->getTemporaryImportDirectory();
         $importedFiles = [];
         if (is_dir($importDir)) {
             $importedFiles = array_diff(scandir($importDir), ['.', '..']);
@@ -111,14 +111,14 @@ class Importer implements ImporterInterface
         $otherFilenames = array_diff($storedFiles, [$filenameToCheck]);
 
         $checkedFilenameInfos = $this->uploadChecker->getParsedFilename($filenameToCheck);
-        $checkedIsLocalized   = null !== $checkedFilenameInfos->getLocaleCode();
+        $checkedIsLocalized = null !== $checkedFilenameInfos->getLocaleCode();
 
         $filenamesIterator = new \ArrayIterator($otherFilenames);
 
         while ($filenamesIterator->valid()) {
             $filename = $filenamesIterator->current();
 
-            $comparedInfos       = $this->uploadChecker->getParsedFilename($filename);
+            $comparedInfos = $this->uploadChecker->getParsedFilename($filename);
             $comparedIsLocalized = null !== $comparedInfos->getLocaleCode();
 
             if ($checkedFilenameInfos->getAssetCode() === $comparedInfos->getAssetCode() &&

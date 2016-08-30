@@ -41,7 +41,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
         ProductCascadeRemovalRepositoryInterface $cascadeRemovalRepo,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->cascadeRemovalRepo  = $cascadeRemovalRepo;
+        $this->cascadeRemovalRepo = $cascadeRemovalRepo;
         $this->attributeRepository = $attributeRepository;
     }
 

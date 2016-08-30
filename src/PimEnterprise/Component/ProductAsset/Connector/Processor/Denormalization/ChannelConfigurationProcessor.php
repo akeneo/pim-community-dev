@@ -53,9 +53,9 @@ class ChannelConfigurationProcessor extends AbstractProcessor implements
     ) {
         parent::__construct($repository);
 
-        $this->channelRepository      = $channelRepository;
-        $this->configurationFactory   = $configurationFactory;
-        $this->validator              = $validator;
+        $this->channelRepository = $channelRepository;
+        $this->configurationFactory = $configurationFactory;
+        $this->validator = $validator;
     }
 
     /**

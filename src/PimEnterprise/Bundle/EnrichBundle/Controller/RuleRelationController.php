@@ -43,8 +43,8 @@ class RuleRelationController
         FQCNResolver $FQCNResolver
     ) {
         $this->ruleRelationRepo = $ruleRelationRepo;
-        $this->normalizer       = $normalizer;
-        $this->FQCNResolver     = $FQCNResolver;
+        $this->normalizer = $normalizer;
+        $this->FQCNResolver = $FQCNResolver;
     }
 
     /**

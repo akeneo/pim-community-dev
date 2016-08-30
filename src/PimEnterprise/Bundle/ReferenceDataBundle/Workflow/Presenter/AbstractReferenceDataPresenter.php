@@ -32,7 +32,7 @@ abstract class AbstractReferenceDataPresenter extends AbstractProductValuePresen
      */
     public function __construct(ReferenceDataRepositoryResolver $repositoryResolver)
     {
-        $this->repositoryResolver  = $repositoryResolver;
+        $this->repositoryResolver = $repositoryResolver;
     }
 
     /**

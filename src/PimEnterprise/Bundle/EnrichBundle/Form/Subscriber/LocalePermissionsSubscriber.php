@@ -37,7 +37,7 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
      */
     public function __construct(LocaleAccessManager $accessManager, SecurityFacade $securityFacade)
     {
-        $this->accessManager  = $accessManager;
+        $this->accessManager = $accessManager;
         $this->securityFacade = $securityFacade;
     }
 

@@ -36,7 +36,7 @@ class AssociationPublisher implements PublisherInterface
     public function __construct($publishClassName, PublishedProductRepositoryInterface $repository)
     {
         $this->publishClassName = $publishClassName;
-        $this->repository       = $repository;
+        $this->repository = $repository;
     }
 
     /**

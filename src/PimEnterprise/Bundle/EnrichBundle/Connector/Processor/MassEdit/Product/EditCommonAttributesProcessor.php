@@ -65,9 +65,9 @@ class EditCommonAttributesProcessor extends BaseProcessor
             $productDetacher
         );
 
-        $this->tokenStorage         = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->userManager          = $userManager;
+        $this->userManager = $userManager;
     }
 
     /**

@@ -63,9 +63,9 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
     ) {
         parent::__construct($documentManager, $productClass, $channelRepository, $familyRepository);
 
-        $this->assetRepository     = $assetRepository;
+        $this->assetRepository = $assetRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->connection          = $manager->getConnection();
+        $this->connection = $manager->getConnection();
     }
 
     /**
@@ -83,7 +83,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
 
         foreach ($attributesCodes as $code) {
             $normalizedKey = sprintf('normalizedData.%s', $code);
-            $searchedId    = sprintf('%s.id', $normalizedKey);
+            $searchedId = sprintf('%s.id', $normalizedKey);
 
             $productQb->addOr(
                 $productQb->expr()
@@ -133,11 +133,11 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
         $expectedCompleteness = $channel->getCode() . '-' . $locale->getCode();
         $fields[$expectedCompleteness] = [];
         $fields[$expectedCompleteness]['channel'] = $channel->getId();
-        $fields[$expectedCompleteness]['locale']  = $locale->getId();
-        $fields[$expectedCompleteness]['reqs']    = [];
+        $fields[$expectedCompleteness]['locale'] = $locale->getId();
+        $fields[$expectedCompleteness]['reqs'] = [];
         $fields[$expectedCompleteness]['reqs']['attributes'] = [];
-        $fields[$expectedCompleteness]['reqs']['prices']     = [];
-        $fields[$expectedCompleteness]['reqs']['assets']     = [];
+        $fields[$expectedCompleteness]['reqs']['prices'] = [];
+        $fields[$expectedCompleteness]['reqs']['assets'] = [];
 
         foreach ($familyReqs[$channel->getCode()] as $requirement) {
             $fieldName = $this->getNormalizedFieldName($requirement->getAttribute(), $channel, $locale);
@@ -168,7 +168,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
     protected function getRequiredCount(array $normalizedReqs, $missingComp)
     {
         $requiredCount = parent::getRequiredCount($normalizedReqs, $missingComp);
-        $assetsReqs    = $normalizedReqs[$missingComp]['reqs']['assets'];
+        $assetsReqs = $normalizedReqs[$missingComp]['reqs']['assets'];
 
         return $requiredCount + count($assetsReqs);
     }
@@ -179,15 +179,15 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
     protected function getMissingCount(array $normalizedReqs, array $normalizedData, array $dataFields, $missingComp)
     {
         $missingCount = parent::getMissingCount($normalizedReqs, $normalizedData, $dataFields, $missingComp);
-        $assetsReqs   = $normalizedReqs[$missingComp]['reqs']['assets'];
+        $assetsReqs = $normalizedReqs[$missingComp]['reqs']['assets'];
 
-        $localeId  = $normalizedReqs[$missingComp]['locale'];
+        $localeId = $normalizedReqs[$missingComp]['locale'];
         $channelId = $normalizedReqs[$missingComp]['channel'];
 
         $completeAttributes = 0;
         foreach ($assetsReqs as $attributeCode) {
             if (isset($normalizedData[$attributeCode])) {
-                $assetIds       = $this->getAssetsIdsFromAttribute($normalizedData, $attributeCode);
+                $assetIds = $this->getAssetsIdsFromAttribute($normalizedData, $attributeCode);
                 $completeAssets = $this->assetRepository->countCompleteAssets($assetIds, $localeId, $channelId);
                 if ($completeAssets > 0) {
                     $completeAttributes += 1;

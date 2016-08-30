@@ -86,7 +86,7 @@ class CategoryTreeController extends BaseCategoryTreeController
         );
 
         $this->categoryAccessRepo = $categoryAccessRepo;
-        $this->tokenStorage       = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -101,7 +101,7 @@ class CategoryTreeController extends BaseCategoryTreeController
         }
 
         $selectNodeId = $request->get('select_node_id', -1);
-        $context      = $request->get('context', false);
+        $context = $request->get('context', false);
 
         try {
             $selectNode = $this->findGrantedCategory($selectNodeId, $context);
@@ -132,9 +132,9 @@ class CategoryTreeController extends BaseCategoryTreeController
      */
     protected function getChildrenCategories(Request $request, $selectNode)
     {
-        $parent        = $this->findCategory($request->get('id'));
+        $parent = $this->findCategory($request->get('id'));
         $isEditGranted = $this->securityFacade->isGranted($this->buildAclName('category_edit'));
-        $context       = $request->get('context', false);
+        $context = $request->get('context', false);
 
         if ($isEditGranted && self::CONTEXT_MANAGE === $context) {
             $categories = parent::getChildrenCategories($request, $selectNode);

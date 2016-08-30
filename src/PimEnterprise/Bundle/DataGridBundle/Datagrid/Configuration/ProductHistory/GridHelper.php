@@ -38,7 +38,7 @@ class GridHelper
         ProductRepositoryInterface $productRepository
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->productRepository    = $productRepository;
+        $this->productRepository = $productRepository;
     }
 
     /**

@@ -31,7 +31,7 @@ class ImageMagickLauncher
      */
     public function __construct($defaultConvertPath = null)
     {
-        $this->executableFinder   = new ExecutableFinder();
+        $this->executableFinder = new ExecutableFinder();
         $this->defaultConvertPath = $defaultConvertPath;
     }
 
@@ -45,7 +45,7 @@ class ImageMagickLauncher
     {
         $output = [];
         $status = null;
-        $cmd    = sprintf(
+        $cmd = sprintf(
             '%s %s %s %s',
             $this->getConvertBinaryPath(),
             escapeshellarg($pathName),

@@ -63,9 +63,9 @@ class PermissionFilter extends OroChoiceFilter
     ) {
         parent::__construct($factory, $util);
 
-        $this->tokenStorage      = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
         $this->productRepository = $productRepository;
-        $this->accessRepository  = $accessRepository;
+        $this->accessRepository = $accessRepository;
     }
 
     /**

@@ -108,7 +108,7 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
     protected function getProduct($identifier)
     {
         $repository = $this->getContainer()->get('pim_catalog.repository.product');
-        $product    = $repository->findOneByIdentifier($identifier);
+        $product = $repository->findOneByIdentifier($identifier);
 
         return $product;
     }

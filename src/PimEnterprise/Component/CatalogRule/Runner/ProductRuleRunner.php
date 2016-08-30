@@ -50,9 +50,9 @@ class ProductRuleRunner implements DryRunnerInterface
         ApplierInterface $applier,
         $productCondClass
     ) {
-        $this->builder          = $builder;
-        $this->selector         = $selector;
-        $this->applier          = $applier;
+        $this->builder = $builder;
+        $this->selector = $selector;
+        $this->applier = $applier;
         $this->productCondClass = $productCondClass;
     }
 

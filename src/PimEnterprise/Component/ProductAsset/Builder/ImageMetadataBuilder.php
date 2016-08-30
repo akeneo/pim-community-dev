@@ -39,8 +39,8 @@ class ImageMetadataBuilder implements MetadataBuilderInterface
         MetadataBuilderInterface $fileMetaBuidler,
         $imageMetadataClass = 'PimEnterprise\Component\ProductAsset\Model\ImageMetadata'
     ) {
-        $this->metaReaderFactory  = $metaReaderFactory;
-        $this->fileMetaBuidler    = $fileMetaBuidler;
+        $this->metaReaderFactory = $metaReaderFactory;
+        $this->fileMetaBuidler = $fileMetaBuidler;
         $this->imageMetadataClass = $imageMetadataClass;
     }
 

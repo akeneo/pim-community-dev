@@ -40,7 +40,7 @@ class RemoveOutdatedProductDraftSubscriber implements EventSubscriberInterface
     public function __construct(ProductDraftRepositoryInterface $productDraftRepo, BulkRemoverInterface $remover)
     {
         $this->productDraftRepo = $productDraftRepo;
-        $this->remover          = $remover;
+        $this->remover = $remover;
     }
 
     /**

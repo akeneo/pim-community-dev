@@ -39,9 +39,9 @@ class ColorSpace extends AbstractTransformation
             'image/png'
         ]
     ) {
-        $this->optionsResolver    = $optionsResolver;
+        $this->optionsResolver = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;
-        $this->launcher           = $launcher;
+        $this->launcher = $launcher;
     }
 
     /**

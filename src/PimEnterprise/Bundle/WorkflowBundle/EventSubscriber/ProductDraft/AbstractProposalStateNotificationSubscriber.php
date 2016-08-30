@@ -57,9 +57,9 @@ abstract class AbstractProposalStateNotificationSubscriber
         AttributeRepositoryInterface $attributeRepository,
         SimpleFactoryInterface $notificationFactory
     ) {
-        $this->notifier            = $notifier;
-        $this->userContext         = $userContext;
-        $this->userRepository      = $userRepository;
+        $this->notifier = $notifier;
+        $this->userContext = $userContext;
+        $this->userRepository = $userRepository;
         $this->attributeRepository = $attributeRepository;
         $this->notificationFactory = $notificationFactory;
     }
@@ -131,7 +131,7 @@ abstract class AbstractProposalStateNotificationSubscriber
         }
 
         if (count($updatedValues) > self::NOTIFICATION_MAX_ATTRIBUTES) {
-            $messageInfos['message']       = sprintf('pimee_workflow.product_draft.notification.%s_number', $type);
+            $messageInfos['message'] = sprintf('pimee_workflow.product_draft.notification.%s_number', $type);
             $messageInfos['messageParams'] = ['%attributes_count%' => count($updatedValues)];
 
             return $messageInfos;
@@ -144,7 +144,7 @@ abstract class AbstractProposalStateNotificationSubscriber
             return $attribute->getLabel();
         }, array_keys($updatedValues));
 
-        $messageInfos['message']       = sprintf('pimee_workflow.product_draft.notification.%s', $type);
+        $messageInfos['message'] = sprintf('pimee_workflow.product_draft.notification.%s', $type);
         $messageInfos['messageParams'] = ['%attributes%' => implode(', ', $attributeLabels)];
 
         return $messageInfos;

@@ -34,7 +34,7 @@ class RuleExtension extends \Twig_Extension
     public function __construct(PresenterRegistryInterface $presenterRegistry, LocaleResolver $localeResolver)
     {
         $this->presenterRegistry = $presenterRegistry;
-        $this->localeResolver    = $localeResolver;
+        $this->localeResolver = $localeResolver;
     }
 
     /**

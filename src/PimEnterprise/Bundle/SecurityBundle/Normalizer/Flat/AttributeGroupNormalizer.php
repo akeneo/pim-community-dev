@@ -36,7 +36,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
         AttributeGroupAccessManager $accessManager
     ) {
         $this->attrGroupNormalizer = $attrGroupNormalizer;
-        $this->accessManager       = $accessManager;
+        $this->accessManager = $accessManager;
     }
 
     /**

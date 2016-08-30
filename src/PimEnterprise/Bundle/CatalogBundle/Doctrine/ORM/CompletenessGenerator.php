@@ -53,7 +53,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         parent::__construct($manager, $productClass, $productValueClass, $attributeClass);
 
         $this->assetRepository = $assetRepository;
-        $this->assetClass      = $assetClass;
+        $this->assetClass = $assetClass;
     }
 
     /**
@@ -99,7 +99,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
      */
     protected function prepareCompleteAssets(array $criteria)
     {
-        $cleanupSql  = "DROP TABLE IF EXISTS " . self::COMPLETE_ASSETS_TABLE . PHP_EOL;
+        $cleanupSql = "DROP TABLE IF EXISTS " . self::COMPLETE_ASSETS_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
@@ -231,7 +231,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
     protected function getExtraConditions()
     {
         $assetsConditions = sprintf('OR %s.value_id IS NOT NULL', static::COMPLETE_ASSETS_TABLE);
-        $extraConditions  = array_merge(parent::getExtraConditions(), [$assetsConditions]);
+        $extraConditions = array_merge(parent::getExtraConditions(), [$assetsConditions]);
 
         return $extraConditions;
     }

@@ -51,7 +51,7 @@ class JobExecutionManager extends BaseJobExecutionManager
         parent::__construct($repository, $securityFacade);
 
         $this->accessRepository = $accessRepository;
-        $this->tokenStorage     = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**

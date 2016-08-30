@@ -37,8 +37,8 @@ class AddTagsToAssetsType extends AbstractType
     public function __construct($dataClass, $formName, $tagClass)
     {
         $this->dataClass = $dataClass;
-        $this->formName  = $formName;
-        $this->tagClass  = $tagClass;
+        $this->formName = $formName;
+        $this->tagClass = $tagClass;
     }
 
     /**

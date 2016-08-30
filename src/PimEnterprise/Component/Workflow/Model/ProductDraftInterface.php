@@ -21,9 +21,9 @@ use Pim\Component\Catalog\Model\ProductInterface;
 interface ProductDraftInterface
 {
     const IN_PROGRESS = 0;
-    const READY       = 1;
+    const READY = 1;
 
-    const CHANGE_DRAFT     = 'draft';
+    const CHANGE_DRAFT = 'draft';
     const CHANGE_TO_REVIEW = 'to_review';
 
     /**

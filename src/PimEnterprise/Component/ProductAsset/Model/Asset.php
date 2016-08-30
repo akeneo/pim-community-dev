@@ -58,10 +58,10 @@ class Asset implements AssetInterface, VersionableInterface
     public function __construct()
     {
         $this->references = new ArrayCollection();
-        $this->enabled    = true;
-        $this->createdAt  = new \Datetime();
-        $this->updatedAt  = new \Datetime();
-        $this->tags       = new ArrayCollection();
+        $this->enabled = true;
+        $this->createdAt = new \Datetime();
+        $this->updatedAt = new \Datetime();
+        $this->tags = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
 

@@ -64,11 +64,11 @@ class CategoryAccessManager
         BulkRemoverInterface $accessRemover,
         $categoryAccessClass
     ) {
-        $this->accessRepository    = $accessRepository;
-        $this->categoryRepository  = $categoryRepository;
-        $this->groupRepository     = $groupRepository;
-        $this->accessSaver         = $accessSaver;
-        $this->accessRemover       = $accessRemover;
+        $this->accessRepository = $accessRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->groupRepository = $groupRepository;
+        $this->accessSaver = $accessSaver;
+        $this->accessRemover = $accessRemover;
         $this->categoryAccessClass = $categoryAccessClass;
     }
 
@@ -329,7 +329,7 @@ class CategoryAccessManager
             $mergedPermissions[$group->getName()]['view'] = true;
         }
         foreach ($addOwnGroups as $group) {
-            $mergedPermissions[$group->getName()]['own']  = true;
+            $mergedPermissions[$group->getName()]['own'] = true;
             $mergedPermissions[$group->getName()]['edit'] = true;
             $mergedPermissions[$group->getName()]['view'] = true;
         }

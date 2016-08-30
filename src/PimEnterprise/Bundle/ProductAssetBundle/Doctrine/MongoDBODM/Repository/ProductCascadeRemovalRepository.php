@@ -35,7 +35,7 @@ class ProductCascadeRemovalRepository extends DocumentRepository implements Prod
      */
     public function __construct(DocumentManager $dm, $documentName)
     {
-        $this->dm           = $dm;
+        $this->dm = $dm;
         $this->documentName = $documentName;
     }
 

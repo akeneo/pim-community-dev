@@ -77,11 +77,11 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
         ObjectRepository $jobRepository,
         SimpleFactoryInterface $notificationFactory
     ) {
-        $this->notifier            = $notifier;
-        $this->userRepository      = $userRepository;
+        $this->notifier = $notifier;
+        $this->userRepository = $userRepository;
         $this->ownerGroupsProvider = $ownerGroupsProvider;
-        $this->usersProvider       = $usersProvider;
-        $this->jobRepository       = $jobRepository;
+        $this->usersProvider = $usersProvider;
+        $this->jobRepository = $jobRepository;
         $this->notificationFactory = $notificationFactory;
     }
 

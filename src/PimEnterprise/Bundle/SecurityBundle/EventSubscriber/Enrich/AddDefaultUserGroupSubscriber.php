@@ -45,8 +45,8 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
         CategoryAccessManager $catAccessManager,
         AttributeGroupAccessManager $attGrpAccessManager
     ) {
-        $this->groupRepository     = $groupRepository;
-        $this->catAccessManager    = $catAccessManager;
+        $this->groupRepository = $groupRepository;
+        $this->catAccessManager = $catAccessManager;
         $this->attGrpAccessManager = $attGrpAccessManager;
     }
 

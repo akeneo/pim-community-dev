@@ -49,7 +49,7 @@ class ProductHistoryHydrator implements HydratorInterface
         foreach ($query->execute() as $result) {
             $result['published'] = ($result['_id']->{'$id'} === $publishedVersionId);
             $result['loggedAt'] = isset($result['loggedAt']) ? $dateTransformer->transform($result['loggedAt']) : null;
-            $result['id'] =  $result['_id']->__toString();
+            $result['id'] = $result['_id']->__toString();
             $rows[] = new ResultRecord($result);
         }
 

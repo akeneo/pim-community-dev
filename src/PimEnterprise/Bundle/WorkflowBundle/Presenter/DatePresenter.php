@@ -34,7 +34,7 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     public function __construct(BasePresenterInterface $datePresenter, LocaleResolver $localeResolver)
     {
-        $this->datePresenter  = $datePresenter;
+        $this->datePresenter = $datePresenter;
         $this->localeResolver = $localeResolver;
     }
 

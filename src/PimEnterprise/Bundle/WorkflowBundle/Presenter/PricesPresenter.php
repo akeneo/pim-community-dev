@@ -35,7 +35,7 @@ class PricesPresenter extends AbstractProductValuePresenter
     public function __construct(BasePresenterInterface $pricesPresenter, LocaleResolver $localeResolver)
     {
         $this->pricesPresenter = $pricesPresenter;
-        $this->localeResolver  = $localeResolver;
+        $this->localeResolver = $localeResolver;
     }
 
     /**

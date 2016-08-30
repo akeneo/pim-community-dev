@@ -38,7 +38,7 @@ class CategoryNormalizer implements NormalizerInterface
     public function __construct(NormalizerInterface $categoryNormalizer, CategoryAccessManager $accessManager)
     {
         $this->categoryNormalizer = $categoryNormalizer;
-        $this->accessManager      = $accessManager;
+        $this->accessManager = $accessManager;
     }
 
     /**

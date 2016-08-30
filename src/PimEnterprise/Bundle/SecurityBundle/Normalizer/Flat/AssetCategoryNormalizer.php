@@ -41,7 +41,7 @@ class AssetCategoryNormalizer implements NormalizerInterface
         CategoryAccessManager $categoryManager
     ) {
         $this->categoryNormalizer = $categoryNormalizer;
-        $this->categoryManager    = $categoryManager;
+        $this->categoryManager = $categoryManager;
     }
 
     /**

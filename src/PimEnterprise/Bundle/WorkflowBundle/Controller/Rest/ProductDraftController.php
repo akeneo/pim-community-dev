@@ -104,16 +104,16 @@ class ProductDraftController
         CollectionFilterInterface $collectionFilter
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->repository           = $repository;
-        $this->manager              = $manager;
-        $this->productRepository    = $productRepository;
-        $this->normalizer           = $normalizer;
-        $this->tokenStorage         = $tokenStorage;
-        $this->attributeRepository  = $attributeRepository;
-        $this->channelRepository    = $channelRepository;
-        $this->localeRepository     = $localeRepository;
-        $this->userContext          = $userContext;
-        $this->collectionFilter     = $collectionFilter;
+        $this->repository = $repository;
+        $this->manager = $manager;
+        $this->productRepository = $productRepository;
+        $this->normalizer = $normalizer;
+        $this->tokenStorage = $tokenStorage;
+        $this->attributeRepository = $attributeRepository;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
+        $this->userContext = $userContext;
+        $this->collectionFilter = $collectionFilter;
     }
 
     /**
@@ -128,9 +128,9 @@ class ProductDraftController
      */
     public function readyAction(Request $request, $productId)
     {
-        $product      = $this->findProductOr404($productId);
+        $product = $this->findProductOr404($productId);
         $productDraft = $this->findDraftForProductOr404($product);
-        $comment      = $request->get('comment') ?: null;
+        $comment = $request->get('comment') ?: null;
 
         if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft)) {
             throw new AccessDeniedHttpException();
@@ -297,7 +297,7 @@ class ProductDraftController
      */
     protected function findDraftForProductOr404(ProductInterface $product)
     {
-        $username     = $this->tokenStorage->getToken()->getUsername();
+        $username = $this->tokenStorage->getToken()->getUsername();
         $productDraft = $this->repository->findUserProductDraft($product, $username);
         if (null === $productDraft) {
             throw new NotFoundHttpException(sprintf('Draft for product %s not found', $product->getId()));

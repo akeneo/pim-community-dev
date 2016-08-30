@@ -40,9 +40,9 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
      */
     public function __construct($ruleClass, $definitionClass, $type)
     {
-        $this->ruleClass       = $ruleClass;
+        $this->ruleClass = $ruleClass;
         $this->definitionClass = $definitionClass;
-        $this->type            = $type;
+        $this->type = $type;
     }
 
     /**

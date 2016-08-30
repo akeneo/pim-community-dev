@@ -29,7 +29,7 @@ class ComposerScripts extends BaseComposerScripts
      */
     protected static function copyUpgradesFolder(Event $event)
     {
-        $eePath          = static::getDependencyMigrationPath($event, 'pim-enterprise-dev');
+        $eePath = static::getDependencyMigrationPath($event, 'pim-enterprise-dev');
         $migrationFolder = static::getMigrationFolderPath($event);
 
         static::copyFiles($event, $eePath, $migrationFolder);
@@ -47,11 +47,11 @@ class ComposerScripts extends BaseComposerScripts
     protected static function copyUpgradeFile(Event $event)
     {
         $finder = new Finder();
-        $ds     = DIRECTORY_SEPARATOR;
+        $ds = DIRECTORY_SEPARATOR;
 
-        $eePath    = static::getDependencyMigrationPath($event, 'pim-enterprise-dev');
+        $eePath = static::getDependencyMigrationPath($event, 'pim-enterprise-dev');
         $eeDepPath = $eePath . '..' . $ds;
-        $eeRoot    = $event->getComposer()->getConfig()->get('vendor-dir') . $ds . '..' . $ds;
+        $eeRoot = $event->getComposer()->getConfig()->get('vendor-dir') . $ds . '..' . $ds;
 
         $finder
             ->files()

@@ -54,10 +54,10 @@ class RowActionsConfigurator implements ConfiguratorInterface
         ProductRepositoryInterface $productRepository,
         LocaleRepositoryInterface $localeRepository
     ) {
-        $this->registry             = $registry;
+        $this->registry = $registry;
         $this->authorizationChecker = $authorizationChecker;
-        $this->productRepository    = $productRepository;
-        $this->localeRepository     = $localeRepository;
+        $this->productRepository = $productRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**

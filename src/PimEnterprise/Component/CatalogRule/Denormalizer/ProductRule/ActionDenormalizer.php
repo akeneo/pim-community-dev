@@ -34,7 +34,7 @@ class ActionDenormalizer implements DenormalizerInterface
     public function __construct($actionClass, $actionType)
     {
         $this->actionClass = $actionClass;
-        $this->actionType  = $actionType;
+        $this->actionType = $actionType;
     }
 
     /**

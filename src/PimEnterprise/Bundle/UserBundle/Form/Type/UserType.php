@@ -63,7 +63,7 @@ class UserType extends BaseUserType
             $eventDispatcher
         );
 
-        $this->eeSubscriber     = $eeSubscriber;
+        $this->eeSubscriber = $eeSubscriber;
         $this->categoryProvider = $categoryProvider;
     }
 

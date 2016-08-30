@@ -37,7 +37,7 @@ class RulesExecutor implements ItemWriterInterface
         RunnerInterface $runner,
         RuleDefinitionRepositoryInterface $ruleRepository
     ) {
-        $this->runner         = $runner;
+        $this->runner = $runner;
         $this->ruleRepository = $ruleRepository;
     }
 

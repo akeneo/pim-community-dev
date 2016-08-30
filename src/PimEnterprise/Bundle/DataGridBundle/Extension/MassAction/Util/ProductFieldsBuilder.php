@@ -67,7 +67,7 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
         );
 
         $this->accessRepository = $accessRepository;
-        $this->tokenStorage     = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**

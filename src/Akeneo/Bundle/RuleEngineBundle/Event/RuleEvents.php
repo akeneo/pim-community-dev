@@ -136,7 +136,7 @@ final class RuleEvents
      * The event listener receives a
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      */
-    const POST_EXECUTE  = 'pim_rule_engine.rule.post_execute';
+    const POST_EXECUTE = 'pim_rule_engine.rule.post_execute';
 
     /**
      * This event is thrown before a set of rules is executed.
@@ -152,5 +152,5 @@ final class RuleEvents
      * The event listener receives a
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      */
-    const POST_EXECUTE_ALL  = 'pim_rule_engine.rule.post_execute_all';
+    const POST_EXECUTE_ALL = 'pim_rule_engine.rule.post_execute_all';
 }

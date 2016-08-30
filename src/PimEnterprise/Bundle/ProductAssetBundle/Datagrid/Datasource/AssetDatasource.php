@@ -29,7 +29,7 @@ class AssetDatasource extends Datasource
      */
     public function __construct(ObjectManager $om, HydratorInterface $hydrator)
     {
-        $this->om       = $om;
+        $this->om = $om;
         $this->hydrator = $hydrator;
     }
 
