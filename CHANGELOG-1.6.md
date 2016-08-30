@@ -2,6 +2,8 @@
 
 ## Bug fixes
 
+- PIM-5782: add right filtering on locales for export builder
+
 # 1.6.O (2016-08-30)
 
 ## Bug fixes
