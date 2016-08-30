@@ -30,7 +30,7 @@ class AddProductValueProcessor extends AbstractProcessor
     public function __construct(PropertyAdderInterface $propertyAdder, ValidatorInterface $validator)
     {
         $this->propertyAdder = $propertyAdder;
-        $this->validator      = $validator;
+        $this->validator = $validator;
     }
 
     /**

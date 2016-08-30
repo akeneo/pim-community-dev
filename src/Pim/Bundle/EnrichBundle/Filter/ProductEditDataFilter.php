@@ -37,7 +37,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
         SecurityFacade $securityFacade,
         CollectionFilterInterface $productValuesFilter
     ) {
-        $this->securityFacade      = $securityFacade;
+        $this->securityFacade = $securityFacade;
         $this->productValuesFilter = $productValuesFilter;
     }
 

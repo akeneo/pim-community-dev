@@ -88,7 +88,7 @@ class VariantViewUpdater implements ViewUpdaterInterface
     protected function markAttributeAsUpdatedByVariant(FormView $view, ProductValueInterface $value)
     {
         $view->vars['from_variant'] = $value->getEntity()->getVariantGroup();
-        $view->vars['disabled']  = true;
+        $view->vars['disabled'] = true;
         $view->vars['read_only'] = true;
 
         foreach ($view as $child) {

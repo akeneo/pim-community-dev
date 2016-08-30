@@ -33,9 +33,9 @@ class MassActionMediator implements MassActionMediatorInterface
         array $data = []
     ) {
         $this->massAction = $massAction;
-        $this->results    = $results;
-        $this->data       = $data;
-        $this->datagrid   = $datagrid;
+        $this->results = $results;
+        $this->data = $data;
+        $this->datagrid = $datagrid;
     }
 
     /**

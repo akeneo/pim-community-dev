@@ -31,7 +31,7 @@ class UpdateProductValueProcessor extends AbstractProcessor
         ValidatorInterface $validator
     ) {
         $this->propertySetter = $propertySetter;
-        $this->validator      = $validator;
+        $this->validator = $validator;
     }
 
     /**

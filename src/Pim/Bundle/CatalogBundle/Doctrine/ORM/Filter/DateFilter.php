@@ -29,9 +29,9 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -51,8 +51,8 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
             $value = $this->formatValues($attribute->getCode(), $value);
         }
 
-        $joinAlias     = $this->getUniqueAlias('filter' . $attribute->getCode());
-        $backendField  = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
         $joinCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         if ($operator === Operators::IS_EMPTY || $operator === Operators::IS_NOT_EMPTY) {

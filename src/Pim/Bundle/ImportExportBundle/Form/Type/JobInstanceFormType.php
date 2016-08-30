@@ -59,11 +59,11 @@ class JobInstanceFormType extends AbstractType
         JobParametersFactory $jobParametersFactory,
         SecurityFacade $securityFacade
     ) {
-        $this->jobRegistry          = $jobRegistry;
-        $this->translator           = $translator;
-        $this->jobLabelProvider     = $jobLabelProvider;
+        $this->jobRegistry = $jobRegistry;
+        $this->translator = $translator;
+        $this->jobLabelProvider = $jobLabelProvider;
         $this->jobParametersFactory = $jobParametersFactory;
-        $this->securityFacade       = $securityFacade;
+        $this->securityFacade = $securityFacade;
     }
 
     /**

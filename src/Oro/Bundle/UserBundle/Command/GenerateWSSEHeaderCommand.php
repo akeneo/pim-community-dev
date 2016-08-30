@@ -30,7 +30,7 @@ class GenerateWSSEHeaderCommand extends ContainerAwareCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $username = $input->getArgument('username');
-        $user     = $this
+        $user = $this
             ->getContainer()
             ->get('oro_user.manager')
             ->findUserByUsername($username);
@@ -46,8 +46,8 @@ class GenerateWSSEHeaderCommand extends ContainerAwareCommand
         $created = date('c');
 
         // http://stackoverflow.com/questions/18117695/how-to-calculate-wsse-nonce
-        $prefix         = gethostname();
-        $nonce          = base64_encode(substr(md5(uniqid($prefix . '_', true)), 0, 16));
+        $prefix = gethostname();
+        $nonce = base64_encode(substr(md5(uniqid($prefix . '_', true)), 0, 16));
         $passwordDigest = base64_encode(sha1(base64_decode($nonce) . $created . $user->getApi()->getApiKey(), true));
 
         $output->writeln('<info>To use WSSE authentication add following headers to the request:</info>');

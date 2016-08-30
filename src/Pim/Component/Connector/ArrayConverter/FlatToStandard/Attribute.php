@@ -26,7 +26,7 @@ class Attribute implements ArrayConverterInterface
      */
     public function __construct(FieldsRequirementChecker $fieldChecker, array $booleanFields)
     {
-        $this->fieldChecker  = $fieldChecker;
+        $this->fieldChecker = $fieldChecker;
         $this->booleanFields = $booleanFields;
     }
 

@@ -28,7 +28,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
         array $supportedFields
     ) {
         $this->categoryRepository = $categoryRepository;
-        $this->supportedFields    = $supportedFields;
+        $this->supportedFields = $supportedFields;
     }
 
     /**

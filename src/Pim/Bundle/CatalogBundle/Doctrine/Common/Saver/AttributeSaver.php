@@ -34,7 +34,7 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectManager   = $objectManager;
+        $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 

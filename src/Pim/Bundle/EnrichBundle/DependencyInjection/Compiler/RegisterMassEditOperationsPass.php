@@ -37,7 +37,7 @@ class RegisterMassEditOperationsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $registry   = $container->getDefinition(self::OPERATION_REGISTRY);
+        $registry = $container->getDefinition(self::OPERATION_REGISTRY);
         $operations = $container->findTaggedServiceIds(self::OPERATION_TAG);
 
         foreach ($operations as $operationId => $operation) {

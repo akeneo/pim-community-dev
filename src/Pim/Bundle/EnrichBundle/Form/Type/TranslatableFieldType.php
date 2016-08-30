@@ -42,8 +42,8 @@ class TranslatableFieldType extends AbstractType
      */
     public function __construct(ValidatorInterface $validator, UserContext $userContext, LocaleHelper $localeHelper)
     {
-        $this->validator    = $validator;
-        $this->userContext  = $userContext;
+        $this->validator = $validator;
+        $this->userContext = $userContext;
         $this->localeHelper = $localeHelper;
     }
 

@@ -20,12 +20,12 @@ interface SpeedFamilyInterface
     /**
      * @staticvar string
      */
-    const FOOT_PER_SECOND    = 'FOOT_PER_SECOND';
+    const FOOT_PER_SECOND = 'FOOT_PER_SECOND';
 
     /**
      * @staticvar string
      */
-    const FOOT_PER_HOUR      = 'FOOT_PER_HOUR';
+    const FOOT_PER_HOUR = 'FOOT_PER_HOUR';
 
     /**
      * @staticvar string
@@ -35,25 +35,25 @@ interface SpeedFamilyInterface
     /**
      * @staticvar string
      */
-    const METER_PER_HOUR     = 'METER_PER_HOUR';
+    const METER_PER_HOUR = 'METER_PER_HOUR';
 
     /**
      * @staticvar string
      */
-    const METER_PER_MINUTE   = 'METER_PER_MINUTE';
+    const METER_PER_MINUTE = 'METER_PER_MINUTE';
 
     /**
      * @staticvar string
      */
-    const METER_PER_SECOND   = 'METER_PER_SECOND';
+    const METER_PER_SECOND = 'METER_PER_SECOND';
 
     /**
      * @staticvar string
      */
-    const MILE_PER_HOUR      = 'MILE_PER_HOUR';
+    const MILE_PER_HOUR = 'MILE_PER_HOUR';
 
     /**
      * @staticvar string
      */
-    const YARD_PER_HOUR      = 'YARD_PER_HOUR';
+    const YARD_PER_HOUR = 'YARD_PER_HOUR';
 }

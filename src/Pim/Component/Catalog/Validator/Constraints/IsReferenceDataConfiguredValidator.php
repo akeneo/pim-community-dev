@@ -28,7 +28,7 @@ class IsReferenceDataConfiguredValidator extends ConstraintValidator
     public function __construct(array $referenceDataType, ConfigurationRegistryInterface $registry = null)
     {
         $this->referenceDataType = $referenceDataType;
-        $this->registry          = $registry;
+        $this->registry = $registry;
     }
 
     /**

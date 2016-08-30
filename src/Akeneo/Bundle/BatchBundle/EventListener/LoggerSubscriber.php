@@ -37,7 +37,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      */
     public function __construct(LoggerInterface $logger, TranslatorInterface $translator)
     {
-        $this->logger     = $logger;
+        $this->logger = $logger;
         $this->translator = $translator;
     }
 

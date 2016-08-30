@@ -36,7 +36,7 @@ class ContainsProductsUpdateGuesser extends BaseContainsProductsUpdateGuesser
      */
     public function __construct(ManagerRegistry $registry, $productClass)
     {
-        $this->registry     = $registry;
+        $this->registry = $registry;
         $this->productClass = $productClass;
     }
 

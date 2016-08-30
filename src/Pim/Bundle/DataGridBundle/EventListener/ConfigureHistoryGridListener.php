@@ -45,7 +45,7 @@ class ConfigureHistoryGridListener
     public function __construct(RequestParameters $requestParams, FQCNResolver $FQCNResolver)
     {
         $this->requestParams = $requestParams;
-        $this->FQCNResolver  = $FQCNResolver;
+        $this->FQCNResolver = $FQCNResolver;
     }
 
     /**
@@ -53,9 +53,9 @@ class ConfigureHistoryGridListener
      */
     public function onBuildBefore(BuildBefore $event)
     {
-        $config               = $event->getConfig();
+        $config = $event->getConfig();
         $objectClassParameter = $this->getObjectClassParameter();
-        $objectClass          = $this->getObjectClass($objectClassParameter);
+        $objectClass = $this->getObjectClass($objectClassParameter);
 
         $repositoryParameters = [
             'objectClass' => str_replace(

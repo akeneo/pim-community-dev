@@ -44,7 +44,7 @@ class MetricSorter implements AttributeSorterInterface
     public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $scope = null)
     {
         $aliasPrefix = 'sorter';
-        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
+        $joinAlias = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
         // join to value

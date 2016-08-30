@@ -532,9 +532,9 @@ class JobExecution
      */
     public function __toString()
     {
-        $startTime       = self::formatDate($this->startTime);
-        $endTime         = self::formatDate($this->endTime);
-        $updatedTime     = self::formatDate($this->updatedTime);
+        $startTime = self::formatDate($this->startTime);
+        $endTime = self::formatDate($this->endTime);
+        $updatedTime = self::formatDate($this->updatedTime);
         $jobInstanceCode = $this->jobInstance != null ? $this->jobInstance->getCode() : '';
 
         $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%d, exitStatus=%s, exitDescription=[%s], job=[%s]";

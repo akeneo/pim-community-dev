@@ -16,7 +16,7 @@ class SystemConfigurationPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $config    = [];
+        $config = [];
         $processor = new ProcessorDecorator();
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {

@@ -35,10 +35,10 @@ class ProductViolationNormalizer implements NormalizerInterface
                 throw new \InvalidArgumentException('Expects a product or a product template as context');
             }
 
-            $codeStart     = strpos($path, '[') + 1;
-            $codeLength    = strpos($path, ']') - $codeStart;
+            $codeStart = strpos($path, '[') + 1;
+            $codeLength = strpos($path, ']') - $codeStart;
             $attributePath = substr($path, $codeStart, $codeLength);
-            $productValue  = $product->getValues()[$attributePath];
+            $productValue = $product->getValues()[$attributePath];
 
             $normalizedViolation = [
                 'attribute' => $productValue->getAttribute()->getCode(),

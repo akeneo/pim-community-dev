@@ -41,7 +41,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $this->configContext($resolver);
         $context = $resolver->resolve($context);
 
-        $value  = $context['value'];
+        $value = $context['value'];
         $prices = $this->extractPrices($data, $context);
         foreach ($prices as $price) {
             $this->addPriceForCurrency($value, $price['data'], $price['currency']);

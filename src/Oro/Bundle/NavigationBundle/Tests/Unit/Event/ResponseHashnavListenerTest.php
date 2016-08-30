@@ -32,7 +32,7 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->response = new Response();
-        $this->request  = Request::create(self::TEST_URL);
+        $this->request = Request::create(self::TEST_URL);
         $this->request->headers->add([ResponseHashnavListener::HASH_NAVIGATION_HEADER => true]);
         $this->event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\FilterResponseEvent')
             ->disableOriginalConstructor()

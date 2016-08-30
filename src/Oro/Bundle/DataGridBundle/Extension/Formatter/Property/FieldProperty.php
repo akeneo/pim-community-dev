@@ -23,7 +23,7 @@ class FieldProperty extends AbstractProperty
         if ($this->getOr(self::FRONTEND_TYPE_KEY) === self::TYPE_SELECT) {
             $translator = $this->translator;
 
-            $choices    = $this->getOr('choices', []);
+            $choices = $this->getOr('choices', []);
             $translated = array_map(
                 function ($item) use ($translator) {
                     return $translator->trans($item);

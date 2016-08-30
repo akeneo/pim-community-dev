@@ -74,15 +74,15 @@ class Product implements ArrayConverterInterface
         ColumnsMapper $columnsMapper,
         FieldsRequirementChecker $fieldChecker
     ) {
-        $this->attrFieldExtractor   = $attrFieldExtractor;
-        $this->converterRegistry    = $converterRegistry;
+        $this->attrFieldExtractor = $attrFieldExtractor;
+        $this->converterRegistry = $converterRegistry;
         $this->assocColumnsResolver = $assocColumnsResolver;
-        $this->attrColumnsResolver  = $attrColumnsResolver;
-        $this->fieldConverter       = $fieldConverter;
-        $this->columnsMerger        = $columnsMerger;
-        $this->columnsMapper        = $columnsMapper;
-        $this->fieldChecker         = $fieldChecker;
-        $this->optionalAssocFields  = [];
+        $this->attrColumnsResolver = $attrColumnsResolver;
+        $this->fieldConverter = $fieldConverter;
+        $this->columnsMerger = $columnsMerger;
+        $this->columnsMapper = $columnsMapper;
+        $this->fieldChecker = $fieldChecker;
+        $this->optionalAssocFields = [];
     }
 
     /**
@@ -172,11 +172,11 @@ class Product implements ArrayConverterInterface
     {
         $options = $this->prepareOptions($options);
 
-        $mappedItem   = $this->mapFields($item, $options);
+        $mappedItem = $this->mapFields($item, $options);
         $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
         $this->validateItem($filteredItem, $options['with_required_identifier']);
 
-        $mergedItem    = $this->columnsMerger->merge($filteredItem);
+        $mergedItem = $this->columnsMerger->merge($filteredItem);
         $convertedItem = $this->convertItem($mergedItem);
 
         return $convertedItem;
@@ -222,7 +222,7 @@ class Product implements ArrayConverterInterface
     protected function filterFields(array $mappedItem, $withAssociations)
     {
         if (false === $withAssociations) {
-            $isGroupAssPattern   = '/^\w+'.AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX.'$/';
+            $isGroupAssPattern = '/^\w+'.AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX.'$/';
             $isProductAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX.'$/';
             foreach (array_keys($mappedItem) as $field) {
                 $isGroup = (1 === preg_match($isGroupAssPattern, $field));

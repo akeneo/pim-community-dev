@@ -20,12 +20,12 @@ interface VolumeFamilyInterface
     /**
      * @staticvar string
      */
-    const BARREL           = 'BARREL';
+    const BARREL = 'BARREL';
 
     /**
      * @staticvar string
      */
-    const CENTILITER       = 'CENTILITER';
+    const CENTILITER = 'CENTILITER';
 
     /**
      * @staticvar string
@@ -35,22 +35,22 @@ interface VolumeFamilyInterface
     /**
      * @staticvar string
      */
-    const CUBIC_DECIMETER  = 'CUBIC_DECIMETER';
+    const CUBIC_DECIMETER = 'CUBIC_DECIMETER';
 
     /**
      * @staticvar string
      */
-    const CUBIC_FOOT       = 'CUBIC_FOOT';
+    const CUBIC_FOOT = 'CUBIC_FOOT';
 
     /**
      * @staticvar string
      */
-    const CUBIC_INCH       = 'CUBIC_INCH';
+    const CUBIC_INCH = 'CUBIC_INCH';
 
     /**
      * @staticvar string
      */
-    const CUBIC_METER      = 'CUBIC_METER';
+    const CUBIC_METER = 'CUBIC_METER';
 
     /**
      * @staticvar string
@@ -60,35 +60,35 @@ interface VolumeFamilyInterface
     /**
      * @staticvar string
      */
-    const CUBIC_YARD       = 'CUBIC_YARD';
+    const CUBIC_YARD = 'CUBIC_YARD';
 
     /**
      * @staticvar string
      */
-    const DECILITER        = 'DECILITER';
+    const DECILITER = 'DECILITER';
 
     /**
      * @staticvar string
      */
-    const GALLON           = 'GALLON';
+    const GALLON = 'GALLON';
 
     /**
      * @staticvar string
      */
-    const LITER            = 'LITER';
+    const LITER = 'LITER';
 
     /**
      * @staticvar string
      */
-    const MILLILITER       = 'MILLILITER';
+    const MILLILITER = 'MILLILITER';
 
     /**
      * @staticvar string
      */
-    const OUNCE            = 'OUNCE';
+    const OUNCE = 'OUNCE';
 
     /**
      * @staticvar string
      */
-    const PINT             = 'PINT';
+    const PINT = 'PINT';
 }

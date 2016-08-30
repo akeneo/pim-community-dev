@@ -30,7 +30,7 @@ class UserSubscriber implements EventSubscriberInterface
         FormFactoryInterface $factory,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->factory      = $factory;
+        $this->factory = $factory;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -48,7 +48,7 @@ class UserSubscriber implements EventSubscriberInterface
     {
         /* @var $entity UserInterface */
         $entity = $event->getData();
-        $form   = $event->getForm();
+        $form = $event->getForm();
 
         if (is_null($entity)) {
             return;

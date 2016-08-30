@@ -59,11 +59,11 @@ class MailNotifier implements Notifier
         \Swift_Mailer $mailer,
         $senderEmail
     ) {
-        $this->logger       = $logger;
+        $this->logger = $logger;
         $this->tokenStorage = $tokenStorage;
-        $this->twig         = $twig;
-        $this->mailer       = $mailer;
-        $this->senderEmail  = $senderEmail;
+        $this->twig = $twig;
+        $this->mailer = $mailer;
+        $this->senderEmail = $senderEmail;
     }
 
     /**
@@ -94,7 +94,7 @@ class MailNotifier implements Notifier
             'log'          => $this->logger->getFilename(),
         ];
 
-        $txtBody  = $this->twig->render('AkeneoBatchBundle:Mails:notification.txt.twig', $parameters);
+        $txtBody = $this->twig->render('AkeneoBatchBundle:Mails:notification.txt.twig', $parameters);
         $htmlBody = $this->twig->render('AkeneoBatchBundle:Mails:notification.html.twig', $parameters);
 
         $message = $this->mailer->createMessage();

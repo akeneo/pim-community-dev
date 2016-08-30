@@ -29,7 +29,7 @@ class ChoiceFilter extends AbstractFilter
             return false;
         }
 
-        $operator  = $this->getOperator($data['type']);
+        $operator = $this->getOperator($data['type']);
         $parameter = $ds->generateParameterName($this->getName());
 
         if ('IN' == $operator) {
@@ -49,7 +49,7 @@ class ChoiceFilter extends AbstractFilter
      */
     public function getMetadata()
     {
-        $formView  = $this->getForm()->createView();
+        $formView = $this->getForm()->createView();
         $fieldView = $formView->children['value'];
 
         $choices = array_map(
@@ -76,8 +76,8 @@ class ChoiceFilter extends AbstractFilter
             $fieldView->vars['choices']
         );
 
-        $metadata                    = parent::getMetadata();
-        $metadata['choices']         = $choices;
+        $metadata = parent::getMetadata();
+        $metadata['choices'] = $choices;
         $metadata['populateDefault'] = $formView->vars['populate_default'];
 
         if ($fieldView->vars['multiple']) {
@@ -111,7 +111,7 @@ class ChoiceFilter extends AbstractFilter
             $value = [$value];
         }
 
-        $data['type']  = isset($data['type']) ? $data['type'] : null;
+        $data['type'] = isset($data['type']) ? $data['type'] : null;
         $data['value'] = $value;
 
         return $data;

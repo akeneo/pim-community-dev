@@ -38,8 +38,8 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function __construct(RequestStack $requestStack, TranslatorInterface $translator, EntityManager $em)
     {
         $this->requestStack = $requestStack;
-        $this->translator   = $translator;
-        $this->em           = $em;
+        $this->translator = $translator;
+        $this->em = $em;
     }
 
     /**
@@ -62,7 +62,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-        $locale  = $this->getLocale($request);
+        $locale = $this->getLocale($request);
 
         if (null !== $locale) {
             $request->setLocale($locale);

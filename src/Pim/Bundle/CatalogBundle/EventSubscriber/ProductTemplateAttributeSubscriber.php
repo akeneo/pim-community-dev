@@ -39,8 +39,8 @@ class ProductTemplateAttributeSubscriber implements EventSubscriberInterface
         ProductTemplateBuilderInterface $productTplBuilder,
         ProductTemplateRepositoryInterface $productTplRepository
     ) {
-        $this->objectManager        = $objectManager;
-        $this->productTplBuilder    = $productTplBuilder;
+        $this->objectManager = $objectManager;
+        $this->productTplBuilder = $productTplBuilder;
         $this->productTplRepository = $productTplRepository;
     }
 

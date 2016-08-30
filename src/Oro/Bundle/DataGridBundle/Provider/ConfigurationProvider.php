@@ -24,7 +24,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
     public function __construct(array $rawConfiguration, SystemAwareResolver $resolver)
     {
         $this->rawConfiguration = $rawConfiguration;
-        $this->resolver         = $resolver;
+        $this->resolver = $resolver;
     }
 
     /**

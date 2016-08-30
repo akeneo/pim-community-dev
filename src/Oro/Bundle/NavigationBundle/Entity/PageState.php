@@ -116,7 +116,7 @@ class PageState
      */
     public function setPageId($pageId)
     {
-        $this->pageId   = $pageId;
+        $this->pageId = $pageId;
         $this->pageHash = self::generateHash($pageId);
 
         return $this;

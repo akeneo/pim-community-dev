@@ -59,10 +59,10 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         MetricConverter $metricConverter,
         $generateCompleteness
     ) {
-        $this->pqbFactory           = $pqbFactory;
-        $this->channelRepository    = $channelRepository;
-        $this->completenessManager  = $completenessManager;
-        $this->metricConverter      = $metricConverter;
+        $this->pqbFactory = $pqbFactory;
+        $this->channelRepository = $channelRepository;
+        $this->completenessManager = $completenessManager;
+        $this->metricConverter = $metricConverter;
         $this->generateCompleteness = (bool) $generateCompleteness;
     }
 

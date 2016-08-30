@@ -41,9 +41,9 @@ class ProductValuesDenormalizer implements DenormalizerInterface
         AttributeRepositoryInterface $attributeRepository,
         $valueClass
     ) {
-        $this->denormalizer        = $denormalizer;
+        $this->denormalizer = $denormalizer;
         $this->attributeRepository = $attributeRepository;
-        $this->valueClass          = $valueClass;
+        $this->valueClass = $valueClass;
     }
 
     /**

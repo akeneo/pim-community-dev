@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Serializer;
 class FamilyDenormalizerSpec extends ObjectBehavior
 {
     const ENTITY_CLASS = 'Pim\Component\Catalog\Model\FamilyInterface';
-    const FORMAT_CSV   = 'csv';
+    const FORMAT_CSV = 'csv';
 
     function let(Serializer $serializer, ManagerRegistry $registry, FamilyRepositoryInterface $repository)
     {

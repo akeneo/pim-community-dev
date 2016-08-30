@@ -51,11 +51,11 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
         AuthorizationCheckerInterface $authorizationChecker,
         SaverInterface $versionSaver
     ) {
-        $this->versionFactory       = $versionFactory;
-        $this->versionRepository    = $versionRepository;
-        $this->tokenStorage         = $tokenStorage;
+        $this->versionFactory = $versionFactory;
+        $this->versionRepository = $versionRepository;
+        $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->versionSaver         = $versionSaver;
+        $this->versionSaver = $versionSaver;
     }
 
     /**
@@ -73,7 +73,7 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
      */
     public function addRemoveVersion(RemoveEvent $event)
     {
-        $author  = '';
+        $author = '';
         $subject = $event->getSubject();
 
         if (!$subject instanceof VersionableInterface) {

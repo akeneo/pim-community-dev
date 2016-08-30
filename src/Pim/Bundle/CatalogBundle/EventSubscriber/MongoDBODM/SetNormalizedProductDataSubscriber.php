@@ -63,7 +63,7 @@ class SetNormalizedProductDataSubscriber implements EventSubscriber
         if ($document instanceof ProductInterface) {
             $this->updateNormalizedData($document);
 
-            $dm       = $args->getDocumentManager();
+            $dm = $args->getDocumentManager();
             $metadata = $dm->getClassMetadata(get_class($document));
             $dm->getUnitOfWork()->recomputeSingleDocumentChangeSet($metadata, $document);
         }

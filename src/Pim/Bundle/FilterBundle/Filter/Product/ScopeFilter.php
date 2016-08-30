@@ -46,7 +46,7 @@ class ScopeFilter extends ChoiceFilter
         parent::__construct($factory, $util);
 
         $this->catalogContext = $catalogContext;
-        $this->userContext    = $userContext;
+        $this->userContext = $userContext;
     }
 
     /**

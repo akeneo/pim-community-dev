@@ -56,9 +56,9 @@ class Group implements GroupInterface
      */
     public function __construct()
     {
-        $this->products     = new ArrayCollection();
+        $this->products = new ArrayCollection();
         $this->translations = new ArrayCollection();
-        $this->attributes   = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
     }
 
     /**
@@ -139,7 +139,7 @@ class Group implements GroupInterface
         }
 
         $translationClass = $this->getTranslationFQCN();
-        $translation      = new $translationClass();
+        $translation = new $translationClass();
         $translation->setLocale($locale);
         $translation->setForeignKey($this);
         $this->addTranslation($translation);

@@ -30,7 +30,7 @@ class OdmFilterProductDatasourceAdapter extends OdmFilterDatasourceAdapter imple
      */
     public function __construct(DatasourceInterface $datasource)
     {
-        $this->qb  = $datasource->getQueryBuilder();
+        $this->qb = $datasource->getQueryBuilder();
         $this->pqb = $datasource->getProductQueryBuilder();
     }
 

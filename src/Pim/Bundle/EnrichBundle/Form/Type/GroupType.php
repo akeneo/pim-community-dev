@@ -42,8 +42,8 @@ class GroupType extends AbstractType
     public function __construct(ProductRepositoryInterface $productRepository, $attributeClass, $dataClass)
     {
         $this->productRepository = $productRepository;
-        $this->attributeClass    = $attributeClass;
-        $this->dataClass         = $dataClass;
+        $this->attributeClass = $attributeClass;
+        $this->dataClass = $dataClass;
     }
 
     /**

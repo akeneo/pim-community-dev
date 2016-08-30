@@ -36,7 +36,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $currencyRepository
     ) {
         $this->categoryRepository = $categoryRepository;
-        $this->localeRepository   = $localeRepository;
+        $this->localeRepository = $localeRepository;
         $this->currencyRepository = $currencyRepository;
     }
 

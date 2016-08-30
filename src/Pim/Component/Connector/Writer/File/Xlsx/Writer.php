@@ -56,7 +56,7 @@ class Writer extends AbstractFileWriter implements
 
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
-        $this->flusher       = $flusher;
+        $this->flusher = $flusher;
     }
 
     /**
