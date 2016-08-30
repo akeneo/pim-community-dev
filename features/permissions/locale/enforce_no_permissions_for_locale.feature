@@ -54,3 +54,15 @@ Feature: Enforce no permissions for a locale
     And I change the "Name" to "My custom name"
     And I save the product
     Then the field Name should contain "My custom name"
+
+  @javascript
+  Scenario: Display only available locales in the product export builder
+    Given the following locale accesses:
+      | locale | user group | access |
+      | en_GB  | Manager    | none   |
+      | fr_FR  | Manager    | none   |
+    And I am logged in as "Julia"
+    And I am on the "ecommerce_product_export" export job edit page
+    When I visit the "Content" tab
+    Then I should see the text "German (Germany) English (United States)"
+    And I should not see the text "French (France)"
