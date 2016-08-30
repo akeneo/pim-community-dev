@@ -12,6 +12,11 @@ use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
 
+/**
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class XmlProductReader implements
     ItemReaderInterface,
     StepExecutionAwareInterface,
@@ -42,6 +47,7 @@ class XmlProductReader implements
             // for example purpose, we should use XML Parser to read line per line
             $this->xml = simplexml_load_file($filePath, 'SimpleXMLIterator');
             $this->xml->rewind();
+            $this->stepExecution->addSummaryInfo('read_lines', -1);
         }
 
         if ($data = $this->xml->current()) {

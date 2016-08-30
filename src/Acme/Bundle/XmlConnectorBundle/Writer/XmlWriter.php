@@ -16,7 +16,7 @@ use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 /**
  * Write data into an xml file on the filesystem
  *
- * @author    Yohan Blain <yohan.blain@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -74,7 +74,7 @@ class XmlWriter extends AbstractFileWriter implements
 
             $this->xml = new \XMLWriter();
             $this->xml->openURI($filePath);
-            $this->xml->startDocument('1.0');
+            $this->xml->startDocument('1.0', 'UTF-8');
             $this->xml->setIndent(4);
             $this->xml->startElement('products');
         }
@@ -103,14 +103,10 @@ class XmlWriter extends AbstractFileWriter implements
 
             $this->xml->startElement('product');
             foreach ($flatItem as $property => $value) {
-                 $this->xml->writeAttribute($property, $value);
+                $this->xml->writeAttribute($property, $value);
             }
             $this->xml->endElement();
         }
-
-        $parameters = $this->stepExecution->getJobParameters();
-        $options = [];
-        $options['withHeader'] = $parameters->get('withHeader');
     }
 
     /**

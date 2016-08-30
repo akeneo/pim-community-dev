@@ -2,7 +2,6 @@
 
 namespace Acme\Bundle\XmlConnectorBundle\Archiver;
 
-use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -48,7 +47,6 @@ class XmlInvalidItemWriter extends AbstractInvalidItemWriter
 
         $writeParams = $this->defaultValuesProvider->getDefaultValues();
         $writeParams['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $fileKey;
-        $writeParams['withHeader'] = true;
 
         $writeJobParameters = new JobParameters($writeParams);
         $writeJobExecution  = new JobExecution();

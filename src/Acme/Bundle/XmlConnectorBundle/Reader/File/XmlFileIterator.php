@@ -2,7 +2,6 @@
 
 namespace Acme\Bundle\XmlConnectorBundle\Reader\File;
 
-use Box\Spout\Reader\ReaderFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
@@ -62,17 +61,8 @@ class XmlFileIterator implements FileIteratorInterface
     public function getHeaders()
     {
         $headers = [];
-
-        $xmlReader = simplexml_load_file($this->filePath, 'SimpleXMLIterator');
-        $xmlReader->rewind();
-
-        if ($data = $xmlReader->current()) {
-            foreach ($data->attributes() as $attributeName => $attributeValue) {
-                if (!in_array($attributeName, $headers)) {
-                    $headers[] = $attributeName;
-                }
-            }
-            $xmlReader->next();
+        foreach ($this->xmlFileIterator->current()->attributes() as $header => $value) {
+            $headers[] = $header;
         }
 
         return $headers;

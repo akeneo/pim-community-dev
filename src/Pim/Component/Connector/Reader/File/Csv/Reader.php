@@ -11,7 +11,6 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
-use Pim\Component\Connector\Reader\File\FileIteratorException;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -85,22 +84,34 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
             $this->stepExecution->incrementSummaryInfo('read_lines');
         }
 
-        $data = null;
+        $data = $this->fileIterator->current();
 
-        try {
-            $data = $this->fileIterator->current();
-            $data = $this->converter->convert($data, $this->getArrayConverterOptions());
-        } catch (FileIteratorException $e) {
-            $headers = $this->fileIterator->getHeaders();
-            $countHeaders = count($headers);
-            $item = $e->getItem();
-
-            $this->checkColumnNumber($countHeaders, count($item), $item, $filePath);
-        } catch (DataArrayConversionException $e) {
-            $this->skipItemFromConversionException($data, $e);
+        if (null === $data) {
+            return null;
         }
 
-        return $data;
+        $headers = $this->fileIterator->getHeaders();
+
+        $countHeaders = count($headers);
+        $countData    = count($data);
+
+        $this->checkColumnNumber($countHeaders, $countData, $data, $filePath);
+
+        if ($countHeaders > $countData) {
+            $missingValuesCount = $countHeaders - $countData;
+            $missingValues = array_fill(0, $missingValuesCount, '');
+            $data = array_merge($data, $missingValues);
+        }
+
+        $item = array_combine($this->fileIterator->getHeaders(), $data);
+
+        try {
+            $item = $this->converter->convert($item, $this->getArrayConverterOptions());
+        } catch (DataArrayConversionException $e) {
+            $this->skipItemFromConversionException($item, $e);
+        }
+
+        return $item;
     }
 
     /**
