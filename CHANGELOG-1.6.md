@@ -2,6 +2,9 @@
 
 ## Bug fixes
 
+- PIM-5935: Fix view all button in dashboard
+- PIM-5945 : Fix tabs on user profile, DOM was not well structured
+
 # 1.6.0 (2016-08-30)
 
 ## Bug fixes
