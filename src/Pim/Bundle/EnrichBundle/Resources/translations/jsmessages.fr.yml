@@ -98,10 +98,10 @@ pim:
         csv_grid_context: CSV (contexte de la grille)
         xlsx_all: XLSX (tous les attributs)
         xlsx_grid_context: XLSX (contexte de la grille)
-      delete: Supprimer
-      mass_edit: Edition de masse
-      category_edit: Edition de catégorie
-      sequential_edit: Modification séquentielle
+      delete: Supprimer des produits
+      mass_edit: Modifier les informations produit
+      category_edit: Déplacer des produits vers des catégories
+      sequential_edit: Modifier les produits séquentiellement
 jstree.create: Créer
 switch_on: Oui
 switch_off: Non
@@ -331,23 +331,23 @@ pim_enrich:
   export:
     product:
       data:
-        title: Filtres de données
+        title: Filtrer les produits
       structure:
-        title: Filtres de structure
+        title: Filtrer les données
         attributes:
           title: Attributs
       filter:
         channel:
           title: Canal
-          help: Le canal que vous souhaitez exporter
+          help: "Le canal définit la portée des valeurs des produits, les locales utilisées pour sélectionner les données ainsi que l'arbre utilisé pour sélectionner les produits."
         locales:
           title: Locales
-          help: La locale que vous souhaitez exporter
+          help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex : les informations produits en allemand.'
         attributes:
           title: Attributs
           edit: Modifier
           label: '{0} Tous les attributs|{1} Un attribut sélectionné|]1,Inf[ {{ count }} attributs sélectionnés'
-          help: Les catégories des produits que vous souhaitez exporter
+          help: "Sélectionne l'information produit à exporter. Par exemple : seulement les attributs techniques."
           empty: Tous les attributs vont être exportés
           modal:
             apply: Appliquer
@@ -362,7 +362,7 @@ pim_enrich:
           empty_selection: Tous les attributs vont être exportés
         family:
           title: Famille
-          help: Les familles que vous souhaitez exporter
+          help: 'Sélectionne les produits à exporter en fonction de leur famille. Par ex : exporter seulement les chaussures et les robes.'
           operators:
             IN: Dans la liste
             NOT IN: Pas dans la liste
@@ -378,23 +378,25 @@ pim_enrich:
             SINCE LAST JOB: Produits mis à jour depuis le dernier export
         enabled:
           title: Statut
-          help: Le statut des produits que vous souhaitez exporter
+          help: 'Sélectionne les produits à exporter selon leur statut. Par ex : exporter les produits peu importe leur statut.'
           value:
             all: Tous
             enabled: Activé
             disabled: Désactivé
         completeness:
           title: Complétude
-          help: La complétude des produits que vous souhaitez exporter
+          help: Sélectionne les produits à exporter selon leur complétude.
           operators:
+            ALL: Pas de condition de complétude
             >=: Complet sur au moins une locale sélectionnée
             GREATER OR EQUALS THAN ON ALL LOCALES: Complet sur toutes les locales sélectionnées
             LOWER THAN ON ALL LOCALES: Non complet sur toutes les locales sélectionnées
           empty_selection: Sélectionnez une famille
         category:
           title: Catégorie
-          help: Les catégories des produits que vous souhaitez exporter
+          help: "Utilise les catégories de produits de l'arbre (défini par le canal ci-dessus) pour sélectionner les produits à exporter"
         identifier:
+          title: Identifiant
           help: Les identifiants des produits que vous souhaitez exporter, séparés par une virgule, un espace ou un saut de ligne
         metric:
           operators:
