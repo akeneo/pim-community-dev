@@ -2,6 +2,8 @@
 
 ## Bug fixes
 
+- PIM-5935: Fix view all button in dashboard
+
 # 1.6.0 (2016-08-30)
 
 ## Bug fixes
