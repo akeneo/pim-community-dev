@@ -59,13 +59,13 @@ pim_base_connector:
     group_processor.title: Ryhmän perustaminen
     attribute_processor.title: Attribuutin luominen
     attribute_option_processor.title: Attribuutin vaihtoehdon luominen
-    heterogeneous_processor.title: CSV-tuotteiden sarjanmuodostaja
+    heterogeneous_processor.title: CSV-tuotteiden sarjanmuodostoja
     homogeneous_processor.title: CSV-entiteettien sarjanmuodostaja
     transformer_processor.title: Muunnos
     dummy_writer.title: Mallikirjoittaja
     file_writer.title: Ulostulo
     product_writer.title: Tuotteen varastointi
-    category_writer.title: Luokan varastointi
+    category_writer.title: Kategorian varastointi
     writer.title: Yksikön varastointi
     csv_writer.title: CSV-kirjoittaja
   export:
@@ -77,7 +77,7 @@ pim_base_connector:
       help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
     withHeader:
       label: Otsikon kanssa
-      help: Tulostatko sarakkeen nimen vai et
+      help: Tulostaako sarakkeen nimen vai ei
     filePath:
       label: Tiedostopolku
       help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa

@@ -44,77 +44,77 @@ pim_base_connector:
       validation.title: Dateivalidierung
       import.title: Gruppen-Import
   steps:
-    dummy_reader.title: Dummy reader
-    product_reader.title: Produkt Auszug
-    entity_reader.title: Entitäten Auszug
+    dummy_reader.title: Dummy-Leser
+    product_reader.title: Produktextraktion
+    entity_reader.title: Entitätsextraktion
     csv_reader:
-      title: CSV-Reader
-      invalid_item_columns_count: 'Erwartet wurden %totalColumnsCount% Spalten, tatsächlich sind es %itemColumnsCount% in %csvPath%:%lineno%'
-    csv_product_reader.title: CSV Produkt Reader
-    csv_category_reader.title: CSV Kategorie Reader
-    dummy_processor.title: Dummy Processor
-    product_processor.title: Produktanlage
-    category_processor.title: Kategorieanlage
-    association_processor.title: Zuweisungserstellung
+      title: CSV-Leser
+      invalid_item_columns_count: 'Erwartet wurden %totalColumnsCount% Spalten, tatsächlich vorhanden sind %itemColumnsCount% in %csvPath%:%lineno%'
+    csv_product_reader.title: CSV Produkt-Leser
+    csv_category_reader.title: CSV Kategorie-Leser
+    dummy_processor.title: Dummy-Prozessor
+    product_processor.title: Produkterstellung
+    category_processor.title: Kategorieerstellung
+    association_processor.title: Verbindungserstellung
     group_processor.title: Gruppenerstellung
     attribute_processor.title: Attributerstellung
-    attribute_option_processor.title: Attribut-Optionserstellung
-    heterogeneous_processor.title: Produkt CSV serialisierung
-    homogeneous_processor.title: CSV Entitäten serialisierung
-    transformer_processor.title: Transformation
-    dummy_writer.title: Dummy Writer
+    attribute_option_processor.title: Attributoptionserstellung
+    heterogeneous_processor.title: Produkt CSV-Serialisierer
+    homogeneous_processor.title: CSV Entitäten-Serialisierer
+    transformer_processor.title: Umwandlung
+    dummy_writer.title: Dummy-Schreiber
     file_writer.title: Ausgabe
     product_writer.title: Produkt-Speicher
     category_writer.title: Kategorie-Speicher
     writer.title: Entitäten-Speicher
-    csv_writer.title: CSV Writer
+    csv_writer.title: CSV-Schreiber
   export:
     delimiter:
       label: Trennzeichen
-      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
+      help: Einzelnes Zeichen, das als Feld-Trennzeichen verwendet wird
     enclosure:
-      label: Eingeschlossen von
-      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
+      label: Zeichen zum Einschließen
+      help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
     withHeader:
       label: Mit Kopfzeile
-      help: Soll die Spaltenüberschrift ausgegeben werden
+      help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
     filePath:
-      label: Datei
-      help: Verzeichnis, in welches die generierte Datei abgelegt werden soll
+      label: Dateipfad
+      help: Wo die generierte Datei im Dateisystem abgelegt wird
     channel:
       label: Ausgabekanal
       help: Der Ausgabekanal, den Sie exportieren möchten
   import:
     enabled:
       label: Produkt aktivieren
-      help: Auswahl, ob importierte Produkte aktiviert werden sollen oder nicht
+      help: Ob importierte Produkte aktiviert werden sollen oder nicht
     categoriesColumn:
-      label: Kategorie-Spalte
-      help: Name der Kategorie-Spalte
+      label: Kategorienspalte
+      help: Name der Kategorienspalte
     familyColumn:
-      label: Produktfamilien-Spalte
-      help: Name der Produktfamilien-Spalte
+      label: Produktfamilienspalte
+      help: Name der Produktfamilienspalte
     groupsColumn:
-      label: Gruppen-Spalte
-      help: Name der Gruppen-Spalte
+      label: Gruppenspalte
+      help: Name der Gruppenspalte
     filePath:
       label: Datei
       help: Die zu importierende CSV-Datei
     uploadAllowed:
       label: Datei-Upload erlauben
-      help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
+      help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
     delimiter:
       label: Trennzeichen
-      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
+      help: Einzelnes Zeichen, das als Feld-Trennzeichen verwendet wird
     enclosure:
-      label: Eingeschlossen von
-      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
+      label: Zeichen zum Einschließen
+      help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
     escape:
-      label: Escape
-      help: Zeichen mit dem das Feld escaped wird
+      label: Escape-Zeichen
+      help: Einzelnes Zeichen, das als Escape-Zeichen für Felder benutzt wird
     circularRefsChecked:
-      label: Prüfen Sie auf Zirkelbezüge
+      label: Zirkelbezüge überprüfen
       help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
     realTimeVersioning:
       label: Echtzeit Änderungsverfolgung
-      help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern kann diese Funktion ausgeschaltet werden.
+      help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden

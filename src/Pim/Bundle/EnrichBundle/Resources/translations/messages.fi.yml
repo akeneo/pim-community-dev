@@ -283,7 +283,7 @@ switch_on: Kyllä
 switch_off: Ei
 Close: Sulje
 Choose a color: Valitse väri
-Search: Haku
+Search: Etsi
 Choose the attribute type: Valitse attribuutin tyyppi
 Choose the attribute group: Valitse attribuuttiryhmä
 Drop a file or click here: Pudota tiedosto tai klikkaa tästä
@@ -381,7 +381,7 @@ pim_catalog_file: Tiedosto
 pim_catalog_image: Kuva
 pim_catalog_boolean: Kyllä/ei
 pim_catalog_date: Päivämäärä
-pim_catalog_metric: Metrinen arvo
+pim_catalog_metric: Metriikka
 Activated: Aktivoitu
 Disable: Poista käytöstä
 pim_enrich.mass_edit_action:

@@ -271,6 +271,7 @@ Translate from: Traduzir de
 switch_on: Sim
 switch_off: Não
 Close: Fechar
+Search: Pesquisar
 Choose the attribute type: Escolha o tipo de atributo
 Choose the attribute group: Escolha o grupo de atributos
 Drop a file or click here: Solte um ficheiro ou clique aqui
@@ -308,6 +309,7 @@ Default metric unit: Unidade métrica padrão
 Max file size: Tamanho máximo do ficheiro (MB)
 Allowed extensions: Extensões permitidas
 None: Nenhum
+E-mail: E-mail
 URL: URL
 Regular expression: Expressões regulares
 Minimum input length: Tamanho mínimo da introdução
@@ -357,8 +359,15 @@ pim_title.dashboard: Painel
 pim_catalog_identifier: Identificador
 pim_catalog_text: Texto
 pim_catalog_textarea: Área de Texto
+pim_catalog_number: Número
+pim_catalog_price_collection: Preço
+pim_catalog_multiselect: Seleção múltipla
+pim_catalog_simpleselect: Seleção simples
 pim_catalog_file: Ficheiro
 pim_catalog_image: Imagem
+pim_catalog_boolean: Sim/Não
+pim_catalog_date: Data
+pim_catalog_metric: Métrica
 Activated: Ativado
 Disable: Desativar
 pim_enrich.mass_edit_action:
