@@ -6,23 +6,23 @@
         additionalData - array with additional data
 #}
 {% macro attibuteRow(title, value, additionalData) %}
-        {% macro attribute_data(value, additionalData) %}
-            <div class="clearfix-oro">
-                {% if value.value is not defined  %}
-                    <p class="control-label">{{ value }}</p>
-                {% else %}
-                    <p class="control-label">{{ value.value }} <strong>{{ value.hint|trans }}</strong></p>
-                {% endif %}
-            </div>
-            {% if additionalData|length %}
-                {% for data in additionalData.data %}
-                    <div class="clearfix-oro">
-                        <p class="control-label">{{ attribute(data, additionalData.field) }}</p>
-                    </div>
-                {% endfor %}
+    {% macro attribute_data(value, additionalData) %}
+        <div class="clearfix-oro">
+            {% if value.value is not defined  %}
+                <p class="control-label">{{ value }}</p>
+            {% else %}
+                <p class="control-label">{{ value.value }} <strong>{{ value.hint|trans }}</strong></p>
             {% endif %}
-        {% endmacro %}
-        {{ _self.renderAttribute(title, _self.attribute_data(value, additionalData)) }}
+        </div>
+        {% if additionalData|length %}
+            {% for data in additionalData.data %}
+                <div class="clearfix-oro">
+                    <p class="control-label">{{ attribute(data, additionalData.field) }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endmacro %}
+    {{ _self.renderAttribute(title, _self.attribute_data(value, additionalData)) }}
 {% endmacro %}
 
 {#
@@ -86,8 +86,8 @@
             {% if (parameters.dataId is defined) %}
                 data-id="{{ parameters.dataId }}"
             {% endif %}
-            data-message="{{ parameters.dataMessage|trans }}"
-            data-success-message="{{ parameters.successMessage|default('Item deleted')|trans }}"
+       data-message="{{ parameters.dataMessage|trans }}"
+       data-success-message="{{ parameters.successMessage|default('Item deleted')|trans }}"
             {% if (parameters.dataUrl is defined) %}
                 data-url="{{ parameters.dataUrl }}"
             {% endif %}
@@ -96,13 +96,13 @@
             {% endif %}
             {% if parameters.data is defined %}
                 {% for dataItemName,dataItemValue in parameters.data %}
-                data-{{ dataItemName }}="{{ dataItemValue|raw }}"
+                    data-{{ dataItemName }}="{{ dataItemValue|raw }}"
                 {% endfor %}
             {% endif %}
             {% if (parameters.title is defined) %}
                 title="{{ parameters.title|trans }}"
             {% endif %}
-           ><i class="icon-trash"></i>{{ parameters.label|trans -}}
+            ><i class="icon-trash"></i>{{ parameters.label|trans -}}
         </a>
     </div>
 {% endmacro %}
@@ -132,7 +132,7 @@
 
 {% macro saveAndStayButton(acl = '', label = 'Save') %}
     {% if acl is empty or resource_granted(acl) %}
-    {{ _self.buttonType({'type': 'button', 'class': 'btn-primary btn-submit icons-holder-text', 'label': label, 'action': 'save_and_stay', 'iClass': 'icon-ok'}) }}
+        {{ _self.buttonType({'type': 'button', 'class': 'btn-primary btn-submit icons-holder-text', 'label': label, 'action': 'save_and_stay', 'iClass': 'icon-ok'}) }}
     {% endif %}
 {% endmacro %}
 
@@ -145,12 +145,12 @@
 #}
 {% macro scrollSubblock(title, data, isForm) %}
     <div>
-    {% if title|length %}<div class="tabsection-title user-fiedset"><span>{{ title|trans }}</span></div>{% endif %}
-    <div class="tabsection-content">
-        {% for dataBlock in data %}
-            {{ dataBlock|raw }}
-        {% endfor %}
-    </div>
+        {% if title|length %}<div class="tabsection-title user-fiedset"><span>{{ title|trans }}</span></div>{% endif %}
+        <div class="tabsection-content">
+            {% for dataBlock in data %}
+                {{ dataBlock|raw }}
+            {% endfor %}
+        </div>
     </div>
     {#% if span %}
         </div>
@@ -173,24 +173,23 @@
 #}
 {% macro scrollBlock(blockId, title, subblocks, isForm, contentAttributes, useSubBlockDivider) %}
     {% set cols = subblocks|length %}
-    <div class="tabsection responsive-section">
-        <div id="{{ blockId }}" class="scrollspy-nav-target"></div>
+    <div id="{{ blockId }}" class="tabsection responsive-section">
         <div class="tabsection-title scrollspy-title">{{ title|trans }}</div>
         <div class="row-fluid{% if (contentAttributes is defined and contentAttributes.class is defined and contentAttributes.class|length) %} {{ contentAttributes.class }}{% endif %}{% if cols > 1 and (useSubBlockDivider is not defined or useSubBlockDivider == true) %} row-fluid-divider{% endif %}" {{ _self.attributes(contentAttributes, ['class']) }}>
             {% if isForm is defined and isForm == true %}
-                <fieldset class="form-horizontal">
-            {% else %}
+            <fieldset class="form-horizontal">
+                {% else %}
                 <div class="form-horizontal">
-            {% endif %}
-                {% for subblock in subblocks %}
-                    {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, true) }}
-                {% endfor %}
-            {% if isForm is defined and isForm == true %}
-                </fieldset>
+                    {% endif %}
+                    {% for subblock in subblocks %}
+                        {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, true) }}
+                    {% endfor %}
+                    {% if isForm is defined and isForm == true %}
+            </fieldset>
             {% else %}
-                </div>
-            {% endif %}
         </div>
+        {% endif %}
+    </div>
     </div>
 {% endmacro %}
 
