@@ -31,15 +31,24 @@ class VariantGroupWriterSpec extends ObjectBehavior
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
         AttributeRepositoryInterface $attributeRepository,
-        FileExporterPathGeneratorInterface $fileExporterPath
+        FileExporterPathGeneratorInterface $fileExporterPath,
+        FileExporterPathGeneratorInterface $filePathGenerator
     ) {
         $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->directory);
 
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $attributeRepository, $fileExporterPath, [
-            'pim_catalog_file', 'pim_catalog_image'
-        ]);
+        $this->beConstructedWith(
+            $arrayConverter,
+            $bufferFactory,
+            $flusher,
+            $attributeRepository,
+            $fileExporterPath,
+            $filePathGenerator,
+            [
+                'pim_catalog_file', 'pim_catalog_image'
+            ]
+        );
     }
 
     function letGo()
@@ -57,6 +66,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $attributeRepository,
         $fileExporterPath,
         $bufferFactory,
+        $filePathGenerator,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
@@ -67,7 +77,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.csv');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label% variant_group.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
@@ -139,9 +149,14 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('csv_variant_group_export');
+        $jobInstance->getLabel()->willReturn('CSV Variant group export');
 
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
+
+        $filePathGenerator
+            ->generate($this->directory . '%job_label% variant_group.csv', Argument::Type('array'))
+            ->willReturn($this->directory . 'CSV Variant group export variant_group.csv');
 
         $variantPathMedia1 = $this->directory . 'files/jackets/media/';
         $originalFilename = "it's the filename.jpg";
@@ -179,22 +194,31 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $attributeRepository,
         $fileExporterPath,
         $bufferFactory,
+        $filePathGenerator,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
+        JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.csv');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label% variant_group.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(false);
+
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('CSV Variant group export');
+
+        $filePathGenerator
+            ->generate($this->directory . '%job_label% variant_group.csv', Argument::Type('array'))
+            ->willReturn($this->directory . 'CSV Variant group export variant_group.csv');
 
         $variantStandard1 = [
             'code'   => 'jackets',
@@ -249,10 +273,12 @@ class VariantGroupWriterSpec extends ObjectBehavior
     function it_writes_the_csv_file(
         $bufferFactory,
         $flusher,
+        $filePathGenerator,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
+        JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
@@ -267,8 +293,15 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->get('filePath')->willReturn('my/file/path/%job_label% export.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
+
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('job_label');
+
+        $filePathGenerator
+            ->generate('my/file/path/%job_label% export.csv', Argument::Type('array'))
+            ->willReturn('my/file/path/job_label export.csv');
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
@@ -276,7 +309,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
             Argument::type('array'),
             Argument::type('string'),
             -1
-        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
+        )->willReturn(['my/file/path/job_label export1.csv', 'my/file/path/job_label export2.csv']);
 
         $this->initialize();
         $this->flush();

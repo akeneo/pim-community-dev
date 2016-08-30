@@ -3,10 +3,13 @@
 namespace spec\Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -17,9 +20,10 @@ class WriterSpec extends ObjectBehavior
     function let(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        FileExporterPathGeneratorInterface $filePathGenerator
     ) {
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher);
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $filePathGenerator);
     }
 
     function it_is_initializable()
@@ -40,15 +44,25 @@ class WriterSpec extends ObjectBehavior
     function it_prepares_items_to_write(
         $arrayConverter,
         $bufferFactory,
+        $filePathGenerator,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
         JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('XLSX Group export');
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn('%job_label% group.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
+
+        $filePathGenerator
+            ->generate('%job_label% group.xlsx', Argument::Type('array'))
+            ->willReturn('XLSX Group export group.xlsx');
 
         $groups = [
             [
@@ -111,8 +125,11 @@ class WriterSpec extends ObjectBehavior
     function it_writes_the_xlsx_file(
         $bufferFactory,
         $flusher,
+        $filePathGenerator,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
         JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);
@@ -120,9 +137,16 @@ class WriterSpec extends ObjectBehavior
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('XLSX Group export');
         $jobParameters->get('linesPerFile')->willReturn(2);
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->get('filePath')->willReturn('my/file/path/foo/%job_label% group.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
+
+        $filePathGenerator
+            ->generate('my/file/path/foo/%job_label% group.xlsx', Argument::Type('array'))
+            ->willReturn('my/file/path/foo/XLSX Group export group.xlsx');
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 

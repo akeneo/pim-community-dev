@@ -57,7 +57,6 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['with_media'] = true;
-        $parameters['filePath'] = sys_get_temp_dir() . 'csv_products_export.xlsx';
         $parameters['linesPerFile'] = 10000;
 
         $defaultChannel = $this->channelRepository->getFullChannels()[0];

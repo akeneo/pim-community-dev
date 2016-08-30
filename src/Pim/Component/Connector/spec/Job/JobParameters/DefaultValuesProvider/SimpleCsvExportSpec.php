@@ -22,7 +22,7 @@ class SimpleCsvExportSpec extends ObjectBehavior
     {
         $this->getDefaultValues()->shouldReturn(
             [
-                'filePath'   => null,
+                'filePath'   => '/tmp/export %job_label% %datetime%.csv',
                 'delimiter'  => ";",
                 'enclosure'  => '"',
                 'withHeader' => true,

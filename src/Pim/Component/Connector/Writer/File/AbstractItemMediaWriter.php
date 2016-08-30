@@ -41,6 +41,9 @@ abstract class AbstractItemMediaWriter implements
     /** @var FileExporterPathGeneratorInterface */
     protected $fileExporterPath;
 
+    /** @var FileExporterPathGeneratorInterface */
+    protected $filePathGenerator;
+
     /** @var string[] */
     protected $mediaAttributeTypes;
 
@@ -56,12 +59,16 @@ abstract class AbstractItemMediaWriter implements
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
 
+    /** @var string Datetime format for the file path placeholder */
+    protected $datetimeFormat = 'Y-m-d H-i-s';
+
     /**
      * @param ArrayConverterInterface            $arrayConverter
      * @param BufferFactory                      $bufferFactory
      * @param FlatItemBufferFlusher              $flusher
      * @param AttributeRepositoryInterface       $attributeRepository
      * @param FileExporterPathGeneratorInterface $fileExporterPath
+     * @param FileExporterPathGeneratorInterface $filePathGenerator
      * @param array                              $mediaAttributeTypes
      */
     public function __construct(
@@ -70,6 +77,7 @@ abstract class AbstractItemMediaWriter implements
         FlatItemBufferFlusher $flusher,
         AttributeRepositoryInterface $attributeRepository,
         FileExporterPathGeneratorInterface $fileExporterPath,
+        FileExporterPathGeneratorInterface $filePathGenerator,
         array $mediaAttributeTypes
     ) {
         $this->arrayConverter = $arrayConverter;
@@ -78,6 +86,7 @@ abstract class AbstractItemMediaWriter implements
         $this->attributeRepository = $attributeRepository;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->fileExporterPath = $fileExporterPath;
+        $this->filePathGenerator = $filePathGenerator;
 
         $this->localFs = new Filesystem();
     }
@@ -153,8 +162,18 @@ abstract class AbstractItemMediaWriter implements
     public function getPath()
     {
         $parameters = $this->stepExecution->getJobParameters();
+        $filePath = $parameters->get('filePath');
+        $resolvedFilePath = $this->filePathGenerator->generate(
+            $filePath,
+            [
+                'parameters' => [
+                    '%datetime%'  => date($this->datetimeFormat),
+                    '%job_label%' => $this->stepExecution->getJobExecution()->getJobInstance()->getLabel()
+                ]
+            ]
+        );
 
-        return $parameters->get('filePath');
+        return $resolvedFilePath;
     }
 
     /**
