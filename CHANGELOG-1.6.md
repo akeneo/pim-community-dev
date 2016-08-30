@@ -4,6 +4,7 @@
 
 - PIM-5935: Fix view all button in dashboard
 - PIM-5945 : Fix tabs on user profile, DOM was not well structured
+- TIP-568: Detach version entity to improve performances on products import
 
 # 1.6.0 (2016-08-30)
 
