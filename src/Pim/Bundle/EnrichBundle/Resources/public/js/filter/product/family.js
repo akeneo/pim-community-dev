@@ -1,16 +1,16 @@
 'use strict';
 
 define([
-        'underscore',
-        'oro/translator',
-        'pim/filter/filter',
-        'routing',
-        'text!pim/template/filter/product/family',
-        'pim/fetcher-registry',
-        'pim/user-context',
-        'pim/i18n',
-        'jquery.select2'
-    ], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n) {
+    'underscore',
+    'oro/translator',
+    'pim/filter/filter',
+    'routing',
+    'text!pim/template/filter/product/family',
+    'pim/fetcher-registry',
+    'pim/user-context',
+    'pim/i18n',
+    'jquery.select2'
+], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n) {
     return BaseFilter.extend({
         shortname: 'family',
         config: {},
@@ -27,6 +27,7 @@ define([
 
             this.selectOptions = {
                 allowClear: true,
+                containerCss: {width: 500},
                 multiple: true,
                 ajax: {
                     url: Routing.generate(this.config.url),
