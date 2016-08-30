@@ -2,6 +2,10 @@
 
 ## Bug fixes
 
+# 1.6.O (2016-08-30)
+
+## Bug fixes
+
 # 1.6.O-RC1 (2016-08-29)
 
 ## Bug fixes
