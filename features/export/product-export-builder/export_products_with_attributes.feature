@@ -62,6 +62,34 @@ Feature: Export products with only selected attributes
     BOOT-2;;1;boots;;dry;
     """
 
+  Scenario: Export products by selecting multiple attribute using the UI in a specific order
+    Given the following job "csv_footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv |
+    When I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
+    And I select the following attributes to export lace_color and weather_conditions
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
+    And I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contains the following headers:
+    """
+    sku;categories;enabled;family;groups;lace_color;weather_conditions
+    """
+    Then I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
+    And I select the following attributes to export weather_conditions and lace_color
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
+    And I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contains the following headers:
+    """
+    sku;categories;enabled;family;groups;weather_conditions;lace_color
+    """
+
   Scenario: Export products by selecting no attributes using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv                                                              |

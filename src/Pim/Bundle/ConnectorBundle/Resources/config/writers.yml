@@ -384,4 +384,4 @@ services:
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
             - '@pim_catalog.repository.product'
-            - ['label']
+            - ['categories', 'enabled', 'family', 'groups']

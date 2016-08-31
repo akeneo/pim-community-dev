@@ -35,9 +35,14 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
     /**
      * {@inheritdoc}
      */
-    public function sort(array $columns)
+    public function sort(array $columns, array $context = [])
     {
         $identifier = $this->productRepository->getIdentifierProperties()[0];
+
+        if (isset($context['filters']['structure']['attributes']) && !empty($context['filters']['structure']['attributes'])) {
+            return array_merge([$identifier], $this->firstDefaultColumns, $context['filters']['structure']['attributes']);
+        }
+
         array_unshift($this->firstDefaultColumns, $identifier);
 
         return parent::sort($columns);
