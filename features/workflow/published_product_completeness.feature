@@ -26,7 +26,7 @@ Feature: View the completeness of a published product
 
   @jira https://akeneo.atlassian.net/browse/PIM-5136
   Scenario: Successfully display the completeness of the products
-    Given I am on the "sneakers" published show page
+    Given I am on the "sneakers" published product show page
     When I open the "Completeness" panel
     And I should see the completeness:
       | channel | locale | state   | missing_values         | ratio |
@@ -34,7 +34,7 @@ Feature: View the completeness of a published product
       | tablet  | en_US  | warning | Side view              | 89%   |
       | mobile  | fr_FR  | success |                        | 100%  |
       | tablet  | fr_FR  | warning | Description, Side view | 78%   |
-    When I am on the "sandals" published show page
+    When I am on the "sandals" published product show page
     And I open the "Completeness" panel
     And I should see the completeness:
       | channel | locale | state   | missing_values                                    | ratio |

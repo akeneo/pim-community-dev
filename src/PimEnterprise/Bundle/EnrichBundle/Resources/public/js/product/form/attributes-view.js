@@ -55,6 +55,14 @@ define(
                 FieldManager.clearFields();
 
                 this.onExtensions('group:change', this.render.bind(this));
+                this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
+                this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+                this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
+                    this.setScope(event.scopeCode);
+                }.bind(this));
+                this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
+                    this.setLocale(event.localeCode);
+                }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -136,12 +144,40 @@ define(
 
                 return $.when.apply($, promises).promise();
             },
+
+            /**
+             * Initialize  the scope if there is none, or modify it by reference if there is already one
+             *
+             * @param {Object} event
+             */
+            initScope: function (event) {
+                if (undefined === this.getScope()) {
+                    this.setScope(event.scopeCode, {silent: true});
+                } else {
+                    event.scopeCode = this.getScope();
+                }
+            },
+
             setScope: function (scope, options) {
                 UserContext.set('catalogScope', scope, options);
             },
             getScope: function () {
                 return UserContext.get('catalogScope');
             },
+
+            /*
+             * Initialize  the locale if there is none, or modify it by reference if there is already one
+             *
+             * @param {Object} event
+             */
+            initLocale: function (event) {
+                if (undefined === this.getLocale()) {
+                    this.setLocale(event.localeCode, {silent: true});
+                } else {
+                    event.localeCode = this.getLocale();
+                }
+            },
+
             setLocale: function (locale, options) {
                 UserContext.set('catalogLocale', locale, options);
             },

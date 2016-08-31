@@ -282,7 +282,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      *
      * @return \Pim\Component\Catalog\Model\Product
      */
-    public function getPublished($sku)
+    public function getPublishedProduct($sku)
     {
         $published = $this->getPublishedProductManager()->findByIdentifier($sku);
 

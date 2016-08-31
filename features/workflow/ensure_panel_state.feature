@@ -17,7 +17,7 @@ Feature: Keep the side panel open when switching from product page to published 
     Given I am on the "rangers" product page
     And I open the "Completeness" panel
     Then I should see the text "No family defined. Please define a family to calculate the completeness of this product."
-    When I am on the "rangers" published show page
+    When I am on the "rangers" published product show page
     Then I should not see the text "No family defined. Please define a family to calculate the completeness of this product."
     When I am on the "high-heels" product page
     Then I should see the text "No family defined. Please define a family to calculate the completeness of this product."

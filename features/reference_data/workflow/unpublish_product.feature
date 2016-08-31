@@ -19,7 +19,7 @@ Feature: Unpublish a product
       | yellow-heels | Yellow     | Wool                    |
 
   Scenario: Successfully unpublish a product with reference data
-    And I am on the "red-heels" published show page
+    And I am on the "red-heels" published product show page
     When I press the "Unpublish" button
     And I confirm the publishing
     Then I should be on the published index page

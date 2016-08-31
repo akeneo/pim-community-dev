@@ -51,7 +51,7 @@ Feature: Quick export products with user permissions applied
       | sku         | family  | name-en_US   | name-de_DE       | sleeve_color |
       | blackhoodie | hoodies | Black hoodie | Schwarzer Hoodie | black        |
       | greenhoodie | hoodies | Green hoodie | Grüner Hoodie    | green        |
-    When I am on the published page
+    When I am on the published products page
     And I select rows blackhoodie and greenhoodie
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_published_product_quick_export" quick export to finish
