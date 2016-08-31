@@ -62,10 +62,21 @@ class ChannelNormalizer implements NormalizerInterface
         return $data instanceof ChannelInterface && in_array($format, $this->supportedFormats);
     }
 
+    /**
+     * Normalize and return given $locales
+     *
+     * @param $locales
+     *
+     * @return array|\ArrayAccess
+     */
     protected function normalizeLocales($locales)
     {
-        return array_map(function ($locale) {
-            return $this->localeNormalizer->normalize($locale, 'json');
-        }, $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view')->toArray());
+        $normalizedLocales = [];
+
+        foreach ($this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view') as $locale) {
+            $normalizedLocales[] = $this->localeNormalizer->normalize($locale, 'json');
+        }
+
+        return $normalizedLocales;
     }
 }
