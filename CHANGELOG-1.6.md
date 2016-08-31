@@ -4,6 +4,7 @@
 
 - PIM-5782: Add right filtering on locales for export builder
 - PIM-5949: Fix scope and locale switches on published product edit form
+- PIM-5959: Change wording of XLSX to Excel on mass actions
 
 # 1.6.O (2016-08-30)
 
