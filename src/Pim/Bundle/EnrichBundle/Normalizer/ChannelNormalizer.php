@@ -66,6 +66,6 @@ class ChannelNormalizer implements NormalizerInterface
     {
         return array_map(function ($locale) {
             return $this->localeNormalizer->normalize($locale, 'json');
-        }, $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view'));
+        }, $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view')->toArray());
     }
 }
