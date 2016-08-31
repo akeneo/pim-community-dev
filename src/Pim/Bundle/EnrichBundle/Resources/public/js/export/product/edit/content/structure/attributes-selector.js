@@ -224,17 +224,26 @@ define(
                     tolerance: 'pointer',
                     cursor: 'move',
                     receive: function (event, ui) {
-                        var attributeCode = ui.item.data('attributeCode');
-                        var selectedAttributes = this.getSelected();
+                        if (
+                            0 !== ui.item.parents('.attributes').length &&
+                            0 !== ui.sender.parents('.selected-attributes').length
+                        ) {
+                            var selectedAttributesElement = ui.sender.parents('.selected-attributes');
 
-                        if (ui.sender.parents('div').hasClass('attributes')) {
-                            selectedAttributes = _.union(selectedAttributes, [attributeCode]);
+                            this.setSelected(_.map(selectedAttributesElement.find('li'), function (element) {
+                                return element.dataset.attributeCode;
+                            }));
                         }
-                        if (ui.sender.parents('div').hasClass('selected-attributes')) {
-                            selectedAttributes = _.without(selectedAttributes, attributeCode);
-                        }
+                    }.bind(this),
+                    stop: function (event, ui) {
+                        var selectedAttributesElement;
+                        if (0 !== ui.item.parents('.selected-attributes').length) {
+                            var selectedAttributesElement = ui.item.parents('.selected-attributes');
 
-                        this.setSelected(selectedAttributes);
+                            this.setSelected(_.map(selectedAttributesElement.find('li'), function (element) {
+                                return element.dataset.attributeCode;
+                            }));
+                        }
                     }.bind(this)
                 }).disableSelection();
             },
