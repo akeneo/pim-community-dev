@@ -8,7 +8,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Archiver\AbstractInvalidItemWriter;
 
 /**
- * Writer for invalid items coming from a XML import.
+ * Writer for invalid items coming from an XML import.
  * It writes invalid items (ie. invalid products, families, etc...) into a new XML file, available for download.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>

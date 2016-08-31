@@ -6,12 +6,8 @@ use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\Buffer\BufferFactory;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Pim\Component\Connector\Writer\File\FlatItemBuffer;
-use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
 /**
  * Write data into an xml file on the filesystem
@@ -27,42 +23,11 @@ class XmlWriter extends AbstractFileWriter implements
     ArchivableWriterInterface,
     StepExecutionAwareInterface
 {
-    /** @var ArrayConverterInterface */
-    protected $arrayConverter;
-
-    /** @var FlatItemBuffer */
-    protected $flatRowBuffer = null;
-
-    /** @var FlatItemBufferFlusher */
-    protected $flusher;
-
-    /** @var BufferFactory */
-    protected $bufferFactory;
-
-    /** @var array */
-    protected $headers = [];
-
     /** @var array */
     protected $writtenFiles = [];
 
     /** @var \XMLWriter **/
     protected $xml;
-    /**
-     * @param ArrayConverterInterface   $arrayConverter
-     * @param BufferFactory             $bufferFactory
-     * @param FlatItemBufferFlusher     $flusher
-     */
-    public function __construct(
-        ArrayConverterInterface $arrayConverter,
-        BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
-    ) {
-        parent::__construct();
-
-        $this->arrayConverter = $arrayConverter;
-        $this->bufferFactory = $bufferFactory;
-        $this->flusher = $flusher;
-    }
 
     /**
      * {@inheritdoc}
@@ -99,10 +64,9 @@ class XmlWriter extends AbstractFileWriter implements
         }
 
         foreach ($items as $item) {
-            $flatItem = $this->arrayConverter->convert($item);
 
             $this->xml->startElement('product');
-            foreach ($flatItem as $property => $value) {
+            foreach ($item as $property => $value) {
                 $this->xml->writeAttribute($property, $value);
             }
             $this->xml->endElement();
@@ -119,6 +83,5 @@ class XmlWriter extends AbstractFileWriter implements
         $this->xml->flush();
 
         $this->writtenFiles = [$this->stepExecution->getJobParameters()->get('filePath')];
-        $this->flusher->setStepExecution($this->stepExecution);
     }
 }

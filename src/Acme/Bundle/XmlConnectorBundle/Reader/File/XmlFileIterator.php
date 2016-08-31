@@ -111,6 +111,8 @@ class XmlFileIterator implements FileIteratorInterface
     }
 
     /**
+     * Converts an xml node into an array of values
+     *
      * @param \SimpleXMLIterator $elem
      *
      * @return array
@@ -118,10 +120,9 @@ class XmlFileIterator implements FileIteratorInterface
     protected function xmlElementToFlat($elem)
     {
         $flatElem = [];
-        if (null !== $elem) {
-            foreach ($elem->attributes() as $property => $value) {
-                $flatElem[] = (string) $value;
-            }
+
+        foreach ($elem->attributes() as $value) {
+            $flatElem[] = (string) $value;
         }
 
         return $flatElem;

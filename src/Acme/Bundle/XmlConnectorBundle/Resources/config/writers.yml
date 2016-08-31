@@ -4,7 +4,3 @@ parameters:
 services:
     acme_xml_connector.writer.file.invalid_items_xml:
         class: '%acme_xml_connector.writer.file.xml.class%'
-        arguments:
-            - '@pim_connector.array_converter.dummy'
-            - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.flat_invalid_item_buffer_flusher'
