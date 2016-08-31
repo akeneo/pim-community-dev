@@ -6,9 +6,6 @@ Feature: Display the product history
 
   Background:
     Given a "default" catalog configuration
-    And the following products:
-      | sku     |
-      | sandals |
     And the following attributes:
       | code    | type                        | reference_data_name |
       | color   | reference_data_simpleselect | color               |
@@ -16,10 +13,15 @@ Feature: Display the product history
     And the following "color" attribute reference data: Red, Green, Blue
     And the following "fabrics" attribute reference data: Cashmerewool, Neoprene and Silk
     And I am logged in as "Julia"
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU | sandals |
+    And I press the "Save" button in the popin
+    And I wait to be on the "sandals" product page
 
   Scenario: Add an available "simple select" reference data to a product
-    Given I am on the "sandals" product page
-    And I add available attribute color
+    Given I add available attribute color
     And I fill in the following information:
       | color | Red |
     Then I save the product
@@ -37,8 +39,7 @@ Feature: Display the product history
       | 3       | [color]  | Green |
 
   Scenario: Add an available "multi select" reference data to a product
-    Given I am on the "sandals" product page
-    And I add available attribute fabrics
+    Given I add available attribute fabrics
     And I fill in the following information:
       | fabrics | Cashmerewool, Neoprene |
     Then I save the product
