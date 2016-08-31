@@ -146,6 +146,19 @@ class JobContext extends PimContext
     }
 
     /**
+     * @param string $filters
+     *
+     * @Then /^I should see the ordered filters (.*)$/
+     */
+    public function iShouldSeeTheOrderedFilters($filters)
+    {
+        $expectedOrderedFilters = $this->getMainContext()->listToArray($filters);
+        $currentOrderedFilters = $this->getOrderedFilters();
+
+        assertEquals($expectedOrderedFilters, $currentOrderedFilters);
+    }
+
+    /**
      * @param string   $code
      * @param int|null $number
      *
@@ -227,5 +240,22 @@ class JobContext extends PimContext
         $archives = $archiver->getArchives($jobExecution);
 
         return $archives;
+    }
+
+    /**
+     * Gets currently displayed export filters, ordered.
+     *
+     * return string[]
+     */
+    protected function getOrderedFilters()
+    {
+        $filters = $this->getCurrentPage()->findAll('css', '.filters .filter-item');
+        $currentFilters = [];
+
+        foreach ($filters as $filter) {
+            $currentFilters[] = $filter->getAttribute('data-name');
+        }
+
+        return $currentFilters;
     }
 }
