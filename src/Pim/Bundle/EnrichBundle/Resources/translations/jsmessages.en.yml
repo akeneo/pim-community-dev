@@ -107,8 +107,8 @@ pim:
             quick_export:
                 csv_all: CSV (All attributes)
                 csv_grid_context: CSV (Grid context)
-                xlsx_all: XLSX (All attributes)
-                xlsx_grid_context: XLSX (Grid context)
+                xlsx_all: Excel (All attributes)
+                xlsx_grid_context: Excel (Grid context)
             delete: Delete products
             mass_edit: Change product information
             category_edit: Move products in categories

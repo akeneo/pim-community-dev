@@ -3,10 +3,11 @@
 ## Bug fixes
 
 - PIM-5935: Fix view all button in dashboard
-- PIM-5945 : Fix tabs on user profile, DOM was not well structured
+- PIM-5945: Fix tabs on user profile, DOM was not well structured
 - TIP-568: Detach version entity to improve performances on products import
-- PIM-5940: added a flash message in case of product export builder error
-- PIM-5922: fix the scope switcher in variant group page grid
+- PIM-5940: Add a flash message in case of product export builder error
+- PIM-5922: Fix the scope switcher in variant group page grid
+- PIM-5959: Change wording of XLSX to Excel on mass actions
 
 # 1.6.0 (2016-08-30)
 
