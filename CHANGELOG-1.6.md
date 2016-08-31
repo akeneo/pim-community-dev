@@ -9,6 +9,7 @@
 - PIM-5922: Fix the scope switcher in variant group page grid
 - PIM-5959: Change wording of XLSX to Excel on mass actions
 - PIM-5938: Fix typos in import/export tooltips
+- PIM-5966: Fix style about category filter on product export builder
 
 # 1.6.0 (2016-08-30)
 
