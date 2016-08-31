@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - TIP-307: Fix issues with Mongo 2.6
+- PIM-5862: Fix product grid display on a custom user view
 
 # 1.5.8 (2016-08-25)
 
