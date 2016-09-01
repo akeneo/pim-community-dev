@@ -38,10 +38,10 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
-        $this->objectIdResolver        = $objectIdResolver;
+        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->objectIdResolver = $objectIdResolver;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -75,7 +75,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             $this->checkValue($options['field'], $value);
         }
 
-        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $joinAliasOpt = $this->getUniqueAlias('filterO' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
 
@@ -131,10 +131,10 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
      */
     protected function getNotInSubquery(AttributeInterface $attribute, $locale, $scope, $value)
     {
-        $notInQb      = $this->qb->getEntityManager()->createQueryBuilder();
-        $rootEntity   = current($this->qb->getRootEntities());
-        $notInAlias   = $this->getUniqueAlias('productsNotIn');
-        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $notInQb = $this->qb->getEntityManager()->createQueryBuilder();
+        $rootEntity = current($this->qb->getRootEntities());
+        $notInAlias = $this->getUniqueAlias('productsNotIn');
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $joinAliasOpt = $this->getUniqueAlias('filterO' . $attribute->getCode());
 
         $notInQb->select($notInAlias . '.id')

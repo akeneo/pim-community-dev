@@ -30,7 +30,7 @@ class UiLocaleProvider implements LocaleProviderInterface
      */
     public function __construct(TranslatorInterface $translator, $minPercentage)
     {
-        $this->translator    = $translator;
+        $this->translator = $translator;
         $this->minPercentage = (float) $minPercentage;
     }
 

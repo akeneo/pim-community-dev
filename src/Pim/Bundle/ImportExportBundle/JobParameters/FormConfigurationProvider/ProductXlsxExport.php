@@ -47,10 +47,10 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
         array $decimalSeparators,
         array $dateFormats
     ) {
-        $this->simpleXlsxExport  = $simpleXlsxExport;
+        $this->simpleXlsxExport = $simpleXlsxExport;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
-        $this->dateFormats       = $dateFormats;
+        $this->dateFormats = $dateFormats;
     }
 
     /**

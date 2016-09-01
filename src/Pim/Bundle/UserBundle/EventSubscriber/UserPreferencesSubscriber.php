@@ -160,7 +160,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function onChannelRemoved(ChannelInterface $channel)
     {
-        $users  = $this->findUsersBy(['catalogScope' => $channel]);
+        $users = $this->findUsersBy(['catalogScope' => $channel]);
         $scopes = $this->container->get('pim_catalog.repository.channel')->findAll();
 
         $defaultScope = current(

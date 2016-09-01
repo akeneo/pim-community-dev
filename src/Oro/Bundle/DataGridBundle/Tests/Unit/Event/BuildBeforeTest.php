@@ -11,7 +11,7 @@ class BuildBeforeTest extends \PHPUnit_Framework_TestCase
 
     public function testEventCreation()
     {
-        $grid   = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface');
+        $grid = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface');
         $config = DatagridConfiguration::create([]);
 
         $event = new BuildBefore($grid, $config);

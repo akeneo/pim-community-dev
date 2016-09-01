@@ -50,8 +50,8 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
         array $options = []
     ) {
         $this->fileIteratorFactory = $fileIteratorFactory;
-        $this->converter           = $converter;
-        $this->options             = $options;
+        $this->converter = $converter;
+        $this->options = $options;
     }
 
     /**
@@ -82,7 +82,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
         $headers = $this->fileIterator->getHeaders();
 
         $countHeaders = count($headers);
-        $countData    = count($data);
+        $countData = count($data);
 
         $this->checkColumnNumber($countHeaders, $countData, $data, $filePath);
 

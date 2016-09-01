@@ -23,9 +23,9 @@ class PagerExtension extends AbstractExtension
 {
     /** @staticvar string Query params */
     const PAGER_ROOT_PARAM = '_pager';
-    const PAGE_PARAM       = '_page';
-    const PER_PAGE_PARAM   = '_per_page';
-    const TOTAL_PARAM      = 'totalRecords';
+    const PAGE_PARAM = '_page';
+    const PER_PAGE_PARAM = '_per_page';
+    const TOTAL_PARAM = 'totalRecords';
 
     /** @var PagerResolver */
     protected $pagerResolver;

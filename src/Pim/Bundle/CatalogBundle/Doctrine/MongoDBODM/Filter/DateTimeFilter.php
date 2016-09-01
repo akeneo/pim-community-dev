@@ -39,10 +39,10 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields       = $supportedFields;
-        $this->supportedOperators    = $supportedOperators;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
         $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->jobRepository         = $jobRepository;
+        $this->jobRepository = $jobRepository;
     }
 
     /**
@@ -69,8 +69,8 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                 return $this;
             }
             $lastJobStartTime = $lastCompletedJobExecution->getStartTime()->setTimezone(new \DateTimeZone('UTC'));
-            $value            = $lastJobStartTime->getTimestamp();
-            $operator         = Operators::GREATER_THAN;
+            $value = $lastJobStartTime->getTimestamp();
+            $operator = Operators::GREATER_THAN;
         }
 
         if (Operators::SINCE_LAST_N_DAYS === $operator) {
@@ -79,7 +79,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             }
 
             $fromDate = new \DateTime(sprintf('%s days ago', $value), new \DateTimeZone('UTC'));
-            $value    = $fromDate->getTimestamp();
+            $value = $fromDate->getTimestamp();
             $operator = Operators::GREATER_THAN;
         }
 

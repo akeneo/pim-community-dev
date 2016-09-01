@@ -6,8 +6,8 @@ use Oro\Bundle\DataGridBundle\Common\Object;
 
 class MetadataObject extends Object
 {
-    const GRID_NAME_KEY        = 'gridName';
-    const OPTIONS_KEY          = 'options';
+    const GRID_NAME_KEY = 'gridName';
+    const OPTIONS_KEY = 'options';
     const REQUIRED_MODULES_KEY = 'requireJSModules';
 
     /**
@@ -28,7 +28,7 @@ class MetadataObject extends Object
      */
     public static function createNamed($name, array $params)
     {
-        $params                                         = self::getDefaultMetadata();
+        $params = self::getDefaultMetadata();
         $params[self::OPTIONS_KEY][self::GRID_NAME_KEY] = $name;
 
         return self::create($params);

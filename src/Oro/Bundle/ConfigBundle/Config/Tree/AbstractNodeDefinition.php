@@ -12,7 +12,7 @@ abstract class AbstractNodeDefinition
 
     public function __construct($name, array $definition)
     {
-        $this->name       = $name;
+        $this->name = $name;
         $this->definition = $this->prepareDefinition($definition);
     }
 

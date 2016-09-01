@@ -51,9 +51,9 @@ class DataBlocks
     public function render(\Twig_Environment $env, $context, FormView $form, $formVariableName = 'form')
     {
         $this->formVariableName = $formVariableName;
-        $this->formConfig       = new FormConfig;
-        $this->context          = $context;
-        $this->env              = $env;
+        $this->formConfig = new FormConfig;
+        $this->context = $context;
+        $this->env = $env;
 
         $tmpLoader = $env->getLoader();
         $env->setLoader(new \Twig_Loader_Chain([$tmpLoader, new \Twig_Loader_String()]));
@@ -85,7 +85,7 @@ class DataBlocks
 
                 if (!$block) {
                     $blockCode = $child->vars['block'];
-                    $block     = $this->createBlock($blockCode);
+                    $block = $this->createBlock($blockCode);
 
                     $this->formConfig->addBlock($block);
                 }
@@ -119,7 +119,7 @@ class DataBlocks
             $subBlock = $block->getSubBlock($child->vars['subblock']);
         } elseif (!isset($child->vars['subblock'])) {
             $subBlocks = $block->getSubBlocks();
-            $subBlock  = reset($subBlocks);
+            $subBlock = reset($subBlocks);
         }
 
         if (!$subBlock) {

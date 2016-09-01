@@ -25,7 +25,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
         Collection $decoratedCollection
     ) {
         $decoratedProvider->getConstraintCollection()->willReturn($decoratedCollection);
-        $collection =  $this->getConstraintCollection();
+        $collection = $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
         $fields->shouldHaveKey('decimalSeparator');

@@ -28,7 +28,7 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
-        $this->supportedTypes  = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**

@@ -62,7 +62,7 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getEmptyConfig()
     {
-        $yaml   = '';
+        $yaml = '';
         $parser = new Parser();
 
         return $parser->parse($yaml);
@@ -80,7 +80,7 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
     protected function getContainer(array $config = [])
     {
         $container = new ContainerBuilder();
-        $loader    = new OroConfigExtension();
+        $loader = new OroConfigExtension();
 
         $container->addCompilerPass(new Compiler\ConfigPass());
         $container->setParameter('kernel.bundles', []);

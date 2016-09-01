@@ -27,9 +27,9 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -64,10 +64,10 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
      */
     protected function addFilter(AttributeInterface $attribute, $operator, $value, $locale, $scope)
     {
-        $joinAlias      = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $joinAliasMedia = $this->getUniqueAlias('filterMedia' . $attribute->getCode());
-        $backendField   = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
-        $backendType    = $attribute->getBackendType();
+        $backendField = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
+        $backendType = $attribute->getBackendType();
 
         $this->addValuesInnerJoin($attribute, $locale, $scope, $joinAlias);
         $this->qb->innerJoin(
@@ -86,9 +86,9 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
      */
     protected function addEmptyTypeFilter(AttributeInterface $attribute, $operator, $locale, $scope)
     {
-        $joinAlias      = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $joinAliasMedia = $this->getUniqueAlias('filterMedia' . $attribute->getCode());
-        $backendField   = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
+        $backendField = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
 
         $this->addValuesLeftJoin($attribute, $locale, $scope, $joinAlias);
         $this->addMediaLeftJoin($attribute, $joinAlias, $joinAliasMedia);
@@ -154,19 +154,19 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         switch ($operator) {
             case Operators::STARTS_WITH:
                 $operator = Operators::IS_LIKE;
-                $value    = $value . '%';
+                $value = $value . '%';
                 break;
             case Operators::ENDS_WITH:
                 $operator = Operators::IS_LIKE;
-                $value    = '%' . $value;
+                $value = '%' . $value;
                 break;
             case Operators::CONTAINS:
                 $operator = Operators::IS_LIKE;
-                $value    = '%' . $value . '%';
+                $value = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $operator = Operators::NOT_LIKE;
-                $value    = '%' . $value . '%';
+                $value = '%' . $value . '%';
                 break;
             case Operators::EQUALS:
                 $operator = Operators::IS_LIKE;

@@ -52,7 +52,7 @@ class FileIterator implements FileIteratorInterface
      */
     public function __construct($type, $filePath, array $options = [])
     {
-        $this->type     = $type;
+        $this->type = $type;
         $this->filePath = $filePath;
         $this->fileInfo = new \SplFileInfo($filePath);
 
@@ -76,7 +76,7 @@ class FileIterator implements FileIteratorInterface
         $sheet->getRowIterator()->rewind();
 
         $this->headers = $sheet->getRowIterator()->current();
-        $this->rows    = $sheet->getRowIterator();
+        $this->rows = $sheet->getRowIterator();
     }
 
     /**

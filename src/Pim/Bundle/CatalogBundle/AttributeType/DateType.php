@@ -37,7 +37,7 @@ class DateType extends AbstractAttributeType
             ]
         ];
 
-        $properties['unique']['options']['disabled']  = (bool) $attribute->getId();
+        $properties['unique']['options']['disabled'] = (bool) $attribute->getId();
         $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
 
         return $properties;

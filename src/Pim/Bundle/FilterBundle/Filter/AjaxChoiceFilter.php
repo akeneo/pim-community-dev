@@ -72,9 +72,9 @@ class AjaxChoiceFilter extends ChoiceFilter
         $metadata[FilterUtility::TYPE_KEY] = $formView->vars['preload_choices'] ? 'ajax-choice' : 'select2-choice';
 
         $metadata['populateDefault'] = $formView->vars['populate_default'];
-        $metadata['choiceUrl']       = $formView->vars['choice_url'];
+        $metadata['choiceUrl'] = $formView->vars['choice_url'];
         $metadata['choiceUrlParams'] = $formView->vars['choice_url_params'];
-        $metadata['emptyChoice']     = $formView->vars['empty_choice'];
+        $metadata['emptyChoice'] = $formView->vars['empty_choice'];
 
         return $metadata;
     }

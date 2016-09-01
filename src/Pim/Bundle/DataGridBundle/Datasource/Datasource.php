@@ -46,7 +46,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
      */
     public function __construct(ObjectManager $om, HydratorInterface $hydrator)
     {
-        $this->om       = $om;
+        $this->om = $om;
         $this->hydrator = $hydrator;
     }
 

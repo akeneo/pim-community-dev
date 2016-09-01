@@ -60,11 +60,11 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     ) {
         parent::__construct($repository);
 
-        $this->builder            = $builder;
-        $this->updater            = $updater;
-        $this->validator          = $validator;
-        $this->detacher           = $detacher;
-        $this->productFilter      = $productFilter;
+        $this->builder = $builder;
+        $this->updater = $updater;
+        $this->validator = $validator;
+        $this->detacher = $detacher;
+        $this->productFilter = $productFilter;
     }
 
     /**
@@ -83,8 +83,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
 
-        $familyCode    = $this->getFamilyCode($item);
-        $filteredItem  = $this->filterItemData($item);
+        $familyCode = $this->getFamilyCode($item);
+        $filteredItem = $this->filterItemData($item);
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
 

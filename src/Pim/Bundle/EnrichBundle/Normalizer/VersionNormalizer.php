@@ -48,8 +48,8 @@ class VersionNormalizer implements NormalizerInterface
         PresenterInterface $datetimePresenter,
         PresenterRegistryInterface $presenterRegistry
     ) {
-        $this->userManager       = $userManager;
-        $this->translator        = $translator;
+        $this->userManager = $userManager;
+        $this->translator = $translator;
         $this->datetimePresenter = $datetimePresenter;
         $this->presenterRegistry = $presenterRegistry;
     }

@@ -29,7 +29,7 @@ class BaseSelector implements SelectorInterface
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
         if ($this->applied === false) {
-            $rootAlias    = $datasource->getQueryBuilder()->getRootAlias();
+            $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
             $path = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_ATTRIBUTES_KEY);
             $attributeIds = $configuration->offsetGetByPath($path);
 

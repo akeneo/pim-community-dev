@@ -34,7 +34,7 @@ class DisableFieldSubscriber implements EventSubscriberInterface
      */
     public function __construct($fieldName, $determinator = 'getId')
     {
-        $this->fieldName    = $fieldName;
+        $this->fieldName = $fieldName;
         $this->determinator = $determinator;
     }
 
@@ -61,8 +61,8 @@ class DisableFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $form    = $event->getForm();
-        $config  = $form->get($this->fieldName)->getConfig();
+        $form = $event->getForm();
+        $config = $form->get($this->fieldName)->getConfig();
         $options = $this->prepareOptions($config);
 
         $form->add($this->fieldName, null, $options);

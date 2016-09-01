@@ -48,10 +48,10 @@ class ProductCsvExport implements FormConfigurationProviderInterface
         array $decimalSeparators,
         array $dateFormats
     ) {
-        $this->simpleCsvExport   = $simpleCsvExport;
+        $this->simpleCsvExport = $simpleCsvExport;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
-        $this->dateFormats       = $dateFormats;
+        $this->dateFormats = $dateFormats;
     }
 
     /**

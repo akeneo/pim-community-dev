@@ -34,7 +34,7 @@ class CategoryType extends AbstractType
      */
     public function __construct($dataClass, $translationDataClass)
     {
-        $this->dataClass            = $dataClass;
+        $this->dataClass = $dataClass;
         $this->translationDataClass = $translationDataClass;
     }
 

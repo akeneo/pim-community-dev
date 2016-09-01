@@ -44,8 +44,8 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
         BulkObjectDetacherInterface $detacher
     ) {
         $this->versionManager = $versionManager;
-        $this->productSaver   = $productSaver;
-        $this->detacher       = $detacher;
+        $this->productSaver = $productSaver;
+        $this->detacher = $detacher;
     }
 
     /**

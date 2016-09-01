@@ -38,9 +38,9 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
         EventDispatcherInterface $eventDispatcher,
         $removedClass
     ) {
-        $this->objectManager   = $objectManager;
+        $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->removedClass    = $removedClass;
+        $this->removedClass = $removedClass;
     }
 
     /**

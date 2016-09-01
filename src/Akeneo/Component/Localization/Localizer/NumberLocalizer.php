@@ -34,8 +34,8 @@ class NumberLocalizer implements LocalizerInterface
         NumberFactory $numberFactory,
         array $attributeTypes
     ) {
-        $this->validator      = $validator;
-        $this->numberFactory  = $numberFactory;
+        $this->validator = $validator;
+        $this->numberFactory = $numberFactory;
         $this->attributeTypes = $attributeTypes;
     }
 

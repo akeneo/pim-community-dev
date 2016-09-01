@@ -38,7 +38,7 @@ class BooleanComparatorSpec extends ObjectBehavior
 
     function it_gets_changes_when_changing_value()
     {
-        $changes   = false;
+        $changes = false;
         $originals = true;
         $this->compare($changes, $originals)->shouldReturn($changes);
 
@@ -48,19 +48,19 @@ class BooleanComparatorSpec extends ObjectBehavior
 
     function it_returns_null_when_values_are_the_same()
     {
-        $changes   = true;
+        $changes = true;
         $originals = true;
         $this->compare($changes, $originals)->shouldReturn(null);
 
-        $changes   = 1;
+        $changes = 1;
         $originals = 1;
         $this->compare($changes, $originals)->shouldReturn(null);
 
-        $changes   = 1;
+        $changes = 1;
         $originals = true;
         $this->compare($changes, $originals)->shouldReturn(null);
 
-        $changes   = true;
+        $changes = true;
         $originals = 1;
         $this->compare($changes, $originals)->shouldReturn(null);
     }

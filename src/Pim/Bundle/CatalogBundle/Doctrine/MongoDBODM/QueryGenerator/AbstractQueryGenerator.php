@@ -33,8 +33,8 @@ abstract class AbstractQueryGenerator implements NormalizedDataQueryGeneratorInt
         $field = ''
     ) {
         $this->namingUtility = $namingUtility;
-        $this->entityClass   = $entityClass;
-        $this->field         = $field;
+        $this->entityClass = $entityClass;
+        $this->field = $field;
     }
 
     /**

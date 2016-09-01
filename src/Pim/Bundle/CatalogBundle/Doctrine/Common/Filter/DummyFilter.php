@@ -42,8 +42,8 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
     public function __construct(array $supportedAttributeTypes, array $supportedFields, array $supportedOperators)
     {
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedFields         = $supportedFields;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

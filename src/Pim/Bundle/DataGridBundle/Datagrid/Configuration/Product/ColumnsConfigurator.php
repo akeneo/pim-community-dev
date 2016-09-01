@@ -74,7 +74,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
         $this->editableColumns = [];
-        $this->primaryColumns  = [];
+        $this->primaryColumns = [];
 
         foreach ($this->propertiesColumns as $columnCode => $columnData) {
             if (isset($columnData['editable'])) {
@@ -95,11 +95,11 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $attributes = ($attributes === null) ? [] : $attributes;
-        $this->identifierColumn  = [];
+        $this->identifierColumn = [];
         $this->attributesColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
-            $attributeType     = $attribute['attributeType'];
+            $attributeType = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if (!$attributeTypeConf || !isset($attributeTypeConf['column'])) {

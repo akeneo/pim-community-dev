@@ -42,7 +42,7 @@ class VariantGroupWriter implements ItemWriterInterface, StepExecutionAwareInter
         BulkObjectDetacherInterface $bulkDetacher,
         ProductTemplateApplierInterface $productTplApplier
     ) {
-        $this->bulkSaver    = $bulkSaver;
+        $this->bulkSaver = $bulkSaver;
         $this->bulkDetacher = $bulkDetacher;
         $this->productTplApplier = $productTplApplier;
     }

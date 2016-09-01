@@ -62,7 +62,7 @@ class VersionManager
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->registry       = $registry;
+        $this->registry = $registry;
         $this->versionBuilder = $versionBuilder;
         $this->versionContext = $versionContext;
         $this->eventDispatcher = $eventDispatcher;

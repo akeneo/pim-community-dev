@@ -43,10 +43,10 @@ class NamingUtility
     public function __construct($managerRegistry, $channelClass, $localeClass, $attributeClass, $currencyClass)
     {
         $this->managerRegistry = $managerRegistry;
-        $this->channelClass    = $channelClass;
-        $this->localeClass     = $localeClass;
-        $this->attributeClass  = $attributeClass;
-        $this->currencyClass   = $currencyClass;
+        $this->channelClass = $channelClass;
+        $this->localeClass = $localeClass;
+        $this->attributeClass = $attributeClass;
+        $this->currencyClass = $currencyClass;
     }
 
     /**
@@ -141,7 +141,7 @@ class NamingUtility
      */
     public function getAttributeNormFields(AttributeInterface $attribute, $prefix = null)
     {
-        $localeCodes  = $this->getLocaleCodes($attribute);
+        $localeCodes = $this->getLocaleCodes($attribute);
         $channelCodes = $this->getChannelCodes($attribute);
 
         if (null === $prefix) {
@@ -163,7 +163,7 @@ class NamingUtility
      */
     public function getChannels()
     {
-        $channelManager    = $this->managerRegistry->getManagerForClass($this->channelClass);
+        $channelManager = $this->managerRegistry->getManagerForClass($this->channelClass);
         $channelRepository = $channelManager->getRepository($this->channelClass);
 
         return $channelRepository->findAll();
@@ -189,7 +189,7 @@ class NamingUtility
      */
     public function getLocales()
     {
-        $localeManager    = $this->managerRegistry->getManagerForClass($this->localeClass);
+        $localeManager = $this->managerRegistry->getManagerForClass($this->localeClass);
         $localeRepository = $localeManager->getRepository($this->localeClass);
 
         return $localeRepository->getActivatedLocales();

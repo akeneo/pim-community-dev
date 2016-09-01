@@ -27,7 +27,7 @@ class CategoryFieldRemover extends AbstractFieldRemover
         array $supportedFields
     ) {
         $this->categoryRepository = $categoryRepository;
-        $this->supportedFields    = $supportedFields;
+        $this->supportedFields = $supportedFields;
     }
 
     /**

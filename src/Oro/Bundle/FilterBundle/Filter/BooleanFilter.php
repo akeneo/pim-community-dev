@@ -37,7 +37,7 @@ class BooleanFilter extends ChoiceFilter
             return false;
         }
 
-        $field             = $this->get(FilterUtility::DATA_NAME_KEY);
+        $field = $this->get(FilterUtility::DATA_NAME_KEY);
         $compareExpression = $ds->expr()->neq($field, 'false');
 
         if ($this->getOr(self::NULLABLE_KEY, false)) {

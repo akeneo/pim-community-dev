@@ -36,7 +36,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
         $this->attrOptionRepository = $attrOptionRepository;
-        $this->supportedTypes       = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**

@@ -47,7 +47,7 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
             $value = $context['entity'];
             // TODO : this fix should be merged from EE 1.0.x PIM-3533
             unset($context['entity']);
-            $context['value']  = $value;
+            $context['value'] = $value;
         } else {
             throw new InvalidArgumentException('Value should be passed in context');
         }

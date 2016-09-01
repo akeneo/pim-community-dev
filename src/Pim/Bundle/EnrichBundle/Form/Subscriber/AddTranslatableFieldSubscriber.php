@@ -69,11 +69,11 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         LocaleHelper $localeHelper,
         array $options
     ) {
-        $this->formFactory        = $formFactory;
-        $this->validator          = $validator;
-        $this->userContext        = $userContext;
-        $this->localeHelper       = $localeHelper;
-        $this->options            = $options;
+        $this->formFactory = $formFactory;
+        $this->validator = $validator;
+        $this->userContext = $userContext;
+        $this->localeHelper = $localeHelper;
+        $this->options = $options;
 
         $this->translationFactory = new TranslationFactory(
             $this->getOption('translation_class'),

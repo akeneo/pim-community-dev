@@ -18,7 +18,7 @@ class AttributeColumnInfoExtractor
 {
     const ARRAY_SEPARATOR = ',';
     const FIELD_SEPARATOR = '-';
-    const UNIT_SEPARATOR  = ' ';
+    const UNIT_SEPARATOR = ' ';
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -46,10 +46,10 @@ class AttributeColumnInfoExtractor
         LocaleRepositoryInterface $localeRepository
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->channelRepository   = $channelRepository;
-        $this->localeRepository    = $localeRepository;
-        $this->fieldNameInfoCache  = [];
-        $this->excludedFieldNames  = [];
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
+        $this->fieldNameInfoCache = [];
+        $this->excludedFieldNames = [];
     }
 
     /**

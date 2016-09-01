@@ -49,8 +49,8 @@ class ObjectIdHydrator implements HydratorInterface
     protected function setOrderByFieldsToSelect($qb)
     {
         $originalSelects = $qb->getDQLPart('select');
-        $orders          = $qb->getDQLPart('orderBy');
-        $newSelects      = [];
+        $orders = $qb->getDQLPart('orderBy');
+        $newSelects = [];
 
         $qb->resetDQLPart('select');
 

@@ -34,8 +34,8 @@ class DateLocalizer implements LocalizerInterface
         DateFactory $factory,
         array $attributeTypes
     ) {
-        $this->validator      = $validator;
-        $this->factory        = $factory;
+        $this->validator = $validator;
+        $this->factory = $factory;
         $this->attributeTypes = $attributeTypes;
     }
 
@@ -70,7 +70,7 @@ class DateLocalizer implements LocalizerInterface
             return $date;
         }
 
-        $options   = $this->getOptions($options);
+        $options = $this->getOptions($options);
         $formatter = $this->factory->create($options);
         $formatter->setLenient(false);
 
@@ -97,7 +97,7 @@ class DateLocalizer implements LocalizerInterface
             return $date;
         }
 
-        $options   = $this->getOptions($options);
+        $options = $this->getOptions($options);
         $formatter = $this->factory->create($options);
 
         $datetime = new \DateTime($date);
