@@ -42,10 +42,6 @@ pim_connector:
       title: Importar tipos de asociaciones desde CSV
       validation.title: Validación de archivo
       import.title: Importar tipos de asociaciones
-    csv_family_import:
-      title: Importar familias en CSV
-      validation.title: Validación de archivo
-      import.title: Importe de familias
     csv_group_import:
       title: Importar grupos desde CSV
       validation.title: Validación de archivo
@@ -99,8 +95,6 @@ pim_connector:
     channel:
       label: Canal
       help: El canal que desea exportar
-    header:
-      label: Encabezado
   import:
     enabled:
       label: Habilitar el producto
@@ -125,7 +119,7 @@ pim_connector:
       help: Permitir o no cargar el fichero directamente
     delimiter:
       label: Delimitador
-      help: Único carácter utilizado para delimitar el campo para el fichero CSV
+      help: Único caracter utilizado para delimitar el campo
     enclosure:
       label: Encuadre
       help: Único caracter utilizado para encuadrar los campos
@@ -144,12 +138,6 @@ pim_connector:
     enabledComparison:
       label: Comparar valores
       help: Permite comparar entre los valores originales y valores importados. Puede acelerar la importación si los valores importados son similares a los valores originales
-    decimalSeparator:
-      label: Separador de decimales
-      help: Único carácter utilizado para fijar el separador de campo por decimal
-    dateFormat:
-      label: Formato de fecha
-      help: Especifique el formato de cada columna tipo fecha en el archivo, por ejemplo DD/MM/YYYY para el formato 31/04/2014.
 job_execution.summary:
   read: leer
   read_lines: leer líneas
