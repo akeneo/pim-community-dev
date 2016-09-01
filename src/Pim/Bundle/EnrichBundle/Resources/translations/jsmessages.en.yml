@@ -73,6 +73,8 @@ error:
         attribute_option: Error during deletion of the attribute option
     saving:
         attribute_option: Cannot save attribute option
+        export_profile: Cannot save export profile. Please check that all filters are well filled
+
 alert:
     attribute_option:
         error_occured_during_submission: An error occured during the form submission on the server
@@ -105,8 +107,8 @@ pim:
             quick_export:
                 csv_all: CSV (All attributes)
                 csv_grid_context: CSV (Grid context)
-                xlsx_all: XLSX (All attributes)
-                xlsx_grid_context: XLSX (Grid context)
+                xlsx_all: Excel (All attributes)
+                xlsx_grid_context: Excel (Grid context)
             delete: Delete products
             mass_edit: Change product information
             category_edit: Move products in categories

@@ -42,6 +42,10 @@ define(
              */
             moveFilter: function (collection) {
                 var $grid = $('#grid-' + collection.inputName);
+
+                if (0 === $grid.length) {
+                    $grid = $('[data-type="datagrid"]:first');
+                }
                 this.$el.addClass('pull-right').insertBefore($grid.find('.actions-panel'));
 
                 var $filterChoices = $grid.find('#add-filter-select');

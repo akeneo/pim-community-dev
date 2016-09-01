@@ -39,7 +39,12 @@ Feature: Display last operations widget
 
   Scenario: Show job tracker
     Given a "footwear" catalog configuration
+    And the following job "csv_footwear_category_export" configuration:
+      | filePath | %tmp%/category_export/category_export.csv |
     And I am logged in as "Mary"
+    And I am on the "csv_footwear_category_export" export job page
+    And I launch the export job
+    And I wait for the "csv_footwear_category_export" job to finish
     When I am on the dashboard page
     And I follow "Show job tracker"
     Then I should be redirected on the job tracker page

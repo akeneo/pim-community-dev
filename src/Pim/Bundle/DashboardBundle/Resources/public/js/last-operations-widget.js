@@ -79,26 +79,15 @@ define(
             /**
              * {@inheritdoc}
              */
-            setElement: function () {
-                AbstractWidget.prototype.setElement.apply(this, arguments);
-
-                this._addShowTrackerBtn();
-
-                return this;
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             _afterLoad: function () {
                 AbstractWidget.prototype._afterLoad.apply(this, arguments);
 
                 var $btn = this._getViewAllBtn();
 
-                if (_.isEmpty(this.data)) {
+                if (!_.isEmpty(this.data)) {
+                    this._addShowTrackerBtn();
+                } else if (0 > $btn.length) {
                     $btn.hide();
-                } else {
-                    $btn.show();
                 }
             },
 

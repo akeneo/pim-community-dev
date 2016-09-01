@@ -33,27 +33,27 @@ class SimpleCsvExport implements FormConfigurationProviderInterface
         return [
             'filePath' => [
                 'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
+                    'label' => 'pim_connector.export.csv.filePath.label',
+                    'help'  => 'pim_connector.export.csv.filePath.help'
                 ]
             ],
             'delimiter' => [
                 'options' => [
-                    'label' => 'pim_connector.export.delimiter.label',
-                    'help'  => 'pim_connector.export.delimiter.help'
+                    'label' => 'pim_connector.export.csv.delimiter.label',
+                    'help'  => 'pim_connector.export.csv.delimiter.help'
                 ]
             ],
             'enclosure' => [
                 'options' => [
-                    'label' => 'pim_connector.export.enclosure.label',
-                    'help'  => 'pim_connector.export.enclosure.help'
+                    'label' => 'pim_connector.export.csv.enclosure.label',
+                    'help'  => 'pim_connector.export.csv.enclosure.help'
                 ]
             ],
             'withHeader' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help'
+                    'label' => 'pim_connector.export.csv.withHeader.label',
+                    'help'  => 'pim_connector.export.csv.withHeader.help'
                 ]
             ],
         ];

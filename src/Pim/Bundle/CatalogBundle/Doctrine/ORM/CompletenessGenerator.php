@@ -88,7 +88,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * applying the criteria if provided to reduce the product set.
      *
      * If the completeness is being calculated for only one product, we
-     * do not create the missing_completeness temporary table.
+     * do not create the missing_completeness and complete_price temporary tables.
      * This allows to drastically reduce the IO waits on non SSD disks.
      *
      * For completeness recalculation of channels or families, we keep
@@ -377,8 +377,8 @@ MAIN_SQL;
         return [
             '%product_value_conditions%' => implode(' OR ', $this->getProductValueConditions()),
             '%product_value_joins%'      => implode(' ', $this->getProductValueJoins()),
-            '%extra_joins%'              => implode(' ', $this->getExtraJoins()),
-            '%extra_conditions%'         => implode(' ', $this->getExtraConditions()),
+            '%extra_joins%'              => implode(' ', $this->getExtraJoins($criteria)),
+            '%extra_conditions%'         => implode(' ', $this->getExtraConditions($criteria)),
             '%missing_completeness%'     => isset($criteria['productId']) ?
                     $this->getMissingCompletenessesSQL() :
                     self::MISSING_TABLE,
@@ -708,17 +708,21 @@ SQL;
     }
 
     /**
+     * @param array $criteria
+     *
      * @return string[]
      */
-    protected function getExtraJoins()
+    protected function getExtraJoins(array $criteria)
     {
         return [];
     }
 
     /**
+     * @param array $criteria
+     *
      * @return string[]
      */
-    protected function getExtraConditions()
+    protected function getExtraConditions(array $criteria)
     {
         return [];
     }
