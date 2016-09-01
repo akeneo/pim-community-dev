@@ -120,7 +120,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
@@ -184,7 +184,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
         $jobParameters->get('enabledComparison')->willReturn(true);
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);

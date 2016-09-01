@@ -59,28 +59,38 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters['with_media'] = true;
         $parameters['filePath'] = sys_get_temp_dir() . 'csv_products_export.csv';
 
-        $defaultChannel = $this->channelRepository->getFullChannels()[0];
-        $defaultLocaleCode = $this->localeRepository->getActivatedLocaleCodes()[0];
+        $defaultChannelCode = null;
+        $channels = $this->channelRepository->getFullChannels();
+        if (0 !== count($channels)) {
+            $defaultChannelCode = $channels[0]->getCode();
+        }
+
+        $defaultLocaleCode = null;
+        $localesCodes = $this->localeRepository->getActivatedLocaleCodes();
+        if (0 !== count($localesCodes)) {
+            $defaultLocaleCode = $localesCodes[0];
+        }
+
         $parameters['filters'] = [
             'data'      => [
                 [
                     'field'    => 'enabled',
-                    'operator' => OPERATORS::EQUALS,
+                    'operator' => Operators::EQUALS,
                     'value'    => true,
                 ],
                 [
                     'field'    => 'completeness',
-                    'operator' => OPERATORS::GREATER_OR_EQUAL_THAN,
+                    'operator' => Operators::GREATER_OR_EQUAL_THAN,
                     'value'    => 100,
                 ],
                 [
                     'field'    => 'categories.code',
-                    'operator' => OPERATORS::IN_CHILDREN_LIST,
-                    'value'    => []
-                ]
+                    'operator' => Operators::IN_CHILDREN_LIST,
+                    'value'    => [],
+                ],
             ],
             'structure' => [
-                'scope'   => $defaultChannel->getCode(),
+                'scope'   => $defaultChannelCode,
                 'locales' => [$defaultLocaleCode],
             ],
         ];

@@ -28,11 +28,7 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
     }
 
     /**
-     * Get the input file iterator to iterate on all the lines of the file.
-     *
-     * @param JobParameters $jobParameters
-     *
-     * @return FileIteratorInterface
+     * {@inheritdoc}
      */
     protected function getInputFileIterator(JobParameters $jobParameters)
     {
@@ -46,15 +42,13 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
             ]
         ]);
         $fileIterator->rewind();
+        $fileIterator->next();
 
         return $fileIterator;
     }
 
     /**
-     * Setup the writer with a new JobExecution to write the invalid_items file.
-     * We need to setup the writer manually because it's usally set up by the ItemStep.
-     *
-     * @param JobExecution $jobExecution
+     * {@inheritdoc}
      */
     protected function setupWriter(JobExecution $jobExecution)
     {

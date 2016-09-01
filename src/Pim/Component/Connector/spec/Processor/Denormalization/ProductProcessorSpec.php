@@ -442,7 +442,7 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
@@ -473,7 +473,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
@@ -574,7 +574,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $convertedData = [
             'sku' => [

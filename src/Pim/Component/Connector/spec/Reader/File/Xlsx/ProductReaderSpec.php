@@ -99,7 +99,7 @@ class ProductReaderSpec extends ObjectBehavior
         $fileIterator->valid()->willReturn(true);
         $fileIterator->getDirectoryPath()->willReturn($filePath);
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $arrayConverter->convert($item, $converterOptions)->willReturn($convertedItem);
         $mediaPathTransformer->transform($convertedItem, $filePath)->shouldBeCalled();

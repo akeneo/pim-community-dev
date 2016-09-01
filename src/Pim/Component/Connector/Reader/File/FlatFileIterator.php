@@ -15,11 +15,13 @@ use Symfony\Component\Finder\Finder;
 /**
  * Use Spout library to iterate on each rows of file.
  *
+ * Iterates over XLSX & CSV files.
+ *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileIterator implements FileIteratorInterface
+class FlatFileIterator implements FileIteratorInterface
 {
     /** @var string */
     protected $type;

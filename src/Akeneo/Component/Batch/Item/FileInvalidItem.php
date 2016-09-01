@@ -16,16 +16,16 @@ class FileInvalidItem implements InvalidItemInterface
     protected $invalidData;
 
     /** @var int */
-    protected $lineNumber;
+    protected $itemPosition;
 
     /**
      * @param array $invalidData
-     * @param int   $lineNumber
+     * @param int   $itemPosition
      */
-    public function __construct(array $invalidData, $lineNumber)
+    public function __construct(array $invalidData, $itemPosition)
     {
         $this->invalidData = $invalidData;
-        $this->lineNumber = $lineNumber;
+        $this->itemPosition = $itemPosition;
     }
 
     /**
@@ -39,8 +39,8 @@ class FileInvalidItem implements InvalidItemInterface
     /**
      * @return int
      */
-    public function getLineNumber()
+    public function getItemPosition()
     {
-        return $this->lineNumber;
+        return $this->itemPosition;
     }
 }
