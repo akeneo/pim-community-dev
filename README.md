@@ -30,16 +30,16 @@ Application Technical Information
 ---------------------------------
 
 The following documentation is designed for both clients and partners and provides all technical information required to define required server(s) to run Akeneo PIM application and check that end users workstation is compatible with Akeneo PIM application:
-https://docs.akeneo.com/1.6/developer_guide/installation/system_requirements/system_requirements.html
+https://docs.akeneo.com/master/developer_guide/installation/system_requirements/system_requirements.html
 
 Installation instructions
 -------------------------
 
 To install Akeneo PIM for a PIM project or for evaluation, please follow:
-https://docs.akeneo.com/1.6/developer_guide/installation/index.html
+https://docs.akeneo.com/master/developer_guide/installation/index.html
 
 Upgrade instructions
 --------------------
 
 To upgrade Akeneo PIM to a newer version, please follow:
-https://docs.akeneo.com/1.6/developer_guide/migration/index.html
+https://docs.akeneo.com/master/developer_guide/migration/index.html
