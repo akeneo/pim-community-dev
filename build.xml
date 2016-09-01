@@ -244,6 +244,21 @@
             <arg value="3.0.*@dev" />
         </exec>
 
+        <replace
+                file="${basedir}/phpspec.yml.dist"
+                token="suites:"
+                failOnNoReplacements="true"
+        >
+            <replacevalue><![CDATA[formatter.name: dot
+extensions:
+    Akeneo\SkipExampleExtension: ~
+    PhpSpecCodeCoverage\CodeCoverageExtension: ~
+code_coverage:
+    format: php
+    output: app/build/coverage-parts/phpspec.php
+suites:]]></replacevalue>
+        </replace>
+
         <!--
             As long as composer does not provide an option to ignore platform dependency,
             it must be executed with the xdebug extension activated
@@ -275,8 +290,6 @@
             <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
             <arg value="${basedir}/bin/phpspec" />
             <arg value="run" />
-            <arg value="-c" />
-            <arg path="${basedir}/app/phpspec.jenkins-coverage.yml" />
         </exec>
 
         <exec executable="php">
