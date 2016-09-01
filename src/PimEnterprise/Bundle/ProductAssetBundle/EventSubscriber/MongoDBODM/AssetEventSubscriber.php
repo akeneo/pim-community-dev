@@ -11,7 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\MongoDBODM;
 
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Repository\ProductCascadeRemovalRepositoryInterface;
