@@ -1,3 +1,9 @@
+# 1.6.
+
+## Bug fixes
+
+- PIM-5964: Index category labels by locale code in channel normalization
+
 # 1.6.2 (2016-09-02)
 
 ## Bug fixes
