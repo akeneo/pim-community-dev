@@ -1,5 +1,7 @@
 # 1.6.x
 
+- TIP-574: Fix a regression on completeness calculation affecting the duration of a product save.
+
 ## Bug fixes
 
 - PIM-5782: Add right filtering on locales for export builder
