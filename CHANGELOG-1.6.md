@@ -1,4 +1,4 @@
-# 1.6.x
+# 1.6.1 (2016-09-01)
 
 - TIP-574: Fix a regression on completeness calculation affecting the duration of a product save.
 
