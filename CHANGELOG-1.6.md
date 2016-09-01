@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-5821: Apply rights on locale specific values during quick export
+
 # 1.6.2 (2016-09-02)
 
 # 1.6.1 (2016-09-01)

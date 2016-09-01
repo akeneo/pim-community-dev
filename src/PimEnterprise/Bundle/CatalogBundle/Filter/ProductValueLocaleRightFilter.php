@@ -20,11 +20,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Product Value filter
+ * If a product value is localizable or locale specific it will be filtered according to locale rights.
+ * In case of a locale specific value, the user must have the view rights on at least one of its locales to see it.
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface, ObjectFilterInterface
+class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter
+    implements CollectionFilterInterface, ObjectFilterInterface
 {
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
@@ -53,11 +55,34 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
             throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
         }
 
-        return $productValue->getAttribute()->isLocalizable() &&
+        if ($productValue->getAttribute()->isLocalizable() &&
             !$this->authorizationChecker->isGranted(
                 Attributes::VIEW_ITEMS,
                 $this->localeRepository->findOneByIdentifier($productValue->getLocale())
+            )
+        ) {
+            return true;
+        }
+
+        if ($productValue->getAttribute()->isLocaleSpecific()) {
+            $localeCodes = $productValue->getAttribute()->getLocaleSpecificCodes();
+
+            $authorizedLocaleCodes = array_filter(
+                $localeCodes,
+                function ($localeCode) {
+                    return $this->authorizationChecker->isGranted(
+                        Attributes::VIEW_ITEMS,
+                        $this->localeRepository->findOneByIdentifier($localeCode)
+                    );
+                }
             );
+
+            if (empty($authorizedLocaleCodes)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
