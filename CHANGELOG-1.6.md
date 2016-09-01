@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-5963: Fix installation on MySQL 5.7
+
 # 1.6.1 (2016-09-01)
 
 ## Bug fixes
