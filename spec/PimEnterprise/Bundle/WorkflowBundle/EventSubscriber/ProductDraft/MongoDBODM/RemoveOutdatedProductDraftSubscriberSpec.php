@@ -36,7 +36,7 @@ class RemoveOutdatedProductDraftSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_removed_drafts_for_a_product(
+    function it_removes_drafts_for_a_product(
         $productDraftRepo,
         $remover,
         RemoveEvent $event,
@@ -54,7 +54,7 @@ class RemoveOutdatedProductDraftSubscriberSpec extends ObjectBehavior
         $this->removeDraftsByProduct($event);
     }
 
-    function it_removed_drafts_for_many_products(
+    function it_removes_drafts_for_many_products(
         $productDraftRepo,
         $remover,
         RemoveEvent $event,

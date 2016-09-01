@@ -12,7 +12,7 @@ define(
         'use strict';
 
         return Backbone.View.extend({
-            el: '#pimee-product-asset-tabs-variations',
+            el: '#pimee_product_asset-tabs-variations',
             uploader: undefined,
             events: {
                 'click .delete': 'confirmDelete',
