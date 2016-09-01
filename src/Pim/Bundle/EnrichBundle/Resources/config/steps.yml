@@ -11,7 +11,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.database.product'
             - '@pim_enrich.connector.processor.quick_export.product'
-            - '@pim_connector.writer.file.csv_product'
+            - '@pim_connector.writer.file.csv_product_quick_export'
             - 1000
 
     # XLSX Quick Export steps -----------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.database.product'
             - '@pim_enrich.connector.processor.quick_export.product'
-            - '@pim_connector.writer.file.xlsx_product'
+            - '@pim_connector.writer.file.xlsx_product_quick_export'
             - 1000
 
     # Mass Edit steps -------------------------------------------------------------------------------------------------

@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 /**
@@ -17,19 +18,25 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
     /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;
 
+    /** @var AssociationTypeRepositoryInterface */
+    protected $associationTypeRepository;
+
     /**
      * @param FieldSplitter                         $fieldSplitter
      * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param AssociationTypeRepositoryInterface    $associationTypeRepository
      * @param array                                 $firstDefaultColumns
      */
     public function __construct(
         FieldSplitter $fieldSplitter,
         IdentifiableObjectRepositoryInterface $productRepository,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         array $firstDefaultColumns
     ) {
         parent::__construct($fieldSplitter, $firstDefaultColumns);
 
-        $this->productRepository = $productRepository;
+        $this->productRepository         = $productRepository;
+        $this->associationTypeRepository = $associationTypeRepository;
     }
 
     /**
@@ -39,8 +46,26 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
     {
         $identifier = $this->productRepository->getIdentifierProperties()[0];
 
-        if (isset($context['filters']['structure']['attributes']) && !empty($context['filters']['structure']['attributes'])) {
-            return array_merge([$identifier], $this->firstDefaultColumns, $context['filters']['structure']['attributes']);
+        if (isset($context['filters']['structure']['attributes']) &&
+            !empty($context['filters']['structure']['attributes'])
+        ) {
+            $rawColumns = array_merge(
+                [$identifier],
+                $this->firstDefaultColumns,
+                array_map(function ($associationType) {
+                    return $associationType->getCode();
+                }, $this->associationTypeRepository->findAll()),
+                $context['filters']['structure']['attributes']
+            );
+
+            $sortedColumns = [];
+            foreach ($rawColumns as $columnCode) {
+                $sortedColumns = array_merge($sortedColumns, array_filter($columns, function ($columnCandidate) use ($columnCode) {
+                    return 0 !== preg_match(sprintf('/^%s(-.*)*/', $columnCode), $columnCandidate);
+                }));
+            }
+
+            return $sortedColumns;
         }
 
         array_unshift($this->firstDefaultColumns, $identifier);

@@ -223,27 +223,10 @@ define(
                     containment: this.$el,
                     tolerance: 'pointer',
                     cursor: 'move',
-                    receive: function (event, ui) {
-                        if (
-                            0 !== ui.item.parents('.attributes').length &&
-                            0 !== ui.sender.parents('.selected-attributes').length
-                        ) {
-                            var selectedAttributesElement = ui.sender.parents('.selected-attributes');
-
-                            this.setSelected(_.map(selectedAttributesElement.find('li'), function (element) {
-                                return element.dataset.attributeCode;
-                            }));
-                        }
-                    }.bind(this),
-                    stop: function (event, ui) {
-                        var selectedAttributesElement;
-                        if (0 !== ui.item.parents('.selected-attributes').length) {
-                            var selectedAttributesElement = ui.item.parents('.selected-attributes');
-
-                            this.setSelected(_.map(selectedAttributesElement.find('li'), function (element) {
-                                return element.dataset.attributeCode;
-                            }));
-                        }
+                    stop: function () {
+                        this.setSelected(_.map(this.$('.selected-attributes li'), function (element) {
+                            return element.dataset.attributeCode;
+                        }));
                     }.bind(this)
                 }).disableSelection();
             },
