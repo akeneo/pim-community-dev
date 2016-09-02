@@ -161,11 +161,11 @@ This modification introduces a new constraint, the minimum version of PHP for Ak
         }
         ```
 
-        If your project uses the https://github.com/akeneo-labs/ExcelConnectorBundle, please use the following version,
+        If your project uses the https://github.com/akeneo-labs/ExcelConnectorBundle, this bundle is not compatible anymore and you must replace it by the https://github.com/akeneo/ExcelInitBundle,
 
         ```
         "require": {
-            "akeneo-labs/excel-connector-bundle": "1.7.*"
+            "akeneo-labs/excel-init-bundle": "1.0.*"
         }
         ```
 

@@ -10,6 +10,7 @@ parameters:
     pim_enrich.normalizer.association_type.class:                  Pim\Bundle\EnrichBundle\Normalizer\AssociationTypeNormalizer
     pim_enrich.normalizer.attribute.class:                         Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer
     pim_enrich.normalizer.locale.class:                            Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer
+    pim_enrich.normalizer.channel.class:                           Pim\Bundle\EnrichBundle\Normalizer\ChannelNormalizer
     pim_enrich.normalizer.sequential_edit.class:                   Pim\Bundle\EnrichBundle\Normalizer\SequentialEditNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
@@ -89,6 +90,15 @@ services:
         class: '%pim_enrich.normalizer.locale.class%'
         arguments:
             - '@pim_catalog.helper.locale'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.channel:
+        class: '%pim_enrich.normalizer.channel.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.normalizer.locale'
+            - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

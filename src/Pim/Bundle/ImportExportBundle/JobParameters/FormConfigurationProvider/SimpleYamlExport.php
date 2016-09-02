@@ -33,8 +33,8 @@ class SimpleYamlExport implements FormConfigurationProviderInterface
         return [
             'filePath' => [
                 'options' => [
-                    'label' => 'pim_connector.import.filePath.label',
-                    'help'  => 'pim_connector.import.filePath.help'
+                    'label' => 'pim_connector.export.yml.filePath.label',
+                    'help'  => 'pim_connector.export.yml.filePath.help'
                 ]
             ],
         ];

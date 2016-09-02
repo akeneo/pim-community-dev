@@ -51,8 +51,8 @@ class ProductCsvExportSpec extends ObjectBehavior
                     'choices'  => [','],
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_connector.export.decimalSeparator.label',
-                    'help'     => 'pim_connector.export.decimalSeparator.help'
+                    'label'    => 'pim_connector.export.csv.decimalSeparator.label',
+                    'help'     => 'pim_connector.export.csv.decimalSeparator.help'
                 ]
             ],
             'dateFormat' => [
@@ -61,8 +61,8 @@ class ProductCsvExportSpec extends ObjectBehavior
                     'choices'  => ['yyyy-MM-dd', 'dd/MM/yyyy'],
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_connector.export.dateFormat.label',
-                    'help'     => 'pim_connector.export.dateFormat.help',
+                    'label'    => 'pim_connector.export.csv.dateFormat.label',
+                    'help'     => 'pim_connector.export.csv.dateFormat.help',
                 ]
             ]
         ];
@@ -70,29 +70,29 @@ class ProductCsvExportSpec extends ObjectBehavior
         $exportConfig = [
             'filePath' => [
                 'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
+                    'label' => 'pim_connector.export.csv.filePath.label',
+                    'help'  => 'pim_connector.export.csv.filePath.help'
                 ]
             ],
             'linesPerFile' => [
                 'type'    => 'integer',
                 'options' => [
-                    'label' => 'pim_connector.export.lines_per_files.label',
-                    'help'  => 'pim_connector.export.lines_per_files.help',
+                    'label' => 'pim_connector.export.csv.lines_per_files.label',
+                    'help'  => 'pim_connector.export.csv.lines_per_files.help',
                 ]
             ],
             'withHeader' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help'
+                    'label' => 'pim_connector.export.csv.withHeader.label',
+                    'help'  => 'pim_connector.export.csv.withHeader.help'
                 ]
             ],
             'with_media' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.export.with_media.label',
-                    'help'  => 'pim_connector.export.with_media.help'
+                    'label' => 'pim_connector.export.csv.with_media.label',
+                    'help'  => 'pim_connector.export.csv.with_media.help'
                 ]
             ],
         ];

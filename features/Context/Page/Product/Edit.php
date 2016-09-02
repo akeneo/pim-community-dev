@@ -75,7 +75,7 @@ class Edit extends ProductEditForm
                     ]
                 ],
                 'Main context selector' => [
-                    'css'        => '.tab-container .object-attributes .attribute-edit-actions .context-selectors',
+                    'css'        => '.tab-container .attribute-edit-actions .context-selectors',
                     'decorators' => [
                         'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]
