@@ -7,8 +7,8 @@
 </select>
 <% if ('>' === operator) { %>
     <span class="date-wrapper">
-        <input name="filter-value" class="datepicker add-on input-large value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- value ? value : '' %>">
+        <input name="filter-value-updated" class="add-on value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- value ? value : '' %>">
     </span>
 <% } else if ('SINCE LAST N DAYS' === operator) { %>
-    <input name="filter-value" class="input-large" type="text" value="<%- value ? value : '' %>"<%- isEditable ? '' : ' disabled' %>>
+    <input name="filter-value-updated" type="text" value="<%- value ? value : '' %>"<%- isEditable ? '' : ' disabled' %>>
 <% } %>
