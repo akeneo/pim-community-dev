@@ -3,7 +3,7 @@
     <property name="symfony.catalog.storage.dir" value="catalog" />
     <property name="symfony.asset.storage.dir" value="asset" />
 
-    <target name="build-phpspec" depends="prepare,composer,require-mongo,vendors-no-scripts,phpspec,phpspec-junit"/>
+    <target name="build-phpspec" depends="prepare,composer,vendors-no-scripts,phpspec,phpspec-junit"/>
 
     <target name="build-phpspec-coverage" depends="prepare,composer,vendors"/>
 
@@ -11,7 +11,7 @@
 
     <target name="build-behat-deprecated" depends="prepare,composer,require-ce,vendors,prepare-deprecated-behat,prepare,install-all-behat,behat"/>
 
-    <target name="build-behat-mongo" depends="prepare,composer,require-ce,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
+    <target name="build-behat-mongo" depends="prepare,composer,require-ce,activate-mongo,vendors,install-all-behat,behat"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,php-cs-fixer,phpcpd,phpdoc"/>
 
@@ -285,21 +285,6 @@
             <arg value="--no-update" />
             <arg value="akeneo/pim-community-dev" />
             <arg value="${ce-branch}" />
-        </exec>
-    </target>
-
-    <target name="require-mongo" description="Require the mongo bundle">
-        <exec executable="${basedir}/composer.phar" failonerror="true">
-            <arg value="require" />
-            <arg value="--no-update" />
-            <arg value="doctrine/mongodb-odm-bundle" />
-            <arg value="v3.0.0-BETA6@dev" />
-        </exec>
-        <exec executable="${basedir}/composer.phar" failonerror="true">
-            <arg value="require" />
-            <arg value="--no-update" />
-            <arg value="doctrine/mongodb-odm" />
-            <arg value="v1.0.0-beta12@dev" />
         </exec>
     </target>
 
