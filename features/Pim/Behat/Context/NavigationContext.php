@@ -2,15 +2,12 @@
 
 namespace Pim\Behat\Context;
 
-use Behat\Behat\Context\Step;
-use Behat\Behat\Context\Step\Then;
-use Behat\Mink\Exception\DriverException;
-use Context\Page\Base\Base;
+use Behat\ChainedStepsExtension\Step\Then;
 use Context\Spin\SpinCapableTrait;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 
-class NavigationContext extends PimContext implements PageObjectAwareInterface
+class NavigationContext extends PimContext implements PageObjectAware
 {
     use SpinCapableTrait;
 
@@ -23,7 +20,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     /** @var string */
     protected $password;
 
-    /** @var PageFactory */
+    /** @var PageObjectFactory */
     protected $pageFactory;
 
     /** @var string */
@@ -79,9 +76,9 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param PageFactory $pageFactory
+     * {@inheritdoc}
      */
-    public function setPageFactory(PageFactory $pageFactory)
+    public function setPageObjectFactory(PageObjectFactory $pageFactory)
     {
         $this->pageFactory = $pageFactory;
     }
@@ -171,7 +168,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $this->currentPage = $page;
         $this->getCurrentPage()->open();
 
-        return new Step\Then('I should see "403 Forbidden"');
+        return new Then('I should see "403 Forbidden"');
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace Pim\Behat\Context;
 
 use Behat\Behat\Console\Processor\ProcessorInterface;
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;

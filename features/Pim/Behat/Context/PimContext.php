@@ -2,14 +2,20 @@
 
 namespace Pim\Behat\Context;
 
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\Symfony2Extension\Context\KernelAwareContext;
+use Context\FeatureContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class PimContext extends RawMinkContext implements KernelAwareInterface
+class PimContext extends RawMinkContext implements KernelAwareContext, Context
 {
     /** @var array */
     protected static $placeholderValues = [];
+
+    /** @var FeatureContext */
+    protected $maintContext;
 
     /** @var KernelInterface */
     private $kernel;
@@ -125,5 +131,18 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     protected function wait($condition = null)
     {
         $this->getMainContext()->wait($condition);
+    }
+
+    protected function getMainContext()
+    {
+        return $this->maintContext;
+    }
+
+
+    /** @BeforeScenario */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $environment = $scope->getEnvironment();
+        $this->maintContext = $environment->getContext('Context\FeatureContext');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Behat\MinkExtension\Context\RawMinkContext;
+use Pim\Behat\Context\PimContext;
 
 /**
  * Context for technical tests
@@ -11,7 +11,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TechnicalContext extends RawMinkContext
+class TechnicalContext extends PimContext
 {
     /**
      * @param string $identifiers

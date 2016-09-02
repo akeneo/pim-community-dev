@@ -2,16 +2,18 @@
 
 namespace Pim\Behat\Context;
 
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
-use Behat\Behat\Hook\Annotation\AfterFeature;
-use Behat\Behat\Hook\Annotation\AfterScenario;
-use Behat\Behat\Hook\Annotation\AfterStep;
-use Behat\Behat\Hook\Annotation\BeforeScenario;
-use Behat\Behat\Hook\Annotation\BeforeStep;
+use Behat\Behat\Hook\Scope\AfterFeatureScope;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Behat\Hook\Scope\AfterStepScope;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Behat\Hook\Scope\BeforeStepScope;
+use Behat\Behat\Tester\Result\StepResult;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -92,13 +94,13 @@ class HookContext extends PimContext
     /**
      * Take a screenshot when a step fails
      *
-     * @param StepEvent $event
+     * @param AfterStepScope $event
      *
      * @AfterStep
      */
-    public function takeScreenshotAfterFailedStep(StepEvent $event)
+    public function takeScreenshotAfterFailedStep(AfterStepScope $event)
     {
-        if ($event->getResult() === StepEvent::FAILED) {
+        if ($event->getTestResult() === TestResult::FAILED) {
             $driver = $this->getSession()->getDriver();
 
             $rootDir   = dirname($this->getParameter('kernel.root_dir'));
@@ -211,7 +213,7 @@ class HookContext extends PimContext
      */
     public function clearRecordedMails()
     {
-        $this->getMainContext()->getMailRecorder()->clear();
+//        $this->getMainContext()->getMailRecorder()->clear();
     }
 
     /**
@@ -266,13 +268,13 @@ class HookContext extends PimContext
     }
 
     /**
-     * @param BaseScenarioEvent $event
+     * @param AfterScenarioScope $event
      *
      * @AfterScenario
      */
-    public function resetCurrentPage(BaseScenarioEvent $event)
+    public function resetCurrentPage(AfterScenarioScope $event)
     {
-        if ($event->getResult() !== StepEvent::UNDEFINED) {
+        if ($event->getTestResult() !== StepResult::UNDEFINED) {
             $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
             $this->getMainContext()->executeScript($script);
         }

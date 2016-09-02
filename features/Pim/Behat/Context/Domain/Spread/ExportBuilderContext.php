@@ -3,22 +3,25 @@
 namespace Pim\Behat\Context\Domain\Spread;
 
 use Behat\Mink\Exception\ExpectationException;
+use Context\Page\Base\Grid;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
-use Pim\Behat\Decorator\Export\Filter\UpdatedTimeConditionDecorator;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 
-class ExportBuilderContext extends PimContext implements PageObjectAwareInterface
+class ExportBuilderContext extends PimContext implements PageObjectAware
 {
     use SpinCapableTrait;
 
+    /** @var PageObjectFactory */
+    private $pageFactory;
+
     /**
-     * @param PageFactory $pageFactory
+     * {@inheritdoc}
      */
-    public function setPageFactory(PageFactory $pageFactory)
+    public function setPageObjectFactory(PageObjectFactory $pageFactory)
     {
-        $this->filters = $pageFactory->createPage('Base\Grid');
+        $this->pageFactory = $pageFactory;
     }
 
     /**
@@ -36,7 +39,6 @@ class ExportBuilderContext extends PimContext implements PageObjectAwareInterfac
      */
     public function iShouldNotSeeTheElement($field, $filterElement)
     {
-        /** @var UpdatedTimeConditionDecorator $filterElement */
         $filterElement = $this->getCurrentPage()->getElement($filterElement);
 
         if ($filterElement->checkValueElementVisibility($field)) {
@@ -66,7 +68,7 @@ class ExportBuilderContext extends PimContext implements PageObjectAwareInterfac
      */
     public function iSwitchTheLocaleFromFilterTo($filter, $locale)
     {
-        $filter = $this->filters->getFilter($filter);
+        $filter = $this->getDatagrid()->getFilter($filter);
         $filter->setLocale($locale);
     }
 
@@ -75,7 +77,15 @@ class ExportBuilderContext extends PimContext implements PageObjectAwareInterfac
      */
     public function iSwitchTheScopeFromFilterTo($filter, $scope)
     {
-        $filter = $this->filters->getFilter($filter);
+        $filter = $this->getDatagrid()->getFilter($filter);
         $filter->setScope($scope);
+    }
+    
+    /**
+     * @return Grid
+     */
+    protected function getDatagrid()
+    {
+        return $this->createPage('Base\Grid');
     }
 }
