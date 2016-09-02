@@ -1,6 +1,6 @@
 @javascript
-Feature: Display the completeness of a product with reference data
-  In order to see the completeness of a product with reference data in the catalog
+Feature: Display the completeness of a product with simple or multi selects
+  In order to see the completeness of a product with simple or multi selects in the catalog
   As a product manager
   I need to be able to display the completeness of a product
 
@@ -9,22 +9,27 @@ Feature: Display the completeness of a product with reference data
     And I add the "french" locale to the "tablet" channel
     And I add the "french" locale to the "mobile" channel
     And the following attributes:
-      | code        | label       | localizable | scopable | type                        | reference_data_name |
-      | heel_fabric | Heel fabric | yes         | yes      | reference_data_multiselect  | fabrics             |
-      | main_fabric | Main fabric | no          | yes      | reference_data_multiselect  | fabrics             |
-      | main_color  | Main color  | yes         | no       | reference_data_simpleselect | color               |
+      | code         | label        | localizable | scopable | type         |
+      | braid_color  | Braid color  | no          | no       | simpleselect |
+      | braid_fabric | Braid fabric | no          | no       | multiselect  |
+      | heel_fabric  | Heel fabric  | yes         | yes      | multiselect  |
+      | main_fabric  | Main fabric  | no          | yes      | multiselect  |
+      | main_color   | Main color   | yes         | no       | simpleselect |
     And the following family:
-      | code      | attributes                                                         | requirements-tablet                      | requirements-mobile                      |
-      | highheels | sku, heel_color, sole_fabric, heel_fabric, main_fabric, main_color | sku, heel_color, sole_fabric, main_color | sku,heel_fabric, main_fabric, main_color |
+      | code      | attributes                                                           | requirements-tablet                        | requirements-mobile                       |
+      | highheels | sku, braid_color, braid_fabric, heel_fabric, main_fabric, main_color | sku, braid_color, braid_fabric, main_color | sku, heel_fabric, main_fabric, main_color |
     And I am logged in as "Julia"
-    And the following "main_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
-    And the following "main_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
+    And the following "braid_fabric" attribute options: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
+    And the following "braid_color" attribute options: Red, Green, Emerald, Blue, Yellow, Cyan, Magenta, Black, White
+    And the following "main_fabric" attribute options: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
+    And the following "main_color" attribute options: Red, Green, Emerald, Blue, Yellow, Cyan, Magenta, Black, White
+    And the following "heel_fabric" attribute options: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following products:
-      | sku         | family    | heel_color | sole_fabric | heel_fabric-en_US-mobile | heel_fabric-fr_FR-mobile | heel_fabric-en_US-tablet | heel_fabric-fr_FR-tablet | main_fabric-mobile | main_fabric-tablet | main_color-fr_FR | main_color-en_US |
-      | red-heels   | highheels |            | Spandex     |                          | Neoprene,Jute            |                          |                          | PVC                |                    | Red              |                  |
-      | black-heels | highheels | Black      | Wool        |                          |                          | Nylon                    | Kevlar,Jute              |                    | Nylon              |                  | Black            |
-      | green-heels | highheels | Green      | PVC         |                          |                          |                          |                          |                    |                    | Green            | Light green      |
-      | high-heels  | highheels |            |             |                          |                          |                          |                          |                    |                    |                  |                  |
+      | sku         | family    | braid_color | braid_fabric | heel_fabric-en_US-mobile | heel_fabric-fr_FR-mobile | heel_fabric-en_US-tablet | heel_fabric-fr_FR-tablet | main_fabric-mobile | main_fabric-tablet | main_color-fr_FR | main_color-en_US |
+      | red-heels   | highheels |             | Spandex      |                          | Neoprene,Jute            |                          |                          | PVC                |                    | Red              |                  |
+      | black-heels | highheels | Black       | Wool         |                          |                          | Nylon                    | Kevlar,Jute              |                    | Nylon              |                  | Black            |
+      | green-heels | highheels | Green       | PVC          |                          |                          |                          |                          |                    |                    | Green            | Emerald          |
+      | high-heels  | highheels |             |              |                          |                          |                          |                          |                    |                    |                  |                  |
     And I launched the completeness calculator
 
   Scenario: Successfully display the completeness of the products with reference data

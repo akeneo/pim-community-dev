@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-5963: Fix installation on MySQL 5.7
+
 # 1.6.1 (2016-09-01)
 
 ## Bug fixes
@@ -10,6 +16,8 @@
 - PIM-5959: Change wording of XLSX to Excel on mass actions
 - PIM-5938: Fix typos in import/export tooltips
 - PIM-5966: Fix style about category filter on product export builder
+- PIM-5952: Add the information "No condition on families" in the family field of the Export Builder
+- PIM-5965: Fix the display order of the default product export filters
 
 # 1.6.0 (2016-08-30)
 

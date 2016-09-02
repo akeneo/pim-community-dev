@@ -380,7 +380,7 @@ pim_enrich:
                         "NOT IN": Not in list
                         EMPTY: Products that don't have a family
                         "NOT EMPTY": Products that have a family
-                    empty_selection: Select a family
+                    empty_selection: No condition on families
                 updated:
                     title: Time condition
                     operators:
