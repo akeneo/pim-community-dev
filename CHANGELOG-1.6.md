@@ -11,6 +11,7 @@
 - PIM-5938: Fix typos in import/export tooltips
 - PIM-5966: Fix style about category filter on product export builder
 - PIM-5952: Add the information "No condition on families" in the family field of the Export Builder
+- PIM-5965: Fix the display order of the default product export filters
 
 # 1.6.0 (2016-08-30)
 
