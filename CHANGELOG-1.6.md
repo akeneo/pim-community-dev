@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-5958: Fix tooltip for the field "attributes" in the tab "Content" of an export profile
 - PIM-5963: Fix installation on MySQL 5.7
 
 # 1.6.1 (2016-09-01)
