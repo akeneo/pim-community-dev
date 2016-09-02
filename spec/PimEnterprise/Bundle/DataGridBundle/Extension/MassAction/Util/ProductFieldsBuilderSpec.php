@@ -29,8 +29,6 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         CatalogContext $catalogContext,
         AttributeGroupAccessRepository $accessRepository,
         SecurityContextInterface $securityContext,
-        ProductRepositoryInterface $productRepository,
-        ObjectRepository $attributeRepository,
         TokenInterface $token,
         UserInterface $user
     ) {

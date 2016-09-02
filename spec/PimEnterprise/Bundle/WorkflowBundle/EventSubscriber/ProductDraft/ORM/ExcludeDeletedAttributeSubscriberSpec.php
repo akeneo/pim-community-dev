@@ -27,7 +27,6 @@ class ExcludeDeletedAttributeSubscriberSpec extends ObjectBehavior
     }
 
     function it_excludes_unexistant_attributes(
-        $attributeRepository,
         ProductDraftInterface $productDraft,
         EntityManager $entityManager,
         AttributeRepositoryInterface $attributeRepository,

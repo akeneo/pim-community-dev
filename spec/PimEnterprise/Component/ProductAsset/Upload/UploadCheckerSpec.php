@@ -16,7 +16,6 @@ class UploadCheckerSpec extends ObjectBehavior
 
     function let(
         AssetRepositoryInterface $assetRepo,
-        LocaleRepositoryInterface $localeRepository,
         LocaleInterface $localeEn,
         LocaleInterface $localeFr,
         LocaleRepositoryInterface $localeRepository
