@@ -67,3 +67,14 @@ Feature: Export products according to their families
     SNKRS-5;summer_collection;;;1;boots;;;;;"Black boots";;;;;;;;;
     SNKRS-6;summer_collection;;;1;boots;;;;;"Black boots";;;;;;;;;
     """
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5952
+  Scenario: Display default messages when no family are selected
+    Given the following job "csv_footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv |
+    When I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    Then the export content field "family.code" should contain "No condition on families"
+    When I am on the "csv_footwear_product_export" export job page
+    And I visit the "Content" tab
+    Then the export content field "family.code" should contain "No condition on families"

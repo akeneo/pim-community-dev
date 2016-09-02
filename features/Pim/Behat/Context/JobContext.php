@@ -8,10 +8,13 @@ use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
+use Context\Spin\SpinCapableTrait;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class JobContext extends PimContext
 {
+    use SpinCapableTrait;
+
     /**
      * @param string    $code
      * @param TableNode $table
@@ -104,14 +107,14 @@ class JobContext extends PimContext
      * @param string      $action
      * @param JobInstance $job
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
      */
     public function iShouldNotBeAbleToAccessTheJob($action, JobInstance $job)
     {
         $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
-        $page              = $this->getCurrentPage()->open(['id' => $job->getId()]);
+        $this->getCurrentPage()->open(['id' => $job->getId()]);
 
         return new Step\Then('I should see "403 Forbidden"');
     }
@@ -124,6 +127,22 @@ class JobContext extends PimContext
     public function iTryToCreateAnUnknownJob($jobType)
     {
         $this->getNavigationContext()->openPage(sprintf('%s creation', ucfirst($jobType)));
+    }
+
+    /**
+     * @param string $label
+     * @param string $message
+     *
+     * @Then /^the export content field "([^"]*)" should contain "([^"]*)"$/
+     */
+    public function theExportContentFieldShouldContain($label, $message)
+    {
+        $page = $this->getCurrentPage();
+        $field = $this->spin(function () use ($label, $page) {
+            return $page->find('css', sprintf('[data-name="%s"] .select2-default', $label));
+        }, sprintf('Field "%s" not found.', $label));
+
+        assertEquals($field->getValue(), $message);
     }
 
     /**

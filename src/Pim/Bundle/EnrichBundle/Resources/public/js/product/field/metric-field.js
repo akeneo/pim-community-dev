@@ -8,13 +8,13 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-        'jquery',
-        'pim/field',
-        'underscore',
-        'pim/fetcher-registry',
-        'text!pim/template/product/field/metric',
-        'pim/initselect2'
-        ], function ($, Field, _, FetcherRegistry, fieldTemplate, initSelect2) {
+    'jquery',
+    'pim/field',
+    'underscore',
+    'pim/fetcher-registry',
+    'text!pim/template/product/field/metric',
+    'pim/initselect2'
+], function ($, Field, _, FetcherRegistry, fieldTemplate, initSelect2) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {
