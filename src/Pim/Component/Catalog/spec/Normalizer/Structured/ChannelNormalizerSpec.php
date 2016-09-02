@@ -68,7 +68,7 @@ class ChannelNormalizerSpec extends ObjectBehavior
                     'id' => 42,
                     'code' => 'master',
                     'labels' => [
-                        ['locale' => 'en_US', 'label' => 'label']
+                        'en_US' => 'label'
                     ],
                 ],
                 'conversion_units' => 'Weight: Kilogram, Size: Centimeter'

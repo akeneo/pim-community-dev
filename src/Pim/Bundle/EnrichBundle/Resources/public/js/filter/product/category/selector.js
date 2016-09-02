@@ -144,7 +144,6 @@ define(
                     FetcherRegistry.getFetcher('channel')
                         .fetch(this.attributes.channel)
                         .then(function (channel) {
-
                             this.currentTree = channel.category;
 
                             this.$el.html(this.template({
