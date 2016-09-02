@@ -1098,7 +1098,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     protected function getDatagrid()
     {
-        return $this->createPage('Base\Grid');
+        return $this->pageFactory->createPage('Base\Grid');
     }
 
     /**
