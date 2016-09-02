@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step\Then;
+use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;

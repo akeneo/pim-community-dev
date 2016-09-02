@@ -2,7 +2,7 @@
 
 namespace Pim\Behat\Context;
 
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
 use Behat\Behat\Hook\Scope\AfterFeatureScope;

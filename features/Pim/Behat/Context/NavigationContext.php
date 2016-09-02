@@ -2,8 +2,7 @@
 
 namespace Pim\Behat\Context;
 
-use Behat\Behat\Context\Step;
-use Behat\Behat\Context\Step\Then;
+use Behat\ChainedStepsExtension\Step\Then;
 use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
@@ -169,7 +168,7 @@ class NavigationContext extends PimContext implements PageObjectAware
         $this->currentPage = $page;
         $this->getCurrentPage()->open();
 
-        return new Step\Then('I should see "403 Forbidden"');
+        return new Then('I should see "403 Forbidden"');
     }
 
     /**

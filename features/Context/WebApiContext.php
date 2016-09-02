@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step;
 use Behat\CommonContexts\WebApiContext as BehatWebApiContext;
 use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;

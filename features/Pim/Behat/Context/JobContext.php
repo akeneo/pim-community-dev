@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -104,7 +104,7 @@ class JobContext extends PimContext
      * @param string      $action
      * @param JobInstance $job
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return \Behat\ChainedStepsExtension\Step\Then
      *
      * @When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
      */
