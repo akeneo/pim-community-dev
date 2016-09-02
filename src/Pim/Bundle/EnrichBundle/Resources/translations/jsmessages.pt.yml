@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Tem a certeza que pretende eliminar este item?
+    item: Tem a certeza que pretende remover este item?
     association type: Tem certeza que deseja eliminar este tipo de associação?
     attribute: Tem certeza que deseja eliminar este atributo?
     family: Tem certeza que deseja eliminar esta família?
@@ -93,6 +93,9 @@ pim:
     mass_action:
       quick_export:
         csv_all: CSV (todos os atributos)
+      delete: Eliminar
+      mass_edit: Editar em massa
+      sequential_edit: Edição sequencial
 jstree.create: Criar
 switch_on: Sim
 switch_off: Não
@@ -131,7 +134,6 @@ pim_enrich:
         from: De
         modified: Modificado
         property: Propriedade
-        actions: Ações
       info:
         deletion_successful: Produto eliminado com sucesso.
         deletion_failed: Não foi possível eliminar o produto.
@@ -312,8 +314,10 @@ pim_enrich:
       filter:
         channel:
           title: Canal
+          help: O canal que deseja exportar
         locales:
           title: Linguagens
+          help: As linguagens que deseja exportar
         attributes:
           title: Atributos
           edit: Editar
@@ -326,18 +330,21 @@ pim_enrich:
           all_group: Todos os grupos
         family:
           title: Família
+          help: As famílias que deseja exportar
         updated:
           operators:
             ALL: Sem restrição de data
             SINCE LAST JOB: Produtos atualizados desde a última exportação
         enabled:
           title: Estado
+          help: O estado dos produtos que deseja exportar
           value:
             all: Tudo
             enabled: Ativo
             disabled: Inativo
         completeness:
           title: '% de Dados Completos'
+          help: O nível de informação preenchida dos produtos que deseja exportar
           operators:
             >=: Completo em pelo menos uma das linguagens selecionadas
             GREATER OR EQUALS THAN ON ALL LOCALES: Completo em todas as linguagens escolhidas
