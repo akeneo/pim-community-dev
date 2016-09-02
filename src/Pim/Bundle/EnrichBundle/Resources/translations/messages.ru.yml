@@ -5,28 +5,28 @@ pim_enrich:
       category.title: Категории
       association.title: Ассоциации
       completeness.title: Завершенность
-      history.title: История
+      history.title: Журнал
     no_comparison_locale_available: Нет другой локали для сравнения
     no_compared_media: Нет медиа доступной для сравнения
   attribute:
     tab:
       parameter.title: Параметры
       value.title: Значения
-      history.title: История
+      history.title: Журнал
   attribute_group:
     tab:
       property.title: Свойства
       attribute.title: Атрибуты
-      history.title: История
+      history.title: Журнал
   family:
     tab:
       property.title: Свойства
       attribute.title: Атрибуты
-      history.title: История
+      history.title: Журнал
   association_type:
     tab:
       property.title: Свойства
-      history.title: История
+      history.title: Журнал
   group_type:
     tab:
       property.title: Свойства
@@ -34,38 +34,66 @@ pim_enrich:
     pick_conversion_unit: Выбрать единицу преобразования для каждого метрического атрибута, которая будет использована во время экспорта продуктов
     tab:
       property.title: Свойства
-      history.title: История
+      history.title: Журнал
   category:
     tab:
       property.title: Свойства
-      history.title: История
+      history.title: Журнал
   group:
+    axis.help: Ось является атрибутом, который определяет варианты для группы вариантов. Оси это атрибуты с параметрами, не локализуемые и не определяемые областью. Эту настройку нельзя изменить после создания группы вариантов.
     type:
       VARIANT: Вариант
+      X_SELL: Перекрестные продажи
+      ADDITIONAL: Дополнительно
+      RELATED: Связанные
     tab:
       product.title: Продукты
       property.title: Свойства
-      history.title: История
+      history.title: Журнал
   variant_group:
     type:
       VARIANT: Вариант
+      X_SELL: Перекрестные продажи
+      ADDITIONAL: Дополнительно
+      RELATED: Связанные
     tab:
       product.title: Продукты
       property.title: Свойства
-      history.title: История
+      history.title: Журнал
       attribute.title: Атрибуты
     info:
       no_attributes: Это группа вариантов пока не имеет атрибутов
       no_attributes_in_selected_locale: Эта группа вариантов не имеет атрибутов в этой локали
   completeness:
+    progress_bar.title: '%ratio%% выполнено (1 требуемое значение)|%ratio%% выполнено (требуется %count% значений)'
+    subtitle: '{0} Готово|{1} 1 отсутствующее значение|]1, Inf] %count% отсутствующих значений'
     missing_attributes: Отсутствующее значение|Отсутствующие значения
     legend:
       locale_not_associated: Локаль не назначена для этого канала
   mass_edit_action:
+    limit_exceeded: 'Пожалуйста, выберите менее %limit% элементов для редактирования'
     product:
       page_title: Продукты
+      page_subtitle: 'Массовое редактирование (1 продукт)|Массовое редактирование (%count% продуктов)'
+      title: Выберите операцию
+      subtitle: 'Выберите операцию, которую вы хотите применить для выбранного продукта|Выберите операцию, которую вы хотите применить для %count% выбранных продуктов'
+      confirm: 'Вы собираетесь обновить продукт со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% продуктов со следующей информацией, пожалуйста, подтвердите.'
+      steps:
+        first: Выберите продукты
+        second: Выберите операцию
+        third: Настройка
+        fourth: Подтверждение
     family:
       page_title: Семейства
+      page_subtitle: 'Массовое редактирование (1 семейство)|Массовое редактирование (%count% семейств)'
+      title: Выберите операцию
+      subtitle: 'Выберите операцию, которую вы хотите применить для выбранного семейства|Выберите операцию, которую вы хотите применить для %count% выбранных семейств'
+      confirm: 'Вы собираетесь обновить семейство со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% семейств со следующей информацией, пожалуйста, подтвердите.'
+      steps:
+        first: Выберите семейства
+        second: Выберите операцию
+        third: Настройка
+        fourth: Подтверждение
     change-status:
       label: Изменить статус (включить / выключить)
       description: Выбранные продукты будут активированы или деактивированы.
@@ -88,11 +116,23 @@ pim_enrich:
       label: Добавить в группы
       description: Выберите группы, в которые нужно добавить выбранные продукты
       success_flash: Продукты были успешно добавлены в выбранные группы
+      no_group: Сейчас нет групп. Начните с создания группы.
     add-to-variant-group:
       label: Добавить в группу вариантов
       description: Выберите группу вариантов для добавления выбранных продуктов
       success_flash: Продукты были успешно добавлены в выбранную группу вариантов
       no_variant_group: Сейчас нет групп вариантов. Начните с создания группы вариантов.
+      no_valid_variant_group: Ни одна группа вариантов не имеет общих атрибутов с выбранными продуктами.
+      some_variant_groups_are_skipped:
+        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
+    set-attribute-requirements:
+      label: Установить требования к атрибутам
+      description: Следующие требования к атрибутам будут применены к выбранным семействам
+      success_flash: Требования к атрибутам были применены к выбранным семействам
+  sequential_edit_action:
+    product:
+      previous: 'Перейти обратно к "%product%" без сохранения.'
+      next: 'Перейти к "%product%" без сохранения изменений.'
   acl:
     locale:
       index: Просмотр локалей
@@ -102,6 +142,7 @@ pim_enrich:
     product:
       index: Список продуктов
       create: Создать продукт
+      edit_attributes: Изменить атрибуты продукта
       remove: Удалить продукт
       add_attribute: Добавить атрибут к продукту
       remove_attribute: Удалить атрибут из продукта
@@ -110,7 +151,11 @@ pim_enrich:
       change_family: Изменить семейство продуктов
       change_state: Изменить статус продукта
       add_to_groups: Добавление продукта в группы
+      add_to_variant_group: Добавить продукт в группу вариантов
       mass_edit: 'Операции массового редактирования продуктов '
+      comment: Комментировать продукты
+      download: Скачать продукт в PDF
+      history: Просмотреть журнал продукта
     category:
       list: Список категорий
       create: Создать категорию
@@ -119,33 +164,51 @@ pim_enrich:
       move: Переместить категорию
       children: Посмотреть дочерние категории
       products: Посмотреть продукты в категории
+      history: Просмотреть журнал категории
     channel:
       index: Список каналов
       create: Создать канал
       edit: Редактировать канал
       remove: Удалить канал
+      history: Просмотреть журнал канала
     family:
       index: Просмотр семейств
       create: Создать семейство
+      edit_properties: Изменить свойства семейства
+      edit_attributes: Изменить атрибуты семейства
       remove: Удалить семейство
+      history: Просмотреть журнал семейства
     attribute_group:
+      index: Перечислить группы атрибутов
       create: Создать группу атрибутов
       edit: Редактировать группу атрибутов
       remove: Удалить группу атрибутов
       sort: Сортировка групп атрибутов
       add_attribute: Добавление атрибута в группу
       remove_attribute: Удаление атрибута из группы
+      history: Просмотреть журнал группы аттрибутов
     attribute:
       index: Список атрибутов
       create: Создать атрибут
       edit: Редактировать атрибут
       remove: Удалить атрибут
       sort: Сортировка атрибутов внутри группы
+      history: Просмотреть журнал атрибута
     group:
       index: Список групп
       create: Создать группу
       edit: Редактировать группу
       remove: Удалить группу
+      history: Просмотреть журнал группы
+    variant_group:
+      index: Перечислить группы вариантов
+      create: Создать группу вариантов
+      edit: Изменить группу вариантов
+      remove: Удалить группу вариантов
+      history: Просмотреть журнал группы вариантов
+      edit_attributes: Изменить атрибуты групп вариантов
+      add_attributes: Добавить атрибуты в группы вариантов
+      remove_attribute: Удалить атрибуты из группы вариантов
     group_type:
       index: Список типов группы
       create: Создать тип группы
@@ -156,6 +219,7 @@ pim_enrich:
       create: Создать тип ассоциации
       edit: Редактировать тип ассоциации
       remove: Удалить тип ассоциации
+      history: Просмотреть журнал типа ассоциаций
   acl_group:
     association_type: Типы ассоциаций
     attribute: Атрибуты
@@ -438,7 +502,7 @@ Unique: Уникальный
 Not required: Не обязательно
 Translatable: Переводимое
 Scopable: Область назначаема
-Localizable: Локализуемые
+Localizable: Локализуемый
 Unique value: Уникальное значение
 Attribute group: Группа атрибутов
 Other: Другие
@@ -460,6 +524,7 @@ Defaultvalue: Значение по умолчанию
 Variant: Вариант
 Smart: Smart
 Useable as grid column: Может использоваться как столбец таблицы
+Useable as grid filter: Используется в сетке
 Family: Семейство
 Available locales: Доступные локали
 Locale specific: Специфично для локали
@@ -467,6 +532,8 @@ default: По умолчанию
 Axis: Ось
 Add attributes: Добавить атрибуты
 Translate from: Перевести с
+switch_on: Да
+switch_off: Нет
 Close: Закрыть
 Choose a color: Выбрать цвет
 Search: Поиск
@@ -531,8 +598,10 @@ pim_title.attribute:
   edit: 'Атрибуты %attribute.label% | Редактировать'
 pim_title.product:
   index: Продукты
+  edit: 'Продукты %product.sku% | Редактировать'
 pim_title.family:
   index: Семейства
+  edit: 'Семействa %family.label% | Редактировать'
 pim_title.channel:
   index: Каналы
   create: Каналы | Создать
@@ -571,20 +640,45 @@ pim_catalog_date: Дата
 pim_catalog_metric: Метрическая
 Activated: Активированный
 Disable: Отключить
+pim_enrich.sequential_edit_action:
+  product:
+    previous: 'Перейти обратно к "%product%" без сохранения.'
+    next: 'Перейти к "%product%" без сохранения изменений.'
 pim_enrich.mass_edit_action:
+  limit_exceeded: 'Пожалуйста, выберите менее %limit% элементов для редактирования'
   product:
     page_title: Продукты
+    page_subtitle: 'Массовое редактирование (1 продукт)|Массовое редактирование (%count% продуктов)'
+    title: Выберите операцию
+    subtitle: 'Выберите операцию, которую вы хотите применить для выбранного продукта|Выберите операцию, которую вы хотите применить для %count% выбранных продуктов'
+    confirm: 'Вы собираетесь обновить продукт со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% продуктов со следующей информацией, пожалуйста, подтвердите.'
+    steps:
+      first: Выберите продукты
+      second: Выберите операцию
+      third: Настройка
+      fourth: Подтверждение
   family:
     page_title: Семейства
+    page_subtitle: 'Массовое редактирование (1 семейство)|Массовое редактирование (%count% семейств)'
+    title: Выберите операцию
+    subtitle: 'Выберите операцию, которую вы хотите применить для выбранного семейства|Выберите операцию, которую вы хотите применить для %count% выбранных семейств'
+    confirm: 'Вы собираетесь обновить семейство со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% семейств со следующей информацией, пожалуйста, подтвердите.'
+    steps:
+      first: Выберите семейства
+      second: Выберите операцию
+      third: Настройка
+      fourth: Подтверждение
   change-status:
     label: Изменить статус (включить / выключить)
     description: Выбранные продукты будут активированы или деактивированы.
     success_flash: Статус продукта(ов) был изменен
   edit-common-attributes:
+    label: Изменить общие атрибуты
     empty: Пожалуйста, выберите один или несколько атрибутов, которые вы хотите редактировать
     success_flash: Атрибуты товаров были обновлены
     message.warning: Для выбранных продуктов нет общих атрибутов. Пожалуйста измените свой выбор.
     no_attribute.warning: Для выбранных продуктов нет общих атрибутов. Пожалуйста измените свой выбор.
+    truncated_by_variant_attribute.warning: 'Некоторые общие атрибуты для выбранных продуктов получены из групп вариантов. Они не доступны для массового изменения: %attributes%.'
   classify:
     label: Классифицировать товары в категориях
     description: Продукты будут добавлены в следующие категории, исходное расположение сохраниться.
@@ -597,6 +691,10 @@ pim_enrich.mass_edit_action:
     label: Добавить в группы
     description: Выберите группы, в которые нужно добавить выбранные продукты
     success_flash: Продукты были успешно добавлены в выбранные группы
+  set-attribute-requirements:
+    label: Установить требования к атрибутам
+    description: Следующие требования к атрибутам будут применены к выбранным семействам
+    success_flash: Требования к атрибутам были применены к выбранным семействам
 To enable: Включить
 Select attributes: Выберите атрибуты
 Select: Выбрать
@@ -626,13 +724,14 @@ pim_menu:
     product: Продукты
     variant_group: Вариативные группы
 Properties: Свойства
-History: История
+History: Журнал
 pane.accordion:
   node_values: Значения узлов
   general_properties: Общие свойства
   locale_values: Данные локали
   backend_parameters: Параметры базы данных
   general_parameters: Общие параметры
+  validation_parameters: Параметры проверки
   label_translations: Переводы меток
   options: Параметры
   group_values: Значения группы
@@ -663,6 +762,7 @@ Entity name: Имя раздела
 Entity id: Идентификатор раздела
 Data: Дата
 Author: Автор
+Logged at: Дата входа
 Deleted: Удален
 Old values: Старые значения
 New values: Новые значения
@@ -685,11 +785,14 @@ oro.locale:
       county: страна
       area: район
       prefecture: префектура
+      department: департамент
       district: дистрикт
       province: провинция
   form:
     tooltip:
       locale: Выберите параметр локалиы, используемoй для форматирования чисел, адресов, имен и даты
+      location: " Расположение будет использоваться для форматирования адресов, когда опция 'Формат адреса по стандартам страны' отключена"
+      format_address_by_address_country: При выборе этого параметра адреса будут отформатированы по стандартам страны, в которой они сейчас находятся. Дезактивация этого параметра приведет к форматированию адресов по стандартам вашего местоположения
       language: Выберите язык системы, который вы хотите использовать
       timezone: Выберите часовой пояс для отображения даты и времени
       currency: Выберите валюту по умолчанию

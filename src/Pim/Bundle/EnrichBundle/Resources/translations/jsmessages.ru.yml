@@ -61,20 +61,20 @@ error:
     export profile: Не удается удалить этот профиль экспорта
     user: Не удается удалить этого пользователя
     role: Не удается удалить эту роль
-    attribute_option: При удалении свойства атрибута произошла ошибка
+    attribute_option: При удалении элемента списка атрибута произошла ошибка
   saving:
-    attribute_option: Не удается сохранить свойство атрибута
+    attribute_option: Не удается сохранить элемента списка атрибута
 alert:
   attribute_option:
     error_occured_during_submission: Во время отправки формы на сервер произошла ошибка
     save_before_edit_other: Пожалуйста зафиксируйте ваши изменения на других строках перед редактированием этой
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Внимание, вы потеряете несохраненные данные. Вы действительно хотите отменить изменения для этой опции?
+    cancel_edition_on_new_option_text: Внимание, вы потеряете несохраненные данные. Вы действительно хотите отменить изменения для этого элемента списка?
     cancel_edition_on_new_option_title: Отмена изменений
 label:
   attribute_option:
-    add_option: Добавить новое свойство
+    add_option: Добавить новый элемента списка
 Code: Код
 Edit: Редактировать
 Delete: Удалить
@@ -88,6 +88,8 @@ pim.grid.mass_action.delete: Удалить
 pim.grid.mass_action.mass_edit: Массовое редактирование
 pim.grid.mass_action.sequential_edit: Последовательное редактирование
 jstree.create: Создать
+switch_on: Да
+switch_off: Нет
 pim_enrich:
   item:
     list:

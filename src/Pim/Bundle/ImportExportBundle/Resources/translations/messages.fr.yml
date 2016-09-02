@@ -1,4 +1,4 @@
-Job: Job
+Job: Tâche
 Connector: Connecteur
 pim_import_export:
   status:
@@ -26,14 +26,14 @@ pim_import_export:
       error: "L'import de <strong>%label%</strong> a échoué"
       warning: "L'import de <strong>%label%</strong> est terminé mais il y a des avertissements"
       success: "L'import de <strong>%label%</strong> est terminé"
-  list: Sélectionner un job
-pim_title.export_profile.index: "Gestion de profils d'export"
-pim_title.export_profile.edit: "Profile d'export %job.label% | Edition"
-pim_title.export_profile.show: "Profile d'export %job.label% | Visualisation"
-pim_title.export_execution.index: "Exporter l'historique d'exécutions"
+  list: Sélectionner une tâche
+pim_title.export_profile.index: "Gestion des profils d'export"
+pim_title.export_profile.edit: "Profil d'export %job.label% | Modification"
+pim_title.export_profile.show: "Profil d'export %job.label% | Visualisation"
+pim_title.export_execution.index: "Exporter l'historique des exécutions"
 pim_title.export_execution.show: "Executions d'exports | Détails"
-pim_title.import_profile.index: Importer gestion de profils
-pim_title.import_profile.edit: "Profil d'import %job.label% | Edition"
+pim_title.import_profile.index: Gestion des profils d’import
+pim_title.import_profile.edit: "Profil d'import %job.label% | Modification"
 pim_title.import_profile.show: "Profil d'import %job.label% | Visualisation"
 pim_title.import_execution.index: "Historique d'exécution des imports"
 pim_title.import_execution.show: "Executions d'imports | Détails"
@@ -43,14 +43,14 @@ export profile:
   create: "Créer un profil d'export"
   edit: "Modifier un profil d'export"
 export report:
-  overview: "Rapports d'exportations"
+  overview: "rapports d'export"
 import profile:
   title: "Profil d'import"
   overview: "Liste des profils d'import"
   create: "Créer un profil d'import"
   edit: "Modifier un profil d'import"
 import report:
-  overview: "Rapports d'importations"
+  overview: "rapports d'import"
 pim_importexport:
   acl:
     export_profile:
@@ -92,15 +92,15 @@ import now: Importer maintenant
 export now: Exporter maintenant
 confirmation:
   remove:
-    export profile: "Êtes-vous sûr de vouloir supprimer le profil d'export %name% ?"
-    import profile: "Êtes-vous sûr de vouloir supprimer le profil d'import %name% ?"
+    export profile: "Êtes-vous sûr(e) de vouloir supprimer le profil d'export %name% ?"
+    import profile: "Êtes-vous sûr(e) de vouloir supprimer le profil d'import %name% ?"
 flash:
   export:
-    created: "L'export a été correctement crée"
+    created: "L'export a été correctement créé"
     removed: "Le profil d'export a été supprimé"
     updated: "L'export a correctement été mis à jour"
   import:
-    created: "L'import a été correctement crée"
+    created: "L'import a été correctement créé"
     removed: "Le profil d'import a été supprimé"
     updated: "L'import a correctement été mis à jour"
 pim_menu:
@@ -125,19 +125,19 @@ Download log: "Télécharger l'historique"
 Show profile: Afficher le profil
 execution details: "détails d'exécution"
 job_execution.summary:
-  read: lu
-  write: écrit
-  skip: ignoré
-  create: créé
+  read: lu(s)
+  write: écrit(s)
+  skip: ignoré(s)
+  create: créé(s)
   update: mis à jour
   update_products: produits mis à jour
   skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:
     title: 'Encodage du fichier :'
-    skipped: Ignoré, extension dans la liste blanche
+    skipped: ignoré(s), extension dans la liste blanche
 Step: Étape
-Status: Statut
+Status: État
 Summary: Résumé
 Start: Début
 End: Fin
