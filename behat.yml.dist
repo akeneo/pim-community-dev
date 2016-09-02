@@ -1,25 +1,63 @@
 default:
-    paths:
-        features: features
-    context:
-        class:  Context\FeatureContext
-        parameters:
-            base_url: http://akeneo-pim-behat.local/
-            timeout: 30000
-            window_width: 1280
-            window_height: 1024
+    suites:
+        pim:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - Context\FeatureContext:
+                    -
+                        base_url: http://pcd-behat.akeneo.local/
+                        timeout: 30000
+                        window_width: 1280
+                        window_height: 1024
+                - Context\FixturesContext
+                - Context\CatalogConfigurationContext
+                - Context\WebUser
+                - Context\DataGridContext
+                - Context\CommandContext
+                - Context\NavigationContext:
+                    - http://pcd-behat.akeneo.local/
+                - Context\TransformationContext
+                - Context\AssertionContext
+                - Context\TechnicalContext
+                - Pim\Behat\Context\AttributeValidationContext
+                - Pim\Behat\Context\Domain\Collect\ImportProfilesContext
+                - Pim\Behat\Context\Domain\Enrich\AttributeTabContext
+                - Pim\Behat\Context\Domain\Enrich\CompletenessContext
+                - Pim\Behat\Context\Domain\Enrich\GridPaginationContext
+                - Pim\Behat\Context\Domain\Enrich\PanelContext
+                - Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext
+                - Pim\Behat\Context\Domain\Enrich\VariantGroupContext
+                - Pim\Behat\Context\Domain\Spread\ExportBuilderContext
+                - Pim\Behat\Context\Domain\Spread\ExportProfilesContext
+                - Pim\Behat\Context\Domain\Spread\XlsxFileContext
+                - Pim\Behat\Context\Domain\System\PermissionsContext
+                - Pim\Behat\Context\Domain\TreeContext
+                - Pim\Behat\Context\HookContext:
+                    - 1280
+                    - 1024
+                - Pim\Behat\Context\JobContext
+                - Pim\Behat\Context\Storage\FileInfoStorage
+                - Pim\Behat\Context\Storage\ProductStorage
     extensions:
-        Behat\MinkExtension\Extension:
+        Behat\ChainedStepsExtension: ~
+        Behat\MinkExtension:
             default_session: symfony2
+            javascript_session: selenium2
             show_cmd: chromium-browser %s
-            selenium2: ~
-            base_url: http://akeneo-pim-behat.local/
+            sessions:
+                symfony2:
+                    symfony2: ~
+                selenium2:
+                    selenium2: ~
+            base_url: http://pcd-behat.akeneo.local/
             files_path: 'features/Context/fixtures/'
-        Behat\Symfony2Extension\Extension:
+        Behat\Symfony2Extension:
             kernel:
                 env: behat
                 debug: false
-        SensioLabs\Behat\PageObjectExtension\Extension: ~
+        SensioLabs\Behat\PageObjectExtension:
+            namespaces:
+                page: [Context\Page]
 
 jenkins-1:
     context:

@@ -2,30 +2,14 @@
 
 namespace Context;
 
-use Behat\Behat\Exception\BehaviorException;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\MinkExtension\Context\MinkContext;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\Symfony2Extension\Context\KernelAwareContext;
+use Behat\Testwork\Counter\Exception\TimerException;
 use Context\Spin\SpinCapableTrait;
-use Pim\Behat\Context\AttributeValidationContext;
-use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
-use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
-use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
-use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
-use Pim\Behat\Context\Domain\Enrich\PanelContext;
-use Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext;
-use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
-use Pim\Behat\Context\Domain\Spread\ExportBuilderContext;
-use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
-use Pim\Behat\Context\Domain\Spread\XlsxFileContext;
-use Pim\Behat\Context\Domain\System\PermissionsContext;
-use Pim\Behat\Context\Domain\TreeContext;
-use Pim\Behat\Context\HookContext;
-use Pim\Behat\Context\JobContext;
-use Pim\Behat\Context\Storage\FileInfoStorage;
-use Pim\Behat\Context\Storage\ProductStorage;
+use Pim\Behat\Context\PimContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -35,7 +19,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FeatureContext extends MinkContext implements KernelAwareInterface
+class FeatureContext extends PimContext implements KernelAwareContext
 {
     use SpinCapableTrait;
 
@@ -48,6 +32,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /** @var int */
     protected static $timeout;
 
+    private $contexts = [];
+
     /**
      * Register contexts
      *
@@ -55,36 +41,50 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function __construct(array $parameters)
     {
-        $this->useContext('fixtures', new FixturesContext());
-        $this->useContext('catalogConfiguration', new CatalogConfigurationContext());
-        $this->useContext('webUser', new WebUser());
-        $this->useContext('webApi', new WebApiContext($parameters['base_url']));
-        $this->useContext('datagrid', new DataGridContext());
-        $this->useContext('command', new CommandContext());
-        $this->useContext('navigation', new NavigationContext($parameters['base_url']));
-        $this->useContext('transformations', new TransformationContext());
-        $this->useContext('assertions', new AssertionContext());
-        $this->useContext('technical', new TechnicalContext());
-
-        $this->useContext('domain-attribute-tab', new AttributeTabContext());
-        $this->useContext('domain-completeness', new CompletenessContext());
-        $this->useContext('domain-export-profiles', new ExportProfilesContext());
-        $this->useContext('domain-xlsx-files', new XlsxFileContext());
-        $this->useContext('domain-import-profiles', new ImportProfilesContext());
-        $this->useContext('domain-pagination-grid', new GridPaginationContext());
-        $this->useContext('domain-panel', new PanelContext());
-        $this->useContext('domain-product-association-tab', new AssociationTabContext());
-        $this->useContext('domain-tree', new TreeContext());
-        $this->useContext('domain-variant-group', new VariantGroupContext());
-        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
-        $this->useContext('job', new JobContext());
-        $this->useContext('storage-product', new ProductStorage());
-        $this->useContext('storage-file-info', new FileInfoStorage());
-        $this->useContext('attribute-validation', new AttributeValidationContext());
-        $this->useContext('role', new PermissionsContext());
-        $this->useContext('export-builder', new ExportBuilderContext());
-
         $this->setTimeout($parameters);
+    }
+
+    public function getSubcontext($context)
+    {
+        if (!isset($this->contexts[$context])) {
+            throw new \Exception(sprintf('The context %s does not exist', $context));
+        }
+
+        return $this->contexts[$context];
+    }
+
+    /** @BeforeScenario */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $environment = $scope->getEnvironment();
+
+        $this->contexts['fixtures'] = $environment->getContext('Context\FixturesContext');
+        $this->contexts['catalogConfiguration'] = $environment->getContext('Context\CatalogConfigurationContext');
+        $this->contexts['webUser'] = $environment->getContext('Context\WebUser');
+//        $this->contexts['webApi'] = $environment->getContext('WebApiContext');
+        $this->contexts['datagrid'] = $environment->getContext('Context\DataGridContext');
+        $this->contexts['command'] = $environment->getContext('Context\CommandContext');
+        $this->contexts['navigation'] = $environment->getContext('Context\NavigationContext');
+        $this->contexts['transformations'] = $environment->getContext('Context\TransformationContext');
+        $this->contexts['assertions'] = $environment->getContext('Context\AssertionContext');
+        $this->contexts['technical'] = $environment->getContext('Context\TechnicalContext');
+        $this->contexts['domain-attribute-tab'] = $environment->getContext('Pim\Behat\Context\Domain\Enrich\AttributeTabContext');
+        $this->contexts['domain-completeness'] = $environment->getContext('Pim\Behat\Context\Domain\Enrich\CompletenessContext');
+        $this->contexts['domain-export-profiles'] = $environment->getContext('Pim\Behat\Context\Domain\Spread\ExportProfilesContext');
+        $this->contexts['domain-xlsx-files'] = $environment->getContext('Pim\Behat\Context\Domain\Spread\XlsxFileContext');
+        $this->contexts['domain-import-profiles'] = $environment->getContext('Pim\Behat\Context\Domain\Collect\ImportProfilesContext');
+        $this->contexts['domain-pagination-grid'] = $environment->getContext('Pim\Behat\Context\Domain\Enrich\GridPaginationContext');
+        $this->contexts['domain-panel'] = $environment->getContext('Pim\Behat\Context\Domain\Enrich\PanelContext');
+        $this->contexts['domain-product-association-tab'] = $environment->getContext('Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext');
+        $this->contexts['domain-tree'] = $environment->getContext('Pim\Behat\Context\Domain\TreeContext');
+        $this->contexts['domain-variant-group'] = $environment->getContext('Pim\Behat\Context\Domain\Enrich\VariantGroupContext');
+        $this->contexts['hook'] = $environment->getContext('Pim\Behat\Context\HookContext');
+        $this->contexts['job'] = $environment->getContext('Pim\Behat\Context\JobContext');
+        $this->contexts['storage-product'] = $environment->getContext('Pim\Behat\Context\Storage\ProductStorage');
+        $this->contexts['storage-file-info'] = $environment->getContext('Pim\Behat\Context\Storage\FileInfoStorage');
+        $this->contexts['attribute-validation'] = $environment->getContext('Pim\Behat\Context\AttributeValidationContext');
+        $this->contexts['role'] = $environment->getContext('Pim\Behat\Context\Domain\System\PermissionsContext');
+        $this->contexts['export-builder'] = $environment->getContext('Pim\Behat\Context\Domain\Spread\ExportBuilderContext');
     }
 
     /**
@@ -245,7 +245,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 foreach ($conditions as $condition) {
                     $result = $this->getSession()->evaluateScript($condition);
                     if (!$result) {
-                        throw new BehaviorException(
+                        throw new TimerException(
                             sprintf(
                                 'Timeout of %d reached when checking on "%s"',
                                 $timeout,
@@ -255,7 +255,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                     }
                 }
             } else {
-                throw new BehaviorException(sprintf('Timeout of %d reached when checking on %s', $timeout, $condition));
+                throw new TimerException(sprintf('Timeout of %d reached when checking on %s', $timeout, $condition));
             }
         }
     }

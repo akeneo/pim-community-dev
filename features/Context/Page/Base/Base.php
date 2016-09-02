@@ -144,19 +144,13 @@ class Base extends Page
     }
 
     /**
-     * @param array $options
+     * @param array $urlParameters
      *
      * @return string
      */
-    public function getUrl(array $options = [])
+    public function getUrl(array $urlParameters = [])
     {
-        $url = $this->getPath();
-
-        foreach ($options as $parameter => $value) {
-            $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
-        }
-
-        return $url;
+        return parent::getUrl($urlParameters);
     }
 
     /**
