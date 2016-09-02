@@ -2,11 +2,14 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Updates a product
@@ -26,6 +29,9 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
      * @param PropertySetterInterface         $propertySetter
      * @param PropertyCopierInterface         $propertyCopier  will be removed in 1.6
@@ -34,11 +40,13 @@ class ProductUpdater implements ObjectUpdaterInterface
     public function __construct(
         PropertySetterInterface $propertySetter,
         PropertyCopierInterface $propertyCopier,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ProductTemplateUpdaterInterface $templateUpdater,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->propertySetter = $propertySetter;
-        $this->propertyCopier = $propertyCopier;
+        $this->propertySetter  = $propertySetter;
+        $this->propertyCopier  = $propertyCopier;
         $this->templateUpdater = $templateUpdater;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -113,6 +121,9 @@ class ProductUpdater implements ObjectUpdaterInterface
             );
         }
 
+        $options['data'] = $data;
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_UPDATE, new GenericEvent($product, $options));
+
         foreach ($data as $field => $values) {
             if (in_array($field, ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'])) {
                 $this->updateProductFields($product, $field, $values);
@@ -121,6 +132,8 @@ class ProductUpdater implements ObjectUpdaterInterface
             }
         }
         $this->updateProductVariantValues($product, $data);
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_UPDATE, new GenericEvent($product, $options));
 
         return $this;
     }
