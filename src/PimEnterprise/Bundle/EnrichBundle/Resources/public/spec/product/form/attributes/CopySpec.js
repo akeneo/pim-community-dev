@@ -4,12 +4,14 @@
 define(
     [
         'jquery',
+        'underscore',
         'pimee/product-edit-form/attributes/copy',
         'pim/fetcher-registry',
         'pimee/product-draft-fetcher'
     ],
     function (
         $,
+        _,
         Copy,
         FetcherRegistry,
         Fetcher
@@ -38,12 +40,6 @@ define(
                 expect(copy.startCopyingWorkingCopy).toBeDefined();
             });
 
-            it('clear the fetcher cache during configure', function () {
-                copy.configure();
-
-                expect(fetcher.clear).toHaveBeenCalled();
-            });
-
             it('set default sources during initialize', function () {
                 expect(copy.sources).toContain({
                     'code': 'working_copy',
@@ -53,7 +49,7 @@ define(
                 });
 
                 expect(copy.sources).toContain({
-                    'code': 'draft',
+                    'code': 'my_draft',
                     'label': 'pimee_enrich.entity.product.copy.source.draft',
                     'type': 'my_draft',
                     'author': null
@@ -111,14 +107,30 @@ define(
             it('updates current source and start copying on a source change event', function () {
                 spyOn(copy, 'trigger');
 
+                this.sources = [
+                    {
+                        code: 'working_copy',
+                        label: 'pimee_enrich.entity.product.copy.source.working_copy',
+                        type: 'working_copy',
+                        author: null
+                    },
+                    {
+                        code: 'my_draft',
+                        label: 'pimee_enrich.entity.product.copy.source.draft',
+                        type: 'my_draft',
+                        author: null
+                    }
+                ];
+
+                this.currentSource = _.first(this.sources);
+
                 copy.configure();
-                copy.currentSource = {};
-                copy.changeCurrentSource('draft');
+                copy.changeCurrentSource('my_draft');
 
                 expect(copy.trigger.calls.count()).toEqual(1);
                 expect(copy.trigger.calls.argsFor(0)).toEqual(['copy:context:change']);
                 expect(copy.currentSource).not.toBeNull();
-                expect(copy.currentSource.code).toEqual('draft');
+                expect(copy.currentSource.code).toEqual('my_draft');
             });
 
             it('updates context on source switcher render event', function () {
@@ -136,7 +148,7 @@ define(
                 });
 
                 expect(context.sources).toContain({
-                    'code': 'draft',
+                    'code': 'my_draft',
                     'label': 'pimee_enrich.entity.product.copy.source.draft',
                     'type': 'my_draft',
                     'author': null
@@ -161,7 +173,7 @@ define(
                 });
 
                 expect(context.sources).not.toContain({
-                    'code': 'draft',
+                    'code': 'my_draft',
                     'label': 'pimee_enrich.entity.product.copy.source.draft',
                     'type': 'my_draft',
                     'author': null

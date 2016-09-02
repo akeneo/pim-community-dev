@@ -33,10 +33,16 @@ module.exports = function (grunt) {
                 'web/bundles/pim*/**/*.css',
                 'web/bundles/pim*/**/*.less',
                 '!web/bundles/**/lib/**/*.css',
-                '!web/bundles/**/lib/**/*.less'
+                '!web/bundles/**/lib/**/*.less',
+                '!web/bundles/pimui/css/flags.less',
+                '!web/bundles/pimui/css/form.less',
+                '!web/bundles/pimui/css/less/oro.less',
+                '!web/bundles/pimui/css/pim.less'
             ],
             options: {
                 strictPropertyOrder: false,
+                noIDs:               false,
+                noUnderscores:       false,
                 noOverqualifying:    false
             }
         },

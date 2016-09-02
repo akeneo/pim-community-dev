@@ -15,7 +15,9 @@ define(
                     .then(function (versions) {
                         var version = _.findWhere(versions, {published: true});
                         if (version) {
-                            var $version = this.getParent().$el.find('.product-version[data-version-id="' + version.id + '"] .version');
+                            var $version = this.getParent().$el.find(
+                                '.product-version[data-version-id="' + version.id + '"] .version'
+                            );
 
                             if ($version.children('.label-published').length === 0) {
                                 $version.append(this.template({

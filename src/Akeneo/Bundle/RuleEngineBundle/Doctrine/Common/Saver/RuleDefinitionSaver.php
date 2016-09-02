@@ -99,6 +99,5 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
                 )
             );
         }
-
     }
 }

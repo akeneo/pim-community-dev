@@ -29,8 +29,9 @@ use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterf
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface,
- PublishedAssociationRepositoryInterface
+class PublishedProductRepository extends ProductRepository implements
+    PublishedProductRepositoryInterface,
+    PublishedAssociationRepositoryInterface
 {
     /**
      * {@inheritdoc}
