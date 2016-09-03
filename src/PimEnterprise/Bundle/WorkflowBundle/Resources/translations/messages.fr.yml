@@ -7,7 +7,7 @@ pimee_workflow:
     product:
       label: Libellé du produit
     status:
-      label: Statut
+      label: État
       working_copy: Version de travail
       in_progress: En cours
       ready: En attente d’approbation

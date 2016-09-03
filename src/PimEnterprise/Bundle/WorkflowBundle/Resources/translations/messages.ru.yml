@@ -11,7 +11,7 @@ pimee_workflow:
       working_copy: Рабочая копия
       in_progress: В процессе
       ready: В ожидании утверждения
-      can_not_be_approved: Не может быть пересмотрено
+      can_not_be_approved: Не может быть пересмотрен
       can_not_be_deleted: Не может быть удален
     action:
       approve: Одобрить
@@ -22,7 +22,7 @@ pimee_workflow:
       refuse: Отклонить выбраннoе
       error:
         draft_not_ready: Это предложение не готово быть принятым
-        not_product_owner: Вы не являетесь владельцем продукта, относящиеся к этому предложению
+        not_product_owner: Вы не являетесь владельцем продукта, относяющемуся к этому предложению
         cannot_edit_attributes: Нельзя редактировать атрибуты изменяемые этим предложением
         invalid_draft: 'Это предложение не может быть применено из-за следующей ошибки. %error%'
   published_product:
@@ -32,8 +32,10 @@ pimee_workflow:
     index: Управление опубликованными продуктами
   product:
     permission:
+      label: Права доступа
       own: Обзор / публикация
       edit: Редактировать
+      view: Просмотр
   jobs:
     csv_product_proposal_import:
       title: Импорт предложений в CSV
@@ -89,7 +91,7 @@ job_execution.summary:
   mass_published: Продукт опубликован
   mass_unpublished: Продукт снят с публикации
   proposal: Предложение создано
-  proposal_deleted: удаленнoe предложение
-  proposal_updated: обновленное предложение
-  proposal_created: созданное предложение
-  proposal_skipped: пропущеннoе предложение (без изменений)
+  proposal_deleted: удаленных предложений
+  proposal_updated: обновленных предложений
+  proposal_created: созданных предложений
+  proposal_skipped: пропущенных предложений (без изменений)

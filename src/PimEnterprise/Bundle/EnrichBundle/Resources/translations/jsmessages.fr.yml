@@ -29,13 +29,13 @@ pimee_enrich:
       flash:
         product_unpublished: Produit dépublié avec succès
         product_published: Produit publié avec succès
-        product_not_published: Échec de la publication du produit
-        product_not_unpublished: Échec de la dépublication du produit
-        product_reverted: Produit restauré à la version précédente
+        product_not_published: Échec lors de la publication du produit
+        product_not_unpublished: Échec lors de la dépublication du produit
+        product_reverted: La version précédente du produit a été restaurée
       meta:
         published: Version publiée
         owner_groups: Groupes propriétaires
-        draft_status: Statut brouillon
+        draft_status: État du brouillon
         draft:
           in_progress: En cours
           sent_for_approval: En attente d’approbation
@@ -79,5 +79,5 @@ pimee_enrich:
         send_for_approval: Soumettre pour validation
         sent_for_approval: Soumis à la validation
       confirmation:
-        discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications?
-        discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon?
+        discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications ?
+        discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon ?

@@ -5,3 +5,8 @@ pimee_dashboard:
       date: Дата
       author: Автор
       product: Продукт
+      review: Обзор
+      empty: Нет черновиков для рассмотрения
+  version:
+    community_edition: CE
+    enterprise_edition: EE

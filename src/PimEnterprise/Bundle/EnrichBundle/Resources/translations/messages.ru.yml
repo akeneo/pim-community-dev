@@ -3,26 +3,127 @@ pim_title.locale:
 Permissions: Разрешения
 attribute group.permissions:
   edit.help: Разрешить редактирование товаров в данной группе атрибутов
+locale.permissions:
+  no_access_to_products: Вы не имеете прав доступа к данным продукта ни в одной локали. Пожалуйста, обратитесь к вашему администратору
+btn:
+  save working copy: Сохранить рабочую копию
+  save draft: Сохранить черновик
+  save working copy and next: Сохранить рабочую копию и перейти к следующему
+  save draft and next: Сохранить черновик и перейти к следующему
+  save working copy and finish: Сохранить рабочую копию и закончить
+  save draft and finish: Сохранить черновик и закончить
+  send for approval: Отправить на утверждение
+  sent for approval: Отправлено на утверждение
 pim_enrich:
   mass_edit_action:
+    product:
+      not_editable: 'Вы не имеете прав на изменение продуктов "%identifiers%".'
     publish:
+      label: Опубликовать продукты
+      description: Опубликовать выбранные продукты, при этом текущие опубликованные данные будут перезаписаны текущей рабочей копией.
+      success_flash: Выбранные продукты были успешно опубликованы.
       launched_flash: Процесс публикации товара(ов) выполняется в данный момент.
       message:
         error: Вы не являетесь владельцем товара и не можете его опубликовать.
+        warning: 'Вы не являетесь владельцем всех выбранных продуктов. Вы не можете опубликовать продукты "%notGranted%".'
+        info: '%nbProducts% выбранных продуктов будет опубликовано.'
+      not_editable: 'Вы не имеете прав на изменение продуктов "%identifiers%".'
     published_product:
       page_title: Опубликованные продукты
+      title: Выберите операцию
+      steps:
+        second: Выберите операцию
+        third: Настройка
+        fourth: Подтверждение
+    unpublish:
+      label: Снять продукты с публикации
+      description: Снять выбранные продукты с публикации, текущий опубликованные данные будут удалены.
+      success_flash: Выбранные продукты были успешно сняты с публикации.
+      launched_flash: Процесс снятия товара(ов) с публикации выполняется в данный момент.
+      message:
+        error: Вы не владелец продукта, вы не можете снять его с публикации.
+        warning: 'Вы не являетесь владельцем всех выбранных продуктов. Вы не можете снять продукты "%notGranted%" с публикации.'
+        info: '%nbProducts% выбранных продуктов будет снять с публикации.'
+      not_editable: 'Вы не имеете прав на изменение продуктов "%identifiers%".'
+    classify:
+      message:
+        error: Вы не владелец продукта, вы не можете классифицировать его.
+        warning: 'Вы не являетесь владельцем всех выбранных продуктов. Вы не можете классифицировать продукты "%notGranted%".'
+    edit_common_attributes:
+      message:
+        error: Вы не владелец продукта, вы не можете редактировать его.
 pim_enrich.mass_edit_action:
+  limit_exceeded: 'Пожалуйста, выберите менее %limit% элементов для редактирования'
   product:
     page_title: Продукты
+    page_subtitle: 'Массовое редактирование (1 продукт)|Массовое редактирование (%count% продуктов)'
+    title: Выберите операцию
+    subtitle: 'Выберите операцию, которую вы хотите применить для выбранного продукта|Выберите операцию, которую вы хотите применить для %count% выбранных продуктов'
+    confirm: 'Вы собираетесь обновить продукт со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% продуктов со следующей информацией, пожалуйста, подтвердите.'
+    steps:
+      first: Выберите продукты
+      second: Выберите операцию
+      third: Настройка
+      fourth: Подтверждение
+flash.product.updated: Рабочая копия продукта была обновлена
+flash.product_draft.updated: Черновик был успешно сохранен
+flash.locale.updated: Локаль и права доступа были обновлены
 pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Права доступа
   product:
     tab:
       proposal.title: Предложения
+  category:
+    tab:
+      permission.title: Права доступа
+  channel:
+    tab:
+      asset_transformation.title: Преобразования активов
+  acl.product_ownership.title: Владение
+  attributes:
+    empty: Пусто
+  groups:
+    label: Группы владельцы
+    empty: Пусто
   asset_transformation:
+    not_found: Преобразования не найдены
     title:
       transformation: Преобразование
       options: Параметры
+    colorspace:
+      title: Цветовое пространство
+      options:
+        colorspace: '%value% цветовое пространство'
+    resize:
+      title: Изменение размера
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+    resolution:
+      title: Разрешение
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Маштабирование
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+        ratio: '%value%% соотношение'
+    thumbnail:
+      title: Миниатюра изображения
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Добавить значение продукта с правами доступа
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Обновить значение продукта с правами доступа
+edit_common_attributes_with_permission: Редактировать общие атрибуты с правами доступа
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Редактировать общие атрибуты с правами доступа
 job_execution.summary:
   mass_published: Продукт опубликован
   mass_unpublished: Продукт снят с публикации
   proposal: Предложение создано
+  proposal_deleted: удалено
+pim_assets_collection: Коллекция медиафайлов

@@ -4,3 +4,6 @@ pimee_dashboard:
       date: Дата
       author: Автор
       product: Продукт
+      review: Обзор
+      empty: Нет предложений для обзора
+      view_all: Просмотреть все
