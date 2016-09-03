@@ -96,8 +96,6 @@ pim:
       quick_export:
         csv_all: CSV (todos los atributos)
         csv_grid_context: CSV (contexto de la grilla)
-        xlsx_all: XLSX (todos los atributos)
-        xlsx_grid_context: XLSX (contexto de la grilla)
 jstree.create: Crear
 switch_on: Sí
 switch_off: 'No'
