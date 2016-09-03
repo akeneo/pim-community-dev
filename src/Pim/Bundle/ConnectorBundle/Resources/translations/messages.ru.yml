@@ -11,7 +11,7 @@ pim_connector:
     csv_variant_group .title: Считыватель групп вариантов из CSV
     dummy_processor.title: Заглушка
     product_processor.title: Создание продукта
-    variant_group_processor.title: Создание / обновление группы вариантов
+    variant_group_processor.title: Создание / обновление групп вариантов
     category_processor.title: Создание категорий
     association_processor.title: Создание ассоциаций
     product_association_processor.title: Создание ассоциаций
@@ -35,9 +35,15 @@ pim_connector:
     enclosure:
       label: Символ обрамления
       help: Символ, используемый для обрамления полей
+    lines_per_files:
+      label: Количество строк в файле
+      help: Определить предельное число строк в файле
     withHeader:
       label: Включая заголовки
-      help: Добавлять строку с заголовками
+      help: Добавить строку с заголовками
+    with_media:
+      label: Экспортировать файлы и изображения
+      help: Экспортировать файлы и изображения продуктов
     filePath:
       label: Путь к файлу
       help: Путь к сгенерированному файлу
@@ -46,14 +52,20 @@ pim_connector:
       help: Канал, который вы хотите экспортировать
     locales:
       label: Локали
+      help: Локали, которые вы хотите экспортировать
+      validation:
+        not_blank: Одна локаль должена быть выбрана, пожалуйста, выберите локаль для экспорта.
     decimalSeparator:
       label: Десятичный разделитель
       help: Введите десятичный разделитель
     dateFormat:
       label: Формат даты
       help: Введите формат даты
+    header:
+      label: Заголовок
     families:
       label: Семейство
+      help: Семейства, которые вы хотите экспортировать
       placeholder: Выберите семейство
   import:
     enabled:
@@ -96,13 +108,14 @@ pim_connector:
       label: Копировать значения из группы вариантов в продукты
       help: Это означает, что продукты будут автоматически обновлены значениями группы вариантов, можно отключить для обновления только группы вариантов
     enabledComparison:
-      label: Сравнить значения
+      label: Сравнивать значения
       help: Включить сравнение исходных значений и импортированных значений. Может ускорить импорт, если импортированные значения очень похожи на исходные значения
     decimalSeparator:
       label: Десятичный разделитель
       help: Символ, используемый для установки разделителя полей для десятичной
     dateFormat:
       label: Формат даты
+      help: Укажите формат столбцов дат в файле, например здесь дд/мм/гггг для формата 30/04/2014.
 job_execution.summary:
   read: прочитано
   read_lines: прочитанных строк
@@ -113,7 +126,7 @@ job_execution.summary:
   update_products: обновленных продуктов
   process_products: обработанных продуктов
   skip_products: пропущенных продуктов
-  displayed: первые предупреждения отображены
+  displayed: отображены первые предупреждения
   charset_validator:
     title: 'Кодировка файла:'
     skipped: пропущено, расширение из белого списка
@@ -128,9 +141,6 @@ batch_jobs:
   csv_attribute_export:
     label: Экспорт атрибутов в CSV
     export.label: Экспорт атрибутов
-  csv_attribute_option_export:
-    label: Экспорт выборов атрибутов в CSV
-    export.label: Экспорт выборов атрибутов
   csv_association_type_export:
     label: Экспорт типов ассоциаций в CSV
     export.label: Экспорт типов ассоциаций
@@ -145,68 +155,109 @@ batch_jobs:
     export.label: Экспорт семейств
   csv_product_import:
     label: Импорт продуктов из CSV
-    validation.label: Подтверждение файла
+    validation.label: Проверка файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
   csv_category_import:
     label: Импорт категорий из CSV
-    validation.label: Подтверждение файла
+    validation.label: Проверка файла
     import.label: Импорт категории
   csv_attribute_import:
     label: Импорт атрибутов из CSV
-    validation.label: Подтверждение файла
+    validation.label: Проверка файла
     import.label: Импорт атрибутов
   csv_attribute_option_import:
     label: Импорт выборов атрибутов из CSV
-    validation.label: Подтверждение файла
-    import.label: Импорт выборов атрибутов
+    validation.label: Проверка файла
   csv_association_type_import:
     label: Импорт типов ассоциаций из CSV
-    validation.label: Подтверждение файла
+    validation.label: Проверка файла
     import.label: Импорт типов ассоциаций
   csv_family_import:
     label: Импорт семейств из CSV
-    validation.label: Подтверждение файла
+    validation.label: Проверка файла
     import.label: Импорт семейств
   csv_group_import:
     label: Импорт группы из CSV
-    validation.label: Подтверждение файла
+    validation.label: Проверка файла
     import.label: Импорт группы
   csv_variant_group_import:
     label: Импорт группы вариантов в CSV
-    validation.label: Подтверждение файла
+    validation.label: Проверка файла
     import.label: Импорт групп вариантов
+  csv_channel_import:
+    validation.label: Проверка файла
+  csv_locale_import:
+    validation.label: Проверка файла
+  csv_attribute_group_import:
+    validation.label: Проверка файла
+  csv_currency_import:
+    validation.label: Проверка файла
+  csv_group_type_import:
+    validation.label: Проверка файла
   xlsx_category_import:
-    validation.label: Подтверждение файла
+    label: Импорт категорий из XLSX
+    validation.label: Проверка файла
     import.label: Импорт категории
   xlsx_association_type_import:
-    validation.label: Подтверждение файла
+    label: Импорт типов ассоциаций из XLSX
+    validation.label: Проверка файла
     import.label: Импорт типов ассоциаций
   xlsx_attribute_import:
-    validation.label: Подтверждение файла
+    label: Импорт атрибутов из XLSX
+    validation.label: Проверка файла
     import.label: Импорт атрибутов
   xlsx_attribute_option_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт выборов атрибутов
+    label: Импорт элементов списочных атрибутов из XLSX
+    validation.label: Проверка файла
   xlsx_family_import:
-    validation.label: Подтверждение файла
+    label: Импорт семейств из XLSX
+    validation.label: Проверка файла
     import.label: Импорт семейств
   xlsx_product_export:
+    label: Экспорт продуктов в XLSX
     export.label: Экспорт продуктов
   xlsx_product_import:
-    validation.label: Подтверждение файла
+    label: Импорт продуктов из XLSX
+    validation.label: Проверка файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
   xlsx_group_export:
+    label: Экспорт групп в XLSX
     export.label: Экспорт групп
   xlsx_variant_group_export:
+    label: Экспорт групп вариантов в XLSX
     export.label: Экспорт групп вариантов
   xlsx_group_import:
-    validation.label: Подтверждение файла
+    label: Импорт групп из XLSX
+    validation.label: Проверка файла
     import.label: Импорт группы
   xlsx_variant_group_import:
-    validation.label: Подтверждение файла
+    label: Импорт групп вариантов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт групп вариантов
   xlsx_family_export:
+    label: Экспорт семейств в XLSX
     export.label: Экспорт семейств
   xlsx_category_export:
+    label: Экспорт категорий в XLSX
     export.label: Экспорт категорий
+  xlsx_attribute_export:
+    label: Экспорт атрибутов в XLSX
+    export.label: Экспорт атрибутов в XLSX
+  xlsx_attribute_option_export:
+    label: Экспорт элементов списочных атрибутов в XLSX
+    export.label: Экспорт элементов списочных атрибутов в XLSX
+  xlsx_association_type_export:
+    label: Экспорт типов ассоциаций в XLSX
+    export.label: Экспорт типов ассоциаций в XLSX
+  xlsx_channel_import:
+    validation.label: Проверка файла
+  xlsx_locale_import:
+    validation.label: Проверка файла
+  xlsx_attribute_group_import:
+    validation.label: Проверка файла
+  xlsx_currency_import:
+    validation.label: Проверка файла
+  xlsx_group_type_import:
+    validation.label: Проверка файла
