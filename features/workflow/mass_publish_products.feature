@@ -35,7 +35,7 @@ Feature: Publish many products at once
     And I wait for the "publish" mass-edit job to finish
     Then I should see "You're not the owner of the product, you can't publish it"
     And I should see "skipped products 1"
-    When I am on the published index page
+    When I am on the published products page
     Then the grid should contain 2 elements
 
   Scenario: Publish nothing if the user is the owner of no product
@@ -48,5 +48,5 @@ Feature: Publish many products at once
     And I wait for the "publish" mass-edit job to finish
     Then I should see "You're not the owner of the product, you can't publish it"
     And I should see "skipped products 3"
-    When I am on the published index page
+    When I am on the published products page
     Then the grid should contain 0 elements

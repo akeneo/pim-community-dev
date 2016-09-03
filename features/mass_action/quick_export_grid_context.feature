@@ -18,7 +18,7 @@ Feature: Quick export products according to the product grid context
     And I am logged in as "Julia"
 
   Scenario: Successfully quick export published products from grid context as a CSV file
-    Given I am on the published page
+    Given I am on the published products page
     And I display in the published products grid the columns sku, name, label, family, color, completeness, groups, price, size, created and updated, description, weight
     And I select rows boots, sneakers, pump
     When I press "CSV (Grid context)" on the "Quick Export" dropdown button
@@ -40,10 +40,10 @@ Feature: Quick export products according to the product grid context
     """
 
   Scenario: Successfully quick export products from grid context as a XSLX file
-    Given I am on the published page
+    Given I am on the published products page
     And I display in the published products grid the columns sku, name, label, family, color, completeness, groups, price, size, created and updated, description, weight
     And I select rows boots, sneakers, pump
-    When I press "XLSX (Grid context)" on the "Quick Export" dropdown button
+    When I press "Excel (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "xlsx_published_product_grid_context_quick_export" quick export to finish
     And I am on the dashboard page
     Then I should have 1 new notification

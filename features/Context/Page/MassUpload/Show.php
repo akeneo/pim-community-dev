@@ -1,6 +1,6 @@
 <?php
 
-namespace Context\Page\Mass_upload;
+namespace Context\Page\MassUpload;
 
 use Context\Page\Job\Show as JobShow;
 

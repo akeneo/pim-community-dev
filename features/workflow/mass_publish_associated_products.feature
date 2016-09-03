@@ -45,7 +45,7 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
-    And I am on the published index page
+    And I am on the published products page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
     And I am on the products page
@@ -55,7 +55,7 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
-    And I am on the published index page
+    And I am on the published products page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
 
@@ -85,7 +85,7 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
-    And I am on the published index page
+    And I am on the published products page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
     And I am on the products page
@@ -95,6 +95,6 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
-    And I am on the published index page
+    And I am on the published products page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi

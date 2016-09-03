@@ -20,7 +20,7 @@ Feature: Publish many products at once
       | yellow-sneakers | Yellow     | Nylon                   |
 
   Scenario: Successfully publish several products with reference data
-    Given I am on the published index page
+    Given I am on the published products page
     Then the grid should contain 0 elements
     When I am on the products page
     And I select rows red-heels, blue-sneakers and yellow-sneakers
@@ -29,5 +29,5 @@ Feature: Publish many products at once
     And I should see "The 3 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
-    When I am on the published index page
+    When I am on the published products page
     Then the grid should contain 3 elements

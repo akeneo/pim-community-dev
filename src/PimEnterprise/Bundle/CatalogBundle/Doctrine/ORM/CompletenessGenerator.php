@@ -53,7 +53,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         parent::__construct($manager, $productClass, $productValueClass, $attributeClass);
 
         $this->assetRepository = $assetRepository;
-        $this->assetClass = $assetClass;
+        $this->assetClass      = $assetClass;
     }
 
     /**
@@ -73,10 +73,12 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
      */
     protected function generate(array $criteria = [])
     {
-        $this->prepareMissingCompletenesses($criteria);
+        if (!isset($criteria['productId'])) {
+            $this->prepareMissingCompletenesses($criteria);
 
-        $this->prepareCompletePrices($criteria);
-        $this->prepareCompleteAssets($criteria);
+            $this->prepareCompletePrices($criteria);
+            $this->prepareCompleteAssets($criteria);
+        }
 
         $sql = $this->getInsertCompletenessSQL($criteria);
 
@@ -99,29 +101,11 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
      */
     protected function prepareCompleteAssets(array $criteria)
     {
-        $cleanupSql = "DROP TABLE IF EXISTS " . self::COMPLETE_ASSETS_TABLE . PHP_EOL;
+        $cleanupSql  = "DROP TABLE IF EXISTS " . self::COMPLETE_ASSETS_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
-        $selectSql = 'SELECT av.value_id,
-            IF (r.locale_id IS NOT NULL, r.locale_id, cl.locale_id) AS locale_id,
-            v.channel_id
-
-            FROM pim_catalog_product_value_asset av
-            JOIN pim_catalog_product_value pv ON av.value_id = pv.id
-            JOIN %missing_completeness_table% missing ON missing.product_id = pv.entity_id
-            JOIN pimee_product_asset_asset a ON av.asset_id = a.id
-            JOIN pimee_product_asset_reference r ON r.asset_id = a.id
-            JOIN pimee_product_asset_variation v ON v.reference_id = r.id
-            LEFT JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id AND r.locale_id IS NULL
-
-            WHERE 1 = 1
-            %product_value_conditions%
-
-            GROUP BY value_id, locale_id, channel_id
-
-            HAVING COUNT(v.file_info_id) > 0';
-
+        $selectSql = $this->getCompleteAssetsSQL();
         $selectSql = $this->applyTableNames($selectSql);
         $selectSql = $this->applyCriteria($selectSql, $criteria);
 
@@ -155,22 +139,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
 
         return $sql;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyTableNames($sql)
-    {
-        $sql = parent::applyTableNames($sql);
-
-        return strtr(
-            $sql,
-            [
-                '%missing_completeness_table%' => self::MISSING_TABLE,
-            ]
-        );
-    }
-
+    
     /**
      * Overrided method to exclude assets from automatic mapping
      *
@@ -212,27 +181,57 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
     /**
      * {@inheritdoc}
      */
-    protected function getExtraJoins()
+    protected function getExtraJoins(array $criteria)
     {
+        $completeAssetTable = isset($criteria['productId']) ?
+            $this->getCompleteAssetsSQL() :
+            self::COMPLETE_ASSETS_TABLE;
+
         $assetsJoin = 'LEFT JOIN %s AS complete_asset
             ON complete_asset.value_id = v.id
             AND complete_asset.channel_id = c.id
             AND complete_asset.locale_id = l.id';
 
-        $assetsJoin = sprintf($assetsJoin, static::COMPLETE_ASSETS_TABLE);
-        $extraJoins = array_merge(parent::getExtraJoins(), [$assetsJoin]);
+        $assetsJoin = sprintf($assetsJoin, $completeAssetTable);
 
-        return $extraJoins;
+        return array_merge(parent::getExtraJoins($criteria), [$assetsJoin]);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getExtraConditions()
+    protected function getExtraConditions(array $criteria)
     {
-        $assetsConditions = sprintf('OR %s.value_id IS NOT NULL', static::COMPLETE_ASSETS_TABLE);
-        $extraConditions = array_merge(parent::getExtraConditions(), [$assetsConditions]);
+        return array_merge(
+            parent::getExtraConditions($criteria),
+            ['OR complete_asset.value_id IS NOT NULL']
+        );
+    }
 
-        return $extraConditions;
+    /**
+     * Provide the SQL that allows to find complete assets.
+     *
+     * An assets collection is complete on a locale/channel
+     * if there is at least one variation file for the locale/channel tuple.
+     *
+     * @return string
+     */
+    protected function getCompleteAssetsSQL()
+    {
+        return <<<COMPLETE_ASSETS_SQL
+            (SELECT av.value_id,
+                IF (r.locale_id IS NOT NULL, r.locale_id, cl.locale_id) AS locale_id,
+                v.channel_id
+            FROM pim_catalog_product_value_asset av
+            JOIN pim_catalog_product_value pv ON av.value_id = pv.id
+            JOIN pimee_product_asset_asset a ON av.asset_id = a.id
+            JOIN pimee_product_asset_reference r ON r.asset_id = a.id
+            JOIN pimee_product_asset_variation v ON v.reference_id = r.id
+            LEFT JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id AND r.locale_id IS NULL
+            WHERE 1 = 1
+                %product_value_conditions%
+            GROUP BY value_id, locale_id, channel_id
+            HAVING COUNT(v.file_info_id) > 0)
+COMPLETE_ASSETS_SQL;
     }
 }

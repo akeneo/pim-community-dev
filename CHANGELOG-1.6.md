@@ -2,6 +2,25 @@
 
 ## Bug fixes
 
+- PIM-5821: Apply rights on locale specific values during quick export
+
+# 1.6.2 (2016-09-02)
+
+# 1.6.1 (2016-09-01)
+
+- TIP-574: Fix a regression on completeness calculation affecting the duration of a product save.
+
+## Bug fixes
+
+- PIM-5782: Add right filtering on locales for export builder
+- PIM-5949: Fix scope and locale switches on published product edit form
+- PIM-5961: Remove translations of BaseConnectorBundle (synchronization issue with Nelson)
+- PIM-5959: Change wording of XLSX to Excel on mass actions
+
+# 1.6.O (2016-08-30)
+
+## Bug fixes
+
 # 1.6.O-RC1 (2016-08-29)
 
 ## Bug fixes

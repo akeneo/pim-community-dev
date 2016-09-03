@@ -38,7 +38,10 @@ define(
         };
         Dropzone.autoDiscover = false;
 
-        var $navbarButtons, $importButton, $startButton, $cancelButton;
+        var $navbarButtons;
+        var $importButton;
+        var $startButton;
+        var $cancelButton;
 
         return Backbone.View.extend({
             myDropzone: null,
@@ -107,20 +110,20 @@ define(
                         Routing.generate('pimee_product_asset_rest_verify_upload', {
                             filename: encodeURIComponent(file.name)
                         })
-                        ).done(function () {
-                            $startButton.removeClass('disabled');
-                            $cancelButton.removeClass('hide');
-                        }).fail(function (response) {
-                            file.status = Dropzone.ERROR;
-                            var message = 'pimee_product_asset.mass_upload.error.filename';
-                            if (response.responseJSON) {
-                                message = response.responseJSON.error;
-                            }
-                            file.previewElement.querySelector('.filename .error.text-danger')
-                                .textContent = _.__(message);
-                        }).complete(function () {
-                            this.setStatus(file);
-                            file.previewElement.querySelector('.dz-type').textContent = file.type;
+                    ).done(function () {
+                        $startButton.removeClass('disabled');
+                        $cancelButton.removeClass('hide');
+                    }).fail(function (response) {
+                        file.status = Dropzone.ERROR;
+                        var message = 'pimee_product_asset.mass_upload.error.filename';
+                        if (response.responseJSON) {
+                            message = response.responseJSON.error;
+                        }
+                        file.previewElement.querySelector('.filename .error.text-danger')
+                            .textContent = _.__(message);
+                    }).complete(function () {
+                        this.setStatus(file);
+                        file.previewElement.querySelector('.dz-type').textContent = file.type;
                     }.bind(this));
 
                     if ((0 !== file.type.indexOf('image')) || (file.size > myDropzone.options.maxThumbnailFilesize)) {

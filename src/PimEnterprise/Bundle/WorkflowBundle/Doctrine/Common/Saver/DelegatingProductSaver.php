@@ -16,6 +16,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -211,7 +212,6 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
                 $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($productDraft, $options));
                 $this->objectManager->refresh($product);
             }
-
         } elseif (null !== $draft = $this->productDraftRepo->findUserProductDraft($product, $this->getUsername())) {
             $this->productDraftRemover->remove($draft);
         }

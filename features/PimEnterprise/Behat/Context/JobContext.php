@@ -14,7 +14,10 @@ class JobContext extends BaseJobContext
      */
     public function iShouldBeOnTheJobExecutionPage(JobInstance $job)
     {
-        $jobPage           = sprintf('%s show', ucfirst($job->getType()));
+        $type = join('', array_map(function ($jobTypeWord) {
+            return ucfirst($jobTypeWord);
+        }, explode('_', $job->getType())));
+        $jobPage           = sprintf('%s show', $type);
         $jobExecutionId    = $job->getJobExecutions()->last()->getId();
         $expectedAddress   = $this->getPage($jobPage)->getUrl(['id' => $jobExecutionId]);
         $this->getMainContext()->getSubcontext('navigation')->assertAddress($expectedAddress);

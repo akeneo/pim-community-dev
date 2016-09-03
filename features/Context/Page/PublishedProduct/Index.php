@@ -1,6 +1,6 @@
 <?php
 
-namespace Context\Page\Published;
+namespace Context\Page\PublishedProduct;
 
 use Context\Page\Product\Index as BaseIndex;
 

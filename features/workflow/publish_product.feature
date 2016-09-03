@@ -15,7 +15,7 @@ Feature: Publish a product
     And I edit the "my-jacket" product
     When I press the "Publish" button
     And I confirm the publishing
-    And I am on the published index page
+    And I am on the published products page
     Then the grid should contain 1 elements
     And I should see product my-jacket
 
@@ -23,7 +23,7 @@ Feature: Publish a product
     And the following published product:
       | sku       | family  | categories | name-en_US |
       | my-jacket | jackets | jackets    | Jacket1    |
-    And I am on the "my-jacket" published show page
+    And I am on the "my-jacket" published product show page
     Then I should see "Edit working copy"
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-4762
@@ -31,7 +31,7 @@ Feature: Publish a product
     And the following published product:
       | sku    | family | categories | name-en_US |
       | my-tee | tees   | tshirts    | Tee1       |
-    And I am on the "my-tee" published show page
+    And I am on the "my-tee" published product show page
     Then I should not see "Edit working copy"
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-4762
@@ -71,10 +71,10 @@ Feature: Publish a product
     And I edit the "my-jacket" product
     When I press the "Publish" button
     And I confirm the publishing
-    And I am on the published index page
+    And I am on the published products page
     Then the grid should contain 1 elements
     And I should see product my-jacket
-    And I am on the "my-jacket" published show page
+    And I am on the "my-jacket" published product show page
     And I should see "Release"
     And I should see "February 02, 2013"
     And I should see "Available"
@@ -97,10 +97,10 @@ Feature: Publish a product
     And I save the product
     When I press the "Publish" button
     And I confirm the publishing
-    And I am on the published index page
+    And I am on the published products page
     Then the grid should contain 1 elements
     And I should see product my-jacket
-    And I am on the "my-jacket" published show page
+    And I am on the "my-jacket" published product show page
     And I should see "March 25, 2014"
     And I should see "akeneo2.jpg"
     And I should not see "February 02, 2013"
@@ -132,6 +132,6 @@ Feature: Publish a product
     Given the following published product:
       | sku       | family  | name-en_US |
       | my-jacket | jackets | Jackets    |
-    And I am on the "my-jacket" published show page
+    And I am on the "my-jacket" published product show page
     When I press the "Back to grid" button
     Then I should be on the published index page
