@@ -24,8 +24,16 @@ class UpdatedDecorator extends ElementDecorator
         $operatorField->setValue($operator);
 
         if ('' !== $value) {
-            $field = $this->find('css', 'input[name="filter-value"]');
-            $field->setValue($value);
+            $valueField = $this->find(
+                'css',
+                sprintf(
+                    '.filter-item[data-name="%s"][data-type="%s"] [name="filter-value-updated"]',
+                    $this->getAttribute('data-name'),
+                    $this->getAttribute('data-type')
+                )
+            );
+
+            $valueField->setValue($value);
         }
     }
 }

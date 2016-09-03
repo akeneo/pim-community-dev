@@ -164,11 +164,31 @@ define(
 
                 this.$el.html(this.template({__: __}));
 
-                this.addExistingFilters().then(function () {
+                $.when(
+                    fetcherRegistry.getFetcher('attribute').getIdentifierAttribute(),
+                    this.addExistingFilters()
+                ).then(function (identifier) {
                     var filtersContainer = this.$('.filters').empty();
-                    _.each(this.filterViews, function (filterView) {
-                        filtersContainer.append(filterView.render().$el);
-                    });
+
+                    var configuredFieldCodes = _.pluck(this.config.filters, 'field');
+                    var savedFieldCodes = _.pluck(this.filterViews, 'filterCode').sort();
+                    var fieldCodes = _.union(
+                        configuredFieldCodes,
+                        _.without(savedFieldCodes, identifier.code),
+                        [identifier.code]
+                    );
+
+                    var filterViews = _.map(fieldCodes, function (code) {
+                        var view = _.findWhere(this.filterViews, {filterCode: code});
+
+                        if (undefined === view) {
+                            return;
+                        }
+
+                        return view.render().$el;
+                    }.bind(this));
+
+                    filtersContainer.append(filterViews);
 
                     this.renderExtensions();
                 }.bind(this));

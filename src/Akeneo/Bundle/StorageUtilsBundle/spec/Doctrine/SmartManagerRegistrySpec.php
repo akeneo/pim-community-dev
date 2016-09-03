@@ -46,9 +46,6 @@ class SmartManagerRegistrySpec extends ObjectBehavior
         $odmRegistry,
         $customRegistry
     ) {
-        if (!class_exists('Doctrine\ODM\MongoDB\MongoDBException', false)) {
-            throw new SkippingException('Mongo ODM is not installed');
-        }
         $ormRegistry->getAliasNamespace('foo')->willThrow(new ORMException());
         $odmRegistry->getAliasNamespace('foo')->willThrow(new MongoDBException());
         $customRegistry->getAliasNamespace('foo')->willReturn('\Foo');
@@ -61,9 +58,6 @@ class SmartManagerRegistrySpec extends ObjectBehavior
         $odmRegistry,
         $customRegistry
     ) {
-        if (!class_exists('Doctrine\ODM\MongoDB\MongoDBException', false)) {
-            throw new SkippingException('Mongo ODM is not installed');
-        }
         $ormRegistry->getAliasNamespace('foo')->willThrow(new ORMException());
         $odmRegistry->getAliasNamespace('foo')->willThrow(new MongoDBException());
         $customRegistry->getAliasNamespace('foo')->willThrow(new ORMException());
