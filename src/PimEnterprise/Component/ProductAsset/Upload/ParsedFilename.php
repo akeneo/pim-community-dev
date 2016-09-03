@@ -43,7 +43,7 @@ class ParsedFilename implements ParsedFilenameInterface
      */
     public function __construct(array $availableLocales, $rawFilename)
     {
-        $this->rawFilename      = $rawFilename;
+        $this->rawFilename = $rawFilename;
         $this->availableLocales = $availableLocales;
 
         $this->parseRawFilename($this->rawFilename);
@@ -100,7 +100,7 @@ class ParsedFilename implements ParsedFilenameInterface
      */
     public function parseRawFilename($rawFilename)
     {
-        $localeCodes   = array_map(function (LocaleInterface $locale) {
+        $localeCodes = array_map(function (LocaleInterface $locale) {
             return $locale->getCode();
         }, $this->availableLocales);
         $patternLocale = implode('|', $localeCodes);
@@ -122,7 +122,7 @@ class ParsedFilename implements ParsedFilenameInterface
                 $this->assetCode = $this->sanitizeAssetCode($matches['code2']);
             }
             $this->localeCode = strlen($matches['locale']) > 0 ? $matches['locale'] : null;
-            $this->extension  = $matches['extension'];
+            $this->extension = $matches['extension'];
         }
     }
 

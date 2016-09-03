@@ -61,12 +61,12 @@ abstract class AbstractProductPublisherTasklet implements TaskletInterface
         UserManager $userManager,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->manager          = $manager;
+        $this->manager = $manager;
         $this->paginatorFactory = $paginatorFactory;
-        $this->validator        = $validator;
-        $this->objectDetacher   = $objectDetacher;
-        $this->userManager      = $userManager;
-        $this->tokenStorage     = $tokenStorage;
+        $this->validator = $validator;
+        $this->objectDetacher = $objectDetacher;
+        $this->userManager = $userManager;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**

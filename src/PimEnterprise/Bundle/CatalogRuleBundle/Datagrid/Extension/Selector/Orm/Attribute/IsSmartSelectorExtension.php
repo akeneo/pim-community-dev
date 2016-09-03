@@ -39,7 +39,7 @@ class IsSmartSelectorExtension extends AbstractExtension
         parent::__construct($requestParams);
 
         $this->attributeClass = $attributeClass;
-        $this->relationClass  = $relationClass;
+        $this->relationClass = $relationClass;
     }
 
     /**

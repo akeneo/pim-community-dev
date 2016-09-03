@@ -40,9 +40,9 @@ class Rule implements RuleInterface
     public function __construct(RuleDefinitionInterface $definition)
     {
         $this->definition = $definition;
-        $this->actions    = [];
+        $this->actions = [];
         $this->conditions = [];
-        $this->relations  = new ArrayCollection();
+        $this->relations = new ArrayCollection();
     }
 
     /**

@@ -45,8 +45,8 @@ class ScaleOptionsResolver implements TransformationOptionsResolverInterface
             throw InvalidOptionsTransformationException::general($e, 'scale');
         }
 
-        $ratio  = $options['ratio'];
-        $width  = $options['width'];
+        $ratio = $options['ratio'];
+        $width = $options['width'];
         $height = $options['height'];
 
         if (null === $ratio && null === $width && null === $height) {

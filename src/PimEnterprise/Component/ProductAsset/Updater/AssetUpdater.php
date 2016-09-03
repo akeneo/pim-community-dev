@@ -51,10 +51,10 @@ class AssetUpdater implements ObjectUpdaterInterface
         CategoryRepositoryInterface $categoryRepository,
         AssetFactory $assetFactory
     ) {
-        $this->tagRepository      = $tagRepository;
+        $this->tagRepository = $tagRepository;
         $this->categoryRepository = $categoryRepository;
-        $this->assetFactory       = $assetFactory;
-        $this->accessor           = PropertyAccess::createPropertyAccessor();
+        $this->assetFactory = $assetFactory;
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -115,7 +115,7 @@ class AssetUpdater implements ObjectUpdaterInterface
      */
     protected function setTags(AssetInterface $asset, array $data)
     {
-        $newTags  = $data;
+        $newTags = $data;
         $tagCodes = $asset->getTagCodes();
 
         if (!empty($tagCodes)) {
@@ -141,7 +141,7 @@ class AssetUpdater implements ObjectUpdaterInterface
      */
     protected function setCategories(AssetInterface $asset, array $data)
     {
-        $newCategories  = $data;
+        $newCategories = $data;
         $categoriesCode = $asset->getCategoryCodes();
 
         if (!empty($categoriesCode)) {

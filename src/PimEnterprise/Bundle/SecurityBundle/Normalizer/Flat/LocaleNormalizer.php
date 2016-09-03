@@ -38,7 +38,7 @@ class LocaleNormalizer implements NormalizerInterface
     public function __construct(NormalizerInterface $localeNormalizer, LocaleAccessManager $accessManager)
     {
         $this->localeNormalizer = $localeNormalizer;
-        $this->accessManager    = $accessManager;
+        $this->accessManager = $accessManager;
     }
 
     /**

@@ -46,9 +46,9 @@ class CategoryAssetRemover implements RemoverInterface
         EventDispatcherInterface $eventDispatcher,
         BulkSaverInterface $assetSaver
     ) {
-        $this->objectManager   = $objectManager;
+        $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->assetSaver      = $assetSaver;
+        $this->assetSaver = $assetSaver;
     }
 
     /**

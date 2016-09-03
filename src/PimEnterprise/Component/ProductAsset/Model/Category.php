@@ -42,7 +42,7 @@ class Category extends BaseCategory implements CategoryInterface
     {
         parent::__construct();
 
-        $this->assets       = new ArrayCollection();
+        $this->assets = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }
 
@@ -104,7 +104,7 @@ class Category extends BaseCategory implements CategoryInterface
         }
 
         $translationClass = $this->getTranslationFQCN();
-        $translation      = new $translationClass();
+        $translation = new $translationClass();
         $translation->setLocale($locale);
         $translation->setForeignKey($this);
         $this->addTranslation($translation);

@@ -41,9 +41,9 @@ class ProductVersionController
         $versionClass,
         ProductReverter $reverter
     ) {
-        $this->doctrine     = $doctrine;
+        $this->doctrine = $doctrine;
         $this->versionClass = $versionClass;
-        $this->reverter     = $reverter;
+        $this->reverter = $reverter;
     }
 
     /**

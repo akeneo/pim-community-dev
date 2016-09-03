@@ -54,8 +54,8 @@ class RuleNotificationFactory extends AbstractNotificationFactory implements Not
         }
 
         $notification = new $this->notificationClass();
-        $type         = $jobExecution->getJobInstance()->getType();
-        $status       = $this->getJobStatus($jobExecution);
+        $type = $jobExecution->getJobInstance()->getType();
+        $status = $this->getJobStatus($jobExecution);
 
         $notification
             ->setType($status)

@@ -46,8 +46,8 @@ class AssetNormalizer implements NormalizerInterface
             ];
         }
 
-        $normalizedData               = $this->assetNormalizer->normalize($asset, $format, $context);
-        $normalizedData['tags']       = implode(static::INNER_SEPARATOR, $asset->getTagCodes());
+        $normalizedData = $this->assetNormalizer->normalize($asset, $format, $context);
+        $normalizedData['tags'] = implode(static::INNER_SEPARATOR, $asset->getTagCodes());
         $normalizedData['categories'] = implode(static::INNER_SEPARATOR, $asset->getCategoryCodes());
 
         if (array_key_exists('versioning', $context)) {

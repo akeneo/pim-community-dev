@@ -90,14 +90,14 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $filesystemAlias
     ) {
         $this->configurationRepository = $configurationRepository;
-        $this->fileTransformer         = $fileTransformer;
-        $this->filesystemProvider      = $filesystemProvider;
-        $this->metadataSaver           = $metadataSaver;
-        $this->variationSaver          = $variationSaver;
-        $this->fileStorer              = $fileStorer;
-        $this->fileFetcher             = $fileFetcher;
-        $this->metadaBuilderRegistry   = $metadaBuilderRegistry;
-        $this->filesystemAlias         = $filesystemAlias;
+        $this->fileTransformer = $fileTransformer;
+        $this->filesystemProvider = $filesystemProvider;
+        $this->metadataSaver = $metadataSaver;
+        $this->variationSaver = $variationSaver;
+        $this->fileStorer = $fileStorer;
+        $this->fileFetcher = $fileFetcher;
+        $this->metadaBuilderRegistry = $metadaBuilderRegistry;
+        $this->filesystemAlias = $filesystemAlias;
     }
 
     /**
@@ -105,21 +105,21 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      */
     public function generate(VariationInterface $variation)
     {
-        $locale             = $variation->getReference()->getLocale();
-        $channel            = $variation->getChannel();
+        $locale = $variation->getReference()->getLocale();
+        $channel = $variation->getChannel();
         $rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
-        $sourceFile         = $this->retrieveSourceFileInfo($variation);
-        $outputFilename     = $this->buildVariationOutputFilename($sourceFile, $channel, $locale);
+        $sourceFile = $this->retrieveSourceFileInfo($variation);
+        $outputFilename = $this->buildVariationOutputFilename($sourceFile, $channel, $locale);
 
-        $storageFilesystem  = $this->filesystemProvider->getFilesystem($this->filesystemAlias);
-        $sourceFileInfo     = $this->fileFetcher->fetch($storageFilesystem, $sourceFile->getKey());
-        $variationFileInfo  = $this->fileTransformer->transform(
+        $storageFilesystem = $this->filesystemProvider->getFilesystem($this->filesystemAlias);
+        $sourceFileInfo = $this->fileFetcher->fetch($storageFilesystem, $sourceFile->getKey());
+        $variationFileInfo = $this->fileTransformer->transform(
             $sourceFileInfo,
             $rawTransformations,
             $outputFilename
         );
         $variationMetadata = $this->extractMetadata($variationFileInfo);
-        $variationFile     = $this->fileStorer->store($variationFileInfo, $this->filesystemAlias, true);
+        $variationFile = $this->fileStorer->store($variationFileInfo, $this->filesystemAlias, true);
 
         $variationMetadata->setFileInfo($variationFile);
         $this->metadataSaver->save($variationMetadata);
@@ -196,7 +196,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         LocaleInterface $locale = null
     ) {
         $extensionPattern = sprintf('/\.%s$/', $sourceFileInfo->getExtension());
-        $outputFileName   = preg_replace($extensionPattern, '', $sourceFileInfo->getOriginalFilename());
+        $outputFileName = preg_replace($extensionPattern, '', $sourceFileInfo->getOriginalFilename());
 
         if (null !== $locale) {
             $outputFileName = sprintf('%s-%s', $outputFileName, $locale->getCode());

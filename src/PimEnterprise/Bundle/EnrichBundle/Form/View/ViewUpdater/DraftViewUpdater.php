@@ -30,7 +30,7 @@ class DraftViewUpdater implements ViewUpdaterInterface
         ProductDraftChangesApplier $applier,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->applier      = $applier;
+        $this->applier = $applier;
         $this->urlGenerator = $urlGenerator;
     }
 

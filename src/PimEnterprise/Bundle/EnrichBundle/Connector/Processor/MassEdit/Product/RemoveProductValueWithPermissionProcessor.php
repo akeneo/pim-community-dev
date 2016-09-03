@@ -54,8 +54,8 @@ class RemoveProductValueWithPermissionProcessor extends BaseProcessor
         parent::__construct($propertyRemover, $validator);
 
         $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage         = $tokenStorage;
-        $this->userManager          = $userManager;
+        $this->tokenStorage = $tokenStorage;
+        $this->userManager = $userManager;
     }
 
     /**

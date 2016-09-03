@@ -36,7 +36,7 @@ class VariationBuilder implements VariationBuilderInterface
         $variationClass = 'PimEnterprise\Component\ProductAsset\Model\Variation'
     ) {
         $this->channelRepository = $channelRepository;
-        $this->variationClass    = $variationClass;
+        $this->variationClass = $variationClass;
     }
 
     /**
@@ -45,7 +45,7 @@ class VariationBuilder implements VariationBuilderInterface
     public function buildMissing(ReferenceInterface $reference)
     {
         $variations = [];
-        $channels   = $this->channelRepository->getFullChannels();
+        $channels = $this->channelRepository->getFullChannels();
 
         foreach ($channels as $channel) {
             if ($this->canBuildOne($reference, $channel) && !$reference->hasVariation($channel)) {
@@ -84,7 +84,7 @@ class VariationBuilder implements VariationBuilderInterface
     public function buildAll(ReferenceInterface $reference)
     {
         $variations = [];
-        $channels   = $this->channelRepository->getFullChannels();
+        $channels = $this->channelRepository->getFullChannels();
 
         foreach ($channels as $channel) {
             if ($this->canBuildOne($reference, $channel)) {

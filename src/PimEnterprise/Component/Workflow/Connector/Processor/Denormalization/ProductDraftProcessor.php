@@ -72,11 +72,11 @@ class ProductDraftProcessor extends AbstractProcessor implements
     ) {
         parent::__construct($repository);
 
-        $this->updater             = $updater;
-        $this->validator           = $validator;
+        $this->updater = $updater;
+        $this->validator = $validator;
         $this->productDraftBuilder = $productDraftBuilder;
         $this->productDraftApplier = $productDraftApplier;
-        $this->productDraftRepo    = $productDraftRepo;
+        $this->productDraftRepo = $productDraftRepo;
     }
 
     /**

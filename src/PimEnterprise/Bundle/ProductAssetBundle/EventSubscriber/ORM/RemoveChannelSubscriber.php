@@ -41,9 +41,9 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
         RemoverInterface $variationRemover,
         RemoverInterface $channelConfigRemover
     ) {
-        $this->variationRepo        = $variationRepo;
-        $this->channelConfigRepo    = $channelConfigRepo;
-        $this->variationRemover     = $variationRemover;
+        $this->variationRepo = $variationRepo;
+        $this->channelConfigRepo = $channelConfigRepo;
+        $this->variationRemover = $variationRemover;
         $this->channelConfigRemover = $channelConfigRemover;
     }
 

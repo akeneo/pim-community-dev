@@ -64,12 +64,12 @@ class ProductRuleApplier implements ApplierInterface
         EventDispatcherInterface $eventDispatcher,
         ObjectDetacherInterface $objectDetacher
     ) {
-        $this->paginatorFactory    = $paginatorFactory;
-        $this->productsUpdater     = $productsUpdater;
-        $this->productsValidator   = $productsValidator;
-        $this->productsSaver       = $productsSaver;
-        $this->eventDispatcher     = $eventDispatcher;
-        $this->objectDetacher      = $objectDetacher;
+        $this->paginatorFactory = $paginatorFactory;
+        $this->productsUpdater = $productsUpdater;
+        $this->productsValidator = $productsValidator;
+        $this->productsSaver = $productsSaver;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->objectDetacher = $objectDetacher;
     }
 
     /**

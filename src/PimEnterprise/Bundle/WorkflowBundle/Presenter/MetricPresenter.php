@@ -37,7 +37,7 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
     public function __construct(BasePresenterInterface $metricPresenter, LocaleResolver $localeResolver)
     {
         $this->metricPresenter = $metricPresenter;
-        $this->localeResolver  = $localeResolver;
+        $this->localeResolver = $localeResolver;
     }
 
     /**

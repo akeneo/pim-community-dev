@@ -41,9 +41,9 @@ class AjaxAssetTagTransformer implements DataTransformerInterface
         IdentifiableObjectRepositoryInterface $repository,
         array $options
     ) {
-        $this->saver      = $saver;
+        $this->saver = $saver;
         $this->repository = $repository;
-        $this->options    = $options;
+        $this->options = $options;
     }
 
     /**

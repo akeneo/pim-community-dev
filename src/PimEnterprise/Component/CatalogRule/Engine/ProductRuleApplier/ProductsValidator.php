@@ -46,8 +46,8 @@ class ProductsValidator
         ObjectDetacherInterface $objectDetacher
     ) {
         $this->productValidator = $productValidator;
-        $this->eventDispatcher  = $eventDispatcher;
-        $this->objectDetacher   = $objectDetacher;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->objectDetacher = $objectDetacher;
     }
 
     /**

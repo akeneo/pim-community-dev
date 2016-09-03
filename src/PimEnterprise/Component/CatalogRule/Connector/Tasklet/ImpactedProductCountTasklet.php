@@ -53,9 +53,9 @@ class ImpactedProductCountTasklet implements TaskletInterface
         BulkObjectDetacherInterface $detacher
     ) {
         $this->ruleDefinitionRepo = $ruleDefinitionRepo;
-        $this->productRuleRunner  = $productRuleRunner;
-        $this->saver              = $saver;
-        $this->detacher           = $detacher;
+        $this->productRuleRunner = $productRuleRunner;
+        $this->saver = $saver;
+        $this->detacher = $detacher;
     }
 
     /**

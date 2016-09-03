@@ -79,14 +79,14 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         ProductDraftRepositoryInterface $productDraftRepo,
         RemoverInterface $productDraftRemover
     ) {
-        $this->objectManager        = $objectManager;
-        $this->completenessManager  = $completenessManager;
-        $this->eventDispatcher      = $eventDispatcher;
+        $this->objectManager = $objectManager;
+        $this->completenessManager = $completenessManager;
+        $this->eventDispatcher = $eventDispatcher;
         $this->authorizationChecker = $authorizationChecker;
-        $this->productDraftBuilder  = $productDraftBuilder;
-        $this->tokenStorage         = $tokenStorage;
-        $this->productDraftRepo     = $productDraftRepo;
-        $this->productDraftRemover  = $productDraftRemover;
+        $this->productDraftBuilder = $productDraftBuilder;
+        $this->tokenStorage = $tokenStorage;
+        $this->productDraftRepo = $productDraftRepo;
+        $this->productDraftRemover = $productDraftRemover;
     }
 
     /**

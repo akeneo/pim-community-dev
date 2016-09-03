@@ -53,12 +53,12 @@ class CompletenessController
         NormalizerInterface $completenessNormalizer,
         CollectionFilterInterface $collectionFilter
     ) {
-        $this->completenessManager    = $completenessManager;
-        $this->productRepository      = $productRepository;
-        $this->channelRepository      = $channelRepository;
-        $this->userContext            = $userContext;
+        $this->completenessManager = $completenessManager;
+        $this->productRepository = $productRepository;
+        $this->channelRepository = $channelRepository;
+        $this->userContext = $userContext;
         $this->completenessNormalizer = $completenessNormalizer;
-        $this->collectionFilter       = $collectionFilter;
+        $this->collectionFilter = $collectionFilter;
     }
 
     /**
@@ -79,7 +79,7 @@ class CompletenessController
         $this->completenessManager->generateMissingForProduct($product);
 
         $channels = $this->channelRepository->getFullChannels();
-        $locales  = $this->userContext->getUserLocales();
+        $locales = $this->userContext->getUserLocales();
 
         $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
 

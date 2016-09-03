@@ -45,7 +45,7 @@ class ContextConfigurator implements ConfiguratorInterface
         UserContext $userContext
     ) {
         $this->requestParams = $requestParams;
-        $this->userContext   = $userContext;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -55,7 +55,7 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $this->configuration = $configuration;
 
-        $path             = sprintf(self::SOURCE_PATH, self::REPOSITORY_PARAMETERS_KEY);
+        $path = sprintf(self::SOURCE_PATH, self::REPOSITORY_PARAMETERS_KEY);
         $repositoryParams = $this->configuration->offsetGetByPath($path, null);
 
         if ($repositoryParams) {

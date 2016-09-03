@@ -41,7 +41,7 @@ class IsSmartFilter extends BooleanFilter
         parent::__construct($factory, $util);
 
         $this->attributeClass = $attributeClass;
-        $this->relationClass  = $relationClass;
+        $this->relationClass = $relationClass;
     }
 
     /**

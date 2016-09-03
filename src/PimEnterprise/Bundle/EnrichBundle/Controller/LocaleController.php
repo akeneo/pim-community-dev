@@ -44,8 +44,8 @@ class LocaleController extends BaseLocaleController
      */
     public function __construct(Request $request, RouterInterface $router, FormFactoryInterface $formFactory)
     {
-        $this->request     = $request;
-        $this->router      = $router;
+        $this->request = $request;
+        $this->router = $router;
         $this->formFactory = $formFactory;
     }
 

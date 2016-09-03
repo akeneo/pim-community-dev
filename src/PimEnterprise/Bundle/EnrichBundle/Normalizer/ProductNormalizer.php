@@ -73,12 +73,12 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->normalizer           = $normalizer;
-        $this->publishedManager     = $publishedManager;
-        $this->draftRepository      = $draftRepository;
-        $this->draftApplier         = $draftApplier;
-        $this->categoryAccessRepo   = $categoryAccessRepo;
-        $this->tokenStorage         = $tokenStorage;
+        $this->normalizer = $normalizer;
+        $this->publishedManager = $publishedManager;
+        $this->draftRepository = $draftRepository;
+        $this->draftApplier = $draftApplier;
+        $this->categoryAccessRepo = $categoryAccessRepo;
+        $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
     }
 
@@ -100,7 +100,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
 
-        $published   = $this->publishedManager->findPublishedProductByOriginalId($product->getId());
+        $published = $this->publishedManager->findPublishedProductByOriginalId($product->getId());
         $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForProduct(
             $product,
             Attributes::OWN_PRODUCTS

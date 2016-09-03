@@ -63,7 +63,7 @@ class LocaleVoter implements VoterInterface
         if ($this->supportsClass($locale) && !is_string($token->getUser())) {
             foreach ($attributes as $attribute) {
                 if ($this->supportsAttribute($attribute)) {
-                    $result        = VoterInterface::ACCESS_DENIED;
+                    $result = VoterInterface::ACCESS_DENIED;
                     $grantedGroups = $this->extractUserGroups($attribute, $locale);
 
                     foreach ($grantedGroups as $group) {

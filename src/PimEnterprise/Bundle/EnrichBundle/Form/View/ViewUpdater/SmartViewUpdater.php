@@ -39,7 +39,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->ruleRelationManager = $ruleRelationManager;
-        $this->urlGenerator        = $urlGenerator;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**

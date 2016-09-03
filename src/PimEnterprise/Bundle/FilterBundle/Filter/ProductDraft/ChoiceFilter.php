@@ -33,9 +33,9 @@ class ChoiceFilter extends OroChoiceFilter
             return false;
         }
 
-        $field    = $this->get(ProductDraftFilterUtility::DATA_NAME_KEY);
+        $field = $this->get(ProductDraftFilterUtility::DATA_NAME_KEY);
         $operator = $this->getOperator($data['type']);
-        $value    = $data['value'];
+        $value = $data['value'];
 
         $this->util->applyFilter($ds, $field, $operator, $value);
 

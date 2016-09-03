@@ -80,8 +80,8 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             );
         }
 
-        $editableCategories  = $this->categoryAccessRepo->getGrantedCategoryCodes($user, Attributes::EDIT_ITEMS);
-        $ownedCategories     = $this->categoryAccessRepo->getGrantedCategoryCodes($user, Attributes::OWN_PRODUCTS);
+        $editableCategories = $this->categoryAccessRepo->getGrantedCategoryCodes($user, Attributes::EDIT_ITEMS);
+        $ownedCategories = $this->categoryAccessRepo->getGrantedCategoryCodes($user, Attributes::OWN_PRODUCTS);
         $editableButNotOwned = array_diff($editableCategories, $ownedCategories);
         if (!empty($editableCategories) && !empty($editableButNotOwned)) {
             $form->add(

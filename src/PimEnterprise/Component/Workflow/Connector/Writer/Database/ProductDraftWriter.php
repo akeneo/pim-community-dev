@@ -47,9 +47,9 @@ class ProductDraftWriter implements ItemWriterInterface, StepExecutionAwareInter
         BulkObjectDetacherInterface $bulkDetacher,
         RemoverInterface $remover
     ) {
-        $this->saver        = $saver;
+        $this->saver = $saver;
         $this->bulkDetacher = $bulkDetacher;
-        $this->remover      = $remover;
+        $this->remover = $remover;
     }
 
     /**

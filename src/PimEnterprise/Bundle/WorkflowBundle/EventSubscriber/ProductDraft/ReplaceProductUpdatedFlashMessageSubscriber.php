@@ -42,7 +42,7 @@ class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInte
         ObjectRepository $repository
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->repository           = $repository;
+        $this->repository = $repository;
     }
 
     /**

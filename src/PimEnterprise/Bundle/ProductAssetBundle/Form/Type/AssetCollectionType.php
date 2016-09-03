@@ -37,7 +37,7 @@ class AssetCollectionType extends AbstractType
     public function __construct(DataTransformerInterface $assetTransformer, UserContext $userContext)
     {
         $this->assetTransformer = $assetTransformer;
-        $this->userContext      = $userContext;
+        $this->userContext = $userContext;
     }
 
     /**

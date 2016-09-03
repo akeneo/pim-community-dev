@@ -39,7 +39,7 @@ class GridHelper
         ProductDraftChangesPermissionHelper $permissionHelper
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->permissionHelper     = $permissionHelper;
+        $this->permissionHelper = $permissionHelper;
     }
 
     /**

@@ -43,7 +43,7 @@ class AssetFactory implements SimpleFactoryInterface
     ) {
         $this->referenceFactory = $referenceFactory;
         $this->localeRepository = $localeRepository;
-        $this->assetClass       = $assetClass;
+        $this->assetClass = $assetClass;
     }
 
     /**

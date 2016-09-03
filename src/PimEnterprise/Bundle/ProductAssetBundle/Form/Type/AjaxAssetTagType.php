@@ -45,10 +45,10 @@ class AjaxAssetTagType extends AjaxEntityType
         $transformerClass
     ) {
         $this->transformerFactory = $transformerFactory;
-        $this->saver              = $saver;
-        $this->router             = $router;
-        $this->userContext        = $userContext;
-        $this->transformerClass   = $transformerClass;
+        $this->saver = $saver;
+        $this->router = $router;
+        $this->userContext = $userContext;
+        $this->transformerClass = $transformerClass;
     }
 
     /**

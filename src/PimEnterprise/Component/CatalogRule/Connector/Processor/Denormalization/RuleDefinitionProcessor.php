@@ -63,10 +63,10 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     ) {
         parent::__construct($repository);
         $this->denormalizer = $denormalizer;
-        $this->validator    = $validator;
-        $this->detacher     = $detacher;
-        $this->ruleClass    = $ruleClass;
-        $this->class        = $ruleDefinitionClass;
+        $this->validator = $validator;
+        $this->detacher = $detacher;
+        $this->ruleClass = $ruleClass;
+        $this->class = $ruleDefinitionClass;
     }
 
     /**

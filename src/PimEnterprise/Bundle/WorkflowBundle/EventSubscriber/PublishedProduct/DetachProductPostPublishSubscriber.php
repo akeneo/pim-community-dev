@@ -53,7 +53,7 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
      */
     public function detachProductPostPublish(PublishedProductEvent $event)
     {
-        $product   = $event->getProduct();
+        $product = $event->getProduct();
         $published = $event->getPublishedProduct();
 
         foreach ($published->getValues() as $publishedValue) {

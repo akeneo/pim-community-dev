@@ -43,8 +43,8 @@ class IsGrantedExtension extends \Twig_Extension
         LocaleRepositoryInterface $localeRepository
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->attributeRepository  = $attributeRepository;
-        $this->localeRepository     = $localeRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**

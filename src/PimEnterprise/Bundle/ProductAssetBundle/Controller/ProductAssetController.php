@@ -170,26 +170,26 @@ class ProductAssetController extends Controller
         CategoryRepositoryInterface $categoryRepository,
         CategoryManager $categoryManager
     ) {
-        $this->assetRepository        = $assetRepository;
-        $this->referenceRepository    = $referenceRepository;
-        $this->variationRepository    = $variationRepository;
-        $this->metadataRepository     = $metadataRepository;
-        $this->localeRepository       = $localeRepository;
-        $this->channelRepository      = $channelRepository;
+        $this->assetRepository = $assetRepository;
+        $this->referenceRepository = $referenceRepository;
+        $this->variationRepository = $variationRepository;
+        $this->metadataRepository = $metadataRepository;
+        $this->localeRepository = $localeRepository;
+        $this->channelRepository = $channelRepository;
         $this->variationFileGenerator = $variationFileGenerator;
-        $this->assetFilesUpdater      = $assetFilesUpdater;
-        $this->assetSaver             = $assetSaver;
-        $this->referenceSaver         = $referenceSaver;
-        $this->variationSaver         = $variationSaver;
-        $this->assetRemover           = $assetRemover;
-        $this->eventDispatcher        = $eventDispatcher;
-        $this->assetFactory           = $assetFactory;
-        $this->fileInfoFactory        = $fileInfoFactory;
-        $this->userContext            = $userContext;
-        $this->fileController         = $fileController;
-        $this->assetCategoryRepo      = $assetCategoryRepo;
-        $this->categoryRepository     = $categoryRepository;
-        $this->categoryManager        = $categoryManager;
+        $this->assetFilesUpdater = $assetFilesUpdater;
+        $this->assetSaver = $assetSaver;
+        $this->referenceSaver = $referenceSaver;
+        $this->variationSaver = $variationSaver;
+        $this->assetRemover = $assetRemover;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->assetFactory = $assetFactory;
+        $this->fileInfoFactory = $fileInfoFactory;
+        $this->userContext = $userContext;
+        $this->fileController = $fileController;
+        $this->assetCategoryRepo = $assetCategoryRepo;
+        $this->categoryRepository = $categoryRepository;
+        $this->categoryManager = $categoryManager;
     }
 
     /**
@@ -237,7 +237,7 @@ class ProductAssetController extends Controller
 
         if ($form->isValid()) {
             $uploadedFile = $form->get('reference_file')->get('uploadedFile')->getData();
-            $isLocalized  = $form->get('isLocalized')->getData();
+            $isLocalized = $form->get('isLocalized')->getData();
 
             $asset = $this->assetFactory->create();
             $asset->setCode($form->get('code')->getData());
@@ -266,12 +266,12 @@ class ProductAssetController extends Controller
 
                 $this->addFlashMessage('success', 'pimee_product_asset.enrich_asset.flash.create.success');
 
-                $route  = 'pimee_product_asset_edit';
+                $route = 'pimee_product_asset_edit';
                 $params = ['id' => $asset->getId()];
             } catch (\Exception $e) {
                 $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.create.error');
 
-                $route  = 'pimee_product_asset_index';
+                $route = 'pimee_product_asset_index';
                 $params = [];
             }
 
@@ -397,7 +397,7 @@ class ProductAssetController extends Controller
             throw new AccessDeniedException();
         }
 
-        $asset     = $variation->getAsset();
+        $asset = $variation->getAsset();
         $reference = $variation->getReference();
 
         try {
@@ -574,7 +574,7 @@ class ProductAssetController extends Controller
      */
     public function thumbnailAction(Request $request, $code, $filter, $channelCode, $localeCode = null)
     {
-        $asset    = $this->findProductAssetByCodeOr404($code);
+        $asset = $this->findProductAssetByCodeOr404($code);
         $filename = FileController::DEFAULT_IMAGE_KEY;
 
         if (null !== $channel = $this->channelRepository->findOneByIdentifier($channelCode)) {
@@ -719,7 +719,7 @@ class ProductAssetController extends Controller
             throw new AccessDeniedException();
         }
 
-        $references  = $productAsset->getReferences();
+        $references = $productAsset->getReferences();
         $attachments = [];
         foreach ($references as $refKey => $reference) {
             $attachments[$refKey]['reference'] = $reference;
@@ -793,7 +793,7 @@ class ProductAssetController extends Controller
     {
         switch ($request->get('action')) {
             case self::BACK_TO_GRID:
-                $route  = 'pimee_product_asset_index';
+                $route = 'pimee_product_asset_index';
                 $params = [];
                 break;
             default:

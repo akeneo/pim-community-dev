@@ -54,14 +54,14 @@ class DisableProductValueFieldSubscriber implements EventSubscriberInterface
     {
         $value = $event->getProductValue();
         $attributeGroup = $value->getAttribute()->getGroup();
-        $eventContext   = $event->getContext();
-        $isCreateForm   = isset($eventContext['root_form_name'])
+        $eventContext = $event->getContext();
+        $isCreateForm = isset($eventContext['root_form_name'])
             && $eventContext['root_form_name'] === 'pim_product_create';
 
         if (!$isCreateForm
             && false === $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attributeGroup)) {
             $formOptions = $event->getFormOptions();
-            $formOptions['disabled']  = true;
+            $formOptions['disabled'] = true;
             $formOptions['read_only'] = true;
             $event->updateFormOptions($formOptions);
         }

@@ -57,7 +57,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         );
 
         $this->authorizationChecker = $authorizationChecker;
-        $this->pqbFactory           = $pqbFactory;
+        $this->pqbFactory = $pqbFactory;
     }
 
     /**

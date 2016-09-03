@@ -37,7 +37,7 @@ class AttributeGroupAccessUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $userGroupRepo,
         IdentifiableObjectRepositoryInterface $attributeGroupRepo
     ) {
-        $this->userGroupRepo      = $userGroupRepo;
+        $this->userGroupRepo = $userGroupRepo;
         $this->attributeGroupRepo = $attributeGroupRepo;
     }
 

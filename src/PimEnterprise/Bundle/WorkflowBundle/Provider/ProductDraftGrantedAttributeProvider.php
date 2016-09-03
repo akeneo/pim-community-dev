@@ -43,8 +43,8 @@ class ProductDraftGrantedAttributeProvider
         IdentifiableObjectRepositoryInterface $localeRepository,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->attributeRepository  = $attributeRepository;
-        $this->localeRepository     = $localeRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->localeRepository = $localeRepository;
         $this->authorizationChecker = $authorizationChecker;
     }
 
@@ -60,7 +60,7 @@ class ProductDraftGrantedAttributeProvider
         }
 
         $attributes = [];
-        $values     = $proposal->getChanges()['values'];
+        $values = $proposal->getChanges()['values'];
 
         foreach ($values as $code => $changes) {
             $attribute = $this->attributeRepository->findOneByIdentifier($code);

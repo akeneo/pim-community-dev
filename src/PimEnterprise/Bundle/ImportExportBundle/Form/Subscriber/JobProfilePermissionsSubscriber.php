@@ -45,7 +45,7 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
         SecurityFacade $securityFacade,
         GroupRepository $userGroupRepository
     ) {
-        $this->accessManager  = $accessManager;
+        $this->accessManager = $accessManager;
         $this->securityFacade = $securityFacade;
         $this->userGroupRepository = $userGroupRepository;
     }
@@ -87,7 +87,7 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
         }
 
         $executeGroups = $this->accessManager->getExecuteUserGroups($jobInstance);
-        $editGroups    = $this->accessManager->getEditUserGroups($jobInstance);
+        $editGroups = $this->accessManager->getEditUserGroups($jobInstance);
 
         $form = $event->getForm()->get('permissions');
         $form->get('execute')->setData($executeGroups);
@@ -112,11 +112,11 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
         if ($form->isValid()) {
             if (null === $jobInstance->getId()) {
-                $editGroups    = $this->userGroupRepository->findAll();
+                $editGroups = $this->userGroupRepository->findAll();
                 $executeGroups = $editGroups;
             } elseif ($this->isGranted($jobInstance)) {
                 $executeGroups = $form->get('permissions')->get('execute')->getData();
-                $editGroups    = $form->get('permissions')->get('edit')->getData();
+                $editGroups = $form->get('permissions')->get('edit')->getData();
             } else {
                 return;
             }

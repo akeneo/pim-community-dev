@@ -96,7 +96,7 @@ class FilePresenter implements PresenterInterface
      */
     protected function hasChanged(array $change, FileInfoInterface $fileInfo = null)
     {
-        $dataHash   = null !== $fileInfo ? $fileInfo->getHash() : null;
+        $dataHash = null !== $fileInfo ? $fileInfo->getHash() : null;
         $changeHash = isset($change['data']['hash']) ? $change['data']['hash'] : null;
 
         return $dataHash !== $changeHash;

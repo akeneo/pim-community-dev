@@ -42,7 +42,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
         ProductQueryBuilderFactoryInterface $pqbFactory,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->pqbFactory          = $pqbFactory;
+        $this->pqbFactory = $pqbFactory;
         $this->attributeRepository = $attributeRepository;
     }
 
