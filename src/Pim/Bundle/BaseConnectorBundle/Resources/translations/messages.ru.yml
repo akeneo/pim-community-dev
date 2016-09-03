@@ -9,9 +9,6 @@ pim_base_connector:
     csv_attribute_export:
       title: Экспорт атрибутов в CSV
       export.title: Экспорт атрибутов
-    csv_attribute_option_export:
-      title: Экспорт выборов атрибутов в CSV
-      export.title: Экспорт выборов атрибутов
     csv_association_type_export:
       title: Экспорт типов ассоциаций в CSV
       export.title: Экспорт типов ассоциаций
@@ -23,32 +20,31 @@ pim_base_connector:
       export.title: Экспорт групп вариантов
     csv_product_import:
       title: Импорт продуктов из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт продуктов
       import_associations.title: Импорт ассоциаций
     csv_category_import:
       title: Импорт категорий из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт категории
     csv_attribute_import:
       title: Импорт атрибутов из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт атрибутов
     csv_attribute_option_import:
       title: Импорт выборов атрибутов из CSV
-      validation.title: Подтверждение файла
-      import.title: Импорт выборов атрибутов
+      validation.title: Проверка файла
     csv_association_type_import:
       title: Импорт типов ассоциаций из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт типов ассоциаций
     csv_group_import:
       title: Импорт группы из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт группы
     csv_variant_group_import:
       title: Импорт группы вариантов в CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт групп вариантов
   steps:
     dummy_reader.title: Заглушка
@@ -62,7 +58,7 @@ pim_base_connector:
     csv_variant_group .title: Считыватель групп вариантов из CSV
     dummy_processor.title: Заглушка
     product_processor.title: Создание продукта
-    variant_group_processor.title: Создание / обновление группы вариантов
+    variant_group_processor.title: Создание / обновление групп вариантов
     category_processor.title: Создание категорий
     association_processor.title: Создание ассоциаций
     group_processor.title: Создание групп
@@ -87,7 +83,7 @@ pim_base_connector:
       help: Символ, используемый для обрамления полей
     withHeader:
       label: Включая заголовки
-      help: Добавлять строку с заголовками
+      help: Добавить строку с заголовками
     filePath:
       label: Путь к файлу
       help: Путь к сгенерированному файлу

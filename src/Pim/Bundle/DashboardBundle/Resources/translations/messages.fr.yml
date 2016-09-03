@@ -12,11 +12,11 @@ pim_dashboard:
       message: |-
         Le widget "%alias%" n'existe pas
     completeness:
-      title: Complétude par canal et locale
+      title: Complétude par canal et par locale
     last_operations:
       title: Dernières opérations
       empty: Aucune opération trouvée
-      status: Statut
+      status: État
       date: Date
       type: Type
       profile name: Nom du profil
