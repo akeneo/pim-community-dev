@@ -2,7 +2,7 @@ pim_dashboard:
   widget:
     last_operations:
       empty: Aucune opération trouvée
-      status: Statut
+      status: État
       date: Date
       type: Type
       profile name: Nom du profil
@@ -10,7 +10,7 @@ pim_dashboard:
       job_type:
         import: Import
         export: Export
-        mass_edit: Edition de masse
+        mass_edit: Edition en masse
         quick_export: Export rapide
     completeness:
       load_more: Charger plus...
