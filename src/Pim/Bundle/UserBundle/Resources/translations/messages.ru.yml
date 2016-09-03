@@ -2,6 +2,11 @@ pim_user:
   user:
     tab:
       general.title: Основные
+      additional.title: Дополнительно
+      group_and_role.title: Группы и роли
+      password.title: Пароль
+      business_unit.title: Бизнес-единицы
+      email_synchronization.title: Параметры синхронизации email
 oro.user.controller:
   group.message.saved: Группа сохранена
   role.message.saved: Роль сохранена
@@ -29,18 +34,106 @@ pim_title:
   system_configuration.index: Настройки
 user.title: Пользователь
 user.overview: Пользователь
+Users Management: Управление пользователями
+Create user: Создать пользователя
+btn.create.user: Создать пользователя
+New user: Новый пользователь
+Additional: Дополнительно
+Groups and Roles: Группы и роли
+Username: Имя пользователя
+Password: Пароль
+Re-enter password: Подтвердите пароль
+Name prefix: Префикс имени
+First name: Имя
+Middle name: Отчество
+Last name: Фамилия
+Name suffix: Суффикс имени
+Date of birth: Дата рождения
+Avatar: Аватар
+Additional emails: Дополнительные email
+Add another email: Добавить другой email
+Catalog locale: Локаль каталога
+Catalog scope: Область видимости каталога
+Default tree: Дерево каталога по умолчанию
+Business Units: Бизнес-единицы
+Email synchronization settings: Параметры синхронизации email
+Host: Сервер
+Port: Порт
+Last logged in: Дата последнего входа
+Login count: Количество входов
+Additional Information: Дополнительная информация
+Basic Information: Общая информация
+Contact Information: Контактная информация
+User name: Имя пользователя
+Birthday: День рождения
+API key: Ключ API
+Generate key: Сгенерировать ключ
+Primary: первичный
+Removed user: Удаленный пользователь
+user.product_grid_filters: Фильтры товаров
+Role: Роль
+Owner: Владелец
+General: Основные
 Entity: Объект
+Capabilities: Способности
+Save and close: Сохранить и закрыть
+Has role: Имеет роль
+role:
+  title: роль
+  overview: роль
+  edit: Изменить роль
+  create: Создать роль
+btn.create.role: Создать роль
+rights:
+  action: Права доступа
 oro_security:
   acl_group:
     user: Пользователи
     role: Роли
+    group: Группы пользователя
+  acl:
+    user:
+      view: Просмотр списка пользователей
+      create: Создание пользователя
+      edit: Изменение пользователей
+      delete: Удаление пользователя
+    role:
+      view: Просмотр списка ролей
+      create: Создание роли
+      edit: Изменение ролей
+      delete: Удаление роли
+    group:
+      view: Просмотр списка групп пользователя
+      create: Создание группы пользователя
+      edit: Изменение групп пользователя
+      delete: Удаление группы пользователя
+(default): Разрешения по умолчанию на сущности
+VIEW: Просмотр
 CREATE: Создать
 EDIT: Редактировать
 DELETE: Удалить
+ASSIGN: Назначить
+SHARE: Поделиться
 oro:
   security:
     access-level:
       BASIC: Пользователь
+      LOCAL: Бизнес-единица
+      DEEP: Отдел
+      GLOBAL: Организация
       SYSTEM: Система
       NONE: Нет
+Create group: Создать группу
+btn.create.user-group: Создать группу
+Has group: Имеет группу
+Save and Close: Сохранить и закрыть
 user-group.overview: Группы
+Log in: Войти
+Remember me on this computer: Запомнить меня на этом компьютере
+Forgot your password?: Забыли пароль?
+Username or Email: Имя пользователя или Email
+Forgot Password: Восстановить пароль
+Request: Запрос
+Check Email: Проверить электронную почту
+password_reset_email_sent: 'На адрес %email% было отправлено письмо. Оно содержит ссылку, которую вам нужно нажать, чтобы сбросить ваш пароль.'
+Go to homepage: Перейти на главную страницу
