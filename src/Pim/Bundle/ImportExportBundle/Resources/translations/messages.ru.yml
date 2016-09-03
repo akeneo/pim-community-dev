@@ -15,7 +15,7 @@ pim_import_export:
   download_archive:
     archive: Скачать созданный архив|Скачать созданные архивы|Скачать созданные архивы
     output: Скачать созданный файл|скачать созданные файлы
-    input: 'скачать файл чтения|скачать  файлы чтения'
+    input: Скачать прочитанный файл|Скачать прочитанные файлы
     invalid: Скачать недопустимые значения
   notification:
     export:
@@ -39,7 +39,7 @@ pim_title.import_execution.index: История запусков импорта
 pim_title.import_execution.show: Запуск импорта | Детали
 export profile:
   title: профиль экспорта
-  overview: Обзор профилей экспорта
+  overview: Обзор профиля экспорта
   create: Создать профиль экспорта
   edit: Редактировать профиль экспорта
 export report:
@@ -50,7 +50,7 @@ import profile:
   create: Создать профиль импорта
   edit: Редактировать профиль импорта
 import report:
-  overview: отчеты импорта
+  overview: Отчеты импорта
 pim_importexport:
   acl:
     export_profile:
@@ -93,7 +93,7 @@ export now: Экспортировать сейчас
 confirmation:
   remove:
     export profile: 'Вы уверены, что хотите удалить профиль экспорта "%name%"?'
-    import profile: 'Вы уверены, что вы хотите удалить профиль импорта "%name%"?'
+    import profile: 'Вы уверены, что хотите удалить профиль импорта "%name%"?'
 flash:
   export:
     created: Экспорт был успешно создан
@@ -110,7 +110,7 @@ pim_menu:
     import_history: История импорта
     import_profile: Профили импорта
 General properties: Общие свойства
-History: История
+History: Журнал
 pane.accordion:
   properties: Свойства
   global_settings: Глобальные настройки

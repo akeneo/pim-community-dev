@@ -61,9 +61,9 @@ error:
     export profile: Не удается удалить этот профиль экспорта
     user: Не удается удалить этого пользователя
     role: Не удается удалить эту роль
-    attribute_option: При удалении свойства атрибута произошла ошибка
+    attribute_option: При удалении элемента списка атрибута произошла ошибка
   saving:
-    attribute_option: Не удается сохранить свойство атрибута
+    attribute_option: Не удается сохранить элемента списка атрибута
 alert:
   attribute_option:
     error_occured_during_submission: Во время отправки формы на сервер произошла ошибка
@@ -72,11 +72,11 @@ alert:
     not_available: Ваш веб-браузер кажется не совместим с sessionStorage. Обратитесь к администратору
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Внимание, вы потеряете несохраненные данные. Вы действительно хотите отменить изменения для этой опции?
+    cancel_edition_on_new_option_text: Внимание, вы потеряете несохраненные данные. Вы действительно хотите отменить изменения для этого элемента списка?
     cancel_edition_on_new_option_title: Отмена изменений
 label:
   attribute_option:
-    add_option: Добавить новое свойство
+    add_option: Добавить новый элемента списка
 Code: Код
 Edit: Редактировать
 Delete: Удалить
@@ -90,6 +90,8 @@ pim.grid.mass_action.delete: Удалить
 pim.grid.mass_action.mass_edit: Массовое редактирование
 pim.grid.mass_action.sequential_edit: Последовательное редактирование
 jstree.create: Создать
+switch_on: Да
+switch_off: Нет
 pim_enrich:
   item:
     list:
@@ -112,10 +114,12 @@ pim_enrich:
         download_pdf: PDF
         compare_translate: Сравнить / Перевести
         delete: Удалить
+        save: Сохранить
         save_and_back: Сохранить и вернуться к списку
       history:
         version: Версия
         author: Автор
+        logged_at: Дата входа
         more: Дополнительно
         less: Менее
         from: С
@@ -123,6 +127,7 @@ pim_enrich:
         property: Свойство
         old_values: Старые значения
         new_values: Новые значения
+        actions: Действия
       info:
         deletion_successful: Продукт успешно удален.
         deletion_failed: Не удалось удалить продукт.
@@ -199,6 +204,7 @@ pim_enrich:
         attributes:
           title: Атрибуты
           btn:
+            add: Добавить
             add_attributes: Добавить атрибуты
           info:
             search_attributes: Поиск
@@ -213,14 +219,14 @@ pim_enrich:
             no_family: Семейство не определено. Пожалуйста определите семейство для вычисления завершенности этого продукта.
             no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить завершенность для нового семейства.
         history:
-          title: История
+          title: Журнал
       switch:
         "no": false
         "yes": true
       sequential_edit:
         info:
           products: продукты
-          previous: 'Перейдите обратно к {{ product }} без сохранения.'
+          previous: 'Перейти обратно к {{ product }} без сохранения.'
           next: 'Перейти к {{ product }} без сохранения.'
         btn:
           save_and_next: Сохранить и далее
@@ -239,10 +245,11 @@ pim_enrich:
         select: Выбрать
     attribute_option:
       flash:
-        option_created: Выбор в списке атрибута успешно создан
-        error_creating_option: Произошла ошибка при попытке создания выбора для атрибута
+        option_created: Элемент в списке атрибута успешно создан
+        error_creating_option: Произошла ошибка при попытке создания элемента списка для атрибута
       add_option_modal:
-        title: Добавить выбор для атрибута
+        title: Добавить элемента списка для атрибута
+        confirm: Добавить
         cancel: Отмена
 pim_enrich.error:
   exception.title: 'Ах, нет! Произошла ошибка {{ status_code }}...'
