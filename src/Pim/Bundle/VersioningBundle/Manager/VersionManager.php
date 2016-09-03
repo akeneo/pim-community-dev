@@ -118,7 +118,8 @@ class VersionManager
         }
 
         if ($this->realTimeVersioning) {
-            $this->registry->getManagerForClass(ClassUtils::getClass($versionable))->refresh($versionable);
+            $manager = $this->registry->getManagerForClass(ClassUtils::getClass($versionable));
+            $manager->refresh($versionable);
 
             $createdVersions = $this->buildPendingVersions($versionable);
 
@@ -142,6 +143,10 @@ class VersionManager
                     $previousVersion,
                     $this->versionContext->getContextInfo(ClassUtils::getClass($versionable))
                 );
+
+            if (null !== $previousVersion) {
+                $manager->detach($previousVersion);
+            }
         } else {
             $createdVersions[] = $this->versionBuilder
                 ->createPendingVersion(

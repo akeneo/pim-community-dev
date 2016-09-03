@@ -1,133 +1,168 @@
 'use strict';
 
 define([
-        'underscore',
-        'oro/translator',
-        'pim/filter/filter',
-        'routing',
-        'text!pim/template/filter/product/updated',
-        'pim/fetcher-registry',
-        'pim/user-context',
-        'pim/i18n',
-        'jquery.select2',
-        'datepicker',
-        'pim/date-context'
-    ], function (
-        _,
-        __,
-        BaseFilter,
-        Routing,
-        template,
-        fetcherRegistry,
-        userContext,
-        i18n,
-        initSelect2,
-        Datepicker,
-        DateContext
-    ) {
-        return BaseFilter.extend({
-            shortname: 'updated',
-            template: _.template(template),
-            events: {
-                'change [name="filter-operator"], [name="filter-value"]': 'updateState'
-            },
+    'jquery',
+    'underscore',
+    'oro/translator',
+    'pim/filter/filter',
+    'routing',
+    'text!pim/template/filter/product/updated',
+    'pim/fetcher-registry',
+    'pim/user-context',
+    'pim/i18n',
+    'jquery.select2',
+    'datepicker',
+    'pim/date-context'
+], function (
+    $,
+    _,
+    __,
+    BaseFilter,
+    Routing,
+    template,
+    fetcherRegistry,
+    userContext,
+    i18n,
+    initSelect2,
+    Datepicker,
+    DateContext
+) {
+    return BaseFilter.extend({
+        shortname: 'updated',
+        template: _.template(template),
+        events: {
+            'change [name="filter-operator"], [name="filter-value-updated"]': 'updateState'
+        },
 
-            /**
-             * Initializes configuration.
-             *
-             * @param config
-             */
-            initialize: function (config) {
-                this.config = config.config;
+        /* Date widget options */
+        datetimepickerOptions: {
+            format: DateContext.get('date').format,
+            defaultFormat: DateContext.get('date').defaultFormat,
+            language: DateContext.get('language')
+        },
 
-                return BaseFilter.prototype.initialize.apply(this, arguments);
-            },
+        /* Model date format */
+        modelDateFormat: 'yyyy-MM-dd HH:mm:ss',
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-                    _.defaults(data, {field: this.getCode(), operator: _.first(_.values(this.config.operators))});
-                }.bind(this));
+        /**
+         * Initializes configuration.
+         *
+         * @param config
+         */
+        initialize: function (config) {
+            this.config = config.config;
 
-                return BaseFilter.prototype.configure.apply(this, arguments);
-            },
+            return BaseFilter.prototype.initialize.apply(this, arguments);
+        },
 
-            /**
-             * Returns rendered input.
-             *
-             * @return {String}
-             */
-            renderInput: function () {
-                return this.template({
-                    isEditable: this.isEditable(),
-                    __: __,
-                    field: this.getField(),
-                    operator: this.getOperator(),
-                    value: this.getValue(),
-                    operatorChoices: this.config.operators
-                });
-            },
+        /**
+         * {@inheritdoc}
+         */
+        configure: function () {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {field: this.getCode(), operator: _.first(_.values(this.config.operators))});
+            }.bind(this));
 
-            /**
-             * Initializes select2 and datepicker after rendering.
-             */
-            postRender: function () {
-                this.$('[name="filter-operator"]').select2({minimumResultsForSearch: -1});
+            return BaseFilter.prototype.configure.apply(this, arguments);
+        },
 
-                if ('>' === this.getOperator()) {
-                    Datepicker
-                        .init(
-                            this.$('.date-wrapper:first'),
-                            {
-                                format: 'yyyy-MM-dd',
-                                defaultFormat: 'yyyy-MM-dd',
-                                language: DateContext.get('language')
-                            }
-                        )
-                        .on('changeDate', this.updateState.bind(this));
-                }
-            },
+        /**
+         * Returns rendered input.
+         *
+         * @return {String}
+         */
+        renderInput: function () {
+            var value    = this.getValue();
+            var operator = this.getOperator();
 
-            /**
-             * {@inheritdoc}
-             */
-            isEmpty: function () {
-                return !this.getOperator() || 'ALL' === this.getOperator();
-            },
-
-            /**
-             * Updates operator and value on fields change.
-             * Value is reset after operator has changed.
-             */
-            updateState: function () {
-                this.$('.date-wrapper:first').datetimepicker('hide');
-
-                var oldOperator = this.getOperator();
-
-                var value    = this.$('[name="filter-value"]').val();
-                var operator = this.$('[name="filter-operator"]').val();
-
-                if ('>' === operator) {
-                    value = value + ' 00:00:00';
-                }
-
-                if (operator !== oldOperator) {
-                    value = '';
-                }
-
-                if ('SINCE LAST JOB' === operator) {
-                    value = this.getParentForm().getFormData().jobCode;
-                }
-
-                this.setData({
-                    field: this.getField(),
-                    operator: operator,
-                    value: value
-                });
-
-                this.render();
+            if ('SINCE LAST JOB' !== operator && 'SINCE LAST N DAYS' !== operator) {
+                value = this.formatDate(value, this.modelDateFormat, DateContext.get('date').format);
             }
-        });
+
+            return this.template({
+                isEditable: this.isEditable(),
+                __: __,
+                field: this.getField(),
+                operator: operator,
+                value: value,
+                operatorChoices: this.config.operators
+            });
+        },
+
+        /**
+         * Initializes select2 and datepicker after rendering.
+         */
+        postRender: function () {
+            this.$('[name="filter-operator"]').select2({minimumResultsForSearch: -1});
+
+            if ('>' === this.getOperator()) {
+                Datepicker
+                    .init(this.$('.date-wrapper:first'), this.datetimepickerOptions)
+                    .on('changeDate', this.updateState.bind(this));
+            }
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        isEmpty: function () {
+            return !this.getOperator() || 'ALL' === this.getOperator();
+        },
+
+        /**
+         * Updates operator and value on fields change.
+         * Value is reset after operator has changed.
+         */
+        updateState: function () {
+            this.$('.date-wrapper:first').datetimepicker('hide');
+
+            var oldOperator = this.getOperator();
+            var value       = this.$('[name="filter-value-updated"]').val();
+            var operator    = this.$('[name="filter-operator"]').val();
+
+            if (operator !== oldOperator) {
+                value = '';
+            }
+
+            if ('SINCE LAST JOB' !== operator && 'SINCE LAST N DAYS' !== operator) {
+                value = this.formatDate(value, DateContext.get('date').format, this.modelDateFormat);
+            } else {
+                value = this.getParentForm().getFormData().jobCode;
+            }
+
+            this.setData({
+                field: this.getField(),
+                operator: operator,
+                value: value
+            });
+
+            this.render();
+        },
+
+        /**
+         * Format a date according to specified format.
+         * It instantiates a datepicker on-the-fly to perform the conversion. Not possible to use the "real" ones since
+         * we need to format a date even when the UI is not initialized yet.
+         *
+         * @param {String} date
+         * @param {String} fromFormat
+         * @param {String} toFormat
+         *
+         * @return {String}
+         */
+        formatDate: function (date, fromFormat, toFormat) {
+            if (_.isArray(date) || _.isEmpty(date)) {
+                return null;
+            }
+
+            var options        = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
+            var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
+
+            fakeDatepicker.setValue(date);
+            fakeDatepicker.format = toFormat;
+            fakeDatepicker._compileFormat();
+
+            return fakeDatepicker.formatDate(fakeDatepicker.getDate());
+        }
     });
+});

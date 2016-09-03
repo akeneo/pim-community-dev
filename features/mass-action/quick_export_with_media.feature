@@ -40,7 +40,7 @@ Feature: Quick export many products with media from datagrid
   Scenario: Successfully quick export products and media as a XSLX file
     Given I am on the products page
     When I select rows boots, sneakers
-    And I press "XLSX (All attributes)" on the "Quick Export" dropdown button
+    And I press "Excel (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "xlsx_product_quick_export" quick export to finish
     And I am on the dashboard page
     Then I should have 1 new notification

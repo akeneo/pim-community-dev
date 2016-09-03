@@ -63,8 +63,8 @@ class ProductCsvExport implements FormConfigurationProviderInterface
             'with_media' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.export.with_media.label',
-                    'help'  => 'pim_connector.export.with_media.help'
+                    'label' => 'pim_connector.export.csv.with_media.label',
+                    'help'  => 'pim_connector.export.csv.with_media.help'
                 ]
             ],
         ]);
@@ -84,8 +84,8 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                     'choices'  => $this->decimalSeparators,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_connector.export.decimalSeparator.label',
-                    'help'     => 'pim_connector.export.decimalSeparator.help'
+                    'label'    => 'pim_connector.export.csv.decimalSeparator.label',
+                    'help'     => 'pim_connector.export.csv.decimalSeparator.help'
                 ]
             ],
             'dateFormat' => [
@@ -94,8 +94,8 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                     'choices'  => $this->dateFormats,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_connector.export.dateFormat.label',
-                    'help'     => 'pim_connector.export.dateFormat.help',
+                    'label'    => 'pim_connector.export.csv.dateFormat.label',
+                    'help'     => 'pim_connector.export.csv.dateFormat.help',
                 ]
             ],
         ];
