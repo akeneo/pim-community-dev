@@ -1,9 +1,19 @@
 parameters:
     pim_ui.twig.style_extension.class: Pim\Bundle\UIBundle\Twig\StyleExtension
+    pim_ui.twig.loading_message_extension.class: Pim\Bundle\UIBundle\Twig\LoadingMessageExtension
+    pim_ui.loading_messages_file: %kernel.root_dir%/../src/Pim/Bundle/UIBundle/Resources/config/loading_messages.txt
 
 services:
     pim_ui.twig.style_extension:
         class: '%pim_ui.twig.style_extension.class%'
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    pim_ui.twig.loading_message_extension:
+        class: '%pim_ui.twig.loading_message_extension.class%'
+        arguments:
+            - '%pim_ui.loading_messages_file%'
         public: false
         tags:
             - { name: twig.extension }

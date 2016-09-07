@@ -9,9 +9,13 @@
   margin-right: auto;
   margin-left: auto;
   text-align: center;
-  width: 300px;
-  .progress-striped .bar {
-    #gradient > .striped(@blue, -45deg);
+  width: 600px;
+  .progress-striped {
+    width: 300px;
+    margin-left: 150px;
+    .bar {
+      #gradient > .striped(@blue, -45deg);
+    }
   }
   .progress.active .bar {
     -webkit-animation: progress-bar-stripes 1s linear infinite;

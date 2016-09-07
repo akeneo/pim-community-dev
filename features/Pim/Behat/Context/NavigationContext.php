@@ -67,9 +67,10 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     ];
 
     protected $elements = [
-        'Dot menu' => ['css' => '.pin-bar .pin-menus i.icon-ellipsis-horizontal'],
+        'Dot menu'        => ['css' => '.pin-bar .pin-menus i.icon-ellipsis-horizontal'],
+        'Loading message' => ['css' => '#progressbar h3'],
     ];
-    
+
     /**
      * @param string $baseUrl
      */
@@ -335,6 +336,21 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         }, 'Unable to click on the pin bar dot menu');
 
         $pinDotMenu->click();
+    }
+
+    /**
+     * @Then /^I should see a nice loading message$/
+     */
+    public function iShouldSeeANiceLoadingMessage()
+    {
+        $message = $this->spin(function () {
+            return trim($this->getSession()
+                ->getPage()
+                ->find('css', $this->elements['Loading message']['css'])
+                ->getHtml());
+        }, 'Unable to find any loading message');
+
+        assertNotEquals('Loading ...', $message, 'The loading message should not equals the default value');
     }
 
     /**

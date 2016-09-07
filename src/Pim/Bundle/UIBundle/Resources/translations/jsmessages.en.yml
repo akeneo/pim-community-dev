@@ -120,3 +120,8 @@ oro_config:
                 notification:
                     title: Notifications
                     system_notification: New versions notifications
+                loading_message:
+                    title: Loading messages
+                    label: Enable loading messages
+                loading_messages:
+                    label: Available loading messages

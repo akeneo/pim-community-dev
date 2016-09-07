@@ -34,7 +34,13 @@
     <body class="{% block bodyClass %}{% endblock %}">
     {% placeholder after_body_start %}
     <div id="progressbar">
-        <h3>{% trans %}Loading ...{% endtrans %}</h3>
+        <h3>
+            {% if oro_config_value('pim_ui.loading_message_enabled') %}
+                {{ loading_message() }}
+            {% else %}
+                {% trans %}Loading ...{% endtrans %}
+            {% endif %}
+        </h3>
         <div class="progress progress-striped active">
             <div class="bar" style="width: 90%;"></div>
         </div>
