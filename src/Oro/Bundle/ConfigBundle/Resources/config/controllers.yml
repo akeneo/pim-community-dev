@@ -6,6 +6,7 @@ services:
         class: '%oro_config.controller.configuration.class%'
         arguments:
             - '@oro_config.global'
+            - '@file_locator'
             - '%pim_ui.loading_messages_file%'
             -
                 -

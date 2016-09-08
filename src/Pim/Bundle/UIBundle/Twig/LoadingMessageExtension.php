@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\UIBundle\Twig;
 
+use Symfony\Component\HttpKernel\Config\FileLocator;
+
 /**
  * Extension to load random user friendly messages instead of "Loading" message
  *
@@ -10,14 +12,18 @@ namespace Pim\Bundle\UIBundle\Twig;
  */
 class LoadingMessageExtension extends \Twig_Extension
 {
+    /** @var FileLocator */
+    protected $fileLocator;
+
     /** @var string */
     protected $file;
 
     /**
      * @param string $file
      */
-    public function __construct($file)
+    public function __construct(FileLocator $fileLocator, $file)
     {
+        $this->fileLocator = $fileLocator;
         $this->file = $file;
     }
 
@@ -32,13 +38,14 @@ class LoadingMessageExtension extends \Twig_Extension
     }
 
     /**
-     * Return a random string from available messages list
+     * Returns a random string from available messages list
      *
      * @return string
      */
     public function loadingMessage()
     {
-        $messages = file($this->file);
+        $path = $this->fileLocator->locate($this->file);
+        $messages = file($path);
 
         return $messages[array_rand($messages)];
     }
