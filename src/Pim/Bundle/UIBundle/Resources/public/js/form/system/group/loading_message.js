@@ -7,7 +7,7 @@ define([
         'text!pim/template/system/group/loading_message',
         'bootstrap.bootstrapswitch'
     ],
-    function(
+    function (
         _,
         $,
         BaseForm,
