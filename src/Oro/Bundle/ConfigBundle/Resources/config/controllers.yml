@@ -6,6 +6,8 @@ services:
         class: '%oro_config.controller.configuration.class%'
         arguments:
             - '@oro_config.global'
+            - '@file_locator'
+            - '%pim_ui.loading_messages_file%'
             -
                 -
                     section: pim_localization
@@ -13,3 +15,9 @@ services:
                 -
                     section: pim_analytics
                     name: version_update
+                -
+                    section: pim_ui
+                    name: loading_message_enabled
+                -
+                    section: pim_ui
+                    name: loading_messages
