@@ -7,5 +7,4 @@ Feature: Display an happy message during loading screen
   Scenario: Display loading message
     Given a "default" catalog configuration
     When I am logged in as "Mary"
-    And I am on the homepage
     Then I should see a nice loading message
