@@ -1,18 +1,18 @@
 confirmation:
   remove:
-    item: Êtes-vous certain de vouloir supprimer cet élément ?
-    association type: "Êtes-vous sûr de que vouloir supprimer ce type d'association ?"
-    attribute: Êtes-vous sûr de que vouloir supprimer cet attribut ?
-    family: Êtes-vous sûr de que vouloir supprimer cette famille ?
-    product: Êtes-vous sûr de que vouloir supprimer ce produit ?
-    channel: Êtes-vous sûr de que vouloir supprimer ce canal ?
-    group: Êtes-vous sûr de vouloir supprimer ce groupe ?
-    variant group: Êtes-vous sûr de que vouloir supprimer ce groupe de variantes ?
-    group type: Êtes-vous sûr de que vouloir supprimer ce type de groupe ?
-    import profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'import ?"
-    export profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'export ?"
-    user: Êtes-vous sûr de vouloir supprimer cet utilisateur ?
-    role: Êtes-vous sûr de vouloir supprimer ce rôle ?
+    item: Êtes-vous certain(e) de vouloir supprimer cet élément ?
+    association type: "Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?"
+    attribute: Êtes-vous sûr(e) de que vouloir supprimer cet attribut ?
+    family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
+    product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
+    channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
+    group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
+    variant group: Êtes-vous sûr(e) de que vouloir supprimer ce groupe de variantes ?
+    group type: Êtes-vous sûr(e) de que vouloir supprimer ce type de groupe ?
+    import profile: "Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?"
+    export profile: "Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?"
+    user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
+    role: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -21,24 +21,24 @@ pim_datagrid:
       label: Export rapide
   mass_action:
     delete:
-      confirm_content: Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?
+      confirm_content: Êtes-vous sûr(e) de vouloir supprimer les produits sélectionnés ?
       success: Les produits sélectionnés ont été supprimés.
       error: "Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau."
 flash:
   item:
     removed: Elément supprimé avec succès
   association type:
-    removed: "Le type d'association a bien été supprimé"
+    removed: "Le type d'association est supprimé avec succès"
   attribute:
-    removed: "L'attribut a bien été supprimé"
+    removed: Attribut supprimé avec succès
   family:
-    removed: La famille a bien été supprimée
+    removed: Famille supprimée avec succès
   product:
-    removed: Le produit a bien été supprimé
+    removed: Produit supprimé avec succès
   channel:
-    removed: Le canal a bien été supprimé
+    removed: Canal supprimé avec succès
   group:
-    removed: Le groupe a bien été supprimé
+    removed: Groupe supprimé avec succès
   variant group:
     removed: Le groupe de variantes a bien été supprimé
   group type:
@@ -48,7 +48,7 @@ flash:
   export profile:
     removed: "Le profil d'export a bien été supprimé"
   user:
-    removed: "L'utilisateur a bien été supprimé"
+    removed: Utilisateur supprimé avec succès
   role:
     removed: Le rôle a bien été supprimé
 error:
@@ -69,6 +69,7 @@ error:
     attribute_option: "Erreur lors de la suppression de l'option de l'attribut"
   saving:
     attribute_option: "Impossible d'enregistrer l'option de l'attribut"
+    export_profile: "Impossible d'enregistrer le profil d'export. Vérifiez que tous les champs sont correctement remplis."
 alert:
   attribute_option:
     error_occured_during_submission: "Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur"
@@ -77,13 +78,13 @@ alert:
     not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Attention, vous allez perdre les données non sauvegardées. Êtes-vous sûr de vouloir annuler les modifications sur cette nouvelle option ?
+    cancel_edition_on_new_option_text: Attention, vous allez perdre les données non sauvegardées. Êtes-vous sûr(e) de vouloir annuler les modifications sur cette nouvelle option ?
     cancel_edition_on_new_option_title: Annuler les modifications
 label:
   attribute_option:
     add_option: Ajouter une option
 Code: Code
-Edit: Editer
+Edit: Modifier
 Delete: Supprimer
 Edit attributes of the product: Modifier les attributs du produit
 Classify the product: Classer le produit
@@ -96,10 +97,10 @@ pim:
       quick_export:
         csv_all: CSV (tous les attributs)
         csv_grid_context: CSV (contexte de la grille)
-        xlsx_all: XLSX (tous les attributs)
-        xlsx_grid_context: XLSX (contexte de la grille)
+        xlsx_all: Excel (tous les attributs)
+        xlsx_grid_context: Excel (contexte de la grille)
       delete: Supprimer des produits
-      mass_edit: Modifier les informations produit
+      mass_edit: Modifier les informations du produit
       category_edit: Déplacer des produits vers des catégories
       sequential_edit: Modifier les produits séquentiellement
 jstree.create: Créer
@@ -111,8 +112,8 @@ pim_enrich:
       delete.label: Supprimer
       delete.error: "Erreur lors de la suppression de l'élément"
     delete:
-      confirm.content: "Êtes-vous sûr de que vouloir supprimer  {{ itemName }} ? Il n'est pas possible d'annuler cette action"
-      confirm.title: 'Supprimer {{ itemName }}'
+      confirm.content: "Êtes-vous sûr(e) de que vouloir supprimer {{ itemName }} ? Il n'est pas possible d'annuler cette action"
+      confirm.title: "Supprimer l'élément {{ itemName }}"
   navigation:
     link:
       back_to_grid: Retour à la grille
@@ -127,17 +128,17 @@ pim_enrich:
       btn:
         enable: Activer
         enabled: Activé
-        disable: Desactiver
+        disable: Désactiver
         disabled: Désactivé
         download_pdf: PDF
         compare_translate: Comparer / traduire
         delete: Supprimer
         save: Enregistrer
-        save_and_back: Enregistrer et revenir à la grille
+        save_and_back: Enregistrer et revenir sur la grille
       history:
         version: Version
         author: Auteur
-        logged_at: Connecté le
+        logged_at: Connecté(e) le
         more: Plus
         less: Moins
         from: De
@@ -154,7 +155,7 @@ pim_enrich:
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - champs
-        already_in_upload: 'Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et "{{ scope }}"'
+        already_in_upload: 'Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"'
       error:
         upload: "Une erreur s'est produite lors du transfert du fichier."
       meta:
@@ -176,7 +177,7 @@ pim_enrich:
       copy:
         select: Sélectionner
         all: Tous
-        all_visible: Tous les visibles
+        all_visible: Tous les éléments visibles
         none: Aucun
         copy: Copier
       variant_group:
@@ -195,7 +196,7 @@ pim_enrich:
       create_popin:
         title: Créer un nouveau produit
         labels:
-          family: Choisissez une famille
+          family: Choisir une famille
           save: Enregistrer
           cancel: Annuler
     attribute_option:
@@ -211,7 +212,7 @@ pim_enrich:
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - champs
-        already_in_upload: 'Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et "{{ scope }}"'
+        already_in_upload: 'Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"'
         no_attributes: "Ce groupe de variantes n'a pas encore d'attributs"
       btn:
         save: Enregistrer
@@ -222,19 +223,19 @@ pim_enrich:
         updated: Mis à jour
         updated_by: Mis à jour par
   confirmation:
-    leave: Êtes-vous sûr de vouloir quitter cette page?
+    leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: 'Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.'
     delete_item: "Supprimer l'élément."
     delete:
       attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
   info:
-    not_applicable: Inconnu
+    not_applicable: N/A
     entity:
       updated: "Des modifications n'ont pas encore été sauvegardées."
   error:
     upload: "Une erreur s'est produite pendant le chargement du fichier"
   alert:
-    not_allowed: "Vous n'êtes pas autorisé à accéder à cette page"
+    not_allowed: "Vous n'êtes pas autorisé(e) à accéder à cette page"
     error_occured: "Une erreur s'est produite lors du chargement de la page"
   form:
     required: (obligatoire)
@@ -339,7 +340,7 @@ pim_enrich:
       filter:
         channel:
           title: Canal
-          help: "Le canal définit la portée des valeurs des produits, les locales utilisées pour sélectionner les données ainsi que l'arbre utilisé pour sélectionner les produits."
+          help: "Le canal définit la portée des valeurs des produits, les locales utilisées pour sélectionner les données ainsi que l'arbre de catégories utilisé pour sélectionner les produits."
         locales:
           title: Locales
           help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex : les informations produits en allemand.'
@@ -347,7 +348,7 @@ pim_enrich:
           title: Attributs
           edit: Modifier
           label: '{0} Tous les attributs|{1} Un attribut sélectionné|]1,Inf[ {{ count }} attributs sélectionnés'
-          help: "Sélectionne l'information produit à exporter. Par exemple : seulement les attributs techniques."
+          help: 'Sélectionne les informations du produit à exporter. Par ex. : seulement les attributs techniques.'
           empty: Tous les attributs vont être exportés
           modal:
             apply: Appliquer
@@ -362,42 +363,41 @@ pim_enrich:
           empty_selection: Tous les attributs vont être exportés
         family:
           title: Famille
-          help: 'Sélectionne les produits à exporter en fonction de leur famille. Par ex : exporter seulement les chaussures et les robes.'
+          help: 'Sélectionne les produits à exporter en fonction de leur famille. Par ex. : exporter seulement les chaussures et les robes.'
           operators:
             IN: Dans la liste
             NOT IN: Pas dans la liste
             EMPTY: Produits qui n’ont pas de famille
             NOT EMPTY: Produits qui ont une famille
-          empty_selection: Sélectionnez une famille
         updated:
-          title: Condition temporelle
+          title: Condition sur la date de mise à jour
           operators:
             ALL: Pas de condition de date
             SINCE LAST N DAYS: Produits mis à jour durant les n derniers jours (par ex. 6)
             >: Produits mis à jours depuis cette date
             SINCE LAST JOB: Produits mis à jour depuis le dernier export
         enabled:
-          title: Statut
-          help: 'Sélectionne les produits à exporter selon leur statut. Par ex : exporter les produits peu importe leur statut.'
+          title: État
+          help: 'Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut.'
           value:
             all: Tous
             enabled: Activé
             disabled: Désactivé
         completeness:
           title: Complétude
-          help: Sélectionne les produits à exporter selon leur complétude.
+          help: Choisir les produits à exporter selon leur complétude.
           operators:
-            ALL: Pas de condition de complétude
+            ALL: Pas de condition sur la complétude
             >=: Complet sur au moins une locale sélectionnée
             GREATER OR EQUALS THAN ON ALL LOCALES: Complet sur toutes les locales sélectionnées
-            LOWER THAN ON ALL LOCALES: Non complet sur toutes les locales sélectionnées
+            LOWER THAN ON ALL LOCALES: Incomplet sur toutes les locales sélectionnées
           empty_selection: Sélectionnez une famille
         category:
           title: Catégorie
-          help: "Utilise les catégories de produits de l'arbre (défini par le canal ci-dessus) pour sélectionner les produits à exporter"
+          help: "Utiliser les catégories (venant de l'arbre défini par le canal ci-dessus) pour sélectionner les produits à exporter"
         identifier:
           title: Identifiant
-          help: Les identifiants des produits que vous souhaitez exporter, séparés par une virgule, un espace ou un saut de ligne
+          help: Les identifiants des produits que vous souhaitez exporter, séparés par une virgule, par un espace ou par un saut de ligne
         metric:
           operators:
             =: Est égal à

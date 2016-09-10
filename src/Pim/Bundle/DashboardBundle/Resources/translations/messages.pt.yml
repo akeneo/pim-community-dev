@@ -1,6 +1,5 @@
 pim_dashboard:
   title: Painel
-  version: Versão
   link.label:
     product: Gerir produtos
     category: Gerir categorias

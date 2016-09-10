@@ -22,4 +22,4 @@ pim_catalog:
     300: "Ce champ attend un code d'entité valide."
     301: Ce champ attend une portée et une locale valides.
     302: Ce champ attend une portée valide.
-    303: "Ce cahmp attend un format d'association valide."
+    303: "Ce champ attend un format d'association valide."

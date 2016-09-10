@@ -4,7 +4,7 @@ Selected Rows: Lignes sélectionnées
 "Yes": Oui
 Yes, Delete: Oui, supprimer
 Yes, I Agree: "Oui, je suis d'accord"
-Yes, do it: Oui, le faire
+Yes, do it: "Oui, j'en suis sûr(e)"
 "No": Non
 Ok, got it.: OK, compris.
 Cancel: Annuler
@@ -44,7 +44,7 @@ jstree:
     unclassified: Produits non classifiés
   no_tree: "Pas d'arborescence disponible"
   include_sub: Inc. les sous-catégories
-  loading: Chargement ...
+  loading: Chargement...
 datetimepicker:
   days:
     Sunday: Dimanche
@@ -99,7 +99,7 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Configuation système
+      title: Configuration du système
       tab:
         system:
           title: Système
@@ -109,4 +109,4 @@ oro_config:
           system_locale: Langue
         notification:
           title: Notifications
-          system_notification: Notifications des nouvelles versions
+          system_notification: Notifications de nouvelles versions
