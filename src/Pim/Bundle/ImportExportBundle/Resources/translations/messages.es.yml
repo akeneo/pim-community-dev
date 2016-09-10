@@ -1,6 +1,8 @@
 Job: Trabajo
 Connector: Conector
 pim_import_export:
+  job: Trabajo
+  connector: Conector
   status:
     - Listo
   batch_status:
