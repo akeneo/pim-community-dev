@@ -4,6 +4,10 @@
 
 - PIM-5964: Index category labels by locale code in channel normalization
 
+## Functionnal improvements
+
+- PIM-5782: User can now change the attribute order on the product export builder
+
 # 1.6.2 (2016-09-02)
 
 ## Bug fixes

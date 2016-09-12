@@ -166,7 +166,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
     protected function sortHeaders(array $headers)
     {
         if (null !== $this->columnSorter) {
-            $headers = $this->columnSorter->sort($headers);
+            $headers = $this->columnSorter->sort($headers, $this->stepExecution->getJobParameters()->all());
         }
 
         return $headers;

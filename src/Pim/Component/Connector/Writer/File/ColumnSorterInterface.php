@@ -13,8 +13,9 @@ interface ColumnSorterInterface
 {
     /**
      * @param array $columns
+     * @param array $context
      *
      * @return array
      */
-    public function sort(array $columns);
+    public function sort(array $columns, array $context = []);
 }

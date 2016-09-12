@@ -171,7 +171,7 @@ class XlsxFileContext extends PimContext
             $actualCount,
             sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
         );
-        
+
         $headerDiff = array_diff($actualLines[0], $expectedLines[0]);
         if (0 !== count(array_diff($actualLines[0], $expectedLines[0]))) {
             throw new \Exception(
