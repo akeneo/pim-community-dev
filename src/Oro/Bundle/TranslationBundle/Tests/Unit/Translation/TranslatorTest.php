@@ -181,7 +181,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     {
         $messages = $this->messages;
         $obj = $this;
-        $loader = $this->getMock('Symfony\Component\Translation\Loader\LoaderInterface');
+        $loader = $this->createMock('Symfony\Component\Translation\Loader\LoaderInterface');
         $loader
             ->expects($this->any())
             ->method('load')
@@ -204,7 +204,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContainer($loader)
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container
             ->expects($this->any())
             ->method('get')

@@ -11,12 +11,12 @@ class RequestVoterTest extends \PHPUnit_Framework_TestCase
     {
         $uri = 'test.uri';
 
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
+        $request = $this->createMock('Symfony\Component\HttpFoundation\Request');
         $request->expects($this->once())
             ->method('getRequestUri')
             ->will($this->returnValue($uri));
 
-        $itemMock = $this->getMock('Knp\Menu\ItemInterface');
+        $itemMock = $this->createMock('Knp\Menu\ItemInterface');
         $itemMock->expects($this->exactly(2))
             ->method('getUri')
             ->will($this->returnValue($uri));

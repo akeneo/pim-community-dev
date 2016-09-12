@@ -9,7 +9,7 @@ class RoutePatternVoterTest extends \PHPUnit_Framework_TestCase
 {
     public function testMatchingWithoutRequest()
     {
-        $item = $this->getMock('Knp\Menu\ItemInterface');
+        $item = $this->createMock('Knp\Menu\ItemInterface');
         $item->expects($this->never())->method('getExtra');
 
         $voter = new RoutePatternVoter();
@@ -28,7 +28,7 @@ class RoutePatternVoterTest extends \PHPUnit_Framework_TestCase
      */
     public function testMatching($route, array $parameters, $itemRoutes, array $itemsRoutesParameters, $expected)
     {
-        $item = $this->getMock('Knp\Menu\ItemInterface');
+        $item = $this->createMock('Knp\Menu\ItemInterface');
         $item->expects($this->any())
             ->method('getExtra')
             ->will(

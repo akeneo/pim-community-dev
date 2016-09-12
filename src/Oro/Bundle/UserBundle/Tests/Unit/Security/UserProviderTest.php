@@ -27,9 +27,9 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
         }
 
         $ef = new EncoderFactory([static::USER_CLASS => new MessageDigestPasswordEncoder('sha512')]);
-        $class = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
-        $om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $class = $this->createMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
+        $om = $this->createMock('Doctrine\Common\Persistence\ObjectManager');
+        $repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
 
         $om->expects($this->any())
             ->method('getRepository')
@@ -41,7 +41,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(static::USER_CLASS))
             ->will($this->returnValue($class));
 
-        $this->userManager = $this->getMock(
+        $this->userManager = $this->createMock(
             'Oro\Bundle\UserBundle\Entity\UserManager',
             ['findUserBy', 'findUserByUsernameOrEmail', 'getClass'],
             [static::USER_CLASS, $om, $ef]
@@ -79,7 +79,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue(123));
 
-        $refreshedUser = $this->getMock('Pim\Bundle\UserBundle\Entity\UserInterface');
+        $refreshedUser = $this->createMock('Pim\Bundle\UserBundle\Entity\UserInterface');
 
         $this->userManager
             ->expects($this->once())
@@ -95,7 +95,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRefreshDeleted()
     {
-        $user = $this->getMock('Pim\Bundle\UserBundle\Entity\UserInterface');
+        $user = $this->createMock('Pim\Bundle\UserBundle\Entity\UserInterface');
 
         $this->userManager
             ->expects($this->once())

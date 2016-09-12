@@ -89,12 +89,12 @@ abstract class AbstractFormTypeTest extends TypeTestCase
             ->addTypeExtension(new FormTypeSelect2Extension())
             ->addTypeExtension(
                 new FormTypeValidatorExtension(
-                    $this->getMock('Symfony\Component\Validator\ValidatorInterface')
+                    $this->createMock('Symfony\Component\Validator\ValidatorInterface')
                 )
             )
             ->addType(
                 new TranslatableFieldType(
-                    $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
+                    $this->createMock('Symfony\Component\Validator\ValidatorInterface'),
                     $this->getUserContextMock(),
                     $this->getLocaleHelperMock()
                 )
@@ -140,7 +140,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      */
     protected function getObjectManagerMock()
     {
-        return $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        return $this->createMock('Doctrine\Common\Persistence\ObjectManager');
     }
 
     /**
@@ -150,7 +150,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      */
     protected function getEventDispatcherInterfaceMock()
     {
-        return $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        return $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
     }
 
     /**

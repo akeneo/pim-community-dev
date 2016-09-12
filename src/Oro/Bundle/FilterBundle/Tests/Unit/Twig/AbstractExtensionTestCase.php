@@ -52,7 +52,7 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
 
     public function testGetFunctions()
     {
-        $twigNode = $this->getMock('\Twig_Node');
+        $twigNode = $this->createMock('\Twig_Node');
 
         $actualFunctions = $this->extension->getFunctions();
 

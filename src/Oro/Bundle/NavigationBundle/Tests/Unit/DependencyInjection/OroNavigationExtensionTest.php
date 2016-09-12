@@ -11,7 +11,7 @@ class OroNavigationExtensionTest extends \PHPUnit_Framework_TestCase
         $extension = new OroNavigationExtension();
 
         $configs = [];
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 
         $container->expects($this->any())
             ->method('getParameter')

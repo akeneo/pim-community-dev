@@ -11,7 +11,7 @@ class TitleSetTokenParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testParsing()
     {
-        $node = $this->getMock('Twig_Node');
+        $node = $this->createMock('Twig_Node');
 
         $exprParser = $this->getMockBuilder('Twig_ExpressionParser')
                            ->disableOriginalConstructor()

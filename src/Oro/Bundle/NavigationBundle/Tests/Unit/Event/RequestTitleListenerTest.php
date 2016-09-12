@@ -14,7 +14,7 @@ class RequestTitleListenerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->titleService = $this->getMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
+        $this->titleService = $this->createMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
     }
 
     /**
@@ -69,7 +69,7 @@ class RequestTitleListenerTest extends \PHPUnit_Framework_TestCase
      */
     private function getRequest($invokeTimes)
     {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
+        $request = $this->createMock('Symfony\Component\HttpFoundation\Request');
 
         $request->expects($this->exactly($invokeTimes))
             ->method('getRequestFormat')

@@ -17,12 +17,12 @@ class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFunctions()
     {
-        $configProvider = $this->getMock('Oro\Bundle\RequireJSBundle\Provider\Config', [], [], '', false);
+        $configProvider = $this->createMock('Oro\Bundle\RequireJSBundle\Provider\Config', [], [], '', false);
         $configProvider->expects($this->any())
             ->method('getMainConfig')
             ->will($this->returnValue($this->functions['get_requirejs_config']));
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
             ->method('getParameter')
             ->will($this->returnValueMap($this->parameters));
@@ -51,7 +51,7 @@ class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $extension = new OroRequireJSExtension($container);
         $this->assertEquals('requirejs_extension', $extension->getName());
     }

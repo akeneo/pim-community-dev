@@ -27,7 +27,7 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
             ->setMethods([])
             ->getMock();
 
-        $this->repository = $this->getMock(
+        $this->repository = $this->createMock(
             'Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository',
             ['findOneBy'],
             [
@@ -63,7 +63,7 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
         ];
 
         if ($isScope) {
-            $value = $this->getMock('Oro\Bundle\ConfigBundle\Entity\ConfigValue');
+            $value = $this->createMock('Oro\Bundle\ConfigBundle\Entity\ConfigValue');
             $value->expects($this->once())
                 ->method('getSection')
                 ->will($this->returnValue('oro_user'));
@@ -74,7 +74,7 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->method('getValue')
                 ->will($this->returnValue('test'));
 
-            $scope = $this->getMock('Oro\Bundle\ConfigBundle\Entity\Config');
+            $scope = $this->createMock('Oro\Bundle\ConfigBundle\Entity\Config');
             $scope->expects($this->once())
                 ->method('getValues')
                 ->will($this->returnValue([$value]));

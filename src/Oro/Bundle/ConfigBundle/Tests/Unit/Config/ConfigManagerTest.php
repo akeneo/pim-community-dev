@@ -67,7 +67,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');
         }
 
-        $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->om = $this->createMock('Doctrine\Common\Persistence\ObjectManager');
         $this->object = new ConfigManager($this->om, $this->settings);
     }
 
@@ -105,7 +105,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDefaultSettings()
     {
-        $object = $this->getMock(
+        $object = $this->createMock(
             'Oro\Bundle\ConfigBundle\Config\ConfigManager',
             ['loadStoredSettings'],
             [$this->om, $this->settings]
@@ -124,7 +124,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSettingsByForm()
     {
-        $object = $this->getMock(
+        $object = $this->createMock(
             'Oro\Bundle\ConfigBundle\Config\ConfigManager',
             ['get'],
             [$this->om, $this->settings]
@@ -165,7 +165,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $object = $this->getMock(
+        $object = $this->createMock(
             'Oro\Bundle\ConfigBundle\Config\ConfigManager',
             ['getChanged'],
             [$this->om, $this->settings]
@@ -180,7 +180,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($settings))
             ->will($this->returnValue($changes));
 
-        $configMock = $this->getMock('Oro\Bundle\ConfigBundle\Entity\Config');
+        $configMock = $this->createMock('Oro\Bundle\ConfigBundle\Entity\Config');
         $configMock->expects($this->once())
             ->method('getOrCreateValue')
             ->will($this->returnValue(new ConfigValue()));
@@ -232,7 +232,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $object = $this->getMock(
+        $object = $this->createMock(
             'Oro\Bundle\ConfigBundle\Config\ConfigManager',
             ['get'],
             [$this->om, $this->settings]
