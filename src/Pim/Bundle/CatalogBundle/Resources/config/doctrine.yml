@@ -1,3 +1,10 @@
 parameters:
     # replaces Doctrine\Common\Cache\ApcCache
     doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
+    doctrine.orm.cache.filesystem.class: Doctrine\Common\Cache\FilesystemCache
+
+services:
+    doctrine.orm.cache.filesystem:
+        class: '%doctrine.orm.cache.filesystem.class%'
+        arguments:
+            - '%kernel.root_dir%/cache/%kernel.environment%/doctrine/em'

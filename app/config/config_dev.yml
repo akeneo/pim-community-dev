@@ -32,3 +32,14 @@ swiftmailer:
 
 parameters:
     apy_js_form_validation.yui_js: false
+
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                metadata_cache_driver:
+                    type: service
+                    id: doctrine.orm.cache.filesystem
+                query_cache_driver:
+                    type: service
+                    id: doctrine.orm.cache.filesystem
