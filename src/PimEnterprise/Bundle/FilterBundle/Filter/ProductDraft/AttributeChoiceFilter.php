@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
 
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
 use PimEnterprise\Bundle\CatalogBundle\Query\Filter\Operators;
+use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
 
 /**
  * Extends ChoiceFilter in order to use a different operator that check an attribute code exists in the values
@@ -19,7 +22,7 @@ use PimEnterprise\Bundle\CatalogBundle\Query\Filter\Operators;
  *
  * @author Clement Gautier <clement.gautier@akeneo.com>
  */
-class AttributeChoiceFilter extends ChoiceFilter
+class AttributeChoiceFilter extends AjaxChoiceFilter
 {
     /**
      * {@inheritdoc}
@@ -33,5 +36,36 @@ class AttributeChoiceFilter extends ChoiceFilter
         }
 
         return $operator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        $data = $this->parseData($data);
+
+        if (!$data) {
+            return false;
+        }
+
+        $field    = $this->get(ProductDraftFilterUtility::DATA_NAME_KEY);
+        $operator = $this->getOperator($data['type']);
+        $value    = $data['value'];
+
+        $this->util->applyFilter($ds, $field, $operator, $value);
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFormOptions()
+    {
+        return array_merge(
+            parent::getFormOptions(),
+            ['choice_url' => 'pimee_workflow_product_draft_rest_attribute_choice']
+        );
     }
 }

@@ -60,15 +60,6 @@ class AttributeGroupAccessRepositorySpec extends ObjectBehavior
         $this->getGrantedAttributeIds($user, $accessLevel, $filterableIds)->shouldReturn([]);
     }
 
-    function it_throws_an_exception_if_filterable_ids_is_null(UserInterface $user)
-    {
-        $accessLevel = Attributes::VIEW_ATTRIBUTES;
-
-        $this
-            ->shouldThrow('Exception')
-            ->duringGetGrantedAttributeIds($user, $accessLevel, null);
-    }
-
     private function buildGrantedAttributeQuery(
         EntityManager $em,
         QueryBuilder $qb,

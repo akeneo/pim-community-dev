@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -20,11 +21,13 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper;
 use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Provider\ProductDraftGrantedAttributeProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -77,18 +80,26 @@ class ProductDraftController
     /** @var array */
     protected $supportedReviewActions = ['approve', 'refuse'];
 
+    /** @var SearchableRepositoryInterface */
+    protected $attributeSearchableRepository;
+
+    /** @var GridHelper */
+    protected $gridHelper;
+
     /**
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param ProductDraftRepositoryInterface $repository
-     * @param ProductDraftManager             $manager
-     * @param ProductRepositoryInterface      $productRepository
-     * @param NormalizerInterface             $normalizer
-     * @param TokenStorageInterface           $tokenStorage
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param ChannelRepositoryInterface      $channelRepository
-     * @param LocaleRepositoryInterface       $localeRepository
-     * @param UserContext                     $userContext
-     * @param CollectionFilterInterface       $collectionFilter
+     * @param AuthorizationCheckerInterface        $authorizationChecker
+     * @param ProductDraftRepositoryInterface      $repository
+     * @param ProductDraftManager                  $manager
+     * @param ProductRepositoryInterface           $productRepository
+     * @param NormalizerInterface                  $normalizer
+     * @param TokenStorageInterface                $tokenStorage
+     * @param AttributeRepositoryInterface         $attributeRepository
+     * @param ChannelRepositoryInterface           $channelRepository
+     * @param LocaleRepositoryInterface            $localeRepository
+     * @param UserContext                          $userContext
+     * @param CollectionFilterInterface            $collectionFilter
+     * @param GridHelper                           $gridHelper
+     * @param SearchableRepositoryInterface        $attributeSearchableRepository
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -101,19 +112,23 @@ class ProductDraftController
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         UserContext $userContext,
-        CollectionFilterInterface $collectionFilter
+        CollectionFilterInterface $collectionFilter,
+        GridHelper $gridHelper,
+        SearchableRepositoryInterface $attributeSearchableRepository = null
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->repository           = $repository;
-        $this->manager              = $manager;
-        $this->productRepository    = $productRepository;
-        $this->normalizer           = $normalizer;
-        $this->tokenStorage         = $tokenStorage;
-        $this->attributeRepository  = $attributeRepository;
-        $this->channelRepository    = $channelRepository;
-        $this->localeRepository     = $localeRepository;
-        $this->userContext          = $userContext;
-        $this->collectionFilter     = $collectionFilter;
+        $this->authorizationChecker          = $authorizationChecker;
+        $this->repository                    = $repository;
+        $this->manager                       = $manager;
+        $this->productRepository             = $productRepository;
+        $this->normalizer                    = $normalizer;
+        $this->tokenStorage                  = $tokenStorage;
+        $this->attributeRepository           = $attributeRepository;
+        $this->channelRepository             = $channelRepository;
+        $this->localeRepository              = $localeRepository;
+        $this->userContext                   = $userContext;
+        $this->collectionFilter              = $collectionFilter;
+        $this->gridHelper                    = $gridHelper;
+        $this->attributeSearchableRepository = $attributeSearchableRepository;
     }
 
     /**
@@ -284,6 +299,36 @@ class ProductDraftController
             'internal_api',
             $normalizationContext
         ));
+    }
+
+    /**
+     * Get the attribute choice collection
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function attributeChoiceAction(Request $request)
+    {
+        $query  = $request->query;
+        $search = $query->get('search');
+        $options = $query->get('options', []);
+
+        $token = $this->tokenStorage->getToken();
+        $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
+
+        if (null !== $this->attributeSearchableRepository) {
+            $attributes = $this->attributeSearchableRepository->findBySearch($search, $options);
+        } else {
+            $attributes = $this->gridHelper->getAttributeChoices();
+        }
+
+        $normalizedAttributes = [];
+        foreach ($attributes as $attribute) {
+            $normalizedAttributes[] = ['id' => $attribute->getCode(), 'text' => $attribute->getLabel()];
+        }
+
+        return new JsonResponse(['results' => $normalizedAttributes]);
     }
 
     /**

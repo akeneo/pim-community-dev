@@ -27,3 +27,8 @@ pimee_workflow_product_draft_rest_partial_reject:
     defaults: { _controller: pimee_workflow.controller.product_draft_rest:partialReviewAction, action: refuse }
     requirements:
         _method: POST
+
+pimee_workflow_product_draft_rest_attribute_choice:
+    path: /rest/attribute-choice
+    defaults: { _controller: pimee_workflow.controller.product_draft_rest:attributeChoiceAction, _format: json }
+    methods: [GET]
