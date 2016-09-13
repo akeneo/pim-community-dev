@@ -9,19 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle;
+namespace Akeneo\ActivityManager\Behat\Context;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Akeneo\ActivityManager\Behat\Context;
+use Akeneo\ActivityManager\Behat\ContextInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ActivityManagerBundle extends Bundle
+class ProjectContext extends Context implements ContextInterface
 {
-    public function build(ContainerBuilder $container)
+    /**
+     * @Then /^I should be on the project show page/
+     */
+    public function iShouldBeOnTheProjectPage()
     {
+        Assert::true($this->getCurrentPage()->isOpen());
     }
 }
