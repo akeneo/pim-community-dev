@@ -1,8 +1,9 @@
-# 1.6.
+# 1.6.x
 
 ## Bug fixes
 
 - PIM-5964: Index category labels by locale code in channel normalization
+- PIM-5968: Fix default translation for attribute options when value is null
 
 ## Functionnal improvements
 
