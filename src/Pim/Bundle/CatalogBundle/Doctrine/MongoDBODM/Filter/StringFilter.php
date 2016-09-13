@@ -100,7 +100,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $this->qb->field($field)->notEqual($value);
                 break;
             case Operators::DOES_NOT_CONTAIN:
-                $value = $this->prepareValue(Operators::DOES_NOT_CONTAIN, $value);
+                $value = $this->prepareValue($operator, $value);
                 $this->qb->addAnd(
                     $this->qb->expr()
                         ->addOr($this->qb->expr()->field($field)->exists(false))

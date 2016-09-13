@@ -115,7 +115,9 @@ class StringFilterSpec extends ObjectBehavior
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
 
-        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+        $queryBuilder->andWhere(Argument::any())->willReturn('p');
+
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku', null, null, ['field' => 'sku']);
     }

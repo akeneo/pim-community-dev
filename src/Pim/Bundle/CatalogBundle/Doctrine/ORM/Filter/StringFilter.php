@@ -85,6 +85,12 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                     $this->qb->expr()->isNotNull($backendField),
                     $this->qb->expr()->neq($backendField, $this->qb->expr()->literal(''))
                 );
+                $this->qb->innerJoin(
+                    $this->qb->getRootAlias() . '.values',
+                    $joinAlias,
+                    'WITH',
+                    $condition
+                );
             } elseif (Operators::DOES_NOT_CONTAIN === $operator) {
                 $whereCondition = $this->prepareCondition($backendField, $operator, $value) .
                     ' OR ' .
