@@ -176,6 +176,16 @@ batch_jobs:
     label: Muuttujaryhmien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Muutujaryhmien tuonti
+  csv_channel_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_locale_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_attribute_group_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_currency_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_group_type_import:
+    validation.label: Tiedostojen tarkistaminen
   xlsx_category_import:
     validation.label: Tiedostojen tarkistaminen
     import.label: Kategorioiden tuonti
@@ -210,3 +220,13 @@ batch_jobs:
     export.label: Ryhmän vienti
   xlsx_category_export:
     export.label: Kategorian vienti
+  xlsx_channel_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_locale_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_attribute_group_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_currency_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_group_type_import:
+    validation.label: Tiedostojen tarkistaminen

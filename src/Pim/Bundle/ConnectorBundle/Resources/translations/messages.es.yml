@@ -81,10 +81,10 @@ pim_connector:
       label: Columna de grupos
       help: Nombre de la columna de grupos
     filePath:
-      label: Fichero
+      label: Archivo
       help: Fichero CSV a importar
     yamlFilePath:
-      label: Fichero
+      label: Archivo
       help: Archivo YAML a importar
     uploadAllowed:
       label: Permitir la carga de ficheros
@@ -94,7 +94,7 @@ pim_connector:
       help: Único carácter utilizado para delimitar el campo para el fichero CSV
     enclosure:
       label: Encuadre
-      help: Único carácter usado para encuadrar el campo
+      help: Único caracter utilizado para encuadrar los campos
     escape:
       label: Escape
       help: Único carácter utilizado para fijar el escape del campo
@@ -126,10 +126,10 @@ job_execution.summary:
   update_products: productos actualizados
   process_products: productos procesados
   skip_products: productos omitidos
-  displayed: primeras alertas mostradas
+  displayed: primeras advertencias mostradas
   charset_validator:
-    title: 'Codificación del archivo:'
-    skipped: omitido, extensión en la lista blanca
+    title: 'Codificación de Archivo:'
+    skipped: omitido, extensión en lista blanca
   product_skipped_no_diff: producto omitido (ninguna diferencia)
 batch_jobs:
   csv_product_export:
@@ -189,6 +189,16 @@ batch_jobs:
     label: Importar Grupo de variantes de CSV
     validation.label: Validación de archivo
     import.label: importación de grupo de variantes
+  csv_channel_import:
+    validation.label: Validación de archivo
+  csv_locale_import:
+    validation.label: Validación de archivo
+  csv_attribute_group_import:
+    validation.label: Validación de archivo
+  csv_currency_import:
+    validation.label: Validación de archivo
+  csv_group_type_import:
+    validation.label: Validación de archivo
   xlsx_category_import:
     label: Importar categorías en XLSX
     validation.label: Validación de archivo
@@ -246,3 +256,13 @@ batch_jobs:
   xlsx_association_type_export:
     label: Exportar tipo de asociaciones en XLSX
     export.label: Exportar tipo de asociaciones en XLSX
+  xlsx_channel_import:
+    validation.label: Validación de archivo
+  xlsx_locale_import:
+    validation.label: Validación de archivo
+  xlsx_attribute_group_import:
+    validation.label: Validación de archivo
+  xlsx_currency_import:
+    validation.label: Validación de archivo
+  xlsx_group_type_import:
+    validation.label: Validación de archivo
