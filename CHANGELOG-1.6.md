@@ -4,8 +4,9 @@
 
 - PIM-5964: Index category labels by locale code in channel normalization
 - PIM-5968: Fix default translation for attribute options when value is null
-- PIM-5897: fix the does not contain filter to filter on product without product values
+- PIM-5897: Fix the does not contain filter to filter on product without product values
 - PIM-5566: Fix version number displayed as decimals
+- PIM-5976: Fix adding products to a group (regression following variant group ajaxification)
 
 ## Functionnal improvements
 
