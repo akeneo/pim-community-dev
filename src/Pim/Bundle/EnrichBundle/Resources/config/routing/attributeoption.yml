@@ -39,5 +39,5 @@ pim_enrich_attributeoption_get:
     path: /attribute/{identifier}/option
     defaults: { _controller: pim_enrich.controller.rest.attribute_option:getAction, _format: json }
     requirements:
-        identifier: \d+
+        identifier: '[a-zA-Z0-9_]+'
     methods: [GET]
