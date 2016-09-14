@@ -1,160 +1,167 @@
-Job: Trabajo
-Connector: Conector
+Job: Job
+Connector: Connector
 pim_import_export:
+  job: Job
+  connector: Connector
   status:
-    - Listo
+    - Ready
   batch_status:
-    1: COMPLETADO
-    2: INICIANDO
-    3: INICIADO
-    4: PARAR
-    5: DETENIDO
-    6: FALLO
-    7: ABANDONADO
-    8: DESCONOCIDO
+    1: COMPLETED
+    2: STARTING
+    3: STARTED
+    4: STOPPING
+    5: STOPPED
+    6: FAILED
+    7: ABANDONED
+    8: UNKNOWN
   download_archive:
-    archive: descargar fichero generado|descargar ficheros generados
-    output: descargar ficher generado |descargar ficheros generados
-    input: descargar fichero de lectura |descargar ficheros de lectura
-    invalid_xlsx: descargar datos no válidos
-    invalid_csv: descargar datos no válidos
+    archive: download generated archive|download generated archives
+    output: download generated file|download generated files
+    input: download read file|download read files
+    invalid_xlsx: download invalid data
+    invalid_csv: download invalid data
   notification:
     export:
-      error: 'Exportación <strong>%label%</strong> fallida'
-      warning: 'Exportación <strong>%label%</strong> terminó con algunas advertencias'
-      success: 'Exportación <strong>%label%</strong> finalizada'
+      error: 'Export <strong>%label%</strong> failed'
+      warning: 'Export <strong>%label%</strong> finished with some warnings'
+      success: 'Export <strong>%label%</strong> finished'
     import:
-      error: 'Importación <strong>%label%</strong> fallida'
-      warning: 'Importación <strong>%label%</strong> terminó con algunas advertencias'
-      success: 'Importación <strong>%label%</strong> finalizada'
-  list: Seleccionar un trabajo
+      error: 'Import <strong>%label%</strong> failed'
+      warning: 'Import <strong>%label%</strong> finished with some warnings'
+      success: 'Import <strong>%label%</strong> finished'
+  list: Select a job
   job_profile:
     tab:
-      property.title: Propiedades generales
-      history.title: Histórico
-      job_content.title: Contenido
-pim_title.export_profile.index: Gestión de perfiles de exportación
-pim_title.export_profile.edit: 'Perfiles de exportación %job.label% | Editar'
-pim_title.export_profile.show: 'Perfiles de exportación %job.label% | Mostrar'
-pim_title.export_execution.index: Historial de ejecuciones de exportación
-pim_title.export_execution.show: Ejecuciones de importación | Detalles
-pim_title.import_profile.index: Gestión de perfiles de exportación
-pim_title.import_profile.edit: 'Perfiles de importación %job.label% | Editar'
-pim_title.import_profile.show: 'Perfiles de importación %job.label% | Mostrar'
-pim_title.import_execution.index: Historia de las ejecuciones de importación
-pim_title.import_execution.show: Ejecuciones de importación | Detalles
+      property.title: General properties
+      history.title: History
+      job_content.title: Content
+pim_title.export_profile.index: Export profiles management
+pim_title.export_profile.edit: 'Export profiles %job.label% | Edit'
+pim_title.export_profile.show: 'Export profiles %job.label% | Show'
+pim_title.export_execution.index: Export executions history
+pim_title.export_execution.show: Export executions | Details
+pim_title.import_profile.index: Import profiles management
+pim_title.import_profile.edit: 'Import profiles %job.label% | Edit'
+pim_title.import_profile.show: 'Import profiles %job.label% | Show'
+pim_title.import_execution.index: Import executions history
+pim_title.import_execution.show: Import executions | Details
 export profile:
-  title: Perfil de exportación
-  overview: Resumen del perfil de exportación
-  create: crear perfil exportador
-  edit: Editar perfil exportador
+  title: export profile
+  overview: export profile overview
+  create: create export profile
+  edit: edit export profile
 export report:
-  overview: informes de exportaciones
+  overview: export reports
 import profile:
-  title: Perfil de importación
-  overview: resumen del perfil de importación
-  create: crear perfil de importación
-  edit: editar perfil de importación
+  title: import profile
+  overview: import profile overview
+  create: create import profile
+  edit: edit import profile
 import report:
-  overview: informes de importación
+  overview: import reports
 pim_importexport:
   acl:
     export_profile:
-      index: Ver lista de perfiles de exportación
-      create: Crear un perfil de exportación
-      show: Mostrar un perfil de exportación
-      edit: Editar un perfil de exportación
-      remove: Quitar un perfil de exportación
-      launch: Lanzar un perfil de exportación
-      history: Ver historial del perfil exportación
+      index: View export profiles list
+      create: Create an export profile
+      show: Show an export profile
+      edit: Edit an export profile
+      remove: Remove an export profile
+      launch: Launch an export profile
+      property_edit: Edit an export profile general properties
+      property_show: Show an export profile general properties
+      history: View export profile history
+      content_edit: Edit an export profile content
+      content_show: Show an export profile content
     import_profile:
-      index: Ver lista de perfiles de importación
-      create: Crear un perfil de importación
-      show: Mostrar un perfil de importación
-      edit: Editar un perfil de importación
-      remove: Quitar un perfil de importación
-      launch: Lanzar un perfil de importación
-      history: Ver historial del perfil de importación
+      index: View import profiles list
+      create: Create an import profile
+      show: Show an import profile
+      edit: Edit an import profile
+      remove: Remove an import profile
+      launch: Launch an import profile
+      history: View import profile history
     export_execution:
-      index: Ver lista de informes de exportación
-      show: Ver detalles de informe de exportación
-      dl_log: Descargar registro de informes de exportación
-      dl_files: Descargar archivos exportados
+      index: View export reports list
+      show: View export report details
+      dl_log: Download export report log
+      dl_files: Download exported files
     import_execution:
-      index: Ver lista de informes de importación
-      show: Ver detalles de informe de importación
-      dl_log: Descargar registro de informes de importación
-      dl_files: Descargar archivos importados
+      index: View import reports list
+      show: View import report details
+      dl_log: Download import report log
+      dl_files: Download imported files
   acl_group:
-    export: Perfiles de exportación
-    import: Perfiles de importación
+    export: Export profiles
+    import: Import profiles
 btn:
   create:
-    export profile: crear perfil exportador
-    import profile: crear Perfil de importación
-Upload and import now: Subir e importar ahora
-import now: Importar ahora
-export now: Exportar Ahora
+    export profile: create export profile
+    import profile: create import profile
+Upload and import now: Upload and import now
+import now: Import now
+export now: Export now
 confirmation:
   remove:
-    export profile: '¿Está seguro que desea eliminar el perfil de exportación %name% ?'
-    import profile: '¿Está seguro que desea eliminar el perfil de importación %name%?'
+    export profile: 'Are you sure you want to delete the export profile %name%?'
+    import profile: 'Are you sure you want to delete the import profile %name%?'
 flash:
   export:
-    created: La exportación se ha creado con éxito
-    removed: La exportación se ha eliminado
-    updated: La exportación se ha actualizado exitosamente
-    running: La exportación se está ejecutando
+    created: The export has been successfully created
+    removed: The export has been removed
+    updated: The export has been successfully updated
+    running: The export is running
   import:
-    created: La importación se ha creado con éxito
-    removed: La importación se ha eliminado
-    updated: La importación se ha actualizado exitosamente
-    running: La importación se está ejecutando
+    created: The import has been successfully created
+    removed: The import has been removed
+    updated: The import has been successfully updated
+    running: The import is running
 pim_menu:
   item:
-    export_history: Histórico de exportaciones
-    export_profile: Perfiles de exportación
-    import_history: Histórico de importaciones
-    import_profile: Perfiles de importación
-General properties: Propiedades generales
-History: Histórico
+    export_history: Exports history
+    export_profile: Export profiles
+    import_history: Imports history
+    import_profile: Import profiles
+General properties: General properties
+History: History
 pane.accordion:
-  properties: Propiedades
-  global_settings: Configuración global
-  filters: Filtros
+  properties: Properties
+  global_settings: Global settings
+  filters: Filters
 popin.create:
-  export_profile.title: Crear un nuevo perfil de exportación
-  import_profile.title: Crear un nuevo perfil de importación
-Display item: Mostrar elemento
-Hide item: Ocultar item
-Collecting data about job execution...: Colectando datos sobre la ejecución del trabajo...
-You must select a file to upload: Debe seleccionar un archivo para subir
-Download log: Registro de Descargas
-Show profile: Ver perfil
-execution details: detalles de ejecución
+  export_profile.title: Create a new export profile
+  import_profile.title: Create a new import profile
+Display item: Display item
+Hide item: Hide item
+Collecting data about job execution...: Collecting data about job execution...
+You must select a file to upload: You must select a file to upload
+Download log: Download log
+Show profile: Show profile
+execution details: execution details
 job_execution.summary:
-  read: leer
-  write: escrito
-  skip: omitido
-  create: creado
-  update: actualizado
-  update_products: productos actualizados
-  skip_products: productos omitidos
-  displayed: primeras advertencias mostradas
+  read: read
+  write: written
+  skip: skipped
+  create: created
+  update: updated
+  update_products: updated products
+  skip_products: skipped products
+  displayed: first warnings displayed
   charset_validator:
-    title: 'Codificación de Archivo:'
-    skipped: omitido, extensión en lista blanca
-Step: Paso
-Status: Estado
-Summary: Resumen
-Start: Iniciar
-End: Finalizar
-set_attribute_requirements: Configurar requerimientos del atributo
-COMPLETED: FINALIZADO
-STARTING: INICIANDO
-STARTED: INICIADO
-STOPPING: DETENIENDO
-STOPPED: DETENIDO
-FAILED: FALLIDO
-ABANDONED: ABANDONADO
-UNKNOWN: DESCONOCIDO
+    title: 'File encoding:'
+    skipped: skipped, extension in white list
+Step: Step
+Status: Status
+Summary: Summary
+Start: Start
+End: End
+set_attribute_requirements: Set attribute requirements
+COMPLETED: COMPLETED
+STARTING: STARTING
+STARTED: STARTED
+STOPPING: STOPPING
+STOPPED: STOPPED
+FAILED: FAILED
+ABANDONED: ABANDONED
+UNKNOWN: UNKNOWN
+warning.label: Warning

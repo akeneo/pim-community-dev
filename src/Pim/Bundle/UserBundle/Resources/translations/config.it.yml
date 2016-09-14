@@ -1,6 +1,6 @@
-entity.user.name: Utente
-entity.user.description: Profilo utente
-entity.role.name: Ruolo
-entity.role.description: ruolo utente
-entity.group.name: Gruppo
-entity.group.description: Ruolo del gruppo
+entity.user.name: User
+entity.user.description: User profile
+entity.role.name: Role
+entity.role.description: user role
+entity.group.name: Group
+entity.group.description: Role group

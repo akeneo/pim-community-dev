@@ -1,25 +1,39 @@
 pim_analytics:
-  new_patch_available: Uusi päivitys saatavilla
+  new_patch_available: New patch available
   system_config:
     group:
-      notification.title: Ilmoitukset
-      version_update.title: Versiopäivitykset
+      notification.title: Notifications
+      version_update.title: Version updates
     form:
-      version_update.label: Uuden version päivitykset
-      version_update.tooltip: Lähetä pyyntö etäpalvelimelle hakemaan tietoa uusien päivityksien julkaisuista
+      version_update.label: New versions notifications
+      version_update.tooltip: Send request to a distant server to retrieve information about the release of new patchs
   system_info:
-    title: Järjestelmätiedot
+    title: System information
     download: TXT
   info_type:
-    pim_edition: Painos
-    pim_version: Versio
-    pim_storage_driver: Tallennus
-    pim_environment: Ympäristö
-    pim_install_time: Asennusaika
-    registered_bundles: Rekisteröidyt ohjelmapaketit
+    pim_edition: Edition
+    pim_version: Version
+    pim_storage_driver: Storage
+    pim_environment: Environment
+    pim_install_time: Install time
+    registered_bundles: Registered bundles
+    nb_channels: Number of channels
+    nb_products: Number of products
+    nb_attributes: Number of attributes
+    nb_locales: Number of locales
+    nb_families: Number of families
+    nb_users: Number of users
+    pim_storage_version: Storage version
+    os_version: OS version
+    php_version: PHP version
+    mysql_version: MySQL version
+    mariadb_version: MariaDB version
+    mongodb_version: MongoDB version
+    server_version: Server version
+    php_extensions: PHP extensions
   acl:
     system_info:
-      index: Järjestelmätiedot
+      index: System information
 pim_menu:
   item:
-    system_info: Järjestelmätiedot
+    system_info: System information

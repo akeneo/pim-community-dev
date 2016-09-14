@@ -1,371 +1,471 @@
 confirmation:
   remove:
-    item: Вы действительно хотите удалить этот элемент?
-    association type: Вы действительно хотите удалить этот тип ассоциации?
-    attribute: Вы действительно хотите удалить этот атрибут?
-    family: Вы действительно хотите удалить это семейство?
-    product: Вы действительно хотите удалить этот продукт?
-    channel: Вы действительно хотите удалить этот канал?
-    group: Вы действительно хотите удалить эту группу?
-    variant group: Вы действительно хотите удалить эту группу вариантов?
-    group type: Вы действительно хотите удалить эту группу типов?
-    import profile: Вы действительно хотите удалить этот профиль импорта?
-    export profile: Вы действительно хотите удалить этот профиль экспорта?
-    user: Вы действительно хотите удалить этого пользователя?
-    role: Вы действительно хотите удалить эту роль?
+    item: Are you sure you want to delete this item?
+    association type: Are you sure you want to delete this association type?
+    attribute: Are you sure you want to delete this attribute?
+    family: Are you sure you want to delete this family?
+    product: Are you sure you want to delete this product?
+    channel: Are you sure you want to delete this channel?
+    group: Are you sure you want to delete this group?
+    variant group: Are you sure you want to delete this variant group?
+    group type: Are you sure you want to delete this group type?
+    import profile: Are you sure you want to delete this import profile?
+    export profile: Are you sure you want to delete this export profile?
+    user: Are you sure you want to delete this user?
+    role: Are you sure you want to delete this role?
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: Bulk Actions
     quick_export:
-      label: Быстрый экспорт
+      label: Quick Export
   mass_action:
     delete:
-      confirm_content: Вы уверены, что хотите удалить выбранные продукты?
-      success: Выбранные продукты успешно удалены.
-      error: Oшибка при попытке удаления выбранных продуктов, пожалуйста, попробуйте снова.
+      confirm_content: Are you sure you want to delete selected products?
+      success: Selected products successfully deleted.
+      error: Error ocurred when trying to delete selected products, please try again.
 flash:
   item:
-    removed: Элемент успешно удален
+    removed: Item successfully removed
   association type:
-    removed: Тип ассоциации успешно удален
+    removed: Association type successfully removed
   attribute:
-    removed: Атрибут успешно удален
+    removed: Attribute successfully removed
   family:
-    removed: Семейство успешно удалено
+    removed: Family successfully removed
   product:
-    removed: Продукт успешно удален
+    removed: Product successfully removed
   channel:
-    removed: Канал успешно удален
+    removed: Channel successfully removed
   group:
-    removed: Группа успешно удалена
+    removed: Group successfully removed
   variant group:
-    removed: Группа вариантов успешно удалена
+    removed: Variant group successfully removed
   group type:
-    removed: Группа типов успешно удалена
+    removed: Group type successfully removed
   import profile:
-    removed: Профиль импорта успешно удален
+    removed: Import profile successfully removed
   export profile:
-    removed: Профиль экспорта успешно удален
+    removed: Export profile successfully removed
   user:
-    removed: Пользователь успешно удален
+    removed: User successfully removed
   role:
-    removed: Роль успешно удалена
+    removed: Role successfully removed
 error:
   removing:
-    item: Не удается удалить этот элемент
-    association type: Не удается удалить этот тип ассоциации
-    attribute: Не удается удалить этот атрибут
-    family: Не удается удалить это семейство
-    product: Не удается удалить этот продукт
-    channel: Не удается удалить этот канал
-    group: Не удается удалить эту группу
-    variant group: Не удается удалить эту группу вариантов
-    group type: Не удается удалить эту группу типов
-    import profile: Не удается удалить этот профиль импорта
-    export profile: Не удается удалить этот профиль экспорта
-    user: Не удается удалить этого пользователя
-    role: Не удается удалить эту роль
-    attribute_option: При удалении свойства атрибута произошла ошибка
+    item: Cannot delete this item
+    association type: Cannot delete this association type
+    attribute: Cannot delete this attribute
+    family: Cannot delete this family
+    product: Cannot delete this product
+    channel: Cannot delete this channel
+    group: Cannot delete this group
+    variant group: Cannot delete this variant group
+    group type: Cannot delete this group type
+    import profile: Cannot delete this import profile
+    export profile: Cannot delete this export profile
+    user: Cannot delete this user
+    role: Cannot delete this role
+    attribute_option: Error during deletion of the attribute option
   saving:
-    attribute_option: Не удается сохранить свойство атрибута
+    attribute_option: Cannot save attribute option
+    export_profile: Cannot save export profile. Please check that all filters are well filled
 alert:
   attribute_option:
-    error_occured_during_submission: Во время отправки формы на сервер произошла ошибка
-    save_before_edit_other: Пожалуйста зафиксируйте ваши изменения на других строках перед редактированием этой
+    error_occured_during_submission: An error occured during the form submission on the server
+    save_before_edit_other: Please register your modifications on other rows before editing this one
   session_storage:
-    not_available: Ваш веб-браузер кажется не совместим с sessionStorage. Обратитесь к администратору
+    not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Внимание, вы потеряете несохраненные данные. Вы действительно хотите отменить изменения для этой опции?
-    cancel_edition_on_new_option_title: Отмена изменений
+    cancel_edition_on_new_option_text: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ?
+    cancel_edition_on_new_option_title: Cancel modification
 label:
   attribute_option:
-    add_option: Добавить новое свойство
-Code: Код
-Edit: Изменить
-Delete: Удалить
-Edit attributes of the product: Изменение атрибутов продукта
-Classify the product: Классифицировать продукт
-Delete the product: Удалить продукт
-Change status: Изменить статус
-Toggle status: Переключить состояние
+    add_option: Add an option
+Code: Code
+Edit: Edit
+Delete: Delete
+Edit attributes of the product: Edit attributes of the product
+Classify the product: Classify the product
+Delete the product: Delete the product
+Change status: Change status
+Toggle status: Toggle status
 pim:
   grid:
     mass_action:
       quick_export:
-        csv_all: CSV (Все атрибуты)
-jstree.create: Создать
-switch_on: Да
-switch_off: Нет
+        csv_all: CSV (All attributes)
+        csv_grid_context: CSV (Grid context)
+        xlsx_all: Excel (All attributes)
+        xlsx_grid_context: Excel (Grid context)
+      delete: Delete products
+      mass_edit: Change product information
+      category_edit: Move products in categories
+      sequential_edit: Edit products sequentially
+jstree.create: Create
+switch_on: 'Yes'
+switch_off: 'No'
 pim_enrich:
   item:
     list:
-      delete.label: Удалить
-      delete.error: Ошибка при удалении элемента
+      delete.label: Delete
+      delete.error: Error during item deletion
     delete:
-      confirm.content: 'Вы действительно хотите удалить {{ itemName }}? Это действие нельзя отменить'
-      confirm.title: 'Удалить {{ itemName }}'
+      confirm.content: 'Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action'
+      confirm.title: 'Delete this {{ itemName }}'
   navigation:
     link:
-      back_to_grid: Вернуться к списку
+      back_to_grid: Back to grid
   entity:
     save:
-      label: Сохранить
+      label: Save
     info:
-      update_failed: Не удалось обновить
-      update_successful: Обновление завершено
+      update_failed: Update failed
+      update_successful: Successfully updated
     product:
-      title: продукт
+      title: product
       btn:
-        enable: Активировать
-        enabled: Активирован
-        disable: Деактивировать
-        disabled: Деактивирован
+        enable: Enable
+        enabled: Enabled
+        disable: Disable
+        disabled: Disabled
         download_pdf: PDF
-        compare_translate: Сравнить / Перевести
-        delete: Удалить
-        save: Сохранить
-        save_and_back: Сохранить и вернуться к списку
+        compare_translate: Compare / Translate
+        delete: Delete
+        save: Save
+        save_and_back: Save and back to grid
       history:
-        version: Версия
-        author: Автор
-        logged_at: Дата входа
-        more: Дополнительно
-        less: Менее
-        from: С
-        modified: Изменен
-        property: Свойство
-        old_values: Старые значения
-        new_values: Новые значения
-        actions: Действия
+        version: Version
+        author: Author
+        logged_at: Logged at
+        more: More
+        less: Less
+        from: From
+        modified: Modified
+        property: Property
+        old_values: Old values
+        new_values: New values
+        actions: Actions
       info:
-        deletion_successful: Продукт успешно удален.
-        deletion_failed: Не удалось удалить продукт.
-        update_successful: Продукт успешно обновлен.
-        update_failed: Не удалось обновить продукт.
+        deletion_successful: Product successfully deleted.
+        deletion_failed: The product could not be deleted.
+        update_successful: Product successfully updated.
+        update_failed: The product could not be updated.
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
-            - поля
-        already_in_upload: 'Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»'
+            - fields
+        already_in_upload: 'A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"'
       error:
-        upload: Произошла ошибка при загрузке файла
+        upload: An error occured during the file upload
       meta:
-        created: Создан
-        created_by: Создан
-        updated_by: Обновлен
-        updated: Последнее обновление
+        created: Created
+        created_by: By
+        updated_by: By
+        updated: Last update
         family:
-          title: Семейство
-          none: (Пусто)
+          title: Family
+          none: None
         groups:
-          title: Группы
+          title: Groups
           modal:
-            title: 'Группа {{ group }}'
-            view_group: Посмотреть группу
-            group_label: Ярлык
-            more_products: '{{ count }} больше продуктов...'
-            close: Закрыть
+            title: 'Group {{ group }}'
+            view_group: View group
+            group_label: Label
+            more_products: '{{ count }} more products...'
+            close: Close
       copy:
-        select: Выбрать
-        all: Все
-        all_visible: Все видимые
-        none: (Пусто)
-        copy: Копировать
+        select: Select
+        all: All
+        all_visible: All visible
+        none: None
+        copy: Copy
       variant_group:
-        updated_by: Обновлено группой вариантов
+        updated_by: Updated by variant group
         switch:
-          "yes": Да
-          "no": Нет
+          "yes": 'Yes'
+          "no": 'No'
       optional_attribute:
-        remove: Удалить этот атрибут
+        remove: Remove this attribute
       locale_specific_attribute:
-        unavailable: Это локализуемое поле не доступно для этого языка
+        unavailable: This locale specific field is not available in this locale
       localizable:
-        channel_locale_unavailable: 'Это локализуемое поле не доступно для языка «{{ locale }}» и канала «{{ channel }}»'
+        channel_locale_unavailable: "This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'"
       media:
-        upload: Перетащите чтобы загрузить, или нажмите здесь
+        upload: Drag and drop to upload or click here
       create_popin:
-        title: Создать новый продукт
+        title: Create a new product
         labels:
-          family: Выберите семейство
-          cancel: Отмена
+          family: Choose a family
+          save: Save
+          cancel: Cancel
     attribute_option:
-      code: Код
-      label: Ярлык
+      code: Code
+      label: Label
     variant_group:
+      title: Variant group
       info:
+        deletion_successful: Variant group successfully deleted.
+        deletion_failed: The variant group could not be deleted.
+        update_successful: Variant group successfully updated.
+        update_failed: The variant group could not be updated.
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
-            - поля
-        already_in_upload: 'Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»'
-        no_attributes: Это группа вариантов пока не имеет атрибутов
+            - fields
+        already_in_upload: 'A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"'
+        no_attributes: This variant group has no attributes yet
+      btn:
+        save: Save
       meta:
-        product_count: Продукты
-        created: Создано
-        updated: Обновлено
+        product_count: Products
+        created: Created
+        created_by: Created by
+        updated: Updated
+        updated_by: Updated by
   confirmation:
-    leave: Вы уверены, что хотите покинуть эту страницу?
-    discard_changes: 'Если вы покините страницу изменения будут потеряны для {{ entity }}.'
-    delete_item: Подтвердить удаление
+    leave: Are you sure you want to leave this page?
+    discard_changes: 'You will lose changes to the {{ entity }} if you leave the page.'
+    delete_item: Confirm deletion
     delete:
-      attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
+      attribute: Are you sure you want to delete this attribute from the product?
   info:
-    not_applicable: '-'
+    not_applicable: N/A
     entity:
-      updated: Имеются несохраненные изменения.
+      updated: There are unsaved changes.
   error:
-    upload: Произошла ошибка во время загрузки файла
+    upload: An error occured during the upload of the file
   alert:
-    not_allowed: Вы не имеете доступа к этой странице
-    error_occured: Произошла ошибка во время загрузки страницы
+    not_allowed: You are not allowed to access this page
+    error_occured: An error occured during the loading of the page
   form:
+    required: (required)
     product:
       tab:
         associations:
-          title: Ассоциации
+          title: Associations
           info:
-            none_exist: Типы ассоциаций отсутствуют.
-            show_products: Показать продукты
-            show_groups: Показать группы
-            number_of_associations: '{{ productCount }} продуктов и {{ groupCount }} групп'
+            none_exist: No association types exist.
+            show_products: Show products
+            show_groups: Show groups
+            number_of_associations: '{{ productCount }} products and {{ groupCount }} groups'
         attributes:
-          title: Атрибуты
+          title: Attributes
           btn:
-            add: Добавить
-            add_attributes: Добавить атрибуты
+            add: Add
+            add_attributes: Add attributes
           info:
-            search_attributes: Поиск...
-            no_available_attributes: Нет больше атрибутов для добавления
-            attributes_selected: 'Выбран(o) {{ attributeCount }} атрибут(ов)'
-            no_match: Совпадений не найдено
-            load_more: Загрузка дополнительных результатов...
+            search_attributes: Search...
+            no_available_attributes: There are no more attributes to add
+            attributes_selected: '{{ attributeCount }} attribute(s) selected'
+            no_match: No matches found
+            load_more: Loading more results...
         categories:
-          title: Категории
+          title: Categories
       panel:
         completeness:
-          title: Завершенность
+          title: Completeness
           info:
-            no_family: Семейство не определено. Пожалуйста определите семейство для вычисления завершенности этого продукта.
-            no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить завершенность для нового семейства.
-          missing_values: Отсутствующуют значения
+            no_family: No family defined. Please define a family to calculate the completeness of this product.
+            no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
+          missing_values: Missing values
         history:
-          title: Журнал
+          title: History
       switch:
-        "no": Нет
-        "yes": Да
+        "no": 'No'
+        "yes": 'Yes'
       sequential_edit:
         info:
-          products: продуктов
-          previous: 'Перейдите обратно к {{ product }} без сохранения.'
-          next: 'Перейти к {{ product }} без сохранения.'
+          products: products
+          previous: 'Skip back to {{ product }} without saving.'
+          next: 'Skip to {{ product }} without saving.'
         btn:
-          save_and_next: Сохранить и далее
-          save_and_finish: Сохранить и завершить
+          save_and_next: Save and next
+          save_and_finish: Save and finish
       change_family:
         modal:
-          title: Изменить семейство продуктов
-          merge_attributes: Текущие атрибуты будут объединены с существующими в новом семействе.
-          keep_attributes: Атрибуты не будут удалены.
-          change_family_to: Изменить семейство на
-          empty_selection: Выберите семейство
+          title: Change the product family
+          merge_attributes: Current attributes will be merged with the ones in the new family.
+          keep_attributes: No attributes will be removed.
+          change_family_to: Change the family to
+          empty_selection: Choose a family
       flash:
-        attribute_deletion_error: Произошла ошибка при удалении атрибута
+        attribute_deletion_error: An error occured during the attribute deletion
       mass_edit:
-        select_attributes: Выберите атрибуты
-        select: Выберите
+        select_attributes: Select attributes
+        select: Select
     attribute_option:
       flash:
-        option_created: Выбор в списке атрибута успешно создан
-        error_creating_option: Произошла ошибка при попытке создания выбора для атрибута
+        option_created: Attribute option successfully created
+        error_creating_option: An error ocurred when trying to create the attribute option
       add_option_modal:
-        title: Добавить выбор для атрибута
-        confirm: Добавить
-        cancel: Отменить
+        title: Add attribute option
+        confirm: Add
+        cancel: Cancel
     entity:
       switch:
-        "no": Нет
-        "yes": Да
+        "no": 'No'
+        "yes": 'Yes'
     variant_group:
       tab:
         properties:
-          title: Свойства
-          general: Общие свойства
-          code: Код
-          type: Тип
-          axis: Ось
-          label_translations: Переводы меток
+          title: Properties
+          general: General properties
+          code: Code
+          type: Type
+          axis: Axis
+          label_translations: Label translations
         history:
-          title: История
+          title: History
         products:
-          title: Продукты
+          title: Products
         attributes:
-          title: Атрибуты
+          title: Attributes
     common:
       tab:
         attributes:
           btn:
-            add_attributes: Добавить атрибуты
+            add: Add
+            add_attributes: Add attributes
           info:
-            search_attributes: Поиск...
-            no_available_attributes: Нет больше атрибутов для добавления
+            search_attributes: Search...
+            no_available_attributes: There are no more attributes to add
   export:
     product:
+      data:
+        title: Filter the products
       structure:
+        title: Filter the data
         attributes:
-          title: Атрибуты
+          title: Attributes
       filter:
         channel:
-          title: Канал
+          title: Channel
+          help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
         locales:
-          title: Локали
+          title: Locales
+          help: 'The locales defines the localized product values to export. Ex: only product information in French.'
         attributes:
-          title: Атрибуты
-          edit: Редактировать
+          title: Attributes
+          edit: Edit
+          label: '{0} All attributes|{1} One attribute selected|]1,Inf[ {{ count }} attributes selected'
+          help: 'Select the product information to export. Ex: only the technical attributes.'
+          empty: All attributes will be exported
           modal:
-            apply: Применить
-            cancel: Отмена
+            apply: Apply
+            cancel: Cancel
+            title: Attribute selection
         attributes_selector:
-          attribute_group: Группы атрибутов
-          clear: Очистить
-          all_group: Все группы
+          attribute_group: Attribute groups
+          attributes: 'Search in {{ attributeCount }} attributes'
+          selected: Selected attributes
+          clear: Clear
+          all_group: All groups
+          empty_selection: All attributes will be exported
         family:
-          title: Семейство
+          title: Family
+          help: 'Select the products to export by their family. Ex: Export only the shoes and dresses.'
           operators:
-            IN: В списке
+            IN: In list
+            NOT IN: Not in list
+            EMPTY: "Products that don't have a family"
+            NOT EMPTY: Products that have a family
+          empty_selection: No condition on families
+        updated:
+          title: Time condition
+          operators:
+            ALL: No date condition
+            SINCE LAST N DAYS: Updated products over the last n days (e.g. 6)
+            >: Updated products since this date
+            SINCE LAST JOB: Updated products since last export
         enabled:
-          title: Статус
+          title: Status
+          help: 'Select the products to export by their status. Ex: Export products whatsoever their status.'
           value:
-            all: Все
-            enabled: Включено
-            disabled: Отключено
+            all: All
+            enabled: Enabled
+            disabled: Disabled
         completeness:
-          title: Завершенность
+          title: Completeness
+          help: Select the products to export by their completeness.
+          operators:
+            ALL: No condition on completeness
+            >=: Complete on at least one selected locale
+            GREATER OR EQUALS THAN ON ALL LOCALES: Complete on all selected locales
+            LOWER THAN ON ALL LOCALES: Not complete on all selected locales
+          empty_selection: Select a family
+        category:
+          title: Category
+          help: Use the product categories in the tree (defined by the channel above) to select the products to export
         identifier:
-          title: Идентификатор
+          title: Identifier
+          help: Identifiers of products you want to export separated by commas, spaces or line breaks
         metric:
           operators:
-            EMPTY: Пусто
+            =: Is equal to
+            !=: Is not equal to
+            >=: Greater than or equals
+            >: Greater than
+            <=: Lower than or equals
+            <: Lower than
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         string:
           operators:
-            ALL: Все
-            EMPTY: Пусто
+            ALL: All
+            CONTAINS: Contains
+            DOES NOT CONTAIN: Does not contain
+            =: Is equal to
+            STARTS WITH: Starts with
+            ENDS WITH: Ends with
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         price-collection:
           operators:
-            EMPTY: Пусто
+            =: Is equal to
+            !=: Is not equal to
+            >=: Greater than or equals
+            >: Greater than
+            <=: Lower than or equals
+            <: Lower than
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         multi_select:
           operators:
-            IN: В списке
-            EMPTY: Пусто
+            IN: In list
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         media:
           operators:
-            EMPTY: Пусто
+            CONTAINS: Contains
+            DOES NOT CONTAIN: Does not contain
+            =: Is equal to
+            STARTS WITH: Starts with
+            ENDS WITH: Ends with
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         date:
           operators:
-            EMPTY: Пусто
+            >: Greater than
+            <: Lower than
+            =: Is equal to
+            !=: Is not equal to
+            BETWEEN: Between
+            NOT BETWEEN: Not between
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         number:
           operators:
-            EMPTY: Пусто
+            =: Is equal to
+            !=: Is not equal to
+            >=: Greater than or equals
+            >: Greater than
+            <=: Lower than or equals
+            <: Lower than
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
   mass_edit_action:
     edit_common_attributes:
-      description: 'Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.'
+      description: |-
+        The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
 pim_enrich.error:
-  exception.title: 'Ах, нет! Произошла ошибка {{ status_code }}...'
+  exception.title: 'Oh snap! A {{ status_code }} error occured...'

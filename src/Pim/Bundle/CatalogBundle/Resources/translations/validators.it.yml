@@ -1,11 +1,25 @@
-An identifier attribute already exists.: Attributo identificatore già esistente.
-Attribute code may contain only letters, numbers and underscore: Il codice attributo può contenere solo lettere, numeri e underscore
-This attribute type can't be used as a grid filter: Questo tipo di attributo non può essere utilizzato come filtro griglia
-This code is not available: Questo codice non è disponibile
-This attribute type must be required: Questo tipo di attributo deve essere obbligatorio
-This attribute type can't be required: Questo tipo di attributo non deve essere obbligatorio
-This attribute type can't have unique value: Questo tipo di attributo non può avere valore univoco
-No default value may be specified for this attribute type: Non può essere selezionato un valore predefinito per questo tipo di attributo
-This value should be Yes or No: Questo valore può essere Sì o No
-This value should not be blank: Questo valore non può essere vuoto
-Option code may contain only letters, numbers and underscores: Il codice opzione può contenere solo lettere, numeri e caratteri di sottolineatura
+An identifier attribute already exists.: An identifier attribute already exists.
+Attribute code may contain only letters, numbers and underscore: Attribute code may contain only letters, numbers and underscore
+Attribute code may contain only letters (at least one), numbers and underscores: Attribute code may contain only letters (at least one), numbers and underscores
+This attribute type can't be used as a grid filter: "This attribute type can't be used as a grid filter"
+This code is not available: This code is not available
+This attribute type must be required: This attribute type must be required
+This attribute type can't be required: "This attribute type can't be required"
+This attribute type can't have unique value: "This attribute type can't have unique value"
+No default value may be specified for this attribute type: No default value may be specified for this attribute type
+This value should be Yes or No: This value should be Yes or No
+This value should not be blank: This value should not be blank
+Option code may contain only letters, numbers and underscores: Option code may contain only letters, numbers and underscores
+Option code may contain only letters (at least one), numbers and underscores: Option code may contain only letters (at least one), numbers and underscores
+This value should not be a decimal.: This value should not be a decimal.
+The file extension is not allowed (allowed extensions:
+  "%extensions%).":
+    The file extension is not allowed (allowed extensions: '%extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": 'The value %value% is already set on another product for the unique attribute %attribute%'
+regex.comma_or_semicolon.message: This field should not contain any comma or semicolon.
+file.extensions.message: 'The file extension is not allowed (allowed extensions: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 'This type of value expects the use of {{ decimal_separator }} to separate decimals.'
+This type of value expects the use of dot (.) to separate decimals.: This type of value expects the use of a dot (.) to separate decimals.
+This type of value expects the use of comma (,) to separate decimals.: This type of value expects the use of a comma (,) to separate decimals.
+This type of value expects the use of arabic decimal separator (٫) to separate decimals.: This type of value expects the use of an arabic decimal separator (٫) to separate decimals.
+"This type of value expects the use of the format {{ date_format }} for dates.": 'This type of value expects the use of the format {{ date_format }} for dates.'

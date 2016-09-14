@@ -1,39 +1,48 @@
-User: Utilizador
-Run demo: Executar demonstração
-Product: Produto
-Attribute list: Lista de atributos
-Attribute Group list: Lista de Grupos de Atributos
-Users: Utilizadores
-Roles: Funções
-Groups: Grupos
-Configuration: Configuração
-Currency list: Lista de moedas
-Locale list: Lista de linguagens
-Logged in as: Iniciou sessão como
-Logout: Terminar sessão
-Login: Início de sessão
-Previous: Anterior
-Next: Seguinte
-Channel list: Lista de canais
-Select file: Selecionar ficheiro
-Change file: Alterar ficheiro
-Remove file: Eliminar ficheiro
-Delete: Eliminar
-Save: Guardar
-Cancel: Cancelar
-Get help: Obter ajuda
-My User: A minha conta
-oro.form.choose_value: Escolher um valor...
-Read more: Ler mais
-oro.form.click_here_to_select: Clique aqui para selecionar...
-Add: Adicionar
-Learn how to use this space: Aprenda a usar este espaço
-How To Use Pinbar: Como usar o Pinbar
+User: User
+Run demo: Run demo
+Product: Product
+Attribute list: Attribute list
+Attribute Group list: Attribute Group list
+Users: Users
+Roles: Roles
+Groups: Groups
+Configuration: Configuration
+Currency list: Currency list
+Locale list: Locale list
+Logged in as: Logged in as
+Logout: Logout
+Login: Login
+Previous: Previous
+Next: Next
+Channel list: Channel list
+Select file: Select file
+Change file: Change file
+Remove file: Remove file
+Delete: Delete
+Save: Save
+Cancel: Cancel
+Get help: Get help
+My User: My Account
+oro.form.choose_value: Choose a value...
+Read more: Read more
+oro.form.click_here_to_select: Click here to select...
+Add: Add
+Learn how to use this space: Learn how to use this space
+How To Use Pinbar: How To Use Pinbar
 Pinbar: Pinbar
-Favorites: Favoritos
-Most Viewed: Mais Vistos
-Add this page to favorites: Adicione esta página aos favoritos
-Minimize the window to the pinbar: Minimizar a janela para o pinbar
-Loading ...: A carregar ...
-"Yes": Sim
-"No": Não
+Favorites: Favorites
+Most Viewed: Most Viewed
+Add this page to favorites: Add this page to favorites
+Minimize the window to the pinbar: Minimize the window to the pinbar
+Loading ...: Loading ...
+"Yes": 'Yes'
+"No": 'No'
+required: (required)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Enable loading messages
+    loading_message_enabled.tooltip: Display user friendly messages while waiting for a page to poad
+    loading_messages.label: Available loading messages
+    loading_messages.tooltip: All available loading messages separated by line breaks
+  group:
+    loading_message.title: Loading messages

@@ -1,6 +1,6 @@
-entity.user.name: ユーザー
-entity.user.description: ユーザープロフィール
-entity.role.name: ロール
-entity.role.description: ユーザー ロール
-entity.group.name: グループ
-entity.group.description: ロールグループ
+entity.user.name: User
+entity.user.description: User profile
+entity.role.name: Role
+entity.role.description: user role
+entity.group.name: Group
+entity.group.description: Role group

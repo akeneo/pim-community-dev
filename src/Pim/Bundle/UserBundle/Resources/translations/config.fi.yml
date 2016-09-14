@@ -1,6 +1,6 @@
-entity.user.name: Käyttäjä
-entity.user.description: Käyttäjäprofiili
-entity.role.name: Rooli
-entity.role.description: käyttäjärooli
-entity.group.name: Ryhmä
-entity.group.description: Ryhmän rooli
+entity.user.name: User
+entity.user.description: User profile
+entity.role.name: Role
+entity.role.description: user role
+entity.group.name: Group
+entity.group.description: Role group

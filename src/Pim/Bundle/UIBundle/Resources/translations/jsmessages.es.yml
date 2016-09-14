@@ -1,112 +1,117 @@
-Close: Cerrar
-Update: Actualizar
-Selected Rows: Filas seleccionadas
-"Yes": SÍ
-Yes, Delete: Sí, eliminar
-Yes, I Agree: Sí, estoy de acuerdo
-Yes, do it: Sí, hazlo
+Close: Close
+Update: Update
+Selected Rows: Selected Rows
+"Yes": 'Yes'
+Yes, Delete: Yes, Delete
+Yes, I Agree: Yes, I Agree
+Yes, do it: Yes, do it
 "No": 'No'
-Ok, got it.: De acuerdo.
-Cancel: Cancelar
-Delete Confirmation: Confirmación de eliminación
-Edit: Editar
-Unexpected error occured. Please contact system administrator.: Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema.
-Now: Ahora
-Prev: Ant
-Next: Siguiente
-Today: Hoy
-Wk: Smn
-Done: Hecho
+Ok, got it.: Ok, got it.
+Cancel: Cancel
+Delete Confirmation: Delete Confirmation
+Edit: Edit
+Unexpected error occured. Please contact system administrator.: Unexpected error occured. Please contact system administrator.
+Now: Now
+Prev: Prev
+Next: Next
+Today: Today
+Wk: Wk
+Done: Done
 AM: AM
 A: A
 PM: PM
 P: P
-Choose Time: Selecciona Hora
-Time: Tiempo
-Hour: Hora
-Minute: Minuto
-Second: Segundo
-Millisecond: Milisegundo
-Microsecond: Microsegundo
-Time Zone: Zona Horaria
-Localized value: Valor localizado
-Columns: Columnas
-Datagrid Configuration: Configuración de Grilla
-Apply: Aplicar
-Action: Acción
-Unit: Unidad
-Currency: Moneda
+Choose Time: Choose Time
+Time: Time
+Hour: Hour
+Minute: Minute
+Second: Second
+Millisecond: Millisecond
+Microsecond: Microsecond
+Time Zone: Time Zone
+Localized value: Localized value
+Columns: Columns
+Datagrid Configuration: Datagrid Configuration
+Apply: Apply
+Action: Action
+Unit: Unit
+Currency: Currency
 jstree:
-  all: Todos los productos
-  unclassified: Productos sin clasificar
+  all: All products
+  unclassified: Unclassified products
   product:
-    all: Todos los productos
-    unclassified: Productos sin clasificar
-  no_tree: Ningún árbol disponible
-  include_sub: Incluir subcategorías
-  loading: Cargando...
+    all: All products
+    unclassified: Unclassified products
+  no_tree: No tree available
+  include_sub: Include sub-categories
+  loading: Loading ...
 datetimepicker:
   days:
-    Sunday: Domingo
-    Monday: Lunes
-    Tuesday: Martes
-    Wednesday: Miércoles
-    Thursday: Jueves
-    Friday: Viernes
-    Saturday: Sábado
+    Sunday: Sunday
+    Monday: Monday
+    Tuesday: Tuesday
+    Wednesday: Wednesday
+    Thursday: Thursday
+    Friday: Friday
+    Saturday: Saturday
   daysShort:
-    Sun: Dom
-    Mon: Lun
-    Tue: Mar
-    Wed: Mie
-    Thu: Jue
-    Fri: Vie
-    Sat: Sab
+    Sun: Sun
+    Mon: Mon
+    Tue: Tue
+    Wed: Wed
+    Thu: Thu
+    Fri: Fri
+    Sat: Sat
   daysMin:
-    Su: Do
-    Mo: Lu
-    Tu: Ma
-    We: Mi
-    Th: Ju
-    Fr: Vi
+    Su: Su
+    Mo: Mo
+    Tu: Tu
+    We: We
+    Th: Th
+    Fr: Fr
     Sa: Sa
   months:
-    January: Enero
-    February: Febrero
-    March: Marzo
-    April: Abril
-    May: Mayo
-    June: Junio
-    July: Julio
-    August: Agosto
-    September: Septiembre
-    October: Octubre
-    November: Noviembre
-    December: Diciembre
+    January: January
+    February: February
+    March: March
+    April: April
+    May: May
+    June: June
+    July: July
+    August: August
+    September: September
+    October: October
+    November: November
+    December: December
   monthsShort:
-    Jan: Ene
+    Jan: Jan
     Feb: Feb
     Mar: Mar
-    Apr: Abr
+    Apr: Apr
     May: May
     Jun: Jun
     Jul: Jul
-    Aug: Ago
+    Aug: Aug
     Sep: Sep
     Oct: Oct
     Nov: Nov
-    Dec: Dic
+    Dec: Dec
 oro_config:
   form:
     config:
-      title: Configuración del sitema
+      title: System configuration
       tab:
         system:
-          title: Sistema
+          title: System
       group:
         localization:
-          title: Localización
-          system_locale: Idioma
+          title: Localization
+          system_locale: Language
         notification:
-          title: Notificaciones
-          system_notification: Notificaciones de nuevas versiones
+          title: Notifications
+          system_notification: New versions notifications
+        loading_message:
+          title: Loading messages
+          label: Enable loading messages
+        loading_messages:
+          label: Available loading messages

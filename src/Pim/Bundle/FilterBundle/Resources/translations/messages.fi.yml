@@ -3,18 +3,18 @@ oro.filter.form.label_type_greater_equal: '>='
 oro.filter.form.label_type_greater_than: '>'
 oro.filter.form.label_type_less_equal: '<='
 oro.filter.form.label_type_less_than: '<'
-oro.filter.form.label_type_yes: kyllä
-oro.filter.form.label_type_no: ei
-oro.filter.form.label_type_contains: sisältää
-oro.filter.form.label_type_not_contains: ei sisällä
-oro.filter.form.label_type_equals: vastaa
-oro.filter.form.label_type_start_with: alkaa
-oro.filter.form.label_type_end_with: päättyy
-oro.filter.form.label_type_empty: on tyhjä
-oro.filter.form.label_type_in_list: -luettelosta
-oro.filter.form.label_date_type_between: välillä
-oro.filter.form.label_date_type_not_between: ei välillä
-oro.filter.form.label_date_type_more_than: suurempi kuin
-oro.filter.form.label_date_type_less_than: pienempi kuin
-oro.filter.form.label_not_selected: Ei ole valittu
-oro.filter.form.label_selected: Valittu
+oro.filter.form.label_type_yes: 'yes'
+oro.filter.form.label_type_no: 'no'
+oro.filter.form.label_type_contains: contains
+oro.filter.form.label_type_not_contains: does not contain
+oro.filter.form.label_type_equals: is equal to
+oro.filter.form.label_type_start_with: starts with
+oro.filter.form.label_type_end_with: ends with
+oro.filter.form.label_type_empty: is empty
+oro.filter.form.label_type_in_list: in list
+oro.filter.form.label_date_type_between: between
+oro.filter.form.label_date_type_not_between: not between
+oro.filter.form.label_date_type_more_than: more than
+oro.filter.form.label_date_type_less_than: less than
+oro.filter.form.label_not_selected: Not selected
+oro.filter.form.label_selected: Selected

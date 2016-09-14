@@ -1,27 +1,27 @@
 pim_dashboard:
-  title: Панель управления
-  version: Версия
+  title: Dashboard
+  version: Version
   link.label:
-    product: Управление продуктами
-    category: Управление категориями
-    attribute: Управление атрибутами
-    family: Управление семействами
+    product: Manage Products
+    category: Manage Categories
+    attribute: Manage Attributes
+    family: Manage Families
   widget:
     error:
-      title: Ошибка при загрузке виджета
-      message: 'Виджет «%alias%» не существует'
+      title: Error while loading widget
+      message: "Widget '%alias%' does not exist"
     completeness:
-      title: Законченность по каналам и языкам
+      title: Completeness Over Channels and Locales
     last_operations:
-      title: Последние операции
-      empty: Операции не найдены
-      status: Состояние
-      date: Дата
-      type: Тип
-      profile name: Имя профиля
-      details: Подробно
+      title: Last operations
+      empty: No operations found
+      status: Status
+      date: Date
+      type: Type
+      profile name: Profile name
+      details: Details
       job_type:
-        import: Импорт
-        export: Экспорт
-        mass_edit: Массовое редактирование
-        quick_export: Быстрый экспорт
+        import: Import
+        export: Export
+        mass_edit: Mass edit
+        quick_export: Quick export

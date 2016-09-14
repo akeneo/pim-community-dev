@@ -1,26 +1,26 @@
 btn:
-  post: Добавить новый комментарий
-  reply: Ответить
-  cancel: Отменить
+  post: Add a new comment
+  reply: Reply
+  cancel: Cancel
 confirmation:
   remove:
-    comment: Вы уверены, что хотите удалить комментарий?
+    comment: Are you sure you want to delete this comment?
 flash:
   comment:
     create:
-      success: Ваш комментарий был успешно создан.
-      error: Произошла ошибка во время создания вашего комментария.
+      success: Your comment has been created successfully.
+      error: An error occured during the creation of your comment.
     delete:
-      success: Ваш комментарий был успешно удален.
-      error: Произошла ошибка во время удаления вашего комментария.
+      success: Your comment has been deleted successfully.
+      error: An error occured during the deletion of your comment.
     reply:
-      success: Ваш ответ был успешно создан.
-      error: Произошла ошибка во время создания вашего ответа.
+      success: Your reply has been created successfully.
+      error: An error occured during the creation of your reply.
 comment:
   index:
-    empty: Нет комментариев
+    empty: No comment for now
   placeholder:
-    new: Написать новый комментарий...
-    reply: Ответить на этот комментарий...
+    new: Write a new comment...
+    reply: Reply to this comment...
 pim_comment:
-  product.panel.comment.title: Комментарии
+  product.panel.comment.title: Comments

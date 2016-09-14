@@ -1,212 +1,367 @@
 pim_connector:
   steps:
-    dummy_reader.title: Mallilukija
-    product_reader.title: Tuotteen poisto
-    entity_reader.title: Kohteen poisto
+    dummy_reader.title: Dummy reader
+    product_reader.title: Product extraction
+    entity_reader.title: Entity extraction
     csv_reader:
-      title: CSV-lukija
-      invalid_item_columns_count: 'Odotit %totalColumnsCount% saraketta, sinulla on %itemColumnsCount% %csvPath%:%lineno%'
-    csv_product_reader.title: CSV-tuotteen lukija
-    csv_category_reader.title: CSV-kategorian lukija
-    csv_variant_group .title: CSV-vaihtoehtojen ryhmälukija
-    dummy_processor.title: Malliprosessori
-    product_processor.title: Tuotteen luominen
-    variant_group_processor.title: Malliryhmän luonti / päivitys
-    category_processor.title: Kategorian luominen
-    association_processor.title: Assosiaation luominen
-    product_association_processor.title: Assosiaation luominen
-    group_processor.title: Ryhmän perustaminen
-    attribute_processor.title: Attribuutin luominen
-    attribute_option_processor.title: Attribuutin vaihtoehdon luominen
-    heterogeneous_processor.title: CSV-tuotteiden sarjanmuodostoja
-    homogeneous_processor.title: CSV-entiteettien sarjanmuodostaja
-    transformer_processor.title: Muunnos
-    dummy_writer.title: Mallikirjoittaja
-    file_writer.title: Ulostulo
-    product_writer.title: Tuotteen varastointi
-    category_writer.title: Kategorian varastointi
-    variant_group_writer.title: Variant ryhmän varastointi
-    writer.title: Yksikön varastointi
-    csv_writer.title: CSV-kirjoittaja
+      title: CSV reader
+      invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %csvPath%:%lineno%'
+    csv_product_reader.title: CSV product reader
+    csv_category_reader.title: CSV category reader
+    csv_variant_group .title: CSV variant group reader
+    dummy_processor.title: Dummy processor
+    product_processor.title: Product creation
+    variant_group_processor.title: Variant group creation / update
+    category_processor.title: Category creation
+    association_processor.title: Association creation
+    product_association_processor.title: Association creation
+    group_processor.title: Group creation
+    attribute_processor.title: Attribute creation
+    attribute_option_processor.title: Attribute option creation
+    heterogeneous_processor.title: CSV product serializer
+    homogeneous_processor.title: CSV entity serializer
+    transformer_processor.title: Transformation
+    dummy_writer.title: Dummy writer
+    file_writer.title: Output
+    product_writer.title: Product storage
+    category_writer.title: Category storage
+    variant_group_writer.title: Variant group storage
+    writer.title: Entity storage
+    csv_writer.title: Csv Writer
   export:
-    delimiter:
-      label: Erotin
-      help: Yhtä merkkiä käytetään kentän erottajan määrittämiseen
-    enclosure:
-      label: Liite
-      help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
-    withHeader:
-      label: Otsikon kanssa
-      help: Tulostaako sarakkeen nimen vai ei
-    filePath:
-      label: Tiedostopolku
-      help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa
-    channel:
-      label: Kanava
-      help: Kanava, jonka haluat viedä
-    locales:
-      label: Alueet
-    decimalSeparator:
-      label: Desimaalierotin
-      help: Määritä desimaalierotin
-    dateFormat:
-      label: Päivämäärän muoto
-      help: Määritä päivämääräkenttien formaatti
-    families:
-      label: Perhe
-      placeholder: Valitse perhe
+    csv:
+      delimiter:
+        label: Delimiter
+        help: One character used to set the field delimiter
+      enclosure:
+        label: Enclosure
+        help: One character used to set the field enclosure
+      withHeader:
+        label: With header
+        help: Whether or not to print the column name
+      with_media:
+        label: Export files and images
+        help: Whether or not to export product files and images
+      filePath:
+        label: File path
+        help: Where to write the generated file on the file system
+      decimalSeparator:
+        label: Decimal separator
+        help: Determine the decimal separator
+      dateFormat:
+        label: Date format
+        help: Determine the format of date fields
+    xlsx:
+      lines_per_files:
+        label: Number of lines per file
+        help: Define the limit number of lines per file
+      withHeader:
+        label: With header
+        help: Whether or not to print the column name
+      with_media:
+        label: Export files and images
+        help: Whether or not to export product files and images
+      filePath:
+        label: File path
+        help: Where to write the generated file on the file system
+      decimalSeparator:
+        label: Decimal separator
+        help: Determine the decimal separator
+      dateFormat:
+        label: Date format
+        help: Determine the format of date fields
+    yml:
+      filePath:
+        label: File path
+        help: Where to write the generated file on the file system
   import:
-    enabled:
-      label: Enabloi tuote
-      help: Pitääkö tuodun tuotteen olla enabloitu
-    categoriesColumn:
-      label: Kategoriasarake
-      help: Kategoriasarakkeen nimi
-    familyColumn:
-      label: Perhesarake
-      help: Perhesarakkeen nimi
-    groupsColumn:
-      label: Ryhmäsarake
-      help: Ryhmäsarakkeen nimi
-    filePath:
-      label: Tiedosto
-      help: Tuotava CSV-tiedosto
-    yamlFilePath:
-      label: Tiedosto
-      help: YAML tiedosto joka tuodaan
-    uploadAllowed:
-      label: Salli tiedoston tuonti
-      help: Sallitaanko tiedoston suora lataus järjestelmään
-    delimiter:
-      label: Erotin
-      help: Yhtä merkkiä käytetään CSV-tiedoston kenttäerottimena
-    enclosure:
-      label: Liite
-      help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
-    escape:
-      label: Poistu
-      help: 'Yhtä merkkiä käytetään kentän "poistu" määrittämiseen'
-    circularRefsChecked:
-      label: Tarkista kehäviittaukset
-      help: Jos kyllä, data prosessoidaan siten että kategorioiden välillä ei ole kehäviittauksia
-    realTimeVersioning:
-      label: Reaaliaikainen historiapäivitys
-      help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
-    copyValuesToProducts:
-      label: Kopioi variant-ryhmien arvot tuotteisiin
-      help: Tarkoittaa että tuotteet päivitetään automaattisesti variant-ryhmien arvojen mukaan, voidaan ottaa poistaa päältä vain variant-ryhmän päivittämiseksi
-    enabledComparison:
-      label: Vertaa arvoja
-      help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
-    decimalSeparator:
-      label: Desimaalierotin
-      help: Yksi merkki asettaa kenttäerottimen desimaaleja varten
-    dateFormat:
-      label: Päivämäärän muoto
+    csv:
+      enabled:
+        label: Enable the product
+        help: Whether or not imported product should be enabled
+      categoriesColumn:
+        label: Categories column
+        help: Name of the categories column
+      familyColumn:
+        label: Family column
+        help: Name of the family column
+      groupsColumn:
+        label: Groups column
+        help: Name of the groups column
+      filePath:
+        label: File
+        help: The CSV file to import
+      uploadAllowed:
+        label: Allow file upload
+        help: Whether or not to allow uploading the file directly
+      delimiter:
+        label: Delimiter
+        help: One character used to set the field delimiter for CSV file
+      enclosure:
+        label: Enclosure
+        help: One character used to set the field enclosure
+      escape:
+        label: Escape
+        help: One character used to set the field escape
+      circularRefsChecked:
+        label: Check circular references
+        help: If yes, data will be processed to make sure that there are no circular references between the categories
+      realTimeVersioning:
+        label: Real time history update
+        help: Means that the product history is automatically updated, can be switched off to improve performances
+      copyValuesToProducts:
+        label: Copy variant group values to products
+        help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group
+      enabledComparison:
+        label: Compare values
+        help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
+      decimalSeparator:
+        label: Decimal separator
+        help: One character used to set the field separator for decimal
+      dateFormat:
+        label: Date format
+        help: Specify the format of any date columns in the file, e.g. here DD/MM/YYYY for a 30/04/2014 format.
+    xlsx:
+      enabled:
+        label: Enable the product
+        help: Whether or not imported product should be enabled
+      categoriesColumn:
+        label: Categories column
+        help: Name of the categories column
+      familyColumn:
+        label: Family column
+        help: Name of the family column
+      groupsColumn:
+        label: Groups column
+        help: Name of the groups column
+      filePath:
+        label: File
+        help: The XLSX file to import
+      uploadAllowed:
+        label: Allow file upload
+        help: Whether or not to allow uploading the file directly
+      circularRefsChecked:
+        label: Check circular references
+        help: If yes, data will be processed to make sure that there are no circular references between the categories
+      realTimeVersioning:
+        label: Real time history update
+        help: Means that the product history is automatically updated, can be switched off to improve performances
+      copyValuesToProducts:
+        label: Copy variant group values to products
+        help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group
+      enabledComparison:
+        label: Compare values
+        help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
+      decimalSeparator:
+        label: Decimal separator
+        help: One character used to set the field separator for decimal
+      dateFormat:
+        label: Date format
+        help: Specify the format of any date columns in the file, e.g. here DD/MM/YYYY for a 30/04/2014 format.
+    yml:
+      filePath:
+        label: File
+        help: The YML file to import
+      uploadAllowed:
+        label: Allow file upload
+        help: Whether or not to allow uploading the file directly
 job_execution.summary:
-  read: lue
-  read_lines: lue rivit
-  write: kirjoitettu
-  skip: ohitettu
-  create: luotu
-  process: käsitelty
-  update_products: päivitetyt tuotteet
-  process_products: prosessoidut tuotteet
-  skip_products: ohitetut tuotteet
-  displayed: ensimmäiset varoitukset näytetty
+  read: read
+  read_lines: read lines
+  write: written
+  skip: skipped
+  create: created
+  process: processed
+  update_products: updated products
+  process_products: processed products
+  skip_products: skipped products
+  displayed: first warnings displayed
   charset_validator:
-    title: 'Tiedoston koodaus:'
-    skipped: ohitetaan, laajennus valkolistattu
-  product_skipped_no_diff: ohitettu tuote (ei eroavaisuuksia)
+    title: 'File encoding:'
+    skipped: skipped, extension in white list
+  product_skipped_no_diff: skipped product (no differences)
 batch_jobs:
   csv_product_export:
-    label: Tuotteiden vienti CSV-muodossa
-    export.label: Tuotteiden vienti
+    label: Product export in CSV
+    export.label: Product export
   csv_category_export:
-    label: Kategorian vienti CSV-muodossa
-    export.label: Kategorian vienti
+    label: Category export in CSV
+    export.label: Category export
   csv_attribute_export:
-    label: Attribuuttien vienti CSV-muodossa
-    export.label: Attribuuttien vienti
+    label: Attribute export in CSV
+    export.label: Attribute export
   csv_attribute_option_export:
-    label: Attribuuttien määritteiden vienti CSV-muodossa
-    export.label: Attribuuttien määritteiden vienti
+    label: Attribute option export in CSV
+    export.label: Attribute option export
   csv_association_type_export:
-    label: Liitännäistyyppien vienti CSV-muodossa
-    export.label: Liitännäistyyppien vienti
+    label: Association type export in CSV
+    export.label: Association type export
   csv_group_export:
-    label: Ryhmän vienti CSV-muodossa
-    export.label: Ryhmän vienti
+    label: Group export in CSV
+    export.label: Group export
   csv_variant_group_export:
-    label: Muuttujaryhmien vienti CSV-muodossa
-    export.label: Muutujaryhmien vienti
+    label: Variant group export in CSV
+    export.label: Variant group export
   csv_family_export:
-    label: Ryhmän tuonti CSV-tiedostona
-    export.label: Ryhmän vienti
+    label: Family export in CSV
+    export.label: Family export
   csv_product_import:
-    label: Tuotteiden tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Tuotteiden tuonti
-    import_associations.label: Liitännäisten tuonti
+    label: Product import in CSV
+    validation.label: File validation
+    import.label: Product import
+    import_associations.label: Association import
   csv_category_import:
-    label: Kategorioiden tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Kategorioiden tuonti
+    label: Category import in CSV
+    validation.label: File validation
+    import.label: Category import
   csv_attribute_import:
-    label: Attribuuttien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien tuonti
+    label: Attribute import in CSV
+    validation.label: File validation
+    import.label: Attribute import
   csv_attribute_option_import:
-    label: Attribuuttien määritteiden tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien määritteiden tuonti
+    label: Attribute option import in CSV
+    validation.label: File validation
+    import.label: Attribute option import
   csv_association_type_import:
-    label: Liitännäistyyppien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Liitännäistyyppien tuonti
+    label: Association type import in CSV
+    validation.label: File validation
+    import.label: Association type import
   csv_family_import:
-    label: Ryhmän tuonti CSV-tiedostona
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Ryhmätuonti
+    label: Family import in CSV
+    validation.label: File validation
+    import.label: Family import
   csv_group_import:
-    label: Ryhmien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Ryhmien tuonti
+    label: Group import in CSV
+    validation.label: File validation
+    import.label: Group import
   csv_variant_group_import:
-    label: Muuttujaryhmien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Muutujaryhmien tuonti
+    label: Variant group import in CSV
+    validation.label: File validation
+    import.label: Variant group import
+  csv_channel_export:
+    label: Channel export in CSV
+    export.label: Channel export
+  csv_locale_export:
+    label: Locale export in CSV
+    export.label: Locale export
+  csv_attribute_group_export:
+    label: Attribute group export in CSV
+    export.label: Attribute group export
+  csv_currency_export:
+    label: Currency export in CSV
+    export.label: Currency export
+  csv_group_type_export:
+    label: Group type export in CSV
+    export.label: Group type export
+  csv_channel_import:
+    label: Channel import in CSV
+    validation.label: File validation
+    import.label: Channel import
+  csv_locale_import:
+    label: Locale import in CSV
+    validation.label: File validation
+    import.label: Locale import
+  csv_attribute_group_import:
+    label: Attribute group import in CSV
+    validation.label: File validation
+    import.label: Attribute group import
+  csv_currency_import:
+    label: Currency import in CSV
+    validation.label: File validation
+    import.label: Currency import
+  csv_group_type_import:
+    label: Group type import in CSV
+    validation.label: File validation
+    import.label: Group type import
   xlsx_category_import:
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Kategorioiden tuonti
+    label: Category import in XLSX
+    validation.label: File validation
+    import.label: Category import
   xlsx_association_type_import:
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Liitännäistyyppien tuonti
+    label: Association type import in XLSX
+    validation.label: File validation
+    import.label: Association type import
   xlsx_attribute_import:
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien tuonti
+    label: Attribute import in XLSX
+    validation.label: File validation
+    import.label: Attribute import
   xlsx_attribute_option_import:
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien määritteiden tuonti
+    label: Attribute option import in XLSX
+    validation.label: File validation
+    import.label: Attribute option import
   xlsx_family_import:
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Ryhmätuonti
+    label: Family import in XLSX
+    validation.label: File validation
+    import.label: Family import
   xlsx_product_export:
-    export.label: Tuotteiden vienti
+    label: Product export in XLSX
+    export.label: Product export
   xlsx_product_import:
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Tuotteiden tuonti
-    import_associations.label: Liitännäisten tuonti
+    label: Product import in XLSX
+    validation.label: File validation
+    import.label: Product import
+    import_associations.label: Association import
   xlsx_group_export:
-    export.label: Ryhmän vienti
+    label: Group export in XLSX
+    export.label: Group export
   xlsx_variant_group_export:
-    export.label: Muutujaryhmien vienti
+    label: Variant group export in XLSX
+    export.label: Variant group export
   xlsx_group_import:
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Ryhmien tuonti
+    label: Group import in XLSX
+    validation.label: File validation
+    import.label: Group import
   xlsx_variant_group_import:
-    validation.label: Tiedostojen tarkistaminen
+    label: Variant group import in XLSX
+    validation.label: File validation
+    import.label: Variant Group import
   xlsx_family_export:
-    export.label: Ryhmän vienti
+    label: Family export in XLSX
+    export.label: Family export
   xlsx_category_export:
-    export.label: Kategorian vienti
+    label: Category export in XLSX
+    export.label: Category export
+  xlsx_attribute_export:
+    label: Attribute export in XLSX
+    export.label: Attribute export in XLSX
+  xlsx_attribute_option_export:
+    label: Attribute option export in XLSX
+    export.label: Attribute option export in XLSX
+  xlsx_association_type_export:
+    label: Association type export in XLSX
+    export.label: Association type export in XLSX
+  xlsx_channel_export:
+    label: Channel export in XLSX
+    export.label: Channel export
+  xlsx_locale_export:
+    label: Locale export in XLSX
+    export.label: Locale export
+  xlsx_attribute_group_export:
+    label: Attribute group export in XLSX
+    export.label: Attribute group export
+  xlsx_currency_export:
+    label: Currency export in XLSX
+    export.label: Currency export
+  xlsx_group_type_export:
+    label: Group type export in XLSX
+    export.label: Group type export
+  xlsx_channel_import:
+    label: Channel import in XLSX
+    validation.label: File validation
+    import.label: Channel import
+  xlsx_locale_import:
+    label: Locale import in XLSX
+    validation.label: File validation
+    import.label: Locale import
+  xlsx_attribute_group_import:
+    label: Attribute group import in XLSX
+    validation.label: File validation
+    import.label: Attribute group import
+  xlsx_currency_import:
+    label: Currency import in XLSX
+    validation.label: File validation
+    import.label: Currency import
+  xlsx_group_type_import:
+    label: Group type import in XLSX
+    validation.label: File validation
+    import.label: Group type import

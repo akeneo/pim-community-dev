@@ -1,4 +1,4 @@
-Sorry, page was not loaded correctly: Valitettavasti sivua ei ole ladattu oikein
-Your local changes will be lost. Are you sure you want to refresh the page?: Paikalliset muutoksesi menetetään. Oletko varma, että haluat päivittää sivun?
-navigation.message.content.outdated: "{{ title }} sivun sisältö on vanhentunut, ole hyvä ja <a href='#' data-action='page-refresh'> päivitä sivu</a>"
-"Content of pinned page is outdated": Valitsemasi sivun sisältö on päivittämätön
+Sorry, page was not loaded correctly: Sorry, page was not loaded correctly
+Your local changes will be lost. Are you sure you want to refresh the page?: Your local changes will be lost. Are you sure you want to refresh the page?
+navigation.message.content.outdated: "Content of {{ title }} page is outdated, please <a href='#' data-action='page-refresh'>refresh the page</a>"
+"Content of pinned page is outdated": Content of pinned page is outdated

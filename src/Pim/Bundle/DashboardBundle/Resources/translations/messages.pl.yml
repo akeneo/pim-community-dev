@@ -1,27 +1,27 @@
 pim_dashboard:
-  title: Kokpit
-  version: Wersja
+  title: Dashboard
+  version: Version
   link.label:
-    product: Zarządzaj Produktami
-    category: Zarządzaj Kategoriami
-    attribute: Zarządzaj Atrybutami
-    family: Zarządzaj Rodzinami
+    product: Manage Products
+    category: Manage Categories
+    attribute: Manage Attributes
+    family: Manage Families
   widget:
     error:
-      title: Wystąpił błąd podczas ładowania widżetu
-      message: "Widżet '%alias%' nie istnieje"
+      title: Error while loading widget
+      message: "Widget '%alias%' does not exist"
     completeness:
-      title: Kompletność dla kanałów oraz ustawień regionalnych
+      title: Completeness Over Channels and Locales
     last_operations:
-      title: Ostatnie operacje
-      empty: Nie znaleziono żadnych operacji
+      title: Last operations
+      empty: No operations found
       status: Status
-      date: Data
-      type: Typ
-      profile name: Nazwa profilu
-      details: Szczegóły
+      date: Date
+      type: Type
+      profile name: Profile name
+      details: Details
       job_type:
         import: Import
-        export: Eksport
-        mass_edit: Masowa edycja
-        quick_export: Szybki eksport
+        export: Export
+        mass_edit: Mass edit
+        quick_export: Quick export

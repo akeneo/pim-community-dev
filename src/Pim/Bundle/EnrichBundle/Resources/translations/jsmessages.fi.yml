@@ -1,372 +1,471 @@
 confirmation:
   remove:
-    item: Haluatko varmasti poistaa tämän kohteen?
-    association type: Oletko varma, että haluat poistaa tämän liitostyypin?
-    attribute: Oletko varma, että haluat poistaa tämän määritteen?
-    family: Oletko varma, että haluat poistaa tämän ryhmän?
-    product: Oletko varma, että haluat poistaa tämän tuotteen?
-    channel: Oletko varma, että haluat poistaa tämän kanavan?
-    group: Oletko varma että haluat poistaa tämän ryhmän?
-    variant group: Oletko varma, että haluat poistaa tämän muuttujaryhmän?
-    group type: Oletko varma, että haluat poistaa tämän ryhmätyypin?
-    import profile: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
-    export profile: Oletko varma, että haluat poistaa tämän vientiprofiilin?
-    user: Haluatko varmasti poistaa tämän käyttäjän?
-    role: Oletko varma, että haluat poistaa tämän roolin?
+    item: Are you sure you want to delete this item?
+    association type: Are you sure you want to delete this association type?
+    attribute: Are you sure you want to delete this attribute?
+    family: Are you sure you want to delete this family?
+    product: Are you sure you want to delete this product?
+    channel: Are you sure you want to delete this channel?
+    group: Are you sure you want to delete this group?
+    variant group: Are you sure you want to delete this variant group?
+    group type: Are you sure you want to delete this group type?
+    import profile: Are you sure you want to delete this import profile?
+    export profile: Are you sure you want to delete this export profile?
+    user: Are you sure you want to delete this user?
+    role: Are you sure you want to delete this role?
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: Bulk Actions
     quick_export:
-      label: Nopea vienti
+      label: Quick Export
   mass_action:
     delete:
-      confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
-      success: Valitut tuotteet poistettiin.
-      error: Virhe yritettäessä poistaa valitut tuotteet, yritä uudelleen.
+      confirm_content: Are you sure you want to delete selected products?
+      success: Selected products successfully deleted.
+      error: Error ocurred when trying to delete selected products, please try again.
 flash:
   item:
-    removed: Kohde poistettu
+    removed: Item successfully removed
   association type:
-    removed: Liitostyyppi poistettu
+    removed: Association type successfully removed
   attribute:
-    removed: Määritteen poistaminen onnistui
+    removed: Attribute successfully removed
   family:
-    removed: Ryhmä poistettu
+    removed: Family successfully removed
   product:
-    removed: Tuote poistettu
+    removed: Product successfully removed
   channel:
-    removed: Kanavan poistaminen onnistui
+    removed: Channel successfully removed
   group:
-    removed: Ryhmän poistaminen onnistui
+    removed: Group successfully removed
   variant group:
-    removed: Variant-ryhmä poistettiin onnistuneesti
+    removed: Variant group successfully removed
   group type:
-    removed: Ryhmätyyppi poistettiin onnistuneesti
+    removed: Group type successfully removed
   import profile:
-    removed: Tuontiprofiili poistettiin onnistuneesti
+    removed: Import profile successfully removed
   export profile:
-    removed: Vientiprofiili poistettiin onnistuneesti
+    removed: Export profile successfully removed
   user:
-    removed: Käyttäjän poistaminen onnistui
+    removed: User successfully removed
   role:
-    removed: Roolin poistaminen onnistui
+    removed: Role successfully removed
 error:
   removing:
-    item: Kohdetta ei voi poistaa
-    association type: Liitostyyppiä ei voi poistaa
-    attribute: Attribuuttia ei voi poistaa
-    family: Ryhmää ei voi poistaa
-    product: Tuotetta ei voi poistaa
-    channel: Kanavaa ei voi poistaa
-    group: Ryhmää ei voi poistaa
-    variant group: Variant ryhmää ei voi poistaa
-    group type: Ryhmätyyppiä ei voi poistaa
-    import profile: Tuontiprofiilia ei voi poistaa
-    export profile: Vientiprofiilia ei voi poistaa
-    user: Käyttäjää ei voi poistaa
-    role: Roolia ei voi poistaa
-    attribute_option: Määriteasetuksen poistossa virhe
+    item: Cannot delete this item
+    association type: Cannot delete this association type
+    attribute: Cannot delete this attribute
+    family: Cannot delete this family
+    product: Cannot delete this product
+    channel: Cannot delete this channel
+    group: Cannot delete this group
+    variant group: Cannot delete this variant group
+    group type: Cannot delete this group type
+    import profile: Cannot delete this import profile
+    export profile: Cannot delete this export profile
+    user: Cannot delete this user
+    role: Cannot delete this role
+    attribute_option: Error during deletion of the attribute option
   saving:
-    attribute_option: Määriteasennusta ei voi tallentaa
+    attribute_option: Cannot save attribute option
+    export_profile: Cannot save export profile. Please check that all filters are well filled
 alert:
   attribute_option:
-    error_occured_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
-    save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
+    error_occured_during_submission: An error occured during the form submission on the server
+    save_before_edit_other: Please register your modifications on other rows before editing this one
   session_storage:
-    not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
+    not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta mahdollisuutta?
-    cancel_edition_on_new_option_title: Peruuta muokkaukset
+    cancel_edition_on_new_option_text: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ?
+    cancel_edition_on_new_option_title: Cancel modification
 label:
   attribute_option:
-    add_option: Lisää vaihtoehto
-Code: Koodi
-Edit: Muokkaa
-Delete: Poista
-Edit attributes of the product: Muokkaa tuotteen ominaisuuksia
-Classify the product: Luokittele tuote
-Delete the product: Poista tuote
-Change status: Muuta tuotteen tila
-Toggle status: Vaihda tuotteen tilaa
+    add_option: Add an option
+Code: Code
+Edit: Edit
+Delete: Delete
+Edit attributes of the product: Edit attributes of the product
+Classify the product: Classify the product
+Delete the product: Delete the product
+Change status: Change status
+Toggle status: Toggle status
 pim:
   grid:
     mass_action:
       quick_export:
-        csv_all: CSV (kaikki määritteet)
-jstree.create: Luo
-switch_on: Kyllä
-switch_off: Ei
+        csv_all: CSV (All attributes)
+        csv_grid_context: CSV (Grid context)
+        xlsx_all: Excel (All attributes)
+        xlsx_grid_context: Excel (Grid context)
+      delete: Delete products
+      mass_edit: Change product information
+      category_edit: Move products in categories
+      sequential_edit: Edit products sequentially
+jstree.create: Create
+switch_on: 'Yes'
+switch_off: 'No'
 pim_enrich:
   item:
     list:
-      delete.label: Poista
-      delete.error: Virhe kohteen poistamisessa
+      delete.label: Delete
+      delete.error: Error during item deletion
     delete:
-      confirm.content: 'Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota'
-      confirm.title: 'Poista tämä {{ itemName }}'
+      confirm.content: 'Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action'
+      confirm.title: 'Delete this {{ itemName }}'
   navigation:
     link:
-      back_to_grid: Takaisin ruudukkoon
+      back_to_grid: Back to grid
   entity:
     save:
-      label: Tallenna
+      label: Save
     info:
-      update_failed: Päivitys epäonnistui
-      update_successful: Päivitys onnistui
+      update_failed: Update failed
+      update_successful: Successfully updated
     product:
-      title: tuote
+      title: product
       btn:
-        enable: Ota käyttöön
-        enabled: Käytössä
-        disable: Ota pois käytöstä
-        disabled: Pois käytöstä
+        enable: Enable
+        enabled: Enabled
+        disable: Disable
+        disabled: Disabled
         download_pdf: PDF
-        compare_translate: Vertaa / Käännä
-        delete: Poista
-        save: Tallenna
-        save_and_back: Tallenna ja takaisin ruudukkoon
+        compare_translate: Compare / Translate
+        delete: Delete
+        save: Save
+        save_and_back: Save and back to grid
       history:
-        version: Versio
-        author: Tekijä
-        logged_at: Kirjautunut
-        more: Lisää
-        less: Vähemmän
-        from: Lähettäjä
-        modified: Muutettu
-        property: Ominaisuus
-        old_values: Vanhat arvot
-        new_values: Uudet arvot
-        actions: Toiminnot
+        version: Version
+        author: Author
+        logged_at: Logged at
+        more: More
+        less: Less
+        from: From
+        modified: Modified
+        property: Property
+        old_values: Old values
+        new_values: New values
+        actions: Actions
       info:
-        deletion_successful: Tuote poistettiin.
-        deletion_failed: Tuotetta ei voi poistaa.
-        update_successful: Tuote päivitetty.
-        update_failed: Tuotetta ei voitu päivittää.
+        deletion_successful: Product successfully deleted.
+        deletion_failed: The product could not be deleted.
+        update_successful: Product successfully updated.
+        update_failed: The product could not be updated.
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
-            - kentät
-        already_in_upload: 'Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"'
+            - fields
+        already_in_upload: 'A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"'
       error:
-        upload: Virhe tiedoston lataamisessa
+        upload: An error occured during the file upload
       meta:
-        created: Luotu
-        created_by: Luoja
-        updated_by: Luoja
-        updated: Uusi päivitys
+        created: Created
+        created_by: By
+        updated_by: By
+        updated: Last update
         family:
-          title: Perhe
-          none: Ei yhtään
+          title: Family
+          none: None
         groups:
-          title: Ryhmät
+          title: Groups
           modal:
-            title: 'Ryhmä {{ group }}'
-            view_group: Näytä ryhmä
-            group_label: Nimike
-            more_products: '{{ count }} lisää tuotteita...'
-            close: Sulje
+            title: 'Group {{ group }}'
+            view_group: View group
+            group_label: Label
+            more_products: '{{ count }} more products...'
+            close: Close
       copy:
-        select: Valitse
-        all: Kaikki
-        all_visible: Kaikki näkyvillä olevat
-        none: Ei yhtään
-        copy: Kopioi
+        select: Select
+        all: All
+        all_visible: All visible
+        none: None
+        copy: Copy
       variant_group:
-        updated_by: Päivitetty variant-ryhmittäin
+        updated_by: Updated by variant group
         switch:
-          "yes": Kyllä
-          "no": Ei
+          "yes": 'Yes'
+          "no": 'No'
       optional_attribute:
-        remove: Poista määrite
+        remove: Remove this attribute
       locale_specific_attribute:
-        unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
+        unavailable: This locale specific field is not available in this locale
       localizable:
-        channel_locale_unavailable: "Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'"
+        channel_locale_unavailable: "This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'"
       media:
-        upload: Vedä ja pudota ladattavaksi tai klikkaa tästä
+        upload: Drag and drop to upload or click here
       create_popin:
-        title: Luo uusi tuote
+        title: Create a new product
         labels:
-          family: Valitse perhe
-          save: Tallenna
-          cancel: Peruuta
+          family: Choose a family
+          save: Save
+          cancel: Cancel
     attribute_option:
-      code: Koodi
-      label: Nimike
+      code: Code
+      label: Label
     variant_group:
+      title: Variant group
       info:
+        deletion_successful: Variant group successfully deleted.
+        deletion_failed: The variant group could not be deleted.
+        update_successful: Variant group successfully updated.
+        update_failed: The variant group could not be updated.
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
-            - kentät
-        already_in_upload: 'Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"'
-        no_attributes: Tällä tuotevariaatioryhmällä ei ole attribuutteja vielä
+            - fields
+        already_in_upload: 'A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"'
+        no_attributes: This variant group has no attributes yet
       btn:
-        save: Tallenna
+        save: Save
       meta:
-        product_count: Tuotteet
-        created: Luotu
-        updated: Päivitetty
+        product_count: Products
+        created: Created
+        created_by: Created by
+        updated: Updated
+        updated_by: Updated by
   confirmation:
-    leave: Oletko varma, että haluat poistua tältä sivulta?
-    discard_changes: 'Menetät muutokset tähän {{ entity }}, jos poistut sivulta.'
-    delete_item: Vahvista poisto
+    leave: Are you sure you want to leave this page?
+    discard_changes: 'You will lose changes to the {{ entity }} if you leave the page.'
+    delete_item: Confirm deletion
     delete:
-      attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
+      attribute: Are you sure you want to delete this attribute from the product?
   info:
     not_applicable: N/A
     entity:
-      updated: Tallentamattomia muutoksia löytyy.
+      updated: There are unsaved changes.
   error:
-    upload: Tiedoston lataamisen aikana tapahtui virhe
+    upload: An error occured during the upload of the file
   alert:
-    not_allowed: Et saa käyttää tätä sivua
-    error_occured: Virhe ladattaessa sivua
+    not_allowed: You are not allowed to access this page
+    error_occured: An error occured during the loading of the page
   form:
+    required: (required)
     product:
       tab:
         associations:
-          title: Määritteet
+          title: Associations
           info:
-            none_exist: Yhdistystyyppejä ei ole olemassa.
-            show_products: Näytä tuotteet
-            show_groups: Näytä ryhmät
-            number_of_associations: '{{ productCount }} ja {{ groupCount }} ryhmistä'
+            none_exist: No association types exist.
+            show_products: Show products
+            show_groups: Show groups
+            number_of_associations: '{{ productCount }} products and {{ groupCount }} groups'
         attributes:
-          title: Ominaisuudet
+          title: Attributes
           btn:
-            add: Lisää
-            add_attributes: Lisää määritteet
+            add: Add
+            add_attributes: Add attributes
           info:
-            search_attributes: Hae...
-            no_available_attributes: Määritteitä ei ole enää lisättävänä
-            attributes_selected: '{{ attributeCount }} attribuuttia valittu'
-            no_match: Ei hakutuloksia
-            load_more: Ladataan lisää tuloksia...
+            search_attributes: Search...
+            no_available_attributes: There are no more attributes to add
+            attributes_selected: '{{ attributeCount }} attribute(s) selected'
+            no_match: No matches found
+            load_more: Loading more results...
         categories:
-          title: Kategoriat
+          title: Categories
       panel:
         completeness:
-          title: Täyttöaste
+          title: Completeness
           info:
-            no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
-            no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
-          missing_values: Puuttuvat arvot
+            no_family: No family defined. Please define a family to calculate the completeness of this product.
+            no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
+          missing_values: Missing values
         history:
-          title: Historiatiedot
+          title: History
       switch:
-        "no": Ei
-        "yes": Kyllä
+        "no": 'No'
+        "yes": 'Yes'
       sequential_edit:
         info:
-          products: tuotteet
-          previous: 'Siirry takaisin {{ product }} tallentamatta.'
-          next: 'Siirry {{ product }} tallentamatta.'
+          products: products
+          previous: 'Skip back to {{ product }} without saving.'
+          next: 'Skip to {{ product }} without saving.'
         btn:
-          save_and_next: Tallenna ja seuraava
-          save_and_finish: Tallenna ja lopeta
+          save_and_next: Save and next
+          save_and_finish: Save and finish
       change_family:
         modal:
-          title: Muuta tuoteperhe
-          merge_attributes: Nykyiset määritteet yhdistetään uuteen ryhmään.
-          keep_attributes: Määritteitä ei poisteta.
-          change_family_to: Vaihda ryhmä
-          empty_selection: Valitse ryhmä
+          title: Change the product family
+          merge_attributes: Current attributes will be merged with the ones in the new family.
+          keep_attributes: No attributes will be removed.
+          change_family_to: Change the family to
+          empty_selection: Choose a family
       flash:
-        attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
+        attribute_deletion_error: An error occured during the attribute deletion
       mass_edit:
-        select_attributes: Valitse attribuutit
-        select: Valitse
+        select_attributes: Select attributes
+        select: Select
     attribute_option:
       flash:
-        option_created: Määritteen asetuksen luominen onnistui
-        error_creating_option: Virhe yritettäessä luoda määritteen asetusta
+        option_created: Attribute option successfully created
+        error_creating_option: An error ocurred when trying to create the attribute option
       add_option_modal:
-        title: Lisää määritteen vaihtoehto
-        confirm: Lisää
-        cancel: Peruuta
+        title: Add attribute option
+        confirm: Add
+        cancel: Cancel
     entity:
       switch:
-        "no": Ei
-        "yes": Kyllä
+        "no": 'No'
+        "yes": 'Yes'
     variant_group:
       tab:
         properties:
-          title: Ominaisuudet
-          general: Yleiset ominaisuudet
-          code: Koodi
-          type: Tyyppi
-          axis: Akseli
-          label_translations: Nimikkeiden käännökset
+          title: Properties
+          general: General properties
+          code: Code
+          type: Type
+          axis: Axis
+          label_translations: Label translations
         history:
-          title: Historia
+          title: History
         products:
-          title: Tuotteet
+          title: Products
         attributes:
-          title: Attribuutit
+          title: Attributes
     common:
       tab:
         attributes:
           btn:
-            add: Lisää
-            add_attributes: Lisää attribuutteja
+            add: Add
+            add_attributes: Add attributes
           info:
-            search_attributes: Hae...
-            no_available_attributes: Ei ole enää attribuutteja lisättäväksi
+            search_attributes: Search...
+            no_available_attributes: There are no more attributes to add
   export:
     product:
+      data:
+        title: Filter the products
       structure:
+        title: Filter the data
         attributes:
-          title: Attribuutit
+          title: Attributes
       filter:
         channel:
-          title: Kanava
+          title: Channel
+          help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
         locales:
-          title: Alueet
+          title: Locales
+          help: 'The locales defines the localized product values to export. Ex: only product information in French.'
         attributes:
-          title: Attribuutit
-          edit: Muokkaa
+          title: Attributes
+          edit: Edit
+          label: '{0} All attributes|{1} One attribute selected|]1,Inf[ {{ count }} attributes selected'
+          help: 'Select the product information to export. Ex: only the technical attributes.'
+          empty: All attributes will be exported
           modal:
-            apply: Valitse
-            cancel: Peruuta
+            apply: Apply
+            cancel: Cancel
+            title: Attribute selection
         attributes_selector:
-          attribute_group: Attribuuttiryhmät
-          clear: Tyhjennä
-          all_group: Kaikki ryhmät
+          attribute_group: Attribute groups
+          attributes: 'Search in {{ attributeCount }} attributes'
+          selected: Selected attributes
+          clear: Clear
+          all_group: All groups
+          empty_selection: All attributes will be exported
         family:
-          title: Perhe
+          title: Family
+          help: 'Select the products to export by their family. Ex: Export only the shoes and dresses.'
           operators:
-            IN: Luettelossa
+            IN: In list
+            NOT IN: Not in list
+            EMPTY: "Products that don't have a family"
+            NOT EMPTY: Products that have a family
+          empty_selection: No condition on families
+        updated:
+          title: Time condition
+          operators:
+            ALL: No date condition
+            SINCE LAST N DAYS: Updated products over the last n days (e.g. 6)
+            >: Updated products since this date
+            SINCE LAST JOB: Updated products since last export
         enabled:
           title: Status
+          help: 'Select the products to export by their status. Ex: Export products whatsoever their status.'
           value:
-            all: Kaikki
-            enabled: Käytössä
-            disabled: Poistettu käytöstä
+            all: All
+            enabled: Enabled
+            disabled: Disabled
         completeness:
-          title: Valmistumisaste
+          title: Completeness
+          help: Select the products to export by their completeness.
+          operators:
+            ALL: No condition on completeness
+            >=: Complete on at least one selected locale
+            GREATER OR EQUALS THAN ON ALL LOCALES: Complete on all selected locales
+            LOWER THAN ON ALL LOCALES: Not complete on all selected locales
+          empty_selection: Select a family
+        category:
+          title: Category
+          help: Use the product categories in the tree (defined by the channel above) to select the products to export
         identifier:
-          title: Tunniste
+          title: Identifier
+          help: Identifiers of products you want to export separated by commas, spaces or line breaks
         metric:
           operators:
-            EMPTY: Tyhjä
+            =: Is equal to
+            !=: Is not equal to
+            >=: Greater than or equals
+            >: Greater than
+            <=: Lower than or equals
+            <: Lower than
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         string:
           operators:
-            ALL: Kaikki
-            EMPTY: Tyhjä
+            ALL: All
+            CONTAINS: Contains
+            DOES NOT CONTAIN: Does not contain
+            =: Is equal to
+            STARTS WITH: Starts with
+            ENDS WITH: Ends with
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         price-collection:
           operators:
-            EMPTY: Tyhjä
+            =: Is equal to
+            !=: Is not equal to
+            >=: Greater than or equals
+            >: Greater than
+            <=: Lower than or equals
+            <: Lower than
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         multi_select:
           operators:
-            IN: Luettelossa
-            EMPTY: Tyhjä
+            IN: In list
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         media:
           operators:
-            EMPTY: Tyhjä
+            CONTAINS: Contains
+            DOES NOT CONTAIN: Does not contain
+            =: Is equal to
+            STARTS WITH: Starts with
+            ENDS WITH: Ends with
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         date:
           operators:
-            EMPTY: Tyhjä
+            >: Greater than
+            <: Lower than
+            =: Is equal to
+            !=: Is not equal to
+            BETWEEN: Between
+            NOT BETWEEN: Not between
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         number:
           operators:
-            EMPTY: Tyhjä
+            =: Is equal to
+            !=: Is not equal to
+            >=: Greater than or equals
+            >: Greater than
+            <=: Lower than or equals
+            <: Lower than
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
+  mass_edit_action:
+    edit_common_attributes:
+      description: |-
+        The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
 pim_enrich.error:
-  exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'
+  exception.title: 'Oh snap! A {{ status_code }} error occured...'
