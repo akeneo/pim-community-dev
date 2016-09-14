@@ -3,9 +3,7 @@
 namespace spec\Akeneo\ActivityManager\Bundle;
 
 use Akeneo\ActivityManager\Bundle\ActivityManagerBundle;
-use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ActivityManagerBundleSpec extends ObjectBehavior
