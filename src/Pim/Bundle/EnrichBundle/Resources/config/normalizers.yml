@@ -129,5 +129,6 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.manager.attribute_option'
+            - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer}

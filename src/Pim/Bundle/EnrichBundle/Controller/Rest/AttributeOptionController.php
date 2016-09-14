@@ -25,21 +25,21 @@ class AttributeOptionController
 
     /**
      * @param AttributeOptionSearchableRepository $attributeOptionSearchableRepo
-     * @param NormalizerInterface $normalizer
+     * @param NormalizerInterface                 $normalizer
      */
     public function __construct(
         AttributeOptionSearchableRepository $attributeOptionSearchableRepo,
         NormalizerInterface $normalizer
     ) {
         $this->attributeOptionSearchableRepo = $attributeOptionSearchableRepo;
-        $this->normalizer = $normalizer;
+        $this->normalizer                    = $normalizer;
     }
 
     /**
      * Return the attribute option array
      *
      * @param Request $request
-     * @param int $identifier
+     * @param int     $identifier
      *
      * @return JsonResponse
      */
@@ -58,7 +58,11 @@ class AttributeOptionController
 
         $normalizedAttributeOptions = [];
         foreach ($attributeOptions as $attributeOption) {
-            $normalizedAttributeOptions[] = $this->normalizer->normalize($attributeOption, 'json', ['onlyActivatedLocales' => true]);
+            $normalizedAttributeOptions[] = $this->normalizer->normalize(
+                $attributeOption,
+                'json',
+                ['onlyActivatedLocales' => true]
+            );
         }
 
         return new JsonResponse($normalizedAttributeOptions);
