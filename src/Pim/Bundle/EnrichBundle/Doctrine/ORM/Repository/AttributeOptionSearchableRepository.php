@@ -30,7 +30,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     {
         $this->entityManager = $entityManager;
         $this->entityName = $entityName;
-        $this->entityName    = $entityName;
+        $this->entityName = $entityName;
     }
 
     /**
