@@ -67,7 +67,6 @@
         "phpmd/phpmd": "1.*",
         "behat/behat": "2.5.5",
         "kriswallsmith/buzz": ">=0.5",
-        "behat/common-contexts": "1.2.0",
         "behat/gherkin":"2.3.5",
         "behat/mink":"1.7.1",
         "behat/mink-browserkit-driver": "1.3.2",
