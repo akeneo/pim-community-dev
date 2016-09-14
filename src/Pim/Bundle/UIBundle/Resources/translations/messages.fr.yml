@@ -1,39 +1,39 @@
-User: Utilisateur
-Run demo: Lancer la démo
-Product: Produit
-Attribute list: "Liste d'attributs"
-Attribute Group list: "Liste de groupes d'attributs"
-Users: Utilisateurs
-Roles: Rôles
-Groups: Groupes
+User: User
+Run demo: Run demo
+Product: Product
+Attribute list: Attribute list
+Attribute Group list: Attribute Group list
+Users: Users
+Roles: Roles
+Groups: Groups
 Configuration: Configuration
-Currency list: Liste de devises
-Locale list: Liste de locales
-Logged in as: Connecté en tant que
-Logout: Déconnexion
-Login: Connexion
-Previous: Précédent
-Next: Suivant
-Channel list: Liste des canaux
-Select file: Sélectionner un fichier
-Change file: Changer le fichier
-Remove file: Supprimer le fichier
-Delete: Supprimer
-Save: Enregistrer
-Cancel: Annuler
-Get help: "Obtenir de l'aide"
-My User: Mon compte
-oro.form.choose_value: Choisissez une valeur...
-Read more: Lire la suite
-oro.form.click_here_to_select: Cliquez ici pour sélectionner...
-Add: Ajouter
-Learn how to use this space: Apprendre à utiliser cet espace
-How To Use Pinbar: Comment utiliser la Pinbar
+Currency list: Currency list
+Locale list: Locale list
+Logged in as: Logged in as
+Logout: Logout
+Login: Login
+Previous: Previous
+Next: Next
+Channel list: Channel list
+Select file: Select file
+Change file: Change file
+Remove file: Remove file
+Delete: Delete
+Save: Save
+Cancel: Cancel
+Get help: Get help
+My User: My Account
+oro.form.choose_value: Choose a value...
+Read more: Read more
+oro.form.click_here_to_select: Click here to select...
+Add: Add
+Learn how to use this space: Learn how to use this space
+How To Use Pinbar: How To Use Pinbar
 Pinbar: Pinbar
-Favorites: Favoris
-Most Viewed: Plus populaires
-Add this page to favorites: Ajouter cette page à vos favoris
-Minimize the window to the pinbar: Réduire la fenêtre dans la pinbar
-Loading ...: Chargement ...
-"Yes": Oui
-"No": Non
+Favorites: Favorites
+Most Viewed: Most Viewed
+Add this page to favorites: Add this page to favorites
+Minimize the window to the pinbar: Minimize the window to the pinbar
+Loading ...: Loading ...
+"Yes": 'Yes'
+"No": 'No'

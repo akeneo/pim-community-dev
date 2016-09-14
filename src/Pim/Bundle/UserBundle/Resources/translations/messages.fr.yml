@@ -1,153 +1,153 @@
 pim_user:
   user:
     tab:
-      general.title: Général
-      additional.title: Supplémentaire
-      group_and_role.title: Groupes et rôles
-      password.title: Mot de passe
-      business_unit.title: Entité commerciale
-      email_synchronization.title: Paramètres de synchronisation de messagerie
+      general.title: General
+      additional.title: Additional
+      group_and_role.title: Groups and Roles
+      password.title: Password
+      business_unit.title: Business Units
+      email_synchronization.title: Email synchronization settings
       interfaces.title: Interfaces
 oro.user.controller:
-  group.message.saved: Groupe enregistré
-  role.message.saved: Rôle enregistré
-  user.message.saved: Utilisateur enregistré
-  status.message.saved: Statut enregistré
+  group.message.saved: Group saved
+  role.message.saved: Role saved
+  user.message.saved: User saved
+  status.message.saved: Status saved
 oro.user.grid.users:
   columns:
-    username: "Nom d'utilisateur"
+    username: Username
     email: Email
-    firstName: Prénom
-    lastName: Nom
-    createdAt: Crée le
-    updatedAt: Mis à jour le
-    enabled: Statut
+    firstName: First name
+    lastName: Last name
+    createdAt: Created at
+    updatedAt: Updated at
+    enabled: Status
 oro.user.grid.roles:
   columns:
-    label: Libellé
+    label: Label
 oro.user.grid.groups:
   columns:
-    name: Nom
+    name: Name
 pim_title:
-  user.index: Utilisateurs
-  user_role.index: Rôles
-  user_group.index: Groupes
+  user.index: Users
+  user_role.index: Roles
+  user_group.index: Groups
   system_configuration.index: Configuration
-user.title: Utilisateur
-user.overview: Utilisateur
-Users Management: Gestion des utilisateurs
-Create user: Créer un utilisateur
-btn.create.user: Créer un utilisateur
-New user: Nouvel utilisateur
-Additional: Supplémentaire
-Groups and Roles: Groupes et rôles
-Username: "Nom d'utilisateur"
-Password: Mot de passe
-Re-enter password: Confirmer le mot de passe
-Name prefix: Particule
-First name: Prénom
-Middle name: Deuxième prénom
-Last name: Nom
-Name suffix: Suffixe de nom
-Date of birth: Date de naissance
-Avatar: Photo
-Additional emails: E-mails supplémentaires
-Add another email: Ajouter un autre email
-Catalog locale: Locale du catalogue
-Catalog scope: Portée du catalogue
-Default tree: Arborescence par défaut
-Business Units: Entité commerciale
-Email synchronization settings: Paramètres de synchronisation de messagerie
-Host: Hôte
+user.title: User
+user.overview: User
+Users Management: Users Management
+Create user: Create user
+btn.create.user: Create user
+New user: New user
+Additional: Additional
+Groups and Roles: Groups and Roles
+Username: Username
+Password: Password
+Re-enter password: Re-enter password
+Name prefix: Name prefix
+First name: First name
+Middle name: Middle name
+Last name: Last name
+Name suffix: Name suffix
+Date of birth: Date of birth
+Avatar: Avatar
+Additional emails: Additional emails
+Add another email: Add another email
+Catalog locale: Catalog locale
+Catalog scope: Catalog scope
+Default tree: Default tree
+Business Units: Business Units
+Email synchronization settings: Email synchronization settings
+Host: Host
 Port: Port
-Ssl: SSL
-Last logged in: Dernière connexion
-Login count: Nombre de connexion
-Additional Information: Informations complémentaires
+Ssl: Ssl
+Last logged in: Last logged in
+Login count: Login count
+Additional Information: Additional Information
 Interfaces: Interfaces
-Basic Information: Informations générales
-Contact Information: Information Contact
-User name: "Nom d'utilisateur"
-Birthday: Date d’anniversaire
-API key: Clé API
-Ui locale: "Langage de l'interface"
-UI locale: "Langage de l'interface"
-User salt: Sel de hachage
-Current password: Mot de passe actuel 
-New password: Nouveau mot de passe 
-Repeat new password: Nouveau mot de passe (répéter)
-Generate key: Générer une clé
-Primary: principal
-Removed user: Utilisateur supprimé
+Basic Information: Basic Information
+Contact Information: Contact Information
+User name: User name
+Birthday: Birthday
+API key: API key
+Ui locale: UI locale
+UI locale: UI locale
+User salt: User salt
+Current password: Current password
+New password: New password
+Repeat new password: New password (repeat)
+Generate key: Generate key
+Primary: primary
+Removed user: Removed user
 user:
-  product_grid_filters: Filtres de la grille produits
+  product_grid_filters: Product grid filters
   default_product_grid_view:
-    label: Vue par défaut de la grille produits
+    label: Default product grid view
   default_grid_view:
-    none: Aucun
-Role: Rôle
-Owner: Propriétaire
-General: Général
-Entity: Entité
-Capabilities: Capacités
-Save and close: Enregistrer et fermer
-Has role: A le rôle
+    none: None
+Role: Role
+Owner: Owner
+General: General
+Entity: Entity
+Capabilities: Capabilities
+Save and close: Save and close
+Has role: Has role
 role:
-  title: rôle
-  overview: rôle
-  edit: Editer un rôle
-  create: Créer un rôle
-btn.create.role: Créer un rôle
+  title: role
+  overview: role
+  edit: Edit role
+  create: Create role
+btn.create.role: Create role
 rights:
   action: Permissions
 oro_security:
   acl_group:
-    user: Utilisateurs
-    role: Rôles
-    group: "Groupes d'utilisateurs"
+    user: Users
+    role: Roles
+    group: User groups
   acl:
     user:
-      view: Liste des utilisateurs
-      create: Créer un utilisateur
-      edit: Editer les utilisateurs
-      delete: Supprimer un utilisateur
+      view: List users
+      create: Create a user
+      edit: Edit users
+      delete: Remove a user
     role:
-      view: Liste des rôles
-      create: Créer un rôle
-      edit: Editer un rôle
-      delete: Supprimer un rôle
+      view: List roles
+      create: Create a role
+      edit: Edit roles
+      delete: Remove a role
     group:
-      view: "Liste des groupes d'utilisateurs"
-      create: "Créer un groupe d'utilisateurs"
-      edit: "Editer des groupes d'utilisateurs"
-      delete: "Supprimer un groupe d'utilisateurs"
-(default): Autorisations par défaut sur les entités
-VIEW: Voir
-CREATE: Créer
-EDIT: Modifier
-DELETE: Supprimer
-ASSIGN: Assigner
-SHARE: Partager
+      view: List user groups
+      create: Create a user group
+      edit: Edit user groups
+      delete: Remove a user group
+(default): Default permission on entities
+VIEW: View
+CREATE: Create
+EDIT: Edit
+DELETE: Delete
+ASSIGN: Assign
+SHARE: Share
 oro:
   security:
     access-level:
-      BASIC: Utilisateur
-      LOCAL: Entité commerciale
+      BASIC: User
+      LOCAL: Business Unit
       DEEP: Division
-      GLOBAL: Organisation
-      SYSTEM: Système
-      NONE: Aucun
-Create group: Créer un groupe
-btn.create.user-group: Créer un groupe
-Has group: Appartient au groupe
-Save and Close: Enregistrer et fermer
-user-group.overview: Groupes
-Log in: Connexion
-Remember me on this computer: Mémoriser mes informations sur cet ordinateur
-Forgot your password?: Mot de passe oublié ?
-Username or Email: "Nom d'utilisateur ou Email"
-Forgot Password: Mot de passe oublié
-Request: Demande
-Check Email: Vérifier Email
-password_reset_email_sent: 'Un Email a été envoyé à %email%. Il contient un lien, vous devez cliquer sur ce lien pour réinitialiser votre mot de passe.'
-Go to homepage: "Aller à la page d'accueil"
+      GLOBAL: Organization
+      SYSTEM: System
+      NONE: None
+Create group: Create group
+btn.create.user-group: Create group
+Has group: Has group
+Save and Close: Save and close
+user-group.overview: Groups
+Log in: Log in
+Remember me on this computer: Remember me on this computer
+Forgot your password?: Forgot your password?
+Username or Email: Username or Email
+Forgot Password: Forgot Password
+Request: Request
+Check Email: Check Email
+password_reset_email_sent: 'An email has been sent to %email%. It contains a link you must click to reset your password.'
+Go to homepage: Go to homepage

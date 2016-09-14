@@ -1,73 +1,73 @@
-Item deleted: Élément supprimé
-Are you sure you want to delete this item?: Êtes-vous certain de vouloir supprimer cet élément ?
-Delete Error: Erreur de suppression
-Are you sure you want to do remove selected items?: Êtes-vous sûr de vouloir supprimer les éléments sélectionnés ?
-Selected items were removed.: Les éléments sélectionnés ont été supprimés.
-Selected items were not removed.: "Les éléments sélectionnés n'ont pas été supprimés."
-Please, select items to remove.: Veuillez sélectionner les éléments à supprimer.
-Cannot delete item.: "Impossible de supprimer l'élément."
-Refresh Confirmation: "Confirmer l'actualisation"
-Your local changes will be lost. Are you sure you want to refresh grid?: Vos modifications locales seront perdues. Êtes-vous certain de vouloir actualiser la grille ?
-Reset Confirmation: Confirmation de remise à zéro
-Your local changes will be lost. Are you sure you want to reset grid?: Vos modifications locales seront perdues. Êtes-vous certain de vouloir actualiser la grille ?
+Item deleted: Item deleted
+Are you sure you want to delete this item?: Are you sure you want to delete this item?
+Delete Error: Delete Error
+Are you sure you want to do remove selected items?: Are you sure you want to do remove selected items?
+Selected items were removed.: Selected items were removed.
+Selected items were not removed.: Selected items were not removed.
+Please, select items to remove.: Please, select items to remove.
+Cannot delete item.: Cannot delete item.
+Refresh Confirmation: Refresh Confirmation
+Your local changes will be lost. Are you sure you want to refresh grid?: Your local changes will be lost. Are you sure you want to refresh grid?
+Reset Confirmation: Reset Confirmation
+Your local changes will be lost. Are you sure you want to reset grid?: Your local changes will be lost. Are you sure you want to reset grid?
 Confirmation: Confirmation
-edit: Modifier
-copy: copier
-remove: Retirer
-Status: Statut
-All: Tous
-Per page: Par page
-Mass Action Confirmation: "Confirmation de l'action de masse"
-Mass action performed.: Action de masse effectuée.
-Mass action is not performed.: "L'action de masse n'est pas effectuée."
-Please, select items to perform mass action.: Veuillez sélectionner les éléments pour exécuter cette action de masse.
-Execution Confirmation: "Confirmation de l'exécution"
-Are you sure you want to do this?: Êtes-vous sûr de que vouloir faire cela ?
-Action performed.: Action exécutée.
-Action is not performed.: "L'action n'a pas été exécutée."
-Please, select item to perform action.: "Veuillez sélectionner des éléments afin d'effectuer l'action."
-View per page: Par page
-oro.datagrid.entityHint: Entité
-oro.datagrid.noentities: Aucun enregistrement trouvé
-oro.datagrid.noresults: Aucun résultat trouvé. Essayez de modifier vos critères de recherche.
-oro.datagrid.nocolumns: Aucune colonne configurée pour cette grille
+edit: edit
+copy: copy
+remove: remove
+Status: Status
+All: All
+Per page: Per page
+Mass Action Confirmation: Mass Action Confirmation
+Mass action performed.: Mass action performed.
+Mass action is not performed.: Mass action is not performed.
+Please, select items to perform mass action.: Please, select items to perform mass action.
+Execution Confirmation: Execution Confirmation
+Are you sure you want to do this?: Are you sure you want to do this?
+Action performed.: Action performed.
+Action is not performed.: Action is not performed.
+Please, select item to perform action.: Please, select item to perform action.
+View per page: View per page
+oro.datagrid.entityHint: Entity
+oro.datagrid.noentities: No records found
+oro.datagrid.noresults: No results found. Try to change your search criteria.
+oro.datagrid.nocolumns: No columns configured for this grid
 oro.datagrid.pagination.label: Page
-oro.datagrid.pagination.totalPages: 'de {{ totalPages }}'
-oro.datagrid.pagination.totalRecords: '{{ totalRecords }} éléments'
-oro.datagrid.action.reset: Réinitialiser
-oro.datagrid.action.refresh: Mettre à jour
-oro_datagrid.select.all: Tous
-oro_datagrid.select.visible: Tous les visibles
-oro_datagrid.select.none: Aucun
-pim.grid.ajax_choice_filter.label_empty: est vide
+oro.datagrid.pagination.totalPages: 'of {{ totalPages }}'
+oro.datagrid.pagination.totalRecords: '{{ totalRecords }} records'
+oro.datagrid.action.reset: Reset
+oro.datagrid.action.refresh: Refresh
+oro_datagrid.select.all: All
+oro_datagrid.select.visible: All visible
+oro_datagrid.select.none: None
+pim.grid.ajax_choice_filter.label_empty: is empty
 pim.grid.choice_filter:
-  label_empty: Est vide
-  label_in_list: Dans la liste
-Available Columns: Colonnes disponibles
-Displayed Columns: Colonnes affichées
-datagrid_view.columns.min_message: Vous devez sélectionner au moins une colonne à afficher
+  label_empty: Is empty
+  label_in_list: In list
+Available Columns: Available Columns
+Displayed Columns: Displayed Columns
+datagrid_view.columns.min_message: You must select at least one datagrid column to display
 pim_datagrid:
   column_configurator:
-    label: Colonnes
-    title: Sélection de colonnes
-    all_groups: Tous les groupes
-    search: Recherche
-    clear: Réinitialiser
-    displayed_columns: Colonnes affichées
-    apply: Appliquer
-    cancel: Annuler
-    remove_column: Supprimer
+    label: Columns
+    title: Column Selection
+    all_groups: All groups
+    search: Search
+    clear: Clear
+    displayed_columns: Displayed Columns
+    apply: Apply
+    cancel: Cancel
+    remove_column: Remove
   mass_action:
     delete:
-      confirm_title: Confirmation de la suppression.
+      confirm_title: Delete confirmation.
       confirm_ok: OK
-      empty_selection: Aucun produit sélectionné.
-pim.grid.mass_action.quick_export.title: Export rapide
-pim.grid.mass_action.quick_export.launched: Export rapide a été lancé
-pim.grid.action.launch.title: Démarrer
-pim.grid.action.show.title: Afficher
-Please select view: Veuillez sélectionner une vue
-Loading...: Chargement en cours...
-View: Voir
-from: De
-to: À
+      empty_selection: No product selected.
+pim.grid.mass_action.quick_export.title: Quick Export
+pim.grid.mass_action.quick_export.launched: Quick export has been launched
+pim.grid.action.launch.title: Launch
+pim.grid.action.show.title: Show
+Please select view: Please select view
+Loading...: Loading...
+View: View
+from: from
+to: to

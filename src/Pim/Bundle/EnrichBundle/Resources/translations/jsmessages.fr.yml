@@ -1,274 +1,275 @@
 confirmation:
   remove:
-    item: Êtes-vous certain de vouloir supprimer cet élément ?
-    association type: "Êtes-vous sûr de que vouloir supprimer ce type d'association ?"
-    attribute: Êtes-vous sûr de que vouloir supprimer cet attribut ?
-    family: Êtes-vous sûr de que vouloir supprimer cette famille ?
-    product: Êtes-vous sûr de que vouloir supprimer ce produit ?
-    channel: Êtes-vous sûr de que vouloir supprimer ce canal ?
-    group: Êtes-vous sûr de vouloir supprimer ce groupe ?
-    variant group: Êtes-vous sûr de que vouloir supprimer ce groupe de variantes ?
-    group type: Êtes-vous sûr de que vouloir supprimer ce type de groupe ?
-    import profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'import ?"
-    export profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'export ?"
-    user: Êtes-vous sûr de vouloir supprimer cet utilisateur ?
-    role: Êtes-vous sûr de vouloir supprimer ce rôle ?
+    item: Are you sure you want to delete this item?
+    association type: Are you sure you want to delete this association type?
+    attribute: Are you sure you want to delete this attribute?
+    family: Are you sure you want to delete this family?
+    product: Are you sure you want to delete this product?
+    channel: Are you sure you want to delete this channel?
+    group: Are you sure you want to delete this group?
+    variant group: Are you sure you want to delete this variant group?
+    group type: Are you sure you want to delete this group type?
+    import profile: Are you sure you want to delete this import profile?
+    export profile: Are you sure you want to delete this export profile?
+    user: Are you sure you want to delete this user?
+    role: Are you sure you want to delete this role?
 pim_datagrid:
   mass_action_group:
     quick_export:
-      label: Export rapide
+      label: Quick Export
   mass_action:
     delete:
-      confirm_content: Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?
-      success: Les produits sélectionnés ont été supprimés.
-      error: "Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau."
+      confirm_content: Are you sure you want to delete selected products?
+      success: Selected products successfully deleted.
+      error: Error ocurred when trying to delete selected products, please try again.
 flash:
   item:
-    removed: Elément supprimé avec succès
+    removed: Item successfully removed
   association type:
-    removed: "Le type d'association est supprimé avec succès"
+    removed: Association type successfully removed
   attribute:
-    removed: Attribut supprimé avec succès
+    removed: Attribute successfully removed
   family:
-    removed: Famille supprimée avec succès
+    removed: Family successfully removed
   product:
-    removed: Produit supprimé avec succès
+    removed: Product successfully removed
   channel:
-    removed: Canal supprimé avec succès
+    removed: Channel successfully removed
   group:
-    removed: Groupe supprimé avec succès
+    removed: Group successfully removed
   variant group:
-    removed: Le groupe de variantes a bien été supprimé
+    removed: Variant group successfully removed
   group type:
-    removed: Le type de groupe a bien été supprimé
+    removed: Group type successfully removed
   import profile:
-    removed: "Le profil d'import a bien été supprimé"
+    removed: Import profile successfully removed
   export profile:
-    removed: "Le profil d'export a bien été supprimé"
+    removed: Export profile successfully removed
   user:
-    removed: Utilisateur supprimé avec succès
+    removed: User successfully removed
   role:
-    removed: Le rôle a bien été supprimé
+    removed: Role successfully removed
 error:
   removing:
-    item: Impossible de supprimer cet élément
-    association type: "Impossible de supprimer ce type d'association"
-    attribute: Impossible de supprimer cet attribut
-    family: Impossible de supprimer cette famille
-    product: Impossible de supprimer ce produit
-    channel: Impossible de supprimer ce canal
-    group: Impossible de supprimer ce groupe
-    variant group: Impossible de supprimer ce groupe de variantes
-    group type: Impossible de supprimer ce type de groupe
-    import profile: "Impossible de supprimer ce profil d'import"
-    export profile: "Impossible de supprimer ce profil d'export"
-    user: Impossible de supprimer cet utilisateur
-    role: Impossible de supprimer ce rôle
-    attribute_option: "Erreur lors de la suppression de l'option de l'attribut"
+    item: Cannot delete this item
+    association type: Cannot delete this association type
+    attribute: Cannot delete this attribute
+    family: Cannot delete this family
+    product: Cannot delete this product
+    channel: Cannot delete this channel
+    group: Cannot delete this group
+    variant group: Cannot delete this variant group
+    group type: Cannot delete this group type
+    import profile: Cannot delete this import profile
+    export profile: Cannot delete this export profile
+    user: Cannot delete this user
+    role: Cannot delete this role
+    attribute_option: Error during deletion of the attribute option
   saving:
-    attribute_option: "Impossible d'enregistrer l'option de l'attribut"
+    attribute_option: Cannot save attribute option
 alert:
   attribute_option:
-    error_occured_during_submission: "Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur"
-    save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
+    error_occured_during_submission: An error occured during the form submission on the server
+    save_before_edit_other: Please register your modifications on other rows before editing this one
   session_storage:
-    not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
+    not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Attention, vous allez perdre les données non sauvegardées. Êtes-vous sûr de vouloir annuler les modifications sur cette nouvelle option ?
-    cancel_edition_on_new_option_title: Annuler les modifications
+    cancel_edition_on_new_option_text: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ?
+    cancel_edition_on_new_option_title: Cancel modification
 label:
   attribute_option:
-    add_option: Ajouter une option
+    add_option: Add an option
 Code: Code
-Edit: Modifier
-Delete: Supprimer
-Edit attributes of the product: Modifier les attributs du produit
-Classify the product: Classer le produit
-Delete the product: Supprimer le produit
-Change status: Changer le statut
-Toggle status: Changer le statut
-pim.grid.mass_action.quick_export.csv_all: CSV (tous les attributs)
-pim.grid.mass_action.delete: Supprimer
-pim.grid.mass_action.mass_edit: Edition de masse
-pim.grid.mass_action.sequential_edit: Modification séquentielle
-jstree.create: Créer
-switch_on: Oui
-switch_off: Non
+Edit: Edit
+Delete: Delete
+Edit attributes of the product: Edit attributes of the product
+Classify the product: Classify the product
+Delete the product: Delete the product
+Change status: Change status
+Toggle status: Toggle status
+pim.grid.mass_action.quick_export.csv_all: CSV (All attributes)
+pim.grid.mass_action.delete: Delete
+pim.grid.mass_action.mass_edit: Mass Edit
+pim.grid.mass_action.sequential_edit: Sequential Edit
+jstree.create: Create
+switch_on: 'Yes'
+switch_off: 'No'
 pim_enrich:
   item:
     list:
-      delete.label: Supprimer
-      delete.error: "Erreur lors de la suppression de l'élément"
+      delete.label: Delete
+      delete.error: Error during item deletion
     delete:
-      confirm.content: "Êtes-vous sûr de que vouloir supprimer  {{ itemName }} ? Il n'est pas possible d'annuler cette action"
-      confirm.title: 'Supprimer {{ itemName }}'
+      confirm.content: 'Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action'
+      confirm.title: 'Delete this {{ itemName }}'
   navigation:
     link:
-      back_to_grid: Retour à la grille
+      back_to_grid: Back to grid
   entity:
     save:
-      label: Enregistrer
+      label: Save
     info:
-      update_failed: Échec de la mise à jour
-      update_successful: Mise à jour effectuée avec succès
+      update_failed: Update failed
+      update_successful: Successfully updated
     product:
-      title: produit
+      title: product
       btn:
-        enable: Activer
-        enabled: Activé
-        disable: Désactiver
-        disabled: Désactivé
+        enable: Enable
+        enabled: Enabled
+        disable: Disable
+        disabled: Disabled
         download_pdf: PDF
-        compare_translate: Comparer / traduire
-        delete: Supprimer
-        save: Enregistrer
-        save_and_back: Enregistrer et revenir à la grille
+        compare_translate: Compare / Translate
+        delete: Delete
+        save: Save
+        save_and_back: Save and back to grid
       history:
         version: Version
-        author: Auteur
-        logged_at: Connecté le
-        more: Plus
-        less: Moins
-        from: De
-        modified: Modifié
-        property: Propriété
-        old_values: Anciennes valeurs
-        new_values: Nouvelles valeurs
+        author: Author
+        logged_at: Logged at
+        more: More
+        less: Less
+        from: From
+        modified: Modified
+        property: Property
+        old_values: Old values
+        new_values: New values
         actions: Actions
       info:
-        deletion_successful: Les produits ont bien été supprimés.
-        deletion_failed: "Le produit n'a pas pu être supprimé."
-        update_successful: Le produit a bien été mis à jour.
-        update_failed: "Le produit n'a pas pu être mis à jour."
+        deletion_successful: Product successfully deleted.
+        deletion_failed: The product could not be deleted.
+        update_successful: Product successfully updated.
+        update_failed: The product could not be updated.
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
-            - champs
-        already_in_upload: 'Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et "{{ scope }}"'
+            - fields
+        already_in_upload: 'A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"'
       error:
-        upload: "Une erreur s'est produite lors du transfert du fichier."
+        upload: An error occured during the file upload
       meta:
-        created: Créé
-        created_by: par
-        updated_by: par
-        updated: Dernière mise à jour
+        created: Created
+        created_by: By
+        updated_by: By
+        updated: Last update
         family:
-          title: Famille
-          none: Aucun
+          title: Family
+          none: None
         groups:
-          title: Groupes
+          title: Groups
           modal:
-            title: 'Groupe {{ group }}'
-            view_group: Afficher le groupe
-            group_label: Libellé
-            more_products: '{{ count }} produits supplémentaires...'
-            close: Fermer
+            title: 'Group {{ group }}'
+            view_group: View group
+            group_label: Label
+            more_products: '{{ count }} more products...'
+            close: Close
       copy:
-        select: Sélectionner
-        all: Tous
-        all_visible: Tous les visibles
-        none: Aucun
-        copy: Copier
+        select: Select
+        all: All
+        all_visible: All visible
+        none: None
+        copy: Copy
       variant_group:
-        updated_by: Mis à jour par un groupe de variantes
+        updated_by: Updated by variant group
         switch:
-          "yes": Oui
-          "no": Non
+          "yes": 'Yes'
+          "no": 'No'
       optional_attribute:
-        remove: Supprimer cet attribut
+        remove: Remove this attribute
       locale_specific_attribute:
-        unavailable: "Ce champ est spécifique à certaines locales, celle-ci n'en fait pas partie"
+        unavailable: This locale specific field is not available in this locale
       localizable:
-        channel_locale_unavailable: "Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'"
+        channel_locale_unavailable: "This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'"
       media:
-        upload: Glisser et déposer pour télécharger ou cliquer ici
+        upload: Drag and drop to upload or click here
     attribute_option:
       code: Code
-      label: Libellé
+      label: Label
   confirmation:
-    leave: Êtes-vous sûr de vouloir quitter cette page?
-    discard_changes: 'Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.'
-    delete_item: "Supprimer l'élément."
+    leave: Are you sure you want to leave this page?
+    discard_changes: 'You will lose changes to the {{ entity }} if you leave the page.'
+    delete_item: Confirm deletion
     delete:
-      product_attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
+      product_attribute: Are you sure you want to delete this attribute from the product?
   info:
     not_applicable: N/A
     entity:
-      updated: "Des modifications n'ont pas encore été sauvegardées."
+      updated: There are unsaved changes.
   error:
-    upload: "Une erreur s'est produite pendant le chargement du fichier"
+    upload: An error occured during the upload of the file
   alert:
-    not_allowed: "Vous n'êtes pas autorisé à accéder à cette page"
-    error_occured: "Une erreur s'est produite lors du chargement de la page"
+    not_allowed: You are not allowed to access this page
+    error_occured: An error occured during the loading of the page
   form:
     product:
       tab:
         associations:
           title: Associations
           info:
-            none_exist: "Aucun type d'association n'existe."
-            show_products: Afficher les produits
-            show_groups: Afficher les groupes
-            number_of_associations: '{{ productCount }} produits et {{ groupCount }} groupes'
+            none_exist: No association types exist.
+            show_products: Show products
+            show_groups: Show groups
+            number_of_associations: '{{ productCount }} products and {{ groupCount }} groups'
         attributes:
-          title: Attributs
+          title: Attributes
           btn:
-            add: Ajouter
-            add_attributes: Ajouter des attributs
+            add: Add
+            add_attributes: Add attributes
           info:
-            search_attributes: Rechercher...
-            no_available_attributes: "Il n'y a plus d'attributs disponibles"
-            attributes_selected: '{{ attributeCount }} attribut(s) sélectionné(s)'
-            no_match: Aucune correspondance trouvée
-            load_more: Chargement de plus de résultats...
+            search_attributes: Search...
+            no_available_attributes: There are no more attributes to add
+            attributes_selected: '{{ attributeCount }} attribute(s) selected'
+            no_match: No matches found
+            load_more: Loading more results...
         categories:
-          title: Catégories
+          title: Categories
       panel:
         completeness:
-          title: Complétude
+          title: Completeness
           info:
-            no_family: Aucune famille définie. Merci de définir une famille pour calculer la complétude de ce produit.
-            no_completeness: "Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille."
-          missing_values: Valeurs manquantes
+            no_family: No family defined. Please define a family to calculate the completeness of this product.
+            no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
+          missing_values: Missing values
         history:
-          title: Historique
+          title: History
       switch:
-        "no": Non
-        "yes": Oui
+        "no": 'No'
+        "yes": 'Yes'
       sequential_edit:
         info:
-          products: Produits
-          previous: 'Retourner à {{ product }} sans enregistrer les modifications.'
-          next: 'Passer à {{ product }} sans enregistrer les modifications.'
+          products: products
+          previous: 'Skip back to {{ product }} without saving.'
+          next: 'Skip to {{ product }} without saving.'
         btn:
-          save_and_next: Enregistrer et passer au suivant
-          save_and_finish: Enregistrer et terminer
+          save_and_next: Save and next
+          save_and_finish: Save and finish
       change_family:
         modal:
-          title: Changer la famille du produit
-          merge_attributes: Les attributs existants seront fusionnés avec ceux de la nouvelle famille.
-          keep_attributes: Aucun attribut ne sera supprimé.
-          change_family_to: Changer la famille pour
-          empty_selection: Choisissez une famille
+          title: Change the product family
+          merge_attributes: Current attributes will be merged with the ones in the new family.
+          keep_attributes: No attributes will be removed.
+          change_family_to: Change the family to
+          empty_selection: Choose a family
       flash:
-        attribute_deletion_error: "Une erreur s'est produite lors de la suppression de l'attribut"
+        attribute_deletion_error: An error occured during the attribute deletion
       mass_edit:
-        select_attributes: Sélectionnez les attributs
-        select: Sélectionner
+        select_attributes: Select attributes
+        select: Select
     attribute_option:
       flash:
-        option_created: "L'option d'attribut a été créée avec succès."
-        error_creating_option: "Une erreur s'est produite en essayant de créer l'option d'attribut."
+        option_created: Attribute option successfully created
+        error_creating_option: An error ocurred when trying to create the attribute option
       add_option_modal:
-        title: "Ajouter une option d'attribut"
-        confirm: Ajouter
-        cancel: Annuler
+        title: Add attribute option
+        confirm: Add
+        cancel: Cancel
     entity:
       switch:
-        "no": Non
-        "yes": Oui
+        "no": 'No'
+        "yes": 'Yes'
   mass_edit_action:
     edit_common_attributes:
-      description: 'Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.'
+      description: |-
+        The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
 pim_enrich.error:
-  exception.title: "Oups! Une erreur {{ status_code }} s'est produite..."
+  exception.title: 'Oh snap! A {{ status_code }} error occured...'
