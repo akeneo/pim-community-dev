@@ -3,7 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionNormalizer as BaseAttributeOptionNormalizer;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
@@ -14,6 +17,22 @@ class StructuredAttributeOptionNormalizer extends BaseAttributeOptionNormalizer
 {
     /** @var array */
     protected $supportedFormat = ['json'];
+
+    /** @var ObjectFilterInterface */
+    protected $objectFilter;
+
+    /**
+     * @param ObjectFilterInterface $objectFilter
+     */
+    public function __construct(
+        LocaleRepositoryInterface $localeRepository,
+        AttributeOptionManager $optionManager,
+        ObjectFilterInterface $objectFilter
+    ) {
+        parent::__construct($localeRepository, $optionManager);
+
+        $this->objectFilter = $objectFilter;
+    }
 
     /**
      * {@inheritdoc}
@@ -43,7 +62,12 @@ class StructuredAttributeOptionNormalizer extends BaseAttributeOptionNormalizer
     {
         $normalizedLabels = [];
         foreach ($optionsValues as $optionsValue) {
-            $normalizedLabels[$optionsValue->getLocale()] = $optionsValue->getValue();
+            if (!$this->objectFilter->filterObject(
+                $optionsValue->getLocale(),
+                'pim.internal_api.locale.view'
+            )) {
+                $normalizedLabels[$optionsValue->getLocale()] = $optionsValue->getValue();
+            }
         }
 
         return $normalizedLabels;
