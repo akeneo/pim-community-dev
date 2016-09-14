@@ -74,7 +74,7 @@ define(
                 this.getChoiceUrl().then(function (choiceUrl) {
                     var options = {
                         ajax: {
-                            url: Routing.generate('pim_enrich_attributeoption_get', {identifier: this.attribute.id}),
+                            url: choiceUrl,
                             quietMillis: 250,
                             cache: true,
                             data: function (term, page) {
@@ -87,41 +87,43 @@ define(
                                 };
                             }.bind(this),
                             results: function (response) {
+                                if (response.results) {
+                                    response.more = 20 === _.keys(response.results).length;
+
+                                    return response;
+                                }
+
                                 var data = {
                                     more: 20 === _.keys(response).length,
                                     results: []
                                 };
                                 _.each(response, function (value) {
-                                    data.results.push({
-                                        id: value.code,
-                                        text: i18n.getLabel(value.labels, UserContext.get('catalogLocale'), value.code)
-                                    });
-                                });
+                                    data.results.push(this.convertBackendItem(value));
+                                }.bind(this));
 
                                 return data;
-                            }
+                            }.bind(this)
                         },
                         initSelection: function (element, callback) {
                             if (null === this.choicePromise) {
-                                this.choicePromise = $.get(choiceUrl);
+                                this.choicePromise = $.get(choiceUrl, {
+                                    options: {
+                                        identifiers: this.model.attributes.values[0].data
+                                    }
+                                });
                             }
 
                             this.choicePromise.then(function (results) {
                                 var choices = _.map($(element).val().split(','), function (choice) {
                                     var option = _.findWhere(results, {code: choice});
                                     if (option) {
-                                        return {
-                                            id: option.code,
-                                            text: i18n.getLabel(
-                                                option.labels,
-                                                UserContext.get('catalogLocale'),
-                                                option.code
-                                            )
-                                        };
+                                        return this.convertBackendItem(option);
                                     }
-                                });
+
+                                    return _.findWhere(results.results, {id: choice});
+                                }.bind(this));
                                 callback(choices);
-                            });
+                            }.bind(this));
                         }.bind(this),
                         multiple: true
                     };
@@ -140,10 +142,7 @@ define(
                     Routing.generate(
                         'pim_enrich_attributeoption_get',
                         {
-                            identifier: this.attribute.id,
-                            options: {
-                                identifiers: this.model.attributes.values[0].data
-                            }
+                            identifier: this.attribute.code
                         }
                     )
                 ).promise();
@@ -161,6 +160,20 @@ define(
                 this.choicePromise = null;
 
                 this.setCurrentValue(data);
+            },
+
+            /**
+             * Convert the item returned from the backend to fit select2 needs
+             *
+             * @param {object} item
+             *
+             * @return {object}
+             */
+            convertBackendItem: function (item) {
+                return {
+                    id: item.code,
+                    text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code)
+                };
             }
         });
     }

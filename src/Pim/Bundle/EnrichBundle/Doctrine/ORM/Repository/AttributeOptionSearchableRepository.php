@@ -23,13 +23,13 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     protected $entityName;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param ObjectManager $entityManager
      * @param string $entityName
      */
     public function __construct(EntityManagerInterface $entityManager, $entityName)
     {
         $this->entityManager = $entityManager;
-        $this->entityName = $entityName;
+        $this->entityName    = $entityName;
     }
 
     /**
@@ -45,9 +45,10 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
             ->addSelect('v')
             ->from($this->entityName, 'o')
             ->leftJoin('o.optionValues', 'v')
-            ->andWhere('o.attribute = :attribute')
+            ->leftJoin('o.attribute', 'a')
+            ->andWhere('a.code = :attributeCode')
             ->orderBy('o.sortOrder')
-            ->setParameter('attribute', $options['identifier']);
+            ->setParameter('attributeCode', $options['identifier']);
 
         if ($search) {
             $qb->andWhere('v.value like :search OR o.code LIKE :search')
