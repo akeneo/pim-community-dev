@@ -68,9 +68,9 @@ This modification introduces a new constraint, the minimum version of PHP for Ak
     * For the **Community Edition**, download it from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
 
     ```
-     wget http://www.akeneo.com/pim-community-standard-v1.6-latest.tar.gz
+     wget http://download.akeneo.com/pim-community-standard-v1.6-latest.tar.gz
      tar -zxf pim-community-standard-v1.6-latest.tar.gz
-     cd pim-community-standard-v1.6.*/
+     cd pim-community-standard/
     ```
 
     * For the **Enterprise Edition**, download the archive from the Partner Portal and extract:
