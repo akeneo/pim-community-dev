@@ -25,7 +25,7 @@ class AttributeOptionController
 
     /**
      * @param AttributeOptionSearchableRepository $attributeOptionSearchableRepo
-     * @param NormalizerInterface $normalizer
+     * @param NormalizerInterface                 $normalizer
      */
     public function __construct(
         AttributeOptionSearchableRepository $attributeOptionSearchableRepo,
