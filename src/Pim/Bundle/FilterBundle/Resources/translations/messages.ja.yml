@@ -3,16 +3,18 @@ oro.filter.form.label_type_greater_equal: '>='
 oro.filter.form.label_type_greater_than: '>'
 oro.filter.form.label_type_less_equal: '<='
 oro.filter.form.label_type_less_than: '<'
-oro.filter.form.label_type_yes: はい
-oro.filter.form.label_type_no: いいえ
-oro.filter.form.label_type_contains: 含む
-oro.filter.form.label_type_not_contains: 含まない
-oro.filter.form.label_type_equals: 等しい
-oro.filter.form.label_type_start_with: で始まる
-oro.filter.form.label_type_end_with: で終わる
-oro.filter.form.label_date_type_between: の間
-oro.filter.form.label_date_type_not_between: の間ではない
-oro.filter.form.label_date_type_more_than: 以上
-oro.filter.form.label_date_type_less_than: 以下
-oro.filter.form.label_not_selected: 選択されていません
-oro.filter.form.label_selected: 選択されています
+oro.filter.form.label_type_yes: 'yes'
+oro.filter.form.label_type_no: 'no'
+oro.filter.form.label_type_contains: contains
+oro.filter.form.label_type_not_contains: does not contain
+oro.filter.form.label_type_equals: is equal to
+oro.filter.form.label_type_start_with: starts with
+oro.filter.form.label_type_end_with: ends with
+oro.filter.form.label_type_empty: is empty
+oro.filter.form.label_type_in_list: in list
+oro.filter.form.label_date_type_between: between
+oro.filter.form.label_date_type_not_between: not between
+oro.filter.form.label_date_type_more_than: more than
+oro.filter.form.label_date_type_less_than: less than
+oro.filter.form.label_not_selected: Not selected
+oro.filter.form.label_selected: Selected

@@ -1,107 +1,117 @@
-Close: Fechar
-Update: Atualizar
-Selected Rows: Linhas Selecionadas
-"Yes": Sim
-Yes, Delete: Sim, Eliminar
-Yes, I Agree: Sim, Eu Concordo
-Yes, do it: Sim, avançar
-"No": Não
-Ok, got it.: Ok, entendi.
-Cancel: Cancelar
-Delete Confirmation: Confirmar Eliminação
-Edit: Editar
-Unexpected error occured. Please contact system administrator.: Ocorreu um erro inesperado. Por favor, contate o administrador do sistema.
-Now: Agora
-Prev: Anterior
-Next: Seguinte
-Today: Hoje
-Done: Terminado
+Close: Close
+Update: Update
+Selected Rows: Selected Rows
+"Yes": 'Yes'
+Yes, Delete: Yes, Delete
+Yes, I Agree: Yes, I Agree
+Yes, do it: Yes, do it
+"No": 'No'
+Ok, got it.: Ok, got it.
+Cancel: Cancel
+Delete Confirmation: Delete Confirmation
+Edit: Edit
+Unexpected error occured. Please contact system administrator.: Unexpected error occured. Please contact system administrator.
+Now: Now
+Prev: Prev
+Next: Next
+Today: Today
+Wk: Wk
+Done: Done
 AM: AM
 A: A
 PM: PM
 P: P
-Choose Time: Escolher Hora
-Time: Horas
-Hour: Hora
-Minute: Minuto
-Second: Segundo
-Millisecond: Milissegundo
-Microsecond: Microssegundo
-Time Zone: Fuso Horário
-Localized value: Valor multi-linguagem
-Columns: Colunas
-Datagrid Configuration: Configuração da grelha de dados
-Apply: Aplicar
-Action: Ação
-Unit: Unidade
-Currency: Moeda
+Choose Time: Choose Time
+Time: Time
+Hour: Hour
+Minute: Minute
+Second: Second
+Millisecond: Millisecond
+Microsecond: Microsecond
+Time Zone: Time Zone
+Localized value: Localized value
+Columns: Columns
+Datagrid Configuration: Datagrid Configuration
+Apply: Apply
+Action: Action
+Unit: Unit
+Currency: Currency
 jstree:
-  all: Todos os produtos
-  unclassified: Produtos não classificados
+  all: All products
+  unclassified: Unclassified products
   product:
-    all: Todos os produtos
-    unclassified: Produtos não classificados
-  no_tree: Nenhuma árvore disponível
-  include_sub: Incluir subcategorias
-  loading: A carregar ...
+    all: All products
+    unclassified: Unclassified products
+  no_tree: No tree available
+  include_sub: Include sub-categories
+  loading: Loading ...
 datetimepicker:
   days:
-    Sunday: Domingo
-    Monday: Segunda
-    Tuesday: Terça
-    Wednesday: Quarta
-    Thursday: Quinta
-    Friday: Sexta
-    Saturday: Sábado
+    Sunday: Sunday
+    Monday: Monday
+    Tuesday: Tuesday
+    Wednesday: Wednesday
+    Thursday: Thursday
+    Friday: Friday
+    Saturday: Saturday
   daysShort:
-    Sun: Dom
-    Mon: Seg
-    Tue: Ter
-    Wed: Qua
-    Thu: Qui
-    Fri: Sex
-    Sat: Sab
+    Sun: Sun
+    Mon: Mon
+    Tue: Tue
+    Wed: Wed
+    Thu: Thu
+    Fri: Fri
+    Sat: Sat
   daysMin:
-    Su: Do
-    Mo: Se
-    Tu: Te
-    We: Qa
-    Th: Qi
-    Fr: Sx
+    Su: Su
+    Mo: Mo
+    Tu: Tu
+    We: We
+    Th: Th
+    Fr: Fr
     Sa: Sa
   months:
-    January: Janeiro
-    February: Fevereiro
-    March: Março
-    April: Abril
-    May: Maio
-    June: Junho
-    July: Julho
-    August: Agosto
-    September: Setembro
-    October: Outubro
-    November: Novembro
-    December: Dezembro
+    January: January
+    February: February
+    March: March
+    April: April
+    May: May
+    June: June
+    July: July
+    August: August
+    September: September
+    October: October
+    November: November
+    December: December
   monthsShort:
     Jan: Jan
-    Feb: Fev
+    Feb: Feb
     Mar: Mar
-    Apr: Abr
-    May: Mai
+    Apr: Apr
+    May: May
     Jun: Jun
     Jul: Jul
-    Aug: Ago
-    Sep: Set
-    Oct: Out
+    Aug: Aug
+    Sep: Sep
+    Oct: Oct
     Nov: Nov
-    Dec: Dez
+    Dec: Dec
 oro_config:
   form:
     config:
+      title: System configuration
       tab:
         system:
-          title: Sistema
+          title: System
       group:
+        localization:
+          title: Localization
+          system_locale: Language
         notification:
-          title: Notificações
-          system_notification: Notificações de novas versões
+          title: Notifications
+          system_notification: New versions notifications
+        loading_message:
+          title: Loading messages
+          label: Enable loading messages
+        loading_messages:
+          label: Available loading messages

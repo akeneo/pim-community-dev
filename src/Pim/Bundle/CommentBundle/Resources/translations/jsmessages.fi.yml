@@ -1,26 +1,26 @@
 btn:
-  post: Lisää uusi kommentti
-  reply: Vastaa
-  cancel: Peruuta
+  post: Add a new comment
+  reply: Reply
+  cancel: Cancel
 confirmation:
   remove:
-    comment: Oletko varma että haluat poistaa tämän kommentin?
+    comment: Are you sure you want to delete this comment?
 flash:
   comment:
     create:
-      success: Kommentti luotu.
-      error: Kommenttia luotaessa tapahtui virhe.
+      success: Your comment has been created successfully.
+      error: An error occured during the creation of your comment.
     delete:
-      success: Kommenttisi on poistettu onnistuneesti.
-      error: Kommenttia poistaessa tapahtui virhe.
+      success: Your comment has been deleted successfully.
+      error: An error occured during the deletion of your comment.
     reply:
-      success: Vastauksesi on luotu.
-      error: Virhe luotaessa vastausta.
+      success: Your reply has been created successfully.
+      error: An error occured during the creation of your reply.
 comment:
   index:
-    empty: Ei kommentteja tällä hetkellä
+    empty: No comment for now
   placeholder:
-    new: Kirjoita uusi kommentti...
-    reply: Vastaa tähän kommenttiin...
+    new: Write a new comment...
+    reply: Reply to this comment...
 pim_comment:
-  product.panel.comment.title: Kommentit
+  product.panel.comment.title: Comments

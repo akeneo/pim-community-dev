@@ -1,469 +1,471 @@
 confirmation:
   remove:
-    item: Êtes-vous certain de vouloir supprimer cet élément ?
-    association type: "Êtes-vous sûr de que vouloir supprimer ce type d'association ?"
-    attribute: Êtes-vous sûr de que vouloir supprimer cet attribut ?
-    family: Êtes-vous sûr de que vouloir supprimer cette famille ?
-    product: Êtes-vous sûr de que vouloir supprimer ce produit ?
-    channel: Êtes-vous sûr de que vouloir supprimer ce canal ?
-    group: Êtes-vous sûr de vouloir supprimer ce groupe ?
-    variant group: Êtes-vous sûr de que vouloir supprimer ce groupe de variantes ?
-    group type: Êtes-vous sûr de que vouloir supprimer ce type de groupe ?
-    import profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'import ?"
-    export profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'export ?"
-    user: Êtes-vous sûr de vouloir supprimer cet utilisateur ?
-    role: Êtes-vous sûr de vouloir supprimer ce rôle ?
+    item: Are you sure you want to delete this item?
+    association type: Are you sure you want to delete this association type?
+    attribute: Are you sure you want to delete this attribute?
+    family: Are you sure you want to delete this family?
+    product: Are you sure you want to delete this product?
+    channel: Are you sure you want to delete this channel?
+    group: Are you sure you want to delete this group?
+    variant group: Are you sure you want to delete this variant group?
+    group type: Are you sure you want to delete this group type?
+    import profile: Are you sure you want to delete this import profile?
+    export profile: Are you sure you want to delete this export profile?
+    user: Are you sure you want to delete this user?
+    role: Are you sure you want to delete this role?
 pim_datagrid:
   mass_action_group:
     bulk_actions:
-      label: Actions de masse
+      label: Bulk Actions
     quick_export:
-      label: Export rapide
+      label: Quick Export
   mass_action:
     delete:
-      confirm_content: Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?
-      success: Les produits sélectionnés ont été supprimés.
-      error: "Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau."
+      confirm_content: Are you sure you want to delete selected products?
+      success: Selected products successfully deleted.
+      error: Error ocurred when trying to delete selected products, please try again.
 flash:
   item:
-    removed: Elément supprimé avec succès
+    removed: Item successfully removed
   association type:
-    removed: "Le type d'association a bien été supprimé"
+    removed: Association type successfully removed
   attribute:
-    removed: "L'attribut a bien été supprimé"
+    removed: Attribute successfully removed
   family:
-    removed: La famille a bien été supprimée
+    removed: Family successfully removed
   product:
-    removed: Le produit a bien été supprimé
+    removed: Product successfully removed
   channel:
-    removed: Le canal a bien été supprimé
+    removed: Channel successfully removed
   group:
-    removed: Le groupe a bien été supprimé
+    removed: Group successfully removed
   variant group:
-    removed: Le groupe de variantes a bien été supprimé
+    removed: Variant group successfully removed
   group type:
-    removed: Le type de groupe a bien été supprimé
+    removed: Group type successfully removed
   import profile:
-    removed: "Le profil d'import a bien été supprimé"
+    removed: Import profile successfully removed
   export profile:
-    removed: "Le profil d'export a bien été supprimé"
+    removed: Export profile successfully removed
   user:
-    removed: "L'utilisateur a bien été supprimé"
+    removed: User successfully removed
   role:
-    removed: Le rôle a bien été supprimé
+    removed: Role successfully removed
 error:
   removing:
-    item: Impossible de supprimer cet élément
-    association type: "Impossible de supprimer ce type d'association"
-    attribute: Impossible de supprimer cet attribut
-    family: Impossible de supprimer cette famille
-    product: Impossible de supprimer ce produit
-    channel: Impossible de supprimer ce canal
-    group: Impossible de supprimer ce groupe
-    variant group: Impossible de supprimer ce groupe de variantes
-    group type: Impossible de supprimer ce type de groupe
-    import profile: "Impossible de supprimer ce profil d'import"
-    export profile: "Impossible de supprimer ce profil d'export"
-    user: Impossible de supprimer cet utilisateur
-    role: Impossible de supprimer ce rôle
-    attribute_option: "Erreur lors de la suppression de l'option de l'attribut"
+    item: Cannot delete this item
+    association type: Cannot delete this association type
+    attribute: Cannot delete this attribute
+    family: Cannot delete this family
+    product: Cannot delete this product
+    channel: Cannot delete this channel
+    group: Cannot delete this group
+    variant group: Cannot delete this variant group
+    group type: Cannot delete this group type
+    import profile: Cannot delete this import profile
+    export profile: Cannot delete this export profile
+    user: Cannot delete this user
+    role: Cannot delete this role
+    attribute_option: Error during deletion of the attribute option
   saving:
-    attribute_option: "Impossible d'enregistrer l'option de l'attribut"
+    attribute_option: Cannot save attribute option
+    export_profile: Cannot save export profile. Please check that all filters are well filled
 alert:
   attribute_option:
-    error_occured_during_submission: "Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur"
-    save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
+    error_occured_during_submission: An error occured during the form submission on the server
+    save_before_edit_other: Please register your modifications on other rows before editing this one
   session_storage:
-    not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
+    not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Attention, vous allez perdre les données non sauvegardées. Êtes-vous sûr de vouloir annuler les modifications sur cette nouvelle option ?
-    cancel_edition_on_new_option_title: Annuler les modifications
+    cancel_edition_on_new_option_text: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ?
+    cancel_edition_on_new_option_title: Cancel modification
 label:
   attribute_option:
-    add_option: Ajouter une option
+    add_option: Add an option
 Code: Code
-Edit: Editer
-Delete: Supprimer
-Edit attributes of the product: Modifier les attributs du produit
-Classify the product: Classer le produit
-Delete the product: Supprimer le produit
-Change status: Changer le statut
-Toggle status: Changer le statut
+Edit: Edit
+Delete: Delete
+Edit attributes of the product: Edit attributes of the product
+Classify the product: Classify the product
+Delete the product: Delete the product
+Change status: Change status
+Toggle status: Toggle status
 pim:
   grid:
     mass_action:
       quick_export:
-        csv_all: CSV (tous les attributs)
-        csv_grid_context: CSV (contexte de la grille)
-        xlsx_all: XLSX (tous les attributs)
-        xlsx_grid_context: XLSX (contexte de la grille)
-      delete: Supprimer des produits
-      mass_edit: Modifier les informations produit
-      category_edit: Déplacer des produits vers des catégories
-      sequential_edit: Modifier les produits séquentiellement
-jstree.create: Créer
-switch_on: Oui
-switch_off: Non
+        csv_all: CSV (All attributes)
+        csv_grid_context: CSV (Grid context)
+        xlsx_all: Excel (All attributes)
+        xlsx_grid_context: Excel (Grid context)
+      delete: Delete products
+      mass_edit: Change product information
+      category_edit: Move products in categories
+      sequential_edit: Edit products sequentially
+jstree.create: Create
+switch_on: 'Yes'
+switch_off: 'No'
 pim_enrich:
   item:
     list:
-      delete.label: Supprimer
-      delete.error: "Erreur lors de la suppression de l'élément"
+      delete.label: Delete
+      delete.error: Error during item deletion
     delete:
-      confirm.content: "Êtes-vous sûr de que vouloir supprimer  {{ itemName }} ? Il n'est pas possible d'annuler cette action"
-      confirm.title: 'Supprimer {{ itemName }}'
+      confirm.content: 'Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action'
+      confirm.title: 'Delete this {{ itemName }}'
   navigation:
     link:
-      back_to_grid: Retour à la grille
+      back_to_grid: Back to grid
   entity:
     save:
-      label: Enregistrer
+      label: Save
     info:
-      update_failed: Échec de la mise à jour
-      update_successful: Mise à jour effectuée avec succès
+      update_failed: Update failed
+      update_successful: Successfully updated
     product:
-      title: produit
+      title: product
       btn:
-        enable: Activer
-        enabled: Activé
-        disable: Desactiver
-        disabled: Désactivé
+        enable: Enable
+        enabled: Enabled
+        disable: Disable
+        disabled: Disabled
         download_pdf: PDF
-        compare_translate: Comparer / traduire
-        delete: Supprimer
-        save: Enregistrer
-        save_and_back: Enregistrer et revenir à la grille
+        compare_translate: Compare / Translate
+        delete: Delete
+        save: Save
+        save_and_back: Save and back to grid
       history:
         version: Version
-        author: Auteur
-        logged_at: Connecté le
-        more: Plus
-        less: Moins
-        from: De
-        modified: Modifié
-        property: Propriété
-        old_values: Anciennes valeurs
-        new_values: Nouvelles valeurs
+        author: Author
+        logged_at: Logged at
+        more: More
+        less: Less
+        from: From
+        modified: Modified
+        property: Property
+        old_values: Old values
+        new_values: New values
         actions: Actions
       info:
-        deletion_successful: Les produits ont bien été supprimés.
-        deletion_failed: "Le produit n'a pas pu être supprimé."
-        update_successful: Le produit a bien été mis à jour.
-        update_failed: "Le produit n'a pas pu être mis à jour."
+        deletion_successful: Product successfully deleted.
+        deletion_failed: The product could not be deleted.
+        update_successful: Product successfully updated.
+        update_failed: The product could not be updated.
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
-            - champs
-        already_in_upload: 'Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et "{{ scope }}"'
+            - fields
+        already_in_upload: 'A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"'
       error:
-        upload: "Une erreur s'est produite lors du transfert du fichier."
+        upload: An error occured during the file upload
       meta:
-        created: Créé
-        created_by: par
-        updated_by: par
-        updated: Dernière mise à jour
+        created: Created
+        created_by: By
+        updated_by: By
+        updated: Last update
         family:
-          title: Famille
-          none: Aucun
+          title: Family
+          none: None
         groups:
-          title: Groupes
+          title: Groups
           modal:
-            title: 'Groupe {{ group }}'
-            view_group: Afficher le groupe
-            group_label: Libellé
-            more_products: '{{ count }} produits supplémentaires...'
-            close: Fermer
+            title: 'Group {{ group }}'
+            view_group: View group
+            group_label: Label
+            more_products: '{{ count }} more products...'
+            close: Close
       copy:
-        select: Sélectionner
-        all: Tous
-        all_visible: Tous les visibles
-        none: Aucun
-        copy: Copier
+        select: Select
+        all: All
+        all_visible: All visible
+        none: None
+        copy: Copy
       variant_group:
-        updated_by: Mis à jour par un groupe de variantes
+        updated_by: Updated by variant group
         switch:
-          "yes": Oui
-          "no": Non
+          "yes": 'Yes'
+          "no": 'No'
       optional_attribute:
-        remove: Supprimer cet attribut
+        remove: Remove this attribute
       locale_specific_attribute:
-        unavailable: "Ce champ est spécifique à certaines locales, celle-ci n'en fait pas partie"
+        unavailable: This locale specific field is not available in this locale
       localizable:
-        channel_locale_unavailable: "Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'"
+        channel_locale_unavailable: "This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'"
       media:
-        upload: Glisser et déposer pour télécharger ou cliquer ici
+        upload: Drag and drop to upload or click here
       create_popin:
-        title: Créer un nouveau produit
+        title: Create a new product
         labels:
-          family: Choisissez une famille
-          save: Enregistrer
-          cancel: Annuler
+          family: Choose a family
+          save: Save
+          cancel: Cancel
     attribute_option:
       code: Code
-      label: Libellé
+      label: Label
     variant_group:
-      title: Groupe de variantes
+      title: Variant group
       info:
-        deletion_successful: Le groupe de variantes a bien été supprimé.
-        deletion_failed: "Le groupe de variantes n'a pas pu être supprimé."
-        update_successful: Le groupe de variantes a bien été mis à jour.
-        update_failed: "Le groupe de variantes n'a pas pu être mis à jour."
+        deletion_successful: Variant group successfully deleted.
+        deletion_failed: The variant group could not be deleted.
+        update_successful: Variant group successfully updated.
+        update_failed: The variant group could not be updated.
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
-            - champs
-        already_in_upload: 'Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et "{{ scope }}"'
-        no_attributes: "Ce groupe de variantes n'a pas encore d'attributs"
+            - fields
+        already_in_upload: 'A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"'
+        no_attributes: This variant group has no attributes yet
       btn:
-        save: Enregistrer
+        save: Save
       meta:
-        product_count: Produits
-        created: Créé
-        created_by: Créé par
-        updated: Mis à jour
-        updated_by: Mis à jour par
+        product_count: Products
+        created: Created
+        created_by: Created by
+        updated: Updated
+        updated_by: Updated by
   confirmation:
-    leave: Êtes-vous sûr de vouloir quitter cette page?
-    discard_changes: 'Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.'
-    delete_item: "Supprimer l'élément."
+    leave: Are you sure you want to leave this page?
+    discard_changes: 'You will lose changes to the {{ entity }} if you leave the page.'
+    delete_item: Confirm deletion
     delete:
-      attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
+      attribute: Are you sure you want to delete this attribute from the product?
   info:
-    not_applicable: Inconnu
+    not_applicable: N/A
     entity:
-      updated: "Des modifications n'ont pas encore été sauvegardées."
+      updated: There are unsaved changes.
   error:
-    upload: "Une erreur s'est produite pendant le chargement du fichier"
+    upload: An error occured during the upload of the file
   alert:
-    not_allowed: "Vous n'êtes pas autorisé à accéder à cette page"
-    error_occured: "Une erreur s'est produite lors du chargement de la page"
+    not_allowed: You are not allowed to access this page
+    error_occured: An error occured during the loading of the page
   form:
-    required: (obligatoire)
+    required: (required)
     product:
       tab:
         associations:
           title: Associations
           info:
-            none_exist: "Aucun type d'association n'existe."
-            show_products: Afficher les produits
-            show_groups: Afficher les groupes
-            number_of_associations: '{{ productCount }} produits et {{ groupCount }} groupes'
+            none_exist: No association types exist.
+            show_products: Show products
+            show_groups: Show groups
+            number_of_associations: '{{ productCount }} products and {{ groupCount }} groups'
         attributes:
-          title: Attributs
+          title: Attributes
           btn:
-            add: Ajouter
-            add_attributes: Ajouter des attributs
+            add: Add
+            add_attributes: Add attributes
           info:
-            search_attributes: Rechercher...
-            no_available_attributes: "Il n'y a plus d'attributs disponibles"
-            attributes_selected: '{{ attributeCount }} attribut(s) sélectionné(s)'
-            no_match: Aucune correspondance trouvée
-            load_more: Chargement de plus de résultats...
+            search_attributes: Search...
+            no_available_attributes: There are no more attributes to add
+            attributes_selected: '{{ attributeCount }} attribute(s) selected'
+            no_match: No matches found
+            load_more: Loading more results...
         categories:
-          title: Catégories
+          title: Categories
       panel:
         completeness:
-          title: Complétude
+          title: Completeness
           info:
-            no_family: Aucune famille définie. Merci de définir une famille pour calculer la complétude de ce produit.
-            no_completeness: "Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille."
-          missing_values: Valeurs manquantes
+            no_family: No family defined. Please define a family to calculate the completeness of this product.
+            no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
+          missing_values: Missing values
         history:
-          title: Historique
+          title: History
       switch:
-        "no": Non
-        "yes": Oui
+        "no": 'No'
+        "yes": 'Yes'
       sequential_edit:
         info:
-          products: Produits
-          previous: 'Retourner à {{ product }} sans enregistrer les modifications.'
-          next: 'Passer à {{ product }} sans enregistrer les modifications.'
+          products: products
+          previous: 'Skip back to {{ product }} without saving.'
+          next: 'Skip to {{ product }} without saving.'
         btn:
-          save_and_next: Enregistrer et passer au suivant
-          save_and_finish: Enregistrer et terminer
+          save_and_next: Save and next
+          save_and_finish: Save and finish
       change_family:
         modal:
-          title: Changer la famille du produit
-          merge_attributes: Les attributs existants seront fusionnés avec ceux de la nouvelle famille.
-          keep_attributes: Aucun attribut ne sera supprimé.
-          change_family_to: Changer la famille pour
-          empty_selection: Choisir une famille
+          title: Change the product family
+          merge_attributes: Current attributes will be merged with the ones in the new family.
+          keep_attributes: No attributes will be removed.
+          change_family_to: Change the family to
+          empty_selection: Choose a family
       flash:
-        attribute_deletion_error: "Une erreur s'est produite lors de la suppression de l'attribut"
+        attribute_deletion_error: An error occured during the attribute deletion
       mass_edit:
-        select_attributes: Sélectionnez les attributs
-        select: Sélectionner
+        select_attributes: Select attributes
+        select: Select
     attribute_option:
       flash:
-        option_created: "L'option d'attribut a été créée avec succès."
-        error_creating_option: "Une erreur s'est produite en essayant de créer l'option d'attribut."
+        option_created: Attribute option successfully created
+        error_creating_option: An error ocurred when trying to create the attribute option
       add_option_modal:
-        title: "Ajouter une option d'attribut"
-        confirm: Ajouter
-        cancel: Annuler
+        title: Add attribute option
+        confirm: Add
+        cancel: Cancel
     entity:
       switch:
-        "no": Non
-        "yes": Oui
+        "no": 'No'
+        "yes": 'Yes'
     variant_group:
       tab:
         properties:
-          title: Propriétés
-          general: Propriétés générales
+          title: Properties
+          general: General properties
           code: Code
           type: Type
-          axis: Axes
-          label_translations: Traduction des libellés
+          axis: Axis
+          label_translations: Label translations
         history:
-          title: Historique
+          title: History
         products:
-          title: Produits
+          title: Products
         attributes:
-          title: Attributs
+          title: Attributes
     common:
       tab:
         attributes:
           btn:
-            add: Ajouter
-            add_attributes: Ajouter des attributs
+            add: Add
+            add_attributes: Add attributes
           info:
-            search_attributes: Rechercher...
-            no_available_attributes: "Il n'y a plus d'attributs disponibles"
+            search_attributes: Search...
+            no_available_attributes: There are no more attributes to add
   export:
     product:
       data:
-        title: Filtrer les produits
+        title: Filter the products
       structure:
-        title: Filtrer les données
+        title: Filter the data
         attributes:
-          title: Attributs
+          title: Attributes
       filter:
         channel:
-          title: Canal
-          help: "Le canal définit la portée des valeurs des produits, les locales utilisées pour sélectionner les données ainsi que l'arbre utilisé pour sélectionner les produits."
+          title: Channel
+          help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
         locales:
           title: Locales
-          help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex : les informations produits en allemand.'
+          help: 'The locales defines the localized product values to export. Ex: only product information in French.'
         attributes:
-          title: Attributs
-          edit: Modifier
-          label: '{0} Tous les attributs|{1} Un attribut sélectionné|]1,Inf[ {{ count }} attributs sélectionnés'
-          help: "Sélectionne l'information produit à exporter. Par exemple : seulement les attributs techniques."
-          empty: Tous les attributs vont être exportés
+          title: Attributes
+          edit: Edit
+          label: '{0} All attributes|{1} One attribute selected|]1,Inf[ {{ count }} attributes selected'
+          help: 'Select the product information to export. Ex: only the technical attributes.'
+          empty: All attributes will be exported
           modal:
-            apply: Appliquer
-            cancel: Annuler
-            title: "Sélection d'attributs"
+            apply: Apply
+            cancel: Cancel
+            title: Attribute selection
         attributes_selector:
-          attribute_group: "Groupes d'attributs"
-          attributes: 'Rechercher dans les {{ attributeCount }} attributs'
-          selected: Attributs sélectionnés
-          clear: Réinitialiser
-          all_group: Tous les groupes
-          empty_selection: Tous les attributs vont être exportés
+          attribute_group: Attribute groups
+          attributes: 'Search in {{ attributeCount }} attributes'
+          selected: Selected attributes
+          clear: Clear
+          all_group: All groups
+          empty_selection: All attributes will be exported
         family:
-          title: Famille
-          help: 'Sélectionne les produits à exporter en fonction de leur famille. Par ex : exporter seulement les chaussures et les robes.'
+          title: Family
+          help: 'Select the products to export by their family. Ex: Export only the shoes and dresses.'
           operators:
-            IN: Dans la liste
-            NOT IN: Pas dans la liste
-            EMPTY: Produits qui n’ont pas de famille
-            NOT EMPTY: Produits qui ont une famille
-          empty_selection: Sélectionnez une famille
+            IN: In list
+            NOT IN: Not in list
+            EMPTY: "Products that don't have a family"
+            NOT EMPTY: Products that have a family
+          empty_selection: No condition on families
         updated:
-          title: Condition temporelle
+          title: Time condition
           operators:
-            ALL: Pas de condition de date
-            SINCE LAST N DAYS: Produits mis à jour durant les n derniers jours (par ex. 6)
-            >: Produits mis à jours depuis cette date
-            SINCE LAST JOB: Produits mis à jour depuis le dernier export
+            ALL: No date condition
+            SINCE LAST N DAYS: Updated products over the last n days (e.g. 6)
+            >: Updated products since this date
+            SINCE LAST JOB: Updated products since last export
         enabled:
-          title: Statut
-          help: 'Sélectionne les produits à exporter selon leur statut. Par ex : exporter les produits peu importe leur statut.'
+          title: Status
+          help: 'Select the products to export by their status. Ex: Export products whatsoever their status.'
           value:
-            all: Tous
-            enabled: Activé
-            disabled: Désactivé
+            all: All
+            enabled: Enabled
+            disabled: Disabled
         completeness:
-          title: Complétude
-          help: Sélectionne les produits à exporter selon leur complétude.
+          title: Completeness
+          help: Select the products to export by their completeness.
           operators:
-            ALL: Pas de condition de complétude
-            >=: Complet sur au moins une locale sélectionnée
-            GREATER OR EQUALS THAN ON ALL LOCALES: Complet sur toutes les locales sélectionnées
-            LOWER THAN ON ALL LOCALES: Non complet sur toutes les locales sélectionnées
-          empty_selection: Sélectionnez une famille
+            ALL: No condition on completeness
+            >=: Complete on at least one selected locale
+            GREATER OR EQUALS THAN ON ALL LOCALES: Complete on all selected locales
+            LOWER THAN ON ALL LOCALES: Not complete on all selected locales
+          empty_selection: Select a family
         category:
-          title: Catégorie
-          help: "Utilise les catégories de produits de l'arbre (défini par le canal ci-dessus) pour sélectionner les produits à exporter"
+          title: Category
+          help: Use the product categories in the tree (defined by the channel above) to select the products to export
         identifier:
-          title: Identifiant
-          help: Les identifiants des produits que vous souhaitez exporter, séparés par une virgule, un espace ou un saut de ligne
+          title: Identifier
+          help: Identifiers of products you want to export separated by commas, spaces or line breaks
         metric:
           operators:
-            =: Est égal à
-            !=: "N'est pas égal à"
-            >=: Supérieur ou égal à
-            >: Supérieur à
-            <=: Inférieur ou égal à
-            <: Inférieur à
-            EMPTY: Est vide
-            NOT EMPTY: "N'est pas vide"
+            =: Is equal to
+            !=: Is not equal to
+            >=: Greater than or equals
+            >: Greater than
+            <=: Lower than or equals
+            <: Lower than
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         string:
           operators:
-            ALL: Tous
-            CONTAINS: Contient
-            DOES NOT CONTAIN: Ne contient pas
-            =: Est égal à
-            STARTS WITH: Commence par
-            ENDS WITH: Finit par
-            EMPTY: Est vide
-            NOT EMPTY: "N'est pas vide"
+            ALL: All
+            CONTAINS: Contains
+            DOES NOT CONTAIN: Does not contain
+            =: Is equal to
+            STARTS WITH: Starts with
+            ENDS WITH: Ends with
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         price-collection:
           operators:
-            =: Est égal à
-            !=: "N'est pas égal à"
-            >=: Supérieur ou égal à
-            >: Supérieur à
-            <=: Inférieur ou égal à
-            <: Inférieur à
-            EMPTY: Est vide
-            NOT EMPTY: "N'est pas vide"
+            =: Is equal to
+            !=: Is not equal to
+            >=: Greater than or equals
+            >: Greater than
+            <=: Lower than or equals
+            <: Lower than
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         multi_select:
           operators:
-            IN: Dans la liste
-            EMPTY: Est vide
-            NOT EMPTY: "N'est pas vide"
+            IN: In list
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         media:
           operators:
-            CONTAINS: Contient
-            DOES NOT CONTAIN: Ne contient pas
-            =: Est égal à
-            STARTS WITH: Commence par
-            ENDS WITH: Finit par
-            EMPTY: Est vide
-            NOT EMPTY: "N'est pas vide"
+            CONTAINS: Contains
+            DOES NOT CONTAIN: Does not contain
+            =: Is equal to
+            STARTS WITH: Starts with
+            ENDS WITH: Ends with
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         date:
           operators:
-            >: Supérieur à
-            <: Inférieur à
-            =: Est égal à
-            !=: "N'est pas égal à"
-            BETWEEN: Entre
-            NOT BETWEEN: Pas entre
-            EMPTY: Est vide
-            NOT EMPTY: "N'est pas vide"
+            >: Greater than
+            <: Lower than
+            =: Is equal to
+            !=: Is not equal to
+            BETWEEN: Between
+            NOT BETWEEN: Not between
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
         number:
           operators:
-            =: Est égal à
-            !=: "N'est pas égal à"
-            >=: Supérieur ou égal à
-            >: Supérieur à
-            <=: Inférieur ou égal à
-            <: Inférieur à
-            EMPTY: Est vide
-            NOT EMPTY: "N'est pas vide"
+            =: Is equal to
+            !=: Is not equal to
+            >=: Greater than or equals
+            >: Greater than
+            <=: Lower than or equals
+            <: Lower than
+            EMPTY: Is empty
+            NOT EMPTY: Is not empty
   mass_edit_action:
     edit_common_attributes:
-      description: 'Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.'
+      description: |-
+        The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
 pim_enrich.error:
-  exception.title: "Oups! Une erreur {{ status_code }} s'est produite..."
+  exception.title: 'Oh snap! A {{ status_code }} error occured...'

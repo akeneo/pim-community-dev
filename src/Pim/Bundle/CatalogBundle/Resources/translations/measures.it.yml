@@ -1,66 +1,66 @@
 Area: Area
-ACRE: Acri
-ARE: Ara
-ARPENT: Arpenti
-CENTIARE: Centiara
-HECTARE: Ettaro
-SQUARE_CENTIMETER: Centimetro quadrato
-SQUARE_DECIMETER: Decimetro quadrato
-SQUARE_DEKAMETER: Decametro quadrato
-SQUARE_FOOT: Piede quadrato
-SQUARE_FURLONG: Furlong quadrato
-SQUARE_HECTOMETER: Ettometro quadrato
-SQUARE_INCH: Pollice quadrato
-SQUARE_KILOMETER: Chilometro quadrato
-SQUARE_METER: Metro quadrato
-SQUARE_MIL: Mil quadrati
-SQUARE_MILE: Miglio quadrato
-SQUARE_MILLIMETER: Millimetro quadrato
-SQUARE_YARD: Yard quadrata
-Binary: Binario
+ACRE: Acre
+ARE: Are
+ARPENT: Arpent
+CENTIARE: Centiare
+HECTARE: Hectare
+SQUARE_CENTIMETER: Square centimeter
+SQUARE_DECIMETER: Square decimeter
+SQUARE_DEKAMETER: Square dekameter
+SQUARE_FOOT: Square foot
+SQUARE_FURLONG: Square furlong
+SQUARE_HECTOMETER: Square hectometer
+SQUARE_INCH: Square inch
+SQUARE_KILOMETER: Square kilometer
+SQUARE_METER: Square meter
+SQUARE_MIL: Square mil
+SQUARE_MILE: Square mile
+SQUARE_MILLIMETER: Square millimeter
+SQUARE_YARD: Square yard
+Binary: Binary
 BIT: Bit
 BYTE: Byte
 KILOBYTE: Kilobyte
 MEGABYTE: Megabyte
 GIGABYTE: Gigabyte
 TERABYTE: Terabyte
-Frequency: Frequenza
+Frequency: Frequency
 GIGAHERTZ: Gigahertz
 KILOHERTZ: Kilohertz
 MEGAHERTZ: Megahertz
 TERAHERTZ: Terahertz
 HERTZ: Hertz
-Length: Lunghezza
-CENTIMETER: Centimetro
+Length: Length
+CENTIMETER: Centimeter
 CHAIN: Chain
-DECIMETER: Decimetro
-DEKAMETER: Decametro
-FEET: Piedi
+DECIMETER: Decimeter
+DEKAMETER: Dekameter
+FEET: Feet
 FURLONG: Furlong
-INCH: Pollici
-HECTOMETER: Ettometro
-KILOMETER: Chilometro
-METER: Metro
+INCH: Inch
+HECTOMETER: Hectometer
+KILOMETER: Kilometer
+METER: Meter
 MIL: Mil
-MILE: Miglio
-MILLIMETER: Millimetro
+MILE: Mile
+MILLIMETER: Millimeter
 YARD: Yard
-Power: Potenza
+Power: Power
 GIGAWATT: Gigawatt
-KILOWATT: Chilowatt
+KILOWATT: Kilowatt
 MEGAWATT: Megawatt
 TERAWATT: Terawatt
 WATT: Watt
-Speed: Velocità
-FOOT_PER_SECOND: Piedi al secondo
-FOOT_PER_HOUR: "Piedi all'ora"
-KILOMETER_PER_HOUR: "Chilometri all'ora"
-METER_PER_HOUR: "Metri all'ora"
-METER_PER_MINUTE: Metri al minuto
-METER_PER_SECOND: Metri al secondo
-MILE_PER_HOUR: Miglia orarie
-YARD_PER_HOUR: Yard orarie
-Temperature: Temperatura
+Speed: Speed
+FOOT_PER_SECOND: Foot per second
+FOOT_PER_HOUR: Foot per hour
+KILOMETER_PER_HOUR: Kilometer per hour
+METER_PER_HOUR: Meter per hour
+METER_PER_MINUTE: Meter per minute
+METER_PER_SECOND: Meter per second
+MILE_PER_HOUR: Mile per hour
+YARD_PER_HOUR: Yard per hour
+Temperature: Temperature
 CELSIUS: Celsius
 FAHRENHEIT: Fahrenheit
 KELVIN: Kelvin
@@ -68,28 +68,28 @@ RANKINE: Rankine
 REAUMUR: Reaumur
 Volume: Volume
 BARREL: Barrel
-CENTILITER: Centilitri
-CUBIC_CENTIMETER: Centimetro cubo
-CUBIC_DECIMETER: Decimetro cubo
-CUBIC_FOOT: Piede cubo
-CUBIC_INCH: Pollice cubo
-CUBIC_METER: Metro cubo
-CUBIC_MILLIMETER: Millimetro cubo
-CUBIC_YARD: Iarda cubica
-DECILITER: Decilitro
-GALLON: Gallone
-LITER: Litri
-MILLILITER: Millilitro
-OUNCE: Oncia
-PINT: Pinta
-Weight: Peso
+CENTILITER: Centiliter
+CUBIC_CENTIMETER: Cubic centimeter
+CUBIC_DECIMETER: Cubic decimeter
+CUBIC_FOOT: Cubic foot
+CUBIC_INCH: Cubic inch
+CUBIC_METER: Cubic meter
+CUBIC_MILLIMETER: Cubic millimeter
+CUBIC_YARD: Cubic yard
+DECILITER: Deciliter
+GALLON: Gallon
+LITER: Liter
+MILLILITER: Milliliter
+OUNCE: Ounce
+PINT: Pint
+Weight: Weight
 DENIER: Denier
 GRAIN: Grain
 GRAM: Gram
-KILOGRAM: Chilogrammo
+KILOGRAM: Kilogram
 LIVRE: Livre
 MARC: Marc
-MILLIGRAM: Milligrammo
+MILLIGRAM: Milligram
 ONCE: Once
 POUND: Pound
-TON: Tonnellata
+TON: Ton

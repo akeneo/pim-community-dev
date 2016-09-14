@@ -1,38 +1,38 @@
-"oro_datagrid.no_data_hint %entityHint%": 'Сущность %entityHint% не существует.'
-oro_datagrid.not_found_hint: Ничего не найдено. Попробуйте изменить критерии поиска.
-oro_datagrid.label_add_filter: Управление фильтрами
-oro_datagrid.label_loading_mask: Загрузка . . .
-oro.grid.mass_action.selected_rows: Выбранные строки
-oro.grid.mass_action.confirm_title: Подтверждение массового действия
-oro.grid.mass_action.confirm_content: Вы уверены, что хотите сделать это?
-oro.grid.mass_action.confirm_ok: Да, сделать это
-oro.grid.mass_action.error_title: Ошибка массового действия
-oro.grid.mass_action.error_content: Не удается выполнить массовое действие
-oro.grid.mass_action.delete.label: Удалить
-oro.grid.mass_action.delete.confirm_title: Подтверждение массового удаления
-oro.grid.mass_action.delete.confirm_content: Вы уверены, что вы хотите удалить выбранные элементы?
-oro.grid.datagrid.page_size.all: Все
-oro.grid.mass_action.delete.success_message: '{0} Ни одна сущность не была удалена|{1} Одна сущность была удалена|]1,Inf[ %count% сущностей было удалено'
+"oro_datagrid.no_data_hint %entityHint%": 'No %entityHint% exists.'
+oro_datagrid.not_found_hint: No results found. Try to change your search criteria.
+oro_datagrid.label_add_filter: Manage filters
+oro_datagrid.label_loading_mask: Loading . . .
+oro.grid.mass_action.selected_rows: Selected Rows
+oro.grid.mass_action.confirm_title: Mass Action Confirmation
+oro.grid.mass_action.confirm_content: Are you sure you want to do this?
+oro.grid.mass_action.confirm_ok: Yes, do it
+oro.grid.mass_action.error_title: Mass Action Error
+oro.grid.mass_action.error_content: Cannot perform mass action
+oro.grid.mass_action.delete.label: Delete
+oro.grid.mass_action.delete.confirm_title: Mass Delete Confirmation
+oro.grid.mass_action.delete.confirm_content: Are you sure you want to do delete selected items?
+oro.grid.datagrid.page_size.all: All
+oro.grid.mass_action.delete.success_message: '{0} No entities were removed|{1} One entity was removed|]1,Inf[ %count% entities were removed'
 datagrid_view:
-  views: Представления
-  default: Представление по умолчанию
-  create: Создать представление
-  placeholder: Название нового представления
-  remove: Удалить это представление
-  save_changes: Сохранить представление
-  choose_label: Выберите ярлык для представления
+  views: Views
+  default: Default view
+  create: Create view
+  placeholder: Name of new view
+  remove: Delete this view
+  save_changes: Save this view
+  choose_label: Choose a label for the view
   columns:
-    min_message: Вы должны выбрать по крайней мере один столбец для отображения
+    min_message: You must select at least one datagrid column to display
   label:
-    unique_message: Ярлык должен быть уникальным
-    not_blank_message: Ярлык не должен быть пустым
-confirmation.remove.datagrid view: Вы действительно хотите удалить это представление табличных данных?
+    unique_message: The label must be unique
+    not_blank_message: The label must not be blank
+confirmation.remove.datagrid view: Are you sure you want to delete this datagrid view?
 flash.datagrid view:
-  created: Представление табличных данных успешно создано
-  updated: Представление табличных данных успешно обновлено
-  removed: Представление табличных данных успешно удалено
-  not removable: У вас нет прав для удаления этого представления
-quick_export: Быстрый экспорт
-import: Импорт
-export: Экспорт
-mass_edit: Массовое редактирование
+  created: Datagrid view successfully created
+  updated: Datagrid view successfully updated
+  removed: Datagrid view successfully removed
+  not removable: "You don't have the rights to remove this view"
+quick_export: Quick Export
+import: Import
+export: Export
+mass_edit: Mass Edit

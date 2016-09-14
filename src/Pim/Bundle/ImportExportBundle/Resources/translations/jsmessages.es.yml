@@ -1,15 +1,18 @@
 job_execution:
   summary:
-    display_item: Mostrar elemento
-    hide_item: Ocultar elemento
+    display_item: Display item
+    hide_item: Hide item
 pim_connector:
   export:
     categories:
       selector:
         modal:
-          cancel: Cancelar
-          confirm: Confirmar
-        edit: Editar
+          title: Categories selection
+          cancel: Cancel
+          confirm: Confirm
+        label: '{0} All products|{1} One category selected|]1,Inf[ {{ count }} categories selected'
+        edit: Edit
+        title: Select categories
     locales:
       validation:
-        not_blank: Un local debe ser seleccionado, por favor seleccione un local para exportar.
+        not_blank: One locale must be selected, please choose a locale to export.

@@ -1,22 +1,25 @@
-An identifier attribute already exists.: Un attribut identifiant existe déjà.
-Attribute code may contain only letters, numbers and underscore: "Le code de l'attribut ne doit contenir que des lettres, chiffres et tirets bas"
-Attribute code may contain only letters (at least one), numbers and underscores: "Code d'attribut ne peut contenir uniquement des lettres (au moins une), des chiffres et des tirets bas"
-This attribute type can't be used as a grid filter: "Ce type d'attribut ne peut pas être utilisé comme filtre dans la grille"
-This code is not available: "Ce code n'est pas disponible"
-This attribute type must be required: "Ce type d'attribut doit être requis"
-This attribute type can't be required: "Ce type d'attribut ne peut être requis"
-This attribute type can't have unique value: "Ce type d'attribut ne peut pas avoir de valeur unique"
-No default value may be specified for this attribute type: "Aucune valeur par défaut ne peut être définie pour ce type d'attribut"
-This value should be Yes or No: Cette valeur doit être oui ou non
-This value should not be blank: Cette valeur ne doit pas être vide
-Option code may contain only letters, numbers and underscores: "Le code de l'option peut contenir uniquement des lettres, des chiffres et des traits de soulignement"
-Option code may contain only letters (at least one), numbers and underscores: "Code d'option ne peut contenir que des lettres (au moins une), des chiffres et des tirets bas"
-This value should not be a decimal.: Cette valeur ne doit pas être un nombre décimal.
-"The value %value% is already set on another product for the unique attribute %attribute%": "La valeur %value% est déjà définie sur un autre produit pour l'attribut unique %attribute%"
-regex.comma_or_semicolon.message: Ce champ ne doit pas contenir de virgule ou de point-virgule.
-file.extensions.message: "L'extension du fichier n'est pas autorisée (les extensions autorisées sont: %extensions%)."
-"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 'Ce type de valeur attend {{ decimal_separator }} comme séparateur de décimales.'
-This type of value expects the use of dot (.) to separate decimals.: Ce type de valeur attend un point (.) comme séparateur de décimales.
-This type of value expects the use of comma (,) to separate decimals.: Ce type de valeur attend une virgule (,) comme séparateur de décimales.
-This type of value expects the use of arabic decimal separator (٫) to separate decimals.: Ce type de valeur attend un séparateur de décimales arabe (٫).
-"This type of value expects the use of the format {{ date_format }} for dates.": 'Ce type de valeur attend le format {{ date_format }} pour les dates.'
+An identifier attribute already exists.: An identifier attribute already exists.
+Attribute code may contain only letters, numbers and underscore: Attribute code may contain only letters, numbers and underscore
+Attribute code may contain only letters (at least one), numbers and underscores: Attribute code may contain only letters (at least one), numbers and underscores
+This attribute type can't be used as a grid filter: "This attribute type can't be used as a grid filter"
+This code is not available: This code is not available
+This attribute type must be required: This attribute type must be required
+This attribute type can't be required: "This attribute type can't be required"
+This attribute type can't have unique value: "This attribute type can't have unique value"
+No default value may be specified for this attribute type: No default value may be specified for this attribute type
+This value should be Yes or No: This value should be Yes or No
+This value should not be blank: This value should not be blank
+Option code may contain only letters, numbers and underscores: Option code may contain only letters, numbers and underscores
+Option code may contain only letters (at least one), numbers and underscores: Option code may contain only letters (at least one), numbers and underscores
+This value should not be a decimal.: This value should not be a decimal.
+The file extension is not allowed (allowed extensions:
+  "%extensions%).":
+    The file extension is not allowed (allowed extensions: '%extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": 'The value %value% is already set on another product for the unique attribute %attribute%'
+regex.comma_or_semicolon.message: This field should not contain any comma or semicolon.
+file.extensions.message: 'The file extension is not allowed (allowed extensions: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 'This type of value expects the use of {{ decimal_separator }} to separate decimals.'
+This type of value expects the use of dot (.) to separate decimals.: This type of value expects the use of a dot (.) to separate decimals.
+This type of value expects the use of comma (,) to separate decimals.: This type of value expects the use of a comma (,) to separate decimals.
+This type of value expects the use of arabic decimal separator (٫) to separate decimals.: This type of value expects the use of an arabic decimal separator (٫) to separate decimals.
+"This type of value expects the use of the format {{ date_format }} for dates.": 'This type of value expects the use of the format {{ date_format }} for dates.'

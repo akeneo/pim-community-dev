@@ -1,212 +1,367 @@
 pim_connector:
   steps:
-    dummy_reader.title: Заглушка
-    product_reader.title: Извелечение продуктов
-    entity_reader.title: Извлечение объектов
+    dummy_reader.title: Dummy reader
+    product_reader.title: Product extraction
+    entity_reader.title: Entity extraction
     csv_reader:
-      title: Считыватель из CSV
-      invalid_item_columns_count: 'Ожидается получить %totalColumnsCount% колонок, но было передано %itemColumnsCount% в %csvPath%:%lineno%'
-    csv_product_reader.title: Считыватель продуктов из CSV
-    csv_category_reader.title: Считыватель категорий из CSV
-    csv_variant_group .title: Считыватель групп вариантов из CSV
-    dummy_processor.title: Заглушка
-    product_processor.title: Создание продукта
-    variant_group_processor.title: Создание / обновление группы вариантов
-    category_processor.title: Создание категорий
-    association_processor.title: Создание ассоциаций
-    product_association_processor.title: Создание ассоциаций
-    group_processor.title: Создание групп
-    attribute_processor.title: Создание атрибутов
-    attribute_option_processor.title: Создание выборов атрибутов
-    heterogeneous_processor.title: Сериализатор продукта в CSV
-    homogeneous_processor.title: Сериализатор объектов в CSV
-    transformer_processor.title: Преобразование
-    dummy_writer.title: Заглушка
-    file_writer.title: Вывод в файл
-    product_writer.title: Хранилище продуктов
-    category_writer.title: Хранилище категорий
-    variant_group_writer.title: Хранилище групп вариантов
-    writer.title: Хранилище объектов
-    csv_writer.title: Записыватель CSV
+      title: CSV reader
+      invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %csvPath%:%lineno%'
+    csv_product_reader.title: CSV product reader
+    csv_category_reader.title: CSV category reader
+    csv_variant_group .title: CSV variant group reader
+    dummy_processor.title: Dummy processor
+    product_processor.title: Product creation
+    variant_group_processor.title: Variant group creation / update
+    category_processor.title: Category creation
+    association_processor.title: Association creation
+    product_association_processor.title: Association creation
+    group_processor.title: Group creation
+    attribute_processor.title: Attribute creation
+    attribute_option_processor.title: Attribute option creation
+    heterogeneous_processor.title: CSV product serializer
+    homogeneous_processor.title: CSV entity serializer
+    transformer_processor.title: Transformation
+    dummy_writer.title: Dummy writer
+    file_writer.title: Output
+    product_writer.title: Product storage
+    category_writer.title: Category storage
+    variant_group_writer.title: Variant group storage
+    writer.title: Entity storage
+    csv_writer.title: Csv Writer
   export:
-    delimiter:
-      label: Разделитель
-      help: Символ, используемый как разделитель полей
-    enclosure:
-      label: Символ обрамления
-      help: Символ, используемый для обрамления полей
-    withHeader:
-      label: Включая заголовки
-      help: Добавлять строку с заголовками
-    filePath:
-      label: Путь к файлу
-      help: Путь к сгенерированному файлу
-    channel:
-      label: Канал
-      help: Канал, который вы хотите экспортировать
-    locales:
-      label: Локали
-    decimalSeparator:
-      label: Десятичный разделитель
-      help: Введите десятичный разделитель
-    dateFormat:
-      label: Формат даты
-      help: Введите формат даты
-    families:
-      label: Семейство
-      placeholder: Выберите семейство
+    csv:
+      delimiter:
+        label: Delimiter
+        help: One character used to set the field delimiter
+      enclosure:
+        label: Enclosure
+        help: One character used to set the field enclosure
+      withHeader:
+        label: With header
+        help: Whether or not to print the column name
+      with_media:
+        label: Export files and images
+        help: Whether or not to export product files and images
+      filePath:
+        label: File path
+        help: Where to write the generated file on the file system
+      decimalSeparator:
+        label: Decimal separator
+        help: Determine the decimal separator
+      dateFormat:
+        label: Date format
+        help: Determine the format of date fields
+    xlsx:
+      lines_per_files:
+        label: Number of lines per file
+        help: Define the limit number of lines per file
+      withHeader:
+        label: With header
+        help: Whether or not to print the column name
+      with_media:
+        label: Export files and images
+        help: Whether or not to export product files and images
+      filePath:
+        label: File path
+        help: Where to write the generated file on the file system
+      decimalSeparator:
+        label: Decimal separator
+        help: Determine the decimal separator
+      dateFormat:
+        label: Date format
+        help: Determine the format of date fields
+    yml:
+      filePath:
+        label: File path
+        help: Where to write the generated file on the file system
   import:
-    enabled:
-      label: Активировать продукт
-      help: Активировать импортируемые продукты
-    categoriesColumn:
-      label: Колонка категорий
-      help: Название колонки категорий
-    familyColumn:
-      label: Колонка семейства
-      help: Название колонки семейства
-    groupsColumn:
-      label: Колонка групп
-      help: Название колонки групп
-    filePath:
-      label: Файл
-      help: CSV-файл для импорта
-    yamlFilePath:
-      label: Файл
-      help: YAML-файл для импорта
-    uploadAllowed:
-      label: Разрешить загрузку файлов
-      help: Разрешить загрузку файлов
-    delimiter:
-      label: Разделитель
-      help: Символ, используемый как разделитель полей для CSV-файла
-    enclosure:
-      label: Символ обрамления
-      help: Символ, используемый для обрамления полей
-    escape:
-      label: Экранирование
-      help: Символ, используемый для экранирования
-    circularRefsChecked:
-      label: Проверять циклические ссылки
-      help: Если да, данные будут обрабатываться чтобы убедиться, что нет циклических ссылок между категориями
-    realTimeVersioning:
-      label: Обновление истории изменений в реальном времени
-      help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
-    copyValuesToProducts:
-      label: Копировать значения из группы вариантов в продукты
-      help: Это означает, что продукты будут автоматически обновлены значениями группы вариантов, можно отключить для обновления только группы вариантов
-    enabledComparison:
-      label: Сравнить значения
-      help: Включить сравнение исходных значений и импортированных значений. Может ускорить импорт, если импортированные значения очень похожи на исходные значения
-    decimalSeparator:
-      label: Десятичный разделитель
-      help: Символ, используемый для установки разделителя полей для десятичной
-    dateFormat:
-      label: Формат даты
+    csv:
+      enabled:
+        label: Enable the product
+        help: Whether or not imported product should be enabled
+      categoriesColumn:
+        label: Categories column
+        help: Name of the categories column
+      familyColumn:
+        label: Family column
+        help: Name of the family column
+      groupsColumn:
+        label: Groups column
+        help: Name of the groups column
+      filePath:
+        label: File
+        help: The CSV file to import
+      uploadAllowed:
+        label: Allow file upload
+        help: Whether or not to allow uploading the file directly
+      delimiter:
+        label: Delimiter
+        help: One character used to set the field delimiter for CSV file
+      enclosure:
+        label: Enclosure
+        help: One character used to set the field enclosure
+      escape:
+        label: Escape
+        help: One character used to set the field escape
+      circularRefsChecked:
+        label: Check circular references
+        help: If yes, data will be processed to make sure that there are no circular references between the categories
+      realTimeVersioning:
+        label: Real time history update
+        help: Means that the product history is automatically updated, can be switched off to improve performances
+      copyValuesToProducts:
+        label: Copy variant group values to products
+        help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group
+      enabledComparison:
+        label: Compare values
+        help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
+      decimalSeparator:
+        label: Decimal separator
+        help: One character used to set the field separator for decimal
+      dateFormat:
+        label: Date format
+        help: Specify the format of any date columns in the file, e.g. here DD/MM/YYYY for a 30/04/2014 format.
+    xlsx:
+      enabled:
+        label: Enable the product
+        help: Whether or not imported product should be enabled
+      categoriesColumn:
+        label: Categories column
+        help: Name of the categories column
+      familyColumn:
+        label: Family column
+        help: Name of the family column
+      groupsColumn:
+        label: Groups column
+        help: Name of the groups column
+      filePath:
+        label: File
+        help: The XLSX file to import
+      uploadAllowed:
+        label: Allow file upload
+        help: Whether or not to allow uploading the file directly
+      circularRefsChecked:
+        label: Check circular references
+        help: If yes, data will be processed to make sure that there are no circular references between the categories
+      realTimeVersioning:
+        label: Real time history update
+        help: Means that the product history is automatically updated, can be switched off to improve performances
+      copyValuesToProducts:
+        label: Copy variant group values to products
+        help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group
+      enabledComparison:
+        label: Compare values
+        help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
+      decimalSeparator:
+        label: Decimal separator
+        help: One character used to set the field separator for decimal
+      dateFormat:
+        label: Date format
+        help: Specify the format of any date columns in the file, e.g. here DD/MM/YYYY for a 30/04/2014 format.
+    yml:
+      filePath:
+        label: File
+        help: The YML file to import
+      uploadAllowed:
+        label: Allow file upload
+        help: Whether or not to allow uploading the file directly
 job_execution.summary:
-  read: прочитано
-  read_lines: прочитанных строк
-  write: записано
-  skip: пропущено
-  create: создано
-  process: обработано
-  update_products: обновленных продуктов
-  process_products: обработанных продуктов
-  skip_products: пропущенных продуктов
-  displayed: первые предупреждения отображены
+  read: read
+  read_lines: read lines
+  write: written
+  skip: skipped
+  create: created
+  process: processed
+  update_products: updated products
+  process_products: processed products
+  skip_products: skipped products
+  displayed: first warnings displayed
   charset_validator:
-    title: 'Кодировка файла:'
-    skipped: пропущено, расширение из белого списка
-  product_skipped_no_diff: пропущен продукт (без разницы)
+    title: 'File encoding:'
+    skipped: skipped, extension in white list
+  product_skipped_no_diff: skipped product (no differences)
 batch_jobs:
   csv_product_export:
-    label: Экспорт продуктов в CSV
-    export.label: Экспорт продуктов
+    label: Product export in CSV
+    export.label: Product export
   csv_category_export:
-    label: Экспорт категорий в CSV
-    export.label: Экспорт категорий
+    label: Category export in CSV
+    export.label: Category export
   csv_attribute_export:
-    label: Экспорт атрибутов в CSV
-    export.label: Экспорт атрибутов
+    label: Attribute export in CSV
+    export.label: Attribute export
   csv_attribute_option_export:
-    label: Экспорт выборов атрибутов в CSV
-    export.label: Экспорт выборов атрибутов
+    label: Attribute option export in CSV
+    export.label: Attribute option export
   csv_association_type_export:
-    label: Экспорт типов ассоциаций в CSV
-    export.label: Экспорт типов ассоциаций
+    label: Association type export in CSV
+    export.label: Association type export
   csv_group_export:
-    label: Экспорт групп в CSV
-    export.label: Экспорт групп
+    label: Group export in CSV
+    export.label: Group export
   csv_variant_group_export:
-    label: Экспорт групп вариантов в CSV
-    export.label: Экспорт групп вариантов
+    label: Variant group export in CSV
+    export.label: Variant group export
   csv_family_export:
-    label: Экспорт семейств в CSV
-    export.label: Экспорт семейств
+    label: Family export in CSV
+    export.label: Family export
   csv_product_import:
-    label: Импорт продуктов из CSV
-    validation.label: Подтверждение файла
-    import.label: Импорт продуктов
-    import_associations.label: Импорт ассоциаций
+    label: Product import in CSV
+    validation.label: File validation
+    import.label: Product import
+    import_associations.label: Association import
   csv_category_import:
-    label: Импорт категорий из CSV
-    validation.label: Подтверждение файла
-    import.label: Импорт категории
+    label: Category import in CSV
+    validation.label: File validation
+    import.label: Category import
   csv_attribute_import:
-    label: Импорт атрибутов из CSV
-    validation.label: Подтверждение файла
-    import.label: Импорт атрибутов
+    label: Attribute import in CSV
+    validation.label: File validation
+    import.label: Attribute import
   csv_attribute_option_import:
-    label: Импорт выборов атрибутов из CSV
-    validation.label: Подтверждение файла
-    import.label: Импорт выборов атрибутов
+    label: Attribute option import in CSV
+    validation.label: File validation
+    import.label: Attribute option import
   csv_association_type_import:
-    label: Импорт типов ассоциаций из CSV
-    validation.label: Подтверждение файла
-    import.label: Импорт типов ассоциаций
+    label: Association type import in CSV
+    validation.label: File validation
+    import.label: Association type import
   csv_family_import:
-    label: Импорт семейств из CSV
-    validation.label: Подтверждение файла
-    import.label: Импорт семейств
+    label: Family import in CSV
+    validation.label: File validation
+    import.label: Family import
   csv_group_import:
-    label: Импорт группы из CSV
-    validation.label: Подтверждение файла
-    import.label: Импорт группы
+    label: Group import in CSV
+    validation.label: File validation
+    import.label: Group import
   csv_variant_group_import:
-    label: Импорт группы вариантов в CSV
-    validation.label: Подтверждение файла
-    import.label: Импорт групп вариантов
+    label: Variant group import in CSV
+    validation.label: File validation
+    import.label: Variant group import
+  csv_channel_export:
+    label: Channel export in CSV
+    export.label: Channel export
+  csv_locale_export:
+    label: Locale export in CSV
+    export.label: Locale export
+  csv_attribute_group_export:
+    label: Attribute group export in CSV
+    export.label: Attribute group export
+  csv_currency_export:
+    label: Currency export in CSV
+    export.label: Currency export
+  csv_group_type_export:
+    label: Group type export in CSV
+    export.label: Group type export
+  csv_channel_import:
+    label: Channel import in CSV
+    validation.label: File validation
+    import.label: Channel import
+  csv_locale_import:
+    label: Locale import in CSV
+    validation.label: File validation
+    import.label: Locale import
+  csv_attribute_group_import:
+    label: Attribute group import in CSV
+    validation.label: File validation
+    import.label: Attribute group import
+  csv_currency_import:
+    label: Currency import in CSV
+    validation.label: File validation
+    import.label: Currency import
+  csv_group_type_import:
+    label: Group type import in CSV
+    validation.label: File validation
+    import.label: Group type import
   xlsx_category_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт категории
+    label: Category import in XLSX
+    validation.label: File validation
+    import.label: Category import
   xlsx_association_type_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт типов ассоциаций
+    label: Association type import in XLSX
+    validation.label: File validation
+    import.label: Association type import
   xlsx_attribute_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт атрибутов
+    label: Attribute import in XLSX
+    validation.label: File validation
+    import.label: Attribute import
   xlsx_attribute_option_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт выборов атрибутов
+    label: Attribute option import in XLSX
+    validation.label: File validation
+    import.label: Attribute option import
   xlsx_family_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт семейств
+    label: Family import in XLSX
+    validation.label: File validation
+    import.label: Family import
   xlsx_product_export:
-    export.label: Экспорт продуктов
+    label: Product export in XLSX
+    export.label: Product export
   xlsx_product_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт продуктов
-    import_associations.label: Импорт ассоциаций
+    label: Product import in XLSX
+    validation.label: File validation
+    import.label: Product import
+    import_associations.label: Association import
   xlsx_group_export:
-    export.label: Экспорт групп
+    label: Group export in XLSX
+    export.label: Group export
   xlsx_variant_group_export:
-    export.label: Экспорт групп вариантов
+    label: Variant group export in XLSX
+    export.label: Variant group export
   xlsx_group_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт группы
+    label: Group import in XLSX
+    validation.label: File validation
+    import.label: Group import
   xlsx_variant_group_import:
-    validation.label: Подтверждение файла
+    label: Variant group import in XLSX
+    validation.label: File validation
+    import.label: Variant Group import
   xlsx_family_export:
-    export.label: Экспорт семейств
+    label: Family export in XLSX
+    export.label: Family export
   xlsx_category_export:
-    export.label: Экспорт категорий
+    label: Category export in XLSX
+    export.label: Category export
+  xlsx_attribute_export:
+    label: Attribute export in XLSX
+    export.label: Attribute export in XLSX
+  xlsx_attribute_option_export:
+    label: Attribute option export in XLSX
+    export.label: Attribute option export in XLSX
+  xlsx_association_type_export:
+    label: Association type export in XLSX
+    export.label: Association type export in XLSX
+  xlsx_channel_export:
+    label: Channel export in XLSX
+    export.label: Channel export
+  xlsx_locale_export:
+    label: Locale export in XLSX
+    export.label: Locale export
+  xlsx_attribute_group_export:
+    label: Attribute group export in XLSX
+    export.label: Attribute group export
+  xlsx_currency_export:
+    label: Currency export in XLSX
+    export.label: Currency export
+  xlsx_group_type_export:
+    label: Group type export in XLSX
+    export.label: Group type export
+  xlsx_channel_import:
+    label: Channel import in XLSX
+    validation.label: File validation
+    import.label: Channel import
+  xlsx_locale_import:
+    label: Locale import in XLSX
+    validation.label: File validation
+    import.label: Locale import
+  xlsx_attribute_group_import:
+    label: Attribute group import in XLSX
+    validation.label: File validation
+    import.label: Attribute group import
+  xlsx_currency_import:
+    label: Currency import in XLSX
+    validation.label: File validation
+    import.label: Currency import
+  xlsx_group_type_import:
+    label: Group type import in XLSX
+    validation.label: File validation
+    import.label: Group type import

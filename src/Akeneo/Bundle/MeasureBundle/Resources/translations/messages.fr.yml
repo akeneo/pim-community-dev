@@ -1,148 +1,148 @@
-Area: Surface
+Area: Area
 ACRE: Acre
 ARE: Are
 ARPENT: Arpent
 CENTIARE: Centiare
 HECTARE: Hectare
-SQUARE_CENTIMETER: Centimètre carré
-SQUARE_DECIMETER: Décimètre carré
-SQUARE_DEKAMETER: Décamètre carré
-SQUARE_FOOT: Pied carré
-SQUARE_FURLONG: Furlong carré
-SQUARE_HECTOMETER: Hectomètre carré
-SQUARE_INCH: Pouce carré
-SQUARE_KILOMETER: Kilomètre carré
-SQUARE_METER: Mètre carré
-SQUARE_MIL: Mil carré
-SQUARE_MILE: Mile carré
-SQUARE_MILLIMETER: Millimètre carré
-SQUARE_YARD: Yard carré
-Binary: Binaire
+SQUARE_CENTIMETER: Square centimeter
+SQUARE_DECIMETER: Square decimeter
+SQUARE_DEKAMETER: Square dekameter
+SQUARE_FOOT: Square foot
+SQUARE_FURLONG: Square furlong
+SQUARE_HECTOMETER: Square hectometer
+SQUARE_INCH: Square inch
+SQUARE_KILOMETER: Square kilometer
+SQUARE_METER: Square meter
+SQUARE_MIL: Square mil
+SQUARE_MILE: Square mile
+SQUARE_MILLIMETER: Square millimeter
+SQUARE_YARD: Square yard
+Binary: Binary
 BIT: Bit
-BYTE: Octet
-KILOBYTE: Kilo-octet
-MEGABYTE: Mégaoctet
-GIGABYTE: Gigaoctet
-TERABYTE: Téraoctet
-Decibel: Décibel
-DECIBEL: Décibel
-Frequency: Fréquence
+BYTE: Byte
+KILOBYTE: Kilobyte
+MEGABYTE: Megabyte
+GIGABYTE: Gigabyte
+TERABYTE: Terabyte
+Decibel: Decibel
+DECIBEL: Decibel
+Frequency: Frequency
 GIGAHERTZ: Gigahertz
 KILOHERTZ: Kilohertz
-MEGAHERTZ: Mégahertz
-TERAHERTZ: Térahertz
+MEGAHERTZ: Megahertz
+TERAHERTZ: Terahertz
 HERTZ: Hertz
-Length: Longueur
-CENTIMETER: Centimètre
-CHAIN: Chaîne
-DECIMETER: Décimètre
-DEKAMETER: Décamètre
-FEET: Pieds
+Length: Length
+CENTIMETER: Centimeter
+CHAIN: Chain
+DECIMETER: Decimeter
+DEKAMETER: Dekameter
+FEET: Feet
 FURLONG: Furlong
-INCH: Pouce
-HECTOMETER: Hectomètre
-KILOMETER: Kilomètre
-METER: Mètre
+INCH: Inch
+HECTOMETER: Hectometer
+KILOMETER: Kilometer
+METER: Meter
 MIL: Mil
 MILE: Mile
-MILLIMETER: Millimètre
+MILLIMETER: Millimeter
 YARD: Yard
-Power: Puissance
+Power: Power
 GIGAWATT: Gigawatt
 KILOWATT: Kilowatt
-MEGAWATT: Mégawatt
-TERAWATT: Térawatt
+MEGAWATT: Megawatt
+TERAWATT: Terawatt
 WATT: Watt
-Resistance: Résistance
+Resistance: Resistence
 MILLIOHM: Milliohm
 CENTIOHM: Centiohm
-DECIOHM: Déciohm
+DECIOHM: Deciohm
 OHM: Ohm
-DEKAOHM: Decaohm
+DEKAOHM: Dekaohm
 HECTOHM: Hectohm
 KILOHM: Kilohm
-MEGOHM: Mégohm
-Voltage: Tension
+MEGOHM: Megohm
+Voltage: Voltage
 MILLIVOLT: Millivolt
 CENTIVOLT: Centivolt
-DECIVOLT: Décivolt
+DECIVOLT: Decivolt
 VOLT: Volt
-DEKAVOLT: Décavolt
+DEKAVOLT: Dekavolt
 HECTOVOLT: Hectovolt
 KILOVOLT: Kilovolt
-Intensity: Intensité
-MILLIAMPERE: Milliampères
+Intensity: Intensity
+MILLIAMPERE: Milliampere
 CENTIAMPERE: Centiampere
 DECIAMPERE: Deciampere
-AMPERE: Ampère
-DEKAAMPERE: Décaampere
+AMPERE: Ampere
+DEKAAMPERE: Dekaampere
 HECTOAMPERE: Hectoampere
-KILOAMPERE: Kiloampère
-MEGAAMPERE: Mégaampere
-ElectricCharge: Charge électrique
-MILLIAMPEREHOUR: Milliampères heure
-AMPEREHOUR: Ampère heure
+KILOAMPERE: Kiloampere
+MEGAAMPERE: Megaampere
+ElectricCharge: Electric charge
+MILLIAMPEREHOUR: Milliampere hour
+AMPEREHOUR: Ampere hour
 MILLICOULOMB: Millicoulomb
 CENTICOULOMB: Centicoulomb
-DECICOULOMB: Décicoulomb
+DECICOULOMB: Decicoulomb
 COULOMB: Coulomb
-DEKACOULOMB: Décacoulomb
+DEKACOULOMB: Dekacoulomb
 HECTOCOULOMB: Hectocoulomb
 KILOCOULOMB: Kilocoulomb
-Duration: Durée
-MILLISECOND: Milliseconde
-SECOND: Seconde
+Duration: Duration
+MILLISECOND: Millisecond
+SECOND: Second
 MINUTE: Minute
-HOUR: Heure
-DAY: Jour
-Speed: Vitesse
-FOOT_PER_SECOND: Pied par seconde
-FOOT_PER_HOUR: Pied / heure
-KILOMETER_PER_HOUR: Kilomètre par heure
-METER_PER_HOUR: Mètre / heure
-METER_PER_MINUTE: Mètre par minute
-METER_PER_SECOND: Mètre par seconde
-MILE_PER_HOUR: Mile par heure
-YARD_PER_HOUR: Yard par heure
-Temperature: Température
+HOUR: Hour
+DAY: Day
+Speed: Speed
+FOOT_PER_SECOND: Foot per second
+FOOT_PER_HOUR: Foot per hour
+KILOMETER_PER_HOUR: Kilometer per hour
+METER_PER_HOUR: Meter per hour
+METER_PER_MINUTE: Meter per minute
+METER_PER_SECOND: Meter per second
+MILE_PER_HOUR: Mile per hour
+YARD_PER_HOUR: Yard per hour
+Temperature: Temperature
 CELSIUS: Celsius
 FAHRENHEIT: Fahrenheit
 KELVIN: Kelvin
 RANKINE: Rankine
-REAUMUR: Réaumur
+REAUMUR: Reaumur
 Volume: Volume
-BARREL: Baril
-CENTILITER: Centilitre
-CUBIC_CENTIMETER: Centimètre cube
-CUBIC_DECIMETER: Décimètre cube
-CUBIC_FOOT: Pied cube
-CUBIC_INCH: Pouce cube
-CUBIC_METER: Mètre cube
-CUBIC_MILLIMETER: Millimètre cube
-CUBIC_YARD: Yard cube
-DECILITER: Décilitre
+BARREL: Barrel
+CENTILITER: Centiliter
+CUBIC_CENTIMETER: Cubic centimeter
+CUBIC_DECIMETER: Cubic decimeter
+CUBIC_FOOT: Cubic foot
+CUBIC_INCH: Cubic inch
+CUBIC_METER: Cubic meter
+CUBIC_MILLIMETER: Cubic millimeter
+CUBIC_YARD: Cubic yard
+DECILITER: Deciliter
 GALLON: Gallon
-LITER: Litre
-MILLILITER: Millilitre
-OUNCE: Once
-PINT: Pinte
-Weight: Poids
+LITER: Liter
+MILLILITER: Milliliter
+OUNCE: Ounce
+PINT: Pint
+Weight: Weight
 DENIER: Denier
 GRAIN: Grain
-GRAM: Gramme
-KILOGRAM: Kilogramme
+GRAM: Gram
+KILOGRAM: Kilogram
 LIVRE: Livre
 MARC: Marc
-MILLIGRAM: Milligramme
+MILLIGRAM: Milligram
 ONCE: Once
-POUND: Livre
-TON: Tonne
-Pressure: Pression
+POUND: Pound
+TON: Ton
+Pressure: Pressure
 BAR: Bar
 PASCAL: Pascal
-HECTOPASCAL: HectoPascal
-MILLIBAR: Millibar
-ATM: Atmosphère
-PSI: Livre par pouce carré
+HECTOPASCAL: hecto Pascal
+MILLIBAR: milli Bar
+ATM: Atmosphere
+PSI: Pound per square inch
 TORR: Torr
-MMHG: Millimètre de mercure
+MMHG: millimeter of Mercury

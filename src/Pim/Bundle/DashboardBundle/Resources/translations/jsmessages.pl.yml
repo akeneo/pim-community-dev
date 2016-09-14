@@ -1,14 +1,18 @@
 pim_dashboard:
   widget:
     last_operations:
-      empty: Nie znaleziono żadnych operacji
+      empty: No operations found
       status: Status
-      date: Data
-      type: Typ
-      profile name: Nazwa profilu
-      details: Szczegóły
+      date: Date
+      type: Type
+      profile name: Profile name
+      details: Details
       job_type:
         import: Import
-        export: Eksport
-        mass_edit: Masowa edycja
-        quick_export: Szybki eksport
+        export: Export
+        mass_edit: Mass edit
+        quick_export: Quick export
+    completeness:
+      load_more: Load more...
+    header:
+      view_all: View all

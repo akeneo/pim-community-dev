@@ -1,41 +1,117 @@
-Close: 閉じる
-Update: 更新
-Selected Rows: 選択した行
-"Yes": はい
-Yes, Delete: はい、削除します
-Yes, I Agree: はい、同意します。
-Yes, do it: はい、実行します
-"No": いいえ
-Ok, got it.: はい、わかりました。
-Cancel: キャンセル
-Delete Confirmation: 削除の確認
-Edit: 編集
-Unexpected error occured. Please contact system administrator.: 予期しないエラーが発生しました。システム管理者に問い合わせてください。
-Now: 今
-Prev: 前
-Next: 次
-Today: 今日
+Close: Close
+Update: Update
+Selected Rows: Selected Rows
+"Yes": 'Yes'
+Yes, Delete: Yes, Delete
+Yes, I Agree: Yes, I Agree
+Yes, do it: Yes, do it
+"No": 'No'
+Ok, got it.: Ok, got it.
+Cancel: Cancel
+Delete Confirmation: Delete Confirmation
+Edit: Edit
+Unexpected error occured. Please contact system administrator.: Unexpected error occured. Please contact system administrator.
+Now: Now
+Prev: Prev
+Next: Next
+Today: Today
 Wk: Wk
-Done: 完了
-AM: 午前
+Done: Done
+AM: AM
 A: A
-PM: 午後
+PM: PM
 P: P
-Choose Time: 時間を選択
-Time: 時間
-Hour: 時
-Minute: 分
-Second: 秒
-Millisecond: ミリ秒
-Microsecond: マイクロ秒
-Time Zone: タイムゾーン
-Localized value: ローカライズした値
-Columns: 列
-Datagrid Configuration: データグリッド設定
-Apply: 適用
-Action: アクション
-Unit: 単位
-Currency: 通貨
+Choose Time: Choose Time
+Time: Time
+Hour: Hour
+Minute: Minute
+Second: Second
+Millisecond: Millisecond
+Microsecond: Microsecond
+Time Zone: Time Zone
+Localized value: Localized value
+Columns: Columns
+Datagrid Configuration: Datagrid Configuration
+Apply: Apply
+Action: Action
+Unit: Unit
+Currency: Currency
 jstree:
-  no_tree: 利用できるツリーがありません
-  include_sub: サブカテゴリを含む
+  all: All products
+  unclassified: Unclassified products
+  product:
+    all: All products
+    unclassified: Unclassified products
+  no_tree: No tree available
+  include_sub: Include sub-categories
+  loading: Loading ...
+datetimepicker:
+  days:
+    Sunday: Sunday
+    Monday: Monday
+    Tuesday: Tuesday
+    Wednesday: Wednesday
+    Thursday: Thursday
+    Friday: Friday
+    Saturday: Saturday
+  daysShort:
+    Sun: Sun
+    Mon: Mon
+    Tue: Tue
+    Wed: Wed
+    Thu: Thu
+    Fri: Fri
+    Sat: Sat
+  daysMin:
+    Su: Su
+    Mo: Mo
+    Tu: Tu
+    We: We
+    Th: Th
+    Fr: Fr
+    Sa: Sa
+  months:
+    January: January
+    February: February
+    March: March
+    April: April
+    May: May
+    June: June
+    July: July
+    August: August
+    September: September
+    October: October
+    November: November
+    December: December
+  monthsShort:
+    Jan: Jan
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: May
+    Jun: Jun
+    Jul: Jul
+    Aug: Aug
+    Sep: Sep
+    Oct: Oct
+    Nov: Nov
+    Dec: Dec
+oro_config:
+  form:
+    config:
+      title: System configuration
+      tab:
+        system:
+          title: System
+      group:
+        localization:
+          title: Localization
+          system_locale: Language
+        notification:
+          title: Notifications
+          system_notification: New versions notifications
+        loading_message:
+          title: Loading messages
+          label: Enable loading messages
+        loading_messages:
+          label: Available loading messages

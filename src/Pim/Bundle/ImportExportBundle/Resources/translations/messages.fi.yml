@@ -1,155 +1,167 @@
-Job: Työ
-Connector: Liitin
+Job: Job
+Connector: Connector
 pim_import_export:
+  job: Job
+  connector: Connector
   status:
-    - Valmis
+    - Ready
   batch_status:
-    1: VALMIS
-    2: ALKAEN
-    3: ALKOI
-    4: PYSÄYTYS
-    5: LOPETTANUT
-    6: EPÄONNISTUNUT
-    7: HYLÄTTY
-    8: TUNTEMATON
+    1: COMPLETED
+    2: STARTING
+    3: STARTED
+    4: STOPPING
+    5: STOPPED
+    6: FAILED
+    7: ABANDONED
+    8: UNKNOWN
   download_archive:
-    output: lataus loi tiedoston|latauksien luomat tiedostot
-    input: lataus lukema tiedosto|latauksien lukemat tiedostot
-    invalid_xlsx: lataa virheellisiä tietoja
-    invalid_csv: lataa virheellisiä tietoja
+    archive: download generated archive|download generated archives
+    output: download generated file|download generated files
+    input: download read file|download read files
+    invalid_xlsx: download invalid data
+    invalid_csv: download invalid data
   notification:
     export:
-      error: 'Vienti <strong>%label%</strong> epäonnistui'
-      warning: 'Vienti <strong>%label%</strong> päättynyt joillain varoituksilla'
-      success: 'Vienti <strong>%label%</strong> valmis'
+      error: 'Export <strong>%label%</strong> failed'
+      warning: 'Export <strong>%label%</strong> finished with some warnings'
+      success: 'Export <strong>%label%</strong> finished'
     import:
-      error: 'Vienti <strong>%label%</strong> epäonnistui'
-      warning: 'Vienti <strong>%label%</strong> päättynyt joillain varoituksilla'
-      success: 'Vienti <strong>%label%</strong> valmis'
-  list: Valitse työ
+      error: 'Import <strong>%label%</strong> failed'
+      warning: 'Import <strong>%label%</strong> finished with some warnings'
+      success: 'Import <strong>%label%</strong> finished'
+  list: Select a job
   job_profile:
     tab:
-      property.title: Yleiset ominaisuudet
-      history.title: Historia
-pim_title.export_profile.index: Profiilien viennin hallinta
-pim_title.export_profile.edit: 'Vie profiilit %job.label% | Muokkaa'
-pim_title.export_profile.show: 'Vie profiilit %job.label% | Näytä'
-pim_title.export_execution.index: Vientien historia
-pim_title.export_execution.show: Vientisuoritukset | Yksityiskohdat
-pim_title.import_profile.index: Profiilien tuonnin hallinta
-pim_title.import_profile.edit: 'Vie profiilit %job.label% | Muokkaa'
-pim_title.import_profile.show: 'Tuo profiilit %job.label% | Näytä'
-pim_title.import_execution.index: Tuontihistoria
-pim_title.import_execution.show: Tuontisuoritukset | Yksityiskohdat
+      property.title: General properties
+      history.title: History
+      job_content.title: Content
+pim_title.export_profile.index: Export profiles management
+pim_title.export_profile.edit: 'Export profiles %job.label% | Edit'
+pim_title.export_profile.show: 'Export profiles %job.label% | Show'
+pim_title.export_execution.index: Export executions history
+pim_title.export_execution.show: Export executions | Details
+pim_title.import_profile.index: Import profiles management
+pim_title.import_profile.edit: 'Import profiles %job.label% | Edit'
+pim_title.import_profile.show: 'Import profiles %job.label% | Show'
+pim_title.import_execution.index: Import executions history
+pim_title.import_execution.show: Import executions | Details
 export profile:
-  title: tuontiprofiili
-  overview: tuontiprofiilin esittely
-  create: luo tuontiprofiili
-  edit: muokkaa tuontiprofiilia
+  title: export profile
+  overview: export profile overview
+  create: create export profile
+  edit: edit export profile
 export report:
-  overview: tuontiraportit
+  overview: export reports
 import profile:
-  title: tuontiprofiili
-  overview: tuontiprofiilin esittely
-  create: luo tuontiprofiili
-  edit: muokkaa tuontiprofiilia
+  title: import profile
+  overview: import profile overview
+  create: create import profile
+  edit: edit import profile
 import report:
-  overview: tuontiraportit
+  overview: import reports
 pim_importexport:
   acl:
     export_profile:
-      index: Tuontiprofiilin listaus
-      create: Vientiprofiilin luonti
-      show: Näytä vientiprofiili
-      edit: Editoi vientiprofiilia
-      remove: Poista vientiprofiili
-      launch: Käynnistä vientiprofiili
-      history: Näytä vientiprofiilin historia
+      index: View export profiles list
+      create: Create an export profile
+      show: Show an export profile
+      edit: Edit an export profile
+      remove: Remove an export profile
+      launch: Launch an export profile
+      property_edit: Edit an export profile general properties
+      property_show: Show an export profile general properties
+      history: View export profile history
+      content_edit: Edit an export profile content
+      content_show: Show an export profile content
     import_profile:
-      index: Näytä tuontiprofiilien lista
-      create: Vientiprofiilin luonti
-      show: Näytä vientiprofiili
-      edit: Editoi vientiprofiilia
-      remove: Poista vientiprofiili
-      launch: Käynnistä vientiprofiili
-      history: Näytä vientiprofiilin historia
+      index: View import profiles list
+      create: Create an import profile
+      show: Show an import profile
+      edit: Edit an import profile
+      remove: Remove an import profile
+      launch: Launch an import profile
+      history: View import profile history
     export_execution:
-      index: Näytä vientiraporttien lista
-      show: Näytä vientiraportin yksityiskohdat
-      dl_log: Lataa vientiraporttilogi
-      dl_files: Lataa viedyt tiedosto
+      index: View export reports list
+      show: View export report details
+      dl_log: Download export report log
+      dl_files: Download exported files
     import_execution:
-      index: Näytä vientiraporttien lista
-      show: Näytä vientiraportin yksityiskohdat
-      dl_log: Lataa vientiraporttilogi
-      dl_files: Lataa tuodut tiedostot
+      index: View import reports list
+      show: View import report details
+      dl_log: Download import report log
+      dl_files: Download imported files
   acl_group:
-    export: Profiilien vieminen
-    import: Profiilien tuominen
+    export: Export profiles
+    import: Import profiles
 btn:
   create:
-    export profile: luo vientiprofiili
-    import profile: luo tuontiprofiili
-Upload and import now: Lataa ja tuo nyt
-import now: Tuo nyt
-export now: Vie nyt
+    export profile: create export profile
+    import profile: create import profile
+Upload and import now: Upload and import now
+import now: Import now
+export now: Export now
 confirmation:
   remove:
-    export profile: 'Oletko varma, että haluat poistaa vientiprofiilin %name%?'
-    import profile: 'Oletko varma, että haluat poistaa vientiprofiilin %name%?'
+    export profile: 'Are you sure you want to delete the export profile %name%?'
+    import profile: 'Are you sure you want to delete the import profile %name%?'
 flash:
   export:
-    created: Vienti onnistui
-    removed: Vienti poistettu
-    updated: Vienti on päivitetty
+    created: The export has been successfully created
+    removed: The export has been removed
+    updated: The export has been successfully updated
+    running: The export is running
   import:
-    created: Tuonti onnistui
-    removed: Tuonti poistettu
-    updated: Tuonti päivitetty
+    created: The import has been successfully created
+    removed: The import has been removed
+    updated: The import has been successfully updated
+    running: The import is running
 pim_menu:
   item:
-    export_history: Vientihistoria
-    export_profile: Vientiprofiili
-    import_history: Tuontihistoria
-    import_profile: Tuontiprofiilit
-General properties: Yleiset ominaisuudet
-History: Historia
+    export_history: Exports history
+    export_profile: Export profiles
+    import_history: Imports history
+    import_profile: Import profiles
+General properties: General properties
+History: History
 pane.accordion:
-  properties: Ominaisuudet
-  global_settings: Yleiset asetukset
+  properties: Properties
+  global_settings: Global settings
+  filters: Filters
 popin.create:
-  export_profile.title: Luo uusi vientiprofiili
-  import_profile.title: Luo uusi tuontiprofiili
-Display item: Näytä kohde
-Hide item: Piilota kohde
-Collecting data about job execution...: Kerää tietoja työsuorituksesta...
-You must select a file to upload: Valitse ladattava tiedosto
-Download log: Latauslogi
-Show profile: Näytä profiili
-execution details: suorittamisen yksityiskohdat
+  export_profile.title: Create a new export profile
+  import_profile.title: Create a new import profile
+Display item: Display item
+Hide item: Hide item
+Collecting data about job execution...: Collecting data about job execution...
+You must select a file to upload: You must select a file to upload
+Download log: Download log
+Show profile: Show profile
+execution details: execution details
 job_execution.summary:
-  read: lue
-  write: kirjoitettu
-  skip: ohitettu
-  create: luotu
-  update: päivitetty
-  update_products: päivitetyt tuotteet
-  skip_products: ohitetut tuotteet
-  displayed: ensimmäiset varoitukset näytetty
+  read: read
+  write: written
+  skip: skipped
+  create: created
+  update: updated
+  update_products: updated products
+  skip_products: skipped products
+  displayed: first warnings displayed
   charset_validator:
-    title: 'Tiedoston koodaus:'
-    skipped: ohitetaan, laajennus valkolistattu
-Step: Vaihe
+    title: 'File encoding:'
+    skipped: skipped, extension in white list
+Step: Step
 Status: Status
-Summary: Yhteenveto
-Start: Aloitus
-End: Loppu
-set_attribute_requirements: Aseta attribuuttivaatimukset
-COMPLETED: VALMIS
-STARTING: ALKAEN
-STARTED: ALKOI
-STOPPING: PYSÄYTYS
-STOPPED: LOPETTANUT
-FAILED: EPÄONNISTUNUT
-ABANDONED: HYLÄTTY
-UNKNOWN: TUNTEMATON
+Summary: Summary
+Start: Start
+End: End
+set_attribute_requirements: Set attribute requirements
+COMPLETED: COMPLETED
+STARTING: STARTING
+STARTED: STARTED
+STOPPING: STOPPING
+STOPPED: STOPPED
+FAILED: FAILED
+ABANDONED: ABANDONED
+UNKNOWN: UNKNOWN
+warning.label: Warning

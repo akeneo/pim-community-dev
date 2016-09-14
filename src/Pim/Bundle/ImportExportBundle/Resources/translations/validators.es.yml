@@ -1,4 +1,4 @@
-This directory is not writable: Este directorio no permite la escritura.
-This directory is not valid: Este directorio no es válido.
-pim_import_export.job_instance.unknown_job_definition: 'Error al crear un %job_type% con una definición de trabajo desconocida'
-This code is already taken: Este código ya está en uso
+This directory is not writable: This directory is not writable.
+This directory is not valid: This directory is not valid.
+pim_import_export.job_instance.unknown_job_definition: 'Failed to create an %job_type% with an unknown job definition'
+This code is already taken: This code is already taken

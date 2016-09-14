@@ -1,38 +1,38 @@
-"oro_datagrid.no_data_hint %entityHint%": 'No existe %entityHint% .'
-oro_datagrid.not_found_hint: No se encontraron resultados. Intentar cambiar tu criterio de búsqueda.
-oro_datagrid.label_add_filter: Administrar filtros
-oro_datagrid.label_loading_mask: Cargando...
-oro.grid.mass_action.selected_rows: Filas seleccionadas
-oro.grid.mass_action.confirm_title: Confirmación de acción de masiva
-oro.grid.mass_action.confirm_content: ¿Está seguro de quere hacer esto?
-oro.grid.mass_action.confirm_ok: Sí, hazlo
-oro.grid.mass_action.error_title: Error de acción masiva
-oro.grid.mass_action.error_content: No puede realizar la acción masiva
-oro.grid.mass_action.delete.label: Eliminar
-oro.grid.mass_action.delete.confirm_title: Confirmación de eliminación masiva
-oro.grid.mass_action.delete.confirm_content: ¿Está seguro que desea eliminar los elementos seleccionados?
-oro.grid.datagrid.page_size.all: Todos
-oro.grid.mass_action.delete.success_message: '{0} Ninguna entidad fue  eliminada|{1} Una entidad eliminada|]1, Inf [%count% entidades fueron eliminadas'
+"oro_datagrid.no_data_hint %entityHint%": 'No %entityHint% exists.'
+oro_datagrid.not_found_hint: No results found. Try to change your search criteria.
+oro_datagrid.label_add_filter: Manage filters
+oro_datagrid.label_loading_mask: Loading . . .
+oro.grid.mass_action.selected_rows: Selected Rows
+oro.grid.mass_action.confirm_title: Mass Action Confirmation
+oro.grid.mass_action.confirm_content: Are you sure you want to do this?
+oro.grid.mass_action.confirm_ok: Yes, do it
+oro.grid.mass_action.error_title: Mass Action Error
+oro.grid.mass_action.error_content: Cannot perform mass action
+oro.grid.mass_action.delete.label: Delete
+oro.grid.mass_action.delete.confirm_title: Mass Delete Confirmation
+oro.grid.mass_action.delete.confirm_content: Are you sure you want to do delete selected items?
+oro.grid.datagrid.page_size.all: All
+oro.grid.mass_action.delete.success_message: '{0} No entities were removed|{1} One entity was removed|]1,Inf[ %count% entities were removed'
 datagrid_view:
-  views: Vistas
-  default: Vista por defecto
-  create: Crear vista
-  placeholder: Nombre de la nueva vista
-  remove: Eliminar esta vista
-  save_changes: Guardar esta vista
-  choose_label: Elija una etiqueta para la vista
+  views: Views
+  default: Default view
+  create: Create view
+  placeholder: Name of new view
+  remove: Delete this view
+  save_changes: Save this view
+  choose_label: Choose a label for the view
   columns:
-    min_message: Debe seleccionar al menos una columna de datagrid para mostrar
+    min_message: You must select at least one datagrid column to display
   label:
-    unique_message: La etiqueta debe ser única
-    not_blank_message: La etiqueta no debe estar en blanco
-confirmation.remove.datagrid view: ¿Está seguro que desea eliminar este punto de vista del datagrid?
+    unique_message: The label must be unique
+    not_blank_message: The label must not be blank
+confirmation.remove.datagrid view: Are you sure you want to delete this datagrid view?
 flash.datagrid view:
-  created: Vista de grilla de datos creada correctamente
-  updated: Vista de grilla de datos actualizada correctamente
-  removed: Vista de grilla de datos eliminada correctamente
-  not removable: No tienes los derechos para eliminar este punto de vista
-quick_export: Exportación rápida
-import: Importación
-export: Exportación
-mass_edit: Edición en masa
+  created: Datagrid view successfully created
+  updated: Datagrid view successfully updated
+  removed: Datagrid view successfully removed
+  not removable: "You don't have the rights to remove this view"
+quick_export: Quick Export
+import: Import
+export: Export
+mass_edit: Mass Edit

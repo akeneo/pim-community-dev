@@ -1,14 +1,14 @@
-Close: Cerrar
-Update: Actualizar
-Now: Ahora
-Selected Rows: Filas seleccionadas
-more than: Mayor que
-less than: Menor que
-before: antes
-after: después
-from: desde
-to: hasta
-and: 'y'
-system_filter_group: Sistema
-oro_filter.filters.manage: Administrar filtros
-oro_filter.placeholder.all: Todo
+Close: Close
+Update: Update
+Now: Now
+Selected Rows: Selected rows
+more than: More than
+less than: Less than
+before: before
+after: after
+from: from
+to: to
+and: and
+system_filter_group: System
+oro_filter.filters.manage: Manage filters
+oro_filter.placeholder.all: All

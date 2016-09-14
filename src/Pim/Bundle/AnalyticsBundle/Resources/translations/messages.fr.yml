@@ -1,39 +1,39 @@
 pim_analytics:
-  new_patch_available: Nouveau patch disponible
+  new_patch_available: New patch available
   system_config:
     group:
       notification.title: Notifications
-      version_update.title: Mises à jour de version
+      version_update.title: Version updates
     form:
-      version_update.label: Notifications des nouvelles versions
-      version_update.tooltip: Envoyer une requête à un serveur distant pour récupérer les informations concernant les nouveaux patchs
+      version_update.label: New versions notifications
+      version_update.tooltip: Send request to a distant server to retrieve information about the release of new patchs
   system_info:
-    title: Informations système
+    title: System information
     download: TXT
   info_type:
-    pim_edition: Édition
+    pim_edition: Edition
     pim_version: Version
-    pim_storage_driver: Stockage
-    pim_environment: Environnement
-    pim_install_time: "Date d'installation"
-    registered_bundles: Paquets installés
-    nb_channels: Nombre de canaux
-    nb_products: Nombre de produits
-    nb_attributes: "Nombre d'attributs"
-    nb_locales: Nombre de locales
-    nb_families: Nombre de familles
-    nb_users: Nombre d’utilisateurs
-    pim_storage_version: Version de stockage
-    os_version: "Version du système d'exploitation"
-    php_version: Version de PHP
-    mysql_version: Version de MySQL
-    mariadb_version: Version de MariaDB
-    mongodb_version: Version de MongoDB
-    server_version: Version du serveur
-    php_extensions: Extensions PHP
+    pim_storage_driver: Storage
+    pim_environment: Environment
+    pim_install_time: Install time
+    registered_bundles: Registered bundles
+    nb_channels: Number of channels
+    nb_products: Number of products
+    nb_attributes: Number of attributes
+    nb_locales: Number of locales
+    nb_families: Number of families
+    nb_users: Number of users
+    pim_storage_version: Storage version
+    os_version: OS version
+    php_version: PHP version
+    mysql_version: MySQL version
+    mariadb_version: MariaDB version
+    mongodb_version: MongoDB version
+    server_version: Server version
+    php_extensions: PHP extensions
   acl:
     system_info:
-      index: Informations système
+      index: System information
 pim_menu:
   item:
-    system_info: Informations système
+    system_info: System information
