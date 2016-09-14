@@ -1,26 +1,26 @@
 btn:
-  post: Ajouter un nouveau commentaire
-  reply: Répondre
-  cancel: Annuler
+  post: Add a new comment
+  reply: Reply
+  cancel: Cancel
 confirmation:
   remove:
-    comment: Voulez-vous vraiment supprimer ce commentaire?
+    comment: Are you sure you want to delete this comment?
 flash:
   comment:
     create:
-      success: Votre commentaire a été ajouté.
-      error: "Une erreur s'est produite lors de la création de votre commentaire."
+      success: Your comment has been created successfully.
+      error: An error occured during the creation of your comment.
     delete:
-      success: Votre commentaire a été supprimé.
-      error: "Une erreur s'est produite lors de la suppression de votre commentaire."
+      success: Your comment has been deleted successfully.
+      error: An error occured during the deletion of your comment.
     reply:
-      success: Votre réponse a été ajoutée.
-      error: "Une erreur s'est produite lors de la création de votre réponse."
+      success: Your reply has been created successfully.
+      error: An error occured during the creation of your reply.
 comment:
   index:
-    empty: "Aucun commentaire pour l'instant"
+    empty: No comment for now
   placeholder:
-    new: Ajouter un nouveau commentaire...
-    reply: Répondre à ce commentaire...
+    new: Write a new comment...
+    reply: Reply to this comment...
 pim_comment:
-  product.panel.comment.title: Commentaires
+  product.panel.comment.title: Comments
