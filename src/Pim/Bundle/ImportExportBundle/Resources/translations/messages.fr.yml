@@ -1,154 +1,154 @@
 Job: Job
-Connector: Connecteur
+Connector: Connector
 pim_import_export:
   status:
-    - Prêt
+    - Ready
   batch_status:
-    1: TERMINÉ
-    2: DÉMARRAGE EN COURS
-    3: DÉMARRÉ
-    4: ARRÊT EN COURS
-    5: ARRÊTÉ
-    6: EN ÉCHEC
-    7: ABANDONNÉ
-    8: INCONNU
+    1: COMPLETED
+    2: STARTING
+    3: STARTED
+    4: STOPPING
+    5: STOPPED
+    6: FAILED
+    7: ABANDONED
+    8: UNKNOWN
   download_archive:
-    archive: Télécharger le fichier généré|Télécharger les fichiers générés
-    output: Télécharger le fichier généré|Télécharger les fichiers générés
-    input: Télécharger le fichier lu|Télécharger les fichiers lus
-    invalid: Télécharger données invalides
+    archive: download generated archive|download generated archives
+    output: download generated file|download generated files
+    input: download read file|download read files
+    invalid: download invalid data
   notification:
     export:
-      error: "L'export de <strong>%label%</strong> a échoué"
-      warning: "L'export de <strong>%label%</strong> est terminé mais il y a des avertissements"
-      success: "L'export de <strong>%label%</strong> est terminé"
+      error: 'Export <strong>%label%</strong> failed'
+      warning: 'Export <strong>%label%</strong> finished with some warnings'
+      success: 'Export <strong>%label%</strong> finished'
     import:
-      error: "L'import de <strong>%label%</strong> a échoué"
-      warning: "L'import de <strong>%label%</strong> est terminé mais il y a des avertissements"
-      success: "L'import de <strong>%label%</strong> est terminé"
-  list: Sélectionner un job
-pim_title.export_profile.index: "Gestion de profils d'export"
-pim_title.export_profile.edit: "Profile d'export %job.label% | Edition"
-pim_title.export_profile.show: "Profile d'export %job.label% | Visualisation"
-pim_title.export_execution.index: "Exporter l'historique d'exécutions"
-pim_title.export_execution.show: "Executions d'exports | Détails"
-pim_title.import_profile.index: Importer gestion de profils
-pim_title.import_profile.edit: "Profil d'import %job.label% | Edition"
-pim_title.import_profile.show: "Profil d'import %job.label% | Visualisation"
-pim_title.import_execution.index: "Historique d'exécution des imports"
-pim_title.import_execution.show: "Executions d'imports | Détails"
+      error: 'Import <strong>%label%</strong> failed'
+      warning: 'Import <strong>%label%</strong> finished with some warnings'
+      success: 'Import <strong>%label%</strong> finished'
+  list: Select a job
+pim_title.export_profile.index: Export profiles management
+pim_title.export_profile.edit: 'Export profiles %job.label% | Edit'
+pim_title.export_profile.show: 'Export profiles %job.label% | Show'
+pim_title.export_execution.index: Export executions history
+pim_title.export_execution.show: Export executions | Details
+pim_title.import_profile.index: Import profiles management
+pim_title.import_profile.edit: 'Import profiles %job.label% | Edit'
+pim_title.import_profile.show: 'Import profiles %job.label% | Show'
+pim_title.import_execution.index: Import executions history
+pim_title.import_execution.show: Import executions | Details
 export profile:
-  title: "Profil d'export"
-  overview: "Liste des profils d'export"
-  create: "Créer un profil d'export"
-  edit: "Modifier un profil d'export"
+  title: export profile
+  overview: export profile overview
+  create: create export profile
+  edit: edit export profile
 export report:
-  overview: "Rapports d'exportations"
+  overview: export reports
 import profile:
-  title: "Profil d'import"
-  overview: "Liste des profils d'import"
-  create: "Créer un profil d'import"
-  edit: "Modifier un profil d'import"
+  title: import profile
+  overview: import profile overview
+  create: create import profile
+  edit: edit import profile
 import report:
-  overview: "Rapports d'importations"
+  overview: import reports
 pim_importexport:
   acl:
     export_profile:
-      index: "Visualiser la liste des profils d'export"
-      create: "Créer un profil d'export"
-      show: "Voir le profil d'export"
-      edit: "Modifier un profil d'export"
-      remove: "Supprimer un profil d'export"
-      launch: "Lancer un profil d'export"
-      history: "Afficher l'historique du profil d'export"
+      index: View export profiles list
+      create: Create an export profile
+      show: Show an export profile
+      edit: Edit an export profile
+      remove: Remove an export profile
+      launch: Launch an export profile
+      history: View export profile history
     import_profile:
-      index: "Visualiser la liste des profils d'import"
-      create: "Créer un profil d'import"
-      show: "Voir le profil d'import"
-      edit: "Modifier un profil d'import"
-      remove: "Supprimer un profil d'import"
-      launch: "Lancer un profil d'import"
-      history: "Afficher l'historique du profil d'import"
+      index: View import profiles list
+      create: Create an import profile
+      show: Show an import profile
+      edit: Edit an import profile
+      remove: Remove an import profile
+      launch: Launch an import profile
+      history: View import profile history
     export_execution:
-      index: "Visualiser la liste des rapports d'export"
-      show: "Visualiser les détails du rapport d'export"
-      dl_log: "Télécharger le rapport d'export"
-      dl_files: Télécharger les fichiers exportés
+      index: View export reports list
+      show: View export report details
+      dl_log: Download export report log
+      dl_files: Download exported files
     import_execution:
-      index: "Visualiser la liste des rapports d'import"
-      show: "Visualiser les détails du rapport d'import"
-      dl_log: "Télécharger le rapport d'import"
-      dl_files: Télécharger les fichiers importés
+      index: View import reports list
+      show: View import report details
+      dl_log: Download import report log
+      dl_files: Download imported files
   acl_group:
-    export: "Profils d'export"
-    import: "Profils d'import"
+    export: Export profiles
+    import: Import profiles
 btn:
   create:
-    export profile: "Créer un profil d'export"
-    import profile: "Créer un profil d'import"
-Upload and import: Upload et importation
-Upload and import now: Télécharger et importer maintenant
-import now: Importer maintenant
-export now: Exporter maintenant
+    export profile: create export profile
+    import profile: create import profile
+Upload and import: Upload and import
+Upload and import now: Upload and import now
+import now: Import now
+export now: Export now
 confirmation:
   remove:
-    export profile: "Êtes-vous sûr de vouloir supprimer le profil d'export %name% ?"
-    import profile: "Êtes-vous sûr de vouloir supprimer le profil d'import %name% ?"
+    export profile: 'Are you sure you want to delete the export profile %name%?'
+    import profile: 'Are you sure you want to delete the import profile %name%?'
 flash:
   export:
-    created: "L'export a été correctement crée"
-    removed: "Le profil d'export a été supprimé"
-    updated: "L'export a correctement été mis à jour"
-    running: "L'export est en cours d'exécution"
+    created: The export has been successfully created
+    removed: The export has been removed
+    updated: The export has been successfully updated
+    running: The export is running
   import:
-    created: "L'import a été correctement crée"
-    removed: "Le profil d'import a été supprimé"
-    updated: "L'import a correctement été mis à jour"
-    running: "L'import est en cours d'exécution"
+    created: The import has been successfully created
+    removed: The import has been removed
+    updated: The import has been successfully updated
+    running: The import is running
 pim_menu:
   item:
-    export_history: Historique des exports
-    export_profile: "Profils d'export"
-    import_history: Historique des imports
-    import_profile: "Profils d'import"
-General properties: Propriétés générales
-History: Historique
+    export_history: Exports history
+    export_profile: Export profiles
+    import_history: Imports history
+    import_profile: Import profiles
+General properties: General properties
+History: History
 pane.accordion:
-  properties: Propriétés
-  global_settings: Paramètres généraux
+  properties: Properties
+  global_settings: Global settings
 popin.create:
-  export_profile.title: "Créer un nouveau profil d'export"
-  import_profile.title: "Créer un nouveau profil d'import"
-Display item: "Afficher l'élément"
-Hide item: "Masquer l'élément"
-Collecting data about job execution...: "Collecte de données de l'exécution..."
-You must select a file to upload: Vous devez sélectionner un fichier à télécharger
-Download log: "Télécharger l'historique"
-Show profile: Afficher le profil
-execution details: "détails d'exécution"
+  export_profile.title: Create a new export profile
+  import_profile.title: Create a new import profile
+Display item: Display item
+Hide item: Hide item
+Collecting data about job execution...: Collecting data about job execution...
+You must select a file to upload: You must select a file to upload
+Download log: Download log
+Show profile: Show profile
+execution details: execution details
 job_execution.summary:
-  read: lu
-  write: écrit
-  skip: ignoré
-  create: créé
-  update: mis à jour
-  update_products: produits mis à jour
-  skip_products: produits ignorés
-  displayed: premiers avertissements affichés
+  read: read
+  write: written
+  skip: skipped
+  create: created
+  update: updated
+  update_products: updated products
+  skip_products: skipped products
+  displayed: first warnings displayed
   charset_validator:
-    title: 'Encodage du fichier :'
-    skipped: Ignoré, extension dans la liste blanche
-Step: Étape
-Status: Statut
-Summary: Résumé
-Start: Début
-End: Fin
-set_attribute_requirements: Choisir les attributs requis
-COMPLETED: TERMINÉ
-STARTING: DÉMARRAGE EN COURS
-STARTED: DÉMARRÉ
-STOPPING: ARRÊT EN COURS
-STOPPED: ARRÊTÉ
-FAILED: EN ÉCHEC
-ABANDONED: ABANDONNÉ
-UNKNOWN: INCONNU
+    title: 'File encoding:'
+    skipped: skipped, extension in white list
+Step: Step
+Status: Status
+Summary: Summary
+Start: Start
+End: End
+set_attribute_requirements: Set attribute requirements
+COMPLETED: COMPLETED
+STARTING: STARTING
+STARTED: STARTED
+STOPPING: STOPPING
+STOPPED: STOPPED
+FAILED: FAILED
+ABANDONED: ABANDONED
+UNKNOWN: UNKNOWN
