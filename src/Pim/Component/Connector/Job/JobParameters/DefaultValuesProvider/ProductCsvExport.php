@@ -59,17 +59,11 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters['with_media'] = true;
         $parameters['filePath'] = sys_get_temp_dir() . 'csv_products_export.csv';
 
-        $defaultChannelCode = null;
         $channels = $this->channelRepository->getFullChannels();
-        if (0 !== count($channels)) {
-            $defaultChannelCode = $channels[0]->getCode();
-        }
+        $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;
 
-        $defaultLocaleCode = null;
         $localesCodes = $this->localeRepository->getActivatedLocaleCodes();
-        if (0 !== count($localesCodes)) {
-            $defaultLocaleCode = $localesCodes[0];
-        }
+        $defaultLocaleCode = (0 !== count($localesCodes)) ? $localesCodes[0] : null;
 
         $parameters['filters'] = [
             'data'      => [
@@ -86,8 +80,8 @@ class ProductCsvExport implements DefaultValuesProviderInterface
                 [
                     'field'    => 'categories.code',
                     'operator' => Operators::IN_CHILDREN_LIST,
-                    'value'    => [],
-                ],
+                    'value'    => []
+                ]
             ],
             'structure' => [
                 'scope'   => $defaultChannelCode,
