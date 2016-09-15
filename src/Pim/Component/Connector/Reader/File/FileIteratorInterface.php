@@ -20,7 +20,7 @@ interface FileIteratorInterface extends \Iterator
 
     /**
      * Returns file headers
-     * 
+     *
      * @return array
      */
     public function getHeaders();

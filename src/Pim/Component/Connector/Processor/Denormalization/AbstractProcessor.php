@@ -92,7 +92,7 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
 
         $invalidItem = new FileInvalidItem(
             $item,
-            ($this->stepExecution->getSummaryInfo('read_lines') + 1)
+            ($this->stepExecution->getSummaryInfo('item_position'))
         );
 
         throw new InvalidItemException($message, $invalidItem, [], 0, $previousException);
@@ -118,7 +118,7 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
 
         throw new InvalidItemFromViolationsException(
             $violations,
-            new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+            new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('item_position'))),
             [],
             0,
             $previousException

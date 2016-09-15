@@ -83,7 +83,7 @@ class  ProductReaderSpec extends ObjectBehavior
         $fileIterator->getDirectoryPath()->willReturn($directoryPath);
         $mediaPath->transform($data, $directoryPath)->willReturn($absolutePath);
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $converter->convert($absolutePath, [
             'mapping' => [

@@ -172,7 +172,6 @@ pim_connector:
 
 job_execution.summary:
     read:       read
-    read_lines: read lines
     write:      written
     skip:       skipped
     create:     created
@@ -185,6 +184,7 @@ job_execution.summary:
         title: File encoding:
         skipped: skipped, extension in white list
     product_skipped_no_diff: skipped product (no differences)
+    item_position: read lines
 
 # Job labels
 batch_jobs:

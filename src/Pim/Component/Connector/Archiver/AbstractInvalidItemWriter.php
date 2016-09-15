@@ -78,28 +78,34 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
             return;
         }
 
-        $invalidLineNumbers = new ArrayCollection();
+        $invalidItemPositions = new ArrayCollection();
         foreach ($this->collector->getInvalidItems() as $invalidItem) {
             if ($invalidItem instanceof InvalidItemInterface) {
-                $invalidLineNumbers->add($invalidItem->getLineNumber());
+                $invalidItemPositions->add($invalidItem->getItemPosition());
             }
         }
 
         $readJobParameters = $jobExecution->getJobParameters();
-        $currentLineNumber = 0;
+        $currentItemPosition = 0;
         $itemsToWrite = [];
 
         $fileIterator = $this->getInputFileIterator($readJobParameters);
-        $headers = $fileIterator->getHeaders();
 
         $this->setupWriter($jobExecution);
 
-        foreach ($fileIterator as $readItem) {
-            $currentLineNumber++;
+        while ($fileIterator->valid()) {
+            $readItem = $fileIterator->current();
 
-            if ($invalidLineNumbers->contains($currentLineNumber)) {
-                $itemsToWrite[] = array_combine($headers, $readItem);
-                $invalidLineNumbers->removeElement($currentLineNumber);
+            $currentItemPosition++;
+
+            if ($invalidItemPositions->contains($currentItemPosition)) {
+                $headers = $fileIterator->getHeaders();
+                $invalidItem = array_combine($headers, $readItem);
+                if (false !== $invalidItem) {
+                    $itemsToWrite[] = $invalidItem;
+                }
+
+                $invalidItemPositions->removeElement($currentItemPosition);
             }
 
             if (count($itemsToWrite) > 0 && 0 === count($itemsToWrite) % $this->batchSize) {
@@ -107,9 +113,11 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
                 $itemsToWrite = [];
             }
 
-            if ($invalidLineNumbers->isEmpty()) {
+            if ($invalidItemPositions->isEmpty()) {
                 break;
             }
+
+            $fileIterator->next();
         }
 
         if (count($itemsToWrite) > 0) {
@@ -140,7 +148,8 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
     abstract protected function setupWriter(JobExecution $jobExecution);
 
     /**
-     * Get the input file iterator to iterate on all the lines of the file.
+     * Get the input file iterator to iterate on all the items of the file.
+     * The returned FileIteratorInterface instance should be position on the first item of the file.
      *
      * @param JobParameters $jobParameters
      *

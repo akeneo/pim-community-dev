@@ -55,7 +55,7 @@ class ReaderSpec extends ObjectBehavior
         $fileIterator->valid()->willReturn(true);
         $fileIterator->current()->willReturn($data);
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $converter->convert($data, Argument::any())->willReturn($data);
 
@@ -80,7 +80,7 @@ class ReaderSpec extends ObjectBehavior
             'sku'  => 'SKU-001',
             'name' => 'door',
         ];
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $fileIteratorFactory->create($filePath, [
             'reader_options' => [
@@ -95,7 +95,7 @@ class ReaderSpec extends ObjectBehavior
         $fileIterator->valid()->willReturn(true);
         $fileIterator->current()->willReturn($data);
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo("skip")->shouldBeCalled();
         $converter->convert($data, Argument::any())->willThrow(
