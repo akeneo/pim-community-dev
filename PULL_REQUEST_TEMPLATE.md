@@ -14,7 +14,6 @@ What does this Pull Request do? reference the related issue?
 | Added Specs                       |
 | Added Behats                      |
 | Changelog updated                 |
-| Review and 2 GTM                  |
 | Micro Demo to the PO (Story only) |
 | Migration script                  |
 | Tech Doc                          |
