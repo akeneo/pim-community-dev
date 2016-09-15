@@ -155,7 +155,7 @@ class Grid extends Index
                 'Grid toolbar'          => ['css' => 'div.grid-toolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
                 'Configure columns'     => ['css' => 'a:contains("Columns")'],
-                'View selector'         => ['css' => '#view-selector'],
+                'View selector'         => ['css' => '.grid-view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],
                 'Main context selector' => [
@@ -644,40 +644,6 @@ class Grid extends Index
         }, 'Refresh button not found');
 
         $refreshBtn->click();
-    }
-
-    /**
-     * Click on view in the view select
-     *
-     * @param string $viewLabel
-     */
-    public function applyView($viewLabel)
-    {
-        $view = $this->spin(function () use ($viewLabel) {
-            return $this->findView($viewLabel);
-        }, sprintf('Impossible to find view "%s"', $viewLabel));
-
-        $view->click();
-    }
-
-    /**
-     * Find a view in the list
-     *
-     * @param string $viewLabel
-     *
-     * @return NodeElement|null
-     */
-    public function findView($viewLabel)
-    {
-        $this
-            ->getElement('View selector')
-            ->getParent()
-            ->find('css', 'button.pimmultiselect')
-            ->click();
-
-        return $this
-            ->getElement('Views list')
-            ->find('css', sprintf('label:contains("%s")', $viewLabel));
     }
 
     /**

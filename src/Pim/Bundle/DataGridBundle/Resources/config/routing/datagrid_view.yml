@@ -1,19 +1,41 @@
+pim_datagrid_view_rest_index:
+    path: /rest/{alias}/views
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:indexAction }
+    methods: [GET]
+
+pim_datagrid_view_rest_default_columns:
+    path: /rest/{alias}/default-columns
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:defaultViewColumnsAction }
+    methods: [GET]
+
+pim_datagrid_view_list_available_columns:
+    path: /rest/{alias}/available-columns
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:listColumnsAction }
+    methods: [GET]
+
+pim_datagrid_view_rest_default_user_view:
+    path: /rest/{alias}/default
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:getUserDefaultDatagridViewAction }
+    methods: [GET]
+
+pim_datagrid_view_rest_save:
+    path: /rest/{alias}
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:saveAction }
+    methods: [POST]
+
+pim_datagrid_view_rest_remove:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:removeAction }
+    methods: [DELETE]
+
+pim_datagrid_view_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:getAction }
+    methods: [GET]
+
 pim_datagrid_view_index:
     path: /{alias}/{id}
     defaults: { _controller: pim_datagrid.controller.datagrid_view:indexAction, id: ~ }
     requirements:
         _method: GET|POST
         id: \d+
-
-pim_datagrid_view_list_columns:
-    path: /{alias}/columns
-    defaults: { _controller: pim_datagrid.controller.datagrid_view:listColumnsAction }
-    requirements:
-        _method: GET
-
-pim_datagrid_view_remove:
-    path: /{id}/remove
-    defaults: { _controller: pim_datagrid.controller.datagrid_view:removeAction }
-    requirements:
-        id: \d+
-    methods: [DELETE]

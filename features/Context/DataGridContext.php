@@ -998,17 +998,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iApplyTheView($viewLabel)
     {
-        $this->datagrid->applyView($viewLabel);
-        $this->wait();
+        $this->getCurrentPage()->getViewSelector()->setValue($viewLabel);
     }
 
     /**
-     * @When /^I delete the view$/
+     * @When /^I delete the view "([^"]*)"$/
      */
-    public function iDeleteTheView()
+    public function iDeleteTheView($viewLabel)
     {
-        $this->getCurrentPage()->find('css', '#remove-view')->click();
-        $this->wait();
+        $this->getCurrentPage()->removeView($viewLabel);
     }
 
     /**
@@ -1020,9 +1018,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCreateTheView(TableNode $table)
     {
-        $this->getCurrentPage()->find('css', '#create-view')->click();
+        $this->getCurrentPage()->getViewSelector()->click();
 
         return [
+            new Step\Then('I press the "Create view" button'),
             new Step\Then('I fill in the following information in the popin:', $table),
             new Step\Then('I press the "OK" button')
         ];
@@ -1033,7 +1032,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iUpdateTheView()
     {
-        $this->getCurrentPage()->find('css', '#update-view')->click();
+        $this->getCurrentPage()->saveView();
         $this->wait();
     }
 
@@ -1047,9 +1046,12 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeTheView($not, $viewLabel)
     {
-        $view = $this->datagrid->findView($viewLabel);
+        $availableViews = $this->getCurrentPage()->getAvailableViews();
 
-        if (('' !== $not && null !== $view) || ('' === $not && null === $view)) {
+        if (
+                ('' !== $not && in_array($viewLabel, $availableViews)) ||
+                ('' === $not && !in_array($viewLabel, $availableViews))
+        ) {
             throw $this->createExpectationException(
                 sprintf(
                     'View "%s" should%s be available.',
