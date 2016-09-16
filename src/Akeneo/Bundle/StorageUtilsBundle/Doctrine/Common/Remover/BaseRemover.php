@@ -52,6 +52,8 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
 
         $objectId = $object->getId();
 
+        $options['unitary'] = true;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $objectId, $options));
 
         $this->objectManager->remove($object);
@@ -68,6 +70,8 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
         if (empty($objects)) {
             return;
         }
+
+        $options['unitary'] = false;
 
         foreach ($objects as $object) {
             $this->validateObject($object);

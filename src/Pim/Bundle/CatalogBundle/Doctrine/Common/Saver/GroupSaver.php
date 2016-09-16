@@ -100,6 +100,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateGroup($group);
 
+        $options['unitary'] = true;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group));
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
@@ -119,6 +121,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         if (empty($groups)) {
             return;
         }
+
+        $options['unitary'] = false;
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups));
 
