@@ -19,3 +19,4 @@ Feature: Ensure versioning on family
     Then I should not see the text "There are unsaved changes."
     When I visit the "History" tab
     Then there should be 2 updates
+    And I should not see the text "2.00"
