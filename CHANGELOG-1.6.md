@@ -1,8 +1,17 @@
-# 1.6.
+# 1.6.x
 
 ## Bug fixes
 
 - PIM-5964: Index category labels by locale code in channel normalization
+- PIM-5968: Fix default translation for attribute options when value is null
+- PIM-5897: Fix the does not contain filter to filter on product without product values
+- PIM-5566: Fix version number displayed as decimals
+- PIM-5976: Fix adding products to a group (regression following variant group ajaxification)
+- PIM-5975 & #5016: Fix attribute groups order not kept in product edit form, cheers @julienanquetil!
+
+## Functionnal improvements
+
+- PIM-5782: User can now change the attribute order on the product export builder
 
 # 1.6.2 (2016-09-02)
 

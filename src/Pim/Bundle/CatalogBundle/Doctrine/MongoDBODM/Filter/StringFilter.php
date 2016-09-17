@@ -99,6 +99,14 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $this->qb->field($field)->exists(true);
                 $this->qb->field($field)->notEqual($value);
                 break;
+            case Operators::DOES_NOT_CONTAIN:
+                $value = $this->prepareValue($operator, $value);
+                $this->qb->addAnd(
+                    $this->qb->expr()
+                        ->addOr($this->qb->expr()->field($field)->exists(false))
+                        ->addOr($this->qb->expr()->field($field)->equals($value))
+                );
+                break;
             default:
                 $value = $this->prepareValue($operator, $value);
                 $this->qb->field($field)->equals($value);

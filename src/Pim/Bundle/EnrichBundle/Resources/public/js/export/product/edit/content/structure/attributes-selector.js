@@ -223,18 +223,10 @@ define(
                     containment: this.$el,
                     tolerance: 'pointer',
                     cursor: 'move',
-                    receive: function (event, ui) {
-                        var attributeCode = ui.item.data('attributeCode');
-                        var selectedAttributes = this.getSelected();
-
-                        if (ui.sender.parents('div').hasClass('attributes')) {
-                            selectedAttributes = _.union(selectedAttributes, [attributeCode]);
-                        }
-                        if (ui.sender.parents('div').hasClass('selected-attributes')) {
-                            selectedAttributes = _.without(selectedAttributes, attributeCode);
-                        }
-
-                        this.setSelected(selectedAttributes);
+                    stop: function () {
+                        this.setSelected(_.map(this.$('.selected-attributes li'), function (element) {
+                            return element.dataset.attributeCode;
+                        }));
                     }.bind(this)
                 }).disableSelection();
             },
