@@ -11,9 +11,6 @@
 
 namespace PimEnterprise\Bundle\ConnectorBundle;
 
-use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterFlatToStandardConverterPass;
-use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -23,14 +20,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimEnterpriseConnectorBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        $container
-            ->addCompilerPass(new RegisterFlatToStandardConverterPass())
-            ->addCompilerPass(new RegisterStandardToFlatConverterPass())
-        ;
-    }
 }
