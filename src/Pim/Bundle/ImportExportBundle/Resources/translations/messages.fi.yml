@@ -1,6 +1,8 @@
 Job: Työ
 Connector: Liitin
 pim_import_export:
+  job: Työ
+  connector: Liitin
   status:
     - Valmis
   batch_status:

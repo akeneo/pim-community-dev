@@ -1,6 +1,8 @@
 Job: Trabajo
 Connector: Conector
 pim_import_export:
+  job: Trabajo
+  connector: Conector
   status:
     - Listo
   batch_status:
@@ -66,7 +68,11 @@ pim_importexport:
       edit: Editar un perfil de exportación
       remove: Quitar un perfil de exportación
       launch: Lanzar un perfil de exportación
+      property_edit: Editar las propiedades generales de un perfil de exportación
+      property_show: Mostrar las propiedades generales de un perfil de exportación
       history: Ver historial del perfil exportación
+      content_edit: Editar el contenido de un perfil de exportación
+      content_show: Mostrar el contenido de un perfil de exportación
     import_profile:
       index: Ver lista de perfiles de importación
       create: Crear un perfil de importación
@@ -158,3 +164,4 @@ STOPPED: DETENIDO
 FAILED: FALLIDO
 ABANDONED: ABANDONADO
 UNKNOWN: DESCONOCIDO
+warning.label: ¡Advertencia!
