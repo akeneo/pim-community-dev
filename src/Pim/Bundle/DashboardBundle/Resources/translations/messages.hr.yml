@@ -1,0 +1,4 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      date: Datum
