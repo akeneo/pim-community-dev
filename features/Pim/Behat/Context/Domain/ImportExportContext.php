@@ -137,9 +137,9 @@ class ImportExportContext extends PimContext
     protected function compareFileHeadersOrder(array $expectedHeaders, array $actualHeaders)
     {
         assertEquals(
-            $expectedHeaders[0],
-            $actualHeaders[0],
-            sprintf('Expecting to see headers order like %d , found %d', $expectedHeaders[0], $actualHeaders[0])
+            $expectedHeaders,
+            $actualHeaders,
+            sprintf('Expecting to see headers order like %d , found %d', $expectedHeaders, $actualHeaders)
         );
     }
 }

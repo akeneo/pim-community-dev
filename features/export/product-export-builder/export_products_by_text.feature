@@ -101,6 +101,7 @@ Feature: Export products according to text attribute filter
     sku;categories;enabled;family;groups;comment;name-en_US
     SNKRS-1B;summer_collection;1;rangers;;Awesome;
     SNKRS-1Z;summer_collection;1;rangers;;This is nice;Ranger 1Z
+    SNKRS-1N;summer_collection;1;rangers;;;
     """
 
   Scenario: Export products by text values using the UI

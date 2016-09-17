@@ -2,15 +2,16 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 class ProductColumnSorterSpec extends ObjectBehavior
 {
-    function let(FieldSplitter $fieldSplitter, IdentifiableObjectRepositoryInterface $productRepository)
+    function let(FieldSplitter $fieldSplitter, IdentifiableObjectRepositoryInterface $productRepository, AssociationTypeRepositoryInterface $associationTypeRepository)
     {
-        $this->beConstructedWith($fieldSplitter, $productRepository, ['label']);
+        $this->beConstructedWith($fieldSplitter, $productRepository, $associationTypeRepository, ['label']);
     }
 
     function it_is_initializable()

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
@@ -95,7 +96,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_does_not_contain_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    function it_adds_a_does_not_contain_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku, Expr $or)
     {
         $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
@@ -104,8 +105,14 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
-        $qb->field('normalizedData.sku')->shouldBeCalled()->willReturn($qb);
+        $qb->expr()->willReturn($or);
+        $or->field('normalizedData.sku')->willReturn($qb);
+
+        $qb->exists(false)->shouldBeCalled();
         $qb->equals(new \MongoRegex('/^((?!My Sku).)*$/i'))->shouldBeCalled();
+        $or->addOr(null)->willReturn($qb);
+        $qb->addOr(null)->willReturn($qb);
+        $qb->addAnd($qb)->willReturn($qb);
 
         $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku', null, null, ['field' => 'sku']);
     }
