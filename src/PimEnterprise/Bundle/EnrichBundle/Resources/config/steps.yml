@@ -77,7 +77,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_workflow.connector.reader.mass_edit.published_product'
             - '@pim_enrich.connector.processor.quick_export.product'
-            - '@pim_connector.writer.file.csv_product'
+            - '@pim_connector.writer.file.csv_product_quick_export'
             - 1000
 
     # XLSX Quick Export steps -----------------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_workflow.connector.reader.mass_edit.published_product'
             - '@pim_enrich.connector.processor.quick_export.product'
-            - '@pim_connector.writer.file.xlsx_product'
+            - '@pim_connector.writer.file.xlsx_product_quick_export'
             - 1000
 
     # Execute Rules steps ---------------------------------------------------------------------------------------------
