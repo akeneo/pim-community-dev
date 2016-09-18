@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\EnrichBundle\Flash\Message;
@@ -49,9 +48,6 @@ class GroupController
     /** @var GroupFactory */
     protected $groupFactory;
 
-    /** @var RemoverInterface */
-    protected $groupRemover;
-
     /**
      * @param Request                      $request
      * @param EngineInterface              $templating
@@ -60,7 +56,6 @@ class GroupController
      * @param HandlerInterface             $groupHandler
      * @param FormInterface                $groupForm
      * @param GroupFactory                 $groupFactory
-     * @param RemoverInterface             $groupRemover
      */
     public function __construct(
         Request $request,
@@ -69,8 +64,7 @@ class GroupController
         GroupTypeRepositoryInterface $groupTypeRepository,
         HandlerInterface $groupHandler,
         FormInterface $groupForm,
-        GroupFactory $groupFactory,
-        RemoverInterface $groupRemover
+        GroupFactory $groupFactory
     ) {
         $this->request = $request;
         $this->templating = $templating;
@@ -79,7 +73,6 @@ class GroupController
         $this->groupHandler = $groupHandler;
         $this->groupForm = $groupForm;
         $this->groupFactory = $groupFactory;
-        $this->groupRemover = $groupRemover;
     }
 
     /**
@@ -122,7 +115,7 @@ class GroupController
 
             $url = $this->router->generate(
                 'pim_enrich_group_edit',
-                ['id' => $group->getId()]
+                ['code' => $group->getCode()]
             );
             $response = ['status' => 1, 'url' => $url];
 
@@ -135,49 +128,16 @@ class GroupController
     }
 
     /**
-     * Edit a group
+     * {@inheritdoc}
      *
-     * TODO : find a way to use param converter with interfaces
-     *
-     * @param Group $group
-     *
-     * @Template
      * @AclAncestor("pim_enrich_group_edit")
-     *
-     * @return array
+     * @Template
      */
-    public function editAction(Group $group)
+    public function editAction($code)
     {
-        if ($this->groupHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.group.updated'));
-        }
-
         return [
-            'form'         => $this->groupForm->createView(),
-            'currentGroup' => $group->getId()
+            'code' => $code
         ];
-    }
-
-    /**
-     * Remove a group
-     *
-     * TODO : find a way to use param converter with interfaces
-     *
-     * @param Group $group
-     *
-     * @AclAncestor("pim_enrich_group_remove")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function removeAction(Group $group)
-    {
-        $this->groupRemover->remove($group);
-
-        if ($this->request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return new RedirectResponse($this->router->generate('pim_enrich_group_index'));
-        }
     }
 
     /**
