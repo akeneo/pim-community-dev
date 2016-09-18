@@ -143,9 +143,7 @@ define(
                             var route = 'VARIANT' === group.type ?
                                 'pim_enrich_variant_group_edit' :
                                 'pim_enrich_group_edit';
-                            var parameters = 'VARIANT' === group.type ?
-                                { code: group.code } :
-                                { id: group.meta.id };
+                            var parameters = { code: group.code };
 
                             Navigation.getInstance().setLocation(Routing.generate(route, parameters));
                         }.bind(this));
