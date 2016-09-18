@@ -7,15 +7,21 @@ use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Prophecy\Argument;
 
 class GroupUpdaterSpec extends ObjectBehavior
 {
-    function let(GroupTypeRepositoryInterface $groupTypeRepository, AttributeRepositoryInterface $attributeRepository)
-    {
-        $this->beConstructedWith($groupTypeRepository, $attributeRepository);
+    function let(
+        GroupTypeRepositoryInterface $groupTypeRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        ProductQueryBuilderFactoryInterface $pqbFactory
+    ) {
+        $this->beConstructedWith($groupTypeRepository, $attributeRepository, $pqbFactory);
     }
 
     function it_is_initializable()
@@ -43,15 +49,23 @@ class GroupUpdaterSpec extends ObjectBehavior
     function it_updates_a_group(
         $groupTypeRepository,
         $attributeRepository,
+        $pqbFactory,
         GroupInterface $group,
         GroupTypeInterface $type,
         GroupTranslation $translatable,
         AttributeInterface $attributeColor,
-        AttributeInterface $attributeSize
+        AttributeInterface $attributeSize,
+        ProductInterface $removedProduct,
+        ProductInterface $addedProduct,
+        ProductQueryBuilderInterface $pqb
     ) {
         $groupTypeRepository->findOneByIdentifier('RELATED')->willReturn($type);
         $attributeRepository->findOneByIdentifier('color')->willReturn($attributeColor);
         $attributeRepository->findOneByIdentifier('size')->willReturn($attributeSize);
+
+        $pqbFactory->create()->willReturn($pqb);
+        $pqb->addFilter('id', 'IN', [2])->shouldBeCalled();
+        $pqb->execute()->willReturn([$addedProduct]);
 
         $group->getTranslation()->willReturn($translatable);
         $translatable->setLabel('T-shirt super beau')->shouldBeCalled();
@@ -61,13 +75,18 @@ class GroupUpdaterSpec extends ObjectBehavior
         $group->setAxisAttributes([$attributeColor, $attributeSize])->shouldBeCalled();
         $group->getId()->willReturn(null);
 
+        $group->removeProduct($removedProduct)->shouldBeCalled();
+        $group->addProduct($addedProduct)->shouldBeCalled();
+        $group->getProducts()->willReturn([$removedProduct]);
+
         $values = [
-            'code'   => 'mycode',
-            'type'   => 'RELATED',
-            'labels' => [
+            'code'     => 'mycode',
+            'type'     => 'RELATED',
+            'labels'   => [
                 'fr_FR' => 'T-shirt super beau',
             ],
-            'axis'   => ['color', 'size'],
+            'axis'     => ['color', 'size'],
+            'products' => [2]
         ];
 
         $this->update($group, $values, []);
