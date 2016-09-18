@@ -191,6 +191,7 @@ extensions:
         module: pim/common/tab/history
         parent: pim-variant-group-edit-form-form-tabs
         targetZone: container
+        aclResourceId: pim_enrich_variant_group_history
         position: 110
         config:
             class: 'group'
