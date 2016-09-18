@@ -11,25 +11,20 @@ Feature: Edit a product group
 
   @javascript
   Scenario: Successfully edit a group
-    Then I should see the Code and Type fields
-    And the fields Code and Type should be disabled
-    And I should not see the Axis field
-    When I fill in the following information:
-      | English (United States) | My similar boots |
+    Then the product group property "Code" should be disabled
+    When I fill in the product group property "English (United States)" with "My similar boots"
     And I press the "Save" button
     Then I should see "My similar boots"
 
   @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
-    Given I fill in the following information:
-      | English (United States) | My similar boots |
+    Given I fill in the product group property "English (United States)" with "My similar boots"
     And I click on the Akeneo logo
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                          |
       | content | You will lose changes to the product group if you leave this page. |
 
-  @skip
+  @javascript
   Scenario: Successfully display a message when there are unsaved changes
-    Given I fill in the following information:
-      | English (United States) | My similar boots |
-    Then I should see "There are unsaved changes."
+    When I fill in the product group property "English (United States)" with "My similar boots"
+    Then I should see the text "There are unsaved changes."

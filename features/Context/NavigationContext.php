@@ -125,20 +125,6 @@ class NavigationContext extends BaseNavigationContext
     /**
      * @param string $identifier
      *
-     * @Given /^I am on the "([^"]*)" product group page$/
-     * @Given /^I edit the "([^"]*)" product group$/
-     */
-    public function iAmOnTheProductGroupEditPage($identifier)
-    {
-        $page   = 'ProductGroup';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
-    }
-
-    /**
-     * @param string $identifier
-     *
      * @Given /^I am on the "([^"]*)" group type page$/
      * @Given /^I edit the "([^"]*)" group type$/
      */
@@ -219,17 +205,6 @@ class NavigationContext extends BaseNavigationContext
     public function iShouldBeOnTheGroupTypePage(GroupTypeInterface $groupType)
     {
         $expectedAddress = $this->getPage('GroupType edit')->getUrl(['id' => $groupType->getId()]);
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param GroupInterface $group
-     *
-     * @Given /^I should be on the ("([^"]*)" product group) page$/
-     */
-    public function iShouldBeOnTheProductGroupPage(GroupInterface $group)
-    {
-        $expectedAddress = $this->getPage('ProductGroup edit')->getUrl(['id' => $group->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
