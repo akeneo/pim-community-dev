@@ -9,6 +9,7 @@ use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderIn
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
@@ -44,6 +45,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $versionNormalizer,
         $localizedConverter,
         GroupInterface $tshirt,
+        GroupTypeInterface $groupType,
         Version $oldestLog,
         Version $newestLog,
         ArrayCollection $products,
@@ -54,6 +56,9 @@ class GroupNormalizerSpec extends ObjectBehavior
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
         ];
+
+        $tshirt->getType()->willReturn($groupType);
+        $groupType->isVariant()->willReturn(true);
 
         $variantNormalized = [
             'code' => 'my_variant',
