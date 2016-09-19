@@ -316,7 +316,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $validator->validate($rule)->shouldBeCalled()->willReturn($violations);
 
         $this->setStepExecution($stepExecution);
-        $stepExecution->getSummaryInfo('read_lines')->willReturn(1);
+        $stepExecution->getSummaryInfo('item_position')->willReturn(1);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
         $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->during('process', [$item]);
