@@ -60,7 +60,7 @@ class GroupSaverSpec extends ObjectBehavior
         GroupInterface $group,
         GroupType $type
     ) {
-        $optionsResolver->resolveSaveOptions([])->willReturn(
+        $optionsResolver->resolveSaveOptions(['unitary' => true])->willReturn(
             [
                 'flush'                   => true,
                 'copy_values_to_products' => false,
@@ -89,7 +89,7 @@ class GroupSaverSpec extends ObjectBehavior
         GroupType $type,
         ProductInterface $addedProduct
     ) {
-        $optionsResolver->resolveSaveOptions(['add_products' => [$addedProduct]])->willReturn(
+        $optionsResolver->resolveSaveOptions(['add_products' => [$addedProduct], 'unitary' => true])->willReturn(
             [
                 'flush'                   => true,
                 'copy_values_to_products' => false,
@@ -123,7 +123,7 @@ class GroupSaverSpec extends ObjectBehavior
         ProductInterface $removedProduct,
         ProductQueryBuilderInterface $pqb
     ) {
-        $optionsResolver->resolveSaveOptions(['remove_products' => [$removedProduct]])->willReturn(
+        $optionsResolver->resolveSaveOptions(['remove_products' => [$removedProduct], 'unitary' => true])->willReturn(
             [
                 'flush'                   => true,
                 'copy_values_to_products' => false,
@@ -188,7 +188,7 @@ class GroupSaverSpec extends ObjectBehavior
         ProductInterface $product,
         ProductTemplateInterface $template
     ) {
-        $optionsResolver->resolveSaveOptions(['copy_values_to_products' => true])->willReturn(
+        $optionsResolver->resolveSaveOptions(['copy_values_to_products' => true, 'unitary' => true])->willReturn(
             [
                 'flush'                   => true,
                 'copy_values_to_products' => true,
