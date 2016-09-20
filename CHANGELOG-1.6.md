@@ -10,6 +10,7 @@
 - PIM-5976: Fix adding products to a group (regression following variant group ajaxification)
 - PIM-5975 & #5016: Fix attribute groups order not kept in product edit form, cheers @julienanquetil!
 - #4994: Fix grid filter selection in the user profile, cheers @julienanquetil!
+- PIM-5978: Fix missing currencies
 
 ## Functionnal improvements
 
