@@ -81,10 +81,12 @@ extensions:
             labelBy: pim_enrich.entity.variant_group.meta.updated_by
 
     pim-variant-group-edit-form-product-count:
-        module: pim/variant-group-edit-form/meta/product-count
+        module: pim/group-edit-form/meta/product-count
         parent: pim-variant-group-edit-form
         targetZone: meta
         position: 110
+        config:
+            productCountLabel: pim_enrich.entity.variant_group.meta.product_count
 
     pim-variant-group-edit-form-attributes:
         module: pim/form/common/attributes

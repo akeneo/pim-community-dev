@@ -22,6 +22,15 @@ define(
             /**
              * {@inheritdoc}
              */
+            initialize: function (config) {
+                this.config = config.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
 
@@ -37,7 +46,7 @@ define(
 
                 if (_.has(group, 'products')) {
                     html = this.template({
-                        label: __('pim_enrich.entity.group.meta.product_count'),
+                        label: __(this.config.productCountLabel),
                         productCount: group.products.length
                     });
                 }

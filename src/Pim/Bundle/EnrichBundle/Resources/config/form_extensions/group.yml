@@ -85,6 +85,8 @@ extensions:
         parent: pim-group-edit-form
         targetZone: meta
         position: 110
+        config:
+            productCountLabel: pim_enrich.entity.group.meta.product_count
 
     pim-group-edit-form-properties:
         module: pim/group-edit-form/properties
