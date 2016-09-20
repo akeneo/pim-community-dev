@@ -59,6 +59,8 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateAsset($asset);
 
+        $options['unitary'] = true;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($asset, $options));
 
         $this->objectManager->persist($asset);
@@ -74,6 +76,8 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
      */
     public function saveAll(array $assets, array $options = [])
     {
+        $options['unitary'] = false;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($assets, $options));
 
         foreach ($assets as $asset) {

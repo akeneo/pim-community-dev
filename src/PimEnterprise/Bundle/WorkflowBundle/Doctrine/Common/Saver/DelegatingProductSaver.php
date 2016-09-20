@@ -182,6 +182,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      */
     protected function saveProduct(ProductInterface $product, array $options, $withFlush = true)
     {
+        $options['unitary'] = true;
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
         $this->completenessManager->schedule($product);
 
@@ -204,6 +205,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 
         if (null !== $productDraft) {
             $this->validateObject($productDraft, 'PimEnterprise\Component\Workflow\Model\ProductDraftInterface');
+            $options['unitary'] = true;
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($productDraft, $options));
             $this->objectManager->persist($productDraft);
 
