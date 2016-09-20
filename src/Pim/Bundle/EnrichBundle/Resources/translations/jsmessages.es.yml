@@ -96,8 +96,6 @@ pim:
       quick_export:
         csv_all: CSV (todos los atributos)
         csv_grid_context: CSV (contexto de la grilla)
-        xlsx_all: XLSX (todos los atributos)
-        xlsx_grid_context: XLSX (contexto de la grilla)
 jstree.create: Crear
 switch_on: Sí
 switch_off: 'No'
@@ -350,7 +348,6 @@ pim_enrich:
             NOT IN: No figura en la lista
             EMPTY: Productos que no tienen una familia
             NOT EMPTY: Productos que tienen una familia
-          empty_selection: Seleccionar una familia
         updated:
           operators:
             ALL: Ninguna condición de fecha
