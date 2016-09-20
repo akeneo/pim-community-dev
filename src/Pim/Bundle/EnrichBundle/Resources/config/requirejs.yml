@@ -276,21 +276,20 @@ config:
         pim/variant-group-edit-form/delete:                 pimenrich/js/variant-group/form/delete
         pim/variant-group-edit-form/no-attribute:           pimenrich/js/variant-group/form/no-attribute
         pim/variant-group-edit-form/properties/general:     pimenrich/js/variant-group/form/properties/general
-        pim/variant-group-edit-form/properties/translation: pimenrich/js/variant-group/form/properties/translation
         pim/variant-group-edit-form/add-attribute:          pimenrich/js/variant-group/form/attributes/add-attribute
 
         # Group
         pim/group-edit-form/products:               pimenrich/js/group/form/products
         pim/group-edit-form/delete:                 pimenrich/js/group/form/delete
         pim/group-edit-form/properties/general:     pimenrich/js/group/form/properties/general
-        pim/group-edit-form/properties/translation: pimenrich/js/group/form/properties/translation
         pim/group-edit-form/meta/product-count:     pimenrich/js/group/form/meta/product-count
 
         # Common
-        pim/common/tab/history:    pimenrich/js/form/common/tab/history
-        pim/common/tab/properties: pimenrich/js/form/common/tab/properties
-        pim/common/grid:           pimenrich/js/form/common/grid
-        pim/common/add-attribute:  pimenrich/js/form/common/attributes/add-attribute
+        pim/common/tab/history:            pimenrich/js/form/common/tab/history
+        pim/common/tab/properties:         pimenrich/js/form/common/tab/properties
+        pim/common/grid:                   pimenrich/js/form/common/grid
+        pim/common/add-attribute:          pimenrich/js/form/common/attributes/add-attribute
+        pim/common/properties/translation: pimenrich/js/form/common/properties/translation
 
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form
@@ -342,6 +341,7 @@ config:
         pim/template/form/attribute/add-attribute:                pimenrich/templates/form/attribute/add-attribute.html
         pim/template/form/attribute/add-attribute-line:           pimenrich/templates/form/attribute/add-attribute-line.html
         pim/template/form/attribute/add-attribute-footer:         pimenrich/templates/form/attribute/add-attribute-footer.html
+        pim/template/form/properties/translation:                 pimenrich/templates/form/properties/translation.html
         pim/template/form/back-to-grid:                           pimenrich/templates/form/back-to-grid.html
         pim/template/form/form-tabs:                              pimenrich/templates/form/form-tabs.html
         pim/template/form/state:                                  pimenrich/templates/form/state.html
@@ -391,11 +391,9 @@ config:
         pim/template/error/error:                            pimenrich/templates/error/error.html
 
         pim/template/variant-group/tab/properties/general:     pimenrich/templates/variant-group/tab/properties/general.html
-        pim/template/variant-group/tab/properties/translation: pimenrich/templates/variant-group/tab/properties/translation.html
         pim/template/variant-group/form/no-attribute:          pimenrich/templates/variant-group/form/no-attribute.html
 
         pim/template/group/tab/properties/general:     pimenrich/templates/group/tab/properties/general.html
-        pim/template/group/tab/properties/translation: pimenrich/templates/group/tab/properties/translation.html
         pim/template/group/meta/product-count:         pimenrich/templates/group/meta/product-count.html
 
         # Exports

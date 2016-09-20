@@ -103,10 +103,13 @@ extensions:
         position: 100
 
     pim-group-edit-form-properties-translation:
-        module: pim/group-edit-form/properties/translation
+        module: pim/common/properties/translation
         parent: pim-group-edit-form-properties
         targetZone: accordion
         position: 110
+        config:
+            label: 'pim_enrich.form.group.tab.properties.label_translations'
+            fieldBaseId: 'pim_enrich_group_form_label_'
 
     pim-group-edit-form-history:
         module: pim/common/tab/history

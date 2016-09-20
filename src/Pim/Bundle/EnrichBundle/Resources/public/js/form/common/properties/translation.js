@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Module used to display the localized properties of a group
+ * Module used to display the localized properties of an object
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -11,7 +11,7 @@ define([
         'underscore',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/group/tab/properties/translation'
+        'text!pim/template/form/properties/translation'
     ],
     function (
         _,
@@ -26,6 +26,15 @@ define([
                 'change .label-field': 'updateModel'
             },
             validationErrors: {},
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                this.config = config.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -65,7 +74,9 @@ define([
                     this.$el.html(this.template({
                         model: this.getFormData(),
                         locales: locales,
-                        errors: this.validationErrors
+                        errors: this.validationErrors,
+                        label: this.config.label,
+                        fieldBaseId: this.config.fieldBaseId
                     }));
                 }.bind(this));
 
