@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -42,6 +43,10 @@ class SimpleXlsxExport implements ConstraintCollectionProviderInterface
                     'filePath'     => [
                         new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
                         new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
+                        new Regex([
+                            'pattern' => '/.\.xlsx$/',
+                            'message' => 'The extension file must be ".xlsx"'
+                        ])
                     ],
                     'withHeader'   => new Type(
                         [
