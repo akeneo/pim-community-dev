@@ -37,6 +37,7 @@ parameters:
     pim_enrich.controller.rest.product_comment.class:    Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController
     pim_enrich.controller.rest.variant_group.class:      Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupController
     pim_enrich.controller.rest.versioning.class:         Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController
+    pim_enrich.controller.rest.attribute_option.class:   Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController
 
 services:
     pim_enrich.controller.attribute_group:
@@ -453,3 +454,9 @@ services:
             - '@pim_versioning.repository.version'
             - '@pim_catalog.resolver.fqcn'
             - '@pim_internal_api_serializer'
+
+    pim_enrich.controller.rest.attribute_option:
+        class: %pim_enrich.controller.rest.attribute_option.class%
+        arguments:
+            - '@pim_enrich.repository.attribute_option.search'
+            - '@pim_enrich.normalizer.structured.attribute_option'
