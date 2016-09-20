@@ -121,3 +121,6 @@ extensions:
         parent: pim-group-edit-form-form-tabs
         targetZone: container
         position: 80
+        config:
+            label: 'pim_enrich.form.group.tab.products.title'
+            gridId: 'product-group-grid'

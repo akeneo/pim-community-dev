@@ -27,10 +27,19 @@ define([
             /**
              * {@inheritdoc}
              */
+            initialize: function (config) {
+                this.config = config.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
-                    label: __('pim_enrich.form.group.tab.products.title')
+                    label: __(this.config.label)
                 });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -42,7 +51,7 @@ define([
             render: function () {
                 if (!this.productGroupGrid) {
                     this.productGroupGrid = new Grid(
-                        'product-group-grid',
+                        this.config.gridId,
                         {
                             locale: UserContext.get('catalogLocale'),
                             currentGroup: this.getFormData().meta.id,

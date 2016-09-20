@@ -200,7 +200,10 @@ extensions:
             title: 'pim_enrich.form.variant_group.tab.history.title'
 
     pim-variant-group-edit-form-products:
-        module: pim/variant-group-edit-form/products
+        module: pim/group-edit-form/products
         parent: pim-variant-group-edit-form-form-tabs
         targetZone: container
         position: 80
+        config:
+            label: 'pim_enrich.form.variant_group.tab.products.title'
+            gridId: 'product-variant-group-grid'
