@@ -172,10 +172,12 @@ extensions:
         position: 110
 
     pim-variant-group-edit-form-properties:
-        module: pim/variant-group-edit-form/properties
+        module: pim/common/tab/properties
         parent: pim-variant-group-edit-form-form-tabs
         targetZone: container
         position: 100
+        config:
+            label: 'pim_enrich.form.variant_group.tab.properties.title'
 
     pim-variant-group-edit-form-properties-general:
         module: pim/variant-group-edit-form/properties/general
