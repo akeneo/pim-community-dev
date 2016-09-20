@@ -25,6 +25,7 @@ class GroupSavingOptionsResolver implements SavingOptionsResolverInterface
                 'copy_values_to_products' => false,
                 'add_products'            => [],
                 'remove_products'         => [],
+                'unitary'                 => true,
             ]
         );
         $options = $resolver->resolve($options);
@@ -37,7 +38,7 @@ class GroupSavingOptionsResolver implements SavingOptionsResolverInterface
      */
     public function resolveSaveAllOptions(array $options)
     {
-        return $this->resolveSaveOptions($options);
+        return array_merge($this->resolveSaveOptions($options), ['unitary' => false]);
     }
 
     /**
