@@ -42,8 +42,8 @@ pimee_catalog_rule:
       IN OR UNCLASSIFIED: "n'est pas catégorisé ou est dans"
       BETWEEN: est entre
       NOT BETWEEN: "n'est pas entre"
-      =: égale
-      !=: différent de
+      =: est égal à
+      !=: est différent de
       >: est supérieur à
       >=: est supérieur ou égal à
       <: est inférieur à
