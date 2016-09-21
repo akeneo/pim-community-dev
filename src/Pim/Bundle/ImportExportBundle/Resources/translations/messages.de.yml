@@ -1,6 +1,8 @@
 Job: Auftrag
 Connector: Konnektor
 pim_import_export:
+  job: Auftrag
+  connector: Konnektor
   status:
     - Bereit
   batch_status:
