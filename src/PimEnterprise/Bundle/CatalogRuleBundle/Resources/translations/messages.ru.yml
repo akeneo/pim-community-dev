@@ -3,20 +3,115 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         delete: Удалить
+        execute: Выполнить
+      title: Правила
       column:
         code: Код
+        conditions: Условие
         actions: Действие
         impacted_product_count:
-          no_yet_calculated: не подсчитана
+          label: Затрагиваемые продукты
+          count: '{0,1}%count% затронутый продукт |] 1, Inf [%count% затронутых продуктов'
+          no_yet_calculated: Не подсчитано
+      mass_edit_action:
+        impacted_product_count: Вычислить количество затрагиваемых продуктов
+        execute: Выполнить выбранные правила
+        delete: Удалить выбранные правила
+  actions:
+    type:
+      copy: 'Тогда %from_field% копируется в %to_field%'
+      copy_value: 'Тогда %from_field% копируется в %to_field%'
+      set: 'Тогда %value% устанавливается в %field%'
+      set_value: 'Тогда %value% устанавливается в %field%'
+      add: 'Тогда %value% добавляется к %field%'
+      remove: 'Тогда %value% удаляется из %field%'
   condition:
+    label: 'Если %field% %operator% %value%'
     operators:
+      STARTS WITH: начинается с
+      ENDS WITH: заканчивается на
+      CONTAINS: содержит
+      DOES NOT CONTAIN: не содержит
       EMPTY: пусто
+      NOT EMPTY: не является пустым
+      IN: в списке
+      NOT IN: не в списке
+      IN CHILDREN: среди детей
+      NOT IN CHILDREN: не среди детей
+      UNCLASSIFIED: неклассифицирован
+      IN OR UNCLASSIFIED: неклассифицирован или в списке
+      BETWEEN: между
+      NOT BETWEEN: не между
+      =: равен
+      !=: не равно
+      >: больше
+      >=: равно или больше
+      <: менее чем
+      <=: равно или меньше
+  acl_group:
+    rule: Правила
+  acl:
+    rule:
+      view_permissions: Просмотр правил
+      delete_permissions: Удалить правила
+      impacted_product_count_permissions: Вычислить затрагиваемые продукты для правил
+      execute_permissions: Выполнить привила
+  attribute:
+    tab:
+      rule.title: Правила
+    grid:
+      is_smart.label: Умные
+    acl:
+      rule.view_permissions: Просмотр правил
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: 'Значение этого атрибута может быть получено из правил(а) <strong>%rule%</strong>. Это значит, что если условия верны, то ваши настройки будут перезаписаны.'
+      variant_attribute_affected_by_a_rule.content: 'Атрибуты групп вариантов имеют приоритет над атрибутами продуктов. Это значит, что каждый атрибут группы вариантов будет перезаписывать соответствующее значение продукта. Правила <strong>%rule%</strong> не будут применяться к продуктам.'
+      loading.title: Загрузка...
+    history: 'Применено правило "%rule%"'
+  product_value:
+    tooltip:
+      affected_by.title: 'Под влиянием правил(а):'
+  steps:
+    product_rule_definition_reader.title: Считыватель правил продукта
+    rule_definition_processor.title: Обработчик правил продукта
+    product_rule_definition_writer.title: Записыватель правил продукта
+    rules_execution.title: Выполнение правил
+  notification:
+    rule:
+      executed: Завершено выполнение правила
+      launched: Начато выполнение правил. Вы будете уведомлены, когда это будет сделано.
+    mass_edit_rule:
+      success: Вычисление затрагиваемых продуктов для правил
+      error: Произошла ошибка при вычислении затрагиваемых продуктов для правил
+  popin:
+    execute_rules:
+      confirm_title: Подтверждение исполнения
+      confirm_content: Вы уверены, что хотите выполнить все правила? (это может занять много времени)
+btn:
+  Execute rules: Выполнить привила
+rule: Настройки правил
+mass_edit_rule: Настройки правил
+job_execution.summary.rule_calculated: Количество привил
 batch_jobs:
+  yml_rule_import:
+    label: Импорт правил из YAML
+    import.label: Импорт правил
+  yml_rule_export:
+    label: Экспорт правил в YAML
+    export.label: Экспорт правил
+  rule_impacted_product_count:
+    label: Затрагиваемые продукты для правил
+    perform.label: Вычислить затрагиваемые продукты
   csv_product_import_with_rules:
-    validation.label: Подтверждение файла
+    label: Импорт продуктов из CSV с правилами
+    execute_rules.label: Выполнение правил
+    validation.label: Проверка файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
   xlsx_product_import_with_rules:
-    validation.label: Подтверждение файла
+    label: Импорт продуктов из XLSX с правилами
+    execute_rules.label: Выполнение правил
+    validation.label: Проверка файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций

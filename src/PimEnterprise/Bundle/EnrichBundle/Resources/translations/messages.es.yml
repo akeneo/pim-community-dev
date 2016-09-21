@@ -146,6 +146,8 @@ batch_jobs:
     perform.label: Actualizar el valor del producto
     execute_rules.label: Ejecución de las reglas
   remove_product_value_with_permission_and_rules:
+    label: Quitar el valor del producto con verificación de permisos y aplicación de reglas
+    perform.label: Quitar el valor del producto
     execute_rules.label: Ejecución de las reglas
   edit_common_attributes_with_permission_and_rules:
     label: Editar atributos comunes con verificación de permisos y aplicación de reglas
@@ -156,6 +158,22 @@ batch_jobs:
     label: Agregar productos al grupo de variantes con aplicación de reglas
     perform.label: Agregar productos al grupo de variantes
     execute_rules.label: Ejecución de las reglas
+  csv_published_product_quick_export:
+    export.label: Exportación rápida en CSV de los productos publicados
+    perform:
+      label: Exportación rápida en CSV de los productos publicados
+  csv_published_product_grid_context_quick_export:
+    export.label: Exportación rápida de la grilla de productos publicados en CSV
+    perform:
+      label: Exportación rápida de la grilla de productos publicados en CSV
+  xlsx_published_product_quick_export:
+    export.label: Exportación rápida en XLSX de los productos publicados
+    perform:
+      label: Exportación rápida en XLSX de los productos publicados
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Exportación rápida de la grilla de productos publicados en XLSX
+    perform:
+      label: Exportación rápida de la grilla de productos publicados en XLSX
 add_to_variant_group_with_rules:
   steps.perform: Agregar productos al grupo de variantes
   steps.excluded.title: Producto excluido
@@ -163,6 +181,7 @@ add_to_variant_group_with_rules:
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Editar atributos comunes
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Agregar valores de producto con permisiones
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualizar el valor de producto con permisiones
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Quitar el valor del producto con permisos
 edit_common_attributes_with_permission: Editar los atributos comunes con permisiones
 edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Editar los atributos comunes con permisiones
 job_execution.summary:

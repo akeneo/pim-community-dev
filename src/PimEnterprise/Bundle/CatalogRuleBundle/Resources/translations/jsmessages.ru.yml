@@ -1,14 +1,53 @@
 pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Код
+      condition.label: Условие
+      action.label: Действие
+      no_rule_yet.label: В данный момент правила отсутствуют
+  rule:
+    condition:
+      if.label: Если
+    action:
+      then.label: Тогда
+      set_value.label: установлено в
+      copy_value.label: копируется в
+      set.label: установлено в
+      copy.label: копируется в
+      add.label: Добавлено в
+      remove.label: удален из
   datagrid:
     rule-grid:
       actions:
         execute:
+          confirm_title: Подтверждение исполнения
+          confirm_content: Вы уверены, что хотите выполнить правило?
           confirm_ok: Подтвердить
       mass_edit_action:
+        confirm_title: Подтверждение расчета
+        confirm_content: Вы уверены, что вы хотите вычислить количество продуктов затрагиваемых правилами?
         confirm_ok: Подтвердить
       mass_action:
         execute:
           confirm_ok: Подтвердить
+          confirm_title: Подтверждение исполнения
+          confirm_content: Вы уверены, что хотите выполнить выбранные правила?
+          success: Выполнение выбранных правил начато. Вы будете уведомлены, когда это будет сделано
+          error: Произошла ошибка во время выполнения правил.
+          empty_selection: Правила не выбраны.
         delete:
           confirm_ok: Подтвердить
           confirm_title: Подтверждение удаления
+          confirm_content: Вы уверены, что хотите удалить выбранные правила?
+          success: Вы успешно удалили правила.
+          error: Произошла ошибка при удалении правил.
+          empty_selection: Правила не выбраны.
+confirmation:
+  remove:
+    rule: Вы уверены, что хотите удалить это правило? Это действие отменить невозможно
+flash:
+  rule:
+    removed: Роль успешно удалена
+    impacted_product_count: Вычисление количества продуктов затрагиваемых правилами начато. Вы будете уведомлены, когда это будет сделано.
+    executed: Начато выполнение правила. Вы будете уведомлены, когда это будет сделано.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Настройки правил

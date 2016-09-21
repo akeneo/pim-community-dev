@@ -4,5 +4,5 @@ pimee_dashboard:
       date: Date
       author: Auteur
       product: Produit
-      review: Revue
-      empty: Aucune proposition à revoir
+      review: Examiner
+      empty: "Il n'y a aucune proposition à examiner"
