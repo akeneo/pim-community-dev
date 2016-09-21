@@ -25,6 +25,7 @@ pimee_catalog_rule:
           confirm_ok: OK
       mass_edit_action:
         confirm_title: Confirmación de cálculo
+        confirm_content: ¿Está seguro que desea calcular los productos afectados por la regla?
         confirm_ok: OK
       mass_action:
         execute:
@@ -47,5 +48,6 @@ confirmation:
 flash:
   rule:
     removed: Regla eliminada con éxito
+    impacted_product_count: La acción en bloque para ejecutar las reglas seleccionadas ha sido lanzada. Será notificado una vez finalizada.
     executed: La ejecución de la regla ha sido lanzada. Será notificado una vez finalizada.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuración de reglas

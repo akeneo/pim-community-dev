@@ -1,9 +1,43 @@
+View the product: Просмотреть продукт
+pimee_enrich.product_history.action.revert: Вернуться к этой версии
+permission-changes:
+  category:
+    grant: 'Группа <strong>{{ group }} будет {{ permission }}</strong> в этой категории'
+    revoke: 'Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой категории'
+  locale:
+    grant: 'Группа <strong>{{ group }} будет {{ permission }}</strong> в этой локали'
+    revoke: 'Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой локали'
+  attribute group:
+    grant: 'Группа <strong>{{ group }} будет {{ permission }}</strong> в этой группе атрибутов'
+    revoke: 'Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой группе атрибутов'
+  job profile:
+    grant: 'Группа <strong>{{ group }} будет {{ permission }}</strong>'
+    revoke: 'Группа <strong>{{ group }} не будет {{ permission }}</strong>'
 pimee_enrich:
   entity:
     product:
+      history:
+        published: Опубликован
+        revert: Восстановить
+      smart_attribute:
+        come_from: 'Этот атрибут может обновляться по правилу:'
+      btn:
+        publish: Опубликовать
+        publish_this_version: Опубликовать эту версию
+        unpublish: Отменить публикацию
+        save_draft: Сохранить черновик
+      flash:
+        product_unpublished: Продукт успешно снят с публикации
+        product_published: Продукт успешно опубликован
+        product_not_published: Не удалось опубликовать этот продукт
+        product_not_unpublished: Не удалось снять с публикации этот продукт
+        product_reverted: Продукт успешно восстановлен
       meta:
+        published: Опубликованная версия
+        owner_groups: Группы владельцев
+        draft_status: Статус черновика
         draft:
-          in_progress: В процессе
+          in_progress: В ходе выполнения
           sent_for_approval: В ожидании утверждения
           working_copy: Рабочая копия
       tab:
@@ -12,9 +46,52 @@ pimee_enrich:
           messages:
             approve:
               success: Предложение было успешно применено.
+              error:
+                The proposal can't be applied due to the following error:
+                  - ошибка
             reject:
               success: Это предложение было отклонено.
+            remove:
+              success: Предложение было удалено.
+      confirmation:
+        revert:
+          title: Подтверждение восстановления
+          content: Вы уверены, что хотите вернуться к этой версии продукта?
+        publish:
+          title: Опубликовать этот продукт
+          content: Вы действительно хотите опубликовать этот продукт?
+        unpublish:
+          title: Снять продукт с публикации
+          content: Вы действительно хотите снять этот продукт с публикации?
+      info:
+        update_successful: Рабочая копия продукта была обновлена
+      copy:
+        source:
+          working_copy: Рабочая копия
+          draft: Мои черновики
+          draft_of: 'Черновики пользователя {{ author }}'
     product_draft:
+      info:
+        update_successful: Черновик продукта успешно сохранен
+        update_failed: Черновик продукта не обновлен
+        value_modified: Это значение изменяется текущим черновиком
+      flash:
+        sent_for_approval: Черновик продукта отправлен на утверждение
+        draft_not_sendable: Невозможно отправить черновик на утверждение
+      btn:
+        send_for_approval: Отправить на утверждение
+        sent_for_approval: Отправить на утверждение
       modal:
+        accept_proposal: Принять предложение
+        accept_selected_proposal: Принять выбранные предложения
         reject_proposal: Отклонить предложение
+        reject_selected_proposal: Отклонить выбранные предложения
+        remove_proposal: Удалить предложение
+        send_for_approval: Отправить на утверждение
         cancel: Отмена
+        confirm: Отправить
+        title: 'Комментировать ваше предложение (необязательно - 255 символов макс.)'
+        characters: знаков
+      confirmation:
+        discard_changes: Несохраненные изменения будут потеряны. Вы уверены, что хотите отправить черновик для утверждения без несохраненных изменений?
+        discard_changes_title: Вы уверены, что вы хотите отправить этот черновик?

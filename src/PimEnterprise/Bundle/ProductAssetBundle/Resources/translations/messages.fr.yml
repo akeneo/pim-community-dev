@@ -153,7 +153,7 @@ pim_enrich:
       description: "Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera perdu"
       success_flash: La (les) ressource(s) ont été déplacées dans les catégories sélectionnées
       launched_flash: |-
-        L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+        L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     add-tags-to-assets:
       label: Ajouter des mots clés aux ressources
       description: Les mots clés seront ajoutés aux ressources. Les mots clés inconnus seront créés.

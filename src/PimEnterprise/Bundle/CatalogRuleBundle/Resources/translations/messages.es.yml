@@ -3,13 +3,20 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         delete: Eliminar
+        execute: Ejecutar
       title: Reglas
       column:
         code: Código
         conditions: Condición
         actions: Acción
         impacted_product_count:
+          label: Productos afectados
+          count: '{0,1}%count% producto afectado|]1,Inf[%count% productos afectados'
           no_yet_calculated: Aún no calculados
+      mass_edit_action:
+        impacted_product_count: Calcular los productos afectados
+        execute: Ejecutar las reglas seleccionadas
+        delete: Eliminar la(s) regla(s) seleccionada(s)
   actions:
     type:
       copy: 'Entonces %from_field% es copiado en %to_field%'
@@ -17,6 +24,7 @@ pimee_catalog_rule:
       set: 'Entonces %value% es establecido en %field%'
       set_value: 'Entonces %value% es establecido en %field%'
       add: 'Entonces %value% es agregado en %field%'
+      remove: 'Entonces %value% es elimiado de %field%'
   condition:
     label: 'Si %field% %operator% %value%'
     operators:
@@ -25,6 +33,7 @@ pimee_catalog_rule:
       CONTAINS: contiene
       DOES NOT CONTAIN: no contiene
       EMPTY: está vacía
+      NOT EMPTY: no está vacío
       IN: en
       NOT IN: no en
       IN CHILDREN: en descendiente
@@ -45,6 +54,8 @@ pimee_catalog_rule:
     rule:
       view_permissions: Ver reglas
       delete_permissions: Eliminar reglas
+      impacted_product_count_permissions: Calcular los productos afectados por las reglas
+      execute_permissions: Ejecutar reglas
   attribute:
     tab:
       rule.title: Reglas
@@ -66,9 +77,19 @@ pimee_catalog_rule:
     rule_definition_processor.title: Procesador de reglas de importación de productos
     product_rule_definition_writer.title: Editor de reglas de importación de productos
     rules_execution.title: Ejecución de las reglas
+  notification:
+    rule:
+      executed: Ejecución de la(s) regla(s) finalizada
+      launched: La ejecución de la(s) regla(s) ha sido lanzada. Será notificado una vez finalizada.
+    mass_edit_rule:
+      success: Cálculo de productos afectados por las reglas finalizado
+      error: Un error ocurrió durante el cálculo de los productos afectados por la(s) regla(s)
   popin:
     execute_rules:
       confirm_title: Confirmación de ejecución
+      confirm_content: ¿Está seguro que desea ejecutar todas las reglas? (esto puede tomar algún tiempo)
+btn:
+  Execute rules: Ejecutar reglas
 rule: Configuración de reglas
 mass_edit_rule: Configuración de reglas
 job_execution.summary.rule_calculated: Número de reglas
@@ -80,6 +101,7 @@ batch_jobs:
     label: Exportación de regla en YAML
     export.label: Exportación de regla
   rule_impacted_product_count:
+    label: Productos afectados por las reglas
     perform.label: Cuenta de productos afectados
   csv_product_import_with_rules:
     label: Importar productos en CSV con reglas
