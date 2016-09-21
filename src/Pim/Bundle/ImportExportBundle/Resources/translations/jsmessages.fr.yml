@@ -1,7 +1,7 @@
 job_execution:
   summary:
-    display_item: Voir plus
-    hide_item: Voir moins
+    display_item: "Afficher l'élément"
+    hide_item: "Masquer l'élément"
 pim_connector:
   export:
     categories:
