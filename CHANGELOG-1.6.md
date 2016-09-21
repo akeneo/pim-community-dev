@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-5947: Add default file path in new export jobs
 - PIM-5964: Index category labels by locale code in channel normalization
 - PIM-5968: Fix default translation for attribute options when value is null
 - PIM-5897: Fix the does not contain filter to filter on product without product values
@@ -25,7 +26,6 @@
 
 ## Bug fixes
 
-- PIM-5947: Add default file path in new export jobs 
 - PIM-5935: Fix view all button in dashboard
 - PIM-5945: Fix tabs on user profile, DOM was not well structured
 - TIP-568: Detach version entity to improve performances on products import
