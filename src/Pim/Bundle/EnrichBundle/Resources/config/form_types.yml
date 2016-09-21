@@ -136,7 +136,6 @@ services:
     pim_enrich.form.type.group:
         class: '%pim_enrich.form.type.group.class%'
         arguments:
-            - '@pim_catalog.repository.product'
             - '%pim_catalog.entity.attribute.class%'
             - '%pim_catalog.entity.group.class%'
         tags:
@@ -145,7 +144,6 @@ services:
     pim_enrich.form.type.variant_group:
         class: '%pim_enrich.form.type.variant_group.class%'
         arguments:
-            - '@pim_catalog.repository.product'
             - '%pim_catalog.entity.attribute.class%'
             - '%pim_catalog.entity.group.class%'
         calls:

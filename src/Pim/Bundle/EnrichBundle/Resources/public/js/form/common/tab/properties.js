@@ -1,11 +1,18 @@
 'use strict';
 
+/**
+ * Module used to display a simple properties tab
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 define([
         'underscore',
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/variant-group/tab/properties',
+        'text!pim/template/form/tab/properties',
         'jquery.select2'
     ],
     function (
@@ -22,10 +29,19 @@ define([
             /**
              * {@inheritdoc}
              */
+            initialize: function (config) {
+                this.config = config.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
-                    label: __('pim_enrich.form.variant_group.tab.properties.title')
+                    label: __(this.config.label)
                 });
 
                 return BaseForm.prototype.configure.apply(this, arguments);

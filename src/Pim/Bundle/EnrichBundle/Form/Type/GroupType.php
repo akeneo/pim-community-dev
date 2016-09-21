@@ -20,9 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class GroupType extends AbstractType
 {
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
-
     /** @var string */
     protected $attributeClass;
 
@@ -35,13 +32,11 @@ class GroupType extends AbstractType
     /**
      * Constructor
      *
-     * @param ProductRepositoryInterface $productRepository
-     * @param string                     $attributeClass
-     * @param string                     $dataClass
+     * @param string $attributeClass
+     * @param string $dataClass
      */
-    public function __construct(ProductRepositoryInterface $productRepository, $attributeClass, $dataClass)
+    public function __construct($attributeClass, $dataClass)
     {
-        $this->productRepository = $productRepository;
         $this->attributeClass = $attributeClass;
         $this->dataClass = $dataClass;
     }
@@ -56,10 +51,6 @@ class GroupType extends AbstractType
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
 
         $this->addTypeField($builder);
-
-        $this->addLabelField($builder);
-
-        $this->addProductsField($builder);
 
         foreach ($this->subscribers as $subscriber) {
             $builder->addEventSubscriber($subscriber);
@@ -118,55 +109,5 @@ class GroupType extends AbstractType
                 ]
             )
             ->addEventSubscriber(new DisableFieldSubscriber('type', 'getType'));
-    }
-
-    /**
-     * Add label field
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addLabelField(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'label',
-            'pim_translatable_field',
-            [
-                'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
-                'property_path'     => 'translations'
-            ]
-        );
-    }
-
-    /**
-     * Add products field with append/remove hidden fields
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addProductsField(FormBuilderInterface $builder)
-    {
-        $builder
-            ->add(
-                'appendProducts',
-                'pim_object_identifier',
-                [
-                    'repository' => $this->productRepository,
-                    'required'   => false,
-                    'mapped'     => false,
-                    'multiple'   => true
-                ]
-            )
-            ->add(
-                'removeProducts',
-                'pim_object_identifier',
-                [
-                    'repository' => $this->productRepository,
-                    'required'   => false,
-                    'mapped'     => false,
-                    'multiple'   => true
-                ]
-            )
-            ->addEventSubscriber(new BindGroupProductsSubscriber($this->productRepository));
     }
 }

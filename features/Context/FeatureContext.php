@@ -16,6 +16,7 @@ use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
 use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
 use Pim\Behat\Context\Domain\Enrich\PanelContext;
 use Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext;
+use Pim\Behat\Context\Domain\Enrich\ProductGroupContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportBuilderContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
@@ -76,6 +77,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('domain-product-association-tab', new AssociationTabContext());
         $this->useContext('domain-tree', new TreeContext());
         $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('domain-group', new ProductGroupContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
         $this->useContext('job', new JobContext());
         $this->useContext('storage-product', new ProductStorage());

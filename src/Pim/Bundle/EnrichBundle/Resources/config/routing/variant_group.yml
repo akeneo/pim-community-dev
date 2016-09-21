@@ -44,7 +44,7 @@ pim_enrich_variant_group_rest_post:
 
 pim_enrich_variant_group_rest_remove:
     path: /rest/{code}
-    defaults: { _controller: pim_enrich.controller.rest.variant_group:removeAction }
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:removeAction, _format: json }
     requirements:
         code: '[a-zA-Z0-9_]+'
     methods: [DELETE]

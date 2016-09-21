@@ -220,7 +220,6 @@ services:
             - '@pim_enrich.form.handler.group'
             - '@pim_enrich.form.group'
             - '@pim_catalog.factory.group'
-            - '@pim_catalog.remover.group'
 
     pim_enrich.controller.association_type:
         scope: request
@@ -369,6 +368,12 @@ services:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.repository.product'
             - '@pim_internal_api_serializer'
+            - '@pim_user.context.user'
+            - '@pim_catalog.updater.group'
+            - '@pim_catalog.validator.product'
+            - '@pim_enrich.normalizer.group_violation'
+            - '@pim_catalog.saver.group'
+            - '@pim_catalog.remover.group'
 
     pim_enrich.controller.rest.navigation_history:
         class: '%pim_enrich.controller.rest.navigation_history.class%'

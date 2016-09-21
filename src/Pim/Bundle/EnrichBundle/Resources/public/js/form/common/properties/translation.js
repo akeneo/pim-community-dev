@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Module used to display the localized properties of a variant group
+ * Module used to display the localized properties of an object
  *
- * @author    Clement Gautier <clement.gautier@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -11,7 +11,7 @@ define([
         'underscore',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/variant-group/tab/properties/translation'
+        'text!pim/template/form/properties/translation'
     ],
     function (
         _,
@@ -26,6 +26,15 @@ define([
                 'change .label-field': 'updateModel'
             },
             validationErrors: {},
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                this.config = config.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -65,7 +74,9 @@ define([
                     this.$el.html(this.template({
                         model: this.getFormData(),
                         locales: locales,
-                        errors: this.validationErrors
+                        errors: this.validationErrors,
+                        label: this.config.label,
+                        fieldBaseId: this.config.fieldBaseId
                     }));
                 }.bind(this));
 

@@ -81,10 +81,12 @@ extensions:
             labelBy: pim_enrich.entity.variant_group.meta.updated_by
 
     pim-variant-group-edit-form-product-count:
-        module: pim/variant-group-edit-form/meta/product-count
+        module: pim/group-edit-form/meta/product-count
         parent: pim-variant-group-edit-form
         targetZone: meta
         position: 110
+        config:
+            productCountLabel: pim_enrich.entity.variant_group.meta.product_count
 
     pim-variant-group-edit-form-attributes:
         module: pim/form/common/attributes
@@ -170,10 +172,12 @@ extensions:
         position: 110
 
     pim-variant-group-edit-form-properties:
-        module: pim/variant-group-edit-form/properties
+        module: pim/common/tab/properties
         parent: pim-variant-group-edit-form-form-tabs
         targetZone: container
         position: 100
+        config:
+            label: 'pim_enrich.form.variant_group.tab.properties.title'
 
     pim-variant-group-edit-form-properties-general:
         module: pim/variant-group-edit-form/properties/general
@@ -182,22 +186,29 @@ extensions:
         position: 100
 
     pim-variant-group-edit-form-properties-translation:
-        module: pim/variant-group-edit-form/properties/translation
+        module: pim/common/properties/translation
         parent: pim-variant-group-edit-form-properties
         targetZone: accordion
         position: 110
+        config:
+            label: 'pim_enrich.form.variant_group.tab.properties.label_translations'
+            fieldBaseId: 'pim_enrich_variant_group_form_label_'
 
     pim-variant-group-edit-form-history:
         module: pim/common/tab/history
         parent: pim-variant-group-edit-form-form-tabs
         targetZone: container
+        aclResourceId: pim_enrich_variant_group_history
         position: 110
         config:
             class: 'group'
             title: 'pim_enrich.form.variant_group.tab.history.title'
 
     pim-variant-group-edit-form-products:
-        module: pim/variant-group-edit-form/products
+        module: pim/group-edit-form/products
         parent: pim-variant-group-edit-form-form-tabs
         targetZone: container
         position: 80
+        config:
+            label: 'pim_enrich.form.variant_group.tab.products.title'
+            gridId: 'product-variant-group-grid'

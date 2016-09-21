@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Module used to display the product datagrid in a variant group
+ * Module used to display the product datagrid in a group
  *
- * @author    Clement Gautier <clement.gautier@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -27,10 +27,19 @@ define([
             /**
              * {@inheritdoc}
              */
+            initialize: function (config) {
+                this.config = config.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
-                    label: __('pim_enrich.form.variant_group.tab.products.title')
+                    label: __(this.config.label)
                 });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -42,7 +51,7 @@ define([
             render: function () {
                 if (!this.productGroupGrid) {
                     this.productGroupGrid = new Grid(
-                        'product-variant-group-grid',
+                        this.config.gridId,
                         {
                             locale: UserContext.get('catalogLocale'),
                             currentGroup: this.getFormData().meta.id,

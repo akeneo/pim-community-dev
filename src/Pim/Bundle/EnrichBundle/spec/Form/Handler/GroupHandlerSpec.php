@@ -35,10 +35,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $saver,
         GroupInterface $group,
         GroupTypeInterface $groupType,
-        ProductInterface $product,
-        ProductInterface $addedProduct,
-        FormInterface $addedForm,
-        FormInterface $removedForm
+        ProductInterface $product
     ) {
         $form->setData($group)->shouldBeCalled();
         $request->isMethod('POST')->willReturn(true);
@@ -49,12 +46,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $form->submit($request)->shouldBeCalled();
         $form->isValid()->willReturn(true);
 
-        $form->get('appendProducts')->willReturn($addedForm);
-        $form->get('removeProducts')->willReturn($removedForm);
-        $addedForm->getData()->willReturn([$addedProduct]);
-        $removedForm->getData()->willReturn([]);
-
-        $saver->save($group, ['add_products' => [$addedProduct], 'remove_products' => []])->shouldBeCalled();
+        $saver->save($group, ['copy_values_to_products' => true])->shouldBeCalled();
 
         $this->process($group)->shouldReturn(true);
     }
@@ -65,10 +57,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $saver,
         GroupInterface $group,
         GroupTypeInterface $groupType,
-        ProductInterface $product,
-        ProductInterface $addedProduct,
-        FormInterface $addedForm,
-        FormInterface $removedForm
+        ProductInterface $product
     ) {
         $form->setData($group)->shouldBeCalled();
         $request->isMethod('POST')->willReturn(true);
@@ -80,14 +69,9 @@ class GroupHandlerSpec extends ObjectBehavior
         $form->submit($request)->shouldBeCalled();
         $form->isValid()->willReturn(true);
 
-        $form->get('appendProducts')->willReturn($addedForm);
-        $form->get('removeProducts')->willReturn($removedForm);
-        $addedForm->getData()->willReturn([$addedProduct]);
-        $removedForm->getData()->willReturn([]);
-
         $saver->save(
             $group,
-            ['add_products' => [$addedProduct], 'remove_products' => [], 'copy_values_to_products' => true]
+            ['copy_values_to_products' => true]
         )->shouldBeCalled();
 
         $this->process($group)->shouldReturn(true);
@@ -109,32 +93,6 @@ class GroupHandlerSpec extends ObjectBehavior
 
         $form->isValid()->willReturn(false);
         $groupType->isVariant()->willReturn(false);
-
-        $group->getType()->willReturn($groupType);
-        $saver->save($group)->shouldNotBeCalled();
-        $this->process($group)->shouldReturn(false);
-    }
-
-    function it_reloads_variant_group_products_if_submit_fails(
-        $form,
-        $request,
-        $saver,
-        $repository,
-        GroupInterface $group,
-        ProductInterface $product,
-        GroupTypeInterface $groupType
-    ) {
-        $form->setData($group)->shouldBeCalled();
-        $request->isMethod('POST')->willReturn(true);
-
-        $group->getProducts()->willReturn([$product]);
-        $form->submit($request)->shouldBeCalled();
-
-        $form->isValid()->willReturn(false);
-        $groupType->isVariant()->willReturn(true);
-        $group->getId()->willReturn(123);
-        $repository->findAllForVariantGroup($group)->shouldBeCalled()->willReturn([]);
-        $group->setProducts([])->shouldBeCalled();
 
         $group->getType()->willReturn($groupType);
         $saver->save($group)->shouldNotBeCalled();

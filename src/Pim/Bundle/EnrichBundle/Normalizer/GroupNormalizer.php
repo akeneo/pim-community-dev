@@ -84,11 +84,14 @@ class GroupNormalizer implements NormalizerInterface
             $this->versionNormalizer->normalize($lastVersion, 'internal_api') :
             null;
 
+        $form = $group->getType()->isVariant() ? 'pim-variant-group-edit-form' : 'pim-group-edit-form';
+        $modelType = $group->getType()->isVariant() ? 'variant_group' : 'group';
+
         $normalizedGroup['meta'] = [
             'id'                => $group->getId(),
-            'form'              => 'pim-variant-group-edit-form',
+            'form'              => $form,
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'model_type'        => 'variant_group',
+            'model_type'        => $modelType,
             'created'           => $firstVersion,
             'updated'           => $lastVersion,
         ];

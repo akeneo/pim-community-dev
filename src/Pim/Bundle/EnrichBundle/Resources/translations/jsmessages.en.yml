@@ -232,6 +232,22 @@ pim_enrich:
                 created_by: Created by
                 updated: Updated
                 updated_by: Updated by
+        group:
+            title: Group
+            info:
+                deletion_successful: Group successfully deleted.
+                deletion_failed: Group could not be deleted.
+                update_successful: Group successfully updated.
+                update_failed: The group could not be updated.
+                field_not_ready: The group cannot be saved right now. The following fields are not ready: {{ fields }}
+            btn:
+                save: Save
+            meta:
+                product_count: Products
+                created: Created
+                created_by: Created by
+                updated: Updated
+                updated_by: Updated by
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
@@ -330,6 +346,18 @@ pim_enrich:
                     title: Products
                 attributes:
                     title: Attributes
+        group:
+            tab:
+                properties:
+                    title: Properties
+                    general: General properties
+                    code: Code
+                    type: Type
+                    label_translations: Label translations
+                history:
+                    title: History
+                products:
+                    title: Products
         common:
             tab:
                 attributes:
