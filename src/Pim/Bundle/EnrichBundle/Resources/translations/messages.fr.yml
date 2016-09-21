@@ -855,9 +855,9 @@ pim_mass_edit:
       warning: 'Action de masse <strong>%label%</strong> terminée avec quelques mises en garde'
       success: 'Action de masse <strong>%label%</strong> terminée'
     quick_export:
-      error: 'Exportation rapide <strong>%label%</strong> a échouée'
-      warning: 'Exportation rapide <strong>%label%</strong> terminée avec quelques mises en garde'
-      success: 'Exportation rapide <strong>%label%</strong> est terminée'
+      error: "L'export rapide <strong>%label%</strong> a échoué"
+      warning: "L'export rapide <strong>%label%</strong> est terminé avec quelques mises en garde"
+      success: "L'export rapide <strong>%label%</strong> est terminé"
 job_execution.summary:
   mass_edited: Édition en masse
   skip: Ignoré
