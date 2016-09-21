@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-5821: Apply rights on locale specific values during quick export
+- PIM-5978: Fix missing currencies
 
 # 1.6.2 (2016-09-02)
 
