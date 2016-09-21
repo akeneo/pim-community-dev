@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Tem a certeza que pretende eliminar este item?
+    item: Tem a certeza que pretende remover este item?
     association type: Tem certeza que deseja eliminar este tipo de associação?
     attribute: Tem certeza que deseja eliminar este atributo?
     family: Tem certeza que deseja eliminar esta família?
@@ -131,7 +131,6 @@ pim_enrich:
         from: De
         modified: Modificado
         property: Propriedade
-        actions: Ações
       info:
         deletion_successful: Produto eliminado com sucesso.
         deletion_failed: Não foi possível eliminar o produto.
