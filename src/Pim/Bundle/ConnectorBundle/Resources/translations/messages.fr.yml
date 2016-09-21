@@ -151,12 +151,12 @@ pim_connector:
       label: Format de date
       help: Spécifie le format de chaque colonne de type date dans le fichier, par exemple DD/MM/YYYY pour une date au format 31/04/2014.
 job_execution.summary:
-  read: lu
+  read: lu(s)
   read_lines: lignes lues
-  write: écrit
-  skip: ignoré
-  create: créé
-  process: traitées
+  write: écrit(s)
+  skip: ignoré(s)
+  create: créé(s)
+  process: traité(s)
   update_products: produits mis à jour
   process_products: produits traités
   skip_products: produits ignorés

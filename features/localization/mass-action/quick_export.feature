@@ -22,10 +22,10 @@ Feature: Quick export many products with localized attributes from datagrid
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                  |
-      | success | Exportation rapide CSV product quick export est terminée |
-    Then I go on the last executed job resume of "csv_product_quick_export"
-    And I should see "TERMINÉ"
+      | type    | message                                              |
+      | success | L'export rapide CSV product quick export est terminé |
+    When I go on the last executed job resume of "csv_product_quick_export"
+    Then I should see "TERMINÉ"
     And the path of the exported file of "csv_product_quick_export" should be "/tmp/products_export_en_US_mobile.csv"
     And exported file of "csv_product_quick_export" should contain:
     """
@@ -35,3 +35,4 @@ Feature: Quick export many products with localized attributes from datagrid
     sandals;summer_collection;red;;;1;sandals;;;;Sandals;5;5;75;;;40;;;0,50;GRAM
     pump;summer_collection;blue;;;1;;;;;Pump;15;20;;;;41;;;;
     """
+
