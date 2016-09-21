@@ -107,14 +107,16 @@ Feature: Revert a product to a previous version
       | group      | attribute | value | locale | scope |
       | hh_jackets | name      | a     | en_US  |       |
     Then I am on the "hh_jackets" variant group page
+    Then the grid should contain 1 elements
+    And I should see products helly-hansen
     And I check the row "helly-hansen"
-    And I press the "Save" button
     # TODO: see with @nidup => temporary fix (broken since the deferred explicit persist of Doctrine)
-    And I press the "Save" button
+    And I save the variant group
+    Then I should not see the text "There are unsaved changes."
+    And the row "helly-hansen" should be checked
     Then I am on the "helly-hansen" product page
     And the history of the product "helly-hansen" has been built
     And I open the history
-    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then I should see the flash message "Product can not be reverted because it belongs to a variant group"
 
