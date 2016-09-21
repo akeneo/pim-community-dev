@@ -1,6 +1,8 @@
 Job: Tarefa
 Connector: Conector
 pim_import_export:
+  job: Tarefa
+  connector: Conector
   status:
     - Pronto
   batch_status:
