@@ -19,9 +19,9 @@ oro.user.grid.users:
     email: Email
     firstName: Prénom
     lastName: Nom
-    createdAt: Crée le
+    createdAt: Créé le
     updatedAt: Mis à jour le
-    enabled: Statut
+    enabled: État
 oro.user.grid.roles:
   columns:
     label: Libellé
@@ -56,33 +56,33 @@ Add another email: Ajouter un autre email
 Catalog locale: Locale du catalogue
 Catalog scope: Portée du catalogue
 Default tree: Arborescence par défaut
-Business Units: Entité commerciale
+Business Units: Entités commerciales
 Email synchronization settings: Paramètres de synchronisation de messagerie
 Host: Hôte
 Port: Port
 Ssl: 'SSL '
 Last logged in: Dernière connexion
-Login count: Nombre de connexion
+Login count: Nombre de connexions
 Additional Information: Informations complémentaires
 Interfaces: Interfaces
 Basic Information: Informations générales
-Contact Information: Information Contact
+Contact Information: Information de contact
 User name: "Nom d'utilisateur"
 Birthday: Date d’anniversaire
 API key: Clé API
 Ui locale: "Langue de l'interface"
 UI locale: "Langue de l'interface"
 User salt: Sel de hachage
-Current password: Mot de passe actuel 
-New password: Nouveau mot de passe 
+Current password: Mot de passe actuel
+New password: Nouveau mot de passe
 Repeat new password: Nouveau mot de passe (répéter)
 Generate key: Générer une clé
 Primary: principal
 Removed user: Utilisateur supprimé
 user:
-  product_grid_filters: Filtres de la grille produits
+  product_grid_filters: Filtres de la grille des produits
   default_product_grid_view:
-    label: Vue par défaut de la grille produits
+    label: Vue par défaut de la grille des produits
   default_grid_view:
     none: Aucune
 Role: Rôle
@@ -95,7 +95,7 @@ Has role: A le rôle
 role:
   title: rôle
   overview: rôle
-  edit: Editer un rôle
+  edit: Modifier un rôle
   create: Créer un rôle
 btn.create.role: Créer un rôle
 rights:
@@ -109,22 +109,22 @@ oro_security:
     user:
       view: Liste des utilisateurs
       create: Créer un utilisateur
-      edit: Editer les utilisateurs
+      edit: Modifier les utilisateurs
       delete: Supprimer un utilisateur
     role:
       view: Liste des rôles
       create: Créer un rôle
-      edit: Editer un rôle
+      edit: Modifier un rôle
       delete: Supprimer un rôle
     group:
       view: "Liste des groupes d'utilisateurs"
       create: "Créer un groupe d'utilisateurs"
-      edit: "Editer des groupes d'utilisateurs"
+      edit: "Modifier les groupes d'utilisateurs"
       delete: "Supprimer un groupe d'utilisateurs"
 (default): Autorisations par défaut sur les entités
 VIEW: Voir
 CREATE: Créer
-EDIT: Editer
+EDIT: Modifier
 DELETE: Supprimer
 ASSIGN: Assigner
 SHARE: Partager
@@ -148,6 +148,6 @@ Forgot your password?: Mot de passe oublié ?
 Username or Email: "Nom d'utilisateur ou Email"
 Forgot Password: Mot de passe oublié
 Request: Demande
-Check Email: Vérifier Email
-password_reset_email_sent: 'Un Email a été envoyé à %email%. Il contient un lien, vous devez cliquer sur ce lien pour réinitialiser votre mot de passe.'
+Check Email: "Vérifier l'email"
+password_reset_email_sent: 'Un email a été envoyé à %email%. Il contient un lien, vous devez cliquer sur ce lien pour réinitialiser votre mot de passe.'
 Go to homepage: "Aller à la page d'accueil"

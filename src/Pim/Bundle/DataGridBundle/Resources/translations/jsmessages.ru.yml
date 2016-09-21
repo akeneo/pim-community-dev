@@ -7,7 +7,7 @@ Selected items were not removed.: Выбранные элементы не бы�
 Please, select items to remove.: Пожалуйста, выберите элементы для удаления.
 Cannot delete item.: Не удается удалить элемент.
 Refresh Confirmation: Подтверждение обновления
-Your local changes will be lost. Are you sure you want to refresh grid?: Ваши локальные изменения будут потеряны. Вы действительно хотите обновить сетку таблицы?
+Your local changes will be lost. Are you sure you want to refresh grid?: Ваши локальные изменения будут потеряны. Вы уверены, что вы хотите, чтобы обновить сетку?
 Reset Confirmation: Подтверждение сброса
 Your local changes will be lost. Are you sure you want to reset grid?: Ваши локальные изменения будут потеряны. Вы действительно хотите произвести сброс сетки таблицы?
 Confirmation: Подтверждение
@@ -42,7 +42,9 @@ oro_datagrid.select.none: Ничего
 pim.grid.ajax_choice_filter.label_empty: пусто
 pim.grid.choice_filter:
   label_empty: пусто
+  label_in_list: в списке
 Available Columns: Доступные столбцы
+Displayed Columns: Выбранные столбцы
 datagrid_view.columns.min_message: Необходимо выбрать по крайней мере один столбец для отображения
 pim_datagrid:
   column_configurator:
@@ -51,6 +53,7 @@ pim_datagrid:
     all_groups: Все группы
     search: Поиск
     clear: Очистить
+    displayed_columns: Выбранные столбцы
     apply: Применить
     cancel: Отмена
     remove_column: Удалить
@@ -58,10 +61,13 @@ pim_datagrid:
     delete:
       confirm_title: Подтверждение удаления
       confirm_ok: Подтвердить
+      empty_selection: Не выбрано ни одного продукта
 pim.grid.mass_action.quick_export.title: Быстрый экспорт
 pim.grid.mass_action.quick_export.launched: Экспорт запущен
 pim.grid.action.launch.title: Запуск
 pim.grid.action.show.title: Показать
-Please select view: Пожалуйста выберите вид
+Please select view: Пожалуйста выберите представление
 Loading...: Загрузка...
-View: Вид
+View: Представление
+from: от
+to: до

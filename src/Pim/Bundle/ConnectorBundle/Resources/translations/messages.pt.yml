@@ -29,89 +29,132 @@ pim_connector:
     writer.title: Armazenamento da entidade
     csv_writer.title: Escritor CSV
   export:
-    delimiter:
-      label: Delimitador
-      help: Um carácter usado para definir o delimitador de campo
-    enclosure:
-      label: Invólucro
-      help: Caractere usado para definir o invólucro do campo
-    lines_per_files:
-      label: Número de linhas por ficheiro
-      help: Definir o número limite de linhas por ficheiro
-    withHeader:
-      label: Com o cabeçalho
-      help: Imprimir ou não o nome da coluna
-    filePath:
-      label: Caminho do ficheiro
-      help: Onde escrever o ficheiro gerado no sistema de ficheiros
-    channel:
-      label: Canal
-      help: O canal que deseja exportar
-    locales:
-      label: Linguagens
-      help: As linguagens que deseja exportar
-      validation:
-        not_blank: Uma linguagem deve ser selecionada, por favor, escolha uma para exportar.
-    decimalSeparator:
-      label: Separador decimal
-      help: Determinar o separador decimal
-    dateFormat:
-      label: Formato de data
-      help: Determinar o formato dos campos de data
-    header:
-      label: Cabeçalho
-    families:
-      label: Família
-      help: As famílias que deseja exportar
-      placeholder: Escolha uma família
+    csv:
+      delimiter:
+        label: Delimitador
+        help: Um carácter usado para definir o delimitador de campo
+      enclosure:
+        label: Invólucro
+        help: Caractere usado para definir o invólucro do campo
+      withHeader:
+        label: Com o cabeçalho
+        help: Imprimir ou não o nome da coluna
+      filePath:
+        label: Caminho do ficheiro
+        help: Onde escrever o ficheiro gerado no sistema de ficheiros
+      decimalSeparator:
+        label: Separador decimal
+        help: Determinar o separador decimal
+      dateFormat:
+        label: Formato de data
+        help: Determinar o formato dos campos de data
+    xlsx:
+      lines_per_files:
+        label: Número de linhas por ficheiro
+        help: Definir o número limite de linhas por ficheiro
+      withHeader:
+        label: Com o cabeçalho
+        help: Imprimir ou não o nome da coluna
+      filePath:
+        label: Caminho do ficheiro
+        help: Onde escrever o ficheiro gerado no sistema de ficheiros
+      decimalSeparator:
+        label: Separador decimal
+        help: Determinar o separador decimal
+      dateFormat:
+        label: Formato de data
+        help: Determinar o formato dos campos de data
+    yml:
+      filePath:
+        label: Caminho do ficheiro
+        help: Onde escrever o ficheiro gerado no sistema de ficheiros
   import:
-    enabled:
-      label: Ativar o produto
-      help: Ativar ou não o produto importado
-    categoriesColumn:
-      label: Coluna das categorias
-      help: Nome da coluna das categorias
-    familyColumn:
-      label: Coluna da família
-      help: Nome da coluna da família
-    groupsColumn:
-      label: Coluna dos groupos
-      help: Nome da coluna dos grupos
-    filePath:
-      label: Ficheiro
-      help: O ficheiro CSV para importar
-    yamlFilePath:
-      label: Ficheiro
-      help: O ficheiro YAML para importar
-    uploadAllowed:
-      label: Permitir o upload do ficheiro
-      help: Deve ou não permitir o upload to ficheiro diretamente
-    delimiter:
-      label: Delimitador
-      help: Caractere usado para definir o delimitador de campo no ficheiro CSV
-    enclosure:
-      label: Invólucro
-      help: Caractere usado para definir o invólucro do campo
-    escape:
-      label: Escape
-      help: Um caractere usado para definir o campo de escape
-    circularRefsChecked:
-      label: Verificar referências circulares
-      help: Se sim, os dados serão processados para se certificar de que não há nenhuma referência circular entre as categorias
-    realTimeVersioning:
-      label: Atulização do histórico a tempo real
-      help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
-    copyValuesToProducts:
-      label: Copiar valores da variante de grupo para os produtos
-      help: Significa que os produtos são automaticamente atualizados com valores do grupo variante, pode ser desligado apenas para atualizar o grupo variante
-    enabledComparison:
-      label: Comparar valores
-      help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
-    decimalSeparator:
-      label: Separador decimal
-      help: Caractere usado para definir o separador de campo para decimal
-    dateFormat:
-      label: Formato de data
+    csv:
+      enabled:
+        label: Ativar o produto
+        help: Ativar ou não o produto importado
+      categoriesColumn:
+        label: Coluna das categorias
+        help: Nome da coluna das categorias
+      familyColumn:
+        label: Coluna da família
+        help: Nome da coluna da família
+      groupsColumn:
+        label: Coluna dos groupos
+        help: Nome da coluna dos grupos
+      filePath:
+        label: Ficheiro
+        help: O ficheiro CSV para importar
+      uploadAllowed:
+        label: Permitir o upload do ficheiro
+        help: Deve ou não permitir o upload to ficheiro diretamente
+      delimiter:
+        label: Delimitador
+        help: Caractere usado para definir o delimitador de campo no ficheiro CSV
+      enclosure:
+        label: Invólucro
+        help: Caractere usado para definir o invólucro do campo
+      escape:
+        label: Escape
+        help: Um caractere usado para definir o campo de escape
+      circularRefsChecked:
+        label: Verificar referências circulares
+        help: Se sim, os dados serão processados para se certificar de que não há nenhuma referência circular entre as categorias
+      realTimeVersioning:
+        label: Atulização do histórico a tempo real
+        help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
+      copyValuesToProducts:
+        label: Copiar valores da variante de grupo para os produtos
+        help: Significa que os produtos são automaticamente atualizados com valores do grupo variante, pode ser desligado apenas para atualizar o grupo variante
+      enabledComparison:
+        label: Comparar valores
+        help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
+      decimalSeparator:
+        label: Separador decimal
+        help: Caractere usado para definir o separador de campo para decimal
+      dateFormat:
+        label: Formato de data
+    xlsx:
+      enabled:
+        label: Ativar o produto
+        help: Ativar ou não o produto importado
+      categoriesColumn:
+        label: Coluna das categorias
+        help: Nome da coluna das categorias
+      familyColumn:
+        label: Coluna da família
+        help: Nome da coluna da família
+      groupsColumn:
+        label: Coluna dos groupos
+        help: Nome da coluna dos grupos
+      filePath:
+        label: Ficheiro
+      uploadAllowed:
+        label: Permitir o upload do ficheiro
+        help: Deve ou não permitir o upload to ficheiro diretamente
+      circularRefsChecked:
+        label: Verificar referências circulares
+        help: Se sim, os dados serão processados para se certificar de que não há nenhuma referência circular entre as categorias
+      realTimeVersioning:
+        label: Atulização do histórico a tempo real
+        help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
+      copyValuesToProducts:
+        label: Copiar valores da variante de grupo para os produtos
+        help: Significa que os produtos são automaticamente atualizados com valores do grupo variante, pode ser desligado apenas para atualizar o grupo variante
+      enabledComparison:
+        label: Comparar valores
+        help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
+      decimalSeparator:
+        label: Separador decimal
+        help: Caractere usado para definir o separador de campo para decimal
+      dateFormat:
+        label: Formato de data
+    yml:
+      filePath:
+        label: Ficheiro
+      uploadAllowed:
+        label: Permitir o upload do ficheiro
+        help: Deve ou não permitir o upload to ficheiro diretamente
 job_execution.summary:
   read: ler
   read_lines: linhas lidas
@@ -184,6 +227,16 @@ batch_jobs:
     label: Importar variante do grupo para o CSV
     validation.label: Validação do ficheiro
     import.label: Importar variante do grupo
+  csv_channel_import:
+    validation.label: Validação do ficheiro
+  csv_locale_import:
+    validation.label: Validação do ficheiro
+  csv_attribute_group_import:
+    validation.label: Validação do ficheiro
+  csv_currency_import:
+    validation.label: Validação do ficheiro
+  csv_group_type_import:
+    validation.label: Validação do ficheiro
   xlsx_category_import:
     label: Importação de categorias por XLSX
     validation.label: Validação do ficheiro
@@ -241,3 +294,13 @@ batch_jobs:
   xlsx_association_type_export:
     label: Exportação de tipos de associação em XLSX
     export.label: Exportação de tipos de associação em XLSX
+  xlsx_channel_import:
+    validation.label: Validação do ficheiro
+  xlsx_locale_import:
+    validation.label: Validação do ficheiro
+  xlsx_attribute_group_import:
+    validation.label: Validação do ficheiro
+  xlsx_currency_import:
+    validation.label: Validação do ficheiro
+  xlsx_group_type_import:
+    validation.label: Validação do ficheiro

@@ -117,6 +117,17 @@ pim_enrich:
       label: Clasificar los productos en categorías
       description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
       success_flash: Los producto(s) han sido clasificados en las categorías seleccionadas
+      launched_flash: 'La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.'
+    classify-move:
+      label: Mueve productos a categorías
+      description: Los productos se colocarán en las siguientes categorías, la posición actual se perderá.
+      success_flash: El/los producto(s) ha(n) sido trasladado(s) a las categorías seleccionadas
+      launched_flash: 'La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.'
+    classify-remove:
+      label: Quitar productos de categorías
+      description: Se eliminarán los productos de las siguientes categorías.
+      success_flash: El/los producto(s) se ha(n) quitado de las categorías seleccionadas
+      launched_flash: 'La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.'
     change-family:
       label: Cambiar la familia de los productos
       description: La familia de los productos seleccionados se cambiará a la familia elegida
@@ -845,6 +856,7 @@ job_execution.summary:
 pim_mass_edit_execution_show: Exclusiones de edición en masa | Detalles
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos comunes
 update_product_value.steps.update_product_value_processor.title: Actualizar el valor del producto
+remove_product_value.steps.update_product_value_processor.title: Quitar el valor del producto
 add_to_variant_group_clean.steps.excluded.title: Producto excluido
 add_to_variant_group_clean.steps.duplicated.title: Eje duplicado
 add_to_variant_group.steps.excluded.title: Producto excluido
