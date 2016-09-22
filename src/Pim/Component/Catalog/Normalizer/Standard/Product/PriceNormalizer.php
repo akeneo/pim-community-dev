@@ -24,7 +24,7 @@ class PriceNormalizer implements NormalizerInterface
         //TODO: at this point, $price->getData() = '45.32165' or '56.000000'
 
         return [
-            'data'     => $price->getData(),
+            'amount'   => $price->getData(),
             'currency' => $price->getCurrency(),
         ];
     }

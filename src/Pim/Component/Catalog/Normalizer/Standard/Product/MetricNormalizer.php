@@ -24,8 +24,8 @@ class MetricNormalizer implements NormalizerInterface
         //TODO: at this point, $metric->getData() = '45.32165' or '56.000000'
 
         return [
-            'data' => $metric->getData(),
-            'unit' => null !== $metric->getUnit() ?
+            'amount' => $metric->getData(),
+            'unit'   => null !== $metric->getUnit() ?
                 $metric->getUnit() :
                 $metric->getValue()->getAttribute()->getDefaultMetricUnit(),
         ];
