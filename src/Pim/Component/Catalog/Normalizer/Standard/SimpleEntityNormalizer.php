@@ -20,6 +20,8 @@ class SimpleEntityNormalizer implements NormalizerInterface
      */
     public function normalize($option, $format = null, array $context = [])
     {
+        // TODO: No check on the $option type variable ?
+        // Object does not ensure getCode() is defined
         return $option->getCode();
     }
 
