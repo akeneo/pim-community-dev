@@ -22,7 +22,6 @@ vendor
 composer.phar
 /cov
 bin
-behat.yml
 /phpspec.yml
 web/uploads/*
 web/uploads_test/*

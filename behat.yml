@@ -1,0 +1,64 @@
+default:
+    suites:
+        pim:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - Context\FeatureContext:
+                    -
+                        base_url: http://behat.ci/
+                        timeout: 50000
+                        window_width: 1280
+                        window_height: 1024
+                - Context\FixturesContext
+                - Context\CatalogConfigurationContext
+                - Context\WebUser
+                - Context\DataGridContext
+                - Context\CommandContext
+                - Context\NavigationContext:
+                    - http://behat.ci/
+                - Context\TransformationContext
+                - Context\AssertionContext
+                - Context\TechnicalContext
+                - Pim\Behat\Context\AttributeValidationContext
+                - Pim\Behat\Context\Domain\Collect\ImportProfilesContext
+                - Pim\Behat\Context\Domain\Enrich\AttributeTabContext
+                - Pim\Behat\Context\Domain\Enrich\CompletenessContext
+                - Pim\Behat\Context\Domain\Enrich\GridPaginationContext
+                - Pim\Behat\Context\Domain\Enrich\PanelContext
+                - Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext
+                - Pim\Behat\Context\Domain\Enrich\VariantGroupContext
+                - Pim\Behat\Context\Domain\Spread\ExportBuilderContext
+                - Pim\Behat\Context\Domain\Spread\ExportProfilesContext
+                - Pim\Behat\Context\Domain\Spread\XlsxFileContext
+                - Pim\Behat\Context\Domain\System\PermissionsContext
+                - Pim\Behat\Context\Domain\TreeContext
+                - Pim\Behat\Context\HookContext:
+                    - 1280
+                    - 1024
+                - Pim\Behat\Context\JobContext
+                - Pim\Behat\Context\Storage\FileInfoStorage
+                - Pim\Behat\Context\Storage\ProductStorage
+    extensions:
+        Behat\ChainedStepsExtension: ~
+        Behat\MinkExtension:
+            default_session: symfony2
+            javascript_session: selenium2
+            show_cmd: chromium-browser %s
+            sessions:
+                symfony2:
+                    symfony2: ~
+                selenium2:
+                    selenium2: ~
+            base_url: http://behat.ci/
+            files_path: 'features/Context/fixtures/'
+        Behat\Symfony2Extension:
+            kernel:
+                env: behat
+                debug: false
+        SensioLabs\Behat\PageObjectExtension:
+            namespaces:
+                page: [Context\Page]
+    formatter:
+        name: Context\SummaryFormatter, junit
+        parameters:
+            output_path: null,app/build/logs/behat/
