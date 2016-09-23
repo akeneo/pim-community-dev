@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- #4987: Fix hardcoded image URLs in the dashboard, cheers @julienanquetil!
+
 # 1.6.3 (2016-09-22)
 
 ## Bug fixes
