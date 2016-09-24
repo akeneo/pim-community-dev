@@ -9,9 +9,6 @@ pim_connector:
     csv_attribute_export:
       title: Экспорт атрибутов в CSV
       export.title: Экспорт атрибутов
-    csv_attribute_option_export:
-      title: Экспорт выборов атрибутов в CSV
-      export.title: Экспорт выборов атрибутов
     csv_association_type_export:
       title: Экспорт типов ассоциаций в CSV
       export.title: Экспорт типов ассоциаций
@@ -23,36 +20,35 @@ pim_connector:
       export.title: Экспорт групп вариантов
     csv_product_import:
       title: Импорт продуктов из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт продуктов
       import_associations.title: Импорт ассоциаций
     csv_category_import:
       title: Импорт категорий из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт категории
     csv_attribute_import:
       title: Импорт атрибутов из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт атрибутов
     csv_attribute_option_import:
       title: Импорт выборов атрибутов из CSV
-      validation.title: Подтверждение файла
-      import.title: Импорт выборов атрибутов
+      validation.title: Проверка файла
     csv_association_type_import:
       title: Импорт типов ассоциаций из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт типов ассоциаций
     csv_family_import:
       title: Импорт семейств из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт семейств
     csv_group_import:
       title: Импорт группы из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт группы
     csv_variant_group_import:
       title: Импорт группы вариантов в CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт групп вариантов
   steps:
     dummy_reader.title: Заглушка
@@ -66,7 +62,7 @@ pim_connector:
     csv_variant_group .title: Считыватель групп вариантов из CSV
     dummy_processor.title: Заглушка
     product_processor.title: Создание продукта
-    variant_group_processor.title: Создание / обновление группы вариантов
+    variant_group_processor.title: Создание / обновление групп вариантов
     category_processor.title: Создание категорий
     association_processor.title: Создание ассоциаций
     product_association_processor.title: Создание ассоциаций
@@ -92,13 +88,15 @@ pim_connector:
       help: Символ, используемый для обрамления полей
     withHeader:
       label: Включая заголовки
-      help: Добавлять строку с заголовками
+      help: Добавить строку с заголовками
     filePath:
       label: Путь к файлу
       help: Путь к сгенерированному файлу
     channel:
       label: Канал
       help: Канал, который вы хотите экспортировать
+    header:
+      label: Заголовок
   import:
     enabled:
       label: Активировать продукт
@@ -140,7 +138,7 @@ pim_connector:
       label: Копировать значения из группы вариантов в продукты
       help: Это означает, что продукты будут автоматически обновлены значениями группы вариантов, можно отключить для обновления только группы вариантов
     enabledComparison:
-      label: Сравнить значения
+      label: Сравнивать значения
       help: Включить сравнение исходных значений и импортированных значений. Может ускорить импорт, если импортированные значения очень похожи на исходные значения
     decimalSeparator:
       label: Десятичный разделитель
@@ -149,7 +147,17 @@ pim_connector:
       label: Формат даты
       help: Укажите формат столбцов дат в файле, например здесь дд/мм/гггг для формата 31/04/2014.
 job_execution.summary:
+  read: прочитано
   read_lines: прочитанных строк
+  write: записано
+  skip: пропущено
+  create: создано
   process: обработано
+  update_products: обновленных продуктов
   process_products: обработанных продуктов
+  skip_products: пропущенных продуктов
+  displayed: отображены первые предупреждения
+  charset_validator:
+    title: 'Кодировка файла:'
+    skipped: пропущено, расширение из белого списка
   product_skipped_no_diff: пропущен продукт (без разницы)
