@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: Dashboard
+  title: Ohjauspaneeli
   version: Versio
   link.label:
     product: Tuotteiden hallinta

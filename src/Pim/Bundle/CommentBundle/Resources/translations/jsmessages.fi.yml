@@ -11,10 +11,10 @@ flash:
       success: Kommentti luotu.
       error: Kommenttia luotaessa tapahtui virhe.
     delete:
-      success: Kommenttisi on poistettu onnistuneesti.
+      success: Kommentti poistettu.
       error: Kommenttia poistaessa tapahtui virhe.
     reply:
-      success: Vastauksesi on luotu.
+      success: Vastaus luotu.
       error: Virhe luotaessa vastausta.
 comment:
   index:
