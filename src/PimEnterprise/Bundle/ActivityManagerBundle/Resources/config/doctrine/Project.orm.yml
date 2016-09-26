@@ -1,0 +1,27 @@
+Akeneo\ActivityManager\Component\Model\Project:
+    type:  entity
+    table: akeneo_activity_mananger_project
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        # Label or do you use the label of the datagrid view?
+        label:
+            type: string
+            length: 100
+            unique: true
+            nullable: false
+        description:
+            type: text
+            nullable: true
+        dueDate:
+            type: date
+            column: due_date
+    # manyToOne or oneToOne? Do we create several project from a view or only one?
+    manyToOne:
+        owner:
+            targetEntity: Pim\Bundle\DataGridBundle\Entity\DatagridView
+
