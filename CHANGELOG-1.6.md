@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - #4987: Fix hardcoded image URLs in the dashboard, cheers @julienanquetil!
+- PIM-5978 : Fix missing products in the variant group edit form
 
 # 1.6.3 (2016-09-22)
 
