@@ -1,0 +1,11 @@
+activity_manager:
+    grid.view_selector.create: Create todo
+    project:
+        label: Label
+    create_project_modal:
+        label_placeholder: Name of the new todo
+        title: Create todo
+        confirm: Next
+        cancel: Cancel
+        error:
+            required: This value should not be blank.

@@ -1,0 +1,3 @@
+css:
+    activity-manager:
+        - bundles/activitymanager/css/activity-manager.less

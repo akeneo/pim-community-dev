@@ -27,4 +27,12 @@ class ProjectContext extends Context implements ContextInterface
     {
         Assert::true($this->getCurrentPage()->isOpen());
     }
+
+    /**
+     * @Given /^I open the view selector$/
+     */
+    public function iOpenTheViewSelector()
+    {
+        $this->getCurrentPage()->getViewSelector()->click();
+    }
 }

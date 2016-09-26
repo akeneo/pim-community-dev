@@ -26,5 +26,8 @@ class ActivityManagerExtension extends Extension
         $loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('doctrine/models.yml');
+        $loader->load('factories.yml');
+        $loader->load('normalizers.yml');
+        $loader->load('updaters.yml');
     }
 }

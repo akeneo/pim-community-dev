@@ -1,0 +1,9 @@
+extensions:
+    activity-manager-project-create-form:
+        module: activity-manager/project/create-form
+
+    pim-grid-view-selector-footer-create:
+        module: activity-manager/grid/view-selector/footer/create-view
+        parent: pim-grid-view-selector-footer
+        targetZone: buttons
+        position: 100

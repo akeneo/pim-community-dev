@@ -1,0 +1,4 @@
+Akeneo\ActivityManager\Component\Model\Project:
+    properties:
+        label:
+            - NotBlank: ~

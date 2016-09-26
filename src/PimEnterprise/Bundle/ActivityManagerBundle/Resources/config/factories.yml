@@ -1,0 +1,5 @@
+services:
+    activity_manager.factory.project:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%akeneo_activity_manager.model.project.class%'

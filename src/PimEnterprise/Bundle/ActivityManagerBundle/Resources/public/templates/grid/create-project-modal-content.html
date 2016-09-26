@@ -1,0 +1,14 @@
+<div class="control-group">
+    <label for="project-label" class="control-label required"><%- projectLabel %></label>
+    <div class="controls">
+        <input type="'text" name="project-label" id="project-label" class="input-large" placeholder="<%- labelPlaceholder %>"/>
+    </div>
+    <div class="validation-errors">
+        <% _.each(errors, function (error) { %>
+            <span>
+                <i class="icon-warning-sign"></i>
+                <span class="error-message"><%- error.message %></span>
+            </span>
+        <% }) %>
+    </div>
+</div>
