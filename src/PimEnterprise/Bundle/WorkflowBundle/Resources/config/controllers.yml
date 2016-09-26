@@ -62,7 +62,6 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
-            - '@pimee_datagrid.datagrid.configuration.proposal.grid_helper'
             - '@pimee_enrich.repository.attribute.search'
 
     pimee_workflow.controller.rest.product:

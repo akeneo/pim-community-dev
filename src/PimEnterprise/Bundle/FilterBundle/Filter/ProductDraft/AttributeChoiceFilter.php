@@ -45,7 +45,7 @@ class AttributeChoiceFilter extends AjaxChoiceFilter
     {
         $data = $this->parseData($data);
 
-        if (!$data) {
+        if (null === $data) {
             return false;
         }
 

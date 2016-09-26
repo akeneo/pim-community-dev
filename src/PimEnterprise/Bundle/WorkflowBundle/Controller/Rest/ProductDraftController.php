@@ -21,13 +21,11 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper;
 use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use PimEnterprise\Component\Workflow\Provider\ProductDraftGrantedAttributeProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -83,23 +81,19 @@ class ProductDraftController
     /** @var SearchableRepositoryInterface */
     protected $attributeSearchableRepository;
 
-    /** @var GridHelper */
-    protected $gridHelper;
-
     /**
-     * @param AuthorizationCheckerInterface        $authorizationChecker
-     * @param ProductDraftRepositoryInterface      $repository
-     * @param ProductDraftManager                  $manager
-     * @param ProductRepositoryInterface           $productRepository
-     * @param NormalizerInterface                  $normalizer
-     * @param TokenStorageInterface                $tokenStorage
-     * @param AttributeRepositoryInterface         $attributeRepository
-     * @param ChannelRepositoryInterface           $channelRepository
-     * @param LocaleRepositoryInterface            $localeRepository
-     * @param UserContext                          $userContext
-     * @param CollectionFilterInterface            $collectionFilter
-     * @param GridHelper                           $gridHelper
-     * @param SearchableRepositoryInterface        $attributeSearchableRepository
+     * @param AuthorizationCheckerInterface   $authorizationChecker
+     * @param ProductDraftRepositoryInterface $repository
+     * @param ProductDraftManager             $manager
+     * @param ProductRepositoryInterface      $productRepository
+     * @param NormalizerInterface             $normalizer
+     * @param TokenStorageInterface           $tokenStorage
+     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param ChannelRepositoryInterface      $channelRepository
+     * @param LocaleRepositoryInterface       $localeRepository
+     * @param UserContext                     $userContext
+     * @param CollectionFilterInterface       $collectionFilter
+     * @param SearchableRepositoryInterface   $attributeSearchableRepository
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -113,7 +107,6 @@ class ProductDraftController
         LocaleRepositoryInterface $localeRepository,
         UserContext $userContext,
         CollectionFilterInterface $collectionFilter,
-        GridHelper $gridHelper,
         SearchableRepositoryInterface $attributeSearchableRepository = null
     ) {
         $this->authorizationChecker          = $authorizationChecker;
@@ -127,7 +120,6 @@ class ProductDraftController
         $this->localeRepository              = $localeRepository;
         $this->userContext                   = $userContext;
         $this->collectionFilter              = $collectionFilter;
-        $this->gridHelper                    = $gridHelper;
         $this->attributeSearchableRepository = $attributeSearchableRepository;
     }
 
@@ -320,7 +312,7 @@ class ProductDraftController
         if (null !== $this->attributeSearchableRepository) {
             $attributes = $this->attributeSearchableRepository->findBySearch($search, $options);
         } else {
-            $attributes = $this->gridHelper->getAttributeChoices();
+            $attributes = [];
         }
 
         $normalizedAttributes = [];
