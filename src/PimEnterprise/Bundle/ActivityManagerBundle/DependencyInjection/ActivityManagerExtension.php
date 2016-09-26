@@ -23,7 +23,8 @@ class ActivityManagerExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $containerBuilder)
     {
-        $loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__.'/../Resources/config/service'));
-        $loader->load('services.yml');
+        $loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__.'/../Resources/config/services'));
+
+        $loader->load('models.yml');
     }
 }

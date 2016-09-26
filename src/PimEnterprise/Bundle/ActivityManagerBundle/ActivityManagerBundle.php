@@ -11,6 +11,7 @@
 
 namespace Akeneo\ActivityManager\Bundle;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -21,5 +22,16 @@ class ActivityManagerBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
+        $mappingConfig = [
+            realpath(__DIR__.'/Resources/config/doctrine') => 'Akeneo\ActivityManager\Component\Model',
+        ];
+
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createYamlMappingDriver(
+                $mappingConfig,
+                ['doctrine.orm.entity_manager'],
+                'akeneo_storage_utils.storage_driver.doctrine/orm'
+            )
+        );
     }
 }

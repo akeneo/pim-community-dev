@@ -1,0 +1,2 @@
+parameters:
+    akeneo_activity_manager.model.project.class: Akeneo\ActivityManager\Component\Model\ProjectInterface
