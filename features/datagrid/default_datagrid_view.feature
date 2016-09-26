@@ -17,7 +17,7 @@ Feature: Datagrid views
   Scenario: Successfully choose my default published view
     Given I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
-      | label | Sneakers only |
+      | new-view-label | Sneakers only |
     Then I should be on the published index page
     And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page
@@ -36,7 +36,7 @@ Feature: Datagrid views
     When I logout
     And I am logged in as "Mary"
     And I am on the published products page
-    Then I should see the text "Views Sneakers only"
+    Then I should see the text "Sneakers only"
     And I should see published products purple-sneakers and black-sneakers
     But I should not see product black-boots
     Then I press the "Reset" button
