@@ -11,6 +11,9 @@
 
 namespace Akeneo\ActivityManager\Component\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
@@ -52,4 +55,19 @@ interface ProjectInterface
      * @return
      */
     public function setDueDate(\DateTime $dueDate = null);
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getDatagridViews();
+
+    /**
+     * @param DatagridView $datagridView
+     */
+    public function addDatagridView(DatagridView $datagridView);
+
+    /**
+     * @param DatagridView $datagridView
+     */
+    public function removeDatagridView(DatagridView $datagridView);
 }

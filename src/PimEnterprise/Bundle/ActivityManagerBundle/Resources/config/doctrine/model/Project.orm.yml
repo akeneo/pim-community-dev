@@ -1,0 +1,34 @@
+Akeneo\ActivityManager\Component\Model\Project:
+    type:  entity
+    table: akeneo_activity_manager_project
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        label:
+            type: string
+            length: 100
+            unique: true
+            nullable: false
+        description:
+            type: text
+            nullable: true
+        dueDate:
+            type: date
+            column: due_date
+    # oneToMany unidirectional with join table
+    manyToMany:
+        datagridViews:
+          targetEntity: Pim\Bundle\DataGridBundle\Entity\DatagridView
+          joinTable:
+            name: akeneo_activity_mananger_project_view
+            joinColumns:
+              project_id:
+                referencedColumnName: id
+            inverseJoinColumns:
+              view_id:
+                referencedColumnName: id
+                unique: true

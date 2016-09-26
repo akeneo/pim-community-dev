@@ -11,6 +11,7 @@
 
 namespace Akeneo\ActivityManager\Bundle;
 
+use Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -20,10 +21,13 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class ActivityManagerBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         $mappingConfig = [
-            realpath(__DIR__.'/Resources/config/doctrine') => 'Akeneo\ActivityManager\Component\Model',
+            realpath(__DIR__.'/Resources/config/doctrine/model') => 'Akeneo\ActivityManager\Component\Model',
         ];
 
         $container->addCompilerPass(
@@ -33,5 +37,7 @@ class ActivityManagerBundle extends Bundle
                 'akeneo_storage_utils.storage_driver.doctrine/orm'
             )
         );
+
+        $container->addCompilerPass(new ResolveDoctrineTargetModelPass());
     }
 }

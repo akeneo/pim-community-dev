@@ -3,8 +3,8 @@
 namespace spec\Akeneo\ActivityManager\Bundle;
 
 use Akeneo\ActivityManager\Bundle\ActivityManagerBundle;
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ActivityManagerBundleSpec extends ObjectBehavior
@@ -19,9 +19,15 @@ class ActivityManagerBundleSpec extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\HttpKernel\Bundle\Bundle');
     }
 
-    function it_builds_container(ContainerBuilder $container, DoctrineOrmMappingsPass $doctrineOrmMappingsPass)
+    function it_builds_container(ContainerBuilder $container)
     {
-        $container->addCompilerPass($doctrineOrmMappingsPass)->shouldBeCalled();
+        $container->addCompilerPass(
+            Argument::type('Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')
+        )->shouldBeCalled();
+
+        $container->addCompilerPass(
+            Argument::type('Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass')
+        )->shouldBeCalled();
 
         $this->build($container);
     }

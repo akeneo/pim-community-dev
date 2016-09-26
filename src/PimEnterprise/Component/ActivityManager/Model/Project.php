@@ -11,6 +11,9 @@
 
 namespace Akeneo\ActivityManager\Component\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
@@ -28,8 +31,16 @@ class Project implements ProjectInterface
     /** @var \DateTime */
     private $dueDate;
 
+    /** @var ArrayCollection */
+    private $datagridViews;
+
+    public function __construct()
+    {
+        $this->datagridViews = new ArrayCollection();
+    }
+
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -37,7 +48,7 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -45,7 +56,7 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param string $label
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
@@ -53,7 +64,7 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getDescription()
     {
@@ -61,7 +72,7 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param string $description
+     * {@inheritdoc}
      */
     public function setDescription($description)
     {
@@ -69,7 +80,7 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @return \DateTime
+     * {@inheritdoc}
      */
     public function getDueDate()
     {
@@ -77,10 +88,34 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param \DateTime $dueDate
+     * {@inheritdoc}
      */
     public function setDueDate(\DateTime $dueDate = null)
     {
         $this->dueDate = $dueDate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDatagridViews()
+    {
+        return $this->datagridViews;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addDatagridView(DatagridView $datagridView)
+    {
+        $this->datagridViews[] = $datagridView;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeDatagridView(DatagridView $datagridView)
+    {
+        $this->datagridViews->removeElement($datagridView);
     }
 }

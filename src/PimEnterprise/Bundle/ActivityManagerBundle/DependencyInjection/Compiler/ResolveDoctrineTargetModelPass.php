@@ -18,10 +18,13 @@ use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolv
  */
 class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelPass
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getParametersMapping()
     {
         return [
-            'Akeneo\ActivityManager\Component\Model\ProjectInterface' => 'akeneo_activity_manager.model.project.class'
+            'Akeneo\ActivityManager\Component\Model\ProjectInterface' => 'akeneo_activity_manager.model.project.class',
         ];
     }
 }

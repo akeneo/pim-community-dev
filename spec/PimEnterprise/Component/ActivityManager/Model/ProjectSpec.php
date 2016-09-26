@@ -5,6 +5,7 @@ namespace spec\Akeneo\ActivityManager\Component\Model;
 use Akeneo\ActivityManager\Component\Model\Project;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 class ProjectSpec extends ObjectBehavior
 {
@@ -22,5 +23,14 @@ class ProjectSpec extends ObjectBehavior
     {
         $this->setDueDate(null)->shouldReturn(null);
         $this->setDueDate($date)->shouldReturn(null);
+        $this->getDueDate()->shouldReturn($date);
+    }
+
+    function it_has_datagrid_view(DatagridView $datagridView, DatagridView $otherDatagridView)
+    {
+        $this->addDatagridView($datagridView)->shouldReturn(null);
+        $this->addDatagridView($otherDatagridView)->shouldReturn(null);
+        $this->removeDatagridView($otherDatagridView)->shouldReturn(null);
+        $this->getDatagridViews()->toArray()->shouldReturn([$datagridView]);
     }
 }
