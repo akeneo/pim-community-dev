@@ -38,3 +38,4 @@ css:
         - bundles/pimui/less/components/breadcrumb.less
         - bundles/pimui/less/components/iconButton.less
         - bundles/pimui/less/components/buttonsList.less
+        - bundles/pimui/less/components/breadcrumbContainer.less
