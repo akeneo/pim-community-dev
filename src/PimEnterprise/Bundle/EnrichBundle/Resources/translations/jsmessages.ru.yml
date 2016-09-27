@@ -70,7 +70,7 @@ pimee_enrich:
       modal:
         reject_proposal: Отклонить предложение
         cancel: Отмена
-          draft: Мои черновики
+        draft: Мои черновики
       info:
         update_successful: Черновик продукта успешно сохранен
         update_failed: Черновик продукта не обновлен
