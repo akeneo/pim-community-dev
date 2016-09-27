@@ -9,7 +9,7 @@ pimee_workflow:
     attribute:
       label: Attribut
     status:
-      label: Statut
+      label: État
       working_copy: Version de travail
       in_progress: En cours
       ready: En attente d’approbation

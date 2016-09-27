@@ -1,17 +1,147 @@
 pimee_product_asset:
+  acl:
+    asset:
+      index: Дополнить активы
+      create: Создать медиафайл
+      remove: Удалить медиафайл
+      categories_view: Обращение к категории медиафайла
+      mass_upload: Масс загрузка медиафайлов
+    category_asset_picker:
+      list: Перечислить категории медиафайлов в средстве выбора медиафайлов
+    category:
+      create: Создать категорию медиафайлов
+      edit: Редактировать категорию медиафайлов
+      list: Перечислить категории медиафайлов
+      remove: Удалить категорию медиафайлов
+      manage: Управление правами доступа категории медиафайлов
+      history: Просмотреть журнал категории медиафайла
+  acl_group:
+    asset: Медиафайлы продуктов
+    category: Категории медиафайлов
   enrich_asset:
     button:
+      upload: Загрузить
       delete: Удалить
+      download: Скачать
+      generate_from_reference: Создание из образца
+      reset_variations: Сбросить вариации
+    confirmation.remove: 'Вы уверены, что хотите удалить медиафайл «%asset%»?'
+    grid:
+      edit: Редактирование свойств актива
     view:
+      title: Медиафайл продуктов
       code: Код
+      description: Описание
+      end_of_use: Конец использования
+      reference: Образец
+      filename: Имя файла
+      width: Ширина
+      height: Высота
+      resolution: Разрешение
+      colors: Цветовое пространство
+      filesize: Размер файла
+      filetype: Тип файла
+      actions: Действия
+      download: Скачать
+      tag: Теги
+      no_reference: Файл образца не был загружен еще.
+      no_variation: Не был создан еще ни один файл вариации.
+    flash:
+      update:
+        success: Медиафайл был обновлен.
+        error: Медиафайл не был обновлен. Произошла ошибка.
+      create:
+        success: Медиафайл был создан.
+        error: Медиафайл не был создан. Произошла ошибка.
+      remove:
+        success: Медиафайл был удален.
+  enrich_reference:
+    flash:
+      delete:
+        success: Файл образца был удален.
+        error: Файл образца не был удален. Произошла ошибка.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: 'Невозможно сгенерировать вариацию дла канала %channel% из-за недопустимых параметров.'
+        image_width_error: 'Невозможно сгенерировать вариацию дла канала %channel% потому что загруженное изображение имеет ширину меньше, чем требуется для преобразования.'
+        image_height_error: 'Невозможно сгенерировать вариацию дла канала %channel% потому что загруженное изображение имеет высоту меньше, чем требуется для преобразования.'
+        not_applicable: 'Невозможно сгенерировать вариацию дла канала %channel%.'
+        non_registered: 'Преобразование %transformation% незарегистрировано для mime-типа %mimeType%. Невозможно сгенерировать вариацию дла канала %channel%.'
+        error: 'Невозможно сгенерировать вариацию дла канала %channel%.'
+        success: Вариации были успешно созданы.
+      update:
+        success: Вариация обновлена.
+        error: Вариация не обновлена. Произошла ошибка.
+      delete:
+        success: Вариация удалена.
+        error: Вариация не удалена. Произошла ошибка.
   popin.create:
-    is_localized: Локализуемые
+    title: Создать новый медиафайл
+    is_localized: Локализуемый
+  menu: Медиафайлы
+  page_tab:
+    title:
+      view: 'Медиафайл %asset.code% | Просмотр'
+      edit: 'Медиафайл %asset.code% | Редактировать'
+      index: Медиафайлы продуктов
   code:
     label: Код
+  thumbnail:
+    label: Миниатюра изображения
   status:
     label: Статус
+  description:
+    label: Описание
+  endOfUse:
+    label: Конец использования
   createdAt:
     label: Создано
+  updatedAt:
+    label: Последнее обновление
+  tags:
+    label: Теги
   tabs:
     properties.title: Свойства
+    variations.title: Вариации
     categories.title: Категории
+  validation:
+    code:
+      not_empty: Код требуется. Он не может быть пустым.
+      unique: Код должен быть уникальным.
+      new_generation: Мы создали новый для Вас.
+  notAvailable:
+    label: недоступно
+  asset:
+    title: Медиафайл
+  mass_upload:
+    menu: Загрузить медиафайлы
+    new: Будет создан новый медиафайл
+    add_files: Добавить файлы
+    start: Начать загрузку
+    cancel: Отменить загрузку
+    executed: Массовая загрузка выполнена
+    error:
+      upload: Произошла ошибка при загрузке
+      code: Недопустимый формат кода для медиафайла
+      localizable: Актив существует, но не является локализуемым
+      invalid_locale: Локаль отключена или недопустна
+  category:
+    menu: Категории медиафайлов
+    permissions:
+      view.label: Разрешено просматривать медиафайлы
+      view.help: Разрешить просмотр медиафайлов в этой категории
+      edit.label: Разрешено редактирование медиафайлов
+      edit.help: Разрешить редактирование медиафайлов в этой категории (подразумевает права на просмотр)
+      no_access_to_products: Вы не имеете прав доступа к медиафайлам в деревьях категорий. Пожалуйста, обратитесь к вашему администратору
+      apply_on_children.label: Применить изменения на дочерние элементы
+      apply_on_children.help: Копирование изменений прав доступа на все дочерние элементы, при этом существующие права сохраняются
+btn.create.asset: Создать медиафайл
+btn.drag_or_upload: Перетащите файл или нажмите здесь
+job_execution.summary:
+  variations_not_generated: Вариации не созданы
+  pimee_product_asset.mass_upload.new: Медиафайлы, созданные из файла
+  pimee_product_asset.mass_upload.updated: Медиафайл загружен
+assets_mass_upload.steps:
+  asset_mass_upload.title: Масс загрузка медиафайлов
+mass_upload: Масс загрузка медиафайлов
