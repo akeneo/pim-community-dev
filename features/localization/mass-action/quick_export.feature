@@ -23,7 +23,7 @@ Feature: Quick export many products with localized attributes from datagrid
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                  |
-      | success | Exportation rapide CSV product quick export est terminée |
+      | success | L'export rapide CSV product quick export est terminé     |
     Then I go on the last executed job resume of "csv_product_quick_export"
     And I should see "TERMINÉ"
     And the path of the exported file of "csv_product_quick_export" should be "/tmp/products_export_en_US_mobile.csv"
