@@ -306,8 +306,8 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     public function iPinTheCurrentPage()
     {
         $pinButton = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.minimize-button');
-        }, 'Cannot find ".minimize-button" to pin current page');
+            return $this->getCurrentPage()->find('css', '.js-minimize-button');
+        }, 'Cannot find ".js-minimize-button" to pin current page');
 
         $pinButton->click();
     }

@@ -1,0 +1,20 @@
+@import '../base/variables';
+
+.AkIconButton {
+  @size: 28px;
+
+  .noRedBorder();
+  background: white;
+  color: @AkGrayLighter;
+  font-family: @AkDefaultFont;
+  width: @size;
+  height: @size;
+  display: inline-block;
+  padding: 0;
+  font-size: 19px;
+
+  &:hover {
+    background: @AkGrayLighter;
+    color: white;
+  }
+}

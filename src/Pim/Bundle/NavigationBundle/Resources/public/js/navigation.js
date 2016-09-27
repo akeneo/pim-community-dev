@@ -64,7 +64,7 @@ define(function (require) {
             breadcrumb:          '#breadcrumb',
             pinButtonsContainer: '#pin-button-div',
             gridContainer:       '.grid-container',
-            pinButtons:          '.minimize-button, .favorite-button'
+            pinButtons:          '.js-minimize-button, .js-favorite-button'
         },
         selectorCached: {},
 
