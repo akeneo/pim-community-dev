@@ -34,3 +34,9 @@ Feature: Execute a job
     Then I should see "Execution details"
     And file "%tmp%/product_export/product_export.csv" should exist
     And an email to "Julia@example.com" should have been sent
+
+  @ce @jira https://akeneo.atlassian.net/browse/PIM-5982
+  Scenario: Successfully launch an export with custom parameters
+    When I run 'akeneo:batch:job csv_product_export -c "{\"filePath\": \"%tmp%/productCustomConfig.csv\"}"'
+    Then file "%tmp%/productCustomConfig.csv" should exist
+    And file "%tmp%/productCustomConfig.csv" should contain 113 rows

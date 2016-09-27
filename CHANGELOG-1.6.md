@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - #4987: Fix hardcoded image URLs in the dashboard, cheers @julienanquetil!
+- PIM-5982: Missing job instance parameters when using custom configuration in command line
 
 # 1.6.3 (2016-09-22)
 
