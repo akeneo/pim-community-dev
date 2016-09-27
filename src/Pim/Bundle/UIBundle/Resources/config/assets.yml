@@ -32,3 +32,7 @@ css:
         - bundles/pimui/css/accordion.less
         - bundles/pimui/css/filterbox.less
         - bundles/pimui/css/notifications.less
+    bem:
+#        - bundles/pimui/less/redBorder.less # Please remove this class before merge!
+        - bundles/pimui/less/base/general.less
+        - bundles/pimui/less/components/breadcrumb.less
