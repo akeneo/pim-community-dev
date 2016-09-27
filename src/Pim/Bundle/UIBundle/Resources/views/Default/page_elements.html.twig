@@ -7,9 +7,9 @@
             {% set url = null %}
         {% endif %}
         {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-        <a class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if entity and icon %} icons-holder-text{% elseif icon %} icons-holder{% endif %} " href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
-          {% if icon %}
-            <i class="icon-{{ icon }}"></i>
+        <a class="AkButton AkButton--success{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AkButton--withIcon {% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
+        {% if icon %}
+            <i class="AkButton-icon icon-{{ icon }}"></i>
           {% endif %}
           {{ title }}
         </a>

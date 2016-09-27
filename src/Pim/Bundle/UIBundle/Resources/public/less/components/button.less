@@ -1,0 +1,51 @@
+@import '../base/variables';
+
+.AkButton {
+  @height: 32px;
+
+  .noRedBorder();
+  background: @AkGrayLighter;
+  color: @AkDefaultFontColor;
+  height: @height;
+  display: inline-block;
+  line-height: @height;
+  font-size: 14.154px;
+  padding: 0 10px;
+  border-radius: 2px;
+
+  &--withIcon {
+    padding-left: 0;
+  }
+
+  &:hover {
+    background: darken(@AkGrayLighter, 10%);
+    color: darken(@AkDefaultFontColor, 10%);
+  }
+
+  &-icon {
+    .noRedBorder();
+    height: @height;
+    width: @height;
+    line-height: @height;
+    background: darken(@AkGrayLighter, 10%);
+    text-align: center;
+    margin-left: 0;
+    margin-right: 5px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  &--success {
+    background-color: @AkGreen;
+    color: white;
+
+    &:hover {
+      background-color: darken(@AkGreen, 10%);
+      color: white;
+    }
+  }
+
+  &--success &-icon {
+    background: darken(@AkGreen, 10%);
+  }
+}
