@@ -6,24 +6,22 @@
   @border-color: #ddd;
   @font-size: 12.123px;
 
-  .noRedBorder();
   display: flex;
   align-items: center;
   justify-content: center;
 
   &-input {
-    .noRedBorder();
-    width: calc(@height - 2px);
-    height: calc(@height - 2px);
+    border: none;
+    display: block;
     text-align: center;
     font-size: @font-size;
-    display: block;
+    width: calc(@height - 2px);
+    height: calc(@height - 2px);
   }
 
   &-icons {
-    .noRedBorder();
-    list-style: none;
     display: flex;
+    list-style: none;
     line-height: @height;
     background: white;
     margin: 0 5px;
@@ -33,10 +31,9 @@
     min-width: calc(@height - 5px);
     text-align: center;
     height: @height;
-    border-top: 1px solid @border-color !important;
-    border-bottom: 1px solid @border-color !important;
-    border-left: 1px solid @border-color !important;
-    border-right: none !important;
+    border-top: 1px solid @border-color;
+    border-bottom: 1px solid @border-color;
+    border-left: 1px solid @border-color;
 
     &:first-child {
       border-top-left-radius: 4px;
@@ -44,7 +41,7 @@
     }
 
     &:last-child {
-      border-right: 1px solid @border-color !important;
+      border-right: 1px solid @border-color;
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
     }
@@ -65,9 +62,5 @@
 
   &-link {
     display: block;
-  }
-
-  label, i, a {
-    .noRedBorder();
   }
 }
