@@ -1,0 +1,22 @@
+@import '../base/variables';
+
+.AkTitleContainer {
+  .noRedBorder();
+
+  display: flex;
+  justify-content: space-between;
+  align-items:  center;
+  padding: 15px 20px;
+  background: #f8f8f9;
+
+  &-title {
+    .noRedBorder();
+
+    font-size: 18.198px;
+    color: #52267D;
+  }
+
+  & > div:not([class]) { // All the div without class
+    .noRedBorder();
+  }
+}

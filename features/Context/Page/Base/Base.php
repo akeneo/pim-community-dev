@@ -25,7 +25,7 @@ class Base extends Page
     protected $elements = [
         'Body'             => ['css' => 'body'],
         'Dialog'           => ['css' => 'div.modal'],
-        'Title'            => ['css' => '.navbar-title'],
+        'Title'            => ['css' => '.AkTitleContainer-title'],
         'Product title'    => ['css' => '.entity-title'],
         'HeadTitle'        => ['css' => 'title'],
         'Flash messages'   => ['css' => '.flash-messages-holder'],
@@ -174,7 +174,7 @@ class Base extends Page
     {
         $elt = $this->getElement('Title');
 
-        $subtitle  = $elt->find('css', '.sub-title');
+        $subtitle  = $elt->find('css', '.AkTitleContainer-title');
         $separator = $elt->find('css', '.separator');
         $name      = $elt->find('css', '.product-name');
 

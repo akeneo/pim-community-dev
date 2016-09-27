@@ -40,3 +40,4 @@ css:
         - bundles/pimui/less/components/button.less
         - bundles/pimui/less/components/buttonsList.less
         - bundles/pimui/less/components/iconButton.less
+        - bundles/pimui/less/components/titleContainer.less

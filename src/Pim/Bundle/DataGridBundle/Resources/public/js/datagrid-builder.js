@@ -14,7 +14,7 @@ define(function (require) {
     var GridViewsView = require('oro/datagrid/grid-views/view');
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
-        gridGridViewsSelector = '.page-title > .navbar-extra .span10:last',
+        gridGridViewsSelector = '.page-title > .AkTitleContainer .span10:last',
         cellModuleName = 'oro/datagrid/{{type}}-cell',
         actionModuleName = 'oro/datagrid/{{type}}-action',
         cellTypes = {
