@@ -62,7 +62,7 @@ define(function (require) {
             flashMessages:       '#flash-messages',
             menu:                '#main-menu',
             breadcrumb:          '#breadcrumb',
-            pinButtonsContainer: '#pin-button-div',
+            pinButtonsContainer: '.js-pin-button-div',
             gridContainer:       '.grid-container',
             pinButtons:          '.js-minimize-button, .js-favorite-button'
         },
@@ -532,7 +532,7 @@ define(function (require) {
          */
         processPinButton: function(data) {
             if (data.showPinButton) {
-                this.selectorCached.pinButtonsContainer.show();
+                this.selectorCached.pinButtonsContainer.removeClass('AkButtonsList--isHidden');
                 /**
                  * Setting serialized titles for pinbar and favourites buttons
                  */
@@ -543,7 +543,7 @@ define(function (require) {
                 }
                 this.setPinButtonsData('title-rendered-short', data.titleShort);
             } else {
-                this.selectorCached.pinButtonsContainer.hide();
+                this.selectorCached.pinButtonsContainer.addClass('AkButtonsList--isHidden');
             }
         },
 

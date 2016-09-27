@@ -1,18 +1,14 @@
-<div id="pin-button-div" {% if app.request.attributes.get('_route') == bap.start_route %}style="display: none"{% endif %}>
-    <div class="navigation clearfix">
-        <div class="top-action-box">
-            <button class="AkIconButton js-favorite-button"
-                data-title="{{ oro_title_render_serialized() }}"
-                data-title-rendered-short="{{ oro_title_render_short() }}"
-                title="{{ 'Add this page to favorites'|trans }}">
-                    <i class="icon-star"></i>
-            </button>
-            <button class="AkIconButton js-minimize-button"
-                data-title="{{ oro_title_render_serialized() }}"
-                data-title-rendered-short="{{ oro_title_render_short() }}"
-                title="{{ 'Minimize the window to the pinbar'|trans }}">
-                    <i class="icon-pushpin"></i>
-            </button>
-        </div>
-    </div>
+<div class="AkButtonsList {% if app.request.attributes.get('_route') == bap.start_route %}AkButtonsList--isHidden{% endif %} js-pin-button-div">
+    <button class="AkIconButton js-favorite-button"
+        data-title="{{ oro_title_render_serialized() }}"
+        data-title-rendered-short="{{ oro_title_render_short() }}"
+        title="{{ 'Add this page to favorites'|trans }}">
+            <i class="icon-star"></i>
+    </button>
+    <button class="AkIconButton js-minimize-button"
+        data-title="{{ oro_title_render_serialized() }}"
+        data-title-rendered-short="{{ oro_title_render_short() }}"
+        title="{{ 'Minimize the window to the pinbar'|trans }}">
+            <i class="icon-pushpin"></i>
+    </button>
 </div>
