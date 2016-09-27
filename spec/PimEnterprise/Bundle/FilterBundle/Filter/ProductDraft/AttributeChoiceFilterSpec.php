@@ -32,7 +32,7 @@ class AttributeChoiceFilterSpec extends ObjectBehavior
 
     function it_applies_empty_operator_with_type_empty($utility, FilterDatasourceAdapterInterface $ds)
     {
-        $utility->applyFilter($ds, 'data_name_key', Operators::IS_EMPTY, ['null'])->shouldBeCalled();
+        $utility->applyFilter($ds, 'data_name_key', Operators::IS_EMPTY, 'null')->shouldBeCalled();
 
         $this->apply($ds, ['type' => FilterType::TYPE_EMPTY, 'value' => 'null'])->shouldReturn(true);
     }

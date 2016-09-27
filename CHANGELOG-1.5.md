@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5972: Ajaxify the proposal attribute filter
+
 # 1.5.8 (2016-08-25)
 
 # 1.5.7 (2016-07-19)

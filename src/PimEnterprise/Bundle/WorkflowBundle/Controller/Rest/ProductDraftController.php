@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -77,6 +78,9 @@ class ProductDraftController
     /** @var array */
     protected $supportedReviewActions = ['approve', 'refuse'];
 
+    /** @var SearchableRepositoryInterface */
+    protected $attributeSearchableRepository;
+
     /**
      * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param ProductDraftRepositoryInterface $repository
@@ -89,6 +93,7 @@ class ProductDraftController
      * @param LocaleRepositoryInterface       $localeRepository
      * @param UserContext                     $userContext
      * @param CollectionFilterInterface       $collectionFilter
+     * @param SearchableRepositoryInterface   $attributeSearchableRepository
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -101,19 +106,21 @@ class ProductDraftController
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         UserContext $userContext,
-        CollectionFilterInterface $collectionFilter
+        CollectionFilterInterface $collectionFilter,
+        SearchableRepositoryInterface $attributeSearchableRepository = null
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->repository           = $repository;
-        $this->manager              = $manager;
-        $this->productRepository    = $productRepository;
-        $this->normalizer           = $normalizer;
-        $this->tokenStorage         = $tokenStorage;
-        $this->attributeRepository  = $attributeRepository;
-        $this->channelRepository    = $channelRepository;
-        $this->localeRepository     = $localeRepository;
-        $this->userContext          = $userContext;
-        $this->collectionFilter     = $collectionFilter;
+        $this->authorizationChecker          = $authorizationChecker;
+        $this->repository                    = $repository;
+        $this->manager                       = $manager;
+        $this->productRepository             = $productRepository;
+        $this->normalizer                    = $normalizer;
+        $this->tokenStorage                  = $tokenStorage;
+        $this->attributeRepository           = $attributeRepository;
+        $this->channelRepository             = $channelRepository;
+        $this->localeRepository              = $localeRepository;
+        $this->userContext                   = $userContext;
+        $this->collectionFilter              = $collectionFilter;
+        $this->attributeSearchableRepository = $attributeSearchableRepository;
     }
 
     /**
@@ -284,6 +291,36 @@ class ProductDraftController
             'internal_api',
             $normalizationContext
         ));
+    }
+
+    /**
+     * Get the attribute choice collection
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function attributeChoiceAction(Request $request)
+    {
+        $query  = $request->query;
+        $search = $query->get('search');
+        $options = $query->get('options', []);
+
+        $token = $this->tokenStorage->getToken();
+        $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
+
+        if (null !== $this->attributeSearchableRepository) {
+            $attributes = $this->attributeSearchableRepository->findBySearch($search, $options);
+        } else {
+            $attributes = [];
+        }
+
+        $normalizedAttributes = [];
+        foreach ($attributes as $attribute) {
+            $normalizedAttributes[] = ['id' => $attribute->getCode(), 'text' => $attribute->getLabel()];
+        }
+
+        return new JsonResponse(['results' => $normalizedAttributes]);
     }
 
     /**
