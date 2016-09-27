@@ -15,7 +15,7 @@ function($, _, Backbone) {
         tagName: 'div',
 
         /** @property */
-        className: 'pagination pagination-centered',
+        className: 'AkPagination',
 
         /** @property */
         windowSize: 10,
@@ -28,11 +28,11 @@ function($, _, Backbone) {
 
         /** @property */
         template: _.template(
-            '<label class="dib">Page:</label>' +
-            '<ul class="icons-holder">' +
+            '<label>Page:</label>' +
+            '<ul class="AkPagination-icons">' +
                 '<% _.each(handles, function (handle) { %>' +
-                    '<li <% if (handle.className) { %>class="<%= handle.className %>"<% } %>>' +
-                        '<a href="#" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
+                    '<li class="AkPagination-item <% if (handle.className) { %><%= handle.className %><% } %>">' +
+                        '<a href="#" class="AkPagination-link" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
                             '<% if (handle.wrapClass) {%>' +
                                 '<i <% if (handle.wrapClass) { %>class="<%= handle.wrapClass %>"<% } %>>' +
                                     '<%= handle.label %>' +
@@ -44,7 +44,7 @@ function($, _, Backbone) {
                     '</li>' +
                 '<% }); %>' +
             '</ul>' +
-            '<label class="dib">of <%= state.totalPages ? state.totalPages : 1 %> | <%= state.totalRecords %> records</label>'
+            '<label>of <%= state.totalPages ? state.totalPages : 1 %> | <%= state.totalRecords %> records</label>'
         ),
 
         /** @property */
@@ -56,11 +56,11 @@ function($, _, Backbone) {
         fastForwardHandleConfig: {
             prev: {
                 label: 'Prev',
-                wrapClass: 'icon-chevron-left hide-text'
+                wrapClass: 'AkPagination-arrow icon-chevron-left hide-text'
             },
             next: {
                 label: 'Next',
-                wrapClass: 'icon-chevron-right hide-text'
+                wrapClass: 'AkPagination-arrow icon-chevron-right hide-text'
             }
         },
 

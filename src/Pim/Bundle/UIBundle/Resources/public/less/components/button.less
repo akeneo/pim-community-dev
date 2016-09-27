@@ -1,7 +1,7 @@
 @import '../base/variables';
 
 .AkButton {
-  @height: 32px;
+  @height: 26px;
 
   .noRedBorder();
   background: @AkGrayLighter;
@@ -24,7 +24,7 @@
 
   &-icon {
     .noRedBorder();
-    height: @height;
+    height: @height !important;
     width: @height;
     line-height: @height;
     background: darken(@AkGrayLighter, 10%);

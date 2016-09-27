@@ -22,7 +22,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
                     '<div class="actions-panel pull-right form-horizontal"></div>' +
                     '<div class="page-size pull-right form-horizontal"></div>' +
                 '</div>' +
-                '<div class="pagination pagination-centered"></div>' +
+                '<div class="AkPagination"></div>' +
             '</div>'
         ),
 
@@ -123,7 +123,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             this.$el.empty();
             this.$el.append(this.template());
 
-            this.$('.pagination').replaceWith(this.pagination.render().$el);
+            this.$('.AkPagination').replaceWith(this.pagination.render().$el);
             this.$('.page-size').append(this.pageSize.render().$el);
             this.$('.actions-panel').append(this.actionsPanel.render().$el);
             this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el);

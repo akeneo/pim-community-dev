@@ -18,7 +18,7 @@ class PaginationDecorator extends ElementDecorator
 
     /** @var array selectors for pagination components*/
     protected $selectors = [
-        'pagination input' => '.icons-holder input[type="text"]',
+        'pagination input' => '.AkPagination-input',
         'page size button' => '.page-size .dropdown-toggle',
         'page size list'   => '.page-size .dropdown-menu',
     ];
