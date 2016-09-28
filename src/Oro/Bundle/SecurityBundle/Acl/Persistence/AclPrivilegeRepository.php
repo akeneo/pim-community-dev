@@ -445,7 +445,7 @@ class AclPrivilegeRepository
      */
     protected function sortPrivileges(ArrayCollection &$privileges)
     {
-        /** @var \ArrayIterator $iterator */
+        /** @var \Iterator $iterator */
         $iterator = $privileges->getIterator();
         $iterator->uasort(
             function (AclPrivilege $a, AclPrivilege $b) {

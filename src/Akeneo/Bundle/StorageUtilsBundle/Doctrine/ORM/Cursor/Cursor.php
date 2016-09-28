@@ -29,7 +29,7 @@ class Cursor extends AbstractCursor
     /** @var int */
     protected $count;
 
-    /** @var \ArrayIterator */
+    /** @var \Iterator */
     protected $entitiesPage;
 
     /** @var EntityManager */
@@ -185,7 +185,7 @@ class Cursor extends AbstractCursor
     /**
      * Get next entities batch from DB
      *
-     * @return \ArrayIterator
+     * @return \Iterator
      */
     protected function getNextEntitiesPage()
     {

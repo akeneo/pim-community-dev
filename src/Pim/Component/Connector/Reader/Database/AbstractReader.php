@@ -22,7 +22,7 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var \ArrayIterator */
+    /** @var \Iterator */
     protected $results;
 
     /**
@@ -61,7 +61,7 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     }
 
     /**
-     * @return \ArrayIterator
+     * @return \Iterator
      */
     abstract protected function getResults();
 }

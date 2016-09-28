@@ -37,7 +37,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var \ArrayIterator */
+    /** @var \Iterator */
     protected $yaml;
 
     /**
