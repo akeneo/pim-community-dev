@@ -1,0 +1,62 @@
+@import '../base/variables';
+@import '../base/mixins';
+
+// TODO Remove the .dropdown, .dropdown-menu ... classes. I keep it because it's used everywhere for now.
+.AkDropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 1000; // TODO Due to datagrid z-index, to remove.
+
+  &-button {
+    height: @littleButtonsHeight;
+    line-height: calc(@littleButtonsHeight - 2px);
+    background: none;
+    border: 1px solid @borderColor;
+    border-radius: 4px;
+  }
+
+  &-caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 4px solid #000000;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    content: "";
+    margin-left: 5px;
+    margin-bottom: 2px;
+  }
+
+  &-menu {
+    padding: 5px 0;
+    position: absolute;
+    left: 0;
+    display: none;
+    background-color: #fff;
+    border: 1px solid @borderColor;
+    .border-radius(2px);
+    .box-shadow(0 5px 10px rgba(0,0,0,0.2));
+    margin-top: -1px;
+
+    &--alignRight {
+      right: 0;
+      left: auto;
+    }
+  }
+
+  &-menuLink {
+    padding: 0 15px;
+    display: block;
+    height: 20px;
+    line-height: 20px;
+
+    &:hover {
+      background: @AkGrayLighter;
+    }
+  }
+
+  &.open &-menu {
+    // TODO Due to JS dropdown, find where this is declared to replace it by BEM class --isOpen.
+    display: block;
+  }
+}
