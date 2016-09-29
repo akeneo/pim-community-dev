@@ -135,10 +135,32 @@ Feature: Execute a job
     Given the following product:
       | sku     | price            |
       | SKU-001 | 100 EUR, 150 USD |
+      | SKU-002 | 100 EUR, 150 USD |
     And the following CSV file to import:
       """
       sku;price
       SKU-001;"100 EUR, 90 USD"
+      SKU-002;"200 EUR"
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then there should be 2 products
+    And the product "SKU-001" should have the following value:
+      | price | 100.00 EUR, 90.00 USD |
+    And the product "SKU-002" should have the following value:
+      | price | 200.00 EUR, 150.00 USD |
+
+  Scenario: Successfully update one existing product price in a specific currency
+    Given the following product:
+      | sku     | price            |
+      | SKU-001 | 100 EUR, 150 USD |
+    And the following CSV file to import:
+      """
+      sku;price-USD
+      SKU-001;"90"
       """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
