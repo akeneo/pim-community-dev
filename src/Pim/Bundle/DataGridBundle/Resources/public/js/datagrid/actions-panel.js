@@ -12,7 +12,7 @@ function(_, Backbone, groupTemplate) {
      */
     return Backbone.View.extend({
         /** @property String */
-        className: 'btn-group',
+        className: 'AkActionsPanel',
 
         /** @property {Array} */
         actionsGroups: [],
@@ -67,7 +67,7 @@ function(_, Backbone, groupTemplate) {
                     $container.append(launcher.render().$el);
                 }, this);
 
-                this.$el.append($container.addClass('btn-group'));
+                this.$el.append($container);
             }
 
             if (groupedLaunchers.length) {
