@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -18,6 +18,8 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    const DECIMAL_PRECISION = 4;
+
     /** @var SerializerInterface */
     protected $serializer;
 
@@ -42,6 +44,14 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             }
         } else {
             $data = $this->serializer->normalize($entity->getData(), $format, $context);
+
+            // if decimals_allowed is false, we return an integer
+            // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
+            $attribute = $entity->getAttribute();
+            if (AttributeTypes::NUMBER === $attribute->getAttributeType() && null !== $data && is_numeric($data)) {
+                $data = $attribute->isDecimalsAllowed()
+                    ? number_format($data, static::DECIMAL_PRECISION, '.', '') : (int) $data;
+            }
         }
 
         return [

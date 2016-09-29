@@ -14,20 +14,26 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class MetricNormalizer implements NormalizerInterface
 {
+    const DECIMAL_PRECISION = 4;
+
     /**
      * {@inheritdoc}
      */
     public function normalize($metric, $format = null, array $context = [])
     {
-        //TODO: when the Metric object is loaded from the database, the data is converted to a string
-        //TODO: see http://doctrine-orm.readthedocs.io/projects/doctrine-dbal/en/latest/reference/types.html#decimal
-        //TODO: at this point, $metric->getData() = '45.32165' or '56.000000'
+        $amount = $metric->getData();
+        $attribute = $metric->getValue()->getAttribute();
+
+        // if decimals_allowed is false, we return an integer
+        // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
+        if (null !== $amount && is_numeric($amount)) {
+            $amount = $attribute->isDecimalsAllowed()
+                ? number_format($amount, static::DECIMAL_PRECISION, '.', '') : (int) $amount;
+        }
 
         return [
-            'amount' => $metric->getData(),
-            'unit'   => null !== $metric->getUnit() ?
-                $metric->getUnit() :
-                $metric->getValue()->getAttribute()->getDefaultMetricUnit(),
+            'amount' => $amount,
+            'unit'   => null !== $metric->getUnit() ? $metric->getUnit() : $attribute->getDefaultMetricUnit(),
         ];
     }
 
