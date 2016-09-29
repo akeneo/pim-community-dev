@@ -125,11 +125,6 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
 
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-        } else {
-            $prices = $value->getPrices();
-            foreach ($prices as $price) {
-                $price->setData(null);
-            }
         }
 
         foreach ($data as $price) {
