@@ -3,7 +3,9 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
 
 class MetricNormalizerSpec extends ObjectBehavior
@@ -28,13 +30,56 @@ class MetricNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($otherObject, 'other_format')->shouldReturn(false);
     }
 
-    function it_normalizes_metric_in_standard_format_only(MetricInterface $metric)
-    {
+    function it_normalizes_metric_in_standard_format_only_with_decimal_allowed(
+        MetricInterface $metric,
+        ProductValueInterface $productValue,
+        AttributeInterface $attribute
+    ) {
+        $metric->getValue()->willReturn($productValue);
+        $productValue->getAttribute()->willReturn($attribute);
+        $attribute->isDecimalsAllowed()->willReturn(true);
+
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('12.1231');
 
         $this->normalize($metric, 'standard')->shouldReturn([
             'amount' => '12.1231',
+            'unit'   => 'KILOGRAM'
+        ]);
+    }
+
+    function it_normalizes_metric_in_standard_format_only_with_decimal_disallowed(
+        MetricInterface $metric,
+        ProductValueInterface $productValue,
+        AttributeInterface $attribute
+    ) {
+        $metric->getValue()->willReturn($productValue);
+        $productValue->getAttribute()->willReturn($attribute);
+        $attribute->isDecimalsAllowed()->willReturn(false);
+
+        $metric->getUnit()->willReturn('KILOGRAM');
+        $metric->getData()->willReturn('12.0000');
+
+        $this->normalize($metric, 'standard')->shouldReturn([
+            'amount' => 12,
+            'unit'   => 'KILOGRAM'
+        ]);
+    }
+
+    function it_returns_data_if_it_is_not_a_numeric(
+        MetricInterface $metric,
+        ProductValueInterface $productValue,
+        AttributeInterface $attribute
+    ) {
+        $metric->getValue()->willReturn($productValue);
+        $productValue->getAttribute()->willReturn($attribute);
+        $attribute->isDecimalsAllowed()->willReturn(false);
+
+        $metric->getUnit()->willReturn('KILOGRAM');
+        $metric->getData()->willReturn('yolo');
+
+        $this->normalize($metric, 'standard')->shouldReturn([
+            'amount' => 'yolo',
             'unit'   => 'KILOGRAM'
         ]);
     }

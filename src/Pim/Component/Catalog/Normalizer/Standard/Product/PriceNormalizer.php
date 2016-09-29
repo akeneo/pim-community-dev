@@ -14,17 +14,25 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class PriceNormalizer implements NormalizerInterface
 {
+    const DECIMAL_PRECISION = 2;
+
     /**
      * {@inheritdoc}
      */
     public function normalize($price, $format = null, array $context = [])
     {
-        //TODO: when the Price object is loaded from the database, the data is converted to a string
-        //TODO: see http://doctrine-orm.readthedocs.io/projects/doctrine-dbal/en/latest/reference/types.html#decimal
-        //TODO: at this point, $price->getData() = '45.32165' or '56.000000'
+        $amount = $price->getData();
+        $attribute = $price->getValue()->getAttribute();
+
+        // if decimals_allowed is false, we return an integer
+        // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
+        if (null !== $amount && is_numeric($amount)) {
+            $amount = $attribute->isDecimalsAllowed()
+                ? number_format($amount, static::DECIMAL_PRECISION, '.', '') : (int) $amount;
+        }
 
         return [
-            'amount'   => $price->getData(),
+            'amount'   => $amount,
             'currency' => $price->getCurrency(),
         ];
     }
