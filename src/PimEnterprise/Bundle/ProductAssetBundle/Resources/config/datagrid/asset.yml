@@ -141,7 +141,7 @@ datagrid:
                     group: bulk_actions
             delete:
                 type: delete
-                label: pim.grid.mass_action.delete
+                label: pim.grid.mass_action.delete_assets
                 entity_name: asset
                 acl_resource: pimee_product_asset_remove
                 handler: mass_delete_asset
