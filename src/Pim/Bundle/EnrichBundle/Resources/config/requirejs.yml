@@ -27,6 +27,9 @@ config:
         pim/export/product/edit/content:
             forwarded-events:
                 'pim_enrich:form:filter:extension:add': 'pim_enrich:form:filter:extension:add'
+        pim/grid/view-selector:
+            forwarded-events:
+                'grid:product-grid:state_changed': 'grid:product-grid:state_changed'
         pim/variant-group-manager:
             urls:
                 get: pim_enrich_variant_group_rest_get
@@ -331,6 +334,14 @@ config:
         # Formatters
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base
 
+        # Grid view selector
+        pim/grid/view-selector: pimenrich/js/grid/view-selector
+        pim/grid/view-selector-footer: pimenrich/js/grid/view-selector-footer
+        pim/grid/view-selector-line: pimenrich/js/grid/view-selector-line
+        pim/grid/view-selector-line-remove: pimenrich/js/grid/view-selector-line-remove
+        pim/grid/view-selector-save: pimenrich/js/grid/view-selector-save
+        pim/grid/view-selector-current: pimenrich/js/grid/view-selector-current
+
         # Templates
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html
@@ -427,3 +438,11 @@ config:
         pim/template/filter/attribute/select:           pimenrich/templates/filter/attribute/select.html
         pim/template/filter/attribute/media:            pimenrich/templates/filter/attribute/media.html
         pim/template/filter/attribute/date:             pimenrich/templates/filter/attribute/date.html
+
+        # Grid view selector
+        pim/template/grid/view-selector: pimenrich/templates/grid/view-selector.html
+        pim/template/grid/view-selector-footer: pimenrich/templates/grid/view-selector-footer.html
+        pim/template/grid/view-selector-line: pimenrich/templates/grid/view-selector-line.html
+        pim/template/grid/view-selector-line-remove: pimenrich/templates/grid/view-selector-line-remove.html
+        pim/template/grid/view-selector-save: pimenrich/templates/grid/view-selector-save.html
+        pim/template/grid/view-selector-current: pimenrich/templates/grid/view-selector-current.html

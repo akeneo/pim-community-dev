@@ -171,13 +171,15 @@ a.select2-choice {
   margin-top: 2px;
 }
 
-.add-attribute, .form-horizontal .add-attribute {
+.add-attribute,
+.grid-view-selector,
+.form-horizontal .add-attribute,
+.form-horizontal .grid-view-selector {
   &.bigdrop {
     width: 300px !important;
   }
 
   .select2-container {
-    margin: 6px 5px;
     width: 200px;
 
     a.select2-choice {
@@ -199,6 +201,11 @@ a.select2-choice {
   .select2-results {
     .select2-result-label {
       padding: 0;
+
+      .select2-result-label-view {
+        padding: 5px 5px;
+        line-height: 34px;
+      }
 
       .select2-result-label-attribute {
         padding: 3px 7px 4px;
@@ -233,6 +240,10 @@ a.select2-choice {
     border-top: 1px solid @color-ccc;
     .clearfix();
 
+    .left-footer {
+      line-height: 30px;
+    }
+
     .attribute-counter {
       padding-left: 5px;
       line-height: 30px;
@@ -255,6 +266,18 @@ a.select2-choice {
         border-bottom-left-radius: 2px;
       }
     }
+  }
+}
+
+.add-attribute {
+  .select2-container {
+    margin: 6px 5px;
+  }
+}
+
+.grid-view-selector {
+  .select2-container {
+    margin-left: 5px;
   }
 }
 

@@ -171,4 +171,34 @@ class Select2Decorator extends ElementDecorator
 
         return [$element->getHtml()];
     }
+
+    /**
+     * Return the available elements in the Select2 dropdown element.
+     * Note: if this Select2 is paginated, only return the first X elements visible on the 1st page.
+     *
+     * @throws TimeoutException
+     *
+     * @return array
+     */
+    public function getAvailableValues()
+    {
+        $widget = $this->getWidget();
+        $results = [];
+
+        $resultElements = $this->spin(function () use ($widget) {
+            return $widget->findAll('css', '.select2-result-label');
+        }, 'Cannot find any .select2-result-label element.');
+
+        foreach ($resultElements as $element) {
+            $results[] = $element->getText();
+        }
+
+        $this->spin(function () {
+            $this->close();
+
+            return true;
+        }, 'Cannot close the select2 field');
+
+        return $results;
+    }
 }

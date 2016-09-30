@@ -1,4 +1,20 @@
 config:
+    config:
+        pim/fetcher-registry:
+            fetchers:
+                datagrid-view:
+                    module: pim/datagrid-view-fetcher
+                    options:
+                        urls:
+                            list: pim_datagrid_view_rest_index
+                            get: pim_datagrid_view_rest_get
+                            columns: pim_datagrid_view_rest_default_columns
+                            userDefaultView: pim_datagrid_view_rest_default_user_view
+        pim/saver/datagrid-view:
+            url: pim_datagrid_view_rest_save
+        pim/remover/datagrid-view:
+            url: pim_datagrid_view_rest_remove
+
     shim:
         backgrid:
             deps:
@@ -94,6 +110,15 @@ config:
         oro/datafilter/filters-manager:             pimdatagrid/js/datafilter/filters-manager
         oro/datafilter/collection-filters-manager:  pimdatagrid/js/datafilter/collection-filters-manager
         oro/datafilter-builder:                     pimdatagrid/js/datafilter-builder
+
+        # Fetcher
+        pim/datagrid-view-fetcher: pimdatagrid/js/fetcher/datagrid-view-fetcher
+
+        # Saver
+        pim/saver/datagrid-view: pimdatagrid/js/saver/datagrid-view-saver
+
+        # Remover
+        pim/remover/datagrid-view: pimdatagrid/js/remover/datagrid-view-remover
 
         pim/template/datagrid/action-launcher-button:           pimdatagrid/templates/datagrid/action-launcher-button.html
         pim/template/datagrid/action-launcher-list-item:        pimdatagrid/templates/datagrid/action-launcher-list-item.html
