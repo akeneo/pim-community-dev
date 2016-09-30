@@ -152,7 +152,7 @@ class Grid extends Index
                 'Grid'                  => ['css' => 'table.grid'],
                 'Grid content'          => ['css' => 'table.grid tbody'],
                 'Filters'               => ['css' => '.filter-box, .filter-wrapper'],
-                'Grid toolbar'          => ['css' => 'div.grid-toolbar'],
+                'Grid toolbar'          => ['css' => '.GridToolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
                 'Configure columns'     => ['css' => 'a:contains("Columns")'],
                 'View selector'         => ['css' => '.grid-view-selector'],

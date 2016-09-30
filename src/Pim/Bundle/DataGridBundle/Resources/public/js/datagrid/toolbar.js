@@ -14,15 +14,17 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
     return Backbone.View.extend({
         /** @property */
         template:_.template(
-            '<div class="grid-toolbar">' +
-                '<div class="pull-left">' +
+            '<div class="GridToolbar">' +
+                '<div class="GridToolbar-left">' +
                     '<div class="mass-actions-panel icons-holder"></div>' +
                 '</div>' +
-                '<div class="pull-right">' +
+                '<div class="GridToolbar-center">' +
+                    '<div class="AkPagination"></div>' +
+                '</div>' +
+                '<div class="GridToolbar-right">' +
                     '<div class="actions-panel pull-right form-horizontal"></div>' +
                     '<div class="page-size pull-right form-horizontal"></div>' +
                 '</div>' +
-                '<div class="AkPagination"></div>' +
             '</div>'
         ),
 

@@ -47,7 +47,7 @@ define(
 
             icon: 'th',
 
-            target: 'div.grid-toolbar .actions-panel',
+            target: '.GridToolbar .actions-panel',
 
             template: _.template(
                 '<div class="btn-group">' +
