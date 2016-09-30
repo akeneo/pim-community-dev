@@ -1,0 +1,10 @@
+parameters:
+    pimee_datagrid.filter.datagrid_view.class: PimEnterprise\Bundle\DataGridBundle\Filter\DatagridViewFilter
+
+services:
+    pimee_datagrid.filter.datagrid_view:
+        class: '%pimee_datagrid.filter.datagrid_view.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.datagrid_view.view }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.datagrid_view.view }

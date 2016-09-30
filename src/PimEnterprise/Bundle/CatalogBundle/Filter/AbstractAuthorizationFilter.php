@@ -31,6 +31,7 @@ abstract class AbstractAuthorizationFilter extends AbstractFilter implements Col
     protected $authorizationChecker;
 
     /**
+     * @param TokenStorageInterface         $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
