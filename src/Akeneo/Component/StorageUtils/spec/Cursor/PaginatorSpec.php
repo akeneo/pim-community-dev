@@ -38,9 +38,6 @@ class PaginatorSpec extends ObjectBehavior
             new Entity(13)
         ];
 
-        $page1 = array_slice($data, 0, 10);
-        $page2 = array_slice($data, 10, 10);
-
         $iterator = new \ArrayIterator($data);
 
         $cursor->count()->will(function() use($iterator) {
