@@ -22,7 +22,7 @@ class PaginatorSpec extends ObjectBehavior
 
     function it_iterate_by_page_over_cursor(CursorInterface $cursor)
     {
-        $page1 = [
+        $data = [
             new Entity(1),
             new Entity(2),
             new Entity(3),
@@ -32,37 +32,45 @@ class PaginatorSpec extends ObjectBehavior
             new Entity(7),
             new Entity(8),
             new Entity(9),
-            new Entity(10)
+            new Entity(10),
+            new Entity(11),
+            new Entity(12),
+            new Entity(13)
         ];
-        $page2 = [new Entity(11), new Entity(12), new Entity(13)];
-        $data = array_merge($page1, $page2);
 
-        $cursor->count()->shouldBeCalled()->willReturn(13);
-        $cursor->next()->shouldBeCalled()->will(function () use ($cursor, &$data) {
-            $item = array_shift($data);
-            if ($item === null) {
-                $item = false;
-            }
-            $cursor->current()->willReturn($item);
+        $page1 = array_slice($data, 0, 10);
+        $page2 = array_slice($data, 10, 10);
+
+        $iterator = new \ArrayIterator($data);
+
+        $cursor->count()->will(function() use($iterator) {
+            return $iterator->count();
         });
-        $cursor->rewind()->shouldBeCalled()->will(function () use ($cursor, &$data, $page1, $page2) {
-            $data = array_merge($page1, $page2);
-            $item = array_shift($data);
-            if ($item === null) {
-                $item = false;
-            }
-            $cursor->current()->willReturn($item);
+        $cursor->current()->will(function() use($iterator) {
+            return $iterator->current();
+        });
+        $cursor->next()->will(function() use($iterator) {
+            $iterator->next();
+        });
+        $cursor->key()->will(function() use($iterator) {
+            return $iterator->key();
+        });
+        $cursor->valid()->will(function() use($iterator) {
+            return $iterator->valid();
+        });
+        $cursor->rewind()->will(function() use($iterator) {
+            $iterator->rewind();
         });
 
         // for each call sequence
         $this->rewind()->shouldReturn(null);
         $this->valid()->shouldReturn(true);
-        $this->current()->shouldReturn($page1);
+        $this->current()->shouldReturnAnInstanceOf(\Traversable::class);
         $this->key()->shouldReturn(0);
 
         $this->next()->shouldReturn(null);
         $this->valid()->shouldReturn(true);
-        $this->current()->shouldReturn($page2);
+        $this->current()->shouldReturnAnInstanceOf(\Traversable::class);
         $this->key()->shouldReturn(1);
 
         $this->next()->shouldReturn(null);
@@ -76,8 +84,8 @@ class PaginatorSpec extends ObjectBehavior
         $this->rewind()->shouldReturn(null);
         $this->valid()->shouldReturn(true);
         $this->valid()->shouldReturn(true);
-        $this->current()->shouldReturn($page1);
-        $this->current()->shouldReturn($page1);
+        $this->current()->shouldReturnAnInstanceOf(\Traversable::class);
+        $this->current()->shouldReturnAnInstanceOf(\Traversable::class);
         $this->key()->shouldReturn(0);
         $this->key()->shouldReturn(0);
     }

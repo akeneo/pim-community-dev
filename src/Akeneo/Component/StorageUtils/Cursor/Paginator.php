@@ -101,7 +101,12 @@ class Paginator implements PaginatorInterface
      */
     public function valid()
     {
-        return $this->pageNumber < $this->count();
+        if ($this->pageNumber < $this->count()) {
+            return true;
+        }
+
+        $this->pageData = false;
+        return false;
     }
 
     /**
@@ -119,29 +124,22 @@ class Paginator implements PaginatorInterface
      */
     public function count()
     {
-        return intval(ceil($this->cursor->count() / $this->pageSize));
+        return (int) ceil($this->cursor->count() / $this->pageSize);
     }
 
     /**
-     * @return array
+     * @return \Traversable
      */
     private function getNextDataPage()
     {
-        $result = [];
         $pageSize = 0;
         do {
             $current = $this->cursor->current();
             if (null !== $current && false !== $current) {
-                $result[] = $current;
+                yield $current;
             }
             $pageSize++;
             $this->cursor->next();
         } while ($pageSize < $this->pageSize && null !== $current && false !== $current);
-
-        if (empty($result)) {
-            return false;
-        }
-
-        return $result;
     }
 }
