@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
+use Akeneo\Component\StorageUtils\Event\BulkSaveEvent;
+use Akeneo\Component\StorageUtils\Event\SaveEvent;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
@@ -89,7 +91,7 @@ class ProductSaver extends BaseProductSaver
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new BulkSaveEvent($products, $options));
 
         $productsToInsert = [];
         $productsToUpdate = [];
@@ -102,7 +104,7 @@ class ProductSaver extends BaseProductSaver
                 $productsToUpdate[] = $product;
             }
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new BulkSaveEvent($product, $options));
         }
 
         $insertDocs = $this->getDocsFromProducts($productsToInsert);
@@ -119,13 +121,13 @@ class ProductSaver extends BaseProductSaver
         foreach ($products as $product) {
             $this->completenessManager->generateMissingForProduct($product);
 
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new BulkSaveEvent($product, $options));
         }
 
         $versions = $this->bulkVersionBuilder->buildVersions($products);
         $this->versionSaver->saveAll($versions);
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new BulkSaveEvent($products, $options));
     }
 
     /**

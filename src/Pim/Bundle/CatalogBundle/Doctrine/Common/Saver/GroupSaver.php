@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Event\BulkSaveEvent;
+use Akeneo\Component\StorageUtils\Event\SaveEvent;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
@@ -16,7 +18,6 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Group saver, contains custom logic for variant group products saving
@@ -100,7 +101,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateGroup($group);
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new SaveEvent($group));
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
@@ -108,7 +109,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new SaveEvent($group));
     }
 
     /**
@@ -120,14 +121,14 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new BulkSaveEvent($groups));
 
         $options = $this->optionsResolver->resolveSaveAllOptions($options);
 
         foreach ($groups as $group) {
             $this->validateGroup($group);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new BulkSaveEvent($group, $options));
 
             $this->persistGroup($group, $options);
         }
@@ -135,10 +136,10 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($groups as $group) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new BulkSaveEvent($group, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new BulkSaveEvent($groups, $options));
     }
 
     /**
@@ -192,7 +193,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
+                    'Expects a "%s", "%s" provided.',
+                    GroupInterface::class,
                     ClassUtils::getClass($group)
                 )
             );

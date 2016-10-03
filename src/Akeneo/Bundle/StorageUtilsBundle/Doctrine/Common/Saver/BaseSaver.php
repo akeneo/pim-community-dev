@@ -2,13 +2,14 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Event\BulkSaveEvent;
+use Akeneo\Component\StorageUtils\Event\SaveEvent;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Base saver, declared as different services for different classes
@@ -50,13 +51,13 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateObject($object);
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new SaveEvent($object, $options));
 
         $this->objectManager->persist($object);
 
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new SaveEvent($object, $options));
     }
 
     /**
@@ -68,13 +69,12 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $options));
-
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new BulkSaveEvent($objects, $options));
 
         foreach ($objects as $object) {
             $this->validateObject($object);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new BulkSaveEvent($object, $options));
 
             $this->objectManager->persist($object);
         }
@@ -82,10 +82,10 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($objects as $object) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new BulkSaveEvent($object, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new BulkSaveEvent($objects, $options));
     }
 
     /**

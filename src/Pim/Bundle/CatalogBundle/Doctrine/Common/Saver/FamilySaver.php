@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Event\BulkSaveEvent;
+use Akeneo\Component\StorageUtils\Event\SaveEvent;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
@@ -10,7 +12,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Family saver, contains custom logic for family's product saving
@@ -52,7 +53,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateFamily($family);
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new SaveEvent($family, $options));
 
         $this->objectManager->persist($family);
 
@@ -60,7 +61,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new SaveEvent($family, $options));
     }
 
     /**
@@ -72,12 +73,12 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($families, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new BulkSaveEvent($families, $options));
 
         foreach ($families as $family) {
             $this->validateFamily($family);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new BulkSaveEvent($family, $options));
 
             $this->objectManager->persist($family);
 
@@ -87,10 +88,10 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($families as $family) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new BulkSaveEvent($family, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($families, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new BulkSaveEvent($families, $options));
     }
 
     /**
@@ -101,7 +102,8 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         if (!$family instanceof FamilyInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\FamilyInterface", "%s" provided.',
+                    'Expects a "%s", "%s" provided.',
+                    FamilyInterface::class,
                     ClassUtils::getClass($family)
                 )
             );

@@ -12,20 +12,15 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RemoveEvent extends GenericEvent implements SubjectAwareInterface, StorageEventInterface
+class SaveEvent extends GenericEvent implements StorageEventInterface
 {
-    use SubjectIdAwareTrait;
-
     /**
      * @param mixed $subject
-     * @param int   $subjectId
      * @param array $arguments
      */
-    public function __construct($subject, $subjectId, array $arguments = [])
+    public function __construct($subject, array $arguments = [])
     {
         parent::__construct($subject, $arguments);
-
-        $this->setSubjectId($subjectId);
     }
 
     /**

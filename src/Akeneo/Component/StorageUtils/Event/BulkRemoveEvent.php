@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RemoveEvent extends GenericEvent implements SubjectAwareInterface, StorageEventInterface
+class BulkRemoveEvent extends GenericEvent implements SubjectAwareInterface, StorageEventInterface
 {
     use SubjectIdAwareTrait;
 
@@ -33,6 +33,6 @@ class RemoveEvent extends GenericEvent implements SubjectAwareInterface, Storage
      */
     public function isBulk()
     {
-        return false;
+        return true;
     }
 }

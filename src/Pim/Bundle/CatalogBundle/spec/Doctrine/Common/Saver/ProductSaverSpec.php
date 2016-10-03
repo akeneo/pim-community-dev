@@ -82,7 +82,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Expects a Pim\Component\Catalog\Model\ProductInterface, "stdClass" provided'))
+            ->shouldThrow(new \InvalidArgumentException('Expects a "Pim\Component\Catalog\Model\ProductInterface", "stdClass" provided'))
             ->duringSave($otherObject);
     }
 }
