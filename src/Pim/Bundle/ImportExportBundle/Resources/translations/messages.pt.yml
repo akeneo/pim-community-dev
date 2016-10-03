@@ -98,10 +98,12 @@ flash:
     created: A exportação foi criada com sucesso
     removed: A exportação foi removida
     updated: A exportação foi atualizada com sucesso
+    running: A exportação está a ser executada
   import:
     created: A importação foi criada com sucesso
     removed: A importação foi removida
     updated: A exportação foi atualizada com sucesso
+    running: A importação está a ser executada
 pim_menu:
   item:
     export_history: Histórico de exportações
@@ -139,3 +141,12 @@ Status: Estado
 Summary: Resumo
 Start: Início
 End: Fim
+set_attribute_requirements: Estabelecer requisitos do atributo
+COMPLETED: CONCLUÍDO
+STARTING: A COMEÇAR
+STARTED: COMEÇOU
+STOPPING: A PARAR
+STOPPED: PAROU
+FAILED: FALHOU
+ABANDONED: ABANDONADO
+UNKNOWN: DESCONHECIDO
