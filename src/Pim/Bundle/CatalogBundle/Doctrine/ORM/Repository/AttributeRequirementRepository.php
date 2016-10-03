@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
@@ -27,6 +28,8 @@ class AttributeRequirementRepository extends EntityRepository implements Attribu
             ->innerJoin('ar.channel', 'c')
             ->where('ar.family = :family')
             ->andWhere('ar.required = :required')
+            ->orderBy('c.code', Criteria::ASC)
+            ->addOrderBy('a.code', Criteria::ASC)
             ->setParameter(':family', $family)
             ->setParameter(':required', true);
 
