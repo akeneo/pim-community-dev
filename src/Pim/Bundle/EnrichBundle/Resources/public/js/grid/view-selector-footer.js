@@ -49,6 +49,8 @@ define(
                     buttonTitle: __('grid.view_selector.create')
                 }));
 
+                this.renderExtensions();
+
                 return this;
             },
 
