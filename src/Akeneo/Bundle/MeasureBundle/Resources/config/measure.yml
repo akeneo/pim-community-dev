@@ -464,6 +464,15 @@ measures_config:
             CUBIC_YARD:
                 convert: [{'mul': 0.764554861}]
                 symbol: yd³
+    Volumetric_Flow_Rate:
+        standard: CUBIC_METER_PER_SECOND
+        units:
+            CUBIC_METER_PER_SECOND:
+                convert: [{'mul': 1}]
+                symbol: m³/s
+            LITER_PER_MINUTE:
+                convert: [{'mul': 0.001}, {'div': 60}]
+                symbol: l/m
     Weight:
         standard: KILOGRAM
         units:
