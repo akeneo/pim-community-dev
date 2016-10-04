@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-5821: Fix wording issue on asset bulk action
+
 # 1.6.3 (2016-09-22)
 
 ## Bug fixes

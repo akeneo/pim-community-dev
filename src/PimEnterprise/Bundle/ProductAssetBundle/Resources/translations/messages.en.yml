@@ -168,6 +168,7 @@ pim:
         mass_action:
             mass_classify_assets: Classify
             add_tags_to_assets: Add tags
+            delete_assets: Delete assets
 
 btn.create.asset: Create an asset
 btn.drag_or_upload: Drag and drop a file or click here
