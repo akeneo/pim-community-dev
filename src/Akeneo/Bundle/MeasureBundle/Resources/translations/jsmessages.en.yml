@@ -176,7 +176,11 @@ PINT:             Pint
 
 Volumetric_Flow_Rate: Volumetric flow rate
 CUBIC_METER_PER_SECOND: Cubic merter per second
-LITER_PER_MINUTE: Liter per minute
+CUBIC_METER_PER_MINUTE: Cubic merter per minute
+CUBIC_METER_PER_HOUR:   Cubic merter per hour
+LITER_PER_SECOND:       Liter per second
+LITER_PER_MINUTE:       Liter per minute
+LITER_PER_HOUR:         Liter per hour
 
 Weight:    Weight
 DENIER:    Denier

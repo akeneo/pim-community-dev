@@ -470,9 +470,21 @@ measures_config:
             CUBIC_METER_PER_SECOND:
                 convert: [{'mul': 1}]
                 symbol: m³/s
+            CUBIC_METER_PER_MINUTE:
+                convert: [{'div': 60}]
+                symbol: m³/min
+            CUBIC_METER_PER_HOUR:
+                convert: [{'div': 3600}]
+                symbol: m³/h
+            LITER_PER_SECOND:
+                convert: [{'mul': 0.001}]
+                symbol: l/s
             LITER_PER_MINUTE:
                 convert: [{'mul': 0.001}, {'div': 60}]
                 symbol: l/m
+            LITER_PER_HOUR:
+                convert: [{'mul': 0.001}, {'div': 3600}]
+                symbol: l/h
     Weight:
         standard: KILOGRAM
         units:
