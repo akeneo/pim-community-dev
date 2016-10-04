@@ -102,10 +102,12 @@ define(
                 });
 
                 _.each(this.datagrids, function (datagrid) {
+                    mediator.clear('datagrid:selectModel:' + datagrid.name);
                     mediator.on('datagrid:selectModel:' + datagrid.name, function (model) {
                         this.selectModel(model, datagrid);
                     }.bind(this));
 
+                    mediator.clear('datagrid:unselectModel:' + datagrid.name);
                     mediator.on('datagrid:unselectModel:' + datagrid.name, function (model) {
                         this.unselectModel(model, datagrid);
                     }.bind(this));
