@@ -26,8 +26,27 @@ MEGABYTE: Megabyte
 GIGABYTE: Gigabyte
 TERABYTE: Terabyte
 
+Capacitance: Capacitance
+FARAD: Farad
+MILLIFARAD: Millifarad
+MICROFARAD: Microfarad
+NANOFARAD: Nanofarad
+PICOFARAD: Picofarad
+
 Decibel: Decibel
 DECIBEL: Decibel
+
+Energy: Energy
+JOULE: Joule
+KILOJOULE: Kilojoule
+MEGAJOULE: Megajoule
+CALORIE: Calorie
+KILOCALORIE: Kilocalorie
+WATT_HOUR: Watt-hour
+KILOWATT_HOUR: Kilowatt-hour
+
+Force: Force
+NEWTON: Newton
 
 Frequency: Frequency
 GIGAHERTZ: Gigahertz
@@ -36,7 +55,12 @@ MEGAHERTZ: Megahertz
 TERAHERTZ: Terahertz
 HERTZ:     Hertz
 
+Illuminance: Illuminance
+LUX: Lux
+
 Length:     Length
+NANOMETER:  Nanometer
+MICROMETER: Micrometer
 CENTIMETER: Centimeter
 CHAIN:      Chain
 DECIMETER:  Decimeter
@@ -51,6 +75,9 @@ MIL:        Mil
 MILE:       Mile
 MILLIMETER: Millimeter
 YARD:       Yard
+
+Luminous_Power: Luminous Power
+LUMEN: Lumen
 
 Power:    Power
 GIGAWATT: Gigawatt
@@ -79,6 +106,7 @@ HECTOVOLT: Hectovolt
 KILOVOLT:  Kilovolt
 
 Intensity:   Intensity
+MICROAMPERE: Microampere
 MILLIAMPERE: Milliampere
 CENTIAMPERE: Centiampere
 DECIAMPERE:  Deciampere
@@ -100,6 +128,8 @@ HECTOCOULOMB:    Hectocoulomb
 KILOCOULOMB:     Kilocoulomb
 
 Duration:    Duration
+NANOSECOND:  Nanosecond
+MICROSECOND: Microsecond
 MILLISECOND: Millisecond
 SECOND:      Second
 MINUTE:      Minute
@@ -123,6 +153,9 @@ KELVIN:      Kelvin
 RANKINE:     Rankine
 REAUMUR:     Reaumur
 
+Torque: Torque
+NEWTON_METER: Newton meter
+
 Volume:           Volume
 BARREL:           Barrel
 CENTILITER:       Centiliter
@@ -136,6 +169,7 @@ CUBIC_YARD:       Cubic yard
 DECILITER:        Deciliter
 GALLON:           Gallon
 LITER:            Liter
+MICROLITER:       Microliter
 MILLILITER:       Milliliter
 OUNCE:            Ounce
 PINT:             Pint
@@ -147,6 +181,7 @@ GRAM:      Gram
 KILOGRAM:  Kilogram
 LIVRE:     Livre
 MARC:      Marc
+MICROGRAM: Microgram
 MILLIGRAM: Milligram
 ONCE:      Once
 OUNCE:     Ounce
