@@ -77,12 +77,60 @@ measures_config:
             TERABYTE:
                 convert: [{'mul': 1099511627776}]
                 symbol: TB
+    Capacitance:
+        standard: FARAD
+        units:
+            PICOFARAD:
+                convert: [{'mul': 0.000000000001}]
+                symbol: pF
+            NANOFARAD:
+                convert: [{'mul': 0.000000001}]
+                symbol: nF
+            MICROFARAD:
+                convert: [{'mul': 0.000001}]
+                symbol: µF
+            MILLIFARAD:
+                convert: [{'mul': 0.001}]
+                symbol: mF
+            FARAD:
+                convert: [{'mul': 1}]
+                symbol: F
     Decibel:
         standard: DECIBEL
         units:
             DECIBEL:
                 convert: [{'mul': 1}]
                 symbol: dB
+    Energy:
+        standard: JOULE
+        units:
+            JOULE:
+                convert: [{'mul': 1}]
+                symbol: J
+            KILOJOULE:
+                convert: [{'mul': 1000}]
+                symbol: kJ
+            MEGAJOULE:
+                convert: [{'mul': 1000000}]
+                symbol: MJ
+            CALORIE:
+                convert: [{'mul': 4.1868}]
+                symbol: cal
+            KILOCALORIE:
+                convert: [{'mul': 4186.8}]
+                symbol: kcal
+            WATT_HOUR:
+                convert: [{'mul': 3600}]
+                symbol: Wh
+            KILOWATT_HOUR:
+                convert: [{'mul': 3600000}]
+                symbol: kWh
+    Force:
+        standard: NEWTON
+        units:
+            NEWTON:
+                convert: [{'mul': 1}]
+                symbol: N
     Frequency:
         standard: HERTZ
         units:
@@ -101,9 +149,21 @@ measures_config:
             TERAHERTZ:
                 convert: [{'mul': 1000000000000}]
                 symbol: THz
+    Illuminance:
+        standard: LUX
+        units:
+            LUX:
+                convert: [{'mul': 1}]
+                symbol: lx
     Length:
         standard: METER
         units:
+            NANOMETER:
+                convert: [{'mul': 0.000000001}]
+                symbol: nm
+            MICROMETER:
+                convert: [{'mul': 0.000001}]
+                symbol: µm
             MILLIMETER:
                 convert: [{'mul': 0.001}]
                 symbol: mm
@@ -146,6 +206,12 @@ measures_config:
             MILE:
                 convert: [{'mul': 1609.344}]
                 symbol: mi
+    Luminous_Power:
+        standard: LUMEN
+        units:
+            LUMEN:
+                convert: [{'mul': 1}]
+                symbol: lm
     Power:
         standard: WATT
         units:
@@ -191,6 +257,9 @@ measures_config:
     Intensity:
         standard: AMPERE
         units:
+            MICROAMPERE:
+                convert: [{'mul': 0.000001}]
+                symbol: µA
             MILLIAMPERE:
                 convert: [{'mul': 0.001}]
                 symbol: mA
@@ -299,6 +368,12 @@ measures_config:
     Duration:
         standard: SECOND
         units:
+            NANOSECOND:
+                convert: [{'mul': 0.000000001}]
+                symbol: ns
+            MICROSECOND:
+                convert: [{'mul': 0.000001}]
+                symbol: µs
             MILLISECOND:
                 convert: [{'mul': 0.001}]
                 symbol: ms
@@ -332,6 +407,12 @@ measures_config:
             REAUMUR:
                 convert: [{'mul': 1.25}, {'add': 273.15}]
                 symbol: °r
+    Torque:
+        standard: NEWTON_METER
+        units:
+            NEWTON_METER:
+                convert: [{'mul': 1}]
+                symbol: Nm
     Volume:
         standard: CUBIC_METER
         units:
@@ -341,6 +422,9 @@ measures_config:
             CUBIC_CENTIMETER:
                 convert: [{'mul': 0.000001}]
                 symbol: cm³
+            MICROLITER:
+                convert: [{'mul': 0.000000001}]
+                symbol: µl
             MILLILITER:
                 convert: [{'mul': 0.000001}]
                 symbol: ml
@@ -383,6 +467,9 @@ measures_config:
     Weight:
         standard: KILOGRAM
         units:
+            MICROGRAM:
+                convert: [{'mul': 0.000001}]
+                symbol: µg
             MILLIGRAM:
                 convert: [{'mul': 0.000001}]
                 symbol: mg
