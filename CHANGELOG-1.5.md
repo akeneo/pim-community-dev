@@ -3,6 +3,7 @@
 ## Bug fixes
 
 PIM-5985: Fix the import of localizable and scopable variant group attributes (backport of PIM-5915)
+PIM-5973: Fix association between products with new association types
 
 # 1.5.9 (2016-09-27)
 
