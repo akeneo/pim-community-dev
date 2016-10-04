@@ -45,7 +45,4 @@ script:
 notifications:
   slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo
 
-matrix:
-  allow_failures:
-    - php: "7.1"
 
