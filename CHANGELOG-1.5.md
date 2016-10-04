@@ -19,6 +19,7 @@
 - PIM-5777: Fix attribute refresh when locale change in Product Edit Form
 - TIP-307: Fix issues with Mongo 2.6
 - PIM-5862: Fix product grid display on a custom user view
+- PIM-5984: Optimization on product import when iterating on each existing attributes
 
 # 1.5.8 (2016-08-25)
 
