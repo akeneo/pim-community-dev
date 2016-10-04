@@ -109,7 +109,9 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     public function getDeletedLocalesForChannel(ChannelInterface $channel)
     {
         $currentLocaleIds = array_map(
-            function (LocaleInterface $locale) {return $locale->getId();},
+            function (LocaleInterface $locale) {
+                return $locale->getId();
+            },
             $channel->getLocales()->toArray()
         );
 
