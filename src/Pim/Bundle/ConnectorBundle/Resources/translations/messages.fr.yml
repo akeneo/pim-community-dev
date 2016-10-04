@@ -61,20 +61,20 @@ pim_connector:
     csv_reader:
       title: Lecteur de CSV
       invalid_item_columns_count: '%totalColumnsCount% colonnes attendues, %itemColumnsCount% trouvées dans %csvPath%:%lineno%'
-    csv_product_reader.title: Lecteur de CSV de produits
-    csv_category_reader.title: Lecteur de CSV de catégories
+    csv_product_reader.title: Lecteur de produits en CSV
+    csv_category_reader.title: Lecteur de catégories en CSV
     csv_variant_group .title: Lecteur de groupes de variantes en CSV
     dummy_processor.title: Processeur factice
     product_processor.title: Création des produits
     variant_group_processor.title: Création / Mise à jour des groupes de variantes
-    category_processor.title: Création de catégorie
+    category_processor.title: Création des catégories
     association_processor.title: "Création d'association"
     product_association_processor.title: "Création d'association"
-    group_processor.title: Création de groupe
-    attribute_processor.title: "Création d'attribut"
+    group_processor.title: Création des groupes
+    attribute_processor.title: Création des attributs
     attribute_option_processor.title: "Création des options d'attributs"
-    heterogeneous_processor.title: Sérialiseur de produit en CSV
-    homogeneous_processor.title: "Sérialiseur d'entité en CSV"
+    heterogeneous_processor.title: Sérialiseur de produits en CSV
+    homogeneous_processor.title: "Sérialiseur d'entités en CSV"
     transformer_processor.title: Transformation
     dummy_writer.title: Ecriture factice
     file_writer.title: Sortie
@@ -82,7 +82,7 @@ pim_connector:
     category_writer.title: Stockage des catégories
     variant_group_writer.title: Stockage des groupes de variantes
     writer.title: Stockage des entités
-    csv_writer.title: Ecriture Csv
+    csv_writer.title: Ecriture CSV
   export:
     delimiter:
       label: Délimiteur
@@ -106,14 +106,14 @@ pim_connector:
       label: Activer le produit
       help: Activer automatiquement les produits importés
     categoriesColumn:
-      label: Colonne catégories
-      help: Nom de la colonne catégories
+      label: Colonne des catégories
+      help: Nom de la colonne qui contient les catégories
     familyColumn:
-      label: Colonne Famille
-      help: Nom de la colonne famille
+      label: Colonne de la famille
+      help: Nom de la colonne qui contient la famille du produit
     groupsColumn:
-      label: Colonne de groupes
-      help: Nom de la colonne de groupes
+      label: Colonne des groupes
+      help: Nom de la colonne qui contient les groupes du produit
     filePath:
       label: Fichier
       help: Le fichier CSV à importer
@@ -130,7 +130,7 @@ pim_connector:
       label: "Caractère d'encadrement"
       help: Caractère unique utilisé pour encadrer les champs
     escape:
-      label: Echapper
+      label: Échappement
       help: Le caractère utilisé pour échapper les champs
     circularRefsChecked:
       label: Vérifiez les références circulaires
@@ -143,7 +143,7 @@ pim_connector:
       help: "Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes"
     enabledComparison:
       label: Comparer les valeurs
-      help: "Permettre la comparaison entre les valeurs d'origine et des valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine"
+      help: "Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine"
     decimalSeparator:
       label: Séparateur de décimales
       help: Caractère unique utilisé comme séparateur de décimales
@@ -151,17 +151,17 @@ pim_connector:
       label: Format de date
       help: Spécifie le format de chaque colonne de type date dans le fichier, par exemple DD/MM/YYYY pour une date au format 31/04/2014.
 job_execution.summary:
-  read: lu
+  read: lu(s)
   read_lines: lignes lues
-  write: écrit
-  skip: ignoré
-  create: créé
-  process: traitées
+  write: écrit(s)
+  skip: ignoré(s)
+  create: créé(s)
+  process: traité(s)
   update_products: produits mis à jour
   process_products: produits traités
   skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:
     title: 'Encodage du fichier :'
-    skipped: Ignoré, extension dans la liste blanche
-  product_skipped_no_diff: produit ignoré (aucune différence)
+    skipped: ignoré(s), extension dans la liste blanche
+  product_skipped_no_diff: produit(s) ignoré(s) (aucune différence)
