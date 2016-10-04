@@ -1,5 +1,9 @@
 # 1.7
 
+## Bug Fixes
+
+- #5062 Fixed unit conversion for ElectricCharge cheers @gplanchat!
+
 ## Functional improvements
 
 - Change the loading message by a more humanized message to share our love.
