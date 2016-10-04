@@ -2,15 +2,63 @@ pimee_product_asset:
   form:
     product:
       asset:
+        manage: Управление активами
+        panel:
+          basket:
+            title: Корзина
+            empty_basket: Корзина пуста
         manage_asset:
+          title: Управление активами
           cancel: Отмена
+          confirm: Подтверждение
+  enrich_asset:
+    grid:
+      edit: Редактирование свойств актива
   enrich_variation:
     popin:
       delete:
         title: Подтверждение удаления
+        message: Вы действительно хотите удалить этот элемент?
+      reset:
+        title: Сбросить вариации
+        message: Вы уверен, что хотите сбросить все вариации?
   mass_upload:
+    menu: Загрузить медиафайлы
     btn:
+      cancel: Отменить загрузку
       delete: Удалить
+      start: Начать загрузку
+    success:
+      new: Будет создан новый медиафайл
+      canceled: Загрузка успешно отмененa
+      deleted: Загруженный файл успешно удален
+    error:
+      list: Невозможно читать уже загруженные файлы
+      upload: Произошла ошибка при загрузке
+      delete: Не удается удалить файл с сервера
+      filename: Недопустимое имя файла для актива
+      code: Недопустимый формат кода для медиафайла
+      locale: Актив существует, но не является локализуемым
+      invalid_locale: Локаль отключена или недопустна
+      conflicts: Конфликт имен файлов
+    grid:
+      medias: медиафайлы
+      filename: имя файла
+      filetype: тип файла
+      status: статус
+      progress: прогресс
+      actions: действия
     action:
       cancel: Отмена
       delete: Удалить
+    status:
+      added: Добавлено
+      queued: Поставлено в очередь
+      uploading: Загрузка
+      error: Ошибка
+      success: Успешно
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Массовая загрузка

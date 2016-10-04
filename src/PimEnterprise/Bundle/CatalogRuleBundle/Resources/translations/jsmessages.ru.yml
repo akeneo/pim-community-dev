@@ -2,4 +2,13 @@ pimee_catalog_rule:
   attribute:
     list:
       code.label: Код
+      condition.label: Условие
       action.label: Действие
+      no_rule_yet.label: В данный момент правила отсутствуют
+  rule:
+    condition:
+      if.label: Если
+    action:
+      then.label: Тогда
+      set_value.label: установлено в
+      copy_value.label: копируется в

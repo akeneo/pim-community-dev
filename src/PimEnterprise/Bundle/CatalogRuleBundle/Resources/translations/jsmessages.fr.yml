@@ -4,7 +4,7 @@ pimee_catalog_rule:
       code.label: Code
       condition.label: Condition
       action.label: Action
-      no_rule_yet.label: "Aucune règle pour l'instant"
+      no_rule_yet.label: "Il n'y a aucune règle pour l'instant"
   rule:
     condition:
       if.label: Si
