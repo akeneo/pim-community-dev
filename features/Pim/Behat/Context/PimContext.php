@@ -17,12 +17,14 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     /** @var string */
     private static $kernelRootDir;
 
+    /** @var string */
+    private static $fixturePath;
+
     public static function resetPlaceholderValues()
     {
         self::$placeholderValues = [
             '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
-            //TODO: change that later
-            '%fixtures%' => self::$kernelRootDir . '/../features/Context/fixtures/'
+            '%fixtures%' => sprintf('%s/../%s', self::$kernelRootDir, self::$fixturePath)
         ];
     }
 
@@ -32,7 +34,9 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     public function setKernel(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
+
         self::$kernelRootDir = $kernel->getRootDir();
+        self::$fixturePath = $this->getMinkParameter('files_path');
     }
 
     /**
