@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
+namespace Pim\Component\Catalog\Validator\Constraints;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -14,6 +15,11 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class NotBlankPropertiesValidator extends ConstraintValidator
 {
+    const REFERENCE_DATA_TYPES = [
+        AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
+        AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -21,10 +27,11 @@ class NotBlankPropertiesValidator extends ConstraintValidator
     {
         $properties = $constraint->properties;
         $values = $value->getProperties();
-
-        foreach ($properties as $propertyCode) {
-            if (array_key_exists($propertyCode, $values) && null === $values[$propertyCode]) {
-                $this->context->buildViolation($constraint->message)->addViolation();
+        if (in_array($value->getAttributeType(), self::REFERENCE_DATA_TYPES)) {
+            foreach ($properties as $propertyCode) {
+                if (array_key_exists($propertyCode, $values) && null === $values[$propertyCode]) {
+                    $this->context->buildViolation($constraint->message)->addViolation();
+                }
             }
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
+namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 

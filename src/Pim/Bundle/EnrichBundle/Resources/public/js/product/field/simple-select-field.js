@@ -98,7 +98,7 @@ define(
                             var id = $(element).val();
                             if ('' !== id) {
                                 if (null === this.choicePromise) {
-                                    this.choicePromise = $.get(choiceUrl, {options: {identifiers: [id]}});
+                                    this.choicePromise = $.get(choiceUrl);
                                 }
 
                                 this.choicePromise.then(function (response) {

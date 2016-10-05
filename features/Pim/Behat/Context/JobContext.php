@@ -152,10 +152,12 @@ class JobContext extends PimContext
      */
     public function iShouldSeeTheOrderedFilters($filters)
     {
-        $expectedOrderedFilters = $this->getMainContext()->listToArray($filters);
-        $currentOrderedFilters = $this->getOrderedFilters();
+        $this->spin(function() use ($filters) {
+            $expectedOrderedFilters = $this->getMainContext()->listToArray($filters);
+            $currentOrderedFilters = $this->getOrderedFilters();
 
-        assertEquals($expectedOrderedFilters, $currentOrderedFilters);
+            return $expectedOrderedFilters === $currentOrderedFilters;
+        }, 'Filters not ordered.');
     }
 
     /**
