@@ -2,7 +2,18 @@
 
 ## Bug fixes
 
+- TIP-307: Fix issues with Mongo 2.6
+
+# 1.5.8 (2016-08-25)
+
+## Bug fixes
+
 - PIM-5767: Issue with filter "in list" when SKU contains dashes (-)
+- PIM-5896: Fix reference data name validation when creating a reference data simple/multi-select attribute
+
+## Technical improvements
+
+- Add a duplicated product values cleaning command
 
 ## Technical improvements
 
