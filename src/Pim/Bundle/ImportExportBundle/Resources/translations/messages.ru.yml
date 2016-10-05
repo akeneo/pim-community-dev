@@ -98,6 +98,7 @@ btn:
   create:
     export profile: Создать профиль экспорта
     import profile: Создать профиль импорта
+Upload and import: Загрузить и импортировать
 Upload and import now: Загрузить и импортировать сейчас
 import now: Импортировать сейчас
 export now: Экспортировать сейчас

@@ -64,6 +64,119 @@ class Form extends Base
     }
 
     /**
+     * Visit the specified tab
+     *
+     * @param string $tab
+     */
+    public function visitTab($tab)
+    {
+        $tabs = $this->spin(function () {
+            $tabs = $this->find('css', $this->elements['Tabs']['css']);
+            if (!$tabs) {
+                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
+            }
+            if (!$tabs) {
+                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
+            }
+
+            return $tabs;
+        }, 'Could not find any tabs container element');
+
+        $tabDom = $this->spin(function () use ($tabs, $tab) {
+            return $tabs->findLink($tab);
+        }, sprintf('Could not find a tab named "%s"', $tab));
+
+        $this->spin(function () {
+            $loading = $this->find('css', '#loading-wrapper');
+
+            return null === $loading || !$loading->isVisible();
+        }, sprintf('Could not visit tab %s because of loading wrapper', $tab));
+
+        $tabDom->click();
+    }
+
+    /**
+     * Open the specified panel
+     *
+     * @param string $panel
+     */
+    public function openPanel($panel)
+    {
+        $elt = $this->spin(function () {
+            return $this->getElement('Panel selector');
+        }, 'Can not find the Panel selector');
+
+        $panel = strtolower($panel);
+        if (null === $elt->find('css', sprintf('button[data-panel$="%s"].active', $panel))) {
+            $elt->find('css', sprintf('button[data-panel$="%s"]', $panel))->click();
+        }
+    }
+
+    /**
+     * Close the specified panel
+     *
+     * @throws \Context\Spin\TimeoutException
+     */
+    public function closePanel()
+    {
+        $elt = $this->spin(function () {
+            return $this->getElement('Panel container')->find('css', 'header .close');
+        });
+
+        $elt->click();
+    }
+
+    /**
+     * Get the tabs in the current page
+     *
+     * @return NodeElement[]
+     */
+    public function getTabs()
+    {
+        $tabs = $this->spin(function () {
+            return $this->find('css', $this->elements['Tabs']['css']);
+        });
+
+        if (!$tabs) {
+            $tabs = $this->getElement('Oro tabs');
+        }
+
+        return $tabs->findAll('css', 'a');
+    }
+
+    /**
+     * Get the form tab containing $tab text
+     *
+     * @param string $tab
+     *
+     * @return NodeElement|null
+     */
+    public function getFormTab($tab)
+    {
+        $tabs = $this->getPageTabs();
+
+        try {
+            $node = $this->spin(function () use ($tabs, $tab) {
+                return $tabs->find('css', sprintf('a:contains("%s")', $tab));
+            }, sprintf('Cannot find form tab "%s"', $tab));
+        } catch (\Exception $e) {
+            $node = null;
+        }
+
+        return $node;
+    }
+
+    /**
+     * Get the specified tab
+     *
+     * @return NodeElement
+     */
+    public function getTab($tab)
+    {
+        return $this->find('css', sprintf('a:contains("%s")', $tab));
+    }
+
+    /**
      * Visit the specified group
      *
      * @param string $group
@@ -760,5 +873,25 @@ class Form extends Base
 
         $field = $this->findPriceField($label->labelContent, $label->subLabelContent);
         $field->setValue($value);
+    }
+
+    /**
+     * Returns the tabs of the current page, if any.
+     *
+     * @return NodeElement
+     */
+    protected function getPageTabs()
+    {
+        return $this->spin(function () {
+            $tabs = $this->find('css', $this->elements['Tabs']['css']);
+            if (null === $tabs) {
+                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
+            }
+            if (null === $tabs) {
+                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
+            }
+
+            return $tabs;
+        }, 'Cannot find any tabs in this page');
     }
 }

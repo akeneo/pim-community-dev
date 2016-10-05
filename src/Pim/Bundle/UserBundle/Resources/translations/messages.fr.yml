@@ -5,7 +5,7 @@ pim_user:
       additional.title: Complément
       group_and_role.title: Groupes et rôles
       password.title: Mot de passe
-      business_unit.title: Business Units
+      business_unit.title: Entités commerciales
       email_synchronization.title: Paramètres de synchronisation de messagerie
       interfaces.title: Interfaces
 oro.user.controller:

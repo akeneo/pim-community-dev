@@ -161,7 +161,7 @@ pim_enrich:
     set-attribute-requirements:
       label: Choisir les attributs requis
       description: "Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées"
-      success_flash: "Les exigences d'attributs ont été appliqués aux familles sélectionnées"
+      success_flash: "Les exigences d'attributs ont été appliquées aux familles sélectionnées"
       launched_flash: |-
         L'action de masse "définition des attributs requis" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     mass_action:
@@ -573,10 +573,11 @@ Translate from: Traduire depuis
 switch_on: Oui
 switch_off: Non
 Close: Fermer
-Search: Recherche
-Choose the attribute type: "Choisir le type d'attribut"
-Choose the attribute group: "Choisir le groupe d'attributs"
-Drag and drop a file or click here: Glisser et déposer un fichier pour le télécharger ou cliquer ici
+Choose a color: Choisir une couleur
+Search: Rechercher
+Choose the attribute type: "Choisissez le type d'attribut"
+Choose the attribute group: "Choisissez le groupe d'attributs"
+Drop a file or click here: Déposez un fichier ou cliquez ici
 Drop an image or click here: Déposez une image ou cliquez ici
 Automatic option sorting: Option de tri automatique
 save_attribute_before_manage_option: "Pour gérer les options, veuillez d'abord enregistrer l'attribut"
@@ -864,9 +865,8 @@ job_execution.summary:
   skipped_products: Produits ignorés
   skipped_attributes: Attributs ignorés
 pim_mass_edit_execution_show: Exécutions des éditions en masse | Détails
-edit_common_attributes.steps.edit_common_attributes_processor.title: Modification des attributs communs
-update_product_value.steps.update_product_value_processor.title: Mise à jour de la valeur du produit
-remove_product_value.steps.update_product_value_processor.title: Suppression de la valeur du produit
+edit_common_attributes.steps.edit_common_attributes_processor.title: Modifier les attributs communs
+update_product_value.steps.update_product_value_processor.title: Mise à jour de la valeur produit
 add_to_variant_group_clean.steps.excluded.title: Produit exclu
 add_to_variant_group_clean.steps.duplicated.title: Axe dupliqué
 add_to_variant_group.steps.excluded.title: Produit exclu

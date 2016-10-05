@@ -4,8 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\ProductQueryUtility;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
@@ -121,7 +119,7 @@ class IndexCreator
      *
      * @param LocaleInterface $locale
      */
-    public function ensureIndexesFromLocale(LocaleInterface $locale)
+    public function ensureIndexesFromLocale()
     {
         $completenessFields = $this->getCompletenessNormFields();
         $this->ensureIndexes($completenessFields);
@@ -141,7 +139,7 @@ class IndexCreator
      *
      * @param CurrencyInterface $currency
      */
-    public function ensureIndexesFromCurrency(CurrencyInterface $currency)
+    public function ensureIndexesFromCurrency()
     {
         $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {

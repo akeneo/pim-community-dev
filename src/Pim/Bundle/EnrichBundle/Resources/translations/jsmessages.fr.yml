@@ -138,7 +138,7 @@ pim_enrich:
       history:
         version: Version
         author: Auteur
-        logged_at: Connecté le
+        logged_at: Connecté(e) le
         more: Plus
         less: Moins
         from: De

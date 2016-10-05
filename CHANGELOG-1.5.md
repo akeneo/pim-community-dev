@@ -1,8 +1,21 @@
-# 1.5.x
+# 1.5.9 (2016-09-27)
+
+## Bug fixes
+clear
+- PIM-5777: Fix attribute refresh when locale change in Product Edit Form
+- TIP-307: Fix issues with Mongo 2.6
+- PIM-5862: Fix product grid display on a custom user view
+
+# 1.5.8 (2016-08-25)
 
 ## Bug fixes
 
 - PIM-5767: Issue with filter "in list" when SKU contains dashes (-)
+- PIM-5896: Fix reference data name validation when creating a reference data simple/multi-select attribute
+
+## Technical improvements
+
+- Add a duplicated product values cleaning command
 
 ## Technical improvements
 

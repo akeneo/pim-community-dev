@@ -6,7 +6,6 @@ pim_user:
       group_and_role.title: Grupos e Funções
       password.title: Senha
       email_synchronization.title: Configurações de sincronização de e-mail
-      interfaces.title: Interfaces
 oro.user.controller:
   group.message.saved: Grupo gravado
   role.message.saved: Função guardada
@@ -61,26 +60,15 @@ Port: Porta
 Last logged in: Último registo de ínicio de sessão
 Login count: Contagem de logins
 Additional Information: Informação Adicional
-Interfaces: Interfaces
 Basic Information: Informação básica
 Contact Information: Informações de contacto
 User name: Nome de utilizador
 Birthday: Aniversário
 API key: Chave de API
-Ui locale: Linguagem do UI
-UI locale: Linguagem do UI
-Current password: Senha atual
-New password: Nova senha
-Repeat new password: Nova senha (repetir)
 Generate key: Gerar chave
 Primary: primário
 Removed user: Utilizador removido
-user:
-  product_grid_filters: Filtros da grelha de produtos
-  default_product_grid_view:
-    label: Vista da grelha de produtos por defeito
-  default_grid_view:
-    none: Nenhum
+user.product_grid_filters: Filtros da grelha de produtos
 Role: Função
 Owner: Dono
 General: Geral
