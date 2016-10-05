@@ -1,6 +1,8 @@
 Job: Auftrag
 Connector: Konnektor
 pim_import_export:
+  job: Auftrag
+  connector: Konnektor
   status:
     - Bereit
   batch_status:
@@ -147,7 +149,7 @@ Status: Status
 Summary: Zusammenfassung
 Start: Start
 End: Ende
-set_attribute_requirements: Attribut-Anforderungen festlegen
+set_attribute_requirements: Benötigte Attribute auswählen
 COMPLETED: ABGESCHLOSSEN
 STARTING: STARTEN
 STARTED: GESTARTET
