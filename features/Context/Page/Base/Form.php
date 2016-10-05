@@ -64,38 +64,6 @@ class Form extends Base
     }
 
     /**
-     * Visit the specified tab
-     *
-     * @param string $tab
-     */
-    public function visitTab($tab)
-    {
-        $tabs = $this->spin(function () {
-            $tabs = $this->find('css', $this->elements['Tabs']['css']);
-            if (!$tabs) {
-                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
-            }
-            if (!$tabs) {
-                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
-            }
-
-            return $tabs;
-        }, 'Could not find any tabs container element');
-
-        $tabDom = $this->spin(function () use ($tabs, $tab) {
-            return $tabs->findLink($tab);
-        }, sprintf('Could not find a tab named "%s"', $tab));
-
-        $this->spin(function () {
-            $loading = $this->find('css', '#loading-wrapper');
-
-            return null === $loading || !$loading->isVisible();
-        }, sprintf('Could not visit tab %s because of loading wrapper', $tab));
-
-        $tabDom->click();
-    }
-
-    /**
      * Open the specified panel
      *
      * @param string $panel
