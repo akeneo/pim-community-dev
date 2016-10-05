@@ -11,6 +11,9 @@ cache:
   directories:
     - $HOME/.composer/cache/files
 
+before_script:
+    - echo 'date.timezone = "Europe/Paris"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
 before_install:
     - if [ "$TRAVIS_PHP_VERSION" != "7.1" ]; then
         phpenv config-rm xdebug.ini;
