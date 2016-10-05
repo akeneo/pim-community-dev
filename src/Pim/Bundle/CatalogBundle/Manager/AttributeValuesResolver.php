@@ -73,7 +73,10 @@ class AttributeValuesResolver
                     'scope'     => null
                 ];
             }
-            $values = array_merge($values, $this->filterExpectedValues($attribute, $requiredValues));
+            $expectedValues = $this->filterExpectedValues($attribute, $requiredValues);
+            foreach ($expectedValues as $expectedValue) {
+                $values[] = $expectedValue;
+            }
         }
 
         return $values;
