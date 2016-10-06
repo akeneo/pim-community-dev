@@ -1,1 +1,4 @@
-activity_manager.hello_world: Hello world!
+activity_manager:
+    project:
+        required: This value should not be blank.
+        label_maxlength: This value is too long. It should have {{ max }} characters or less

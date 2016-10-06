@@ -1,11 +1,15 @@
 activity_manager:
+    common:
+        required: Required
     grid.view_selector.create: Create todo
     project:
         label: Label
+        description: Description
+        due_date: Due Date
     create_project_modal:
         label_placeholder: Name of the new todo
+        description_placeholder: Description of the new todo
         title: Create todo
         confirm: Next
         cancel: Cancel
-        error:
-            required: This value should not be blank.
+

@@ -31,6 +31,8 @@ class ProjectNormalizer implements NormalizerInterface
      * returns
      * [
      *     'label' => (string),
+     *     'description' => (string),
+     *     'due_date' => (string),
      * ]
      */
     public function normalize($project, $format = null, array $context = [])
@@ -45,7 +47,11 @@ class ProjectNormalizer implements NormalizerInterface
             );
         }
 
-        return ['label' => $project->getLabel()];
+        return [
+            'label' => (string) $project->getLabel(),
+            'description' => (string) $project->getDescription(),
+            'due_date' => (string) $project->getDueDate()->format('YYYY-MM-dd')
+        ];
     }
 
     /**

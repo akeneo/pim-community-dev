@@ -4,9 +4,13 @@ config:
             url: activity_manager_project_create
 
     paths:
+        # Forms
         activity-manager/grid/view-selector/footer/create-view: activitymanager/js/grid/view-selector-footer-create
         activity-manager/project/create-form: activitymanager/js/project/create-form
+
+        # Savers
         activity-manager/saver/project: activitymanager/js/saver/project-saver
 
+        # Templates
         activity-manager/templates/grid/create-project-modal-content: activitymanager/templates/grid/create-project-modal-content.html
         activity-manager/templates/grid/view-selector/footer/create-view: activitymanager/templates/grid/view-selector-footer-create.html
