@@ -49,7 +49,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value,
         FamilyInterface $family,
         ArrayCollection $values,
-        \ArrayIterator $iterator
+        \ArrayIterator $iterator,
+        ProductValueInterface $identifier
     ) {
         $values->getIterator()->willReturn($iterator);
 
@@ -62,6 +63,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
+
+        $product->getIdentifier()->willReturn($identifier);
+        $identifier->getData()->willReturn('my_code');
 
         $product->getValues()->willReturn($values);
 
@@ -94,22 +98,23 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer->normalize($updated, 'standard')->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($product, 'standard', $context)->shouldReturn([
-            'family' => 'my_family',
-            'groups' => [],
+            'identifier'    => 'my_code',
+            'family'        => 'my_family',
+            'groups'        => [],
             'variant_group' => null,
-            'categories' => [],
-            'enabled' => true,
-            'values' => [
+            'categories'    => [],
+            'enabled'       => true,
+            'values'        => [
                 'name' => [
                     [
                         'locale' => null,
-                        'scope' => null,
-                        'value' => 'foo',
+                        'scope'  => null,
+                        'value'  => 'foo',
                     ]
                 ]
             ],
-            'created' => '2010-06-23T00:00:00+01:00',
-            'updated' => '2010-06-23T23:00:00+01:00',
+            'created'       => '2010-06-23T00:00:00+01:00',
+            'updated'       => '2010-06-23T23:00:00+01:00',
         ]);
     }
 }

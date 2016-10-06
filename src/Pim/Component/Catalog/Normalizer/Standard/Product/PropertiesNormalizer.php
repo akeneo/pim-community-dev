@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  */
 class PropertiesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
+    const FIELD_IDENTIFIER = 'identifier';
     const FIELD_FAMILY = 'family';
     const FIELD_GROUPS = 'groups';
     const FIELD_VARIANT_GROUP = 'variant_group';
@@ -50,6 +51,7 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
 
+        $data[self::FIELD_IDENTIFIER] = $product->getIdentifier()->getData();
         $data[self::FIELD_FAMILY] = $product->getFamily() ? $product->getFamily()->getCode() : null;
         $data[self::FIELD_GROUPS] = $this->normalizeGroups($product);
         $data[self::FIELD_VARIANT_GROUP] = $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
