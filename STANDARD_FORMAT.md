@@ -513,7 +513,7 @@ When the `decimal_allowed` attribute property is set to true, they are represent
           "group" => "other"
           "unique" => false
           "useable_as_grid_filter" => false
-          "allowed_extensions" => null
+          "allowed_extensions" => []
           "metric_family" => null
           "default_metric_unit" => null
           "reference_data_name" => null
@@ -545,7 +545,7 @@ When the `decimal_allowed` attribute property is set to true, they are represent
 | group                  | string         | `"other"`                          | it represents the *code* of the object *Pim\Component\Catalog\Model\GroupInterface*                                                                                                    |
 | unique                 | boolean        | `false`                            |                                                                                                                                                                                        |
 | useable_as_grid_filter | boolean        | `true`                             |                                                                                                                                                                                        |
-| allowed_extensions     | string         | `"pdf,doc"`                        | Extensions separated by commas                                                                                                                                                         |
+| allowed_extensions     | string[]       | `[0 => "pdf", 1 => "doc"]`         | List of extensions                                                                                                                                                                     |
 | metric_family          | string         | `"Power"`                          | it represents the constant *FAMILY* in classes of *Akeneo/Bundle/MeasureBundle/Family/*                                                                                                |
 | default_metric_unit    | string         | `"watt"`                           | it represents one of the constant in classes of *Akeneo/Bundle/MeasureBundle/Family/*, except *FAMILY*                                                                                 |
 | reference_data_name    | string         | `"color"`                          | it represents the *code* of the object *Pim\Component\ReferenceData\Model\ReferenceDataInterface*                                                                                      |
@@ -798,7 +798,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
         array:5 [
           "code" => "my_variant_group"
           "type" => "VARIANT"
-          "axis" => array:1 [
+          "axes" => array:1 [
             0 => "a_simple_select"
           ]
           "labels" => array:1 [
@@ -820,7 +820,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | ------ | -------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | code   | string         | `"my_variant_group"`                                                   | it's the identifier of the variant group                                                                |
 | type   | string         | `"VARIANT"`                                                            |                                                                                                         |
-| axis   | string[]       | `[0 => "a_simple_select", 1 => "a_multi_select"]`                      | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+| axes   | string[]       | `[0 => "a_simple_select", 1 => "a_multi_select"]`                      | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
 | labels | string[]       | `["en_US" => "My variant group", "fr_FR" => "Mon groupe de variante"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
 | values | array          |                                                                        | has the same structure as product values (see above)                                                    |
 
