@@ -16,6 +16,8 @@ class ProductStandardIntegration extends PimTestCase
     const DATE_FIELD_PATTERN = '#[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2}#';
     const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+#';
 
+    protected $purgeDatabaseForEachTest = false;
+
     public function setUp()
     {
         parent::setUp();
@@ -27,6 +29,7 @@ class ProductStandardIntegration extends PimTestCase
     public function testEmptyDisabledProduct()
     {
         $expected = [
+            'code'          => 'bar',
             'family'        => null,
             'groups'        => [],
             'variant_group' => null,
@@ -52,6 +55,7 @@ class ProductStandardIntegration extends PimTestCase
     public function testEmptyEnabledProduct()
     {
         $expected = [
+            'code'          => 'baz',
             'family'        => null,
             'groups'        => [],
             'variant_group' => null,
@@ -74,13 +78,11 @@ class ProductStandardIntegration extends PimTestCase
         $this->assertStandardFormat('baz', $expected);
     }
 
-    /**
-     * @group test
-     */
     public function testProductWithAllAttributes()
     {
         $expected =
             [
+                'code'          => 'foo',
                 'family'        => 'familyA',
                 'groups'        => ['groupA', 'groupB'],
                 'variant_group' => 'variantA',
@@ -268,7 +270,7 @@ class ProductStandardIntegration extends PimTestCase
         $expected = $this->sanitizeDateFields($expected);
         $expected = $this->sanitizeMediaAttributeData($expected);
 
-        $this->assertSame($expected, $result);
+        $this->assertEquals($expected, $result);
     }
 
     /**

@@ -27,19 +27,42 @@ class PimTestCase extends KernelTestCase
     /** @var string */
     protected $catalog = 'technical';
 
+    /** @var string */
+    protected $extraDirectories;
+
+    /** @var bool If you don't need to purge database between each test in the same test class, set to false */
+    protected $purgeDatabaseForEachTest = true;
+
+    /** @var int Count of test inside the same test class */
+    protected static $count = 0;
+
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public static function setUpBeforeClass()
     {
-        self::bootKernel();
+        self::$count = 0;
+    }
 
-        $this->container = self::$kernel->getContainer();
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        static::bootKernel();
 
-        $this->purgeDatabase();
+        $this->container = static::$kernel->getContainer();
 
-        $files = $this->getConfigurationFiles();
-        $this->loadCatalog($files);
+        self::$count++;
+
+        // if $purgeDatabaseForEachTest = true: purge database before each test
+        // if $purgeDatabaseForEachTest = false: purge database before the first test of a test class
+        if ($this->purgeDatabaseForEachTest || (!$this->purgeDatabaseForEachTest && 1 === self::$count)) {
+            $this->purgeDatabase();
+
+            $files = $this->getConfigurationFiles();
+            $this->loadCatalog($files);
+        }
     }
 
     /**
@@ -69,9 +92,26 @@ class PimTestCase extends KernelTestCase
      */
     protected function loadCatalog($files)
     {
+        // prepare replace paths to use catalog paths and not the minimal fixtures path, please note that we can
+        // have several files per job in case of Enterprise Catalog, for instance,
+        // [
+        //     'jobs' => [
+        //         "/project/features/Context/catalog/footwear/jobs.yml"
+        //         "/project/features/PimEnterprise/Behat/Context/../../../Context/catalog/footwear/jobs.yml"
+        // ]
+        $replacePaths = [];
+        foreach ($files as $file) {
+            $tokens = explode(DIRECTORY_SEPARATOR, $file);
+            $fileName = array_pop($tokens);
+            if (!isset($replacePaths[$fileName])) {
+                $replacePaths[$fileName] = [];
+            }
+            $replacePaths[$fileName][] = $file;
+        }
+
         // configure and load job instances in database
         $jobLoader = $this->get('pim_installer.fixture_loader.job_loader');
-        $jobLoader->loadJobInstances($files);
+        $jobLoader->loadJobInstances($replacePaths);
 
         // setup application to be able to run akeneo:batch:job command
         $application = new Application();
@@ -110,15 +150,12 @@ class PimTestCase extends KernelTestCase
      */
     protected function getConfigurationFiles()
     {
-        $directory = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR
-                     . 'Context' . DIRECTORY_SEPARATOR . $this->catalogPath . DIRECTORY_SEPARATOR . strtolower($this->catalog);
-
-        $finder = new Finder();
-        $finder->files()->in($directory);
+        $directories = array_merge([__DIR__ . '/../../Context/' . $this->catalogPath], $this->extraDirectories);
 
         $files = [];
-        foreach ($finder as $file) {
-            $files[$file->getRelativePathname()] = [$file->getRealPath()];
+        foreach ($directories as &$directory) {
+            $directory = sprintf('%s/%s', $directory, strtolower($this->catalog));
+            $files     = array_merge($files, glob($directory.'/*'));
         }
 
         if (empty($files)) {
@@ -126,7 +163,7 @@ class PimTestCase extends KernelTestCase
                 sprintf(
                     'No configuration found for catalog "%s", looked in "%s"',
                     $this->catalog,
-                    $directory
+                    implode(', ', $directories)
                 )
             );
         }
@@ -136,7 +173,7 @@ class PimTestCase extends KernelTestCase
 
     protected function purgeDatabase()
     {
-        if ('doctrine/mongodb-odm' === $this->container->getParameter('pim_catalog_product_storage_driver')) {
+        if ('doctrine/mongodb-odm' === $this->getParameter('pim_catalog_product_storage_driver')) {
             $purgers[] = new MongoDBPurger($this->get('doctrine_mongodb')->getManager());
         }
 
