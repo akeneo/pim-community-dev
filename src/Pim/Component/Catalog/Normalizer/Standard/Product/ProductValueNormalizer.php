@@ -36,23 +36,8 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function normalize($entity, $format = null, array $context = [])
     {
-        if ($entity->getData() instanceof Collection) {
-            $data = [];
-            foreach ($entity->getData() as $item) {
-                $data[] = $this->serializer->normalize($item, $format, $context);
-                sort($data);
-            }
-        } else {
-            $data = $this->serializer->normalize($entity->getData(), $format, $context);
-
-            // if decimals_allowed is false, we return an integer
-            // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
-            $attribute = $entity->getAttribute();
-            if (AttributeTypes::NUMBER === $attribute->getAttributeType() && null !== $data && is_numeric($data)) {
-                $data = $attribute->isDecimalsAllowed()
-                    ? number_format($data, static::DECIMAL_PRECISION, '.', '') : (int) $data;
-            }
-        }
+        $data = $entity->getData() instanceof Collection ?
+            $this->getCollectionValue($entity, $format, $context) : $this->getSimpleValue($entity, $format, $context);
 
         return [
             'locale' => $entity->getLocale(),
@@ -67,5 +52,62 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductValueInterface && 'standard' === $format;
+    }
+
+    /**
+     * @param ProductValueInterface $productValue
+     * @param string|null           $format
+     * @param array                 $context
+     *
+     * @return array
+     */
+    protected function getCollectionValue(ProductValueInterface $productValue, $format = null, array $context = [])
+    {
+        $attributeType = $productValue->getAttribute()->getAttributeType();
+        $data = [];
+        foreach ($productValue->getData() as $item) {
+            if (in_array($attributeType, [
+                AttributeTypes::OPTION_MULTI_SELECT,
+                AttributeTypes::REFERENCE_DATA_MULTI_SELECT
+            ])) {
+                $data[] = $item->getCode();
+            } else {
+                $data[] = $this->serializer->normalize($item, $format, $context);
+            }
+
+            sort($data);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ProductValueInterface $productValue
+     * @param null                  $format
+     * @param array                 $context
+     *
+     * @return mixed
+     */
+    protected function getSimpleValue(ProductValueInterface $productValue, $format = null, array $context = [])
+    {
+        $attributeType = $productValue->getAttribute()->getAttributeType();
+
+        // if decimals_allowed is false, we return an integer
+        // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
+        if (AttributeTypes::NUMBER === $attributeType && null !== $productValue->getData() &&
+            is_numeric($productValue->getData())) {
+            return $productValue->getAttribute()->isDecimalsAllowed()
+                ? number_format($productValue->getData(), static::DECIMAL_PRECISION, '.', '')
+                : (int) $productValue->getData();
+        }
+
+        if (in_array($attributeType, [
+            AttributeTypes::OPTION_SIMPLE_SELECT,
+            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
+        ])) {
+            return $productValue->getData()->getCode();
+        }
+
+        return $this->serializer->normalize($productValue->getData(), $format, $context);
     }
 }
