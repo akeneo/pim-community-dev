@@ -12,7 +12,8 @@
         "psr-0": {
             "": "src/",
             "Context": "features/",
-            "Pim\\Behat": "features/"
+            "Pim\\Behat": "features/",
+            "Pim\\Integration": "features/"
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/"
