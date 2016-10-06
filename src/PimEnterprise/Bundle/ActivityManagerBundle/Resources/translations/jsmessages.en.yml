@@ -4,8 +4,10 @@ activity_manager:
     grid.view_selector.create: Create todo
     project:
         label: Label
+        label_maxlength: This value is too long. It should have {{ max }} characters or less.
         description: Description
         due_date: Due Date
+        due_date_past: You can't select a date in the past.
     create_project_modal:
         label_placeholder: Name of the new todo
         description_placeholder: Description of the new todo
