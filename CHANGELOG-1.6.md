@@ -11,6 +11,7 @@
 - PIM-5975 & #5016: Fix attribute groups order not kept in product edit form, cheers @julienanquetil!
 - #4994: Fix grid filter selection in the user profile, cheers @julienanquetil!
 - PIM-5978: Fix missing currencies
+- #4993: Fix XLSX product import with numeric value for simpleselect codes, cheers @julienanquetil!
 
 ## Functionnal improvements
 
