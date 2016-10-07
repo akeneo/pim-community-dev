@@ -90,7 +90,7 @@ pimee_product_asset:
   thumbnail:
     label: Miniature
   status:
-    label: Statut
+    label: État
   description:
     label: Description
   endOfUse:

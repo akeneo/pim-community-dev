@@ -37,7 +37,6 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         ChannelVariationsConfigurationInterface $channelConfiguration,
         ChannelInterface $ecommerce,
         ReferenceInterface $reference,
-        VariationInterface $variation,
         FileInfoInterface $sourceFileInfo,
         Filesystem $filesystem,
         LocaleInterface $en_US

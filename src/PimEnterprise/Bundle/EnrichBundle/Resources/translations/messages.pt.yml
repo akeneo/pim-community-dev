@@ -43,9 +43,6 @@ pimee_enrich:
   category:
     tab:
       permission.title: Permissões
-  locale:
-    tab:
-      permission.title: Permissões
   acl.product_ownership.title: Propriedade
   asset_transformation:
     title:
