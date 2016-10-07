@@ -30,7 +30,6 @@ class PriceNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($otherObject, 'other_format')->shouldReturn(false);
     }
 
-
     function it_normalizes_price_in_standard_format_only_with_decimal_allowed(
         ProductPriceInterface $price,
         ProductValueInterface $productValue,
@@ -38,12 +37,11 @@ class PriceNormalizerSpec extends ObjectBehavior
     ) {
         $price->getValue()->willReturn($productValue);
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->isDecimalsAllowed()->willReturn(true);
 
         $price->getCurrency()->willReturn('EUR');
         $price->getData()->willReturn('125.99');
 
-        $this->normalize($price, 'standard')->shouldReturn([
+        $this->normalize($price, 'standard', ['is_decimals_allowed' => true])->shouldReturn([
             'amount'   => '125.99',
             'currency' => 'EUR',
         ]);
@@ -56,12 +54,11 @@ class PriceNormalizerSpec extends ObjectBehavior
     ) {
         $price->getValue()->willReturn($productValue);
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->isDecimalsAllowed()->willReturn(false);
 
         $price->getCurrency()->willReturn('USD');
         $price->getData()->willReturn('125.00');
 
-        $this->normalize($price, 'standard')->shouldReturn([
+        $this->normalize($price, 'standard', ['is_decimals_allowed' => false])->shouldReturn([
             'amount'   => 125,
             'currency' => 'USD'
         ]);
@@ -79,7 +76,7 @@ class PriceNormalizerSpec extends ObjectBehavior
         $price->getCurrency()->willReturn('EUR');
         $price->getData()->willReturn('yolo');
 
-        $this->normalize($price, 'standard')->shouldReturn([
+        $this->normalize($price, 'standard', ['is_decimals_allowed' => false])->shouldReturn([
             'amount'   => 'yolo',
             'currency' => 'EUR'
         ]);
