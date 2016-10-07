@@ -3,13 +3,13 @@
 namespace Pim\Integration;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Finder\Finder;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -173,7 +173,7 @@ class PimTestCase extends KernelTestCase
 
     protected function purgeDatabase()
     {
-        if ('doctrine/mongodb-odm' === $this->getParameter('pim_catalog_product_storage_driver')) {
+        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->getParameter('pim_catalog_product_storage_driver')) {
             $purgers[] = new MongoDBPurger($this->get('doctrine_mongodb')->getManager());
         }
 

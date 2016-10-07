@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Tests\Integration\StandardFormat;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Integration\PimTestCase;
 
@@ -23,7 +24,18 @@ class ProductStandardIntegration extends PimTestCase
         parent::setUp();
 
         $em = $this->get('doctrine.orm.entity_manager');
-        $em->getConnection()->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'db.sql'));
+        $em->getConnection()->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'common.sql'));
+
+        if (1 === self::$count) {
+            $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
+            if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $storage) {
+                $client = $this->get('doctrine.odm.mongodb.document_manager')->getConnection()->akeneo_pim;
+                $client->execute(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'products_mongodb.json'));
+            } else {
+                $em->getConnection()
+                    ->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'products_orm.sql'));
+            }
+        }
     }
 
     public function testEmptyDisabledProduct()
