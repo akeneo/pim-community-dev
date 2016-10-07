@@ -15,11 +15,18 @@ class ProjectNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_normalizes_a_project(ProjectInterface $project)
+    function it_normalizes_a_project(ProjectInterface $project, \DateTime $datetime)
     {
+        $datetime->format('YYYY-MM-dd')->willReturn('2069-02-15');
+
         $project->getLabel()->willReturn('Summer collection');
+        $project->getDescription()->willReturn('The sun is here, such is the collection!');
+        $project->getDueDate()->willReturn($datetime);
+
         $this->normalize($project)->shouldReturn([
             'label' => 'Summer collection',
+            'description' => 'The sun is here, such is the collection!',
+            'due_date' => '2069-02-15',
         ]);
     }
 
