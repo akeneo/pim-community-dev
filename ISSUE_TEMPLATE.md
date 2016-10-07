@@ -8,11 +8,11 @@ Then explain the expected behavior, the encountered behavior and the steps to re
 
 **I'm asking a Question**
 
-Please submit your question via the forum http://www.akeneo.com/forums/forum/questions/
+Please submit your question via the forum https://www.akeneo.com/forums/forum/programming-questions/
 
 **I'm submitting a Feature Request**
 
-Please submit your feature request via the forum http://www.akeneo.com/forums/forum/feature-request
+Please submit your feature request via the forum https://www.akeneo.com/forums/forum/feature-request/
 
 **I'm using the Enterprise Edition**
 
