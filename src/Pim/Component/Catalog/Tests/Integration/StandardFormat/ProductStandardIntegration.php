@@ -41,7 +41,7 @@ class ProductStandardIntegration extends PimTestCase
     public function testEmptyDisabledProduct()
     {
         $expected = [
-            'code'          => 'bar',
+            'identifier'    => 'bar',
             'family'        => null,
             'groups'        => [],
             'variant_group' => null,
@@ -67,7 +67,7 @@ class ProductStandardIntegration extends PimTestCase
     public function testEmptyEnabledProduct()
     {
         $expected = [
-            'code'          => 'baz',
+            'identifier'    => 'baz',
             'family'        => null,
             'groups'        => [],
             'variant_group' => null,
@@ -94,7 +94,7 @@ class ProductStandardIntegration extends PimTestCase
     {
         $expected =
             [
-                'code'          => 'foo',
+                'identifier'    => 'foo',
                 'family'        => 'familyA',
                 'groups'        => ['groupA', 'groupB'],
                 'variant_group' => 'variantA',
@@ -246,7 +246,11 @@ class ProductStandardIntegration extends PimTestCase
                             'scope'  => 'ecommerce',
                             'data'   => 'a text area for ecommerce in English',
                         ],
-                        ['locale' => 'en_US', 'scope' => 'tablet', 'data' => 'a text area for tablets in English'],
+                        [
+                            'locale' => 'en_US',
+                            'scope'  => 'tablet',
+                            'data'   => 'a text area for tablets in English'
+                        ],
                         [
                             'locale' => 'fr_FR',
                             'scope'  => 'tablet',
