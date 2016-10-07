@@ -5,15 +5,15 @@
         <div data-drop-zone="label-errors"></div>
     </div>
     <div class="controls">
-        <label for="project-description" class="control-label"><%- projectDescription %></label>
-        <textarea name="project-description" id="project-description" class="project-field" placeholder="<%- descriptionPlaceholder %>"></textarea>
-    </div>
-    <div class="controls">
         <label class="control-label"><%- projectDueDate %></label>
         <span class="date-wrapper">
             <input name="project-due-date" class="add-on project-field" type="text">
         </span>
         <div data-drop-zone="due-date-errors"></div>
+    </div>
+    <div class="controls">
+        <label for="project-description" class="control-label"><%- projectDescription %></label>
+        <textarea name="project-description" id="project-description" class="project-field" placeholder="<%- descriptionPlaceholder %>"></textarea>
     </div>
     <div class="validation-errors">
         <% _.each(errors, function (error) { %>
