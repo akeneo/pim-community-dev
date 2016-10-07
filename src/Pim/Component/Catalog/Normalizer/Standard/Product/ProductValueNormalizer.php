@@ -64,6 +64,8 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     protected function getCollectionValue(ProductValueInterface $productValue, $format = null, array $context = [])
     {
         $attributeType = $productValue->getAttribute()->getAttributeType();
+        $context['is_decimals_allowed'] = $productValue->getAttribute()->isDecimalsAllowed();
+
         $data = [];
         foreach ($productValue->getData() as $item) {
             if (in_array($attributeType, [
@@ -91,6 +93,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     protected function getSimpleValue(ProductValueInterface $productValue, $format = null, array $context = [])
     {
         $attributeType = $productValue->getAttribute()->getAttributeType();
+        $context['is_decimals_allowed'] = $productValue->getAttribute()->isDecimalsAllowed();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)

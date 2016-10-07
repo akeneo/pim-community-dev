@@ -37,12 +37,11 @@ class MetricNormalizerSpec extends ObjectBehavior
     ) {
         $metric->getValue()->willReturn($productValue);
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->isDecimalsAllowed()->willReturn(true);
 
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('12.1231');
 
-        $this->normalize($metric, 'standard')->shouldReturn([
+        $this->normalize($metric, 'standard', ['is_decimals_allowed' => true])->shouldReturn([
             'amount' => '12.1231',
             'unit'   => 'KILOGRAM'
         ]);
@@ -60,7 +59,7 @@ class MetricNormalizerSpec extends ObjectBehavior
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('12.0000');
 
-        $this->normalize($metric, 'standard')->shouldReturn([
+        $this->normalize($metric, 'standard', ['is_decimals_allowed' => false])->shouldReturn([
             'amount' => 12,
             'unit'   => 'KILOGRAM'
         ]);
@@ -78,7 +77,7 @@ class MetricNormalizerSpec extends ObjectBehavior
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('yolo');
 
-        $this->normalize($metric, 'standard')->shouldReturn([
+        $this->normalize($metric, 'standard', ['is_decimals_allowed' => false])->shouldReturn([
             'amount' => 'yolo',
             'unit'   => 'KILOGRAM'
         ]);

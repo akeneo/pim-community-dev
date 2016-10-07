@@ -22,12 +22,11 @@ class PriceNormalizer implements NormalizerInterface
     public function normalize($price, $format = null, array $context = [])
     {
         $amount = $price->getData();
-        $attribute = $price->getValue()->getAttribute();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
-        if (null !== $amount && is_numeric($amount)) {
-            $amount = $attribute->isDecimalsAllowed()
+        if (null !== $amount && is_numeric($amount) && isset($context['is_decimals_allowed'])) {
+            $amount = $context['is_decimals_allowed']
                 ? number_format($amount, static::DECIMAL_PRECISION, '.', '') : (int) $amount;
         }
 

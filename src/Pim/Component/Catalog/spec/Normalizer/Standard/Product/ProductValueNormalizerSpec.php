@@ -47,7 +47,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $productValue,
         AttributeInterface $attribute
     ) {
-        $serializer->normalize('product_value_data', null, [])
+        $serializer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
             ->shouldBeCalled()
             ->willReturn('product_value_data');
         $this->setSerializer($serializer);
@@ -57,6 +57,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getScope()->willReturn(null);
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
             [
@@ -72,7 +73,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $productValue,
         AttributeInterface $attribute
     ) {
-        $serializer->normalize('product_value_data', null, [])
+        $serializer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
             ->shouldBeCalled()
             ->willReturn('product_value_data');
         $this->setSerializer($serializer);
@@ -82,6 +83,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getScope()->willReturn(null);
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
             [
@@ -97,7 +99,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $productValue,
         AttributeInterface $attribute
     ) {
-        $serializer->normalize('product_value_data', null, [])
+        $serializer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
             ->shouldBeCalled()
             ->willReturn('product_value_data');
         $this->setSerializer($serializer);
@@ -107,6 +109,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getScope()->willReturn('ecommerce');
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
             [
@@ -122,7 +125,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $productValue,
         AttributeInterface $attribute
     ) {
-        $serializer->normalize('15.50', null, [])
+        $serializer->normalize('15.50', null, ['is_decimals_allowed' => true])
             ->shouldNotBeCalled();
         $this->setSerializer($serializer);
 
@@ -132,6 +135,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->isDecimalsAllowed()->willReturn(true);
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
+        $attribute->isDecimalsAllowed()->willReturn(true);
 
         $this->normalize($productValue)->shouldReturn(
             [
@@ -157,6 +161,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->isDecimalsAllowed()->willReturn(false);
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
+        $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
             [
@@ -182,6 +187,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getScope()->willReturn(null);
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getAttributeType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
+        $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
             [
@@ -220,6 +226,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getScope()->willReturn(null);
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getAttributeType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
+        $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
             [
