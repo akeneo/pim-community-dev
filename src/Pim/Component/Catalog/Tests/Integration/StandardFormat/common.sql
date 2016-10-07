@@ -15,13 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Dumping data for table `acme_catalog_product_value_fabric`
---
-
-/*!40000 ALTER TABLE `acme_catalog_product_value_fabric` DISABLE KEYS */;
-INSERT INTO `acme_catalog_product_value_fabric` VALUES (216,5),(216,6);
-/*!40000 ALTER TABLE `acme_catalog_product_value_fabric` ENABLE KEYS */;
 
 --
 -- Dumping data for table `acme_reference_data_color`
@@ -30,7 +23,6 @@ INSERT INTO `acme_catalog_product_value_fabric` VALUES (216,5),(216,6);
 /*!40000 ALTER TABLE `acme_reference_data_color` DISABLE KEYS */;
 INSERT INTO `acme_reference_data_color` VALUES (7,'colorA',1,'colorA','#colora',31,95,52,28,72,0,45,35),(8,'colorB',1,'colorB','#colorb',49,54,16,46,29,79,12,95),(9,'colorc',1,'colorc','#colorc',10,45,20,88,8,59,19,32);
 /*!40000 ALTER TABLE `acme_reference_data_color` ENABLE KEYS */;
-
 
 --
 -- Dumping data for table `acme_reference_data_fabric`
@@ -60,32 +52,6 @@ INSERT INTO `pim_catalog_association_type` (`id`, `code`, `created`, `updated`) 
 (867, 'SUBSTITUTION', '2016-10-04 16:14:44', '2016-10-04 16:14:44'),
 (868, 'PACK', '2016-10-04 16:14:44', '2016-10-04 16:14:44');
 /*!40000 ALTER TABLE `pim_catalog_association_type` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_association`
---
-
-/*!40000 ALTER TABLE `pim_catalog_association` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association` VALUES (9,865,49),(8,866,49),(7,868,49);
-/*!40000 ALTER TABLE `pim_catalog_association` ENABLE KEYS */;
-
---
--- Dumping data for table `pim_catalog_association_group`
---
-
-/*!40000 ALTER TABLE `pim_catalog_association_group` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association_group` VALUES (8,240),(9,241);
-/*!40000 ALTER TABLE `pim_catalog_association_group` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_association_product`
---
-
-/*!40000 ALTER TABLE `pim_catalog_association_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association_product` VALUES (7,47),(7,48),(9,47);
-/*!40000 ALTER TABLE `pim_catalog_association_product` ENABLE KEYS */;
 
 
 --
@@ -170,15 +136,6 @@ INSERT INTO `pim_catalog_category` VALUES (895,NULL,'master','2016-08-04 14:28:4
 
 
 --
--- Dumping data for table `pim_catalog_category_product`
---
-
-/*!40000 ALTER TABLE `pim_catalog_category_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_category_product` VALUES (49,897),(49,899);
-/*!40000 ALTER TABLE `pim_catalog_category_product` ENABLE KEYS */;
-
-
---
 -- Dumping data for table `pim_catalog_channel`
 --
 
@@ -204,15 +161,6 @@ INSERT INTO `pim_catalog_channel_currency` VALUES (209,10101),(210,10102);
 /*!40000 ALTER TABLE `pim_catalog_channel_locale` DISABLE KEYS */;
 INSERT INTO `pim_catalog_channel_locale` VALUES (209,21058),(210,21039),(210,21058),(210,21090);
 /*!40000 ALTER TABLE `pim_catalog_channel_locale` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_completeness`
---
-
-/*!40000 ALTER TABLE `pim_catalog_completeness` DISABLE KEYS */;
-INSERT INTO `pim_catalog_completeness` VALUES (773,21058,209,49,100,0,19),(774,21039,210,49,89,2,19),(775,21058,210,49,100,0,19),(776,21090,210,49,100,0,19);
-/*!40000 ALTER TABLE `pim_catalog_completeness` ENABLE KEYS */;
 
 
 --
@@ -255,15 +203,6 @@ INSERT INTO `pim_catalog_group_attribute` VALUES (239,2535);
 
 
 --
--- Dumping data for table `pim_catalog_group_product`
---
-
-/*!40000 ALTER TABLE `pim_catalog_group_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_group_product` VALUES (49,239),(49,240),(49,241);
-/*!40000 ALTER TABLE `pim_catalog_group_product` ENABLE KEYS */;
-
-
---
 -- Dumping data for table `pim_catalog_group_type`
 --
 
@@ -281,102 +220,6 @@ INSERT INTO `pim_catalog_group_type` VALUES (322,'VARIANT',1),(323,'RELATED',0);
 DELETE FROM `pim_catalog_locale`;
 INSERT INTO `pim_catalog_locale` VALUES (21001,'af_ZA',0),(21002,'am_ET',0),(21003,'ar_AE',0),(21004,'ar_BH',0),(21005,'ar_DZ',0),(21006,'ar_EG',0),(21007,'ar_IQ',0),(21008,'ar_JO',0),(21009,'ar_KW',0),(21010,'ar_LB',0),(21011,'ar_LY',0),(21012,'ar_MA',0),(21013,'arn_CL',0),(21014,'ar_OM',0),(21015,'ar_QA',0),(21016,'ar_SA',0),(21017,'ar_SY',0),(21018,'ar_TN',0),(21019,'ar_YE',0),(21020,'as_IN',0),(21021,'az_Cyrl_AZ',0),(21022,'az_Latn_AZ',0),(21023,'ba_RU',0),(21024,'be_BY',0),(21025,'bg_BG',0),(21026,'bn_BD',0),(21027,'bn_IN',0),(21028,'bo_CN',0),(21029,'br_FR',0),(21030,'bs_Cyrl_BA',0),(21031,'bs_Latn_BA',0),(21032,'ca_ES',0),(21033,'co_FR',0),(21034,'cs_CZ',0),(21035,'cy_GB',0),(21036,'da_DK',0),(21037,'de_AT',0),(21038,'de_CH',0),(21039,'de_DE',1),(21040,'de_LI',0),(21041,'de_LU',0),(21042,'dsb_DE',0),(21043,'dv_MV',0),(21044,'el_GR',0),(21045,'en_029',0),(21046,'en_AU',0),(21047,'en_BZ',0),(21048,'en_CA',0),(21049,'en_GB',0),(21050,'en_IE',0),(21051,'en_IN',0),(21052,'en_JM',0),(21053,'en_MY',0),(21054,'en_NZ',0),(21055,'en_PH',0),(21056,'en_SG',0),(21057,'en_TT',0),(21058,'en_US',1),(21059,'en_ZA',0),(21060,'en_ZW',0),(21061,'es_AR',0),(21062,'es_BO',0),(21063,'es_CL',0),(21064,'es_CO',0),(21065,'es_CR',0),(21066,'es_DO',0),(21067,'es_EC',0),(21068,'es_ES',0),(21069,'es_GT',0),(21070,'es_HN',0),(21071,'es_MX',0),(21072,'es_NI',0),(21073,'es_PA',0),(21074,'es_PE',0),(21075,'es_PR',0),(21076,'es_PY',0),(21077,'es_SV',0),(21078,'es_US',0),(21079,'es_UY',0),(21080,'es_VE',0),(21081,'et_EE',0),(21082,'eu_ES',0),(21083,'fa_IR',0),(21084,'fi_FI',0),(21085,'fil_PH',0),(21086,'fo_FO',0),(21087,'fr_BE',0),(21088,'fr_CA',0),(21089,'fr_CH',0),(21090,'fr_FR',1),(21091,'fr_LU',0),(21092,'fr_MC',0),(21093,'fy_NL',0),(21094,'ga_IE',0),(21095,'gd_GB',0),(21096,'gl_ES',0),(21097,'gsw_FR',0),(21098,'gu_IN',0),(21099,'ha_Latn_NG',0),(21100,'he_IL',0),(21101,'hi_IN',0),(21102,'hr_BA',0),(21103,'hr_HR',0),(21104,'hsb_DE',0),(21105,'hu_HU',0),(21106,'hy_AM',0),(21107,'id_ID',0),(21108,'ig_NG',0),(21109,'ii_CN',0),(21110,'is_IS',0),(21111,'it_CH',0),(21112,'it_IT',0),(21113,'iu_Cans_CA',0),(21114,'iu_Latn_CA',0),(21115,'ja_JP',0),(21116,'ka_GE',0),(21117,'kk_KZ',0),(21118,'kl_GL',0),(21119,'km_KH',0),(21120,'kn_IN',0),(21121,'kok_IN',0),(21122,'ko_KR',0),(21123,'ky_KG',0),(21124,'lb_LU',0),(21125,'lo_LA',0),(21126,'lt_LT',0),(21127,'lv_LV',0),(21128,'mi_NZ',0),(21129,'mk_MK',0),(21130,'ml_IN',0),(21131,'mn_MN',0),(21132,'mn_Mong_CN',0),(21133,'moh_CA',0),(21134,'mr_IN',0),(21135,'ms_BN',0),(21136,'ms_MY',0),(21137,'mt_MT',0),(21138,'nb_NO',0),(21139,'ne_NP',0),(21140,'nl_BE',0),(21141,'nl_NL',0),(21142,'nn_NO',0),(21143,'nso_ZA',0),(21144,'oc_FR',0),(21145,'or_IN',0),(21146,'pa_IN',0),(21147,'pl_PL',0),(21148,'prs_AF',0),(21149,'ps_AF',0),(21150,'pt_BR',0),(21151,'pt_PT',0),(21152,'qut_GT',0),(21153,'quz_BO',0),(21154,'quz_EC',0),(21155,'quz_PE',0),(21156,'rm_CH',0),(21157,'ro_RO',0),(21158,'ru_RU',0),(21159,'rw_RW',0),(21160,'sah_RU',0),(21161,'sa_IN',0),(21162,'se_FI',0),(21163,'se_NO',0),(21164,'se_SE',0),(21165,'si_LK',0),(21166,'sk_SK',0),(21167,'sl_SI',0),(21168,'sma_NO',0),(21169,'sma_SE',0),(21170,'smj_NO',0),(21171,'smj_SE',0),(21172,'smn_FI',0),(21173,'sms_FI',0),(21174,'sq_AL',0),(21175,'sr_Cyrl_BA',0),(21176,'sr_Cyrl_CS',0),(21177,'sr_Cyrl_ME',0),(21178,'sr_Cyrl_RS',0),(21179,'sr_Latn_BA',0),(21180,'sr_Latn_CS',0),(21181,'sr_Latn_ME',0),(21182,'sr_Latn_RS',0),(21183,'sv_FI',0),(21184,'sv_SE',0),(21185,'sw_KE',0),(21186,'syr_SY',0),(21187,'ta_IN',0),(21188,'te_IN',0),(21189,'tg_Cyrl_TJ',0),(21190,'th_TH',0),(21191,'tk_TM',0),(21192,'tn_ZA',0),(21193,'tr_TR',0),(21194,'tt_RU',0),(21195,'tzm_Latn_DZ',0),(21196,'ug_CN',0),(21197,'uk_UA',0),(21198,'ur_PK',0),(21199,'uz_Cyrl_UZ',0),(21200,'uz_Latn_UZ',0),(21201,'vi_VN',0),(21202,'wo_SN',0),(21203,'xh_ZA',0),(21204,'yo_NG',0),(21205,'zh_CN',0),(21206,'zh_HK',0),(21207,'zh_MO',0),(21208,'zh_SG',0),(21209,'zh_TW',0),(21210,'zu_ZA',0);
 /*!40000 ALTER TABLE `pim_catalog_locale` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_metric`
---
-
-/*!40000 ALTER TABLE `pim_catalog_metric` DISABLE KEYS */;
-INSERT INTO `pim_catalog_metric` VALUES
-(3,987654321987.123456789123,'KILOWATT',999999999999.999999999999,'WATT','Power'),
-(4,98.000000000000,'CENTIMETER',98.000000000000,'METER','Length'),
-(5,-20.000000000000,'CELSIUS',20.000000000000,'CELSIUS','Temperature'),
-(6,-20.500000000000,'CELSIUS',20.500000000000,'CELSIUS','Temperature');
-/*!40000 ALTER TABLE `pim_catalog_metric` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_product`
---
-
-/*!40000 ALTER TABLE `pim_catalog_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_product` VALUES (47,NULL,0,'2016-08-04 14:28:51','2016-08-04 14:28:51'),(48,NULL,1,'2016-08-04 14:28:51','2016-08-04 14:28:51'),(49,466,1,'2016-08-04 14:28:51','2016-08-04 14:28:51');
-/*!40000 ALTER TABLE `pim_catalog_product` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_product_template`
---
-
-/*!40000 ALTER TABLE `pim_catalog_product_template` DISABLE KEYS */;
-INSERT INTO `pim_catalog_product_template` VALUES (3,'[]');
-/*!40000 ALTER TABLE `pim_catalog_product_template` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_product_value`
---
-
-/*!40000 ALTER TABLE `pim_catalog_product_value` DISABLE KEYS */;
-INSERT INTO `pim_catalog_product_value` VALUES
-(199,NULL,NULL,2523,NULL,47,NULL,'bar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'174878780'),
-(200,NULL,NULL,2523,NULL,48,NULL,'baz',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'566731801'),
-(201,NULL,NULL,2523,NULL,49,NULL,'foo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'444882715'),
-(202,NULL,NULL,2525,NULL,49,35,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1723967000'),
-(203,NULL,NULL,2526,NULL,49,36,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1494623165'),
-(204,NULL,NULL,2524,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,'2016-06-13',NULL,NULL,NULL,'1871692103'),
-(205,NULL,3,2527,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1912643738'),
-(206,NULL,4,2542,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1912643739'),
-(207,NULL,5,2543,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1912643739'),
-(208,NULL,6,2544,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1912643739'),
-(209,NULL,NULL,2528,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1790955411'),
-(210,NULL,NULL,2529,NULL,49,NULL,NULL,NULL,12.5678,NULL,NULL,NULL,NULL,NULL,NULL,'2072785373'),
-(211,NULL,NULL,2530,NULL,49,NULL,NULL,NULL,-99.8732,NULL,NULL,NULL,NULL,NULL,NULL,'533536503'),
-(212,NULL,NULL,2531,NULL,49,NULL,NULL,NULL,42.0000,NULL,NULL,NULL,NULL,NULL,NULL,'2143395388'),
-(213,NULL,NULL,2546,NULL,49,NULL,NULL,NULL,-42,NULL,NULL,NULL,NULL,NULL,NULL,'2072785374'),
-(214,NULL,NULL,2532,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1846269442'),
-(215,NULL,NULL,2545,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1846069442'),
-(216,NULL,NULL,2533,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2103925379'),
-(217,8,NULL,2534,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'710152958'),
-(218,NULL,NULL,2535,3804,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'516043646'),
-(219,NULL,NULL,2536,NULL,49,NULL,'this is a text',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1211703665'),
-(220,NULL,NULL,2537,NULL,49,NULL,NULL,NULL,NULL,NULL,'this is a very very very very very long  text',NULL,NULL,NULL,NULL,'753768604'),
-(221,NULL,NULL,2538,NULL,49,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,'355741662'),
-(222,NULL,NULL,2539,NULL,49,37,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'en_US',NULL,'389300684'),
-(223,NULL,NULL,2539,NULL,49,38,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'fr_FR',NULL,'1261239871'),
-(224,NULL,NULL,2540,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ecommerce','1389221508'),
-(225,NULL,NULL,2540,NULL,49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'tablet','1464149237'),
-(226,NULL,NULL,2541,NULL,49,NULL,NULL,NULL,NULL,NULL,'a text area for ecommerce in English',NULL,NULL,'en_US','ecommerce','411138330'),
-(227,NULL,NULL,2541,NULL,49,NULL,NULL,NULL,NULL,NULL,'a text area for tablets in English',NULL,NULL,'en_US','tablet','1248207208'),
-(228,NULL,NULL,2541,NULL,49,NULL,NULL,NULL,NULL,NULL,'une zone de texte pour les tablettes en français',NULL,NULL,'fr_FR','tablet','1275161185');
-/*!40000 ALTER TABLE `pim_catalog_product_value` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_product_value_option`
---
-
-/*!40000 ALTER TABLE `pim_catalog_product_value_option` DISABLE KEYS */;
-INSERT INTO `pim_catalog_product_value_option` VALUES (209,3801),(209,3802);
-/*!40000 ALTER TABLE `pim_catalog_product_value_option` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_product_value_price`
---
-
-/*!40000 ALTER TABLE `pim_catalog_product_value_price` DISABLE KEYS */;
-INSERT INTO `pim_catalog_product_value_price` VALUES
-(13,214,56.53,'EUR'),
-(14,214,45.00,'USD'),
-(15,224,15.00,'EUR'),
-(16,224,20.00,'USD'),
-(17,225,17.00,'EUR'),
-(18,225,24.00,'USD'),
-(19,215,-45.00,'USD'),
-(20,215,56.00,'EUR');
-/*!40000 ALTER TABLE `pim_catalog_product_value_price` ENABLE KEYS */;
 
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
