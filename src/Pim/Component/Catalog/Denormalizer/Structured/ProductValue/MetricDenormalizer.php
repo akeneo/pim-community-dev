@@ -44,7 +44,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
         }
 
         $metric = $this->factory->createMetric($context['attribute']->getMetricFamily());
-        $metric->setData($this->localizer->localize($data['data'], $context));
+        $metric->setData($this->localizer->localize($data['amount'], $context));
         $metric->setUnit($data['unit']);
 
         return $metric;

@@ -96,10 +96,10 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
                 );
             }
 
-            if (!array_key_exists('data', $price)) {
+            if (!array_key_exists('amount', $price)) {
                 throw InvalidArgumentException::arrayKeyExpected(
                     $attribute->getCode(),
-                    'data',
+                    'amount',
                     'adder',
                     'prices collection',
                     print_r($data, true)
@@ -116,10 +116,10 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
                 );
             }
 
-            if (!is_numeric($price['data']) && null !== $price['data']) {
+            if (!is_numeric($price['amount']) && null !== $price['amount']) {
                 throw InvalidArgumentException::arrayNumericKeyExpected(
                     $attribute->getCode(),
-                    'data',
+                    'amount',
                     'adder',
                     'prices collection',
                     gettype($price['data'])
@@ -157,7 +157,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
         }
 
         foreach ($data as $price) {
-            $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['data']);
+            $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['amount']);
         }
     }
 }

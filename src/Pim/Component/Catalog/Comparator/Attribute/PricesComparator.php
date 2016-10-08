@@ -42,20 +42,20 @@ class PricesComparator implements ComparatorInterface
 
         $originalPrices = [];
         foreach ($originals['data'] as $price) {
-            if (null !== $price['data']) {
-                $originalPrices[$price['currency']] = $price['data'];
-                if (is_numeric($price['data'])) {
-                    $originalPrices[$price['currency']] = number_format($price['data'], 4);
+            if (null !== $price['amount']) {
+                $originalPrices[$price['currency']] = $price['amount'];
+                if (is_numeric($price['amount'])) {
+                    $originalPrices[$price['currency']] = number_format($price['amount'], 4);
                 }
             }
         }
 
         $dataPrices = [];
         foreach ($data['data'] as $price) {
-            if (null !== $price['data']) {
-                $dataPrices[$price['currency']] = $price['data'];
-                if (is_numeric($price['data'])) {
-                    $dataPrices[$price['currency']] = number_format($price['data'], 4);
+            if (null !== $price['amount']) {
+                $dataPrices[$price['currency']] = $price['amount'];
+                if (is_numeric($price['amount'])) {
+                    $dataPrices[$price['currency']] = number_format($price['amount'], 4);
                 }
             }
         }

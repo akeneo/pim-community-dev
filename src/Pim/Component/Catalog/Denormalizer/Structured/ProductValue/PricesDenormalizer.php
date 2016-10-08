@@ -46,7 +46,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $prices = new ArrayCollection();
 
         foreach ($data as $priceData) {
-            $data = $this->localizer->localize($priceData['data'], $context);
+            $data = $this->localizer->localize($priceData['amount'], $context);
             $prices->add(new $this->productPriceClass($data, $priceData['currency']));
         }
 

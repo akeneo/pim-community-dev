@@ -37,11 +37,11 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
      * Expected data input format:
      * [
      *     {
-     *         "data": "12.0"|"12"|12|12.3,
+     *         "amount": "12.0"|"12"|12|12.3,
      *         "currency": "EUR"
      *     },
      *     {
-     *         "data": "12.0"|"12"|12|12.3,
+     *         "amount": "12.0"|"12"|12|12.3,
      *         "currency": "EUR"
      *     }
      * ]
@@ -88,10 +88,10 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
                 );
             }
 
-            if (!array_key_exists('data', $price)) {
+            if (!array_key_exists('amount', $price)) {
                 throw InvalidArgumentException::arrayKeyExpected(
                     $attribute->getCode(),
-                    'data',
+                    'amount',
                     'setter',
                     'prices collection',
                     print_r($data, true)
@@ -133,7 +133,7 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
         }
 
         foreach ($data as $price) {
-            $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['data']);
+            $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['amount']);
         }
     }
 }
