@@ -57,15 +57,15 @@ class MetricAttributeSetter extends AbstractAttributeSetter
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'metric');
 
         if (null === $data) {
-            $data = ['data' => null, 'unit' => null];
+            $data = ['amount' => null, 'unit' => null];
         }
 
         $this->checkData($attribute, $data);
 
         $unit = $data['unit'];
-        $data = $data['data'];
+        $amount = $data['amount'];
 
-        $this->setData($product, $attribute, $data, $unit, $options['locale'], $options['scope']);
+        $this->setData($product, $attribute, $amount, $unit, $options['locale'], $options['scope']);
     }
 
     /**
@@ -80,10 +80,10 @@ class MetricAttributeSetter extends AbstractAttributeSetter
             throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'metric', gettype($data));
         }
 
-        if (!array_key_exists('data', $data)) {
+        if (!array_key_exists('amount', $data)) {
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
-                'data',
+                'amount',
                 'setter',
                 'metric',
                 print_r($data, true)
@@ -106,7 +106,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
      *
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
-     * @param mixed              $data
+     * @param mixed              $amount
      * @param string             $unit
      * @param string             $locale
      * @param string             $scope
@@ -114,7 +114,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
     protected function setData(
         ProductInterface $product,
         AttributeInterface $attribute,
-        $data,
+        $amount,
         $unit,
         $locale,
         $scope
@@ -130,6 +130,6 @@ class MetricAttributeSetter extends AbstractAttributeSetter
 
         $value->setMetric($metric);
         $metric->setUnit($unit);
-        $metric->setData($data);
+        $metric->setData($amount);
     }
 }

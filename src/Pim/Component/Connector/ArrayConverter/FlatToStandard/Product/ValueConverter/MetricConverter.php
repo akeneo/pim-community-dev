@@ -35,7 +35,7 @@ class MetricConverter extends AbstractValueConverter
             $tokens = $this->fieldSplitter->splitUnitValue($value);
             $data = isset($tokens[0]) ? $tokens[0] : null;
             $unit = isset($tokens[1]) ? $tokens[1] : null;
-            $value = ['data' => $data, 'unit' => $unit];
+            $value = ['amount' => $data, 'unit' => $unit];
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[

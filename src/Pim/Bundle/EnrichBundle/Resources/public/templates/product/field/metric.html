@@ -1,5 +1,5 @@
 <div class="metric-container">
-    <input id="<%- fieldId %>" type="text" class="data" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" value="<%- value.data.data %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
+    <input id="<%- fieldId %>" type="text" class="data" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" value="<%- value.data.amount %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
     <select class="unit select-field" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>>
         <% _.each(_.keys(measures[attribute.metric_family].units), function(unit) { %>
             <option value="<%- unit %>"<% if (value.data.unit === unit) { %> selected<% } %>><%- _.__(unit) %></option>
