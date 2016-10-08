@@ -1,4 +1,12 @@
 pim_dashboard:
   widget:
     last_operations:
+      empty: Nije pronađena niti jedna operacija
+      status: Status
       date: Datum
+      type: Tip
+      profile name: Naziv profila
+      details: Detalji
+      job_type:
+        import: Uvoz
+        export: Izvoz
