@@ -22,7 +22,7 @@ class MetricLocalizer extends NumberLocalizer
             return null;
         }
 
-        return parent::validate($metric['data'], $attributeCode, $options);
+        return parent::validate($metric['amount'], $attributeCode, $options);
     }
 
     /**

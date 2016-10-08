@@ -64,7 +64,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $metric->setData('107')->shouldBeCalled();
         $metricValue->setMetric($metric)->shouldBeCalled();
 
-        $data = ['data' => 107, 'unit' => 'KILOGRAM'];
+        $data = ['amount' => 107, 'unit' => 'KILOGRAM'];
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
@@ -92,7 +92,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
-                'data',
+                'amount',
                 'setter',
                 'metric',
                 print_r($data, true)
@@ -106,7 +106,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = ['data' => 'data value'];
+        $data = ['amount' => 'data value'];
 
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric',
@@ -126,7 +126,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = ['data' => 107, 'unit' => 'KILOGRAM'];
+        $data = ['amount' => 107, 'unit' => 'KILOGRAM'];
 
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
@@ -135,7 +135,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $productValue->setMetric($metric)->shouldBeCalled();
 
         $metric->setUnit('KILOGRAM')->shouldBeCalled();
-        $metric->setData($data['data'])->shouldBeCalled();
+        $metric->setData($data['amount'])->shouldBeCalled();
 
         $builder
             ->addProductValue($product2, $attribute, $locale, $scope)
@@ -164,7 +164,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = ['data' => 'foo', 'unit' => 'KILOGRAM'];
+        $data = ['amount' => 'foo', 'unit' => 'KILOGRAM'];
 
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
@@ -173,7 +173,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $productValue->setMetric($metric)->shouldBeCalled();
 
         $metric->setUnit('KILOGRAM')->shouldBeCalled();
-        $metric->setData($data['data'])->shouldBeCalled();
+        $metric->setData($data['amount'])->shouldBeCalled();
 
         $builder->addProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
