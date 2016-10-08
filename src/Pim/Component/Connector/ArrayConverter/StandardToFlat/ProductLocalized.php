@@ -37,7 +37,10 @@ class ProductLocalized implements ArrayConverterInterface
      */
     public function convert(array $productStandard, array $options = [])
     {
-        $productStandard['values'] = $this->localizer->convertToLocalizedFormats($productStandard['values'], $options);
+        if (isset($productStandard['values'])) {
+            $productStandard['values'] = $this->localizer->convertToLocalizedFormats($productStandard['values'], $options);
+        }
+
         $productFlat = $this->converter->convert($productStandard, $options);
 
         return $productFlat;
