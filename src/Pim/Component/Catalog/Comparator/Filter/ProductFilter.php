@@ -52,14 +52,13 @@ class ProductFilter implements ProductFilterInterface
     public function filter(ProductInterface $product, array $newValues)
     {
         $originalValues = $this->getOriginalProduct($product);
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($newValues));
 
         $result = [];
         foreach ($newValues as $code => $value) {
-            if (in_array($code, $this->productFields)) {
+            if ('values' === $code) {
+                $data = $this->compareAttribute($originalValues, $value);
+            } elseif (in_array($code, $this->productFields)) {
                 $data = $this->compareField($originalValues, $value, $code);
-            } elseif (isset($attributeTypes[$code])) {
-                $data = $this->compareAttribute($originalValues, $value, $attributeTypes, $code);
             } else {
                 throw new \LogicException(sprintf('Cannot filter value of field "%s"', $code));
             }
@@ -98,29 +97,35 @@ class ProductFilter implements ProductFilterInterface
     /**
      * Compare product's values
      *
-     * @param array  $originalValues
-     * @param array  $attribute
-     * @param array  $attributeTypes
-     * @param string $code
+     * @param array $originalValues
+     * @param array $values
      *
      * @throws \LogicException
      *
      * @return array|null
      */
-    protected function compareAttribute(array $originalValues, array $attribute, array $attributeTypes, $code)
+    protected function compareAttribute(array $originalValues, array $values)
     {
-        $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($values));
+
         $result = [];
+        foreach ($values as $code => $value) {
+            if (!isset($attributeTypes[$code])) {
+                throw new \LogicException(sprintf('Cannot filter value of attribute "%s"', $code));
+            }
 
-        foreach ($attribute as $data) {
-            $diff = $comparator->compare($data, $this->getOriginalAttribute($originalValues, $data, $code));
+            $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);
 
-            if (null !== $diff) {
-                $result[$code][] = $diff;
+            foreach ($value as $data) {
+                $diff = $comparator->compare($data, $this->getOriginalAttribute($originalValues, $data, $code));
+
+                if (null !== $diff) {
+                    $result[$code][] = $diff;
+                }
             }
         }
 
-        return !empty($result) ? $result : null;
+        return !empty($result) ? ['values' => $result] : null;
     }
 
     /**
