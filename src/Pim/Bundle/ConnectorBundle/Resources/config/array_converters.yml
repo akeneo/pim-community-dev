@@ -155,6 +155,7 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.product.columns_merger'
             - '@pim_connector.array_converter.flat_to_standard.product.columns_mapper'
             - '@pim_connector.array_convertor.checker.fields_requirement'
+            - '@pim_catalog.repository.attribute'
 
     pim_connector.array_converter.flat_to_standard.product_delocalized:
         class: '%pim_connector.array_converter.flat_to_standard.product_delocalized.class%'
@@ -166,7 +167,6 @@ services:
         class: '%pim_connector.array_converter.flat_to_standard.product_association.class%'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product'
-            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
 
     pim_connector.array_converter.flat_to_standard.variant_group:
         class: '%pim_connector.array_converter.flat_to_standard.variant_group.class%'

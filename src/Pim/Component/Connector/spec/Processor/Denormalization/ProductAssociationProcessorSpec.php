@@ -66,12 +66,15 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
+            'identifier'   => 'tshirt',
+            'values'       => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'tshirt'
+                    ],
+                ]
             ],
             'associations' => [
                 'XSELL' => [
@@ -127,12 +130,15 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
+            'identifier'   => 'tshirt',
+            'values'       => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
+                ]
             ],
             'associations' => [
                 'NOT_FOUND' => [
@@ -191,12 +197,15 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
+            'identifier'   => 'tshirt',
+            'values'       => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
+                ]
             ],
             'associations' => [
                 'XSELL' => [
@@ -260,12 +269,15 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
+            'identifier'   => 'tshirt',
+            'values'       => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
+                ]
             ],
             'associations' => [
                 'XSELL' => [

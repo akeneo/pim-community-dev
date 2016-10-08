@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterInterface;
@@ -26,7 +27,8 @@ class ProductSpec extends ObjectBehavior
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
-        FieldsRequirementChecker $fieldChecker
+        FieldsRequirementChecker $fieldChecker,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith(
             $fieldExtractor,
@@ -36,7 +38,8 @@ class ProductSpec extends ObjectBehavior
             $fieldConverter,
             $columnsMerger,
             $columnsMapper,
-            $fieldChecker
+            $fieldChecker,
+            $attributeRepository
         );
     }
 
@@ -48,6 +51,7 @@ class ProductSpec extends ObjectBehavior
         $columnsMapper,
         $attrColumnsResolver,
         $assocColumnsResolver,
+        $attributeRepository,
         AttributeInterface $attribute1,
         AttributeInterface $attribute2,
         AttributeInterface $attribute3,
@@ -68,7 +72,8 @@ class ProductSpec extends ObjectBehavior
             'price-EUR'              => '15',
             'price-USD'              => '10',
             'X_SELL-groups'          => 'group-A',
-            'X_SELL-products'        => 'sku-A, sku-B'
+            'X_SELL-products'        => 'sku-A, sku-B',
+            'SUBSTITUTION-products'  => 'sku-C'
         ];
 
         $itemMerged = [
@@ -81,7 +86,8 @@ class ProductSpec extends ObjectBehavior
             'release_date-print'     => '2011-07-15',
             'price'                  => '15 EUR, 10 USD',
             'X_SELL-groups'          => 'group-A',
-            'X_SELL-products'        => 'sku-A, sku-B'
+            'X_SELL-products'        => 'sku-A, sku-B',
+            'SUBSTITUTION-products'  => 'sku-C'
         ];
 
         $columnsMapper->map($item)->willReturn($item);
@@ -89,7 +95,13 @@ class ProductSpec extends ObjectBehavior
         $attrColumnsResolver->resolveAttributeColumns()->willReturn(
             ['sku', 'name', 'release_date-ecommerce', 'release_date-print', 7, 'price', 'price-EUR', 'price-USD']
         );
-        $assocColumnsResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'X_SELL-products']);
+        $assocColumnsResolver->resolveAssociationColumns()->willReturn(
+            [
+                'X_SELL-groups',
+                'X_SELL-products',
+                'SUBSTITUTION-products'
+            ]
+        );
 
         $columnsMerger->merge($item)->willReturn($itemMerged);
 
@@ -105,6 +117,7 @@ class ProductSpec extends ObjectBehavior
         $fieldConverter->supportsColumn('price')->willReturn(false);
         $fieldConverter->supportsColumn('X_SELL-groups')->willReturn(true);
         $fieldConverter->supportsColumn('X_SELL-products')->willReturn(true);
+        $fieldConverter->supportsColumn('SUBSTITUTION-products')->willReturn(true);
 
         $fieldConverter->convert('categories', 'audio_video_sales,loudspeakers,sony')->willReturn(
             ['categories' => ['audio_video_sales', 'loudspeakers', 'sony']]
@@ -115,6 +128,9 @@ class ProductSpec extends ObjectBehavior
         );
         $fieldConverter->convert('X_SELL-products', 'sku-A, sku-B')->willReturn(
             ['associations' => ['X_SELL' => ['products' => ['sku-A', 'sku-B']]]]
+        );
+        $fieldConverter->convert('SUBSTITUTION-products', 'sku-C')->willReturn(
+            ['associations' => ['SUBSTITUTION' => ['products' => ['sku-C']]]]
         );
 
         $converterRegistry->getConverter(Argument::any())->willReturn($converter);
@@ -145,9 +161,11 @@ class ProductSpec extends ObjectBehavior
         $converter->convert(['attribute' => $attribute1], '1069978')->willReturn(
             [
                 'sku' => [
-                    'locale' => '',
-                    'scope'  => '',
-                    'data'   => 1069978,
+                    [
+                        'locale' => '',
+                        'scope'  => '',
+                        'data'   => 1069978,
+                    ]
                 ]
             ]
         );
@@ -191,9 +209,11 @@ class ProductSpec extends ObjectBehavior
         $converter->convert(['attribute' => $attribute6], 'foo')->willReturn(
             [
                 7 => [
+                    [
                         'locale' => '',
                         'scope'  => '',
                         'data'   => 'foo'
+                    ]
                 ]
             ]
         );
@@ -207,50 +227,62 @@ class ProductSpec extends ObjectBehavior
             ]
         );
 
-        $result = [
-            'sku'                    => [
-                'locale' => '',
-                'scope'  => '',
-                'data'   => 1069978,
-            ],
-            7                        => [
-                'locale' => '',
-                'scope'  => '',
-                'data'   => 'foo',
-            ],
-            'categories'             => ['audio_video_sales', 'loudspeakers', 'sony'],
-            'enabled'                => true,
-            'name'                   => [
-                [
-                    'locale' => '',
-                    'scope'  => '',
-                    'data'   => 'Sony SRS-BTV25',
-                ]
-            ],
-            'release_date' => [
-                [
-                    'locale' => '',
-                    'scope'  => 'ecommerce',
-                    'data'   => '2011-08-21'
-                ],
-                [
-                    'locale' => '',
-                    'scope'  => 'print',
-                    'data'   => '2011-07-15'
-                ],
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
 
-            ],
-            'price' => [
-                'locale' => '',
-                'scope'  => '',
-                'data'   => [['data' => 15, 'currency' => 'EUR'], ['data' => 10, 'currency' => 'USD']]
-            ],
+        $result = [
+            'categories'   => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled'      => true,
             'associations' => [
                 'X_SELL' => [
                     'groups'   => ['group-A'],
                     'products' => ['sku-A', 'sku-B'],
                 ],
-            ]
+                'SUBSTITUTION' => [
+                    'products' => ['sku-C'],
+                ],
+            ],
+            'values'       => [
+                'sku'          => [
+                    [
+                        'locale' => '',
+                        'scope'  => '',
+                        'data'   => 1069978,
+                    ]
+                ],
+                7              => [
+                    [
+                        'locale' => '',
+                        'scope'  => '',
+                        'data'   => 'foo',
+                    ]
+                ],
+                'name'         => [
+                    [
+                        'locale' => '',
+                        'scope'  => '',
+                        'data'   => 'Sony SRS-BTV25',
+                    ]
+                ],
+                'release_date' => [
+                    [
+                        'locale' => '',
+                        'scope'  => 'ecommerce',
+                        'data'   => '2011-08-21'
+                    ],
+                    [
+                        'locale' => '',
+                        'scope'  => 'print',
+                        'data'   => '2011-07-15'
+                    ],
+
+                ],
+                'price'        => [
+                    'locale' => '',
+                    'scope'  => '',
+                    'data'   => [['data' => 15, 'currency' => 'EUR'], ['data' => 10, 'currency' => 'USD']]
+                ],
+            ],
+            'identifier'   => 1069978
         ];
 
         $this
@@ -265,6 +297,7 @@ class ProductSpec extends ObjectBehavior
         $converterRegistry,
         $fieldExtractor,
         $columnsMerger,
+        $attributeRepository,
         ValueConverterInterface $converter,
         AttributeInterface $attribute
     ) {
@@ -286,23 +319,32 @@ class ProductSpec extends ObjectBehavior
         $converterRegistry->getConverter(Argument::any())->willReturn($converter);
         $fieldConverter->convert('enabled', true)->willReturn(['enabled' => true]);
 
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
         $converter->convert(['attribute' => $attribute], '1069978')->willReturn(
             [
                 'sku' => [
-                    'locale' => '',
-                    'scope'  => '',
-                    'data'   => 1069978,
+                    [
+                        'locale' => '',
+                        'scope'  => '',
+                        'data'   => 1069978
+                    ]
                 ]
             ]
         );
 
         $result = [
-            'sku'                    => [
-                'locale' => '',
-                'scope'  => '',
-                'data'   => 1069978,
+            'enabled'    => true,
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => '',
+                        'scope'  => '',
+                        'data'   => 1069978,
+                    ]
+                ],
             ],
-            'enabled'                => true,
+            'identifier' => 1069978,
         ];
 
         $this
