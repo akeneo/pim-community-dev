@@ -18,12 +18,9 @@ class AttributeColumnsResolverSpec extends ObjectBehavior
         $this->beConstructedWith($attributeRepository, $currencyRepository, $valuesResolver);
     }
 
-    function it_resolves_identifier_field(
-        $attributeRepository,
-        AttributeInterface $attribute
-    ) {
-        $attributeRepository->getIdentifier()->willReturn($attribute);
-        $attribute->getCode()->willReturn('sku');
+    function it_resolves_identifier_field($attributeRepository)
+    {
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
 
         $this->resolveIdentifierField()->shouldReturn('sku');
     }

@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
@@ -54,6 +55,9 @@ class Product implements ArrayConverterInterface
     /** @var array */
     protected $optionalAssocFields;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
      * @param AttributeColumnInfoExtractor    $attrFieldExtractor
      * @param ValueConverterRegistryInterface $converterRegistry
@@ -63,6 +67,7 @@ class Product implements ArrayConverterInterface
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
      * @param FieldsRequirementChecker        $fieldChecker
+     * @param AttributeRepositoryInterface    $attributeRepository
      */
     public function __construct(
         AttributeColumnInfoExtractor $attrFieldExtractor,
@@ -72,7 +77,8 @@ class Product implements ArrayConverterInterface
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
-        FieldsRequirementChecker $fieldChecker
+        FieldsRequirementChecker $fieldChecker,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->attrFieldExtractor = $attrFieldExtractor;
         $this->converterRegistry = $converterRegistry;
@@ -83,6 +89,7 @@ class Product implements ArrayConverterInterface
         $this->columnsMapper = $columnsMapper;
         $this->fieldChecker = $fieldChecker;
         $this->optionalAssocFields = [];
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -106,60 +113,63 @@ class Product implements ArrayConverterInterface
      *
      * After:
      * {
-     *      "sku": [{
-     *          "locale": null,
-     *          "scope":  null,
-     *          "data":  "MySku",
-     *      }],
-     *      "name": [{
-     *          "locale": "fr_FR",
-     *          "scope":  null,
-     *          "data":  "T-shirt super beau",
-     *      }],
-     *      "description": [
-     *           {
-     *               "locale": "en_US",
-     *               "scope":  "mobile",
-     *               "data":   "My description"
-     *           },
-     *           {
-     *               "locale": "fr_FR",
-     *               "scope":  "mobile",
-     *               "data":   "Ma description mobile"
-     *           },
-     *           {
-     *               "locale": "en_US",
-     *               "scope":  "ecommerce",
-     *               "data":   "My description for the website"
-     *           },
-     *      ],
-     *      "price": [
-     *           {
-     *               "locale": null,
-     *               "scope":  ecommerce,
-     *               "data":   [
-     *                   {"data": 10, "currency": "EUR"},
-     *                   {"data": 24, "currency": "USD"},
-     *                   {"data": 20, "currency": "CHF"}
-     *               ]
-     *           }
-     *           {
-     *               "locale": null,
-     *               "scope":  mobile,
-     *               "data":   [
-     *                   {"data": 11, "currency": "EUR"},
-     *                   {"data": 25, "currency": "USD"},
-     *                   {"data": 21, "currency": "CHF"}
-     *               ]
-     *           }
-     *      ],
-     *      "length": [{
-     *          "locale": "en_US",
-     *          "scope":  "mobile",
-     *          "data":   {"data": "10", "unit": "CENTIMETER"}
-     *      }],
+     *      "identifier": "MySku",
      *      "enabled": true,
      *      "categories": ["tshirt", "men"],
+     *      "values": {
+     *          "sku": [{
+     *              "locale": null,
+     *              "scope":  null,
+     *              "data":  "MySku",
+     *          }],
+     *          "name": [{
+     *              "locale": "fr_FR",
+     *              "scope":  null,
+     *              "data":  "T-shirt super beau",
+     *          }],
+     *          "description": [
+     *               {
+     *                   "locale": "en_US",
+     *                   "scope":  "mobile",
+     *                   "data":   "My description"
+     *               },
+     *               {
+     *                   "locale": "fr_FR",
+     *                   "scope":  "mobile",
+     *                   "data":   "Ma description mobile"
+     *               },
+     *               {
+     *                   "locale": "en_US",
+     *                   "scope":  "ecommerce",
+     *                   "data":   "My description for the website"
+     *               },
+     *          ],
+     *          "price": [
+     *               {
+     *                   "locale": null,
+     *                   "scope":  ecommerce,
+     *                   "data":   [
+     *                       {"data": 10, "currency": "EUR"},
+     *                       {"data": 24, "currency": "USD"},
+     *                       {"data": 20, "currency": "CHF"}
+     *                   ]
+     *               }
+     *               {
+     *                   "locale": null,
+     *                   "scope":  mobile,
+     *                   "data":   [
+     *                       {"data": 11, "currency": "EUR"},
+     *                       {"data": 25, "currency": "USD"},
+     *                       {"data": 21, "currency": "CHF"}
+     *                   ]
+     *               }
+     *          ],
+     *          "length": [{
+     *              "locale": "en_US",
+     *              "scope":  "mobile",
+     *              "data":   {"data": "10", "unit": "CENTIMETER"}
+     *          }],
+     *      },
      *      "associations": {
      *          "XSELL": {
      *              "groups": ["akeneo_tshirt", "oro_tshirt"],
@@ -177,7 +187,7 @@ class Product implements ArrayConverterInterface
         $this->validateItem($filteredItem, $options['with_required_identifier']);
 
         $mergedItem = $this->columnsMerger->merge($filteredItem);
-        $convertedItem = $this->convertItem($mergedItem);
+        $convertedItem = $this->convertItem($mergedItem, $options);
 
         return $convertedItem;
     }
@@ -238,22 +248,38 @@ class Product implements ArrayConverterInterface
 
     /**
      * @param array $item
+     * @param array $options
      *
      * @return array
      */
-    protected function convertItem(array $item)
+    protected function convertItem(array $item, array $options = [])
     {
         $convertedItem = [];
+        $convertedValues = [];
+
         foreach ($item as $column => $value) {
             if ($this->fieldConverter->supportsColumn($column)) {
                 $value = $this->fieldConverter->convert($column, $value);
+                $convertedItem = $this->mergeValueToItem($convertedItem, $value);
             } else {
                 $value = $this->convertValue($column, $value);
+                $convertedValues = $this->mergeValueToItem($convertedValues, $value);
+            }
+        }
+
+        if (empty($convertedValues)) {
+            throw new \LogicException('Cannot find any values. There should be at least the identifier');
+        }
+
+        $convertedItem['values'] = $convertedValues;
+
+        if ($options['with_required_identifier']) {
+            $identifierCode = $this->attributeRepository->getIdentifierCode();
+            if (!isset($convertedItem['values'][$identifierCode])) {
+                throw new \LogicException(sprintf('Unable to find the column "%s"', $identifierCode));
             }
 
-            if (!empty($value)) {
-                $convertedItem = $this->mergeValueToItem($convertedItem, $value);
-            }
+            $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'];
         }
 
         return $convertedItem;
@@ -301,6 +327,10 @@ class Product implements ArrayConverterInterface
      */
     protected function mergeValueToItem(array $item, array $value)
     {
+        if (empty($value)) {
+            return $item;
+        }
+
         foreach ($value as $code => $data) {
             if (array_key_exists($code, $item)) {
                 $item[$code] = array_merge_recursive($item[$code], $data);

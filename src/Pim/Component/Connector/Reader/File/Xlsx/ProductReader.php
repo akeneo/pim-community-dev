@@ -51,11 +51,14 @@ class ProductReader extends Reader implements
     {
         $data = parent::read();
 
-        if (!is_array($data)) {
+        if (!is_array($data) || !isset($data['values'])) {
             return $data;
         }
 
-        return $this->mediaPathTransformer->transform($data, $this->fileIterator->getDirectoryPath());
+        $data['values'] = $this->mediaPathTransformer
+            ->transform($data['values'], $this->fileIterator->getDirectoryPath());
+
+        return $data;
     }
 
     /**
