@@ -43,7 +43,7 @@ class PriceConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => [['data' => null, 'currency' => null]],
+            'data'   => [['amount' => null, 'currency' => null]],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);

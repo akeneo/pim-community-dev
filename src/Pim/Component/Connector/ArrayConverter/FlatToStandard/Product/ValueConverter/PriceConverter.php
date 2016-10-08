@@ -77,6 +77,6 @@ class PriceConverter extends AbstractValueConverter
             }
         }
 
-        return ['data' => $priceValue, 'currency' => $currency];
+        return ['amount' => $priceValue, 'currency' => $currency];
     }
 }

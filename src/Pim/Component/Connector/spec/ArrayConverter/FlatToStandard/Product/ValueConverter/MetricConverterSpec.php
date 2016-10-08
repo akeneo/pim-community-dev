@@ -39,7 +39,7 @@ class MetricConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => ['data' => null, 'unit' => null],
+            'data'   => ['amount' => null, 'unit' => null],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
@@ -62,7 +62,7 @@ class MetricConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => ['data' => '4.1125', 'unit' => 'GRAM'],
+            'data'   => ['amount' => '4.1125', 'unit' => 'GRAM'],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);

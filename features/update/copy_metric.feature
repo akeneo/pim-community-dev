@@ -13,5 +13,5 @@ Feature: Update metric fields
       | sku  | width         |
       | BOX1 | 30 CENTIMETER |
     Then I should get the following products after apply the following updater to it:
-      | product | actions                                                              | result                                                                 |
-      | BOX1    | [{"type": "copy_data", "from_field": "width", "to_field": "height"}] | {"values": {"height": [{"data": {"data": 30, "unit": "CENTIMETER"}}]}} |
+      | product | actions                                                              | result                                                                   |
+      | BOX1    | [{"type": "copy_data", "from_field": "width", "to_field": "height"}] | {"values": {"height": [{"data": {"amount": 30, "unit": "CENTIMETER"}}]}} |

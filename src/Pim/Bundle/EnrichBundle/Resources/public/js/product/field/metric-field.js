@@ -40,12 +40,12 @@ define([
             this.$('.data:first').focus();
         },
         updateModel: function () {
-            var data = this.$('.field-input:first .data').val();
+            var amount = this.$('.field-input:first .data').val();
             var unit = this.$('.field-input:first .unit').select2('val');
 
             this.setCurrentValue({
                 unit: '' !== unit ? unit : this.attribute.default_metric_unit,
-                data: '' !== data ? data : null
+                amount: '' !== amount ? amount : null
             });
         }
     });
