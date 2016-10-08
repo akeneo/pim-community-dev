@@ -70,11 +70,11 @@ Contact Information: Information de contact
 User name: "Nom d'utilisateur"
 Birthday: Date d’anniversaire
 API key: Clé API
-Ui locale: "Langage de l'interface"
-UI locale: "Langage de l'interface"
+Ui locale: "Langue de l'interface"
+UI locale: "Langue de l'interface"
 User salt: Sel de hachage
-Current password: Mot de passe actuel 
-New password: Nouveau mot de passe 
+Current password: Mot de passe actuel
+New password: Nouveau mot de passe
 Repeat new password: Nouveau mot de passe (répéter)
 Generate key: Générer une clé
 Primary: principal
@@ -82,7 +82,7 @@ Removed user: Utilisateur supprimé
 user:
   product_grid_filters: Filtres de la grille des produits
   default_product_grid_view:
-    label: Vue par défaut de la grille produits
+    label: Vue par défaut de la grille des produits
   default_grid_view:
     none: Aucun
 Role: Rôle

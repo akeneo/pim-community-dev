@@ -14,6 +14,9 @@ confirmation:
     user: Tem a certeza que deseja eliminar este utilizador?
     role: Tem certeza que deseja eliminar esta função?
 pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Exportação rápida
   mass_action:
     delete:
       confirm_content: Tem certeza que deseja eliminar os produtos selecionados?
@@ -104,6 +107,11 @@ pim_enrich:
     link:
       back_to_grid: Voltar à grelha
   entity:
+    save:
+      label: Guardar
+    info:
+      update_failed: A atualização falhou
+      update_successful: Atualizado com sucesso
     product:
       title: produto
       btn:
@@ -154,11 +162,12 @@ pim_enrich:
         all: Tudo
         all_visible: Tudo visível
         none: Nenhum
+        copy: Copiar
       variant_group:
         updated_by: Atualizado por um grupo variante
         switch:
-          "yes": true
-          "no": false
+          "yes": Sim
+          "no": Não
       optional_attribute:
         remove: Remover este atributo
       locale_specific_attribute:
@@ -199,9 +208,11 @@ pim_enrich:
             add: Adicionar
             add_attributes: Adicionar atributos
           info:
-            search_attributes: Pesquisar
+            search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
             attributes_selected: '{{ attributeCount }} atributo(s) selecionado(s)'
+            no_match: Nenhuma correspondência encontrada
+            load_more: A carregar mais resultados...
         categories:
           title: Categorias
       panel:
@@ -210,11 +221,12 @@ pim_enrich:
           info:
             no_family: Nenhuma família definida. Por favor defina uma família para calcular a integridade da informação deste produto.
             no_completeness: Alterou a família do produto. Por favor, grave-o primeiro para calcular a integridade dos dados para a nova família.
+          missing_values: Valores em falta
         history:
           title: Histórico
       switch:
-        "no": false
-        "yes": true
+        "no": Não
+        "yes": Sim
       sequential_edit:
         info:
           products: produtos
@@ -243,5 +255,12 @@ pim_enrich:
         title: Adicionar a opção de atributo
         confirm: Adicionar
         cancel: Cancelar
+    entity:
+      switch:
+        "no": Não
+        "yes": Sim
+  mass_edit_action:
+    edit_common_attributes:
+      description: 'Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.'
 pim_enrich.error:
   exception.title: 'Ora bolas! Ocorreu o erro {{ status_code }}...'
