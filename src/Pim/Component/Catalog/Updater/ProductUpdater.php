@@ -44,53 +44,61 @@ class ProductUpdater implements ObjectUpdaterInterface
      * {@inheritdoc}
      *
      * {
-     *      "name": [{
-     *          "locale": "fr_FR",
-     *          "scope":  null,
-     *          "data":  "T-shirt super beau",
-     *      }],
-     *      "description": [
-     *           {
-     *               "locale": "en_US",
-     *               "scope":  "mobile",
-     *               "data":   "My description"
-     *           },
-     *           {
-     *               "locale": "fr_FR",
-     *               "scope":  "mobile",
-     *               "data":   "Ma description mobile"
-     *           },
-     *           {
-     *               "locale": "en_US",
-     *               "scope":  "ecommerce",
-     *               "data":   "My description for the website"
-     *           },
-     *      ],
-     *      "price": [
-     *           {
-     *               "locale": null,
-     *               "scope":  ecommerce,
-     *               "data":   [
-     *                   {"data": 10, "currency": "EUR"},
-     *                   {"data": 24, "currency": "USD"},
-     *                   {"data": 20, "currency": "CHF"}
-     *               ]
-     *           }
-     *           {
-     *               "locale": null,
-     *               "scope":  mobile,
-     *               "data":   [
-     *                   {"data": 11, "currency": "EUR"},
-     *                   {"data": 25, "currency": "USD"},
-     *                   {"data": 21, "currency": "CHF"}
-     *               ]
-     *           }
-     *      ],
-     *      "length": [{
-     *          "locale": "en_US",
-     *          "scope":  "mobile",
-     *          "data":   {"data": "10", "unit": "CENTIMETER"}
-     *      }],
+     *      "identifier": "my-sku",
+     *      "values": {
+     *          "sky": [{
+     *             "locale": null,
+     *             "scope":  null,
+     *             "data":  "my-sku",
+     *          }],
+     *          "name": [{
+     *              "locale": "fr_FR",
+     *              "scope":  null,
+     *              "data":  "T-shirt super beau",
+     *          }],
+     *          "description": [
+     *               {
+     *                   "locale": "en_US",
+     *                   "scope":  "mobile",
+     *                   "data":   "My description"
+     *               },
+     *               {
+     *                   "locale": "fr_FR",
+     *                   "scope":  "mobile",
+     *                   "data":   "Ma description mobile"
+     *               },
+     *               {
+     *                   "locale": "en_US",
+     *                   "scope":  "ecommerce",
+     *                   "data":   "My description for the website"
+     *               },
+     *          ],
+     *          "price": [
+     *               {
+     *                   "locale": null,
+     *                   "scope":  ecommerce,
+     *                   "data":   [
+     *                       {"data": 10, "currency": "EUR"},
+     *                       {"data": 24, "currency": "USD"},
+     *                       {"data": 20, "currency": "CHF"}
+     *                   ]
+     *               }
+     *               {
+     *                   "locale": null,
+     *                   "scope":  mobile,
+     *                   "data":   [
+     *                       {"data": 11, "currency": "EUR"},
+     *                       {"data": 25, "currency": "USD"},
+     *                       {"data": 21, "currency": "CHF"}
+     *                   ]
+     *               }
+     *          ],
+     *          "length": [{
+     *              "locale": "en_US",
+     *              "scope":  "mobile",
+     *              "data":   {"data": "10", "unit": "CENTIMETER"}
+     *          }]
+     *      },
      *      "enabled": true,
      *      "categories": ["tshirt", "men"],
      *      "associations": {
@@ -112,11 +120,11 @@ class ProductUpdater implements ObjectUpdaterInterface
             );
         }
 
-        foreach ($data as $field => $values) {
-            if (in_array($field, $this->supportedFields)) {
-                $this->updateProductFields($product, $field, $values);
-            } else {
-                $this->updateProductValues($product, $field, $values);
+        foreach ($data as $code => $values) {
+            if (in_array($code, $this->supportedFields)) {
+                $this->updateProductFields($product, $code, $values);
+            } elseif ('values' === $code) {
+                $this->updateProductValues($product, $values);
             }
         }
         $this->updateProductVariantValues($product, $data);
@@ -143,22 +151,24 @@ class ProductUpdater implements ObjectUpdaterInterface
      *  - sets optional values (not related to family's attributes) with empty data if value already exists
      *
      * @param ProductInterface $product
-     * @param string           $attributeCode
      * @param array            $values
      */
-    protected function updateProductValues(ProductInterface $product, $attributeCode, array $values)
+    protected function updateProductValues(ProductInterface $product, array $values)
     {
         $family = $product->getFamily();
         $authorizedCodes = (null !== $family) ? $family->getAttributeCodes() : [];
-        $isFamilyAttribute = in_array($attributeCode, $authorizedCodes);
 
-        foreach ($values as $value) {
-            $hasValue = $product->getValue($attributeCode, $value['locale'], $value['scope']);
-            $providedData = ('' === $value['data'] || [] === $value['data'] || null === $value['data']) ? false : true;
+        foreach ($values as $code => $value) {
+            $isFamilyAttribute = in_array($code, $authorizedCodes);
 
-            if ($isFamilyAttribute || $providedData || $hasValue) {
-                $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
-                $this->propertySetter->setData($product, $attributeCode, $value['data'], $options);
+            foreach ($value as $data) {
+                $hasValue = $product->getValue($code, $data['locale'], $data['scope']);
+                $providedData = ('' === $data['data'] || [] === $data['data'] || null === $data['data']) ? false : true;
+
+                if ($isFamilyAttribute || $providedData || $hasValue) {
+                    $options = ['locale' => $data['locale'], 'scope' => $data['scope']];
+                    $this->propertySetter->setData($product, $code, $data['data'], $options);
+                }
             }
         }
     }
