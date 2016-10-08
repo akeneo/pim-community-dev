@@ -35,21 +35,23 @@ class ProductFilterSpec extends ObjectBehavior
         $originalValues = [];
         $newValues = [
             'family' => 'tshirt',
-            'description'   => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'ecommerce',
-                    'value'  => 'Ma description'
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'ecommerce',
-                    'value'  => 'My description'
+            'values' => [
+                'description'   => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => 'ecommerce',
+                        'value'  => 'Ma description'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'value'  => 'My description'
+                    ]
                 ]
             ]
         ];
 
-        $attributeRepository->getAttributeTypeByCodes(array_keys($newValues))->willReturn([
+        $attributeRepository->getAttributeTypeByCodes(array_keys($newValues['values']))->willReturn([
             'description' => 'pim_catalog_textarea'
         ]);
 
@@ -60,8 +62,11 @@ class ProductFilterSpec extends ObjectBehavior
         $familyComparator->compare($newValues['family'], null)->willReturn($newValues['family']);
 
         $comparatorRegistry->getAttributeComparator('pim_catalog_textarea')->willReturn($descriptionComparator);
-        $descriptionComparator->compare($newValues['description'][0], [])->willReturn($newValues['description'][0]);
-        $descriptionComparator->compare($newValues['description'][1], [])->willReturn($newValues['description'][1]);
+
+        $descriptionComparator->compare($newValues['values']['description'][0], [])
+            ->willReturn($newValues['values']['description'][0]);
+        $descriptionComparator->compare($newValues['values']['description'][1], [])
+            ->willReturn($newValues['values']['description'][1]);
 
         $this->filter($product, $newValues)->shouldReturn($newValues);
     }
@@ -91,23 +96,26 @@ class ProductFilterSpec extends ObjectBehavior
                 ]
             ]
         ];
+
         $newValues = [
             'family' => 'tshirt',
-            'description'   => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'ecommerce',
-                    'value'  => 'Ma description'
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'ecommerce',
-                    'value'  => 'My description'
+            'values' => [
+                'description'   => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => 'ecommerce',
+                        'value'  => 'Ma description'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'value'  => 'My description'
+                    ]
                 ]
             ]
         ];
 
-        $attributeRepository->getAttributeTypeByCodes(array_keys($newValues))->willReturn([
+        $attributeRepository->getAttributeTypeByCodes(array_keys($newValues['values']))->willReturn([
             'description' => 'pim_catalog_textarea'
         ]);
 
@@ -118,17 +126,21 @@ class ProductFilterSpec extends ObjectBehavior
         $familyComparator->compare($newValues['family'], $originalValues['family'])->willReturn(null);
 
         $comparatorRegistry->getAttributeComparator('pim_catalog_textarea')->willReturn($descriptionComparator);
-        $descriptionComparator->compare($newValues['description'][0], $originalValues['values']['description'][0])
+        $descriptionComparator
+            ->compare($newValues['values']['description'][0], $originalValues['values']['description'][0])
             ->willReturn(null);
-        $descriptionComparator->compare($newValues['description'][1], $originalValues['values']['description'][1])
-            ->willReturn($newValues['description'][1]);
+        $descriptionComparator
+            ->compare($newValues['values']['description'][1], $originalValues['values']['description'][1])
+            ->willReturn($newValues['values']['description'][1]);
 
         $this->filter($product, $newValues)->shouldReturn([
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'ecommerce',
-                    'value'  => 'My description'
+            'values' => [
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'value'  => 'My description'
+                    ]
                 ]
             ]
         ]);
@@ -161,21 +173,23 @@ class ProductFilterSpec extends ObjectBehavior
         ];
         $newValues = [
             'family' => 'tshirt',
+            'values' => [
                 'description'   => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'ecommerce',
-                    'value'  => 'Ma description'
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'ecommerce',
-                    'value'  => 'My description'
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => 'ecommerce',
+                        'value'  => 'Ma description'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'value'  => 'My description'
+                    ]
                 ]
             ]
         ];
 
-        $attributeRepository->getAttributeTypeByCodes(array_keys($newValues))->willReturn([
+        $attributeRepository->getAttributeTypeByCodes(array_keys($newValues['values']))->willReturn([
             'description' => 'pim_catalog_textarea'
         ]);
 
@@ -186,9 +200,11 @@ class ProductFilterSpec extends ObjectBehavior
         $familyComparator->compare($newValues['family'], $originalValues['family'])->willReturn(null);
 
         $comparatorRegistry->getAttributeComparator('pim_catalog_textarea')->willReturn($descriptionComparator);
-        $descriptionComparator->compare($newValues['description'][0], $originalValues['values']['description'][0])
+        $descriptionComparator
+            ->compare($newValues['values']['description'][0], $originalValues['values']['description'][0])
             ->willReturn(null);
-        $descriptionComparator->compare($newValues['description'][1], $originalValues['values']['description'][1])
+        $descriptionComparator
+            ->compare($newValues['values']['description'][1], $originalValues['values']['description'][1])
             ->willReturn(null);
 
         $this->filter($product, $newValues)->shouldReturn([]);
