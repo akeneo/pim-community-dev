@@ -889,10 +889,18 @@ batch_jobs:
     quick_export.label: Exportación rápida de producto en CSV
     perform:
       label: Exportación rápida de producto en CSV
+  csv_product_grid_context_quick_export:
+    quick_export.label: Exportación rápida de la grilla de productos en CSV
+    perform:
+      label: Exportación rápida de la grilla de productos en CSV
   xlsx_product_quick_export:
     quick_export.label: Exportación rápida de producto en XLSX
     perform:
       label: Exportación rápida de producto en XLSX
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Exportación rápida de la grilla de productos en XLSX
+    perform:
+      label: Exportación rápida de la grilla de productos en XLSX
   add_to_variant_group:
     label: Agregar a un grupo de variantes
     perform:
