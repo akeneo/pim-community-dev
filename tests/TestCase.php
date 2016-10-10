@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Integration;
+namespace Test\Integration;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimTestCase extends KernelTestCase
+class TestCase extends KernelTestCase
 {
     /** @var ContainerInterface */
     protected $container;
@@ -28,7 +28,7 @@ class PimTestCase extends KernelTestCase
     protected $catalog = 'technical';
 
     /** @var string */
-    protected $extraDirectories;
+    protected $extraDirectories = [];
 
     /** @var bool If you don't need to purge database between each test in the same test class, set to false */
     protected $purgeDatabaseForEachTest = true;
@@ -150,7 +150,7 @@ class PimTestCase extends KernelTestCase
      */
     protected function getConfigurationFiles()
     {
-        $directories = array_merge([__DIR__ . '/../../Context/' . $this->catalogPath], $this->extraDirectories);
+        $directories = array_merge([__DIR__ . '/' . $this->catalogPath], $this->extraDirectories);
 
         $files = [];
         foreach ($directories as &$directory) {
