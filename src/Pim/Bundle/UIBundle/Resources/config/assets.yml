@@ -47,3 +47,4 @@ css:
         - bundles/pimui/less/components/mainMenu.less
         - bundles/pimui/less/components/pagination.less
         - bundles/pimui/less/components/titleContainer.less
+        - bundles/pimui/less/components/userMenu.less
