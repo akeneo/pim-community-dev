@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Component\Catalog\Tests\Integration\StandardFormat;
+namespace tests\integration\Pim\Component\Catalog\Standard;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Integration\PimTestCase;
+use Test\Integration\TestCase;
 
 /**
  * Integration tests to verify data from database are well formatted in the standard format
  */
-class ProductStandardIntegration extends PimTestCase
+class ProductStandardIntegration extends TestCase
 {
     const DATE_FIELD_COMPARISON = 'this is a date formatted to ISO-8601';
     const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';

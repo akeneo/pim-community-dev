@@ -1,27 +1,27 @@
 <?php
 
-namespace Pim\Component\Catalog\Tests\Integration\StandardFormat;
+namespace tests\integration\Pim\Component\Catalog\Standard;
 
-use Pim\Integration\PimTestCase;
+use Test\Integration\TestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CurrencyIntegration extends PimTestCase
+class LocaleIntegration extends TestCase
 {
-    public function testCurrency()
+    public function testLocale()
     {
         $expected = [
-            'code'    => 'USD',
+            'code'    => 'en_US',
             'enabled' => true,
         ];
 
-        $repository = $this->get('pim_catalog.repository.currency');
+        $repository = $this->get('pim_catalog.repository.locale');
         $serializer = $this->get('pim_serializer');
 
-        $result = $serializer->normalize($repository->findOneByIdentifier('USD'), 'standard');
+        $result = $serializer->normalize($repository->findOneByIdentifier('en_US'), 'standard');
 
         $this->assertSame($expected, $result);
     }

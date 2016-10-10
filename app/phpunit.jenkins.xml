@@ -25,7 +25,7 @@
         </testsuite>
 
         <testsuite name="PIM_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Component/*/Tests/Integration</directory>
+            <directory suffix="Integration.php">../src/Pim/Component/*/tests/integration</directory>
         </testsuite>
     </testsuites>
 
