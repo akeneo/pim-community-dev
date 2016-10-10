@@ -23,13 +23,12 @@ class AssociationsNormalizerSpec extends ObjectBehavior
     }
 
     function it_supports_standard_format_and_product_only(
-        ProductInterface $product,
-        AttributeOption $otherObject
+        ProductInterface $product
     ) {
         $this->supportsNormalization($product, 'standard')->shouldReturn(true);
         $this->supportsNormalization($product, 'other_format')->shouldReturn(false);
-        $this->supportsNormalization($otherObject, 'standard')->shouldReturn(false);
-        $this->supportsNormalization($otherObject, 'other_format')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
     function it_normalizes_a_product_associations_in_standard_format_only(

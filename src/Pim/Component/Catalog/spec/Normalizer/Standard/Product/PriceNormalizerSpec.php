@@ -22,12 +22,10 @@ class PriceNormalizerSpec extends ObjectBehavior
 
     function it_supports_standard_format_and_prices_only(ProductPriceInterface $price)
     {
-        $otherObject = [];
-
         $this->supportsNormalization($price, 'standard')->shouldReturn(true);
         $this->supportsNormalization($price, 'other_format')->shouldReturn(false);
-        $this->supportsNormalization($otherObject, 'standard')->shouldReturn(false);
-        $this->supportsNormalization($otherObject, 'other_format')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
     function it_normalizes_price_in_standard_format_only_with_decimal_allowed(

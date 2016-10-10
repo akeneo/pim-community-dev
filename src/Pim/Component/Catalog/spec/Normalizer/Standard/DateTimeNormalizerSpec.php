@@ -20,11 +20,9 @@ class DateTimeNormalizerSpec extends ObjectBehavior
     function it_supports_standard_normalization_on_datetimes_only()
     {
         $datetime = new \DateTime('NOW');
-        $notSupportedValue = [];
-
         $this->supportsNormalization($datetime, 'standard')->shouldReturn(true);
         $this->supportsNormalization($datetime, 'other_format')->shouldReturn(false);
-        $this->supportsNormalization($notSupportedValue, 'standard')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
     }
 
     function it_normalizes_datetimes_with_paris_timezone()
