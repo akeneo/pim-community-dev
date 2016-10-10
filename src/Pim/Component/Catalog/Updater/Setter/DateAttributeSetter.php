@@ -55,15 +55,17 @@ class DateAttributeSetter extends AbstractAttributeSetter
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
+     * @throws InvalidArgumentException
+     *
      * @return string
      */
     protected function formatData(AttributeInterface $attribute, $data)
     {
         if ($data instanceof \DateTime) {
             $data = $data->format('Y-m-d');
-        } elseif (is_string($data)) {
+        } elseif(is_string($data)) {
             $this->validateDateFormat($attribute, $data);
-        } elseif (null !== $data) {
+        } elseif (null !== $data && !is_string($data)) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
                 'datetime or string',
@@ -75,6 +77,28 @@ class DateAttributeSetter extends AbstractAttributeSetter
         }
 
         return $data;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string             $data
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function validateDateFormat(AttributeInterface $attribute, $data)
+    {
+        try {
+            new \DateTime($data);
+        } catch (\Exception $e) {
+            throw InvalidArgumentException::expected(
+                $attribute->getCode(),
+                'a string with the format yyyy-mm-dd',
+                'setter',
+                'date',
+                gettype($data),
+                $data
+            );
+        }
     }
 
     /**
@@ -98,28 +122,5 @@ class DateAttributeSetter extends AbstractAttributeSetter
         }
 
         $value->setData($data);
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param string             $data
-     */
-    protected function validateDateFormat(AttributeInterface $attribute, $data)
-    {
-        $dateValues = explode('-', $data);
-
-        if (count($dateValues) !== 3
-            || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
-            || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
-        ) {
-            throw InvalidArgumentException::expected(
-                $attribute->getCode(),
-                'a string with the format yyyy-mm-dd',
-                'setter',
-                'date',
-                gettype($data),
-                $data
-            );
-        }
     }
 }

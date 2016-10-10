@@ -67,44 +67,6 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $this->setAttributeData($product, $attribute, '1970-01-01', ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
-    function it_throws_an_error_if_attribute_data_is_not_a_valid_date_format(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = 'not a date';
-
-        $this->shouldThrow(
-            InvalidArgumentException::expected(
-                'attributeCode',
-                'a string with the format yyyy-mm-dd',
-                'setter',
-                'date',
-                gettype($data)
-            )
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
-    function it_throws_an_error_if_attribute_data_is_not_correctly_formatted(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = '1970-mm-01';
-
-        $this->shouldThrow(
-            InvalidArgumentException::expected(
-                'attributeCode',
-                'a string with the format yyyy-mm-dd',
-                'setter',
-                'date',
-                gettype($data)
-            )
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
     function it_allows_setting_attribute_data_to_null(
         ProductInterface $product,
         AttributeInterface $attribute,
