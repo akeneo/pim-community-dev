@@ -49,7 +49,7 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $size
     ) {
-        $translationNormalizer->normalize($variantGroup, 'standard', [])->willReturn(['labels' => []]);
+        $translationNormalizer->normalize($variantGroup, 'standard', [])->willReturn([]);
 
         $variantGroup->getCode()->willReturn('my_code');
         $variantGroup->getType()->willReturn($variantGroupType);

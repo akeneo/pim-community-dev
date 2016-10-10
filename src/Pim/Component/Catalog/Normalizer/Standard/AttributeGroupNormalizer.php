@@ -40,7 +40,8 @@ class AttributeGroupNormalizer implements NormalizerInterface
             'code'       => $attributeGroup->getCode(),
             'sort_order' => (int) $attributeGroup->getSortOrder(),
             'attributes' => $this->attributeRepository->getAttributeCodesByGroup($attributeGroup),
-        ] + $this->translationNormalizer->normalize($attributeGroup, 'standard', $context);
+            'labels'     => $this->translationNormalizer->normalize($attributeGroup, 'standard', $context),
+        ];
     }
 
     /**

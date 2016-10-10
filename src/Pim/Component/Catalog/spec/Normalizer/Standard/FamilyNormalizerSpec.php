@@ -73,6 +73,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
                 'attributes'             => ['name', 'price'],
                 'attribute_as_label'     => 'name',
                 'attribute_requirements' => ['ecommerce' => ['name', 'price'], 'mobile' => ['name', 'price']],
+                'labels' => []
             ]
         );
     }

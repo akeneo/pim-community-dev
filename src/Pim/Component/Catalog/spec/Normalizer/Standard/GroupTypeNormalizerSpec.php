@@ -33,7 +33,7 @@ class GroupTypeNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_group_type($translationNormalizer, GroupTypeInterface $groupType)
     {
-        $translationNormalizer->normalize($groupType, 'standard', [])->willReturn(['labels' => []]);
+        $translationNormalizer->normalize($groupType, 'standard', [])->willReturn([]);
 
         $groupType->getCode()->willReturn('my_code');
         $groupType->isVariant()->willReturn(false);

@@ -22,7 +22,8 @@ class AttributeOptionNormalizer implements NormalizerInterface
             'attribute'  => null === $attributeOption->getAttribute() ?
                 null : $attributeOption->getAttribute()->getCode(),
             'sort_order' => (int) $attributeOption->getSortOrder(),
-        ] + $this->normalizeLabels($attributeOption, $context);
+            'labels'     => $this->normalizeLabels($attributeOption, $context),
+        ];
     }
 
     /**
@@ -52,6 +53,6 @@ class AttributeOptionNormalizer implements NormalizerInterface
             }
         }
 
-        return ['labels' => $labels];
+        return $labels;
     }
 }

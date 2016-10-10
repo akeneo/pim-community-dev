@@ -33,7 +33,8 @@ class VariantGroupNormalizer implements NormalizerInterface
             'type'   => $variantGroup->getType()->getCode(),
             'axes'   => $this->normalizeAxesAttributes($variantGroup),
             'values' => $this->normalizeVariantGroupValues($variantGroup),
-        ] + $this->translationNormalizer->normalize($variantGroup, 'standard', $context);
+            'labels' => $this->translationNormalizer->normalize($variantGroup, 'standard', $context),
+        ];
     }
 
     /**

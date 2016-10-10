@@ -41,7 +41,7 @@ class TranslationNormalizer implements NormalizerInterface
             }
         }
 
-        return ['labels' => $translations];
+        return $translations;
     }
 
     /**

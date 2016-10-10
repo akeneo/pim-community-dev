@@ -41,14 +41,14 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $french->getLocale()->willReturn('fr_FR');
         $french->getLabel()->willReturn('bar');
 
-        $this->normalize($translatable, 'standard', ['locales' => ['en_US', 'de_DE', 'fr_FR', 'fr_BE']])->shouldReturn([
-            'labels' => [
+        $this->normalize($translatable, 'standard', ['locales' => ['en_US', 'de_DE', 'fr_FR', 'fr_BE']])->shouldReturn(
+            [
                 'en_US' => 'foo',
                 'de_DE' => null,
                 'fr_FR' => 'bar',
                 'fr_BE' => null,
             ]
-        ]);
+        );
     }
 
     function it_ignores_a_locale_if_property_does_not_exist_for_a_translation(
@@ -63,14 +63,14 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $this->normalize($translatable, 'standard', [
             'property' => 'label',
             'locales' => ['en_US', 'de_DE', 'fr_FR', 'fr_BE']
-        ])->shouldReturn([
-            'labels' => [
+        ])->shouldReturn(
+            [
                 'en_US' => null,
                 'de_DE' => null,
                 'fr_FR' => null,
                 'fr_BE' => null,
             ]
-        ]);
+        );
     }
 
     function it_ignores_a_locale_not_provided_in_context(
@@ -86,9 +86,12 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $this->normalize($translatable, 'standard', [
             'locales'  => ['en_US', 'fr_FR'],
             'property' => 'label'
-        ])->shouldReturn([
-            'labels' => ['en_US' => null, 'fr_FR' => null],
-        ]);
+        ])->shouldReturn(
+            [
+                'en_US' => null,
+                'fr_FR' => null,
+            ]
+        );
     }
 
     function it_provides_all_locales_if_no_list_provided_in_context(
@@ -113,9 +116,13 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $this->normalize($translatable, 'standard', [
             'locales'  => [],
             'property' => 'label'
-        ])->shouldReturn([
-            'labels' => ['en_US' => 'foo', 'fr_FR' => 'bar', 'de_DE' => 'baz'],
-        ]);
+        ])->shouldReturn(
+            [
+                'en_US' => 'foo',
+                'fr_FR' => 'bar',
+                'de_DE' => 'baz',
+            ]
+        );
     }
 
     function it_throws_an_exception_if_method_not_exists(

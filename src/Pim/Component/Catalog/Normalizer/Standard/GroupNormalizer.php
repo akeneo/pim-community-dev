@@ -30,8 +30,9 @@ class GroupNormalizer implements NormalizerInterface
     {
         return [
             'code' => $group->getCode(),
-            'type' => $group->getType()->getCode()
-        ] + $this->translationNormalizer->normalize($group, 'standard', $context);
+            'type' => $group->getType()->getCode(),
+            'labels' => $this->translationNormalizer->normalize($group, 'standard', $context),
+        ];
     }
 
     /**

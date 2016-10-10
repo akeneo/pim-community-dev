@@ -31,7 +31,8 @@ class CategoryNormalizer implements NormalizerInterface
         return [
             'code'   => $category->getCode(),
             'parent' => null !== $category->getParent() ? $category->getParent()->getCode() : null,
-        ] + $this->translationNormalizer->normalize($category, 'standard', $context);
+            'labels' => $this->translationNormalizer->normalize($category, 'standard', $context),
+        ];
     }
 
     /**
