@@ -27,10 +27,9 @@ class FileNormalizerSpec extends ObjectBehavior
     function it_does_not_supports_other_formats_or_objects(
         FileInfoInterface $fileInfo
     ) {
-        $notSupportedObject = [];
         $this->supportsNormalization($fileInfo, 'other_format')->shouldReturn(false);
-        $this->supportsNormalization($notSupportedObject, 'standard')->shouldReturn(false);
-        $this->supportsNormalization($notSupportedObject, 'other_format')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
     function it_normalizes_file_info(FileInfoInterface $fileInfo)

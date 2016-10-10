@@ -31,6 +31,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($attribute, 'standard')->shouldBe(true);
         $this->supportsNormalization($attribute, 'json')->shouldBe(false);
         $this->supportsNormalization($attribute, 'xml')->shouldBe(false);
+        $this->supportsNormalization(new \stdClass(), 'standard')->shouldBe(false);
     }
 
     function it_normalizes_an_empty_attribute(

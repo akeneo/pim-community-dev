@@ -26,12 +26,10 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_supports_standard_normalization_only(ProductInterface $product)
     {
-        $notSupportedObject = [];
-
         $this->supportsNormalization($product, 'standard')->shouldReturn(true);
         $this->supportsNormalization($product, 'other_format')->shouldReturn(false);
-        $this->supportsNormalization($notSupportedObject, 'standard')->shouldReturn(false);
-        $this->supportsNormalization($notSupportedObject, 'other_format')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
     function it_normalizes_the_product_in_standard_format(

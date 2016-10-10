@@ -31,12 +31,11 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
     function it_supports_standard_format_and_collection_values()
     {
         $collection = new ArrayCollection();
-        $otherObject = 1;
 
         $this->supportsNormalization($collection, 'standard')->shouldReturn(true);
-        $this->supportsNormalization($otherObject, 'standard')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
         $this->supportsNormalization($collection, 'other_format')->shouldReturn(false);
-        $this->supportsNormalization($otherObject, 'other_format')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
     function it_normalizes_collection_of_product_values_in_standard_format(

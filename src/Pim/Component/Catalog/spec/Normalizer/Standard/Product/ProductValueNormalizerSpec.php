@@ -34,12 +34,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_supports_standard_format_and_product_value(ProductValueInterface $productValue)
     {
-        $otherObject = [];
-
         $this->supportsNormalization($productValue, 'standard')->shouldReturn(true);
         $this->supportsNormalization($productValue, 'other_format')->shouldReturn(false);
-        $this->supportsNormalization($otherObject, 'other_format')->shouldReturn(false);
-        $this->supportsNormalization($otherObject, 'standard')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
     }
 
     function it_normalizes_a_product_value_in_standard_format_with_no_locale_and_no_scope(
