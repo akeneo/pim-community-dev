@@ -19,8 +19,9 @@ class AttributeOptionNormalizer implements NormalizerInterface
     {
         return [
             'code'       => $attributeOption->getCode(),
-            'attribute'  => $attributeOption->getAttribute()->getCode(),
-            'sort_order' => (int) $attributeOption->getSortOrder()
+            'attribute'  => null === $attributeOption->getAttribute() ?
+                null : $attributeOption->getAttribute()->getCode(),
+            'sort_order' => (int) $attributeOption->getSortOrder(),
         ] + $this->normalizeLabels($attributeOption, $context);
     }
 
