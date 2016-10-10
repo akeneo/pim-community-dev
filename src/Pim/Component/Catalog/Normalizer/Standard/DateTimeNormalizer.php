@@ -21,7 +21,11 @@ class DateTimeNormalizer implements NormalizerInterface
      */
     public function normalize($date, $format = null, array $context = [])
     {
-        return $date->format('c');
+        if (null !== $date && $date instanceof \DateTimeInterface) {
+            return $date->format('c');
+        }
+
+        return null;
     }
 
     /**
