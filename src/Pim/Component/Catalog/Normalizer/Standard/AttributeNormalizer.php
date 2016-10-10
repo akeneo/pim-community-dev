@@ -61,8 +61,8 @@ class AttributeNormalizer implements NormalizerInterface
                 null : (string) $attribute->getNumberMax(),
             'decimals_allowed'       => (bool) $attribute->isDecimalsAllowed(),
             'negative_allowed'       => (bool) $attribute->isNegativeAllowed(),
-            'date_min'               => $this->normalizeDate($attribute->getDateMin()),
-            'date_max'               => $this->normalizeDate($attribute->getDateMax()),
+            'date_min'               => $this->dateTimeNormalizer->normalize($attribute->getDateMin()),
+            'date_max'               => $this->dateTimeNormalizer->normalize($attribute->getDateMax()),
             'max_file_size'          => null === $attribute->getMaxFileSize() ?
                 null : (string) $attribute->getMaxFileSize(),
             'minimum_input_length'   => null === $attribute->getMinimumInputLength() ?
@@ -80,21 +80,5 @@ class AttributeNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AttributeInterface && 'standard' === $format;
-    }
-
-    /**
-     * Normalize date property
-     *
-     * @param \DateTime|null
-     *
-     * @return string|null
-     */
-    protected function normalizeDate($date = null)
-    {
-        if (null !== $date && $date instanceof \DateTimeInterface) {
-            return $this->dateTimeNormalizer->normalize($date);
-        }
-
-        return null;
     }
 }
