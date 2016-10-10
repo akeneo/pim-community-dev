@@ -37,7 +37,7 @@ class AttributeGroupNormalizerSpec extends ObjectBehavior
         $attributeRepository,
         AttributeGroupInterface $attributeGroup
     ) {
-        $translationNormalizer->normalize($attributeGroup, 'standard', [])->willReturn(['labels' => []]);
+        $translationNormalizer->normalize($attributeGroup, 'standard', [])->willReturn([]);
 
         $attributeGroup->getCode()->willReturn('my_code');
         $attributeGroup->getSortOrder()->willReturn(1);

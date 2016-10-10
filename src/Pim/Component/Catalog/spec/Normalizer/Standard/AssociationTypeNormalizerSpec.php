@@ -35,7 +35,7 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
         $translationNormalizer,
         AssociationTypeInterface $associationType
     ) {
-        $translationNormalizer->normalize($associationType, 'standard', [])->willReturn(['labels' => []]);
+        $translationNormalizer->normalize($associationType, 'standard', [])->willReturn([]);
 
         $associationType->getCode()->willReturn('my_code');
 

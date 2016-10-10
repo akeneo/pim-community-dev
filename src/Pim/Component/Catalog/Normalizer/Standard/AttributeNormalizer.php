@@ -69,8 +69,9 @@ class AttributeNormalizer implements NormalizerInterface
                 null : (int) $attribute->getMinimumInputLength(),
             'sort_order'             => (int) $attribute->getSortOrder(),
             'localizable'            => (bool) $attribute->isLocalizable(),
-            'scopable'               => (bool) $attribute->isScopable()
-        ] + $this->translationNormalizer->normalize($attribute, $format, $context);
+            'scopable'               => (bool) $attribute->isScopable(),
+            'labels'                 => $this->translationNormalizer->normalize($attribute, $format, $context),
+        ];
     }
 
     /**

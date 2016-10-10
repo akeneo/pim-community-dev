@@ -29,8 +29,9 @@ class AssociationTypeNormalizer implements NormalizerInterface
     public function normalize($associationType, $format = null, array $context = [])
     {
         return [
-            'code' => $associationType->getCode(),
-        ] + $this->translationNormalizer->normalize($associationType, 'standard', $context);
+            'code'   => $associationType->getCode(),
+            'labels' => $this->translationNormalizer->normalize($associationType, 'standard', $context),
+        ];
     }
 
     /**

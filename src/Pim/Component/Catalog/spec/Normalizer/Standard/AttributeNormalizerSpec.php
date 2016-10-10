@@ -95,6 +95,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'sort_order'             => 0,
                 'localizable'            => false,
                 'scopable'               => false,
+                'labels'                 => [],
             ]
         );
     }
@@ -168,6 +169,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'sort_order'             => 4,
                 'localizable'            => true,
                 'scopable'               => true,
+                'labels'                 => [],
             ]
         );
     }

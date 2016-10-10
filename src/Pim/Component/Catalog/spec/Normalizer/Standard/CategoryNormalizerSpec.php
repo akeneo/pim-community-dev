@@ -33,7 +33,7 @@ class CategoryNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_category($translationNormalizer, CategoryInterface $category)
     {
-        $translationNormalizer->normalize($category, 'standard', [])->willReturn(['labels' => []]);
+        $translationNormalizer->normalize($category, 'standard', [])->willReturn([]);
 
         $category->getCode()->willReturn('my_code');
         $category->getParent()->willReturn(null);
@@ -50,7 +50,7 @@ class CategoryNormalizerSpec extends ObjectBehavior
         CategoryInterface $category,
         CategoryInterface $parent
     ) {
-        $translationNormalizer->normalize($category, 'standard', [])->willReturn(['labels' => []]);
+        $translationNormalizer->normalize($category, 'standard', [])->willReturn([]);
 
         $category->getCode()->willReturn('my_code');
         $category->getParent()->willReturn($parent);
