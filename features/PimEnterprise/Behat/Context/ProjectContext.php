@@ -13,6 +13,7 @@ namespace Akeneo\ActivityManager\Behat\Context;
 
 use Akeneo\ActivityManager\Behat\Context;
 use Akeneo\ActivityManager\Behat\ContextInterface;
+use Context\Spin\SpinCapableTrait;
 use Webmozart\Assert\Assert;
 
 /**
@@ -20,6 +21,8 @@ use Webmozart\Assert\Assert;
  */
 class ProjectContext extends Context implements ContextInterface
 {
+    use SpinCapableTrait;
+
     /**
      * @Then /^I should be on the project show page/
      */
@@ -34,5 +37,27 @@ class ProjectContext extends Context implements ContextInterface
     public function iOpenTheViewSelector()
     {
         $this->getCurrentPage()->getViewSelector()->click();
+    }
+
+    /**
+     * @Then /^I click on Create view button in the dropdown$/
+     */
+    public function iClickOnCreateViewButton()
+    {
+        $dropdown = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.btn-group:contains("Create todo")');
+        }, 'Dropdown button not found');
+
+        $dropdownToggle = $this->spin(function () use ($dropdown) {
+            return $dropdown->find('css', '.dropdown-toggle');
+        }, 'Dropdown toggle button not found');
+        $dropdownToggle->click();
+
+        $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu');
+
+        $createViewBtn = $this->spin(function () use ($dropdownMenu) {
+            return $dropdownMenu->find('css', 'li:contains("Create view") [data-action="prompt-creation"]');
+        }, 'Item "Create view" of dropdown button not found');
+        $createViewBtn->click();
     }
 }
