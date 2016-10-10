@@ -73,10 +73,10 @@ class MetricNormalizerSpec extends ObjectBehavior
         $attribute->isDecimalsAllowed()->willReturn(false);
 
         $metric->getUnit()->willReturn('KILOGRAM');
-        $metric->getData()->willReturn('yolo');
+        $metric->getData()->willReturn('a_metric_data');
 
         $this->normalize($metric, 'standard', ['is_decimals_allowed' => false])->shouldReturn([
-            'amount' => 'yolo',
+            'amount' => 'a_metric_data',
             'unit'   => 'KILOGRAM'
         ]);
     }

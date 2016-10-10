@@ -72,10 +72,10 @@ class PriceNormalizerSpec extends ObjectBehavior
         $attribute->isDecimalsAllowed()->willReturn(false);
 
         $price->getCurrency()->willReturn('EUR');
-        $price->getData()->willReturn('yolo');
+        $price->getData()->willReturn('a_price_data');
 
         $this->normalize($price, 'standard', ['is_decimals_allowed' => false])->shouldReturn([
-            'amount'   => 'yolo',
+            'amount'   => 'a_price_data',
             'currency' => 'EUR'
         ]);
     }

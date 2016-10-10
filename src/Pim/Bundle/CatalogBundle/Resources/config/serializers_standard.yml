@@ -6,7 +6,6 @@ parameters:
     pim_catalog.normalizer.standard.product.product_value.class: Pim\Component\Catalog\Normalizer\Standard\Product\ProductValueNormalizer
     pim_catalog.normalizer.standard.product.price.class: Pim\Component\Catalog\Normalizer\Standard\Product\PriceNormalizer
     pim_catalog.normalizer.standard.product.metric.class: Pim\Component\Catalog\Normalizer\Standard\Product\MetricNormalizer
-    pim_catalog.normalizer.standard.simple_entity.class: Pim\Component\Catalog\Normalizer\Standard\SimpleEntityNormalizer
     pim_catalog.normalizer.standard.datetime.class: Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer
     pim_catalog.normalizer.standard.file.class: Pim\Component\Catalog\Normalizer\Standard\FileNormalizer
     pim_catalog.normalizer.standard.association_type.class: Pim\Component\Catalog\Normalizer\Standard\AssociationTypeNormalizer

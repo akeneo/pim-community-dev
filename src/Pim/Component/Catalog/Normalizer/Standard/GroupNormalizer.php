@@ -29,8 +29,8 @@ class GroupNormalizer implements NormalizerInterface
     public function normalize($group, $format = null, array $context = [])
     {
         return [
-            'code' => $group->getCode(),
-            'type' => $group->getType()->getCode(),
+            'code'   => $group->getCode(),
+            'type'   => $group->getType()->getCode(),
             'labels' => $this->translationNormalizer->normalize($group, 'standard', $context),
         ];
     }
