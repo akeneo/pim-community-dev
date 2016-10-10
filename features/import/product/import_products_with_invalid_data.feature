@@ -419,8 +419,8 @@ Feature: Execute a job
       | SKU-001 |
       | SKU-002 |
     And the following associations for the product "SKU-002":
-      | type         | product |
-      | SUBSTITUTION | SKU-001 |
+      | type         | products |
+      | SUBSTITUTION | SKU-001  |
     And the following CSV file to import:
       """
       sku;SUBSTITUTION-products

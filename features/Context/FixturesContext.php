@@ -36,6 +36,7 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
@@ -1525,7 +1526,7 @@ class FixturesContext extends BaseFixturesContext
                 $owner->addAssociation($association);
             }
 
-            $association->addProduct($this->getProduct($row['product']));
+            $association->addProduct($this->getProduct($row['products']));
         }
 
         $this->getProductSaver()->save($owner);
