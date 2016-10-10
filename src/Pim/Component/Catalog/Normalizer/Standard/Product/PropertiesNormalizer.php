@@ -22,7 +22,7 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
     const FIELD_FAMILY = 'family';
     const FIELD_GROUPS = 'groups';
     const FIELD_VARIANT_GROUP = 'variant_group';
-    const FIELD_CATEGORY = 'categories';
+    const FIELD_CATEGORIES = 'categories';
     const FIELD_ENABLED = 'enabled';
     const FIELD_VALUES = 'values';
     const FIELD_CREATED = 'created';
@@ -55,8 +55,8 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
         $data[self::FIELD_FAMILY] = $product->getFamily() ? $product->getFamily()->getCode() : null;
         $data[self::FIELD_GROUPS] = $this->normalizeGroups($product);
         $data[self::FIELD_VARIANT_GROUP] = $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
-        $data[self::FIELD_CATEGORY] = $product->getCategoryCodes();
-        $data[self::FIELD_ENABLED] = $product->isEnabled();
+        $data[self::FIELD_CATEGORIES] = $product->getCategoryCodes();
+        $data[self::FIELD_ENABLED] = (bool) $product->isEnabled();
         $data[self::FIELD_VALUES] = $this->normalizeValues($product->getValues(), $context);
         $data[self::FIELD_CREATED] = $this->serializer->normalize($product->getCreated(), 'standard');
         $data[self::FIELD_UPDATED] = $this->serializer->normalize($product->getUpdated(), 'standard');

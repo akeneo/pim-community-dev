@@ -55,8 +55,10 @@ class AttributeNormalizer implements NormalizerInterface
             'validation_regexp'      => '' === $attribute->getValidationRegexp() ?
                 null : $attribute->getValidationRegexp(),
             'wysiwyg_enabled'        => (bool) $attribute->isWysiwygEnabled(),
-            'number_min'             => null === $attribute->getNumberMin() ? null : (string) $attribute->getNumberMin(),
-            'number_max'             => null === $attribute->getNumberMax() ? null : (string) $attribute->getNumberMax(),
+            'number_min'             => null === $attribute->getNumberMin() ?
+                null : (string) $attribute->getNumberMin(),
+            'number_max'             => null === $attribute->getNumberMax() ?
+                null : (string) $attribute->getNumberMax(),
             'decimals_allowed'       => (bool) $attribute->isDecimalsAllowed(),
             'negative_allowed'       => (bool) $attribute->isNegativeAllowed(),
             'date_min'               => $this->normalizeDate($attribute->getDateMin()),
