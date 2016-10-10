@@ -1,0 +1,28 @@
+@import '../base/mixins';
+
+.AkHeader {
+  &-menus {
+    background: #52267D;
+    display: flex;
+    justify-content: space-between;
+    z-index: 900;
+    position: relative;
+    .box-shadow(0 1px 4px rgba(0,0,0,0.065));
+  }
+
+  &-leftMenus {
+    display: flex;
+  }
+
+  &-rightMenus {
+    display: flex;
+  }
+
+  &-logo {
+    margin: 0 15px 0 0;
+  }
+
+  &-logoImage {
+    height: 50px;
+  }
+}

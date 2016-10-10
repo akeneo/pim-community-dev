@@ -48,29 +48,27 @@
     <div id="page" style="display:none;">
         <div id="top-page">
             {% block header %}
-                <header class="navbar" id="oroplatform-header">
+                <header class="AkHeader">
                     {% placeholder before_navigation %}
-                    <div class="navbar-inner">
-                        <div class="container">
+                    <div class="AkHeader-menus">
+                        <div class="AkHeader-leftMenus">
                             {% placeholder header_logo %}
-                            <div class="navbar-responsive-collapse">
-                                {% block navbar %}
+                            {% block navbar %}
                                 <div class="nav pull-left top-search shortcuts">
                                     {% placeholder navbar %}
                                 </div>
-                                {% endblock navbar %}
-                                <div id="main-menu">
-                                    {% block application_menu %}
-                                        {% placeholder application_menu %}
-                                    {% endblock application_menu %}
-                                 </div>
-                                <ul class="AkUserMenu"">
-                                    {% block user_menu %}
-                                        {% placeholder user_menu %}
-                                    {% endblock %}
-                                </ul>
-                            </div>
+                            {% endblock navbar %}
+                            <div id="main-menu">
+                                {% block application_menu %}
+                                    {% placeholder application_menu %}
+                                {% endblock application_menu %}
+                             </div>
                         </div>
+                        <ul class="AkHeader-rightMenus AkUserMenu">
+                            {% block user_menu %}
+                                {% placeholder user_menu %}
+                            {% endblock %}
+                        </ul>
                     </div>
                     {% placeholder after_navigation %}
                 </header>
