@@ -14,6 +14,7 @@ parameters:
     pim_connector.array_converter.flat_to_standard.group_type.class:                              Pim\Component\Connector\ArrayConverter\FlatToStandard\GroupType
     pim_connector.array_converter.flat_to_standard.currency.class:                                Pim\Component\Connector\ArrayConverter\FlatToStandard\Currency
     pim_connector.array_converter.flat_to_standard.user.class:                                    Pim\Component\Connector\ArrayConverter\FlatToStandard\User
+    pim_connector.array_converter.flat_to_standard.locale.class:                                  Pim\Component\Connector\ArrayConverter\FlatToStandard\Locale
 
     pim_connector.array_converter.standard_to_flat.association_type.class:                        Pim\Component\Connector\ArrayConverter\StandardToFlat\AssociationType
     pim_connector.array_converter.standard_to_flat.attribute.class:                               Pim\Component\Connector\ArrayConverter\StandardToFlat\Attribute
@@ -112,11 +113,9 @@ services:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat_to_standard.locale:
-        class: '%pim_connector.array_converter.dummy.class%'
+        class: '%pim_connector.array_converter.flat_to_standard.locale.class%'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
-            - ['code']
-            - ['code']
 
     pim_connector.array_converter.flat_to_standard.attribute_group:
         class: '%pim_connector.array_converter.flat_to_standard.attribute_group.class%'
