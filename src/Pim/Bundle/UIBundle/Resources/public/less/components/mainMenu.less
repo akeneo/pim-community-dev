@@ -1,0 +1,66 @@
+@import '../base/variables';
+@import '../base/mixins';
+
+.AkMainMenu {
+  @submenuHeight: 35px;
+  @submenuWidth: 100px;
+
+  display: flex;
+  height: 50px;
+
+  &-item {
+    font-size: 14.154px;
+  }
+
+  &-level1, &-level2 {
+    display: none;
+  }
+
+  &-link {
+    padding: 0 20px;
+    display: block;
+    color: white;
+    line-height: 50px;
+  }
+
+  &-link.active {
+    background: #1f0e2f;
+  }
+
+  &-submenu {
+    position: absolute;
+    background: white;
+    border: 1px solid #f4f4f4;
+    .box-shadow(1px 2px 3px rgba(0, 0, 0, 0.3));
+  }
+
+  &-level2 {
+    width: @submenuWidth;
+    right: -@submenuWidth;
+    margin-top: -(@submenuHeight + 2px);
+  }
+
+  &-submenu &-link {
+    line-height: @submenuHeight;
+    border-bottom: 1px solid #f4f4f4;
+  }
+
+  &-item:hover &-submenu:not(&-level2),
+  &-level1 &-item:hover &-submenu {
+    display: block;
+  }
+
+  &-item:hover &-link {
+    background: white;
+    color: #444;
+  }
+
+  &-submenu &-item:hover &-link,
+  &-item:hover &-level2 &-item:hover &-link {
+    background: #f4f4f4;
+  }
+
+  &-item:hover &-level2 &-link {
+    background: white;
+  }
+}

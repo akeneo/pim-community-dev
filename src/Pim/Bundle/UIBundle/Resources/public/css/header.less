@@ -2,27 +2,6 @@
 @import 'less/mixins';
 
 /* Header ***********************************************************************************************************/
-
-#main-menu {
-  li.dropdown {
-    ul {
-      display: none !important;
-      ul {
-        top: 5px;
-        border: 1px solid @color-bbb !important;
-        margin: 0;
-      }
-    }
-    &:hover > .menu-level-1 {
-      display: block !important;
-    }
-    .menu-level-2 li:hover > .menu-level-3,
-    .menu-level-1 li:hover > .menu-level-2 {
-      display: block !important;
-    }
-  }
-}
-
 .navbar .nav li.dropdown.open > .dropdown-toggle,
 .navbar .nav li.dropdown.active > .dropdown-toggle,
 .navbar .nav li.dropdown.open.active > .dropdown-toggle {
@@ -36,12 +15,6 @@
     clear: both;
     position: relative;
     z-index: 900;
-
-    .divider-vertical {
-      border: none;
-      margin: 9px 6px;
-      height: 22px;
-    }
 
     .logo {
       position: relative;
@@ -120,10 +93,6 @@ header {
 }
 
 #oroplatform-header {
-  .divider-vertical {
-    float: left;
-    margin-right: 0;
-  }
   /* Header right */
   .nav.pull-right {
     li.dropdown {
@@ -152,62 +121,6 @@ header {
 }
 
 /* Header Application Menu */
-#oroplatform-header {
-  .oroplatform-menu {
-    > li.dropdown {
-      margin: 0;
-      > a {
-        padding: 0 15px;
-        margin: 0;
-        line-height: 50px;
-        font-size: @font-size-14;
-        color: @white;
-        text-shadow:none;
-      }
-      &:hover,
-      &:focus {
-        > a {
-          background: @white;
-          color: @color-444;
-          &:hover {
-            background: @white;
-            color: @color-444;
-          }
-        }
-      }
-      .dropdown-menu { /* All 2+ level */
-        border: none;
-        width: auto;
-        padding: 0;
-        font-size: @font-size-14;
-        .box-shadow(1px 2px 3px rgba(0, 0, 0, 0.3));
-        &:after,
-        &:before { border:none; }
-        li {
-          line-height: 44px;
-          border-top: 1px solid @akeneoGreySuperLight;
-          a {
-            color: @bodyColor;
-          }
-          &.active a { background:none; }
-          a:hover,
-          &.active a:hover { background: @whiteDarker }
-        }
-      }
-    }
-    li.dropdown:hover .dropdown-menu { /* Opens on hover for all 2+ levels */
-      display: block;
-    }
-    li.dropdown .dropdown-menu {
-      left: 160px;
-      top: -2px;
-    }
-    > li.dropdown > .dropdown-menu {
-      left: auto;
-      top: 51px;
-    }
-  }
-}
 #oroplatform-header {
   div.navbar-inner {
     background: @akeneoPurple;
@@ -239,9 +152,6 @@ header {
     a.help i {
       padding-top: 3px;
     }
-  }
-  .oroplatform-menu>li.dropdown:not(:hover).active>a {
-    background: @akeneoPurpleDarker;
   }
 }
 

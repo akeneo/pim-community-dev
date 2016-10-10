@@ -43,5 +43,6 @@ css:
         - bundles/pimui/less/components/dropdown.less
         - bundles/pimui/less/components/gridToolbar.less
         - bundles/pimui/less/components/iconButton.less
+        - bundles/pimui/less/components/mainMenu.less
         - bundles/pimui/less/components/pagination.less
         - bundles/pimui/less/components/titleContainer.less
