@@ -20,7 +20,7 @@ define(
                 loadingText:            null,
                 noNotificationsMessage: null,
                 markAsReadMessage:      null,
-                indicatorBaseClass:     'badge badge-square',
+                indicatorBaseClass:     'AkBell-count',
                 indicatorEmptyClass:    'hide',
                 refreshInterval:        30000
             },
@@ -60,7 +60,7 @@ define(
                 this.options = _.extend({}, this.options, opts);
                 this.collection = new NotificationList();
                 this.indicator  = new Indicator({
-                    el: this.$('span.indicator'),
+                    el: this.$('.AkBell-countContainer'),
                     value: 0,
                     className: this.options.indicatorBaseClass,
                     emptyClass: this.options.indicatorEmptyClass
@@ -128,7 +128,7 @@ define(
                 this.setElement($('#header-notification-widget'));
                 this.$el.html(this.template());
                 this.collection.setElement(this.$('ul'));
-                this.indicator.setElement(this.$('span.indicator'));
+                this.indicator.setElement(this.$('.AkBell-countContainer'));
                 this.renderFooter();
             },
 

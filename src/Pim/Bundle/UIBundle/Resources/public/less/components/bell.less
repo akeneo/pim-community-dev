@@ -1,0 +1,37 @@
+@import '../base/mixins';
+
+.AkBell {
+  @size: 50px;
+
+  &-link {
+    height: @size;
+    width: @size;
+    line-height: @size;
+    color: white;
+    text-align: center;
+    display: block;
+    position: relative;
+
+    &:hover,
+    &:focus {
+      color: white;
+    }
+  }
+
+  &-icon {
+    font-size: 18.198px;
+  }
+
+  &-countContainer {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: @size;
+  }
+
+  &-count {
+    background: #c04230;
+    padding: 0 2px;
+    .border-radius(2px);
+  }
+}

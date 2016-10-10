@@ -36,6 +36,7 @@ css:
 #        - bundles/pimui/less/redBorder.less # Please remove this class before merge!
         - bundles/pimui/less/base/general.less
         - bundles/pimui/less/components/actionsPanel.less
+        - bundles/pimui/less/components/bell.less
         - bundles/pimui/less/components/breadcrumb.less
         - bundles/pimui/less/components/breadcrumbContainer.less
         - bundles/pimui/less/components/button.less

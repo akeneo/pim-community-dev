@@ -64,11 +64,11 @@
                                         {% placeholder application_menu %}
                                     {% endblock application_menu %}
                                  </div>
-                                {% block user_menu %}
-                                    <ul class="nav pull-right user-menu">
+                                <ul class="nav pull-right user-menu">
+                                    {% block user_menu %}
                                         {% placeholder user_menu %}
-                                    </ul>
-                                {% endblock %}
+                                    {% endblock %}
+                                </ul>
                             </div>
                         </div>
                     </div>
