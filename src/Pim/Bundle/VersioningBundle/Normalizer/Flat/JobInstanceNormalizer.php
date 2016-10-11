@@ -15,7 +15,7 @@ use Akeneo\Component\Batch\Normalizer\Structured\JobInstanceNormalizer as BaseNo
 class JobInstanceNormalizer extends BaseNormalizer
 {
     /**  @var string[] */
-    protected $supportedFormats = ['csv'];
+    protected $supportedFormats = ['flat'];
 
     /**
      * {@inheritdoc}
