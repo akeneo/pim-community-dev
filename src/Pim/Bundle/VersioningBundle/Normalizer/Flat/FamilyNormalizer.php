@@ -3,7 +3,8 @@
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Normalizer\Structured\FamilyNormalizer as BaseNormalizer;
+use Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer as StandardNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Flat family normalizer
@@ -12,32 +13,76 @@ use Pim\Component\Catalog\Normalizer\Structured\FamilyNormalizer as BaseNormaliz
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyNormalizer extends BaseNormalizer
+class FamilyNormalizer implements NormalizerInterface
 {
+    const ITEM_SEPARATOR = ',';
+
     /** @var string[] */
-    protected $supportedFormats = ['csv'];
+    protected $supportedFormats = ['flat'];
+
+    /** @var TranslationNormalizer */
+    protected $translationNormalizer;
+
+    /** @var StandardNormalizer */
+    protected $standardNormalizer;
 
     /**
-     * {@inheritdoc}
+     * @param NormalizerInterface   $standardNormalizer
+     * @param TranslationNormalizer $translationNormalizer
      */
-    protected function normalizeAttributes(FamilyInterface $family, array $context = [])
-    {
-        $attributes = parent::normalizeAttributes($family);
-
-        return implode(',', $attributes);
+    public function __construct(
+        NormalizerInterface $standardNormalizer,
+        TranslationNormalizer $translationNormalizer
+    ) {
+        $this->standardNormalizer = $standardNormalizer;
+        $this->translationNormalizer = $translationNormalizer;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function normalizeRequirements(FamilyInterface $family)
+    public function normalize($object, $format = null, array $context = [])
     {
-        $requirements = parent::normalizeRequirements($family);
+        if (!$this->standardNormalizer->supportsNormalization($object, 'standard')) {
+            return null;
+        }
+
+        $standardFamily = $this->standardNormalizer->normalize($object, 'standard', $context);
+        $flatFamily = $standardFamily;
+
+        $flatFamily['attributes'] = implode(self::ITEM_SEPARATOR, $flatFamily['attributes']);
+
+        unset($flatFamily['attribute_requirements']);
+        $flatFamily += $this->normalizeRequirements($standardFamily['attribute_requirements']);
+
+        unset($flatFamily['labels']);
+        if ($this->translationNormalizer->supportsNormalization($standardFamily['labels'], 'flat')) {
+            $flatFamily += $this->translationNormalizer->normalize($standardFamily['labels'], 'flat', $context);
+        }
+
+        return $flatFamily;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof FamilyInterface && in_array($format, $this->supportedFormats);
+    }
+
+    /**
+     * Normalizes the attribute requirements into a flat array
+     *
+     * @param array $requirements
+     *
+     * @return array
+     */
+    protected function normalizeRequirements($requirements)
+    {
         $flat = [];
-        foreach ($requirements as $channel) {
-            foreach ($channel as $key => $attributes) {
-                $flat['requirements-' . $key] = implode(',', $attributes);
-            }
+        foreach ($requirements as $channel => $attributes) {
+            $flat['requirements-'.$channel] = implode(self::ITEM_SEPARATOR, $attributes);
         }
 
         return $flat;

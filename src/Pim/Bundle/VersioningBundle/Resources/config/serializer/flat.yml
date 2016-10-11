@@ -72,10 +72,8 @@ services:
     pim_versioning.serializer.normalizer.flat.family:
         class: '%pim_serializer.normalizer.flat.family.class%'
         arguments:
+            - '@pim_catalog.normalizer.standard.family'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
-            - '@pim_catalog.filter.chained'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_requirement'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
