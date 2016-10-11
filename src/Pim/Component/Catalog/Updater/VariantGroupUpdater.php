@@ -328,7 +328,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     protected function transformArrayToValues(array $arrayValues)
     {
         $product = $this->productBuilder->createProduct();
-        $this->productUpdater->update($product, $arrayValues);
+        $this->productUpdater->update($product, ['values' => $arrayValues]);
 
         $values = $product->getValues();
         $values->removeElement($product->getIdentifier());

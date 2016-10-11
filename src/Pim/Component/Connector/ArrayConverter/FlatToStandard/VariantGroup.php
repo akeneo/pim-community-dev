@@ -103,10 +103,10 @@ class VariantGroup implements ArrayConverterInterface
         }
 
         if (isset($convertedItem['values'])) {
-            $convertedItem['values'] = $this->productConverter->convert(
+            $convertedItem = array_replace($convertedItem, $this->productConverter->convert(
                 $convertedItem['values'],
                 ['with_required_identifier' => false]
-            );
+            ));
             unset($convertedItem['values']['enabled']);
         }
 
