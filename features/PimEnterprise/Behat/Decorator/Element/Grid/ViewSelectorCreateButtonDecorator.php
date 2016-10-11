@@ -21,18 +21,24 @@ class ViewSelectorCreateButtonDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
-    public function click($label)
+    public function open()
     {
-        $dropdownToggle = $this->spin(function () {
-            return $this->find('css', '.dropdown-toggle');
-        }, 'Dropdown toggle button not found');
-        $dropdownToggle->click();
+        $this->click();
 
-        $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu');
+        return $this;
+    }
 
-        $createViewBtn = $this->spin(function () use ($dropdownMenu, $label) {
-            return $dropdownMenu->find('css', sprintf('li:contains("%s") [data-action="prompt-creation"]', $label));
-        }, 'Item "Create view" of dropdown button not found');
-        $createViewBtn->click();
+    public function chooseAction($action)
+    {
+        $dropdownMenu = $this->getParent()->find('css', '.dropdown-menu');
+
+        $createBtn = $this->spin(function () use ($dropdownMenu, $action) {
+            return $dropdownMenu->find('css', sprintf(
+                '.action:contains("Create %s") .select-view-action-list',
+                $action,
+                $action
+            ));
+        }, sprintf('Item "Create %s" of dropdown button not found', $action));
+        $createBtn->click();
     }
 }

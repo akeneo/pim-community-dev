@@ -31,10 +31,15 @@ class ViewSelectorContext extends Context implements ContextInterface
     }
 
     /**
-     * @Then /^I click on the "([^"]*)" button in the dropdown$/
+     * @Then /^I click on "Create ([^"]*)" action in the dropdown$/
+     *
+     * @param string $action
      */
-    public function iClickOnCreateViewButton($label)
+    public function iClickOnCreateAction($action)
     {
-        $this->getCurrentPage()->getCreationButton()->click($label);
+        $this->getCurrentPage()
+            ->getSelectViewActionDropdown()
+            ->open()
+            ->chooseAction($action);
     }
 }

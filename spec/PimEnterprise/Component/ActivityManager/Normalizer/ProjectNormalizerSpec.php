@@ -30,10 +30,8 @@ class ProjectNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normalizes_a_project_without_due_date(ProjectInterface $project, \DateTime $datetime)
+    function it_normalizes_a_project_without_due_date(ProjectInterface $project)
     {
-        $datetime->format('YYYY-MM-dd')->shouldNotBeCalled();;
-
         $project->getLabel()->willReturn('Summer collection');
         $project->getDescription()->willReturn('The sun is here, such is the collection!');
         $project->getDueDate()->willReturn(null);

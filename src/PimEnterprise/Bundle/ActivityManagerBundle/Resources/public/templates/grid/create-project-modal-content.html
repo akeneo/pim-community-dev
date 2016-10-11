@@ -1,26 +1,44 @@
 <div class="control-group modal-project-form">
     <div class="controls">
-        <label for="project-label" class="control-label required"><%- projectLabel %> (<%- requiredLabel %>)</label>
-        <input type="text" name="project-label" id="project-label" class="project-field" placeholder="<%- labelPlaceholder %>" required />
-        <div data-drop-zone="label-errors"></div>
+        <label class="control-label required">
+            <%- labelLabel %> (<%- requiredLabel %>)
+            <input type="text" value="<%- labelValue %>" name="project-label" class="project-field" placeholder="<%- labelPlaceholder %>" required />
+        </label>
+
+        <div class="validation-errors">
+            <span class="validation-errors label-errors"></span>
+            <% _.each(_.where(errors, {field: 'label'}), function (error) { console.log(error)%>
+                <span>
+                    <i class="icon-warning-sign"></i>
+                    <span class="error-message"><%- error.message %></span>
+                </span>
+            <% }) %>
+        </div>
     </div>
+
     <div class="controls">
-        <label class="control-label"><%- projectDueDate %></label>
-        <span class="date-wrapper">
-            <input name="project-due-date" class="add-on project-field" type="text">
-        </span>
-        <div data-drop-zone="due-date-errors"></div>
-    </div>
-    <div class="controls">
-        <label for="project-description" class="control-label"><%- projectDescription %></label>
-        <textarea name="project-description" id="project-description" class="project-field" placeholder="<%- descriptionPlaceholder %>"></textarea>
-    </div>
-    <div class="validation-errors">
-        <% _.each(errors, function (error) { %>
-            <span>
-                <i class="icon-warning-sign"></i>
-                <span class="error-message"><%- error.message %></span>
+        <label class="control-label">
+            <%- dueDateLabel %>
+            <span class="date-wrapper">
+                <input name="project-due-date" value="<%- dueDateValue %>" class="add-on project-field" type="text">
             </span>
-        <% }) %>
+        </label>
+
+        <div class="validation-errors">
+            <span class="validation-errors due-date-errors"></span>
+            <% _.each(_.where(errors, {field: 'due_date'}), function (error) { %>
+                <span>
+                    <i class="icon-warning-sign"></i>
+                    <span class="error-message"><%- error.message %></span>
+                </span>
+            <% }) %>
+        </div>
+    </div>
+
+    <div class="controls">
+        <label class="control-label">
+            <%- descriptionLabel %>
+            <textarea name="project-description" class="project-field" placeholder="<%- descriptionPlaceholder %>"><%- descriptionValue %></textarea>
+        </label>
     </div>
 </div>

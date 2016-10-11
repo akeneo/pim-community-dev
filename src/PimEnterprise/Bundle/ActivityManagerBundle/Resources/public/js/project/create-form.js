@@ -17,7 +17,8 @@ define(
         'activity-manager/saver/project',
         'datepicker',
         'pim/date-context',
-        'text!activity-manager/templates/grid/create-project-modal-content'
+        'text!activity-manager/templates/grid/create-project-modal-content',
+        'text!activity-manager/templates/field-error'
     ],
     function (
         $,
@@ -30,12 +31,14 @@ define(
         ProjectSaver,
         Datepicker,
         DateContext,
-        template
+        template,
+        errorTemplate
     ) {
         return BaseForm.extend({
             template: _.template(template),
+            errorTemplate: _.template(errorTemplate),
             events: {
-                'input .project-field': 'updateModel'
+                'input .project-field': 'onInputField'
             },
             validationErrors: [],
             modelDateFormat: 'yyyy-MM-dd',
@@ -44,40 +47,103 @@ define(
                 defaultFormat: DateContext.get('date').defaultFormat,
                 language: DateContext.get('language')
             },
+            maxLengthLabel: 100,
 
             /**
-             * {@inheritdoc}
+             * When an input occurs, it updates the model, validates fields and partial render form
+             * when field values are not valid.
              */
-            configure: function () {
-                this.listenTo(
-                    this.getParent(),
-                    'grid:view-selector:create-project:modal-on-cancel',
-                    this.onModalCancel.bind(this)
-                );
+            onInputField: function () {
+                var model = this.getFormModel();
 
-                return BaseForm.prototype.configure.apply(this, arguments);
+                this.updateModel(model);
+                this.validateFields(model);
+                this.partialRender();
             },
 
             /**
              * Update the model with data from the js form
+             *
+             * @param {Object} model
              */
-            updateModel: function () {
-                this.getFormModel().set('label', this.$('[name="project-label"]').val());
-                this.getFormModel().set('description', this.$('[name="project-description"]').val());
-
-                var dueDate = $('[name="project-due-date"]').val();
+            updateModel: function (model) {
+                var dueDate = this.$('[name="project-due-date"]').val();
 
                 if ('' !== dueDate) {
-                    var date = this.formatDate(
-                        this.$('[name="project-due-date"]').val(),
+                    dueDate = this.formatDate(
+                        dueDate,
                         DateContext.get('date').format,
                         this.modelDateFormat
                     );
                 }
 
-                this.getFormModel().set('due_date', dueDate);
+                model.set('label', this.$('[name="project-label"]').val());
+                model.set('description', this.$('[name="project-description"]').val());
+                model.set('due_date', dueDate);
+            },
 
-                this.trigger('grid:view-selector:create-project:model-updated', this.getFormModel());
+            /**
+             * Validates fields from the model
+             *
+             * @param {Object} model
+             */
+            validateFields: function (model) {
+                this.validationErrors = [];
+                this.validateLabel(model.get('label'));
+                this.validateDueDate(model.get('due_date'));
+            },
+
+            /**
+             * Check if the model's label respects the max length.
+             * Displays a message if too long and triggers an event to toggle the "Next" button of the modal.
+             *
+             * @param {string} label
+             */
+            validateLabel: function (label) {
+                var isLabelTooLong = (label.length > this.maxLengthLabel);
+
+                if (isLabelTooLong) {
+                    this.validationErrors.push({
+                        field: 'label',
+                        message: __('activity_manager.project.label_maxlength', {max: this.maxLengthLabel})
+                    });
+                }
+
+                this.trigger(
+                    'activity-manager:edit-project:field-validated',
+                    'label',
+                    !isLabelTooLong
+                );
+            },
+
+            /**
+             * Check if the model's due date isn't in the past.
+             * Displays a message if in the past and triggers an event to toggle the "Next" button of the modal.
+             *
+             * @param {string} modelDueDate
+             */
+            validateDueDate: function (modelDueDate) {
+                var isDueDateInPast = false;
+
+                if (modelDueDate) {
+                    var today = new Date().setHours(0, 0, 0, 0);
+                    var dueDate = new Date(modelDueDate).setHours(0, 0, 0, 0);
+
+                    isDueDateInPast = today > dueDate;
+                }
+
+                if (isDueDateInPast) {
+                    this.validationErrors.push({
+                        field: 'due-date',
+                        message: __('activity_manager.project.due_date_past')
+                    });
+                }
+
+                this.trigger(
+                    'activity-manager:edit-project:field-validated',
+                    'due_date',
+                    !isDueDateInPast
+                );
             },
 
             /**
@@ -103,6 +169,25 @@ define(
             },
 
             /**
+             * Partial render validation part of the form.
+             */
+            partialRender: function () {
+                $('.bootstrap-datetimepicker-widget:visible').hide();
+                this.$('.label-errors').empty();
+                this.$('.due-date-errors').empty();
+
+                if (0 < this.validationErrors.length) {
+                    _.each(this.validationErrors, function (error) {
+                        var selector = '.' + error.field + '-errors';
+
+                        this.$(selector).append(this.errorTemplate({
+                            message: error.message
+                        }));
+                    }.bind(this));
+                }
+            },
+
+            /**
              * {@inheritdoc}
              */
             render: function () {
@@ -110,14 +195,19 @@ define(
                     return this;
                 }
 
+                var model = this.getFormModel();
+
                 this.$el.html(this.template({
-                    requiredLabel: __('activity_manager.common.required'),
-                    projectLabel: __('activity_manager.project.label'),
-                    projectDescription: __('activity_manager.project.description'),
-                    projectDueDate: __('activity_manager.project.due_date'),
+                    labelValue: model.get('label'),
+                    labelLabel: __('activity_manager.project.label'),
                     labelPlaceholder: __('activity_manager.create_project_modal.label_placeholder'),
+                    descriptionValue: model.get('description'),
+                    descriptionLabel: __('activity_manager.project.description'),
                     descriptionPlaceholder: __('activity_manager.create_project_modal.description_placeholder'),
-                    errors: this.validationErrors
+                    dueDateValue: model.get('due_date'),
+                    dueDateLabel: __('activity_manager.project.due_date'),
+                    errors: this.validationErrors,
+                    requiredLabel: __('activity_manager.common.required')
                 }));
 
                 this.initializeDatepicker();
@@ -134,11 +224,7 @@ define(
                     .on('show', function () {
                         $('.bootstrap-datetimepicker-widget:visible').css('zIndex', 9999);
                     })
-                    .on('changeDate', this.updateModel.bind(this));
-
-                $('[name="project-due-date"]').blur(function () {
-                    $('.bootstrap-datetimepicker-widget:visible').hide();
-                });
+                    .on('changeDate', this.onInputField.bind(this));
             },
 
             /**
@@ -157,7 +243,7 @@ define(
                     return null;
                 }
 
-                var options        = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
+                var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
                 var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
 
                 fakeDatepicker.setValue(date);
@@ -165,15 +251,6 @@ define(
                 fakeDatepicker._compileFormat();
 
                 return fakeDatepicker.formatDate(fakeDatepicker.getDate());
-            },
-
-            /**
-             * Method called when the parent modal is canceled.
-             * We stop listening to the modal since it doesn't exist anymore.
-             */
-            onModalCancel: function () {
-                this.stopListening(this.getParent());
-                $('.bootstrap-datetimepicker-widget:visible').hide();
             }
         });
     }

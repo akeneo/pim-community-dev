@@ -5,15 +5,13 @@ config:
 
     paths:
         # Forms
-        activity-manager/grid/view-selector/footer/create-view: activitymanager/js/grid/view-selector-footer-create
+        activity-manager/grid/view-selector/footer/create/project: activitymanager/js/grid/view-selector-footer-create-project
         activity-manager/project/create-form: activitymanager/js/project/create-form
-        activity-manager/project/create-form/label/infos: activitymanager/js/project/create-form-label-infos
-        activity-manager/project/create-form/due-date/infos: activitymanager/js/project/create-form-due-date-infos
 
         # Savers
         activity-manager/saver/project: activitymanager/js/saver/project-saver
 
         # Templates
         activity-manager/templates/grid/create-project-modal-content: activitymanager/templates/grid/create-project-modal-content.html
-        activity-manager/templates/grid/view-selector/footer/create-view: activitymanager/templates/grid/view-selector-footer-create.html
-        activity-manager/templates/create-project/field-error: activitymanager/templates/create-form-field-error.html
+        activity-manager/templates/grid/view-selector/footer/create/project: activitymanager/templates/grid/view-selector-footer-create-project.html
+        activity-manager/templates/field-error: activitymanager/templates/field-error.html

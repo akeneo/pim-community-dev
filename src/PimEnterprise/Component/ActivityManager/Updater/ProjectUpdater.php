@@ -41,6 +41,9 @@ class ProjectUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
+            if ('due_date' === $field) {
+                $value = new \DateTime($value);
+            }
             $accessor->setValue($project, $field, $value);
         }
 

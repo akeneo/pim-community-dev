@@ -24,14 +24,14 @@ class IndexDecorator extends ElementDecorator
     /**
      * @return mixed
      */
-    public function getCreationButton()
+    public function getSelectViewActionDropdown()
     {
-        $button = $this->spin(function () {
-            return $this->find('css', '.btn-group:contains("Create todo")');
-        }, 'The button used to create a view was not found.');
+        $dropdownToggle = $this->spin(function () {
+            return $this->find('css', '.create-dropdown.dropdown-toggle');
+        }, 'Dropdown toggle button not found');
 
         return $this->decorate(
-            $button,
+            $dropdownToggle,
             ['Akeneo\ActivityManager\Behat\Decorator\Element\Grid\ViewSelectorCreateButtonDecorator']
         );
     }

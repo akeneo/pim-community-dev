@@ -1,23 +1,6 @@
 extensions:
-    activity-manager-project-create-form:
-        module: activity-manager/project/create-form
-
-    activity-manager-project-create-form-label-infos:
-        module: activity-manager/project/create-form/label/infos
-        parent: activity-manager-project-create-form
-        targetZone: label-errors
-        position: 100
-        config:
-            maxLength: 100
-
-    activity-manager-project-create-form-due-date-infos:
-        module: activity-manager/project/create-form/due-date/infos
-        parent: activity-manager-project-create-form
-        targetZone: due-date-errors
-        position: 100
-
-    pim-grid-view-selector-footer-create:
-        module: activity-manager/grid/view-selector/footer/create-view
-        parent: pim-grid-view-selector-footer
-        targetZone: buttons
+    activity-manager-grid-view-selector-footer-create-project:
+        module: activity-manager/grid/view-selector/footer/create/project
+        parent: pim-grid-view-selector-footer-create
+        targetZone: action-list
         position: 100
