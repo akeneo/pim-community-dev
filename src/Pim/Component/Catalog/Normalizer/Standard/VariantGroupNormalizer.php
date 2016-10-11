@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VariantGroupNormalizer implements NormalizerInterface
 {
-    /** @var TranslationNormalizer */
+    /** @var NormalizerInterface */
     protected $translationNormalizer;
 
     /** @var NormalizerInterface */
@@ -23,10 +23,15 @@ class VariantGroupNormalizer implements NormalizerInterface
     protected $valuesDenormalizer;
 
     /**
-     * @param TranslationNormalizer $translationNormalizer
+     * @param NormalizerInterface   $translationNormalizer
+     * @param NormalizerInterface   $valuesNormalizer
+     * @param DenormalizerInterface $valuesDenormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer, NormalizerInterface $valuesNormalizer, DenormalizerInterface $valuesDenormalizer)
-    {
+    public function __construct(
+        NormalizerInterface $translationNormalizer,
+        NormalizerInterface $valuesNormalizer,
+        DenormalizerInterface $valuesDenormalizer
+    ) {
         $this->translationNormalizer = $translationNormalizer;
         $this->valuesNormalizer = $valuesNormalizer;
         $this->valuesDenormalizer = $valuesDenormalizer;
