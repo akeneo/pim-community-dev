@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Normalizer\Structured\AttributeOptionNormalizer as BaseNormalizer;
+use Pim\Component\Catalog\Normalizer\Standard\AttributeOptionNormalizer as BaseNormalizer;
 
 /**
  * Normalize an attribute option
@@ -17,7 +17,7 @@ use Pim\Component\Catalog\Normalizer\Structured\AttributeOptionNormalizer as Bas
 class AttributeOptionNormalizer extends BaseNormalizer
 {
     /** @var string[] */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['flat'];
 
     /**
      * {@inheritdoc}
@@ -44,7 +44,7 @@ class AttributeOptionNormalizer extends BaseNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeLabel(AttributeOptionInterface $entity, $context)
+    protected function normalizeLabels(AttributeOptionInterface $entity, $context)
     {
         $labels = [];
         $locales = isset($context['locales']) ? $context['locales'] : [];

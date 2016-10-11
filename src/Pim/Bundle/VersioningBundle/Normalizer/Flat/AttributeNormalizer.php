@@ -4,7 +4,8 @@ namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Normalizer\Structured\AttributeNormalizer as BaseNormalizer;
+use Pim\Component\Catalog\Normalizer\Standard\AttributeNormalizer as StandardNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * A normalizer to transform an AttributeInterface entity into a flat array
@@ -13,25 +14,64 @@ use Pim\Component\Catalog\Normalizer\Structured\AttributeNormalizer as BaseNorma
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeNormalizer extends BaseNormalizer
+class AttributeNormalizer implements NormalizerInterface
 {
-    const DATE_FORMAT = 'Y-m-d';
+    const ITEM_SEPARATOR = ',';
+    const LOCALIZABLE_PATTERN = '{locale}:{value}';
+    const GROUP_SEPARATOR = '|';
 
     /** @var string[] */
-    protected $supportedFormats = ['csv'];
+    protected $supportedFormats = ['flat'];
+
+    /** @var StandardNormalizer */
+    protected $standardNormalizer;
+
+    /** @var TranslationNormalizer  */
+    protected $translationNormalizer;
+
+    /**
+     * AttributeNormalizer constructor.
+     *
+     * @param NormalizerInterface   $standardNormalizer
+     * @param TranslationNormalizer $translationNormalizer
+     */
+    public function __construct(
+        NormalizerInterface $standardNormalizer,
+        TranslationNormalizer $translationNormalizer
+    ) {
+        $this->standardNormalizer = $standardNormalizer;
+        $this->translationNormalizer = $translationNormalizer;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param $object AttributeInterface
+     *
+     * @return array
+     */
+    public function normalize($object, $format = null, array $context = [])
+    {
+        $standardAttribute = $this->standardNormalizer->normalize($object, 'standard', $context);
+
+        $flatAttribute = $standardAttribute;
+        $flatAttribute['allowed_extensions'] = implode(self::ITEM_SEPARATOR, $standardAttribute['allowed_extensions']);
+        $flatAttribute['available_locales'] = implode(self::ITEM_SEPARATOR, $standardAttribute['available_locales']);
+
+        unset($flatAttribute['labels']);
+        $flatAttribute += $this->translationNormalizer->normalize($standardAttribute['labels'], 'flat', $context);
+
+        $flatAttribute['options'] = $this->normalizeOptions($object);
+
+        return $flatAttribute;
+    }
 
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAvailableLocales(AttributeInterface $attribute)
+    public function supportsNormalization($data, $format = null)
     {
-        $availableLocales = $attribute->getLocaleSpecificCodes();
-
-        if (empty($availableLocales)) {
-            return null;
-        }
-
-        return implode(self::ITEM_SEPARATOR, $availableLocales);
+        return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
@@ -42,7 +82,7 @@ class AttributeNormalizer extends BaseNormalizer
         $options = $attribute->getOptions();
 
         if ($options->isEmpty()) {
-            $options = '';
+            $options = null;
         } else {
             $data = [];
             foreach ($options as $option) {

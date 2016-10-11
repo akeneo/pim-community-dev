@@ -3,122 +3,63 @@
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
+use Pim\Component\Catalog\Normalizer\Standard\AttributeOptionNormalizer;
+use Prophecy\Argument;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
+    function let(
+        AttributeOptionNormalizer $attributeOptionNormalizerStandard,
+        TranslationNormalizer $translationNormalizer
+    ) {
+        $this->beConstructedWith($attributeOptionNormalizerStandard, $translationNormalizer);
+    }
+
     function it_is_a_normalizer()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_csv_normalization_of_attribute_option(AttributeOptionInterface $option)
-    {
-        $this->supportsNormalization($option, 'csv')->shouldBe(true);
-    }
-
     function it_supports_flat_normalization_of_attribute_option(AttributeOptionInterface $option)
     {
         $this->supportsNormalization($option, 'flat')->shouldBe(true);
-    }
-
-    function it_does_not_support_csv_normalization_of_integer()
-    {
+        $this->supportsNormalization($option, 'csv')->shouldBe(false);
         $this->supportsNormalization(1, 'csv')->shouldBe(false);
     }
 
-    function it_normalizes_option_code_when_field_name_is_provided(AttributeOptionInterface $option)
-    {
-        $option->getCode()->willReturn('red');
-
-        $this->normalize($option, null, ['field_name' => 'color'])->shouldReturn(['color' => 'red']);
-    }
-
     function it_normalizes_the_whole_option(
-        AttributeOptionInterface $option,
-        AttributeInterface $attribute,
-        AttributeOptionValueInterface $valueEn,
-        AttributeOptionValueInterface $valueFr
+        AttributeOptionNormalizer $attributeOptionNormalizerStandard,
+        TranslationNormalizer $translationNormalizer,
+        AttributeOptionInterface $attributeOption
     ) {
-        $option->getCode()->willReturn('red');
-        $option->getAttribute()->willReturn($attribute);
-        $option->getSortOrder()->willReturn(1);
-        $attribute->getCode()->willReturn('color');
-        $option->getOptionValues()->willReturn([
-            'en_US' => $valueEn,
-            'fr_FR' => $valueFr,
-        ]);
-        $valueEn->getLocale()->willReturn('en_US');
-        $valueEn->getValue()->willReturn('Red');
-        $valueFr->getLocale()->willReturn('fr_FR');
-        $valueFr->getValue()->willReturn('Rouge');
+        $translationNormalizer->supportsNormalization(Argument::cetera())
+            ->willReturn(true);
+        $translationNormalizer->normalize(Argument::cetera())->willReturn(
+            [
+                'label-en_US' => 'Red',
+                'label-fr_FR' => 'Rouge',
+                'label-de_DE' => '',
+            ]
+        );
 
-        $this->normalize($option, null, ['locales' => ['en_US', 'fr_FR', 'de_DE']])->shouldReturn([
-            'attribute' => 'color',
+        $attributeOptionNormalizerStandard->supportsNormalization($attributeOption, 'standard')
+            ->willReturn(true);
+        $attributeOptionNormalizerStandard->normalize($attributeOption, 'standard', [])->willReturn([
             'code' => 'red',
+            'attribute' => 'color',
             'sort_order' => 1,
-            'label-en_US' => 'Red',
-            'label-fr_FR' => 'Rouge',
-            'label-de_DE' => '',
+            'labels' => [
+                'en_US' => 'Red',
+                'fr_FR' => 'Rouge',
+                'de_DE' => ''
+            ]
         ]);
-    }
 
-    function it_normalizes_the_whole_option_and_ignore_disabled_locales(
-        AttributeOptionInterface $option,
-        AttributeInterface $attribute,
-        AttributeOptionValueInterface $valueEn,
-        AttributeOptionValueInterface $valueFr
-    ) {
-        $option->getCode()->willReturn('red');
-        $option->getAttribute()->willReturn($attribute);
-        $option->getSortOrder()->willReturn(1);
-        $attribute->getCode()->willReturn('color');
-        $option->getOptionValues()->willReturn([
-            'en_US' => $valueEn,
-            'fr_FR' => $valueFr,
-        ]);
-        $valueEn->getLocale()->willReturn('en_US');
-        $valueEn->getValue()->willReturn('Red');
-        $valueFr->getLocale()->willReturn('fr_FR');
-        $valueFr->getValue()->willReturn('Rouge');
-
-        $this->normalize($option, null, ['locales' => ['en_US', 'de_DE']])->shouldReturn([
-            'attribute' => 'color',
+        $this->normalize($attributeOption, null, [])->shouldReturn([
             'code' => 'red',
-            'sort_order' => 1,
-            'label-en_US' => 'Red',
-            'label-de_DE' => '',
-        ]);
-    }
-
-    function it_provides_all_locales_if_no_list_provided_in_context(
-        AttributeOptionInterface $option,
-        AttributeInterface $attribute,
-        AttributeOptionValueInterface $valueEn,
-        AttributeOptionValueInterface $valueFr,
-        AttributeOptionValueInterface $valueDe
-    ) {
-        $option->getCode()->willReturn('red');
-        $option->getAttribute()->willReturn($attribute);
-        $option->getSortOrder()->willReturn(1);
-        $attribute->getCode()->willReturn('color');
-        $option->getOptionValues()->willReturn([
-            'en_US' => $valueEn,
-            'fr_FR' => $valueFr,
-            'de_DE' => $valueDe
-        ]);
-        $valueEn->getLocale()->willReturn('en_US');
-        $valueEn->getValue()->willReturn('Red');
-        $valueFr->getLocale()->willReturn('fr_FR');
-        $valueFr->getValue()->willReturn('Rouge');
-        $valueDe->getLocale()->willReturn('de_DE');
-        $valueDe->getValue()->willReturn('');
-
-        $this->normalize($option, null, ['locales' => []])->shouldReturn([
             'attribute' => 'color',
-            'code' => 'red',
             'sort_order' => 1,
             'label-en_US' => 'Red',
             'label-fr_FR' => 'Rouge',
