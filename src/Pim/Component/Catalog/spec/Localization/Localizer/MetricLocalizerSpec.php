@@ -66,37 +66,37 @@ class MetricLocalizerSpec extends ObjectBehavior
     function it_convert_comma_to_dot_separator()
     {
         $this->delocalize(['data' => '10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 10.05, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => '10.05', 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => '-10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => -10.05, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => '-10.05', 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => '10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 10.00, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => '10', 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => '-10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => -10.00, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => '-10', 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => 10, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 10.00, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => 10, 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => 10.0585, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 10.0585, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => '10.0585', 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => ' 10.05 ', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 10.05, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => ' 10.05 ', 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => null, 'unit' => null], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => null, 'unit' => null]);
 
         $this->delocalize(['data' => '', 'unit' => ''], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '', 'unit' => '']);
+            ->shouldReturn(['data' => null, 'unit' => '']);
 
         $this->delocalize(['data' => 0, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 0.00, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => 0, 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => '0', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 0.00, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => '0', 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => 'gruik', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => 'gruik', 'unit' => 'GRAM']);
@@ -105,12 +105,12 @@ class MetricLocalizerSpec extends ObjectBehavior
             ->shouldReturn([]);
 
         $this->delocalize(['data' => '10,00', 'unit' => 'GRAM'], [])
-            ->shouldReturn(['data' => 10.00, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => '10.00', 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => '10,00', 'unit' => 'GRAM'], ['decimal_separator' => null])
-            ->shouldReturn(['data' => 10.00, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => '10.00', 'unit' => 'GRAM']);
 
         $this->delocalize(['data' => '10,00', 'unit' => 'GRAM'], ['decimal_separator' => ''])
-            ->shouldReturn(['data' => 10.00, 'unit' => 'GRAM']);
+            ->shouldReturn(['data' => '10.00', 'unit' => 'GRAM']);
     }
 }

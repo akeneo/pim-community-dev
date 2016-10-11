@@ -81,25 +81,25 @@ class PriceLocalizerSpec extends ObjectBehavior
 
         $this->delocalize($prices, ['decimal_separator' => ','])->shouldReturn(
             [
-                ['data' => 10.05, 'currency' => 'EUR'],
-                ['data' => -10.05, 'currency' => 'EUR'],
-                ['data' => 10.00, 'currency' => 'PES'],
-                ['data' => -10.00, 'currency' => 'PES'],
-                ['data' => 10.00, 'currency' => 'PES'],
-                ['data' => 10.05, 'currency' => 'PES'],
-                ['data' => 10.05, 'currency' => 'PES'],
+                ['data' => '10.05', 'currency' => 'EUR'],
+                ['data' => '-10.05', 'currency' => 'EUR'],
+                ['data' => '10', 'currency' => 'PES'],
+                ['data' => '-10', 'currency' => 'PES'],
+                ['data' => 10, 'currency' => 'PES'],
+                ['data' => '10.05', 'currency' => 'PES'],
+                ['data' => ' 10.05 ', 'currency' => 'PES'],
                 ['data' => null, 'currency' => null],
-                ['data' => '', 'currency' => ''],
-                ['data' => 0.00, 'currency' => 'EUR'],
-                ['data' => 0.00, 'currency' => 'EUR'],
+                ['data' => null, 'currency' => ''],
+                ['data' => 0, 'currency' => 'EUR'],
+                ['data' => '0', 'currency' => 'EUR'],
                 ['data' => 'gruik', 'currency' => 'EUR']
             ]
         );
 
-        $this->delocalize([['data' => '10,00']], [], 'prices')->shouldReturn([['data' => 10.00]]);
+        $this->delocalize([['data' => '10,00']], [], 'prices')->shouldReturn([['data' => '10.00']]);
         $this->delocalize([['data' => '10,00']], ['decimal_separator' => null], 'prices')
-            ->shouldReturn([['data' => 10.00]]);
+            ->shouldReturn([['data' => '10.00']]);
         $this->delocalize([['data' => '10,00']], ['decimal_separator' => ''], 'prices')
-            ->shouldReturn([['data' => 10.00]]);
+            ->shouldReturn([['data' => '10.00']]);
     }
 }

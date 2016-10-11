@@ -35,6 +35,12 @@ class MetricConverter extends AbstractValueConverter
             $tokens = $this->fieldSplitter->splitUnitValue($value);
             $data = isset($tokens[0]) ? $tokens[0] : null;
             $unit = isset($tokens[1]) ? $tokens[1] : null;
+
+            if (null !== $data) {
+                $data = !$attributeFieldInfo['attribute']->isDecimalsAllowed() && preg_match('|^\d+$|', $data) ?
+                    (int) $data : (string) $data;
+            }
+
             $value = ['data' => $data, 'unit' => $unit];
         }
 

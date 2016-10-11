@@ -68,7 +68,7 @@ class NumberLocalizer implements LocalizerInterface
             return $number;
         }
 
-        return str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $options['decimal_separator'], $number);
+        return (string) str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $options['decimal_separator'], $number);
     }
 
     /**
@@ -76,22 +76,20 @@ class NumberLocalizer implements LocalizerInterface
      */
     public function delocalize($number, array $options = [])
     {
-        if (null === $number || '' === $number || is_float($number)) {
-            return $number;
-        }
-
-        if (is_int($number)) {
-            return (float) $number;
+        if (null === $number || '' === $number) {
+            return null;
         }
 
         $matchesNumber = $this->getMatchesNumber($number);
         if (!isset($matchesNumber['decimal']) && is_numeric($number)) {
-            return (float) $number;
-        } elseif (isset($matchesNumber['decimal'])) {
-            return (float) str_replace($matchesNumber['decimal'], static::DEFAULT_DECIMAL_SEPARATOR, $number);
+            return $number;
         }
 
-        return $number;
+        if (isset($matchesNumber['decimal'])) {
+            return (string) str_replace($matchesNumber['decimal'], static::DEFAULT_DECIMAL_SEPARATOR, $number);
+        }
+
+        return (string) $number;
     }
 
     /**
