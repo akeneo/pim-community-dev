@@ -7,9 +7,9 @@
             {% set url = null %}
         {% endif %}
         {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-        <a class="AkButton AkButton--success{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AkButton--withIcon {% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
+        <a class="AkbemButton AkbemButton--success{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AkbemButton--withIcon {% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
         {% if icon %}
-            <i class="AkButton-icon icon-{{ icon }}"></i>
+            <i class="AkbemButton-icon icon-{{ icon }}"></i>
           {% endif %}
           {{ title }}
         </a>
@@ -95,16 +95,16 @@
 {% endmacro %}
 
 {% macro page_header(title, buttons, subtitle, left, right, titleButtons) %}
-    <div class="AkTitleContainer navigation">
+    <div class="AkbemTitleContainer navigation">
         <div>
-            <div class="AkTitleContainer-title">
+            <div class="AkbemTitleContainer-title">
                 {{ title|first|capitalize ~ title[1:] }}
                 {% if subtitle is not empty %}
                     / {{ subtitle }}
                 {% endif %}
             </div>
             {% if titleButtons is not empty %}
-                <div class="AkButtonsList">
+                <div class="AkbemButtonsList">
                     {{ titleButtons }}
                 </div>
             {% endif %}
@@ -113,7 +113,7 @@
         <div>
             {{ right }}
             {% if buttons is not empty %}
-                <div class="AkButtonsList">
+                <div class="AkbemButtonsList">
                     {{ buttons }}
                 </div>
             {% endif %}

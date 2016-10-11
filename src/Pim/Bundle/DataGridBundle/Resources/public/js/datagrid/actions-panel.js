@@ -12,7 +12,7 @@ function(_, Backbone, groupTemplate) {
      */
     return Backbone.View.extend({
         /** @property String */
-        className: 'AkActionsPanel',
+        className: 'AkbemActionsPanel',
 
         /** @property {Array} */
         actionsGroups: [],

@@ -14,13 +14,13 @@ function($, _, Backbone, __) {
         /** @property */
         template: _.template(
             '<label class="control-label"><%- _.__("View per page") %>: &nbsp;</label>' +
-            '<div class="AkDropdown">' +
-                '<button data-toggle="dropdown" class="AkDropdown-button <% if (disabled) { %>disabled<% } %>">' +
-                    '<%=  currentSizeLabel %><span class="AkDropdown-caret"></span>' +
+            '<div class="AkbemDropdown">' +
+                '<button data-toggle="dropdown" class="AkbemDropdown-button <% if (disabled) { %>disabled<% } %>">' +
+                    '<%=  currentSizeLabel %><span class="AkbemDropdown-caret"></span>' +
                 '</button>' +
-                '<ul class="AkDropdown-menu AkDropdown-menu--alignRight">' +
+                '<ul class="AkbemDropdown-menu AkbemDropdown-menu--alignRight">' +
                     '<% _.each(items, function (item) { %>' +
-                        '<li><a  class="AkDropdown-menuLink" href="#" data-size="' + '<% if (item.size == undefined) { %><%= item %><% } else { %><%= item.size %><% } %>' + '">' +
+                        '<li><a  class="AkbemDropdown-menuLink" href="#" data-size="' + '<% if (item.size == undefined) { %><%= item %><% } else { %><%= item.size %><% } %>' + '">' +
                         '<% if (item.label == undefined) { %><%= item %><% } else { %><%= item.label %><% } %></a></li>' +
                     '<% }); %>' +
                 '</ul>' +

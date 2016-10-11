@@ -75,7 +75,7 @@ define(
              */
             createLaunchers: function() {
                 return _.map(this.actions, function(action) {
-                    return action.createLauncher({ className: 'AkIconsList-item '});
+                    return action.createLauncher({ className: 'AkbemIconsList-item '});
                 });
             },
 
@@ -84,7 +84,7 @@ define(
              */
             render: function () {
                 this.$el.empty();
-                var iconsList = $('<div>').addClass('AkIconsList');
+                var iconsList = $('<div>').addClass('AkbemIconsList');
                 if (!_.isEmpty(this.launchers)) {
                     _.each(this.launchers, function(launcher) {
                         iconsList.append(launcher.render().$el);

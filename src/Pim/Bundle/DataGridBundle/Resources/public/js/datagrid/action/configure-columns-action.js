@@ -47,7 +47,7 @@ define(
 
             icon: 'th',
 
-            target: '.GridToolbar .actions-panel',
+            target: '.AkbemGridToolbar .actions-panel',
 
             template: _.template(
                 '<div class="btn-group">' +

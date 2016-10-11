@@ -290,7 +290,7 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
                         launcherOptions: {
                             label: 'oro.datagrid.action.refresh',
                             iconClassName: 'icon-refresh',
-                            className: 'AkActionsPanel-button'
+                            className: 'AkbemActionsPanel-button'
                         }
                     });
 
@@ -321,7 +321,7 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
                         launcherOptions: {
                             label: 'oro.datagrid.action.reset',
                             iconClassName: 'icon-repeat',
-                            className: 'AkActionsPanel-button'
+                            className: 'AkbemActionsPanel-button'
                         }
                     });
 
