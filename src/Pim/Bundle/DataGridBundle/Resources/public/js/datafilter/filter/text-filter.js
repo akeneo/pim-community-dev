@@ -22,7 +22,7 @@ function($, _, __, AbstractFilter) {
                 '<strong class="filter-criteria-hint"><%= criteriaHint %></strong>' +
                 '<span class="AkbemDropdown-caret caret"></span>' +
             '</button>' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>' +
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AkbemFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>' +
             '<div class="filter-criteria dropdown-menu" />'
         ),
 

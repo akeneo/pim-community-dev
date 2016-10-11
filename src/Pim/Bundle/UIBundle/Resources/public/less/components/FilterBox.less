@@ -1,0 +1,31 @@
+.AkbemFilterBox {
+  background: #e6e8ec;
+  padding: 15px 20px 15px 150px;
+
+  &-addFilterButton {
+    position: absolute;
+    left: 20px;
+    border: none;
+    background: none;
+    height: 30px;
+    line-height: 30px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  &-filter {
+    margin-right: 10px
+  }
+
+  // jQuery select adds a width with a style tag for the button, we need to remove it for the filters.
+  .ui-multiselect {
+    width: auto !important;
+  }
+
+  &-disableFilter {
+    height: 30px;
+    text-align: center;
+    display: inline-block;
+    width: 20px;
+  }
+}
