@@ -13,7 +13,7 @@ function ($, Backbone, Backgrid) {
     return Backbone.View.extend({
 
         /** @property */
-        className: "select-row-cell",
+        className: "AkbemGrid-bodyCell select-row-cell",
 
         /** @property */
         tagName: "td",

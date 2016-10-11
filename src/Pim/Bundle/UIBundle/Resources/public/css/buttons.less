@@ -1,22 +1,6 @@
 @import 'less/variables';
 @import 'less/mixins';
 
-.grid .action-cell a.action.btn-tiny,
-.btn-tiny {
-  line-height: 28px;
-  height: 28px;
-
-  &.icons-holder-text {
-    padding: 0 10px 0 38px;
-
-    i {
-      line-height: 28px;
-      height: 28px;
-      width: 28px;
-    }
-  }
-}
-
 .btn {
   background-image: none;
   background-color: @akeneoGreyLighter;
@@ -172,10 +156,6 @@
   .btn.btn-primary.dropdown-toggle {
     background-color: @greenDark;
     width: 34px;
-
-    .caret {
-      margin-left: 0;
-    }
   }
 }
 
@@ -236,11 +216,6 @@
     background-color: @akeneoGreyDark;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
-  }
-
-  .caret {
-      margin-top: 15px;
-      border-top: 4px solid @backgroundColor-white;
   }
 
   &:hover {
@@ -344,20 +319,12 @@
     border-radius: 2px;
     border: none;
     background-color: @white;
-
-    .caret {
-      margin-top: 12px;
-    }
   }
 
   .attribute-copy-actions {
     .btn {
       background-color: @akeneoGrey;
       color: @white;
-
-      .caret {
-        border-top: 4px solid @white;
-      }
     }
   }
 
@@ -410,35 +377,4 @@
   border: solid 1px @akeneoGrey;
   color: @akeneoSlateGrey;
   white-space: nowrap;
-}
-
-.grid .action-cell a.action.btn {
-  border: none;
-  display: inline-block;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  opacity: 0;
-
-  i {
-    text-align: center;
-    border: none;
-    border-radius: 2px 0 0 2px;
-  }
-}
-
-tr:hover>.action-cell a.action.btn {
-  opacity: 1;
-
-  &.btn-primary i {
-    background-color: @greenDark;
-  }
-
-  &.btn-delete i {
-    background-color: @redDark;
-  }
-
-  i {
-    background-color: @akeneoGrey;
-  }
 }

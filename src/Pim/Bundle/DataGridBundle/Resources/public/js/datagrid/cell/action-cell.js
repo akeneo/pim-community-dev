@@ -13,7 +13,7 @@ define(
         return Backgrid.Cell.extend({
 
             /** @property */
-            className: 'action-cell',
+            className: 'AkbemGrid-bodyCell AkbemGrid-bodyCell--actions action-cell',
 
             /** @property {Array} */
             actions: undefined,

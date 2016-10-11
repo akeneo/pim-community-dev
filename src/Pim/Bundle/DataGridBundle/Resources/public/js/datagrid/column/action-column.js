@@ -19,7 +19,7 @@ function(_, Backgrid, ActionCell) {
             editable: false,
             cell: ActionCell,
             headerCell: Backgrid.HeaderCell.extend({
-                className: 'action-column'
+                className: 'AkbemGrid-headerCell action-column'
             }),
             sortable: false,
             actions: []

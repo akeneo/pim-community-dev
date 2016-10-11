@@ -1,0 +1,57 @@
+.AkbemGrid {
+  width: 100%;
+
+  &-bodyRow {
+    border-bottom: 1px solid #ddd;
+  }
+
+  &-bodyCell, &-headerCell {
+    line-height: 24px;
+    padding: 12px 10px;
+  }
+
+  &-bodyRow:hover &-bodyCell {
+    background: #F1F4F9;
+    cursor: pointer;
+  }
+
+  &-bodyCell {
+    &--actions {
+      opacity: 0;
+      width: 1px;
+    }
+  }
+
+  &-bodyRow:hover &-bodyCell--actions {
+    opacity: 1;
+  }
+
+  &-headerCell {
+    color: #5e5e5e;
+    border-bottom: solid 2px #11324D;
+    font-size: 11.121px;
+    font-weight: bold;
+    text-align: left;
+    text-transform: uppercase;
+
+    // To remove when we will remove the global 'a' rule
+    a {
+      color: #5e5e5e;
+    }
+  }
+
+  &-caret {
+    margin-left: 5px;
+    display: none;
+  }
+
+  &-headerCell--ascending &-caret,
+  &-headerCell--descending &-caret {
+    display: inline-block;
+  }
+
+  &-headerCell--descending &-caret {
+    border-bottom: 4px solid #000000;
+    border-top: none;
+  }
+}

@@ -1,40 +1,5 @@
 @import '../../pimui/css/less/variables';
 
-table.grid {
-  thead th > a,
-  thead th > span {
-    text-transform: uppercase;
-  }
-  thead th span.caret {
-    display: none;
-    border: none;
-    margin: 20px 0 0 5px;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-  }
-  thead tr th.ascending span.caret {
-    margin: 15px 0 0 5px;
-    display: inline-block;
-    border-top:4px solid transparent;
-    border-bottom: 4px solid @black;
-  }
-  thead tr th.descending span.caret {
-    display: inline-block;
-    border-bottom:4px solid transparent;
-    border-top: 4px solid @black;
-  }
-  tbody tr.row-click-action {
-    cursor: pointer;
-  }
-  input[type=checkbox] {
-    margin-top: 0;
-  }
-}
-
-.grid thead .btn-group .btn .caret {
-  margin-top:11px;
-}
-
 .no-data {
   text-align: center;
   font-size: @font-size-14;

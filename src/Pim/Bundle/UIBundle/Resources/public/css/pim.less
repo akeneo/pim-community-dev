@@ -55,9 +55,6 @@ a:focus {
   color: @akeneoDarkBlue;
 }
 
-table.grid {
-  margin-bottom: 20px;
-}
 .filter-box {
   select.filter-select-oro {
     width: 100px;
@@ -73,33 +70,6 @@ table.grid {
 
 .actions-panel .btn-group+.btn-group {
   margin-left: 5px;
-}
-
-.grid .action-cell {
-  vertical-align: top;
-  a.action {
-    display: table-cell;
-    i {
-      background: @akeneoGrey;
-      opacity: 0;
-      width: 26px;
-      height: 26px;
-      line-height: 26px;
-      text-align: center;
-      .border-radius(2px);
-    }
-  }
-
-  [class^='icon-'].hide-text:before {
-    color: @akeneoSlateGreyDark;
-
-  }
-}
-tr:hover>.action-cell a.action>i {
-  opacity: 0.7;
-  &:hover {
-    opacity: 1;
-  }
 }
 
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
@@ -1436,10 +1406,6 @@ h3.tab-header {
     text-transform: capitalize;
     background-image: none;
 
-    .caret {
-      margin-top: 14px;
-    }
-
     .flag-language .language {
       font-family: @sansFontFamily;
       color: @gray;
@@ -1467,10 +1433,6 @@ h3.tab-header {
     &:not(:first-child) {
       margin-left: 0;
       border-left: none;
-    }
-
-    .caret {
-      margin: 15px 12px;
     }
   }
 }
