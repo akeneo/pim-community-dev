@@ -289,7 +289,8 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
                         datagrid: grid,
                         launcherOptions: {
                             label: 'oro.datagrid.action.refresh',
-                            iconClassName: 'icon-refresh'
+                            iconClassName: 'icon-refresh',
+                            className: 'AkActionsPanel-button'
                         }
                     });
 
@@ -319,7 +320,8 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
                         datagrid: grid,
                         launcherOptions: {
                             label: 'oro.datagrid.action.reset',
-                            iconClassName: 'icon-repeat'
+                            iconClassName: 'icon-repeat',
+                            className: 'AkActionsPanel-button'
                         }
                     });
 
