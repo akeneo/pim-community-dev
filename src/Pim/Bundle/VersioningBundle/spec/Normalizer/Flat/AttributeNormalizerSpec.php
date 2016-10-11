@@ -46,7 +46,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
     ) {
         $attribute->getOptions()->willReturn(new ArrayCollection());
 
-        $translationNormalizer->supportsNormalization(Argument::cetera(), 'flat')
+        $translationNormalizer->supportsNormalization(Argument::cetera())
             ->willReturn(true);
         $translationNormalizer->normalize(Argument::cetera())
             ->willReturn([
@@ -54,7 +54,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'label-fr_FR' => 'Mon attribut',
             ]);
 
-        $attributeNormalizerStandard->supportsNormalization($attribute, 'standard')
+        $attributeNormalizerStandard->supportsNormalization($attribute, 'standard', [])
             ->willReturn(true);
         $attributeNormalizerStandard->normalize($attribute, 'standard', [])
             ->willReturn([
@@ -140,9 +140,9 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $size->addOptionValue($fr);
         $attribute->getOptions()->willReturn(new ArrayCollection([$size]));
 
-        $translationNormalizer->supportsNormalization(Argument::cetera(), 'flat')
+        $translationNormalizer->supportsNormalization(Argument::cetera())
             ->willReturn(true);
-        $translationNormalizer->normalize(Argument::cetera(), 'flat')
+        $translationNormalizer->normalize(Argument::cetera())
             ->willReturn([]);
 
         $attributeNormalizerStandard->supportsNormalization($attribute, 'standard', [])
