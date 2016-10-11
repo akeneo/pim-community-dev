@@ -29,6 +29,7 @@ class NumberConverterSpec extends ObjectBehavior
     function it_converts_an_integer(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
+        $attribute->isDecimalsAllowed()->willReturn(false);
         $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
 
         $value = 1234;
@@ -45,6 +46,7 @@ class NumberConverterSpec extends ObjectBehavior
     function it_converts_an_integer_formatted_as_string(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
+        $attribute->isDecimalsAllowed()->willReturn(false);
         $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
 
         $value = '1234';
@@ -58,28 +60,13 @@ class NumberConverterSpec extends ObjectBehavior
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
     }
 
-    function it_converts_a_float(AttributeInterface $attribute)
+    function it_does_not_convert_a_float(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
+        $attribute->isDecimalsAllowed()->willReturn(true);
         $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
 
         $value = 1234.36;
-
-        $expectedResult = ['attribute_code' => [[
-            'locale' => 'en_US',
-            'scope'  => 'mobile',
-            'data'   => 1234.36,
-        ]]];
-
-        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
-    }
-
-    function it_converts_a_float_formatted_as_string(AttributeInterface $attribute)
-    {
-        $attribute->getCode()->willReturn('attribute_code');
-        $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
-
-        $value = '1234.36';
 
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',

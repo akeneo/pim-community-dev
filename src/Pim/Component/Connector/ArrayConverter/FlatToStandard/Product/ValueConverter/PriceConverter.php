@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
 
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 /**
@@ -35,8 +36,8 @@ class PriceConverter extends AbstractValueConverter
             $data = [];
         }
 
-        $data = array_map(function ($priceValue) {
-            return $this->convertPrice($priceValue);
+        $data = array_map(function ($priceValue) use ($attributeFieldInfo) {
+            return $this->convertPrice($priceValue, $attributeFieldInfo['attribute']);
         }, $data);
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
@@ -47,22 +48,30 @@ class PriceConverter extends AbstractValueConverter
     }
 
     /**
-     * @param string $value
+     * @param string             $value
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function convertPrice($value)
+    protected function convertPrice($value, AttributeInterface $attribute)
     {
         if ('' === $value) {
             $priceValue = null;
             $currency = null;
         } else {
             $tokens = $this->fieldSplitter->splitUnitValue($value);
+
             if (1 === count($tokens)) {
                 $priceValue = null;
                 $currency = $value;
             } else {
-                $priceValue = isset($tokens[0]) ? $tokens[0] : null;
+                if (isset($tokens[0])) {
+                    $priceValue = !$attribute->isDecimalsAllowed() && preg_match('|^\d+$|', $tokens[0]) ?
+                        (int) $tokens[0] : (string) $tokens[0];
+                } else {
+                    $priceValue = null;
+                }
+
                 $currency = isset($tokens[1]) ? $tokens[1] : null;
             }
         }
