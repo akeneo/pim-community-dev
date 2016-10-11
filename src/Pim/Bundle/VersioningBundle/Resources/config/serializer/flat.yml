@@ -88,6 +88,7 @@ services:
     pim_versioning.serializer.normalizer.flat.association_type:
         class: '%pim_serializer.normalizer.flat.association_type.class%'
         arguments:
+            - '@pim_catalog.normalizer.standard.association_type'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
