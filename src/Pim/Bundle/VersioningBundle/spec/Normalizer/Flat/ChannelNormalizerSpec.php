@@ -2,19 +2,21 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
+use Akeneo\Bundle\MeasureBundle\Family\LengthFamilyInterface;
+use Akeneo\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\CurrencyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Normalizer\Standard\ChannelNormalizer;
 use Prophecy\Argument;
 
 class ChannelNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslationNormalizer $transNormalizer)
-    {
-        $this->beConstructedWith($transNormalizer);
+    function let(
+        ChannelNormalizer $channelNormalizerStandard,
+        TranslationNormalizer $translationNormalizer
+    ) {
+        $this->beConstructedWith($channelNormalizerStandard, $translationNormalizer);
     }
 
     function it_is_initializable()
@@ -27,37 +29,42 @@ class ChannelNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_channel_normalization_into_csv(ChannelInterface $channel)
+    function it_supports_channel_normalization_into_flat(ChannelInterface $channel)
     {
-        $this->supportsNormalization($channel, 'csv')->shouldBe(true);
         $this->supportsNormalization($channel, 'flat')->shouldBe(true);
+        $this->supportsNormalization($channel, 'csv')->shouldBe(false);
         $this->supportsNormalization($channel, 'json')->shouldBe(false);
         $this->supportsNormalization($channel, 'xml')->shouldBe(false);
     }
 
     function it_normalizes_channel(
         ChannelInterface $channel,
-        CurrencyInterface $eur,
-        CurrencyInterface $usd,
-        LocaleInterface $en,
-        LocaleInterface $fr,
-        CategoryInterface $category,
-        $transNormalizer
+        ChannelNormalizer $channelNormalizerStandard,
+        TranslationNormalizer $translationNormalizer
     ) {
-        $channel->getCode()->willReturn('ecommerce');
-        $channel->getLabel()->willReturn('Ecommerce');
-        $channel->getCurrencies()->willReturn([$eur, $usd]);
-        $eur->getCode()->willReturn('EUR');
-        $usd->getCode()->willReturn('USD');
-        $channel->getLocales()->willReturn([$en, $fr]);
-        $en->getCode()->willReturn('en_US');
-        $fr->getCode()->willReturn('fr_FR');
-        $channel->getCategory()->willReturn($category);
-        $category->getCode()->willReturn('Master catalog');
-        $channel->getConversionUnits()->willReturn(
+        $translationNormalizer->supportsNormalization(Argument::cetera(), 'flat')->willReturn(true);
+        $translationNormalizer->normalize(Argument::cetera(), 'flat', [])->willReturn(
             [
-                'Weight' => 'Kilogram',
-                'Size' => 'Centimeter'
+                'label-en_US' => 'my_label',
+                'label-fr_FR' => 'mon_label',
+            ]
+        );
+
+        $channelNormalizerStandard->supportsNormalization($channel, 'standard')->willReturn(true);
+        $channelNormalizerStandard->normalize($channel, 'standard', [])->willReturn(
+            [
+                'code'             => 'my_code',
+                'labels'           => [
+                    'en_US' => 'my_label',
+                    'fr_FR' => 'mon_label',
+                ],
+                'currencies'       => ['EUR', 'USD'],
+                'locales'          => ['fr_FR', 'en_US', 'de_DE', 'es_ES'],
+                'category_tree'    => 'winter',
+                'conversion_units' => [
+                    'weight_attribute' => WeightFamilyInterface::GRAM,
+                    'length_attribute' => LengthFamilyInterface::CENTIMETER,
+                ],
             ]
         );
 
@@ -65,11 +72,14 @@ class ChannelNormalizerSpec extends ObjectBehavior
 
         $this->normalize($channel)->shouldReturn(
             [
-                'code'       => 'ecommerce',
-                'currencies' => 'EUR,USD',
-                'locales'    => 'en_US,fr_FR',
-                'category'   => 'Master catalog',
-                'labels' => [],
+                'code'                             => 'my_code',
+                'currencies'                       => 'EUR,USD',
+                'locales'                          => 'fr_FR,en_US,de_DE,es_ES',
+                'category_tree'                    => 'winter',
+                'label-en_US'                      => 'my_label',
+                'label-fr_FR'                      => 'mon_label',
+                'conversion_unit-weight_attribute' => 'GRAM',
+                'conversion_unit-length_attribute' => 'CENTIMETER',
             ]
         );
     }

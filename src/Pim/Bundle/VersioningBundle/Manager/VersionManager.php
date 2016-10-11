@@ -52,9 +52,10 @@ class VersionManager
     protected $versionContext;
 
     /**
-     * @param SmartManagerRegistry $registry
-     * @param VersionBuilder       $versionBuilder
-     * @param VersionContext       $versionContext
+     * @param SmartManagerRegistry     $registry
+     * @param VersionBuilder           $versionBuilder
+     * @param VersionContext           $versionContext
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         SmartManagerRegistry $registry,
