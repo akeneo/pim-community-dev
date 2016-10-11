@@ -47,10 +47,15 @@ class ProjectNormalizer implements NormalizerInterface
             );
         }
 
+        $dueDate = $project->getDueDate();
+        if (null !== $dueDate) {
+            $dueDate = (string) $dueDate->format('YYYY-MM-dd');
+        }
+
         return [
             'label' => (string) $project->getLabel(),
             'description' => (string) $project->getDescription(),
-            'due_date' => (string) $project->getDueDate()->format('YYYY-MM-dd')
+            'due_date' => $dueDate
         ];
     }
 
