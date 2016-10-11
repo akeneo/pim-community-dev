@@ -2,8 +2,8 @@ oro_menu_config:
     templates:
         application_menu:
             template: 'OroNavigationBundle:Menu:application_menu.html.twig'
-            currentClass: 'active'
-            ancestorClass: 'active'
+            currentClass: 'AkbemMainMenu-item--active'
+            ancestorClass: 'AkbemMainMenu-item--active'
             allow_safe_labels: true
             rootClass: 'AkbemMainMenu'
         dots_menu:

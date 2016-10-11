@@ -99,6 +99,7 @@ function($, _, mediator) {
         _setDropdownDesign: function() {
             var widget = this.getWidget();
             widget.addClass('dropdown-menu');
+            widget.addClass('AkbemDropdown-menu');
             widget.removeClass('ui-widget-content');
             widget.removeClass('ui-widget');
             widget.find('.ui-widget-header').removeClass('ui-widget-header');

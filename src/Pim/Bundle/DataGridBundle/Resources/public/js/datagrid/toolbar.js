@@ -22,8 +22,8 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
                     '<div class="AkbemPagination"></div>' +
                 '</div>' +
                 '<div class="AkbemGridToolbar-right">' +
-                    '<div class="actions-panel pull-right form-horizontal"></div>' +
-                    '<div class="page-size pull-right form-horizontal"></div>' +
+                    '<div class="page-size form-horizontal"></div>' +
+                    '<div class="AkbemGridToolbar-actionsPanel actions-panel form-horizontal"></div>' +
                 '</div>' +
             '</div>'
         ),
