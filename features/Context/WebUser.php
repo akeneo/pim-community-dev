@@ -1346,6 +1346,24 @@ class WebUser extends RawMinkContext
     /**
      * @param string $button
      *
+     * @throws TimeoutException
+     *
+     * @Given /^The button "([^"]*)" should be enabled$/
+     */
+    public function theButtonShouldBeEnabled($button)
+    {
+        $buttonNode = $this->spin(function () use ($button) {
+            return $this->getCurrentPage()->getButton($button);
+        }, sprintf("Can not find any '%s' button", $button));
+
+        $this->spin(function () use ($buttonNode) {
+            return !$buttonNode->hasClass('disabled');
+        }, sprintf("The button '%s' is not enabled", $button));
+    }
+
+    /**
+     * @param string $button
+     *
      * @Given /^I should not see the "([^"]*)" button$/
      */
     public function iShouldNotSeeTheButton($button)

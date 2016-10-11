@@ -192,9 +192,11 @@ define(
 
                 var $menu = this.$('.select2-drop');
 
-                FormBuilder.build('pim-grid-view-selector-footer').then(function (form) {
+                FormBuilder.buildForm('pim-grid-view-selector-footer').then(function (form) {
                     form.setParent(this);
-                    $menu.append(form.render().$el);
+                    form.configure().then(function () {
+                        $menu.append(form.render().$el);
+                    });
                 }.bind(this));
             },
 
