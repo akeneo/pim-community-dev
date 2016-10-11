@@ -11,6 +11,7 @@
   font-size: 14.154px;
   padding: 0 10px;
   border-radius: 2px;
+  border: none;
 
   &--withIcon {
     padding-left: 0;
@@ -45,5 +46,15 @@
 
   &--success &-icon {
     background: darken(@AkGreen, 10%);
+  }
+
+  &--little {
+    height: @littleButtonsHeight;
+    line-height: @littleButtonsHeight;
+  }
+
+  &--noLeftRadius {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }

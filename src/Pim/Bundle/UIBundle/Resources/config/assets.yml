@@ -30,7 +30,6 @@ css:
         - bundles/pimui/css/tabnav.less
         - bundles/pimui/css/buttons.less
         - bundles/pimui/css/accordion.less
-        - bundles/pimui/css/filterbox.less
         - bundles/pimui/css/notifications.less
     bem:
 #        - bundles/pimui/less/redBorder.less # Please remove this class before merge!
@@ -42,6 +41,7 @@ css:
         - bundles/pimui/less/components/Button.less
         - bundles/pimui/less/components/ButtonsList.less
         - bundles/pimui/less/components/Dropdown.less
+        - bundles/pimui/less/components/FilterChoice.less
         - bundles/pimui/less/components/Grid.less
         - bundles/pimui/less/components/GridToolbar.less
         - bundles/pimui/less/components/Header.less

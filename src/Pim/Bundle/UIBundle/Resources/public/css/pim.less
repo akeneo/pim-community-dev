@@ -55,23 +55,6 @@ a:focus {
   color: @akeneoDarkBlue;
 }
 
-.filter-box {
-  select.filter-select-oro {
-    width: 100px;
-    padding-right: 0;
-  }
-  .btn-group {
-    float: none;
-  }
-  .filter-item .choicefilter .input-append input {
-    margin-right: 0;
-  }
-}
-
-.actions-panel .btn-group+.btn-group {
-  margin-left: 5px;
-}
-
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
   &.ui-state-hover, &.ui-state-active {
     background-color: @akeneoPurpleLight;
@@ -99,24 +82,6 @@ a:focus {
   &:hover, &:active {
     color: @akeneoPurpleDark;
     cursor: pointer;
-  }
-}
-
-.btn-group>.dropdown-menu li {
-  a:hover {
-    background: @whiteDarker;
-    color: @textColor;
-  }
-  &.disabled a {
-    color: @textColor + #555;
-    background: @backgroundColor-white;
-  }
-  &.select2-search-choice a {
-    padding: 0;
-    color: @textColor + #333;
-    &:hover {
-      background: transparent;
-    }
   }
 }
 
@@ -499,10 +464,6 @@ h3.tab-header {
       margin-left: 5px;
     }
 
-    & > * > .btn, & > * > .btn-group {
-      margin-left: 8px;
-    }
-
     & > div {
       .flex-shrink(0);
     }
@@ -671,12 +632,6 @@ h3.tab-header {
     .state {
       .flex-shrink(0);
       align-self: flex-end;
-    }
-  }
-
-  header {
-    .btn-group+h1, h1+.btn-group {
-      margin-left: 12px;
     }
   }
 
@@ -1411,14 +1366,6 @@ h3.tab-header {
       color: @gray;
       padding-top: 1px;
     }
-  }
-}
-
-.entity-edit-form > header .actions .btn-group {
-  font-weight: 200;
-
-  &.hidden {
-    display: none;
   }
 }
 

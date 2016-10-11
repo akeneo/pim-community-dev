@@ -202,7 +202,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             });
 
             this.selectWidget.setViewDesign(this);
-            this.$(this.buttonSelector).append('<span class="caret"></span>');
+            this.$(this.buttonSelector).append('<span class="AkbemDropdown-caret caret"></span>');
         },
 
         /**

@@ -17,10 +17,10 @@ function($, _, __, AbstractFilter) {
     return AbstractFilter.extend({
         /** @property */
         template: _.template(
-            '<button type="button" class="btn filter-criteria-selector oro-drop-opener oro-dropdown-toggle">' +
+            '<button type="button" class="AkbemDropdown-button filter-criteria-selector oro-drop-opener oro-dropdown-toggle">' +
                 '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<strong class="filter-criteria-hint"><%= criteriaHint %></strong>' +
-                '<span class="caret"></span>' +
+                '<span class="AkbemDropdown-caret caret"></span>' +
             '</button>' +
             '<% if (canDisable) { %><a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>' +
             '<div class="filter-criteria dropdown-menu" />'

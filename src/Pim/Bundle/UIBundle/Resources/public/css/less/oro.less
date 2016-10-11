@@ -54,11 +54,6 @@ a:focus {
 }
 
 // Bootstrap - Buttons
-.btn-group {
-  > .btn {
-    font-size:@font-size-14;
-  }
-}
 .btn {
   .border-radius(@baseBtnBorderRadius);
   padding: 0 12px;
@@ -104,22 +99,6 @@ a:focus {
   line-height: 20px;
   font-size: @font-size-11;
   padding: 0 6px;
-}
-
-.btn-group+.btn-group { margin-left:8px; }
-
-.btn-group > .dropdown-menu li a, .btn-group > .dropdown-menu li button {
-  padding: 1px 20px;
-  font-size: @font-size-12;
-  color: @bodyColor;
-  text-shadow: none !important;
-  background: @white;
-  text-align: left;
-  width: 100%;
-  border: none;
-  &:hover {
-    background: @akeneoGreySuperLight;
-  }
 }
 
 // Bootstrap - Form
@@ -175,19 +154,6 @@ label, input, button, select, textarea {
 }
 
 input[type='checkbox'] + label { margin-bottom:2px; }
-.btn-group > .btn:last-child,
-.btn-group > .dropdown-toggle {
-  -moz-border-radius-topright: 2px;
-  border-top-right-radius: 2px;
-  -moz-border-radius-bottomright: 2px;
-  border-bottom-right-radius: 2px;
-}
-.btn-group > .btn:first-child {
-  -moz-border-radius-topleft: 2px;
-  border-top-left-radius: 2px;
-  -moz-border-radius-bottomleft: 2px;
-  border-bottom-left-radius: 2px;
-}
 
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus,
@@ -281,54 +247,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
 .navbar .nav > .active > a:focus {
   box-shadow: none;
   color: @white;
-}
-.filter-box {
-  .box-shadow(inset 0 2px 1px rgba(0, 0, 0, 0.02));
-  background: @grayLighter;
-  border: 1px solid @color-ddd;
-  border-width: 1px 0;
-  padding: 15px 20px 8px 150px;
-  .icon-remove:before {
-    color: @color-aaa;
-    font-size: @font-size-14;
-  }
-  .filter-list {
-    float: left;
-    margin: 0 0 0 -120px;
-    position: relative;
-  }
-  .filter-item {
-    .filter-criteria-selector,
-    [class$=dropdown-toggle].btn {
-      height: 29px;
-      font-weight: normal;
-      padding-top: 1px;
-      button {
-        color: @gray;
-        font-size: @font-size-12;
-      }
-    }
-    .choicefilter {
-      input[type='text'] {
-        margin-right: -7px;
-        .border-radius(0);
-      }
-      .filter-update {
-        .border-radius(0 3px 3px 0);
-        position: relative;
-        font-size: @font-size-14;
-        height: 29px;
-        line-height: 28px;
-      }
-    }
-    .disable-filter {
-      line-height: 18px !important;
-    }
-  }
-}
-
-.filter-box .btn-group {
-  margin-bottom: 7px;
 }
 
 .badge-enabled,
@@ -441,25 +359,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
       }
     }
   }
-}
-
-.oro-drop > .btn {
-  display: inline-block;
-  vertical-align: top;
-}
-.btn-group > .disable-filter {
-  border-bottom-right-radius: 4px;
-  border-top-right-radius: 4px;
-  border-style: solid;
-  border-color: @color-ccc @color-ccc @color-bbb;
-  border-width: 1px 1px 1px 0;
-  font-size: @font-size-18;
-  display: inline-block;
-  vertical-align: top;
-  height: 28px;
-  padding: 4px 2px 0;
-  line-height: 28px;
-  #gradient > .vertical(@white, @grayLighter);
 }
 
 .dropdown:after {
@@ -623,51 +522,14 @@ textarea {
   color:lighten(@bodyColor,30%);
   font-style:italic;
 }
-.oro-drop.open-filter .filter-criteria.dropdown-menu {
-  min-width: 120px;
-}
 .filter-criteria {
   .oro-action {
     width: 100%;
     margin: 0;
-    .btn-group {
-      float: right;
-    }
     .btn {
       outline: none;
       position: static;
     }
-  }
-  .input-prepend {
-    > .btn-group {
-      > .dropdown-menu {
-        min-width:125px;
-        a {
-          padding:1px 13px;
-        }
-      }
-    }
-  }
-}
-.filter-box .filter-item .filter-criteria {
-  top: 125%;
-  &:before {
-    border-bottom: 9px solid rgba(0, 0, 0, 0.2);
-    border-left: 9px solid transparent;
-    border-right: 9px solid transparent;
-    content: "";
-    display: inline-block;
-    position: absolute;
-    top: -9px;
-  }
-  &:after {
-    border-bottom: 10px solid @white;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    content: "";
-    display: inline-block;
-    position: absolute;
-    top: -8px;
   }
 }
 .filter-criteria {
@@ -687,39 +549,6 @@ textarea {
     left: auto;
     right: 29px;
   }
-}
-.filter-box .filter-select-oro {
-  height: 30px;
-  line-height: 20px;
-  width: 85px; /* need for flexible width at filter grid */
-}
-.filter-box .filter-item .divider {
-  background: none;
-  line-height: 40px;
-  font-size: @font-size-16;
-  padding: 0;
-  margin: 0;
-  position: relative;
-  top: -3px;
-}
-.filter-item .btn {
-  vertical-align: top;
-}
-
-.btn-group > .btn-small {
-  font-size: @font-size-11;
-}
-.btn-group > a.btn {
-  height: 34px;
-  line-height: 34px;
-}
-.oro-action .btn-group > .btn,
-.oro-action .btn-group > .dropdown-menu,
-.oro-action .btn-group > .popover {
-  font-size: @font-size-14;
-}
-.oro-action .btn-group {
-  margin-right: 0;
 }
 .top-messages {
   margin-bottom: 0;
@@ -871,25 +700,6 @@ label.radio.error {
    padding: 6px 0 0;
 }
 
-button.filter-update {
-  margin: 0 0 0 6px;
-}
-.choicefilter {
-  select,
-  textarea,
-  input[type="text"],
-  input[type="date"],
-  input[type="number"],
-  input[type="email"],
-  input[type="url"],
-  input[type="search"] {
-    height: 30px;
-  }
-}
-.choicefilter .input-append,
-.choicefilter .input-prepend {
-  margin-bottom: 0;
-}
 .input-append .add-on,
 .input-prepend .add-on {
   height:32px;

@@ -17,24 +17,21 @@ function($, _, __, app, TextFilter, initSelect2) {
          * @property {function(Object, ?Object=): String}
          */
         popupCriteriaTemplate: _.template(
-            '<div class="choicefilter">' +
-                '<div class="input-prepend">' +
-                    '<div class="btn-group">' +
-                        '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                            '<%= selectedChoiceLabel %>' +
-                            '<span class="caret"></span>' +
-                        '</button>' +
-                        '<ul class="dropdown-menu">' +
-                            '<% _.each(choices, function (option) { %>' +
-                                '<li<% if (selectedChoice == option.value) { %> class="active"<% } %>><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
-                            '<% }); %>' +
-                        '</ul>' +
-                        '<input type="text" class="select-field" name="value" value="">' +
-                        '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
-                        '</div>' +
-                    '</div>' +
-                    '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
+            '<div class="AkbemFilterChoice choicefilter">' +
+                '<div class="AkbemFilterChoice-operator AkbemDropdown">' +
+                    '<button class="AkbemDropdown-button AkbemDropdown-button--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
+                        '<%= selectedChoiceLabel %>' +
+                        '<span class="AkbemDropdown-caret"></span>' +
+                    '</button>' +
+                    '<ul class="dropdown-menu">' +
+                        '<% _.each(choices, function (option) { %>' +
+                            '<li<% if (selectedChoice == option.value) { %> class="active"<% } %>><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
+                        '<% }); %>' +
+                    '</ul>' +
                 '</div>' +
+                '<input type="text" class="AkbemFilterChoice-field select-field" name="value" value="">' +
+                '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
+                '<button class="AkbemButton AkbemButton--success AkbemButton--little AkbemButton--noLeftRadius filter-update" type="button"><%- _.__("Update") %></button>' +
             '</div>'
         ),
 
