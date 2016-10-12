@@ -26,7 +26,7 @@ class AttributeColumnsResolver
     protected $valuesResolver;
 
     /** @var array */
-    protected $attributesFields;
+    protected $attributesFields = [];
 
     /** @var string */
     protected $identifierField;
@@ -70,7 +70,8 @@ class AttributeColumnsResolver
             $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
             foreach ($values as $value) {
-                $this->resolveAttributeField($value, $currencyCodes);
+                $fields = $this->resolveAttributeField($value, $currencyCodes);
+                $this->attributesFields = array_merge($this->attributesFields, $fields);
             }
         }
 
@@ -88,18 +89,20 @@ class AttributeColumnsResolver
         $field = $this->resolveFlatAttributeName($value['attribute'], $value['locale'], $value['scope']);
 
         if (AttributeTypes::PRICE_COLLECTION === $value['type']) {
-            $this->attributesFields[] = $field;
+            $fields[] = $field;
             foreach ($currencyCodes as $currencyCode) {
                 $currencyField = sprintf('%s-%s', $field, $currencyCode);
-                $this->attributesFields[] = $currencyField;
+                $fields[] = $currencyField;
             }
         } elseif (AttributeTypes::METRIC === $value['type']) {
-            $this->attributesFields[] = $field;
+            $fields[] = $field;
             $metricField = sprintf('%s-%s', $field, 'unit');
-            $this->attributesFields[] = $metricField;
+            $fields[] = $metricField;
         } else {
-            $this->attributesFields[] = $field;
+            $fields[] = $field;
         }
+
+        return $fields;
     }
 
     /**
