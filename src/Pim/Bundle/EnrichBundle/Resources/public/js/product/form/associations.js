@@ -48,7 +48,7 @@ define(
             className: 'tab-pane active product-associations',
             events: {
                 'click .associations-list li': 'changeAssociationType',
-                'click .association-buttons .target-button': 'changeAssociationTargets'
+                'click .AkbemTitleContainer .target-button': 'changeAssociationTargets'
             },
             initialize: function () {
                 state = {
@@ -165,12 +165,13 @@ define(
             renderPanes: function () {
                 this.loadAssociationTypes().then(function (associationTypes) {
                     this.setAssociationCount(associationTypes);
-                    this.$('tab-content > .tab-pane').remove();
-                    this.$('.association-buttons').after(
+                    this.$('.tab-content > .association-type').remove();
+                    this.$('.tab-content').prepend(
                         this.panesTemplate({
                             locale: UserContext.get('catalogLocale'),
                             associationTypes: associationTypes,
-                            currentAssociationType: this.getCurrentAssociationType()
+                            currentAssociationType: this.getCurrentAssociationType(),
+                            currentAssociationTarget: this.getCurrentAssociationTarget()
                         })
                     );
                 }.bind(this));
@@ -234,10 +235,10 @@ define(
                     .siblings('.active')
                     .removeClass('active');
 
-                this.$('.tab-pane[data-association-type="' + associationType + '"]')
-                    .addClass('active')
-                    .siblings('.active')
-                    .removeClass('active');
+                this.$('.AkbemTitleContainer.association-type[data-association-type="' + associationType + '"]')
+                    .removeClass('AkbemTitleContainer--hidden')
+                    .siblings('.AkbemTitleContainer.association-type:not(.AkbemTitleContainer--hidden)')
+                    .addClass('AkbemTitleContainer--hidden');
 
                 this.updateListenerSelectors();
 

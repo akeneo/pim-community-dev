@@ -28,7 +28,7 @@ class Show extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Export now button' => ['css' => '.js-NavbarButtons .export-btn'],
+                'Export now button' => ['css' => '.AkbemTitleContainer-rightButtons .export-btn'],
             ]
         );
     }

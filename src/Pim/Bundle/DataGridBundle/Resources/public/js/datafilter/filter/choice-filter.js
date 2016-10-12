@@ -28,9 +28,9 @@ function($, _, __, app, TextFilter, initSelect2) {
                             '<li<% if (selectedChoice == option.value) { %> class="active"<% } %>><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
                         '<% }); %>' +
                     '</ul>' +
+                    '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
                 '</div>' +
                 '<input type="text" class="AkbemFilterChoice-field select-field" name="value" value="">' +
-                '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
                 '<button class="AkbemButton AkbemButton--success AkbemButton--little AkbemButton--noLeftRadius filter-update" type="button"><%- _.__("Update") %></button>' +
             '</div>'
         ),
@@ -181,7 +181,7 @@ function($, _, __, app, TextFilter, initSelect2) {
                     item.parent().removeClass('active');
                 } else if (item.data('value') == newValue.type && !item.parent().hasClass('active')) {
                     item.parent().addClass('active');
-                    menu.parent().find('button').html(item.html() + '<span class="caret"></span>');
+                    item.closest('.AkbemDropdown').find('AkbemDropdown-button').html(item.html() + '<span class="AkbemDropdown-caret"></span>');
                 }
             });
             if (newValue.type === 'empty') {
@@ -200,24 +200,27 @@ function($, _, __, app, TextFilter, initSelect2) {
          * @protected
          */
         _onClickChoiceValue: function(e) {
-            $(e.currentTarget).parent().parent().find('li').each(function() {
+            var dropdown = $(e.currentTarget).closest('.AkbemDropdown');
+
+            // TODO Use -menuLink or -menuItem
+            dropdown.find('li').each(function() {
                 $(this).removeClass('active');
             });
             $(e.currentTarget).parent().addClass('active');
-            var parentDiv = $(e.currentTarget).parent().parent().parent();
-            parentDiv.find('.name_input').val($(e.currentTarget).attr('data-value'));
+            dropdown.find('.name_input').val($(e.currentTarget).attr('data-value'));
 
+            var filterContainer = $(e.currentTarget).closest('.AkbemFilterChoice');
             if ($(e.currentTarget).attr('data-value') === 'in') {
                 this._enableListSelection();
             } else {
                 this._disableListSelection();
             }
             if ($(e.currentTarget).attr('data-value') === 'empty') {
-                parentDiv.find(this.criteriaValueSelectors.value).hide();
+                filterContainer.find(this.criteriaValueSelectors.value).hide();
             } else {
-                parentDiv.find(this.criteriaValueSelectors.value).show();
+                filterContainer.find(this.criteriaValueSelectors.value).show();
             }
-            parentDiv.find('button').html($(e.currentTarget).html() + '<span class="caret"></span>');
+            dropdown.find('.AkbemDropdown-button').html($(e.currentTarget).html() + '<span class="AkbemDropdown-caret"></span>');
             e.preventDefault();
         },
 

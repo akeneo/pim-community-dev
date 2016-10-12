@@ -63,7 +63,7 @@ define(
             /** @property */
             template: _.template(
                 '<div class="toolbar"></div>' +
-                '<div class="container-fluid">' +
+                '<div class="grid-container container-fluid">' +
                     '<table class="AkbemGrid grid"></table>' +
                     '<div class="no-data"></div>' +
                     '<div class="loading-mask"></div>' +

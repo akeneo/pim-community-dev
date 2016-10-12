@@ -594,7 +594,7 @@ class AssertionContext extends RawMinkContext
 
         // Wait for the footer of the notification panel dropdown to be loaded
         $this->spin(function () {
-            $footer  = $this->getCurrentPage()->find('css', '#header-notification-widget ul.dropdown-menu > p');
+            $footer  = $this->getCurrentPage()->find('css', '.AkbemNotificationsList-footer');
             $content = trim($footer->getText());
 
             return !empty($content);
@@ -640,7 +640,7 @@ class AssertionContext extends RawMinkContext
         ];
 
         foreach ($table->getHash() as $data) {
-            $notifications = $notificationWidget->findAll('css', '#header-notification-widget .dropdown-menu li>a');
+            $notifications = $notificationWidget->findAll('css', '.AkbemNotification-link');
 
             $matchingNotification = null;
 

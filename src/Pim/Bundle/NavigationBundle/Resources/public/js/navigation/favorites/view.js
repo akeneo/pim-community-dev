@@ -12,7 +12,7 @@ function(_, Backbone, app, mediator, error,
      */
     return AbstractView.extend({
         options: {
-            el: '.js-favorite-button',
+            el: '.favorite-button',
             tabTitle: 'Favorites',
             tabIcon: 'icon-star-empty',
             tabId: 'favorite'

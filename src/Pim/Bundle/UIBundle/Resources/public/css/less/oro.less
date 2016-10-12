@@ -291,9 +291,12 @@ input[type='checkbox'] + label { margin-bottom:2px; }
 }
 .grid-container {
   width: 100%;
-  position: relative;
   margin-top: 10px;
   overflow: visible;
+
+  // This next line is very important because the Loading mask is in absolute position and NEED this. Elsewhere, the loading mask takes the entire page.
+  position: relative;
+
   .table-bordered {
     border-left:1px solid @color-ddd;
     -webkit-border-radius: 0;

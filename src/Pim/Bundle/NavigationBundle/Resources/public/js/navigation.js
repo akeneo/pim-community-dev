@@ -62,9 +62,9 @@ define(function (require) {
             flashMessages:       '#flash-messages',
             menu:                '#main-menu',
             breadcrumb:          '#breadcrumb',
-            pinButtonsContainer: '.js-pin-button-div',
+            pinButtonsContainer: '#pin-button-div',
             gridContainer:       '.grid-container',
-            pinButtons:          '.js-minimize-button, .js-favorite-button'
+            pinButtons:          '.minimize-button, .favorite-button'
         },
         selectorCached: {},
 

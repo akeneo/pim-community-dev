@@ -34,7 +34,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @property
          */
-        className: 'AkbemFilterBox oro-clearfix-width',
+        className: 'AkbemFilterBox filter-box oro-clearfix-width',
 
         /**
          * Filter list template

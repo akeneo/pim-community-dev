@@ -91,8 +91,8 @@ define(
             popupCriteriaTemplate: _.template(
                 '<div class="metricfilter choicefilter">' +
                     '<div class="input-prepend input-append">' +
-                        '<div class="btn-group">' +
-                            '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
+                        '<div class="AkbemFilterChoice-operator AkbemDropdown btn-group">' +
+                            '<button class="AkbemDropdown-button btn dropdown-toggle" data-toggle="dropdown">' +
                                 '<%= _.__("Action") %>' +
                                 '<span class="caret"></span>' +
                             '</button>' +
@@ -106,8 +106,8 @@ define(
 
                         '<input type="text" name="value" value="">' +
 
-                        '<div class="btn-group">' +
-                            '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
+                        '<div class="AkbemDropdown">' +
+                            '<button class="AkbemDropdown-button btn dropdown-toggle" data-toggle="dropdown">' +
                                 '<%= _.__("Unit") %>' +
                                 '<span class="caret"></span>' +
                             '</button>' +
@@ -204,7 +204,7 @@ define(
              */
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
-                var parentDiv = $(e.currentTarget).parent().parent().parent().parent();
+                var parentDiv = $(e.currentTarget).closest('.metricfilter');
                 if ($(e.currentTarget).attr('data-value') === 'empty') {
                     parentDiv.find('input[name="value"], .btn-group:eq(1)').hide();
                 } else {

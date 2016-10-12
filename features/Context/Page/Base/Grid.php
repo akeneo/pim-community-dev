@@ -262,7 +262,7 @@ class Grid extends Index
     public function findAction($element, $actionName)
     {
         $rowElement = $this->getRow($element);
-        $action     = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
+        $action     = $rowElement->find('css', sprintf('.AkbemIconsList-item[title="%s"]', $actionName));
 
         return $action;
     }
@@ -372,7 +372,7 @@ class Grid extends Index
     {
         $pagination = $this
             ->getElement('Grid toolbar')
-            ->find('css', 'AkbemPagination *:contains("record")');
+            ->find('css', '.AkbemPagination *:contains("record")');
 
         /**
          * If pagination not found or is empty, it actually count rows
@@ -497,11 +497,12 @@ class Grid extends Index
      *
      * @param string $columnName
      * @param string $order
+     * @param string $order
      */
     public function sortBy($columnName, $order = 'ascending')
     {
         $sorter = $this->getColumnSorter($columnName);
-        if ($sorter->getParent()->getAttribute('class') !== strtolower($order)) {
+        if (!$sorter->getParent()->hasClass(strtolower($order))) {
             $sorter->click();
         }
     }
@@ -517,7 +518,7 @@ class Grid extends Index
     public function isSortedAndOrdered($columnName, $order)
     {
         $order = strtolower($order);
-        if ($this->getColumnHeader($columnName)->getAttribute('class') !== $order) {
+        if (!$this->getColumnHeader($columnName)->hasClass($order)) {
             return false;
         }
 
@@ -585,7 +586,7 @@ class Grid extends Index
     public function showFilter($filterName)
     {
         $this->spin(function () {
-            return $this->getElement('Body')->find('css', '.filter-box, .filter-wrapper');
+            return $this->getElement('Body')->find('css', $this->elements['Filters']['css']);
         }, 'The filter box is not loaded');
 
         $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));

@@ -1307,7 +1307,7 @@ class WebUser extends RawMinkContext
     public function iPressTheButton($button)
     {
         $this->spin(function () use ($button) {
-            $this->getCurrentPage()->pressButton($button);
+            $this->getCurrentPage()->pressButton($button, true);
 
             return true;
         }, sprintf("Can not find any '%s' button", $button));

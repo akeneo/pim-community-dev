@@ -1,11 +1,11 @@
-<div class="AkbemButtonsList {% if app.request.attributes.get('_route') == bap.start_route %}AkbemButtonsList--isHidden{% endif %} js-pin-button-div">
-    <button class="AkbemIconButton js-favorite-button"
+<div id="pin-button-div" class="AkbemButtonsList {% if app.request.attributes.get('_route') == bap.start_route %}AkbemButtonsList--isHidden{% endif %}">
+    <button class="AkbemIconButton favorite-button"
         data-title="{{ oro_title_render_serialized() }}"
         data-title-rendered-short="{{ oro_title_render_short() }}"
         title="{{ 'Add this page to favorites'|trans }}">
             <i class="icon-star"></i>
     </button>
-    <button class="AkbemIconButton js-minimize-button"
+    <button class="AkbemIconButton minimize-button"
         data-title="{{ oro_title_render_serialized() }}"
         data-title-rendered-short="{{ oro_title_render_short() }}"
         title="{{ 'Minimize the window to the pinbar'|trans }}">

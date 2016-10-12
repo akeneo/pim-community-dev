@@ -16,17 +16,6 @@
             </ul>
         </div>
         <div class="tab-content">
-            <div class="AkbemTitleContainer pull-right">
-                <button type="button" class="target-button btn pull-right<% if ('products' === currentAssociationTarget) { %> hide<% } %>" data-association-target="products">
-                    <i class="icon-random"></i>
-                    <%- _.__('pim_enrich.form.product.tab.associations.info.show_products') %>
-                </button>
-                <button type="button" class="target-button btn pull-right<% if ('groups' === currentAssociationTarget) { %> hide<% } %>" data-association-target="groups">
-                    <i class="icon-random"></i>
-                    <%- _.__('pim_enrich.form.product.tab.associations.info.show_groups') %>
-                </button>
-            </div>
-
             <div class="association-product-grid<% if ('products' !== currentAssociationTarget) { %> hide<% } %>">
                 <div id="grid-association-product-grid" data-type="datagrid"></div>
             </div>

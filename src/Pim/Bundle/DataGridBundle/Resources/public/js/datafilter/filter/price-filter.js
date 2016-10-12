@@ -26,8 +26,8 @@ define(
             },
 
             _onDisable: function() {
-                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="caret"></span>');
-                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="caret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="AkbemDropdown-caret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="AkbemDropdown-caret"></span>');
             },
 
             /**
@@ -85,35 +85,33 @@ define(
              * @inheritDoc
              */
             popupCriteriaTemplate: _.template(
-                '<div class="currencyfilter choicefilter">' +
-                    '<div class="input-prepend input-append">' +
-                        '<div class="btn-group">' +
-                            '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                '<%= _.__("Action") %>' +
-                                '<span class="caret"></span>' +
-                            '</button>' +
-                            '<ul class="dropdown-menu">' +
-                                '<% _.each(choices, function (option) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= option.value %>" data-input-toggle="true"><%= option.label %></a></li>' +
-                                '<% }); %>' +
-                            '</ul>' +
-                            '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
-                        '</div>' +
-                        '<input type="text" name="value" value="">' +
-                        '<div class="btn-group">' +
-                            '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                '<%= _.__("Currency") %>' +
-                                '<span class="caret"></span>' +
-                            '</button>' +
-                            '<ul class="dropdown-menu">' +
-                                '<% _.each(currencies, function (currency) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= currency %>"><%= currency %></a></li>' +
-                                '<% }); %>' +
-                            '</ul>' +
-                            '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
-                        '</div>' +
+                '<div class="AkbemFilterChoice currencyfilter choicefilter">' +
+                    '<div class="AkbemFilterChoice-operator AkbemDropdown">' +
+                        '<button class="AkbemDropdown-button AkbemDropdown-button--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
+                            '<%= _.__("Action") %>' +
+                            '<span class="AkbemDropdown-caret"></span>' +
+                        '</button>' +
+                        '<ul class="dropdown-menu">' +
+                            '<% _.each(choices, function (option) { %>' +
+                                '<li><a class="choice_value" href="#" data-value="<%= option.value %>" data-input-toggle="true"><%= option.label %></a></li>' +
+                            '<% }); %>' +
+                        '</ul>' +
+                        '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
                     '</div>' +
-                    '<button class="btn btn-primary filter-update" type="button"><%= _.__("Update") %></button>' +
+                    '<input class="AkbemFilterChoice-field" type="text" name="value" value="">' +
+                    '<div class="AkbemDropdown">' +
+                        '<button class="AkbemDropdown-button AkbemDropdown-button--noRightBorder AkbemDropdown-button--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
+                            '<%= _.__("Currency") %>' +
+                            '<span class="AkbemDropdown-caret"></span>' +
+                        '</button>' +
+                        '<ul class="dropdown-menu">' +
+                            '<% _.each(currencies, function (currency) { %>' +
+                                '<li><a class="choice_value" href="#" data-value="<%= currency %>"><%= currency %></a></li>' +
+                            '<% }); %>' +
+                        '</ul>' +
+                        '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
+                    '</div>' +
+                    '<button class="AkbemButton AkbemButton--success AkbemButton--little AkbemButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>' +
                 '</div>'
             ),
 
@@ -177,7 +175,7 @@ define(
                         }
                     } else if (value == newValue.type || value == newValue.currency) {
                         item.parent().addClass('active');
-                        item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
+                        item.closest('.AkbemDropdown').find('AkbemDropdown-button').html(item.html() + '<span class="AkbemDropdown-caret"></span>');
                     }
                 });
                 if (newValue.type === 'empty') {
@@ -211,11 +209,11 @@ define(
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 if ($(e.currentTarget).attr('data-input-toggle')) {
-                    var parentDiv = $(e.currentTarget).parent().parent().parent().parent();
+                    var filterContainer = $(e.currentTarget).closest('.AkbemFilterChoice');
                     if ($(e.currentTarget).attr('data-value') === 'empty') {
-                        parentDiv.find('input[name="value"]').hide();
+                        filterContainer.find(this.criteriaValueSelectors.value).hide();
                     } else {
-                        parentDiv.find('input[name="value"]').show();
+                        filterContainer.find(this.criteriaValueSelectors.value).show();
                     }
                 }
             },

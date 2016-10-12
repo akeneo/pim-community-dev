@@ -1,7 +1,8 @@
 @import '../base/variables';
 
 .AkbemTitleContainer {
-  display: flex;
+  // TODO Remove these "!important" when ".tab-content > .active, .pill-content > .active { display: block }" will be removed
+  display: flex !important;
   justify-content: space-between;
   align-items:  center;
   padding: 15px 20px;
@@ -10,5 +11,16 @@
   &-title {
     font-size: 18.198px;
     color: #52267D;
+    margin: 0;
+  }
+
+  &-rightButtons {
+    order: 10;
+  }
+
+  &-titleButtons { }
+
+  &--hidden {
+    display: none !important;
   }
 }

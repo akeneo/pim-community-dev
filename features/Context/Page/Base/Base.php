@@ -29,7 +29,7 @@ class Base extends Page
         'Product title'    => ['css' => '.entity-title'],
         'HeadTitle'        => ['css' => 'title'],
         'Flash messages'   => ['css' => '.flash-messages-holder'],
-        'Navigation Bar'   => ['css' => 'header#oroplatform-header'],
+        'Navigation Bar'   => ['css' => '.AkbemHeader-menus'],
         'Container'        => ['css' => '#container'],
         'Locales dropdown' => ['css' => '#locale-switcher'],
         'Tabs'             => ['css' => '#form-navbar'],
@@ -197,13 +197,14 @@ class Base extends Page
     /**
      * Overriden for compatibility with links
      *
-     * @param string $locator
+     * @param string  $locator
+     * @param boolean $forceVisible
      *
      * @throws ElementNotFoundException
      */
-    public function pressButton($locator)
+    public function pressButton($locator, $forceVisible = false)
     {
-        $button = $this->getButton($locator);
+        $button = $forceVisible ? $this->getVisibleButton($locator) : $this->getButton($locator);
 
         if (null === $button) {
             $button = $this->find(
@@ -225,26 +226,46 @@ class Base extends Page
     /**
      * Get button
      *
-     * @param string $locator
+     * @param string  $locator
+     * @param boolean $forceVisible
      *
      * @return NodeElement|null
      */
-    public function getButton($locator)
+    public function getButton($locator, $forceVisible = false)
     {
         // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
-
         if (null === $button) {
             $button = $this->find('xpath', sprintf("//a[text() = '%s']", $locator));
         }
-
         if (null === $button) {
             $button = $this->find('css', sprintf('a[title="%s"]', $locator));
         }
-
         if (null === $button) {
             // Use Mink search, which use "contains" xpath condition
             $button = $this->findButton($locator);
+        }
+        return $button;
+    }
+
+    /**
+     * Get visible button
+     *
+     * @param string  $locator
+     *
+     * @return NodeElement|null
+     */
+    public function getVisibleButton($locator)
+    {
+        $button = $this->getFirstVisible($this->findAll('xpath', sprintf("//button[text() = '%s']", $locator)));
+        if (null === $button) {
+            $button = $this->getFirstVisible($this->findAll('xpath', sprintf("//a[text() = '%s']", $locator)));
+        }
+        if (null === $button) {
+            $button =  $this->getFirstVisible($this->findAll('css', sprintf('a[title="%s"]', $locator)));
+        }
+        if (null === $button) {
+            $button = $this->getFirstVisible($this->findAll('named', array('button', $locator)));
         }
 
         return $button;
@@ -347,10 +368,9 @@ class Base extends Page
      */
     public function clickOnAkeneoLogo()
     {
-        $this
-            ->getElement('Navigation Bar')
-            ->find('css', 'h1.logo a')
-            ->click();
+        $this->spin(function () {
+            return $this->getElement('Navigation Bar')->find('css', '.AkbemHeader-logo a');
+        }, 'Can not find Akeneo logo')->click();
     }
 
     /**
@@ -496,5 +516,23 @@ class Base extends Page
 
             return $tabs;
         }, 'Cannot find any tabs in this page');
+    }
+
+    /**
+     * Returns the first visible element
+     *
+     * @param $nodeElements NodeElement[]
+     *
+     * @return NodeElement|null
+     */
+    protected function getFirstVisible(array $nodeElements)
+    {
+        foreach ($nodeElements as $nodeElement) {
+            if ($nodeElement->isVisible()) {
+                return $nodeElement;
+            }
+        }
+
+        return null;
     }
 }

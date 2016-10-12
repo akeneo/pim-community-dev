@@ -18,7 +18,7 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
             tabIcon: 'icon-folder-close',
             el: '.pin-bar',
             listBar: '.list-bar',
-            minimizeButton: '.js-minimize-button',
+            minimizeButton: '.minimize-button',
             defaultUrl: '/',
             tabId: 'pinbar',
             collection: null
