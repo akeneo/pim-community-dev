@@ -48,9 +48,31 @@
     background: darken(@AkGreen, 10%);
   }
 
+  &--gray {
+    background-color: #A1A9B7;
+    color: #F1F4F9;
+  }
+
+  &--gray &-icon {
+    background: #ccd1d8;
+  }
+
   &--little {
     height: @littleButtonsHeight;
     line-height: @littleButtonsHeight;
+  }
+
+  &--micro {
+    height: @microButtonsHeight;
+    line-height: @microButtonsHeight;
+    font-size: 12.132px;
+  }
+
+  &--micro &-icon {
+    height: @microButtonsHeight;
+    width: @microButtonsHeight;
+    line-height: @microButtonsHeight;
+    font-size: 12.132px;
   }
 
   &--noLeftRadius {

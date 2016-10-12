@@ -1,15 +1,17 @@
-<a href="<%= url ? url : 'javascript: void(0);' %>" <%= viewed ? '' : 'class="new"' %>>
-    <div class="action-icon <%= actionType.replace('_', '-') %>">
-        <i class="status icon-<%= icon %>"></i>
+<a href="<%= url ? url : 'javascript: void(0);' %>" class="AkbemNotification-link <%= viewed ? '' : 'AkbemNotification-link--new new' %>">
+    <div class="AkbemNotification-header">
+        <div class="AkbemNotification-icon AkbemNotification-icon--<%= actionType %>">
+            <i class="AkbemNotification-status AkbemNotification-status--<%= type %> icon-<%= icon %>"></i>
+        </div>
+        <div class="AkbemNotification-metas">
+            <time class="AkbemNotification-time"><%= createdAt %></time>
+            <span class="AkbemNotification-title"><%= actionTypeMessage %></span>
+        </div>
+        <i class="AkbemNotification-trashAction icon-<%= viewed ? 'trash' : 'eye-close' %> action"></i>
     </div>
-    <div class="metas">
-        <time><%= createdAt %></time>
-        <span class="title"><%= actionTypeMessage %></span>
-    </div>
-    <div class="message"><%= message %></div>
-    <% if (comment) { %> <div class="comment"><%= comment %></div> <% } %>
-    <i class="icon-<%= viewed ? 'trash' : 'eye-close' %> action"></i>
+    <div class="AkbemNotification-message"><%= message %></div>
+    <% if (comment) { %> <div class="AkbemNotification-comment"><%= comment %></div> <% } %>
     <% if (showReportButton) { %>
-    <button class="btn icons-holder-text"><i class="icon-file-text-alt"></i><%- _.__('pim_notification.report') %></button>
+    <button class="AkbemNotification-button AkbemButton AkbemButton--micro AkbemButton--gray AkbemButton--withIcon"><i class="AkbemButton-icon icon-file-text-alt"></i><%- _.__('pim_notification.report') %></button>
     <% } %>
 </a>

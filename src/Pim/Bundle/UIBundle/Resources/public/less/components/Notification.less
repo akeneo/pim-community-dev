@@ -1,0 +1,133 @@
+@import '../base/variables';
+@import '../base/mixins';
+
+.AkbemNotification {
+  @iconSize: 50px;
+  @littleIconSize: 26px;
+  @statusIconSize: 20px;
+
+  width: 400px;
+
+  &-link {
+    border-bottom: 1px solid @borderColor;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    color: @AkDefaultFontColor;
+    opacity: 0.4;
+
+    &:hover {
+      background: #ebe0f5;
+    }
+
+    &--new {
+      opacity: 1;
+    }
+  }
+
+  &-header {
+    display: flex;
+  }
+
+  &-icon {
+    width: @iconSize;
+    height: @iconSize;
+    border: 1px solid @borderColor;
+    .border-radius(2px);
+    background-position: center center;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    position: relative;
+
+    &--import, &--massUpload {
+      background-image: url("/bundles/pimui/images/icon-import.svg");
+    }
+
+    &--export, &--quickExport {
+      background-image: url("/bundles/pimui/images/icon-export.svg");
+    }
+
+    &--massEdit {
+      background-image: url("/bundles/pimui/images/icon-edit.svg");
+    }
+  }
+
+  &-status {
+    width: @statusIconSize;
+    height: @statusIconSize;
+    position: absolute;
+    right: -@statusIconSize / 3;
+    top: -@statusIconSize / 3;
+    margin: 0;
+    color: white;
+    text-align: center;
+    line-height: @statusIconSize;
+
+    &--success, &--add {
+      background: #67b373;
+    }
+
+    &--warning {
+      background: #f8b43f;
+    }
+
+    &--error {
+      background: #d36050;
+    }
+  }
+
+  &-metas {
+    flex-grow: 1;
+    line-height: 20px;
+    padding: 0 16px;
+    align-self: center;
+  }
+
+  &-time {
+    font-size: 11px;
+    color: #A1A9B7;
+    display: block;
+  }
+
+  &-title {
+    font-size: 14.154px;
+    font-weight: bold;
+    display: block;
+  }
+
+  &-trashAction {
+    // TODO Maybe this should have the same style than AkbemIconsList-item
+    width: @littleIconSize;
+    height: @littleIconSize;
+    background-color: #F1F4F9;
+    border: 1px solid #A1A9B7;
+    color: #A1A9B7;
+    .border-radius(2px);
+    font-size: 14px;
+    text-align: center;
+    line-height: @littleIconSize;
+
+    &:hover {
+      background-color: #A1A9B7;
+      color: white;
+    }
+  }
+
+  &-message {
+    line-height: 16px;
+    padding: 16px 0;
+  }
+
+  &-comment {
+    background-color: @akeneoLight;
+    color: @akeneoDarkBlue;
+    line-height: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+
+  &-button {
+    align-self: flex-start;
+  }
+}

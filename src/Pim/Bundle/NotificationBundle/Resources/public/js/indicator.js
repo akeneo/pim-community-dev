@@ -6,7 +6,9 @@ define(
         var Indicator = Backbone.Model.extend({
             defaults: {
                 value: null,
-                className: 'AkbemBell-count'
+                className: 'AkbemBell-count',
+                emptyClass: 'AkbemBell-count--hidden',
+                nonEmptyClass: ''
             }
         });
 
@@ -14,7 +16,7 @@ define(
             model: Indicator,
 
             template: _.template(
-                '<span class="<%= className %>"><%= value %></span>'
+                '<span class="<%= className %> <%= value ? nonEmptyClass : emptyClass %>"><%= value %></span>'
             ),
 
             initialize: function () {

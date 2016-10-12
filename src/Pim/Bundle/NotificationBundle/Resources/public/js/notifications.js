@@ -21,7 +21,7 @@ define(
                 noNotificationsMessage: null,
                 markAsReadMessage:      null,
                 indicatorBaseClass:     'AkbemBell-count',
-                indicatorEmptyClass:    'hide',
+                indicatorEmptyClass:    'AkbemBell-count--hidden',
                 refreshInterval:        30000
             },
 
