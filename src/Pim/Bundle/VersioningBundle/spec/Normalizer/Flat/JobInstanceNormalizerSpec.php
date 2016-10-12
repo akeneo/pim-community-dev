@@ -17,9 +17,10 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_job_instance_normalization_into_csv(JobInstance $jobinstance)
+    function it_supports_job_instance_normalization_into_flat(JobInstance $jobinstance)
     {
-        $this->supportsNormalization($jobinstance, 'csv')->shouldBe(true);
+        $this->supportsNormalization($jobinstance, 'flat')->shouldBe(true);
+        $this->supportsNormalization($jobinstance, 'csv')->shouldBe(false);
         $this->supportsNormalization($jobinstance, 'json')->shouldBe(false);
         $this->supportsNormalization($jobinstance, 'xml')->shouldBe(false);
     }

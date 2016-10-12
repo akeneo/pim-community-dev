@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Normalizer\Structured\JobInstanceNormalizer as BaseNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * A normalizer to transform a job instance entity into a array
@@ -12,18 +12,34 @@ use Akeneo\Component\Batch\Normalizer\Structured\JobInstanceNormalizer as BaseNo
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobInstanceNormalizer extends BaseNormalizer
+class JobInstanceNormalizer implements NormalizerInterface
 {
     /**  @var string[] */
     protected $supportedFormats = ['flat'];
 
     /**
      * {@inheritdoc}
+     *
+     * @param JobInstance $object
      */
-    protected function normalizeConfiguration(JobInstance $job)
+    public function normalize($object, $format = null, array $context = [])
     {
-        $configuration = json_encode($job->getRawParameters());
+        $results = [
+            'code'          => $object->getCode(),
+            'label'         => $object->getLabel(),
+            'connector'     => $object->getConnector(),
+            'type'          => $object->getType(),
+            'configuration' => json_encode($object->getRawParameters()),
+        ];
 
-        return $configuration;
+        return $results;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof JobInstance && in_array($format, $this->supportedFormats);
     }
 }
