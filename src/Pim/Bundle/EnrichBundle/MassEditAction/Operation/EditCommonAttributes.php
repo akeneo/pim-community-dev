@@ -225,7 +225,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $data = $this->localizedConverter->convertToDefaultFormats($data, ['locale' => $locale]);
 
         $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
-        $this->productUpdater->update($product, $data);
+        $this->productUpdater->update($product, ['values' => $data]);
         $violations = $this->productValidator->validate($product);
         $violations->addAll($this->localizedConverter->getViolations());
 
