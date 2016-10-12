@@ -14,189 +14,131 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Normalizer\Standard\ProductNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, CollectionFilterInterface $filter)
+    function let(ProductNormalizer $productNormalizerStandard)
     {
-        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-
-        $this->beConstructedWith($filter);
-        $this->setSerializer($serializer);
+        $this->beConstructedWith($productNormalizerStandard);
     }
 
-    function it_is_a_serializer_aware_normalizer()
+    function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
+        $this->shouldHaveType('Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductNormalizer');
+    }
+
+    function it_is_a_normalizer()
+    {
+        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
     function it_supports_csv_normalization_of_product(ProductInterface $product)
     {
-        $this->supportsNormalization($product, 'csv')->shouldBe(true);
-    }
-
-    function it_supports_flat_normalization_of_product(ProductInterface $product)
-    {
         $this->supportsNormalization($product, 'flat')->shouldBe(true);
-    }
-
-    function it_does_not_support_csv_normalization_of_integer()
-    {
+        $this->supportsNormalization($product, 'csv')->shouldBe(false);
         $this->supportsNormalization(1, 'csv')->shouldBe(false);
     }
 
     function it_normalizes_product(
-        $filter,
-        ProductInterface $product,
-        AttributeInterface $skuAttribute,
-        ProductValueInterface $sku,
-        Collection $values,
-        FamilyInterface $family,
-        $serializer
+        ProductNormalizer $productNormalizerStandard,
+        ProductInterface $product
     ) {
-        $family->getCode()->willReturn('shoes');
-        $skuAttribute->getCode()->willReturn('sku');
-        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $skuAttribute->isLocalizable()->willReturn(false);
-        $skuAttribute->isScopable()->willReturn(false);
-        $sku->getAttribute()->willReturn($skuAttribute);
-        $sku->getData()->willReturn('sku-001');
-
-        $product->getIdentifier()->willReturn($sku);
-        $product->getFamily()->willReturn($family);
-        $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['group1', 'group2', 'variant_group_1']);
-        $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
-        $product->getAssociations()->willReturn([]);
-        $product->getValues()->willReturn($values);
-        $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
-
-        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+        $productNormalizerStandard->supportsNormalization($product, 'standard')->willReturn(true);
+        $productNormalizerStandard->normalize($product, 'standard', [])->willReturn(
+            [
+                'identifier'    => 'sku-001',
+                'family'        => 'familyA',
+                'groups'        => ['groupA', 'groupB'],
+                'variant_group' => 'variantA',
+                'categories'    => ['categoryA', 'categoryB'],
+                'enabled'       => false,
+                'created'       => '2016-06-23T11:24:44+02:00',
+                'updated'       => '2016-06-23T11:24:44+02:00',
+            ]
+        );
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
-                'sku'        => 'sku-001',
-                'family'     => 'shoes',
-                'groups'     => 'group1,group2,variant_group_1',
-                'categories' => 'nice shoes,converse',
-                'enabled'    => 1,
+                'identifier' => 'sku-001',
+                'family'     => 'familyA',
+                'groups'     => 'groupA,groupB',
+                'categories' => 'categoryA,categoryB',
+                'enabled'    => true,
             ]
         );
     }
 
     function it_normalizes_product_with_associations(
-        $filter,
-        ProductInterface $product,
-        AttributeInterface $skuAttribute,
-        ProductValueInterface $sku,
-        Association $myCrossSell,
-        AssociationTypeInterface $crossSell,
-        Association $myUpSell,
-        AssociationTypeInterface $upSell,
-        GroupInterface $associatedGroup1,
-        GroupInterface $associatedGroup2,
-        ProductInterface $associatedProduct1,
-        ProductInterface $associatedProduct2,
-        ProductValueInterface $skuAssocProduct1,
-        ProductValueInterface $skuAssocProduct2,
-        Collection $values,
-        FamilyInterface $family,
-        $serializer
+        ProductNormalizer $productNormalizerStandard,
+        ProductInterface $product
     ) {
-        $family->getCode()->willReturn('shoes');
-        $skuAttribute->getCode()->willReturn('sku');
-        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $skuAttribute->isLocalizable()->willReturn(false);
-        $skuAttribute->isScopable()->willReturn(false);
-        $sku->getAttribute()->willReturn($skuAttribute);
-        $sku->getData()->willReturn('sku-001');
-
-        $crossSell->getCode()->willReturn('cross_sell');
-        $myCrossSell->getAssociationType()->willReturn($crossSell);
-        $myCrossSell->getGroups()->willReturn([]);
-        $myCrossSell->getProducts()->willReturn([]);
-        $upSell->getCode()->willReturn('up_sell');
-        $myUpSell->getAssociationType()->willReturn($upSell);
-        $associatedGroup1->getCode()->willReturn('associated_group1');
-        $associatedGroup2->getCode()->willReturn('associated_group2');
-        $myUpSell->getGroups()->willReturn([$associatedGroup1, $associatedGroup2]);
-        $skuAssocProduct1->getAttribute()->willReturn($skuAttribute);
-        $skuAssocProduct2->getAttribute()->willReturn($skuAttribute);
-        $skuAssocProduct1->__toString()->willReturn('sku_assoc_product1');
-        $skuAssocProduct2->__toString()->willReturn('sku_assoc_product2');
-        $associatedProduct1->getIdentifier()->willReturn($skuAssocProduct1);
-        $associatedProduct2->getIdentifier()->willReturn($skuAssocProduct2);
-        $myUpSell->getProducts()->willReturn([$associatedProduct1, $associatedProduct2]);
-
-        $product->getIdentifier()->willReturn($sku);
-        $product->getFamily()->willReturn($family);
-        $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['group1,group2', 'variant_group_1']);
-        $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
-        $product->getAssociations()->willReturn([$myCrossSell, $myUpSell]);
-        $product->getValues()->willReturn($values);
-        $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
-
-        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+        $productNormalizerStandard->supportsNormalization($product, 'standard')->willReturn(true);
+        $productNormalizerStandard->normalize($product, 'standard', [])->willReturn(
+            [
+                'identifier'    => 'sku-001',
+                'family'        => 'shoes',
+                'groups'        => ['group1', 'group2', 'variant_group_1'],
+                'variant_group' => 'variantA',
+                'categories'    => ['categoryA', 'categoryB'],
+                'enabled'       => false,
+                'created'       => '2016-06-23T11:24:44+02:00',
+                'updated'       => '2016-06-23T11:24:44+02:00',
+                'associations' => [
+                    'cross_sell' => [
+                        'products' => [],
+                        'groups' => []
+                    ],
+                    'up_sell' => [
+                        'products' => ['associated_group1', 'associated_group2'],
+                        'groups' => ['sku_assoc_product1', 'sku_assoc_product2']
+                    ]
+                ]
+            ]
+        );
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
-                'sku'        => 'sku-001',
-                'family'     => 'shoes',
-                'groups'     => 'group1,group2,variant_group_1',
-                'categories' => 'nice shoes,converse',
-                'cross_sell-groups' => '',
+                'sku'                 => 'sku-001',
+                'family'              => 'shoes',
+                'groups'              => 'group1,group2,variant_group_1',
+                'categories'          => 'nice shoes,converse',
+                'cross_sell-groups'   => '',
                 'cross_sell-products' => '',
-                'up_sell-groups' => 'associated_group1,associated_group2',
-                'up_sell-products' => 'sku_assoc_product1,sku_assoc_product2',
-                'enabled'    => 1,
+                'up_sell-groups'      => 'associated_group1,associated_group2',
+                'up_sell-products'    => 'sku_assoc_product1,sku_assoc_product2',
+                'enabled'             => true,
             ]
         );
     }
 
     function it_normalizes_product_with_a_multiselect_value(
-        $filter,
-        $serializer,
-        ProductInterface $product,
-        AttributeInterface $skuAttribute,
-        AttributeInterface $colorsAttribute,
-        ProductValueInterface $sku,
-        ProductValueInterface $colors,
-        AttributeOptionInterface $red,
-        AttributeOptionInterface $blue,
-        Collection $values,
-        FamilyInterface $family
+        ProductNormalizer $productNormalizerStandard,
+        ProductInterface $product
     ) {
-        $family->getCode()->willReturn('shoes');
-        $skuAttribute->getCode()->willReturn('sku');
-        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $skuAttribute->isLocalizable()->willReturn(false);
-        $skuAttribute->isScopable()->willReturn(false);
-        $sku->getAttribute()->willReturn($skuAttribute);
-        $sku->getData()->willReturn('sku-001');
-
-        $colorsAttribute->getCode()->willReturn('colors');
-        $colorsAttribute->isLocalizable()->willReturn(false);
-        $colorsAttribute->isScopable()->willReturn(false);
-        $colors->getAttribute()->willReturn($colorsAttribute);
-        $colors->getData()->willReturn([$red, $blue]);
-
-        $product->getIdentifier()->willReturn($sku);
-        $product->getFamily()->willReturn($family);
-        $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn([]);
-        $product->getCategoryCodes()->willReturn([]);
-        $product->getAssociations()->willReturn([]);
-        $product->getValues()->willReturn($values);
-        $filter
-            ->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())
-            ->willReturn([$sku, $colors]);
-
-        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
-        $serializer->normalize($colors, 'flat', Argument::any())->willReturn(['colors' => 'red, blue']);
+        $productNormalizerStandard->supportsNormalization($product, 'standard')->willReturn(true);
+        $productNormalizerStandard->normalize($product, 'standard', [])->willReturn(
+            [
+                'identifier'    => 'sku-001',
+                'family'        => 'shoes',
+                'groups'        => [],
+                'variant_group' => 'variantA',
+                'categories'    => [],
+                'enabled'       => false,
+                'created'       => '2016-06-23T11:24:44+02:00',
+                'updated'       => '2016-06-23T11:24:44+02:00',
+                'associations'  => [],
+                'values'        => [
+                    'colors' => [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => ['red', 'blue'],
+                    ],
+                ]
+            ]
+        );
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
@@ -211,48 +153,35 @@ class ProductNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_with_price(
-        $filter,
-        ProductInterface $product,
-        AttributeInterface $priceAttribute,
-        ProductValueInterface $price,
-        Collection $prices,
-        Collection $values,
-        ProductPriceInterface $productPrice,
-        FamilyInterface $family,
-        SerializerInterface $serializer
+        ProductNormalizer $productNormalizerStandard,
+        ProductInterface $product
     ) {
-        $family->getCode()->willReturn('shoes');
-        $priceAttribute->getCode()->willReturn('price');
-        $priceAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
-        $priceAttribute->isLocalizable()->willReturn(false);
-        $priceAttribute->isScopable()->willReturn(false);
-
-        $price->getAttribute()->willReturn($priceAttribute);
-        $price->getData()->willReturn(null);
-
-        $productPrice->getData()->willReturn("356.00");
-        $productPrice->getCurrency()->willReturn("EUR");
-
-        $prices->add($productPrice);
-
-        $price->getPrices()->willReturn($prices);
-
-        $product->getIdentifier()->willReturn($price);
-        $product->getFamily()->willReturn($family);
-        $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['group1', 'group2', 'variant_group_1']);
-        $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
-        $product->getAssociations()->willReturn([]);
-
-        $values->add($price);
-
-        $product->getValues()->willReturn($values);
-        $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn(
-            [$price]
+        $productNormalizerStandard->supportsNormalization($product, 'standard')->willReturn(true);
+        $productNormalizerStandard->normalize($product, 'standard', [])->willReturn(
+            [
+                'identifier'    => 'sku-001',
+                'family'        => 'shoes',
+                'groups'        => [],
+                'variant_group' => 'variantA',
+                'categories'    => [],
+                'enabled'       => false,
+                'created'       => '2016-06-23T11:24:44+02:00',
+                'updated'       => '2016-06-23T11:24:44+02:00',
+                'associations'  => [],
+                'values'        => [
+                    'price' => [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => [
+                            [
+                                'amount'   => '356.00',
+                                'currency' => 'EUR',
+                            ],
+                        ],
+                    ],
+                ]
+            ]
         );
-
-        $serializer->normalize($price, 'flat', Argument::any())->willReturn(['price-EUR' => '356.00']);
-
         $this->normalize($product, 'flat', ['price-EUR' => ''])->shouldReturn(
             [
                 'price-EUR'  => '356.00',

@@ -81,8 +81,8 @@ services:
     pim_versioning.serializer.normalizer.flat.attribute_group:
         class: '%pim_serializer.normalizer.flat.attribute_group.class%'
         arguments:
+            - '@pim_catalog.normalizer.standard.attribute_group'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
-            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

@@ -3,16 +3,18 @@
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
+use Pim\Component\Catalog\Normalizer\Standard\AttributeGroupNormalizer;
 use Prophecy\Argument;
 
 class AttributeGroupNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslationNormalizer $normalizer, AttributeRepositoryInterface $attributeRepository)
-    {
-        $this->beConstructedWith($normalizer, $attributeRepository);
+    function let(
+        AttributeGroupNormalizer $attributeGroupNormalizerStandard,
+        TranslationNormalizer $translationNormalizer
+    ) {
+        $this->beConstructedWith($attributeGroupNormalizerStandard, $translationNormalizer);
     }
 
     function it_is_initializable()
@@ -25,28 +27,48 @@ class AttributeGroupNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_attribute_group_normalization_into_csv(AttributeGroupInterface $group)
+    function it_supports_attribute_group_normalization_into_flat(AttributeGroupInterface $attributeGroup)
     {
-        $this->supportsNormalization($group, 'csv')->shouldBe(true);
-        $this->supportsNormalization($group, 'json')->shouldBe(false);
-        $this->supportsNormalization($group, 'xml')->shouldBe(false);
+        $this->supportsNormalization($attributeGroup, 'flat')->shouldBe(true);
+        $this->supportsNormalization($attributeGroup, 'csv')->shouldBe(false);
+        $this->supportsNormalization($attributeGroup, 'json')->shouldBe(false);
+        $this->supportsNormalization($attributeGroup, 'xml')->shouldBe(false);
     }
 
     function it_normalizes_attribute_group(
-        $normalizer,
-        $attributeRepository,
-        AttributeGroupInterface $group
+        AttributeGroupNormalizer $attributeGroupNormalizerStandard,
+        TranslationNormalizer $translationNormalizer,
+        AttributeGroupInterface $attributeGroup
     ) {
-        $normalizer->normalize(Argument::cetera())->willReturn([]);
+        $translationNormalizer->supportsNormalization(Argument::cetera())
+            ->willReturn(true);
+        $translationNormalizer->normalize(Argument::cetera())
+            ->willReturn([
+                'label-en_US' => 'My attribute group',
+                'label-fr_FR' => 'Mon group d\'attribut',
+            ]);
 
-        $attributeRepository->getAttributeCodesByGroup($group)->willReturn(['type', 'size', 'price']);
-        $group->getCode()->willReturn('code');
-        $group->getSortOrder()->willReturn(1);
+        $attributeGroupNormalizerStandard->supportsNormalization($attributeGroup, 'standard')
+            ->willReturn(true);
+        $attributeGroupNormalizerStandard->normalize($attributeGroup, 'standard', [])
+            ->willReturn(
+                [
+                    'code'       => 'code',
+                    'sort_order' => 1,
+                    'attributes' => ['price', 'size', 'type'],
+                    'labels'     => [
+                        'en_US' => 'My attribute group',
+                        'fr_FR' => 'Mon group d\'attribut',
+                    ],
+                ]
+            );
 
-        $this->normalize($group)->shouldReturn([
+        $this->normalize($attributeGroup)->shouldReturn([
             'code'       => 'code',
             'sort_order' => 1,
-            'attributes' => 'price,size,type'
+            'attributes' => 'price,size,type',
+            'label-en_US' => 'My attribute group',
+            'label-fr_FR' => 'Mon group d\'attribut',
         ]);
     }
 }
