@@ -71,7 +71,9 @@ class AttributeColumnsResolver
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
             foreach ($values as $value) {
                 $fields = $this->resolveAttributeField($value, $currencyCodes);
-                $this->attributesFields = array_merge($this->attributesFields, $fields);
+                foreach ($fields as $field) {
+                    $this->attributesFields[] = $field;
+                }
             }
         }
 
