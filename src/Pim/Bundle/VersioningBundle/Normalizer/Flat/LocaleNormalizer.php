@@ -4,6 +4,7 @@ namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Pim\Component\Catalog\Normalizer\Standard\LocaleNormalizer as StandardNormalizer;
 
 /**
  * Normalize a locale
@@ -15,14 +16,25 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class LocaleNormalizer implements NormalizerInterface
 {
     /** @var string[] */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['flat'];
+
+    /** @var StandardNormalizer */
+    protected $standardNormalizer;
+
+    /**
+     * @param NormalizerInterface $standardNormalizer
+     */
+    public function __construct(NormalizerInterface $standardNormalizer)
+    {
+        $this->standardNormalizer = $standardNormalizer;
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($locale, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = [])
     {
-        return ['code' => $locale->getCode()];
+        return $this->standardNormalizer->normalize($object, 'standard', $context);
     }
 
     /**
