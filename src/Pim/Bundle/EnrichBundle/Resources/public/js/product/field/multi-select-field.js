@@ -114,6 +114,10 @@ define(
                             }
 
                             this.choicePromise.then(function (results) {
+                                if (_.has(results, 'results')) {
+                                    results = results.results;
+                                }
+
                                 var choices = _.map($(element).val().split(','), function (choice) {
                                     var option = _.findWhere(results, {code: choice});
                                     if (option) {
