@@ -171,5 +171,7 @@ services:
 
     pim_versioning.serializer.normalizer.flat.locale:
         class: '%pim_serializer.normalizer.flat.locale.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.locale'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
