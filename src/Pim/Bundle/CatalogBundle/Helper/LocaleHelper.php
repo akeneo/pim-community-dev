@@ -48,6 +48,16 @@ class LocaleHelper
     }
 
     /**
+     * Gets the list of codes for all activated locales
+     *
+     * @return string[]
+     */
+    public function getActivatedLocaleCodes()
+    {
+        return $this->localeRepository->getActivatedLocaleCodes();
+    }
+
+    /**
      * Returns the label of a locale in the specified language
      *
      * @param string $code        the code of the locale to translate
