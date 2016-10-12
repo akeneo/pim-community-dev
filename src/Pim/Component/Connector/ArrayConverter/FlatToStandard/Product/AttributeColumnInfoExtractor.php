@@ -143,26 +143,11 @@ class AttributeColumnInfoExtractor
      */
     protected function checkFieldNameTokens(AttributeInterface $attribute, $fieldName, array $explodedFieldName)
     {
-        // the expected number of tokens in a field may vary,
-        //  - with the current price import, the currency can be optionally present in the header,
-        //  - with the current metric import, a "-unit" field can be added in the header,
-        //
-        // To avoid BC break, we keep the support in this fix, a next minor version could contain only the
-        // support of currency code in the header and metric in a single field
         $isLocalizable = $attribute->isLocalizable();
         $isScopable = $attribute->isScopable();
         $isPrice = 'prices' === $attribute->getBackendType();
-        $isMetric = 'metric' === $attribute->getBackendType();
 
-        $expectedSize = 1;
-        $expectedSize = $isLocalizable ? $expectedSize + 1 : $expectedSize;
-        $expectedSize = $isScopable ? $expectedSize + 1 : $expectedSize;
-
-        if ($isMetric || $isPrice) {
-            $expectedSize = [$expectedSize, $expectedSize + 1];
-        } else {
-            $expectedSize = [$expectedSize];
-        }
+        $expectedSize = $this->calculateExpectedSize($attribute);
 
         $nbTokens = count($explodedFieldName);
         if (!in_array($nbTokens, $expectedSize)) {
@@ -185,6 +170,39 @@ class AttributeColumnInfoExtractor
         if ($isLocalizable) {
             $this->checkForLocaleSpecificValue($attribute, $explodedFieldName);
         }
+    }
+
+    /**
+     * Calculates the expected size of the field with the attribute and its properties locale, scope, etc.
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return int
+     */
+    protected function calculateExpectedSize(AttributeInterface $attribute)
+    {
+        // the expected number of tokens in a field may vary,
+        //  - with the current price import, the currency can be optionally present in the header,
+        //  - with the current metric import, a "-unit" field can be added in the header,
+        //
+        // To avoid BC break, we keep the support in this fix, a next minor version could contain only the
+        // support of currency code in the header and metric in a single field
+        $isLocalizable = $attribute->isLocalizable();
+        $isScopable = $attribute->isScopable();
+        $isPrice = 'prices' === $attribute->getBackendType();
+        $isMetric = 'metric' === $attribute->getBackendType();
+
+        $expectedSize = 1;
+        $expectedSize = $isLocalizable ? $expectedSize + 1 : $expectedSize;
+        $expectedSize = $isScopable ? $expectedSize + 1 : $expectedSize;
+
+        if ($isMetric || $isPrice) {
+            $expectedSize = [$expectedSize, $expectedSize + 1];
+        } else {
+            $expectedSize = [$expectedSize];
+        }
+
+        return $expectedSize;
     }
 
     /**
