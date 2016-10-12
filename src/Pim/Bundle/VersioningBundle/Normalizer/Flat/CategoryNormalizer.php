@@ -38,6 +38,10 @@ class CategoryNormalizer implements NormalizerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param CategoryInterface $object
+     *
+     * @return array
      */
     public function normalize($object, $format = null, array $context = [])
     {

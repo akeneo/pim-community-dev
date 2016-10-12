@@ -2,27 +2,22 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\Model\Association;
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductValueNormalizer;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\Standard\ProductNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(ProductNormalizer $productNormalizerStandard)
-    {
-        $this->beConstructedWith($productNormalizerStandard);
+    function let(
+        SerializerInterface $serializer,
+        ProductNormalizer $productNormalizerStandard,
+        ProductValueNormalizer $productValueNormalizerFlat
+    ) {
+        $this->beConstructedWith($productNormalizerStandard, $productValueNormalizerFlat);
+        $this->setSerializer($serializer);
     }
 
     function it_is_initializable()
@@ -35,18 +30,18 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_csv_normalization_of_product(ProductInterface $product)
+    function it_supports_flat_normalization_of_product(ProductInterface $product)
     {
         $this->supportsNormalization($product, 'flat')->shouldBe(true);
         $this->supportsNormalization($product, 'csv')->shouldBe(false);
         $this->supportsNormalization(1, 'csv')->shouldBe(false);
     }
 
-    function it_normalizes_product(
+    function it_normalizes_a_scopable_and_localizable_product(
         ProductNormalizer $productNormalizerStandard,
+        SerializerInterface $serializer,
         ProductInterface $product
     ) {
-        $productNormalizerStandard->supportsNormalization($product, 'standard')->willReturn(true);
         $productNormalizerStandard->normalize($product, 'standard', [])->willReturn(
             [
                 'identifier'    => 'sku-001',
@@ -57,22 +52,117 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'enabled'       => false,
                 'created'       => '2016-06-23T11:24:44+02:00',
                 'updated'       => '2016-06-23T11:24:44+02:00',
+                'values'        => [
+                    'sku'         => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => '12',
+                        ],
+                    ],
+                    'description' => [
+                        [
+                            'locale' => 'fr_FR',
+                            'scope'  => null,
+                            'data'   => 'VNeck t-shirt',
+                        ],
+                    ],
+                    'price'       => [
+                        [
+                            'locale' => 'fr_FR',
+                            'scope'  => null,
+                            'data'   => [
+                                [
+                                    'amount'   => '10.00',
+                                    'currency' => 'EUR',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'associations'  => [],
+            ]
+        );
+
+        $serializer->serialize(
+            [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => '12',
+                    ],
+                ],
+            ],
+            'flat',
+            Argument::cetera()
+        )->willReturn(
+            [
+                'sku' => '12',
+            ]
+        );
+
+        $serializer->serialize(
+            [
+                'description' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => null,
+                        'data'   => 'VNeck t-shirt',
+                    ],
+                ],
+            ],
+            'flat',
+            Argument::cetera()
+        )->willReturn(
+            [
+                'description-fr_FR' => 'VNeck t-shirt',
+            ]
+        );
+
+        $serializer->serialize(
+            [
+                'price' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => null,
+                        'data'   => [
+                            [
+                                'amount'   => '10.00',
+                                'currency' => 'EUR',
+                            ],
+                        ],
+                    ],
+                ],
+
+            ],
+            'flat',
+            Argument::cetera()
+        )->willReturn(
+            [
+                'price-fr_FR'      => '10.00',
+                'price-unit-fr_FR' => 'EUR',
             ]
         );
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
-                'identifier' => 'sku-001',
-                'family'     => 'familyA',
-                'groups'     => 'groupA,groupB',
-                'categories' => 'categoryA,categoryB',
-                'enabled'    => true,
+                'family'            => 'familyA',
+                'groups'            => 'groupA,groupB',
+                'variant_group'     => 'variantA',
+                'categories'        => 'categoryA,categoryB',
+                'enabled'           => false,
+                'description-fr_FR' => 'VNeck t-shirt',
+                'price-fr_FR'       => '10.00',
+                'price-unit-fr_FR'  => 'EUR',
+                'sku'               => '12',
             ]
         );
     }
 
     function it_normalizes_product_with_associations(
         ProductNormalizer $productNormalizerStandard,
+        SerializerInterface $serializer,
         ProductInterface $product
     ) {
         $productNormalizerStandard->supportsNormalization($product, 'standard')->willReturn(true);
@@ -86,109 +176,54 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'enabled'       => false,
                 'created'       => '2016-06-23T11:24:44+02:00',
                 'updated'       => '2016-06-23T11:24:44+02:00',
-                'associations' => [
+                'values'        => [
+                    'sku' => [
+                        'scope'  => null,
+                        'locale' => null,
+                        'data'   => 'sku-001',
+                    ],
+                ],
+                'associations'  => [
                     'cross_sell' => [
                         'products' => [],
-                        'groups' => []
+                        'groups'   => [],
                     ],
-                    'up_sell' => [
-                        'products' => ['associated_group1', 'associated_group2'],
-                        'groups' => ['sku_assoc_product1', 'sku_assoc_product2']
-                    ]
-                ]
+                    'up_sell'    => [
+                        'groups' => ['associated_group1', 'associated_group2'],
+                        'products'   => ['sku_assoc_product1', 'sku_assoc_product2'],
+                    ],
+                ],
+            ]
+        );
+
+        $serializer->serialize(
+            [
+                'sku' => [
+                    'scope'  => null,
+                    'locale' => null,
+                    'data'   => 'sku-001',
+                ],
+            ],
+            'flat',
+            Argument::cetera()
+        )->willReturn(
+            [
+                'sku' => 'sku-001',
             ]
         );
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
-                'sku'                 => 'sku-001',
                 'family'              => 'shoes',
                 'groups'              => 'group1,group2,variant_group_1',
-                'categories'          => 'nice shoes,converse',
+                'variant_group'       => 'variantA',
+                'categories'          => 'categoryA,categoryB',
+                'enabled'             => false,
                 'cross_sell-groups'   => '',
                 'cross_sell-products' => '',
                 'up_sell-groups'      => 'associated_group1,associated_group2',
                 'up_sell-products'    => 'sku_assoc_product1,sku_assoc_product2',
-                'enabled'             => true,
-            ]
-        );
-    }
-
-    function it_normalizes_product_with_a_multiselect_value(
-        ProductNormalizer $productNormalizerStandard,
-        ProductInterface $product
-    ) {
-        $productNormalizerStandard->supportsNormalization($product, 'standard')->willReturn(true);
-        $productNormalizerStandard->normalize($product, 'standard', [])->willReturn(
-            [
-                'identifier'    => 'sku-001',
-                'family'        => 'shoes',
-                'groups'        => [],
-                'variant_group' => 'variantA',
-                'categories'    => [],
-                'enabled'       => false,
-                'created'       => '2016-06-23T11:24:44+02:00',
-                'updated'       => '2016-06-23T11:24:44+02:00',
-                'associations'  => [],
-                'values'        => [
-                    'colors' => [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => ['red', 'blue'],
-                    ],
-                ]
-            ]
-        );
-
-        $this->normalize($product, 'flat', [])->shouldReturn(
-            [
-                'sku'        => 'sku-001',
-                'family'     => 'shoes',
-                'groups'     => '',
-                'categories' => '',
-                'colors'     => 'red, blue',
-                'enabled'    => 1,
-            ]
-        );
-    }
-
-    function it_normalizes_product_with_price(
-        ProductNormalizer $productNormalizerStandard,
-        ProductInterface $product
-    ) {
-        $productNormalizerStandard->supportsNormalization($product, 'standard')->willReturn(true);
-        $productNormalizerStandard->normalize($product, 'standard', [])->willReturn(
-            [
-                'identifier'    => 'sku-001',
-                'family'        => 'shoes',
-                'groups'        => [],
-                'variant_group' => 'variantA',
-                'categories'    => [],
-                'enabled'       => false,
-                'created'       => '2016-06-23T11:24:44+02:00',
-                'updated'       => '2016-06-23T11:24:44+02:00',
-                'associations'  => [],
-                'values'        => [
-                    'price' => [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => [
-                            [
-                                'amount'   => '356.00',
-                                'currency' => 'EUR',
-                            ],
-                        ],
-                    ],
-                ]
-            ]
-        );
-        $this->normalize($product, 'flat', ['price-EUR' => ''])->shouldReturn(
-            [
-                'price-EUR'  => '356.00',
-                'family'     => 'shoes',
-                'groups'     => 'group1,group2,variant_group_1',
-                'categories' => 'nice shoes,converse',
-                'enabled'    => 1,
+                'sku'                 => 'sku-001',
             ]
         );
     }

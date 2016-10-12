@@ -21,6 +21,8 @@ class JobInstanceNormalizer implements NormalizerInterface
      * {@inheritdoc}
      *
      * @param JobInstance $object
+     *
+     * @return array
      */
     public function normalize($object, $format = null, array $context = [])
     {

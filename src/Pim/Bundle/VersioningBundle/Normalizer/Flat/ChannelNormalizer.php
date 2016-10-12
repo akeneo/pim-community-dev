@@ -45,7 +45,7 @@ class ChannelNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param $object ChannelInterface
+     * @param ChannelInterface $channel
      *
      * @return array
      */

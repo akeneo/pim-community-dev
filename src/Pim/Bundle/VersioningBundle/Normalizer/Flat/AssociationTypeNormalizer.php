@@ -38,6 +38,10 @@ class AssociationTypeNormalizer implements NormalizerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param AssociationTypeInterface $object
+     *
+     * @return array
      */
     public function normalize($object, $format = null, array $context = [])
     {

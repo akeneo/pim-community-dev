@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 class CollectionNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
     /** @var string[] */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['flat'];
 
     /**
      * {@inheritdoc}

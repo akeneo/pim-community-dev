@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -165,7 +164,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     protected function filterLocaleSpecific(ProductValueInterface $value)
     {
-        /** @var AttributeInterface $attribute */
         $attribute = $value->getAttribute();
         if ($attribute->isLocaleSpecific()) {
             $currentLocale = $value->getLocale();
