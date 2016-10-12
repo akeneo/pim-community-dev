@@ -40,6 +40,10 @@ class FamilyNormalizer implements NormalizerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param FamilyInterface $object
+     *
+     * @return array
      */
     public function normalize($object, $format = null, array $context = [])
     {

@@ -31,6 +31,10 @@ class LocaleNormalizer implements NormalizerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param LocaleInterface $object
+     *
+     * @return array
      */
     public function normalize($object, $format = null, array $context = [])
     {

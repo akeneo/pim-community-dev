@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\MetricInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Normalize a metric data
@@ -13,8 +14,13 @@ use Pim\Component\Catalog\Model\MetricInterface;
  */
 class MetricNormalizer extends AbstractProductValueDataNormalizer
 {
+    const LABEL_SEPARATOR = '-';
+    const MULTIPLE_FIELDS_FORMAT = 'multiple_fields';
+    const SINGLE_FIELD_FORMAT = 'single_field';
+    const UNIT_LABEL = 'unit';
+
     /** @var string[] */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['flat'];
 
     /**
      * {@inheritdoc}
@@ -34,7 +40,7 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
         $context = $this->resolveContext($context);
         $decimalsAllowed = !array_key_exists('decimals_allowed', $context) || true === $context['decimals_allowed'];
 
-        if ('multiple_fields' === $context['metric_format']) {
+        if (self::MULTIPLE_FIELDS_FORMAT === $context['metric_format']) {
             $fieldKey = $this->getFieldName($object, $context);
             $unitFieldKey = sprintf('%s-unit', $fieldKey);
 
@@ -94,14 +100,16 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
      */
     protected function resolveContext(array $context = [])
     {
-        $context = array_merge(['metric_format' => 'multiple_fields'], $context);
+        $context = array_merge(['metric_format' => self::MULTIPLE_FIELDS_FORMAT], $context);
 
-        if (!in_array($context['metric_format'], ['single_field', 'multiple_fields'])) {
+        if (!in_array($context['metric_format'], [self::MULTIPLE_FIELDS_FORMAT, self::SINGLE_FIELD_FORMAT])) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Value "%s" of "metric_format" context value is not allowed ' .
-                    '(allowed values: "single_field, multiple_fields"',
-                    $context['metric_format']
+                    '(allowed values: "%s, %s"',
+                    $context['metric_format'],
+                    self::SINGLE_FIELD_FORMAT,
+                    self::MULTIPLE_FIELDS_FORMAT
                 )
             );
         }
