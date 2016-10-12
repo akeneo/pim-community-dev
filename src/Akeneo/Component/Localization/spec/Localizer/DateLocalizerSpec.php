@@ -70,7 +70,7 @@ class DateLocalizerSpec extends ObjectBehavior
         $dateFactory->create(['date_format' => 'dd/MM/yyyy'])->willReturn($dateFormatter);
         $dateFormatter->setLenient(false)->shouldBeCalled();
         $dateFormatter->parse('28/10/2015')->willReturn(1445986800);
-        $dateFormatter->setPattern('yyyy-MM-dd')->shouldBeCalled();
+        $dateFormatter->setPattern("yyyy-MM-dd'T'HH:mm:ssxxx")->shouldBeCalled();
         $dateFormatter->format(1445986800)->willReturn('2015-10-28');
 
         $this->delocalize('28/10/2015', ['date_format' => 'dd/MM/yyyy'])->shouldReturn('2015-10-28');
