@@ -118,7 +118,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     public function checkConnection()
     {
         $connection = $this->jobManager->getConnection();
-        if ($this->pingConnection($connection) === false) {
+        if ($this->pingConnection() === false) {
             $connection->close();
             $connection->connect();
         }
@@ -131,7 +131,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
      * @return bool
      * @author Cristian Quiroz <cq@amp.co>
      */
-    private function pingConnection()
+    protected function pingConnection()
     {
         $connection = $this->jobManager->getConnection();
         $connection->connect();
