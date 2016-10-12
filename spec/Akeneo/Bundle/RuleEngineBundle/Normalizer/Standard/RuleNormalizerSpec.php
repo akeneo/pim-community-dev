@@ -10,7 +10,7 @@ class RuleNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Normalizer\RuleNormalizer');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Normalizer\Standard\RuleNormalizer');
     }
 
     function it_is_a_normalizer()
