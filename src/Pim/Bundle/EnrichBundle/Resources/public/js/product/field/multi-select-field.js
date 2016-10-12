@@ -120,9 +120,9 @@ define(
                                         return this.convertBackendItem(option);
                                     }
 
-                                    return _.findWhere(results.results, {id: choice});
+                                    return _.findWhere(results, {id: choice});
                                 }.bind(this));
-                                callback(choices);
+                                callback(_.compact(choices));
                             }.bind(this));
                         }.bind(this),
                         multiple: true
