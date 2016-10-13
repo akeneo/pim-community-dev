@@ -94,7 +94,7 @@ class ProductProcessor extends AbstractProcessor
 
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
-        $productStandard = $this->normalizer->normalize($product, 'json', $normalizerContext);
+        $productStandard = $this->normalizer->normalize($product, 'standard', $normalizerContext);
 
         if ($this->areAttributesToFilter($parameters)) {
             $productStandard = $this->filterProperties($productStandard, $parameters->get('selected_properties'));

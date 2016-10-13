@@ -66,7 +66,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $normalizer
-            ->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'json', [
+            ->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'standard', [
                 'entity'                     => 'product',
                 'locale'                     => 'en_US',
                 'disable_grouping_separator' => true

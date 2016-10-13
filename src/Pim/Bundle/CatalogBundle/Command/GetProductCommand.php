@@ -57,7 +57,7 @@ class GetProductCommand extends ContainerAwareCommand
             return;
         }
 
-        $normalizedProduct = $this->getContainer()->get('pim_serializer')->normalize($product, 'json', []);
+        $normalizedProduct = $this->getContainer()->get('pim_serializer')->normalize($product, 'standard', []);
 
         $output->write(json_encode($normalizedProduct));
     }

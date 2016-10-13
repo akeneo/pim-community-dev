@@ -55,7 +55,7 @@ class AttributeGroupController
 
         $normalizedAttrGroups = [];
         foreach ($filteredAttrGroups as $attributeGroup) {
-            $normalizedAttrGroups[$attributeGroup->getCode()] = $this->normalizer->normalize($attributeGroup, 'json');
+            $normalizedAttrGroups[$attributeGroup->getCode()] = $this->normalizer->normalize($attributeGroup, 'standard');
         }
 
         return new JsonResponse($normalizedAttrGroups);

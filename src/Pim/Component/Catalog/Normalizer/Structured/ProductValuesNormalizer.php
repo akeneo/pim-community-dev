@@ -39,7 +39,7 @@ class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInt
         $result = [];
 
         foreach ($data as $value) {
-            $normalizedValue = $this->serializer->normalize($value, 'json', $context);
+            $normalizedValue = $this->serializer->normalize($value, 'standard', $context);
             if ($value instanceof ProductValueInterface) {
                 $result[$value->getAttribute()->getCode()][] = $normalizedValue;
             } else {

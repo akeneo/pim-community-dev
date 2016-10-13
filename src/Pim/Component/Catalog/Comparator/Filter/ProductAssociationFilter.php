@@ -37,7 +37,7 @@ class ProductAssociationFilter implements ProductFilterInterface
      */
     public function filter(ProductInterface $product, array $newValues)
     {
-        $originalAssociations = $this->normalizer->normalize($product, 'json');
+        $originalAssociations = $this->normalizer->normalize($product, 'standard');
         $hasAssociation = $this->hasNewAssociations($newValues);
 
         if (!$hasAssociation && empty($originalAssociations)) {

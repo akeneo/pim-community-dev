@@ -36,7 +36,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json')
+        $normalizer->normalize($product, 'standard')
             ->willReturn($originalValues);
 
         $comparatorRegistry->getFieldComparator('associations')->willReturn($arrayComparator);
@@ -69,7 +69,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json')
+        $normalizer->normalize($product, 'standard')
             ->willReturn($originalValues);
 
         $comparatorRegistry->getFieldComparator('associations')->willReturn($arrayComparator);
@@ -113,7 +113,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json')
+        $normalizer->normalize($product, 'standard')
             ->willReturn($originalValues);
 
         $comparatorRegistry->getFieldComparator('associations')->willReturn($arrayComparator);
