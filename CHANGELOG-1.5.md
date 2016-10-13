@@ -1,7 +1,13 @@
+# 1.5.x
+
+## Bug fixes
+
+PIM-5985: Fix the import of localizable and scopable variant group attributes (backport of PIM-5915)
+
 # 1.5.9 (2016-09-27)
 
 ## Bug fixes
-clear
+
 - PIM-5777: Fix attribute refresh when locale change in Product Edit Form
 - TIP-307: Fix issues with Mongo 2.6
 - PIM-5862: Fix product grid display on a custom user view
