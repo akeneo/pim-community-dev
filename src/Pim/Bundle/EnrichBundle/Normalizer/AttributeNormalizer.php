@@ -59,7 +59,7 @@ class AttributeNormalizer implements NormalizerInterface
         $dateMax = (null === $attribute->getDateMax()) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
         $groupCode = (null === $attribute->getGroup()) ? null : $attribute->getGroup()->getCode();
 
-        $normalizedAttribute = $this->normalizer->normalize($attribute, 'json', $context) + [
+        $normalizedAttribute = $this->normalizer->normalize($attribute, 'standard', $context) + [
             'id'                    => $attribute->getId(),
             'wysiwyg_enabled'       => $attribute->isWysiwygEnabled(),
             'empty_value'           => $this->emptyValueProvider->getEmptyValue($attribute),
@@ -88,7 +88,7 @@ class AttributeNormalizer implements NormalizerInterface
         $normalizedAttribute['group'] = null;
 
         if (isset($context['include_group']) && $context['include_group'] && null !== $attribute->getGroup()) {
-            $normalizedAttribute['group'] = $this->normalizer->normalize($attribute->getGroup(), 'json', $context);
+            $normalizedAttribute['group'] = $this->normalizer->normalize($attribute->getGroup(), 'standard', $context);
         }
 
         return $normalizedAttribute;

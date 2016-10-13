@@ -157,7 +157,7 @@ class ProductFilter implements ProductFilterInterface
      */
     protected function getOriginalProduct(ProductInterface $product)
     {
-        $originalProduct = $this->normalizer->normalize($product, 'json');
+        $originalProduct = $this->normalizer->normalize($product, 'standard');
 
         return $this->flatProductValues($originalProduct);
     }

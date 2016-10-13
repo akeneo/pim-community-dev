@@ -64,7 +64,7 @@ class FamilyController
 
         $normalizedFamilies = [];
         foreach ($families as $family) {
-            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize($family, 'json');
+            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize($family, 'standard');
         }
 
         return new JsonResponse($normalizedFamilies);
@@ -85,6 +85,6 @@ class FamilyController
             throw new NotFoundHttpException(sprintf('Family with code "%s" not found', $identifier));
         }
 
-        return new JsonResponse($this->normalizer->normalize($family, 'json'));
+        return new JsonResponse($this->normalizer->normalize($family, 'standard'));
     }
 }
