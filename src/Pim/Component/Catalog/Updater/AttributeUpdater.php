@@ -102,6 +102,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 $date = $this->getDate($data);
                 $attribute->setDateMax($date);
                 break;
+            case 'allowed_extensions':
+                $attribute->setAllowedExtensions(implode(',', $data));
+                break;
             default:
                 $this->accessor->setValue($attribute, $field, $data);
         }
@@ -199,15 +202,18 @@ class AttributeUpdater implements ObjectUpdaterInterface
             return;
         }
 
-        if (!preg_match('/(\d{4})-(\d{2})-(\d{2})/', $data, $dateValues)) {
+        try {
+            new \DateTime($data);
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException(
-                sprintf('Attribute expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
+                sprintf('Invalid date, "%s" given', $data)
             );
         }
 
-        if (!checkdate($dateValues[2], $dateValues[3], $dateValues[1])) {
+        $datetime = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data);
+        if (false === $datetime) {
             throw new \InvalidArgumentException(
-                sprintf('Invalid date, "%s" given', $data)
+                sprintf('Attribute expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
             );
         }
     }
