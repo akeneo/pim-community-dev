@@ -327,6 +327,10 @@ class ProductEditForm extends Form
         }
 
         foreach ($this->listToArray($values) as $value) {
+            $this->spin(function () use ($link) {
+                return $link->isVisible();
+            }, 'Select2 widget is not visible');
+
             $link->click();
             $item = $this->spin(function () use ($value) {
                 return $this->find(
