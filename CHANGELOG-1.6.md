@@ -4,6 +4,7 @@
 
 - #4987: Fix hardcoded image URLs in the dashboard, cheers @julienanquetil!
 - PIM-5982: Missing job instance parameters when using custom configuration in command line
+- PIM-5978 : Fix missing products in the variant group edit form
 
 # 1.6.3 (2016-09-22)
 
@@ -18,6 +19,7 @@
 - PIM-5975 & #5016: Fix attribute groups order not kept in product edit form, cheers @julienanquetil!
 - #4994: Fix grid filter selection in the user profile, cheers @julienanquetil!
 - PIM-5978: Fix missing currencies
+- #4993: Fix XLSX product import with numeric value for simpleselect codes, cheers @julienanquetil!
 
 ## Functionnal improvements
 
