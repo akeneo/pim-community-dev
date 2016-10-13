@@ -28,17 +28,18 @@ class ProductLoaderProcessorSpec extends ObjectBehavior
         $this->process($product)->shouldReturn($product);
     }
 
-    function it_should_return_null_when_there_is_no_product(
-        $productRepository
-    ) {
+    function it_should_return_null_when_there_is_no_product($productRepository)
+    {
         $productRepository->findOneByIdentifier('foo')->willReturn(null);
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $this->process($this->getItem())->shouldReturn(null);
     }
 
     function it_should_throw_a_runtime_exception_when_no_identifier_is_set()
     {
-        $this->shouldThrow('\RuntimeException')->during('process', [$this->getItem()]);
+        $item = $this->getItem();
+        unset($item['identifier']);
+
+        $this->shouldThrow('\RuntimeException')->during('process', [$item]);
     }
 
     protected function getItem()
@@ -50,7 +51,8 @@ class ProductLoaderProcessorSpec extends ObjectBehavior
                     'locale' => null,
                     'data'   => 'foo'
                 ]
-            ]
+            ],
+            'identifier' => 'foo'
         ];
     }
 }

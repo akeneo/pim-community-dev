@@ -50,11 +50,16 @@ class ProductLoaderProcessor implements ItemProcessorInterface
      *
      * With this $item example:
      * [
+     *   'identifier' => 'boot-123',
      *   'sku' => [
      *     [
      *       'scope'  => null,
      *       'locale' => null,
-     *       'data'   => 'boot-123'
+     *       'data'   => [
+     *           'scope'  => null,
+     *           'locale' => null,
+     *           'data'   => 'boot-123'
+     *       ]
      *     ]
      *   ],
      *   'color' => [ ... ]
@@ -69,13 +74,10 @@ class ProductLoaderProcessor implements ItemProcessorInterface
      */
     protected function getIdentifier(array $item)
     {
-        $identifierProperties = $this->productRepository->getIdentifierProperties();
-        $identifierProperty = $identifierProperties[0];
-
-        if (!isset($item[$identifierProperty][0]['data'])) {
-            throw new \RuntimeException(sprintf('Identifier property "%s" is expected', $identifierProperty));
+        if (!isset($item['identifier'])) {
+            throw new \RuntimeException(sprintf('Identifier is expected'));
         }
 
-        return $item[$identifierProperty][0]['data'];
+        return $item['identifier'];
     }
 }
