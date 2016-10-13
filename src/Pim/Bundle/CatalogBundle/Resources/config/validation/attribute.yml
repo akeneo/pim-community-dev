@@ -148,6 +148,14 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Valid: ~
         group:
             - NotBlank: ~
+        numberMin:
+            - Type:
+                type: numeric
+                groups: [pim_catalog_number]
+        numberMax:
+            - Type:
+                type: numeric
+                groups: [pim_catalog_number]
 
     getters:
         group:

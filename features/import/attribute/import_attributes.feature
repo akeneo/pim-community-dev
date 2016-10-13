@@ -207,7 +207,7 @@ Feature: Import attributes
     And I wait for the "csv_footwear_attribute_import" job to finish
     Then I should see "read lines 2"
     Then I should see "skipped 2"
-    Then I should see "maxFileSize: This value should be 0.01 or more.: 0"
+    Then I should see "maxFileSize: This value should be a valid number.: not an int"
     Then I should see "AttributeGroup \"not a group\" does not exist"
 
   Scenario: Successfully import new attribute
