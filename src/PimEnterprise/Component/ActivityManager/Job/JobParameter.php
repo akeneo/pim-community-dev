@@ -47,6 +47,6 @@ class JobParameter implements DefaultValuesProviderInterface, ConstraintCollecti
      */
     public function supports(JobInterface $job)
     {
-        return $job->getName() === 'attribute_group';
+        return $job->getName() === 'project_generation';
     }
 }

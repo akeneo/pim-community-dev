@@ -1,11 +1,11 @@
 services:
-    attribute_group:
+    project_generation:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - 'attribute_group'
+            - 'project_generation'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@attribute_group_step'
+                - '@project_generation_step'
         tags:
-            - { name: akeneo_batch.job, connector: 'activity manager', type: 'calculator' }
+            - { name: akeneo_batch.job, connector: 'activity manager', type: 'project_generation' }

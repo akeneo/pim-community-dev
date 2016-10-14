@@ -1,5 +1,5 @@
 services:
-    attribute_group_step:
+    project_generation_step:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'activity_manager'
