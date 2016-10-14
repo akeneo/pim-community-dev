@@ -24,7 +24,7 @@
                 <% _.each(locale['channels'], function(channelCompleteness) { %>
                     <% if (channelCompleteness.completeness) { %>
                         <div>
-                            <span class="channel" data-channel="<%- channelCompleteness.completeness['channel'] %>"><%- channelCompleteness.completeness['channel'] %></span>
+                            <span class="channel" data-channel="<%- channelCompleteness.completeness['channel_code'] %>"><%- channelCompleteness.completeness['channel_labels'][catalogLocale] %></span>
                             <span class="literal-progress"><%- channelCompleteness.completeness.ratio %>%</span>
                             <div class="progress <%- channelCompleteness.completeness.ratio === 100 ? 'progress-success' : 'progress-warning' %>">
                                 <div class="bar" data-ratio="<%- channelCompleteness.completeness.ratio %>" style="width: <%- channelCompleteness.completeness.ratio %>%;"></div>
@@ -34,7 +34,7 @@
                                  <%- _.__('pim_enrich.form.product.panel.completeness.missing_values') %>:
                                  <span class="missing-attributes">
                                     <% _.each(channelCompleteness.missing, function(missing) { %>
-                                        <span data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- channelCompleteness.completeness['channel'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></span>
+                                        <span data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- channelCompleteness.completeness['channel_code'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></span>
                                     <% }) %>
                                 </span>
                                 <% } %>

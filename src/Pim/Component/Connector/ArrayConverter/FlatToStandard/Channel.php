@@ -4,7 +4,6 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
  * Channel Flat to Standard format Converter
@@ -33,8 +32,9 @@ class Channel implements ArrayConverterInterface
      *
      * Before:
      * [
-     *      'code'             => 'ecommerce',
-     *      'label'            => 'Ecommerce',
+     *      'code'             => 'mobile',
+     *      'label-fr_FR'      => 'Mobile',
+     *      'label-en_US'      => 'Mobil',
      *      'locales'          => 'en_US,fr_FR',
      *      'currencies'       => 'EUR,USD',
      *      'tree'             => 'master_catalog',
@@ -44,7 +44,10 @@ class Channel implements ArrayConverterInterface
      * After:
      * [
      *     'code'             => 'ecommerce',
-     *     'label'            => 'Ecommerce',
+     *     'labels' => [
+     *          'fr_FR' => 'Mobile',
+     *          'en_US' => 'Mobil',
+     *      ],
      *     'locales'          => ['en_US', 'fr_FR'],
      *     'currencies'       => ['EUR', 'USD'],
      *     'tree'             => 'master_catalog',
@@ -60,7 +63,7 @@ class Channel implements ArrayConverterInterface
         $this->fieldChecker->checkFieldsPresence($item, ['code', 'tree', 'locales', 'currencies']);
         $this->fieldChecker->checkFieldsFilling($item, ['code', 'tree', 'locales', 'currencies']);
 
-        $convertedItem = [];
+        $convertedItem = ['labels' => []];
         foreach ($item as $field => $data) {
             $convertedItem = $this->convertField($convertedItem, $field, $data);
         }
@@ -77,17 +80,16 @@ class Channel implements ArrayConverterInterface
      */
     protected function convertField(array $convertedItem, $field, $data)
     {
-        switch ($field) {
-            case 'locales':
-            case 'currencies':
-                $convertedItem[$field] = explode(',', $data);
-                break;
-            case 'conversion_units':
-                $convertedItem[$field] = $this->convertUnits($data);
-                break;
-            default:
-                $convertedItem[$field] = $data;
-                break;
+        if (false !== strpos($field, 'label-', 0)) {
+            $labelTokens = explode('-', $field);
+            $labelLocale = $labelTokens[1];
+            $convertedItem['labels'][$labelLocale] = $data;
+        } elseif ('locales' === $field || 'currencies' === $field) {
+            $convertedItem[$field] = explode(',', $data);
+        } elseif ('conversion_units' === $field) {
+            $convertedItem[$field] = $this->convertUnits($data);
+        } else {
+            $convertedItem[$field] = $data;
         }
 
         return $convertedItem;

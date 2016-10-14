@@ -62,7 +62,8 @@ parameters:
     pim_catalog.updater.remover.group_field.class:            Pim\Component\Catalog\Updater\Remover\GroupFieldRemover
     pim_catalog.updater.remover.multiselect_value.class:      Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover
 
-    pim_catalog.updater.category_translatable.class: Pim\Component\Catalog\Localization\CategoryUpdater
+    pim_catalog.updater.category_translatable.class:          Pim\Component\Catalog\Localization\CategoryUpdater
+    pim_catalog.updater.channel_translatable.class:           Pim\Component\Catalog\Localization\ChannelUpdater
 
 services:
     # Updaters

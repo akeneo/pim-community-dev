@@ -7,9 +7,16 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Prophecy\Argument;
 
 class ChannelNormalizerSpec extends ObjectBehavior
 {
+    function let(TranslationNormalizer $transNormalizer)
+    {
+        $this->beConstructedWith($transNormalizer);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer');
@@ -34,7 +41,8 @@ class ChannelNormalizerSpec extends ObjectBehavior
         CurrencyInterface $usd,
         LocaleInterface $en,
         LocaleInterface $fr,
-        CategoryInterface $category
+        CategoryInterface $category,
+        $transNormalizer
     ) {
         $channel->getCode()->willReturn('ecommerce');
         $channel->getLabel()->willReturn('Ecommerce');
@@ -53,13 +61,15 @@ class ChannelNormalizerSpec extends ObjectBehavior
             ]
         );
 
+        $transNormalizer->normalize(Argument::cetera())->willReturn(['labels' => []]);
+
         $this->normalize($channel)->shouldReturn(
             [
                 'code'       => 'ecommerce',
-                'label'      => 'Ecommerce',
                 'currencies' => 'EUR,USD',
                 'locales'    => 'en_US,fr_FR',
                 'category'   => 'Master catalog',
+                'labels' => [],
             ]
         );
     }

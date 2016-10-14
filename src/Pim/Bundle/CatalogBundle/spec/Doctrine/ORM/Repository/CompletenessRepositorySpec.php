@@ -43,7 +43,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
             ]
         );
 
-        $this->getProductsCountPerChannels()->shouldReturn(
+        $this->getProductsCountPerChannels(Argument::any())->shouldReturn(
             [
                 ['label' => 'ECommerce', 'total' => 3],
                 ['label' => 'Mobile', 'total' => 2]
@@ -63,7 +63,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
             ]
         );
 
-        $this->getCompleteProductsCountPerChannels()->shouldReturn(
+        $this->getCompleteProductsCountPerChannels(Argument::any())->shouldReturn(
             [
                 ['locale' => 'en_US', 'label' => 'ECommerce', 'total' => 0],
                 ['locale' => 'fr_FR', 'label' => 'ECommerce', 'total' => 1],

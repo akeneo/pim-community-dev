@@ -13,15 +13,15 @@ Feature: Edit a channel
     Then I should see the Code field
     And the field Code should be disabled
     When I fill in the following information:
-      | Default label | My tablet |
+      | English (United States) | My tablet |
     And I press the "Save" button
-    Then I should see "My tablet"
+    Then I should see the text "My tablet"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am logged in as "Peter"
     And  I am on the "mobile" channel page
     When I fill in the following information:
-      | Default label | My mobile |
+      | English (United States) | My mobile |
     And I click on the Akeneo logo
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                    |
@@ -31,8 +31,8 @@ Feature: Edit a channel
     Given I am logged in as "Peter"
     And  I am on the "mobile" channel page
     When I fill in the following information:
-      | Default label | My mobile |
-    Then I should see "There are unsaved changes."
+      | English (United States) | My mobile |
+    Then I should see the text "There are unsaved changes."
 
   Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel
     Given I am logged in as "Peter"

@@ -4,8 +4,10 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\ChannelTranslation;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelTranslationInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Prophecy\Argument;
@@ -51,11 +53,15 @@ class ChannelUpdaterSpec extends ObjectBehavior
         LocaleInterface $enUS,
         LocaleInterface $frFR,
         CurrencyInterface $usd,
-        CurrencyInterface $eur
+        CurrencyInterface $eur,
+        ChannelTranslationInterface $channelTranslation
     ) {
         $values = [
             'code'  => 'ecommerce',
-            'label' => 'Ecommerce',
+            'labels' => [
+                'fr_FR' => 'Tablette',
+                'en_US' => 'Tablet',
+            ],
             'locales'    => ['en_US', 'fr_FR'],
             'currencies' => ['EUR', 'USD'],
             'tree'       => 'master_catalog',
@@ -65,7 +71,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
         ];
 
         $channel->setCode('ecommerce')->shouldBeCalled();
-        $channel->setLabel('Ecommerce')->shouldBeCalled();
 
         $categoryRepository->findOneByIdentifier('master_catalog')->willReturn($tree);
         $channel->setCategory($tree)->shouldBeCalled();
@@ -77,6 +82,13 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $currencyRepository->findOneByIdentifier('EUR')->willReturn($eur);
         $currencyRepository->findOneByIdentifier('USD')->willReturn($usd);
         $channel->setCurrencies([$eur, $usd])->shouldBeCalled();
+
+        $channel->setLocale('en_US')->shouldBeCalled();
+        $channel->setLocale('fr_FR')->shouldBeCalled();
+        $channel->getTranslation()->willReturn($channelTranslation);
+
+        $channelTranslation->setLabel('Tablet');
+        $channelTranslation->setLabel('Tablette');
 
         $channel->setConversionUnits([
             'weight' => 'GRAM'
@@ -94,15 +106,19 @@ class ChannelUpdaterSpec extends ObjectBehavior
         CurrencyInterface $eur
     ) {
         $values = [
-            'code'  => 'ecommerce',
-            'label' => 'Ecommerce',
-            'locales'    => ['fr_FR'],
-            'currencies' => ['EUR'],
+            'code'       => 'ecommerce',
             'tree'       => 'unknown',
+            'labels'     => [
+                'fr_FR' => 'E-commerce',
+            ],
+            'locales'    => ['fr_FR'],
+            'currencies' => ['EUR']
         ];
         $categoryRepository->findOneByIdentifier('unknown')->willReturn(null);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
         $currencyRepository->findOneByIdentifier('EUR')->willReturn($eur);
+
+        $channel->setCode('ecommerce')->shouldBeCalled();
 
         $this->shouldThrow(new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', 'unknown')))
             ->during('update', [$channel, $values]);
@@ -117,8 +133,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
         CurrencyInterface $eur
     ) {
         $values = [
-            'code'  => 'ecommerce',
-            'label' => 'Ecommerce',
+            'code'       => 'ecommerce',
             'locales'    => ['unknown'],
             'currencies' => ['EUR'],
             'tree'       => 'tree',
@@ -140,11 +155,13 @@ class ChannelUpdaterSpec extends ObjectBehavior
         LocaleInterface $frFR
     ) {
         $values = [
-            'code'  => 'ecommerce',
-            'label' => 'Ecommerce',
+            'code'       => 'ecommerce',
             'locales'    => ['fr_FR'],
             'currencies' => ['unknown'],
             'tree'       => 'tree',
+            'labels'     => [
+                'fr_FR' => 'E-commerce',
+            ],
         ];
         $categoryRepository->findOneByIdentifier('tree')->willReturn($tree);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
