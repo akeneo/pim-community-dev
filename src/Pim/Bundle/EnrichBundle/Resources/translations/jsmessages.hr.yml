@@ -1,12 +1,274 @@
+confirmation:
+  remove:
+    item: Jeste li sigurni da želite izbrisati ovu stavku?
+    association type: Jeste li sigurni da želite izbrisati ovaj tip pridruživanja?
+    attribute: Jeste li sigurni da želite izbrisati ovaj atribut?
+    family: Jeste li sigurni da želite izbrisati ovu obitelj?
+    product: Jeste li sigurni da želite izbrisati ovaj proizvod?
+    channel: Jeste li sigurni da želite izbrisati ovaj kanal?
+    group: Jeste li sigurni da želite izbrisati ovu grupu?
+    variant group: Jeste li sigurni da želite izbrisati ovu varijantu grupe?
+    group type: Jeste li sigurni da želite izbrisati ovaj tip grupe?
+    import profile: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
+    export profile: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
+    user: Jeste li sigurni da želite izbrisati ovog korisnika?
+    role: Jeste li sigurni da želite izbrisati ovu rolu?
+pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Brzi izvoz
+  mass_action:
+    delete:
+      confirm_content: Jeste li sigurni da želite izbrisati odabrane proizvode?
+      success: Odabrani proizvodi su uspješno izbrisani.
+      error: Dogodila se pogreška prilikom pokušaja brisanja odabranih proizvoda, molimo pokušajte ponovo.
+flash:
+  item:
+    removed: Stavka je uspješno uklonjena
+  association type:
+    removed: Tip pridruživanja je uspješno uklonjen
+  attribute:
+    removed: Atribut je uspješno uklonjen
+  family:
+    removed: Obitelj je uspješno uklonjena
+  product:
+    removed: Proizvod je uspješno uklonjen
+  channel:
+    removed: Kanal je uspješno uklonjen
+  group:
+    removed: Grupa je uspješno uklonjena
+  variant group:
+    removed: Varijanta grupe je uspješno uklonjena
+  group type:
+    removed: Tip grupe je uspješno uklonjen
+  import profile:
+    removed: Profil uvoza je uspješno uklonjen
+  export profile:
+    removed: Profil izvoza je uspješno uklonjen
+  user:
+    removed: Korisnik je uspješno uklonjen
+  role:
+    removed: Rola je uspješno uklonjena
+error:
+  removing:
+    item: Ne možete izbrisati ovu stavku
+    association type: Ne možete izbrisati ovaj tip pridruživanja
+    attribute: Ne možete izbrisati ovaj atribut
+    family: Ne možete izbrisati ovu obitelj
+    product: Ne možete izbrisati ovaj proizvod
+    channel: Ne možete izbrisati ovaj kanal
+    group: Ne možete izbrisati ovu grupu
+    variant group: Ne možete izbrisati ovu varijantu grupe
+    group type: Ne možete izbrisati ovaj tip grupe
+    import profile: Ne možete izbrisati ovaj profil uvoza
+    export profile: Ne možete izbrisati ovaj profil izvoza
+    user: Ne može se izbrisati ovog korisnika
+    role: Ne možete izbrisati ovu rolu
+    attribute_option: Pogreška tijekom brisanja opcije atributa
+  saving:
+    attribute_option: Nije moguće spremiti opciju atributa
+alert:
+  attribute_option:
+    error_occured_during_submission: Došlo je do pogreške tijekom slanja obrasca na poslužitelj
+    save_before_edit_other: Spremite vaše izmjene drugih redaka prije uređivanja ovoga
+  session_storage:
+    not_available: Vaš web preglednik nije kompatibilan sa sessionStorage opcijom. Obratite se administratoru
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Upozorenje, izgubit ćete nespremljene podatke. Jeste li sigurni da želite prekinuti promjenu ove nove opcije?
+    cancel_edition_on_new_option_title: Odustani od izmjena
+label:
+  attribute_option:
+    add_option: Dodati mogućnost
+Code: Kod
+Edit: Uredi
+Delete: Obriši
+Edit attributes of the product: Uređivanje atributa proizvoda
+Classify the product: Klasifikacija proizvoda
+Delete the product: Brisanje proizvoda
+Change status: Promjena statusa
+Toggle status: Uključivanje/isključivanje statusa
+pim.grid.mass_action.quick_export.csv_all: CSV (Svi atributi)
+pim.grid.mass_action.delete: Obriši
+pim.grid.mass_action.mass_edit: Masovno uređivanje
+pim.grid.mass_action.sequential_edit: Sekvencijalno uređivanje
+jstree.create: Kreiraj
+switch_on: Da
+switch_off: Ne
 pim_enrich:
+  item:
+    list:
+      delete.label: Obriši
+      delete.error: Pogreška tijekom brisanje stavke
+    delete:
+      confirm.content: 'Jeste li sigurni da želite izbrisati ovaj {{ itemName }}? Nije moguće poništiti ovu akciju'
+      confirm.title: 'Izbrisati ovaj {{ itemName }}'
+  navigation:
+    link:
+      back_to_grid: Natrag na tablični prikaz
   entity:
+    save:
+      label: Spremi
+    info:
+      update_failed: Ažuriranje nije uspjelo
+      update_successful: Uspješno ažurirano
     product:
+      title: proizvod
+      btn:
+        enable: Omogući
+        enabled: Omogućeno
+        disable: Onemogući
+        disabled: Onemogućeno
+        download_pdf: PDF
+        compare_translate: Usporedi / prevedi
+        delete: Obriši
+        save: Spremi
+        save_and_back: Spremi i nazad na tablični prikaz
+      history:
+        version: Verzija
+        author: Autor
+        logged_at: Prijavljen u
+        more: Više
+        less: Manje
+        from: Od
+        modified: Promjenjeno
+        property: Svojstvo
+        old_values: Stare vrijednosti
+        new_values: Nove vrijednosti
+        actions: Akcije
+      info:
+        deletion_successful: Proizvod je uspješno izbrisan.
+        deletion_failed: Proizvod se ne može izbrisati.
+        update_successful: Proizvod je uspješno ažuriran.
+        update_failed: Proizvod ne može se ažurirati.
+        field_not_ready:
+          The product cannot be saved right now. The following fields are not ready:
+            - polja
+        already_in_upload: 'Datoteka je već procesu prijenosa za ovaj atribut u lokalizaciji "{{ locale }}" i opsegu "{{ scope }}"'
+      error:
+        upload: Došlo je do pogreške tijekom prijenosa datoteke
+      meta:
+        created: Kreirano
+        created_by: Od
+        updated_by: Od
+        updated: Posljednje Ažuriranje
+        family:
+          title: Obitelj
+          none: Niti jedan
+        groups:
+          title: Grupe
+          modal:
+            title: 'Grupa {{ group }}'
+            view_group: Prikaz grupe
+            group_label: Oznaka
+            more_products: '{{ count }} više proizvoda...'
+            close: Zatvori
+      copy:
+        select: Odaberi
+        all: Sve
+        all_visible: Sve vidljive
+        none: Niti jedan
+        copy: Kopiraj
       variant_group:
+        updated_by: Ažurirano sa varijantom grupe
         switch:
-          "yes": true
-          "no": false
+          "yes": Da
+          "no": Ne
+      optional_attribute:
+        remove: Ukloni ovaj atribut
+      locale_specific_attribute:
+        unavailable: Ovo specifično polje lokalizacije nije dostupno za ovu lokalizaciju
+      localizable:
+        channel_locale_unavailable: "Ovo polje lokalizacije nije dostupno za lokalizaciju '{{ locale }}' i kanal '{{ channel }}'"
+      media:
+        upload: Povucite i ispustite za upload ili kliknite ovdje
+    attribute_option:
+      code: Kod
+      label: Oznaka
+  confirmation:
+    leave: Jeste li sigurni da želite napustiti ovu stranicu?
+    discard_changes: 'Promjene u {{ entity }} će se izgubiti ako napustite ovu stranicu.'
+    delete_item: Potvrdi brisanje
+    delete:
+      product_attribute: Jeste li sigurni da želite izbrisati ovaj atribut proizvoda?
+  info:
+    not_applicable: N/A
+    entity:
+      updated: Postoje nespremljene promjene.
+  error:
+    upload: Došlo je do pogreške tijekom prijenosa datoteke
+  alert:
+    not_allowed: Ne možete pristupiti ovoj stranici
+    error_occured: Došlo je do pogreške tijekom učitavanja stranice
   form:
     product:
+      tab:
+        associations:
+          title: Povezanost
+          info:
+            none_exist: Ne postoji tip pridruživanja.
+            show_products: Prikaži proizvode
+            show_groups: Prikaži grupe
+            number_of_associations: '{{ productCount }} proizvoda i {{ groupCount }} grupe'
+        attributes:
+          title: Atributi
+          btn:
+            add: Dodaj
+            add_attributes: Dodaj atribute
+          info:
+            search_attributes: Pretraži...
+            no_available_attributes: Nema više atributa koje se može dodati
+            attributes_selected: '{{ attributeCount }} atributa odabrano'
+            no_match: Nisu pronađeni rezultati
+            load_more: Učitavanje više rezultata...
+        categories:
+          title: Kategorije
+      panel:
+        completeness:
+          title: Potpunost
+          info:
+            no_family: Nijedna obitelj nije definirana. Definirajte obitelj kako bi se izračunala potpunost ovog proizvoda.
+            no_completeness: Promijenili ste obitelj proizvoda. Prvo sačuvajte promjene da se izračuna potpunost za novu obitelj.
+          missing_values: Vrijednosti koje nedostaju
+        history:
+          title: Povijest
       switch:
-        "no": false
-        "yes": true
+        "no": Ne
+        "yes": Da
+      sequential_edit:
+        info:
+          products: proizvodi
+          previous: 'Vrati nazad {{ product }} bez spremanja.'
+          next: 'Prebaci se na {{ product }} bez spremanja.'
+        btn:
+          save_and_next: Spremi i dalje
+          save_and_finish: Spremi i završi
+      change_family:
+        modal:
+          title: Promjeni obitelj proizvoda
+          merge_attributes: Trenutni atributi će se spojiti se s onima u novoj obitelji.
+          keep_attributes: Niti jedan atribut neće biti uklonjen.
+          change_family_to: Promjeni obitelji na
+          empty_selection: Odaberi obitelj
+      flash:
+        attribute_deletion_error: Pojavila se pogreška tijekom brisanja atributa
+      mass_edit:
+        select_attributes: Odaberi atribute
+        select: Odaberi
+    attribute_option:
+      flash:
+        option_created: Opcija atributa je uspješno kreirana
+        error_creating_option: Dogodila se greška prilikom kreiranja opcije atributa
+      add_option_modal:
+        title: Dodaj opciju atributa
+        confirm: Dodaj
+        cancel: Poništi
+    entity:
+      switch:
+        "no": Ne
+        "yes": Da
+  mass_edit_action:
+    edit_common_attributes:
+      description: 'Atributi odabranih proizvoda u tabličnom prikazu proizvoda će se promijeniti s podacima za lokalizaciju <span class="highlight">{{ locale }}</span> i kanala <span class="highlight">{{ channel }}</span>.'
+pim_enrich.error:
+  exception.title: 'Ups! Pojavila se pogreška u {{ status_code }}...'
