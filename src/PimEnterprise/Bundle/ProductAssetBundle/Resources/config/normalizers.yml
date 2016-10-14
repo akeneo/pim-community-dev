@@ -30,13 +30,13 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
-    pimee_product_asset.normalizer.standard.variation:
-        class: '%pimee_product_asset.normalizer.standard.variation.class%'
+    pim_product_asset.normalizer.standard.variation:
+        class: '%pim_product_asset.normalizer.standard.variation.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
-    pimee_product_asset.normalizer.standard.channel_configuration:
-        class: '%pimee_product_asset.normalizer.standard.channel_configuration.class%'
+    pim_product_asset.normalizer.standard.channel_configuration:
+        class: '%pim_product_asset.normalizer.standard.channel_configuration.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
