@@ -81,8 +81,7 @@ define(
                                 return {
                                     search: term,
                                     options: {
-                                        limit: 20,
-                                        page: page
+                                        locale: UserContext.get('catalogLocale')
                                     }
                                 };
                             }.bind(this),
