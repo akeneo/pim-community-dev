@@ -213,7 +213,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         $datetime = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data);
         if (false === $datetime) {
             throw new \InvalidArgumentException(
-                sprintf('Attribute expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
+                sprintf('Attribute expects a string with the format "yyyy-mm-ddTH:i:sP" as data, "%s" given', $data)
             );
         }
     }

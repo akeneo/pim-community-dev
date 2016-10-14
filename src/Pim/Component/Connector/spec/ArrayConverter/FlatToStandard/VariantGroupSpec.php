@@ -72,7 +72,8 @@ class VariantGroupSpec extends ObjectBehavior
         $attributeRepository->getIdentifierCode('description-fr_FR-ecommerce')->willReturn($description1Attribute);
         $attributeRepository->getIdentifierCode('description-en_US-ecommerce')->willReturn($description2Attribute);
 
-        $productConverter->convert($values, ["with_required_identifier" => false])->willReturn($convertedValues);
+        $productConverter->convert($values, ["with_required_identifier" => false])
+            ->willReturn(['values' => $convertedValues]);
 
         $this->convert($fields + $values)->shouldReturn([
             'labels'   => [
