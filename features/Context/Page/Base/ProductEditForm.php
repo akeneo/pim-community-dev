@@ -312,39 +312,17 @@ class ProductEditForm extends Form
      */
     protected function fillMultiSelectField(NodeElement $fieldContainer, $values)
     {
-        $field = $fieldContainer->find('css', '.form-field');
+        $element = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.select2-container');
+        }, 'Can not find the select2 container.');
 
-        $link = $this->spin(function () use ($fieldContainer) {
-            return $fieldContainer->find('css', 'ul.select2-choices');
-        }, sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
-
-        // clear multi select first
-        $fieldClasses = $field->getAttribute('class');
-        if (preg_match('/akeneo-multi-select(-reference-data)?-field/', $fieldClasses, $matches)) {
-            $select2Selector = sprintf('.%s div.field-input > input', $matches[0]);
-            $script          = sprintf('$("%s").select2("val", "");$("%1$s").trigger("change");', $select2Selector);
-            $this->getSession()->executeScript($script);
-        }
-
-        foreach ($this->listToArray($values) as $value) {
-            $this->spin(function () use ($link) {
-                return $link->isVisible();
-            }, 'Select2 widget is not visible');
-
-            $link->click();
-            $item = $this->spin(function () use ($value) {
-                return $this->find(
-                    'css',
-                    sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $value)
-                );
-            }, sprintf('Cannot find "%s" element in select2 widget', $value));
-
-            $item->click();
-        }
-
-        $this->getSession()->executeScript(
-            '$(\'.field-input input.select-field\').trigger(\'change\');'
+        $field = $this->decorate(
+            $element,
+            ['Pim\Behat\Decorator\Field\Select2Decorator']
         );
+
+        $this->getSession()->wait($this->getTimeout(), '!$.active');
+        $field->setValue($values);
     }
 
     /**
