@@ -1,0 +1,12 @@
+services:
+    processor:
+        class: 'Akeneo\ActivityManager\Component\Processor\Processor'
+        arguments:
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product'
+            - '@pimee_security.voter.attribute'
+            - '@oro_user.manager'
+            - '@pimee_security.manager.attribute_group_access'
+            - '@pimee_security.manager.category_access'
