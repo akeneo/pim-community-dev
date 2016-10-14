@@ -152,7 +152,7 @@ class JobContext extends PimContext
      */
     public function iShouldSeeTheOrderedFilters($filters)
     {
-        $this->spin(function() use ($filters) {
+        $this->spin(function () use ($filters) {
             $expectedOrderedFilters = $this->getMainContext()->listToArray($filters);
             $currentOrderedFilters = $this->getOrderedFilters();
 
