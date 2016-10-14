@@ -23,8 +23,8 @@ Feature: Edit a product
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:
-      | Heel color  | Red              |
-      | Sole fabric | [neoprene], Silk |
+      | Heel color  | Red            |
+      | Sole fabric | neoprene, Silk |
     When I save the product
     Then I should be on the product "high-heels" edit page
     Then the product Heel color should be "red"
