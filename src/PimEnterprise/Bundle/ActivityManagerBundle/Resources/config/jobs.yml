@@ -1,0 +1,11 @@
+services:
+    attribute_group:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'attribute_group'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@attribute_group_step'
+        tags:
+            - { name: akeneo_batch.job, connector: 'activity manager', type: 'calculator' }
