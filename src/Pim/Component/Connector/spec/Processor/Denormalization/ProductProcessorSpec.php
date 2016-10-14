@@ -61,7 +61,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('categoriesColumn')->willReturn('categories');
         $jobParameters->get('groupsColumn')->willReturn('groups');
         $jobParameters->get('enabled')->willReturn(true);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('decimalSepara7tor')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -463,7 +463,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $this
-            ->shouldThrow(new \RuntimeException('Identifier is expected'))
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$convertedData]
@@ -914,7 +914,8 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $filteredData = [
             'family' => 'Tshirt',
-            'enabled' => true
+            'enabled' => true,
+            'values' => [],
         ];
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);

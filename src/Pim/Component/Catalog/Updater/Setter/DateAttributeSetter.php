@@ -34,7 +34,7 @@ class DateAttributeSetter extends AbstractAttributeSetter
     /**
      * {@inheritdoc}
      *
-     * Expected data input format : "yyyy-mm-dd"
+     * Expected data input format : "yyyy-mm-ddTH:i:sP" (2016-01-01T00:00:00+01:00)
      */
     public function setAttributeData(
         ProductInterface $product,
@@ -63,7 +63,7 @@ class DateAttributeSetter extends AbstractAttributeSetter
     {
         if ($data instanceof \DateTime) {
             $data = $data->format('Y-m-d');
-        } elseif(is_string($data)) {
+        } elseif (is_string($data)) {
             $this->validateDateFormat($attribute, $data);
         } elseif (null !== $data && !is_string($data)) {
             throw InvalidArgumentException::expected(
@@ -87,12 +87,12 @@ class DateAttributeSetter extends AbstractAttributeSetter
      */
     protected function validateDateFormat(AttributeInterface $attribute, $data)
     {
-        try {
-            new \DateTime($data);
-        } catch (\Exception $e) {
+        $datetime = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data);
+
+        if (false === $datetime) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
-                'a string with the format yyyy-mm-dd',
+                'a string with the format yyyy-mm-ddTH:i:sP',
                 'setter',
                 'date',
                 gettype($data),
