@@ -1,0 +1,10 @@
+services:
+    attribute_group_step:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'activity_manager'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.product'
+            - '@processor'
+            - '@writer'
