@@ -16,6 +16,7 @@ use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacher;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -64,13 +65,16 @@ class Writer implements ItemWriterInterface
     }
 
     /**
+     * @param string $code
+     *
      * @return Project
      */
-    private function findProject()
+    private function findProject($code)
     {
         $project = $this->projectRepository->findOneBy(['code' => 'toto']);
-        if (null === $project) {
 
+        if (null === $project) {
+            throw new NotFoundResourceException(sprintf('Could not found any project with code "%s"', $code));
         }
 
         return $project;

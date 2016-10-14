@@ -18,6 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Component\Security\Attributes;
@@ -58,6 +59,9 @@ class Processor extends AbstractProcessor
     /** @var CategoryAccessManager */
     private $categoryAccessManager;
 
+    /** @var CategoryAccessRepository */
+    private $accessRepository;
+
     /**
      * @param ObjectDetacher                $objectDetacher
      * @param TokenStorageInterface         $tokenStorage
@@ -67,6 +71,7 @@ class Processor extends AbstractProcessor
      * @param UserManager                   $userManager
      * @param AttributeGroupAccessManager   $attributeGroupAccessManager
      * @param CategoryAccessManager         $categoryAccessManager
+     * @param CategoryAccessRepository      $accessRepository
      */
     public function __construct(
         ObjectDetacher $objectDetacher,
@@ -76,7 +81,8 @@ class Processor extends AbstractProcessor
         VoterInterface $attributeVoter,
         UserManager $userManager,
         AttributeGroupAccessManager $attributeGroupAccessManager,
-        CategoryAccessManager $categoryAccessManager
+        CategoryAccessManager $categoryAccessManager,
+        CategoryAccessRepository $accessRepository
     ) {
         $this->objectDetacher = $objectDetacher;
         $this->tokenStorage = $tokenStorage;
@@ -86,6 +92,7 @@ class Processor extends AbstractProcessor
         $this->userManager = $userManager;
         $this->attributeGroupAccessManager = $attributeGroupAccessManager;
         $this->categoryAccessManager = $categoryAccessManager;
+        $this->accessRepository = $accessRepository;
     }
 
     /**
@@ -170,7 +177,7 @@ class Processor extends AbstractProcessor
         foreach ($categories as $category) {
             $productUserGroups = array_merge(
                 $productUserGroups,
-                $this->categoryAccessManager->getEditUserGroups($category)
+                $this->accessRepository->getGrantedUserGroups($category, Attributes::EDIT_ITEMS)
             );
 
             $this->objectDetacher->detach($category);
