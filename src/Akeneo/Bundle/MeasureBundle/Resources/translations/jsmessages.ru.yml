@@ -8,7 +8,7 @@ SQUARE_CENTIMETER: Квадратный сантиметр
 SQUARE_DECIMETER: Квадратный дециметр
 SQUARE_DEKAMETER: Квадратный декаметр
 SQUARE_FOOT: Квадратный фут
-SQUARE_FURLONG: Квадратный Ферлонг
+SQUARE_FURLONG: Квадратный фурлонг
 SQUARE_HECTOMETER: Квадратный гектометр
 SQUARE_INCH: Квадратный дюйм
 SQUARE_KILOMETER: Квадратный километр
@@ -24,6 +24,8 @@ KILOBYTE: Килобайт
 MEGABYTE: Мегабайт
 GIGABYTE: Гигабайт
 TERABYTE: Терабайт
+Decibel: Децибел
+DECIBEL: Децибел
 Frequency: Частота
 GIGAHERTZ: Гигагерц
 KILOHERTZ: Килогерц
@@ -36,7 +38,7 @@ CHAIN: Чейн
 DECIMETER: Дециметр
 DEKAMETER: Декаметр
 FEET: Фут
-FURLONG: Фарлонг
+FURLONG: Фурлонг
 INCH: Дюйм
 HECTOMETER: Гектометр
 KILOMETER: Километр
@@ -51,6 +53,48 @@ KILOWATT: Киловатт
 MEGAWATT: Мегаватт
 TERAWATT: Тераватт
 WATT: Ватт
+Resistance: Сопротивление
+MILLIOHM: Миллиом
+CENTIOHM: Сантиом
+DECIOHM: Дециом
+OHM: Ом
+DEKAOHM: Декаом
+HECTOHM: Гектоом
+KILOHM: Килоом
+MEGOHM: Мегаом
+Voltage: Напряжение
+MILLIVOLT: Милливольт
+CENTIVOLT: Сантивольт
+DECIVOLT: Децивольт
+VOLT: Вольт
+DEKAVOLT: Декавольт
+HECTOVOLT: Гектовольт
+KILOVOLT: Киловольт
+Intensity: Интенсивность
+MILLIAMPERE: Миллиампер
+CENTIAMPERE: Сантиампер
+DECIAMPERE: Дециампер
+AMPERE: Ампер
+DEKAAMPERE: Декаампер
+HECTOAMPERE: Гектоампер
+KILOAMPERE: Килоампер
+MEGAAMPERE: Мегаампер
+ElectricCharge: Электрический заряд
+MILLIAMPEREHOUR: Миллиампер в час
+AMPEREHOUR: Ампер в час
+MILLICOULOMB: Милликулон
+CENTICOULOMB: Сантикулон
+DECICOULOMB: Децикулон
+COULOMB: Кулон
+DEKACOULOMB: Декакулон
+HECTOCOULOMB: Гектокулон
+KILOCOULOMB: Килокулон
+Duration: Длительности
+MILLISECOND: Миллисекунда
+SECOND: Секунда
+MINUTE: Минута
+HOUR: Час
+DAY: День
 Speed: Скорость
 FOOT_PER_SECOND: Футов в секунду
 FOOT_PER_HOUR: Футoв в час
@@ -93,3 +137,12 @@ MILLIGRAM: Миллиграмм
 ONCE: Унция
 POUND: Фунт
 TON: Тонна
+Pressure: Давление
+BAR: Бар
+PASCAL: Паскаль
+HECTOPASCAL: Гектопаскаль
+MILLIBAR: Миллибар
+ATM: Атмосфера
+PSI: Фунт на квадратный дюйм
+TORR: Торр
+MMHG: Миллиметр ртутного столба
