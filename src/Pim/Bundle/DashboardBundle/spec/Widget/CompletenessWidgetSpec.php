@@ -5,12 +5,14 @@ namespace spec\Pim\Bundle\DashboardBundle\Widget;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Prophecy\Argument;
 
 class CompletenessWidgetSpec extends ObjectBehavior
 {
-    function let(CompletenessRepositoryInterface $completenessRepo, LocaleHelper $localeHelper)
+    function let(CompletenessRepositoryInterface $completenessRepo, LocaleHelper $localeHelper, UserContext $userContext)
     {
-        $this->beConstructedWith($completenessRepo, $localeHelper);
+        $this->beConstructedWith($completenessRepo, $localeHelper, $userContext);
     }
 
     function it_is_a_widget()
@@ -35,7 +37,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
 
     function it_exposes_the_completeness_data($completenessRepo, $localeHelper)
     {
-        $completenessRepo->getProductsCountPerChannels()->willReturn(
+        $completenessRepo->getProductsCountPerChannels(Argument::any())->willReturn(
             [
                 [
                     'label' => 'Mobile',
@@ -47,7 +49,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
                 ],
             ]
         );
-        $completenessRepo->getCompleteProductsCountPerChannels()->willReturn(
+        $completenessRepo->getCompleteProductsCountPerChannels(Argument::any())->willReturn(
             [
                 [
                     'label'  => 'Mobile',

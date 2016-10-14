@@ -105,6 +105,8 @@ services:
 
     pim_versioning.serializer.normalizer.flat.channel:
         class: '%pim_serializer.normalizer.flat.channel.class%'
+        arguments:
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

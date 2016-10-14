@@ -26,11 +26,10 @@ class ChannelNormalizer extends BaseNormalizer
     {
         return [
             'code'       => $object->getCode(),
-            'label'      => $this->normalizeLabel($object),
             'currencies' => $this->normalizeCurrencies($object),
             'locales'    => $this->normalizeLocales($object),
             'category'   => $this->normalizeCategoryTree($object),
-        ];
+        ] + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**

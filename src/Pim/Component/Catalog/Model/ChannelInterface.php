@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Pim\Component\Enrich\Model\ChosableInterface;
 
@@ -12,7 +13,7 @@ use Pim\Component\Enrich\Model\ChosableInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ChannelInterface extends ReferableInterface, VersionableInterface, ChosableInterface
+interface ChannelInterface extends ReferableInterface, VersionableInterface, ChosableInterface, TranslatableInterface
 {
     /**
      * @return int

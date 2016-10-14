@@ -26,6 +26,12 @@ class Channel extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'category':
                 $convertedItem['tree'] = $data['code'];
                 break;
+            case 'labels':
+                foreach ($data as $localeCode => $label) {
+                    $labelKey = sprintf('label-%s', $localeCode);
+                    $convertedItem[$labelKey] = $label;
+                }
+                break;
             default:
                 $convertedItem[$property] = (string) $data;
         }

@@ -21,6 +21,7 @@ services:
         arguments:
             - '@pim_catalog.repository.completeness'
             - '@pim_catalog.helper.locale'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_dashboard.widget, position: 20 }
 
