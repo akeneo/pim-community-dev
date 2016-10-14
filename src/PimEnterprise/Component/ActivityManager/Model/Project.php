@@ -125,10 +125,23 @@ class Project implements ProjectInterface
         $this->datagridViews->removeElement($datagridView);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function addUserGroup(Group $userGroup)
     {
         if (!$this->userGroups->contains($userGroup)) {
             $this->userGroups[] = $userGroup;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeUserGroup(Group $userGroup)
+    {
+        if ($this->userGroups->contains($userGroup)) {
+            $this->userGroups->remove($userGroup);
         }
     }
 }

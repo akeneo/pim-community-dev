@@ -12,6 +12,7 @@
 namespace Akeneo\ActivityManager\Component\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
@@ -70,4 +71,18 @@ interface ProjectInterface
      * @param DatagridView $datagridView
      */
     public function removeDatagridView(DatagridView $datagridView);
+
+    /**
+     * Add an new user group to the Project
+     *
+     * @param Group $group
+     */
+    public function addUserGroup(Group $group);
+
+    /**
+     * Remove a user group to the Project
+     *
+     * @param Group $group
+     */
+    public function removeUserGroup(Group $group);
 }
