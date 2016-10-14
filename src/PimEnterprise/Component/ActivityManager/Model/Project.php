@@ -12,7 +12,9 @@
 namespace Akeneo\ActivityManager\Component\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -34,9 +36,13 @@ class Project implements ProjectInterface
     /** @var ArrayCollection */
     private $datagridViews;
 
+    /** @var ArrayCollection */
+    private $userGroups;
+
     public function __construct()
     {
         $this->datagridViews = new ArrayCollection();
+        $this->userGroups = new ArrayCollection();
     }
 
     /**
@@ -117,5 +123,12 @@ class Project implements ProjectInterface
     public function removeDatagridView(DatagridView $datagridView)
     {
         $this->datagridViews->removeElement($datagridView);
+    }
+
+    public function addUserGroup(Group $userGroup)
+    {
+        if (!$this->userGroups->contains($userGroup)) {
+            $this->userGroups[] = $userGroup;
+        }
     }
 }

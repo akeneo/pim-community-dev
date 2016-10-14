@@ -33,3 +33,16 @@ Akeneo\ActivityManager\Component\Model\Project:
               view_id:
                 referencedColumnName: id
                 unique: true
+        userGroups:
+          targetEntity: Oro\Bundle\UserBundle\Entity\Group
+          joinTable:
+            name: akeneo_activity_manager_project_user_group
+            joinColumns:
+              project_id:
+                referencedColumnName: id
+            inverseJoinColumns:
+              attribute_group_id:
+                referencedColumnName: id
+            cascade:
+                - refresh
+                - detach
