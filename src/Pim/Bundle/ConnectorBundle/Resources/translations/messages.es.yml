@@ -167,11 +167,11 @@ pim_connector:
         help: Permitir o no cargar el fichero directamente
 job_execution.summary:
   read: leer
-  read_lines: leer líneas
+  read_lines: líneas leídas
   write: escrito
   skip: omitido
   create: creado
-  process: procesado
+  process: procesadas
   update_products: productos actualizados
   process_products: productos procesados
   skip_products: productos omitidos

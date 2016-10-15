@@ -78,7 +78,7 @@ pim_enrich:
     limit_exceeded: 'Por favor, elige menos de %limit% de artículos para editar'
     product:
       page_title: Productos
-      page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% de productos)'
+      page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% productos)'
       title: Elegir la operación
       subtitle: 'Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados'
       confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar los siguientes %count% productos con la siguiente información, por favor confirme.'
@@ -89,7 +89,7 @@ pim_enrich:
         fourth: Confirmar
     family:
       page_title: Familias
-      page_subtitle: 'Edición masiva (1 familia) |Edición (%count% familias)'
+      page_subtitle: 'Edición masiva (1 familia) |Edición masiva (%count% familias)'
       title: Elegir la operación
       subtitle: 'Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en %count% de las familias seleccionadas'
       confirm: 'Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Está a punto de actualizar %count% familias con la siguiente información, por favor confirme.'
@@ -119,7 +119,7 @@ pim_enrich:
       success_flash: Los producto(s) han sido clasificados en las categorías seleccionadas
       launched_flash: 'La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.'
     classify-move:
-      label: Mueve productos a categorías
+      label: Mover productos a categorías
       description: Los productos se colocarán en las siguientes categorías, la posición actual se perderá.
       success_flash: El/los producto(s) ha(n) sido trasladado(s) a las categorías seleccionadas
       launched_flash: 'La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.'
@@ -379,7 +379,7 @@ confirmation:
   confirm: Confirmación
   delete: Confirmación de borrado
   leave: ¿Está seguro que desea salir de esta página?
-  discard changes: 'Perderá los cambios en %entity% si dejas la página.'
+  discard changes: 'Perderá los cambios en %entity% si abandona esta página.'
   remove:
     item: ¿Está seguro de que desea borrar este elemento?
     attribute: '¿Está seguro que desea eliminar el atributo %name%?'
@@ -654,10 +654,10 @@ pim_title.group_type:
   index: Tipos de grupo
   edit: 'Tipos de Grupo %group type.label% | Editar'
 pim_title.mass_edit_product_action:
-  choose: Edición masiva | Elija
+  choose: Edición masiva | Seleccionar
   configure: Edición masiva | Configurar
 pim_title.mass_edit_family_action:
-  choose: Edición masiva | Elija
+  choose: Edición masiva | Seleccionar
   configure: Edición masiva | Configurar
 pim_title.job_tracker:
   index: Seguimiento de procesos
@@ -677,7 +677,7 @@ pim_catalog_date: Fecha
 pim_catalog_metric: Métrica
 pim_reference_data_simpleselect: Selección simple de datos de referencia
 pim_reference_data_multiselect: Selección múltiple de datos de referencia
-Activated: Activada
+Activated: Habilitado
 Disable: Desactivar
 pim_enrich.sequential_edit_action:
   product:
@@ -687,7 +687,7 @@ pim_enrich.mass_edit_action:
   limit_exceeded: 'Por favor, elige menos de %limit% de artículos para editar'
   product:
     page_title: Productos
-    page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% de productos)'
+    page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% productos)'
     title: Elegir operación
     subtitle: 'Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados'
     confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
@@ -698,7 +698,7 @@ pim_enrich.mass_edit_action:
       fourth: Confirmar
   family:
     page_title: Familias
-    page_subtitle: 'Edición masiva (1 familia) |Edición (%count% de familias)'
+    page_subtitle: 'Edición masiva (1 familia) |Edición masiva (%count% familias)'
     title: Elegir operación
     subtitle: 'Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en las %count% familias seleccionadas'
     confirm: 'Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Estás a punto de actualizar %count% familias con la siguiente información, por favor confirme.'
@@ -790,8 +790,8 @@ Is associated: Esta asociado
 Complete: Completo
 Created At: Creado el
 Updated At: Actualizado el
-Enabled: Activada
-Disabled: Desactivada
+Enabled: Habilitado
+Disabled: Inhabilitado
 Status: Estado
 Change History: Historial de cambios
 Data Audit: Auditoría de datos
@@ -889,10 +889,18 @@ batch_jobs:
     quick_export.label: Exportación rápida de producto en CSV
     perform:
       label: Exportación rápida de producto en CSV
+  csv_product_grid_context_quick_export:
+    quick_export.label: Exportación rápida de la grilla de productos en CSV
+    perform:
+      label: Exportación rápida de la grilla de productos en CSV
   xlsx_product_quick_export:
     quick_export.label: Exportación rápida de producto en XLSX
     perform:
       label: Exportación rápida de producto en XLSX
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Exportación rápida de la grilla de productos en XLSX
+    perform:
+      label: Exportación rápida de la grilla de productos en XLSX
   add_to_variant_group:
     label: Agregar a un grupo de variantes
     perform:
