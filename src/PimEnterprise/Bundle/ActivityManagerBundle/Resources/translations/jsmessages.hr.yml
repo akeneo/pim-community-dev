@@ -1,0 +1,6 @@
+activity_manager:
+  project:
+    label: Oznaka
+  create_project_modal:
+    confirm: Sljedeća
+    cancel: Poništi

@@ -1,0 +1,6 @@
+activity_manager:
+  project:
+    label: Bezeichnung
+  create_project_modal:
+    confirm: Vor
+    cancel: Abbrechen

@@ -1,0 +1,6 @@
+activity_manager:
+  project:
+    label: Libellé
+  create_project_modal:
+    confirm: Suivant
+    cancel: Annuler

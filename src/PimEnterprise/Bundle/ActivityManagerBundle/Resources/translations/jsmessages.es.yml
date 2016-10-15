@@ -1,0 +1,6 @@
+activity_manager:
+  project:
+    label: Etiqueta
+  create_project_modal:
+    confirm: Siguiente
+    cancel: Cancelar

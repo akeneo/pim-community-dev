@@ -1,0 +1,6 @@
+activity_manager:
+  project:
+    label: Rótulo
+  create_project_modal:
+    confirm: Seguinte
+    cancel: Cancelar

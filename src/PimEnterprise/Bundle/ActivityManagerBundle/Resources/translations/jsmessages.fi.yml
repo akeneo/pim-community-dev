@@ -1,0 +1,6 @@
+activity_manager:
+  project:
+    label: Nimike
+  create_project_modal:
+    confirm: Seuraava
+    cancel: Peruuta
