@@ -12,6 +12,7 @@ pim_analytics:
     download: TXT
   info_type:
     pim_edition: Izdanje
+    pim_version: Verzija
     pim_storage_driver: Pohrana
     pim_environment: Okruženje
     pim_install_time: Datum instalacije

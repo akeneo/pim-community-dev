@@ -74,7 +74,7 @@ pim_enrich:
     limit_exceeded: 'Por favor, elige menos de %limit% de artículos para editar'
     product:
       page_title: Productos
-      page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% de productos)'
+      page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% productos)'
       title: Elegir operación
       subtitle: 'Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados'
       confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
@@ -85,7 +85,7 @@ pim_enrich:
         fourth: Confirmar
     family:
       page_title: Familias
-      page_subtitle: 'Edición masiva (1 familia) |Edición (%count% de familias)'
+      page_subtitle: 'Edición masiva (1 familia) |Edición masiva (%count% familias)'
       title: Elegir operación
       subtitle: 'Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en las %count% familias seleccionadas'
       confirm: 'Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Estás a punto de actualizar %count% familias con la siguiente información, por favor confirme.'
@@ -113,6 +113,7 @@ pim_enrich:
       label: Clasificar los productos en categorías
       description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
       success_flash: Los producto(s) han sido clasificados en las categorías seleccionadas
+      launched_flash: 'La acción en masa "clasificar" ha sido lanzada. Será notificado una vez finalizada.'
     change-family:
       label: Cambiar la familia de los productos
       description: La familia de los productos seleccionados se cambiará a la familia elegida
@@ -364,7 +365,7 @@ confirmation:
   confirm: Confirmación
   delete: Confirmación de borrado
   leave: ¿Está seguro que desea salir de esta página?
-  discard changes: 'Perderá los cambios en %entity% si dejas la página.'
+  discard changes: 'Perderá los cambios en %entity% si abandona esta página.'
   remove:
     item: ¿Está seguro de que desea borrar este elemento?
     attribute: '¿Está seguro que desea eliminar el atributo %name%?'
@@ -646,7 +647,7 @@ pim_title.group_type:
   index: Tipos de grupo
   edit: 'Tipos de Grupo %group type.label% | Editar'
 pim_title.mass_edit_action:
-  choose: Edición masiva | Elija
+  choose: Edición masiva | Seleccionar
   configure: Edición masiva | Configurar
 pim_title.job_tracker:
   index: Seguimiento de procesos
@@ -666,7 +667,7 @@ pim_catalog_date: Fecha
 pim_catalog_metric: Métrica
 pim_reference_data_simpleselect: Selección simple de datos de referencia
 pim_reference_data_multiselect: Selección múltiple de datos de referencia
-Activated: Activada
+Activated: Habilitado
 Disable: Inhabilitar
 pim_enrich.sequential_edit_action:
   product:
@@ -676,7 +677,7 @@ pim_enrich.mass_edit_action:
   limit_exceeded: 'Por favor, elige menos de %limit% de artículos para editar'
   product:
     page_title: Productos
-    page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% de productos)'
+    page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% productos)'
     title: Elegir operación
     subtitle: 'Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados'
     confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
@@ -687,7 +688,7 @@ pim_enrich.mass_edit_action:
       fourth: Confirmar
   family:
     page_title: Familias
-    page_subtitle: 'Edición masiva (1 familia) |Edición (%count% de familias)'
+    page_subtitle: 'Edición masiva (1 familia) |Edición masiva (%count% familias)'
     title: Elegir operación
     subtitle: 'Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en las %count% familias seleccionadas'
     confirm: 'Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Estás a punto de actualizar %count% familias con la siguiente información, por favor confirme.'

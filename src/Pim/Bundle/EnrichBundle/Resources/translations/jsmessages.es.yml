@@ -158,7 +158,7 @@ pim_enrich:
       copy:
         select: Seleccione
         all: Todos
-        all_visible: Todo visible
+        all_visible: Todo lo visible
         none: Ninguno
       variant_group:
         updated_by: Actualizado por grupo de variantes
