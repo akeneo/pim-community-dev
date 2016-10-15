@@ -28,7 +28,7 @@ Minute: Minute
 Second: Seconde
 Millisecond: Milliseconde
 Microsecond: Microseconde
-"Time Zone": Fuseau horaire
+Time Zone: Fuseau horaire
 Localized value: Valeur localisée
 Columns: Colonnes
 Datagrid Configuration: Configuration du tableau
@@ -44,7 +44,7 @@ jstree:
     unclassified: Produits non classifiés
   no_tree: "Pas d'arborescence disponible"
   include_sub: Inc. les sous-catégories
-  loading: Chargement ...
+  loading: Chargement...
 datetimepicker:
   days:
     Sunday: Dimanche
@@ -109,4 +109,4 @@ oro_config:
           system_locale: Langue
         notification:
           title: Notifications
-          system_notification: Notifications des nouvelles versions
+          system_notification: Notifications de nouvelles versions

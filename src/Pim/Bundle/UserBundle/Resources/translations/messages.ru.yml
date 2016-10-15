@@ -7,6 +7,7 @@ pim_user:
       password.title: Пароль
       business_unit.title: Бизнес-единицы
       email_synchronization.title: Параметры синхронизации email
+      interfaces.title: Интерфейсы
 oro.user.controller:
   group.message.saved: Группа сохранена
   role.message.saved: Роль сохранена
@@ -14,6 +15,10 @@ oro.user.controller:
   status.message.saved: Состояние сохранено
 oro.user.grid.users:
   columns:
+    username: Имя пользователя
+    email: Email
+    firstName: Имя
+    lastName: Фамилия
     createdAt: Создано
     updatedAt: Обновлено
     enabled: Статус
@@ -30,9 +35,6 @@ pim_title:
   system_configuration.index: Настройки
 user.title: Пользователь
 user.overview: Пользователь
-user:
-  default_grid_view:
-    none: Нет
 Users Management: Управление пользователями
 Create user: Создать пользователя
 btn.create.user: Создать пользователя
@@ -61,15 +63,27 @@ Port: Порт
 Last logged in: Дата последнего входа
 Login count: Количество входов
 Additional Information: Дополнительная информация
+Interfaces: Интерфейсы
 Basic Information: Общая информация
 Contact Information: Контактная информация
 User name: Имя пользователя
 Birthday: День рождения
 API key: Ключ API
+Ui locale: Локаль пользовательского интерфейса
+UI locale: Локаль пользовательского интерфейса
+User salt: Соль пользователя
+Current password: Действующий пароль
+New password: Новый пароль
+Repeat new password: Новый пароль (повтор)
 Generate key: Сгенерировать ключ
 Primary: первичный
 Removed user: Удаленный пользователь
-user.product_grid_filters: Фильтры товаров
+user:
+  product_grid_filters: Фильтры товаров
+  default_product_grid_view:
+    label: Представление сетки продуктов по умолчанию
+  default_grid_view:
+    none: Нет
 Role: Роль
 Owner: Владелец
 General: Основные

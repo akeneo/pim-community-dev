@@ -38,14 +38,14 @@ pim_title.import_profile.show: 'Профиль импорта %job.label% | По
 pim_title.import_execution.index: История запусков импорта
 pim_title.import_execution.show: Запуск импорта | Детали
 export profile:
-  title: профиль экспорта
+  title: Профиль экспорта
   overview: Обзор профиля экспорта
   create: Создать профиль экспорта
   edit: Редактировать профиль экспорта
 export report:
   overview: Отчеты экспорта
 import profile:
-  title: профиль импорта
+  title: Профиль импорта
   overview: Обзор профилей импорта
   create: Создать профиль импорта
   edit: Редактировать профиль импорта
@@ -60,7 +60,7 @@ pim_importexport:
       edit: Редактировать профиль экспорта
       remove: Удалить профиль экспорта
       launch: Запуск исполнения профиля экспорта
-      history: Просмотр истории профиля экспорта
+      history: Просмотр журнала профиля экспорта
     import_profile:
       index: Просмотр списка профилей импорта
       create: Создать профиль импорта
@@ -68,7 +68,7 @@ pim_importexport:
       edit: Редактировать профиль импорта
       remove: Удалить профиль импорта
       launch: Запуск исполнения профиля импорта
-      history: Просмотр истории профиля импорта
+      history: Просмотр журнала профиля импорта
     export_execution:
       index: Посмотреть список отчетов об экспорте
       show: Подробный просмотр отчета об экспорте
@@ -99,10 +99,12 @@ flash:
     created: Экспорт был успешно создан
     removed: Экспорт был удален
     updated: Экспорт был успешно обновлен
+    running: Выполняется экспорт
   import:
     created: Импорт был успешно создан
     removed: Импорт был успешно удален
     updated: Импорт был успешно обновлен
+    running: Выполняется импорт
 pim_menu:
   item:
     export_history: История экспорта
@@ -121,7 +123,7 @@ Display item: Показать элемент
 Hide item: Скрыть элемент
 Collecting data about job execution...: Сбор данных о выполнении задания...
 You must select a file to upload: Необходимо выбрать файл для загрузки
-Download log: Журнал загрузок
+Download log: Журнал загрузки
 Show profile: Показать профиль
 execution details: подробности выполнения
 job_execution.summary:
@@ -130,14 +132,23 @@ job_execution.summary:
   skip: пропущено
   create: создано
   update: обновлено
-  update_products: обновленные продукты
-  skip_products: пропущенные продукты
-  displayed: первые предупреждения отображены
+  update_products: обновленных продуктов
+  skip_products: пропущенных продуктов
+  displayed: отображены первые предупреждения
   charset_validator:
     title: 'Кодировка файла:'
-    skipped: пропущено, расширение в белом списке
+    skipped: пропущено, расширение из белого списка
 Step: Этап
 Status: Статус
 Summary: Сводка
 Start: Начало
-End: Окончание
+End: Конец
+set_attribute_requirements: Установить требования к атрибутам
+COMPLETED: ЗАВЕРШЕНО
+STARTING: НАЧИНАЕТСЯ
+STARTED: НАЧАТО
+STOPPING: ОСТАНАВЛИВАЕТСЯ
+STOPPED: ОСТАНОВЛЕНО
+FAILED: НЕ УДАЛОСЬ
+ABANDONED: ОТМЕНЕНО
+UNKNOWN: НЕИЗВЕСТНО

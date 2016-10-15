@@ -100,7 +100,7 @@ pim_connector:
       label: Canal
       help: Le canal que vous souhaitez exporter
     header:
-      label: Entête
+      label: En-tête
   import:
     enabled:
       label: Activer le produit
@@ -125,7 +125,7 @@ pim_connector:
       help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
     delimiter:
       label: Délimiteur
-      help: Caractère unique utilisé pour délimiter les valeurs
+      help: Caractère unique utilisé comme délimiteur de champ pour les fichiers CSV
     enclosure:
       label: "Caractère d'encadrement"
       help: Caractère unique utilisé pour encadrer les champs
