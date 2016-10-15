@@ -1,6 +1,8 @@
 Job: Tarefa
 Connector: Conector
 pim_import_export:
+  job: Tarefa
+  connector: Conector
   status:
     - Pronto
   batch_status:
@@ -13,7 +15,6 @@ pim_import_export:
     7: ABANDONADO
     8: DESCONHECIDO
   download_archive:
-    archive: transferir ficheiro gerado | transferir ficheiros gerados
     output: transferir ficheiro gerado | transferir ficheiros gerados
     input: transferir ficheiro lido| transferir ficheiros lidos
     invalid_xlsx: transferir dados inválidos
@@ -86,12 +87,12 @@ pim_importexport:
       dl_log: Transferir log de relatório de importação
       dl_files: Transferir arquivos importados
   acl_group:
-    export: Exportar perfis
-    import: Importar perfis
+    export: Perfis de exportação
+    import: Perfis de importação
 btn:
   create:
-    export profile: criar perfil de exportação
-    import profile: criar perfil de importação
+    export profile: Criar perfil de exportação
+    import profile: Criar perfil de importação
 Upload and import now: Enviar e importar agora
 import now: Importar agora
 export now: Exportar agora
