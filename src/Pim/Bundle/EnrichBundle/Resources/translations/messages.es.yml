@@ -74,7 +74,7 @@ pim_enrich:
     limit_exceeded: 'Por favor, elige menos de %limit% de artículos para editar'
     product:
       page_title: Productos
-      page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% de productos)'
+      page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% productos)'
       title: Elegir operación
       subtitle: 'Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados'
       confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
@@ -85,7 +85,7 @@ pim_enrich:
         fourth: Confirmar
     family:
       page_title: Familias
-      page_subtitle: 'Edición masiva (1 familia) |Edición (%count% de familias)'
+      page_subtitle: 'Edición masiva (1 familia) |Edición masiva (%count% familias)'
       title: Elegir operación
       subtitle: 'Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en las %count% familias seleccionadas'
       confirm: 'Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Estás a punto de actualizar %count% familias con la siguiente información, por favor confirme.'
@@ -100,6 +100,7 @@ pim_enrich:
       success_flash: Estado de los producto(s) han sido cambiados
     edit-common-attributes:
       label: Editar atributos
+      description: Los atributos del producto seleccionado serán editados con los siguientes datos para el local seleccionado.
       empty: Por favor, seleccione atributo(s) que desea editar
       success_flash: Atributo(s) del producto(s) han sido actualizados
       message:
@@ -121,6 +122,7 @@ pim_enrich:
       label: Agregar a un grupo de variantes
       description: Seleccione el grupo de variantes al cual agregar los productos seleccionados
       success_flash: Los productos fueron agregados exitosamente al grupo de variantes seleccionado
+      already_in_variant_group_or_not_valid: 'No puede agrupar los siguientes (%products%) productos debido a que ya forman parte de un grupo de variantes o no posee el axis de grupo.'
       no_variant_group: Ningún grupo de variantes por ahora. Por favor comience por crear un grupo de variantes.
       no_valid_variant_group: Ningún grupo de variantes comparte atributos con los productos seleccionados.
       some_variant_groups_are_skipped:
@@ -343,7 +345,7 @@ confirmation:
   confirm: Confirmación
   delete: Confirmación de borrado
   leave: ¿Está seguro que desea salir de esta página?
-  discard changes: 'Perderá los cambios en %entity% si dejas la página.'
+  discard changes: 'Perderá los cambios en %entity% si abandona esta página.'
   remove:
     item: ¿Está seguro de que desea borrar este elemento?
     attribute: '¿Está seguro que desea eliminar el atributo %name%?'
@@ -623,7 +625,7 @@ pim_title.group_type:
   index: Tipos de grupo
   edit: 'Tipos de Grupo %group type.label% | Editar'
 pim_title.mass_edit_action:
-  choose: Edición masiva | Elija
+  choose: Edición masiva | Seleccionar
   configure: Edición masiva | Configurar
 pim_title.dashboard: Cartelera
 pim_catalog_identifier: Identificador
@@ -638,7 +640,7 @@ pim_catalog_image: Imagen
 pim_catalog_boolean: Si/No
 pim_catalog_date: Fecha
 pim_catalog_metric: Métrica
-Activated: Activada
+Activated: Habilitado
 Disable: Inhabilitar
 pim_enrich.sequential_edit_action:
   product:
@@ -648,7 +650,7 @@ pim_enrich.mass_edit_action:
   limit_exceeded: 'Por favor, elige menos de %limit% de artículos para editar'
   product:
     page_title: Productos
-    page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% de productos)'
+    page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% productos)'
     title: Elegir operación
     subtitle: 'Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados'
     confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
@@ -659,7 +661,7 @@ pim_enrich.mass_edit_action:
       fourth: Confirmar
   family:
     page_title: Familias
-    page_subtitle: 'Edición masiva (1 familia) |Edición (%count% de familias)'
+    page_subtitle: 'Edición masiva (1 familia) |Edición masiva (%count% familias)'
     title: Elegir operación
     subtitle: 'Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en las %count% familias seleccionadas'
     confirm: 'Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Estás a punto de actualizar %count% familias con la siguiente información, por favor confirme.'
@@ -674,6 +676,7 @@ pim_enrich.mass_edit_action:
     success_flash: Estado de los producto(s) han sido cambiados
   edit-common-attributes:
     label: Editar atributos comunes
+    description: Los atributos del producto seleccionado serán editados con los siguientes datos para el local seleccionado.
     empty: Por favor, seleccione atributo(s) que desea editar
     success_flash: Atributo(s) del producto(s) han sido actualizados
     message.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
