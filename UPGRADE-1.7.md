@@ -66,6 +66,7 @@ The following command helps to migrate references to the other Normalizer classe
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\ProductValueNormalizer/Pim\\Component\\Catalog\\Normalizer\\Standard\\Product\\ProductValueNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\ProductValuesNormalizer/Pim\\Component\\Catalog\\Normalizer\\Standard\\Product\\ProductValuesNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\TranslationNormalizer/Pim\\Component\\Catalog\\Normalizer\\Standard\\TranslationNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Comment\\Normalizer\\Structured\\CommentNormalizer/Pim\\Component\\Comment\\Normalizer\\Standard\\CommentNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.normalizer\.association_type/pim_catalog\.normalizer\.standard\.association_type/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.normalizer\.association_type\.class/pim_catalog\.normalizer\.standard\.association_type\.class/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.normalizer\.attribute/pim_catalog\.normalizer\.standard\.attribute/g'
@@ -108,4 +109,6 @@ The following command helps to migrate references to the other Normalizer classe
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.normalizer\.locale\.class/pim_catalog\.normalizer\.standard\.locale\.class/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.normalizer\.label_translation/pim_catalog\.normalizer\.standard\.translation/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.normalizer\.label_translation\.class/pim_catalog\.normalizer\.standard\.translation\.class/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.normalizer\.comment/pim_comment\.normalizer\.standard\.comment/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.normalizer\.comment\.class/pim_comment\.normalizer\.standard\.comment\.class/g'
 ```
