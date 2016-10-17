@@ -78,7 +78,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::expected(
                 'attributeCode',
-                'a string with the format yyyy-mm-ddTH:i:sP',
+                'a string with the format yyyy-mm-dd',
                 'setter',
                 'date',
                 gettype($data)
@@ -97,26 +97,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::expected(
                 'attributeCode',
-                'a string with the format yyyy-mm-ddTH:i:sP',
-                'setter',
-                'date',
-                gettype($data)
-            )
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
-    function it_throws_an_error_if_attribute_data_is_not_iso(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = '1970-01-01';
-
-        $this->shouldThrow(
-            InvalidArgumentException::expected(
-                'attributeCode',
-                'a string with the format yyyy-mm-ddTH:i:sP',
+                'a string with the format yyyy-mm-dd',
                 'setter',
                 'date',
                 gettype($data)

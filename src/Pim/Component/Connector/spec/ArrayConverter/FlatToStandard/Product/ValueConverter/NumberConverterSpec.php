@@ -1,8 +1,6 @@
 <?php
 
-
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
-
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;

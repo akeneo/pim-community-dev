@@ -87,12 +87,16 @@ class DateAttributeSetter extends AbstractAttributeSetter
      */
     protected function validateDateFormat(AttributeInterface $attribute, $data)
     {
-        $datetime = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data);
+        try {
+            new \DateTime($data);
 
-        if (false === $datetime) {
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+                throw new \Exception('Invalid date');
+            }
+        } catch (\Exception $e) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
-                'a string with the format yyyy-mm-ddTH:i:sP',
+                'a string with the format yyyy-mm-dd',
                 'setter',
                 'date',
                 gettype($data),

@@ -66,8 +66,9 @@ class PriceConverter extends AbstractValueConverter
                 $currency = $value;
             } else {
                 if (isset($tokens[0])) {
-                    $priceValue = !$attribute->isDecimalsAllowed() && preg_match('|^\d+$|', $tokens[0]) ?
-                        (int) $tokens[0] : (string) $tokens[0];
+                    $price = $tokens[0];
+                    $priceValue = !$attribute->isDecimalsAllowed() && preg_match('|^\d+$|', $price) ?
+                        (int) $price : (string) $price;
                 } else {
                     $priceValue = null;
                 }

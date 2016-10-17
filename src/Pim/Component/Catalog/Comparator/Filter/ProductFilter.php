@@ -49,12 +49,12 @@ class ProductFilter implements ProductFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function filter(ProductInterface $product, array $newValues)
+    public function filter(ProductInterface $product, array $newProduct)
     {
         $originalValues = $this->getOriginalProduct($product);
 
         $result = [];
-        foreach ($newValues as $code => $value) {
+        foreach ($newProduct as $code => $value) {
             if ('values' === $code) {
                 $data = $this->compareAttribute($originalValues, $value);
             } elseif (in_array($code, $this->productFields)) {

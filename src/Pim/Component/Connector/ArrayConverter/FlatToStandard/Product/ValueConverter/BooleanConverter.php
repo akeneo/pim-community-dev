@@ -30,7 +30,7 @@ class BooleanConverter extends AbstractValueConverter
     public function convert(array $attributeFieldInfo, $value)
     {
         if (in_array($value, ['1', '0'])) {
-            $data = boolval($value);
+            $data = (bool) $value;
         } elseif ('' !== $value) {
             $data = $value;
         } else {

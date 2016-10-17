@@ -76,7 +76,7 @@ class Attribute implements ArrayConverterInterface
             $convertedItem[$field] = ('' === $data) ? null : (int) $data;
         } elseif ('options' === $field ||
             'available_locales' === $field ||
-            'allowed_extensions'=== $field
+            'allowed_extensions' === $field
         ) {
             $convertedItem[$field] = ('' === $data) ? [] : explode(',', $data);
         } elseif ('date_min' === $field ||
@@ -113,6 +113,14 @@ class Attribute implements ArrayConverterInterface
     }
 
     /**
+     * Return the value if it's not a date (launch an exception should not be done here).
+     * "2015-12-31" will be converted to "2015-12-31T00:00:00+01:00"
+     *
+     * These dates are wrong and will not converted:
+     * "2015/12/31"
+     * "2015-45-31"
+     * "not a date"
+     *
      * @param mixed $date
      *
      * @return string|null
@@ -123,12 +131,15 @@ class Attribute implements ArrayConverterInterface
             return null;
         }
 
-        try {
-            $datetime = new \DateTime($date);
+        $datetime = \DateTime::createFromFormat('Y-m-d', $date);
+        $errors = \DateTime::getLastErrors();
+
+        if (0 === $errors['warning_count'] && 0 === $errors['error_count']) {
+            $datetime->setTime(0, 0, 0);
 
             return $datetime->format('c');
-        } catch (\Exception $e) {
-            return $date;
         }
+
+        return $date;
     }
 }
