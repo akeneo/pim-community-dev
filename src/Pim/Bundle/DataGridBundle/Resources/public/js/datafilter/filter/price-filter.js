@@ -87,7 +87,7 @@ define(
             popupCriteriaTemplate: _.template(
                 '<div class="AknFilterChoice currencyfilter choicefilter">' +
                     '<div class="AknFilterChoice-operator AknDropdown">' +
-                        '<button class="AknDropdown-button AknDropdown-button--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
+                        '<button class="AknActionButton AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
                             '<%= _.__("Action") %>' +
                             '<span class="AknDropdown-caret"></span>' +
                         '</button>' +
@@ -100,7 +100,7 @@ define(
                     '</div>' +
                     '<input class="AknFilterChoice-field" type="text" name="value" value="">' +
                     '<div class="AknDropdown">' +
-                        '<button class="AknDropdown-button AknDropdown-button--noRightBorder AknDropdown-button--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
+                        '<button class="AknActionButton AknActionButton--noRightBorder AknActionButton--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
                             '<%= _.__("Currency") %>' +
                             '<span class="AknDropdown-caret"></span>' +
                         '</button>' +
@@ -175,7 +175,7 @@ define(
                         }
                     } else if (value == newValue.type || value == newValue.currency) {
                         item.parent().addClass('active');
-                        item.closest('.AknDropdown').find('AknDropdown-button').html(item.html() + '<span class="AknDropdown-caret"></span>');
+                        item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknDropdown-caret"></span>');
                     }
                 });
                 if (newValue.type === 'empty') {

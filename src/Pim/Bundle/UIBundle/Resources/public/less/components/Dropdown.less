@@ -6,34 +6,6 @@
   position: relative;
   display: inline-block;
 
-  &-button {
-    height: @littleButtonsHeight;
-    line-height: @littleButtonsHeight;
-    background-color: white;
-    border: 1px solid @borderColor;
-    .border-radius(4px);
-    font-size: 12.13px;
-    font-weight: normal;
-    color: #555;
-    padding: 0 10px;
-    vertical-align: middle;
-    display: inline-block;
-    cursor: pointer;
-    white-space: nowrap;
-
-    &--noRightBorder {
-      border-right: none;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
-    &--noLeftBorder {
-      border-left: none;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-
   // TODO Define a global "caret" component
   &-caret {
     display: inline-block;
@@ -75,8 +47,9 @@
   &-menuLink {
     padding: 0 15px;
     display: block;
-    height: 20px;
-    line-height: 20px;
+    height: 27px;
+    line-height: 27px;
+    white-space: nowrap;
 
     &:hover {
       background: @AkGrayLighter;

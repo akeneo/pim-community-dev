@@ -11,9 +11,6 @@ function(_, Backbone, groupTemplate) {
      * @extends Backbone.View
      */
     return Backbone.View.extend({
-        /** @property String */
-        className: 'AknActionsPanel',
-
         /** @property {Array} */
         actionsGroups: [],
 
@@ -62,7 +59,7 @@ function(_, Backbone, groupTemplate) {
             });
 
             if (simpleLaunchers.length) {
-                var $container = $('<div></div>');
+                var $container = $('<div class="AknActionButtonsList"></div>');
                 _.each(simpleLaunchers, function (launcher) {
                     $container.append(launcher.render().$el);
                 }, this);
@@ -98,7 +95,7 @@ function(_, Backbone, groupTemplate) {
             }.bind(this));
 
             _.each(groupedLaunchers, function (groupLaunchers, groupName) {
-                var $dropdown = this.$el.find('.' + this.getGroupClassname(groupName) + ' .dropdown-menu');
+                var $dropdown = this.$el.find('.' + this.getGroupClassname(groupName) + ' .AknDropdown-menu');
                 _.each(groupLaunchers, function (launcher) {
                     $dropdown.append(launcher.renderAsListItem().$el);
                 });

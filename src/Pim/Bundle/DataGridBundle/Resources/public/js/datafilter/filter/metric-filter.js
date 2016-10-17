@@ -92,7 +92,7 @@ define(
                 '<div class="metricfilter choicefilter">' +
                     '<div class="input-prepend input-append">' +
                         '<div class="AknFilterChoice-operator AknDropdown btn-group">' +
-                            '<button class="AknDropdown-button btn dropdown-toggle" data-toggle="dropdown">' +
+                            '<button class="AknActionButton btn dropdown-toggle" data-toggle="dropdown">' +
                                 '<%= _.__("Action") %>' +
                                 '<span class="caret"></span>' +
                             '</button>' +
@@ -107,7 +107,7 @@ define(
                         '<input type="text" name="value" value="">' +
 
                         '<div class="AknDropdown">' +
-                            '<button class="AknDropdown-button btn dropdown-toggle" data-toggle="dropdown">' +
+                            '<button class="AknActionButton btn dropdown-toggle" data-toggle="dropdown">' +
                                 '<%= _.__("Unit") %>' +
                                 '<span class="caret"></span>' +
                             '</button>' +

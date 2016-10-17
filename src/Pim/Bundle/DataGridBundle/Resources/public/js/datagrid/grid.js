@@ -297,10 +297,7 @@ define(
              */
             createMassAction: function (ActionPrototype) {
                 return new ActionPrototype({
-                    datagrid:        this,
-                    launcherOptions: {
-                        className: 'btn'
-                    }
+                    datagrid: this
                 });
             },
 
@@ -318,7 +315,7 @@ define(
                         launcherOptions: {
                             label: 'oro.datagrid.action.refresh',
                             iconClassName: 'icon-refresh',
-                            className: 'AknActionsPanel-button'
+                            className: 'AknActionButtonsList-button'
                         }
                     });
 
@@ -349,7 +346,7 @@ define(
                         launcherOptions: {
                             label: 'oro.datagrid.action.reset',
                             iconClassName: 'icon-repeat',
-                            className: 'AknActionsPanel-button'
+                            className: 'AknActionButtonsList-button'
                         }
                     });
 

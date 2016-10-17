@@ -157,7 +157,7 @@ define([
 
             var $el = $(this.listItemTemplate({
                 label: _.__(this.label || this.action.label),
-                className: 'action' + (this.className ? ' ' + this.className : ''),
+                className: 'AknDropdown-menuLink' + (this.className ? ' ' + this.className : ''),
                 link: this.link,
                 action: this.action,
                 attributes: this.attributes,

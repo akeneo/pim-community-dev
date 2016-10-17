@@ -1,8 +1,8 @@
-<div class="<%- classname %> btn-group">
-    <button class="action btn dropdown-toggle" title="<%- group.title %>" data-toggle="dropdown">
+<div class="AknDropdown <%- classname %> btn-group">
+    <button class="AknActionButton" title="<%- group.title %>" data-toggle="dropdown">
         <% if (group.icon) { %><i class="icon-<%- group.icon %>"></i><% } %>
         <%- _.__(group.label) %>
-        <i class="caret"></i>
+        <i class="AknDropdown-caret"></i>
     </button>
-    <ul class="dropdown-menu"></ul>
+    <ul class="AknDropdown-menu"></ul>
 </div>

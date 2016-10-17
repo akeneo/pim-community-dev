@@ -1,0 +1,35 @@
+@import '../base/variables';
+@import '../base/mixins';
+
+.AknActionButton {
+  height: @littleButtonsHeight;
+  line-height: @littleButtonsHeight;
+  background-color: white;
+  border: 1px solid @borderColor;
+  .border-radius(4px);
+  font-size: 12.13px;
+  font-weight: normal;
+  color: #555;
+  padding: 0 10px;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+  white-space: nowrap;
+  outline: none;
+
+  &:hover, &:active, &:focus {
+    background: #eee;
+  }
+
+  &--noRightBorder {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &--noLeftBorder {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}

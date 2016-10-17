@@ -17,7 +17,7 @@ function(_, __, SelectFilter) {
          * @property
          */
         template: _.template(
-            '<div class="AknDropdown-button filter-select filter-criteria-selector">' +
+            '<div class="AknActionButton filter-select filter-criteria-selector">' +
                 '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<select multiple>' +
                     '<% _.each(options, function (option) { %>' +

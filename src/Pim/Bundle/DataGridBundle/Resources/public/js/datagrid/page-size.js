@@ -15,7 +15,7 @@ function($, _, Backbone, __) {
         template: _.template(
             '<label class="control-label"><%- _.__("View per page") %>: &nbsp;</label>' +
             '<div class="AknDropdown">' +
-                '<button data-toggle="dropdown" class="AknDropdown-button <% if (disabled) { %>disabled<% } %>">' +
+                '<button data-toggle="dropdown" class="AknActionButton <% if (disabled) { %>disabled<% } %>">' +
                     '<%=  currentSizeLabel %><span class="AknDropdown-caret"></span>' +
                 '</button>' +
                 '<ul class="AknDropdown-menu AknDropdown-menu--alignRight">' +
