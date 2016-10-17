@@ -43,7 +43,7 @@ function(_, __, SelectFilter) {
          */
         widgetOptions: {
             multiple: true,
-            classes: 'select-filter-widget multiselect-filter-widget'
+            classes: 'AknActionButton-selectButton select-filter-widget multiselect-filter-widget'
         },
 
         /**
