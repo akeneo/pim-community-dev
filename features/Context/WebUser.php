@@ -1369,6 +1369,7 @@ class WebUser extends RawMinkContext
         }, sprintf('Cannot find "%s" button label in modal', $buttonLabel));
 
         $buttonElement->press();
+
         $this->wait();
     }
 

@@ -1,4 +1,55 @@
 pim_connector:
+  jobs:
+    csv_product_export:
+      title: Экспорт продуктов в CSV
+      export.title: Экспорт продуктов
+    csv_category_export:
+      title: Экспорт категорий в CSV
+      export.title: Экспорт категорий
+    csv_attribute_export:
+      title: Экспорт атрибутов в CSV
+      export.title: Экспорт атрибутов
+    csv_association_type_export:
+      title: Экспорт типов ассоциаций в CSV
+      export.title: Экспорт типов ассоциаций
+    csv_group_export:
+      title: Экспорт групп в CSV
+      export.title: Экспорт групп
+    csv_variant_group_export:
+      title: Экспорт групп вариантов в CSV
+      export.title: Экспорт групп вариантов
+    csv_product_import:
+      title: Импорт продуктов из CSV
+      validation.title: Проверка файла
+      import.title: Импорт продуктов
+      import_associations.title: Импорт ассоциаций
+    csv_category_import:
+      title: Импорт категорий из CSV
+      validation.title: Проверка файла
+      import.title: Импорт категории
+    csv_attribute_import:
+      title: Импорт атрибутов из CSV
+      validation.title: Проверка файла
+      import.title: Импорт атрибутов
+    csv_attribute_option_import:
+      title: Импорт выборов атрибутов из CSV
+      validation.title: Проверка файла
+    csv_association_type_import:
+      title: Импорт типов ассоциаций из CSV
+      validation.title: Проверка файла
+      import.title: Импорт типов ассоциаций
+    csv_family_import:
+      title: Импорт семейств из CSV
+      validation.title: Подтверждение файла
+      import.title: Импорт семейств
+    csv_group_import:
+      title: Импорт группы из CSV
+      validation.title: Проверка файла
+      import.title: Импорт группы
+    csv_variant_group_import:
+      title: Импорт группы вариантов в CSV
+      validation.title: Проверка файла
+      import.title: Импорт групп вариантов
   steps:
     dummy_reader.title: Заглушка
     product_reader.title: Извелечение продуктов

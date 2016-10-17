@@ -254,11 +254,9 @@ pim_enrich:
             add: Добавить
             add_attributes: Добавить атрибуты
           info:
-            search_attributes: Поиск...
+            search_attributes: Поиск
             no_available_attributes: Нет больше атрибутов для добавления
             attributes_selected: 'Выбран(o) {{ attributeCount }} атрибут(ов)'
-            no_match: Совпадений не найдено
-            load_more: Загрузка дополнительных результатов...
         categories:
           title: Категории
       panel:
@@ -267,7 +265,6 @@ pim_enrich:
           info:
             no_family: Семейство не определено. Пожалуйста определите семейство для вычисления завершенности этого продукта.
             no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить завершенность для нового семейства.
-          missing_values: Отсутствующуют значения
         history:
           title: Журнал
       switch:

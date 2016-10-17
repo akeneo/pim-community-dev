@@ -17,9 +17,10 @@ define(
         'pim/attribute-option/create',
         'pim/security-context',
         'pim/initselect2',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/i18n'
     ],
-    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2, UserContext) {
+    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2, UserContext, i18n) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             choicePromise: null,
@@ -83,8 +84,15 @@ define(
                                 };
                             },
                             results: function (data) {
+                                if (!data.results) {
+                                    data = {
+                                        more: 20 === _.keys(data).length,
+                                        results: _.map(data, this.convertBackendItem)
+                                    };
+                                }
+
                                 return data;
-                            }
+                            }.bind(this)
                         },
                         initSelection: function (element, callback) {
                             var id = $(element).val();
@@ -94,9 +102,15 @@ define(
                                 }
 
                                 this.choicePromise.then(function (response) {
-                                    var selected = _.findWhere(response.results, {id: id});
+                                    var selected = _.findWhere(response, {code: id});
+
+                                    if (!selected) {
+                                        selected = _.findWhere(response.results, {id: id});
+                                    } else {
+                                        selected = this.convertBackendItem(selected);
+                                    }
                                     callback(selected);
-                                });
+                                }.bind(this));
                             }
                         }.bind(this),
                         placeholder: ' ',
@@ -115,12 +129,9 @@ define(
             getChoiceUrl: function () {
                 return $.Deferred().resolve(
                     Routing.generate(
-                        'pim_ui_ajaxentity_list',
+                        'pim_enrich_attributeoption_get',
                         {
-                            'class': 'PimCatalogBundle:AttributeOption',
-                            'dataLocale': this.context.locale,
-                            'collectionId': this.attribute.id,
-                            'options': {'type': 'code'}
+                            identifier: this.attribute.code
                         }
                     )
                 ).promise();
@@ -136,6 +147,20 @@ define(
                 this.choicePromise = null;
 
                 this.setCurrentValue(data);
+            },
+
+            /**
+             * Convert the item returned from the backend to fit select2 needs
+             *
+             * @param {object} item
+             *
+             * @return {object}
+             */
+            convertBackendItem: function (item) {
+                return {
+                    id: item.code,
+                    text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code)
+                };
             }
         });
     }

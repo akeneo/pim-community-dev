@@ -1,4 +1,55 @@
 pim_connector:
+  jobs:
+    csv_product_export:
+      title: Exportar produto para o CSV
+      export.title: Exportar produto
+    csv_category_export:
+      title: Exportar categoria para o CSV
+      export.title: Exportar categoria
+    csv_attribute_export:
+      title: Exportar atributo para o CSV
+      export.title: Exportar atributo
+    csv_attribute_option_export:
+      title: Exportar opção de atributo para o CSV
+      export.title: Exportar opção de atributo
+    csv_association_type_export:
+      title: Exportar tipo de associação para o CSV
+      export.title: Exportar tipo de associação
+    csv_group_export:
+      title: Exportar grupo para o CSV
+      export.title: Exportar grupo
+    csv_variant_group_export:
+      title: Exportar variante do grupo para o CSV
+      export.title: Exportar variante do grupo
+    csv_product_import:
+      title: Importar produto para o CSV
+      validation.title: Validação do ficheiro
+      import.title: Importar produto
+      import_associations.title: Importar associação
+    csv_category_import:
+      title: Importar categoria para o CSV
+      validation.title: Validação do ficheiro
+      import.title: Importar categoria
+    csv_attribute_import:
+      title: Importar atributo para o CSV
+      validation.title: Validação do ficheiro
+      import.title: Importar atributo
+    csv_attribute_option_import:
+      title: Importar opção de atributo para o CSV
+      validation.title: Validação do ficheiro
+      import.title: Importar opção de atributo
+    csv_association_type_import:
+      title: Importar tipo de associação para o CSV
+      validation.title: Validação do ficheiro
+      import.title: Importar tipo de associação
+    csv_group_import:
+      title: Importar grupo para o CSV
+      validation.title: Validação do ficheiro
+      import.title: Importar grupo
+    csv_variant_group_import:
+      title: Importar variante do grupo para o CSV
+      validation.title: Validação do ficheiro
+      import.title: Importar variante do grupo
   steps:
     dummy_reader.title: Leitor dummy
     product_reader.title: Extração do produto
@@ -169,138 +220,3 @@ job_execution.summary:
   charset_validator:
     title: 'codificação do ficheiro:'
   product_skipped_no_diff: produtos ignorados (sem diferenças)
-batch_jobs:
-  csv_product_export:
-    label: Exportar produto para o CSV
-    export.label: Exportar produto
-  csv_category_export:
-    label: Exportar categoria para o CSV
-    export.label: Exportar categoria
-  csv_attribute_export:
-    label: Exportar atributo para o CSV
-    export.label: Exportar atributo
-  csv_attribute_option_export:
-    label: Exportar opção de atributo para o CSV
-    export.label: Exportar opção de atributo
-  csv_association_type_export:
-    label: Exportar tipo de associação para o CSV
-    export.label: Exportar tipo de associação
-  csv_group_export:
-    label: Exportar grupo para o CSV
-    export.label: Exportar grupo
-  csv_variant_group_export:
-    label: Exportar variante do grupo para o CSV
-    export.label: Exportar variante do grupo
-  csv_family_export:
-    label: Exportação de famílias em CSV
-    export.label: Exportação de famílias
-  csv_product_import:
-    label: Importar produto para o CSV
-    validation.label: Validação do ficheiro
-    import.label: Importar produto
-    import_associations.label: Importar associação
-  csv_category_import:
-    label: Importar categoria para o CSV
-    validation.label: Validação do ficheiro
-    import.label: Importar categoria
-  csv_attribute_import:
-    label: Importar atributo para o CSV
-    validation.label: Validação do ficheiro
-    import.label: Importar atributo
-  csv_attribute_option_import:
-    label: Importar opção de atributo para o CSV
-    validation.label: Validação do ficheiro
-    import.label: Importar opção de atributo
-  csv_association_type_import:
-    label: Importar tipo de associação para o CSV
-    validation.label: Validação do ficheiro
-    import.label: Importar tipo de associação
-  csv_family_import:
-    label: Importação de famílias por CSV
-    validation.label: Validação do ficheiro
-    import.label: Importação de famílias
-  csv_group_import:
-    label: Importar grupo para o CSV
-    validation.label: Validação do ficheiro
-    import.label: Importar grupo
-  csv_variant_group_import:
-    label: Importar variante do grupo para o CSV
-    validation.label: Validação do ficheiro
-    import.label: Importar variante do grupo
-  csv_channel_import:
-    validation.label: Validação do ficheiro
-  csv_locale_import:
-    validation.label: Validação do ficheiro
-  csv_attribute_group_import:
-    validation.label: Validação do ficheiro
-  csv_currency_import:
-    validation.label: Validação do ficheiro
-  csv_group_type_import:
-    validation.label: Validação do ficheiro
-  xlsx_category_import:
-    label: Importação de categorias por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar categoria
-  xlsx_association_type_import:
-    label: Importação de tipos de associação por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar tipo de associação
-  xlsx_attribute_import:
-    label: Importação de atributos por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar atributo
-  xlsx_attribute_option_import:
-    label: Importação de opções de atributos por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar opção de atributo
-  xlsx_family_import:
-    label: Importação de famílias por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importação de famílias
-  xlsx_product_export:
-    label: Exportação de produtos em XLSX
-    export.label: Exportar produto
-  xlsx_product_import:
-    label: Importação de produtos por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar produto
-    import_associations.label: Importar associação
-  xlsx_group_export:
-    label: Exportação de grupos em XLSX
-    export.label: Exportar grupo
-  xlsx_variant_group_export:
-    label: Exportação de grupos variantes em XLSX
-    export.label: Exportar variante do grupo
-  xlsx_group_import:
-    label: Importação de grupos por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar grupo
-  xlsx_variant_group_import:
-    label: Importação de grupos variantes por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importação de grupos variantes
-  xlsx_family_export:
-    label: Exportação de famílias em XLSX
-    export.label: Exportação de famílias
-  xlsx_category_export:
-    label: Exportação de categorias em XLSX
-    export.label: Exportar categoria
-  xlsx_attribute_export:
-    label: Exportação de atributos em XLSX
-    export.label: Exportação de atributos em XLSX
-  xlsx_attribute_option_export:
-    label: Exportação de opções de atributos em XLSX
-    export.label: Exportação de opções de atributos em XLSX
-  xlsx_association_type_export:
-    label: Exportação de tipos de associação em XLSX
-    export.label: Exportação de tipos de associação em XLSX
-  xlsx_channel_import:
-    validation.label: Validação do ficheiro
-  xlsx_locale_import:
-    validation.label: Validação do ficheiro
-  xlsx_attribute_group_import:
-    validation.label: Validação do ficheiro
-  xlsx_currency_import:
-    validation.label: Validação do ficheiro
-  xlsx_group_type_import:
-    validation.label: Validação do ficheiro
