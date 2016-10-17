@@ -6,6 +6,7 @@
 - PIM-5982: Missing job instance parameters when using custom configuration in command line
 - PIM-5978: Fix missing products in the variant group edit form
 - PIM-5893: Fix products and assets category display issue on Firefox
+- PIM-5536 : Fix search of an attribute by its code
 
 # 1.6.3 (2016-09-22)
 
