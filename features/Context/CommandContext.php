@@ -217,4 +217,13 @@ class CommandContext extends PimContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
+
+    /**
+     * @When /^I run '([^\']*)'$/
+     */
+    public function iRun($command)
+    {
+        $command = $this->replacePlaceholders($command);
+        $this->output = shell_exec('php app/console ' . $command);
+    }
 }
