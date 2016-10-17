@@ -142,13 +142,13 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
             if ($metadata->hasConstraints()) {
                 foreach ($metadata->getConstraints() as $constraint) {
                     $constraintName = $this->getConstraintName($constraint);
-                    if ('UniqueEntity' == $constraintName) {
+                    if ('UniqueEntity' === $constraintName) {
                         if (is_array($constraint->fields)) {
                             //It has not been implemented yet
                         } elseif (is_string($constraint->fields)) {
                             $aConstraints[$constraint->fields][] = $constraint;
                         }
-                    } elseif ('NotBlankProperties' == $constraintName) {
+                    } elseif ('NotBlankProperties' === $constraintName) {
                         foreach ($constraint->properties as $property) {
                             $aConstraints[$property][] = $constraint;
                         }
