@@ -46,7 +46,7 @@ class ProductUpdater implements ObjectUpdaterInterface
      * {
      *      "identifier": "my-sku",
      *      "values": {
-     *          "sky": [{
+     *          "sku": [{
      *             "locale": null,
      *             "scope":  null,
      *             "data":  "my-sku",

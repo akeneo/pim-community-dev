@@ -68,7 +68,7 @@ class NumberLocalizer implements LocalizerInterface
             return $number;
         }
 
-        return (string) str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $options['decimal_separator'], $number);
+        return str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $options['decimal_separator'], $number);
     }
 
     /**
@@ -86,7 +86,7 @@ class NumberLocalizer implements LocalizerInterface
         }
 
         if (isset($matchesNumber['decimal'])) {
-            return (string) str_replace($matchesNumber['decimal'], static::DEFAULT_DECIMAL_SEPARATOR, $number);
+            return str_replace($matchesNumber['decimal'], static::DEFAULT_DECIMAL_SEPARATOR, $number);
         }
 
         return (string) $number;

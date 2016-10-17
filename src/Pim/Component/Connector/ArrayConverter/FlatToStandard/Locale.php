@@ -67,7 +67,7 @@ class Locale implements ArrayConverterInterface
         if ('code' === $field) {
             $convertedItem[$field] = $data;
         } elseif ('activated' === $field) {
-            $convertedItem['enabled'] = (bool) $data;
+            $convertedItem['enabled'] = in_array($data, ['1', '0']) ? (bool) $data : (string) $data;
         }
 
         return $convertedItem;

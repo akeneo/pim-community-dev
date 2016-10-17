@@ -156,4 +156,30 @@ class AttributeSpec extends ObjectBehavior
 
         $this->convert($item)->shouldReturn($result);
     }
+
+    function it_converts_a_date()
+    {
+        $this->convert(['date_min' => '2015-01-31'])->shouldReturn([
+            'labels'   => [],
+            'date_min' => '2015-01-31T00:00:00+01:00'
+        ]);
+    }
+
+    function it_does_not_convert_a_date()
+    {
+        $this->convert(['date_min' => '2015-45-31'])->shouldReturn([
+            'labels'   => [],
+            'date_min' => '2015-45-31'
+        ]);
+
+        $this->convert(['date_min' => '2015/10/31'])->shouldReturn([
+            'labels'   => [],
+            'date_min' => '2015/10/31'
+        ]);
+
+        $this->convert(['date_min' => 'not a date'])->shouldReturn([
+            'labels'   => [],
+            'date_min' => 'not a date'
+        ]);
+    }
 }

@@ -192,6 +192,15 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
+     * Valid dates:
+     * - "2015-12-31T00:00:00+01:00"
+     * - "2015-12-31"
+     *
+     * Wrong dates:
+     * - "2015/12/31"
+     * - "2015-45-31"
+     * - "not a date"
+     *
      * @param string $data
      *
      * @throws \InvalidArgumentException
@@ -205,15 +214,12 @@ class AttributeUpdater implements ObjectUpdaterInterface
         try {
             new \DateTime($data);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(
-                sprintf('Invalid date, "%s" given', $data)
-            );
+            throw new \InvalidArgumentException(sprintf('Invalid date, "%s" given', $data), 0, $e);
         }
 
-        $datetime = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data);
-        if (false === $datetime) {
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
             throw new \InvalidArgumentException(
-                sprintf('Attribute expects a string with the format "yyyy-mm-ddTH:i:sP" as data, "%s" given', $data)
+                sprintf('Attribute expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
             );
         }
     }

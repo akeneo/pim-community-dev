@@ -117,24 +117,25 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->during('update', [$group, []]);
     }
 
-    function it_throws_an_exception_if_date_is_invalid(AttributeInterface $attribute)
+    function it_throws_an_exception_if_data_is_not_a_date(AttributeInterface $attribute)
     {
         $this->shouldThrow(new \InvalidArgumentException('Invalid date, "not a date" given'))->during(
             'update',
             [$attribute, ['date_min' => 'not a date']]
         );
+    }
 
+    function it_throws_an_exception_if_date_is_invalid(AttributeInterface $attribute)
+    {
         $this->shouldThrow(new \InvalidArgumentException('Invalid date, "45/45/2016" given'))->during(
             'update',
             [$attribute, ['date_min' => '45/45/2016']]
         );
+    }
 
-        $this->shouldThrow(new \InvalidArgumentException('Invalid date, "13/01/2016" given'))->during(
-            'update',
-            [$attribute, ['date_min' => '13/01/2016']]
-        );
-
-        $this->shouldThrow(new \InvalidArgumentException('Attribute expects a string with the format "yyyy-mm-ddTH:i:sP" as data, "2016/12/12" given'))->during(
+    function it_throws_an_exception_if_date_is_not_well_formatted(AttributeInterface $attribute)
+    {
+        $this->shouldThrow(new \InvalidArgumentException('Attribute expects a string with the format "yyyy-mm-dd" as data, "2016/12/12" given'))->during(
             'update',
             [$attribute, ['date_min' => '2016/12/12']]
         );
