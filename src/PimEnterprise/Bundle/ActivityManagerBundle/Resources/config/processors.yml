@@ -9,4 +9,4 @@ services:
             - '@pimee_security.voter.attribute'
             - '@oro_user.manager'
             - '@pimee_security.manager.attribute_group_access'
-            - '@pimee_security.manager.category_access'
+            - '@pimee_security.repository.category_access'

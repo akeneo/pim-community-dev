@@ -20,7 +20,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -56,9 +55,6 @@ class Processor extends AbstractProcessor
     /** @var AttributeGroupAccessManager */
     private $attributeGroupAccessManager;
 
-    /** @var CategoryAccessManager */
-    private $categoryAccessManager;
-
     /** @var CategoryAccessRepository */
     private $accessRepository;
 
@@ -70,7 +66,6 @@ class Processor extends AbstractProcessor
      * @param VoterInterface                $attributeVoter
      * @param UserManager                   $userManager
      * @param AttributeGroupAccessManager   $attributeGroupAccessManager
-     * @param CategoryAccessManager         $categoryAccessManager
      * @param CategoryAccessRepository      $accessRepository
      */
     public function __construct(
@@ -81,7 +76,6 @@ class Processor extends AbstractProcessor
         VoterInterface $attributeVoter,
         UserManager $userManager,
         AttributeGroupAccessManager $attributeGroupAccessManager,
-        CategoryAccessManager $categoryAccessManager,
         CategoryAccessRepository $accessRepository
     ) {
         $this->objectDetacher = $objectDetacher;
@@ -91,7 +85,6 @@ class Processor extends AbstractProcessor
         $this->attributeVoter = $attributeVoter;
         $this->userManager = $userManager;
         $this->attributeGroupAccessManager = $attributeGroupAccessManager;
-        $this->categoryAccessManager = $categoryAccessManager;
         $this->accessRepository = $accessRepository;
     }
 
