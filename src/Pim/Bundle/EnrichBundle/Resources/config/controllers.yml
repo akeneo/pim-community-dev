@@ -451,7 +451,7 @@ services:
 
     pim_enrich.controller.rest.variant_group_attribute:
         scope: request
-        class: %pim_enrich.controller.rest.variant_group_attribute.class%
+        class: '%pim_enrich.controller.rest.variant_group_attribute.class%'
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.saver.group'
@@ -459,14 +459,14 @@ services:
             - '@pim_catalog.builder.product_template'
 
     pim_enrich.controller.rest.versioning:
-        class: %pim_enrich.controller.rest.versioning.class%
+        class: '%pim_enrich.controller.rest.versioning.class%'
         arguments:
             - '@pim_versioning.repository.version'
             - '@pim_catalog.resolver.fqcn'
             - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.attribute_option:
-        class: %pim_enrich.controller.rest.attribute_option.class%
+        class: '%pim_enrich.controller.rest.attribute_option.class%'
         arguments:
             - '@pim_enrich.repository.attribute_option.search'
             - '@pim_enrich.normalizer.structured.attribute_option'

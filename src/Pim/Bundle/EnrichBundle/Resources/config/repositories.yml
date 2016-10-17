@@ -79,7 +79,7 @@ services:
             - '%pim_catalog.entity.attribute_group.class%'
 
     pim_enrich.repository.attribute_option.search:
-        class: %pim_enrich.repository.attribute_option.search.class%
+        class: '%pim_enrich.repository.attribute_option.search.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - %pim_catalog.entity.attribute_option.class%
+            - '%pim_catalog.entity.attribute_option.class%'

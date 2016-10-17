@@ -137,11 +137,15 @@ class Form extends Base
     /**
      * Get the specified tab
      *
+     * @param string $tab
+     *
      * @return NodeElement
      */
     public function getTab($tab)
     {
-        return $this->find('css', sprintf('a:contains("%s")', $tab));
+        return $this->spin(function () use ($tab) {
+            return $this->find('css', sprintf('a:contains("%s")', $tab));
+        }, sprintf('Cannot find the tab named "%s"', $tab));
     }
 
     /**
