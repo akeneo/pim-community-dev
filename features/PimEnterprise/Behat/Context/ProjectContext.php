@@ -13,7 +13,9 @@ namespace Akeneo\ActivityManager\Behat\Context;
 
 use Akeneo\ActivityManager\Behat\Context;
 use Akeneo\ActivityManager\Behat\ContextInterface;
+use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Webmozart\Assert\Assert;
 
 /**
@@ -37,6 +39,32 @@ class ProjectContext extends Context implements ContextInterface
     public function iOpenTheViewSelector()
     {
         $this->getCurrentPage()->getViewSelector()->click();
+    }
+
+    /**
+     * @Then /^the project "([^"]*)" has the following properties:$/
+     */
+    public function projectHasProperties($label, TableNode $properties)
+    {
+        $project = $this->getContainer()
+            ->get('akeneo_activity_manager.project.repository')
+            ->findOneBy(['label' => $label]);
+
+        $accessor = PropertyAccess::createPropertyAccessor();
+
+        foreach ($properties->getRows() as $property) {
+            list($propertyName, $expectedValue) = $property;
+            if ($expectedValue !== $actualValue = $accessor->getValue($project, $propertyName)) {
+                throw new \DomainException(
+                    sprintf(
+                        'Given value does not match the expected value, "%s" expected, "%s" given, property: "%s"',
+                        $expectedValue,
+                        $actualValue,
+                        $propertyName
+                    )
+                );
+            }
+        }
     }
 
     /**

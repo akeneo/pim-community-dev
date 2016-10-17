@@ -40,18 +40,25 @@ class ProjectController extends Controller
      */
     public function createAction(Request $request)
     {
-        $factory = $this->container->get('activity_manager.factory.project');
-        $updater = $this->container->get('activity_manager.updater.project');
-        $validator = $this->container->get('validator');
-        $project = $factory->create();
-        $projectUpdates = $request->request->get('project');
-        $updater->update($project, $projectUpdates);
-        $violations = $validator->validate($project);
+        $projectData = $request->request->get('project');
+
+        $project = $this->container->get('activity_manager.factory.project')
+            ->create();
+
+        $this->container->get('activity_manager.updater.project')
+            ->update($project, $projectData);
+
+        $violations = $this->container->get('validator')
+            ->validate($project);
 
         if (0 === $violations->count()) {
-            $normalizer = $this->container->get('activity_manager.normalizer.project');
+            $this->container->get('activity_manager.saver.project')
+                ->save($project);
 
-            return new JsonResponse($normalizer->normalize($project, 'internal_api'), 201);
+            $normalizedProject = $this->container->get('activity_manager.normalizer.project')
+                ->normalize($project, 'internal_api');
+
+            return new JsonResponse($normalizedProject, 201);
         }
 
         $errors = [];

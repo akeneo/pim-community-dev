@@ -29,5 +29,7 @@ class ActivityManagerExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('normalizers.yml');
         $loader->load('updaters.yml');
+        $loader->load('savers.yml');
+        $loader->load('repositories.yml');
     }
 }

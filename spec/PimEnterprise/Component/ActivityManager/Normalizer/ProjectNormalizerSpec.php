@@ -19,7 +19,7 @@ class ProjectNormalizerSpec extends ObjectBehavior
     {
         $project->getLabel()->willReturn('Summer collection');
         $this->normalize($project)->shouldReturn([
-            'label' => 'Summer collection'
+            'label' => 'Summer collection',
         ]);
     }
 

@@ -1,5 +1,5 @@
 Akeneo\ActivityManager\Component\Model\Project:
-    type:  entity
+    type: entity
     table: akeneo_activity_manager_project
     changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
@@ -19,12 +19,13 @@ Akeneo\ActivityManager\Component\Model\Project:
         dueDate:
             type: date
             column: due_date
+            nullable: true
     # oneToMany unidirectional with join table
     manyToMany:
         datagridViews:
           targetEntity: Pim\Bundle\DataGridBundle\Entity\DatagridView
           joinTable:
-            name: akeneo_activity_mananger_project_view
+            name: akeneo_activity_manager_project_view
             joinColumns:
               project_id:
                 referencedColumnName: id
