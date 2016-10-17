@@ -26,8 +26,8 @@ define(
             },
 
             _onDisable: function() {
-                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="AkbemDropdown-caret"></span>');
-                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="AkbemDropdown-caret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="AknDropdown-caret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="AknDropdown-caret"></span>');
             },
 
             /**
@@ -85,11 +85,11 @@ define(
              * @inheritDoc
              */
             popupCriteriaTemplate: _.template(
-                '<div class="AkbemFilterChoice currencyfilter choicefilter">' +
-                    '<div class="AkbemFilterChoice-operator AkbemDropdown">' +
-                        '<button class="AkbemDropdown-button AkbemDropdown-button--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
+                '<div class="AknFilterChoice currencyfilter choicefilter">' +
+                    '<div class="AknFilterChoice-operator AknDropdown">' +
+                        '<button class="AknDropdown-button AknDropdown-button--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
                             '<%= _.__("Action") %>' +
-                            '<span class="AkbemDropdown-caret"></span>' +
+                            '<span class="AknDropdown-caret"></span>' +
                         '</button>' +
                         '<ul class="dropdown-menu">' +
                             '<% _.each(choices, function (option) { %>' +
@@ -98,11 +98,11 @@ define(
                         '</ul>' +
                         '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
                     '</div>' +
-                    '<input class="AkbemFilterChoice-field" type="text" name="value" value="">' +
-                    '<div class="AkbemDropdown">' +
-                        '<button class="AkbemDropdown-button AkbemDropdown-button--noRightBorder AkbemDropdown-button--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
+                    '<input class="AknFilterChoice-field" type="text" name="value" value="">' +
+                    '<div class="AknDropdown">' +
+                        '<button class="AknDropdown-button AknDropdown-button--noRightBorder AknDropdown-button--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
                             '<%= _.__("Currency") %>' +
-                            '<span class="AkbemDropdown-caret"></span>' +
+                            '<span class="AknDropdown-caret"></span>' +
                         '</button>' +
                         '<ul class="dropdown-menu">' +
                             '<% _.each(currencies, function (currency) { %>' +
@@ -111,7 +111,7 @@ define(
                         '</ul>' +
                         '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
                     '</div>' +
-                    '<button class="AkbemButton AkbemButton--success AkbemButton--little AkbemButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>' +
+                    '<button class="AknButton AknButton--success AknButton--little AknButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>' +
                 '</div>'
             ),
 
@@ -175,7 +175,7 @@ define(
                         }
                     } else if (value == newValue.type || value == newValue.currency) {
                         item.parent().addClass('active');
-                        item.closest('.AkbemDropdown').find('AkbemDropdown-button').html(item.html() + '<span class="AkbemDropdown-caret"></span>');
+                        item.closest('.AknDropdown').find('AknDropdown-button').html(item.html() + '<span class="AknDropdown-caret"></span>');
                     }
                 });
                 if (newValue.type === 'empty') {
@@ -209,7 +209,7 @@ define(
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 if ($(e.currentTarget).attr('data-input-toggle')) {
-                    var filterContainer = $(e.currentTarget).closest('.AkbemFilterChoice');
+                    var filterContainer = $(e.currentTarget).closest('.AknFilterChoice');
                     if ($(e.currentTarget).attr('data-value') === 'empty') {
                         filterContainer.find(this.criteriaValueSelectors.value).hide();
                     } else {

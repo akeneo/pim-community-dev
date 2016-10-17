@@ -7,9 +7,9 @@
             {% set url = null %}
         {% endif %}
         {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-        <a class="AkbemButton AkbemButton--success{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AkbemButton--withIcon {% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
+        <a class="AknButton AknButton--success{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AknButton--withIcon {% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
         {% if icon %}
-            <i class="AkbemButton-icon icon-{{ icon }}"></i>
+            <i class="AknButton-icon icon-{{ icon }}"></i>
           {% endif %}
           {{ title }}
         </a>
@@ -95,16 +95,16 @@
 {% endmacro %}
 
 {% macro page_header(title, buttons, subtitle, left, right, titleButtons) %}
-    <div class="AkbemTitleContainer navigation">
+    <div class="AknTitleContainer navigation">
         <div>
-            <div class="AkbemTitleContainer-title">
+            <div class="AknTitleContainer-title">
                 {{ title|first|capitalize ~ title[1:] }}
                 {% if subtitle is not empty %}
                     / {{ subtitle }}
                 {% endif %}
             </div>
             {% if titleButtons is not empty %}
-                <div class="AkbemButtonsList AkbemTitleContainer-titleButtons">
+                <div class="AknButtonsList AknTitleContainer-titleButtons">
                     {{ titleButtons }}
                 </div>
             {% endif %}
@@ -113,7 +113,7 @@
         <div>
             {{ right }}
             {% if buttons is not empty %}
-                <div class="AkbemButtonsList AkbemTitleContainer-rightButtons">
+                <div class="AknButtonsList AknTitleContainer-rightButtons">
                     {{ buttons }}
                 </div>
             {% endif %}

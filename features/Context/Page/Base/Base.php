@@ -25,11 +25,11 @@ class Base extends Page
     protected $elements = [
         'Body'             => ['css' => 'body'],
         'Dialog'           => ['css' => 'div.modal'],
-        'Title'            => ['css' => '.AkbemTitleContainer-title'],
+        'Title'            => ['css' => '.AknTitleContainer-title'],
         'Product title'    => ['css' => '.entity-title'],
         'HeadTitle'        => ['css' => 'title'],
         'Flash messages'   => ['css' => '.flash-messages-holder'],
-        'Navigation Bar'   => ['css' => '.AkbemHeader-menus'],
+        'Navigation Bar'   => ['css' => '.AknHeader-menus'],
         'Container'        => ['css' => '#container'],
         'Locales dropdown' => ['css' => '#locale-switcher'],
         'Tabs'             => ['css' => '#form-navbar'],
@@ -174,7 +174,7 @@ class Base extends Page
     {
         $elt = $this->getElement('Title');
 
-        $subtitle  = $elt->find('css', '.AkbemTitleContainer-title');
+        $subtitle  = $elt->find('css', '.AknTitleContainer-title');
         $separator = $elt->find('css', '.separator');
         $name      = $elt->find('css', '.product-name');
 
@@ -369,7 +369,7 @@ class Base extends Page
     public function clickOnAkeneoLogo()
     {
         $this->spin(function () {
-            return $this->getElement('Navigation Bar')->find('css', '.AkbemHeader-logo a');
+            return $this->getElement('Navigation Bar')->find('css', '.AknHeader-logo a');
         }, 'Can not find Akeneo logo')->click();
     }
 

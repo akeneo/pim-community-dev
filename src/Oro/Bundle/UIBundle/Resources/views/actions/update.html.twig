@@ -5,7 +5,7 @@
     {% block content %}
         <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }}
               method="post" class="unspaced">
-            <div class="AkbemTitleContainer navigation clearfix navbar-extra">
+            <div class="AknTitleContainer navigation clearfix navbar-extra">
                 <div class="row">
                     <div class="pull-right">
                         <div class="pull-right">
@@ -26,11 +26,11 @@
                                     <div class="clearfix">
                                         {% block breadcrumbs %}
                                             <div class="pull-left">
-                                                <div class="AkbemTitleContainer-title"><a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a></div>
+                                                <div class="AknTitleContainer-title"><a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a></div>
                                                 <span class="separator">/</span>
                                                 {% if breadcrumbs.additional is defined %}
                                                     {% for breadcrumb in breadcrumbs.additional %}
-                                                    <div class="AkbemTitleContainer-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
+                                                    <div class="AknTitleContainer-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
                                                     <span class="separator">/</span>
                                                     {% endfor %}
                                                 {% endif %}

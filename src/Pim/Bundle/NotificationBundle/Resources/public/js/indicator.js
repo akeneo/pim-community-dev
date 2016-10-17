@@ -6,8 +6,8 @@ define(
         var Indicator = Backbone.Model.extend({
             defaults: {
                 value: null,
-                className: 'AkbemBell-count',
-                emptyClass: 'AkbemBell-count--hidden',
+                className: 'AknBell-count',
+                emptyClass: 'AknBell-count--hidden',
                 nonEmptyClass: ''
             }
         });

@@ -64,7 +64,7 @@ define(
             template: _.template(
                 '<div class="toolbar"></div>' +
                 '<div class="grid-container container-fluid">' +
-                    '<table class="AkbemGrid grid"></table>' +
+                    '<table class="AknGrid grid"></table>' +
                     '<div class="no-data"></div>' +
                     '<div class="loading-mask"></div>' +
                 '</div>'
@@ -102,7 +102,7 @@ define(
              */
             defaults: {
                 rowClickActionClass: 'row-click-action',
-                rowClassName:        'AkbemGrid-bodyRow',
+                rowClassName:        'AknGrid-bodyRow',
                 toolbarOptions:      {addResetAction: true, addRefreshAction: true},
                 rowClickAction:      undefined,
                 multipleSorting:     true,
@@ -318,7 +318,7 @@ define(
                         launcherOptions: {
                             label: 'oro.datagrid.action.refresh',
                             iconClassName: 'icon-refresh',
-                            className: 'AkbemActionsPanel-button'
+                            className: 'AknActionsPanel-button'
                         }
                     });
 
@@ -349,7 +349,7 @@ define(
                         launcherOptions: {
                             label: 'oro.datagrid.action.reset',
                             iconClassName: 'icon-repeat',
-                            className: 'AkbemActionsPanel-button'
+                            className: 'AknActionsPanel-button'
                         }
                     });
 

@@ -13,7 +13,7 @@ define(
         return Backgrid.Cell.extend({
 
             /** @property */
-            className: 'AkbemGrid-bodyCell AkbemGrid-bodyCell--actions action-cell',
+            className: 'AknGrid-bodyCell AknGrid-bodyCell--actions action-cell',
 
             /** @property {Array} */
             actions: undefined,
@@ -75,7 +75,7 @@ define(
              */
             createLaunchers: function() {
                 return _.map(this.actions, function(action) {
-                    return action.createLauncher({ className: 'AkbemIconsList-item '});
+                    return action.createLauncher({ className: 'AknIconsList-item '});
                 });
             },
 
@@ -84,7 +84,7 @@ define(
              */
             render: function () {
                 this.$el.empty();
-                var iconsList = $('<div>').addClass('AkbemIconsList');
+                var iconsList = $('<div>').addClass('AknIconsList');
                 if (!_.isEmpty(this.launchers)) {
                     _.each(this.launchers, function(launcher) {
                         iconsList.append(launcher.render().$el);

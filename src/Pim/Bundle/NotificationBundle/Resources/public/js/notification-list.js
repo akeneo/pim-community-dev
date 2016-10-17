@@ -33,7 +33,7 @@ define(
 
         var NotificationView = Backbone.View.extend({
             tagName: 'li',
-            className: 'AkbemNotification',
+            className: 'AknNotification',
             model: Notification,
             template: _.template(template),
             events: {

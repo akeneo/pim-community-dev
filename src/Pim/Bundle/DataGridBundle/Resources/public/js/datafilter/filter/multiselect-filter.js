@@ -17,7 +17,7 @@ function(_, __, SelectFilter) {
          * @property
          */
         template: _.template(
-            '<div class="AkbemDropdown-button filter-select filter-criteria-selector">' +
+            '<div class="AknDropdown-button filter-select filter-criteria-selector">' +
                 '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<select multiple>' +
                     '<% _.each(options, function (option) { %>' +
@@ -33,7 +33,7 @@ function(_, __, SelectFilter) {
                     '<% }); %>' +
                 '</select>' +
             '</div>' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AkbemFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
         ),
 
         /**

@@ -1,6 +1,6 @@
 <% _.each(associationTypes, function (associationType) { %>
-    <div class="AkbemTitleContainer association-type<% if (associationType.code !== currentAssociationType) { %> AkbemTitleContainer--hidden<% } %>" data-association-type="<%- associationType.code %>">
-        <div class="AkbemTitleContainer-rightButtons pull-right">
+    <div class="AknTitleContainer association-type<% if (associationType.code !== currentAssociationType) { %> AknTitleContainer--hidden<% } %>" data-association-type="<%- associationType.code %>">
+        <div class="AknTitleContainer-rightButtons pull-right">
             <button type="button" class="target-button btn pull-right<% if ('products' === currentAssociationTarget) { %> hide<% } %>" data-association-target="products">
                 <i class="icon-random"></i>
                 <%- _.__('pim_enrich.form.product.tab.associations.info.show_products') %>
@@ -10,7 +10,7 @@
                 <%- _.__('pim_enrich.form.product.tab.associations.info.show_groups') %>
             </button>
         </div>
-        <h3 class="AkbemTitleContainer-title">
+        <h3 class="AknTitleContainer-title">
             <%- associationType.labels[locale] || '[' + associationType.code + ']'  %>
             <span class="muted small">
                 <%- _.__(

@@ -14,16 +14,16 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
     return Backbone.View.extend({
         /** @property */
         template:_.template(
-            '<div class="AkbemGridToolbar">' +
-                '<div class="AkbemGridToolbar-left">' +
+            '<div class="AknGridToolbar">' +
+                '<div class="AknGridToolbar-left">' +
                     '<div class="mass-actions-panel icons-holder"></div>' +
                 '</div>' +
-                '<div class="AkbemGridToolbar-center">' +
-                    '<div class="AkbemPagination"></div>' +
+                '<div class="AknGridToolbar-center">' +
+                    '<div class="AknPagination"></div>' +
                 '</div>' +
-                '<div class="AkbemGridToolbar-right">' +
+                '<div class="AknGridToolbar-right">' +
                     '<div class="page-size form-horizontal"></div>' +
-                    '<div class="AkbemGridToolbar-actionsPanel actions-panel form-horizontal"></div>' +
+                    '<div class="AknGridToolbar-actionsPanel actions-panel form-horizontal"></div>' +
                 '</div>' +
             '</div>'
         ),
@@ -125,7 +125,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             this.$el.empty();
             this.$el.append(this.template());
 
-            this.$('.AkbemPagination').replaceWith(this.pagination.render().$el);
+            this.$('.AknPagination').replaceWith(this.pagination.render().$el);
             this.$('.page-size').append(this.pageSize.render().$el);
             this.$('.actions-panel').append(this.actionsPanel.render().$el);
             this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el);

@@ -34,7 +34,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @property
          */
-        className: 'AkbemFilterBox filter-box oro-clearfix-width',
+        className: 'AknFilterBox filter-box oro-clearfix-width',
 
         /**
          * Filter list template
@@ -317,7 +317,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                     multiple: true,
                     selectedList: 0,
                     selectedText: this.addButtonHint,
-                    classes: 'AkbemFilterBox-addFilterButton filter-list select-filter-widget',
+                    classes: 'AknFilterBox-addFilterButton filter-list select-filter-widget',
                     open: $.proxy(function () {
                         if (this.$el.is(':visible')) {
                             this.selectWidget.onOpenDropdown();

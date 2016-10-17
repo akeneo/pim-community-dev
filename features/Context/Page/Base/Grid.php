@@ -152,7 +152,7 @@ class Grid extends Index
                 'Grid'                  => ['css' => 'table.grid'],
                 'Grid content'          => ['css' => 'table.grid tbody'],
                 'Filters'               => ['css' => '.filter-box, .filter-wrapper'],
-                'Grid toolbar'          => ['css' => '.AkbemGridToolbar'],
+                'Grid toolbar'          => ['css' => '.AknGridToolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
                 'Configure columns'     => ['css' => 'a:contains("Columns")'],
                 'View selector'         => ['css' => '.grid-view-selector'],
@@ -262,7 +262,7 @@ class Grid extends Index
     public function findAction($element, $actionName)
     {
         $rowElement = $this->getRow($element);
-        $action     = $rowElement->find('css', sprintf('.AkbemIconsList-item[title="%s"]', $actionName));
+        $action     = $rowElement->find('css', sprintf('.AknIconsList-item[title="%s"]', $actionName));
 
         return $action;
     }
@@ -372,7 +372,7 @@ class Grid extends Index
     {
         $pagination = $this
             ->getElement('Grid toolbar')
-            ->find('css', '.AkbemPagination *:contains("record")');
+            ->find('css', '.AknPagination *:contains("record")');
 
         /**
          * If pagination not found or is empty, it actually count rows

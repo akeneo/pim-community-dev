@@ -48,10 +48,10 @@
     <div id="page" style="display:none;">
         <div id="top-page">
             {% block header %}
-                <header class="AkbemHeader">
+                <header class="AknHeader">
                     {% placeholder before_navigation %}
-                    <div class="AkbemHeader-menus">
-                        <div class="AkbemHeader-leftMenus">
+                    <div class="AknHeader-menus">
+                        <div class="AknHeader-leftMenus">
                             {% placeholder header_logo %}
                             {% block navbar %}
                                 <div class="nav pull-left top-search shortcuts">
@@ -64,7 +64,7 @@
                                 {% endblock application_menu %}
                              </div>
                         </div>
-                        <ul class="AkbemHeader-rightMenus AkbemUserMenu">
+                        <ul class="AknHeader-rightMenus AknUserMenu">
                             {% block user_menu %}
                                 {% placeholder user_menu %}
                             {% endblock %}
@@ -82,7 +82,7 @@
                         {% placeholder left_panel %}
                     {% endblock left_panel %}
                     {% block before_content %}
-                    <div class="AkbemBreadcrumbContainer">
+                    <div class="AknBreadcrumbContainer">
                         <div id="breadcrumb">
                             {% block breadcrumb %}
                                 {% placeholder breadcrumb %}

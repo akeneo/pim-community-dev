@@ -48,7 +48,7 @@ define(
             className: 'tab-pane active product-associations',
             events: {
                 'click .associations-list li': 'changeAssociationType',
-                'click .AkbemTitleContainer .target-button': 'changeAssociationTargets'
+                'click .AknTitleContainer .target-button': 'changeAssociationTargets'
             },
             initialize: function () {
                 state = {
@@ -235,10 +235,10 @@ define(
                     .siblings('.active')
                     .removeClass('active');
 
-                this.$('.AkbemTitleContainer.association-type[data-association-type="' + associationType + '"]')
-                    .removeClass('AkbemTitleContainer--hidden')
-                    .siblings('.AkbemTitleContainer.association-type:not(.AkbemTitleContainer--hidden)')
-                    .addClass('AkbemTitleContainer--hidden');
+                this.$('.AknTitleContainer.association-type[data-association-type="' + associationType + '"]')
+                    .removeClass('AknTitleContainer--hidden')
+                    .siblings('.AknTitleContainer.association-type:not(.AknTitleContainer--hidden)')
+                    .addClass('AknTitleContainer--hidden');
 
                 this.updateListenerSelectors();
 

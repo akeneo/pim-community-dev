@@ -1,17 +1,17 @@
-<a href="<%= url ? url : 'javascript: void(0);' %>" class="AkbemNotification-link <%= viewed ? '' : 'AkbemNotification-link--new new' %>">
-    <div class="AkbemNotification-header">
-        <div class="AkbemNotification-icon AkbemNotification-icon--<%= actionType %>">
-            <i class="AkbemNotification-status AkbemNotification-status--<%= type %> icon-<%= icon %>"></i>
+<a href="<%= url ? url : 'javascript: void(0);' %>" class="AknNotification-link <%= viewed ? '' : 'AknNotification-link--new new' %>">
+    <div class="AknNotification-header">
+        <div class="AknNotification-icon AknNotification-icon--<%= actionType %>">
+            <i class="AknNotification-status AknNotification-status--<%= type %> icon-<%= icon %>"></i>
         </div>
-        <div class="AkbemNotification-metas">
-            <time class="AkbemNotification-time"><%= createdAt %></time>
-            <span class="AkbemNotification-title"><%= actionTypeMessage %></span>
+        <div class="AknNotification-metas">
+            <time class="AknNotification-time"><%= createdAt %></time>
+            <span class="AknNotification-title"><%= actionTypeMessage %></span>
         </div>
-        <i class="AkbemNotification-trashAction icon-<%= viewed ? 'trash' : 'eye-close' %> action"></i>
+        <i class="AknNotification-trashAction icon-<%= viewed ? 'trash' : 'eye-close' %> action"></i>
     </div>
-    <div class="AkbemNotification-message"><%= message %></div>
-    <% if (comment) { %> <div class="AkbemNotification-comment"><%= comment %></div> <% } %>
+    <div class="AknNotification-message"><%= message %></div>
+    <% if (comment) { %> <div class="AknNotification-comment"><%= comment %></div> <% } %>
     <% if (showReportButton) { %>
-    <button class="AkbemNotification-button AkbemButton AkbemButton--micro AkbemButton--gray AkbemButton--withIcon"><i class="AkbemButton-icon icon-file-text-alt"></i><%- _.__('pim_notification.report') %></button>
+    <button class="AknNotification-button AknButton AknButton--micro AknButton--gray AknButton--withIcon"><i class="AknButton-icon icon-file-text-alt"></i><%- _.__('pim_notification.report') %></button>
     <% } %>
 </a>

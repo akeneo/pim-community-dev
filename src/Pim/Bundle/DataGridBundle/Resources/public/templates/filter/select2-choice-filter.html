@@ -1,9 +1,9 @@
-<div class="AkbemFilterChoice choicefilter">
-    <div class="AkbemFilterChoice-operator AkbemDropdown">
+<div class="AknFilterChoice choicefilter">
+    <div class="AknFilterChoice-operator AknDropdown">
         <% if (emptyChoice) { %>
-            <button type="button" class="AkbemDropdown-button AkbemDropdown-button--noRightBorder dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="AknDropdown-button AknDropdown-button--noRightBorder dropdown-toggle" data-toggle="dropdown">
                 <%= selectedOperatorLabel %>
-                <span class="AkbemDropdown-caret"></span>
+                <span class="AknDropdown-caret"></span>
             </button>
             <ul class="dropdown-menu">
                 <% _.each(operatorChoices, function (label, operator) { %>
@@ -14,6 +14,6 @@
             </ul>
         <% } %>
     </div>
-    <input type="text" name="value" class="AkbemFilterChoice-field select-field">
-    <button type="button" class="AkbemButton AkbemButton--success AkbemButton--little AkbemButton--noLeftRadius filter-update"><%- _.__('Update') %></button>
+    <input type="text" name="value" class="AknFilterChoice-field select-field">
+    <button type="button" class="AknButton AknButton--success AknButton--little AknButton--noLeftRadius filter-update"><%- _.__('Update') %></button>
 </div>

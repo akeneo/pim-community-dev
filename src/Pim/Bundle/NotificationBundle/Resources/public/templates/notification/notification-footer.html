@@ -1,4 +1,4 @@
-<p class="AkbemNotificationsList-footer">
+<p class="AknNotificationsList-footer">
     <% if (loading) { %>
         <img src="<%= options.imgUrl %>" alt="<%= options.loadingText %>"/>
     <% } %>
@@ -8,6 +8,6 @@
     <% } %>
 
     <% if (hasNotifications && hasUnread) { %>
-        <button class="AkbemButton AkbemButton--gray mark-as-read"><%= options.markAsReadMessage %></button>
+        <button class="AknButton AknButton--gray mark-as-read"><%= options.markAsReadMessage %></button>
     <% } %>
 </p>

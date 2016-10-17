@@ -15,7 +15,7 @@ function($, _, Backbone) {
         tagName: 'div',
 
         /** @property */
-        className: 'AkbemPagination',
+        className: 'AknPagination',
 
         /** @property */
         windowSize: 10,
@@ -29,10 +29,10 @@ function($, _, Backbone) {
         /** @property */
         template: _.template(
             '<label>Page:</label>' +
-            '<ul class="AkbemPagination-icons">' +
+            '<ul class="AknPagination-icons">' +
                 '<% _.each(handles, function (handle) { %>' +
-                    '<li class="AkbemPagination-item <% if (handle.className) { %><%= handle.className %><% } %>">' +
-                        '<a href="#" class="AkbemPagination-link" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
+                    '<li class="AknPagination-item <% if (handle.className) { %><%= handle.className %><% } %>">' +
+                        '<a href="#" class="AknPagination-link" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
                             '<% if (handle.wrapClass) {%>' +
                                 '<i <% if (handle.wrapClass) { %>class="<%= handle.wrapClass %>"<% } %>>' +
                                     '<%= handle.label %>' +
@@ -56,11 +56,11 @@ function($, _, Backbone) {
         fastForwardHandleConfig: {
             prev: {
                 label: 'Prev',
-                wrapClass: 'AkbemPagination-arrow icon-chevron-left hide-text'
+                wrapClass: 'AknPagination-arrow icon-chevron-left hide-text'
             },
             next: {
                 label: 'Next',
-                wrapClass: 'AkbemPagination-arrow icon-chevron-right hide-text'
+                wrapClass: 'AknPagination-arrow icon-chevron-right hide-text'
             }
         },
 

@@ -35,7 +35,7 @@ class EditCommonAttributes extends ProductEditForm
                     'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes',
                 ],
                 'Grid toolbar'              => [
-                    'css'        => '.AkbemGridToolbar',
+                    'css'        => '.AknGridToolbar',
                     'decorators' => [
                         'Pim\Behat\Decorator\Grid\PaginationDecorator',
                     ],

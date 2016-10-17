@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="layout-content">
-    <div class="AkbemTitleContainer navigation clearfix">
+    <div class="AknTitleContainer navigation clearfix">
         <div class="row">
             <div class="pull-right">
                 <div class="pull-right">
@@ -23,7 +23,7 @@
                             {% block breadcrumbs %}
                                 <div class="pull-left">
                                     {% if breadcrumbs.indexLabel is defined %}
-                                    <div class="AkbemTitleContainer-title">
+                                    <div class="AknTitleContainer-title">
                                     {%- if breadcrumbs.indexPath is defined -%}
                                         <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
                                     {%- else -%}
@@ -34,7 +34,7 @@
                                     {% endif %}
                                     {% if breadcrumbs.additional is defined %}
                                         {% for breadcrumb in breadcrumbs.additional %}
-                                            <div class="AkbemTitleContainer-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
+                                            <div class="AknTitleContainer-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
                                             <span class="separator">/</span>
                                         {% endfor %}
                                     {% endif %}

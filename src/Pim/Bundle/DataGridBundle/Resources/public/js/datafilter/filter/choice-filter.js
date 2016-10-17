@@ -17,11 +17,11 @@ function($, _, __, app, TextFilter, initSelect2) {
          * @property {function(Object, ?Object=): String}
          */
         popupCriteriaTemplate: _.template(
-            '<div class="AkbemFilterChoice choicefilter">' +
-                '<div class="AkbemFilterChoice-operator AkbemDropdown">' +
-                    '<button class="AkbemDropdown-button AkbemDropdown-button--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
+            '<div class="AknFilterChoice choicefilter">' +
+                '<div class="AknFilterChoice-operator AknDropdown">' +
+                    '<button class="AknDropdown-button AknDropdown-button--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
                         '<%= selectedChoiceLabel %>' +
-                        '<span class="AkbemDropdown-caret"></span>' +
+                        '<span class="AknDropdown-caret"></span>' +
                     '</button>' +
                     '<ul class="dropdown-menu">' +
                         '<% _.each(choices, function (option) { %>' +
@@ -30,8 +30,8 @@ function($, _, __, app, TextFilter, initSelect2) {
                     '</ul>' +
                     '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
                 '</div>' +
-                '<input type="text" class="AkbemFilterChoice-field select-field" name="value" value="">' +
-                '<button class="AkbemButton AkbemButton--success AkbemButton--little AkbemButton--noLeftRadius filter-update" type="button"><%- _.__("Update") %></button>' +
+                '<input type="text" class="AknFilterChoice-field select-field" name="value" value="">' +
+                '<button class="AknButton AknButton--success AknButton--little AknButton--noLeftRadius filter-update" type="button"><%- _.__("Update") %></button>' +
             '</div>'
         ),
 
@@ -181,7 +181,7 @@ function($, _, __, app, TextFilter, initSelect2) {
                     item.parent().removeClass('active');
                 } else if (item.data('value') == newValue.type && !item.parent().hasClass('active')) {
                     item.parent().addClass('active');
-                    item.closest('.AkbemDropdown').find('AkbemDropdown-button').html(item.html() + '<span class="AkbemDropdown-caret"></span>');
+                    item.closest('.AknDropdown').find('AknDropdown-button').html(item.html() + '<span class="AknDropdown-caret"></span>');
                 }
             });
             if (newValue.type === 'empty') {
@@ -200,7 +200,7 @@ function($, _, __, app, TextFilter, initSelect2) {
          * @protected
          */
         _onClickChoiceValue: function(e) {
-            var dropdown = $(e.currentTarget).closest('.AkbemDropdown');
+            var dropdown = $(e.currentTarget).closest('.AknDropdown');
 
             // TODO Use -menuLink or -menuItem
             dropdown.find('li').each(function() {
@@ -209,7 +209,7 @@ function($, _, __, app, TextFilter, initSelect2) {
             $(e.currentTarget).parent().addClass('active');
             dropdown.find('.name_input').val($(e.currentTarget).attr('data-value'));
 
-            var filterContainer = $(e.currentTarget).closest('.AkbemFilterChoice');
+            var filterContainer = $(e.currentTarget).closest('.AknFilterChoice');
             if ($(e.currentTarget).attr('data-value') === 'in') {
                 this._enableListSelection();
             } else {
@@ -220,7 +220,7 @@ function($, _, __, app, TextFilter, initSelect2) {
             } else {
                 filterContainer.find(this.criteriaValueSelectors.value).show();
             }
-            dropdown.find('.AkbemDropdown-button').html($(e.currentTarget).html() + '<span class="AkbemDropdown-caret"></span>');
+            dropdown.find('.AknDropdown-button').html($(e.currentTarget).html() + '<span class="AknDropdown-caret"></span>');
             e.preventDefault();
         },
 

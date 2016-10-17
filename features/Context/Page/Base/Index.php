@@ -26,7 +26,7 @@ class Index extends Base
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Creation link' => array('css' => '.AkbemTitleContainer-rightButtons .AkbemButton--success'),
+                'Creation link' => array('css' => '.AknTitleContainer-rightButtons .AknButton--success'),
             )
         );
     }

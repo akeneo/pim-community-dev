@@ -91,8 +91,8 @@ define(
             popupCriteriaTemplate: _.template(
                 '<div class="metricfilter choicefilter">' +
                     '<div class="input-prepend input-append">' +
-                        '<div class="AkbemFilterChoice-operator AkbemDropdown btn-group">' +
-                            '<button class="AkbemDropdown-button btn dropdown-toggle" data-toggle="dropdown">' +
+                        '<div class="AknFilterChoice-operator AknDropdown btn-group">' +
+                            '<button class="AknDropdown-button btn dropdown-toggle" data-toggle="dropdown">' +
                                 '<%= _.__("Action") %>' +
                                 '<span class="caret"></span>' +
                             '</button>' +
@@ -106,8 +106,8 @@ define(
 
                         '<input type="text" name="value" value="">' +
 
-                        '<div class="AkbemDropdown">' +
-                            '<button class="AkbemDropdown-button btn dropdown-toggle" data-toggle="dropdown">' +
+                        '<div class="AknDropdown">' +
+                            '<button class="AknDropdown-button btn dropdown-toggle" data-toggle="dropdown">' +
                                 '<%= _.__("Unit") %>' +
                                 '<span class="caret"></span>' +
                             '</button>' +

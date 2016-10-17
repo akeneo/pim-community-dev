@@ -568,7 +568,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $actualCount = (int) $this->getCurrentPage()->find('css', '.AkbemBell-countContainer')->getText();
+        $actualCount = (int) $this->getCurrentPage()->find('css', '.AknBell-countContainer')->getText();
 
         assertEquals(
             $actualCount,
@@ -594,7 +594,7 @@ class AssertionContext extends RawMinkContext
 
         // Wait for the footer of the notification panel dropdown to be loaded
         $this->spin(function () {
-            $footer  = $this->getCurrentPage()->find('css', '.AkbemNotificationsList-footer');
+            $footer  = $this->getCurrentPage()->find('css', '.AknNotificationsList-footer');
             $content = trim($footer->getText());
 
             return !empty($content);
@@ -640,7 +640,7 @@ class AssertionContext extends RawMinkContext
         ];
 
         foreach ($table->getHash() as $data) {
-            $notifications = $notificationWidget->findAll('css', '.AkbemNotification-link');
+            $notifications = $notificationWidget->findAll('css', '.AknNotification-link');
 
             $matchingNotification = null;
 
