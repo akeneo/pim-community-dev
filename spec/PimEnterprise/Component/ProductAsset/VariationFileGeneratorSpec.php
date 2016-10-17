@@ -39,7 +39,8 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         ReferenceInterface $reference,
         FileInfoInterface $sourceFileInfo,
         Filesystem $filesystem,
-        LocaleInterface $en_US
+        LocaleInterface $en_US,
+        VariationInterface $variation
     ) {
         $channelConfigurationRepository->findOneBy(Argument::any())->willReturn($channelConfiguration);
         $ecommerce->getId()->willReturn(12);
