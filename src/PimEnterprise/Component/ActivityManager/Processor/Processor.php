@@ -31,6 +31,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  */
 class Processor extends AbstractProcessor
 {
+    /** @var StepExecution */
+    protected $stepExecution;
+
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
@@ -42,9 +45,6 @@ class Processor extends AbstractProcessor
 
     /** @var ObjectDetacher */
     private $objectDetacher;
-
-    /** @var StepExecution */
-    protected $stepExecution;
 
     /** @var ProductRepositoryInterface */
     private $productRepository;

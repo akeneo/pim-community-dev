@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class ProjectRepository extends EntityRepository implements ProjectRepositoryInterface
 {

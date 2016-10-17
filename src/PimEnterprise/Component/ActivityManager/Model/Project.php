@@ -139,8 +139,6 @@ class Project implements ProjectInterface
      */
     public function removeUserGroup(Group $userGroup)
     {
-        if ($this->userGroups->contains($userGroup)) {
-            $this->userGroups->remove($userGroup);
-        }
+        $this->userGroups->remove($userGroup);
     }
 }

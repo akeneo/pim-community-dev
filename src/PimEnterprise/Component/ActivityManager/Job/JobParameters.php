@@ -19,8 +19,11 @@ use Symfony\Component\Validator\Constraints\Collection;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class JobParameter implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
+class JobParameters implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
 {
+
+    const JOB_NAME = 'project_generation';
+
     /**
      * {@inheritdoc}
      */
@@ -47,6 +50,6 @@ class JobParameter implements DefaultValuesProviderInterface, ConstraintCollecti
      */
     public function supports(JobInterface $job)
     {
-        return $job->getName() === 'project_generation';
+        return self::JOB_NAME === $job->getName();
     }
 }
