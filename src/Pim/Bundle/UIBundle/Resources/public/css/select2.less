@@ -249,7 +249,7 @@ a.select2-choice {
       line-height: 30px;
       color: @color-form-info;
     }
-    .btn-primary {
+    .btn-primary:not(.create-dropdown) {
       padding: 0 10px 0 38px;
       overflow: hidden;
 
@@ -264,6 +264,47 @@ a.select2-choice {
         background-color: @greenDark;
         border-top-left-radius: 2px;
         border-bottom-left-radius: 2px;
+      }
+
+      i:not(.create-dropdown) {
+        width: 34px;
+        height: 34px;
+      }
+    }
+    .create-group {
+      display: flex;
+
+      .dropdown-menu .create-action {
+        line-height: 32px;
+        padding-left: 10px;
+
+        &:hover {
+          background-color: @akeneoLight;
+        }
+
+        .action, .select-view-action-list {
+          display: inline-block;
+          width: 100%;
+        }
+      }
+    }
+    .create-carret {
+      background-color: @greenDark;
+      background-image: none;
+
+      &:hover {
+        background-color: @greenDark;
+        background-image: none;
+      }
+
+      .caret {
+        background-color: @greenDark;
+        border-top: 4px solid @white;
+
+        &:hover {
+          background-color: @greenDark;
+          background-image: none;
+        }
       }
     }
   }

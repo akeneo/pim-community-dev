@@ -87,7 +87,8 @@ grid.view_selector:
     default_view: Default view
     save_changes: Save this view
     remove: Delete this view
-    create: Create view
+    create_view: Create view
+    create: Create
     search: Search
     views: Views
     placeholder: Name of new view

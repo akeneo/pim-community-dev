@@ -51,6 +51,18 @@ class GridCapableDecorator extends ElementDecorator
     }
 
     /**
+     * @param string $button
+     */
+    public function clickCreateOnButton($button)
+    {
+        $button = $this->spin(function () use ($button) {
+            return $this->find('css', sprintf('.create-button:contains("%s")', $button));
+        }, sprintf('Button "%s" not found.', $button));
+
+        $button->click();
+    }
+
+    /**
      * Returns available views in the datagrid view selector.
      *
      * @return array

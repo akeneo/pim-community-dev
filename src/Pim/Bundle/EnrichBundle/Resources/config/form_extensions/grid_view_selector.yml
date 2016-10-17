@@ -11,6 +11,12 @@ extensions:
         targetZone: buttons
         position: 100
 
+    pim-grid-view-selector-footer-create-view:
+        module: pim/grid/view-selector/footer/create/view
+        parent: pim-grid-view-selector-footer-create
+        targetZone: action-list
+        position: 100
+
     pim-grid-view-selector-line:
         module: pim/grid/view-selector/line
 
