@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
+use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
 
 class GroupNormalizerSpec extends ObjectBehavior
 {
