@@ -147,6 +147,6 @@ class Project implements ProjectInterface
      */
     public function getUserGroups()
     {
-        return $this->datagridViews;
+        return $this->userGroups;
     }
 }
