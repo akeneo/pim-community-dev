@@ -85,4 +85,11 @@ interface ProjectInterface
      * @param Group $group
      */
     public function removeUserGroup(Group $group);
+
+    /**
+     * Returns user groups
+     *
+     * @return Group $group
+     */
+    public function getUserGroups();
 }

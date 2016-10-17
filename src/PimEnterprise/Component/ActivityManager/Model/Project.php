@@ -139,6 +139,14 @@ class Project implements ProjectInterface
      */
     public function removeUserGroup(Group $userGroup)
     {
-        $this->userGroups->remove($userGroup);
+        $this->userGroups->removeElement($userGroup);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserGroups()
+    {
+        return $this->datagridViews;
     }
 }
