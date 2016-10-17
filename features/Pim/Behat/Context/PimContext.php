@@ -20,7 +20,7 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     public static function resetPlaceholderValues()
     {
         self::$placeholderValues = [
-            '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
+            '%tmp%'      => getenv('BEHAT_TMPDIR') ?: self::$kernelRootDir . '/build/pim/behat',
             //TODO: change that later
             '%fixtures%' => self::$kernelRootDir . '/../features/Context/fixtures/'
         ];
