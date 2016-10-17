@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Comparator\Filter;
 
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer;
+use Pim\Component\Catalog\Normalizer\Standard\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
