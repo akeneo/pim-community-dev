@@ -32,4 +32,17 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
+
+  &-selectButton {
+    background: none;
+    border: none;
+    color: #555;
+    font-weight: bold;
+  }
+
+  // jQuery select adds style for the button, we need to remove it for the filters.
+  .ui-multiselect {
+    width: auto !important;
+    padding: 0 !important;
+  }
 }

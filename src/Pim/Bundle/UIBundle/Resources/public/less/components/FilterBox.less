@@ -3,6 +3,7 @@
   padding: 15px 20px 15px 150px;
   z-index: 800;
   position: relative;
+  min-height: 64px;
 
   &-addFilterButton {
     position: absolute;
@@ -16,11 +17,6 @@
 
   &-filter {
     margin-right: 10px
-  }
-
-  // jQuery select adds a width with a style tag for the button, we need to remove it for the filters.
-  .ui-multiselect {
-    width: auto !important;
   }
 
   &-disableFilter {
