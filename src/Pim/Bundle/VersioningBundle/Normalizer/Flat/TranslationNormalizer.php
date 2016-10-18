@@ -21,7 +21,7 @@ class TranslationNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param array $object
+     * @param array $translatable
      *
      * @return array
      */
@@ -30,13 +30,14 @@ class TranslationNormalizer implements NormalizerInterface
         $context = array_merge(
             [
                 'field_name' => 'label',
-                'locales'  => [],
+                'locales'    => [],
             ],
             $context
         );
         $property = $context['field_name'];
+        $localCodes = $context['locales'];
 
-        $translations = null;
+        $translations = [];
         foreach ($translatable as $localeCode => $translation) {
             if (empty($localCodes) || in_array($localeCode, $localCodes)) {
                 $translations[$property . self::LABEL_SEPARATOR . $localeCode] = $translation;

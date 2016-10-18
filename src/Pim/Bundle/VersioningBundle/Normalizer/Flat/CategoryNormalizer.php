@@ -3,7 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer as StandardNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -18,19 +17,19 @@ class CategoryNormalizer implements NormalizerInterface
     /**  @var string[] */
     protected $supportedFormats = ['flat'];
 
-    /** @var TranslationNormalizer */
-    protected $translationNormalizer;
-
-    /** @var CategoryNormalizer */
+    /** @var NormalizerInterface */
     protected $standardNormalizer;
 
+    /** @var NormalizerInterface */
+    protected $translationNormalizer;
+
     /**
-     * @param NormalizerInterface   $standardNormalizer
-     * @param TranslationNormalizer $translationNormalizer
+     * @param NormalizerInterface $standardNormalizer
+     * @param NormalizerInterface $translationNormalizer
      */
     public function __construct(
         NormalizerInterface $standardNormalizer,
-        TranslationNormalizer $translationNormalizer
+        NormalizerInterface $translationNormalizer
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->translationNormalizer = $translationNormalizer;
@@ -39,13 +38,13 @@ class CategoryNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param CategoryInterface $object
+     * @param CategoryInterface $category
      *
      * @return array
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($category, $format = null, array $context = [])
     {
-        $standardCategory = $this->standardNormalizer->normalize($object, 'standard', $context);
+        $standardCategory = $this->standardNormalizer->normalize($category, 'standard', $context);
         $flatCategory = $standardCategory;
 
         unset($flatCategory['labels']);

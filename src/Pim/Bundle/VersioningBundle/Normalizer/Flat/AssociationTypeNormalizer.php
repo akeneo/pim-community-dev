@@ -3,7 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Normalizer\Standard\AssociationTypeNormalizer as StandardNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -25,12 +24,12 @@ class AssociationTypeNormalizer implements NormalizerInterface
     protected $translationNormalizer;
 
     /**
-     * @param NormalizerInterface   $standardNormalizer
-     * @param TranslationNormalizer $translationNormalizer
+     * @param NormalizerInterface $standardNormalizer
+     * @param NormalizerInterface $translationNormalizer
      */
     public function __construct(
         NormalizerInterface $standardNormalizer,
-        TranslationNormalizer $translationNormalizer
+        NormalizerInterface $translationNormalizer
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->translationNormalizer = $translationNormalizer;
@@ -39,13 +38,13 @@ class AssociationTypeNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param AssociationTypeInterface $object
+     * @param AssociationTypeInterface $associationType
      *
      * @return array
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($associationType, $format = null, array $context = [])
     {
-        $standardAssociationType = $this->standardNormalizer->normalize($object, 'standard', $context);
+        $standardAssociationType = $this->standardNormalizer->normalize($associationType, 'standard', $context);
         $flatAssociationType = $standardAssociationType;
 
         unset($flatAssociationType['labels']);

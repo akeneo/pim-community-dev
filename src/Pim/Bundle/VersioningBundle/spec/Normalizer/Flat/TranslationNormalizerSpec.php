@@ -20,13 +20,11 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $translations = [
             'en_US' => 'My label',
             'fr_FR' => 'Mon label',
-            'es_ES' => ''
         ];
 
-        $this->normalize($translations, 'flat')->shouldReturn([
+        $this->normalize($translations, 'flat', [])->shouldReturn([
             'label-en_US' => 'My label',
             'label-fr_FR' => 'Mon label',
-            'label-es_ES' => '',
         ]);
     }
 
@@ -35,10 +33,9 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $translations = [
             'en_US' => 'My label',
             'fr_FR' => 'Mon label',
-            'es_ES' => ''
         ];
 
-        $this->normalize($translations, 'flat')->shouldReturn(
+        $this->normalize($translations, 'flat', ['locales' => ['fr_FR', 'en_US', 'es_ES']])->shouldReturn(
             [
                 'label-en_US' => 'My label',
                 'label-fr_FR' => 'Mon label',

@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Gedmo\Translatable\Document\Translation;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Normalizer\Standard\ChannelNormalizer as StandardNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -22,21 +20,19 @@ class ChannelNormalizer implements NormalizerInterface
     /** @var string[] */
     protected $supportedFormats = ['flat'];
 
-    /** @var StandardNormalizer */
+    /** @var NormalizerInterface */
     protected $standardNormalizer;
 
-    /** @var TranslationNormalizer */
+    /** @var NormalizerInterface */
     protected $translationNormalizer;
 
     /**
-     * ChannelNormalizer constructor.
-     *
-     * @param NormalizerInterface   $standardNormalizer
-     * @param TranslationNormalizer $translationNormalizer
+     * @param NormalizerInterface $standardNormalizer
+     * @param NormalizerInterface $translationNormalizer
      */
     public function __construct(
         NormalizerInterface $standardNormalizer,
-        TranslationNormalizer $translationNormalizer
+        NormalizerInterface $translationNormalizer
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->translationNormalizer = $translationNormalizer;
@@ -49,9 +45,9 @@ class ChannelNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($channel, $format = null, array $context = [])
     {
-        $standardChannel = $this->standardNormalizer->normalize($object, 'standard', $context);
+        $standardChannel = $this->standardNormalizer->normalize($channel, 'standard', $context);
 
         $flatChannel = $standardChannel;
         $flatChannel['currencies'] = implode(self::ITEM_SEPARATOR, $standardChannel['currencies']);
@@ -81,12 +77,12 @@ class ChannelNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeConversionUnits($conversionUnits)
+    protected function normalizeConversionUnits(array $conversionUnits)
     {
         $flatArray = [];
 
         foreach ($conversionUnits as $unitType => $unit) {
-            $flatArray[self::UNIT_LABEL_PREFIX.'-'.$unitType] = $unit;
+            $flatArray[self::UNIT_LABEL_PREFIX . '-' . $unitType] = $unit;
         }
 
         return $flatArray;

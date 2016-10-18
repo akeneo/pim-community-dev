@@ -12,12 +12,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ProductNormalizerSpec extends ObjectBehavior
 {
     function let(
-        SerializerInterface $serializer,
         ProductNormalizer $productNormalizerStandard,
         ProductValueNormalizer $productValueNormalizerFlat
     ) {
         $this->beConstructedWith($productNormalizerStandard, $productValueNormalizerFlat);
-        $this->setSerializer($serializer);
     }
 
     function it_is_initializable()
@@ -39,7 +37,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_scopable_and_localizable_product(
         ProductNormalizer $productNormalizerStandard,
-        SerializerInterface $serializer,
+        ProductValueNormalizer $productValueNormalizerFlat,
         ProductInterface $product
     ) {
         $productNormalizerStandard->normalize($product, 'standard', [])->willReturn(
@@ -84,7 +82,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $serializer->serialize(
+        $productValueNormalizerFlat->normalize(
             [
                 'sku' => [
                     [
@@ -102,7 +100,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $serializer->serialize(
+        $productValueNormalizerFlat->normalize(
             [
                 'description' => [
                     [
@@ -120,7 +118,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $serializer->serialize(
+        $productValueNormalizerFlat->normalize(
             [
                 'price' => [
                     [
@@ -162,7 +160,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_with_associations(
         ProductNormalizer $productNormalizerStandard,
-        SerializerInterface $serializer,
+        ProductValueNormalizer $productValueNormalizerFlat,
         ProductInterface $product
     ) {
         $productNormalizerStandard->supportsNormalization($product, 'standard')->willReturn(true);
@@ -196,7 +194,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $serializer->serialize(
+        $productValueNormalizerFlat->normalize(
             [
                 'sku' => [
                     'scope'  => null,

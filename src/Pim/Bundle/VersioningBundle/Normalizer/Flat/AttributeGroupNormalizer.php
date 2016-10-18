@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Normalizer\Standard\AttributeGroupNormalizer as StandardNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,19 +19,19 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /** @var string[] */
     protected $supportedFormats = ['flat'];
 
-    /** @var TranslationNormalizer */
-    protected $translationNormalizer;
-
-    /** @var CategoryNormalizer */
+    /** @var NormalizerInterface */
     protected $standardNormalizer;
 
+    /** @var NormalizerInterface */
+    protected $translationNormalizer;
+
     /**
-     * @param NormalizerInterface   $standardNormalizer
-     * @param TranslationNormalizer $translationNormalizer
+     * @param NormalizerInterface $standardNormalizer
+     * @param NormalizerInterface $translationNormalizer
      */
     public function __construct(
         NormalizerInterface $standardNormalizer,
-        TranslationNormalizer $translationNormalizer
+        NormalizerInterface $translationNormalizer
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->translationNormalizer = $translationNormalizer;
@@ -42,13 +40,13 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param AttributeGroupInterface $object
+     * @param AttributeGroupInterface $attributeGroup
      *
      * @return array
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($attributeGroup, $format = null, array $context = [])
     {
-        $standardAttributeGroup = $this->standardNormalizer->normalize($object, 'standard', $context);
+        $standardAttributeGroup = $this->standardNormalizer->normalize($attributeGroup, 'standard', $context);
         $flatAttributeGroup = $standardAttributeGroup;
 
         $flatAttributeGroup['attributes'] = implode(self::ITEM_SEPARATOR, $standardAttributeGroup['attributes']);
