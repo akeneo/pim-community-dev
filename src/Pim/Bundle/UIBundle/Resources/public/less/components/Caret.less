@@ -1,17 +1,26 @@
 @import '../base/variables';
 
 .AknCaret {
+  @defaultSize: 4px;
+  @bigSize: 5px;
+
   display: inline-block;
   width: 0;
   height: 0;
-  border-top: 4px solid @AknDefaultFontColor;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
+  border-top: @defaultSize solid @AknDefaultFontColor;
+  border-right: @defaultSize solid transparent;
+  border-left: @defaultSize solid transparent;
   content: "";
-  margin-left: 5px;
   margin-bottom: 2px;
 
   &--inverse {
     border-top-color: white;
+  }
+
+  &--big {
+    border-top-width: @bigSize;
+    border-right-width: @bigSize;
+    border-left-width: @bigSize;
+    margin-bottom: 3px;
   }
 }

@@ -43,6 +43,7 @@ css:
         - bundles/pimui/less/components/ButtonsList.less
         - bundles/pimui/less/components/Caret.less
         - bundles/pimui/less/components/Dropdown.less
+        - bundles/pimui/less/components/DropdownButton.less
         - bundles/pimui/less/components/FilterBox.less
         - bundles/pimui/less/components/FilterChoice.less
         - bundles/pimui/less/components/Grid.less

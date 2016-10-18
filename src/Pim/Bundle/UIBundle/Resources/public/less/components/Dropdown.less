@@ -36,9 +36,15 @@
     line-height: 27px;
     white-space: nowrap;
     font-weight: normal;
+    font-size: @AknDefaultFontSize;
 
     &:hover {
       background: @AknDefaultHoverBackground;
+    }
+
+    &--active:not(:hover) {
+      background: @AknPurple;
+      color: white;
     }
   }
 
