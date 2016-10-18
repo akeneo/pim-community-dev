@@ -307,3 +307,22 @@ form.product-edit {
     overflow-y: hidden;
   }
 }
+
+// Added for BEM compatibility. TODO Remove this
+.grid-view-selector {
+  .select2-container {
+    .select2-choice {
+      height: 34px;
+      line-height: 34px;
+      background: #e9ebee !important;
+      font-size: @font-size-14;
+
+      .select2-arrow {
+        height: 34px;
+        width: 34px;
+        line-height: 34px;
+        background: #ccd1d8;
+      }
+    }
+  }
+}

@@ -60,7 +60,7 @@ class ContextSwitcherDecorator extends ElementDecorator
         }, sprintf(
             'Locale is expected to be "%s", actually is "%s".',
             $localeCode,
-            $dropdown->find('css', sprintf('li.active a'))->getAttribute('title')
+            $dropdown->find('css', sprintf('.AknDropdown-menuLink--active'))->getAttribute('title')
         ));
 
         return true;
