@@ -41,4 +41,19 @@ interface DurationFamilyInterface
      * @staticvar string
      */
     const DAY = 'DAY';
+
+    /**
+     * @staticvar string
+     */
+    const WEEK = 'WEEK';
+
+    /**
+     * @staticvar string
+     */
+    const MONTH = 'MONTH';
+
+    /**
+     * @staticvar string
+     */
+    const YEAR = 'YEAR';
 }

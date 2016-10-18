@@ -105,6 +105,9 @@ SECOND:      Second
 MINUTE:      Minute
 HOUR:        Hour
 DAY:         Day
+WEEK:        Week
+MONTH:       Month
+YEAR:        Year
 
 Speed:              Speed
 FOOT_PER_SECOND:    Foot per second
@@ -162,3 +165,7 @@ ATM: Atmosphere
 PSI: Pound per square inch
 TORR: Torr
 MMHG: millimeter of Mercury
+
+Energy: Energy
+KILOCALORIE: kilocalorie
+KILOJOULE: kilojoule
