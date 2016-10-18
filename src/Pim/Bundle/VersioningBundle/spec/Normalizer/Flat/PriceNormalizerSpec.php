@@ -12,10 +12,12 @@ class PriceNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_flat_normalization_of_product_price(ProductPriceInterface $price)
+    function it_supports_flat_normalization_of_product_price()
     {
-        $this->supportsNormalization($price, 'flat')->shouldBe(true);
-        $this->supportsNormalization($price, 'csv')->shouldBe(false);
+        $priceProductValue = ['data' => [['currency' => '10.00']]];
+
+        $this->supportsNormalization($priceProductValue, 'flat')->shouldBe(true);
+        $this->supportsNormalization($priceProductValue, 'csv')->shouldBe(false);
         $this->supportsNormalization(1, 'csv')->shouldBe(false);
     }
 

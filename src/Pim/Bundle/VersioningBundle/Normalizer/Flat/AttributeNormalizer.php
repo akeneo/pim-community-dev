@@ -3,8 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Normalizer\Standard\AttributeNormalizer as StandardNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -23,21 +21,19 @@ class AttributeNormalizer implements NormalizerInterface
     /** @var string[] */
     protected $supportedFormats = ['flat'];
 
-    /** @var StandardNormalizer */
+    /** @var NormalizerInterface */
     protected $standardNormalizer;
 
-    /** @var TranslationNormalizer  */
+    /** @var NormalizerInterface  */
     protected $translationNormalizer;
 
     /**
-     * AttributeNormalizer constructor.
-     *
-     * @param NormalizerInterface   $standardNormalizer
-     * @param TranslationNormalizer $translationNormalizer
+     * @param NormalizerInterface $standardNormalizer
+     * @param NormalizerInterface $translationNormalizer
      */
     public function __construct(
         NormalizerInterface $standardNormalizer,
-        TranslationNormalizer $translationNormalizer
+        NormalizerInterface $translationNormalizer
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->translationNormalizer = $translationNormalizer;
@@ -46,13 +42,13 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param $object AttributeInterface
+     * @param $attribute AttributeInterface
      *
      * @return array
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($attribute, $format = null, array $context = [])
     {
-        $standardAttribute = $this->standardNormalizer->normalize($object, 'standard', $context);
+        $standardAttribute = $this->standardNormalizer->normalize($attribute, 'standard', $context);
 
         $flatAttribute = $standardAttribute;
         $flatAttribute['allowed_extensions'] = implode(self::ITEM_SEPARATOR, $standardAttribute['allowed_extensions']);
@@ -61,7 +57,7 @@ class AttributeNormalizer implements NormalizerInterface
         unset($flatAttribute['labels']);
         $flatAttribute += $this->translationNormalizer->normalize($standardAttribute['labels'], 'flat', $context);
 
-        $flatAttribute['options'] = $this->normalizeOptions($object);
+        $flatAttribute['options'] = $this->normalizeOptions($attribute);
 
         return $flatAttribute;
     }
@@ -92,12 +88,11 @@ class AttributeNormalizer implements NormalizerInterface
             foreach ($options as $option) {
                 $item = [];
                 foreach ($option->getOptionValues() as $value) {
-                    /* @var ProductValueInterface $value */
                     $label = str_replace('{locale}', $value->getLocale(), self::LOCALIZABLE_PATTERN);
                     $label = str_replace('{value}', $value->getValue(), $label);
                     $item[] = $label;
                 }
-                $data[] = 'Code:'.$option->getCode().self::ITEM_SEPARATOR.implode(self::ITEM_SEPARATOR, $item);
+                $data[] = 'Code:' . $option->getCode() . self::ITEM_SEPARATOR . implode(self::ITEM_SEPARATOR, $item);
             }
             $options = implode(self::GROUP_SEPARATOR, $data);
         }

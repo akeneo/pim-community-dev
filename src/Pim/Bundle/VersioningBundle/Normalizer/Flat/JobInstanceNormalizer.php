@@ -20,18 +20,18 @@ class JobInstanceNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param JobInstance $object
+     * @param JobInstance $jobInstance
      *
      * @return array
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($jobInstance, $format = null, array $context = [])
     {
         $results = [
-            'code'          => $object->getCode(),
-            'label'         => $object->getLabel(),
-            'connector'     => $object->getConnector(),
-            'type'          => $object->getType(),
-            'configuration' => json_encode($object->getRawParameters()),
+            'code'          => $jobInstance->getCode(),
+            'label'         => $jobInstance->getLabel(),
+            'connector'     => $jobInstance->getConnector(),
+            'type'          => $jobInstance->getType(),
+            'configuration' => json_encode($jobInstance->getRawParameters()),
         ];
 
         return $results;

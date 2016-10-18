@@ -3,7 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer as StandardNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,19 +19,19 @@ class FamilyNormalizer implements NormalizerInterface
     /** @var string[] */
     protected $supportedFormats = ['flat'];
 
-    /** @var TranslationNormalizer */
+    /** @var NormalizerInterface */
     protected $translationNormalizer;
 
-    /** @var StandardNormalizer */
+    /** @var NormalizerInterface */
     protected $standardNormalizer;
 
     /**
-     * @param NormalizerInterface   $standardNormalizer
-     * @param TranslationNormalizer $translationNormalizer
+     * @param NormalizerInterface $standardNormalizer
+     * @param NormalizerInterface $translationNormalizer
      */
     public function __construct(
         NormalizerInterface $standardNormalizer,
-        TranslationNormalizer $translationNormalizer
+        NormalizerInterface $translationNormalizer
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->translationNormalizer = $translationNormalizer;
@@ -41,17 +40,13 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param FamilyInterface $object
+     * @param FamilyInterface $family
      *
      * @return array
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($family, $format = null, array $context = [])
     {
-        if (!$this->standardNormalizer->supportsNormalization($object, 'standard')) {
-            return null;
-        }
-
-        $standardFamily = $this->standardNormalizer->normalize($object, 'standard', $context);
+        $standardFamily = $this->standardNormalizer->normalize($family, 'standard', $context);
         $flatFamily = $standardFamily;
 
         $flatFamily['attributes'] = implode(self::ITEM_SEPARATOR, $flatFamily['attributes']);
@@ -60,9 +55,7 @@ class FamilyNormalizer implements NormalizerInterface
         $flatFamily += $this->normalizeRequirements($standardFamily['attribute_requirements']);
 
         unset($flatFamily['labels']);
-        if ($this->translationNormalizer->supportsNormalization($standardFamily['labels'], 'flat')) {
-            $flatFamily += $this->translationNormalizer->normalize($standardFamily['labels'], 'flat', $context);
-        }
+        $flatFamily += $this->translationNormalizer->normalize($standardFamily['labels'], 'flat', $context);
 
         return $flatFamily;
     }
@@ -82,11 +75,11 @@ class FamilyNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeRequirements($requirements)
+    protected function normalizeRequirements(array $requirements)
     {
         $flat = [];
-        foreach ($requirements as $channel => $attributes) {
-            $flat['requirements-'.$channel] = implode(self::ITEM_SEPARATOR, $attributes);
+        foreach ($requirements as $channelCode => $attributeCodes) {
+            $flat['requirements-' . $channelCode] = implode(self::ITEM_SEPARATOR, $attributeCodes);
         }
 
         return $flat;
