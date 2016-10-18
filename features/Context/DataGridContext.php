@@ -162,7 +162,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $filterElement = $this->datagrid->getElement('Manage filters')->find('css', sprintf('input[title="%s"]', $title));
 
-        if($filterElement == null || !$filterElement->isVisible()) {
+        if ($filterElement == null || !$filterElement->isVisible()) {
             throw $this->createExpectationException(
                 sprintf('Expecting "%s" to be displayed in the filters list', $title)
             );
