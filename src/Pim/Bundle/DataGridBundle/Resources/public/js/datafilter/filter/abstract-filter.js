@@ -23,7 +23,7 @@ function($, _, Backbone, app) {
          *
          * @property {String}
          */
-        className: 'AknGridToolbar-actionButton AknDropdown AknFilterBox-filter btn-group filter-item oro-drop',
+        className: 'AknDropdown AknFilterBox-filter btn-group filter-item oro-drop',
 
         /**
          * Is filter can be disabled

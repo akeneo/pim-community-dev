@@ -21,7 +21,7 @@ function($, _, __, app, TextFilter, initSelect2) {
                 '<div class="AknFilterChoice-operator AknDropdown">' +
                     '<button class="AknActionButton AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
                         '<%= selectedChoiceLabel %>' +
-                        '<span class="AknDropdown-caret"></span>' +
+                        '<span class="AknCaret"></span>' +
                     '</button>' +
                     '<ul class="dropdown-menu">' +
                         '<% _.each(choices, function (option) { %>' +
@@ -181,7 +181,7 @@ function($, _, __, app, TextFilter, initSelect2) {
                     item.parent().removeClass('active');
                 } else if (item.data('value') == newValue.type && !item.parent().hasClass('active')) {
                     item.parent().addClass('active');
-                    item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknDropdown-caret"></span>');
+                    item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknCaret"></span>');
                 }
             });
             if (newValue.type === 'empty') {
@@ -220,7 +220,7 @@ function($, _, __, app, TextFilter, initSelect2) {
             } else {
                 filterContainer.find(this.criteriaValueSelectors.value).show();
             }
-            dropdown.find('.AknActionButton').html($(e.currentTarget).html() + '<span class="AknDropdown-caret"></span>');
+            dropdown.find('.AknActionButton').html($(e.currentTarget).html() + '<span class="AknCaret"></span>');
             e.preventDefault();
         },
 

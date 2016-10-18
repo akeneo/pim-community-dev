@@ -4,20 +4,6 @@
 // TODO Remove the .dropdown, .dropdown-menu ... classes. I keep it because it's used everywhere for now.
 .AknDropdown {
   position: relative;
-  display: inline-block;
-
-  // TODO Define a global "caret" component
-  &-caret {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border-top: 4px solid #000000;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-    content: "";
-    margin-left: 5px;
-    margin-bottom: 2px;
-  }
 
   &-menu {
     padding: 5px 0;
@@ -28,7 +14,6 @@
     border: 1px solid @borderColor;
     .border-radius(2px);
     .box-shadow(0 5px 10px rgba(0,0,0,0.2));
-    margin-top: -1px;
     z-index: 1;
 
     &--alignRight {
@@ -50,6 +35,7 @@
     height: 27px;
     line-height: 27px;
     white-space: nowrap;
+    font-weight: normal;
 
     &:hover {
       background: @AkGrayLighter;

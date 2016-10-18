@@ -15,15 +15,13 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
         /** @property */
         template:_.template(
             '<div class="AknGridToolbar">' +
-                '<div class="AknGridToolbar-left">' +
-                    '<div class="mass-actions-panel"></div>' +
-                '</div>' +
+                '<div class="AknGridToolbar-left mass-actions-panel"></div>' +
                 '<div class="AknGridToolbar-center">' +
                     '<div class="AknPagination"></div>' +
                 '</div>' +
                 '<div class="AknGridToolbar-right">' +
-                    '<div class="page-size form-horizontal"></div>' +
-                    '<div class="AknGridToolbar-actionsPanel actions-panel form-horizontal"></div>' +
+                    '<div class="AknGridToolbar-pageSize page-size"></div>' +
+                    '<div class="AknGridToolbar-actionsPanel actions-panel"></div>' +
                 '</div>' +
             '</div>'
         ),
@@ -126,9 +124,9 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             this.$el.append(this.template());
 
             this.$('.AknPagination').replaceWith(this.pagination.render().$el);
-            this.$('.page-size').append(this.pageSize.render().$el);
+            this.$('.page-size').append(this.pageSize.render().$el.html());
             this.$('.actions-panel').append(this.actionsPanel.render().$el);
-            this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el);
+            this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el.html());
 
             return this;
         }

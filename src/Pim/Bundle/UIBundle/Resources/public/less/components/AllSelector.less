@@ -1,0 +1,36 @@
+@import '../base/variables';
+
+.AknAllSelector {
+  @radius: 2px;
+
+  display: flex;
+  text-transform: none;
+
+  &-left {
+    height: @littleButtonsHeight;
+    line-height: @littleButtonsHeight;
+    background: #A1A9B7;
+    color: #fff;
+    border-top-left-radius: @radius;
+    border-bottom-left-radius: @radius;
+    border: none;
+    padding: 0 10px;
+  }
+
+  &-right {
+    height: @littleButtonsHeight;
+    width: @littleButtonsHeight;
+    text-align: center;
+    line-height: @littleButtonsHeight;
+    background: #848fa1;
+    color: #fff;
+    border-top-right-radius: @radius;
+    border-bottom-right-radius: @radius;
+    border: none;
+    padding: 0;
+  }
+
+  &-menu {
+    margin-top: @littleButtonsHeight;
+  }
+}

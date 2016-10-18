@@ -35,11 +35,13 @@ css:
         - bundles/pimui/less/base/general.less
         - bundles/pimui/less/components/ActionButton.less
         - bundles/pimui/less/components/ActionButtonsList.less
+        - bundles/pimui/less/components/AllSelector.less
         - bundles/pimui/less/components/Bell.less
         - bundles/pimui/less/components/Breadcrumb.less
         - bundles/pimui/less/components/BreadcrumbContainer.less
         - bundles/pimui/less/components/Button.less
         - bundles/pimui/less/components/ButtonsList.less
+        - bundles/pimui/less/components/Caret.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/FilterBox.less
         - bundles/pimui/less/components/FilterChoice.less
