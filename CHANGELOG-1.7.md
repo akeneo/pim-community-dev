@@ -3,6 +3,8 @@
 ## Bug Fixes
 
 - #5062 Fixed unit conversion for ElectricCharge cheers @gplanchat!
+- Add Energy unit family and conversion cheers @JulienDotDev!
+- Complete Duration unit family with week, month, year and related conversions cheers @JulienDotDev!
 
 ## Functional improvements
 
