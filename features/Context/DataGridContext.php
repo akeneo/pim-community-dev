@@ -552,7 +552,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $steps = [];
 
         foreach ($table->getHash() as $item) {
-            if (isset($item['result'])) {
+            $count = null;
+            if (isset($item['result']) && '' !== $item['result']) {
                 $count = count($this->getMainContext()->listToArray($item['result']));
             }
             $filter = $item['filter'];
@@ -570,7 +571,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 $item['value']
             ));
 
-            if (isset($item['result']) && '' !== $item['result']) {
+            if (null !== $count) {
                 $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $count));
                 $steps[] = new Step\Then(sprintf('I should see entities %s', $item['result']));
             }
@@ -609,12 +610,12 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->datagrid->sortBy($columnName, $order);
 
-        $loadlingMask = $this->datagrid
+        $loadingMask = $this->datagrid
             ->getElement('Grid container')
-            ->find('css', '.loading-mask .loading-mask');
+            ->find('css', '.hash-loading-mask .loading-mask');
 
-        $this->spin(function () use ($loadlingMask) {
-            return !$loadlingMask->isVisible();
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
         }, '".loading-mask" is still visible');
     }
 
