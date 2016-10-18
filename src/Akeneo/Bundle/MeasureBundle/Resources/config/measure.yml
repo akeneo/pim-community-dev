@@ -443,3 +443,12 @@ measures_config:
             MMHG:
                 convert: [{'mul': 750.06375541921}]
                 symbol: mmHg
+    Energy:
+        standard: KILOCALORIE
+        units:
+            KILOCALORIE:
+                convert: [{'mul': 1}]
+                symbol: kcal
+            KILOJOULE:
+                convert: [{'mul': 4.1868}]
+                symbol: kJ
