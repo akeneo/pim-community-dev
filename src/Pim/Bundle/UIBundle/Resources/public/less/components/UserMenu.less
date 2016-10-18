@@ -1,8 +1,8 @@
-.AknUserMenu {
-  @height: 50px;
+@import '../base/variables';
 
-  height: @height;
-  line-height: @height;
+.AknUserMenu {
+  height: @AknMainMenuHeight;
+  line-height: @AknMainMenuHeight;
 
   &-userLink {
     color: white;
@@ -15,12 +15,12 @@
   }
 
   &-helpLink {
-    height: @height;
-    width: @height;
+    height: @AknMainMenuHeight;
+    width: @AknMainMenuHeight;
     text-align: center;
-    line-height: @height;
+    line-height: @AknMainMenuHeight;
     color: white;
-    font-size: 16.176px;
+    font-size: @AknLittleIconFontSize;
     display: block;
 
     &:hover,

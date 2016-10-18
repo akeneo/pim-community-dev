@@ -1,13 +1,13 @@
-@import '../base/mixins';
+@import '../base/variables';
 
 .AknHeader {
   &-menus {
-    background: #52267D;
+    background: @AknPurple;
     display: flex;
     justify-content: space-between;
     z-index: 900;
     position: relative;
-    .box-shadow(0 1px 4px rgba(0,0,0,0.065));
+    box-shadow: 0 1px 4px rgba(0,0,0,0.065);
   }
 
   &-leftMenus {
@@ -23,6 +23,6 @@
   }
 
   &-logoImage {
-    height: 50px;
+    height: @AknMainMenuHeight;
   }
 }

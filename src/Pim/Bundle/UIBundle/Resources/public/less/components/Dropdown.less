@@ -1,19 +1,18 @@
 @import '../base/variables';
-@import '../base/mixins';
 
 // TODO Remove the .dropdown, .dropdown-menu ... classes. I keep it because it's used everywhere for now.
 .AknDropdown {
   position: relative;
 
   &-menu {
+    border: 1px solid @AknBorderColor;
     padding: 5px 0;
     position: absolute;
     left: 0;
     display: none;
-    background-color: #fff;
-    border: 1px solid @borderColor;
-    .border-radius(2px);
-    .box-shadow(0 5px 10px rgba(0,0,0,0.2));
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     z-index: 1;
 
     &--alignRight {
@@ -21,9 +20,10 @@
       left: auto;
     }
 
+    // TODO Remove this
     input[type='search'] {
       padding: 4px;
-      border: 1px solid @borderColor;
+      border: 1px solid @AknBorderColor;
       height: 22px;
       line-height: 22px;
     }
@@ -38,7 +38,7 @@
     font-weight: normal;
 
     &:hover {
-      background: @AkGrayLighter;
+      background: @AknDefaultHoverBackground;
     }
   }
 

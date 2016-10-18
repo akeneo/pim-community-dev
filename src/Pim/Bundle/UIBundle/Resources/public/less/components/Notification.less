@@ -1,23 +1,21 @@
 @import '../base/variables';
-@import '../base/mixins';
 
 .AknNotification {
-  @iconSize: 50px;
-  @littleIconSize: 26px;
+  @bigIconSize: 50px;
   @statusIconSize: 20px;
 
   width: 400px;
 
   &-link {
-    border-bottom: 1px solid @borderColor;
+    border-bottom: 1px solid @AknBorderColor;
+    color: @AknDefaultFontColor;
     padding: 15px;
     display: flex;
     flex-direction: column;
-    color: @AkDefaultFontColor;
     opacity: 0.4;
 
     &:hover {
-      background: #ebe0f5;
+      background: @AknDefaultHoverBackground;
     }
 
     &--new {
@@ -30,10 +28,10 @@
   }
 
   &-icon {
-    width: @iconSize;
-    height: @iconSize;
-    border: 1px solid @borderColor;
-    .border-radius(2px);
+    width: @bigIconSize;
+    height: @bigIconSize;
+    border: 1px solid @AknBorderColor;
+    border-radius: 2px;
     background-position: center center;
     background-size: 50% 50%;
     background-repeat: no-repeat;
@@ -55,24 +53,24 @@
   &-status {
     width: @statusIconSize;
     height: @statusIconSize;
-    position: absolute;
+    line-height: @statusIconSize;
     right: -@statusIconSize / 3;
     top: -@statusIconSize / 3;
+    position: absolute;
     margin: 0;
     color: white;
     text-align: center;
-    line-height: @statusIconSize;
 
     &--success, &--add {
-      background: #67b373;
+      background: @AknGreen;
     }
 
     &--warning {
-      background: #f8b43f;
+      background: @AknOrange;
     }
 
     &--error {
-      background: #d36050;
+      background: @AknRed;
     }
   }
 
@@ -84,33 +82,15 @@
   }
 
   &-time {
-    font-size: 11px;
-    color: #A1A9B7;
+    color: @AknGrey;
+    font-size: @AknDefaultFontSize;
     display: block;
   }
 
   &-title {
-    font-size: 14.154px;
+    font-size: @AknFontSizeBig;
     font-weight: bold;
     display: block;
-  }
-
-  &-trashAction {
-    // TODO Maybe this should have the same style than AknIconsList-item
-    width: @littleIconSize;
-    height: @littleIconSize;
-    background-color: #F1F4F9;
-    border: 1px solid #A1A9B7;
-    color: #A1A9B7;
-    .border-radius(2px);
-    font-size: 14px;
-    text-align: center;
-    line-height: @littleIconSize;
-
-    &:hover {
-      background-color: #A1A9B7;
-      color: white;
-    }
   }
 
   &-message {
@@ -119,8 +99,8 @@
   }
 
   &-comment {
-    background-color: @akeneoLight;
-    color: @akeneoDarkBlue;
+    background-color: @AknLightGray;
+    color: @AknDarkFontColor;
     line-height: 16px;
     padding: 16px;
     margin-bottom: 16px;

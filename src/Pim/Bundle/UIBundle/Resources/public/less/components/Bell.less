@@ -1,12 +1,10 @@
-@import '../base/mixins';
+@import '../base/variables';
 
 .AknBell {
-  @size: 50px;
-
   &-link {
-    height: @size;
-    width: @size;
-    line-height: @size;
+    height: @AknMainMenuHeight;
+    width: @AknMainMenuHeight;
+    line-height: @AknMainMenuHeight;
     color: white;
     text-align: center;
     display: block;
@@ -19,20 +17,20 @@
   }
 
   &-icon {
-    font-size: 18.198px;
+    font-size: @AknBigIconFontSize;
   }
 
   &-countContainer {
+    width: @AknMainMenuHeight;
     position: absolute;
     top: -8px;
     right: -8px;
-    width: @size;
   }
 
   &-count {
-    background: #c04230;
+    background: @AknRed;
     padding: 0 2px;
-    .border-radius(2px);
+    border-radius: 2px;
 
     &--hidden {
       display: none;

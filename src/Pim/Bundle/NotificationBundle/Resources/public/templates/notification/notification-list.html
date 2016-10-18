@@ -7,11 +7,11 @@
             <time class="AknNotification-time"><%= createdAt %></time>
             <span class="AknNotification-title"><%= actionTypeMessage %></span>
         </div>
-        <i class="AknNotification-trashAction icon-<%= viewed ? 'trash' : 'eye-close' %> action"></i>
+        <i class="AknIconButton AknIconButton--light icon-<%= viewed ? 'trash' : 'eye-close' %> action"></i>
     </div>
     <div class="AknNotification-message"><%= message %></div>
     <% if (comment) { %> <div class="AknNotification-comment"><%= comment %></div> <% } %>
     <% if (showReportButton) { %>
-    <button class="AknNotification-button AknButton AknButton--micro AknButton--gray AknButton--withIcon"><i class="AknButton-icon icon-file-text-alt"></i><%- _.__('pim_notification.report') %></button>
+    <button class="AknNotification-button AknButton AknButton--micro AknButton--grey AknButton--withIcon"><i class="AknButton-icon icon-file-text-alt"></i><%- _.__('pim_notification.report') %></button>
     <% } %>
 </a>

@@ -1,15 +1,14 @@
 @import '../base/variables';
-@import '../base/mixins';
 
 .AknActionButton {
-  height: @littleButtonsHeight;
-  line-height: @littleButtonsHeight;
+  height: @AknLittleButtonSize;
+  line-height: @AknLittleButtonSize;
+  font-size: @AknDefaultFontSize;
+  border: 1px solid @AknBorderColor;
+  color: @AknDefaultFontColor;
   background-color: white;
-  border: 1px solid @borderColor;
-  .border-radius(4px);
-  font-size: 12.13px;
+  border-radius: 4px;
   font-weight: normal;
-  color: #555;
   padding: 0 10px;
   vertical-align: middle;
   display: inline-block;
@@ -17,8 +16,10 @@
   white-space: nowrap;
   outline: none;
 
-  &:hover, &:active, &:focus {
-    background: #eee;
+  &:hover,
+  &:active,
+  &:focus {
+    background: @AknDefaultHoverBackground;
   }
 
   &--noRightBorder {
@@ -36,7 +37,7 @@
   &-selectButton {
     background: none;
     border: none;
-    color: #555;
+    color: @AknDefaultFontColor;
     font-weight: bold;
 
     &:hover, &:active, &:focus {

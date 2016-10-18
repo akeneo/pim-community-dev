@@ -1,19 +1,18 @@
 @import '../base/variables';
-@import '../base/mixins';
 
 .AknMainMenu {
   @submenuHeight: 35px;
   @submenuWidth: 100px;
 
+  height: @AknMainMenuHeight;
   display: flex;
-  height: 50px;
 
   &-item {
-    font-size: 14.154px;
+    font-size: @AknFontSizeBig;
   }
 
   &-item--active &-link {
-    background: #1f0e2f;
+    background: darken(@AknPurple, 20%);
   }
 
   &-level1, &-level2 {
@@ -21,21 +20,21 @@
   }
 
   &-link {
+    line-height: @AknMainMenuHeight;
     padding: 0 20px;
     display: block;
     color: white;
-    line-height: 50px;
   }
 
   &-link.active {
-    background: #1f0e2f;
+    background: darken(@AknPurple, 20%);
   }
 
   &-submenu {
+    border: 1px solid lighten(@AknBorderColor, 10%);
     position: absolute;
     background: white;
-    border: 1px solid #f4f4f4;
-    .box-shadow(1px 2px 3px rgba(0, 0, 0, 0.3));
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
   }
 
   &-level2 {
@@ -46,7 +45,7 @@
 
   &-submenu &-link {
     line-height: @submenuHeight;
-    border-bottom: 1px solid #f4f4f4;
+    border-bottom: 1px solid lighten(@AknBorderColor, 10%);
   }
 
   &-item:hover &-submenu:not(&-level2),
@@ -55,13 +54,13 @@
   }
 
   &-item:hover &-link {
+    color: @AknDarkFontColor;
     background: white;
-    color: #444;
   }
 
   &-submenu &-item:hover &-link,
   &-item:hover &-level2 &-item:hover &-link {
-    background: #f4f4f4;
+    background: @AknDefaultHoverBackground;
   }
 
   &-item:hover &-level2 &-link {

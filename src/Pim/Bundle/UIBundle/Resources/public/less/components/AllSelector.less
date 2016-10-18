@@ -7,10 +7,10 @@
   text-transform: none;
 
   &-left {
-    height: @littleButtonsHeight;
-    line-height: @littleButtonsHeight;
-    background: #A1A9B7;
-    color: #fff;
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    background: @AknGrey;
+    color: white;
     border-top-left-radius: @radius;
     border-bottom-left-radius: @radius;
     border: none;
@@ -18,12 +18,12 @@
   }
 
   &-right {
-    height: @littleButtonsHeight;
-    width: @littleButtonsHeight;
+    height: @AknLittleButtonSize;
+    width: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    background: darken(@AknGrey, 10%);;
     text-align: center;
-    line-height: @littleButtonsHeight;
-    background: #848fa1;
-    color: #fff;
+    color: white;
     border-top-right-radius: @radius;
     border-bottom-right-radius: @radius;
     border: none;
@@ -31,6 +31,6 @@
   }
 
   &-menu {
-    margin-top: @littleButtonsHeight;
+    margin-top: @AknLittleButtonSize;
   }
 }

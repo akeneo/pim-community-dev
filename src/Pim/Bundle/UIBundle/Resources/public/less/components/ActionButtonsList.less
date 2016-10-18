@@ -1,23 +1,24 @@
 @import '../base/variables';
-@import '../base/mixins';
 
 .AknActionButtonsList {
-  border: 1px solid @borderColor;
-  .border-radius(2px);
-  font-size: 12.132px;
-  line-height: @littleButtonsHeight;
-  height: @littleButtonsHeight;
+  border: 1px solid @AknBorderColor;
+  font-size: @AknDefaultFontSize;
+  line-height: @AknLittleButtonSize;
+  height: @AknLittleButtonSize;
+  border-radius: 4px;
+  overflow: hidden;
 
   &-button {
     display: inline-block;
     padding: 0 10px;
+    color: @AknDefaultFontColor;
 
     &:hover {
-      background: @AkGrayLighter;
+      background: @AknDefaultHoverBackground;
     }
   }
 
   &-button + &-button {
-    border-left: 1px solid @borderColor;
+    border-left: 1px solid @AknBorderColor;
   }
 }
