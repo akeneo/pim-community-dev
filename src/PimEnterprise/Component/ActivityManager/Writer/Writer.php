@@ -12,10 +12,12 @@
 namespace Akeneo\ActivityManager\Component\Writer;
 
 use Akeneo\ActivityManager\Component\Model\Project;
-use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository;
+use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacher;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
@@ -23,6 +25,7 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
  */
 class Writer implements ItemWriterInterface
 {
+    /** @var ProjectRepositoryInterface */
     private $projectRepository;
 
     /** @var EntityManager */
@@ -32,14 +35,14 @@ class Writer implements ItemWriterInterface
     private $objectDetacher;
 
     /**
-     * @param ProjectRepository $projectRepository
-     * @param EntityManager     $entityManager
-     * @param ObjectDetacher    $objectDetacher
+     * @param ProjectRepositoryInterface $projectRepository
+     * @param EntityManagerInterface     $entityManager
+     * @param ObjectDetacherInterface    $objectDetacher
      */
     public function __construct(
-        ProjectRepository $projectRepository,
-        EntityManager $entityManager,
-        ObjectDetacher $objectDetacher
+        ProjectRepositoryInterface $projectRepository,
+        EntityManagerInterface $entityManager,
+        ObjectDetacherInterface $objectDetacher
     ) {
         $this->projectRepository = $projectRepository;
         $this->entityManager = $entityManager;
@@ -51,7 +54,7 @@ class Writer implements ItemWriterInterface
      */
     public function write(array $items)
     {
-        $project = $this->findProject();
+        $project = $this->findProject(1);
         foreach ($items as $item) {
             foreach ($item as $userGroup) {
                 $project->addUserGroup($userGroup);
@@ -71,7 +74,7 @@ class Writer implements ItemWriterInterface
      */
     private function findProject($code)
     {
-        $project = $this->projectRepository->findOneBy(['code' => 'toto']);
+        $project = $this->projectRepository->findOneById(1);
 
         if (null === $project) {
             throw new NotFoundResourceException(sprintf('Could not found any project with code "%s"', $code));

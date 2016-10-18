@@ -11,8 +11,8 @@
 
 namespace Akeneo\ActivityManager\Component\Processor;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacher;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
@@ -43,7 +43,7 @@ class Processor extends AbstractProcessor
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
-    /** @var ObjectDetacher */
+    /** @var ObjectDetacherInterface */
     private $objectDetacher;
 
     /** @var ProductRepositoryInterface */
@@ -59,7 +59,7 @@ class Processor extends AbstractProcessor
     private $accessRepository;
 
     /**
-     * @param ObjectDetacher                $objectDetacher
+     * @param ObjectDetacherInterface       $objectDetacher
      * @param TokenStorageInterface         $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param ProductRepositoryInterface    $productRepository
@@ -69,7 +69,7 @@ class Processor extends AbstractProcessor
      * @param CategoryAccessRepository      $accessRepository
      */
     public function __construct(
-        ObjectDetacher $objectDetacher,
+        ObjectDetacherInterface $objectDetacher,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductRepositoryInterface $productRepository,
