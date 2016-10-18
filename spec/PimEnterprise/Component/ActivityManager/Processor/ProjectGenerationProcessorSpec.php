@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class ProcessorSpec extends ObjectBehavior
+class ProjectGenerationProcessorSpec extends ObjectBehavior
 {
     function let(
         ObjectDetacherInterface $objectDetacher,
