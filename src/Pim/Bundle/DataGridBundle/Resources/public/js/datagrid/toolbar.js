@@ -15,14 +15,11 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
         /** @property */
         template:_.template(
             '<div class="AknGridToolbar">' +
-                '<div class="AknGridToolbar-left mass-actions-panel"></div>' +
+                '<div class="mass-actions-panel"></div>' +
                 '<div class="AknGridToolbar-center">' +
                     '<div class="AknPagination"></div>' +
                 '</div>' +
-                '<div class="AknGridToolbar-right">' +
-                    '<div class="AknGridToolbar-pageSize page-size"></div>' +
-                    '<div class="AknGridToolbar-actionsPanel actions-panel"></div>' +
-                '</div>' +
+                '<div class="AknGridToolbar-right"></div>' +
             '</div>'
         ),
 
@@ -60,7 +57,10 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             options.pageSize = options.pageSize || {};
             this.pageSize = new this.pageSize(_.extend({}, options.pageSize, { collection: this.collection }));
 
-            this.actionsPanel = new this.actionsPanel(_.extend({}, options.actionsPanel));
+            this.actionsPanel = new this.actionsPanel(_.extend({
+                className: 'AknGridToolbar-actionsPanel actions-panel'
+            }, options.actionsPanel));
+
             if (options.actions) {
                 this.actionsPanel.setActions(options.actions);
             }
@@ -74,7 +74,8 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
 
             this.massActionsPanel = new this.massActionsPanel({
                 actionsGroups: options.massActionsGroups,
-                actions:       options.massActions
+                actions:       options.massActions,
+                className:     'AknGridToolbar-left'
             });
 
             Backbone.View.prototype.initialize.call(this, options);
@@ -124,9 +125,9 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             this.$el.append(this.template());
 
             this.$('.AknPagination').replaceWith(this.pagination.render().$el);
-            this.$('.page-size').append(this.pageSize.render().$el.html());
-            this.$('.actions-panel').append(this.actionsPanel.render().$el);
-            this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el.html());
+            this.$('.AknGridToolbar-right').append(this.pageSize.render().$el);
+            this.$('.AknGridToolbar-right').append(this.actionsPanel.render().$el);
+            this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el);
 
             return this;
         }

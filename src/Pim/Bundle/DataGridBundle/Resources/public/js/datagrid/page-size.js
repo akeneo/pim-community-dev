@@ -11,6 +11,8 @@ function($, _, Backbone, __) {
      * @extends Backbone.View
      */
     return Backbone.View.extend({
+        className: 'AknGridToolbar-pageSize page-size',
+
         /** @property */
         template: _.template(
             '<label class="control-label"><%- _.__("View per page") %>: &nbsp;</label>' +
