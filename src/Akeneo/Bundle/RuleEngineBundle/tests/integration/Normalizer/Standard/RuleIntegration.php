@@ -2,7 +2,7 @@
 
 namespace tests\integration\Akeneo\Bundle\RuleEngineBundle\Normalizer\Standard;
 
-use EnterpriseIntegration\TestCase;
+use TestEnterprise\Integration\TestCase;
 
 class RuleIntegration extends TestCase
 {

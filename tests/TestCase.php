@@ -1,8 +1,8 @@
 <?php
 
-namespace EnterpriseIntegration;
+namespace TestEnterprise\Integration;
 
-use Integration\TestCase as BaseTestCase;
+use Test\Integration\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
 {

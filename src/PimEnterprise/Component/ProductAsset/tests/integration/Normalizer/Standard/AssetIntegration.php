@@ -2,7 +2,7 @@
 
 namespace tests\integration\PimEnterprise\Component\ProductAsset\Normalizer\Standard;
 
-use EnterpriseIntegration\TestCase;
+use TestEnterprise\Integration\TestCase;
 
 class AssetIntegration extends TestCase
 {
