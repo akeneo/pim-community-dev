@@ -680,6 +680,15 @@ class Grid extends Index
 
             return false;
         }, sprintf('Impossible to activate filter "%s"', $filterName));
+
+        $this->spin(function () use ($manageFilters) {
+            $manageClosed = !$manageFilters->isVisible();
+            if (!$manageClosed) {
+                $this->clickFiltersList();
+            }
+
+            return $manageClosed;
+        }, 'Could not close Manage filters');
     }
 
     /**
