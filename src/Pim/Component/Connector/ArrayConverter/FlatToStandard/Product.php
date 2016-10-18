@@ -6,12 +6,10 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
@@ -32,12 +30,6 @@ use Pim\Component\Connector\Exception\StructureArrayConversionException;
  */
 class Product implements ArrayConverterInterface
 {
-    /** @var ValueConverterRegistryInterface */
-    protected $converterRegistry;
-
-    /** @var AttributeColumnInfoExtractor */
-    protected $attrFieldExtractor;
-
     /** @var AttributeColumnsResolver */
     protected $attrColumnsResolver;
 
@@ -62,9 +54,10 @@ class Product implements ArrayConverterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var ArrayConverterInterface */
+    protected $productValueConverter;
+
     /**
-     * @param AttributeColumnInfoExtractor    $attrFieldExtractor
-     * @param ValueConverterRegistryInterface $converterRegistry
      * @param AssociationColumnsResolver      $assocColumnsResolver
      * @param AttributeColumnsResolver        $attrColumnsResolver
      * @param FieldConverter                  $fieldConverter
@@ -72,20 +65,18 @@ class Product implements ArrayConverterInterface
      * @param ColumnsMapper                   $columnsMapper
      * @param FieldsRequirementChecker        $fieldChecker
      * @param AttributeRepositoryInterface    $attributeRepository
+     * @param ArrayConverterInterface         $productValueConverter
      */
     public function __construct(
-        AttributeColumnInfoExtractor $attrFieldExtractor,
-        ValueConverterRegistryInterface $converterRegistry,
         AssociationColumnsResolver $assocColumnsResolver,
         AttributeColumnsResolver $attrColumnsResolver,
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
         FieldsRequirementChecker $fieldChecker,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        ArrayConverterInterface $productValueConverter
     ) {
-        $this->attrFieldExtractor = $attrFieldExtractor;
-        $this->converterRegistry = $converterRegistry;
         $this->assocColumnsResolver = $assocColumnsResolver;
         $this->attrColumnsResolver = $attrColumnsResolver;
         $this->fieldConverter = $fieldConverter;
@@ -94,6 +85,7 @@ class Product implements ArrayConverterInterface
         $this->fieldChecker = $fieldChecker;
         $this->optionalAssocFields = [];
         $this->attributeRepository = $attributeRepository;
+        $this->productValueConverter = $productValueConverter;
     }
 
     /**
@@ -252,11 +244,10 @@ class Product implements ArrayConverterInterface
 
     /**
      * @param array $item
-     * @param array $options
      *
      * @return array
      */
-    protected function convertItem(array $item, array $options = [])
+    protected function convertItem(array $item)
     {
         $convertedItem = [];
         $convertedValues = [];
@@ -266,10 +257,11 @@ class Product implements ArrayConverterInterface
                 $value = $this->fieldConverter->convert($column, $value);
                 $convertedItem = $this->mergeValueToItem($convertedItem, $value);
             } else {
-                $value = $this->convertValue($column, $value);
-                $convertedValues = $this->mergeValueToItem($convertedValues, $value);
+                $convertedValues[$column] = $value;
             }
         }
+
+        $convertedValues = $this->productValueConverter->convert($convertedValues);
 
         if (empty($convertedValues)) {
             throw new \LogicException('Cannot find any values. There should be at least one identifier attribute');
@@ -277,48 +269,14 @@ class Product implements ArrayConverterInterface
 
         $convertedItem['values'] = $convertedValues;
 
-        if ($options['with_required_identifier']) {
-            $identifierCode = $this->attributeRepository->getIdentifierCode();
-            if (!isset($convertedItem['values'][$identifierCode])) {
-                throw new \LogicException(sprintf('Unable to find the column "%s"', $identifierCode));
-            }
-
-            $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'];
+        $identifierCode = $this->attributeRepository->getIdentifierCode();
+        if (!isset($convertedItem['values'][$identifierCode])) {
+            throw new \LogicException(sprintf('Unable to find the column "%s"', $identifierCode));
         }
+
+        $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'];
 
         return $convertedItem;
-    }
-
-    /**
-     * @param string $column
-     * @param string $value
-     *
-     * @throws \LogicException
-     *
-     * @return array
-     */
-    protected function convertValue($column, $value)
-    {
-        $attributeFieldInfo = $this->attrFieldExtractor->extractColumnInfo($column);
-
-        if (null !== $attributeFieldInfo && isset($attributeFieldInfo['attribute'])) {
-            $converter = $this->converterRegistry->getConverter($attributeFieldInfo['attribute']->getAttributeType());
-
-            if (null === $converter) {
-                throw new \LogicException(
-                    sprintf(
-                        'No converters found for attribute type "%s"',
-                        $attributeFieldInfo['attribute']->getAttributeType()
-                    )
-                );
-            }
-
-            return $converter->convert($attributeFieldInfo, $value);
-        }
-
-        throw new \LogicException(
-            sprintf('Unable to convert the given column "%s"', $column)
-        );
     }
 
     /**
