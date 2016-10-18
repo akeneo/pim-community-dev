@@ -80,7 +80,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
         $this->productBuilder->addMissingProductValues($product, [$channel], $channel->getLocales()->toArray());
 
-        $productStandard = $this->normalizer->normalize($product, 'json', [
+        $productStandard = $this->normalizer->normalize($product, 'standard', [
             'channels' => [$channel->getCode()],
             'locales'  => array_intersect(
                 $channel->getLocaleCodes(),

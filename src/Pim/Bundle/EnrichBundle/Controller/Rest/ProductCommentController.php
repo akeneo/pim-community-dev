@@ -98,7 +98,7 @@ class ProductCommentController
             $product->getId()
         );
 
-        return new JsonResponse($this->normalizer->normalize($comments, 'json'));
+        return new JsonResponse($this->normalizer->normalize($comments, 'standard'));
     }
 
     /**
@@ -120,7 +120,7 @@ class ProductCommentController
         if ($form->isValid()) {
             $this->commentSaver->save($comment);
 
-            return new JsonResponse($this->normalizer->normalize($comment, 'json'));
+            return new JsonResponse($this->normalizer->normalize($comment, 'standard'));
         }
 
         $violations = $this->validator->validate($comment);
@@ -169,7 +169,7 @@ class ProductCommentController
 
             $this->commentSaver->save($reply);
 
-            return new JsonResponse($this->normalizer->normalize($reply, 'json'));
+            return new JsonResponse($this->normalizer->normalize($reply, 'standard'));
         }
 
         $violations = $this->validator->validate($reply);

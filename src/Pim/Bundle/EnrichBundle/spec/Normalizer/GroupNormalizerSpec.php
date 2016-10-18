@@ -79,7 +79,7 @@ class GroupNormalizerSpec extends ObjectBehavior
             'date'   => ['data' => '31/01/2015', 'locale' => null, 'scope' => null],
         ];
 
-        $normalizer->normalize($tshirt, 'json', $options)->willReturn($variantNormalized);
+        $normalizer->normalize($tshirt, 'standard', $options)->willReturn($variantNormalized);
         $localizedConverter->convertToLocalizedFormats($variantNormalized['values'], $options)
             ->willReturn($valuesLocalized);
 
