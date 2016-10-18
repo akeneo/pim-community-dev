@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\MeasureBundle\Family;
 
 /**
- * Weight measures constants
+ * Case box measures constants
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
