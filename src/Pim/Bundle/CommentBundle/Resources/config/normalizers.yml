@@ -1,5 +1,5 @@
 parameters:
-    pim_comment.normalizer.standard.comment.class: Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer
+    pim_comment.normalizer.standard.comment.class: Pim\Bundle\CommentBundle\Normalizer\Standard\CommentNormalizer
 
 services:
     pim_comment.normalizer.standard.comment:
