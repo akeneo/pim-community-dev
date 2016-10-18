@@ -11,6 +11,7 @@
 
 namespace Akeneo\ActivityManager\Component\Repository;
 
+use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
@@ -18,4 +19,12 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface ProjectRepositoryInterface extends ObjectRepository
 {
+    /**
+     * Returns Project object regarding its id
+     *
+     * @param int $id
+     *
+     * @return ProjectInterface
+     */
+    public function find($id);
 }
