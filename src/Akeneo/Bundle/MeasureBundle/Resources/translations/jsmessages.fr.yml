@@ -95,6 +95,9 @@ SECOND: Seconde
 MINUTE: Minute
 HOUR: Heure
 DAY: Jour
+WEEK: Semaine
+MONTH: Mois
+YEAR: Année
 Speed: Vitesse
 FOOT_PER_SECOND: Pied par seconde
 FOOT_PER_HOUR: Pied / heure

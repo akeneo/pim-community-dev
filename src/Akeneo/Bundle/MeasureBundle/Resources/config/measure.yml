@@ -314,6 +314,15 @@ measures_config:
             DAY:
                 convert: [{'mul': 86400}]
                 symbol: d
+            WEEK:
+                convert: [{'mul': 604800}]
+                symbol: week
+            MONTH:
+                convert: [{'mul': 18748800}]
+                symbol: month
+            YEAR:
+                convert: [{'mul': 31536000}]
+                symbol: year
     Temperature:
         standard: KELVIN
         units:
