@@ -182,7 +182,7 @@ function($, _, Backbone) {
                 handles.unshift({
                     label: _.has(ffConfig.prev, 'label') ? ffConfig.prev.label : undefined,
                     wrapClass: _.has(ffConfig.prev, 'wrapClass') ? ffConfig.prev.wrapClass : undefined,
-                    className: collection.hasPrevious() ? undefined : "disabled"
+                    className: collection.hasPrevious() ? undefined : "AknPagination-item--disabled"
                 });
             }
 
@@ -190,7 +190,7 @@ function($, _, Backbone) {
                 handles.push({
                     label: _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined,
                     wrapClass: _.has(ffConfig.next, 'wrapClass') ? ffConfig.next.wrapClass : undefined,
-                    className: collection.hasNext() ? void 0 : "disabled"
+                    className: collection.hasNext() ? void 0 : "AknPagination-item--disabled"
                 });
             }
 

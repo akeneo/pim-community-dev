@@ -1,5 +1,5 @@
 {% if app.user %}
-    <li>
+    <li class="AknDropdown">
         <a href="javascript: void(0);" class="AknUserMenu-userLink dropdown-toggle" data-toggle="dropdown">{{ app.user.fullName|escape }} <i class="icon-sort-down"></i></a>
         {{ oro_menu_render('usermenu') }}
     </li>

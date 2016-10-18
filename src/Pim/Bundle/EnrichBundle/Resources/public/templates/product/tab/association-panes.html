@@ -12,7 +12,7 @@
         </div>
         <h3 class="AknTitleContainer-title">
             <%- associationType.labels[locale] || '[' + associationType.code + ']'  %>
-            <span class="muted small">
+            <span class="AknTitleContainer-subTitle">
                 <%- _.__(
                     'pim_enrich.form.product.tab.associations.info.number_of_associations',
                     { productCount: associationType.productCount, groupCount: associationType.groupCount }

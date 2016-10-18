@@ -15,14 +15,24 @@
     line-height: @AknDefaultButtonSize;
     margin: 0;
     display: flex;
-    align-items: center;
+    align-items: baseline;
+  }
+
+  &-subTitle {
+    color: @AknGrey;
+    font-size: @AknFontSizeBig;
+    margin-left: 10px;
   }
 
   &-rightButtons {
     order: 10;
   }
 
-  &-titleButtons { }
+  &-titleButtons {
+    // After BEM merge, TODO Change this behavior to have right placements on the title
+    float: left;
+    margin-right: 10px;
+  }
 
   &--hidden {
     display: none !important;

@@ -97,17 +97,17 @@
 {% macro page_header(title, buttons, subtitle, left, right, titleButtons) %}
     <div class="AknTitleContainer navigation">
         <div>
+            {% if titleButtons is not empty %}
+                <div class="AknButtonsList AknTitleContainer-titleButtons">
+                    {{ titleButtons }}
+                </div>
+            {% endif %}
             <div class="AknTitleContainer-title">
                 {{ title|first|capitalize ~ title[1:] }}
                 {% if subtitle is not empty %}
                     / {{ subtitle }}
                 {% endif %}
             </div>
-            {% if titleButtons is not empty %}
-                <div class="AknButtonsList AknTitleContainer-titleButtons">
-                    {{ titleButtons }}
-                </div>
-            {% endif %}
             {{ left }}
         </div>
         <div>

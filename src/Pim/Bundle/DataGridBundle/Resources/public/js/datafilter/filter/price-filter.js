@@ -26,8 +26,8 @@ define(
             },
 
             _onDisable: function() {
-                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="AknCaret"></span>');
-                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="AknCaret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="AknActionButton-caret AknCaret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="AknActionButton-caret AknCaret"></span>');
             },
 
             /**
@@ -89,7 +89,7 @@ define(
                     '<div class="AknFilterChoice-operator AknDropdown">' +
                         '<button class="AknActionButton AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
                             '<%= _.__("Action") %>' +
-                            '<span class="AknCaret"></span>' +
+                            '<span class="AknActionButton-caret AknCaret"></span>' +
                         '</button>' +
                         '<ul class="dropdown-menu">' +
                             '<% _.each(choices, function (option) { %>' +
@@ -102,7 +102,7 @@ define(
                     '<div class="AknDropdown">' +
                         '<button class="AknActionButton AknActionButton--noRightBorder AknActionButton--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
                             '<%= _.__("Currency") %>' +
-                            '<span class="AknCaret"></span>' +
+                            '<span class="AknActionButton-caret AknCaret"></span>' +
                         '</button>' +
                         '<ul class="dropdown-menu">' +
                             '<% _.each(currencies, function (currency) { %>' +
@@ -175,7 +175,7 @@ define(
                         }
                     } else if (value == newValue.type || value == newValue.currency) {
                         item.parent().addClass('active');
-                        item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknCaret"></span>');
+                        item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknActionButton-caret AknCaret"></span>');
                     }
                 });
                 if (newValue.type === 'empty') {

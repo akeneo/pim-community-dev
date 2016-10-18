@@ -1,4 +1,5 @@
-<<%- tagName %> href="<%= link %>" class="<%- className %><% if (!enabled) { %> disabled<% } %>"
+<% hidden = !icon && !iconClassName && !label %>
+<<%- tagName %> href="<%= link %>" class="<%- className %><% if (hidden) { %>  AknIconsList-item--hidden<% } %><% if (!enabled) { %> disabled<% } %>"
     <% _.each(attributes, function(attribute, name) { %>
         <%- name %>="<%- attribute %>"
     <% }) %>

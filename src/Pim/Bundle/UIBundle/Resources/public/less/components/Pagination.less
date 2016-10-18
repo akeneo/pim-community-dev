@@ -58,4 +58,12 @@
   &-link {
     display: block;
   }
+
+  &-item--disabled &-link {
+    cursor: no-drop;
+  }
+
+  &-item--disabled &-arrow:before {
+    color: lighten(@AknDefaultFontColor, 30%);
+  }
 }

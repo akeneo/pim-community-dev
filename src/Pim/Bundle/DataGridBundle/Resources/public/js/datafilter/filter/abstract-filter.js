@@ -419,11 +419,11 @@ function($, _, Backbone, app) {
             }
 
             if (rightOffset < 0) {
-                $element.addClass('left-dropdown-menu');
-                $element.removeClass('right-dropdown-menu');
+                $element.addClass('AknDropdown-menu--alignRight');
+                $element.removeClass('AknDropdown-menu--alignLeft');
             } else {
-                $element.addClass('right-dropdown-menu');
-                $element.removeClass('left-dropdown-menu');
+                $element.addClass('AknDropdown-menu--alignLeft');
+                $element.removeClass('AknDropdown-menu--alignRight');
             }
         },
 

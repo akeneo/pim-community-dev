@@ -31,7 +31,6 @@ css:
         - bundles/pimui/css/buttons.less
         - bundles/pimui/css/accordion.less
     bem:
-#        - bundles/pimui/less/redBorder.less # Please remove this class before merge!
         - bundles/pimui/less/base/general.less
         - bundles/pimui/less/components/ActionButton.less
         - bundles/pimui/less/components/ActionButtonsList.less
@@ -57,3 +56,4 @@ css:
         - bundles/pimui/less/components/Pagination.less
         - bundles/pimui/less/components/TitleContainer.less
         - bundles/pimui/less/components/UserMenu.less
+        - bundles/pimui/less/bemFixes.less

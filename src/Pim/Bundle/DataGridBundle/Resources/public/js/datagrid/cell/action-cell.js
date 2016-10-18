@@ -75,7 +75,10 @@ define(
              */
             createLaunchers: function() {
                 return _.map(this.actions, function(action) {
-                    return action.createLauncher({ className: 'AknIconsList-item '});
+                    var launcherClass = action.launcherOptions.className;
+                    return action.createLauncher({
+                        className: (undefined !== launcherClass ? launcherClass : '') + ' AknIconsList-item'
+                    });
                 });
             },
 

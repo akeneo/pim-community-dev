@@ -15,6 +15,8 @@
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     z-index: 1;
 
+    &--alignLeft { }
+
     &--alignRight {
       right: 0;
       left: auto;
@@ -42,7 +44,8 @@
       background: @AknDefaultHoverBackground;
     }
 
-    &--active:not(:hover) {
+    &--active,
+    &--active:hover {
       background: @AknPurple;
       color: white;
     }

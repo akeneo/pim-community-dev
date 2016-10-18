@@ -608,7 +608,7 @@ class AssertionContext extends RawMinkContext
     {
         $this->iOpenTheNotificationPanel();
         $page = $this->getCurrentPage();
-        $selector = sprintf('#header-notification-widget .dropdown-menu li>a:contains("%s")', $message);
+        $selector = sprintf('.AknNotification-link:contains("%s")', $message);
 
         $link = $this->spin(function () use ($page, $selector) {
             return $page->find('css', $selector);
@@ -685,7 +685,7 @@ class AssertionContext extends RawMinkContext
             }
 
             if (isset($data['comment']) && '' !== $data['comment']) {
-                $commentNode = $matchingNotification->find('css', 'div.comment');
+                $commentNode = $matchingNotification->find('css', '.AknNotification-comment');
 
                 if (!$commentNode) {
                     throw $this->createExpectationException(
