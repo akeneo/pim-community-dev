@@ -14,7 +14,6 @@ namespace Akeneo\ActivityManager\Component\Processor;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -29,7 +28,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class Processor extends AbstractProcessor
+class ProjectGenerationProcessor extends AbstractProcessor
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -115,8 +114,7 @@ class Processor extends AbstractProcessor
      */
     private function initSecurityContext(StepExecution $stepExecution)
     {
-//        $username = $stepExecution->getJobExecution()->getUser();
-        $username = 'admin';
+        $username = $stepExecution->getJobExecution()->getUser();
         $user = $this->userManager->findUserByUsername($username);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
@@ -164,7 +162,7 @@ class Processor extends AbstractProcessor
             return null;
         }
 
-        $categories = $product->getCategories(); //detach categories
+        $categories = $product->getCategories();
 
         $productUserGroups = [];
         foreach ($categories as $category) {
@@ -178,7 +176,6 @@ class Processor extends AbstractProcessor
 
         $attributeUserGroups = [];
         $attributesRequirement = $product->getFamily()->getAttributeRequirements();
-        /** @var AttributeRequirement $attribute */
         foreach ($attributesRequirement as $attributeRequirement) {
             $attribute = $attributeRequirement->getAttribute();
             if ($this->isAttributeEditable($product, $attribute->getCode())
@@ -213,8 +210,6 @@ class Processor extends AbstractProcessor
                 }
             }
         }
-
-//        echo memory_get_usage()/1024/1024 . "\n";
 
         return $results;
     }

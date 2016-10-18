@@ -49,7 +49,7 @@ class ProjectSpec extends ObjectBehavior
         $this->getDatagridViews()->toArray()->shouldReturn([$datagridView]);
     }
 
-    function it_has_a_user_group(Group $group, Group $otherGroup)
+    function it_has_a_unique_user_group(Group $group, Group $otherGroup)
     {
         $this->addUserGroup($group)->shouldReturn(null);
         $this->addUserGroup($otherGroup)->shouldReturn(null);

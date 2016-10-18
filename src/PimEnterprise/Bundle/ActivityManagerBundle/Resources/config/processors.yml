@@ -1,6 +1,6 @@
 services:
-    activity_manager_processor:
-        class: 'Akeneo\ActivityManager\Component\Processor\Processor'
+    activity_manager.project_generation.processor:
+        class: 'Akeneo\ActivityManager\Component\Processor\ProjectGenerationProcessor'
         arguments:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@security.token_storage'

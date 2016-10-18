@@ -1,5 +1,5 @@
 services:
-    activity_manager_writer:
+    activity_manager.project.writer:
         class: 'Akeneo\ActivityManager\Component\Writer\Writer'
         arguments:
             - '@activity_manager.project.repository'

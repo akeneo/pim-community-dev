@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\Collection;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class JobParameters implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
+class Parameters implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
 {
 
     const JOB_NAME = 'project_generation';
@@ -29,9 +29,7 @@ class JobParameters implements DefaultValuesProviderInterface, ConstraintCollect
      */
     public function getDefaultValues()
     {
-        return [
-            'filters' => []
-        ];
+        return [];
     }
 
     /**

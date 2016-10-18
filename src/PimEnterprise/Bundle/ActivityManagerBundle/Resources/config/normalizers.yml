@@ -1,5 +1,5 @@
 services:
-    activity_manager.normalizer.project:
+    activity_manager.project.normalizer:
         class: 'Akeneo\ActivityManager\Component\Normalizer\ProjectNormalizer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
