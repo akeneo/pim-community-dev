@@ -12,6 +12,7 @@ cache:
     - $HOME/.composer/cache/files
 
 before_install:
+    - phpenv config-add travis.php.ini
     - if [ "$TRAVIS_PHP_VERSION" != "7.1" ]; then
         phpenv config-rm xdebug.ini;
       fi;

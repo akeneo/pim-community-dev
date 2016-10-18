@@ -352,6 +352,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iShowTheFilter($filterName)
     {
         $this->datagrid->showFilter($filterName);
+        $this->wait();
     }
 
     /**

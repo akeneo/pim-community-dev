@@ -232,8 +232,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * Merge original and new values (keep original values when they are missing in the new values)
-     * Iterate on every new attribute and then on every localized and/or scoped value to compare it
+     * Merges original and new values (keeping original ones if missing in the new ones)
+     * Iterates on every new attribute and then on every localized and/or scoped value to compare it
      * with the original values.
      *
      * Example :
@@ -257,7 +257,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      *          {
      *              "locale": "de_DE",
      *              "scope": "ecommerce",
-     *              "data": "new description fr_FR",
+     *              "data": "new description de_DE",
      *          },
      *          {
      *              "locale": "en_US",
@@ -276,7 +276,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      *          {
      *              "locale": "de_DE",
      *              "scope": "ecommerce",
-     *              "data": "new description fr_FR",
+     *              "data": "new description de_DE",
      *          },
      *          {
      *              "locale": "en_US",
