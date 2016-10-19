@@ -461,3 +461,12 @@ measures_config:
             KILOJOULE:
                 convert: [{'mul': 4.1868}]
                 symbol: kJ
+    CaseBox:
+        standard: PIECE
+        units:
+            PIECE:
+                convert: [{'mul': 1}]
+                symbol: Pc
+            DOZEN:
+                convert: [{'mul': 12}]
+                symbol: Dz
