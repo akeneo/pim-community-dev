@@ -75,21 +75,30 @@ define(
                         ajax: {
                             url: choiceUrl,
                             cache: true,
-                            data: function (term) {
+                            data: function (term, page) {
                                 return {
                                     search: term,
                                     options: {
-                                        locale: UserContext.get('catalogLocale')
+                                        limit: 20,
+                                        locale: UserContext.get('catalogLocale'),
+                                        page: page
                                     }
                                 };
                             },
-                            results: function (data) {
-                                if (!data.results) {
-                                    data = {
-                                        more: 20 === _.keys(data).length,
-                                        results: _.map(data, this.convertBackendItem)
-                                    };
+                            results: function (response) {
+                                if (response.results) {
+                                    response.more = 20 === _.keys(response.results).length;
+
+                                    return response;
                                 }
+
+                                var data = {
+                                    more: 20 === _.keys(response).length,
+                                    results: []
+                                };
+                                _.each(response, function (value) {
+                                    data.results.push(this.convertBackendItem(value));
+                                }.bind(this));
 
                                 return data;
                             }.bind(this)
