@@ -21,10 +21,11 @@ class Channel extends AbstractSimpleArrayConverter implements ArrayConverterInte
         switch ($property) {
             case 'locales':
             case 'currencies':
+            case 'conversion_units':
                 $convertedItem[$property] = implode(',', $data);
                 break;
-            case 'category':
-                $convertedItem['tree'] = $data['code'];
+            case 'category_tree':
+                $convertedItem['tree'] = (string) $data;
                 break;
             case 'labels':
                 foreach ($data as $localeCode => $label) {
