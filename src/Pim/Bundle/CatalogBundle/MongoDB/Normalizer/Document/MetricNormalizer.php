@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document;
 
-use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverterInterface;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Pim\Component\Catalog\Model\MetricInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class MetricNormalizer implements NormalizerInterface
 {
-    /** @var MeasureConverter */
+    /** @var MeasureConverterInterface */
     protected $converter;
 
     /** @var MeasureManager */
@@ -28,12 +28,12 @@ class MetricNormalizer implements NormalizerInterface
 
     /**
      * @param MongoObjectsFactory $mongoFactory
-     * @param MeasureConverter    $converter
+     * @param MeasureConverterInterface    $converter
      * @param MeasureManager      $manager
      */
     public function __construct(
         MongoObjectsFactory $mongoFactory,
-        MeasureConverter $converter,
+        MeasureConverterInterface $converter,
         MeasureManager $manager
     ) {
         $this->mongoFactory = $mongoFactory;

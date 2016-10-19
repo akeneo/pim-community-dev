@@ -24,7 +24,7 @@ class MeasureConverterSpec extends ObjectBehavior
 
     public function it_allows_to_define_the_family()
     {
-        $this->setFamily('Length')->shouldReturnAnInstanceOf('Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter');
+        $this->setFamily('Length')->shouldReturnAnInstanceOf('Akeneo\Bundle\MeasureBundle\Convert\MeasureConverterInterface');
     }
 
     public function it_throws_an_exception_if_an_unknown_family_is_set()

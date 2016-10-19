@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
-use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverterInterface;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
@@ -24,7 +24,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 class MetricBaseValuesSubscriber implements EventSubscriber
 {
     /**
-     * @var MeasureConverter
+     * @var MeasureConverterInterface
      */
     protected $converter;
 
@@ -36,10 +36,10 @@ class MetricBaseValuesSubscriber implements EventSubscriber
     /**
      * Constructor
      *
-     * @param MeasureConverter $converter the measure converter
+     * @param MeasureConverterInterface $converter the measure converter
      * @param MeasureManager   $manager   the measure manager
      */
-    public function __construct(MeasureConverter $converter, MeasureManager $manager)
+    public function __construct(MeasureConverterInterface $converter, MeasureManager $manager)
     {
         $this->converter = $converter;
         $this->manager = $manager;

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverterInterface;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
@@ -23,20 +23,20 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /** @var MeasureManager */
     protected $measureManager;
 
-    /** @var MeasureConverter */
+    /** @var MeasureConverterInterface */
     protected $measureConverter;
 
     /**
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MeasureManager           $measureManager
-     * @param MeasureConverter         $measureConverter
+     * @param MeasureConverterInterface         $measureConverter
      * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         MeasureManager $measureManager,
-        MeasureConverter $measureConverter,
+        MeasureConverterInterface $measureConverter,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
