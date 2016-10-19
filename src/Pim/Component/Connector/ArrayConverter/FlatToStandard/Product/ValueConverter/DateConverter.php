@@ -5,13 +5,13 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueCon
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 /**
- * Converts flat metric into structured one.
+ * Converts date value into structured one.
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class MetricConverter extends AbstractValueConverter
+class DateConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -29,25 +29,18 @@ class MetricConverter extends AbstractValueConverter
      */
     public function convert(array $attributeFieldInfo, $value)
     {
-        if ('' === $value) {
-            $value = null;
+        if ($value instanceof \DateTimeInterface) {
+            $data = $value->format('c');
+        } elseif ('' !== $value) {
+            $data = (string) $value;
         } else {
-            $tokens = $this->fieldSplitter->splitUnitValue($value);
-            $data = isset($tokens[0]) ? $tokens[0] : null;
-            $unit = isset($tokens[1]) ? $tokens[1] : null;
-
-            if (null !== $data) {
-                $data = !$attributeFieldInfo['attribute']->isDecimalsAllowed() && preg_match('|^\d+$|', $data) ?
-                    (int) $data : (string) $data;
-            }
-
-            $value = ['data' => $data, 'unit' => $unit];
+            $data = null;
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],
             'scope'  => $attributeFieldInfo['scope_code'],
-            'data'   => $value
+            'data'   => $data,
         ]]];
     }
 }

@@ -14,13 +14,13 @@ class VariantGroupSpec extends ObjectBehavior
     function let(
         LocaleRepositoryInterface $localeRepository,
         AttributeRepositoryInterface $attributeRepository,
-        Product $productConverter,
+        Product $productValueConverter,
         FieldsRequirementChecker $fieldChecker
     ) {
         $this->beConstructedWith(
             $localeRepository,
             $attributeRepository,
-            $productConverter,
+            $productValueConverter,
             $fieldChecker
         );
     }
@@ -28,7 +28,7 @@ class VariantGroupSpec extends ObjectBehavior
     function it_converts(
         $localeRepository,
         $attributeRepository,
-        $productConverter,
+        $productValueConverter,
         AttributeInterface $mainColorAttribute,
         AttributeInterface $tshirtStyleAttribute,
         AttributeInterface $description1Attribute,
@@ -72,7 +72,7 @@ class VariantGroupSpec extends ObjectBehavior
         $attributeRepository->getIdentifierCode('description-fr_FR-ecommerce')->willReturn($description1Attribute);
         $attributeRepository->getIdentifierCode('description-en_US-ecommerce')->willReturn($description2Attribute);
 
-        $productConverter->convert($values, ["with_required_identifier" => false])->willReturn($convertedValues);
+        $productValueConverter->convert($values)->willReturn($convertedValues);
 
         $this->convert($fields + $values)->shouldReturn([
             'labels'   => [

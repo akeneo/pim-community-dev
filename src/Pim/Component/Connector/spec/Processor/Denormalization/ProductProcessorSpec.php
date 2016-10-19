@@ -61,7 +61,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('categoriesColumn')->willReturn('categories');
         $jobParameters->get('groupsColumn')->willReturn('groups');
         $jobParameters->get('enabled')->willReturn(true);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('decimalSepara7tor')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -69,54 +69,59 @@ class ProductProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
+            'identifier' => 'tshirt',
+            'family'     => 'Summer Tshirt',
+            'values'     => [
+                'sku'         => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'tshirt'
+                    ],
                 ],
-            ],
-            'family' => 'Summer Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'Mon super beau t-shirt'
+                'name'        => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => null,
+                        'data'   => 'Mon super beau t-shirt'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => null,
+                        'data'   => 'My very awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My very awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My awesome description'
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'mobile',
+                        'data'   => 'My awesome description'
+                    ]
                 ]
             ]
         ];
 
         $filteredData = [
             'family' => 'Summer Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'Mon super beau t-shirt'
+            'values' => [
+                'name'        => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => null,
+                        'data'   => 'Mon super beau t-shirt'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => null,
+                        'data'   => 'My very awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My very awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My awesome description'
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'mobile',
+                        'data'   => 'My awesome description'
+                    ]
                 ]
             ]
         ];
@@ -160,54 +165,59 @@ class ProductProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
+            'identifier' => 'tshirt',
+            'family'     => 'Tshirt',
+            'values'     => [
+                'sku'         => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'tshirt'
+                    ],
                 ],
-            ],
-            'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'Mon super beau t-shirt'
+                'name'        => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => null,
+                        'data'   => 'Mon super beau t-shirt'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => null,
+                        'data'   => 'My awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My awesome description'
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'mobile',
+                        'data'   => 'My awesome description'
+                    ]
                 ]
             ]
         ];
 
         $preFilteredData = $filteredData = [
             'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'Mon super beau t-shirt'
+            'values' => [
+                'name'        => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => null,
+                        'data'   => 'Mon super beau t-shirt'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => null,
+                        'data'   => 'My awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My awesome description'
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'mobile',
+                        'data'   => 'My awesome description'
+                    ]
                 ]
             ]
         ];
@@ -252,54 +262,59 @@ class ProductProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
+            'identifier' => 'tshirt',
+            'family'     => 'Tshirt',
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
                 ],
-            ],
-            'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'Mon super beau t-shirt'
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'Mon super beau t-shirt'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My awesome description'
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My awesome description'
+                    ]
                 ]
             ]
         ];
 
         $filteredData = [
             'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'Mon super beau t-shirt'
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'Mon super beau t-shirt'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My awesome description'
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My awesome description'
+                    ]
                 ]
             ]
         ];
@@ -345,56 +360,61 @@ class ProductProcessorSpec extends ObjectBehavior
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
-            ],
+            'identifier' => 'tshirt',
+            'enabled' => true,
             'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'T-shirt super beau'
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My description'
-                ]
-            ],
-            'enabled' => true
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'T-shirt super beau'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My description'
+                    ]
+                ],
+            ]
         ];
 
         $filteredData = [
             'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'T-shirt super beau'
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'T-shirt super beau'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My description'
-                ]
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My description'
+                    ]
+                ],
             ],
             'enabled' => true
         ];
@@ -414,11 +434,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
-    function it_skips_a_product_when_identifier_is_empty(
-        $productRepository,
-        $stepExecution,
-        JobParameters $jobParameters
-    ) {
+    function it_skips_a_product_when_identifier_is_empty($stepExecution, JobParameters $jobParameters)
+    {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
         $jobParameters->get('familyColumn')->willReturn('family');
@@ -428,17 +445,18 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
-
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => null
-                ],
+            'identifier' => null,
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => null
+                    ],
+                ]
             ],
-            'family' => 'Tshirt',
+            'family' => 'Tshirt'
         ];
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
@@ -478,56 +496,61 @@ class ProductProcessorSpec extends ObjectBehavior
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
-            ],
+            'identifier' => 'tshirt',
             'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'T-shirt super beau'
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My description'
-                ]
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'T-shirt super beau'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My description'
+                    ]
+                ],
             ],
             'enabled' => true
         ];
 
         $filteredData = [
             'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'T-shirt super beau'
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'T-shirt super beau'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My description'
-                ]
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My description'
+                    ]
+                ],
             ],
             'enabled' => true
         ];
@@ -577,56 +600,61 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
-            ],
+            'identifier' => 'tshirt',
             'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'T-shirt super beau'
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My description'
-                ]
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'T-shirt super beau'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My description'
+                    ]
+                ],
             ],
             'enabled' => true
         ];
 
         $filteredData = [
             'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'T-shirt super beau'
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'T-shirt super beau'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My description'
-                ]
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My description'
+                    ]
+                ],
             ],
             'enabled' => true
         ];
@@ -676,54 +704,59 @@ class ProductProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(1);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
-            ],
+            'identifier' => 'tshirt',
             'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'T-shirt super beau'
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My description'
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'T-shirt super beau'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My description'
+                    ]
                 ]
             ]
         ];
 
         $filteredData = [
             'family' => 'Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'T-shirt super beau'
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'T-shirt super beau'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My description'
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My description'
+                    ]
                 ]
             ]
         ];
@@ -765,55 +798,60 @@ class ProductProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
-            ],
+            'identifier' => 'tshirt',
             'family' => 'Summer Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'Mon super beau t-shirt'
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My very awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My awesome description'
-                ]
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'Mon super beau t-shirt'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My very awesome T-shirt'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My awesome description'
+                    ]
+                ],
             ],
             'enabled' => false,
         ];
 
         $filteredData = [
             'family' => 'Summer Tshirt',
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' =>  null,
-                    'data' => 'Mon super beau t-shirt'
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'Mon super beau t-shirt'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My very awesome T-shirt'
+                    ]
                 ],
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  null,
-                    'data' => 'My very awesome T-shirt'
-                ]
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope' =>  'mobile',
-                    'data' => 'My awesome description'
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My awesome description'
+                    ]
                 ]
             ],
             'enabled' => false,
@@ -860,20 +898,24 @@ class ProductProcessorSpec extends ObjectBehavior
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
         $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope'  =>  null,
-                    'data'   => 'tshirt'
+            'identifier' => 'tshirt',
+            'family' => 'Tshirt',
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope'  =>  null,
+                        'data'   => 'tshirt'
+                    ],
                 ],
             ],
-            'family' => 'Tshirt',
             'enabled' => true
         ];
 
         $filteredData = [
             'family' => 'Tshirt',
-            'enabled' => true
+            'enabled' => true,
+            'values' => [],
         ];
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);

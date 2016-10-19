@@ -32,13 +32,13 @@ class VariantGroup implements ArrayConverterInterface
     /**
      * @param LocaleRepositoryInterface    $localeRepository
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param Product                      $productConverter
+     * @param ArrayConverterInterface      $productConverter
      * @param FieldsRequirementChecker     $fieldChecker
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         AttributeRepositoryInterface $attributeRepository,
-        Product $productConverter,
+        ArrayConverterInterface $productConverter,
         FieldsRequirementChecker $fieldChecker
     ) {
         $this->localeRepository = $localeRepository;
@@ -103,10 +103,7 @@ class VariantGroup implements ArrayConverterInterface
         }
 
         if (isset($convertedItem['values'])) {
-            $convertedItem['values'] = $this->productConverter->convert(
-                $convertedItem['values'],
-                ['with_required_identifier' => false]
-            );
+            $convertedItem['values'] = $this->productConverter->convert($convertedItem['values']);
             unset($convertedItem['values']['enabled']);
         }
 

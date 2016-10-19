@@ -5,13 +5,13 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueCon
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 /**
- * Converts scalar value into structured one.
+ * Converts number value into structured one.
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ScalarConverter extends AbstractValueConverter
+class NumberConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -29,10 +29,12 @@ class ScalarConverter extends AbstractValueConverter
      */
     public function convert(array $attributeFieldInfo, $value)
     {
-        if ('' !== $value) {
-            $data = $value;
-        } else {
+        if ('' === $value) {
             $data = null;
+        } elseif (!$attributeFieldInfo['attribute']->isDecimalsAllowed() && preg_match('|^\d+$|', $value)) {
+            $data = (int) $value;
+        } else {
+            $data = $value;
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[

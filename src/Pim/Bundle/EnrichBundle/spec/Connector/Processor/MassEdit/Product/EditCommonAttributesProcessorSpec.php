@@ -129,11 +129,13 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productRepository->hasAttributeInVariantGroup(10, 'number')->shouldBeCalled()->willReturn(false);
 
         $productUpdater->update($product, [
-            'number' => [
-                [
-                    'scope' => null,
-                    'locale' => null,
-                    'data' => '2.5'
+            'values' => [
+                'number' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => '2.5'
+                    ]
                 ]
             ]
         ])->shouldBeCalled();
@@ -181,11 +183,13 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productRepository->hasAttributeInVariantGroup(10, 'categories')->shouldBeCalled()->willReturn(false);
 
         $productUpdater->update($product, [
-            'categories' => [
-                [
-                    'scope' => null,
-                    'locale' => null,
-                    'data' => ['office', 'bedroom']
+            'values' => [
+                'categories' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => ['office', 'bedroom']
+                    ]
                 ]
             ]
         ])->shouldBeCalled();

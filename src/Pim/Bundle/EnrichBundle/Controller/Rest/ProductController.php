@@ -352,10 +352,7 @@ class ProductController
             'locale' => $this->userContext->getUiLocale()->getCode()
         ]);
 
-        $values = $this->emptyValuesFilter->filter($product, $values);
-
-        unset($data['values']);
-        $data = array_replace($data, $values);
+        $data = array_replace($data, $this->emptyValuesFilter->filter($product, ['values' => $values]));
 
         $this->productUpdater->update($product, $data);
     }

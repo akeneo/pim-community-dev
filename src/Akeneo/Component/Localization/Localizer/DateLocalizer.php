@@ -67,25 +67,24 @@ class DateLocalizer implements LocalizerInterface
     public function delocalize($date, array $options = [])
     {
         if (null === $date || '' === $date) {
-            return $date;
+            return null;
         }
 
         $options = $this->getOptions($options);
         $formatter = $this->factory->create($options);
         $formatter->setLenient(false);
 
-        if ($date instanceof \DateTime) {
-            $timestamp = $date->getTimestamp();
-        } else {
+        if (!$date instanceof \DateTime) {
             $timestamp = $formatter->parse($date);
             if (false === $timestamp) {
                 return $date;
             }
+
+            $date = new \DateTime();
+            $date->setTimestamp($timestamp);
         }
 
-        $formatter->setPattern(static::DEFAULT_DATE_FORMAT);
-
-        return $formatter->format($timestamp);
+        return $date->format('c');
     }
 
     /**
@@ -94,7 +93,7 @@ class DateLocalizer implements LocalizerInterface
     public function localize($date, array $options = [])
     {
         if (null === $date || '' === $date) {
-            return $date;
+            return null;
         }
 
         $options = $this->getOptions($options);

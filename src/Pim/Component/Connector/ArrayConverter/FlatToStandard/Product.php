@@ -2,21 +2,24 @@
 
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  * Convert a Product from Flat to Standard structure.
- * This conversion does not result in the standard format, as the values are not delocalized here.
+ *
+ * This conversion does not result in the standard format. The structure is respected but data are not.
+ * Firstly, the data is not delocalized here.
+ * Then numeric attributes (metric, price, number) which may contain decimals, are not converted to string but remain float,
+ * to be compatible with XLSX files and localization.
  *
  * To get a real standardized from the flat format, please
  * see {@link \Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductDelocalized }
@@ -27,12 +30,6 @@ use Pim\Component\Connector\Exception\StructureArrayConversionException;
  */
 class Product implements ArrayConverterInterface
 {
-    /** @var ValueConverterRegistryInterface */
-    protected $converterRegistry;
-
-    /** @var AttributeColumnInfoExtractor */
-    protected $attrFieldExtractor;
-
     /** @var AttributeColumnsResolver */
     protected $attrColumnsResolver;
 
@@ -54,28 +51,32 @@ class Product implements ArrayConverterInterface
     /** @var array */
     protected $optionalAssocFields;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var ArrayConverterInterface */
+    protected $productValueConverter;
+
     /**
-     * @param AttributeColumnInfoExtractor    $attrFieldExtractor
-     * @param ValueConverterRegistryInterface $converterRegistry
      * @param AssociationColumnsResolver      $assocColumnsResolver
      * @param AttributeColumnsResolver        $attrColumnsResolver
      * @param FieldConverter                  $fieldConverter
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
      * @param FieldsRequirementChecker        $fieldChecker
+     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param ArrayConverterInterface         $productValueConverter
      */
     public function __construct(
-        AttributeColumnInfoExtractor $attrFieldExtractor,
-        ValueConverterRegistryInterface $converterRegistry,
         AssociationColumnsResolver $assocColumnsResolver,
         AttributeColumnsResolver $attrColumnsResolver,
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
-        FieldsRequirementChecker $fieldChecker
+        FieldsRequirementChecker $fieldChecker,
+        AttributeRepositoryInterface $attributeRepository,
+        ArrayConverterInterface $productValueConverter
     ) {
-        $this->attrFieldExtractor = $attrFieldExtractor;
-        $this->converterRegistry = $converterRegistry;
         $this->assocColumnsResolver = $assocColumnsResolver;
         $this->attrColumnsResolver = $attrColumnsResolver;
         $this->fieldConverter = $fieldConverter;
@@ -83,6 +84,8 @@ class Product implements ArrayConverterInterface
         $this->columnsMapper = $columnsMapper;
         $this->fieldChecker = $fieldChecker;
         $this->optionalAssocFields = [];
+        $this->attributeRepository = $attributeRepository;
+        $this->productValueConverter = $productValueConverter;
     }
 
     /**
@@ -106,60 +109,63 @@ class Product implements ArrayConverterInterface
      *
      * After:
      * {
-     *      "sku": [{
-     *          "locale": null,
-     *          "scope":  null,
-     *          "data":  "MySku",
-     *      }],
-     *      "name": [{
-     *          "locale": "fr_FR",
-     *          "scope":  null,
-     *          "data":  "T-shirt super beau",
-     *      }],
-     *      "description": [
-     *           {
-     *               "locale": "en_US",
-     *               "scope":  "mobile",
-     *               "data":   "My description"
-     *           },
-     *           {
-     *               "locale": "fr_FR",
-     *               "scope":  "mobile",
-     *               "data":   "Ma description mobile"
-     *           },
-     *           {
-     *               "locale": "en_US",
-     *               "scope":  "ecommerce",
-     *               "data":   "My description for the website"
-     *           },
-     *      ],
-     *      "price": [
-     *           {
-     *               "locale": null,
-     *               "scope":  ecommerce,
-     *               "data":   [
-     *                   {"data": 10, "currency": "EUR"},
-     *                   {"data": 24, "currency": "USD"},
-     *                   {"data": 20, "currency": "CHF"}
-     *               ]
-     *           }
-     *           {
-     *               "locale": null,
-     *               "scope":  mobile,
-     *               "data":   [
-     *                   {"data": 11, "currency": "EUR"},
-     *                   {"data": 25, "currency": "USD"},
-     *                   {"data": 21, "currency": "CHF"}
-     *               ]
-     *           }
-     *      ],
-     *      "length": [{
-     *          "locale": "en_US",
-     *          "scope":  "mobile",
-     *          "data":   {"data": "10", "unit": "CENTIMETER"}
-     *      }],
+     *      "identifier": "MySku",
      *      "enabled": true,
      *      "categories": ["tshirt", "men"],
+     *      "values": {
+     *          "sku": [{
+     *              "locale": null,
+     *              "scope":  null,
+     *              "data":  "MySku",
+     *          }],
+     *          "name": [{
+     *              "locale": "fr_FR",
+     *              "scope":  null,
+     *              "data":  "T-shirt super beau",
+     *          }],
+     *          "description": [
+     *               {
+     *                   "locale": "en_US",
+     *                   "scope":  "mobile",
+     *                   "data":   "My description"
+     *               },
+     *               {
+     *                   "locale": "fr_FR",
+     *                   "scope":  "mobile",
+     *                   "data":   "Ma description mobile"
+     *               },
+     *               {
+     *                   "locale": "en_US",
+     *                   "scope":  "ecommerce",
+     *                   "data":   "My description for the website"
+     *               },
+     *          ],
+     *          "price": [
+     *               {
+     *                   "locale": null,
+     *                   "scope":  ecommerce,
+     *                   "data":   [
+     *                       {"data": 10, "currency": "EUR"},
+     *                       {"data": 24, "currency": "USD"},
+     *                       {"data": 20, "currency": "CHF"}
+     *                   ]
+     *               }
+     *               {
+     *                   "locale": null,
+     *                   "scope":  mobile,
+     *                   "data":   [
+     *                       {"data": 11, "currency": "EUR"},
+     *                       {"data": 25, "currency": "USD"},
+     *                       {"data": 21, "currency": "CHF"}
+     *                   ]
+     *               }
+     *          ],
+     *          "length": [{
+     *              "locale": "en_US",
+     *              "scope":  "mobile",
+     *              "data":   {"data": "10", "unit": "CENTIMETER"}
+     *          }],
+     *      },
      *      "associations": {
      *          "XSELL": {
      *              "groups": ["akeneo_tshirt", "oro_tshirt"],
@@ -177,7 +183,7 @@ class Product implements ArrayConverterInterface
         $this->validateItem($filteredItem, $options['with_required_identifier']);
 
         $mergedItem = $this->columnsMerger->merge($filteredItem);
-        $convertedItem = $this->convertItem($mergedItem);
+        $convertedItem = $this->convertItem($mergedItem, $options);
 
         return $convertedItem;
     }
@@ -244,51 +250,33 @@ class Product implements ArrayConverterInterface
     protected function convertItem(array $item)
     {
         $convertedItem = [];
+        $convertedValues = [];
+
         foreach ($item as $column => $value) {
             if ($this->fieldConverter->supportsColumn($column)) {
                 $value = $this->fieldConverter->convert($column, $value);
-            } else {
-                $value = $this->convertValue($column, $value);
-            }
-
-            if (!empty($value)) {
                 $convertedItem = $this->mergeValueToItem($convertedItem, $value);
+            } else {
+                $convertedValues[$column] = $value;
             }
         }
+
+        $convertedValues = $this->productValueConverter->convert($convertedValues);
+
+        if (empty($convertedValues)) {
+            throw new \LogicException('Cannot find any values. There should be at least one identifier attribute');
+        }
+
+        $convertedItem['values'] = $convertedValues;
+
+        $identifierCode = $this->attributeRepository->getIdentifierCode();
+        if (!isset($convertedItem['values'][$identifierCode])) {
+            throw new \LogicException(sprintf('Unable to find the column "%s"', $identifierCode));
+        }
+
+        $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'];
 
         return $convertedItem;
-    }
-
-    /**
-     * @param string $column
-     * @param string $value
-     *
-     * @throws \LogicException
-     *
-     * @return array
-     */
-    protected function convertValue($column, $value)
-    {
-        $attributeFieldInfo = $this->attrFieldExtractor->extractColumnInfo($column);
-
-        if (null !== $attributeFieldInfo && isset($attributeFieldInfo['attribute'])) {
-            $converter = $this->converterRegistry->getConverter($attributeFieldInfo['attribute']->getAttributeType());
-
-            if (null === $converter) {
-                throw new \LogicException(
-                    sprintf(
-                        'No converters found for attribute type "%s"',
-                        $attributeFieldInfo['attribute']->getAttributeType()
-                    )
-                );
-            }
-
-            return $converter->convert($attributeFieldInfo, $value);
-        }
-
-        throw new \LogicException(
-            sprintf('Unable to convert the given column "%s"', $column)
-        );
     }
 
     /**
@@ -301,6 +289,10 @@ class Product implements ArrayConverterInterface
      */
     protected function mergeValueToItem(array $item, array $value)
     {
+        if (empty($value)) {
+            return $item;
+        }
+
         foreach ($value as $code => $data) {
             if (array_key_exists($code, $item)) {
                 $item[$code] = array_merge_recursive($item[$code], $data);
