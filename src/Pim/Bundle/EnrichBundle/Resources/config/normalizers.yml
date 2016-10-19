@@ -76,7 +76,7 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.family:
-        parent: pim_serializer.normalizer.family
+        parent: pim_catalog.normalizer.standard.family
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
