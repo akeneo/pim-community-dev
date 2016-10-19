@@ -3,8 +3,8 @@
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductNormalizer;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
@@ -120,9 +120,9 @@ class ProductFieldsBuilder
     protected function prepareFieldsList(array $attributesList = [])
     {
         $fieldsList = $this->prepareAttributesList($attributesList);
-        $fieldsList[] = ProductNormalizer::FIELD_FAMILY;
-        $fieldsList[] = ProductNormalizer::FIELD_CATEGORY;
-        $fieldsList[] = ProductNormalizer::FIELD_GROUPS;
+        $fieldsList[] = PropertiesNormalizer::FIELD_FAMILY;
+        $fieldsList[] = PropertiesNormalizer::FIELD_CATEGORIES;
+        $fieldsList[] = PropertiesNormalizer::FIELD_GROUPS;
 
         $associationTypes = $this->assocTypeRepo->findAll();
         foreach ($associationTypes as $associationType) {

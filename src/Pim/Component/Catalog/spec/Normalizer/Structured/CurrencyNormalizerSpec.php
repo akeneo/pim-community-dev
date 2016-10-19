@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Structured;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Normalizer\Structured\CurrencyNormalizer;
-use PhpSpec\ObjectBehavior;
 
 class CurrencyNormalizerSpec extends ObjectBehavior
 {
