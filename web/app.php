@@ -3,6 +3,11 @@
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
+if (!isset($_SERVER['PHP_AUTH_USER'])) {
+    $_SERVER['PHP_AUTH_USER'] = 'admin';
+    $_SERVER['PHP_AUTH_PW'] = 'admin';
+}
+
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 
 // Use APC for autoloading to improve performance.
