@@ -143,6 +143,33 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $text
+     *
+     * @Then /^I type "([^"]*)" in the manage filter input$/
+     */
+    public function iTypeInTheManageFilterInput($text)
+    {
+        $this->datagrid->typeInManageFilterInput($text);
+    }
+
+
+    /**
+     * @param string $title
+     *
+     * @Then /^I could see "([^"]*)" in the manage filters list$/
+     */
+    public function iCouldSeeInTheManageFiltersList($title)
+    {
+        $filterElement = $this->datagrid->getElement('Manage filters')->find('css', sprintf('input[title="%s"]', $title));
+
+        if ($filterElement == null || !$filterElement->isVisible()) {
+            throw $this->createExpectationException(
+                sprintf('Expecting "%s" to be displayed in the filters list', $title)
+            );
+        }
+    }
+
+    /**
      * @param string    $code
      * @param TableNode $table
      *
