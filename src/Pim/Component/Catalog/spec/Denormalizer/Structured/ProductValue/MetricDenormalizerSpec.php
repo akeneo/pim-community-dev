@@ -61,7 +61,7 @@ class MetricDenormalizerSpec extends ObjectBehavior
         $this
             ->denormalize(
                 [
-                    'data' => 3.5,
+                    'amount' => 3.5,
                     'unit' => 'GIGAHERTZ'
                 ],
                 'pim_catalog_metric',
@@ -93,7 +93,7 @@ class MetricDenormalizerSpec extends ObjectBehavior
         $this
             ->denormalize(
                 [
-                    'data' => 3.5,
+                    'amount' => 3.5,
                     'unit' => 'GIGAHERTZ'
                 ],
                 'pim_catalog_metric',

@@ -39,7 +39,7 @@ class MetricComparator implements ComparatorInterface
     {
         $default = ['locale' => null, 'scope' => null, 'data' => [
             'amount' => null,
-            'unit' => null,
+            'unit'   => null,
         ]];
         $originals = array_merge($default, $originals);
 

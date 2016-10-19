@@ -61,7 +61,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         $product->getValue('price', 'fr_FR', 'mobile')->willReturn($priceValue);
         $priceValue->getPrices()->willReturn([$price]);
 
-        $data = [['data' => 123.2, 'currency' => 'EUR']];
+        $data = [['amount' => 123.2, 'currency' => 'EUR']];
         $this->addAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
@@ -107,7 +107,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
-                'data',
+                'amount',
                 'adder',
                 'prices collection',
                 print_r($data, true)
@@ -121,12 +121,12 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = [['data' => 'non numeric value', 'currency' => 'EUR']];
+        $data = [['amount' => 'non numeric value', 'currency' => 'EUR']];
 
         $this->shouldThrow(
             InvalidArgumentException::arrayNumericKeyExpected(
                 'attributeCode',
-                'data',
+                'amount',
                 'adder',
                 'prices collection',
                 gettype('text')
@@ -140,7 +140,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = [['data' => 123, 'not the currency key' => 'euro']];
+        $data = [['amount' => 123, 'not the currency key' => 'euro']];
 
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected(
@@ -162,7 +162,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
-        $data = [['data' => 123, 'currency' => 'invalid currency']];
+        $data = [['amount' => 123, 'currency' => 'invalid currency']];
 
         $this->shouldThrow(
             InvalidArgumentException::arrayInvalidKey(
@@ -187,7 +187,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = [['data' => 123.2, 'currency' => 'EUR']];
+        $data = [['amount' => 123.2, 'currency' => 'EUR']];
 
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 

@@ -122,7 +122,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
                     'amount',
                     'adder',
                     'prices collection',
-                    gettype($price['data'])
+                    gettype($price['amount'])
                 );
             }
 
