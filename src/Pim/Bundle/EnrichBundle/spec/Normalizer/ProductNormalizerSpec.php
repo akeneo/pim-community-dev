@@ -83,7 +83,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'date'   => ['data' => '31/01/2015', 'locale' => null, 'scope' => null],
         ];
 
-        $productNormalizer->normalize($mug, 'json', $options)->willReturn($productNormalized);
+        $productNormalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
 
         $mug->getId()->willReturn(12);

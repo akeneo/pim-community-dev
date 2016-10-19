@@ -30,7 +30,7 @@ class CurrencyNormalizerSpec extends ObjectBehavior
         $currency->getCode()->willReturn('EUR');
         $currency->isActivated()->willReturn(true);
 
-        $this->normalize($currency, 'json')->shouldReturn([
+        $this->normalize($currency, 'standard')->shouldReturn([
             'code'    => 'EUR',
             'enabled' => true,
         ]);

@@ -29,7 +29,7 @@ class FileNormalizerSpec extends ObjectBehavior
     function it_supports_files_and_internal_api(FileInfoInterface $fileInfo)
     {
         $this->supportsNormalization($fileInfo, 'internal_api')->shouldReturn(true);
-        $this->supportsNormalization($fileInfo, 'json')->shouldReturn(false);
+        $this->supportsNormalization($fileInfo, 'standard')->shouldReturn(false);
         $this->supportsNormalization(new \StdClass(), 'internal_api')->shouldReturn(false);
     }
 }

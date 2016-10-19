@@ -47,7 +47,7 @@ class ChannelNormalizer implements NormalizerInterface
      */
     public function normalize($channel, $format = null, array $context = [])
     {
-        $normalizedChannel = $this->channelNormalizer->normalize($channel, 'json', $context);
+        $normalizedChannel = $this->channelNormalizer->normalize($channel, 'standard', $context);
 
         $normalizedChannel['locales'] = $this->normalizeLocales($channel->getLocales());
 
@@ -74,7 +74,7 @@ class ChannelNormalizer implements NormalizerInterface
         $normalizedLocales = [];
 
         foreach ($this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view') as $locale) {
-            $normalizedLocales[] = $this->localeNormalizer->normalize($locale, 'json');
+            $normalizedLocales[] = $this->localeNormalizer->normalize($locale, 'standard');
         }
 
         return $normalizedLocales;

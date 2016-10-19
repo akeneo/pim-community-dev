@@ -38,7 +38,7 @@ class DatagridViewNormalizerSpec extends ObjectBehavior
         $view->getFilters()->willReturn('i=1&p=10&s%5Bupdated%5D=1&f%5Bfamily%5D%5Bvalue%5D%5B%5D=mugs');
         $view->getOrder()->willReturn('sku,name,brand');
 
-        $this->normalize($view, 'json')->shouldReturn([
+        $this->normalize($view, 'standard')->shouldReturn([
             'id'             => 42,
             'owner_id'       => 666,
             'label'          => 'Cameras',
