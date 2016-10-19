@@ -156,7 +156,7 @@ services:
         class: '%pim_catalog.mongodb.normalizer.normalized_data.family.class%'
         public: false
         arguments:
-            - '@pim_serializer.normalizer.label_translation'
+            - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_serializer.normalizer }
 
@@ -164,7 +164,7 @@ services:
         class: '%pim_catalog.mongodb.normalizer.normalized_data.group.class%'
         public: false
         arguments:
-            - '@pim_serializer.normalizer.label_translation'
+            - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_serializer.normalizer }
 
