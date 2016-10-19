@@ -7,6 +7,7 @@
 - PIM-5978: Fix missing products in the variant group edit form
 - PIM-5893: Fix products and assets category display issue on Firefox
 - PIM-5536 : Fix search of an attribute by its code
+- #5129: Remove useless "league/flysystem-sftp" dependency, if you use "League\Flysystem\Sftp\SftpAdapter" in your own project code, please add this dependency in the composer.json of your project, cheers @mathewrapid!
 
 # 1.6.3 (2016-09-22)
 
