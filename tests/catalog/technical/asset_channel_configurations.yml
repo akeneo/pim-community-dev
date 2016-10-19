@@ -1,0 +1,12 @@
+asset_channel_configurations:
+    ecommerce:
+        configuration:
+            scale:
+                width: 500
+    tablet:
+        configuration:
+            resize:
+                width: 250
+                height: 200
+            colorspace:
+                colorspace: gray
