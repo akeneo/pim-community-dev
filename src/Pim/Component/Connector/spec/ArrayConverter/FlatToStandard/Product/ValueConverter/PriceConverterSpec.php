@@ -85,7 +85,7 @@ class PriceConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => [['data' => null, 'currency' => null]],
+            'data'   => [['amount' => null, 'currency' => null]],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
@@ -110,7 +110,7 @@ class PriceConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => [['data' => 10, 'currency' => 'EUR']],
+            'data'   => [['amount' => 10, 'currency' => 'EUR']],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
@@ -135,7 +135,7 @@ class PriceConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => [['data' => '10.50', 'currency' => 'EUR']],
+            'data'   => [['amount' => '10.50', 'currency' => 'EUR']],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
@@ -160,7 +160,7 @@ class PriceConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => [['data' => '10,55', 'currency' => 'EUR']],
+            'data'   => [['amount' => '10,55', 'currency' => 'EUR']],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);

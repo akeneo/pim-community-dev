@@ -51,11 +51,11 @@ class PricesDenormalizerSpec extends ObjectBehavior
             ->denormalize(
                 [
                     [
-                        'data' => 10,
+                        'amount'   => 10,
                         'currency' => 'EUR'
                     ],
                     [
-                        'data' => 15.45,
+                        'amount'   => 15.45,
                         'currency' => 'USD'
                     ]
                 ],
@@ -87,11 +87,11 @@ class PricesDenormalizerSpec extends ObjectBehavior
             ->denormalize(
                 [
                     [
-                        'data' => 10,
+                        'amount'   => 10,
                         'currency' => 'EUR'
                     ],
                     [
-                        'data' => 15.45,
+                        'amount'   => 15.45,
                         'currency' => 'USD'
                     ]
                 ],

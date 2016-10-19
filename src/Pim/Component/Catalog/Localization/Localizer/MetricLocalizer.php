@@ -18,7 +18,7 @@ class MetricLocalizer extends NumberLocalizer
      */
     public function validate($metric, $attributeCode, array $options = [])
     {
-        if (!isset($metric['data'])) {
+        if (!isset($metric['amount'])) {
             return null;
         }
 
@@ -30,8 +30,8 @@ class MetricLocalizer extends NumberLocalizer
      */
     public function delocalize($metric, array $options = [])
     {
-        if (isset($metric['data'])) {
-            $metric['data'] = parent::delocalize($metric['data'], $options);
+        if (isset($metric['amount'])) {
+            $metric['amount'] = parent::delocalize($metric['amount'], $options);
         }
 
         return $metric;
@@ -46,8 +46,8 @@ class MetricLocalizer extends NumberLocalizer
             return parent::localize($metric, $options);
         }
 
-        if (isset($metric['data'])) {
-            $metric['data'] = parent::localize($metric['data'], $options);
+        if (isset($metric['amount'])) {
+            $metric['amount'] = parent::localize($metric['amount'], $options);
         }
 
         return $metric;
