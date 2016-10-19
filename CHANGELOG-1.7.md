@@ -3,12 +3,13 @@
 ## Bug Fixes
 
 - #5062 Fixed unit conversion for ElectricCharge cheers @gplanchat!
-- Add Energy unit family and conversion cheers @JulienDotDev!
-- Complete Duration unit family with week, month, year and related conversions cheers @JulienDotDev!
 
 ## Functional improvements
 
 - Change the loading message by a more humanized message to share our love.
+- Add Energy measure family and conversions cheers @JulienDotDev!
+- Complete Duration measure family with week, month, year and related conversions cheers @JulienDotDev!
+- Add CaseBox measure family and conversions, cheers @gplanchat!
 
 ## Technical improvements
 
