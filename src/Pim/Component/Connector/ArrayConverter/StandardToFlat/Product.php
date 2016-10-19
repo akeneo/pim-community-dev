@@ -52,6 +52,10 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                     $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($code, $attribute);
                 }
                 break;
+            case 'identifier':
+            case 'created':
+            case 'updated':
+                break;
             default:
                 $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($property, $data);
         }
