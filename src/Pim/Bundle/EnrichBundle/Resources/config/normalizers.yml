@@ -13,6 +13,7 @@ parameters:
     pim_enrich.normalizer.channel.class:                           Pim\Bundle\EnrichBundle\Normalizer\ChannelNormalizer
     pim_enrich.normalizer.sequential_edit.class:                   Pim\Bundle\EnrichBundle\Normalizer\SequentialEditNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
+    pim_enrich.normalizer.variant_group.class:                     Pim\Bundle\EnrichBundle\Normalizer\VariantGroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
     pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
     pim_enrich.normalizer.variant_group_violation.class:           Pim\Bundle\EnrichBundle\Normalizer\VariantGroupViolationNormalizer
@@ -123,7 +124,18 @@ services:
     pim_enrich.normalizer.group:
         class: '%pim_enrich.normalizer.group.class%'
         arguments:
-            - '@pim_serializer.normalizer.group'
+            - '@pim_catalog.normalizer.standard.group'
+            - '@pim_enrich.provider.structure_version.variant_group'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_catalog.localization.localizer.converter'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.variant_group:
+        class: '%pim_enrich.normalizer.variant_group.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.variant_group'
             - '@pim_enrich.provider.structure_version.variant_group'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
