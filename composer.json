@@ -15,7 +15,8 @@
             "Pim\\Behat": "features/"
         },
         "psr-4": {
-            "Pim\\Upgrade\\": "upgrades/"
+            "Pim\\Upgrade\\": "upgrades/",
+            "Test\\Integration\\": "tests/"
         }
     },
     "require": {
