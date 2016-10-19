@@ -165,12 +165,17 @@ class AssetUpdater implements ObjectUpdaterInterface
      */
     protected function validateDateFormat($data)
     {
-        $dateValues = explode('-', $data);
+        if (null === $data) {
+            return;
+        }
 
-        if (count($dateValues) !== 3
-            || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
-            || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
-        ) {
+        try {
+            new \DateTime($data);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException(sprintf('Invalid date, "%s" given', $data), 0, $e);
+        }
+
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
             throw new \InvalidArgumentException(
                 sprintf('Asset expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
             );

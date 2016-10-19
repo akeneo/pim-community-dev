@@ -163,7 +163,7 @@ Feature: Import assets
     And I should see the text "read lines 1"
     And I should see the text "Skipped 1"
 
-  Scenario: Import asset with invalid value for field en_of_use_at
+  Scenario: Import asset with invalid value for field end_of_use_at
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
     And the following CSV file to import:

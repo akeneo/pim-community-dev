@@ -94,7 +94,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
         $productRepository->hasAttributeInVariantGroup(42, 'categories')->willReturn(false);
 
-        $productUpdater->update($product, $values)->shouldBeCalled();
+        $productUpdater->update($product, ['values' => $values])->shouldBeCalled();
 
         $this->process($product);
     }
@@ -151,7 +151,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
         $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
         $productRepository->hasAttributeInVariantGroup(42, 'categories')->willReturn(false);
-        $productUpdater->update($product, $values)->shouldBeCalled();
+        $productUpdater->update($product, ['values' => $values])->shouldBeCalled();
 
         $this->process($product);
     }

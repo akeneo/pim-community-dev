@@ -144,14 +144,11 @@ class ProductDraftProcessor extends AbstractProcessor implements
      */
     protected function getIdentifier(array $convertedItem)
     {
-        $identifierProperty = $this->repository->getIdentifierProperties();
-        if (!isset($convertedItem[$identifierProperty[0]])) {
-            throw new \InvalidArgumentException(
-                sprintf('Identifier property "%s" is expected', $identifierProperty[0])
-            );
+        if (!isset($convertedItem['identifier'])) {
+            throw new \InvalidArgumentException('Identifier is expected');
         }
 
-        return $convertedItem[$identifierProperty[0]][0]['data'];
+        return $convertedItem['identifier'];
     }
 
     /**

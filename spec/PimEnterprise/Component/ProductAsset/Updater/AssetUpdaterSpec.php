@@ -55,7 +55,7 @@ class AssetUpdaterSpec extends ObjectBehavior
     ) {
         $asset->setCode('mycode')->shouldBeCalled();
         $asset->setDescription('My awesome description')->shouldBeCalled();
-        $asset->setEndOfUseAt(new \DateTime('2018-02-01'))->shouldBeCalled();
+        $asset->setEndOfUseAt(new \DateTime('2018-02-01T00:00:00+01:00'))->shouldBeCalled();
 
         $tagRepository->findOneByIdentifier('dog')->willReturn($tag1);
         $tagRepository->findOneByIdentifier('flowers')->willReturn($tag2);
@@ -81,7 +81,7 @@ class AssetUpdaterSpec extends ObjectBehavior
             'description' => 'My awesome description',
             'tags'        => ['dog', 'flowers'],
             'categories'  => ['cat1', 'cat2'],
-            'end_of_use'  => '2018-02-01',
+            'end_of_use'  => '2018-02-01T00:00:00+01:00',
         ];
 
         $this->update($asset, $values, []);

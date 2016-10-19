@@ -82,8 +82,10 @@ class Asset implements ArrayConverterInterface
         switch ($field) {
             case 'code':
             case 'description':
-            case 'end_of_use':
                 $convertedItem[$field] = (string) $data;
+                break;
+            case 'end_of_use':
+                $convertedItem[$field] = $this->convertDate($data);
                 break;
             case 'localized':
                 $convertedItem[$field] = (bool) $data;
@@ -142,5 +144,36 @@ class Asset implements ArrayConverterInterface
                 'Localized field contains invalid data only "0" or "1" is accepted'
             );
         }
+    }
+
+    /**
+     * Return the value if it's not a date (launch an exception should not be done here).
+     * "2015-12-31" will be converted to "2015-12-31T00:00:00+01:00"
+     *
+     * These dates are wrong and will not converted:
+     * "2015/12/31"
+     * "2015-45-31"
+     * "not a date"
+     *
+     * @param mixed $date
+     *
+     * @return string|null
+     */
+    protected function convertDate($date)
+    {
+        if ('' === $date || null === $date) {
+            return null;
+        }
+
+        $datetime = \DateTime::createFromFormat('Y-m-d', $date);
+        $errors = \DateTime::getLastErrors();
+
+        if (0 === $errors['warning_count'] && 0 === $errors['error_count']) {
+            $datetime->setTime(0, 0, 0);
+
+            return $datetime->format('c');
+        }
+
+        return $date;
     }
 }
