@@ -1,16 +1,16 @@
 parameters:
-    activity_manager.project_generation.connector.name: 'activity manager'
-    activity_manager.project_generation.connector.job.name: 'project_generation'
-    activity_manager.project_generation.type: 'project_generation'
+    activity_manager.project_generation.connector_name: 'activity manager'
+    activity_manager.project_generation.job_name: 'project_generation'
+    activity_manager.project_generation.job_type: 'project_generation'
 
 services:
     activity_manager.job.project_generation:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%activity_manager.project_generation.connector.job.name%'
+            - '%activity_manager.project_generation.job_name%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
                 - '@activity_manager.step.project.generation'
         tags:
-            - { name: akeneo_batch.job, connector: '%activity_manager.project_generation.connector.name%', type: '%activity_manager.project_generation.type%' }
+            - { name: akeneo_batch.job, connector: '%activity_manager.project_generation.connector_name%', type: '%activity_manager.project_generation.job_type%' }

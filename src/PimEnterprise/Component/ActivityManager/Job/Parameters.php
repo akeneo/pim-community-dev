@@ -19,9 +19,8 @@ use Symfony\Component\Validator\Constraints\Collection;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class Parameters implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
+class ProjectGenerationParameters implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
 {
-
     const JOB_NAME = 'project_generation';
 
     /**

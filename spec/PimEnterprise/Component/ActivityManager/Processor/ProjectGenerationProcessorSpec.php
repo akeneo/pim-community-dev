@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\ActivityManager\Component\Processor;
 
+use Akeneo\ActivityManager\Component\Processor\ProjectGenerationProcessor;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
@@ -42,6 +43,11 @@ class ProjectGenerationProcessorSpec extends ObjectBehavior
     }
 
     function it_is_initializable()
+    {
+        $this->shouldHaveType(ProjectGenerationProcessor::class);
+    }
+
+    function it_is_a_processor()
     {
         $this->shouldHaveType(AbstractProcessor::class);
     }

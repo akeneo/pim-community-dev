@@ -2,6 +2,6 @@ services:
     activity_manager.writer.project:
         class: 'Akeneo\ActivityManager\Component\Writer\Writer'
         arguments:
-            - '@activity_manager.project.repository'
+            - '@activity_manager.repository.project'
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.doctrine.object_detacher'

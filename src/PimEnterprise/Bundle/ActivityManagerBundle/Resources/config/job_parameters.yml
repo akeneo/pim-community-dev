@@ -1,6 +1,6 @@
 services:
     activity_manager.job.parameter:
-        class: 'Akeneo\ActivityManager\Component\Job\Parameters'
+        class: 'Akeneo\ActivityManager\Component\Job\ProjectGenerationParameters'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

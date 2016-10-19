@@ -51,7 +51,6 @@ class ProjectController extends Controller
         $violations = $this->container->get('validator')
             ->validate($project);
 
-
         if (0 === $violations->count()) {
             $this->container->get('activity_manager.saver.project')
                 ->save($project);
@@ -75,6 +74,12 @@ class ProjectController extends Controller
         return new JsonResponse($errors, 400);
     }
 
+    /**
+     * TODO: Will be reworked to add filters and maybe moved somewhere else
+     *
+     * @param Request $request
+     * @param         $id
+     */
     private function test(Request $request, $id)
     {
         $simpleJobLauncher = $this->container->get('akeneo_batch.launcher.simple_job_launcher');

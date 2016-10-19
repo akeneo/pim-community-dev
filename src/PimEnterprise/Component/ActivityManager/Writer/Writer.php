@@ -59,7 +59,6 @@ class Writer implements ItemWriterInterface, StepExecutionAwareInterface
      */
     public function write(array $items)
     {
-
         $parameters = $this->stepExecution->getJobParameters();
         $projectId = $parameters->get('project_id');
 
@@ -77,6 +76,14 @@ class Writer implements ItemWriterInterface, StepExecutionAwareInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
+    /**
      * @param int $id
      *
      * @return ProjectInterface
@@ -91,13 +98,5 @@ class Writer implements ItemWriterInterface, StepExecutionAwareInterface
         }
 
         return $project;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
     }
 }
