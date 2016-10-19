@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
 
 class PriceNormalizerSpec extends ObjectBehavior
 {
@@ -210,12 +209,12 @@ class PriceNormalizerSpec extends ObjectBehavior
 
         $this->normalize($standardPriceProductValue, 'flat', [])->shouldReturn(
             [
-                'a_price-GB-ecommerce-fr_FR'  => '25.30',
-                'a_price-EUR-ecommerce-fr_FR' => '10.00',
-                'a_price-GB-mobile-en_US'     => '25.30',
-                'a_price-EUR-mobile-en_US'    => '12.30',
-                'a_price-GB-ecommerce-en_US'  => '25.30',
-                'a_price-EUR-ecommerce-en_US' => '12.30',
+                'a_price-GB-fr_FR-ecommerce'  => '25.30',
+                'a_price-EUR-fr_FR-ecommerce' => '10.00',
+                'a_price-GB-en_US-mobile'     => '25.30',
+                'a_price-EUR-en_US-mobile'    => '12.30',
+                'a_price-GB-en_US-ecommerce'  => '25.30',
+                'a_price-EUR-en_US-ecommerce' => '12.30',
             ]
         );
     }
