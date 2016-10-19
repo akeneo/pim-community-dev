@@ -45,6 +45,7 @@ css:
         - bundles/pimui/less/components/DropdownButton.less
         - bundles/pimui/less/components/FilterBox.less
         - bundles/pimui/less/components/FilterChoice.less
+        - bundles/pimui/less/components/FilterDate.less
         - bundles/pimui/less/components/Grid.less
         - bundles/pimui/less/components/GridToolbar.less
         - bundles/pimui/less/components/Header.less

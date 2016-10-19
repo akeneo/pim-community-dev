@@ -202,7 +202,6 @@ function($, _, __, app, TextFilter, initSelect2) {
         _onClickChoiceValue: function(e) {
             var dropdown = $(e.currentTarget).closest('.AknDropdown');
 
-            // TODO Use -menuLink or -menuItem
             dropdown.find('li').each(function() {
                 $(this).removeClass('active');
             });

@@ -55,7 +55,7 @@ class ContextSwitcherDecorator extends ElementDecorator
             return $this->find('css', $this->selectors['Locales dropdown']);
         }, 'Could not find locale switcher');
 
-        $selectedLocale = $this->spin(function () use ($dropdown, $localeCode) {
+        $this->spin(function () use ($dropdown, $localeCode) {
             return $dropdown->find('css', sprintf('.AknDropdown-menuLink--active[href*="%s"]', $localeCode));
         }, sprintf(
             'Locale is expected to be "%s", actually is "%s".',

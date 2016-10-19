@@ -22,7 +22,7 @@
       left: auto;
     }
 
-    // TODO Remove this
+    // TODO Remove this input too when dropdown classes will be dropped
     input[type='search'] {
       padding: 4px;
       border: 1px solid @AknBorderColor;
@@ -51,8 +51,8 @@
     }
   }
 
+  // TODO Due to JS dropdown, we have to change it directly in the jQuery code.
   &.open &-menu {
-    // TODO Due to JS dropdown, find where this is declared to replace it by BEM class --isOpen.
     display: block;
   }
 }
