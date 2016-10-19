@@ -36,7 +36,7 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
             'body'         => $comment->getBody(),
             'created'      => $this->serializer->normalize($comment->getCreatedAt(), 'standard', $context),
             'replied'      => $this->serializer->normalize($comment->getRepliedAt(), 'standard', $context),
-            'replies'      => $this->normalizeChildren($comment->getChildren(), $context),
+            'replies'      => $this->normalizeChildren($comment->getChildren()->toArray(), $context),
         ];
 
         return $data;
@@ -53,12 +53,12 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalize the children comments of the comment.
      *
-     * @param ArrayCollection $children
+     * @param array $children
      * @param array $context
      *
      * @return ArrayCollection
      */
-    protected function normalizeChildren(ArrayCollection $children, array $context = [])
+    protected function normalizeChildren(array $children, array $context = [])
     {
         $comments = [];
         foreach ($children as $child) {
