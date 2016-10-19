@@ -734,7 +734,8 @@ class Grid extends Index
      *
      * @param string $text
      */
-    public function typeInManageFilterInput($text) {
+    public function typeInManageFilterInput($text)
+    {
         $manageFilters = $this->getElement('Manage filters');
         if (!$manageFilters->isVisible()) {
             $this->clickFiltersList();
