@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Structured;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Classification\Model\CategoryInterface;
-use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
 use Prophecy\Argument;
 
 class CategoryNormalizerSpec extends ObjectBehavior

@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
-use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
 use Prophecy\Argument;
 
 class AssociationTypeNormalizerSpec extends ObjectBehavior
