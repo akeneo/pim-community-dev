@@ -61,7 +61,7 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function normalize($group, $format = null, array $context = [])
     {
-        $normalizedGroup = $this->groupNormalizer->normalize($group, 'json', $context);
+        $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
         if (isset($normalizedGroup['values'])) {
             $normalizedGroup['values'] = $this->localizedConverter->convertToLocalizedFormats(
                 $normalizedGroup['values'],

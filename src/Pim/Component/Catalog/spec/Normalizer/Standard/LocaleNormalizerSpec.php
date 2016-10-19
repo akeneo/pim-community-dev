@@ -30,7 +30,7 @@ class LocaleNormalizerSpec extends ObjectBehavior
         $locale->getCode()->willReturn('en_US');
         $locale->isActivated()->willReturn(true);
 
-        $this->normalize($locale, 'json')->shouldReturn([
+        $this->normalize($locale, 'standard')->shouldReturn([
             'code'    => 'en_US',
             'enabled' => true,
         ]);

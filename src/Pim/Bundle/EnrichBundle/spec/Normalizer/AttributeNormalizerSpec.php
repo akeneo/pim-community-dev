@@ -28,7 +28,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $filterProvider,
         AttributeInterface $price
     ) {
-        $normalizer->normalize($price, 'json', [])->willReturn(['code' => 'price']);
+        $normalizer->normalize($price, 'standard', [])->willReturn(['code' => 'price']);
         $price->getId()->willReturn(12);
         $price->isWysiwygEnabled()->willReturn(false);
         $price->getAttributeType()->willReturn('pim_catalog_text');
@@ -91,7 +91,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         AttributeInterface $attribute,
         GroupInterface $group
     ) {
-        $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'text']);
+        $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'text']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(true);
         $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
@@ -145,7 +145,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'boolean']);
+        $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'boolean']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(true);
         $attribute->getAttributeType()->willReturn('pim_catalog_boolean');
@@ -178,7 +178,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'collection']);
+        $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'collection']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(false);
         $attribute->getAttributeType()->willReturn('pim_catalog_attribute_collection');
@@ -211,7 +211,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'collection']);
+        $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'collection']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(false);
         $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
@@ -244,7 +244,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'metric']);
+        $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'metric']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(false);
         $attribute->getAttributeType()->willReturn('pim_catalog_metric');
@@ -279,14 +279,14 @@ class AttributeNormalizerSpec extends ObjectBehavior
         );
 
         $normalizer
-            ->normalize($attribute, 'json', ['include_group' => true])
+            ->normalize($attribute, 'standard', ['include_group' => true])
             ->willReturn(['code' => 'default']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(false);
         $attribute->getAttributeType()->willReturn('unknown');
         $attribute->getGroup()->willReturn($group);
         $normalizer
-            ->normalize($group, 'json', ['include_group' => true])
+            ->normalize($group, 'standard', ['include_group' => true])
             ->willReturn(['code' => 'the_group_is_normalized']);
         $group->getCode()->willReturn('the_group_code');
 

@@ -88,7 +88,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
 
-        $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
+        $normalizer->normalize($product, 'standard', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn([
                 'enabled'    => true,
                 'categories' => ['cat1', 'cat2'],
@@ -190,7 +190,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
+        $normalizer->normalize($product, 'standard', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
         $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
@@ -256,7 +256,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
+        $normalizer->normalize($product, 'standard', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
         $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
