@@ -9,19 +9,19 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Group normalizer
+ * Variant Group normalizer
  *
- * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupNormalizer implements NormalizerInterface
+class VariantGroupNormalizer implements NormalizerInterface
 {
     /** @var array */
     protected $supportedFormats = ['internal_api'];
 
     /** @var NormalizerInterface */
-    protected $groupNormalizer;
+    protected $variantGroupNormalizer;
 
     /** @var StructureVersionProviderInterface */
     protected $structureVersionProvider;
@@ -36,20 +36,20 @@ class GroupNormalizer implements NormalizerInterface
     protected $localizedConverter;
 
     /**
-     * @param NormalizerInterface               $groupNormalizer
+     * @param NormalizerInterface               $variantGroupNormalizer
      * @param StructureVersionProviderInterface $structureVersionProvider
      * @param VersionManager                    $versionManager
      * @param NormalizerInterface               $versionNormalizer
      * @param AttributeConverterInterface       $localizedConverter
      */
     public function __construct(
-        NormalizerInterface $groupNormalizer,
+        NormalizerInterface $variantGroupNormalizer,
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
         AttributeConverterInterface $localizedConverter
     ) {
-        $this->groupNormalizer = $groupNormalizer;
+        $this->variantGroupNormalizer = $variantGroupNormalizer;
         $this->structureVersionProvider = $structureVersionProvider;
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
@@ -61,7 +61,7 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function normalize($group, $format = null, array $context = [])
     {
-        $normalizedGroup = $this->groupNormalizer->normalize($group, 'json', $context);
+        $normalizedGroup = $this->variantGroupNormalizer->normalize($group, 'standard', $context);
         if (isset($normalizedGroup['values'])) {
             $normalizedGroup['values'] = $this->localizedConverter->convertToLocalizedFormats(
                 $normalizedGroup['values'],
@@ -86,9 +86,9 @@ class GroupNormalizer implements NormalizerInterface
 
         $normalizedGroup['meta'] = [
             'id'                => $group->getId(),
-            'form'              => 'pim-group-edit-form',
+            'form'              => 'pim-variant-group-edit-form',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'model_type'        => 'group',
+            'model_type'        => 'variant_group',
             'created'           => $firstVersion,
             'updated'           => $lastVersion,
         ];
@@ -101,6 +101,6 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof GroupInterface && !$data->getType()->isVariant() && in_array($format, $this->supportedFormats);
+        return $data instanceof GroupInterface && $data->getType()->isVariant() && in_array($format, $this->supportedFormats);
     }
 }
