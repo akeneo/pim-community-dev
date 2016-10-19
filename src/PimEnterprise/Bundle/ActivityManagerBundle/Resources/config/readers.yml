@@ -1,5 +1,4 @@
 services:
     activity_manager.project_generation.reader:
         class: 'Akeneo\ActivityManager\Component\Reader\Database\ProductReader'
-        arguments:
-            - '@pim_connector.reader.database.product'
+        parent: pim_connector.reader.database.product

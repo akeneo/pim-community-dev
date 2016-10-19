@@ -7,37 +7,16 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Pim\Component\Connector\Reader\Database\ProductReader as BaseProductReader;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProductReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
+class ProductReader extends BaseProductReader implements
+    ItemReaderInterface,
+    InitializableInterface,
+    StepExecutionAwareInterface
 {
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var CursorInterface */
-    protected $products;
-
-    /** @var ItemReaderInterface */
-    private $productReader;
-
-    /**
-     * @param InitializableInterface $productReader
-     */
-    public function __construct(InitializableInterface $productReader)
-    {
-        $this->productReader = $productReader;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initialize()
-    {
-        $this->productReader->initialize();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -52,13 +31,5 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         }
 
         return $product;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
     }
 }

@@ -5,6 +5,7 @@ namespace spec\Akeneo\ActivityManager\Component\Updater;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Updater\ProjectUpdater;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 
 class ProjectUpdaterSpec extends ObjectBehavior

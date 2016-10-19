@@ -11,10 +11,12 @@
 
 namespace Akeneo\ActivityManager\Component\Writer;
 
-use Akeneo\ActivityManager\Component\Model\Project;
+use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacher;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,8 +25,11 @@ use Doctrine\ORM\EntityNotFoundException;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class Writer implements ItemWriterInterface
+class Writer implements ItemWriterInterface, StepExecutionAwareInterface
 {
+    /** @var StepExecution */
+    protected $stepExecution;
+
     /** @var ProjectRepositoryInterface */
     private $projectRepository;
 
@@ -54,7 +59,11 @@ class Writer implements ItemWriterInterface
      */
     public function write(array $items)
     {
-        $project = $this->findProject(1);
+
+        $parameters = $this->stepExecution->getJobParameters();
+        $projectId = $parameters->get('project_id');
+
+        $project = $this->findProject($projectId);
         foreach ($items as $item) {
             foreach ($item as $userGroup) {
                 $project->addUserGroup($userGroup);
@@ -68,19 +77,27 @@ class Writer implements ItemWriterInterface
     }
 
     /**
-     * @param string $code
+     * @param int $id
      *
-     * @return Project
+     * @return ProjectInterface
      * @throws EntityNotFoundException
      */
-    private function findProject($code)
+    private function findProject($id)
     {
-        $project = $this->projectRepository->find(1);
+        $project = $this->projectRepository->find($id);
 
         if (null === $project) {
-            throw new EntityNotFoundException(sprintf('Could not found any project with code "%s"', $code));
+            throw new EntityNotFoundException(sprintf('Could not found any project with id "%s"', $id));
         }
 
         return $project;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }

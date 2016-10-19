@@ -153,7 +153,7 @@ class ProjectGenerationProcessor extends AbstractProcessor
      *
      * @return array
      */
-    private function getUserGroups($product):array
+    private function getUserGroups($product)
     {
         if (null === $product->getFamily() || !$this->isProductEditable($product)) {
             $this->objectDetacher->detach($product);
