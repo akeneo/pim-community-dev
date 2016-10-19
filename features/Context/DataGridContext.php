@@ -593,7 +593,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $loadingMask = $this->datagrid
             ->getElement('Grid container')
-            ->find('css', '.hash-loading-mask .loading-mask');
+            ->find('css', '.loading-mask .loading-mask');
 
         $this->spin(function () use ($loadingMask) {
             return (null === $loadingMask) || !$loadingMask->isVisible();
