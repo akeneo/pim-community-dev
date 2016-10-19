@@ -25,7 +25,7 @@ class Family extends AbstractSimpleArrayConverter implements ArrayConverterInter
                     $convertedItem[$labelKey] = $label;
                 }
                 break;
-            case 'requirements':
+            case 'attribute_requirements':
                 foreach ($data as $scopeCode => $attributes) {
                     $requirementKey = sprintf('requirements-%s', $scopeCode);
                     $convertedItem[$requirementKey] = implode(',', $attributes);

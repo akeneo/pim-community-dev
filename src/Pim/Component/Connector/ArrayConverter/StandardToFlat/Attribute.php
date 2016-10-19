@@ -41,6 +41,7 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
                 break;
             case 'options':
             case 'available_locales':
+            case 'allowed_extensions':
                 $convertedItem[$property] = implode(',', $data);
                 break;
             case in_array($property, $this->booleanFields):
