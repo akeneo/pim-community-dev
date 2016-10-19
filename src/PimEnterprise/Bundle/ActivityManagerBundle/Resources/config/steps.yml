@@ -1,10 +1,10 @@
 services:
-    activity_manager.project.generation.step:
+    activity_manager.step.project.generation:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'activity_manager'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@activity_manager.project_generation.reader'
-            - '@activity_manager.project_generation.processor'
-            - '@activity_manager.project.writer'
+            - '@activity_manager.reader.project_generation'
+            - '@activity_manager.processor.project_generation'
+            - '@activity_manager.writer.project'

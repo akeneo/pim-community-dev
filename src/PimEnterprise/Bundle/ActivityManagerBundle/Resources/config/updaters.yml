@@ -1,5 +1,5 @@
 services:
-    activity_manager.project.updater:
+    activity_manager.updater.project:
         class: 'Akeneo\ActivityManager\Component\Updater\ProjectUpdater'
         arguments:
             - '@property_accessor'

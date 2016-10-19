@@ -1,5 +1,5 @@
 services:
-    activity_manager.project_generation.processor:
+    activity_manager.processor.project_generation:
         class: 'Akeneo\ActivityManager\Component\Processor\ProjectGenerationProcessor'
         arguments:
             - '@akeneo_storage_utils.doctrine.object_detacher'

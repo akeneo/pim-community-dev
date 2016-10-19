@@ -42,10 +42,10 @@ class ProjectController extends Controller
     {
         $projectData = $request->request->get('project');
 
-        $project = $this->container->get('activity_manager.project.factory')
+        $project = $this->container->get('activity_manager.factory.project')
             ->create();
 
-        $this->container->get('activity_manager.project.updater')
+        $this->container->get('activity_manager.updater.project')
             ->update($project, $projectData);
 
         $violations = $this->container->get('validator')
@@ -58,7 +58,7 @@ class ProjectController extends Controller
 
             $this->test($request, $project->getId());
 
-            $normalizedProject = $this->container->get('activity_manager.project.normalizer')
+            $normalizedProject = $this->container->get('activity_manager.normalizer.project')
                 ->normalize($project, 'internal_api');
 
             return new JsonResponse($normalizedProject, 201);
@@ -79,12 +79,10 @@ class ProjectController extends Controller
     {
         $simpleJobLauncher = $this->container->get('akeneo_batch.launcher.simple_job_launcher');
         $jobInstanceRepo = $this->container->get('pim_import_export.repository.job_instance');
-//        $massActionDispatcher = $this->container->get('pim_datagrid.extension.mass_action.dispatcher');
 
-
-//        $params = $massActionDispatcher->getRawFilters($request);
+        // TODO: add filters
         $params['values'] = [];
-        $jobInstance = $jobInstanceRepo->findOneByIdentifier('test_query'); //TODO: to change !!!!!!
+        $jobInstance = $jobInstanceRepo->findOneByIdentifier('project_generation');
         $configuration = ['filters' => $params['values'], 'project_id' => $id];
 
         $simpleJobLauncher->launch($jobInstance, $this->getUser(), $configuration);

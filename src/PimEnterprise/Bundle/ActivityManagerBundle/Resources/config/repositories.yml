@@ -1,5 +1,5 @@
 services:
-    activity_manager.project.repository:
+    activity_manager.repository.project:
         class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository'
         arguments:
             - '@doctrine.orm.default_entity_manager'
