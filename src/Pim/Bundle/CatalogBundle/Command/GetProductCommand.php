@@ -25,7 +25,7 @@ class GetProductCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:product:get')
-            ->setDescription('Get a json normalized product')
+            ->setDescription('Get a standard normalized product')
             ->addArgument(
                 'identifier',
                 InputArgument::REQUIRED,

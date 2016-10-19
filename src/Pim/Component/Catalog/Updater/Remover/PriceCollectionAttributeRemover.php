@@ -42,11 +42,11 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * Expected data input format:
      * [
      *     {
-     *         "data": "12.0"|"12"|12|12.3|""|null,
+     *         "amount": "12.0"|12|null,
      *         "currency": "EUR"
      *     },
      *     {
-     *         "data": "12.0"|"12"|12|12.3|""|null,
+     *         "amount": "12.0"|12|null,
      *         "currency": "EUR"
      *     }
      * ]
@@ -116,10 +116,10 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 );
             }
 
-            if (!array_key_exists('data', $price)) {
+            if (!array_key_exists('amount', $price)) {
                 throw InvalidArgumentException::arrayKeyExpected(
                     $attribute->getCode(),
-                    'data',
+                    'amount',
                     'remover',
                     'prices collection',
                     print_r($data, true)
