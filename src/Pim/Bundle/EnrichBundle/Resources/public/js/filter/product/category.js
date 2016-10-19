@@ -155,14 +155,14 @@ define([
          * @param {object} channel
          */
         setDefaultValues: function (channel) {
-            if (this.getOperator() === 'IN CHILDREN' && _.isEqual(this.getValue(), [channel.category.code])) {
+            if (this.getOperator() === 'IN CHILDREN' && _.isEqual(this.getValue(), [channel.category_tree])) {
                 return;
             }
 
             this.setData({
                 field: this.getField(),
                 operator: 'IN CHILDREN',
-                value: [channel.category.code]
+                value: [channel.category_tree]
             });
         }
     });
