@@ -38,6 +38,6 @@ class FileDenormalizer extends AbstractValueDenormalizer
             return null;
         }
 
-        return $this->repository->findOneByIdentifier($data['filePath']);
+        return $this->repository->findOneByIdentifier($data);
     }
 }
