@@ -108,7 +108,7 @@ class ProjectGenerationProcessor extends AbstractProcessor
     }
 
     /**
-     * Initialize the SecurityContext from the given $stepExecution
+     * Initialize the SecurityContext from the given $stepExecution.
      *
      * @param StepExecution $stepExecution
      */

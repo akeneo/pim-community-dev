@@ -73,21 +73,21 @@ interface ProjectInterface
     public function removeDatagridView(DatagridView $datagridView);
 
     /**
-     * Add an new user group to the Project
+     * Add a new user group to the Project.
      *
      * @param Group $group
      */
     public function addUserGroup(Group $group);
 
     /**
-     * Remove a user group to the Project
+     * Remove a user group to the Project.
      *
      * @param Group $group
      */
     public function removeUserGroup(Group $group);
 
     /**
-     * Returns user groups
+     * Returns user groups.
      *
      * @return Group $group
      */

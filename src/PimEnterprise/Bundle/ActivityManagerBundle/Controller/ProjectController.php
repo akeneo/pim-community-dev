@@ -75,7 +75,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * TODO: Will be reworked to add filters and maybe moved somewhere else
+     * TODO: Will be reworked to add filters and maybe moved somewhere else.
      *
      * @param Request $request
      * @param         $id

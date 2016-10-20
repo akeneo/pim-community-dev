@@ -11,7 +11,6 @@
 
 namespace Akeneo\ActivityManager\Component\Repository;
 
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 /**

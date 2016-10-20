@@ -87,6 +87,7 @@ class Writer implements ItemWriterInterface, StepExecutionAwareInterface
      * @param int $id
      *
      * @return ProjectInterface
+     *
      * @throws EntityNotFoundException
      */
     private function findProject($id)

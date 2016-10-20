@@ -38,7 +38,7 @@ class ProjectGenerationParameters implements DefaultValuesProviderInterface, Con
     {
         return new Collection([
             'fields' => [
-            ]
+            ],
         ]);
     }
 
