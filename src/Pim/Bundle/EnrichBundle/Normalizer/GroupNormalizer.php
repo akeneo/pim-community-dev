@@ -61,7 +61,7 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function normalize($group, $format = null, array $context = [])
     {
-        $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
+        $normalizedGroup = $this->groupNormalizer->normalize($group, 'json', $context);
         if (isset($normalizedGroup['values'])) {
             $normalizedGroup['values'] = $this->localizedConverter->convertToLocalizedFormats(
                 $normalizedGroup['values'],
@@ -84,11 +84,14 @@ class GroupNormalizer implements NormalizerInterface
             $this->versionNormalizer->normalize($lastVersion, 'internal_api') :
             null;
 
+        $form = $group->getType()->isVariant() ? 'pim-variant-group-edit-form' : 'pim-group-edit-form';
+        $modelType = $group->getType()->isVariant() ? 'variant_group' : 'group';
+
         $normalizedGroup['meta'] = [
             'id'                => $group->getId(),
-            'form'              => 'pim-group-edit-form',
+            'form'              => $form,
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'model_type'        => 'group',
+            'model_type'        => $modelType,
             'created'           => $firstVersion,
             'updated'           => $lastVersion,
         ];
@@ -101,6 +104,6 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof GroupInterface && !$data->getType()->isVariant() && in_array($format, $this->supportedFormats);
+        return $data instanceof GroupInterface && in_array($format, $this->supportedFormats);
     }
 }

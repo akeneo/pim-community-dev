@@ -124,18 +124,7 @@ services:
     pim_enrich.normalizer.group:
         class: '%pim_enrich.normalizer.group.class%'
         arguments:
-            - '@pim_catalog.normalizer.standard.group'
-            - '@pim_enrich.provider.structure_version.variant_group'
-            - '@pim_versioning.manager.version'
-            - '@pim_enrich.normalizer.version'
-            - '@pim_catalog.localization.localizer.converter'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
-
-    pim_enrich.normalizer.variant_group:
-        class: '%pim_enrich.normalizer.variant_group.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.variant_group'
+            - '@pim_catalog.normalizer.standard.proxy_group'
             - '@pim_enrich.provider.structure_version.variant_group'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
