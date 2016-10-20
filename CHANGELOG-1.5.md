@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5993: Fix value display issues with simple/multi select attributes
+
 # 1.5.10 (2016-10-14)
 
 ## Bug fixes
