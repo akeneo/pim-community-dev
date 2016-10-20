@@ -19,7 +19,7 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.6.3';
+    const VERSION = '1.6.4';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Tulip Tree';
