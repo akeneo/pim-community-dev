@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-5821: Fix wording issue on asset bulk action
+- PIM-5981: Fix wording issue on asset bulk action
 - PIM-5988: Fix Product Assets controller & repository to correctly add assets by their code
 
 # 1.6.3 (2016-09-22)
