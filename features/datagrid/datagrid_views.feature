@@ -131,7 +131,8 @@ Feature: Datagrid views
     And I should see the text "Default view"
     But I should not see the text "Sneakers only"
 
-  Scenario: Successfully change grid scope
+  Scenario: Successfully change grid channel
+    Given I should see the text "Tablet"
     And I filter by "scope" with operator "" and value "Mobile"
     And I create the view:
       | new-view-label | Mobile only |
