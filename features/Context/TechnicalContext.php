@@ -26,7 +26,7 @@ class TechnicalContext extends RawMinkContext
 
         foreach ($identifiers as $identifier) {
             $product = $this->getFixturesContext()->getProduct($identifier);
-            $data    = $serializer->normalize($product, 'json');
+            $data    = $serializer->normalize($product, 'standard');
             $values  = $data['values'];
 
             foreach ($values as $attributeCode => $valuesData) {
@@ -39,7 +39,7 @@ class TechnicalContext extends RawMinkContext
                         'json',
                         ['attribute' => $attribute]
                     );
-                    $newData = $serializer->normalize($createdValue, 'json', ['entity' => 'product']);
+                    $newData = $serializer->normalize($createdValue, 'standard', ['entity' => 'product']);
                     assertSame(
                         $valueData,
                         $newData,
