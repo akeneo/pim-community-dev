@@ -181,7 +181,7 @@ define([
                     var price = _.findWhere(prices, { currency: currency.code });
 
                     if (!price) {
-                        price = { data: null, currency: currency.code };
+                        price = { amount: null, currency: currency.code };
                         prices.push(price);
                     }
 
