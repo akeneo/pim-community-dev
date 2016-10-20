@@ -52,7 +52,7 @@ Feature: Products back to the grid
   Scenario: Successfully restore the scope dropdown
     Given I filter by "sku" with operator "is equal to" and value "sneakers_1"
     And the grid should contain 1 element
-    And I should see the text "E-Commerce"
+    And I should see the text "Ecommerce"
     And I should not see the text "Mobile"
     And I click on the "sneakers_1" row
     And I should be on the product "sneakers_1" edit page
