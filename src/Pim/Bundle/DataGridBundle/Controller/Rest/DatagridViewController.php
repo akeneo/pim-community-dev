@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
@@ -55,6 +57,12 @@ class DatagridViewController
     /** @var CollectionFilterInterface */
     protected $datagridViewFilter;
 
+    /** @var ObjectUpdaterInterface */
+    protected $updater;
+
+    /** @var SimpleFactoryInterface */
+    protected $factory;
+
     /**
      * @param NormalizerInterface             $normalizer
      * @param DatagridViewRepositoryInterface $datagridViewRepo
@@ -65,6 +73,8 @@ class DatagridViewController
      * @param ValidatorInterface              $validator
      * @param TranslatorInterface             $translator
      * @param CollectionFilterInterface       $datagridViewFilter
+     * @param ObjectUpdaterInterface          $updater
+     * @param SimpleFactoryInterface          $factory
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -75,7 +85,9 @@ class DatagridViewController
         RemoverInterface $remover,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        CollectionFilterInterface $datagridViewFilter
+        CollectionFilterInterface $datagridViewFilter,
+        ObjectUpdaterInterface $updater,
+        SimpleFactoryInterface $factory
     ) {
         $this->normalizer = $normalizer;
         $this->datagridViewRepo = $datagridViewRepo;
@@ -86,6 +98,8 @@ class DatagridViewController
         $this->validator = $validator;
         $this->translator = $translator;
         $this->datagridViewFilter = $datagridViewFilter;
+        $this->updater = $updater;
+        $this->factory = $factory;
     }
 
     /**
@@ -146,7 +160,7 @@ class DatagridViewController
      * @param Request $request
      * @param string  $alias
      *
-     * @return JsonResponse
+     * @return JsonResponse|BadRequestHttpException|NotFoundHttpException
      */
     public function saveAction(Request $request, $alias)
     {
@@ -161,20 +175,18 @@ class DatagridViewController
             $datagridView = $this->datagridViewRepo->find($view['id']);
         } else {
             $creation = true;
-            $user = $this->tokenStorage->getToken()->getUser();
+            $datagridView = $this->factory->create();
 
-            $datagridView = new DatagridView();
-            $datagridView->setOwner($user);
-            $datagridView->setDatagridAlias($alias);
-            $datagridView->setLabel($view['label']);
+            $view['owner'] = $this->tokenStorage->getToken()->getUser();
+            $view['datagrid_alias'] = $alias;
         }
 
         if (null === $datagridView) {
             return new NotFoundHttpException();
         }
 
-        $datagridView->setColumns(explode(',', $view['columns']));
-        $datagridView->setFilters($view['filters']);
+        $this->updater->update($datagridView, $view);
+
         $violations = $this->validator->validate($datagridView);
 
         if ($violations->count()) {
