@@ -26,7 +26,7 @@ Feature: Import channels
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
-      code;label;currencies;locales;tree
+      code;label-en_US;currencies;locales;tree
       site;Site;USD,EUR;de_DE,en_US,fr_FR;2014_collection
       mobile;Mobile app;EUR,USD;en_US,fr_FR;2014_collection
       """
@@ -48,7 +48,7 @@ Feature: Import channels
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
-      code;label;currencies;locales;tree
+      code;label-en_US;currencies;locales;tree
       print;Print;USD;en_US;2015_collection
       """
     And the following job "csv_channel_import" configuration:
@@ -57,5 +57,5 @@ Feature: Import channels
     And I launch the import job
     And I wait for the "csv_channel_import" job to finish
     Then there should be the following channels:
-      | code  | label | currencies | locales | tree            | conversion_units |
-      | print | Print | USD        | en_US   | 2015_collection |                  |
+      | code  | label-en_US | currencies | locales | tree            | conversion_units |
+      | print | Print       | USD        | en_US   | 2015_collection |                  |

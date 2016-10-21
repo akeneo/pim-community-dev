@@ -8,9 +8,16 @@ use Pim\Component\Catalog\Model\CategoryTranslationInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
+use Prophecy\Argument;
 
 class ChannelNormalizerSpec extends ObjectBehavior
 {
+    function let(TranslationNormalizer $transNormalizer)
+    {
+        $this->beConstructedWith($transNormalizer);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Component\Catalog\Normalizer\Structured\ChannelNormalizer');
@@ -35,10 +42,10 @@ class ChannelNormalizerSpec extends ObjectBehavior
         LocaleInterface $en,
         LocaleInterface $fr,
         CategoryInterface $category,
-        CategoryTranslationInterface $translation
+        CategoryTranslationInterface $translation,
+        TranslationNormalizer $transNormalizer
     ) {
         $channel->getCode()->willReturn('ecommerce');
-        $channel->getLabel()->willReturn('Ecommerce');
         $channel->getCurrencies()->willReturn([$eur, $usd]);
         $eur->getCode()->willReturn('EUR');
         $usd->getCode()->willReturn('USD');
@@ -58,10 +65,11 @@ class ChannelNormalizerSpec extends ObjectBehavior
             ]
         );
 
+        $transNormalizer->normalize(Argument::cetera())->willReturn(['labels' => []]);
+
         $this->normalize($channel)->shouldReturn(
             [
                 'code'             => 'ecommerce',
-                'label'            => 'Ecommerce',
                 'currencies'       => ['EUR', 'USD'],
                 'locales'          => ['en_US', 'fr_FR'],
                 'category'         => [
@@ -71,7 +79,8 @@ class ChannelNormalizerSpec extends ObjectBehavior
                         'en_US' => 'label'
                     ],
                 ],
-                'conversion_units' => 'Weight: Kilogram, Size: Centimeter'
+                'conversion_units' => 'Weight: Kilogram, Size: Centimeter',
+                'labels' => [],
             ]
         );
     }

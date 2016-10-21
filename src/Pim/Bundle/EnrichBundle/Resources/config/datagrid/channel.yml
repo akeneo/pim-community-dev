@@ -45,7 +45,7 @@ datagrid:
                 code:
                     data_name: c.code
                 label:
-                    data_name: c.label
+                    data_name: channelLabel
                 category:
                     data_name: categoryLabel
             default:
@@ -59,7 +59,7 @@ datagrid:
                 label:
                     type:      string
                     label:     Label
-                    data_name: c.label
+                    data_name: translation.label
                 category:
                     type:      choice
                     label:     Category tree

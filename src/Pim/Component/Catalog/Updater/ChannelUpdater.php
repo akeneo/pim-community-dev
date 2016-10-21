@@ -46,7 +46,10 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * Expected input format :
      * {
      *     'code': 'ecommerce',
-     *     'label': 'Ecommerce',
+     *     "labels": {
+     *         "en_US": "Tablet",
+     *         "fr_FR": "Tablette"
+     *     },
      *     'locales': ['en_US'],
      *     'currencies': ['EUR', 'USD'],
      *     'tree': 'master'
@@ -92,11 +95,11 @@ class ChannelUpdater implements ObjectUpdaterInterface
             case 'currencies':
                 $this->setCurrencies($channel, $data);
                 break;
-            case 'label':
-                $channel->setLabel($data);
-                break;
             case 'conversion_units':
                 $channel->setConversionUnits($data);
+                break;
+            case 'labels':
+                $this->setLabels($channel, $data);
                 break;
         }
     }
@@ -149,5 +152,18 @@ class ChannelUpdater implements ObjectUpdaterInterface
             $locales[] = $locale;
         }
         $channel->setLocales($locales);
+    }
+
+    /**
+     * @param ChannelInterface $channel
+     * @param array            $data
+     */
+    protected function setLabels(ChannelInterface $channel, array $data)
+    {
+        foreach ($data as $localeCode => $label) {
+            $channel->setLocale($localeCode);
+            $translation = $channel->getTranslation();
+            $translation->setLabel($label);
+        }
     }
 }

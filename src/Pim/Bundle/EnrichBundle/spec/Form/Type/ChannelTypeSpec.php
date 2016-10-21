@@ -20,7 +20,8 @@ class ChannelTypeSpec extends ObjectBehavior
             $localeHelper,
             $categoryRepository,
             'Pim\Bundle\CatalogBundle\Entity\Category',
-            'Pim\Bundle\CatalogBundle\Entity\Channel'
+            'Pim\Bundle\CatalogBundle\Entity\Channel',
+            'Pim\Bundle\CatalogBundle\Entity\ChannelTranslation'
         );
     }
 

@@ -1,7 +1,6 @@
 <div class="tab-pane tab-property {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
     {% set generalProperties %}
         {{ form_row(form.code) }}
-        {{ form_row(form.label) }}
         {{ form_row(form.currencies) }}
         {{ form_row(form.locales) }}
         {{ form_row(form.category) }}
@@ -13,6 +12,7 @@
     {% endset %}
     {{ elements.tabSections({
         'pane.accordion.general_properties': generalProperties,
+        'pane.accordion.locale_values': form_row(form.label),
         'pim_enrich.channel.pick_conversion_unit': conversionOptions
     }) }}
 </div>

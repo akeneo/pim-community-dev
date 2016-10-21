@@ -8,12 +8,13 @@ Feature: Create a channel
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
     When I am on the channel creation page
-    Then I should see the Code, Default label, Currencies, Locales and Category tree fields
+    Then I should see the Code, English (United States), Currencies, Locales and Category tree fields
     And I fill in the following information:
-      | Code          | foo             |
-      | Default label | bar             |
-      | Category tree | 2014 collection |
-      | Currencies    | EUR             |
-      | Locales       | French          |
+      | Code                    | foo             |
+      | Category tree           | 2014 collection |
+      | Currencies              | EUR             |
+      | Locales                 | French          |
+      | English (United States) | Bar Bar         |
     And I press the "Save" button
     Then I should see the flash message "Channel successfully saved"
+    And I should see the text "Bar Bar"

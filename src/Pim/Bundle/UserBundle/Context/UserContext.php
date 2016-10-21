@@ -232,6 +232,20 @@ class UserContext
     }
 
     /**
+     * Returns the UI user locale code
+     *
+     * @return string
+     */
+    public function getUiLocaleCode()
+    {
+        if (null === $uiLocale = $this->getUiLocale()) {
+            throw new \LogicException('User has no locale');
+        }
+
+        return $uiLocale->getCode();
+    }
+
+    /**
      * Get authenticated user
      *
      * @return UserInterface|null

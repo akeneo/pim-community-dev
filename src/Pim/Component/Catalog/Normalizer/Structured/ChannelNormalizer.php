@@ -14,10 +14,19 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ChannelNormalizer implements NormalizerInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $supportedFormats = ['json', 'xml'];
+
+    /** @var NormalizerInterface */
+    protected $transNormalizer;
+
+    /**
+     * @param NormalizerInterface $transNormalizer
+     */
+    public function __construct(NormalizerInterface $transNormalizer)
+    {
+        $this->transNormalizer = $transNormalizer;
+    }
 
     /**
      * {@inheritdoc}
@@ -28,12 +37,11 @@ class ChannelNormalizer implements NormalizerInterface
     {
         return [
             'code'             => $object->getCode(),
-            'label'            => $this->normalizeLabel($object),
             'currencies'       => $this->normalizeCurrencies($object),
             'locales'          => $this->normalizeLocales($object),
             'category'         => $this->normalizeCategoryTree($object),
             'conversion_units' => $this->normalizeConversionUnits($object),
-        ];
+        ] + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -42,18 +50,6 @@ class ChannelNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ChannelInterface && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Normalize label property
-     *
-     * @param ChannelInterface $channel
-     *
-     * @return string
-     */
-    protected function normalizeLabel(ChannelInterface $channel)
-    {
-        return $channel->getLabel();
     }
 
     /**
