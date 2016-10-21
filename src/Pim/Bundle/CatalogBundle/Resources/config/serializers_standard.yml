@@ -163,3 +163,5 @@ services:
         class: '%pim_catalog.normalizer.standard.variant_group.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.normalizer.standard.product.product_values'
+            - '@pim_serializer.denormalizer.product_values'
