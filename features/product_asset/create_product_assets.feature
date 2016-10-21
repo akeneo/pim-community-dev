@@ -30,7 +30,7 @@ Feature: Create product assets
     Then I should be on the "new_asset" asset edit page
     And I should see the reference upload zone
     And I should see the Mobile variation upload zone
-    And I should see the Tablet variation upload zone
+    And I should see the Tablette variation upload zone
     And the locale "fr_FR" should be selected
 
   Scenario: Create a non localized asset

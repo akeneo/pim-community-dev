@@ -1,2 +1,2 @@
-code;label;locales;currencies;tree
-ecommerce;Default;en_US;USD;master
+code;label-en_US;label-de_DE;label-fr_FR;locales;currencies;tree
+ecommerce;Default;Standard;Défaut;en_US;USD;master
