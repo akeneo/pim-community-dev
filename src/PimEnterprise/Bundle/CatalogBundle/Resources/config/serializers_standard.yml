@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_catalog.normalizer.standard.attribute:
-        class: '%pimee_serializer.normalizer.standard.attribute.class%'
+        class: '%pimee_catalog.normalizer.standard.attribute.class%'
         decorates: pim_catalog.normalizer.standard.attribute
         decoration_inner_name: pim_catalog.normalizer.standard.attribute.base
         arguments:
