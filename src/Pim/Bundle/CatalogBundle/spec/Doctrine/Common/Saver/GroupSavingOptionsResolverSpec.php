@@ -17,10 +17,20 @@ class GroupSavingOptionsResolverSpec extends ObjectBehavior
     {
         $this
             ->resolveSaveOptions(
-                ['copy_values_to_products' => true, 'add_products' => [$added], 'remove_products' => [$removed]]
+                [
+                    'copy_values_to_products' => true,
+                    'add_products' => [$added],
+                    'remove_products' => [$removed],
+                    'unitary' => true,
+                ]
             )
             ->shouldReturn(
-                ['copy_values_to_products' => true, 'add_products' => [$added], 'remove_products' => [$removed]]
+                [
+                    'copy_values_to_products' => true,
+                    'add_products' => [$added],
+                    'remove_products' => [$removed],
+                    'unitary' => true,
+                ]
             )
         ;
     }
@@ -30,7 +40,7 @@ class GroupSavingOptionsResolverSpec extends ObjectBehavior
         $this
             ->resolveSaveOptions([])
             ->shouldReturn(
-                ['copy_values_to_products' => false, 'add_products' => [], 'remove_products' => []]
+                ['unitary' => true, 'copy_values_to_products' => false, 'add_products' => [], 'remove_products' => []]
             )
         ;
     }
@@ -38,11 +48,21 @@ class GroupSavingOptionsResolverSpec extends ObjectBehavior
     function it_resolves_bulk_save_options(GroupInterface $added, GroupInterface $removed)
     {
         $this
-            ->resolveSaveOptions(
-                ['copy_values_to_products' => true, 'add_products' => [$added], 'remove_products' => [$removed]]
+            ->resolveSaveAllOptions(
+                [
+                    'copy_values_to_products' => true,
+                    'add_products' => [$added],
+                    'remove_products' => [$removed],
+                    'unitary' => false,
+                ]
             )
             ->shouldReturn(
-                ['copy_values_to_products' => true, 'add_products' => [$added], 'remove_products' => [$removed]]
+                [
+                    'copy_values_to_products' => true,
+                    'add_products' => [$added],
+                    'remove_products' => [$removed],
+                    'unitary' => false,
+                ]
             )
         ;
     }
@@ -50,9 +70,9 @@ class GroupSavingOptionsResolverSpec extends ObjectBehavior
     function it_resolves_default_values_for_bulk_save_options()
     {
         $this
-            ->resolveSaveOptions([])
+            ->resolveSaveAllOptions([])
             ->shouldReturn(
-                ['copy_values_to_products' => false, 'add_products' => [], 'remove_products' => []]
+                ['unitary' => false, 'copy_values_to_products' => false, 'add_products' => [], 'remove_products' => []]
             )
         ;
     }
@@ -60,7 +80,7 @@ class GroupSavingOptionsResolverSpec extends ObjectBehavior
     function it_throws_an_exception_when_resolve_unknown_saving_option()
     {
         $this
-            ->shouldThrow(new UndefinedOptionsException('The option "fake_option" does not exist. Defined options are: "add_products", "copy_values_to_products", "remove_products".'))
+            ->shouldThrow(new UndefinedOptionsException('The option "fake_option" does not exist. Defined options are: "add_products", "copy_values_to_products", "remove_products", "unitary".'))
             ->duringResolveSaveOptions(['fake_option' => true, 'copy_values_to_products' => true]);
     }
 }

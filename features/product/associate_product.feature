@@ -180,7 +180,8 @@ Feature: Associate a product
     Given I edit the "shoelaces" product
     And I visit the "Associations" tab
     And I select the "Substitution" association
-    And I filter by "sku" with operator "Contains" and value "gr"
+    Then the grid should contain 6 elements
+    When I filter by "sku" with operator "Contains" and value "gr"
     And I press the "Show groups" button
     And I filter by "type" with operator "equals" and value "[RELATED]"
     When I edit the "gray-boots" product

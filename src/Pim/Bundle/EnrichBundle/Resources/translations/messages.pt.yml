@@ -39,10 +39,6 @@ pim_enrich:
     tab:
       property.title: Propriedades
       history.title: Histórico
-  locale:
-    tab:
-      property.title: Propriedades
-      permission.title: Permissões
   group:
     axis.help: Os eixos definem os atributos sobre os quais os produtos do grupo devem variar. Os eixos são atributos com opções, não localizáveis e sem âmbito. Eles não podem ser alterados após a criação do grupo variante.
     type:
@@ -566,10 +562,6 @@ Choose the attribute group: Escolha o grupo de atributos
 Drop an image or click here: Solte uma imagem ou clique aqui
 Automatic option sorting: Opção de ordenação automática
 save_attribute_before_manage_option: Para gerir as opções, por favor, guarde o atributo primeiro
-Please select: Por favor selecione
-Active: Ativo
-Inactive: Inativo
-Do not convert: Não converter
 Create: Criar
 Cancel: Cancelar
 Choose a family: Escolha uma família
@@ -707,7 +699,6 @@ pim_enrich.mass_edit_action:
     success_flash: Estado do(s) produto(s) foi alterado
   edit-common-attributes:
     label: Editar atributos comuns
-    description: Os atributos do produto selecionado serão editados com os seguintes dados para a linguagem escolhida.
     empty: Por favor, selecione o(s) atributo(s) que deseja editar
     success_flash: O(s) atributo(s) do(s) produto(s) foram atualizados
     message.warning: Não há nenhum atributo em comum nos produtos selecionados. Por favor, altere a sua seleção.
@@ -856,14 +847,3 @@ job_tracker:
     title: Visualizador de processos
   filter:
     started_at: Iniciado em
-pim_enrich_attribute_form:
-  code: Código
-  attributeType: Tipo de atributo
-  reference_data_name: Nome de referência de dados
-  scopable: Âmbito
-  localizable: Multilingue
-  unique: Valor único
-  availableLocales: Linguagens disponíveis
-  locale_specific: Específicas de uma linguagem
-  group: Grupo de atributos
-  useableAsGridFilter: Utilizável em grelha

@@ -45,6 +45,8 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateAttribute($attribute);
 
+        $options['unitary'] = true;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute, $options));
 
         $this->objectManager->persist($attribute);
@@ -62,6 +64,8 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         if (empty($attributes)) {
             return;
         }
+
+        $options['unitary'] = false;
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($attributes, $options));
 

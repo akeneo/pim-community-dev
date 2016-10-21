@@ -1,4 +1,55 @@
 pim_connector:
+  jobs:
+    csv_product_export:
+      title: Produkt-Export als CSV-Datei
+      export.title: Produkt export
+    csv_category_export:
+      title: Kategorie-Export als CSV-Datei
+      export.title: Kategorie export
+    csv_attribute_export:
+      title: Attribut-Export als CSV-Datei
+      export.title: Attribut export
+    csv_attribute_option_export:
+      title: Attribut-Option in CSV-Datei exportieren
+      export.title: Attribut-Option export
+    csv_association_type_export:
+      title: Verbindungstyp-Export als CSV-Datei
+      export.title: Verbindungstyp-Export
+    csv_group_export:
+      title: Gruppen-Export in CSV-Datei
+      export.title: Gruppen-Export
+    csv_variant_group_export:
+      title: Variantengruppen-Export als CSV
+      export.title: Variantengruppen-Export
+    csv_product_import:
+      title: Produkt-Export als CSV-Datei
+      validation.title: Dateivalidierung
+      import.title: Produkt import
+      import_associations.title: Produktverbindungen-Import
+    csv_category_import:
+      title: Kategorie-Import aus CSV-Datei
+      validation.title: Dateivalidierung
+      import.title: Kategorie-Import
+    csv_attribute_import:
+      title: Attribut-Import aus CSV-Datei
+      validation.title: Dateivalidierung
+      import.title: Attribut-Import
+    csv_attribute_option_import:
+      title: Attribut-Optionen aus CSV-Datei importieren
+      validation.title: Dateivalidierung
+      import.title: Attribut-Option import
+    csv_association_type_import:
+      title: Verbindungstyp-Import als CSV-Datei
+      validation.title: Dateivalidierung
+      import.title: Verbindungstyp-Import
+    csv_group_import:
+      title: Gruppen-Import aus CSV-Datei
+      validation.title: Dateivalidierung
+      import.title: Gruppen-Import
+    csv_variant_group_import:
+      title: Variantengruppen-Import als CSV
+      validation.title: Dateivalidierung
+      import.title: Variantengruppen-Import
   steps:
     dummy_reader.title: Dummy-Leser
     product_reader.title: Produktextraktion
@@ -29,82 +80,129 @@ pim_connector:
     writer.title: Entitäten-Speicher
     csv_writer.title: CSV-Schreiber
   export:
-    delimiter:
-      label: Trennzeichen
-      help: Einzelnes Zeichen, das als Feld-Trennzeichen verwendet wird
-    enclosure:
-      label: Zeichen zum Einschließen
-      help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
-    withHeader:
-      label: Mit Kopfzeile
-      help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
-    filePath:
-      label: Dateipfad
-      help: Wo die generierte Datei im Dateisystem abgelegt wird
-    channel:
-      label: Ausgabekanal
-      help: Der Ausgabekanal, den Sie exportieren möchten
-    locales:
-      label: Gebietsschemata
-    decimalSeparator:
-      label: Dezimaltrennzeichen
-      help: Wählen Sie ein Dezimaltrennzeichen
-    dateFormat:
-      label: Datumsformat
-      help: Bestimmen Sie das Format der Datumsfelder
-    header:
-      label: Header
-    families:
-      label: Produktfamilie
-      placeholder: Wählen Sie eine Produktfamilie
+    csv:
+      delimiter:
+        label: Trennzeichen
+        help: Einzelnes Zeichen, das als Feld-Trennzeichen verwendet wird
+      enclosure:
+        label: Zeichen zum Einschließen
+        help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
+      withHeader:
+        label: Mit Kopfzeile
+        help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
+      filePath:
+        label: Dateipfad
+        help: Wo die generierte Datei im Dateisystem abgelegt wird
+      decimalSeparator:
+        label: Dezimaltrennzeichen
+        help: Wählen Sie ein Dezimaltrennzeichen
+      dateFormat:
+        label: Datumsformat
+        help: Bestimmen Sie das Format der Datumsfelder
+    xlsx:
+      withHeader:
+        label: Mit Kopfzeile
+        help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
+      filePath:
+        label: Dateipfad
+        help: Wo die generierte Datei im Dateisystem abgelegt wird
+      decimalSeparator:
+        label: Dezimaltrennzeichen
+        help: Wählen Sie ein Dezimaltrennzeichen
+      dateFormat:
+        label: Datumsformat
+        help: Bestimmen Sie das Format der Datumsfelder
+    yml:
+      filePath:
+        label: Dateipfad
+        help: Wo die generierte Datei im Dateisystem abgelegt wird
   import:
-    enabled:
-      label: Produkt aktivieren
-      help: Ob importierte Produkte aktiviert werden sollen oder nicht
-    categoriesColumn:
-      label: Kategorienspalte
-      help: Name der Kategorienspalte
-    familyColumn:
-      label: Produktfamilienspalte
-      help: Name der Produktfamilienspalte
-    groupsColumn:
-      label: Gruppenspalte
-      help: Name der Gruppenspalte
-    filePath:
-      label: Datei
-      help: Die zu importierende CSV-Datei
-    yamlFilePath:
-      label: Datei
-      help: Die zu importierende YAML-Datei
-    uploadAllowed:
-      label: Datei-Upload erlauben
-      help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
-    delimiter:
-      label: Trennzeichen
-      help: Einzelnes Zeichen, von dem Felder in der CSV-Datei getrennt werden
-    enclosure:
-      label: Zeichen zum Einschließen
-      help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
-    escape:
-      label: Escape-Zeichen
-      help: Einzelnes Zeichen, das als Escape-Zeichen für Felder benutzt wird
-    circularRefsChecked:
-      label: Zirkelbezüge überprüfen
-      help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
-    realTimeVersioning:
-      label: Echtzeit Änderungsverfolgung
-      help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
-    copyValuesToProducts:
-      label: Variantengruppenwerte in Produkte kopieren
-      help: Bedeutet, dass die Produkte automatisch mit den Variantengruppenwerten aktualisiert werden. Um nur die Variantengruppe zu aktualisieren, kann diese Funktion ausgeschaltet werden
-    enabledComparison:
-      label: Werte vergleichen
-      help: Den Vergleich von originalen und importierten Werten aktivieren. Kann den Import beschleunigen, wenn die importierten Werte den originalen Werten sehr ähnlich sind
-    decimalSeparator:
-      label: Dezimaltrennzeichen
-      help: Einzelnes Zeichen, das als Dezimaltrennzeichen für Felder benutzt wird
-    dateFormat:
-      label: Datumsformat
+    csv:
+      enabled:
+        label: Produkt aktivieren
+        help: Ob importierte Produkte aktiviert werden sollen oder nicht
+      categoriesColumn:
+        label: Kategorienspalte
+        help: Name der Kategorienspalte
+      familyColumn:
+        label: Produktfamilienspalte
+        help: Name der Produktfamilienspalte
+      groupsColumn:
+        label: Gruppenspalte
+        help: Name der Gruppenspalte
+      filePath:
+        label: Datei
+        help: Die zu importierende CSV-Datei
+      uploadAllowed:
+        label: Datei-Upload erlauben
+        help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
+      delimiter:
+        label: Trennzeichen
+        help: Einzelnes Zeichen, von dem Felder in der CSV-Datei getrennt werden
+      enclosure:
+        label: Zeichen zum Einschließen
+        help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
+      escape:
+        label: Escape-Zeichen
+        help: Einzelnes Zeichen, das als Escape-Zeichen für Felder benutzt wird
+      circularRefsChecked:
+        label: Zirkelbezüge überprüfen
+        help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
+      realTimeVersioning:
+        label: Echtzeit Änderungsverfolgung
+        help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
+      copyValuesToProducts:
+        label: Variantengruppenwerte in Produkte kopieren
+        help: Bedeutet, dass die Produkte automatisch mit den Variantengruppenwerten aktualisiert werden. Um nur die Variantengruppe zu aktualisieren, kann diese Funktion ausgeschaltet werden
+      enabledComparison:
+        label: Werte vergleichen
+        help: Den Vergleich von originalen und importierten Werten aktivieren. Kann den Import beschleunigen, wenn die importierten Werte den originalen Werten sehr ähnlich sind
+      decimalSeparator:
+        label: Dezimaltrennzeichen
+        help: Einzelnes Zeichen, das als Dezimaltrennzeichen für Felder benutzt wird
+      dateFormat:
+        label: Datumsformat
+    xlsx:
+      enabled:
+        label: Produkt aktivieren
+        help: Ob importierte Produkte aktiviert werden sollen oder nicht
+      categoriesColumn:
+        label: Kategorienspalte
+        help: Name der Kategorienspalte
+      familyColumn:
+        label: Produktfamilienspalte
+        help: Name der Produktfamilienspalte
+      groupsColumn:
+        label: Gruppenspalte
+        help: Name der Gruppenspalte
+      filePath:
+        label: Datei
+      uploadAllowed:
+        label: Datei-Upload erlauben
+        help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
+      circularRefsChecked:
+        label: Zirkelbezüge überprüfen
+        help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
+      realTimeVersioning:
+        label: Echtzeit Änderungsverfolgung
+        help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
+      copyValuesToProducts:
+        label: Variantengruppenwerte in Produkte kopieren
+        help: Bedeutet, dass die Produkte automatisch mit den Variantengruppenwerten aktualisiert werden. Um nur die Variantengruppe zu aktualisieren, kann diese Funktion ausgeschaltet werden
+      enabledComparison:
+        label: Werte vergleichen
+        help: Den Vergleich von originalen und importierten Werten aktivieren. Kann den Import beschleunigen, wenn die importierten Werte den originalen Werten sehr ähnlich sind
+      decimalSeparator:
+        label: Dezimaltrennzeichen
+        help: Einzelnes Zeichen, das als Dezimaltrennzeichen für Felder benutzt wird
+      dateFormat:
+        label: Datumsformat
+    yml:
+      filePath:
+        label: Datei
+      uploadAllowed:
+        label: Datei-Upload erlauben
+        help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
 job_execution.summary:
   read: gelesen
   read_lines: gelesene Zeilen
@@ -178,6 +276,16 @@ batch_jobs:
     label: Variantengruppen-Import als CSV
     validation.label: Dateivalidierung
     import.label: Variantengruppen-Import
+  csv_channel_import:
+    validation.label: Dateivalidierung
+  csv_locale_import:
+    validation.label: Dateivalidierung
+  csv_attribute_group_import:
+    validation.label: Dateivalidierung
+  csv_currency_import:
+    validation.label: Dateivalidierung
+  csv_group_type_import:
+    validation.label: Dateivalidierung
   xlsx_category_import:
     validation.label: Dateivalidierung
     import.label: Kategorie-Import
@@ -212,3 +320,13 @@ batch_jobs:
     export.label: Exportiere Produktfamilie
   xlsx_category_export:
     export.label: Kategorie export
+  xlsx_channel_import:
+    validation.label: Dateivalidierung
+  xlsx_locale_import:
+    validation.label: Dateivalidierung
+  xlsx_attribute_group_import:
+    validation.label: Dateivalidierung
+  xlsx_currency_import:
+    validation.label: Dateivalidierung
+  xlsx_group_type_import:
+    validation.label: Dateivalidierung

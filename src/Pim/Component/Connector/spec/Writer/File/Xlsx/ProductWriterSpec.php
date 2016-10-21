@@ -37,9 +37,14 @@ class ProductWriterSpec extends ObjectBehavior
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->directory);
 
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $attributeRepository, $fileExporterPath, [
-            'pim_catalog_file', 'pim_catalog_image'
-        ]);
+        $this->beConstructedWith(
+            $arrayConverter,
+            $bufferFactory,
+            $flusher,
+            $attributeRepository,
+            $fileExporterPath,
+            ['pim_catalog_file', 'pim_catalog_image']
+        );
     }
 
     function letGo()
@@ -68,7 +73,7 @@ class ProductWriterSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'product.xlsx');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
@@ -184,6 +189,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('xlsx_product_export');
+        $jobInstance->getLabel()->willReturn('XLSX Product export');
 
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
@@ -235,13 +241,14 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
+        JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'product.xlsx');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
@@ -287,6 +294,8 @@ class ProductWriterSpec extends ObjectBehavior
         $items = [$productStandard];
 
         $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('XLSX Product export');
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
@@ -311,6 +320,7 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
+        JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
@@ -319,13 +329,15 @@ class ProductWriterSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('CSV Product export');
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
@@ -334,7 +346,10 @@ class ProductWriterSpec extends ObjectBehavior
             Argument::type('array'),
             Argument::type('string'),
             -1
-        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
+        )->willReturn([
+            $this->directory . 'XLSX_Product_export_product1.xlsx',
+            $this->directory . 'XLSX_Product_export_product2.xlsx'
+        ]);
 
         $this->initialize();
         $this->flush();
