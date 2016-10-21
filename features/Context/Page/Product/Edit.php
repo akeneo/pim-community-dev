@@ -57,7 +57,7 @@ class Edit extends ProductEditForm
                 ],
                 'Copy actions'            => ['css' => '.copy-actions'],
                 'Comment threads'         => ['css' => '.comment-threads'],
-                'Meta zone'               => ['css' => '.baseline > .meta'],
+                'Meta zone'               => ['css' => '.AknTitleContainer-metaItem'],
                 'Modal'                   => ['css' => '.modal'],
                 'Progress bar'            => ['css' => '.progress-bar'],
                 'Save'                    => ['css' => '.save'],
@@ -297,11 +297,7 @@ class Edit extends ProductEditForm
     {
         $el = $this->getElement('Status switcher');
 
-        $statusToggle = $this->spin(function () use ($el) {
-            return $el->find('css', 'a.dropdown-toggle');
-        }, 'Spining to get the status dropdown toggle to disable product on PEF');
-
-        $statusToggle->click();
+        $this->getProductSwitcherCaret()->click();
         $button = $el->find('css', 'ul a[data-status="disable"]');
         if ($button) {
             $button->click();
@@ -319,11 +315,7 @@ class Edit extends ProductEditForm
     {
         $el = $this->getElement('Status switcher');
 
-        $statusToggle = $this->spin(function () use ($el) {
-            return $el->find('css', 'a.dropdown-toggle');
-        }, "Spining to get the status dropdown toggle to enable product on PEF");
-
-        $statusToggle->click();
+        $this->getProductSwitcherCaret()->click();
         $button = $el->find('css', 'ul a[data-status="enable"]');
         if ($button) {
             $button->click();
@@ -603,8 +595,8 @@ class Edit extends ProductEditForm
     public function changeFamily($family)
     {
         $changeLink = $this->spin(function () {
-            return $this->getElement('Meta zone')->find('css', '.product-family > .change-family');
-        }, 'Cannot find ".product-family > .change-family" element');
+            return $this->getElement('Meta zone')->find('css', '.AknTitleContainer-metaItem .change-family');
+        }, 'Cannot find the Change Family button element');
 
         $changeLink->click();
 
@@ -621,8 +613,8 @@ class Edit extends ProductEditForm
         $validationButton->click();
 
         return $this->spin(function () use ($family) {
-            return $this->getElement('Meta zone')->find('css', '.product-family .product-family')->getHTML();
-        }, 'Cannot find ".product-family" element');
+            return $this->getElement('Meta zone')->find('css', '.AknTitleContainer-metaItem .product-family');
+        }, 'Cannot find Product Family element')->getHTML();
     }
 
     /**
@@ -662,15 +654,29 @@ class Edit extends ProductEditForm
     public function getSaveAndBackButton()
     {
         $submit = $this->spin(function () {
-            return $this->find('css', '.submit-form');
+            return $this->find('css', '.AknAllSelector.AknAllSelector--success');
         }, 'Submit button not found');
 
-        $submit->find('css', '.dropdown-toggle')->click();
+        $submit->find('css', '.AknAllSelector-right')->click();
 
-        $dropdownMenu = $submit->find('css', '.dropdown-menu');
+        $dropdownMenu = $submit->find('css', '.AknAllSelector-menu');
 
         return $this->spin(function () use ($dropdownMenu) {
             return $dropdownMenu->find('css', '.save-product-and-back');
         }, '"Save and back" button not found');
+    }
+
+    /**
+     * Get the caret of the product switcher to provide click
+     *
+     * @return NodeElement
+     */
+    protected function getProductSwitcherCaret()
+    {
+        $el = $this->getElement('Status switcher');
+
+        return $this->spin(function () use ($el) {
+            return $el->find('css', '.AknDropdownButton-caretContainer');
+        }, 'Unable to find the status dropdown caret to enable or disable product on PEF');
     }
 }

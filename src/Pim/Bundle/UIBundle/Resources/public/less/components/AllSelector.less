@@ -1,36 +1,73 @@
 @import '../base/variables';
 
+// TOTO Rename this AllSelector into other thing
 .AknAllSelector {
   @radius: 2px;
 
   display: flex;
   text-transform: none;
 
-  &-left {
-    height: @AknLittleButtonSize;
-    line-height: @AknLittleButtonSize;
-    background: @AknGrey;
+  &-left, &-right {
+    height: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize;
+    font-size: @AknFontSizeBig;
     color: white;
+    border: none;
+  }
+
+  &-left {
+    background: @AknGrey;
     border-top-left-radius: @radius;
     border-bottom-left-radius: @radius;
-    border: none;
     padding: 0 10px;
   }
 
   &-right {
-    height: @AknLittleButtonSize;
-    width: @AknLittleButtonSize;
-    line-height: @AknLittleButtonSize;
-    background: darken(@AknGrey, 10%);;
-    text-align: center;
-    color: white;
+    width: @AknDefaultButtonSize;
+    background: darken(@AknGrey, 10%);
     border-top-right-radius: @radius;
     border-bottom-right-radius: @radius;
-    border: none;
+    text-align: center;
     padding: 0;
   }
 
   &-menu {
+    margin-top: @AknDefaultButtonSize;
+  }
+
+  &--success &-left {
+    background-color: @AknGreen;
+    color: white;
+
+    &:hover {
+      background-color: darken(@AknGreen, 10%);
+      color: white;
+    }
+  }
+
+  &--success &-right {
+    background: darken(@AknGreen, 10%);
+  }
+
+  &--little &-left {
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--little &-right {
+    height: @AknLittleButtonSize;
+    width: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--little &-menu {
     margin-top: @AknLittleButtonSize;
+  }
+
+  &-left + *:not(&-right) {
+    border-top-right-radius: @radius;
+    border-bottom-right-radius: @radius;
   }
 }

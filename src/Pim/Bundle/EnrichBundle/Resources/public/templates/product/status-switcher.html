@@ -1,11 +1,13 @@
-<a class="btn dropdown-toggle btn-status" data-toggle="dropdown" href="#">
+<a class="AknDropdownButton-button btn-status" data-toggle="dropdown" href="#">
     <span class="product-status" data-status="<%- status ? 'enabled' : 'disabled' %>"><%- status ? _.__('pim_enrich.entity.product.btn.enabled') :  _.__('pim_enrich.entity.product.btn.disabled') %></span>
-    <i class="icon-caret-down"></i>
+    <span class="AknDropdownButton-caretContainer">
+        <i class="AknCaret AknCaret--big"></i>
+    </span>
 </a>
-<ul class="dropdown-menu pull-right">
+<ul class="AknDropdown-menu">
     <% if (status) { %>
-        <li><a data-status="disable"><%- _.__('pim_enrich.entity.product.btn.disable') %></a></li>
+        <li><a class="AknDropdown-menuLink" data-status="disable"><%- _.__('pim_enrich.entity.product.btn.disable') %></a></li>
     <% } else { %>
-        <li><a data-status="enable"><%- _.__('pim_enrich.entity.product.btn.enable') %></a></li>
+        <li><a class="AknDropdown-menuLink" data-status="enable"><%- _.__('pim_enrich.entity.product.btn.enable') %></a></li>
     <% } %>
 </ul>

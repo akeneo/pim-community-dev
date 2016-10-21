@@ -28,10 +28,11 @@ define(
         Dialog
     ) {
         return BaseForm.extend({
-            className: 'btn-group',
+            tagName: 'button',
+            className: 'AknButton AknButton--important AknButton--withIcon AknTitleContainer-rightButton delete',
             template: _.template(template),
             events: {
-                'click .delete': 'delete'
+                'click': 'delete'
             },
 
             /**

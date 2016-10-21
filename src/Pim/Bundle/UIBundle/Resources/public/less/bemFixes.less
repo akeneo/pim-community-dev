@@ -12,29 +12,6 @@
   background-image: none;
   box-shadow: none;
 }
-.edit-form > header > div {
-  display: flex;
-}
-.edit-form {
-  header {
-    .btn-group {
-      position: relative;
-      display: inline-block;
-      font-size: 0;
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-    .btn-group + .btn-group {
-      margin-left: 8px;
-    }
-    .status-switcher {
-      margin-left: 10px;
-    }
-    .title.entity-title > .btn-group {
-      margin-right: 10px;
-    }
-  }
-}
 .akeneo-text-field,
 .akeneo-datepicker-field,
 .akeneo-price-collection-field,
@@ -66,9 +43,6 @@
 }
 .AknTitleContainer.navigation.clearfix > .row {
   width: 100%;
-}
-.customer-info .pull-left .clearfix .status-enabled.pull-left {
-  margin-top: 10px;
 }
 .tab-pane .control-group,
 .tabsection-content .control-group,
@@ -105,16 +79,19 @@
 }
 .grid-view-selector {
   .select2-container {
+    border-color: #ccc;
+    border-radius: 2px;
+
     .select2-choice {
-      height: 34px;
-      line-height: 34px;
+      height: 32px;
+      line-height: 32px;
       background: #e9ebee !important;
       font-size: 14px;
 
       .select2-arrow {
-        height: 34px;
-        width: 34px;
-        line-height: 34px;
+        height: 32px;
+        width: 32px;
+        line-height: 32px;
         background: #ccd1d8;
       }
     }

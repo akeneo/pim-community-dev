@@ -1,61 +1,53 @@
 {% extends bap.layout%}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% block page_container %}
     {% block content %}
-        <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }}
-              method="post" class="unspaced">
-            <div class="AknTitleContainer navigation clearfix navbar-extra">
-                <div class="row">
-                    <div class="pull-right">
-                        <div class="pull-right">
-                            {% block navButtons %}{% endblock navButtons %}
+        <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }} method="post" class="unspaced">
 
-                            <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
-                        </div>
-                    </div>
-                    <div class="span10">
-                        {% block pageHeader %}
-                            <div class="clearfix customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %}">
-                                {% if (breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar) %}
-                                    <div class="visual">
-                                        <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/img/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
-                                    </div>
-                                {% endif %}
-                                <div class="pull-left">
-                                    <div class="clearfix">
-                                        {% block breadcrumbs %}
-                                            <div class="pull-left">
-                                                <div class="AknTitleContainer-title">
-                                                    <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
-                                                    <span class="separator">/</span>
-                                                    {% if breadcrumbs.additional is defined %}
-                                                        {% for breadcrumb in breadcrumbs.additional %}
-                                                            <a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a>
-                                                            <span class="separator">/</span>
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                    <h1 class="user-name">{{ breadcrumbs.entityTitle }}</h1>
-                                                </div>
-                                            </div>
-                                        {% endblock breadcrumbs %}
-                                    </div>
-                                    <div class="clearfix">
-                                        <ul class="inline">
-                                            {% block stats %}
-                                                {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
-                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|datetime_presenter : 'N/A' }}</li>
-                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|datetime_presenter : 'N/A' }}</li>
-                                                {% endif %}
-                                            {% endblock stats %}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endblock pageHeader %}
-                    </div>
-                </div>
-            </div>
+            {% block pageHeader %}
+                {% set buttons %}
+                    {% block navButtons %}{% endblock navButtons %}
+                    <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
+                {% endset %}
+
+                {% set meta %}
+                    <ul class="inline">
+                        {% block stats %}
+                            {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
+                                <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|datetime_presenter : 'N/A' }}</li>
+                                <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|datetime_presenter : 'N/A' }}</li>
+                            {% endif %}
+                        {% endblock stats %}
+                    </ul>
+                {% endset %}
+
+                {% set title %}
+                    {% block breadcrumbs %}
+                        <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
+                        <span class="separator">/</span>
+                        {% if breadcrumbs.additional is defined %}
+                            {% for breadcrumb in breadcrumbs.additional %}
+                                <a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a>
+                                <span class="separator">/</span>
+                            {% endfor %}
+                        {% endif %}
+                        {{ breadcrumbs.entityTitle }}
+                    {% endblock breadcrumbs %}
+                {% endset %}
+
+                {% set back %}
+                    {% block back %}{% endblock %}
+                    {% if (breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar) %}
+                        <img class="AknTitleContainer-avatar" src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/img/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
+                    {% endif %}
+                {% endset %}
+
+                {{ elements.page_header(title, buttons, [], meta, '', back) }}
+
+            {% endblock pageHeader %}
+
             <div class="layout-content">
                 {% block content_data %}
                     {{ UI.scrollData(id, data, form) }}

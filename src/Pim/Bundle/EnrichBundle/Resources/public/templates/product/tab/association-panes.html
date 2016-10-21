@@ -1,23 +1,29 @@
 <% _.each(associationTypes, function (associationType) { %>
     <div class="AknTitleContainer association-type<% if (associationType.code !== currentAssociationType) { %> AknTitleContainer--hidden<% } %>" data-association-type="<%- associationType.code %>">
-        <div class="AknTitleContainer-rightButtons pull-right">
-            <button type="button" class="target-button btn pull-right<% if ('products' === currentAssociationTarget) { %> hide<% } %>" data-association-target="products">
-                <i class="icon-random"></i>
-                <%- _.__('pim_enrich.form.product.tab.associations.info.show_products') %>
-            </button>
-            <button type="button" class="target-button btn pull-right<% if ('groups' === currentAssociationTarget) { %> hide<% } %>" data-association-target="groups">
-                <i class="icon-random"></i>
-                <%- _.__('pim_enrich.form.product.tab.associations.info.show_groups') %>
-            </button>
+        <div class="AknTitleContainer-contentContainer">
+            <div class="AknTitleContainer-mainLine">
+                <div class="AknTitleContainer-rightButtons">
+                    <button type="button" class="target-button btn pull-right<% if ('products' === currentAssociationTarget) { %> hide<% } %>" data-association-target="products">
+                        <i class="icon-random"></i>
+                        <%- _.__('pim_enrich.form.product.tab.associations.info.show_products') %>
+                    </button>
+                    <button type="button" class="target-button btn pull-right<% if ('groups' === currentAssociationTarget) { %> hide<% } %>" data-association-target="groups">
+                        <i class="icon-random"></i>
+                        <%- _.__('pim_enrich.form.product.tab.associations.info.show_groups') %>
+                    </button>
+                </div>
+                <div class="AknTitleContainer-titleContainer">
+                    <h3 class="AknTitleContainer-title">
+                        <%- associationType.labels[locale] || '[' + associationType.code + ']'  %>
+                        <span class="AknTitleContainer-subTitle">
+                            <%- _.__(
+                                'pim_enrich.form.product.tab.associations.info.number_of_associations',
+                                { productCount: associationType.productCount, groupCount: associationType.groupCount }
+                            ) %>
+                       </span>
+                    </h3>
+                </div>
+            </div>
         </div>
-        <h3 class="AknTitleContainer-title">
-            <%- associationType.labels[locale] || '[' + associationType.code + ']'  %>
-            <span class="AknTitleContainer-subTitle">
-                <%- _.__(
-                    'pim_enrich.form.product.tab.associations.info.number_of_associations',
-                    { productCount: associationType.productCount, groupCount: associationType.groupCount }
-                ) %>
-           </span>
-       </h3>
    </div>
 <% }); %>

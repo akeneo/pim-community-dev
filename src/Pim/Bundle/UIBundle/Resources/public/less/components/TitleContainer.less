@@ -1,12 +1,36 @@
 @import '../base/variables';
 
 .AknTitleContainer {
-  // TODO Remove these "!important" when ".tab-content > .active, .pill-content > .active { display: block }" will be removed
+  @avatarSize: 58px;
+
+  // TODO Remove these "!important" when ".tab-content > .active, .pull-content > .active { display: block }" will be removed
   background: lighten(@AknGrey, 30%);
-  display: flex !important;
-  justify-content: space-between;
-  align-items:  center;
   padding: 15px 20px;
+  display: flex;
+
+  &-backContainer { }
+
+  &-contentContainer {
+    flex-grow: 1;
+  }
+
+  &-mainLine {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &-metaLine {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-titleContainer {
+    display: flex;
+    flex-grow: 1;
+  }
 
   &-title {
     color: @AknPurple;
@@ -14,23 +38,70 @@
     height: @AknDefaultButtonSize;
     line-height: @AknDefaultButtonSize;
     margin: 0;
-    display: flex;
-    align-items: baseline;
+    font-weight: normal;
+    white-space: nowrap;
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
 
   &-subTitle {
-    color: @AknGrey;
+    color: @AknDefaultFontColor;
     font-size: @AknFontSizeBig;
-    margin-left: 10px;
   }
 
   &-rightButtons {
     order: 10;
+    display: flex;
+  }
+
+  &-rightButton {
+    margin-left: 10px;
   }
 
   &-titleButtons {
-    // After BEM merge, TODO Change this behavior to have right placements on the title
-    float: left;
+    margin-left: 10px;
+    display: flex;
+  }
+
+  &-meta {
+    font-size: @AknFontSizeSmall;
+    color: lighten(@AknDefaultFontColor, 15%);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-metaItem:not(:first-child):before {
+    content: ' | ';
+  }
+
+  &-state {
+    order: 10;
+  }
+
+  &-backLink {
+    min-height: @AknDefaultButtonSize;
+    width: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize;
+    background: darken(@AknLightGray, 5%);
+    height: 100%;
+    text-align: center;
+    margin-right: 10px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background: darken(@AknLightGray, 15%);
+    }
+  }
+
+  &-avatar {
+    height: @avatarSize;
+    width: @avatarSize;
     margin-right: 10px;
   }
 

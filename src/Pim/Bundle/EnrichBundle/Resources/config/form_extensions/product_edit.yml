@@ -29,7 +29,7 @@ extensions:
     pim-product-edit-form-back-to-grid:
         module: pim/form/common/back-to-grid
         parent: pim-product-edit-form
-        targetZone: title
+        targetZone: back
         aclResourceId: pim_enrich_product_index
         position: 80
         config:

@@ -10,6 +10,7 @@
   padding: 0 10px;
   border-radius: 2px;
   border: none;
+  cursor: pointer;
 
   &--withIcon {
     padding-left: 0;
@@ -32,6 +33,7 @@
     border-bottom-left-radius: 2px;
   }
 
+  // Success color
   &--success {
     background-color: @AknGreen;
     color: white;
@@ -46,6 +48,7 @@
     background: darken(@AknGreen, 10%);
   }
 
+  // Grey color
   &--grey {
     background-color: @AknGrey;
     color: white;
@@ -56,13 +59,23 @@
     }
   }
 
-  &--grey:hover &-icon {
-    background: darken(@AknGrey, 20%);
-    color: white;
-  }
-
   &--grey &-icon {
     background: darken(@AknGrey, 10%);
+  }
+
+  // Red color
+  &--important {
+    background-color: @AknRed;
+    color: white;
+
+    &:hover {
+      background: darken(@AknRed, 10%);
+      color: white;
+    }
+  }
+
+  &--important &-icon {
+    background: darken(@AknRed, 10%);
   }
 
   &--little {

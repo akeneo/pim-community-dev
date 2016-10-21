@@ -18,9 +18,13 @@ define(
     ],
     function (_, BaseForm, template, Routing, UserContext, Navigation) {
         return BaseForm.extend({
-            className: 'btn-group',
+            tagName: 'a',
+            className: 'AknTitleContainer-backLink back-link',
             template: _.template(template),
             config: {},
+            attributes: {
+                title: _.__('pim_enrich.navigation.link.back_to_grid')
+            },
 
             /**
              * {@inheritdoc}
@@ -43,16 +47,15 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.template({
-                    path: Routing.generate(
-                        this.config.backUrl,
-                        {
-                            dataLocale: UserContext.get('catalogLocale')
-                        }
-                    )
-                }));
+                this.$el.html(this.template());
+                this.$el.attr('href', Routing.generate(
+                    this.config.backUrl,
+                    {
+                        dataLocale: UserContext.get('catalogLocale')
+                    }
+                ));
 
-                Navigation.getInstance().processClicks(this.$('a'));
+                Navigation.getInstance().processClicks(this.$el);
 
                 return this;
             }

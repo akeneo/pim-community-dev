@@ -62,7 +62,9 @@
 {% macro backLink(url, title) %}
 {% spaceless %}
     {% set title = title|default('btn.to grid') %}
-    <a class="btn icons-holder back-link" href="{{ url }}" title="{{ title|trans|capitalize }}"><i class="icon-chevron-left"></i></a>
+    <a class="AknTitleContainer-backLink back-link" title="{{ title|trans|capitalize }}" href="{{ url }}">
+        <i class="icon-chevron-left"></i>
+    </a>
 {% endspaceless %}
 {% endmacro %}
 
@@ -94,31 +96,44 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro page_header(title, buttons, subtitle, left, right, titleButtons) %}
-    <div class="AknTitleContainer navigation">
-        <div>
-            {% if titleButtons is not empty %}
-                <div class="AknButtonsList AknTitleContainer-titleButtons">
-                    {{ titleButtons }}
-                </div>
-            {% endif %}
-            <div class="AknTitleContainer-title">
-                {{ title|first|capitalize ~ title[1:] }}
-                {% if subtitle is not empty %}
-                    / {{ subtitle }}
-                {% endif %}
+{% macro page_header(title, buttons, titleButtons, meta, right, backButton) %}
+    <header class="AknTitleContainer navigation">
+        {% if backButton is not empty %}
+            <div class="AknTitleContainer-backContainer" data-drop-zone="back">
+                {{ backButton }}
             </div>
-            {{ left }}
-        </div>
-        <div>
-            {{ right }}
-            {% if buttons is not empty %}
-                <div class="AknButtonsList AknTitleContainer-rightButtons">
-                    {{ buttons }}
+        {% endif %}
+        <div class="AknTitleContainer-contentContainer">
+            <div class="AknTitleContainer-mainLine">
+                <div class="AknTitleContainer-titleContainer" data-drop-zone="title">
+                    <h2 class="AknTitleContainer-title">
+                        {% block title %}
+                            {{ title }}
+                        {% endblock title %}
+                    </h2>
+                    {% if titleButtons is not empty %}
+                        <div class="AknTitleContainer-titleButtons">
+                            {{ titleButtons }}
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
+                <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
+                    {% block navButtons %}{% endblock navButtons %}
+                    {{ right }}
+                    {% if buttons is not empty %}
+                        <div class="AknButtonsList AknTitleContainer-rightButtons">
+                            {{ buttons }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="AknTitleContainer-metaLine">
+                <div class="AknTitleContainer-meta">
+                    {{ meta }}
+                </div>
+            </div>
         </div>
-    </div>
+    </header>
 {% endmacro %}
 
 {% macro form_navbar(tabs, translationSuffix = '.title') %}

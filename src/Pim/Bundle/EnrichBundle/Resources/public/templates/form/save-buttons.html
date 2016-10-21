@@ -1,16 +1,16 @@
 <% if (primaryButton) { %>
-    <button class="btn btn-primary <%- primaryButton.className || '' %>">
+    <button class="AknAllSelector-left <%- primaryButton.className || '' %>">
         <%- primaryButton.label %>
     </button>
 <%  } %>
 <% if (secondaryButtons && secondaryButtons.length) { %>
-    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
-        <span class="caret"></span>
+    <button  class="AknAllSelector-right" data-toggle="dropdown">
+        <span class="AknCaret AknCaret--inverse"></span>
     </button>
-    <ul class="dropdown-menu right-align">
+    <ul class="AknAllSelector-menu AknDropdown-menu AknDropdown-menu--alignRight">
         <% _.each(secondaryButtons, function (btn) { %>
             <li>
-                <button type="button" class="<%- btn.className || '' %>">
+                <button type="button" class="AknDropdown-menuLink <%- btn.className || '' %>">
                     <%- btn.label %>
                 </button>
             </li>

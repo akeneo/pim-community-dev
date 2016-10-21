@@ -60,21 +60,19 @@
         }
     }) }}
 
-        {% set titleButtons %}
-            <div class="customer-info">
-                <div class="visual">
-                    <img src="{{ form.vars.value.imagePath ? form.vars.value.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/img/info-user.png') }}" alt="{{ fullname }}"/>
-                </div>
-                <div class="AknTitleContainer-title sub-title">{{ title|first|capitalize ~ title[1:] }}</div>
-                {% if form.vars.value.id %}
-                    <ul class="inline">
-                        <li>{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|datetime_presenter : 'N/A' }}</li>
-                        <li>{{ 'Updated'|trans }}: {{ form.vars.value.updatedAt ? form.vars.value.updatedAt|datetime_presenter : 'N/A' }}</li>
-                        <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|datetime_presenter : 'N/A' }}</li>
-                        <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
-                    </ul>
-                {% endif %}
-            </div>
+        {% set meta %}
+            {% if form.vars.value.id %}
+                <ul class="inline">
+                    <li>{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|datetime_presenter : 'N/A' }}</li>
+                    <li>{{ 'Updated'|trans }}: {{ form.vars.value.updatedAt ? form.vars.value.updatedAt|datetime_presenter : 'N/A' }}</li>
+                    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|datetime_presenter : 'N/A' }}</li>
+                    <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
+                </ul>
+            {% endif %}
+        {% endset %}
+
+        {% set back %}
+            <img class="AknTitleContainer-avatar" src="{{ form.vars.value.imagePath ? form.vars.value.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/img/info-user.png') }}" alt="{{ fullname }}"/>
         {% endset %}
 
         {% set buttons %}
@@ -97,7 +95,7 @@
             {{ elements.submitBtn('', 'ok') }}
         {% endset %}
 
-        {{ elements.page_header('', buttons, null, null, elements.updated(form.vars.id), titleButtons) }}
+        {{ elements.page_header(title, buttons, null, meta, elements.updated(form.vars.id), back) }}
 
         {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 

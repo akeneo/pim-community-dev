@@ -30,7 +30,7 @@ define(
             className: 'btn-group',
             configure: function () {
                 this.trigger('save-buttons:register-button', {
-                    className: 'btn btn-primary save-product-and-back',
+                    className: 'save-product-and-back',
                     priority: 150,
                     label: _.__('pim_enrich.entity.product.btn.save_and_back'),
                     events: {

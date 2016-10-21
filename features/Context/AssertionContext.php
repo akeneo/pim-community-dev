@@ -717,7 +717,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldNotSeeDefaultAvatar()
     {
-        $this->assertSession()->elementAttributeNotContains('css', '.customer-info img', 'src', 'user-info.png');
+        $this->assertSession()->elementAttributeNotContains('css', 'img.AknTitleContainer-avatar', 'src', 'user-info.png');
     }
 
     /**
