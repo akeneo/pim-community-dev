@@ -1,0 +1,29 @@
+@import '../base/variables';
+
+.AknIconsList {
+  display: flex;
+  justify-content: flex-end;
+
+  &-item {
+    background: @AknGrey;
+    width: @AknIconSize;
+    height: @AknIconSize;
+    line-height: @AknIconSize;
+    display: inline-block;
+    text-align: center;
+    border-radius: 2px;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &--hidden {
+      display: none;
+    }
+  }
+
+  &-item + &-item {
+    margin-left: 6px;
+  }
+}

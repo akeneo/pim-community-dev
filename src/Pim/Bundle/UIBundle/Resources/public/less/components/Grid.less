@@ -1,0 +1,60 @@
+@import '../base/variables';
+
+.AknGrid {
+  width: 100%;
+
+  &-bodyRow {
+    border-bottom: 1px solid @AknBorderColor;
+  }
+
+  &-bodyCell, &-headerCell {
+    line-height: 24px;
+    padding: 12px 10px;
+  }
+
+  &-bodyRow:hover &-bodyCell {
+    background: @AknDefaultHoverBackground;
+    cursor: pointer;
+  }
+
+  &-bodyCell {
+    &--actions {
+      opacity: 0;
+      width: 1px;
+    }
+  }
+
+  &-bodyRow:hover &-bodyCell--actions {
+    opacity: 1;
+  }
+
+  &-headerCell {
+    color: @AknDefaultFontColor;
+    border-bottom: solid 2px @AknDarkBlue;
+    font-size: @AknFontSizeSmall;
+    font-weight: bold;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    // TODO To remove when we will remove the global 'a' rule
+    a {
+      color: @AknDefaultFontColor;
+    }
+  }
+
+  &-caret {
+    margin-left: 5px;
+    display: none;
+  }
+
+  &-headerCell--ascending &-caret,
+  &-headerCell--descending &-caret {
+    display: inline-block;
+  }
+
+  &-headerCell--descending &-caret {
+    border-bottom: 4px solid @AknDefaultFontColor;
+    border-top: none;
+  }
+}

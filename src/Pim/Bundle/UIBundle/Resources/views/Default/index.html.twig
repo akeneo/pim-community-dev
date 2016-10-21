@@ -48,30 +48,27 @@
     <div id="page" style="display:none;">
         <div id="top-page">
             {% block header %}
-                <header class="navbar" id="oroplatform-header">
+                <header class="AknHeader">
                     {% placeholder before_navigation %}
-                    <div class="navbar-inner">
-                        <div class="container">
+                    <div class="AknHeader-menus">
+                        <div class="AknHeader-leftMenus">
                             {% placeholder header_logo %}
-                            <div class="navbar-responsive-collapse">
-                                {% block navbar %}
+                            {% block navbar %}
                                 <div class="nav pull-left top-search shortcuts">
                                     {% placeholder navbar %}
                                 </div>
-                                {% endblock navbar %}
-                                <div class="divider-vertical small-divider"></div>
-                                <div id="main-menu">
-                                    {% block application_menu %}
-                                        {% placeholder application_menu %}
-                                    {% endblock application_menu %}
-                                 </div>
-                                {% block user_menu %}
-                                    <ul class="nav pull-right user-menu">
-                                        {% placeholder user_menu %}
-                                    </ul>
-                                {% endblock %}
-                            </div>
+                            {% endblock navbar %}
+                            <div id="main-menu">
+                                {% block application_menu %}
+                                    {% placeholder application_menu %}
+                                {% endblock application_menu %}
+                             </div>
                         </div>
+                        <ul class="AknHeader-rightMenus AknUserMenu">
+                            {% block user_menu %}
+                                {% placeholder user_menu %}
+                            {% endblock %}
+                        </ul>
                     </div>
                     {% placeholder after_navigation %}
                 </header>
@@ -85,13 +82,12 @@
                         {% placeholder left_panel %}
                     {% endblock left_panel %}
                     {% block before_content %}
-                    <div class="container-fluid breadcrumb-pin">
+                    <div class="AknBreadcrumbContainer">
                         <div id="breadcrumb">
                             {% block breadcrumb %}
                                 {% placeholder breadcrumb %}
                             {% endblock breadcrumb %}
                         </div>
-                        {% placeholder pin_button %}
                         <div id="flash-messages">
                             {% block messages %}
                                 <div class="flash-messages-frame">
@@ -123,7 +119,7 @@
                                 </script>
                             {% endblock messages %}
                         </div>
-
+                        {% placeholder pin_button %}
                     </div>
                     {% endblock before_content %}
                     <div class="hash-loading-mask"></div>

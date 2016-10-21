@@ -33,6 +33,7 @@ define(
 
         var NotificationView = Backbone.View.extend({
             tagName: 'li',
+            className: 'AknNotification',
             model: Notification,
             template: _.template(template),
             events: {
@@ -90,8 +91,9 @@ define(
                         message: this.model.get('message'),
                         url: this.model.get('url'),
                         icon: this.getIcon(this.model.get('type')),
+                        type: this.model.get('type'),
                         createdAt: this.model.get('createdAt'),
-                        actionType: this.model.get('actionType'),
+                        actionType: this.camelize(this.model.get('actionType')),
                         actionTypeMessage: this.model.get('actionTypeMessage'),
                         showReportButton: this.model.get('showReportButton'),
                         comment: this.model.get('comment')
@@ -110,12 +112,19 @@ define(
                 };
 
                 return _.result(icons, type, 'remove');
+            },
+
+            camelize: function (str) {
+                return str.toLowerCase()
+                    .replace(/_(.)/g, function ($firstLetter) {
+                        return $firstLetter.toUpperCase();
+                    })
+                    .replace(/_/g, '');
             }
         });
 
         var NotificationListView = Backbone.View.extend({
             tagName: 'ol',
-            className: 'scroll-menu',
 
             collection: NotificationList,
 

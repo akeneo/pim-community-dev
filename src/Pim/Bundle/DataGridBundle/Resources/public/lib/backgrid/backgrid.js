@@ -845,7 +845,7 @@ var Cell = Backgrid.Cell = Backbone.View.extend({
 var StringCell = Backgrid.StringCell = Cell.extend({
 
   /** @property */
-  className: "string-cell",
+  className: "AknGrid-bodyCell string-cell",
 
   formatter: new StringFormatter()
 
@@ -865,7 +865,7 @@ var StringCell = Backgrid.StringCell = Cell.extend({
 var UriCell = Backgrid.UriCell = Cell.extend({
 
   /** @property */
-  className: "uri-cell",
+  className: "AknGrid-bodyCell uri-cell",
 
   render: function () {
     this.$el.empty();
@@ -893,7 +893,7 @@ var UriCell = Backgrid.UriCell = Cell.extend({
 var EmailCell = Backgrid.EmailCell = StringCell.extend({
 
   /** @property */
-  className: "email-cell",
+  className: "AknGrid-bodyCell email-cell",
 
   formatter: new EmailFormatter(),
 
@@ -921,7 +921,7 @@ var EmailCell = Backgrid.EmailCell = StringCell.extend({
 var NumberCell = Backgrid.NumberCell = Cell.extend({
 
   /** @property */
-  className: "number-cell",
+  className: "AknGrid-bodyCell number-cell",
 
   /**
      @property {number} [decimals=2] Must be an integer.
@@ -966,7 +966,7 @@ var NumberCell = Backgrid.NumberCell = Cell.extend({
 var IntegerCell = Backgrid.IntegerCell = NumberCell.extend({
 
   /** @property */
-  className: "integer-cell",
+  className: "AknGrid-bodyCell integer-cell",
 
   /**
      @property {number} decimals Must be an integer.
@@ -991,7 +991,7 @@ var IntegerCell = Backgrid.IntegerCell = NumberCell.extend({
 var DatetimeCell = Backgrid.DatetimeCell = Cell.extend({
 
   /** @property */
-  className: "datetime-cell",
+  className: "AknGrid-bodyCell datetime-cell",
 
   /**
      @property {boolean} [includeDate=true]
@@ -1049,7 +1049,7 @@ var DatetimeCell = Backgrid.DatetimeCell = Cell.extend({
 var DateCell = Backgrid.DateCell = DatetimeCell.extend({
 
   /** @property */
-  className: "date-cell",
+  className: "AknGrid-bodyCell date-cell",
 
   /** @property */
   includeTime: false
@@ -1065,7 +1065,7 @@ var DateCell = Backgrid.DateCell = DatetimeCell.extend({
 var TimeCell = Backgrid.TimeCell = DatetimeCell.extend({
 
   /** @property */
-  className: "time-cell",
+  className: "AknGrid-bodyCell time-cell",
 
   /** @property */
   includeDate: false
@@ -1168,7 +1168,7 @@ var BooleanCellEditor = Backgrid.BooleanCellEditor = CellEditor.extend({
 var BooleanCell = Backgrid.BooleanCell = Cell.extend({
 
   /** @property */
-  className: "boolean-cell",
+  className: "AknGrid-bodyCell boolean-cell",
 
   /** @property */
   editor: BooleanCellEditor,
@@ -1358,7 +1358,7 @@ var SelectCellEditor = Backgrid.SelectCellEditor = CellEditor.extend({
 var SelectCell = Backgrid.SelectCell = Cell.extend({
 
   /** @property */
-  className: "select-cell",
+  className: "AknGrid-bodyCell select-cell",
 
   /** @property */
   editor: SelectCellEditor,
@@ -1741,6 +1741,8 @@ var HeaderCell = Backgrid.HeaderCell = Backbone.View.extend({
   /** @property */
   tagName: "th",
 
+  className: "AknGrid-headerCell",
+
   /** @property */
   events: {
     "click a": "onClick"
@@ -1779,8 +1781,14 @@ var HeaderCell = Backgrid.HeaderCell = Backbone.View.extend({
    */
   direction: function (dir) {
     if (arguments.length) {
-      if (this._direction) this.$el.removeClass(this._direction);
-      if (dir) this.$el.addClass(dir);
+      if (this._direction) {
+        this.$el.removeClass('AknGrid-headerCell--descending').removeClass('AknGrid-headerCell--ascending');
+        this.$el.removeClass(this._direction);
+      }
+      if (dir) {
+        this.$el.addClass('AknGrid-headerCell--'+dir);
+        this.$el.addClass(dir);
+      }
       this._direction = dir;
     }
 

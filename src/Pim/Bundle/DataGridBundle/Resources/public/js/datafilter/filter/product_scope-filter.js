@@ -95,7 +95,7 @@ define(
              * @see Oro.Filter.SelectFilter
              */
             template: _.template(
-                '<div class="btn filter-select filter-criteria-selector scope-filter">' +
+                '<div class="AknActionButton filter-select filter-criteria-selector scope-filter">' +
                     '<i class="icon-eye-open" title="<%= label %>"></i>' +
                     '<select>' +
                         '<% _.each(options, function (option) { %>' +

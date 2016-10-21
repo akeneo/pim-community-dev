@@ -5,7 +5,7 @@
     {% import 'OroNavigationBundle:Menu:menu.html.twig' as oro_menu %}
     {% set listAttributes = listAttributes|merge(
         {
-            'class': oro_menu.add_attribute_values(listAttributes, 'class', ['dropdown-menu']),
+            'class': oro_menu.add_attribute_values(listAttributes, 'class', ['AknDropdown-menu AknDropdown-menu--alignRight dropdown-menu']),
             'role': 'menu', 'aria-labelledby': 'dropdownMenu'
         }
     ) %}

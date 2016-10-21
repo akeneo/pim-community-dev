@@ -111,14 +111,6 @@
   display: none;
 }
 
-.navbar-buttons .btn-group>.btn {
-  font-size: @font-size-14;
-}
-
-.btn-group.open .btn-primary.dropdown-toggle {
-  background-color: @greenDark
-}
-
 .tabsections {
   .tabsection {
     border: 1px solid @akeneoGreyLighter;
@@ -134,21 +126,6 @@
 
       .add-attribute .select2-container {
         margin: 0 5px 5px;
-      }
-
-      #locale-switcher .btn.dropdown-toggle,
-      #attribute-buttons button {
-        background: white;
-        height: 30px;
-        line-height: 30px;
-        margin-top: -4px;
-
-        & > i {
-          background: @akeneoGreySuperLight;
-          height: 30px;
-          width: 30px;
-          line-height: 30px;
-        }
       }
     }
 
@@ -308,9 +285,6 @@ a.add-attribute-option {
   &>div.switch-on {
     height: 26px;
   }
-}
-div.btn-group > .has-switch {
-  display: block;
 }
 
 #channel-switcher {
@@ -752,50 +726,6 @@ h1 {
   line-height: 33px;
   color: @akeneoPurple;
 }
-
-.navbar-extra {
-  padding: 10px 7px 10px 12px;
-}
-.navbar-content ul.inline {
-  margin-top: 10px;
-}
-.navbar-content, .content {
-  line-height: 18px;
-  .sub-title {
-    float: left;
-    font-size: @font-size-18;
-    color: @textColor + #555;
-  }
-  .separator {
-    float: left;
-    padding: 0 3px;
-    font-size: @font-size-18;
-    color: @grayLight;
-  }
-  ul.inline {
-    color: @textColor + #333;
-    margin-bottom: 0;
-    li {
-      padding: 0 10px;
-      font-size: @font-size-11;
-      line-height: 14px;
-      border-left: 1px solid @grayLighter;
-    }
-    li:first-of-type {
-      padding-left:0;
-      border-left: none;
-    }
-  }
-  .product-name {
-    float: left;
-    font-size: @font-size-14;
-    font-weight: bold;
-    line-height: 20px;
-  }
-}
-.navbar-title {
-  line-height: 35px;
-}
 .tab-groups {
   float:left;
   min-width: 120px;
@@ -857,7 +787,7 @@ div.dropdown-menu.channel {
   min-width: 210px;
 }
 
-#locale-switcher, #comparison-switcher {
+#comparison-switcher {
   span.dropdown-toggle {
     padding: 0px 44px 0px 10px;
     height: 34px;
@@ -925,23 +855,8 @@ div.dropdown-menu.channel {
   margin-right: 10px;
 }
 
-.flag-language {
-  color: @textColor;
-  background-color: transparent;
-  border: none;
-}
-
 .flag {
   display: inline-block;
-}
-
-.language {
-  display: inline-block;
-  padding-left: 5px;
-  font-family: @sansFontFamily;
-  font-size: @font-size-12;
-  color: @textColor + #333;
-  vertical-align: bottom;
 }
 
 #comparison-switcher .dropdown-toggle .flag-language {

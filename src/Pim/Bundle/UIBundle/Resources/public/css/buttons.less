@@ -1,27 +1,6 @@
 @import 'less/variables';
 @import 'less/mixins';
 
-
-.navbar-extra .btn + .btn {
-  margin-left: 8px;
-}
-
-.grid .action-cell a.action.btn-tiny,
-.btn-tiny {
-  line-height: 28px;
-  height: 28px;
-
-  &.icons-holder-text {
-    padding: 0 10px 0 38px;
-
-    i {
-      line-height: 28px;
-      height: 28px;
-      width: 28px;
-    }
-  }
-}
-
 .btn {
   background-image: none;
   background-color: @akeneoGreyLighter;
@@ -70,13 +49,6 @@
   &:focus {
     background-color: @akeneoGreyLighter;
     color: @gray;
-  }
-
-  &:focus, &:hover, &:active {
-    outline: none;
-    background-image: none;
-    border: none;
-    box-shadow: none;
   }
 
   &:hover, &:active {
@@ -169,6 +141,7 @@
   }
 
   &:hover {
+    background-image: none;
     background-color: @greenDark;
   }
 }
@@ -177,10 +150,6 @@
   .btn.btn-primary.dropdown-toggle {
     background-color: @greenDark;
     width: 34px;
-
-    .caret {
-      margin-left: 0;
-    }
   }
 }
 
@@ -221,12 +190,9 @@
   }
 
   &:hover {
+    background-image: none;
     background-color: @redDark;
   }
-}
-
-.btn-group.open .btn.btn-download.dropdown-toggle {
-  background-color: @akeneoGreyDark;
 }
 
 .btn.btn-download {
@@ -243,12 +209,8 @@
     border-bottom-left-radius: 2px;
   }
 
-  .caret {
-      margin-top: 15px;
-      border-top: 4px solid @backgroundColor-white;
-  }
-
   &:hover {
+    background-image: none;
     background-color: @akeneoGreyDark;
   }
 
@@ -258,6 +220,7 @@
   background-color: @akeneoGreyLighter;
 
   &:hover {
+    background-image: none;
     background-color: @akeneoGreyLight;
   }
 
@@ -273,6 +236,7 @@
   width: 34px;
 
   &:hover {
+    background-image: none;
     background-color: @akeneoGreyLight;
   }
 }
@@ -292,6 +256,7 @@
   }
 
   &:hover {
+    background-image: none;
     background-color: @blueDark;
   }
 }
@@ -301,74 +266,11 @@
   padding: 0;
 }
 
-.filter-box {
-  .btn {
-    border-radius: 2px;
-    background-color: @white;
-    border: solid 1px @color-ccc;
-    font-size: @font-size-12;
-
-    &.filter-update {
-      background-color: @green;
-      border: none;
-    }
-  }
-}
-
-.select-all-header-cell {
-  .btn-group {
-    .btn {
-      background-color: @akeneoGrey;
-      color: @white;
-      height: 28px;
-      line-height: 28px;
-
-      &.dropdown-toggle {
-        width: 28px;
-        background-color: @akeneoGreyDark;
-        color: @white;
-        box-shadow: none;
-        i {
-          border-top: 4px solid @white;
-        }
-      }
-    }
-  }
-}
-
 .locale-switcher {
   span.dropdown-toggle {
     border-radius: 2px;
   }
 }
-
-.toolbar {
-  .btn {
-    background-image: none;
-    background-color: @white;
-    position: relative;
-    border: solid 1px @akeneoGreyLighter;
-    text-shadow: none;
-    box-shadow: none;
-    line-height: 28px;
-    height: 28px;
-    font-weight: normal;
-    overflow: hidden;
-    .transition();
-
-    &:hover, &:active, &:focus {
-      background-image: none;
-      border: solid 1px @akeneoGreyLighter;
-      box-shadow: none;
-      background-color: darken(@white, 10%);
-    }
-  }
-
-  label {
-    font-weight: normal;
-  }
-}
-
 .tab-header.attribute-actions {
   .btn {
     height: 28px;
@@ -377,20 +279,12 @@
     border-radius: 2px;
     border: none;
     background-color: @white;
-
-    .caret {
-      margin-top: 12px;
-    }
   }
 
   .attribute-copy-actions {
     .btn {
       background-color: @akeneoGrey;
       color: @white;
-
-      .caret {
-        border-top: 4px solid @white;
-      }
     }
   }
 
@@ -420,37 +314,6 @@
   }
 }
 
-.navbar-title {
-  .navbar-buttons {
-    float: left;
-    margin-right: 12px;
-  }
-}
-
-.navbar-title .sub-title .pimmultiselect {
-  height: 34px;
-  line-height: 34px;
-  margin-top: 0 !important;
-  padding: 0;
-
-  .pull-left {
-    background-color: transparent;
-    padding-left: 10px;
-    font-weight: bold;
-  }
-
-  .icon-caret-down {
-    .icon-button();
-    top: 0 !important;
-    left: inherit !important;
-    right: 0 !important;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
-    text-align: center;
-    background-color: @akeneoGreyLight;
-  }
-}
-
 .badge-enabled {
   background-color: @greenLighter;
 
@@ -474,35 +337,4 @@
   border: solid 1px @akeneoGrey;
   color: @akeneoSlateGrey;
   white-space: nowrap;
-}
-
-.grid .action-cell a.action.btn {
-  border: none;
-  display: inline-block;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  opacity: 0;
-
-  i {
-    text-align: center;
-    border: none;
-    border-radius: 2px 0 0 2px;
-  }
-}
-
-tr:hover>.action-cell a.action.btn {
-  opacity: 1;
-
-  &.btn-primary i {
-    background-color: @greenDark;
-  }
-
-  &.btn-delete i {
-    background-color: @redDark;
-  }
-
-  i {
-    background-color: @akeneoGrey;
-  }
 }

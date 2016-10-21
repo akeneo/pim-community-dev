@@ -28,8 +28,7 @@ class ContextSwitcherDecorator extends ElementDecorator
                 return false;
             }
 
-            $toggle = $dropdown->find('css', '.dropdown-toggle');
-
+            $toggle = $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]');
             if (null === $toggle) {
                 return false;
             }
@@ -56,12 +55,12 @@ class ContextSwitcherDecorator extends ElementDecorator
             return $this->find('css', $this->selectors['Locales dropdown']);
         }, 'Could not find locale switcher');
 
-        $selectedLocale = $this->spin(function () use ($dropdown, $localeCode) {
-            return $dropdown->find('css', sprintf('li.active a[href*="%s"]', $localeCode));
+        $this->spin(function () use ($dropdown, $localeCode) {
+            return $dropdown->find('css', sprintf('.AknDropdown-menuLink--active[href*="%s"]', $localeCode));
         }, sprintf(
             'Locale is expected to be "%s", actually is "%s".',
             $localeCode,
-            $dropdown->find('css', sprintf('li.active a'))->getAttribute('title')
+            $dropdown->find('css', sprintf('.AknDropdown-menuLink--active'))->getAttribute('title')
         ));
 
         return true;

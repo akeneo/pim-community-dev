@@ -11,16 +11,18 @@ function($, _, Backbone, __) {
      * @extends Backbone.View
      */
     return Backbone.View.extend({
+        className: 'AknGridToolbar-pageSize page-size',
+
         /** @property */
         template: _.template(
             '<label class="control-label"><%- _.__("View per page") %>: &nbsp;</label>' +
-            '<div class="btn-group ">' +
-                '<button data-toggle="dropdown" class="btn dropdown-toggle <% if (disabled) { %>disabled<% } %>">' +
-                    '<%=  currentSizeLabel %><span class="caret"></span>' +
+            '<div class="AknDropdown">' +
+                '<button data-toggle="dropdown" class="AknActionButton <% if (disabled) { %>disabled<% } %>">' +
+                    '<%=  currentSizeLabel %><span class="AknActionButton-caret AknCaret"></span>' +
                 '</button>' +
-                '<ul class="dropdown-menu pull-right">' +
+                '<ul class="AknDropdown-menu AknDropdown-menu--alignRight">' +
                     '<% _.each(items, function (item) { %>' +
-                        '<li><a href="#" data-size="' + '<% if (item.size == undefined) { %><%= item %><% } else { %><%= item.size %><% } %>' + '">' +
+                        '<li><a  class="AknDropdown-menuLink" href="#" data-size="' + '<% if (item.size == undefined) { %><%= item %><% } else { %><%= item.size %><% } %>' + '">' +
                         '<% if (item.label == undefined) { %><%= item %><% } else { %><%= item.label %><% } %></a></li>' +
                     '<% }); %>' +
                 '</ul>' +

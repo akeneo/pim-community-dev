@@ -17,24 +17,21 @@ function($, _, __, app, TextFilter, initSelect2) {
          * @property {function(Object, ?Object=): String}
          */
         popupCriteriaTemplate: _.template(
-            '<div class="choicefilter">' +
-                '<div class="input-prepend">' +
-                    '<div class="btn-group">' +
-                        '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                            '<%= selectedChoiceLabel %>' +
-                            '<span class="caret"></span>' +
-                        '</button>' +
-                        '<ul class="dropdown-menu">' +
-                            '<% _.each(choices, function (option) { %>' +
-                                '<li<% if (selectedChoice == option.value) { %> class="active"<% } %>><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
-                            '<% }); %>' +
-                        '</ul>' +
-                        '<input type="text" class="select-field" name="value" value="">' +
-                        '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
-                        '</div>' +
-                    '</div>' +
-                    '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
+            '<div class="AknFilterChoice choicefilter">' +
+                '<div class="AknFilterChoice-operator AknDropdown">' +
+                    '<button class="AknActionButton AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
+                        '<%= selectedChoiceLabel %>' +
+                        '<span class="AknActionButton-caret AknCaret"></span>' +
+                    '</button>' +
+                    '<ul class="dropdown-menu">' +
+                        '<% _.each(choices, function (option) { %>' +
+                            '<li<% if (selectedChoice == option.value) { %> class="active"<% } %>><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
+                        '<% }); %>' +
+                    '</ul>' +
+                    '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
                 '</div>' +
+                '<input type="text" class="AknFilterChoice-field select-field" name="value" value="">' +
+                '<button class="AknButton AknButton--success AknButton--little AknButton--noLeftRadius filter-update" type="button"><%- _.__("Update") %></button>' +
             '</div>'
         ),
 
@@ -184,7 +181,7 @@ function($, _, __, app, TextFilter, initSelect2) {
                     item.parent().removeClass('active');
                 } else if (item.data('value') == newValue.type && !item.parent().hasClass('active')) {
                     item.parent().addClass('active');
-                    menu.parent().find('button').html(item.html() + '<span class="caret"></span>');
+                    item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknActionButton-caret AknCaret"></span>');
                 }
             });
             if (newValue.type === 'empty') {
@@ -203,24 +200,26 @@ function($, _, __, app, TextFilter, initSelect2) {
          * @protected
          */
         _onClickChoiceValue: function(e) {
-            $(e.currentTarget).parent().parent().find('li').each(function() {
+            var dropdown = $(e.currentTarget).closest('.AknDropdown');
+
+            dropdown.find('li').each(function() {
                 $(this).removeClass('active');
             });
             $(e.currentTarget).parent().addClass('active');
-            var parentDiv = $(e.currentTarget).parent().parent().parent();
-            parentDiv.find('.name_input').val($(e.currentTarget).attr('data-value'));
+            dropdown.find('.name_input').val($(e.currentTarget).attr('data-value'));
 
+            var filterContainer = $(e.currentTarget).closest('.AknFilterChoice');
             if ($(e.currentTarget).attr('data-value') === 'in') {
                 this._enableListSelection();
             } else {
                 this._disableListSelection();
             }
             if ($(e.currentTarget).attr('data-value') === 'empty') {
-                parentDiv.find(this.criteriaValueSelectors.value).hide();
+                filterContainer.find(this.criteriaValueSelectors.value).hide();
             } else {
-                parentDiv.find(this.criteriaValueSelectors.value).show();
+                filterContainer.find(this.criteriaValueSelectors.value).show();
             }
-            parentDiv.find('button').html($(e.currentTarget).html() + '<span class="caret"></span>');
+            dropdown.find('.AknActionButton').html($(e.currentTarget).html() + '<span class="AknActionButton-caret AknCaret"></span>');
             e.preventDefault();
         },
 

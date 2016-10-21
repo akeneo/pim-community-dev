@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="layout-content">
-    <div class="navigation clearfix navbar-extra">
+    <div class="AknTitleContainer navigation clearfix">
         <div class="row">
             <div class="pull-right">
                 <div class="pull-right">
@@ -23,22 +23,22 @@
                             {% block breadcrumbs %}
                                 <div class="pull-left">
                                     {% if breadcrumbs.indexLabel is defined %}
-                                    <div class="sub-title">
-                                    {%- if breadcrumbs.indexPath is defined -%}
-                                        <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
-                                    {%- else -%}
-                                        {{ breadcrumbs.indexLabel|trans }}
-                                    {%- endif -%}
+                                    <div class="AknTitleContainer-title">
+                                        {%- if breadcrumbs.indexPath is defined -%}
+                                            <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
+                                        {%- else -%}
+                                            {{ breadcrumbs.indexLabel|trans }}
+                                        {%- endif -%}
+                                        <span class="separator">/</span>
+                                        {% endif %}
+                                        {% if breadcrumbs.additional is defined %}
+                                            {% for breadcrumb in breadcrumbs.additional %}
+                                                <div class="AknTitleContainer-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
+                                                <span class="separator">/</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                        <h1 class="user-name">{{ breadcrumbs.entityTitle }}</h1>
                                     </div>
-                                    <span class="separator">/</span>
-                                    {% endif %}
-                                    {% if breadcrumbs.additional is defined %}
-                                        {% for breadcrumb in breadcrumbs.additional %}
-                                            <div class="sub-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
-                                            <span class="separator">/</span>
-                                        {% endfor %}
-                                    {% endif %}
-                                    <h1 class="user-name">{{ breadcrumbs.entityTitle }}</h1>
                                 </div>
                             {% endblock breadcrumbs %}
                         </div>

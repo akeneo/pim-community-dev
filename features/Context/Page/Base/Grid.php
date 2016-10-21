@@ -152,7 +152,7 @@ class Grid extends Index
                 'Grid'                  => ['css' => 'table.grid'],
                 'Grid content'          => ['css' => 'table.grid tbody'],
                 'Filters'               => ['css' => '.filter-box, .filter-wrapper'],
-                'Grid toolbar'          => ['css' => 'div.grid-toolbar'],
+                'Grid toolbar'          => ['css' => '.AknGridToolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
                 'Configure columns'     => ['css' => 'a:contains("Columns")'],
                 'View selector'         => ['css' => '.grid-view-selector'],
@@ -262,7 +262,7 @@ class Grid extends Index
     public function findAction($element, $actionName)
     {
         $rowElement = $this->getRow($element);
-        $action     = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
+        $action     = $rowElement->find('css', sprintf('.AknIconsList-item[title="%s"]', $actionName));
 
         return $action;
     }
@@ -372,7 +372,7 @@ class Grid extends Index
     {
         $pagination = $this
             ->getElement('Grid toolbar')
-            ->find('css', 'div label.dib:contains("record")');
+            ->find('css', '.AknPagination *:contains("record")');
 
         /**
          * If pagination not found or is empty, it actually count rows
@@ -497,11 +497,12 @@ class Grid extends Index
      *
      * @param string $columnName
      * @param string $order
+     * @param string $order
      */
     public function sortBy($columnName, $order = 'ascending')
     {
         $sorter = $this->getColumnSorter($columnName);
-        if ($sorter->getParent()->getAttribute('class') !== strtolower($order)) {
+        if (!$sorter->getParent()->hasClass(strtolower($order))) {
             $sorter->click();
         }
     }
@@ -517,7 +518,7 @@ class Grid extends Index
     public function isSortedAndOrdered($columnName, $order)
     {
         $order = strtolower($order);
-        if ($this->getColumnHeader($columnName)->getAttribute('class') !== $order) {
+        if (!$this->getColumnHeader($columnName)->hasClass($order)) {
             return false;
         }
 
@@ -585,7 +586,7 @@ class Grid extends Index
     public function showFilter($filterName)
     {
         $this->spin(function () {
-            return $this->getElement('Body')->find('css', '.filter-box, .filter-wrapper');
+            return $this->getElement('Body')->find('css', $this->elements['Filters']['css']);
         }, 'The filter box is not loaded');
 
         $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
@@ -679,6 +680,15 @@ class Grid extends Index
 
             return false;
         }, sprintf('Impossible to activate filter "%s"', $filterName));
+
+        $this->spin(function () use ($manageFilters) {
+            $manageClosed = !$manageFilters->isVisible();
+            if (!$manageClosed) {
+                $this->clickFiltersList();
+            }
+
+            return $manageClosed;
+        }, 'Could not close Manage filters');
     }
 
     /**
@@ -884,7 +894,7 @@ class Grid extends Index
     protected function getDropdownSelector()
     {
         return $this->spin(function () {
-            return $this->getElement('Grid')->find('css', 'th .btn-group');
+            return $this->getElement('Grid')->find('css', '.AknAllSelector');
         }, 'Grid dropdown row selector not found');
     }
 

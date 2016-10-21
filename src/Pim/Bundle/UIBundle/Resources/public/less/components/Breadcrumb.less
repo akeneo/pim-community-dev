@@ -1,0 +1,14 @@
+@import '../base/variables';
+
+.AknBreadcrumb {
+  color: @AknDefaultFontColor;
+  font-size: @AknFontSizeSmall;
+
+  &-item {
+    display: inline;
+
+    &:not(:first-child):before {
+      content: ' / ';
+    }
+  }
+}

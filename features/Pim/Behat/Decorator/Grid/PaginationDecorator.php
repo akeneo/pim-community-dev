@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Decorator\Grid;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
@@ -18,9 +19,10 @@ class PaginationDecorator extends ElementDecorator
 
     /** @var array selectors for pagination components*/
     protected $selectors = [
-        'pagination input' => '.icons-holder input[type="text"]',
-        'page size button' => '.page-size .dropdown-toggle',
-        'page size list'   => '.page-size .dropdown-menu',
+        'pagination input' => '.AknPagination-input',
+        'page size button' => '.page-size .AknActionButton',
+        'page size list'   => '.page-size .AknDropdown-menu',
+        'page size items'  => '.page-size .AknDropdown-menuLink',
     ];
 
     /**
@@ -63,19 +65,33 @@ class PaginationDecorator extends ElementDecorator
      */
     public function setPageSize($num)
     {
-        $this->getPageSizeButton()->click();
+        $this->spin(function () use ($num) {
+            $button = $this->getPageSizeButton();
+            if (!$button->isVisible()) {
+                return false;
+            }
+            $button->click();
 
-        $list = $this->spin(function () {
-            return $this->find('css', $this->selectors['page size list']);
-        }, 'Cannot find the change page size list');
+            $item = null;
+            $items = $this->findAll('css', $this->selectors['page size items']);
+            foreach ($items as $link) {
+                if (null === $item && $link->getText() === strval($num) && $link->isVisible()) {
+                    $item = $link;
+                }
+            }
+            if (null === $item) {
+                return false;
+            }
+            $item->click();
 
-        $list->find('css', sprintf('li a:contains("%d")', (int) $num))->click();
+            return $this->getPageSize() === (int) $num;
+        }, sprintf('The pagination button was not updated with "%s"', $num));
     }
 
     /**
      * Get the pagination element
      *
-     * @return mixed
+     * @return NodeElement
      */
     protected function getPaginationField()
     {
@@ -87,7 +103,7 @@ class PaginationDecorator extends ElementDecorator
     /**
      * Get the button element managing the size
      *
-     * @return mixed
+     * @return NodeElement
      */
     protected function getPageSizeButton()
     {
