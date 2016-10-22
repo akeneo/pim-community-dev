@@ -11,9 +11,9 @@ Your local changes will be lost. Are you sure you want to refresh grid?: As suas
 Reset Confirmation: Confirmação de Reset
 Your local changes will be lost. Are you sure you want to reset grid?: Suas alterações locais serão perdidas. Tem a certeza de que deseja atualizar a grelha?
 Confirmation: Confirmação
-edit: Editar
+edit: editar
 copy: copiar
-remove: Remover
+remove: remover
 Status: Estado
 All: Tudo
 Per page: Por página
@@ -29,22 +29,22 @@ Please, select item to perform action.: Por favor, selecione o item para executa
 View per page: Visualizações por página
 oro.datagrid.entityHint: Entidade
 oro.datagrid.noentities: Nenhum registo encontrado
-oro.datagrid.noresults: Nenhum resultado encontrado. Tente mudar seus critérios de pesquisa.
+oro.datagrid.noresults: "Nenhum resultado encontrado. Tente mudar seus critérios de pesquisa."
 oro.datagrid.nocolumns: Não há colunas configuradas para esta grelha
-oro.datagrid.pagination.label: Página
-oro.datagrid.pagination.totalPages: 'de {{ totalPages }}'
-oro.datagrid.pagination.totalRecords: '{{ totalRecords }} registos'
-oro.datagrid.action.reset: Reset / Restaurar
-oro.datagrid.action.refresh: Atualizar
-oro_datagrid.select.all: Tudo
-oro_datagrid.select.visible: Tudo visível
-oro_datagrid.select.none: Nenhum
+oro.datagrid.pagination.label: "Página"
+oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registos"
+oro.datagrid.action.reset: "Reset / Restaurar"
+oro.datagrid.action.refresh: "Atualizar"
+oro_datagrid.select.all: "Tudo"
+oro_datagrid.select.visible: "Tudo visível"
+oro_datagrid.select.none: "Nenhum"
 pim.grid.ajax_choice_filter.label_empty: está vazio
 pim.grid.choice_filter:
   label_empty: está vazio
   label_in_list: na lista
 Available Columns: Colunas disponíveis
-datagrid_view.columns.min_message: Você deve selecionar pelo menos uma coluna da grelha para exibir
+datagrid_view.columns.min_message: Deve selecionar pelo menos uma coluna da grelha para exibir
 pim_datagrid:
   column_configurator:
     label: Colunas
@@ -65,6 +65,19 @@ pim.grid.action.launch.title: Iniciar
 pim.grid.action.show.title: Mostrar
 Please select view: Por favor, escolha uma vista
 Loading...: A carregar...
-View: Vista
+View: Ver
 from: desde
 to: até
+grid.view_selector:
+  default_view: Vista por defeito
+  save_changes: Gravar esta vista
+  remove: Eliminar esta vista
+  create: Criar vista
+  search: Pesquisar
+  views: Visualizações
+  placeholder: Nome da nova vista
+  choose_label: Escolher um nome para a vista
+  confirmation:
+    remove: Tem certeza que deseja remover esta vista da grelha?
+    delete: Confirmar eliminação
+grid.view_selector.flash.updated: Vista de grelha atualizada com sucesso
