@@ -12,6 +12,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ChannelNormalizer implements NormalizerInterface
 {
+    /** @var NormalizerInterface */
+    protected $transNormalizer;
+
+    /**
+     * @param NormalizerInterface $transNormalizer
+     */
+    public function __construct(NormalizerInterface $transNormalizer)
+    {
+        $this->transNormalizer = $transNormalizer;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -19,11 +30,11 @@ class ChannelNormalizer implements NormalizerInterface
     {
         return [
             'code'             => $channel->getCode(),
-            'label'            => $channel->getLabel(),
             'currencies'       => $this->normalizeCurrencies($channel),
             'locales'          => $channel->getLocaleCodes(),
             'category_tree'    => $channel->getCategory()->getCode(),
             'conversion_units' => $channel->getConversionUnits(),
+            'labels'           => $this->transNormalizer->normalize($channel, $format, $context)
         ];
     }
 
