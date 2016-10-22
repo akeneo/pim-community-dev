@@ -27,12 +27,12 @@ Feature: Show localized rules
           - type:   set
             field:  decimal_price
             value:
-              - data:     12.5
+              - amount:     12.5
                 currency: EUR
           - type:   set
             field:  decimal_metric
             value:
-              data: 10.5
+              amount: 10.5
               unit: CENTIMETER
       """
 
