@@ -111,6 +111,8 @@ services:
 
     pim_catalog.normalizer.standard.channel:
         class: '%pim_catalog.normalizer.standard.channel.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
