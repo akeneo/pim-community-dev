@@ -14,7 +14,7 @@ oro.user.controller:
   status.message.saved: Statut enregistré
 oro.user.grid.users:
   columns:
-    username: "Nom d'utilisateur"
+    username: Nom d'utilisateur
     email: Email
     firstName: Prénom
     lastName: Nom
@@ -40,7 +40,7 @@ btn.create.user: Créer un utilisateur
 New user: Nouvel utilisateur
 Additional: Supplémentaire
 Groups and Roles: Groupes et rôles
-Username: "Nom d'utilisateur"
+Username: Nom d'utilisateur
 Password: Mot de passe
 Re-enter password: Confirmer le mot de passe
 Name prefix: Particule
@@ -65,7 +65,7 @@ Login count: Nombre de connexions
 Additional Information: Informations complémentaires
 Basic Information: Informations générales
 Contact Information: Information de contact
-User name: "Nom d'utilisateur"
+User name: Nom d'utilisateur
 Birthday: Date d’anniversaire
 API key: Clé API
 Generate key: Générer une clé
@@ -91,7 +91,7 @@ oro_security:
   acl_group:
     user: Utilisateurs
     role: Rôles
-    group: "Groupes d'utilisateurs"
+    group: Groupes d'utilisateurs
   acl:
     user:
       view: Liste des utilisateurs
@@ -104,10 +104,10 @@ oro_security:
       edit: Modifier un rôle
       delete: Supprimer un rôle
     group:
-      view: "Liste des groupes d'utilisateurs"
-      create: "Créer un groupe d'utilisateurs"
-      edit: "Modifier les groupes d'utilisateurs"
-      delete: "Supprimer un groupe d'utilisateurs"
+      view: Liste des groupes d'utilisateurs
+      create: Créer un groupe d'utilisateurs
+      edit: Modifier les groupes d'utilisateurs
+      delete: Supprimer un groupe d'utilisateurs
 (default): Autorisations par défaut sur les entités
 VIEW: Voir
 CREATE: Créer
@@ -132,9 +132,9 @@ user-group.overview: Groupes
 Log in: Connexion
 Remember me on this computer: Mémoriser mes informations sur cet ordinateur
 Forgot your password?: Mot de passe oublié ?
-Username or Email: "Nom d'utilisateur ou Email"
+Username or Email: Nom d'utilisateur ou Email
 Forgot Password: Mot de passe oublié
 Request: Demande
-Check Email: "Vérifier l'email"
-password_reset_email_sent: 'Un email a été envoyé à %email%. Il contient un lien, vous devez cliquer sur ce lien pour réinitialiser votre mot de passe.'
-Go to homepage: "Aller à la page d'accueil"
+Check Email: Vérifier l'email
+password_reset_email_sent: Un email a été envoyé à %email%. Il contient un lien, vous devez cliquer sur ce lien pour réinitialiser votre mot de passe.
+Go to homepage: Aller à la page d'accueil
