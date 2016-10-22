@@ -1,16 +1,16 @@
 Close: Закрыть
 Update: Обновить
 Selected Rows: Выбранные строки
-"Yes": Да
-Yes, Delete: Да, удалить
-Yes, I Agree: Да, я согласен
-Yes, do it: Да, сделать это
-"No": Нет
-Ok, got it.: Ок, я понял.
-Cancel: Отмена
-Delete Confirmation: Подтверждение удаления
-Edit: Редактировать
-Unexpected error occured. Please contact system administrator.: Произошла непредвиденная ошибка. Пожалуйста, свяжитесь с системным администратором.
+"Yes": "Да"
+"Yes, Delete": "Да, удалить"
+"Yes, I Agree": "Да, я согласен"
+"Yes, do it": "Да, сделать это"
+"No": "Нет"
+"Ok, got it.": "Ок, я понял."
+"Cancel": "Отмена"
+"Delete Confirmation": "Подтверждение удаления"
+"Edit": "Редактировать"
+"Unexpected error occured. Please contact system administrator.": "Произошла непредвиденная ошибка. Пожалуйста, свяжитесь с системным администратором."
 Now: Сейчас
 Prev: Предыдущий
 Next: Следующая
@@ -21,14 +21,14 @@ AM: AM
 A: A
 PM: PM
 P: P
-Choose Time: Выберите время
+"Choose Time": "Выберите время"
 Time: Время
 Hour: Час
 Minute: Минута
 Second: Секунда
 Millisecond: Миллисекунда
 Microsecond: Микросекунда
-"Time Zone": Часовой пояс
+"Time Zone": "Часовой пояс"
 Localized value: Локализованное значение
 Columns: Столбцы
 Datagrid Configuration: Настройки таблицы

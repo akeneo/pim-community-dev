@@ -1,22 +1,22 @@
 confirmation:
   remove:
-    item: ¿Está seguro de que desea borrar este elemento?
-    association type: ¿Está seguro que desea eliminar este tipo de asociación?
-    attribute: ¿Está seguro que desea eliminar este atributo?
-    family: ¿Está seguro que desea eliminar esta familia?
-    product: ¿Está seguro que desea eliminar este producto?
-    channel: ¿Está seguro que desea eliminar este canal?
-    group: ¿Está seguro que desea eliminar este grupo?
-    variant group: ¿Está seguro que desea eliminar este grupo variante?
-    group type: ¿Está seguro que desea eliminar este tipo de grupo?
-    import profile: ¿Está seguro que desea eliminar este perfil de importación?
-    export profile: ¿Está seguro que desea eliminar este perfil de exportación?
-    user: ¿Seguro que desea eliminar este usuario?
-    role: ¿Está seguro que desea eliminar este rol?
+    item: '¿Está seguro de que desea borrar este elemento?'
+    association type: '¿Está seguro que desea eliminar este tipo de asociación?'
+    attribute: '¿Está seguro que desea eliminar este atributo?'
+    family: '¿Está seguro que desea eliminar esta familia?'
+    product: '¿Está seguro que desea eliminar este producto?'
+    channel: '¿Está seguro que desea eliminar este canal?'
+    group: '¿Está seguro que desea eliminar este grupo?'
+    variant group: '¿Está seguro que desea eliminar este grupo variante?'
+    group type: '¿Está seguro que desea eliminar este tipo de grupo?'
+    import profile: '¿Está seguro que desea eliminar este perfil de importación?'
+    export profile: '¿Está seguro que desea eliminar este perfil de exportación?'
+    user: '¿Seguro que desea eliminar este usuario?'
+    role: '¿Está seguro que desea eliminar este rol?'
 pim_datagrid:
   mass_action:
     delete:
-      confirm_content: ¿Está seguro que desea eliminar los productos seleccionados?
+      confirm_content: '¿Está seguro que desea eliminar los productos seleccionados?'
       success: Productos seleccionados eliminados exitosamente.
       error: Se ha producido un error al intentar eliminar los productos seleccionados, por favor inténtelo de nuevo.
 flash:
@@ -88,8 +88,8 @@ pim.grid.mass_action.delete: Eliminar
 pim.grid.mass_action.mass_edit: Edición en masa
 pim.grid.mass_action.sequential_edit: Edición secuencial
 jstree.create: Crear
-switch_on: SÍ
-switch_off: 'No'
+switch_on: "SÍ"
+switch_off: "No"
 pim_enrich:
   item:
     list:
@@ -97,4 +97,4 @@ pim_enrich:
       delete.error: Error durante la eliminación del elemento
     delete:
       confirm.content: '¿Está seguro que desea eliminar este {{ itemName }}? No es posible revertir esta opción'
-      confirm.title: 'Eliminar este {{ itemName }}'
+      confirm.title: Eliminar este {{ itemName }}

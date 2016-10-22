@@ -69,13 +69,13 @@ pim_enrich:
     legend:
       locale_not_associated: Linguagem não associada a este canal
   mass_edit_action:
-    limit_exceeded: 'Por favor, escolha menos de %limit% itens para editar'
+    limit_exceeded: Por favor, escolha menos de %limit% itens para editar
     product:
       page_title: Produtos
-      page_subtitle: 'Editar em Massa (1 produto) | Editar em Massa (%count% produtos)'
+      page_subtitle: Editar em Massa (1 produto) | Editar em Massa (%count% produtos)
       title: Escolher operação
-      subtitle: 'Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados'
-      confirm: 'Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.'
+      subtitle: Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados
+      confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
       steps:
         first: Escolher produtos
         second: Escolher operação
@@ -83,10 +83,10 @@ pim_enrich:
         fourth: Confirmar
     family:
       page_title: Famílias
-      page_subtitle: 'Editar em Massa (1 família) | Editar em Massa (%count% famílias)'
+      page_subtitle: Editar em Massa (1 família) | Editar em Massa (%count% famílias)
       title: Escolher operação
-      subtitle: 'Escolha a operação que deseja executar na familia selecionada| Escolha a operação que deseja executar nas %count% famílias selecionadas'
-      confirm: 'Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.'
+      subtitle: Escolha a operação que deseja executar na familia selecionada| Escolha a operação que deseja executar nas %count% famílias selecionadas
+      confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
       steps:
         first: Escolher famílias
         second: Escolher operação
@@ -129,8 +129,8 @@ pim_enrich:
       success_flash: Os requisitos dos atributos foram aplicados às famílias selecionadas
   sequential_edit_action:
     product:
-      previous: 'Voltar atrás para "%product%" sem gravar.'
-      next: 'Saltar para "%product%" sem gravar.'
+      previous: Voltar atrás para "%product%" sem gravar.
+      next: Saltar para "%product%" sem gravar.
   acl:
     locale:
       index: Listar linguagens
@@ -341,28 +341,28 @@ confirmation:
   confirm: Confirmação
   delete: Confirmar eliminação
   leave: Tem certeza que deseja sair desta página?
-  discard changes: 'Irá perder as alterações que fez para %entity%, se deixar a página.'
+  discard changes: Irá perder as alterações que fez para %entity%, se deixar a página.
   remove:
     item: Tem a certeza que pretende remover este item?
-    attribute: 'Tem a certeza que deseja eliminar o atributo %name%?'
-    attribute group: 'Tem a certeza que deseja eliminar o grupo de atributos %name%?'
-    category: 'Tem a certeza que deseja eliminar a categoria %name%?'
-    family: 'Tem a certeza que deseja eliminar a família %name%?'
-    product: 'Tem a certeza que deseja eliminar o produto %name%?'
-    channel: 'Tem a certeza que deseja eliminar o canal %name%?'
-    group: 'Tem a certeza que deseja eliminar o grupo %name%?'
-    variant group: 'Tem a certeza que deseja eliminar o grupo variante %name%?'
-    association type: 'Tem a certeza que deseja eliminar o tipo de associação %name%?'
-    group type: 'Tem a certeza que deseja eliminar o tipo de grupo %name%?'
-    user: 'Tem a certeza que deseja eliminar o utilizador %name%?'
+    attribute: Tem a certeza que deseja eliminar o atributo %name%?
+    attribute group: Tem a certeza que deseja eliminar o grupo de atributos %name%?
+    category: Tem a certeza que deseja eliminar a categoria %name%?
+    family: Tem a certeza que deseja eliminar a família %name%?
+    product: Tem a certeza que deseja eliminar o produto %name%?
+    channel: Tem a certeza que deseja eliminar o canal %name%?
+    group: Tem a certeza que deseja eliminar o grupo %name%?
+    variant group: Tem a certeza que deseja eliminar o grupo variante %name%?
+    association type: Tem a certeza que deseja eliminar o tipo de associação %name%?
+    group type: Tem a certeza que deseja eliminar o tipo de grupo %name%?
+    user: Tem a certeza que deseja eliminar o utilizador %name%?
   attribute group:
-    remove attribute: 'Tem certeza que deseja remover o atributo %name% deste grupo de atributos?'
+    remove attribute: Tem certeza que deseja remover o atributo %name% deste grupo de atributos?
   family:
-    remove attribute: 'Tem certeza que deseja remover o atributo %name% desta família?'
+    remove attribute: Tem certeza que deseja remover o atributo %name% desta família?
   product:
-    remove attribute: 'Tem certeza que deseja remover o atributo %name% deste produto?'
+    remove attribute: Tem certeza que deseja remover o atributo %name% deste produto?
   variant_group:
-    remove_attribute: 'Tem certeza que deseja remover o atributo %name% deste grupo variante?'
+    remove_attribute: Tem certeza que deseja remover o atributo %name% deste grupo variante?
 flash:
   entity:
     removed: Item eliminado
@@ -371,7 +371,7 @@ flash:
     updated: Atributo atualizado com sucesso
     removed: Atributo removido com sucesso
     identifier not removable: O atributo identificador não pode ser eliminado
-    used by groups: 'Este atributo não pode ser removido porque é usado por %count% grupos variantes'
+    used by groups: Este atributo não pode ser removido porque é usado por %count% grupos variantes
   attribute group:
     created: Grupo de atributo criado com sucesso
     updated: Grupo de atributos atualizado com sucesso
@@ -442,7 +442,7 @@ info:
   category:
     remove children: Todas as subcategorias serão eliminadas.
     keep products: Os produtos nestas categorias não serão eliminados.
-    products limit exceeded: 'Esta categoria contém mais produtos do que o permitido para esta operação (máximo de %limit% produtos)'
+    products limit exceeded: Esta categoria contém mais produtos do que o permitido para esta operação (máximo de %limit% produtos)
   product:
     no available attributes: Não há mais atributos para adicionar
     no family defined: Nenhuma família definida
@@ -460,11 +460,11 @@ info:
     select products: Por favor selecione produtos que devem pertencer a este grupo.
     selectable products: Os seguintes produtos selecionáveis têm um valor definido para cada eixo.
     no group types: Não há tipos de grupo existentes, clique aqui para criar um
-    more products: 'mais %count% produtos...'
+    more products: mais %count% produtos...
   association type:
     show products: Mostrar produtos
     show groups: Mostrar grupos
-    remove from products: 'A eliminação deste tipo de associação irá retirá-lo de %count% produtos.'
+    remove from products: A eliminação deste tipo de associação irá retirá-lo de %count% produtos.
     none exist: Nenhum tipo de associação existente.
     create one: Clique aqui para criar um
   attribute:
@@ -519,8 +519,8 @@ default: Padrão
 Axis: Eixo
 Add attributes: Adicionar atributos
 Translate from: Traduzir de
-switch_on: Sim
-switch_off: Não
+switch_on: "Sim"
+switch_off: "Não"
 Close: Fechar
 Search: Pesquisar
 Choose the attribute type: Escolha o tipo de atributo
@@ -549,7 +549,7 @@ New group: Novo grupo
 Groups overview: Visão geral de grupos
 Max characters: Máximo de carateres
 Validation rule: Regra de validação
-Validation regexp: 'Validação "regexp"'
+Validation regexp: Validação "regexp"
 Wysiwyg enabled: WYSIWYG ativo
 Number min: Número mínimo
 Number max: Número máximo
@@ -571,45 +571,45 @@ Title: Título
 pim_title.attribute_group:
   index: Grupos de atributos
   create: Grupos de atributos | Criar
-  edit: 'Grupos de atributos %group.label% | Editar'
+  edit: Grupos de atributos %group.label% | Editar
 pim_title.category:
   index: Árvores de categorias
   create: Árvores de categorias | Criar
-  edit: 'Árvores de categorias %category.label% | Editar'
+  edit: Árvores de categorias %category.label% | Editar
 pim_title.attribute:
   index: Atributos
   create: Atributos | Criar
-  edit: 'Atributos %attribute.label% | Editar'
+  edit: Atributos %attribute.label% | Editar
 pim_title.product:
   index: Produtos
-  edit: 'Produtos %product.sku% | Editar'
+  edit: Produtos %product.sku% | Editar
 pim_title.family:
   index: Famílias
-  edit: 'Famílias %family.label% | Editar'
+  edit: Famílias %family.label% | Editar
 pim_title.channel:
   index: Canais
   create: Canais | Criar
-  edit: 'Canais %channel.label% | Editar'
+  edit: Canais %channel.label% | Editar
 pim_title.currency:
   index: Moedas
 pim_title.locale:
   index: Linguagens
 pim_title.group:
   index: Grupos
-  edit: 'Grupos %group.label% | Editar'
+  edit: Grupos %group.label% | Editar
 pim_title.variant_group:
   index: Grupos variantes
-  edit: 'Grupos variantes %group.label% | Editar'
+  edit: Grupos variantes %group.label% | Editar
 pim_title.association_type:
   index: Tipos de associação
-  edit: 'Tipos de associação %association type.label% | Editar'
+  edit: Tipos de associação %association type.label% | Editar
 pim_title.group_type:
   index: Tipos de grupo
-  edit: 'Tipos de grupo %group type.label% | Editar'
+  edit: Tipos de grupo %group type.label% | Editar
 pim_title.mass_edit_action:
   choose: Editar em massa | Escolher
   configure: Editar em massa | Configurar
-pim_title.dashboard: Painel
+pim_title.dashboard: "Painel"
 pim_catalog_identifier: Identificador
 pim_catalog_text: Texto
 pim_catalog_textarea: Área de Texto
@@ -619,23 +619,23 @@ pim_catalog_multiselect: Seleção múltipla
 pim_catalog_simpleselect: Seleção simples
 pim_catalog_file: Ficheiro
 pim_catalog_image: Imagem
-pim_catalog_boolean: Sim/Não
+pim_catalog_boolean: "Sim/Não"
 pim_catalog_date: Data
 pim_catalog_metric: Métrica
 Activated: Ativado
 Disable: Desativar
 pim_enrich.sequential_edit_action:
   product:
-    previous: 'Voltar atrás para "%product%" sem gravar.'
-    next: 'Saltar para "%product%" sem gravar.'
+    previous: Voltar atrás para "%product%" sem gravar.
+    next: Saltar para "%product%" sem gravar.
 pim_enrich.mass_edit_action:
-  limit_exceeded: 'Por favor, escolha menos de %limit% itens para editar'
+  limit_exceeded: Por favor, escolha menos de %limit% itens para editar
   product:
     page_title: Produtos
-    page_subtitle: 'Editar em Massa (1 produto) | Editar em Massa (%count% produtos)'
+    page_subtitle: Editar em Massa (1 produto) | Editar em Massa (%count% produtos)
     title: Escolher operação
-    subtitle: 'Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados'
-    confirm: 'Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.'
+    subtitle: Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados
+    confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
     steps:
       first: Escolher produtos
       second: Escolher operação
@@ -643,10 +643,10 @@ pim_enrich.mass_edit_action:
       fourth: Confirmar
   family:
     page_title: Famílias
-    page_subtitle: 'Editar em Massa (1 família) | Editar em Massa (%count% famílias)'
+    page_subtitle: Editar em Massa (1 família) | Editar em Massa (%count% famílias)
     title: Escolher operação
-    subtitle: 'Escolha a operação que deseja executar na familia selecionada| Escolha a operação que deseja executar nas %count% famílias selecionadas'
-    confirm: 'Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.'
+    subtitle: Escolha a operação que deseja executar na familia selecionada| Escolha a operação que deseja executar nas %count% famílias selecionadas
+    confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
     steps:
       first: Escolher famílias
       second: Escolher operação

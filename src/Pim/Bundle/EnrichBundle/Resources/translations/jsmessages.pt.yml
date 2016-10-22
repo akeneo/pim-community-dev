@@ -88,13 +88,13 @@ pim.grid.mass_action.delete: Eliminar
 pim.grid.mass_action.mass_edit: Editar em massa
 pim.grid.mass_action.sequential_edit: Edição sequencial
 jstree.create: Criar
-switch_on: Sim
-switch_off: Não
+switch_on: "Sim"
+switch_off: "Não"
 pim_enrich:
   item:
     list:
       delete.label: Eliminar
       delete.error: Erro durante a eliminação do item
     delete:
-      confirm.content: 'Tem certeza que deseja eliminar este {{ itemName }}? Não é possível desfazer essa ação'
-      confirm.title: 'Eliminar este {{ itemName }}'
+      confirm.content: Tem certeza que deseja eliminar este {{ itemName }}? Não é possível desfazer essa ação
+      confirm.title: Eliminar este {{ itemName }}
