@@ -7,7 +7,7 @@ confirmation:
 flash:
   comment:
     create:
-      success: 'Ihr Kommentar wurde  erfolgreich erstellt.'
+      success: Ihr Kommentar wurde  erfolgreich erstellt.
       error: Bei der Erstellung Ihres Kommentars ist ein Fehler aufgetreten.
     delete:
       success: Ihr Kommentar wurde erfolgreich gelöscht.
