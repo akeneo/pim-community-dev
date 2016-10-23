@@ -68,10 +68,8 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
 
         $data = [];
         foreach ($productValue->getData() as $item) {
-            if (in_array($attributeType, [
-                AttributeTypes::OPTION_MULTI_SELECT,
-                AttributeTypes::REFERENCE_DATA_MULTI_SELECT
-            ])) {
+            if (AttributeTypes::OPTION_MULTI_SELECT === $attributeType ||
+                $productValue->getAttribute()->isBackendTypeReferenceData()) {
                 $data[] = $item->getCode();
             } else {
                 $data[] = $this->serializer->normalize($item, $format, $context);
