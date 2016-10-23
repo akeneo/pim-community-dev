@@ -17,13 +17,13 @@ Feature: Import rules
                 - field: price
                   operator: =
                   value:
-                      data: 35
+                      amount: 35
                       currency: EUR
             actions:
                 - type:  set
                   field: price
                   value:
-                       - data: 3
+                       - amount: 3
                          currency: EUR
     """
     And the following job "clothing_rule_import" configuration:
@@ -46,13 +46,13 @@ Feature: Import rules
                 - field:    length
                   operator: =
                   value:
-                      data: 156
+                      amount: 156
                       unit: METER
             actions:
                 - type:  set
                   field: length
                   value:
-                      data: 4
+                      amount: 4
                       unit: CENTIMETER
     """
     And the following job "clothing_rule_import" configuration:

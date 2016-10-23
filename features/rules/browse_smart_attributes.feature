@@ -64,12 +64,12 @@ Feature: Browse smart attributes in the attribute grid
           - type:  set
             field: length
             value:
-              data: 10
+              amount: 10
               unit: CENTIMETER
           - type:  set
             field: price
             value:
-              - data: 2
+              - amount: 2
                 currency: EUR
           - type:  set
             field: number_in_stock

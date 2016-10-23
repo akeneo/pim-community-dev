@@ -31,7 +31,7 @@ Feature: Browse products selected in rules datagrid
           - field: weight
             operator: >=
             value:
-              data: 750
+              amount: 750
               unit: GRAM
         actions:
           - type:  set
