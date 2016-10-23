@@ -65,7 +65,7 @@ class PricesPresenter extends NumberPresenter
         $parts = preg_split('/-/', $versionedAttribute);
         $currency = end($parts);
 
-        return ['data' => (float) $price, 'currency' => $currency];
+        return ['amount' => (float) $price, 'currency' => $currency];
     }
 
     /**
@@ -79,10 +79,10 @@ class PricesPresenter extends NumberPresenter
      */
     protected function getPrice(\NumberFormatter $numberFormatter, array $price)
     {
-        if (!isset($price['data'])) {
+        if (!isset($price['amount'])) {
             return '';
         }
 
-        return $numberFormatter->formatCurrency($price['data'], $price['currency']);
+        return $numberFormatter->formatCurrency($price['amount'], $price['currency']);
     }
 }

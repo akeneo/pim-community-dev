@@ -42,7 +42,7 @@ class MetricPresenter extends NumberPresenter
             $value = $this->getStructuredMetric($value, $options['versioned_attribute']);
         }
 
-        $amount = isset($value['data']) ? parent::present($value['data'], $options) : null;
+        $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;
         $unit = isset($value['unit'])
             ? $this->translatorProxy->trans($value['unit'], ['domain' => 'measures'])
             : null;
@@ -65,6 +65,6 @@ class MetricPresenter extends NumberPresenter
         $parts = preg_split('/-/', $versionedAttribute);
         $unit = end($parts);
 
-        return ('unit' === $unit) ? ['data' => null, 'unit' => $value] : ['data' => $value, 'unit' => null];
+        return ('unit' === $unit) ? ['amount' => null, 'unit' => $value] : ['amount' => $value, 'unit' => null];
     }
 }
