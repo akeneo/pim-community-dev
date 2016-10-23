@@ -81,6 +81,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('with_media')->willReturn(true);
 
         $productStandard1 = [
+            'identifier' => 'jackets',
             'enabled'    => true,
             'categories' => ['2015_clothes', '2016_clothes'],
             'groups'     => [],
@@ -140,6 +141,7 @@ class ProductWriterSpec extends ObjectBehavior
         ];
 
         $productStandard2 = [
+            'identifier' => 'sweaters',
             'type'   => 'product',
             'labels' => [
                 'en_US' => 'Sweaters',
@@ -189,7 +191,6 @@ class ProductWriterSpec extends ObjectBehavior
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 
-        $attributeRepository->getIdentifierCode()->willReturn('sku');
         $attributeRepository->getAttributeTypeByCodes(['sku', 'description', 'media'])
             ->willReturn(['media' => 'pim_catalog_image']);
         $attributeRepository->getAttributeTypeByCodes(['sku', 'media'])
