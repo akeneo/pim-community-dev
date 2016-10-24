@@ -148,8 +148,8 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
      */
     protected function preparePriceCondition(array $value, $joinAlias, $operator)
     {
-        $valueField = sprintf('%s.%s', $joinAlias, 'data');
-        $valueCondition = $this->prepareCriteriaCondition($valueField, $operator, $value['data']);
+        $valueField = sprintf('%s.%s', $joinAlias, 'amount');
+        $valueCondition = $this->prepareCriteriaCondition($valueField, $operator, $value['amount']);
 
         $currencyField = sprintf('%s.%s', $joinAlias, 'currency');
         $currencyCondition = $this->prepareCriteriaCondition($currencyField, '=', $value['currency']);
@@ -167,10 +167,10 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'price', gettype($data));
         }
 
-        if (!array_key_exists('data', $data)) {
+        if (!array_key_exists('amount', $data)) {
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
-                'data',
+                'amount',
                 'filter',
                 'price',
                 print_r($data, true)
@@ -187,13 +187,13 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             );
         }
 
-        if (null !== $data['data'] && !is_numeric($data['data'])) {
+        if (null !== $data['amount'] && !is_numeric($data['amount'])) {
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
-                'data',
+                'amount',
                 'filter',
                 'price',
-                gettype($data['data'])
+                gettype($data['amount'])
             );
         }
 

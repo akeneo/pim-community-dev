@@ -55,18 +55,18 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
-            $value['data'] = (float) $value['data'];
+            $value['amount'] = (float) $value['amount'];
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf(
-            '%s.%s.%s.data',
+            '%s.%s.%s.amount',
             ProductQueryUtility::NORMALIZED_FIELD,
             $field,
             $value['currency']
         );
 
-        $this->applyFilter($field, $operator, $value['data']);
+        $this->applyFilter($field, $operator, $value['amount']);
 
         return $this;
     }
@@ -119,10 +119,10 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'price', gettype($data));
         }
 
-        if (!array_key_exists('data', $data)) {
+        if (!array_key_exists('amount', $data)) {
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
-                'data',
+                'amount',
                 'filter',
                 'price',
                 print_r($data, true)
@@ -139,13 +139,13 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             );
         }
 
-        if (null !== $data['data'] && !is_numeric($data['data'])) {
+        if (null !== $data['amount'] && !is_numeric($data['amount'])) {
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
-                'data',
+                'amount',
                 'filter',
                 'price',
-                gettype($data['data'])
+                gettype($data['amount'])
             );
         }
 
