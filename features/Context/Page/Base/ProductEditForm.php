@@ -170,12 +170,17 @@ class ProductEditForm extends Form
         }
 
         $labelNode = $this->spin(function () use ($label) {
-            return $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
+            return $this->find('css', sprintf('.AknFieldContainer .AknFieldContainer-label:contains("%s")', $label));
         }, 'Cannot find the field label');
 
-        $container = $this->spin(function () use ($labelNode) {
-            return $labelNode->getParent()->getParent()->getParent();
-        }, sprintf('Cannot find parents for "%s" field', $label));
+        $container = $labelNode;
+        while (!$container->hasClass('AknFieldContainer') && null !== $container->getParent()) {
+            $container = $container->getParent();
+        }
+
+        if (!$container->hasClass('AknFieldContainer')) {
+            throw new ElementNotFoundException($this->getSession(), 'compound field', 'class', 'AknFieldContainer');
+        }
 
         $container->name = $label;
 
@@ -424,7 +429,7 @@ class ProductEditForm extends Form
         if ($isLabel) {
             $formFieldWrapper = $fieldContainer->getParent()->getParent();
         } else {
-            $formFieldWrapper = $fieldContainer->find('css', 'div.form-field');
+            $formFieldWrapper = $fieldContainer->find('css', '.AknFieldContainer-formField');
         }
 
         if ($formFieldWrapper->hasClass('akeneo-datepicker-field')) {
