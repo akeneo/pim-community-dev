@@ -19,6 +19,7 @@ parameters:
     pim_enrich.normalizer.variant_group_violation.class:           Pim\Bundle\EnrichBundle\Normalizer\VariantGroupViolationNormalizer
     pim_enrich.normalizer.datagrid_view.class:                     Pim\Bundle\EnrichBundle\Normalizer\DatagridViewNormalizer
     pim_enrich.normalizer.structured.attribute_option.class:       Pim\Bundle\EnrichBundle\Normalizer\StructuredAttributeOptionNormalizer
+    pim_enrich.normalizer.category.class:                          Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -166,3 +167,10 @@ services:
             - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer}
+
+    pim_enrich.normalizer.category:
+        class: '%pim_enrich.normalizer.category.class%'
+        arguments:
+            - '@pim_serializer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
