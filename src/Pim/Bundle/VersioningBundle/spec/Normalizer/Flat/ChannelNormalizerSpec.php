@@ -38,9 +38,9 @@ class ChannelNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_channel(
+        $translationNormalizer,
         ChannelInterface $channel,
-        ChannelNormalizer $channelNormalizerStandard,
-        TranslationNormalizer $translationNormalizer
+        ChannelNormalizer $channelNormalizerStandard
     ) {
         $translationNormalizer->supportsNormalization(Argument::cetera(), 'flat')->willReturn(true);
         $translationNormalizer->normalize(Argument::cetera(), 'flat', [])->willReturn(
@@ -67,8 +67,6 @@ class ChannelNormalizerSpec extends ObjectBehavior
                 ],
             ]
         );
-
-        $transNormalizer->normalize(Argument::cetera())->willReturn(['labels' => []]);
 
         $this->normalize($channel)->shouldReturn(
             [

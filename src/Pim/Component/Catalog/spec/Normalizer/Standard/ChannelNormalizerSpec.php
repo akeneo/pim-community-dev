@@ -8,6 +8,7 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ChannelNormalizerSpec extends ObjectBehavior
@@ -48,7 +49,6 @@ class ChannelNormalizerSpec extends ObjectBehavior
         ];
 
         $channel->getCode()->willReturn('my_code');
-        $channel->getLabel()->willReturn('my_label');
         $channel->getCurrencies()->willReturn([$currencyEUR, $currencyUSD]);
         $channel->getLocaleCodes()->willReturn(['fr_FR', 'en_US', 'de_DE', 'es_ES']);
         $channel->getCategory()->willReturn($category);
@@ -59,15 +59,23 @@ class ChannelNormalizerSpec extends ObjectBehavior
         $currencyEUR->getCode()->willReturn('EUR');
         $currencyUSD->getCode()->willReturn('USD');
 
-        $translationNormalizer->normalize($channel, 'standard', ['locales' => ['en_US']])->willReturn(['en_US' => 'my_label_en']);
+        $translationNormalizer->normalize($channel, Argument::any(), [])->willReturn(
+            [
+                'en_US' => 'My label',
+                'fr_FR' => 'Mon label',
+            ]
+        );
 
-        $this->normalize($channel, 'standard', ['locales' => ['en_US']])->shouldReturn([
+        $this->normalize($channel, 'standard', [])->shouldReturn([
             'code'             => 'my_code',
             'currencies'       => ['EUR', 'USD'],
             'locales'          => ['fr_FR', 'en_US', 'de_DE', 'es_ES'],
             'category_tree'    => 'winter',
             'conversion_units' => $units,
-            'labels'            => ['en_US' => 'my_label_en'],
+            'labels'           => [
+                'en_US' => 'My label',
+                'fr_FR' => 'Mon label'
+            ]
         ]);
     }
 }
