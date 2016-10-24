@@ -166,7 +166,7 @@ pim_enrich:
       copy:
         select: Seleccione
         all: Todos
-        all_visible: Todo visible
+        all_visible: Todo lo visible
         none: Ninguno
         copy: Copiar
       variant_group:

@@ -14,6 +14,9 @@ confirmation:
     user: Вы действительно хотите удалить этого пользователя?
     role: Вы действительно хотите удалить эту роль?
 pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Быстрый экспорт
   mass_action:
     delete:
       confirm_content: Вы уверены, что хотите удалить выбранные продукты?
@@ -104,6 +107,11 @@ pim_enrich:
     link:
       back_to_grid: Вернуться к списку
   entity:
+    save:
+      label: Сохранить
+    info:
+      update_failed: Не удалось обновить
+      update_successful: Обновление завершено
     product:
       title: продукт
       btn:
@@ -160,11 +168,12 @@ pim_enrich:
         all: Все
         all_visible: Все видимые
         none: Нет
+        copy: Копия
       variant_group:
         updated_by: Обновлено группой вариантов
         switch:
-          "yes": true
-          "no": false
+          "yes": Да
+          "no": Нет
       optional_attribute:
         remove: Удалить этот атрибут
       locale_specific_attribute:
@@ -207,9 +216,11 @@ pim_enrich:
             add: Добавить
             add_attributes: Добавить атрибуты
           info:
-            search_attributes: Поиск
+            search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
             attributes_selected: 'Выбран(o) {{ attributeCount }} атрибут(ов)'
+            no_match: Совпадений не найдено
+            load_more: Загрузка дополнительных результатов...
         categories:
           title: Категории
       panel:
@@ -218,11 +229,12 @@ pim_enrich:
           info:
             no_family: Семейство не определено. Пожалуйста определите семейство для вычисления завершенности этого продукта.
             no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить завершенность для нового семейства.
+          missing_values: Отсутствующуют значения
         history:
           title: Журнал
       switch:
-        "no": false
-        "yes": true
+        "no": Нет
+        "yes": Да
       sequential_edit:
         info:
           products: продукты
@@ -251,5 +263,12 @@ pim_enrich:
         title: Добавить элемента списка для атрибута
         confirm: Добавить
         cancel: Отмена
+    entity:
+      switch:
+        "no": Нет
+        "yes": Да
+  mass_edit_action:
+    edit_common_attributes:
+      description: 'Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.'
 pim_enrich.error:
   exception.title: 'Ах, нет! Произошла ошибка {{ status_code }}...'

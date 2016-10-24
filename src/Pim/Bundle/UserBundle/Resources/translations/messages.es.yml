@@ -60,6 +60,7 @@ Business Units: Unidades de negocio
 Email synchronization settings: Configuración de sincronización de correo electrónico
 Host: Host
 Port: Puerto
+Ssl: SSL
 Last logged in: Última visita
 Login count: Contador de inicios de sesión
 Additional Information: Información Adicional
@@ -79,7 +80,7 @@ Generate key: Generar clave
 Primary: primaria
 Removed user: Usuario eliminado
 user:
-  product_grid_filters: Filtross de grilla de productos
+  product_grid_filters: Filtros de grilla de productos
   default_product_grid_view:
     label: Vista de grilla de producto automática
   default_grid_view:
