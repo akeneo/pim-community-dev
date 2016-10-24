@@ -72,6 +72,7 @@ Feature: Edit attributes of a variant group
     Then the field ecommerce Description should contain "British ecommerce description"
     And the field tablet Description should contain "British tablet description"
 
+  @skip temporary disabling Behat
   Scenario: Display a message when variant group has no attributes
     Given I am on the "jackets" variant group page
     And I visit the "Attributes" tab
