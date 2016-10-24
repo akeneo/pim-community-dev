@@ -102,8 +102,7 @@ img {
 
 button,
 input,
-select,
-textarea {
+select {
   margin: 0;
   font-size: 100%;
 }
@@ -149,11 +148,6 @@ input[type="search"] {
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
-}
-
-textarea {
-  overflow: auto;
-  vertical-align: top;
 }
 
 @media print {
@@ -966,21 +960,10 @@ legend small {
   color: #999999;
 }
 
-input,
-button,
-select,
-textarea {
-  font-family: @sansFontFamily;
-}
 
 input,
-textarea,
 .uneditable-input {
   width: 206px;
-}
-
-textarea {
-  height: auto;
 }
 
 textarea:focus,
@@ -1687,10 +1670,8 @@ input.search-query {
 
 .form-search input,
 .form-inline input,
-.form-horizontal input,
 .form-search textarea,
 .form-inline textarea,
-.form-horizontal textarea,
 .form-search select,
 .form-inline select,
 .form-horizontal select,

@@ -769,17 +769,6 @@ h3.tab-header {
   }
 }
 
-.field-container {
-  .display-flex();
-
-  & > * {
-    .flex(1);
-    &:not(:last-child) {
-      margin-right: 20px;
-    }
-  }
-}
-
 .comparison-elements-container {
   display: none;
 
@@ -880,22 +869,6 @@ h3.tab-header {
     > * {
       display: block;
     }
-  }
-
-  input:not([type="file"]),
-  textarea {
-    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
-    font-size: @font-size-12;
-    color: @color-form-input;
-    min-height: 30px;
-    margin-bottom: 0;
-    width: 100%;
-    .border-radius(0);
-    .box-sizing();
-  }
-
-  &.akeneo-text-field > input {
-    width: 100%;
   }
 
   &.akeneo-price-collection-field {

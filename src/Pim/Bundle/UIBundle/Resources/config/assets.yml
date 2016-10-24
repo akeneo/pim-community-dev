@@ -43,6 +43,7 @@ css:
         - bundles/pimui/less/components/Caret.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/DropdownButton.less
+        - bundles/pimui/less/components/FieldContainer.less
         - bundles/pimui/less/components/FilterBox.less
         - bundles/pimui/less/components/FilterChoice.less
         - bundles/pimui/less/components/FilterDate.less
@@ -55,6 +56,8 @@ css:
         - bundles/pimui/less/components/Notification.less
         - bundles/pimui/less/components/NotificationsList.less
         - bundles/pimui/less/components/Pagination.less
+        - bundles/pimui/less/components/TextareaField.less
+        - bundles/pimui/less/components/TextField.less
         - bundles/pimui/less/components/TitleContainer.less
         - bundles/pimui/less/components/UserMenu.less
         - bundles/pimui/less/bemFixes.less
