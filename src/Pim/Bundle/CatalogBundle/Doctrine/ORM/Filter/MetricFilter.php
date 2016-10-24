@@ -150,10 +150,10 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'metric', gettype($data));
         }
 
-        if (!array_key_exists('data', $data)) {
+        if (!array_key_exists('amount', $data)) {
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
-                'data',
+                'amount',
                 'filter',
                 'metric',
                 print_r($data, true)
@@ -170,13 +170,13 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        if (null !== $data['data'] && !is_numeric($data['data'])) {
+        if (null !== $data['amount'] && !is_numeric($data['amount'])) {
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
-                'data',
+                'amount',
                 'filter',
                 'metric',
-                gettype($data['data'])
+                gettype($data['amount'])
             );
         }
 
@@ -218,6 +218,6 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     {
         $this->measureConverter->setFamily($attribute->getMetricFamily());
 
-        return $this->measureConverter->convertBaseToStandard($data['unit'], $data['data']);
+        return $this->measureConverter->convertBaseToStandard($data['unit'], $data['amount']);
     }
 }

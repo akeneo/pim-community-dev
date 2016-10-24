@@ -37,7 +37,7 @@ class PricesPresenter extends NumberPresenter
             ->numberFactory
             ->create(array_merge($options, ['type' => \NumberFormatter::CURRENCY]));
 
-        if (array_key_exists('data', $prices) && array_key_exists('currency', $prices)) {
+        if (array_key_exists('amount', $prices) && array_key_exists('currency', $prices)) {
             return $this->getPrice($numberFormatter, $prices);
         }
 
