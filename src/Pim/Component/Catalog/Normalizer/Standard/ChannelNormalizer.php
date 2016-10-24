@@ -13,14 +13,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ChannelNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
-    protected $transNormalizer;
+    protected $translationNormalizer;
 
     /**
-     * @param NormalizerInterface $transNormalizer
+     * @param NormalizerInterface $translationNormalizer
      */
-    public function __construct(NormalizerInterface $transNormalizer)
+    public function __construct(NormalizerInterface $translationNormalizer)
     {
-        $this->transNormalizer = $transNormalizer;
+        $this->translationNormalizer = $translationNormalizer;
     }
 
     /**
@@ -34,7 +34,8 @@ class ChannelNormalizer implements NormalizerInterface
             'locales'          => $channel->getLocaleCodes(),
             'category_tree'    => $channel->getCategory()->getCode(),
             'conversion_units' => $channel->getConversionUnits(),
-            'labels'           => $this->transNormalizer->normalize($channel, $format, $context)
+            'labels'           => $this->translationNormalizer->normalize($channel, $format, $context)
+
         ];
     }
 

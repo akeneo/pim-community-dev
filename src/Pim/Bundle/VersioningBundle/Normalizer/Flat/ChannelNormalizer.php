@@ -59,6 +59,9 @@ class ChannelNormalizer implements NormalizerInterface
         unset($flatChannel['conversion_units']);
         $flatChannel += $this->normalizeConversionUnits($standardChannel['conversion_units']);
 
+        $flatChannel['category'] = $standardChannel['category_tree'];
+        unset($flatChannel['category_tree']);
+
         return $flatChannel;
     }
 
