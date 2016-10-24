@@ -357,40 +357,6 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * Merge new values in original values
-     *
-     * @param array $originalValues
-     * @param array $newValues
-     *
-     * @return array
-     */
-    protected function mergeValuesData(array $originalValues, array $newValues)
-    {
-        foreach ($newValues as $code => $values) {
-            if (!isset($originalValues[$code])) {
-                $originalValues[$code] = $values;
-            } else {
-                foreach ($values as $newValue) {
-                    $newKey = $code;
-                    $newKey .= isset($value['locale']) ? '-' . $value['locale'] : '';
-                    $newKey .= isset($value['scope']) ? '-' . $value['scope'] : '';
-                    foreach (array_keys($originalValues[$code]) as $currentIndex) {
-                        $currentKey = $code;
-                        $currentKey .= isset($value['locale']) ? '-' . $value['locale'] : '';
-                        $currentKey .= isset($value['scope']) ? '-' . $value['scope'] : '';
-                        if ($newKey === $currentKey) {
-                            unset($originalValues[$code][$currentIndex]);
-                        }
-                    }
-                    $originalValues[$code][] = $newValue;
-                }
-            }
-        }
-
-        return $originalValues;
-    }
-
-    /**
      * Replace media local paths by stored paths in the merged values data as
      * the file has already been stored during the construction of the product values
      * (in the method transformArrayToValues).
