@@ -175,9 +175,6 @@ a.accordion-toggle {
 .form-horizontal .control-group:not(:empty) {
   margin-bottom: 15px;
   label.control-label {
-    &:not(.add-on) {
-      max-height: 25px;
-    }
     &:after {
       content: '';
     }
@@ -324,9 +321,6 @@ a.add-attribute-option {
     &.no-label .control-group {
       label.control-label {
         width: 30px;
-        &.add-on {
-          width: 25px;
-        }
       }
       .controls {
         margin-left: 40px;
@@ -541,9 +535,6 @@ table i {
     &.input-large {
       width: 200px;
     }
-    &.add-on {
-      background-color: @white;
-    }
   }
 }
 
@@ -618,10 +609,7 @@ table.comparison .no-label .attribute-field.scopable {
   margin-bottom: 20px;
   >div {
     &:first-of-type .controls {
-      .control-label.add-on {
-        background-color: @backgroundColor-white;
-        border-top-left-radius: 3px;
-      }
+      .control-label
       input, select, textarea {
         border-top-right-radius: 3px;
       }
@@ -630,16 +618,14 @@ table.comparison .no-label .attribute-field.scopable {
       }
     }
     &:last-of-type .controls {
-      .control-label.add-on {
-        border-bottom-left-radius: 3px;
-      }
+      .control-label
       input, select, textarea {
         border-bottom-right-radius: 3px;
       }
     }
     &:not(.first):not(:first-of-type) {
       &>.control-group {
-        .control-label.add-on, input, select, textarea {
+        input, select, textarea {
           border-top: 0;
         }
       }
@@ -650,28 +636,10 @@ table.comparison .no-label .attribute-field.scopable {
     font-size: @font-size-14;
     .user-select(none);
   }
-  label.control-label.add-on {
-    width: 25px;
-    margin-bottom: 0;
-    font-weight: bold;
-    text-align: center;
-    background-color: @whiteDark;
-    border-right-width: 0;
-    border-radius: 0;
-    .user-select(none);
-  }
   .control-group {
     margin: 0;
     &>.controls.input-prepend {
       position: relative;
-      .control-label.add-on {
-        position: absolute;
-        height: 100%;
-        font-size: @font-size-15;
-        &[style] {
-          text-shadow: none;
-        }
-      }
       .scopable-input {
         position: relative;
         left: 25px;

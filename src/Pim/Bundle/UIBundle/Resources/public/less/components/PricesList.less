@@ -1,0 +1,30 @@
+@import '../base/variables';
+
+.AknPricesList {
+  display: flex;
+  flex-wrap: wrap;
+
+  &-item {
+    // The container is 500px wide, we can insert 3 prices in it.
+    width: (500px - 2*8px)/3;
+    display: flex;
+
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+
+  &-currency {
+    height: @AknFormHeight - 2px;
+    line-height: @AknFormHeight - 2px;
+    width: @AknFormHeight;
+    border: 1px solid @AknBorderColor;
+    background: lighten(@AknGrey, 25%);
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    padding: 0 4px;
+    border-left: none;
+    display: block;
+    box-sizing: content-box;
+  }
+}

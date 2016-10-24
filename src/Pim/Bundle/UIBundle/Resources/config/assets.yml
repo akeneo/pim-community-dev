@@ -56,6 +56,7 @@ css:
         - bundles/pimui/less/components/Notification.less
         - bundles/pimui/less/components/NotificationsList.less
         - bundles/pimui/less/components/Pagination.less
+        - bundles/pimui/less/components/PricesList.less
         - bundles/pimui/less/components/TextareaField.less
         - bundles/pimui/less/components/TextField.less
         - bundles/pimui/less/components/TitleContainer.less
