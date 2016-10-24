@@ -99,7 +99,7 @@ class MediaMigration
         /** @var \Doctrine\ORM\EntityManagerInterface $em */
         $em = null;
         if (!$this->upgradeHelper->areProductsStoredInMongo()) {
-            $this->container->get('doctrine.orm.entity_manager');
+            $em = $this->container->get('doctrine.orm.entity_manager');
         };
 
         $this->output->writeln(sprintf('Storing medias located in <comment>%s</comment> to the catalog filesystem...', $this->mediaDirectory));
