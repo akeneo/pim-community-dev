@@ -78,25 +78,25 @@ class ProductUpdater implements ObjectUpdaterInterface
      *                   "locale": null,
      *                   "scope":  ecommerce,
      *                   "data":   [
-     *                       {"data": 10, "currency": "EUR"},
-     *                       {"data": 24, "currency": "USD"},
-     *                       {"data": 20, "currency": "CHF"}
+     *                       {"amount": 10, "currency": "EUR"},
+     *                       {"amount": 24, "currency": "USD"},
+     *                       {"amount: 20, "currency": "CHF"}
      *                   ]
      *               }
      *               {
      *                   "locale": null,
      *                   "scope":  mobile,
      *                   "data":   [
-     *                       {"data": 11, "currency": "EUR"},
-     *                       {"data": 25, "currency": "USD"},
-     *                       {"data": 21, "currency": "CHF"}
+     *                       {"amount": 11, "currency": "EUR"},
+     *                       {"amount": 25, "currency": "USD"},
+     *                       {"amount": 21, "currency": "CHF"}
      *                   ]
      *               }
      *          ],
      *          "length": [{
      *              "locale": "en_US",
      *              "scope":  "mobile",
-     *              "data":   {"data": "10", "unit": "CENTIMETER"}
+     *              "data":   {"amount": "10", "unit": "CENTIMETER"}
      *          }]
      *      },
      *      "enabled": true,
