@@ -325,6 +325,7 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_enrich.twig.category_extension'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.currency:
         class: '%pim_enrich.controller.rest.currency.class%'

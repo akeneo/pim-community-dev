@@ -144,45 +144,47 @@ define(
                     FetcherRegistry.getFetcher('channel')
                         .fetch(this.attributes.channel)
                         .then(function (channel) {
-                            this.currentTree = channel.category;
+                            return $.when(
+                                FetcherRegistry.getFetcher('category').fetch(channel.category_tree)
+                            ).then(function (category) {
+                                this.$el.html(this.template({
+                                    tree: category,
+                                    label: i18n.getLabel(
+                                        category.labels,
+                                        UserContext.get('uiLocale'),
+                                        category.code
+                                    )
+                                }));
 
-                            this.$el.html(this.template({
-                                tree: this.currentTree,
-                                label: i18n.getLabel(
-                                    this.currentTree.labels,
-                                    UserContext.get('uiLocale'),
-                                    this.currentTree.code
-                                )
-                            }));
+                                this.$('.root').jstree(_.extend(this.config, {
+                                    json_data: {
+                                        ajax: {
+                                            url: function (node) {
+                                                if (-1 === node && 0 < this.attributes.categories.length) {
+                                                    // First load of the tree: get the checked categories
+                                                    return Routing.generate(
+                                                        'pim_enrich_category_rest_list_selected_children',
+                                                        {
+                                                            identifier: category.code,
+                                                            selected: this.attributes.categories
+                                                        }
+                                                    );
+                                                }
 
-                            this.$('.root').jstree(_.extend(this.config, {
-                                json_data: {
-                                    ajax: {
-                                        url: function (node) {
-                                            if (-1 === node && 0 < this.attributes.categories.length) {
-                                                // First load of the tree: get the checked categories
-                                                return Routing.generate(
-                                                    'pim_enrich_category_rest_list_selected_children',
-                                                    {
-                                                        identifier: this.currentTree.code,
-                                                        selected: this.attributes.categories
-                                                    }
-                                                );
+                                                return Routing.generate('pim_enrich_categorytree_children', {
+                                                    _format: 'json'
+                                                });
+                                            }.bind(this),
+                                            data: function (node) {
+                                                if (-1 === node) {
+                                                    return {id: this.get_container().data('tree-id')};
+                                                }
+
+                                                return {id: node.attr('id').replace('node_', '')};
                                             }
-
-                                            return Routing.generate('pim_enrich_categorytree_children', {
-                                                _format: 'json'
-                                            });
-                                        }.bind(this),
-                                        data: function (node) {
-                                            if (-1 === node) {
-                                                return {id: this.get_container().data('tree-id')};
-                                            }
-
-                                            return {id: node.attr('id').replace('node_', '')};
                                         }
                                     }
-                                }}))
+                                }))
                                 .on('check_node.jstree', function (event, data) {
                                     this.checkNode(data);
                                 }.bind(this))
@@ -192,6 +194,7 @@ define(
                                 .on('load_node.jstree', function (event, data) {
                                     this.loadNode(data);
                                 }.bind(this));
+                            }.bind(this));
                         }.bind(this))
                         .done(function () {
                             this.$el.parent().find('.loading-mask').remove();
