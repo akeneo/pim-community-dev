@@ -60,7 +60,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf(
-            '%s.%s.%s.amount',
+            '%s.%s.%s.data',
             ProductQueryUtility::NORMALIZED_FIELD,
             $field,
             $value['currency']

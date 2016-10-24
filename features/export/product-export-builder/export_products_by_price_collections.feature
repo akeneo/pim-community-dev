@@ -19,7 +19,7 @@ Feature: Export products according to price attribute filter
   Scenario: Successfully export products by their price values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
-      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "price", "operator": ">", "value": {"data": 20, "currency": "EUR"}}]} |
+      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "price", "operator": ">", "value": {"amount": 20, "currency": "EUR"}}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish

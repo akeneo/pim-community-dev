@@ -148,7 +148,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
      */
     protected function preparePriceCondition(array $value, $joinAlias, $operator)
     {
-        $valueField = sprintf('%s.%s', $joinAlias, 'amount');
+        $valueField = sprintf('%s.%s', $joinAlias, 'data');
         $valueCondition = $this->prepareCriteriaCondition($valueField, $operator, $value['amount']);
 
         $currencyField = sprintf('%s.%s', $joinAlias, 'currency');
