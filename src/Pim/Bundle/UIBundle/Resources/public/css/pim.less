@@ -401,69 +401,12 @@ body {
   min-height: 600px;
 }
 
-header.tab-header {
-  min-height: 44px;
-  border-left: none;
-  border-bottom: solid 1px @color-ccc;
-  background: @akeneoGreyLighter;
-  padding: 0;
-  .display-flex();
-  justify-content: flex-start;
-
-  h3 {
-    line-height: 24px;
-    margin-left: 20px;
-    font-size: @font-size-16;
-  }
-}
-
 h3.tab-header {
   height: 44px;
   border-left: none;
   border-bottom: solid 1px @grayLighter;
   background: @whiteDark;
   padding: 0 20px;
-}
-
-.attribute-actions {
-  .attribute-edit-actions {
-    margin-right: 0;
-    flex-wrap: wrap;
-
-    .context-selectors {
-      min-width: 250px;
-    }
-  }
-
-  & > div {
-    white-space: nowrap;
-  }
-
-  .attribute-edit-actions, .attribute-copy-actions {
-    padding: 0;
-    .display-flex();
-
-    .other-actions {
-      .display-flex();
-      .flex(1);
-      .justify-content(flex-end);
-      min-width: 100px;
-    }
-  }
-
-  .attribute-edit-actions {
-    .flex(1);
-  }
-
-  .attribute-copy-actions {
-    .context-selectors {
-      margin-left: 5px;
-    }
-
-    & > div {
-      .flex-shrink(0);
-    }
-  }
 }
 
 .comparison-mode {

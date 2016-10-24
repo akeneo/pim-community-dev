@@ -35,6 +35,7 @@ css:
         - bundles/pimui/less/components/ActionButton.less
         - bundles/pimui/less/components/ActionButtonsList.less
         - bundles/pimui/less/components/AllSelector.less
+        - bundles/pimui/less/components/AttributeActions.less
         - bundles/pimui/less/components/Bell.less
         - bundles/pimui/less/components/Breadcrumb.less
         - bundles/pimui/less/components/BreadcrumbContainer.less

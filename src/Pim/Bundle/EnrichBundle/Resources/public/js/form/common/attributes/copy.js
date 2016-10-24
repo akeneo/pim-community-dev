@@ -35,7 +35,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'attribute-copy-actions',
+            className: 'AttributeActions-copyActions attribute-copy-actions',
             copyFields: {},
             copying: false,
             locale: null,

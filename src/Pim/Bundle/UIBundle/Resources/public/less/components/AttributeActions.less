@@ -1,0 +1,25 @@
+@import '../base/variables';
+
+.AknAttributeActions {
+  background: lighten(@AknGrey, 25%);
+  border-bottom: 1px solid @AknBorderColor;
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &-editActions {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    align-items: center;
+  }
+
+  &-copyActions {
+    order: 10;
+  }
+
+  &-contextSelectors {
+    display: flex;
+  }
+}
