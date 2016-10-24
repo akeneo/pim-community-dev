@@ -1,0 +1,46 @@
+Close: Zatvori
+Update: Ažuriraj
+Selected Rows: Odabrani retci
+"Yes": Da
+Yes, Delete: Da, Izbriši
+Yes, I Agree: Da, slažem se
+Yes, do it: Da, uradi
+"No": Ne
+Ok, got it.: Dobro, razumijem.
+Cancel: Poništi
+Delete Confirmation: Potvrdi brisanje
+Edit: Uredi
+Unexpected error occured. Please contact system administrator.: Došlo je do neočekivane pogreške. Obratite se administratoru sustava.
+Now: Sada
+Prev: Prethodna
+Next: Sljedeća
+Today: Danas
+Wk: Tj
+Done: Gotovo
+AM: AM
+A: A
+PM: PM
+P: P
+Choose Time: Odaberi vrijeme
+Time: Vrijeme
+Hour: Sat
+Minute: Minuta
+Second: Sekunda
+Millisecond: Milisekundi
+Microsecond: Mikrosekundi
+"Time Zone": Vremenska zona
+Localized value: Vrijednost regionalnih postavki
+Columns: Stupci
+Datagrid Configuration: DataGrid konfiguracija
+Apply: Primijeni
+Action: Akcija
+Unit: Jedinica
+Currency: Valuta
+jstree:
+  all: Svi proizvodi
+  unclassified: Neklasificirani proizvodi
+  product:
+    all: Svi proizvodi
+    unclassified: Neklasificirani proizvodi
+  no_tree: Nema dostupanog stabla
+  include_sub: Uključuje pod-kategorije
