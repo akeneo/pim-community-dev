@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Pim\Component\Catalog\Normalizer\Standard\AttributeNormalizer;
@@ -44,90 +43,6 @@ class AttributeNormalizerSpec extends ObjectBehavior
         TranslationNormalizer $translationNormalizer,
         AttributeInterface $attribute
     ) {
-        $attribute->getOptions()->willReturn(new ArrayCollection());
-
-        $translationNormalizer->supportsNormalization(Argument::cetera())
-            ->willReturn(true);
-        $translationNormalizer->normalize(Argument::cetera())
-            ->willReturn([
-                'label-en_US' => 'My attribute',
-                'label-fr_FR' => 'Mon attribut',
-            ]);
-
-        $attributeNormalizerStandard->supportsNormalization($attribute, 'standard', [])
-            ->willReturn(true);
-        $attributeNormalizerStandard->normalize($attribute, 'standard', [])
-            ->willReturn([
-                'type'                   => 'Yes/No',
-                'code'                   => 'attribute_size',
-                'group'                  => 'size',
-                'unique'                 => true,
-                'useable_as_grid_filter' => false,
-                'allowed_extensions'     => ['csv', 'xml', 'json'],
-                'labels' => [
-                    'en_US' => 'My attribute',
-                    'fr_FR' => 'Mon attribut'
-                ],
-                'metric_family'          => 'Length',
-                'default_metric_unit'    => 'Centimenter',
-                'reference_data_name'    => 'color',
-                'available_locales'      => ['en_US', 'fr_FR'],
-                'max_characters'         => null,
-                'validation_rule'        => null,
-                'validation_regexp'      => null,
-                'wysiwyg_enabled'        => false,
-                'number_min'             => null,
-                'number_max'             => null,
-                'decimals_allowed'       => false,
-                'negative_allowed'       => false,
-                'date_min'               => null,
-                'date_max'               => null,
-                'max_file_size'          => null,
-                'minimum_input_length'   => null,
-                'sort_order'             => 0,
-                'localizable'            => true,
-                'scopable'               => false,
-            ]);
-
-        $this->normalize($attribute, 'flat')->shouldReturn(
-            [
-                'type'                   => 'Yes/No',
-                'code'                   => 'attribute_size',
-                'group'                  => 'size',
-                'unique'                 => true,
-                'useable_as_grid_filter' => false,
-                'allowed_extensions'     => 'csv,xml,json',
-                'metric_family'          => 'Length',
-                'default_metric_unit'    => 'Centimenter',
-                'reference_data_name'    => 'color',
-                'available_locales'      => 'en_US,fr_FR',
-                'max_characters'         => null,
-                'validation_rule'        => null,
-                'validation_regexp'      => null,
-                'wysiwyg_enabled'        => false,
-                'number_min'             => null,
-                'number_max'             => null,
-                'decimals_allowed'       => false,
-                'negative_allowed'       => false,
-                'date_min'               => null,
-                'date_max'               => null,
-                'max_file_size'          => null,
-                'minimum_input_length'   => null,
-                'sort_order'             => 0,
-                'localizable'            => true,
-                'scopable'               => false,
-                'label-en_US'            => 'My attribute',
-                'label-fr_FR'            => 'Mon attribut',
-                'options'                => null,
-            ]
-        );
-    }
-
-    function it_normalizes_attribute_for_versioning(
-        AttributeNormalizer $attributeNormalizerStandard,
-        TranslationNormalizer $translationNormalizer,
-        AttributeInterface $attribute
-    ) {
         $size = new AttributeOption();
         $size->setCode('size');
         $en = new AttributeOptionValue();
@@ -139,6 +54,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $size->addOptionValue($en);
         $size->addOptionValue($fr);
         $attribute->getOptions()->willReturn(new ArrayCollection([$size]));
+        $attribute->isRequired()->willReturn(false);
 
         $translationNormalizer->supportsNormalization(Argument::cetera())
             ->willReturn(true);
@@ -174,7 +90,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'minimum_input_length'   => null,
                 'sort_order'             => 1,
                 'localizable'            => true,
-                'scope'                 => 'Channel',
+                'scopable'               => true,
                 'required'               => false
             ]);
 
@@ -204,9 +120,9 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'minimum_input_length'   => null,
                 'sort_order'             => 1,
                 'localizable'            => true,
-                'scope'                  => 'Channel',
                 'required'               => false,
                 'options'                => 'Code:size,en_US:big,fr_FR:grand',
+                'scope'                  => 'Channel',
             ]
         );
     }
