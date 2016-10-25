@@ -52,7 +52,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *     },
      *     'locales': ['en_US'],
      *     'currencies': ['EUR', 'USD'],
-     *     'tree': 'master'
+     *     'category_tree': 'master'
      * }
      */
     public function update($channel, array $data, array $options = [])
@@ -86,8 +86,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
             case 'code':
                 $channel->setCode($data);
                 break;
-            case 'tree':
-                $this->setTree($channel, $data);
+            case 'category_tree':
+                $this->setCategoryTree($channel, $data);
                 break;
             case 'locales':
                 $this->setLocales($channel, $data);
@@ -108,7 +108,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * @param ChannelInterface $channel
      * @param string           $treeCode
      */
-    protected function setTree(ChannelInterface $channel, $treeCode)
+    protected function setCategoryTree(ChannelInterface $channel, $treeCode)
     {
         $category = $this->categoryRepository->findOneByIdentifier($treeCode);
         if (null === $category) {

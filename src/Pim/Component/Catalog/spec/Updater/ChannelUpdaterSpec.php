@@ -57,14 +57,14 @@ class ChannelUpdaterSpec extends ObjectBehavior
         ChannelTranslationInterface $channelTranslation
     ) {
         $values = [
-            'code'  => 'ecommerce',
-            'labels' => [
+            'code'             => 'ecommerce',
+            'labels'           => [
                 'fr_FR' => 'Tablette',
                 'en_US' => 'Tablet',
             ],
-            'locales'    => ['en_US', 'fr_FR'],
-            'currencies' => ['EUR', 'USD'],
-            'tree'       => 'master_catalog',
+            'locales'          => ['en_US', 'fr_FR'],
+            'currencies'       => ['EUR', 'USD'],
+            'category_tree'    => 'master_catalog',
             'conversion_units' => [
                 'weight' => 'GRAM'
             ],
@@ -106,12 +106,12 @@ class ChannelUpdaterSpec extends ObjectBehavior
         CurrencyInterface $eur
     ) {
         $values = [
-            'code'       => 'ecommerce',
-            'tree'       => 'unknown',
-            'labels'     => [
+            'code'          => 'ecommerce',
+            'category_tree' => 'unknown',
+            'labels'        => [
                 'fr_FR' => 'E-commerce',
             ],
-            'locales'    => ['fr_FR'],
+            'locales'       => ['fr_FR'],
             'currencies' => ['EUR']
         ];
         $categoryRepository->findOneByIdentifier('unknown')->willReturn(null);
@@ -133,10 +133,10 @@ class ChannelUpdaterSpec extends ObjectBehavior
         CurrencyInterface $eur
     ) {
         $values = [
-            'code'       => 'ecommerce',
-            'locales'    => ['unknown'],
-            'currencies' => ['EUR'],
-            'tree'       => 'tree',
+            'code'          => 'ecommerce',
+            'locales'       => ['unknown'],
+            'currencies'    => ['EUR'],
+            'category_tree' => 'tree',
         ];
         $categoryRepository->findOneByIdentifier('tree')->willReturn($tree);
         $localeRepository->findOneByIdentifier('unknown')->willReturn(null);
@@ -155,11 +155,11 @@ class ChannelUpdaterSpec extends ObjectBehavior
         LocaleInterface $frFR
     ) {
         $values = [
-            'code'       => 'ecommerce',
-            'locales'    => ['fr_FR'],
-            'currencies' => ['unknown'],
-            'tree'       => 'tree',
-            'labels'     => [
+            'code'          => 'ecommerce',
+            'locales'       => ['fr_FR'],
+            'currencies'    => ['unknown'],
+            'category_tree' => 'tree',
+            'labels'        => [
                 'fr_FR' => 'E-commerce',
             ],
         ];
