@@ -1,0 +1,33 @@
+@import '../../base/variables';
+
+.AknVerticalNavtab {
+  min-width: 150px;
+
+  &-header {
+    background: lighten(@AknGrey, 25%);
+    height: @AknTabHeight;
+  }
+
+  &-item:not(:last-child) {
+    border-bottom: 1px solid @AknBorderColor;
+  }
+
+  &-link {
+    height: @AknTabHeight;
+    line-height: @AknTabHeight;
+    color: @AknDefaultFontColor;
+    background: lighten(@AknGrey, 30%);
+    padding: 0 20px;
+    display: block;
+    cursor: pointer;
+
+    &:hover:not(&--active) {
+      background: @AknDefaultHoverBackground;
+    }
+
+    &--active {
+      background: white;
+      font-weight: bold;
+    }
+  }
+}

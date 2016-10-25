@@ -1,0 +1,35 @@
+@import '../../base/variables.less'
+
+.AknHorizontalTabnav {
+  display: flex;
+
+  &-item:not(:last-child) {
+    margin-right: 5px;
+  }
+
+  &-link {
+    height: @AknTabHeight;
+    line-height: @AknTabHeight;
+    color: @AknDefaultFontColor;
+    background: lighten(@AknGrey, 30%);; //TODO
+    padding: 0 20px;
+    display: block;
+    border-top: 1px solid @AknBorderColor;
+    border-left: 1px solid @AknBorderColor;
+    border-right: 1px solid @AknBorderColor;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    cursor: pointer;
+
+    &:hover:not(&--active) {
+      background: @AknDefaultHoverBackground;
+    }
+
+    &--active {
+      background: @AknPurple;
+      border-color: @AknPurple;
+      color: white;
+      font-weight: bold;
+    }
+  };
+}

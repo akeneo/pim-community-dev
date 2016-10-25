@@ -7,10 +7,10 @@
 <% } else { %>
     <div class="tabbable tabs-left">
         <div class="sidebar">
-            <ul class="associations-list nav nav-tabs tab-groups">
+            <ul class="AknVerticalNavtab associations-list nav nav-tabs tab-groups">
                 <% _.each(associationTypes, function (associationType) { %>
-                    <li data-association-type="<%- associationType.code %>"<% if (associationType.code === currentAssociationType) { %> class="active"<% } %>>
-                        <a href="#"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></a>
+                    <li class="AknVerticalNavtab-item<% if (associationType.code === currentAssociationType) { %> active<% } %>" data-association-type="<%- associationType.code %>">
+                        <a class="AknVerticalNavtab-link<% if (associationType.code === currentAssociationType) { %> AknVerticalNavtab-link--active<% } %>" href="#"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></a>
                     </li>
                 <% }); %>
             </ul>
