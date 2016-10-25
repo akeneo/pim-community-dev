@@ -1,37 +1,33 @@
-<div class="media-uploader <%- value.data && value.data.filePath ? 'has-file' : '' %>" >
-    <div>
-        <% if (!value.data || value.data.filePath === null) { %>
-            <label class="file-uploader">
-                <input id="<%- fieldId %>" type="file" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
-            </label>
-            <div class="uploader">
-                <img src="/bundles/pimui/images/upload.png" alt="upload icon"/>
-                <span><%- _.__('pim_enrich.entity.product.media.upload')%></span>
-            </div>
-        <% } else { %>
-            <div class="preview">
-                <% mediaThumbnailUrl = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'thumbnail_small') %>
-                <% mediaPreviewUrl   = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'preview') %>
-                <% mediaDownloadUrl  = mediaUrlGenerator.getMediaDownloadUrl(value.data.filePath) %>
-                <% if ('pim_catalog_image' === attribute.type && null != mediaThumbnailUrl) { %>
-                    <div class="file"><img src="<%- mediaThumbnailUrl %>"/></div>
-                <% } else { %>
-                    <div class="file"><i class="icon icon-file"></i></div>
-                <% } %>
-                <div class="info">
-                    <span class="filename" title="<%- value.data.originalFilename %>"><%- value.data.originalFilename %></span>
-                    <span class="actions">
-                        <% if ('pim_catalog_image' === attribute.type && null != mediaPreviewUrl) { %>
-                            <span class="open-media"><i class="icon icon-eye-open"></i></span>
-                        <% } %>
-                        <a href="<%- mediaDownloadUrl %>" class="download-file" download><i class="icon icon-cloud-download"></i></a>
-                        <span class="clear-field"><i class="icon icon-trash"></i></span>
-                    </span>
+<div class="AknMediaField <%- value.data && value.data.filePath ? 'has-file' : '' %>" >
+    <% if (!value.data || value.data.filePath === null) { %>
+        <input class="AknMediaField-fileUploaderInput" id="<%- fieldId %>" type="file" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
+        <div class="AknMediaField-emptyContainer">
+            <img src="/bundles/pimui/images/upload.png" alt="upload icon"/>
+            <span><%- _.__('pim_enrich.entity.product.media.upload')%></span>
+        </div>
+    <% } else { %>
+        <div class="AknMediaField-preview preview">
+            <% mediaThumbnailUrl = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'thumbnail_small') %>
+            <% mediaPreviewUrl   = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'preview') %>
+            <% mediaDownloadUrl  = mediaUrlGenerator.getMediaDownloadUrl(value.data.filePath) %>
+            <% if ('pim_catalog_image' === attribute.type && null != mediaThumbnailUrl) { %>
+                <div class="AknMediaField-thumb file"><img src="<%- mediaThumbnailUrl %>"/></div>
+            <% } else { %>
+                <div class="AknMediaField-thumb file"><i class="icon icon-file"></i></div>
+            <% } %>
+            <div class="AknMediaField-info info">
+                <div class="filename" title="<%- value.data.originalFilename %>"><%- value.data.originalFilename %></div>
+                <div class="AknIconsList AknIconsList--centered actions">
+                    <% if ('pim_catalog_image' === attribute.type && null != mediaPreviewUrl) { %>
+                        <span class="AknIconsList-item open-media"><i class="icon icon-eye-open"></i></span>
+                    <% } %>
+                    <a href="<%- mediaDownloadUrl %>" class="AknIconsList-item download-file" download><i class="icon icon-cloud-download"></i></a>
+                    <span class="AknIconsList-item clear-field"><i class="icon icon-trash"></i></span>
                 </div>
             </div>
-        <% } %>
-    </div>
-    <div class="progress">
-      <div class="bar"></div>
+        </div>
+    <% } %>
+    <div class="AknMediaField-progress AknProgress AknProgress--micro progress">
+        <div class="AknProgress-bar bar"></div>
     </div>
 </div>

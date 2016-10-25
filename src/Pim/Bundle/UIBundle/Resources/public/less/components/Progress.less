@@ -1,0 +1,23 @@
+@import '../base/variables';
+
+.AknProgress {
+  height: @AknMicroButtonSize;
+  overflow: hidden;
+  background-color: white;
+  border-radius: 2px;
+
+  &-bar {
+    font-size: @AknDefaultFontSize;
+    background-color: @AknPurple;
+    float: left;
+    width: 0;
+    height: 100%;
+    color: white;
+    text-align: center;
+    transition: width 0.6s ease;
+  }
+
+  &--micro {
+    height: @microProgressBarHeight;
+  }
+}

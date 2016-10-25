@@ -54,10 +54,12 @@ css:
         - bundles/pimui/less/components/IconButton.less
         - bundles/pimui/less/components/IconsList.less
         - bundles/pimui/less/components/MainMenu.less
+        - bundles/pimui/less/components/MediaField.less
         - bundles/pimui/less/components/MetricField.less
         - bundles/pimui/less/components/Notification.less
         - bundles/pimui/less/components/NotificationsList.less
         - bundles/pimui/less/components/Pagination.less
+        - bundles/pimui/less/components/Progress.less
         - bundles/pimui/less/components/PricesList.less
         - bundles/pimui/less/components/TextareaField.less
         - bundles/pimui/less/components/TextField.less

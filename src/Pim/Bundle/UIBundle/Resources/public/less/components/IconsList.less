@@ -2,7 +2,6 @@
 
 .AknIconsList {
   display: flex;
-  justify-content: flex-end;
 
   &-item {
     background: @AknGrey;
@@ -13,6 +12,7 @@
     text-align: center;
     border-radius: 2px;
     opacity: 0.7;
+    cursor: pointer;
 
     &:hover {
       opacity: 1;
@@ -25,5 +25,9 @@
 
   &-item + &-item {
     margin-left: 6px;
+  }
+
+  &--centered {
+    justify-content: center;
   }
 }
