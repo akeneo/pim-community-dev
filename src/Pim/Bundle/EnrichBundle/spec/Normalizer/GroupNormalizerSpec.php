@@ -33,21 +33,11 @@ class GroupNormalizerSpec extends ObjectBehavior
         );
     }
 
-    function it_supports_groups(GroupInterface $tshirt, GroupTypeInterface $groupType)
+    function it_supports_groups(GroupInterface $tshirt)
     {
-        $tshirt->getType()->willReturn($groupType);
-        $groupType->isVariant()->willReturn(false);
         $this->supportsNormalization($tshirt, 'internal_api')->shouldReturn(true);
     }
 
-    function it_does_not_support_variant_groups(GroupInterface $tshirt, GroupTypeInterface $groupType)
-    {
-        $tshirt->getType()->willReturn($groupType);
-        $groupType->isVariant()->willReturn(true);
-        $this->supportsNormalization($tshirt, 'internal_api')->shouldReturn(false);
-    }
-
-    /*
     function it_normalizes_groups(
         $normalizer,
         $structureVersionProvider,
@@ -70,10 +60,16 @@ class GroupNormalizerSpec extends ObjectBehavior
         $tshirt->getType()->willReturn($groupType);
         $groupType->isVariant()->willReturn(true);
 
-        $groupNormalized = [
-            'code'   => 'my_variant',
-            'type'   => 'variant',
-            'labels' => []
+        $variantNormalized = [
+            'code' => 'my_variant',
+            'axis' => ['color', 'size'],
+            'type' => 'variant',
+            'values' => [
+                'number' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
+                'metric' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
+                'prices' => ['data' => 12.5, 'locale' => null, 'scope' => null],
+                'date'   => ['data' => '2015-01-31', 'locale' => null, 'scope' => null],
+            ]
         ];
 
         $valuesLocalized = [
@@ -83,8 +79,8 @@ class GroupNormalizerSpec extends ObjectBehavior
             'date'   => ['data' => '31/01/2015', 'locale' => null, 'scope' => null],
         ];
 
-        $normalizer->normalize($tshirt, 'standard', $options)->willReturn($groupNormalized);
-        $localizedConverter->convertToLocalizedFormats($groupNormalized['values'], $options)
+        $normalizer->normalize($tshirt, 'json', $options)->willReturn($variantNormalized);
+        $localizedConverter->convertToLocalizedFormats($variantNormalized['values'], $options)
             ->willReturn($valuesLocalized);
 
         $structureVersionProvider->getStructureVersion()->willReturn(1);
@@ -117,7 +113,7 @@ class GroupNormalizerSpec extends ObjectBehavior
                 'products' => [42],
                 'meta'     => [
                     'id'                => 12,
-                    'form'              => 'pim-group-edit-form',
+                    'form'              => 'pim-variant-group-edit-form',
                     'structure_version' => 1,
                     'model_type'        => 'variant_group',
                     'created'           => 'normalized_oldest_log',
@@ -126,5 +122,4 @@ class GroupNormalizerSpec extends ObjectBehavior
             ]
         );
     }
-    */
 }
