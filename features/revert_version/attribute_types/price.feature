@@ -23,7 +23,7 @@ Feature: Revert product attributes to a previous version
     When I revert the product version number 1
     And I visit the "Attributes" tab
     And I visit the "Marketing" group
-    And the product "jeans" should have the following values:
+    Then the product "jeans" should have the following values:
     | price      |            |
     | name-fr_FR | Nice jeans |
 

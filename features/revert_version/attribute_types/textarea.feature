@@ -20,7 +20,7 @@ Feature: Revert product attributes to a previous version
     And the history of the product "t-shirt" has been built
     When I open the history
     Then I should see 2 versions in the history
-    And I revert the product version number 1
+    When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
     | description-en_US-tablet | A nice t-shirt. |
     Given I am on the "marcel" product page

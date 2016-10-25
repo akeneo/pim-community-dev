@@ -21,8 +21,7 @@ Feature: Revert product attributes to a previous version
     And I open the history
     Then I should see 2 versions in the history
     When I revert the product version number 1
-    And I save the product
-    And the product "jeans" should have the following values:
+    Then the product "jeans" should have the following values:
     | number_in_stock-tablet |  |
 
   Scenario: Successfully revert a number attribute
