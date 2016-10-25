@@ -32,37 +32,37 @@ css:
         - bundles/pimui/css/accordion.less
     bem:
         - bundles/pimui/less/base/general.less
-        - bundles/pimui/less/components/ActionButton.less
-        - bundles/pimui/less/components/ActionButtonsList.less
-        - bundles/pimui/less/components/AllSelector.less
-        - bundles/pimui/less/components/AttributeActions.less
+        - bundles/pimui/less/components/button/ActionButton.less
+        - bundles/pimui/less/components/button/ActionButtonsList.less
+        - bundles/pimui/less/components/button/AllSelector.less
+        - bundles/pimui/less/components/button/Button.less
+        - bundles/pimui/less/components/button/ButtonsList.less
+        - bundles/pimui/less/components/button/DropdownButton.less
+        - bundles/pimui/less/components/button/IconButton.less
+        - bundles/pimui/less/components/button/IconsList.less
+        - bundles/pimui/less/components/grid/FilterBox.less
+        - bundles/pimui/less/components/grid/FilterChoice.less
+        - bundles/pimui/less/components/grid/FilterDate.less
+        - bundles/pimui/less/components/grid/Grid.less
+        - bundles/pimui/less/components/grid/GridToolbar.less
+        - bundles/pimui/less/components/grid/Pagination.less
+        - bundles/pimui/less/components/product-edit-form/AttributeActions.less
+        - bundles/pimui/less/components/product-edit-form/FieldContainer.less
+        - bundles/pimui/less/components/product-edit-form/MediaField.less
+        - bundles/pimui/less/components/product-edit-form/MetricField.less
+        - bundles/pimui/less/components/product-edit-form/PricesList.less
+        - bundles/pimui/less/components/product-edit-form/TextareaField.less
+        - bundles/pimui/less/components/product-edit-form/TextField.less
         - bundles/pimui/less/components/Bell.less
         - bundles/pimui/less/components/Breadcrumb.less
         - bundles/pimui/less/components/BreadcrumbContainer.less
-        - bundles/pimui/less/components/Button.less
-        - bundles/pimui/less/components/ButtonsList.less
         - bundles/pimui/less/components/Caret.less
         - bundles/pimui/less/components/Dropdown.less
-        - bundles/pimui/less/components/DropdownButton.less
-        - bundles/pimui/less/components/FieldContainer.less
-        - bundles/pimui/less/components/FilterBox.less
-        - bundles/pimui/less/components/FilterChoice.less
-        - bundles/pimui/less/components/FilterDate.less
-        - bundles/pimui/less/components/Grid.less
-        - bundles/pimui/less/components/GridToolbar.less
         - bundles/pimui/less/components/Header.less
-        - bundles/pimui/less/components/IconButton.less
-        - bundles/pimui/less/components/IconsList.less
         - bundles/pimui/less/components/MainMenu.less
-        - bundles/pimui/less/components/MediaField.less
-        - bundles/pimui/less/components/MetricField.less
         - bundles/pimui/less/components/Notification.less
         - bundles/pimui/less/components/NotificationsList.less
-        - bundles/pimui/less/components/Pagination.less
         - bundles/pimui/less/components/Progress.less
-        - bundles/pimui/less/components/PricesList.less
-        - bundles/pimui/less/components/TextareaField.less
-        - bundles/pimui/less/components/TextField.less
         - bundles/pimui/less/components/TitleContainer.less
         - bundles/pimui/less/components/UserMenu.less
         - bundles/pimui/less/bemFixes.less
