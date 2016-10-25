@@ -286,7 +286,7 @@ class ProductStandardIntegration extends TestCase
         $expected = $this->sanitizeDateFields($expected);
         $expected = $this->sanitizeMediaAttributeData($expected);
 
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 
     /**

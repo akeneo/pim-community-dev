@@ -17,6 +17,8 @@ class AttributeNormalizer implements NormalizerInterface
     const ITEM_SEPARATOR = ',';
     const LOCALIZABLE_PATTERN = '{locale}:{value}';
     const GROUP_SEPARATOR = '|';
+    const GLOBAL_SCOPE = 'Global';
+    const CHANNEL_SCOPE = 'Channel';
 
     /** @var string[] */
     protected $supportedFormats = ['flat'];
@@ -58,6 +60,11 @@ class AttributeNormalizer implements NormalizerInterface
         $flatAttribute += $this->translationNormalizer->normalize($standardAttribute['labels'], 'flat', $context);
 
         $flatAttribute['options'] = $this->normalizeOptions($attribute);
+
+        $flatAttribute['scope'] = $standardAttribute['scopable'] ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE;
+        $flatAttribute['required'] = (bool) $attribute->isRequired();
+
+        unset($flatAttribute['scopable']);
 
         return $flatAttribute;
     }

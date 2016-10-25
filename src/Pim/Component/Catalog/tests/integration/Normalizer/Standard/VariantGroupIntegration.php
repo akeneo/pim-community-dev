@@ -22,7 +22,10 @@ class VariantGroupIntegration extends TestCase
                     ['locale' => null, 'scope' => null, 'data' => 'A name']
                 ]
             ],
-            'labels' => []
+            'labels' => [
+                'fr_FR' => 'Variante A',
+                'en_US' => 'Variant A'
+            ]
         ];
 
         $repository = $this->get('pim_catalog.repository.group');
