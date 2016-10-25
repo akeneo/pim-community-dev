@@ -87,7 +87,7 @@ class ProjectController extends Controller
 
         // TODO: add filters
         $params['values'] = [];
-        $jobInstance = $jobInstanceRepo->findOneByIdentifier('project_generation');
+        $jobInstance = $jobInstanceRepo->findOneByIdentifier('project_calculation');
         $configuration = ['filters' => $params['values'], 'project_id' => $id];
 
         $simpleJobLauncher->launch($jobInstance, $this->getUser(), $configuration);

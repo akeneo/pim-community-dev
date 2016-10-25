@@ -5,6 +5,6 @@ services:
             - 'activity_manager'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@activity_manager.reader.project_generation'
-            - '@activity_manager.processor.project_generation'
+            - '@activity_manager.reader.project_calculation'
+            - '@activity_manager.processor.project_calculation'
             - '@activity_manager.writer.project'

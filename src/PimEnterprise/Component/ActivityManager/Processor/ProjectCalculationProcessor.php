@@ -28,7 +28,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectGenerationProcessor extends AbstractProcessor
+class ProjectCalculationProcessor extends AbstractProcessor
 {
     /** @var StepExecution */
     protected $stepExecution;

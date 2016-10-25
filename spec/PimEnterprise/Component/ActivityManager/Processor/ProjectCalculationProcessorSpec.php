@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\ActivityManager\Component\Processor;
 
-use Akeneo\ActivityManager\Component\Processor\ProjectGenerationProcessor;
+use Akeneo\ActivityManager\Component\Processor\ProjectCalculationProcessor;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class ProjectGenerationProcessorSpec extends ObjectBehavior
+class ProjectCalculationProcessorSpec extends ObjectBehavior
 {
     function let(
         ObjectDetacherInterface $objectDetacher,
@@ -44,7 +44,7 @@ class ProjectGenerationProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProjectGenerationProcessor::class);
+        $this->shouldHaveType(ProjectCalculationProcessor::class);
     }
 
     function it_is_a_processor()
