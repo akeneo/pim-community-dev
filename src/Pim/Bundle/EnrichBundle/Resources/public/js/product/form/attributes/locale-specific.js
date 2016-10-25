@@ -48,7 +48,7 @@ define(
              */
             updateFieldElements: function (field) {
                 var message = _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable');
-                var element = '<span class="unavailable">' + message + '</span>';
+                var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>';
 
                 field.addElement(
                     'field-input',

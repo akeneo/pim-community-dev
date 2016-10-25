@@ -1,6 +1,7 @@
 // Font
 @AknDefaultFont: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
 @AknDefaultFontColor: #555;
+@AknLightFontColor: lighten(@AknDefaultFontColor, 20%);
 @AknDarkFontColor: darken(@AknDefaultFontColor, 10%);
 
 // Font sizes
@@ -25,9 +26,9 @@
 
 // Sizes
 @AknDefaultButtonSize: 34px;
-@AknFormHeight: 32px;
 @AknLittleButtonSize: 30px;
 @AknIconSize: 26px;
 @AknMicroButtonSize: 22px;
 @AknMainMenuHeight: 50px;
-
+@AknFormHeight: @AknDefaultButtonSize;
+@AknPefFormWidth: 500px;

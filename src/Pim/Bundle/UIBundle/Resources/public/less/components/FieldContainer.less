@@ -1,9 +1,15 @@
+@import '../base/variables';
 
 .AknFieldContainer {
+  display: flex;
+
   &-formField {
+    width: @AknPefFormWidth;
     margin-bottom: 20px;
-    max-width: 500px;
-    min-width: 300px;
+
+    &--comparisonMode {
+      margin-left: 5px;
+    }
   }
 
   &-header {
@@ -11,5 +17,17 @@
     justify-content: space-between;
   }
 
+  &-comparisonContainer {
+    margin-left: 20px;
+  }
+
+  &-copyContainer {
+    display: flex;
+  }
+
   &-label { }
+
+  &-unavailable {
+    color: @AknLightFontColor;
+  }
 }

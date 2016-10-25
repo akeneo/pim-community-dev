@@ -1,24 +1,26 @@
 <% if (!copying) { %>
-    <div class="AknButton AknButton--grey start-copying"><%- _.__('pim_enrich.entity.product.btn.compare_translate') %></div>
+    <div class="AknButton AknButton--grey AknButton--little start-copying"><%- _.__('pim_enrich.entity.product.btn.compare_translate') %></div>
 <% } else { %>
-    <div data-drop-zone="context-selectors" class="context-selectors"></div>
-    <div data-drop-zone="other-actions" class="other-actions">
-        <div data-drop-zone="copy-actions" class="copy-actions">
-            <div class="btn-group selection-dropdown">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+    <div data-drop-zone="context-selectors" class="AknAttributeActions-contextSelectors context-selectors"></div>
+    <div data-drop-zone="other-actions" class="AknAttributeActions-otherActions other-actions">
+        <div data-drop-zone="copy-actions" class="AknAttributeActions-copyActions copy-actions">
+            <div class="AknDropdown AknDropdownButton AknDropdownButton--little selection-dropdown">
+                <a class="AknDropdownButton-button" data-toggle="dropdown" href="#">
                     <%- _.__('pim_enrich.entity.product.copy.select') %>
-                    <span class="caret"></span>
+                    <div class="AknDropdownButton-caretContainer">
+                        <span class="AknCaret"></span>
+                    </div>
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="AknDropdown-menu">
                     <li>
-                        <a class="select-all"><%- _.__('pim_enrich.entity.product.copy.all') %></a>
-                        <a class="select-all-visible"><%- _.__('pim_enrich.entity.product.copy.all_visible') %></a>
-                        <a class="select-none"><%- _.__('pim_enrich.entity.product.copy.none') %></a>
+                        <a class="AknDropdown-menuLink select-all"><%- _.__('pim_enrich.entity.product.copy.all') %></a>
+                        <a class="AknDropdown-menuLink select-all-visible"><%- _.__('pim_enrich.entity.product.copy.all_visible') %></a>
+                        <a class="AknDropdown-menuLink select-none"><%- _.__('pim_enrich.entity.product.copy.none') %></a>
                     </li>
                 </ul>
             </div>
-            <div class="btn copy"><%- _.__('pim_enrich.entity.product.copy.copy') %></div>
-            <div class="btn stop-copying">&times;</div>
+            <div class="AknButton AknButton--little AknButton--success copy"><%- _.__('pim_enrich.entity.product.copy.copy') %></div>
+            <div class="AknButton AknButton--little AknButton--grey stop-copying">&times;</div>
         </div>
     </div>
 <% } %>

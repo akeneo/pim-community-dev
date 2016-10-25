@@ -65,4 +65,14 @@
   &--important:hover &-caretContainer {
     background: lighten(@AknRed, 20%);
   }
+
+  &--little &-button {
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+  }
+
+  &--little &-caretContainer {
+    width: @AknLittleButtonSize - 2px;
+    height: @AknLittleButtonSize - 2px;
+  }
 }

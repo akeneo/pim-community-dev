@@ -409,23 +409,6 @@ h3.tab-header {
   padding: 0 20px;
 }
 
-.comparison-mode {
-  .comparison-elements-container {
-    display: block;
-  }
-
-  .attribute-edit-actions {
-    max-width: @max-field-width;
-    margin-right: 0;
-  }
-
-  .attribute-copy-actions {
-    .flex(1);
-    margin-left: 10px;
-    border-left: 1px solid @color-ccc;
-  }
-}
-
 .entity-edit-form {
   .tabs-left > .sidebar > .nav-tabs a {
     padding: 8px 15px 8px 15px;
@@ -708,26 +691,6 @@ h3.tab-header {
           cursor: pointer;
         }
       }
-    }
-  }
-}
-
-.comparison-elements-container {
-  display: none;
-
-  .copy-container {
-    .display-flex();
-
-    @copy-field-selector-width: 20px;
-
-    .copy-field-selector {
-      width: @copy-field-selector-width;
-    }
-
-    .form-field {
-      .flex(1);
-      max-width: @max-field-width - @copy-field-selector-width;
-      min-width: @min-field-width - @copy-field-selector-width;
     }
   }
 }
@@ -1182,12 +1145,6 @@ h3.tab-header {
   }
   .modal-footer .btn-primary {
     background-color: @green;
-  }
-}
-
-.comparison-elements-container {
-  .media-uploader .preview .info .actions {
-    display: none;
   }
 }
 

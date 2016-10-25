@@ -434,6 +434,7 @@ define(
              */
             comparisonChange: function (open) {
                 this.$el[open ? 'addClass' : 'removeClass']('comparison-mode');
+                this.$el.find('.AknAttributeActions')[open ? 'addClass' : 'removeClass']('AknAttributeActions--comparisonMode');
             }
         });
     }

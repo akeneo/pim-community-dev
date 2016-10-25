@@ -4,7 +4,7 @@
             <%- label %>
             <span class="label-elements-container"></span>
         </label>
-        <span class="field-info pull-right">
+        <span class="AknFieldContainer-fieldInfo field-info">
             <% if (attribute.localizable || attribute.scopable) { %>
                 <span class="field-context">
                     <% if (attribute.scopable) { %> <span><%- context.scopeLabel %></span> <% } %>
@@ -24,6 +24,5 @@
         </div>
     </footer>
 </div>
-<div class="comparison-elements-container">
-
+<div class="AknFieldContainer-comparisonContainer comparison-elements-container">
 </div>

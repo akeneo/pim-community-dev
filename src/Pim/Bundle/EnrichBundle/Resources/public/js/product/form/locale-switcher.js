@@ -18,7 +18,7 @@ define(
     function (_, BaseForm, template, FetcherRegistry, i18n) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'btn-group locale-switcher',
+            className: 'AknDropdown locale-switcher',
             events: {
                 'click li a': 'changeLocale'
             },

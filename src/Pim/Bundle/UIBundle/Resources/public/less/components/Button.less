@@ -6,11 +6,13 @@
   height: @AknDefaultButtonSize;
   line-height: @AknDefaultButtonSize;
   font-size: @AknFontSizeBig;
+  min-width: @AknDefaultButtonSize;
   display: inline-block;
   padding: 0 10px;
   border-radius: 2px;
   border: none;
   cursor: pointer;
+  text-align: center;
 
   &--withIcon {
     padding-left: 0;
@@ -81,11 +83,14 @@
   &--little {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
+    min-width: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
   }
 
   &--micro {
     height: @AknMicroButtonSize;
     line-height: @AknMicroButtonSize;
+    min-width: @AknMicroButtonSize;
     font-size: @AknDefaultFontSize;
   }
 
