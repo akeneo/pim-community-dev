@@ -2,13 +2,12 @@
 
 namespace Pim\Bundle\CommentBundle\Normalizer\Standard;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
 /**
- * Structured Comment normalizer
+ * Standard Comment normalizer
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
