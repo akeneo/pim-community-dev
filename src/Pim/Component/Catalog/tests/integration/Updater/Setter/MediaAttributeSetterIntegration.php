@@ -114,7 +114,7 @@ class MediaAttributeSetterIntegration extends TestCase
         $this->assertCommandMedia($parameters, $result, $attributeName);
     }
 
-    public function estSameMedia()
+    public function isSameMedia()
     {
 
         $attributeName = 'a_localizable_scopable_image';
@@ -159,7 +159,6 @@ class MediaAttributeSetterIntegration extends TestCase
      */
     private function sanitizeMediaAttributeData(array $data)
     {
-        print_r($data);
         foreach ($data as $index => $value) {
             if ($this->assertMediaAttributeDataPattern($value['data'])) {
                 $data[$index]['data'] = self::MEDIA_ATTRIBUTE_DATA_COMPARISON;

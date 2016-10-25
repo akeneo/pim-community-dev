@@ -43,7 +43,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
      *
      * Expected data input format:
      * {
-     *     "data": "12.0"|"12"|12|12.3,
+     *     "amount": "12.0"|"12"|12|12.3,
      *     "unit": "KILOGRAM"
      * }
      */

@@ -16,8 +16,10 @@ class VariantGroupNormalizer implements NormalizerInterface
     /** @var TranslationNormalizer */
     protected $translationNormalizer;
 
+    /** @var NormalizerInterface */
     protected $valuesNormalizer;
 
+    /** @var DenormalizerInterface */
     protected $valuesDenormalizer;
 
     /**
