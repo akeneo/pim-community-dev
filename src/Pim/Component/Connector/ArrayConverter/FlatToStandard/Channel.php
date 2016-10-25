@@ -50,12 +50,12 @@ class Channel implements ArrayConverterInterface
      *      ],
      *     'locales'          => ['en_US', 'fr_FR'],
      *     'currencies'       => ['EUR', 'USD'],
-     *     'tree'             => 'master_catalog',
+     *     'category_tree'    => 'master_catalog',
      *     'conversion_units' => [
-     *          'weight' => 'GRAM',
+     *          'weight'            => 'GRAM',
      *          'maximum_scan_size' => 'KILOMETER',
-     *          'display_diagonal' => 'DEKAMETER',
-     *          'viewing_area' => 'DEKAMETER'
+     *          'display_diagonal'  => 'DEKAMETER',
+     *          'viewing_area'      => 'DEKAMETER'
      *      ]
      */
     public function convert(array $item, array $options = [])
@@ -88,6 +88,8 @@ class Channel implements ArrayConverterInterface
             $convertedItem[$field] = explode(',', $data);
         } elseif ('conversion_units' === $field) {
             $convertedItem[$field] = $this->convertUnits($data);
+        } elseif ('tree' === $field) {
+            $convertedItem['category_tree'] = $data;
         } else {
             $convertedItem[$field] = $data;
         }

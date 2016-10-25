@@ -32,8 +32,8 @@ class Locale implements ArrayConverterInterface
      *
      * Before:
      * [
-     *     'code'    => 'en_US',
-     *     'enabled' => 1,
+     *     'code'      => 'en_US',
+     *     'activated' => 1,
      * ]
      *
      * After:

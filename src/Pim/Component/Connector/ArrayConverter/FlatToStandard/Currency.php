@@ -38,8 +38,8 @@ class Currency implements ArrayConverterInterface
      *
      * After:
      * [
-     *     'code'      => 'USD',
-     *     'activated' => true,
+     *     'code'    => 'USD',
+     *     'enabled' => true,
      * ]
      */
     public function convert(array $item, array $options = [])
@@ -67,7 +67,7 @@ class Currency implements ArrayConverterInterface
         if ('code' === $field) {
             $convertedItem[$field] = $data;
         } elseif ('activated' === $field) {
-            $convertedItem[$field] = (bool) $data;
+            $convertedItem['enabled'] = (bool) $data;
         }
 
         return $convertedItem;
