@@ -11,6 +11,7 @@
 
 namespace Akeneo\ActivityManager\Bundle\Controller;
 
+use Akeneo\ActivityManager\Component\Job\ProjectCalculationJobParameters;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,7 +88,7 @@ class ProjectController extends Controller
 
         // TODO: add filters
         $params['values'] = [];
-        $jobInstance = $jobInstanceRepo->findOneByIdentifier('project_calculation');
+        $jobInstance = $jobInstanceRepo->findOneByIdentifier(ProjectCalculationJobParameters::JOB_NAME);
         $configuration = ['filters' => $params['values'], 'project_id' => $id];
 
         $simpleJobLauncher->launch($jobInstance, $this->getUser(), $configuration);

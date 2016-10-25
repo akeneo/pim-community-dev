@@ -19,8 +19,11 @@ use Symfony\Component\Validator\Constraints\Collection;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectCalculationParameters implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
+class ProjectCalculationJobParameters implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
 {
+    /**
+     * Project calculation job code.
+     */
     const JOB_NAME = 'project_calculation';
 
     /**
