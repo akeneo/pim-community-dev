@@ -13,7 +13,6 @@ parameters:
     pim_enrich.normalizer.channel.class:                           Pim\Bundle\EnrichBundle\Normalizer\ChannelNormalizer
     pim_enrich.normalizer.sequential_edit.class:                   Pim\Bundle\EnrichBundle\Normalizer\SequentialEditNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
-    pim_enrich.normalizer.variant_group.class:                     Pim\Bundle\EnrichBundle\Normalizer\VariantGroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
     pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
     pim_enrich.normalizer.variant_group_violation.class:           Pim\Bundle\EnrichBundle\Normalizer\VariantGroupViolationNormalizer
