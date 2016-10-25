@@ -21,11 +21,11 @@ class CurrencySpec extends ObjectBehavior
 
     function it_converts_an_activated_item_to_standard_format()
     {
-        $this->convert(['code' => 'USD', 'activated' => 1])->shouldReturn(['code' => 'USD', 'activated' => true]);
+        $this->convert(['code' => 'USD', 'activated' => 1])->shouldReturn(['code' => 'USD', 'enabled' => true]);
     }
 
     function it_converts_a_disabled_item_to_standard_format()
     {
-        $this->convert(['code' => 'USD', 'activated' => 0])->shouldReturn(['code' => 'USD', 'activated' => false]);
+        $this->convert(['code' => 'USD', 'activated' => 0])->shouldReturn(['code' => 'USD', 'enabled' => false]);
     }
 }

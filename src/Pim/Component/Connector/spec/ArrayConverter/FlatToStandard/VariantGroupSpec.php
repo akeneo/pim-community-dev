@@ -80,7 +80,7 @@ class VariantGroupSpec extends ObjectBehavior
                 'en_US' => 'T-shirt very beautiful',
             ],
             'code'    => 'mycode',
-            'axis'    => ['main_color', 'secondary_color'],
+            'axes'    => ['main_color', 'secondary_color'],
             'type'    => 'VARIANT',
             'values'  => $convertedValues
         ]);
