@@ -74,7 +74,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      *         "en_US": "T-shirt very beautiful",
      *         "fr_FR": "T-shirt super beau"
      *     }
-     *     "axis": ["main_color", "secondary_color"],
+     *     "axes": ["main_color", "secondary_color"],
      *     "type": "VARIANT",
      *     "values": {
      *         "main_color": "white",
@@ -134,7 +134,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                 $this->setLabels($variantGroup, $data);
                 break;
 
-            case 'axis':
+            case 'axes':
                 $this->setAxes($variantGroup, $data);
                 break;
 
@@ -392,8 +392,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param GroupInterface $group
-     * @param array          $labels
+     * @param GroupInterface $variantGroup
+     * @param array          $productIds
      */
     protected function setProducts(GroupInterface $variantGroup, array $productIds)
     {
