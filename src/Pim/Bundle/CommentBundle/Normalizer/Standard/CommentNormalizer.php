@@ -56,7 +56,7 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
      * @param array $children
      * @param array $context
      *
-     * @return ArrayCollection
+     * @return array
      */
     protected function normalizeChildren(array $children, array $context = [])
     {
