@@ -22,7 +22,7 @@ class AssetNormalizer implements NormalizerInterface
     const INNER_SEPARATOR = ',';
 
     /** @var array */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['flat'];
 
     /** @var NormalizerInterface */
     protected $assetNormalizer;
@@ -50,15 +50,13 @@ class AssetNormalizer implements NormalizerInterface
         $normalizedData['tags'] = implode(static::INNER_SEPARATOR, $asset->getTagCodes());
         $normalizedData['categories'] = implode(static::INNER_SEPARATOR, $asset->getCategoryCodes());
 
-        if (array_key_exists('versioning', $context)) {
-            $normalizedData['references'] = array_filter(array_map(function ($reference) {
-                return null !== $reference->getFileInfo() ? $reference->getFileInfo()->getKey() : null;
-            }, $asset->getReferences()->toArray()));
+        $normalizedData['references'] = array_filter(array_map(function ($reference) {
+            return null !== $reference->getFileInfo() ? $reference->getFileInfo()->getKey() : null;
+        }, $asset->getReferences()->toArray()));
 
-            $normalizedData['variations'] = array_filter(array_map(function ($variation) {
-                return null !== $variation->getFileInfo() ? $variation->getFileInfo()->getKey() : null;
-            }, $asset->getVariations()));
-        }
+        $normalizedData['variations'] = array_filter(array_map(function ($variation) {
+            return null !== $variation->getFileInfo() ? $variation->getFileInfo()->getKey() : null;
+        }, $asset->getVariations()));
 
         return $normalizedData;
     }

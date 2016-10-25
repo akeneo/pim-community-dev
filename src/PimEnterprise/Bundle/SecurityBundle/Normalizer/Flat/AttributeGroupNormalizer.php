@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
 
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -42,21 +43,20 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param @param AttributeGroupInterface $attributeGroup
+     * @param AttributeGroupInterface $attributeGroup
      */
     public function normalize($attributeGroup, $format = null, array $context = [])
     {
         $normalizedAttrGroup = $this->attrGroupNormalizer->normalize($attributeGroup, $format, $context);
-        if (true === $context['versioning']) {
-            $normalizedAttrGroup['view_permission'] = implode(
-                array_map('strval', $this->accessManager->getViewUserGroups($attributeGroup)),
-                ','
-            );
-            $normalizedAttrGroup['edit_permission'] = implode(
-                array_map('strval', $this->accessManager->getEditUserGroups($attributeGroup)),
-                ','
-            );
-        }
+
+        $normalizedAttrGroup['view_permission'] = implode(
+            array_map('strval', $this->accessManager->getViewUserGroups($attributeGroup)),
+            ','
+        );
+        $normalizedAttrGroup['edit_permission'] = implode(
+            array_map('strval', $this->accessManager->getEditUserGroups($attributeGroup)),
+            ','
+        );
 
         return $normalizedAttrGroup;
     }
