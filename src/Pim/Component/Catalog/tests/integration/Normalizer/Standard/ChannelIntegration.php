@@ -15,11 +15,14 @@ class ChannelIntegration extends TestCase
     {
         $expected = [
             'code'             => 'tablet',
-            'label'            => 'Tablet',
             'currencies'       => ['USD', 'EUR'],
             'locales'          => ['de_DE', 'en_US', 'fr_FR'],
             'category_tree'    => 'master',
-            'conversion_units' => []
+            'conversion_units' => [],
+            'labels'           => [
+                'en_US' => 'Tablet',
+                'fr_FR' => 'Tablette'
+            ]
         ];
 
         $repository = $this->get('pim_catalog.repository.channel');

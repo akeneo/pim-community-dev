@@ -141,7 +141,7 @@ INSERT INTO `pim_catalog_category` VALUES (895,NULL,'master','2016-08-04 14:28:4
 
 /*!40000 ALTER TABLE `pim_catalog_channel` DISABLE KEYS */;
 DELETE FROM `pim_catalog_channel`;
-INSERT INTO `pim_catalog_channel` VALUES (209,895,'ecommerce','Default','a:0:{}'),(210,895,'tablet','Tablet','a:0:{}');
+INSERT INTO `pim_catalog_channel` VALUES (209,895,'ecommerce','a:0:{}'),(210,895,'tablet','a:0:{}');
 /*!40000 ALTER TABLE `pim_catalog_channel` ENABLE KEYS */;
 
 
