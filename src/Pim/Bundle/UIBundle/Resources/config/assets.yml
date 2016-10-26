@@ -66,6 +66,7 @@ css:
         - bundles/pimui/less/components/Notification.less
         - bundles/pimui/less/components/NotificationsList.less
         - bundles/pimui/less/components/Progress.less
+        - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/TitleContainer.less
         - bundles/pimui/less/components/UserMenu.less
         - bundles/pimui/less/bemFixes.less

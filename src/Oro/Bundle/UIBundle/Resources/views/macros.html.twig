@@ -225,40 +225,44 @@
 
     {% set dataBlocks = data.dataBlocks %}
 
-    <div id="{{ dataTarget }}" class="navbar navbar-static scrollspy-nav">
-        <div class="navbar-inner">
-            <div class="row-fluid" style="width: auto;">
-                <ul class="nav">
-                    {% for navElement in dataBlocks %}
-                        <li class="{{ navElement.class is defined ? navElement.class : '' }} tab-scrollable"><a href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a></li>
-                    {% endfor %}
-                </ul>
+    <div class="AknTabContainer">
+        <div id="{{ dataTarget }}" class="AknHorizontalTabnav scrollspy-nav">
+            <div class="navbar-inner">
+                <div class="row-fluid" style="width: auto;">
+                    <ul class="AknHorizontalTabnav-list nav">
+                        {% for navElement in dataBlocks %}
+                            <li class="AknHorizontalTabnav-item {{ navElement.class is defined ? navElement.class : '' }} tab-scrollable">
+                                <a class="AknHorizontalTabnav-link" href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="clearfix">
-        {% if data.formErrors is defined and data.formErrors | length%}
-            <div class="customer-info-actions container-fluid alert-wrap">
-                <div class="alert alert-error">
-                    <button class="close" type="button" data-dismiss="alert" data-target=".alert-wrap">×</button>
-                    {{ data.formErrors|raw }}
-                </div>
-            </div>
-        {% endif %}
-        <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="1" class="tabsections tab-content scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
-            {% for scrollBlock in dataBlocks %}
-                {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm, scrollBlock.content_attr is defined ? scrollBlock.content_attr : null, scrollBlock.useSubBlockDivider is defined ? scrollBlock.useSubBlockDivider : true) }}
-            {% endfor %}
-            {% if data.hiddenData is defined or isForm %}
-                <div class="hide">
-                    {% if data.hiddenData is defined %}
-                        {{ data.hiddenData|raw }}
-                    {% endif %}
-                    {% if isForm %}
-                        {{ form_rest(form) }}
-                    {% endif %}
+        <div class="AknTabContainer-content">
+            {% if data.formErrors is defined and data.formErrors | length%}
+                <div class="customer-info-actions container-fluid alert-wrap">
+                    <div class="alert alert-error">
+                        <button class="close" type="button" data-dismiss="alert" data-target=".alert-wrap">×</button>
+                        {{ data.formErrors|raw }}
+                    </div>
                 </div>
             {% endif %}
+            <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="1" class="tabsections tab-content scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
+                {% for scrollBlock in dataBlocks %}
+                    {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm, scrollBlock.content_attr is defined ? scrollBlock.content_attr : null, scrollBlock.useSubBlockDivider is defined ? scrollBlock.useSubBlockDivider : true) }}
+                {% endfor %}
+                {% if data.hiddenData is defined or isForm %}
+                    <div class="hide">
+                        {% if data.hiddenData is defined %}
+                            {{ data.hiddenData|raw }}
+                        {% endif %}
+                        {% if isForm %}
+                            {{ form_rest(form) }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endmacro %}

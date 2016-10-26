@@ -365,41 +365,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
   display: block;
 }
 
-.scrollspy-nav {
-  background-color: @whiteDarker;
-  border-bottom: 1px solid @color-ccc;
-  margin-bottom: 0;
-  .box-shadow(0 2px 0 rgba(0, 0, 0, .03));
-  .navbar-inner {
-    padding: 0;
-    border: 0;
-    background: 0;
-    .container-fluid {
-      padding:0 15px;
-      .nav {
-        > li a {
-          padding:5px 15px;
-          color:@gray;
-          font-size: @font-size-13;
-        }
-        > li a:hover {
-          border-bottom:3px solid @color-ddd;
-          background:none;
-          padding-bottom:2px;
-          color: @color-444 !important;
-        }
-        .active a,
-        .active a:hover {
-          border-bottom:3px solid @gray;
-          background:none;
-          padding-bottom:2px;
-          color:@grayDarker;
-          font-weight:bold;
-        }
-      }
-    }
-  }
-}
 .scrollspy {
   position: relative;
   overflow: auto;

@@ -18,7 +18,7 @@ define(
     function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'tabbable tabs-top',
+            className: 'AknTabContainer tabbable tabs-top',
             tabs: [],
             fullPanel: false,
             urlParsed: false,
