@@ -31,7 +31,7 @@ define(
             events: {
                 'click .expand-history':   'expandHistory',
                 'click .collapse-history': 'collapseHistory',
-                'click .expanded>tbody>tr:not(.changeset)': 'toggleVersion'
+                'click .expanded .AknGrid-bodyCell': 'toggleVersion'
             },
 
             /**
@@ -212,8 +212,8 @@ define(
              * @param {Event} event
              */
             toggleVersion: function (event) {
-                var $row = $(event.currentTarget);
-                var $body = $row.parent();
+                var $row = $(event.currentTarget).closest('.AknGrid-bodyRow');
+                var $body = $row.closest('.AknGrid');
                 $body.find('tr.changeset').addClass('hide');
                 $body.find('i.icon-chevron-down').toggleClass('icon-chevron-right icon-chevron-down');
 

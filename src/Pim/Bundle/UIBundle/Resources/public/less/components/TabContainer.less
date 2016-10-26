@@ -13,6 +13,28 @@
 
   &-contentThreeColumns {
     display: flex;
-    align-items: stretch;;
+    align-items: stretch;
+  }
+
+  &-panels {
+    flex-basis: 400px;
+    animation: flex-basis 0.2s ease;
+
+    &--closed {
+      display: none;
+    }
+  }
+
+  &-notPanels {
+
+  }
+
+  &-contentThreeColumns--fullPanel &-notPanels {
+    display: none;
+  }
+
+  &-contentThreeColumns--fullPanel &-panels {
+    border-left: 1px solid @AknBorderColor;
+    flex-basis: 100%;
   }
 }

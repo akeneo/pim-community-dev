@@ -19,7 +19,7 @@ define(
     function ($, _, Backbone, BaseForm, mediator, template) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknPanelContainer panel-container AknPanelContainer--closed',
+            className: 'AknPanelContainer panel-container',
             events: {
                 'click > header > .close': 'closePanel'
             },
@@ -64,7 +64,7 @@ define(
                     return this;
                 }
 
-                this.$el[this.getCurrentPanelCode() ? 'removeClass' : 'addClass']('AknPanelContainer--closed');
+                this.$el.closest('.AknTabContainer-panels')[this.getCurrentPanelCode() ? 'removeClass' : 'addClass']('AknTabContainer-panels--closed');
 
                 var currentPanel = _.findWhere(this.panels, {code: this.getCurrentPanelCode()});
                 this.$el.html(

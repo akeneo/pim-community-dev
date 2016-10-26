@@ -7,7 +7,8 @@
     border-bottom: 1px solid @AknBorderColor;
   }
 
-  &-bodyCell, &-headerCell {
+  &-bodyCell,
+  &-headerCell {
     line-height: 24px;
     padding: 12px 10px;
   }
@@ -18,6 +19,11 @@
   }
 
   &-bodyCell {
+    &--full {
+      padding: 10px 20px;
+      background: @AknDefaultHoverBackground;
+    }
+
     &--actions {
       opacity: 0;
       width: 1px;
@@ -56,5 +62,17 @@
   &-headerCell--descending &-caret {
     border-bottom: 4px solid @AknDefaultFontColor;
     border-top: none;
+  }
+
+  &--history {
+    border: 1px solid @AknBorderColor;
+    background: white;
+  }
+
+  &--history &-bodyCell,
+  &--history &-headerCell {
+    line-height: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
   }
 }

@@ -4,15 +4,30 @@
   background: lighten(@AknGrey, 30%);
   border-bottom: 1px solid @AknBorderColor;
   border-right: 1px solid @AknBorderColor;
-  width: 400px;
-  padding: 0 10px;
+  padding: 0 10px 10px;
   height: 100%;
-  
-  &--closed {
-    display: none;
+
+  &-header {
+    height: @AknTabHeight;
+    border-bottom: 3px solid @AknBorderColor;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
   }
 
-  h1 {
+  &-title {
+    color: @AknPurple;
+    font-size: @AknTitleFontSize;
+    order: -1;
     margin: 0;
+    font-weight: normal;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  &-footer {
+    text-align: right;
+    margin-top: 10px;
   }
 }
