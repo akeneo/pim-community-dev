@@ -81,7 +81,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_throws_an_error_if_there_is_no_attribute_data_key_in_array(
+    function it_throws_an_error_if_there_is_no_attribute_amount_key_in_array(
         AttributeInterface $attribute,
         ProductInterface $product
     ) {

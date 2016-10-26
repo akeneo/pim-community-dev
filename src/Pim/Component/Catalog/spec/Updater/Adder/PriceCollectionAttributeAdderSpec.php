@@ -96,7 +96,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_throws_an_error_if_attribute_data_value_does_not_contain_data_key(
+    function it_throws_an_error_if_attribute_data_value_does_not_contain_amount_key(
         AttributeInterface $attribute,
         ProductInterface $product
     ) {

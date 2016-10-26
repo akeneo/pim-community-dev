@@ -30,17 +30,17 @@ class PriceLocalizerSpec extends ObjectBehavior
     function it_valids_the_format()
     {
         $prices = [
-            ['data' => '10.05', 'currency' => 'EUR'],
-            ['data' => '-10.05', 'currency' => 'USD'],
-            ['data' => '10', 'currency' => 'USD'],
-            ['data' => '-10', 'currency' => 'EUR'],
-            ['data' => 10, 'currency' => 'EUR'],
-            ['data' => 10.05, 'currency' => 'USD'],
-            ['data' => ' 10.05 ', 'currency' => 'PES'],
-            ['data' => null, 'currency' => null],
-            ['data' => '', 'currency' => ''],
-            ['data' => 0, 'currency' => 'PES'],
-            ['data' => '0', 'currency' => 'PES'],
+            ['amount' => '10.05', 'currency' => 'EUR'],
+            ['amount' => '-10.05', 'currency' => 'USD'],
+            ['amount' => '10', 'currency' => 'USD'],
+            ['amount' => '-10', 'currency' => 'EUR'],
+            ['amount' => 10, 'currency' => 'EUR'],
+            ['amount' => 10.05, 'currency' => 'USD'],
+            ['amount' => ' 10.05 ', 'currency' => 'PES'],
+            ['amount' => null, 'currency' => null],
+            ['amount' => '', 'currency' => ''],
+            ['amount' => 0, 'currency' => 'PES'],
+            ['amount' => '0', 'currency' => 'PES'],
         ];
         $this->validate($prices, 'prices', ['decimal_separator' => '.'])->shouldReturn(null);
     }
@@ -54,7 +54,7 @@ class PriceLocalizerSpec extends ObjectBehavior
         $validator->validate('10,00', Argument::any())->willReturn($constraints);
         $validator->validate('10,05', Argument::any())->willReturn(null);
 
-        $prices = [['data' => '10,00', 'currency' => 'EUR'], ['data' => '10,05', 'currency' => 'USD']];
+        $prices = [['amount' => '10,00', 'currency' => 'EUR'], ['amount' => '10,05', 'currency' => 'USD']];
 
         $allConstraints = new ConstraintViolationList();
         $allConstraints->addAll($constraints);
@@ -65,41 +65,41 @@ class PriceLocalizerSpec extends ObjectBehavior
     function it_converts()
     {
         $prices = [
-            ['data' => '10,05', 'currency' => 'EUR'],
-            ['data' => '-10,05', 'currency' => 'EUR'],
-            ['data' => '10', 'currency' => 'PES'],
-            ['data' => '-10', 'currency' => 'PES'],
-            ['data' => 10, 'currency' => 'PES'],
-            ['data' => 10.05, 'currency' => 'PES'],
-            ['data' => ' 10.05 ', 'currency' => 'PES'],
-            ['data' => null, 'currency' => null],
-            ['data' => '', 'currency' => ''],
-            ['data' => 0, 'currency' => 'EUR'],
-            ['data' => '0', 'currency' => 'EUR'],
-            ['data' => 'gruik', 'currency' => 'EUR']
+            ['amount' => '10,05', 'currency' => 'EUR'],
+            ['amount' => '-10,05', 'currency' => 'EUR'],
+            ['amount' => '10', 'currency' => 'PES'],
+            ['amount' => '-10', 'currency' => 'PES'],
+            ['amount' => 10, 'currency' => 'PES'],
+            ['amount' => 10.05, 'currency' => 'PES'],
+            ['amount' => ' 10.05 ', 'currency' => 'PES'],
+            ['amount' => null, 'currency' => null],
+            ['amount' => '', 'currency' => ''],
+            ['amount' => 0, 'currency' => 'EUR'],
+            ['amount' => '0', 'currency' => 'EUR'],
+            ['amount' => 'gruik', 'currency' => 'EUR']
         ];
 
         $this->delocalize($prices, ['decimal_separator' => ','])->shouldReturn(
             [
-                ['data' => '10.05', 'currency' => 'EUR'],
-                ['data' => '-10.05', 'currency' => 'EUR'],
-                ['data' => '10', 'currency' => 'PES'],
-                ['data' => '-10', 'currency' => 'PES'],
-                ['data' => 10, 'currency' => 'PES'],
-                ['data' => '10.05', 'currency' => 'PES'],
-                ['data' => ' 10.05 ', 'currency' => 'PES'],
-                ['data' => null, 'currency' => null],
-                ['data' => null, 'currency' => ''],
-                ['data' => 0, 'currency' => 'EUR'],
-                ['data' => '0', 'currency' => 'EUR'],
-                ['data' => 'gruik', 'currency' => 'EUR']
+                ['amount' => '10.05', 'currency' => 'EUR'],
+                ['amount' => '-10.05', 'currency' => 'EUR'],
+                ['amount' => '10', 'currency' => 'PES'],
+                ['amount' => '-10', 'currency' => 'PES'],
+                ['amount' => 10, 'currency' => 'PES'],
+                ['amount' => '10.05', 'currency' => 'PES'],
+                ['amount' => ' 10.05 ', 'currency' => 'PES'],
+                ['amount' => null, 'currency' => null],
+                ['amount' => null, 'currency' => ''],
+                ['amount' => 0, 'currency' => 'EUR'],
+                ['amount' => '0', 'currency' => 'EUR'],
+                ['amount' => 'gruik', 'currency' => 'EUR']
             ]
         );
 
-        $this->delocalize([['data' => '10,00']], [], 'prices')->shouldReturn([['data' => '10.00']]);
-        $this->delocalize([['data' => '10,00']], ['decimal_separator' => null], 'prices')
-            ->shouldReturn([['data' => '10.00']]);
-        $this->delocalize([['data' => '10,00']], ['decimal_separator' => ''], 'prices')
-            ->shouldReturn([['data' => '10.00']]);
+        $this->delocalize([['amount' => '10,00']], [], 'prices')->shouldReturn([['amount' => '10.00']]);
+        $this->delocalize([['amount' => '10,00']], ['decimal_separator' => null], 'prices')
+            ->shouldReturn([['amount' => '10.00']]);
+        $this->delocalize([['amount' => '10,00']], ['decimal_separator' => ''], 'prices')
+            ->shouldReturn([['amount' => '10.00']]);
     }
 }

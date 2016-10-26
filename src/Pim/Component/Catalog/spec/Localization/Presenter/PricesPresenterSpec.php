@@ -21,7 +21,7 @@ class PricesPresenterSpec extends ObjectBehavior
             ->willReturn($numberFormatter);
         $numberFormatter->formatCurrency(12.34, 'USD')->willReturn('$12.34');
         $this
-            ->present([['data' => 12.34, 'currency' => 'USD']], ['locale' => 'en_US'])
+            ->present([['amount' => 12.34, 'currency' => 'USD']], ['locale' => 'en_US'])
             ->shouldReturn('$12.34');
     }
 
@@ -34,7 +34,7 @@ class PricesPresenterSpec extends ObjectBehavior
             ->willReturn($numberFormatter);
         $numberFormatter->formatCurrency(12.34, 'USD')->willReturn('12,34 $US');
         $this
-            ->present([['data' => 12.34, 'currency' => 'USD']], ['locale' => 'fr_FR'])
+            ->present([['amount' => 12.34, 'currency' => 'USD']], ['locale' => 'fr_FR'])
             ->shouldReturn('12,34 $US');
     }
 
@@ -47,7 +47,7 @@ class PricesPresenterSpec extends ObjectBehavior
             ->willReturn($numberFormatter);
         $numberFormatter->formatCurrency(-12.34, 'USD')->willReturn('-$12.34');
         $this
-            ->present([['data' => -12.34, 'currency' => 'USD']], ['locale' => 'en_US'])
+            ->present([['amount' => -12.34, 'currency' => 'USD']], ['locale' => 'en_US'])
             ->shouldReturn('-$12.34');
     }
 
@@ -60,7 +60,7 @@ class PricesPresenterSpec extends ObjectBehavior
             ->willReturn($numberFormatter);
         $numberFormatter->formatCurrency(-12.34, 'USD')->willReturn('-12,34 $US');
         $this
-            ->present(['data' => -12.34, 'currency' => 'USD'], ['locale' => 'fr_FR'])
+            ->present(['amount' => -12.34, 'currency' => 'USD'], ['locale' => 'fr_FR'])
             ->shouldReturn('-12,34 $US');
     }
 
@@ -73,7 +73,7 @@ class PricesPresenterSpec extends ObjectBehavior
             ->willReturn($numberFormatter);
         $numberFormatter->formatCurrency(12.34, 'USD')->willReturn('$12.34');
         $this
-            ->present([['data' => 12.34, 'currency' => 'USD']])
+            ->present([['amount' => 12.34, 'currency' => 'USD']])
             ->shouldReturn('$12.34');
     }
 
@@ -88,7 +88,7 @@ class PricesPresenterSpec extends ObjectBehavior
         $numberFormatter->formatCurrency(123.5, 'EUR')->willReturn('€123.5');
 
         $this
-            ->present([['data' => 125, 'currency' => 'USD'], ['data' => 123.5, 'currency' => 'EUR']])
+            ->present([['amount' => 125, 'currency' => 'USD'], ['amount' => 123.5, 'currency' => 'EUR']])
             ->shouldReturn('$125, €123.5');
     }
 
@@ -102,7 +102,7 @@ class PricesPresenterSpec extends ObjectBehavior
         $numberFormatter->formatCurrency(null, 'USD')->shouldNotBeCalled();
 
         $this
-            ->present([['data' => null, 'currency' => 'USD']])
+            ->present([['amount' => null, 'currency' => 'USD']])
             ->shouldReturn('');
     }
 }
