@@ -17,6 +17,7 @@ define(
         'activity-manager/saver/project',
         'datepicker',
         'pim/date-context',
+        'pim/datagrid/state',
         'text!activity-manager/templates/grid/create-project-modal-content',
         'text!activity-manager/templates/field-error'
     ],
@@ -31,6 +32,7 @@ define(
         ProjectSaver,
         Datepicker,
         DateContext,
+        DatagridState,
         template,
         errorTemplate
     ) {
@@ -155,6 +157,7 @@ define(
                 this.validationErrors = [];
                 var loadingMask = new LoadingMask();
                 var project = _.defaults(this.getFormData(), {label: null});
+                project.datagrid_view = DatagridState.get('product-grid', ['filters', 'columns']);
 
                 this.$el.empty().append(loadingMask.render().$el.show());
 
