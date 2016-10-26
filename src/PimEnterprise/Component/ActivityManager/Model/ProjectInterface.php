@@ -11,7 +11,6 @@
 
 namespace Akeneo\ActivityManager\Component\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -91,19 +90,14 @@ interface ProjectInterface
     public function setLocale(LocaleInterface $locale);
 
     /**
-     * @return ArrayCollection
+     * @return DatagridView
      */
-    public function getDatagridViews();
+    public function getDatagridView();
 
     /**
      * @param DatagridView $datagridView
      */
-    public function addDatagridView(DatagridView $datagridView);
-
-    /**
-     * @param DatagridView $datagridView
-     */
-    public function removeDatagridView(DatagridView $datagridView);
+    public function setDatagridView($datagridView);
 
     /**
      * Add a new user group to the Project.

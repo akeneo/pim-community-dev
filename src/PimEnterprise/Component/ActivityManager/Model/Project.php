@@ -38,14 +38,14 @@ class Project implements ProjectInterface
     /** @var UserInterface */
     private $owner;
 
+    /** @var DatagridView */
+    private $datagridView;
+
     /** @var ChannelInterface */
     private $channel;
 
     /** @var LocaleInterface */
     private $locale;
-
-    /** @var ArrayCollection */
-    private $datagridViews;
 
     /** @var ArrayCollection */
     private $userGroups;
@@ -55,7 +55,6 @@ class Project implements ProjectInterface
 
     public function __construct()
     {
-        $this->datagridViews = new ArrayCollection();
         $this->userGroups = new ArrayCollection();
     }
 
@@ -166,25 +165,17 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getDatagridViews()
+    public function getDatagridView()
     {
-        return $this->datagridViews;
+        return $this->datagridView;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addDatagridView(DatagridView $datagridView)
+    public function setDatagridView($datagridView)
     {
-        $this->datagridViews[] = $datagridView;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeDatagridView(DatagridView $datagridView)
-    {
-        $this->datagridViews->removeElement($datagridView);
+        $this->datagridView = $datagridView;
     }
 
     /**

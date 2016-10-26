@@ -62,12 +62,10 @@ class ProjectSpec extends ObjectBehavior
         $this->getLabel()->shouldReturn('My awesome label');
     }
 
-    function it_has_datagrid_view(DatagridView $datagridView, DatagridView $otherDatagridView)
+    function it_has_datagrid_view(DatagridView $datagridView)
     {
-        $this->addDatagridView($datagridView)->shouldReturn(null);
-        $this->addDatagridView($otherDatagridView)->shouldReturn(null);
-        $this->removeDatagridView($otherDatagridView)->shouldReturn(null);
-        $this->getDatagridViews()->toArray()->shouldReturn([$datagridView]);
+        $this->setDatagridView($datagridView)->shouldReturn(null);
+        $this->getDatagridView()->shouldReturn($datagridView);
     }
 
     function it_has_a_unique_user_group(Group $group, Group $otherGroup)

@@ -13,8 +13,11 @@ namespace Akeneo\ActivityManager\Behat\Context;
 
 use Akeneo\ActivityManager\Behat\Context;
 use Akeneo\ActivityManager\Behat\ContextInterface;
+use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
+use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -26,16 +29,17 @@ class ProjectContext extends Context implements ContextInterface
      */
     public function projectHasProperties($label, TableNode $properties)
     {
-        $project = $this->getContainer()
-            ->get('activity_manager.repository.project')
-            ->findOneBy(['label' => $label]);
+        $project = $this->findProjectByLabel($label);
 
         $accessor = PropertyAccess::createPropertyAccessor();
 
         foreach ($properties->getRows() as $property) {
             list($propertyName, $expectedValue) = $property;
-
             switch ($propertyName) {
+                case 'Due date':
+                    $actualValue = $accessor->getValue($project, strtolower(str_replace(' ', '_', $propertyName)));
+                    $actualValue = $actualValue->format('Y-m-d');
+                    break;
                 case 'Channel':
                     $actualValue = $project->getChannel()->getCode();
                     break;
@@ -58,5 +62,47 @@ class ProjectContext extends Context implements ContextInterface
                 );
             }
         }
+    }
+
+    /**
+     * @Given /^the project "([^"]*)" has a project datagrid view$/
+     */
+    public function projectHasDatagridView($label)
+    {
+        $project = $this->findProjectByLabel($label);
+        $datagridView = $project->getDatagridView();
+        $type = $datagridView->getType();
+
+        Assert::notNull($datagridView, 'The project %s does not have a datagrid view');
+        Assert::eq(
+            DatagridViewTypes::PROJECT_VIEW,
+            $type,
+            sprintf(
+                'the project datagrid view has the right type, %s given, %s expected %s',
+                $label,
+                $type,
+                DatagridViewTypes::PROJECT_VIEW
+            )
+        );
+    }
+
+    /**
+     * @param string $label
+     *
+     * @return ProjectInterface
+     *
+     * @throws \UnexpectedValueException
+     */
+    private function findProjectByLabel($label)
+    {
+        $project = $this->getContainer()
+            ->get('activity_manager.repository.project')
+            ->findOneBy(['label' => $label]);
+
+        if (null === $project) {
+            throw new \UnexpectedValueException(sprintf('The project "%s" does not exist', $label));
+        }
+
+        return $project;
     }
 }

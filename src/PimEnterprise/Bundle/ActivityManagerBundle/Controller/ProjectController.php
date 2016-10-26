@@ -11,6 +11,7 @@
 
 namespace Akeneo\ActivityManager\Bundle\Controller;
 
+use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,6 +61,23 @@ class ProjectController extends Controller
         $projectData['owner'] = $this->getUser();
         $projectData['channel'] = $channel;
         $projectData['locale'] = $locale;
+
+        $datagridViewData = [];
+        if (isset($projectData['datagrid_view'])) {
+            $datagridViewData = $projectData['datagrid_view'];
+            $datagridViewData['type'] = DatagridViewTypes::PROJECT_VIEW;
+            $datagridViewData['label'] = sprintf('Project %s', time());
+            $datagridViewData['datagrid_alias'] = 'product-grid';
+        }
+
+        $datagridView = $this->container->get('pim_datagrid.factory.datagrid_view')
+            ->create();
+
+        $this->container->get('pim_datagrid.updater.datagrid_view')
+            ->update($datagridView, $datagridViewData);
+
+        $projectData['datagrid_view'] = $datagridView;
+
 
         $project = $this->container->get('activity_manager.factory.project')
             ->create();

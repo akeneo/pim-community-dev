@@ -42,19 +42,17 @@ Akeneo\ActivityManager\Component\Model\Project:
                 locale_id:
                     nullable: false
                     referencedColumnName: id
-    # oneToMany unidirectional with join table
+     oneToOne:
+        datagridView:
+            targetEntity: Pim\Bundle\DataGridBundle\Entity\DatagridView
+            joinColumn:
+                name: datagrid_view_id
+                nullable: false
+                referencedColumnName: id
+            cascade:
+                - persist
+                - detach
     manyToMany:
-        datagridViews:
-          targetEntity: Pim\Bundle\DataGridBundle\Entity\DatagridView
-          joinTable:
-            name: akeneo_activity_manager_project_view
-            joinColumns:
-              project_id:
-                referencedColumnName: id
-            inverseJoinColumns:
-              view_id:
-                referencedColumnName: id
-                unique: true
         userGroups:
           targetEntity: Oro\Bundle\UserBundle\Entity\Group
           joinTable:

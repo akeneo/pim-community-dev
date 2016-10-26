@@ -51,6 +51,9 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 case 'owner':
                     $project->setOwner($value);
                     break;
+                case 'datagrid_view':
+                    $project->setDatagridView($value);
+                    break;
                 case 'product_filters':
                     $project->setProductFilters($value);
                     break;
