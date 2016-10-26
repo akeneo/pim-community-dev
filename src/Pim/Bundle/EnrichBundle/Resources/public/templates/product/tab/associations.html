@@ -8,9 +8,10 @@
     <div class="tabbable tabs-left">
         <div class="sidebar">
             <ul class="AknVerticalNavtab associations-list nav nav-tabs tab-groups">
+                <li class="AknVerticalNavtab-item AknVerticalNavtab-header header"></li>
                 <% _.each(associationTypes, function (associationType) { %>
-                    <li class="AknVerticalNavtab-item<% if (associationType.code === currentAssociationType) { %> active<% } %>" data-association-type="<%- associationType.code %>">
-                        <a class="AknVerticalNavtab-link<% if (associationType.code === currentAssociationType) { %> AknVerticalNavtab-link--active<% } %>" href="#"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></a>
+                    <li class="AknVerticalNavtab-item<% if (associationType.code === currentAssociationType) { %> AknVerticalNavtab-item--active active<% } %>" data-association-type="<%- associationType.code %>">
+                        <a class="AknVerticalNavtab-link" href="#"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></a>
                     </li>
                 <% }); %>
             </ul>

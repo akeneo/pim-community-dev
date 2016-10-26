@@ -4,7 +4,7 @@
   min-width: 150px;
 
   &-header {
-    background: lighten(@AknGrey, 25%);
+    background: lighten(@AknGrey, 30%);
     height: @AknTabHeight;
   }
 
@@ -24,10 +24,11 @@
     &:hover:not(&--active) {
       background: @AknDefaultHoverBackground;
     }
+  }
 
-    &--active {
-      background: white;
-      font-weight: bold;
-    }
+  &-link--active,
+  &-item--active &-link {
+    background: white;
+    font-weight: bold;
   }
 }

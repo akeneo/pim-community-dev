@@ -48,7 +48,7 @@ define(
             className: 'tab-pane active product-associations',
             events: {
                 'click .associations-list li': 'changeAssociationType',
-                'click .AknTitleContainer .target-button': 'changeAssociationTargets'
+                'click .AknTabHeader .target-button': 'changeAssociationTargets'
             },
             initialize: function () {
                 state = {
@@ -233,9 +233,9 @@ define(
                 this.setCurrentAssociationType(associationType);
 
                 $(event.currentTarget)
-                    .addClass('active')
-                    .siblings('.active')
-                    .removeClass('active');
+                    .addClass('active AknVerticalNavtab-item--active')
+                    .siblings('.active.AknVerticalNavtab-item--active')
+                    .removeClass('active AknVerticalNavtab-item--active');
 
                 this.$('.AknTitleContainer.association-type[data-association-type="' + associationType + '"]')
                     .removeClass('AknTitleContainer--hidden')
