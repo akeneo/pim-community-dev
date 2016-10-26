@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6000: Fix migration from 1.5 on quick exports
+
 # 1.6.4 (2016-10-20)
 
 ## Bug fixes
