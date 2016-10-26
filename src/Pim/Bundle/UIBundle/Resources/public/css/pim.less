@@ -328,63 +328,8 @@ h3.tab-header {
   }
 }
 
-.edit-form {
-  .form-container {
-    overflow: hidden;
-    .display-flex();
-
-    & > .tab-container {
-      .flex(1);
-    }
-  }
-
-  .actions {
-    & > div:empty {
-      display:none;
-    }
-  }
-}
-
 .object-attributes >.tab-content {
   overflow: hidden;
-}
-
-.panel-container {
-  border-top: 3px solid @grayDark;
-  width: 400px;
-  background: @whiteDark;
-  border-left: 1px solid @grayLighter;
-  padding: 0 15px;
-
-  &.closed {
-    display: none;
-  }
-
-  & > header {
-    border-bottom: 3px solid @color-ddd;
-    margin-bottom: 15px;
-
-    .close {
-      width: 22px;
-      height: 22px;
-      margin-top: 10px;
-      background: @grayDark;
-      color: white;
-      line-height: 22px;
-      border-radius: 2px;
-      text-shadow: none;
-      opacity: 1;
-      font-size: @font-size-14;
-    }
-
-    h1 {
-      margin: 0;
-      line-height: 42px;
-      color: @grayDark;
-      font-weight: bold;
-      text-transform: capitalize;
-    }
-  }
 }
 
 .panel-content {

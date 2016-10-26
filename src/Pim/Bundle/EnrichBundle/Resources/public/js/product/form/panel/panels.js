@@ -19,7 +19,7 @@ define(
     function ($, _, Backbone, BaseForm, mediator, template) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'panel-container closed',
+            className: 'AknPanelContainer panel-container AknPanelContainer--closed',
             events: {
                 'click > header > .close': 'closePanel'
             },
@@ -64,7 +64,7 @@ define(
                     return this;
                 }
 
-                this.$el[this.getCurrentPanelCode() ? 'removeClass' : 'addClass']('closed');
+                this.$el[this.getCurrentPanelCode() ? 'removeClass' : 'addClass']('AknPanelContainer--closed');
 
                 var currentPanel = _.findWhere(this.panels, {code: this.getCurrentPanelCode()});
                 this.$el.html(
@@ -134,12 +134,7 @@ define(
              * Resize the panel to fit the pef
              */
             resize: function () {
-                var panelContent = this.$('.panel-content');
-                if (panelContent.length) {
-                    panelContent.css(
-                        {'height': ($(window).height() - panelContent.offset().top - 4) + 'px'}
-                    );
-                }
+                /* TODO Remove this function */
             }
         });
     }

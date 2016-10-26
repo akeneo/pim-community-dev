@@ -131,12 +131,7 @@ define(
              * Default resize method
              */
             resizeContainer: function () {
-                var container = this.$('> .form-container');
-                if (container.length && this.getRoot().$el.length && container.offset()) {
-                    container.css(
-                        {'height': ($(window).height() - container.offset().top - 4) + 'px'}
-                    );
-                }
+                /* TODO Remove this function */
             },
 
             /**
