@@ -6,6 +6,7 @@ use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Updater\ProjectUpdater;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 class ProjectUpdaterSpec extends ObjectBehavior
 {
@@ -20,10 +21,17 @@ class ProjectUpdaterSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->during('update', [$object, []]);
     }
 
-    function it_updates_a_project(ProjectInterface $project)
+    function it_updates_a_project(ProjectInterface $project, UserInterface $user)
     {
-        $this->update($project, ['label' => 'Summer collection 2017']);
+        $this->update(
+            $project,
+            [
+                'label' => 'Summer collection 2017',
+                'owner' => $user
+            ]
+        );
 
         $project->setLabel('Summer collection 2017')->shouldBeCalled();
+        $project->setOwner($user)->shouldBeCalled();
     }
 }

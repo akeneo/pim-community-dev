@@ -7,6 +7,7 @@ use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 class ProjectSpec extends ObjectBehavior
 {
@@ -25,6 +26,12 @@ class ProjectSpec extends ObjectBehavior
         $this->setDueDate(null)->shouldReturn(null);
         $this->setDueDate($date)->shouldReturn(null);
         $this->getDueDate()->shouldReturn($date);
+    }
+
+    function it_has_an_owner(UserInterface $user)
+    {
+        $this->setOwner($user)->shouldReturn(null);
+        $this->getOwner()->shouldReturn($user);
     }
 
     function it_has_a_description()

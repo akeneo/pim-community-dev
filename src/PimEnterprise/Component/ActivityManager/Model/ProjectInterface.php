@@ -14,6 +14,7 @@ namespace Akeneo\ActivityManager\Component\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -56,6 +57,16 @@ interface ProjectInterface
      * @return
      */
     public function setDueDate(\DateTime $dueDate = null);
+
+    /**
+     * @return UserInterface
+     */
+    public function getOwner();
+
+    /**
+     * @param UserInterface $owner
+     */
+    public function setOwner(UserInterface $owner);
 
     /**
      * @return ArrayCollection

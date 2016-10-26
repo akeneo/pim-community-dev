@@ -33,6 +33,7 @@ class ProjectNormalizer implements NormalizerInterface
      *     'label' => (string),
      *     'description' => (string),
      *     'due_date' => (string),
+     *     'owner' => (int),
      * ]
      */
     public function normalize($project, $format = null, array $context = [])
@@ -56,6 +57,7 @@ class ProjectNormalizer implements NormalizerInterface
             'label' => $project->getLabel(),
             'description' => $project->getDescription(),
             'due_date' => $dueDate,
+            'owner' => $project->getOwner()->getId(),
         ];
     }
 

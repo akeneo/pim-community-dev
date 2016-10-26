@@ -5,6 +5,7 @@ namespace spec\Akeneo\ActivityManager\Component\Normalizer;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Normalizer\ProjectNormalizer;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProjectNormalizerSpec extends ObjectBehavior
@@ -15,31 +16,38 @@ class ProjectNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_normalizes_a_project(ProjectInterface $project, \DateTime $datetime)
+    function it_normalizes_a_project(ProjectInterface $project, \DateTime $datetime, UserInterface $user)
     {
         $datetime->format('YYYY-MM-dd')->willReturn('2069-02-15');
+        $user->getId()->willReturn(42);
 
         $project->getLabel()->willReturn('Summer collection');
         $project->getDescription()->willReturn('The sun is here, such is the collection!');
         $project->getDueDate()->willReturn($datetime);
+        $project->getOwner()->willReturn($user);
 
         $this->normalize($project)->shouldReturn([
             'label' => 'Summer collection',
             'description' => 'The sun is here, such is the collection!',
             'due_date' => '2069-02-15',
+            'owner' => 42,
         ]);
     }
 
-    function it_normalizes_a_project_without_due_date(ProjectInterface $project)
+    function it_normalizes_a_project_without_due_date(ProjectInterface $project, UserInterface $user)
     {
+        $user->getId()->willReturn(42);
+
         $project->getLabel()->willReturn('Summer collection');
         $project->getDescription()->willReturn('The sun is here, such is the collection!');
         $project->getDueDate()->willReturn(null);
+        $project->getOwner()->willReturn($user);
 
         $this->normalize($project)->shouldReturn([
             'label' => 'Summer collection',
             'description' => 'The sun is here, such is the collection!',
             'due_date' => null,
+            'owner' => 42,
         ]);
     }
 

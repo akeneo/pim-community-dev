@@ -20,6 +20,13 @@ Akeneo\ActivityManager\Component\Model\Project:
             type: date
             column: due_date
             nullable: true
+    manyToOne:
+        owner:
+          targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
+          joinColumns:
+            owner_id:
+              nullable: false
+              referencedColumnName: id
     # oneToMany unidirectional with join table
     manyToMany:
         datagridViews:

@@ -14,7 +14,6 @@ namespace Akeneo\ActivityManager\Component\Updater;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Project updater is able to hydrate a project with given parameters.
@@ -28,8 +27,6 @@ class ProjectUpdater implements ObjectUpdaterInterface
      */
     public function update($project, array $data, array $options = [])
     {
-        $accessor = PropertyAccess::createPropertyAccessor();
-
         if (!$project instanceof ProjectInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -41,10 +38,20 @@ class ProjectUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
-            if ('due_date' === $field) {
-                $value = new \DateTime($value);
+            switch ($field) {
+                case 'label':
+                    $project->setLabel($value);
+                    break;
+                case 'due_date':
+                    $project->setDueDate(new \DateTime($value));
+                    break;
+                case 'description':
+                    $project->setDescription($value);
+                    break;
+                case 'owner':
+                    $project->setOwner($value);
+                    break;
             }
-            $accessor->setValue($project, $field, $value);
         }
 
         return $this;
