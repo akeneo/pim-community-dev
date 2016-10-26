@@ -18,7 +18,7 @@
     padding-left: 0;
   }
 
-  &:hover {
+  &:hover, &--active {
     background: darken(@AknLightGray, 10%);
     color: darken(@AknDefaultFontColor, 10%);
   }
@@ -39,11 +39,11 @@
   &--success {
     background-color: @AknGreen;
     color: white;
+  }
 
-    &:hover {
-      background-color: darken(@AknGreen, 10%);
-      color: white;
-    }
+  &--success:hover, &--success&--active {
+    background-color: darken(@AknGreen, 10%);
+    color: white;
   }
 
   &--success &-icon {
@@ -54,11 +54,11 @@
   &--grey {
     background-color: @AknGrey;
     color: white;
+  }
 
-    &:hover {
-      background: darken(@AknGrey, 10%);
-      color: white;
-    }
+  &--grey:hover, &--grey&--active {
+    background: darken(@AknGrey, 10%);
+    color: white;
   }
 
   &--grey &-icon {
@@ -69,21 +69,29 @@
   &--important {
     background-color: @AknRed;
     color: white;
+  }
 
-    &:hover {
-      background: darken(@AknRed, 10%);
-      color: white;
-    }
+  &--important:hover, &--important&--active {
+    background: darken(@AknRed, 10%);
+    color: white;
   }
 
   &--important &-icon {
     background: darken(@AknRed, 10%);
   }
 
+  //Sizes
   &--little {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
     min-width: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--little &-icon {
+    height: @AknLittleButtonSize;
+    width: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
     font-size: @AknDefaultFontSize;
   }
 

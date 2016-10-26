@@ -1,3 +1,5 @@
 <% _.each(panels, function(panel) { %>
-    <button class="btn <%- panel.code === currentPanel ? 'active' : '' %>" data-panel="<%- panel.code %>"><%- panel.label %></button>
+    <button class="AknButtonsList-item AknButton AknButton--little AknButton--grey <%- panel.code === currentPanel ? 'AknButton--active active' : '' %>" data-panel="<%- panel.code %>">
+        <%- panel.label %>
+    </button>
 <% }) %>
