@@ -27,8 +27,8 @@ class VariantGroupSpec extends ObjectBehavior
                 'locale' => null,
                 'scope'  => null,
                 'data'   => [
-                    'data' => '80',
-                    'unit' => 'CENTIMETER'
+                    'amount' => '80',
+                    'unit'   => 'CENTIMETER'
                 ]
             ]
         ])->willReturn([
@@ -70,7 +70,7 @@ class VariantGroupSpec extends ObjectBehavior
                 'en_US' => 'Swords',
                 'fr_FR' => 'Épées'
             ],
-            'axis'   => ['blade_length', 'color'],
+            'axes'   => ['blade_length', 'color'],
             'type'   => 'VARIANT',
             'values' => [
                 'blade_length'   => [
@@ -78,8 +78,8 @@ class VariantGroupSpec extends ObjectBehavior
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
-                            'data' => '80',
-                            'unit' => 'CENTIMETER'
+                            'amount' => '80',
+                            'unit'   => 'CENTIMETER'
                         ]
                     ]
                 ],

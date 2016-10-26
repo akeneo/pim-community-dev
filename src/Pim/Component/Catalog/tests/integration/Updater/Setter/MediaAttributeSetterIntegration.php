@@ -16,24 +16,7 @@ class MediaAttributeSetterIntegration extends TestCase
 
     protected $purgeDatabaseForEachTest = false;
 
-    protected function assertCommandMedia(array $parameters, array $result, $attributeName)
-    {
-        $productUpdater = $this->get('pim_catalog.updater.product');
-
-        $product = $this->get('pim_catalog.builder.product')->createProduct('product_media');
-        $productUpdater->update($product, $parameters);
-
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        $standardProduct = $this->get('pim_serializer')->normalize($product, 'standard');
-
-        $result = $this->sanitizeMediaAttributeData($result);
-        $standardValues = $this->sanitizeMediaAttributeData($standardProduct['values'][$attributeName]);
-
-        $this->assertEquals($result, $standardValues);
-    }
-
-    public function testLocalisableMedia()
+    public function testLocalizableMedia()
     {
         $attributeName = 'a_localizable_image';
 
@@ -116,7 +99,6 @@ class MediaAttributeSetterIntegration extends TestCase
 
     public function isSameMedia()
     {
-
         $attributeName = 'a_localizable_scopable_image';
 
         $parameters = [
@@ -149,6 +131,22 @@ class MediaAttributeSetterIntegration extends TestCase
         $this->assertCommandMedia($parameters, $result, $attributeName);
     }
 
+    protected function assertCommandMedia(array $parameters, array $result, $attributeName)
+    {
+        $productUpdater = $this->get('pim_catalog.updater.product');
+
+        $product = $this->get('pim_catalog.builder.product')->createProduct('product_media');
+        $productUpdater->update($product, $parameters);
+
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $standardProduct = $this->get('pim_serializer')->normalize($product, 'standard');
+
+        $result = $this->sanitizeMediaAttributeData($result);
+        $standardValues = $this->sanitizeMediaAttributeData($standardProduct['values'][$attributeName]);
+
+        $this->assertEquals($result, $standardValues);
+    }
 
     /**
      * Replaces media attributes data in the $data array by self::MEDIA_ATTRIBUTE_DATA_COMPARISON.
@@ -157,7 +155,7 @@ class MediaAttributeSetterIntegration extends TestCase
      *
      * @return array
      */
-    private function sanitizeMediaAttributeData(array $data)
+    protected function sanitizeMediaAttributeData(array $data)
     {
         foreach ($data as $index => $value) {
             if ($this->assertMediaAttributeDataPattern($value['data'])) {

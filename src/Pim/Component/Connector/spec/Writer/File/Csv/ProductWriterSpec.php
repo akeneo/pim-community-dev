@@ -97,8 +97,7 @@ class ProductWriterSpec extends ObjectBehavior
                     [
                         'locale' => 'en_US',
                         'scope'  => 'ecommerce',
-                        'data'   => [
-                            'filePath' => 'A wonderful description...',
+                        'data'   => 'A wonderful description...',
                         ]
                     ],
                     [

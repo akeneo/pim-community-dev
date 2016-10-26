@@ -23,7 +23,7 @@ class BaseEmptyValueProvider implements EmptyValueProviderInterface
             case AttributeTypes::METRIC:
                 $emptyValue = [
                     'amount' => null,
-                    'unit' => $attribute->getDefaultMetricUnit(),
+                    'unit'   => $attribute->getDefaultMetricUnit(),
                 ];
                 break;
             case AttributeTypes::OPTION_MULTI_SELECT:

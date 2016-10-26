@@ -65,21 +65,21 @@ class GroupNormalizerSpec extends ObjectBehavior
             'axis' => ['color', 'size'],
             'type' => 'variant',
             'values' => [
-                'number' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
-                'metric' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
-                'prices' => ['data' => 12.5, 'locale' => null, 'scope' => null],
+                'number' => ['amount' => 12.5000, 'locale' => null, 'scope' => null],
+                'metric' => ['amount' => 12.5000, 'locale' => null, 'scope' => null],
+                'prices' => ['amount' => 12.5, 'locale' => null, 'scope' => null],
                 'date'   => ['data' => '2015-01-31', 'locale' => null, 'scope' => null],
             ]
         ];
 
         $valuesLocalized = [
-            'number' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
-            'metric' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
-            'prices' => ['data' => '12,50', 'locale' => null, 'scope' => null],
+            'number' => ['amount' => '12,5000', 'locale' => null, 'scope' => null],
+            'metric' => ['amount' => '12,5000', 'locale' => null, 'scope' => null],
+            'prices' => ['amount' => '12,50', 'locale' => null, 'scope' => null],
             'date'   => ['data' => '31/01/2015', 'locale' => null, 'scope' => null],
         ];
 
-        $normalizer->normalize($tshirt, 'json', $options)->willReturn($variantNormalized);
+        $normalizer->normalize($tshirt, 'standard', $options)->willReturn($variantNormalized);
         $localizedConverter->convertToLocalizedFormats($variantNormalized['values'], $options)
             ->willReturn($valuesLocalized);
 

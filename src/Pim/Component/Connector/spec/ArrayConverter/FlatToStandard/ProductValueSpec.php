@@ -144,7 +144,7 @@ class ProductValueSpec extends ObjectBehavior
                 'price' => [
                         'locale' => '',
                         'scope'  => '',
-                        'data'   => [['data' => 15, 'currency' => 'EUR'], ['data' => 10, 'currency' => 'USD']]
+                        'data'   => [['amount' => 15, 'currency' => 'EUR'], ['amount' => 10, 'currency' => 'USD']]
                 ]
             ]
         );
@@ -187,7 +187,7 @@ class ProductValueSpec extends ObjectBehavior
             'price'        => [
                 'locale' => '',
                 'scope'  => '',
-                'data'   => [['data' => 15, 'currency' => 'EUR'], ['data' => 10, 'currency' => 'USD']]
+                'data'   => [['amount' => 15, 'currency' => 'EUR'], ['amount' => 10, 'currency' => 'USD']]
             ],
         ];
 
