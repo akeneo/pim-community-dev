@@ -154,12 +154,7 @@ define(
              * Resize method to update the container size
              */
             resize: function () {
-                var valuesContainer = this.$('.object-values');
-                if (valuesContainer.length && this.getRoot().$el.length && valuesContainer.offset()) {
-                    valuesContainer.css(
-                        {'height': ($(window).height() - valuesContainer.offset().top - 4) + 'px'}
-                    );
-                }
+                /* TODO Remove this function */
             },
 
             /**
