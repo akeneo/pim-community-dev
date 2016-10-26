@@ -285,28 +285,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
   padding: 0 5px;
   line-height: 26px;
 }
-.grid-container {
-  width: 100%;
-  margin-top: 10px;
-  overflow: visible;
-
-  // This next line is very important because the Loading mask is in absolute position and NEED this. Elsewhere, the loading mask takes the entire page.
-  position: relative;
-
-  .table-bordered {
-    border-left:1px solid @color-ddd;
-    -webkit-border-radius: 0;
-       -moz-border-radius: 0;
-            border-radius: 0;
-    td,
-    th { border-left:0; }
-    .boolean-cell {
-      input[type='checkbox'],
-      input[type='radio'] { margin-top:0; }
-    }
-  }
-}
-
 #loading-wrapper {
   background: @black;
   opacity: 0.6;
