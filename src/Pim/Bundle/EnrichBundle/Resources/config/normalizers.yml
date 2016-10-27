@@ -48,6 +48,8 @@ services:
             - '@pim_enrich.provider.structure_version.product'
             - '@pim_enrich.provider.form.chained'
             - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_file_storage.repository.file_info'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

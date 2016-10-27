@@ -2,11 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -43,6 +45,12 @@ class ProductNormalizer implements NormalizerInterface
     /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var FileInfoRepositoryInterface */
+    protected $fileInfoRepository;
+
     /**
      * @param NormalizerInterface               $productNormalizer
      * @param NormalizerInterface               $versionNormalizer
@@ -51,6 +59,8 @@ class ProductNormalizer implements NormalizerInterface
      * @param StructureVersionProviderInterface $structureVersionProvider
      * @param FormProviderInterface             $formProvider
      * @param AttributeConverterInterface       $localizedConverter
+     * @param AttributeRepositoryInterface      $attributeRepository
+     * @param FileInfoRepositoryInterface       $fileInfoRepository
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
@@ -59,7 +69,9 @@ class ProductNormalizer implements NormalizerInterface
         LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider,
-        AttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter,
+        AttributeRepositoryInterface $attributeRepository,
+        FileInfoRepositoryInterface $fileInfoRepository
     ) {
         $this->productNormalizer = $productNormalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -68,6 +80,8 @@ class ProductNormalizer implements NormalizerInterface
         $this->structureVersionProvider = $structureVersionProvider;
         $this->formProvider = $formProvider;
         $this->localizedConverter = $localizedConverter;
+        $this->attributeRepository = $attributeRepository;
+        $this->fileInfoRepository = $fileInfoRepository;
     }
 
     /**
@@ -81,6 +95,8 @@ class ProductNormalizer implements NormalizerInterface
             $context
         );
 
+        $normalizedProduct['values'] = $this->convertMedia($normalizedProduct['values']);
+
         $oldestLog = $this->versionManager->getOldestLogEntry($product);
         $newestLog = $this->versionManager->getNewestLogEntry($product);
 
@@ -93,7 +109,7 @@ class ProductNormalizer implements NormalizerInterface
             'created'           => $created,
             'updated'           => $updated,
             'model_type'        => 'product',
-            'structure_version' => $this->structureVersionProvider->getStructureVersion()
+            'structure_version' => $this->structureVersionProvider->getStructureVersion(),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
@@ -144,5 +160,57 @@ class ProductNormalizer implements NormalizerInterface
         }
 
         return ['associations' => $meta];
+    }
+
+    /**
+     * Convert media attributes to have "originalFilename" in addition to "filePath"
+     * Before:
+     * {
+     *     "picture": {
+     *          "locale": null,
+     *          "scope": null,
+     *          "data": "a/b/c/b/s936265s65_my_picture.jpg"
+     *      }
+     * }
+     *
+     * After:
+     * {
+     *    "picture": {
+     *         "locale": null,
+     *         "scope": null,
+     *         "data": {
+     *             "originalFilename": "my_picture.jpg",
+     *             "filePath": "a/b/c/b/s936265s65_my_picture.jpg"
+     *         }
+     *     }
+     * }
+     *
+     * @param array $normalizedProduct
+     *
+     * @return array
+     */
+    protected function convertMedia(array $normalizedProduct)
+    {
+        $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
+
+        foreach ($normalizedProduct as $code => $values) {
+            if (in_array($code, $mediaAttributes)) {
+                foreach ($values as $index => $value) {
+                    $file = $this->fileInfoRepository->findOneByIdentifier($value['data']);
+                    $data = [
+                        'filePath'         => $value['data'],
+                        'originalFilename' => null,
+                    ];
+
+                    if (null !== $file) {
+                        $data['originalFilename'] = $file->getOriginalFilename();
+                    }
+
+                    $normalizedProduct[$code][$index]['data'] = $data;
+                }
+            }
+        }
+
+        return $normalizedProduct;
     }
 }
