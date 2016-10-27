@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
@@ -9,6 +11,7 @@ use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
@@ -25,7 +28,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider,
-        AttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter,
+        AttributeRepositoryInterface $attributeRepository,
+        FileInfoRepositoryInterface $fileInfoRepository
     ) {
         $this->beConstructedWith(
             $productNormalizer,
@@ -34,7 +39,9 @@ class ProductNormalizerSpec extends ObjectBehavior
             $localeRepository,
             $structureVersionProvider,
             $formProvider,
-            $localizedConverter
+            $localizedConverter,
+            $attributeRepository,
+            $fileInfoRepository
         );
     }
 
@@ -51,40 +58,60 @@ class ProductNormalizerSpec extends ObjectBehavior
         $structureVersionProvider,
         $formProvider,
         $localizedConverter,
+        $attributeRepository,
+        $fileInfoRepository,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
         GroupInterface $group,
-        ArrayCollection $groups
+        ArrayCollection $groups,
+        FileInfoInterface $fileInfo
     ) {
         $options = [
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
         ];
 
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['picture', 'pdf_description']);
+
         $productNormalized = [
             'enabled'    => true,
             'categories' => ['kitchen'],
             'family'     => '',
             'values' => [
-                'normalized_property' => ['data' => 'a nice normalized property', 'locale' => null, 'scope' => null],
-                'number' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
-                'metric' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
-                'prices' => ['data' => 12.5, 'locale' => null, 'scope' => null],
-                'date'   => ['data' => '2015-01-31', 'locale' => null, 'scope' => null],
+                'normalized_property' => [['data' => 'a nice normalized property', 'locale' => null, 'scope' => null]],
+                'number'              => [['data' => 12.5000, 'locale' => null, 'scope' => null]],
+                'metric'              => [['data' => 12.5000, 'locale' => null, 'scope' => null]],
+                'prices'              => [['data' => 12.5, 'locale' => null, 'scope' => null]],
+                'date'                => [['data' => '2015-01-31', 'locale' => null, 'scope' => null]],
+                'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
             ]
         ];
 
         $valuesLocalized = [
-            'normalized_property' => ['data' => 'a nice normalized property', 'locale' => null, 'scope' => null],
-            'number' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
-            'metric' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
-            'prices' => ['data' => '12,5', 'locale' => null, 'scope' => null],
-            'date'   => ['data' => '31/01/2015', 'locale' => null, 'scope' => null],
+            'normalized_property' => [['data' => 'a nice normalized property', 'locale' => null, 'scope' => null]],
+            'number'              => [['data' => '12,5000', 'locale' => null, 'scope' => null]],
+            'metric'              => [['data' => '12,5000', 'locale' => null, 'scope' => null]],
+            'prices'              => [['data' => '12,5', 'locale' => null, 'scope' => null]],
+            'date'                => [['data' => '31/01/2015', 'locale' => null, 'scope' => null]],
+            'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
         ];
 
         $productNormalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
+
+        $valuesLocalized['picture'] = [
+            [
+                'data' => [
+                    'filePath' => 'a/b/c/my_picture.jpg', 'originalFilename' => 'my_picture.jpg'
+                ],
+                'locale' => null,
+                'scope' => null
+            ]
+        ];
+
+        $fileInfoRepository->findOneByIdentifier('a/b/c/my_picture.jpg')->willReturn($fileInfo);
+        $fileInfo->getOriginalFilename()->willReturn('my_picture.jpg');
 
         $mug->getId()->willReturn(12);
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');

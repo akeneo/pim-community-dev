@@ -113,7 +113,10 @@ define([
                 }.bind(this));
             },
             clearField: function () {
-                this.setCurrentValue(this.attribute.empty_value);
+                this.setCurrentValue({
+                    filePath: null,
+                    originalFilename: null
+                });
 
                 this.render();
             },
