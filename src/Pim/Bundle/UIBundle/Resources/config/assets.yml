@@ -64,6 +64,7 @@ css:
         - bundles/pimui/less/components/BreadcrumbContainer.less
         - bundles/pimui/less/components/Caret.less
         - bundles/pimui/less/components/Dropdown.less
+        - bundles/pimui/less/components/Flash.less
         - bundles/pimui/less/components/Header.less
         - bundles/pimui/less/components/MainMenu.less
         - bundles/pimui/less/components/Notification.less

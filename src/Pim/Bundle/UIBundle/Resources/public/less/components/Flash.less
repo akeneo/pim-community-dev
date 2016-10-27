@@ -1,0 +1,36 @@
+@import '../base/variables';
+
+.AknFlash {
+  border: 1px solid darken(@AknOrange, 10%);
+  background: lighten(@AknOrange, 30%);
+  color: darken(@AknOrange, 20%);
+  border-radius: 2px;
+  padding: 2px 2px 2px 20px;
+  display: flex;
+  align-items: flex-start;
+
+  &-closeButton {
+    font-size: @AknFontSizeBig;
+    flex-basis: @AknFontSizeBig;
+    margin-left: 10px;
+    background: none;
+    border: none;
+    order: 10;
+  }
+
+  &--success {
+    border: 1px solid darken(@AknGreen, 10%);
+    background: lighten(@AknGreen, 30%);
+    color: darken(@AknGreen, 20%);  }
+
+  &--danger,
+  &--error {
+    border: 1px solid darken(@AknRed, 10%);
+    background: lighten(@AknRed, 30%);
+    color: darken(@AknRed, 20%);
+  }
+
+  & + & {
+    margin-top: 10px;
+  }
+}

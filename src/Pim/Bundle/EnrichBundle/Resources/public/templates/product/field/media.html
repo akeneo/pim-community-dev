@@ -13,7 +13,7 @@
             <% if ('pim_catalog_image' === attribute.type && null != mediaThumbnailUrl) { %>
                 <div class="AknMediaField-thumb file"><img src="<%- mediaThumbnailUrl %>"/></div>
             <% } else { %>
-                <div class="AknMediaField-thumb file"><i class="icon icon-file"></i></div>
+                <div class="AknMediaField-thumb file"><i class="AknMediaField-icon icon icon-file"></i></div>
             <% } %>
             <div class="AknMediaField-info info">
                 <div class="filename" title="<%- value.data.originalFilename %>"><%- value.data.originalFilename %></div>
