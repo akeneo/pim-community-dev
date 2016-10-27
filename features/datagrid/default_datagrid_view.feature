@@ -14,6 +14,7 @@ Feature: Datagrid views
     And I am logged in as "Mary"
     And I am on the published products page
 
+  @skip-activity-manager
   Scenario: Successfully choose my default published view
     Given I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
