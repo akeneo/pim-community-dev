@@ -1,17 +1,19 @@
 @import '../../base/variables';
 
 .AknVerticalNavtab {
-  min-width: 150px;
   border-left: 1px solid @AknBorderColor;
-  border-bottom: 1px solid @AknBorderColor;
 
   &-header {
     background: lighten(@AknGrey, 30%);
     height: @AknTabHeight;
   }
 
-  &-item:not(:last-child) {
+  &-item {
     border-bottom: 1px solid @AknBorderColor;
+  }
+
+  &-item:not(&-header) {
+    min-width: 150px;
   }
 
   &-link {

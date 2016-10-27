@@ -6,6 +6,7 @@
   overflow: hidden;
   background-color: white;
   border-radius: 2px;
+  width: 100%;
 
   &-bar {
     font-size: @AknDefaultFontSize;
@@ -16,6 +17,18 @@
     color: white;
     text-align: center;
     transition: width 0.6s ease;
+  }
+
+  &--success &-bar {
+    background: @AknGreen;
+  }
+
+  &--warning &-bar {
+    background: @AknOrange;
+  }
+
+  &--small {
+    height: @smallProgressBarHeight;
   }
 
   &--micro {
