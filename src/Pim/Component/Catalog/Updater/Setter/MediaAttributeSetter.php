@@ -11,7 +11,6 @@ use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
  * Sets a media value in many products
@@ -52,11 +51,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     /**
      * {@inheritdoc}
      *
-     * Expected data input format :
-     * {
-     *     "originalFilename": "original_filename.extension",
-     *     "filePath": "/absolute/file/path/filename.extension"
-     * }
+     * Expected data input format :  "/absolute/file/path/filename.extension"
      */
     public function setAttributeData(
         ProductInterface $product,
@@ -132,10 +127,9 @@ class MediaAttributeSetter extends AbstractAttributeSetter
             return null;
         }
 
-        try {
-            $rawFile = new \SplFileInfo($data);
-            $file = $this->storer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
-        } catch (FileNotFoundException $e) {
+        $rawFile = new \SplFileInfo($data);
+
+        if (!$rawFile->isFile()) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
                 'a valid pathname',
@@ -144,6 +138,8 @@ class MediaAttributeSetter extends AbstractAttributeSetter
                 $data
             );
         }
+
+        $file = $this->storer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
 
         return $file;
     }
