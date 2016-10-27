@@ -1,14 +1,21 @@
 <div class="edit-form oro-config-system">
-    <header>
-        <div>
-            <div class="title">
-                <h1><%- _.__('oro_config.form.config.title') %></h1>
+    <header class="AknTitleContainer navigation">
+        <div class="AknTitleContainer-contentContainer">
+            <div class="AknTitleContainer-mainLine">
+                <div class="AknTitleContainer-titleContainer" data-drop-zone="title">
+                    <h2 class="AknTitleContainer-title">
+                        <%- _.__('oro_config.form.config.title') %>
+                    </h2>
+                </div>
+                <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
+                    <div class="AknButtonsList AknTitleContainer-rightButtons actions" data-drop-zone="buttons">
+                    </div>
+                </div>
             </div>
-            <div data-drop-zone="buttons" class="actions">
+            <div class="AknTitleContainer-metaLine">
+                <div class="AknTitleContainer-meta state" data-drop-zone="state">
+                </div>
             </div>
-        </div>
-        <div class="baseline">
-            <div data-drop-zone="state" class="state"></div>
         </div>
     </header>
     <div data-drop-zone="content" class="content"></div>

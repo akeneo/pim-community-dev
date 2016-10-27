@@ -33,7 +33,7 @@ class Base extends Page
         'Container'        => ['css' => '#container'],
         'Locales dropdown' => ['css' => '#locale-switcher'],
         'Tabs'             => ['css' => '#form-navbar'],
-        'Oro tabs'         => ['css' => '.navbar.scrollspy-nav'],
+        'Oro tabs'         => ['css' => '.navbar.scrollspy-nav, .AknHorizontalTabnav'],
         'Form tabs'        => ['css' => '.nav-tabs.form-tabs'],
         'Active tab'       => ['css' => '.form-horizontal .tab-pane.active'],
     ];
@@ -453,8 +453,9 @@ class Base extends Page
     {
         $tabs = $this->spin(function () {
             return $this->find('css', $this->elements['Tabs']['css']);
-        }, sprintf('Cannot find "%s" element', $this->elements['Tabs']['css']));
+        }, sprintf('Cannot find "%s" tab', $this->elements['Tabs']['css']));
 
+        // Is this dead code?
         if (null === $tabs) {
             $tabs = $this->getElement('Oro tabs');
         }

@@ -79,7 +79,7 @@ class ContextSwitcherDecorator extends ElementDecorator
                 return false;
             }
 
-            $toggle = $dropdown->find('css', '.dropdown-toggle');
+            $toggle = $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]');
 
             if (null === $toggle) {
                 return false;

@@ -42,6 +42,7 @@ class Edit extends ProductEditForm
                 'Copy source dropdown'    => ['css' => '.attribute-copy-actions .source-switcher'],
                 'Status switcher'         => ['css' => '.status-switcher'],
                 'Image preview'           => ['css' => '#lbImage'],
+                'Form fields'             => ['css' => '.AknFieldContainer-formField'],
                 'Completeness'            => [
                     'css'        => '.completeness-panel',
                     'decorators' => [
@@ -110,7 +111,7 @@ class Edit extends ProductEditForm
     public function findLocaleLink($localeCode, $label = null, $flag = null, $copy = false)
     {
         $dropdown = $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown');
-        $dropdown->find('css', '.dropdown-toggle')->click();
+        $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]')->click();
         $link = $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
 
         if (!$link) {
@@ -157,19 +158,22 @@ class Edit extends ProductEditForm
      */
     public function getFieldsCount()
     {
-        return count($this->findAll('css', 'div.form-field'));
+        return count($this->getFields());
     }
 
     /**
-     * @return NodeElement
+     * @return NodeElement[]
      */
     public function getFields()
     {
-        return $this->findAll('css', 'div.form-field');
+        return $this->findAll('css', $this->elements['Form fields']['css']);
     }
 
     /**
      * @param string $attribute
+     *
+     * @throws ElementNotFoundException
+     * @throws TimeoutException
      *
      * @return int
      */

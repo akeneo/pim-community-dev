@@ -368,14 +368,6 @@ h3.tab-header {
   background: @white;
 }
 
-.form-field .remove-attribute {
-  margin-bottom: 3px;
-  margin-right: 0;
-  padding: 5px 5px 3px 5px;
-  border: 1px solid @grayLighter;
-  border-radius: 2px;
-}
-
 .validation-errors {
   .display-flex();
   .flex-direction(column);
@@ -409,68 +401,6 @@ h3.tab-header {
     .icons-holder-text {
       position: relative;
     }
-  }
-}
-
-.form-field .select2-container {
-  box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
-  background-image: none;
-  background-color: white;
-  font-size: @font-size-12;
-  color: @color-form-input;
-  min-height: 30px;
-  .border-radius(0);
-  .box-sizing();
-  max-width: @max-field-width;
-
-  .select2-choice {
-    line-height: 30px;
-  }
-
-  .select2-choices {
-    .select2-search-choice {
-      .border-radius(0);
-      background-image:none;
-      background-color: @akeneoLight;
-      line-height: 22px;
-      border: 1px solid @color-ccc;
-      padding: 0;
-      margin: 2px 0 2px 2px;
-      .display-flex();
-
-      div {
-        margin:0 6px 0 10px;
-        line-height: 26px;
-        .flex-order(2);
-      }
-    }
-
-    .select2-search-choice-close {
-      line-height: 26px;
-      height: 26px;
-      text-align: center;
-      position: relative;
-      top: auto;
-      right: auto;
-
-      &:hover {
-        background: @grayLighter !important;
-      }
-    }
-  }
-
-  .select2-input {
-    min-width: 20px;
-  }
-
-  &.unit{
-    display: inline-block;
-    width: 100px;
-    margin-left: -5px;
-  }
-
-  .select2-search-choice-close {
-    margin-top: 0
   }
 }
 
