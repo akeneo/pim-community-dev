@@ -4,3 +4,9 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%akeneo_activity_manager.model.project.class%'
+
+    activity_manager.repository.user:
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\UserRepository'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_user.entity.user.class%'

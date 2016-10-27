@@ -2,3 +2,9 @@ activity_manager:
     project:
         required: This value should not be blank.
         label_maxlength: This value is too long. It should have {{ max }} characters or less.
+    notification:
+        project_calculation:
+            error:   Project calculation <strong>%label%</strong> failed
+            warning: Project calculation <strong>%label%</strong> finished with some warnings
+            success: Project calculation <strong>%label%</strong> finished
+            start:   Start

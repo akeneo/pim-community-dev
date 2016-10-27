@@ -28,4 +28,9 @@ final class ProjectEvents
      * For instance, we need to calculate the user group affected the project.
      */
     const PROJECT_CALCULATED = 'activity_manager.project_calculated';
+
+    /**
+     * This event is dispatched once the whole project is created.
+     */
+    const PROJECT_CREATED = 'activity_manager.project_created';
 }

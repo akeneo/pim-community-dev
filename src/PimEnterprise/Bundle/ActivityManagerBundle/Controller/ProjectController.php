@@ -11,7 +11,6 @@
 
 namespace Akeneo\ActivityManager\Bundle\Controller;
 
-use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
