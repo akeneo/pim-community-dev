@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Job\Launcher;
+namespace Akeneo\ActivityManager\Component\Adapter;
 
 use Symfony\Component\HttpFoundation\Request;
 

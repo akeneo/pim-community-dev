@@ -11,7 +11,7 @@
 
 namespace Akeneo\ActivityManager\Bundle\Adapter;
 
-use Akeneo\ActivityManager\Component\Job\Launcher\FilterAdapterInterface;
+use Akeneo\ActivityManager\Component\Adapter\FilterAdapterInterface;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\HttpFoundation\Request;
 

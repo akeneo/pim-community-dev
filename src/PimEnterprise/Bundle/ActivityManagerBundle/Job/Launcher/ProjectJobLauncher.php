@@ -47,6 +47,7 @@ class ProjectJobLauncher implements ProjectLauncherInterface
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('project_calculation');
 
         $filters = json_decode($project->getProductFilters());
+
         $projectId = $project->getId();
         $configuration = ['filters' => $filters, 'project_id' => $projectId];
 
