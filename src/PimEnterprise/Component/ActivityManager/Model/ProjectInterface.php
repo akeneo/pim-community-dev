@@ -103,4 +103,16 @@ interface ProjectInterface
      * @return Group $group
      */
     public function getUserGroups();
+
+    /**
+     * Returns product filters
+     *
+     * @return string $productFilters
+     */
+    public function getProductFilters();
+
+    /**
+     * @param string $productFilters
+     */
+    public function setProductFilters($productFilters);
 }

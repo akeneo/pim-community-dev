@@ -42,6 +42,9 @@ class Project implements ProjectInterface
     /** @var ArrayCollection */
     private $userGroups;
 
+    /** @var string */
+    private $productFilters;
+
     public function __construct()
     {
         $this->datagridViews = new ArrayCollection();
@@ -168,5 +171,21 @@ class Project implements ProjectInterface
     public function getUserGroups()
     {
         return $this->userGroups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductFilters()
+    {
+        return $this->productFilters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProductFilters($productFilters)
+    {
+        $this->productFilters = $productFilters;
     }
 }

@@ -25,10 +25,12 @@ class ActivityManagerExtension extends Extension
     {
         $loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__.'/../Resources/config'));
 
+        $loader->load('adapters.yml');
         $loader->load('doctrine/models.yml');
         $loader->load('factories.yml');
         $loader->load('jobs.yml');
         $loader->load('job_parameters.yml');
+        $loader->load('launchers.yml');
         $loader->load('normalizers.yml');
         $loader->load('processors.yml');
         $loader->load('readers.yml');

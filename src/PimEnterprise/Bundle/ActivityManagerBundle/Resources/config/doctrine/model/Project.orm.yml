@@ -20,6 +20,9 @@ Akeneo\ActivityManager\Component\Model\Project:
             type: date
             column: due_date
             nullable: true
+        productFilters:
+            type: string
+            nullable: true
     manyToOne:
         owner:
           targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
