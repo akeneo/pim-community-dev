@@ -75,14 +75,14 @@ class FamilyUpdaterSpec extends ObjectBehavior
         ChannelInterface $printChannel
     ) {
         $values = [
-            'code'                => 'mycode',
-            'attributes'          => ['sku', 'name', 'description', 'price'],
-            'attribute_as_label'  => 'name',
-            'requirements'        => [
+            'code'                   => 'mycode',
+            'attributes'             => ['sku', 'name', 'description', 'price'],
+            'attribute_as_label'     => 'name',
+            'attribute_requirements' => [
                 'mobile' => ['sku', 'name'],
                 'print'  => ['name', 'description'],
             ],
-            'labels'              => [
+            'labels'                 => [
                 'fr_FR' => 'Moniteurs',
                 'en_US' => 'PC Monitors',
             ],
@@ -192,8 +192,8 @@ class FamilyUpdaterSpec extends ObjectBehavior
         ChannelInterface $printChannel
     ) {
         $values = [
-            'code' => 'mycode',
-            'requirements' => []
+            'code'                   => 'mycode',
+            'attribute_requirements' => []
         ];
         $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
         $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
@@ -229,8 +229,8 @@ class FamilyUpdaterSpec extends ObjectBehavior
         ChannelInterface $printChannel
     ) {
         $values = [
-            'code' => 'mycode',
-            'requirements' => [
+            'code'                   => 'mycode',
+            'attribute_requirements' => [
                 'print' => ['name', 'description']
             ]
         ];
@@ -274,14 +274,14 @@ class FamilyUpdaterSpec extends ObjectBehavior
         AttributeInterface $priceAttribute
     ) {
         $data = [
-            'code'                => 'mycode',
-            'attributes'          => ['sku', 'name', 'description', 'price'],
-            'attribute_as_label'  => 'name',
-            'requirements'        => [
+            'code'                   => 'mycode',
+            'attributes'             => ['sku', 'name', 'description', 'price'],
+            'attribute_as_label'     => 'name',
+            'attribute_requirements' => [
                 'mobile' => ['sku', 'name'],
                 'print'  => ['sku', 'name', 'description'],
             ],
-            'labels'              => [
+            'labels'                 => [
                 'fr_FR' => 'Moniteurs',
                 'en_US' => 'PC Monitors',
             ],
@@ -304,8 +304,8 @@ class FamilyUpdaterSpec extends ObjectBehavior
         FamilyInterface $family
     ) {
         $data = [
-            'code'                => 'mycode',
-            'requirements'        => [
+            'code'                   => 'mycode',
+            'attribute_requirements' => [
                 'mobile' => ['sku', 'name'],
                 'print'  => ['sku', 'name', 'description'],
             ]

@@ -72,7 +72,7 @@ class VariantGroup implements ArrayConverterInterface
      *         "en_US": "T-shirt very beautiful",
      *         "fr_FR": "T-shirt super beau"
      *     }
-     *     "axis": ["main_color", "secondary_color"],
+     *     "axes": ["main_color", "secondary_color"],
      *     "type": "VARIANT",
      *     "values": {
      *         "main_color": "white",
@@ -129,7 +129,7 @@ class VariantGroup implements ArrayConverterInterface
                     $convertedItem[$field] = $data;
                     break;
                 case 'axis':
-                    $convertedItem[$field] = explode(',', $data);
+                    $convertedItem['axes'] = explode(',', $data);
                     break;
                 default:
                     $convertedItem['values'][$field] = $data;

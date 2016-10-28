@@ -32,19 +32,19 @@ class ChannelSpec extends ObjectBehavior
         ];
 
         $result = [
-            'labels' => [
+            'labels'           => [
                 'fr_FR' => 'Ecommerce',
                 'en_US' => 'Ecommerce',
             ],
-            'code'       => 'ecommerce',
-            'locales'    => ['en_US', 'fr_FR'],
-            'currencies' => ['EUR', 'USD'],
-            'tree'       => 'master_catalog',
+            'code'             => 'ecommerce',
+            'locales'          => ['en_US', 'fr_FR'],
+            'currencies'       => ['EUR', 'USD'],
+            'category_tree'    => 'master_catalog',
             'conversion_units' => [
-                'weight' => 'GRAM',
+                'weight'            => 'GRAM',
                 'maximum_scan_size' => 'KILOMETER',
-                'display_diagonal' => 'DEKAMETER',
-                'viewing_area' => 'DEKAMETER'
+                'display_diagonal'  => 'DEKAMETER',
+                'viewing_area'      => 'DEKAMETER'
             ]
         ];
 

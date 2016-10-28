@@ -43,14 +43,14 @@ class Family implements ArrayConverterInterface
      *
      * After:
      * [
-     *      'code'                => 'pc_monitors',
-     *      'attributes'          => ['sku', 'name', 'description', 'price'],
-     *      'attribute_as_label'  => 'name',
-     *      'requirements' => [
+     *      'code'                   => 'pc_monitors',
+     *      'attributes'             => ['sku', 'name', 'description', 'price'],
+     *      'attribute_as_label'     => 'name',
+     *      'attribute_requirements' => [
      *          'mobile' => ['sku', 'name'],
      *          'print'  => ['sku', 'name', 'description'],
      *      ],
-     *      'labels' => [
+     *      'labels'                 => [
      *          'fr_FR' => 'Moniteurs',
      *          'en_US' => 'PC Monitors',
      *      ],
@@ -61,7 +61,7 @@ class Family implements ArrayConverterInterface
         $this->fieldChecker->checkFieldsPresence($item, ['code']);
         $this->fieldChecker->checkFieldsFilling($item, ['code']);
 
-        $convertedItem = ['labels' => [], 'requirements' => []];
+        $convertedItem = ['labels' => [], 'attribute_requirements' => []];
         foreach ($item as $field => $data) {
             $convertedItem = $this->convertField($convertedItem, $field, $data);
         }
@@ -85,7 +85,7 @@ class Family implements ArrayConverterInterface
         } elseif ('' !== $data && false !== strpos($field, 'requirements-', 0)) {
             $requirementsTokens = explode('-', $field);
             $requirementsLocale = $requirementsTokens[1];
-            $convertedItem['requirements'][$requirementsLocale] = explode(',', $data);
+            $convertedItem['attribute_requirements'][$requirementsLocale] = explode(',', $data);
         } elseif ('' !== $data) {
             switch ($field) {
                 case 'code':

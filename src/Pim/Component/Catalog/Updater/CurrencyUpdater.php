@@ -20,9 +20,8 @@ class CurrencyUpdater implements ObjectUpdaterInterface
      *
      * Expected input format :
      * [
-     *     'code'      => 'USD',
-     *     'activated' => true,
-     *     ]
+     *     'code'    => 'USD',
+     *     'enabled' => true,
      * ]
      */
     public function update($currency, array $data, array $options = [])
@@ -52,7 +51,7 @@ class CurrencyUpdater implements ObjectUpdaterInterface
     {
         if ('code' == $field) {
             $currency->setCode($data);
-        } elseif ('activated' == $field) {
+        } elseif ('enabled' == $field) {
             $currency->setActivated($data);
         }
     }

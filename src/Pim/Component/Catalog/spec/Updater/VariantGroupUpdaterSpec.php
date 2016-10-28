@@ -108,7 +108,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
 
         $values = [
             'code'         => 'mycode',
-            'axis'         => ['main_color', 'secondary_color'],
+            'axes'         => ['main_color', 'secondary_color'],
             'type'         => 'VARIANT',
             'labels'       => [
                 'fr_FR' => 'T-shirt super beau',
@@ -161,7 +161,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
 
         $values = [
             'code'     => 'mycode',
-            'axis'     => [],
+            'axes'     => [],
             'type'     => 'VARIANT',
             'labels'   => [],
             'values'   => [],
@@ -192,7 +192,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
 
         $values = [
             'code' => 'mycode',
-            'axis' => ['unknown', 'secondary_color'],
+            'axes' => ['unknown', 'secondary_color'],
         ];
 
         $this->shouldThrow(new \InvalidArgumentException('Attribute "unknown" does not exist'))
@@ -209,7 +209,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
 
         $values = [
             'code' => 'mycode',
-            'axis' => ['main_color'],
+            'axes' => ['main_color'],
         ];
 
         $this->shouldThrow(new \InvalidArgumentException('Attributes: This property cannot be changed.'))
