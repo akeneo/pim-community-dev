@@ -14,6 +14,8 @@ namespace Akeneo\ActivityManager\Component\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 /**
@@ -35,6 +37,12 @@ class Project implements ProjectInterface
 
     /** @var UserInterface */
     private $owner;
+
+    /** @var ChannelInterface */
+    private $channel;
+
+    /** @var LocaleInterface */
+    private $locale;
 
     /** @var ArrayCollection */
     private $datagridViews;
@@ -121,6 +129,38 @@ class Project implements ProjectInterface
     public function setOwner(UserInterface $owner)
     {
         $this->owner = $owner;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChannel()
+    {
+        return $this->channel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setChannel(ChannelInterface $channel)
+    {
+        $this->channel = $channel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocale(LocaleInterface $locale)
+    {
+        $this->locale = $locale;
     }
 
     /**

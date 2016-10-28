@@ -14,6 +14,8 @@ namespace Akeneo\ActivityManager\Component\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 /**
@@ -67,6 +69,26 @@ interface ProjectInterface
      * @param UserInterface $owner
      */
     public function setOwner(UserInterface $owner);
+
+    /**
+     * @return ChannelInterface
+     */
+    public function getChannel();
+
+    /**
+     * @param ChannelInterface $channel
+     */
+    public function setChannel(ChannelInterface $channel);
+
+    /**
+     * @return LocaleInterface
+     */
+    public function getLocale();
+
+    /**
+     * @param LocaleInterface $locale
+     */
+    public function setLocale(LocaleInterface $locale);
 
     /**
      * @return ArrayCollection

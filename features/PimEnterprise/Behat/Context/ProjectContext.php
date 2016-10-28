@@ -34,7 +34,20 @@ class ProjectContext extends Context implements ContextInterface
 
         foreach ($properties->getRows() as $property) {
             list($propertyName, $expectedValue) = $property;
-            if ($expectedValue !== $actualValue = $accessor->getValue($project, $propertyName)) {
+
+            switch ($propertyName) {
+                case 'Channel':
+                    $actualValue = $project->getChannel()->getCode();
+                    break;
+                case 'Locale':
+                    $actualValue = $project->getLocale()->getCode();
+                    break;
+                default:
+                    $actualValue = $accessor->getValue($project, $propertyName);
+                    break;
+            }
+
+            if ($expectedValue !== $actualValue) {
                 throw new \DomainException(
                     sprintf(
                         'Given value does not match the expected value, "%s" expected, "%s" given, property: "%s"',

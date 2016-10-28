@@ -7,6 +7,8 @@ use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 class ProjectSpec extends ObjectBehavior
@@ -32,6 +34,18 @@ class ProjectSpec extends ObjectBehavior
     {
         $this->setOwner($user)->shouldReturn(null);
         $this->getOwner()->shouldReturn($user);
+    }
+
+    function it_has_a_channel(ChannelInterface $channel)
+    {
+        $this->setChannel($channel)->shouldReturn(null);
+        $this->getChannel()->shouldReturn($channel);
+    }
+
+    function it_has_a_locale(LocaleInterface $locale)
+    {
+        $this->setLocale($locale)->shouldReturn(null);
+        $this->getLocale()->shouldReturn($locale);
     }
 
     function it_has_a_description()

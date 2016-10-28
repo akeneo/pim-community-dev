@@ -54,6 +54,12 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 case 'product_filters':
                     $project->setProductFilters($value);
                     break;
+                case 'channel':
+                    $project->setChannel($value);
+                    break;
+                case 'locale':
+                    $project->setLocale($value);
+                    break;
             }
         }
 

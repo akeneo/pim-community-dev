@@ -25,11 +25,23 @@ Akeneo\ActivityManager\Component\Model\Project:
             nullable: true
     manyToOne:
         owner:
-          targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
-          joinColumns:
-            owner_id:
-              nullable: false
-              referencedColumnName: id
+            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
+            joinColumns:
+                owner_id:
+                    nullable: false
+                    referencedColumnName: id
+        channel:
+            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
+            joinColumns:
+                channel_id:
+                    nullable: false
+                    referencedColumnName: id
+        locale:
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
+            joinColumns:
+                locale_id:
+                    nullable: false
+                    referencedColumnName: id
     # oneToMany unidirectional with join table
     manyToMany:
         datagridViews:
