@@ -60,6 +60,7 @@ services:
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_catalog.localization.localizer.registry'
             - '@pim_enrich.filter.product_values_edit_data'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '%tmp_storage_dir%'
             - 'edit_common_attributes'
         tags:
