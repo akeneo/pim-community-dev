@@ -9,9 +9,8 @@ namespace Akeneo\Bundle\MeasureBundle\Family;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class EnergyFamilyInterface
+interface EnergyFamilyInterface
 {
-
     /**
      * Family energy name
      * @staticvar string
@@ -27,5 +26,4 @@ class EnergyFamilyInterface
      * @staticvar string
      */
     const KILOJOULE = 'KILOJOULE';
-
 }
