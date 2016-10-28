@@ -1,8 +1,0 @@
-parameters:
-    activity_manager.adapter.filter.class: Akeneo\ActivityManager\Bundle\Adapter\FilterAdapter
-
-services:
-    activity_manager.adapter.filter:
-        class: '%activity_manager.adapter.filter.class%'
-        arguments:
-            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'

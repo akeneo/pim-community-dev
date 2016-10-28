@@ -105,7 +105,7 @@ interface ProjectInterface
     public function getUserGroups();
 
     /**
-     * Returns product filters
+     * Returns PQB filters in json.
      *
      * @return string $productFilters
      */

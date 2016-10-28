@@ -46,9 +46,9 @@ class ProjectController extends Controller
 
         $filters = json_encode($output['f']);
 
-        $filters = $this->container->get('activity_manager.adapter.filter')
-            ->adapt($request, $filters);
-        $projectData['filters'] = $filters;
+        $filters = $this->container->get('activity_manager.converter.filter')
+            ->convert($request, $filters);
+        $projectData['product_filters'] = $filters;
 
         $project = $this->container->get('activity_manager.factory.project')
             ->create();
@@ -63,7 +63,8 @@ class ProjectController extends Controller
             $this->container->get('activity_manager.saver.project')
                 ->save($project);
 
-            $this->container->get('activity_manager.launcher.job')->launch($this->getUser(), $project);
+            $this->container->get('activity_manager.launcher.job.project_calculation')
+                ->launch($this->getUser(), $project);
 
             $normalizedProject = $this->container->get('activity_manager.normalizer.project')
                 ->normalize($project, 'internal_api');

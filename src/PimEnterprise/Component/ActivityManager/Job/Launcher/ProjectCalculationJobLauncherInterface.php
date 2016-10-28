@@ -15,9 +15,11 @@ use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
+ * It launches the calculation of a project depending of the user.
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-interface ProjectLauncherInterface
+interface ProjectCalculationJobLauncherInterface
 {
     /**
      * @param UserInterface    $user

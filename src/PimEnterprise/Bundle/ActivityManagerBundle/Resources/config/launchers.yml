@@ -1,9 +1,0 @@
-parameters:
-    activity_manager.launcher.job.class: Akeneo\ActivityManager\Bundle\Job\Launcher\ProjectJobLauncher
-
-services:
-    activity_manager.launcher.job:
-        class: '%activity_manager.launcher.job.class%'
-        arguments:
-            - '@akeneo_batch.launcher.simple_job_launcher'
-            - '@pim_import_export.repository.job_instance'

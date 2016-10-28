@@ -14,3 +14,9 @@ services:
                 - '@activity_manager.step.project.generation'
         tags:
             - { name: akeneo_batch.job, connector: '%activity_manager.project_calculation.connector_name%', type: '%activity_manager.project_calculation.job_type%' }
+
+    activity_manager.launcher.job.project_calculation:
+        class: 'Akeneo\ActivityManager\Bundle\Job\ProjectCalculationJobLauncher'
+        arguments:
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@pim_import_export.repository.job_instance'

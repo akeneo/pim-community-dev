@@ -1,0 +1,5 @@
+services:
+    activity_manager.converter.filter:
+        class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterConverter'
+        arguments:
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'

@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Job\Launcher;
+namespace spec\Akeneo\ActivityManager\Bundle\Job;
 
-use Akeneo\ActivityManager\Component\Job\Launcher\ProjectLauncherInterface;
+use Akeneo\ActivityManager\Component\Job\Launcher\ProjectCalculationJobLauncherInterface;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 
-class ProjectJobLauncherSpec extends ObjectBehavior
+class ProjectCalculationJobLauncherSpec extends ObjectBehavior
 {
     function let(JobLauncherInterface $simpleJobLauncher, JobInstanceRepository $jobInstanceRepository)
     {
@@ -19,10 +19,10 @@ class ProjectJobLauncherSpec extends ObjectBehavior
 
     function it_is_a_project_job_launcher()
     {
-        $this->shouldImplement(ProjectLauncherInterface::class);
+        $this->shouldImplement(ProjectCalculationJobLauncherInterface::class);
     }
 
-    function it_launches_a_job(
+    function it_launches_a_project_calculation_job(
         $simpleJobLauncher,
         $jobInstanceRepository,
         UserInterface $user,
@@ -43,7 +43,7 @@ class ProjectJobLauncherSpec extends ObjectBehavior
         $project->getId()->willReturn(5);
         $project->getProductFilters()->willReturn($filters);
 
-        $configuration = ['filters' => json_decode($filters), 'project_id' => 5];
+        $configuration = ['filters' => $filters, 'project_id' => 5];
 
         $simpleJobLauncher->launch($jobInstance, $user, $configuration)->shouldBeCalled();
 

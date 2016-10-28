@@ -1,26 +1,20 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Adapter;
+namespace spec\Akeneo\ActivityManager\Bundle\Datagrid;
 
-use Akeneo\ActivityManager\Component\Adapter\FilterAdapterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class FilterAdapterSpec extends ObjectBehavior
+class FilterConverterSpec extends ObjectBehavior
 {
     function let(OroToPimGridFilterAdapter $adapter)
     {
         $this->beConstructedWith($adapter);
     }
 
-    function it_is_a_filter_adapter()
-    {
-        $this->shouldImplement(FilterAdapterInterface::class);
-    }
-
-    function it_adapts(
+    function it_converts_datagrid_filters_into_pqb_filters(
         Request $request,
         ParameterBagInterface $parameterBag
     ) {
@@ -35,6 +29,6 @@ class FilterAdapterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->adapt($request, 'filters');
+        $this->convert($request, 'filters');
     }
 }

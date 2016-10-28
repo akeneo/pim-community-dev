@@ -21,7 +21,7 @@ Akeneo\ActivityManager\Component\Model\Project:
             column: due_date
             nullable: true
         productFilters:
-            type: string
+            type: array
             nullable: true
     manyToOne:
         owner:

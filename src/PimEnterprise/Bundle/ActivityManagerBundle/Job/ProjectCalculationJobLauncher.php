@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Job\Launcher;
+namespace Akeneo\ActivityManager\Bundle\Job;
 
-use Akeneo\ActivityManager\Component\Job\Launcher\ProjectLauncherInterface;
+use Akeneo\ActivityManager\Component\Job\Launcher\ProjectCalculationJobLauncherInterface;
+use Akeneo\ActivityManager\Component\Job\ProjectCalculationJobParameters;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -20,7 +21,7 @@ use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceReposit
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectJobLauncher implements ProjectLauncherInterface
+class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInterface
 {
     /** @var JobLauncherInterface */
     private $simpleJobLauncher;
@@ -44,9 +45,9 @@ class ProjectJobLauncher implements ProjectLauncherInterface
      */
     public function launch(UserInterface $user, ProjectInterface $project)
     {
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('project_calculation');
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(ProjectCalculationJobParameters::JOB_NAME);
 
-        $filters = json_decode($project->getProductFilters());
+        $filters = $project->getProductFilters();
 
         $projectId = $project->getId();
         $configuration = ['filters' => $filters, 'project_id' => $projectId];

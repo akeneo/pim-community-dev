@@ -51,8 +51,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 case 'owner':
                     $project->setOwner($value);
                     break;
-                case 'filters':
-                    $project->setProductFilters(json_encode($value));
+                case 'product_filters':
+                    $project->setProductFilters($value);
                     break;
             }
         }
