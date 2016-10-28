@@ -37,8 +37,6 @@ class ProductWriter extends AbstractItemMediaWriter implements
      */
     protected function getItemIdentifier(array $product)
     {
-        $attributeCode = $this->attributeRepository->getIdentifierCode();
-
-        return current($product['values'][$attributeCode])['data'];
+        return $product['identifier'];
     }
 }
