@@ -111,12 +111,7 @@ define(
                 return this;
             },
             resize: function () {
-                var productValuesContainer = this.$('.object-values');
-                if (productValuesContainer.length && this.getRoot().$el.length && productValuesContainer.offset()) {
-                    productValuesContainer.css(
-                        {'height': ($(window).height() - productValuesContainer.offset().top - 4) + 'px'}
-                    );
-                }
+                /** TODO Remove this function **/
             },
             renderField: function (product, attributeCode, values) {
                 return FieldManager.getField(attributeCode).then(function (field) {
