@@ -42,7 +42,7 @@ class MediaConverter extends AbstractValueConverter implements ValueConverterInt
                 $value['scope']
             );
 
-            $convertedItem[$flatName] = (string) $value['data']['filePath'];
+            $convertedItem[$flatName] = (string) $value['data'];
         }
 
         return $convertedItem;

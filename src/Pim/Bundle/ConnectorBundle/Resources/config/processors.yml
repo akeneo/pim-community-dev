@@ -188,13 +188,13 @@ services:
     pim_connector.processor.normalization.group:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.group'
+            - '@pim_catalog.normalizer.standard.group'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.product:
         class: '%pim_connector.processor.normalization.product.class%'
         arguments:
-            - '@pim_serializer.normalizer.product'
+            - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.builder.product'
@@ -204,7 +204,7 @@ services:
     pim_connector.processor.normalization.variant_group:
         class: '%pim_connector.processor.normalization.variant_group.class%'
         arguments:
-            - '@pim_serializer.normalizer.group'
+            - '@pim_catalog.normalizer.standard.variant_group'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.updater.variant_group'
@@ -212,61 +212,61 @@ services:
     pim_connector.processor.normalization.family:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.family'
+            - '@pim_catalog.normalizer.standard.family'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.category:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.category'
+            - '@pim_catalog.normalizer.standard.category'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.attribute:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.attribute'
+            - '@pim_catalog.normalizer.standard.attribute'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.attribute_option:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.attribute_option'
+            - '@pim_catalog.normalizer.standard.attribute_option'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.association_type:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.association_type'
+            - '@pim_catalog.normalizer.standard.association_type'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.channel:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.channel'
+            - '@pim_catalog.normalizer.standard.channel'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.locale:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.locale'
+            - '@pim_catalog.normalizer.standard.locale'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.attribute_group:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.attribute_group'
+            - '@pim_catalog.normalizer.standard.attribute_group'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.currency:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.currency'
+            - '@pim_catalog.normalizer.standard.currency'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.group_type:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.group_type'
+            - '@pim_catalog.normalizer.standard.group_type'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     # Medias fetcher

@@ -25,7 +25,7 @@ class GetProductCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:product:get')
-            ->setDescription('Get a json normalized product')
+            ->setDescription('Get a standard normalized product')
             ->addArgument(
                 'identifier',
                 InputArgument::REQUIRED,
@@ -57,7 +57,7 @@ class GetProductCommand extends ContainerAwareCommand
             return;
         }
 
-        $normalizedProduct = $this->getContainer()->get('pim_serializer')->normalize($product, 'json', []);
+        $normalizedProduct = $this->getContainer()->get('pim_serializer')->normalize($product, 'standard', []);
 
         $output->write(json_encode($normalizedProduct));
     }

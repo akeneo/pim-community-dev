@@ -41,7 +41,7 @@ class MetricConverter extends AbstractValueConverter
                     (int) $data : (string) $data;
             }
 
-            $value = ['data' => $data, 'unit' => $unit];
+            $value = ['amount' => $data, 'unit' => $unit];
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[

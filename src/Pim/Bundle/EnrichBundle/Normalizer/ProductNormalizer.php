@@ -75,7 +75,7 @@ class ProductNormalizer implements NormalizerInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $normalizedProduct = $this->productNormalizer->normalize($product, 'json', $context);
+        $normalizedProduct = $this->productNormalizer->normalize($product, 'standard', $context);
         $normalizedProduct['values'] = $this->localizedConverter->convertToLocalizedFormats(
             $normalizedProduct['values'],
             $context

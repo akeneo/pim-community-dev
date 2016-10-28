@@ -17,6 +17,7 @@ parameters:
     pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
     pim_enrich.normalizer.variant_group_violation.class:           Pim\Bundle\EnrichBundle\Normalizer\VariantGroupViolationNormalizer
     pim_enrich.normalizer.datagrid_view.class:                     Pim\Bundle\EnrichBundle\Normalizer\DatagridViewNormalizer
+    pim_enrich.normalizer.category.class:                          Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -76,7 +77,7 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.family:
-        parent: pim_serializer.normalizer.family
+        parent: pim_catalog.normalizer.standard.family
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -123,7 +124,7 @@ services:
     pim_enrich.normalizer.group:
         class: '%pim_enrich.normalizer.group.class%'
         arguments:
-            - '@pim_serializer.normalizer.group'
+            - '@pim_catalog.normalizer.standard.proxy_group'
             - '@pim_enrich.provider.structure_version.variant_group'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
@@ -153,5 +154,12 @@ services:
 
     pim_enrich.normalizer.datagrid_view:
         class: '%pim_enrich.normalizer.datagrid_view.class%'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.category:
+        class: '%pim_enrich.normalizer.category.class%'
+        arguments:
+            - '@pim_serializer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

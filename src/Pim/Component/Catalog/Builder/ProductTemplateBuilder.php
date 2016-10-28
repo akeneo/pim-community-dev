@@ -73,7 +73,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
         ];
 
         $values = $this->buildProductValuesFromTemplateValuesData($template, $attributes, $locale);
-        $valuesData = $this->normalizer->normalize($values, 'json', $options);
+        $valuesData = $this->normalizer->normalize($values, 'standard', $options);
         $template->setValuesData($valuesData);
     }
 

@@ -127,17 +127,17 @@ class EditCommonAttributesSpec extends ObjectBehavior
             ],
             'localised_attr' => [
                 ['data' => [
-                    ['data' => '45,59', 'currency' => 'EUR'],
-                    ['data' => '18,22', 'currency' => 'USD'],
+                    ['amount' => '45,59', 'currency' => 'EUR'],
+                    ['amount' => '18,22', 'currency' => 'USD'],
                 ], 'scope' => null, 'locale' => null]
             ],
         ];
         $this->setValues(json_encode($rawData));
 
         $localizer->delocalize(
-            [['data' => '45,59', 'currency' => 'EUR'], ['data' => '18,22', 'currency' => 'USD']],
+            [['amount' => '45,59', 'currency' => 'EUR'], ['amount' => '18,22', 'currency' => 'USD']],
             ["locale" => "fr"]
-        )->willReturn([['data' => '45.59', 'currency' => 'EUR'], ['data' => '18.22', 'currency' => 'USD']]);
+        )->willReturn([['amount' => '45.59', 'currency' => 'EUR'], ['amount' => '18.22', 'currency' => 'USD']]);
 
         $sanitizedData = [
             'normal_attr' => [['data' => 'foo', 'scope' => null, 'locale' => null]],
@@ -149,8 +149,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
             ],
             'localised_attr' => [
                 ['data' => [
-                    ['data' => '45.59', 'currency' => 'EUR'],
-                    ['data' => '18.22', 'currency' => 'USD'],
+                    ['amount' => '45.59', 'currency' => 'EUR'],
+                    ['amount' => '18.22', 'currency' => 'USD'],
                 ], 'scope' => null, 'locale' => null]
             ],
         ];
@@ -165,8 +165,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
             ],
             'localised_attr' => [
                 ['data' => [
-                    ['data' => '45,59', 'currency' => 'EUR'],
-                    ['data' => '18,22', 'currency' => 'USD'],
+                    ['amount' => '45,59', 'currency' => 'EUR'],
+                    ['amount' => '18,22', 'currency' => 'USD'],
                 ], 'scope' => null, 'locale' => null]
             ],
         ];

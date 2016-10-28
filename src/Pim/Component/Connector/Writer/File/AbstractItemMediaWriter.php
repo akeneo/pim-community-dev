@@ -254,7 +254,7 @@ abstract class AbstractItemMediaWriter implements
                         if (!empty($files)) {
                             $path = $exportDirectory . current($files)->getFilename();
                             $this->writtenFiles[$tmpDirectory . $path] = $path;
-                            $item['values'][$attributeCode][$index]['data']['filePath'] = $path;
+                            $item['values'][$attributeCode][$index]['data'] = $path;
                         }
                     }
                 }

@@ -325,6 +325,7 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_enrich.twig.category_extension'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.currency:
         class: '%pim_enrich.controller.rest.currency.class%'
@@ -437,6 +438,8 @@ services:
             - '@pim_comment.builder.comment'
             - '@pim_serializer'
             - '@validator'
+            - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_enrich.resolver.locale'
 
     pim_enrich.controller.rest.variant_group:
         class: '%pim_enrich.controller.rest.variant_group.class%'

@@ -68,10 +68,8 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
 
         $data = [];
         foreach ($productValue->getData() as $item) {
-            if (in_array($attributeType, [
-                AttributeTypes::OPTION_MULTI_SELECT,
-                AttributeTypes::REFERENCE_DATA_MULTI_SELECT
-            ])) {
+            if (AttributeTypes::OPTION_MULTI_SELECT === $attributeType ||
+                $productValue->getAttribute()->isBackendTypeReferenceData()) {
                 $data[] = $item->getCode();
             } else {
                 $data[] = $this->serializer->normalize($item, $format, $context);
@@ -92,13 +90,16 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     protected function getSimpleValue(ProductValueInterface $productValue, $format = null, array $context = [])
     {
+        if (null === $productValue->getData()) {
+            return null;
+        }
+
         $attributeType = $productValue->getAttribute()->getAttributeType();
         $context['is_decimals_allowed'] = $productValue->getAttribute()->isDecimalsAllowed();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
-        if (AttributeTypes::NUMBER === $attributeType && null !== $productValue->getData() &&
-            is_numeric($productValue->getData())) {
+        if (AttributeTypes::NUMBER === $attributeType && is_numeric($productValue->getData())) {
             return $productValue->getAttribute()->isDecimalsAllowed()
                 ? number_format($productValue->getData(), static::DECIMAL_PRECISION, '.', '')
                 : (int) $productValue->getData();

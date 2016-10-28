@@ -123,7 +123,11 @@ config:
                     options:
                         urls:
                             get: pim_enrich_product_rest_get
-
+                category:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_category_rest_get
     paths:
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector

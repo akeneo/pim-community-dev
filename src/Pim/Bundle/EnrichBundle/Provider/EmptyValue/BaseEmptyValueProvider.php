@@ -22,8 +22,8 @@ class BaseEmptyValueProvider implements EmptyValueProviderInterface
         switch ($attribute->getAttributeType()) {
             case AttributeTypes::METRIC:
                 $emptyValue = [
-                    'data' => null,
-                    'unit' => $attribute->getDefaultMetricUnit(),
+                    'amount' => null,
+                    'unit'   => $attribute->getDefaultMetricUnit(),
                 ];
                 break;
             case AttributeTypes::OPTION_MULTI_SELECT:

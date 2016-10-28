@@ -37,8 +37,8 @@ class VariantGroup extends AbstractSimpleArrayConverter implements ArrayConverte
                     $convertedItem[$labelKey] = $label;
                 }
                 break;
-            case 'axis':
-                $convertedItem[$property] = implode(',', $data);
+            case 'axes':
+                $convertedItem['axis'] = implode(',', $data);
                 break;
             case 'values':
                 foreach ($data as $valueField => $valueData) {

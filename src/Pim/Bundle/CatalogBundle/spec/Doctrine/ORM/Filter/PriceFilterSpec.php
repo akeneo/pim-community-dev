@@ -58,7 +58,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
 
-        $value = ['data' => 12, 'currency' => 'EUR'];
+        $value = ['amount' => 12, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
@@ -86,7 +86,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
 
-        $value = ['data' => 12, 'currency' => 'EUR'];
+        $value = ['amount' => 12, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
@@ -114,7 +114,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
 
-        $value = ['data' => 12, 'currency' => 'EUR'];
+        $value = ['amount' => 12, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
@@ -142,7 +142,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
 
-        $value = ['data' => 12, 'currency' => 'EUR'];
+        $value = ['amount' => 12, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
@@ -170,7 +170,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
 
-        $value = ['data' => 12, 'currency' => 'EUR'];
+        $value = ['amount' => 12, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
@@ -202,7 +202,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
 
-        $value = ['data' => null, 'currency' => 'EUR'];
+        $value = ['amount' => null, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
@@ -236,7 +236,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
 
-        $value = ['data' => null, 'currency' => 'EUR'];
+        $value = ['amount' => null, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
@@ -272,7 +272,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isLocalizable()->willReturn(false);
         $price->isScopable()->willReturn(false);
 
-        $value = ['data' => 12, 'currency' => 'EUR'];
+        $value = ['amount' => 12, 'currency' => 'EUR'];
 
         $queryBuilder->expr()->willReturn($expr);
         $queryBuilder->getRootAlias()->willReturn('p');
@@ -303,11 +303,11 @@ class PriceFilterSpec extends ObjectBehavior
 
         $value = ['currency' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('price_code', 'data', 'filter', 'price', print_r($value, true))
+            InvalidArgumentException::arrayKeyExpected('price_code', 'amount', 'filter', 'price', print_r($value, true))
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
-        $value = ['data' => 459];
+        $value = ['amount' => 459];
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected(
                 'price_code',
@@ -319,13 +319,13 @@ class PriceFilterSpec extends ObjectBehavior
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
-        $value = ['data' => 'foo', 'currency' => 'foo'];
+        $value = ['amount' => 'foo', 'currency' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected('price_code', 'data', 'filter', 'price', 'string')
+            InvalidArgumentException::arrayNumericKeyExpected('price_code', 'amount', 'filter', 'price', 'string')
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
-        $value = ['data' => 132, 'currency' => 42];
+        $value = ['amount' => 132, 'currency' => 42];
         $this->shouldThrow(
             InvalidArgumentException::arrayStringKeyExpected('price_code', 'currency', 'filter', 'price', 'integer')
         )
@@ -337,7 +337,7 @@ class PriceFilterSpec extends ObjectBehavior
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $attribute->getCode()->willReturn('price_code');
-        $value = ['data' => 132, 'currency' => 'FOO'];
+        $value = ['amount' => 132, 'currency' => 'FOO'];
         $this->shouldThrow(
             InvalidArgumentException::arrayInvalidKey(
                 'price_code',

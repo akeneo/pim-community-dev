@@ -29,27 +29,27 @@ class MetricLocalizerSpec extends ObjectBehavior
 
     function it_valids_the_format()
     {
-        $this->validate(['data' => '10.05', 'unit' => 'KILOGRAM'], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => '10.05', 'unit' => 'KILOGRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => '-10.05', 'unit' => 'KILOGRAM'], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => '-10.05', 'unit' => 'KILOGRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => '10', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => '10', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => '-10', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => '-10', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => 10, 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => 10, 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => 10.05, 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => 10.05, 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => ' 10.05 ', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => ' 10.05 ', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => null, 'unit' => null], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => null, 'unit' => null], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => '', 'unit' => ''], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => '', 'unit' => ''], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => 0, 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => 0, 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => '0', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
+        $this->validate(['amount' => '0', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
     }
 
@@ -59,58 +59,58 @@ class MetricLocalizerSpec extends ObjectBehavior
     ) {
         $validator->validate(Argument::any(), Argument::any())->willReturn($constraints);
 
-        $this->validate(['data' => '10.00', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => ','])
+        $this->validate(['amount' => '10.00', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => ','])
             ->shouldReturn($constraints);
     }
 
     function it_convert_comma_to_dot_separator()
     {
-        $this->delocalize(['data' => '10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '10.05', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => '10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => '10.05', 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => '-10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '-10.05', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => '-10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => '-10.05', 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => '10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '10', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => '10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => '10', 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => '-10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '-10', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => '-10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => '-10', 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => 10, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 10, 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => 10, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => 10, 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => 10.0585, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '10.0585', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => 10.0585, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => '10.0585', 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => ' 10.05 ', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => ' 10.05 ', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => ' 10.05 ', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => ' 10.05 ', 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => null, 'unit' => null], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => null, 'unit' => null]);
+        $this->delocalize(['amount' => null, 'unit' => null], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => null, 'unit' => null]);
 
-        $this->delocalize(['data' => '', 'unit' => ''], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => null, 'unit' => '']);
+        $this->delocalize(['amount' => '', 'unit' => ''], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => null, 'unit' => '']);
 
-        $this->delocalize(['data' => 0, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 0, 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => 0, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => 0, 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => '0', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '0', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => '0', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => '0', 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => 'gruik', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 'gruik', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => 'gruik', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['amount' => 'gruik', 'unit' => 'GRAM']);
 
         $this->delocalize([], ['decimal_separator' => '.'])
             ->shouldReturn([]);
 
-        $this->delocalize(['data' => '10,00', 'unit' => 'GRAM'], [])
-            ->shouldReturn(['data' => '10.00', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => '10,00', 'unit' => 'GRAM'], [])
+            ->shouldReturn(['amount' => '10.00', 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => '10,00', 'unit' => 'GRAM'], ['decimal_separator' => null])
-            ->shouldReturn(['data' => '10.00', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => '10,00', 'unit' => 'GRAM'], ['decimal_separator' => null])
+            ->shouldReturn(['amount' => '10.00', 'unit' => 'GRAM']);
 
-        $this->delocalize(['data' => '10,00', 'unit' => 'GRAM'], ['decimal_separator' => ''])
-            ->shouldReturn(['data' => '10.00', 'unit' => 'GRAM']);
+        $this->delocalize(['amount' => '10,00', 'unit' => 'GRAM'], ['decimal_separator' => ''])
+            ->shouldReturn(['amount' => '10.00', 'unit' => 'GRAM']);
     }
 }
