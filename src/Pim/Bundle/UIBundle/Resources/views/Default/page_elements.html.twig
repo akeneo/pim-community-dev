@@ -98,11 +98,11 @@
 
 {% macro page_header(title, buttons, titleButtons, meta, right, backButton) %}
     <header class="AknTitleContainer navigation">
-        {% if backButton is not empty %}
-            <div class="AknTitleContainer-backContainer" data-drop-zone="back">
+        <div class="AknTitleContainer-backContainer" data-drop-zone="back">
+            {% if backButton is not empty %}
                 {{ backButton }}
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
         <div class="AknTitleContainer-contentContainer">
             <div class="AknTitleContainer-mainLine">
                 <div class="AknTitleContainer-titleContainer" data-drop-zone="title">
