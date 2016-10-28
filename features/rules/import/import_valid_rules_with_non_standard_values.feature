@@ -32,12 +32,12 @@ Feature: Import rules
                 - field:    length
                   operator: =
                   value:
-                      data: 0
+                      amount: 0
                       unit: CENTIMETER
                 - field:    price
                   operator: =
                   value:
-                      data:     0
+                      amount:     0
                       currency: EUR
             actions:
                 - type:        copy

@@ -58,21 +58,21 @@ class PricesPresenterSpec extends ObjectBehavior
         $jpy->getCurrency()->willReturn('JPY');
 
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $pricesPresenter->present(['data' => 15.67, 'currency' => 'EUR'], ['locale' => 'en_US'])->willReturn('€15.67');
-        $pricesPresenter->present(['data' => 22.34, 'currency' => 'USD'], ['locale' => 'en_US'])->willReturn('$22.34');
-        $pricesPresenter->present(['data' => 150, 'currency' => 'JPY'], ['locale' => 'en_US'])->willReturn('¥150');
+        $pricesPresenter->present(['amount' => 15.67, 'currency' => 'EUR'], ['locale' => 'en_US'])->willReturn('€15.67');
+        $pricesPresenter->present(['amount' => 22.34, 'currency' => 'USD'], ['locale' => 'en_US'])->willReturn('$22.34');
+        $pricesPresenter->present(['amount' => 150,   'currency' => 'JPY'], ['locale' => 'en_US'])->willReturn('¥150');
 
-        $pricesPresenter->present(['data' => 12.34, 'currency' => 'EUR'], ['locale' => 'en_US'])->willReturn('£12.34');
-        $pricesPresenter->present(['data' => 25.67, 'currency' => 'GBP'], ['locale' => 'en_US'])->willReturn('€25.67');
-        $pricesPresenter->present(['data' => 20.12, 'currency' => 'USD'], ['locale' => 'en_US'])->willReturn('$20.12');
-        $pricesPresenter->present(['data' => null, 'currency' => 'JPY'], ['locale' => 'en_US'])->willReturn('');
+        $pricesPresenter->present(['amount' => 12.34, 'currency' => 'EUR'], ['locale' => 'en_US'])->willReturn('£12.34');
+        $pricesPresenter->present(['amount' => 25.67, 'currency' => 'GBP'], ['locale' => 'en_US'])->willReturn('€25.67');
+        $pricesPresenter->present(['amount' => 20.12, 'currency' => 'USD'], ['locale' => 'en_US'])->willReturn('$20.12');
+        $pricesPresenter->present(['amount' => null,  'currency' => 'JPY'], ['locale' => 'en_US'])->willReturn('');
 
         $change = [
             'data' => [
-                ['currency' => 'EUR', 'data' => '12.34'],
-                ['currency' => 'GBP', 'data' => '25.67'],
-                ['currency' => 'USD', 'data' => '20.12'],
-                ['currency' => 'JPY', 'data' => null],
+                ['currency' => 'EUR', 'amount' => '12.34'],
+                ['currency' => 'GBP', 'amount' => '25.67'],
+                ['currency' => 'USD', 'amount' => '20.12'],
+                ['currency' => 'JPY', 'amount' => null],
             ]
         ];
 
@@ -93,15 +93,15 @@ class PricesPresenterSpec extends ObjectBehavior
         $value->getData()->willReturn([]);
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
 
-        $pricesPresenter->present(['data' => 15.12, 'currency' => 'EUR'], ['locale' => 'fr_FR'])->willReturn('15.12 €');
-        $pricesPresenter->present(['data' => 15.48, 'currency' => 'USD'], ['locale' => 'fr_FR'])->willReturn('15.48 $');
+        $pricesPresenter->present(['amount' => 15.12, 'currency' => 'EUR'], ['locale' => 'fr_FR'])->willReturn('15.12 €');
+        $pricesPresenter->present(['amount' => 15.48, 'currency' => 'USD'], ['locale' => 'fr_FR'])->willReturn('15.48 $');
 
         $renderer->renderDiff([], ["15.12 €", "15.48 $"])->willReturn('15.12 €<br/>15.48 $');
         $this->setRenderer($renderer);
 
         $this->present($value, ['data' => [
-            ['data' => 15.12, 'currency' => 'EUR'],
-            ['data' => 15.48, 'currency' => 'USD'],
+            ['amount' => 15.12, 'currency' => 'EUR'],
+            ['amount' => 15.48, 'currency' => 'USD'],
         ]])->shouldReturn('15.12 €<br/>15.48 $');
     }
 }

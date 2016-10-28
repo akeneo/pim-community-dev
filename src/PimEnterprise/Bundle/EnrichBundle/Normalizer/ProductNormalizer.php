@@ -87,7 +87,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $workingCopy = $this->normalizer->normalize($product, 'json', $context);
+        $workingCopy = $this->normalizer->normalize($product, 'standard', $context);
         $draftStatus = null;
 
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);

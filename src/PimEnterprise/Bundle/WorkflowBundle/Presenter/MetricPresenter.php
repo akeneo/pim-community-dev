@@ -58,7 +58,7 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
         }
 
         $options = ['locale' => $this->localeResolver->getCurrentLocale()];
-        $structuredMetric = ['data' => $data->getData(), 'unit' => $data->getUnit()];
+        $structuredMetric = ['amount' => $data->getData(), 'unit' => $data->getUnit()];
 
         return $this->metricPresenter->present($structuredMetric, $options);
     }

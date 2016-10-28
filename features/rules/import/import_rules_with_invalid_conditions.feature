@@ -358,7 +358,7 @@ Feature: Import rules
           - type:   set
             field:  price
             value:
-              - data: 3
+              - amount: 3
                 currency: EUR
       """
     And the following yaml file to import:
@@ -409,7 +409,7 @@ Feature: Import rules
           - type:   set
             field:  length
             value:
-              data: 3
+              amount: 3
               unit: CENTIMETER
       """
     And the following yaml file to import:

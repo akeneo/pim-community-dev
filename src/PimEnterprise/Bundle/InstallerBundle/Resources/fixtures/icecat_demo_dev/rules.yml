@@ -163,7 +163,7 @@ rules:
                 field: price
                 operator: !=
                 value:
-                    data: 12
+                    amount: 12
                     currency: EUR
         actions:
             -
@@ -171,7 +171,7 @@ rules:
                 field: price
                 value:
                     -
-                        data: 12
+                        amount: 12
                         currency: EUR
     set_tshirt_weight:
         priority: 0
@@ -184,14 +184,14 @@ rules:
                 field: weight
                 operator: !=
                 value:
-                    data: 500
+                    amount: 500
                     unit: GRAM
         actions:
             -
                 type: set
                 field: weight
                 value:
-                    data: 500
+                    amount: 500
                     unit: GRAM
     set_tshirt_style:
         priority: 0

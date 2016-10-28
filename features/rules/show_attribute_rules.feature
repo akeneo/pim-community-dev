@@ -73,7 +73,7 @@ Feature: Show all rules related to an attribute
           - type:  set
             field: price
             value:
-              - data: 12
+              - amount: 12
                 currency: EUR
           - type:  set
             field: side_view
@@ -83,7 +83,7 @@ Feature: Show all rules related to an attribute
           - type:  set
             field: length
             value:
-              data: 10
+              amount: 10
               unit: CENTIMETER
           - type:        copy
             from_field:  name

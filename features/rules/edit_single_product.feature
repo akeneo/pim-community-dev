@@ -295,7 +295,7 @@ Feature: Read a single product by applying rules
           - type:  set
             field: length
             value:
-              data: 50
+              amount: 50
               unit: CENTIMETER
           - type:  set
             field: weather_conditions
@@ -312,7 +312,7 @@ Feature: Read a single product by applying rules
           - type:  set
             field: price
             value:
-              - data: 180
+              - amount: 180
                 currency: EUR
           - type:  set
             field: description
