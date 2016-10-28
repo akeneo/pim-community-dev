@@ -93,14 +93,8 @@ class MediaMigration
      */
     public function storeLocalMedias()
     {
-        // enable the garbage collector
-        gc_enable();
-
         /** @var \Doctrine\ORM\EntityManagerInterface $em */
-        $em = null;
-        if (!$this->upgradeHelper->areProductsStoredInMongo()) {
-            $em = $this->container->get('doctrine.orm.entity_manager');
-        };
+        $em = $this->container->get('doctrine.orm.entity_manager');
 
         $this->output->writeln(sprintf('Storing medias located in <comment>%s</comment> to the catalog filesystem...', $this->mediaDirectory));
 
@@ -116,30 +110,17 @@ class MediaMigration
                 ['old_file_key' => $file->getFilename()],
                 ['id'           => $fileInfo->getId()]
             );
-            // detach and unset if products are not stored in Mongo
-            if (null !== $em) {
-                $em->detach($fileInfo);
-            }
+            $em->detach($fileInfo);
             unset($fileInfo);
             unset($file);
 
             if (0 == $count % $batch) {
-                // flush / clear / gc
-                if (null !== $em) {
-                    $em->flush();
-                    $em->clear();
-                    gc_collect_cycles();
-                }
+                $em->clear();
             }
             $count++;
         }
 
-        // flush / clear / gc finally
-        if (null !== $em) {
-            $em->flush();
-            $em->clear();
-            gc_collect_cycles();
-        }
+        $em->clear();
     }
 
     /**
