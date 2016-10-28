@@ -9,6 +9,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -54,6 +55,9 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var CollectionFilterInterface */
     protected $productValuesFilter;
 
+    /** @var ConverterInterface */
+    protected $productValueConverter;
+
     /** @var string */
     protected $tmpStorageDir;
 
@@ -73,9 +77,10 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param ObjectUpdaterInterface       $productUpdater
      * @param ValidatorInterface           $productValidator
      * @param NormalizerInterface          $internalNormalizer
-     * @param AttributeConverterInterface   $localizedConverter
+     * @param AttributeConverterInterface  $localizedConverter
      * @param LocalizerRegistryInterface   $localizerRegistry
      * @param CollectionFilterInterface    $productValuesFilter
+     * @param ConverterInterface           $productValueConverter
      * @param string                       $tmpStorageDir
      * @param string                       $jobInstanceCode
      */
@@ -89,6 +94,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         AttributeConverterInterface $localizedConverter,
         LocalizerRegistryInterface $localizerRegistry,
         CollectionFilterInterface $productValuesFilter,
+        ConverterInterface $productValueConverter,
         $tmpStorageDir,
         $jobInstanceCode
     ) {
@@ -104,6 +110,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->localizedConverter = $localizedConverter;
         $this->localizerRegistry = $localizerRegistry;
         $this->productValuesFilter = $productValuesFilter;
+        $this->productValueConverter = $productValueConverter;
 
         $this->values = '';
     }
@@ -222,6 +229,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $data = json_decode($this->values, true);
 
         $locale = $this->userContext->getUiLocale()->getCode();
+        $data = $this->productValueConverter->convert($data);
         $data = $this->localizedConverter->convertToDefaultFormats($data, ['locale' => $locale]);
 
         $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
