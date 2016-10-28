@@ -17,6 +17,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,6 +75,9 @@ class ProductController
     /** @var ProductFilterInterface */
     protected $emptyValuesFilter;
 
+    /** @var ConverterInterface */
+    protected $productValueConverter;
+
     /**
      * @param ProductRepositoryInterface   $productRepository
      * @param AttributeRepositoryInterface $attributeRepository
@@ -88,6 +92,7 @@ class ProductController
      * @param ProductBuilderInterface      $productBuilder
      * @param AttributeConverterInterface  $localizedConverter
      * @param ProductFilterInterface       $emptyValuesFilter
+     * @param ConverterInterface           $productValueConverter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -102,7 +107,8 @@ class ProductController
         RemoverInterface $productRemover,
         ProductBuilderInterface $productBuilder,
         AttributeConverterInterface $localizedConverter,
-        ProductFilterInterface $emptyValuesFilter
+        ProductFilterInterface $emptyValuesFilter,
+        ConverterInterface $productValueConverter
     ) {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
@@ -117,6 +123,7 @@ class ProductController
         $this->productBuilder = $productBuilder;
         $this->localizedConverter = $localizedConverter;
         $this->emptyValuesFilter = $emptyValuesFilter;
+        $this->productValueConverter = $productValueConverter;
     }
 
     /**
@@ -217,8 +224,6 @@ class ProductController
         } catch (ObjectNotFoundException $e) {
             throw new BadRequestHttpException();
         }
-
-        $data['values'] = $this->convertMedia($data['values']);
 
         $this->updateProduct($product, $data);
 
@@ -350,53 +355,14 @@ class ProductController
      */
     protected function updateProduct(ProductInterface $product, array $data)
     {
-        $values = $this->localizedConverter->convertToDefaultFormats($data['values'], [
+        $values = $this->productValueConverter->convert($data['values']);
+
+        $values = $this->localizedConverter->convertToDefaultFormats($values, [
             'locale' => $this->userContext->getUiLocale()->getCode()
         ]);
 
         $data = array_replace($data, $this->emptyValuesFilter->filter($product, ['values' => $values]));
 
         $this->productUpdater->update($product, $data);
-    }
-
-    /**
-     * Before:
-     * {
-     *     "picture": {
-     *          "locale": null,
-     *          "scope": null,
-     *          "data": {
-     *              "originalFilename": "my_picture.jpg",
-     *              "filePath": "a/b/c/b/s936265s65_my_picture.jpg"
-     *          }
-     *      }
-     * }
-     *
-     * After:
-     * {
-     *    "picture": {
-     *        "locale": null,
-     *        "scope": null,
-     *        "data": "a/b/c/b/s936265s65_my_picture.jpg"
-     *     }
-     * }
-     *
-     * @param array $normalizedProduct
-     *
-     * @return array
-     */
-    protected function convertMedia(array $normalizedProduct)
-    {
-        $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
-
-        foreach ($normalizedProduct as $code => $values) {
-            if (in_array($code, $mediaAttributes)) {
-                foreach ($values as $index => $value) {
-                    $normalizedProduct[$code][$index]['data'] = $value['data']['filePath'];
-                }
-            }
-        }
-
-        return $normalizedProduct;
     }
 }
