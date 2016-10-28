@@ -6,7 +6,7 @@
  * Contains a "create" button to allow the user to create a view from the current
  * state of the grid (regarding filters and columns).
  *
- * @author    Adrien Petremann <adrien.petremann@akeneo.com>
+ * @author    Willy MESNAGE <willy.mesnage@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -16,92 +16,69 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/grid/view-selector/footer/create',
-        'pim/dialog',
-        'routing',
-        'pim/datagrid/state',
-        'pim/saver/datagrid-view',
-        'oro/messenger'
+        'text!pim/template/grid/view-selector/footer/create'
     ],
     function (
         $,
         _,
         __,
         BaseForm,
-        template,
-        Dialog,
-        Routing,
-        DatagridState,
-        DatagridViewSaver,
-        messenger
+        template
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            events: {
-                'click [data-action="prompt-creation"]': 'promptCreation'
-            },
 
             /**
              * {@inheritdoc}
              */
             render: function () {
+                var extensionsCount = 0;
+
+                _.each(this.extensions, function (extension) {
+                    if ('action-list' === extension.targetZone) {
+                        extensionsCount++;
+                    }
+                });
                 this.$el.html(this.template({
-                    buttonTitle: __('grid.view_selector.create')
+                    isMultiple: 1 < extensionsCount,
+                    createButtonTitle: __('grid.view_selector.create')
                 }));
+
+                if (1 < extensionsCount) {
+                    this.$('.dropdown-toggle').dropdown();
+                }
+
+                this.renderExtensions(extensionsCount);
 
                 return this;
             },
 
             /**
-             * Prompt the view creation modal.
+             * {@inheritdoc}
              */
-            promptCreation: function () {
-                this.getRoot().trigger('grid:view-selector:close-selector');
+            renderExtensions: function (extensionsCount) {
+                this.initializeDropZones();
 
-                var placeholder = __('grid.view_selector.placeholder');
-                var content = '<input name="new-view-label" type="text" placeholder="' + placeholder + '">';
-                var label = null;
-
-                Dialog.confirm(content, __('grid.view_selector.choose_label'), this.saveView.bind(this));
-
-                var $input = $('input[name="new-view-label"]');
-                var $submitBtn = $input.parents('.modal').find('.ok').hide();
-
-                $input.on('input', function () {
-                    label = $input.val();
-                    if (!label.length) {
-                        $submitBtn.hide();
+                _.each(this.extensions, function (extension) {
+                    if ('action-list' === extension.targetZone && 1 < extensionsCount) {
+                        this.renderExtensionAsList(extension);
                     } else {
-                        $submitBtn.show();
+                        this.renderExtension(extension);
                     }
-                }).on('keypress', function (e) {
-                    if (13 === (e.keyCode || e.which) && label.length) {
-                        $submitBtn.trigger('click');
-                    }
-                });
+                }.bind(this));
+
+                return this;
             },
 
             /**
-             * Save the current Datagrid view in database and triggers an event to the parent
-             * to select it.
+             * Render a single extension as list
+             *
+             * @param {Object} extension
              */
-            saveView: function () {
-                var gridState = DatagridState.get(this.getRoot().gridAlias, ['filters', 'columns']);
-                var newView = {
-                    filters: gridState.filters,
-                    columns: gridState.columns,
-                    label: $('input[name="new-view-label"]').val()
-                };
+            renderExtensionAsList: function (extension) {
+                this.getZone(extension.targetZone).appendChild($('<li class="create-action">').append(extension.el)[0]);
 
-                DatagridViewSaver.save(newView, this.getRoot().gridAlias)
-                    .done(function (response) {
-                        this.getRoot().trigger('grid:view-selector:view-created', response.id);
-                    }.bind(this))
-                    .fail(function (response) {
-                        _.each(response.responseJSON, function (error) {
-                            messenger.notificationFlashMessage('error', error);
-                        });
-                    });
+                extension.render();
             }
         });
     }
