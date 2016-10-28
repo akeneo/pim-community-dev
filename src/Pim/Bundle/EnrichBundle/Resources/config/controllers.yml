@@ -455,6 +455,7 @@ services:
             - '@pim_catalog.validator.product'
             - '@pim_enrich.normalizer.variant_group_violation'
             - '@pim_enrich.filter.variant_group_edit_data'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
 
     pim_enrich.controller.rest.variant_group_attribute:
         scope: request

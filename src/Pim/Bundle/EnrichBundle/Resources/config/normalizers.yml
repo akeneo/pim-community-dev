@@ -130,6 +130,7 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
             - '@pim_catalog.localization.localizer.converter'
+            - '@pim_enrich.converter.standard_to_enrich.product_value'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -27,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class VariantGroupController
 {
-    /** @var EntityRepository */
+    /** @var GroupRepositoryInterface */
     protected $repository;
 
     /** @var NormalizerInterface */
@@ -57,16 +58,21 @@ class VariantGroupController
     /** @var CollectionFilterInterface */
     protected $variantGroupDataFilter;
 
+    /** @var ConverterInterface */
+    protected $productValueConverter;
+
     /**
-     * @param EntityRepository            $repository
-     * @param NormalizerInterface         $normalizer
-     * @param ObjectUpdaterInterface      $updater
-     * @param SaverInterface              $saver
-     * @param UserContext                 $userContext
-     * @param AttributeConverterInterface $attributeConverter
-     * @param ValidatorInterface          $validator
-     * @param NormalizerInterface         $violationNormalizer
-     * @param CollectionFilterInterface   $variantGroupDataFilter
+     * @param GroupRepositoryInterface $repository
+     * @param NormalizerInterface                       $normalizer
+     * @param ObjectUpdaterInterface                    $updater
+     * @param SaverInterface                            $saver
+     * @param RemoverInterface                          $remover
+     * @param UserContext                               $userContext
+     * @param AttributeConverterInterface               $attributeConverter
+     * @param ValidatorInterface                        $validator
+     * @param NormalizerInterface                       $violationNormalizer
+     * @param CollectionFilterInterface                 $variantGroupDataFilter
+     * @param ConverterInterface                        $productValueConverter
      */
     public function __construct(
         GroupRepositoryInterface $repository,
@@ -78,7 +84,8 @@ class VariantGroupController
         AttributeConverterInterface $attributeConverter,
         ValidatorInterface $validator,
         NormalizerInterface $violationNormalizer,
-        CollectionFilterInterface $variantGroupDataFilter
+        CollectionFilterInterface $variantGroupDataFilter,
+        ConverterInterface $productValueConverter
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -90,6 +97,7 @@ class VariantGroupController
         $this->validator = $validator;
         $this->violationNormalizer = $violationNormalizer;
         $this->variantGroupDataFilter = $variantGroupDataFilter;
+        $this->productValueConverter = $productValueConverter;
     }
 
     /**
@@ -153,6 +161,9 @@ class VariantGroupController
         }
 
         $data = json_decode($request->getContent(), true);
+
+        $data['values'] = $this->productValueConverter->convert($data['values']);
+
         $data = $this->convertLocalizedAttributes($data);
         $data = $this->variantGroupDataFilter->filterCollection($data, null);
 
