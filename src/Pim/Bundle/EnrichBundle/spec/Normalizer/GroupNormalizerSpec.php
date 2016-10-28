@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,14 +23,16 @@ class GroupNormalizerSpec extends ObjectBehavior
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        AttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $converter
     ) {
         $this->beConstructedWith(
             $normalizer,
             $structureVersionProvider,
             $versionManager,
             $versionNormalizer,
-            $localizedConverter
+            $localizedConverter,
+            $converter
         );
     }
 
@@ -44,6 +47,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $versionManager,
         $versionNormalizer,
         $localizedConverter,
+        $converter,
         GroupInterface $tshirt,
         GroupTypeInterface $groupType,
         Version $oldestLog,
@@ -82,6 +86,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($tshirt, 'standard', $options)->willReturn($variantNormalized);
         $localizedConverter->convertToLocalizedFormats($variantNormalized['values'], $options)
             ->willReturn($valuesLocalized);
+        $converter->convert($valuesLocalized)->willReturn($valuesLocalized);
 
         $structureVersionProvider->getStructureVersion()->willReturn(1);
         $versionManager->getOldestLogEntry($tshirt)->willReturn($oldestLog);
