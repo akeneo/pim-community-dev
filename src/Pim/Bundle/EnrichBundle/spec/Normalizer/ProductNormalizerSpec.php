@@ -16,6 +16,7 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -29,8 +30,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider,
         AttributeConverterInterface $localizedConverter,
-        AttributeRepositoryInterface $attributeRepository,
-        FileInfoRepositoryInterface $fileInfoRepository
+        ConverterInterface $converter
     ) {
         $this->beConstructedWith(
             $productNormalizer,
@@ -40,8 +40,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             $structureVersionProvider,
             $formProvider,
             $localizedConverter,
-            $attributeRepository,
-            $fileInfoRepository
+            $converter
         );
     }
 
@@ -58,8 +57,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $structureVersionProvider,
         $formProvider,
         $localizedConverter,
-        $attributeRepository,
-        $fileInfoRepository,
+        $converter,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -71,8 +69,6 @@ class ProductNormalizerSpec extends ObjectBehavior
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
         ];
-
-        $attributeRepository->findMediaAttributeCodes()->willReturn(['picture', 'pdf_description']);
 
         $productNormalized = [
             'enabled'    => true,
@@ -100,7 +96,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productNormalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
 
-        $valuesLocalized['picture'] = [
+        $valuesConverted = $valuesLocalized;
+        $valuesConverted['picture'] = [
             [
                 'data' => [
                     'filePath' => 'a/b/c/my_picture.jpg', 'originalFilename' => 'my_picture.jpg'
@@ -110,8 +107,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ]
         ];
 
-        $fileInfoRepository->findOneByIdentifier('a/b/c/my_picture.jpg')->willReturn($fileInfo);
-        $fileInfo->getOriginalFilename()->willReturn('my_picture.jpg');
+        $converter->convert($valuesLocalized)->willReturn($valuesConverted);
 
         $mug->getId()->willReturn(12);
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
@@ -138,7 +134,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'enabled'    => true,
                 'categories' => ['kitchen'],
                 'family'     => '',
-                'values'     => $valuesLocalized,
+                'values'     => $valuesConverted,
                 'meta'       => [
                     'form'              => 'product-edit-form',
                     'id'                => 12,
