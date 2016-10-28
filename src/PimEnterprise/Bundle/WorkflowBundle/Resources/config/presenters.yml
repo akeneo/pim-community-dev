@@ -123,6 +123,7 @@ services:
         class: '%pimee_workflow.presenter.file.class%'
         arguments:
             - '@router'
+            - '@akeneo_file_storage.repository.file_info'
         tags:
             - { name: pimee_workflow.presenter, priority: -64 }
 
@@ -130,6 +131,7 @@ services:
         class: '%pimee_workflow.presenter.image.class%'
         arguments:
             - '@router'
+            - '@akeneo_file_storage.repository.file_info'
         tags:
             - { name: pimee_workflow.presenter }
 

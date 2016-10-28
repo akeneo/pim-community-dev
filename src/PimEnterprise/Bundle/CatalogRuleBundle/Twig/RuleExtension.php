@@ -11,8 +11,10 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Twig;
 
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Twig extension for rule presentation
@@ -27,14 +29,22 @@ class RuleExtension extends \Twig_Extension
     /** @var LocaleResolver */
     protected $localeResolver;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
-     * @param PresenterRegistryInterface $presenterRegistry
-     * @param LocaleResolver             $localeResolver
+     * @param PresenterRegistryInterface   $presenterRegistry
+     * @param LocaleResolver               $localeResolver
+     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(PresenterRegistryInterface $presenterRegistry, LocaleResolver $localeResolver)
-    {
-        $this->presenterRegistry = $presenterRegistry;
-        $this->localeResolver = $localeResolver;
+    public function __construct(
+        PresenterRegistryInterface $presenterRegistry,
+        LocaleResolver $localeResolver,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        $this->presenterRegistry   = $presenterRegistry;
+        $this->localeResolver      = $localeResolver;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -53,11 +63,11 @@ class RuleExtension extends \Twig_Extension
      * The value can be an attribute value, a field value, or an array of these values.
      *
      * Example with a localized metric:
-     * input: ['value' => 10, 'unit' => 'GRAM'], 'weight'
+     * input: ['amount' => 10, 'unit' => 'GRAM'], 'weight'
      * output: 10 Gram
      *
      * Example with a collection of localized prices:
-     * input: [['data' => 10, 'currency' => 'EUR'], ['data' => 12, 'currency' => 'USD']], 'weight'
+     * input: [['amount' => 10, 'currency' => 'EUR'], ['amount' => 12, 'currency' => 'USD']], 'weight'
      * output: €10, $12
      *
      * Example with a non localized array:
@@ -65,7 +75,7 @@ class RuleExtension extends \Twig_Extension
      * output: foo, bar
      *
      * Example with a file:
-     * input: ['originalFilename' => 'image.jpg'], null
+     * input: '/path/to/my/image.jpg', null
      * output: <i class="icon-file"></i> image.jpg
      *
      * @param mixed  $value
@@ -81,10 +91,6 @@ class RuleExtension extends \Twig_Extension
         }
 
         if (is_array($value)) {
-            if (isset($value['originalFilename'])) {
-                return sprintf('<i class="icon-file"></i> %s', $value['originalFilename']);
-            }
-
             if (null !== $presenter) {
                 $value = $presenter->present($value, ['locale' => $this->localeResolver->getCurrentLocale()]);
 
@@ -96,6 +102,11 @@ class RuleExtension extends \Twig_Extension
             }
 
             return implode(', ', $value);
+        }
+
+        $mediaCodes = $this->attributeRepository->findMediaAttributeCodes();
+        if (in_array($code, $mediaCodes)) {
+            return sprintf('<i class="icon-file"></i> %s', basename($value));
         }
 
         if (null !== $presenter) {
