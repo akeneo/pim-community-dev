@@ -11,7 +11,7 @@ activity_manager:
     create_project_modal:
         label_placeholder: Name of the new todo
         description_placeholder: Description of the new todo
-        title: Create todo
-        confirm: Next
+        title: Create project
+        confirm: Save
         cancel: Cancel
 
