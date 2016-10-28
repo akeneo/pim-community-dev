@@ -133,7 +133,7 @@ class EnterpriseFeatureContext extends FeatureContext
     public function itsStatusShouldBe($status)
     {
         $info = $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.meta .draft-status');
+            return $this->getSession()->getPage()->find('css', '.AknTitleContainer-meta .draft-status');
         }, 'Cannot find draft status');
 
         if (false === strpos($info->getText(), $status)) {
