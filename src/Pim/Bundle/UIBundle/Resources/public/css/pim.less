@@ -92,35 +92,6 @@ a {
   padding-left: 5px;
 }
 
-table.job-execution {
-  tr.error > td, tr.warning > td {
-    background: none;
-    border-top: none;
-    padding: 0 20px 10px;
-
-    & > div {
-      .border-radius(4px);
-      padding: 10px;
-      border-width: 1px;
-      border-style: solid;
-    }
-  }
-
-  tr.error > td > div {
-    background: @redLighter;
-    border-color: @redLight;
-  }
-
-  tr.warning > td > div {
-    background: @yellowLighter;
-    border-color: @yellowLight;
-  }
-
-  table.table-vertically-condensed {
-    width: 100%;
-  }
-}
-
 /** widgets **********************************************************************************************************/
 .configuration {
   width: 100%;
@@ -138,13 +109,6 @@ table.job-execution {
     tr td:first-child {
       width: 200px;
     }
-  }
-}
-
-tr.warning, tr.error {
-  .title {
-    font-weight: bold;
-    color: @textColor;
   }
 }
 

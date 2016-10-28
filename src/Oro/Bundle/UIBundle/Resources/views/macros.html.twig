@@ -229,7 +229,7 @@
         <div id="{{ dataTarget }}" class="AknHorizontalTabnav scrollspy-nav">
             <div class="navbar-inner">
                 <div class="row-fluid" style="width: auto;">
-                    <ul class="AknHorizontalTabnav-list nav">
+                    <ul class="AknHorizontalTabnav-list nav nav-tabs">
                         {% for navElement in dataBlocks %}
                             <li class="AknHorizontalTabnav-item {{ navElement.class is defined ? navElement.class : '' }} tab-scrollable">
                                 <a class="AknHorizontalTabnav-link" href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a>

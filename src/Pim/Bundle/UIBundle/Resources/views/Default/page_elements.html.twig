@@ -141,7 +141,7 @@
         <div class="navbar-inner">
             <div class="row-fluid">
                 {% if tabs is not empty %}
-                    <ul class="AknHorizontalTabnav-list nav">
+                    <ul class="AknHorizontalTabnav-list nav nav-tabs">
                         {% if tabs is iterable %}
                             {% for tab in tabs %}
                                 <li class="AknHorizontalTabnav-item{% if loop.first %} AknHorizontalTabnav-item--active active{% endif %}">

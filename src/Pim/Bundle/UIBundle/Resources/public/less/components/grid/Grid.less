@@ -9,6 +9,7 @@
 
   &-bodyCell,
   &-headerCell {
+    vertical-align: top;
     line-height: 24px;
     padding: 12px 10px;
   }
@@ -19,7 +20,7 @@
   }
 
   &-bodyCell {
-    &--full {
+    &--full, &--toto {
       padding: 10px 20px;
       background: @AknDefaultHoverBackground;
     }
@@ -66,7 +67,6 @@
 
   &--history {
     border: 1px solid @AknBorderColor;
-    background: white;
   }
 
   &--history &-bodyCell,
@@ -74,5 +74,10 @@
     line-height: 20px;
     padding-top: 6px;
     padding-bottom: 6px;
+    background: white;
+  }
+
+  &--unclickable &-bodyRow:hover &-bodyCell {
+    cursor: default;
   }
 }
