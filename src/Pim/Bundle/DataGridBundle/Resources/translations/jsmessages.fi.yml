@@ -29,16 +29,16 @@ Please, select item to perform action.: Valitse kohde toiminnon suorittamiseen.
 View per page: Sivunäkymä
 oro.datagrid.entityHint: Entiteetti
 oro.datagrid.noentities: Tuloksia ei löytynyt
-oro.datagrid.noresults: Tuloksia ei löytynyt. Yritä muuttaa hakuehtoja.
+oro.datagrid.noresults: "Tuloksia ei löytynyt. Yritä muuttaa hakuehtoja."
 oro.datagrid.nocolumns: Sarakkeita ei määritetty tähän ruudukkoon
-oro.datagrid.pagination.label: Sivu
-oro.datagrid.pagination.totalPages: 'koskien {{ totalPages }}'
-oro.datagrid.pagination.totalRecords: '{{ totalRecords }} asiakirjat'
-oro.datagrid.action.reset: Nollaa muutokset
-oro.datagrid.action.refresh: Päivitä
-oro_datagrid.select.all: Kaikki
-oro_datagrid.select.visible: Kaikki näkyvillä olevat
-oro_datagrid.select.none: Ei yhtään
+oro.datagrid.pagination.label: "Sivu"
+oro.datagrid.pagination.totalPages: "koskien {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} asiakirjat"
+oro.datagrid.action.reset: "Nollaa muutokset"
+oro.datagrid.action.refresh: "Päivitä"
+oro_datagrid.select.all: "Kaikki"
+oro_datagrid.select.visible: "Kaikki näkyvillä olevat"
+oro_datagrid.select.none: "Ei yhtään"
 pim.grid.ajax_choice_filter.label_empty: on tyhjä
 pim.grid.choice_filter:
   label_empty: Tyhjä

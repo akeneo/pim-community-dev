@@ -1,7 +1,7 @@
 confirmation:
   remove:
     item: Êtes-vous certain(e) de vouloir supprimer cet élément ?
-    association type: "Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?"
+    association type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
     attribute: Êtes-vous sûr(e) de que vouloir supprimer cet attribut ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
@@ -9,8 +9,8 @@ confirmation:
     group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
     variant group: Êtes-vous sûr(e) de que vouloir supprimer ce groupe de variantes ?
     group type: Êtes-vous sûr(e) de que vouloir supprimer ce type de groupe ?
-    import profile: "Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?"
-    export profile: "Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?"
+    import profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
+    export profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
     user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
     role: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
 pim_datagrid:
@@ -21,12 +21,12 @@ pim_datagrid:
     delete:
       confirm_content: Êtes-vous sûr(e) de vouloir supprimer les produits sélectionnés ?
       success: Les produits sélectionnés ont été supprimés.
-      error: "Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau."
+      error: Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau.
 flash:
   item:
     removed: Elément supprimé avec succès
   association type:
-    removed: "Le type d'association est supprimé avec succès"
+    removed: Le type d'association est supprimé avec succès
   attribute:
     removed: Attribut supprimé avec succès
   family:
@@ -42,9 +42,9 @@ flash:
   group type:
     removed: Le type de groupe a bien été supprimé
   import profile:
-    removed: "Le profil d'import a bien été supprimé"
+    removed: Le profil d'import a bien été supprimé
   export profile:
-    removed: "Le profil d'export a bien été supprimé"
+    removed: Le profil d'export a bien été supprimé
   user:
     removed: Utilisateur supprimé avec succès
   role:
@@ -52,7 +52,7 @@ flash:
 error:
   removing:
     item: Impossible de supprimer cet élément
-    association type: "Impossible de supprimer ce type d'association"
+    association type: Impossible de supprimer ce type d'association
     attribute: Impossible de supprimer cet attribut
     family: Impossible de supprimer cette famille
     product: Impossible de supprimer ce produit
@@ -60,16 +60,16 @@ error:
     group: Impossible de supprimer ce groupe
     variant group: Impossible de supprimer ce groupe de variantes
     group type: Impossible de supprimer ce type de groupe
-    import profile: "Impossible de supprimer ce profil d'import"
-    export profile: "Impossible de supprimer ce profil d'export"
+    import profile: Impossible de supprimer ce profil d'import
+    export profile: Impossible de supprimer ce profil d'export
     user: Impossible de supprimer cet utilisateur
     role: Impossible de supprimer ce rôle
-    attribute_option: "Erreur lors de la suppression de l'option de l'attribut"
+    attribute_option: Erreur lors de la suppression de l'option de l'attribut
   saving:
-    attribute_option: "Impossible d'enregistrer l'option de l'attribut"
+    attribute_option: Impossible d'enregistrer l'option de l'attribut
 alert:
   attribute_option:
-    error_occured_during_submission: "Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur"
+    error_occured_during_submission: Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur
     save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
   session_storage:
     not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
@@ -93,16 +93,16 @@ pim.grid.mass_action.delete: Supprimer
 pim.grid.mass_action.mass_edit: Edition en masse
 pim.grid.mass_action.sequential_edit: Modification séquentielle
 jstree.create: Créer
-switch_on: Oui
-switch_off: Non
+switch_on: "Oui"
+switch_off: "Non"
 pim_enrich:
   item:
     list:
       delete.label: Supprimer
-      delete.error: "Erreur lors de la suppression de l'élément"
+      delete.error: Erreur lors de la suppression de l'élément
     delete:
-      confirm.content: "Êtes-vous sûr(e) de que vouloir supprimer {{ itemName }} ? Il n'est pas possible d'annuler cette action"
-      confirm.title: "Supprimer l'élément {{ itemName }}"
+      confirm.content: Êtes-vous sûr(e) de que vouloir supprimer {{ itemName }} ? Il n'est pas possible d'annuler cette action
+      confirm.title: Supprimer l'élément {{ itemName }}
   navigation:
     link:
       back_to_grid: Retour à la grille
@@ -138,15 +138,15 @@ pim_enrich:
         actions: Actions
       info:
         deletion_successful: Les produits ont bien été supprimés.
-        deletion_failed: "Le produit n'a pas pu être supprimé."
+        deletion_failed: Le produit n'a pas pu être supprimé.
         update_successful: Le produit a bien été mis à jour.
-        update_failed: "Le produit n'a pas pu être mis à jour."
+        update_failed: Le produit n'a pas pu être mis à jour.
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - champs
-        already_in_upload: 'Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"'
+        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
       error:
-        upload: "Une erreur s'est produite lors du transfert du fichier."
+        upload: Une erreur s'est produite lors du transfert du fichier.
       meta:
         created: Créé
         created_by: par
@@ -158,7 +158,7 @@ pim_enrich:
         groups:
           title: Groupes
           modal:
-            title: 'Groupe {{ group }}'
+            title: Groupe {{ group }}
             view_group: Afficher le groupe
             group_label: Libellé
             more_products: '{{ count }} produits supplémentaires...'
@@ -177,9 +177,9 @@ pim_enrich:
       optional_attribute:
         remove: Supprimer cet attribut
       locale_specific_attribute:
-        unavailable: "Ce champ est spécifique à certaines locales, celle-ci n'en fait pas partie"
+        unavailable: Ce champ est spécifique à certaines locales, celle-ci n'en fait pas partie
       localizable:
-        channel_locale_unavailable: "Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'"
+        channel_locale_unavailable: Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'
       media:
         upload: Glisser et déposer pour télécharger ou cliquer ici
     attribute_option:
@@ -187,26 +187,26 @@ pim_enrich:
       label: Libellé
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
-    discard_changes: 'Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.'
-    delete_item: "Supprimer l'élément."
+    discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
+    delete_item: Supprimer l'élément.
     delete:
       product_attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
   info:
     not_applicable: N/A
     entity:
-      updated: "Des modifications n'ont pas encore été sauvegardées."
+      updated: Des modifications n'ont pas encore été sauvegardées.
   error:
-    upload: "Une erreur s'est produite pendant le chargement du fichier"
+    upload: Une erreur s'est produite pendant le chargement du fichier
   alert:
-    not_allowed: "Vous n'êtes pas autorisé(e) à accéder à cette page"
-    error_occured: "Une erreur s'est produite lors du chargement de la page"
+    not_allowed: Vous n'êtes pas autorisé(e) à accéder à cette page
+    error_occured: Une erreur s'est produite lors du chargement de la page
   form:
     product:
       tab:
         associations:
           title: Associations
           info:
-            none_exist: "Aucun type d'association n'existe."
+            none_exist: Aucun type d'association n'existe.
             show_products: Afficher les produits
             show_groups: Afficher les groupes
             number_of_associations: '{{ productCount }} produits et {{ groupCount }} groupes'
@@ -217,7 +217,7 @@ pim_enrich:
             add_attributes: Ajouter des attributs
           info:
             search_attributes: Rechercher...
-            no_available_attributes: "Il n'y a plus d'attributs disponibles"
+            no_available_attributes: Il n'y a plus d'attributs disponibles
             attributes_selected: '{{ attributeCount }} attribut(s) sélectionné(s)'
             no_match: Aucune correspondance trouvée
             load_more: Chargement de plus de résultats...
@@ -228,7 +228,7 @@ pim_enrich:
           title: Complétude
           info:
             no_family: Aucune famille définie. Merci de définir une famille pour calculer la complétude de ce produit.
-            no_completeness: "Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille."
+            no_completeness: Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille.
           missing_values: Valeurs manquantes
         history:
           title: Historique
@@ -238,8 +238,8 @@ pim_enrich:
       sequential_edit:
         info:
           products: Produits
-          previous: 'Retourner à {{ product }} sans enregistrer les modifications.'
-          next: 'Passer à {{ product }} sans enregistrer les modifications.'
+          previous: Retourner à {{ product }} sans enregistrer les modifications.
+          next: Passer à {{ product }} sans enregistrer les modifications.
         btn:
           save_and_next: Enregistrer et passer au suivant
           save_and_finish: Enregistrer et terminer
@@ -251,16 +251,16 @@ pim_enrich:
           change_family_to: Changer la famille pour
           empty_selection: Choisir une famille
       flash:
-        attribute_deletion_error: "Une erreur s'est produite lors de la suppression de l'attribut"
+        attribute_deletion_error: Une erreur s'est produite lors de la suppression de l'attribut
       mass_edit:
         select_attributes: Sélectionnez les attributs
         select: Sélectionner
     attribute_option:
       flash:
-        option_created: "L'option d'attribut a été créée avec succès."
-        error_creating_option: "Une erreur s'est produite en essayant de créer l'option d'attribut."
+        option_created: L'option d'attribut a été créée avec succès.
+        error_creating_option: Une erreur s'est produite en essayant de créer l'option d'attribut.
       add_option_modal:
-        title: "Ajouter une option d'attribut"
+        title: Ajouter une option d'attribut
         confirm: Ajouter
         cancel: Annuler
     entity:
@@ -269,6 +269,6 @@ pim_enrich:
         "yes": Oui
   mass_edit_action:
     edit_common_attributes:
-      description: 'Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.'
+      description: Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.
 pim_enrich.error:
-  exception.title: "Oups! Une erreur {{ status_code }} s'est produite..."
+  exception.title: Oups! Une erreur {{ status_code }} s'est produite...
