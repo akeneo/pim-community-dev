@@ -1,0 +1,136 @@
+pim_base_connector:
+  jobs:
+    csv_product_export:
+      title: Izvoz proizvoda u CSV
+      export.title: Izvoz proizvoda
+    csv_category_export:
+      title: Izvoz kategorije u CSV
+      export.title: Izvoz kategorije
+    csv_attribute_export:
+      title: Izvoz atributa u CSV
+      export.title: Izvoz atributa
+    csv_attribute_option_export:
+      title: Izvoz opcija atributa u CSV
+      export.title: Izvoz opcija atributa
+    csv_association_type_export:
+      title: Izvoz tipa pridruživanja u CSV
+      export.title: Izvoz tipa pridruživanja
+    csv_group_export:
+      title: Izvoz grupe u CSV
+      export.title: Izvoz grupe
+    csv_variant_group_export:
+      title: Izvoz grupne varijante u CSV
+      export.title: Izvoz grupne varijante
+    csv_product_import:
+      title: Uvoz proizvoda iz CSV
+      validation.title: Provjera valjanosti datoteke
+      import.title: Uvoz proizvoda
+      import_associations.title: Uvoz pridruživanja
+    csv_category_import:
+      title: Uvoz kategorije iz CSV
+      validation.title: Provjera valjanosti datoteke
+      import.title: Uvoz kategorije
+    csv_attribute_import:
+      title: Uvoz atributa iz CSV
+      validation.title: Provjera valjanosti datoteke
+      import.title: Uvoz atributa
+    csv_attribute_option_import:
+      title: Uvoz opcija atributa iz CSV
+      validation.title: Provjera valjanosti datoteke
+      import.title: Uvoz opcija atributa
+    csv_association_type_import:
+      title: Uvoz tipa pridruživanja iz CSV
+      validation.title: Provjera valjanosti datoteke
+      import.title: Uvoz tipa pridruživanja
+    csv_group_import:
+      title: Uvoz grupa iz CSV
+      validation.title: Provjera valjanosti datoteke
+      import.title: Uvoz grupa
+    csv_variant_group_import:
+      title: Uvoz varijante grupa iz CSV
+      validation.title: Provjera valjanosti datoteke
+      import.title: Uvoz varijante grupa
+  steps:
+    dummy_reader.title: Pseudo čitač
+    product_reader.title: Izvlačenje proizvoda
+    entity_reader.title: Izvlačenje entiteta
+    csv_reader:
+      title: CSV čitač
+      invalid_item_columns_count: 'Očekujuje se %totalColumnsCount% stupaca, trenutno su %itemColumnsCount% u %csvPath%:%lineno%'
+    csv_product_reader.title: CSV čitač proizvoda
+    csv_category_reader.title: CSV čitač kategorija
+    csv_variant_group .title: CSV čitač varijanti grupa
+    dummy_processor.title: Pseudo procesor
+    product_processor.title: Stvaranje proizvoda
+    variant_group_processor.title: Stvaranje / ažuriranje varijante grupa
+    category_processor.title: Stvaranje kategorije
+    association_processor.title: Stvaranje pridruživanja
+    group_processor.title: Stvaranje grupe
+    attribute_processor.title: Stvaranje atributa
+    attribute_option_processor.title: Stvaranje opcije atributa
+    heterogeneous_processor.title: CSV serija proizvoda
+    homogeneous_processor.title: CSV serija entiteta
+    transformer_processor.title: Transformacije
+    dummy_writer.title: Pseudo pisač
+    file_writer.title: Izlazni podatak
+    product_writer.title: Pohrana proizvoda
+    category_writer.title: Pohrana kategorije
+    variant_group_writer.title: Pohrana grupne varijante
+    writer.title: Pohrana entiteta
+    csv_writer.title: CSV pisač
+  export:
+    delimiter:
+      label: Graničnik
+      help: Jedan znak se koristi za postavljanje granice polja
+    enclosure:
+      label: Zagrada
+      help: Jedan znak se koristi za postavljanje zagrade polja
+    withHeader:
+      label: Sa zaglavljem
+      help: Da li se ispisuje naziv stupaca
+    filePath:
+      label: Put datoteke
+      help: Gdje se zapisuje generirana datoteka u datotečnom sustavu
+    channel:
+      label: Kanal
+      help: Kanal koji se želi izvoziti
+  import:
+    enabled:
+      label: Omogući proizvod
+      help: Da li uvezeni proizvod treba biti omogućen
+    categoriesColumn:
+      label: Stupac kategorije
+      help: Naziv stupca kategorije
+    familyColumn:
+      label: Stupac obitelji
+      help: Naziv stupca obitelji
+    groupsColumn:
+      label: Stupac grupe
+      help: Naziv stupca grupe
+    filePath:
+      label: Datoteka
+      help: CSV datoteka za uvoz
+    yamlFilePath:
+      label: Datoteka
+      help: YAML datoteka za uvoz
+    uploadAllowed:
+      label: Omogući prijenos datoteke
+      help: Omogući izravno učitavanje datoteke
+    delimiter:
+      label: Graničnik
+      help: Jedan znak se koristi za postavljanje granice polja
+    enclosure:
+      label: Zagrada
+      help: Jedan znak se koristi za postavljanje zagrade polja
+    escape:
+      label: Izlaz
+      help: Jedan znak koji se koristi za postavljanje polja izlaza
+    circularRefsChecked:
+      label: Provjeri ponavljajuće reference
+      help: Ako da, podaci će se obraditi kako bi bili sigurni da ne postoje ponavljajuće reference među kategorijama
+    realTimeVersioning:
+      label: Povijest ažuriranja u stvarnom vremenu
+      help: Znači da će se povijest proizvoda automatski ažurirati, može se isključiti za poboljšanje performansi
+    copyValuesToProducts:
+      label: Kopiranje vrijednosti varijante grupa proizvoda
+      help: Znači da se proizvodi automatski ažuriraju sa vrijednostima varijante grupe, može se odabrati samo ažuriranje varijante grupe

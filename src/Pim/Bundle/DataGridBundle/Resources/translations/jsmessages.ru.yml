@@ -29,16 +29,16 @@ Please, select item to perform action.: Пожалуйста, выберите �
 View per page: Записей на странице
 oro.datagrid.entityHint: Объект
 oro.datagrid.noentities: Записи не найдены
-oro.datagrid.noresults: Ничего не найдено. Попробуйте изменить критерии поиска.
+oro.datagrid.noresults: "Ничего не найдено. Попробуйте изменить критерии поиска."
 oro.datagrid.nocolumns: Ни один столбец не настроен для этой сетки
-oro.datagrid.pagination.label: Страница
-oro.datagrid.pagination.totalPages: 'из {{ totalPages }}'
-oro.datagrid.pagination.totalRecords: '{{ totalRecords }} записей'
-oro.datagrid.action.reset: Сброс
-oro.datagrid.action.refresh: Обновить
-oro_datagrid.select.all: Все
-oro_datagrid.select.visible: Все видимые
-oro_datagrid.select.none: Нет
+oro.datagrid.pagination.label: "Страница"
+oro.datagrid.pagination.totalPages: "из {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} записей"
+oro.datagrid.action.reset: "Сброс"
+oro.datagrid.action.refresh: "Обновить"
+oro_datagrid.select.all: "Все"
+oro_datagrid.select.visible: "Все видимые"
+oro_datagrid.select.none: "Нет"
 pim.grid.ajax_choice_filter.label_empty: пусто
 pim.grid.choice_filter:
   label_empty: Пусто

@@ -88,13 +88,13 @@ pim.grid.mass_action.delete: Löschen
 pim.grid.mass_action.mass_edit: Massenbearbeitung
 pim.grid.mass_action.sequential_edit: Sequentielles Bearbeiten
 jstree.create: Anlegen
-switch_on: Ja
-switch_off: Nein
+switch_on: "Ja"
+switch_off: "Nein"
 pim_enrich:
   item:
     list:
       delete.label: Löschen
       delete.error: Fehler beim Löschen des Elementes
     delete:
-      confirm.content: 'Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden'
+      confirm.content: Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden
       confirm.title: '{{ itemName }} löschen'

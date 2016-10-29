@@ -6,8 +6,8 @@ pim_enrich:
       association.title: Associations
       completeness.title: Complétude
       history.title: Historique
-    no_comparison_locale_available: "Aucune autre locale n'est disponible pour la comparaison"
-    no_compared_media: "Aucun média n'est disponible pour comparaison"
+    no_comparison_locale_available: Aucune autre locale n'est disponible pour la comparaison
+    no_compared_media: Aucun média n'est disponible pour comparaison
   attribute:
     tab:
       parameter.title: Paramètres
@@ -31,7 +31,7 @@ pim_enrich:
     tab:
       property.title: Propriétés
   channel:
-    pick_conversion_unit: "Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisée lors de l'export du produit"
+    pick_conversion_unit: Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisée lors de l'export du produit
     tab:
       property.title: Propriétés
       history.title: Historique
@@ -62,8 +62,8 @@ pim_enrich:
       history.title: Historique
       attribute.title: Attributs
     info:
-      no_attributes: "Ce groupe de variantes n'a pas encore d'attributs"
-      no_attributes_in_selected_locale: "Ce groupe de variante n'a pas d'attributs dans cette locale"
+      no_attributes: Ce groupe de variantes n'a pas encore d'attributs
+      no_attributes_in_selected_locale: Ce groupe de variante n'a pas d'attributs dans cette locale
   completeness:
     progress_bar.title: '%ratio%% complet (1 valeur requise)|%ratio%% complet (%count% valeurs requises)'
     subtitle: '{0} Complet|{1} 1 valeur manquante|]1,Inf] %count% valeurs manquantes'
@@ -71,13 +71,13 @@ pim_enrich:
     legend:
       locale_not_associated: Locale non associée à ce canal
   mass_edit_action:
-    limit_exceeded: 'Veuillez sélectionner moins de %limit% éléments à modifier'
+    limit_exceeded: Veuillez sélectionner moins de %limit% éléments à modifier
     product:
       page_title: Produits
-      page_subtitle: 'Édition en masse (1 produit)|Édition en masse (%count% produits)'
+      page_subtitle: Édition en masse (1 produit)|Édition en masse (%count% produits)
       title: Choisir une opération
-      subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné|Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
-      confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.'
+      subtitle: Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné|Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés
+      confirm: Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.
       steps:
         first: Choisir des produits
         second: Choisir une opération
@@ -85,10 +85,10 @@ pim_enrich:
         fourth: Confirmer
     family:
       page_title: Familles
-      page_subtitle: 'Édition en masse (1 famille)|Édition en masse (%count% familles)'
+      page_subtitle: Édition en masse (1 famille)|Édition en masse (%count% familles)
       title: Choisir une opération
-      subtitle: "Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée|Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées"
-      confirm: 'Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% familles avec les renseignements suivants, merci de confirmer.'
+      subtitle: Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée|Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées
+      confirm: Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% familles avec les renseignements suivants, merci de confirmer.
       steps:
         first: Choisir des familles
         second: Choisir une opération
@@ -104,10 +104,10 @@ pim_enrich:
       empty: Veuillez sélectionner le ou les attribut(s) à modifier
       success_flash: Le(s) attribut(s) ont été mis à jour
       message:
-        warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
+        warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
     classify:
       label: Classifier les produits dans des catégories
-      description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé."
+      description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
       success_flash: Le(s) produit(s) ont été classifiés dans les catégories sélectionnées
     change-family:
       label: Changer la famille des produits
@@ -117,24 +117,24 @@ pim_enrich:
       label: Ajouter aux groupes
       description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
       success_flash: Les produits ont été ajoutés aux groupes sélectionnés
-      no_group: "Aucun groupe pour l'instant. Veuillez commencer par créer un groupe."
+      no_group: Aucun groupe pour l'instant. Veuillez commencer par créer un groupe.
     add-to-variant-group:
       label: Ajouter à un groupe de variantes
       description: Choisissez le groupe de variantes auquel associer les produits sélectionnés
       success_flash: Les produits ont bien été associés au groupe de variantes sélectionné
-      already_in_variant_group_or_not_valid: "Vous ne pouvez pas associer à ce groupe les produits suivants (%products%). Ils sont peut-être déjà associés à un groupe de variantes ou n'ont pas les bons axes de variation."
-      no_variant_group: "Aucun groupe de variantes pour l'instant. Veuillez commencer par créer un groupe de variantes."
+      already_in_variant_group_or_not_valid: Vous ne pouvez pas associer à ce groupe les produits suivants (%products%). Ils sont peut-être déjà associés à un groupe de variantes ou n'ont pas les bons axes de variation.
+      no_variant_group: Aucun groupe de variantes pour l'instant. Veuillez commencer par créer un groupe de variantes.
       no_valid_variant_group: Aucun groupe de variantes ne partage des attributs avec les produits sélectionnés.
       some_variant_groups_are_skipped:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
     set-attribute-requirements:
       label: Choisir les attributs requis
-      description: "Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées"
-      success_flash: "Les exigences d'attributs ont été appliquées aux familles sélectionnées"
+      description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
+      success_flash: Les exigences d'attributs ont été appliquées aux familles sélectionnées
   sequential_edit_action:
     product:
-      previous: 'Revenir au produit "%product%" sans enregistrer les modifications.'
-      next: 'Passer au produit "%product%" sans enregistrer les modifications.'
+      previous: Revenir au produit "%product%" sans enregistrer les modifications.
+      next: Passer au produit "%product%" sans enregistrer les modifications.
   acl:
     locale:
       index: Liste des locales
@@ -147,17 +147,17 @@ pim_enrich:
       edit_attributes: Modifier les attributs du produit
       remove: Supprimer un produit
       add_attribute: Ajouter un attribut à un produit
-      remove_attribute: "Supprimer un attribut d'un produit"
-      categories_view: "Consulter les catégories d'un produit"
-      associations_view: "Afficher les types d'association d'un produit"
+      remove_attribute: Supprimer un attribut d'un produit
+      categories_view: Consulter les catégories d'un produit
+      associations_view: Afficher les types d'association d'un produit
       change_family: Changer la famille du produit
-      change_state: "Changer l'état du produit"
+      change_state: Changer l'état du produit
       add_to_groups: Ajouter le produit à des groupes
       add_to_variant_group: Ajouter le produit à un groupe de variantes
-      mass_edit: "Actions d'édition en masse des produits"
+      mass_edit: Actions d'édition en masse des produits
       comment: Commenter les produits
       download: Télécharger le produit en PDF
-      history: "Afficher l'historique du produit"
+      history: Afficher l'historique du produit
     category:
       list: Liste des catégories
       create: Créer une catégorie
@@ -166,48 +166,48 @@ pim_enrich:
       move: Déplacer la catégorie
       children: Voir les catégories enfants
       products: Voir les produits de la catégorie
-      history: "Afficher l'historique de la catégorie"
+      history: Afficher l'historique de la catégorie
     channel:
       index: Liste des canaux
       create: Créer un canal
       edit: Modifier un canal
       remove: Supprimer un canal
-      history: "Afficher l'historique du canal"
+      history: Afficher l'historique du canal
     family:
       index: Liste des familles
       create: Créer une famille
-      edit_properties: "Modifier les propriétés d'une famille"
-      edit_attributes: "Modifier les attributs d'une famille"
+      edit_properties: Modifier les propriétés d'une famille
+      edit_attributes: Modifier les attributs d'une famille
       remove: Supprimer une famille
-      history: "Afficher l'historique de la famille"
+      history: Afficher l'historique de la famille
     attribute_group:
-      index: "Liste des groupes d'attributs"
-      create: "Créer un groupe d'attributs"
-      edit: "Modifier un groupe d'attributs"
-      remove: "Supprimer un groupe d'attributs"
-      sort: "Trier les groupes d'attributs"
-      add_attribute: "Ajouter l'attribut à un groupe"
-      remove_attribute: "Supprimer l'attribut d'un groupe"
-      history: "Afficher l'historique du groupe d'attributs"
+      index: Liste des groupes d'attributs
+      create: Créer un groupe d'attributs
+      edit: Modifier un groupe d'attributs
+      remove: Supprimer un groupe d'attributs
+      sort: Trier les groupes d'attributs
+      add_attribute: Ajouter l'attribut à un groupe
+      remove_attribute: Supprimer l'attribut d'un groupe
+      history: Afficher l'historique du groupe d'attributs
     attribute:
       index: Liste des attributs
       create: Créer un attribut
       edit: Modifier un attribut
       remove: Supprimer un attribut
-      sort: "Trier les attributs au sein d'un groupe d'attributs"
-      history: "Afficher l'historique de l'attribut"
+      sort: Trier les attributs au sein d'un groupe d'attributs
+      history: Afficher l'historique de l'attribut
     group:
       index: Liste des groupes
       create: Créer un groupe
       edit: Modifier un groupe
       remove: Supprimer un groupe
-      history: "Afficher l'historique du groupe"
+      history: Afficher l'historique du groupe
     variant_group:
       index: Liste des groupes de variantes
       create: Créer un groupe de variantes
       edit: Modifier un groupe de variantes
       remove: Supprimer un groupe de variantes
-      history: "Afficher l'historique du groupe de variantes"
+      history: Afficher l'historique du groupe de variantes
       edit_attributes: Modifier les attributs du groupe de variantes
       add_attributes: Ajouter des attributs aux groupe de variantes
       remove_attribute: Supprimer les attributs du groupe de variantes
@@ -217,15 +217,15 @@ pim_enrich:
       edit: Modifier un type de groupe
       remove: Supprimer un type de groupe
     association_type:
-      index: "Liste des types d'association"
-      create: "Créer un type d'association"
-      edit: "Modifier un type d'association"
-      remove: "Supprimer un type d'association"
-      history: "Afficher l'historique du type d'association"
+      index: Liste des types d'association
+      create: Créer un type d'association
+      edit: Modifier un type d'association
+      remove: Supprimer un type d'association
+      history: Afficher l'historique du type d'association
   acl_group:
-    association_type: "Types d'association"
+    association_type: Types d'association
     attribute: Attributs
-    attribute_group: "Groupes d'attributs"
+    attribute_group: Groupes d'attributs
     category: Catégories
     channel: Canaux
     currency: Devises
@@ -246,13 +246,13 @@ attribute:
   create: Créer un attribut
   edit: Modifier un attribut
 attribute group:
-  title: "groupe d'attributs"
-  overview: "Liste des groupes d'attributs"
-  create: "Créer un groupe d'attributs"
-  edit: "Modifier un groupe d'attributs"
-  suggest creation: "Veuillez sélectionner un groupe d'attributs à gauche"
+  title: groupe d'attributs
+  overview: Liste des groupes d'attributs
+  create: Créer un groupe d'attributs
+  edit: Modifier un groupe d'attributs
+  suggest creation: Veuillez sélectionner un groupe d'attributs à gauche
   or: ou
-  create new: "Créer un nouveau groupe d'attributs"
+  create new: Créer un nouveau groupe d'attributs
 category:
   title: catégorie
   overview: Liste des catégories
@@ -306,15 +306,15 @@ variant group:
   create: Créer un groupe de variantes
   edit: Modifier un groupe de variantes
 association type:
-  title: "type d'association"
-  overview: "Liste des types d'association"
-  create: "Créer un type d'association"
-  edit: "Modifier le type d'association"
+  title: type d'association
+  overview: Liste des types d'association
+  create: Créer un type d'association
+  edit: Modifier le type d'association
 products: Produits
 btn:
   create:
     attribute: Créer un attribut
-    attribute group: "Créer un groupe d'attributs"
+    attribute group: Créer un groupe d'attributs
     category: Créer une catégorie
     tree: Créer un arbre
     channel: Créer un canal
@@ -324,7 +324,7 @@ btn:
     product: Créer un produit
     group: Créer un groupe
     variant group: Créer un groupe de variantes
-    association type: "Créer un type d'association"
+    association type: Créer un type d'association
     group type: Créer le type de groupe
   edit: Modifier
   save: Enregistrer
@@ -345,46 +345,46 @@ confirmation:
   confirm: Confirmation
   delete: Confirmation de la suppression
   leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
-  discard changes: "Vous perdrez toutes les modifications apportées à l'objet %entity% si vous quittez cette page."
+  discard changes: Vous perdrez toutes les modifications apportées à l'objet %entity% si vous quittez cette page.
   remove:
     item: Êtes-vous certain(e) de vouloir supprimer cet élément ?
-    attribute: "Êtes-vous sûr(e) de vouloir supprimer l'attribut %name% ?"
-    attribute group: "Êtes-vous sûr(e) de vouloir supprimer le groupe d'attributs %name% ?"
-    category: 'Êtes-vous sûr(e) de vouloir supprimer la catégorie %name% ?'
-    family: 'Êtes-vous sûr(e) de vouloir supprimer la famille %name% ?'
-    product: 'Êtes-vous sûr(e) de vouloir supprimer le produit %name% ?'
-    channel: 'Êtes-vous sûr(e) de vouloir supprimer le canal %name% ?'
-    group: 'Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?'
-    variant group: 'Êtes-vous sûr(e) de vouloir supprimer le groupe de variantes %name% ?'
-    association type: "Êtes-vous sûr(e) de vouloir supprimer le type d'association %name% ?"
-    group type: 'Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?'
-    user: "Êtes vous sûr(e) de vouloir supprimer l'utilisateur %name% ?"
+    attribute: Êtes-vous sûr(e) de vouloir supprimer l'attribut %name% ?
+    attribute group: Êtes-vous sûr(e) de vouloir supprimer le groupe d'attributs %name% ?
+    category: Êtes-vous sûr(e) de vouloir supprimer la catégorie %name% ?
+    family: Êtes-vous sûr(e) de vouloir supprimer la famille %name% ?
+    product: Êtes-vous sûr(e) de vouloir supprimer le produit %name% ?
+    channel: Êtes-vous sûr(e) de vouloir supprimer le canal %name% ?
+    group: Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?
+    variant group: Êtes-vous sûr(e) de vouloir supprimer le groupe de variantes %name% ?
+    association type: Êtes-vous sûr(e) de vouloir supprimer le type d'association %name% ?
+    group type: Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?
+    user: Êtes vous sûr(e) de vouloir supprimer l'utilisateur %name% ?
   attribute group:
-    remove attribute: "Êtes vous sûr(e) de vouloir retirer l'attribut %name% de ce groupe ?"
+    remove attribute: Êtes vous sûr(e) de vouloir retirer l'attribut %name% de ce groupe ?
   family:
-    remove attribute: "Êtes vous sûr(e) de vouloir retirer l'attribut %name% de cette famille ?"
+    remove attribute: Êtes vous sûr(e) de vouloir retirer l'attribut %name% de cette famille ?
   product:
-    remove attribute: "Êtes vous sûr(e) de vouloir retirer l'attribut %name% de ce produit ?"
+    remove attribute: Êtes vous sûr(e) de vouloir retirer l'attribut %name% de ce produit ?
   variant_group:
-    remove_attribute: "Êtes vous sûr(e) de vouloir retirer l'attribut %name% de ce groupe de variantes ?"
+    remove_attribute: Êtes vous sûr(e) de vouloir retirer l'attribut %name% de ce groupe de variantes ?
 flash:
   entity:
-    removed: "L'entité a été supprimée"
+    removed: L'entité a été supprimée
   attribute:
     created: Attribut créé avec succès
     updated: Attribut mis à jour avec succès
     removed: Attribut supprimé avec succès
     identifier not removable: Un attribut de type identifiant ne peut pas être supprimé
-    used by groups: 'Cet attribut ne peut pas être supprimé car il est utilisé par %count% groupes de variantes'
+    used by groups: Cet attribut ne peut pas être supprimé car il est utilisé par %count% groupes de variantes
   attribute group:
-    created: "Groupe d'attributs créé avec succès"
-    updated: "Groupe d'attributs mis à jour avec succès"
-    removed: "Groupe d'attributs supprimé avec succès"
-    attributes added: "Attributs ajoutés avec succès au groupe d'attributs"
-    attribute removed: "Attribut supprimé avec succès du groupe d'attributs"
-    not removed attributes: "Le groupe d'attributs ne peut pas être supprimé car il contient des attributs"
-    not removed default: "Le groupe d'attributs par défaut ne peut pas être supprimé"
-    not removed default attributes: "Cet attribut ne peut pas être supprimé du groupe d'attributs par défaut"
+    created: Groupe d'attributs créé avec succès
+    updated: Groupe d'attributs mis à jour avec succès
+    removed: Groupe d'attributs supprimé avec succès
+    attributes added: Attributs ajoutés avec succès au groupe d'attributs
+    attribute removed: Attribut supprimé avec succès du groupe d'attributs
+    not removed attributes: Le groupe d'attributs ne peut pas être supprimé car il contient des attributs
+    not removed default: Le groupe d'attributs par défaut ne peut pas être supprimé
+    not removed default attributes: Cet attribut ne peut pas être supprimé du groupe d'attributs par défaut
   category:
     created: Catégorie créée avec succès
     updated: Catégorie mise à jour avec succès
@@ -404,9 +404,9 @@ flash:
     created: Famille créée avec succès
     updated: Famille mise à jour avec succès
     removed: Famille supprimée avec succès
-    identifier not removable: "Un attribut de type identifiant ne peut pas être retiré d'une famille"
+    identifier not removable: Un attribut de type identifiant ne peut pas être retiré d'une famille
     label attribute not removable: Cet attribut ne peut pas être retiré car il est utilisé comme libellé pour cette famille
-    attribute not found: "Cet attribut n'appartient pas à cette famille"
+    attribute not found: Cet attribut n'appartient pas à cette famille
     attributes added: Attributs ajoutés avec succès à la famille
     attribute removed: Attributs retirés avec succès de la famille
   product:
@@ -436,20 +436,20 @@ flash:
     cant remove variant: Le type variant ne peut pas être supprimé
     cant remove used: Ce type de groupe est utilisé par certains groupes et ne peut pas être supprimé
   association type:
-    created: "Le type d'association est créé avec succès"
-    updated: "Le type d'association est mis à jour avec succès"
-    removed: "Le type d'association est supprimé avec succès"
+    created: Le type d'association est créé avec succès
+    updated: Le type d'association est mis à jour avec succès
+    removed: Le type d'association est supprimé avec succès
   user:
     removed: Utilisateur supprimé avec succès
   error ocurred: Opération échouée. Merci de réessayer.
 info:
-  updated: "Des modifications n'ont pas encore été sauvegardées."
+  updated: Des modifications n'ont pas encore été sauvegardées.
   category:
     remove children: Toutes les sous-catégories vont être supprimées.
     keep products: Les produits associés à ces catégories ne seront pas supprimés.
-    products limit exceeded: "Cette catégorie contient plus de produits qu'il n'est autorisé pour cette opération (%limit% produits maximum)"
+    products limit exceeded: Cette catégorie contient plus de produits qu'il n'est autorisé pour cette opération (%limit% produits maximum)
   product:
-    no available attributes: "Il n'y a plus d'attributs disponibles"
+    no available attributes: Il n'y a plus d'attributs disponibles
     no family defined: Pas de famille définie
     change family: Changer la famille du produit
     change family to: Changer la famille pour
@@ -469,8 +469,8 @@ info:
   association type:
     show products: Afficher les produits
     show groups: Afficher les groupes
-    remove from products: "La suppression du type d'association l'enlèvera de %count% produits."
-    none exist: "Aucun type d'association n'existe."
+    remove from products: La suppression du type d'association l'enlèvera de %count% produits.
+    none exist: Aucun type d'association n'existe.
     create one: Cliquez ici pour en créer un
   attribute:
     auto option sorting: Si activé, les options sont automatiquement triées par leurs valeurs traduites
@@ -507,9 +507,9 @@ Translatable: Traduisible
 Scopable: Décliné par canal
 Localizable: Localisable
 Unique value: Valeur unique
-Attribute group: "Groupe d'attributs"
+Attribute group: Groupe d'attributs
 Other: Autre
-Variants behavior when edited: "Comportement des variantes lors de l'édition"
+Variants behavior when edited: Comportement des variantes lors de l'édition
 Edit: Modifier
 Remove: Supprimer
 Delete: Supprimer
@@ -517,12 +517,12 @@ Parameters: Paramètres
 System: Système
 Values: Valeurs
 General parameters: Paramètres généraux
-Backend parameters: "Paramètres de l'interface"
+Backend parameters: Paramètres de l'interface
 Label: Libellé
 Default label: Libellé par défaut
 Default value: Valeur par défaut
-Attributetype: "Type d'attribut"
-Attribute type: "Type d'attribut"
+Attributetype: Type d'attribut
+Attribute type: Type d'attribut
 Defaultvalue: Valeur par défaut
 Variant: Variante
 Smart: Intelligent
@@ -535,17 +535,17 @@ default: Défaut
 Axis: Axes
 Add attributes: Ajouter des attributs
 Translate from: Traduire depuis
-switch_on: Oui
-switch_off: Non
+switch_on: "Oui"
+switch_off: "Non"
 Close: Fermer
 Choose a color: Choisir une couleur
 Search: Recherche
-Choose the attribute type: "Choisir le type d'attribut"
-Choose the attribute group: "Choisir le groupe d'attributs"
+Choose the attribute type: Choisir le type d'attribut
+Choose the attribute group: Choisir le groupe d'attributs
 Drop a file or click here: Déposez un fichier ou cliquez ici
 Drop an image or click here: Déposez une image ou cliquez ici
 Automatic option sorting: Option de tri automatique
-save_attribute_before_manage_option: "Pour gérer les options, veuillez d'abord enregistrer l'attribut"
+save_attribute_before_manage_option: Pour gérer les options, veuillez d'abord enregistrer l'attribut
 Create: Créer
 Cancel: Annuler
 Choose a family: Choisir une famille
@@ -564,7 +564,7 @@ General Properties: Propriétés générales
 Group values: Valeurs du groupe
 New group: Nouveau groupe
 Groups overview: Liste des groupes
-"Y-m-d h:i:s": Y-m-d h:i:s
+'Y-m-d h:i:s': 'Y-m-d h:i:s'
 Max characters: Nombre maximum de caractères
 Validation rule: Règle de validation
 Validation regexp: Expression régulière
@@ -588,47 +588,47 @@ Default: Défaut
 Attributes: Attributs
 Title: Titre
 pim_title.attribute_group:
-  index: "Groupes d'attributs"
-  create: "Groupe d'attributs | Créer"
-  edit: "Groupe d'attribut %group.label% | Modifier"
+  index: Groupes d'attributs
+  create: Groupe d'attributs | Créer
+  edit: Groupe d'attribut %group.label% | Modifier
 pim_title.category:
   index: Arborescences des catégories
   create: Arborescences | Créer
-  edit: 'Arborescences %category.label% | Modifier'
+  edit: Arborescences %category.label% | Modifier
 pim_title.attribute:
   index: Attributs
   create: Attributs | Créer
-  edit: 'Attributs %attribute.label% | Modifier'
+  edit: Attributs %attribute.label% | Modifier
 pim_title.product:
   index: Produits
-  edit: 'Produit %product.sku% | Modifier'
+  edit: Produit %product.sku% | Modifier
 pim_title.family:
   index: Familles
-  edit: 'Famille %family.label% | Modifier'
+  edit: Famille %family.label% | Modifier
 pim_title.channel:
   index: Canaux
   create: Canaux | Créer
-  edit: 'Canal %channel.label% | Modifier'
+  edit: Canal %channel.label% | Modifier
 pim_title.currency:
   index: Devises
 pim_title.locale:
   index: Locales
 pim_title.group:
   index: Groupes
-  edit: 'Groupes %group.label% | Modifier'
+  edit: Groupes %group.label% | Modifier
 pim_title.variant_group:
   index: Groupes de variantes
-  edit: 'Groupe de variantes %group.label% | Modifier'
+  edit: Groupe de variantes %group.label% | Modifier
 pim_title.association_type:
-  index: "Types d'association"
-  edit: "Types d'association %association type.label% | Modifier"
+  index: Types d'association
+  edit: Types d'association %association type.label% | Modifier
 pim_title.group_type:
   index: Types de groupe
-  edit: 'Type de groupes %group type.label% | Modifier'
+  edit: Type de groupes %group type.label% | Modifier
 pim_title.mass_edit_action:
   choose: Edition de masse | Choisir
   configure: Edition de masse | Configurer
-pim_title.dashboard: Tableau de bord
+pim_title.dashboard: "Tableau de bord"
 pim_catalog_identifier: Identifiant
 pim_catalog_text: Texte
 pim_catalog_textarea: Zone de texte
@@ -638,23 +638,23 @@ pim_catalog_multiselect: Liste à choix multiples
 pim_catalog_simpleselect: Liste à choix unique
 pim_catalog_file: Fichier
 pim_catalog_image: Image
-pim_catalog_boolean: Oui / Non
+pim_catalog_boolean: "Oui / Non"
 pim_catalog_date: Date
 pim_catalog_metric: Unité de mesure
 Activated: Activé
 Disable: Désactiver
 pim_enrich.sequential_edit_action:
   product:
-    previous: 'Revenir au produit "%product%" sans enregistrer les modifications.'
-    next: 'Passer au produit "%product%" sans enregistrer les modifications.'
+    previous: Revenir au produit "%product%" sans enregistrer les modifications.
+    next: Passer au produit "%product%" sans enregistrer les modifications.
 pim_enrich.mass_edit_action:
-  limit_exceeded: 'Veuillez sélectionner moins de %limit% éléments à modifier'
+  limit_exceeded: Veuillez sélectionner moins de %limit% éléments à modifier
   product:
     page_title: Produits
-    page_subtitle: 'Édition en masse (1 produit)|Édition en masse (%count% produits)'
+    page_subtitle: Édition en masse (1 produit)|Édition en masse (%count% produits)
     title: Choisir une opération
-    subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné|Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
-    confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.'
+    subtitle: Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné|Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés
+    confirm: Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.
     steps:
       first: Choisir des produits
       second: Choisir une opération
@@ -662,10 +662,10 @@ pim_enrich.mass_edit_action:
       fourth: Confirmer
   family:
     page_title: Familles
-    page_subtitle: 'Édition en masse (1 famille)|Édition en masse (%count% familles)'
+    page_subtitle: Édition en masse (1 famille)|Édition en masse (%count% familles)
     title: Choisir une opération
-    subtitle: "Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée|Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées"
-    confirm: 'Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% familles avec les renseignements suivants, merci de confirmer.'
+    subtitle: Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée|Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées
+    confirm: Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% familles avec les renseignements suivants, merci de confirmer.
     steps:
       first: Choisir des familles
       second: Choisir une opération
@@ -680,12 +680,12 @@ pim_enrich.mass_edit_action:
     description: Les attributs sélectionnés vont être modifiés avec les valeurs suivantes pour la locale choisie.
     empty: Veuillez sélectionner le ou les attribut(s) à modifier
     success_flash: Le(s) attribut(s) ont été mis à jour
-    message.warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
-    no_attribute.warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
-    truncated_by_variant_attribute.warning: "Certains attributs des produits sélectionnés sont liés à un groupe de variantes. Ils ne sont pas disponibles pour l'édition en masse : %attributes%."
+    message.warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
+    no_attribute.warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
+    truncated_by_variant_attribute.warning: 'Certains attributs des produits sélectionnés sont liés à un groupe de variantes. Ils ne sont pas disponibles pour l''édition en masse : %attributes%.'
   classify:
     label: Classifier les produits dans des catégories
-    description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé."
+    description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
     success_flash: Le(s) produit(s) ont été classifiés dans les catégories sélectionnées
   change-family:
     label: Changer la famille des produits
@@ -697,8 +697,8 @@ pim_enrich.mass_edit_action:
     success_flash: Les produits ont été ajoutés aux groupes sélectionnés
   set-attribute-requirements:
     label: Choisir les attributs requis
-    description: "Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées"
-    success_flash: "Les exigences d'attributs ont été appliquées aux familles sélectionnées"
+    description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
+    success_flash: Les exigences d'attributs ont été appliquées aux familles sélectionnées
 To enable: Pour activer
 Select attributes: Sélectionnez les attributs
 Select: Sélectionner
@@ -715,9 +715,9 @@ pim_menu:
     settings: Paramètres
     spread: Diffuser
   item:
-    association_type: "Types d'association"
+    association_type: Types d'association
     attribute: Attributs
-    attribute_group: "Groupes d'attributs"
+    attribute_group: Groupes d'attributs
     category: Catégories
     channel: Canaux
     currency: Devises
@@ -733,14 +733,14 @@ pane.accordion:
   node_values: Valeurs du nœud
   general_properties: Propriétés générales
   locale_values: Valeurs de locale
-  backend_parameters: "Paramètres de l'interface"
+  backend_parameters: Paramètres de l'interface
   general_parameters: Paramètres généraux
   validation_parameters: Paramètres de validation
   label_translations: Traduction des libellés
   options: Options
   group_values: Valeurs du groupe
 popin.create:
-  association_type.title: "Créer un nouveau type d'association"
+  association_type.title: Créer un nouveau type d'association
   family.title: Créer une nouvelle famille
   group.title: Créer un nouveau groupe
   group_type.title: Créer un nouveau type de groupe
@@ -761,9 +761,9 @@ Data Audit: Historique des données
 Data Audit - System: 'Historique des données - système'
 Action: Action
 Version: Version
-Entity type: "Type d'entité"
-Entity name: "Nom de l'entité"
-Entity id: "Identifiant de l'entité"
+Entity type: Type d'entité
+Entity name: Nom de l'entité
+Entity id: Identifiant de l'entité
 Data: Données
 Author: Auteur
 Logged at: Connecté(e) le
@@ -776,7 +776,7 @@ Localization: Localisation
 Localization options: Options de localisation
 Locale: Locale
 Location: Emplacement
-Format address by address country: "Format d'adresse par pays"
+Format address by address country: Format d'adresse par pays
 Language: Langue
 Timezone: Fuseau horaire
 Currency: Devise
@@ -794,10 +794,10 @@ oro.locale:
       province: province
   form:
     tooltip:
-      locale: "Sélectionnez l'option de paramètre régional utilisée pour le format des nombres, des adresses, des noms et des dates"
-      location: " L'emplacement sera utilisé pour mettre en forme les adresses lorsque l'option 'Formate l'adresse par adresse de pays' est désactivée"
-      format_address_by_address_country: "En sélectionnant cette option, les adresses seront formatées selon le pays où elles sont localisées. Si l'option est désactivée, les adresses seront formatées selon le format de votre adresse de localisation"
+      locale: Sélectionnez l'option de paramètre régional utilisée pour le format des nombres, des adresses, des noms et des dates
+      location: ' L''emplacement sera utilisé pour mettre en forme les adresses lorsque l''option ''Formate l''adresse par adresse de pays'' est désactivée'
+      format_address_by_address_country: En sélectionnant cette option, les adresses seront formatées selon le pays où elles sont localisées. Si l'option est désactivée, les adresses seront formatées selon le format de votre adresse de localisation
       language: Sélectionnez la langue du système que vous souhaitez utiliser
-      timezone: "Sélectionnez le fuseau horaire pour afficher la date et l'heure"
+      timezone: Sélectionnez le fuseau horaire pour afficher la date et l'heure
       currency: Sélectionnez la monnaie par défaut
 Selected products successfully deleted: La sélection de produits a été supprimée

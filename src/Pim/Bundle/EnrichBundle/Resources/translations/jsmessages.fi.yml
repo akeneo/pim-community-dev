@@ -88,13 +88,13 @@ pim.grid.mass_action.delete: Poista
 pim.grid.mass_action.mass_edit: Massaedit
 pim.grid.mass_action.sequential_edit: Peräkkäiset muokkaukset
 jstree.create: Luo
-switch_on: Kyllä
-switch_off: Ei
+switch_on: "Kyllä"
+switch_off: "Ei"
 pim_enrich:
   item:
     list:
       delete.label: Poista
       delete.error: Virhe kohteen poistamisessa
     delete:
-      confirm.content: 'Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota'
-      confirm.title: 'Poista tämä {{ itemName }}'
+      confirm.content: Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota
+      confirm.title: Poista tämä {{ itemName }}
