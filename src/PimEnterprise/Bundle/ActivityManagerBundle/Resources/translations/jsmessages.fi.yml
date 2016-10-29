@@ -1,6 +1,9 @@
 activity_manager:
+  common:
+    required: Vaadittu
   project:
     label: Nimike
+    description: Kuvaus
   create_project_modal:
     confirm: Seuraava
     cancel: Peruuta

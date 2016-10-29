@@ -1,6 +1,9 @@
 activity_manager:
+  common:
+    required: Requerido
   project:
     label: Etiqueta
+    description: Descripción
   create_project_modal:
     confirm: Siguiente
     cancel: Cancelar

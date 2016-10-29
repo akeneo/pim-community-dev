@@ -1,6 +1,9 @@
 activity_manager:
+  common:
+    required: Obavezno
   project:
     label: Oznaka
+    description: Opis
   create_project_modal:
     confirm: Sljedeća
     cancel: Poništi
