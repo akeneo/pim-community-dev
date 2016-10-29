@@ -22,13 +22,13 @@ pim_import_export:
     invalid_csv: descargar datos no válidos
   notification:
     export:
-      error: 'Exportación <strong>%label%</strong> fallida'
-      warning: 'Exportación <strong>%label%</strong> terminó con algunas advertencias'
-      success: 'Exportación <strong>%label%</strong> finalizada'
+      error: Exportación <strong>%label%</strong> fallida
+      warning: Exportación <strong>%label%</strong> terminó con algunas advertencias
+      success: Exportación <strong>%label%</strong> finalizada
     import:
-      error: 'Importación <strong>%label%</strong> fallida'
-      warning: 'Importación <strong>%label%</strong> terminó con algunas advertencias'
-      success: 'Importación <strong>%label%</strong> finalizada'
+      error: Importación <strong>%label%</strong> fallida
+      warning: Importación <strong>%label%</strong> terminó con algunas advertencias
+      success: Importación <strong>%label%</strong> finalizada
   list: Seleccionar un trabajo
   job_profile:
     tab:
@@ -36,13 +36,13 @@ pim_import_export:
       history.title: Histórico
       job_content.title: Contenido
 pim_title.export_profile.index: Gestión de perfiles de exportación
-pim_title.export_profile.edit: 'Perfiles de exportación %job.label% | Editar'
-pim_title.export_profile.show: 'Perfiles de exportación %job.label% | Mostrar'
+pim_title.export_profile.edit: Perfiles de exportación %job.label% | Editar
+pim_title.export_profile.show: Perfiles de exportación %job.label% | Mostrar
 pim_title.export_execution.index: Historial de ejecuciones de exportación
 pim_title.export_execution.show: Ejecuciones de importación | Detalles
 pim_title.import_profile.index: Gestión de perfiles de exportación
-pim_title.import_profile.edit: 'Perfiles de importación %job.label% | Editar'
-pim_title.import_profile.show: 'Perfiles de importación %job.label% | Mostrar'
+pim_title.import_profile.edit: Perfiles de importación %job.label% | Editar
+pim_title.import_profile.show: Perfiles de importación %job.label% | Mostrar
 pim_title.import_execution.index: Historia de las ejecuciones de importación
 pim_title.import_execution.show: Ejecuciones de importación | Detalles
 export profile:
@@ -131,11 +131,11 @@ pane.accordion:
 popin.create:
   export_profile.title: Crear un nuevo perfil de exportación
   import_profile.title: Crear un nuevo perfil de importación
-Display item: Mostrar elemento
-Hide item: Ocultar item
-Collecting data about job execution...: Colectando datos sobre la ejecución del trabajo...
-You must select a file to upload: Debe seleccionar un archivo para subir
-Download log: Registro de Descargas
+'Display item': Mostrar elemento
+'Hide item': Ocultar item
+'Collecting data about job execution...': Colectando datos sobre la ejecución del trabajo...
+'You must select a file to upload': Debe seleccionar un archivo para subir
+Download log: Descargar registro de log
 Show profile: Ver perfil
 execution details: detalles de ejecución
 job_execution.summary:
@@ -164,4 +164,4 @@ STOPPED: DETENIDO
 FAILED: FALLIDO
 ABANDONED: ABANDONADO
 UNKNOWN: DESCONOCIDO
-warning.label: ¡Advertencia!
+warning.label: '¡Advertencia!'
