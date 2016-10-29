@@ -29,16 +29,16 @@ Please, select item to perform action.: Bitte Element zum Ausführen der Aktion 
 View per page: Pro Seite
 oro.datagrid.entityHint: Entität
 oro.datagrid.noentities: Keine Einträge gefunden
-oro.datagrid.noresults: Keine Ergebnisse gefunden. Versuchen Sie Ihre Suchparameter zu verändern.
+oro.datagrid.noresults: "Keine Ergebnisse gefunden. Versuchen Sie Ihre Suchparameter zu verändern."
 oro.datagrid.nocolumns: Es sind keine Spalten für diese Tabelle konfiguriert
-oro.datagrid.pagination.label: Seite
-oro.datagrid.pagination.totalPages: 'von {{ totalPages }}'
-oro.datagrid.pagination.totalRecords: '{{ totalRecords }} Datensätze'
-oro.datagrid.action.reset: Zurücksetzen
-oro.datagrid.action.refresh: Aktualisieren
-oro_datagrid.select.all: Alle
-oro_datagrid.select.visible: Alle sichtbaren
-oro_datagrid.select.none: Keine
+oro.datagrid.pagination.label: "Seite"
+oro.datagrid.pagination.totalPages: "von {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} Datensätze"
+oro.datagrid.action.reset: "Zurücksetzen"
+oro.datagrid.action.refresh: "Aktualisieren"
+oro_datagrid.select.all: "Alle"
+oro_datagrid.select.visible: "Alle sichtbaren"
+oro_datagrid.select.none: "Keine"
 pim.grid.ajax_choice_filter.label_empty: ist leer
 pim.grid.choice_filter:
   label_empty: ist leer

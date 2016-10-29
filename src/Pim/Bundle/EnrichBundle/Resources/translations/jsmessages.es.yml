@@ -1,18 +1,18 @@
 confirmation:
   remove:
-    item: ¿Está seguro de que desea borrar este elemento?
-    association type: ¿Está seguro que desea eliminar este tipo de asociación?
-    attribute: ¿Está seguro que desea eliminar este atributo?
-    family: ¿Está seguro que desea eliminar esta familia?
-    product: ¿Está seguro que desea eliminar este producto?
-    channel: ¿Está seguro que desea eliminar este canal?
-    group: ¿Está seguro que desea eliminar este grupo?
-    variant group: ¿Está seguro que desea eliminar este grupo variante?
-    group type: ¿Está seguro que desea eliminar este tipo de grupo?
-    import profile: ¿Está seguro que desea eliminar este perfil de importación?
-    export profile: ¿Está seguro que desea eliminar este perfil de exportación?
-    user: ¿Seguro que desea eliminar este usuario?
-    role: ¿Está seguro que desea eliminar este rol?
+    item: '¿Está seguro de que desea borrar este elemento?'
+    association type: '¿Está seguro que desea eliminar este tipo de asociación?'
+    attribute: '¿Está seguro que desea eliminar este atributo?'
+    family: '¿Está seguro que desea eliminar esta familia?'
+    product: '¿Está seguro que desea eliminar este producto?'
+    channel: '¿Está seguro que desea eliminar este canal?'
+    group: '¿Está seguro que desea eliminar este grupo?'
+    variant group: '¿Está seguro que desea eliminar este grupo variante?'
+    group type: '¿Está seguro que desea eliminar este tipo de grupo?'
+    import profile: '¿Está seguro que desea eliminar este perfil de importación?'
+    export profile: '¿Está seguro que desea eliminar este perfil de exportación?'
+    user: '¿Seguro que desea eliminar este usuario?'
+    role: '¿Está seguro que desea eliminar este rol?'
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -21,7 +21,7 @@ pim_datagrid:
       label: Exportación rápida
   mass_action:
     delete:
-      confirm_content: ¿Está seguro que desea eliminar los productos seleccionados?
+      confirm_content: '¿Está seguro que desea eliminar los productos seleccionados?'
       success: Productos seleccionados eliminados exitosamente.
       error: Se ha producido un error al intentar eliminar los productos seleccionados, por favor inténtelo de nuevo.
 flash:
@@ -104,8 +104,8 @@ pim:
       category_edit: Mover producto en categorías
       sequential_edit: Editar productos secuencialmente
 jstree.create: Crear
-switch_on: Sí
-switch_off: 'No'
+switch_on: "Sí"
+switch_off: "No"
 pim_enrich:
   item:
     list:
@@ -113,7 +113,7 @@ pim_enrich:
       delete.error: Error durante la eliminación del elemento
     delete:
       confirm.content: '¿Está seguro que desea eliminar este {{ itemName }}? No es posible revertir esta opción'
-      confirm.title: 'Eliminar este {{ itemName }}'
+      confirm.title: Eliminar este {{ itemName }}
   navigation:
     link:
       back_to_grid: Regresar a la grilla
@@ -155,7 +155,7 @@ pim_enrich:
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - campos
-        already_in_upload: 'Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"'
+        already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
       error:
         upload: Ocurrió un error durante la carga del fichero
       meta:
@@ -169,7 +169,7 @@ pim_enrich:
         groups:
           title: Grupos
           modal:
-            title: 'Group {{ group }}'
+            title: Group {{ group }}
             view_group: Ver grupo
             group_label: Etiqueta
             more_products: '{{ count }} productos adiciones...'
@@ -184,13 +184,13 @@ pim_enrich:
         updated_by: Actualizado por grupo de variantes
         switch:
           "yes": Sí
-          "no": 'No'
+          "no": No
       optional_attribute:
         remove: Suprimir este atributo
       locale_specific_attribute:
         unavailable: Este campo específico de local no está disponible en este local
       localizable:
-        channel_locale_unavailable: "Este campo traducible no está disponible para el local '{{ locale }}' y el canal '{{ channel }}'"
+        channel_locale_unavailable: Este campo traducible no está disponible para el local '{{ locale }}' y el canal '{{ channel }}'
       media:
         upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
       create_popin:
@@ -212,7 +212,7 @@ pim_enrich:
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - campos
-        already_in_upload: 'Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"'
+        already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
         no_attributes: Este grupo de variantes no tiene aun atributos
       btn:
         save: Guardar
@@ -223,11 +223,11 @@ pim_enrich:
         updated: Actualizado
         updated_by: Actualizado por
   confirmation:
-    leave: ¿Está usted seguro que desea abandonar esta página?
-    discard_changes: 'Perderá los cambios realizados sobre {{ entity }} si abandona esta página.'
+    leave: '¿Está usted seguro que desea abandonar esta página?'
+    discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
     delete_item: Confirmar la eliminación
     delete:
-      attribute: ¿Está usted seguro que desea eliminar el atributo de este producto?
+      attribute: '¿Está usted seguro que desea eliminar el atributo de este producto?'
   info:
     not_applicable: N/A
     entity:
@@ -271,13 +271,13 @@ pim_enrich:
         history:
           title: Historial
       switch:
-        "no": 'No'
+        "no": No
         "yes": Sí
       sequential_edit:
         info:
           products: productos
-          previous: 'Regresar al {{ product }} sin guardar.'
-          next: 'Pasar al {{ product }} sin guardar.'
+          previous: Regresar al {{ product }} sin guardar.
+          next: Pasar al {{ product }} sin guardar.
         btn:
           save_and_next: Guardar y siguiente
           save_and_finish: Guardar y finalizar
@@ -303,7 +303,7 @@ pim_enrich:
         cancel: Cancelar
     entity:
       switch:
-        "no": 'No'
+        "no": No
         "yes": Sí
     variant_group:
       tab:
@@ -356,7 +356,7 @@ pim_enrich:
             title: Selección de atributo
         attributes_selector:
           attribute_group: Grupos de atributos
-          attributes: 'Buscando en {{ attributeCount }} atributos'
+          attributes: Buscando en {{ attributeCount }} atributos
           selected: Atributos seleccionados
           clear: Restablecer
           all_group: Todos los grupos
@@ -465,6 +465,6 @@ pim_enrich:
             NOT EMPTY: No está vacío
   mass_edit_action:
     edit_common_attributes:
-      description: 'Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.'
+      description: Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.
 pim_enrich.error:
-  exception.title: 'Oups! Un error {{ status_code }} ha ocurrido...'
+  exception.title: Oups! Un error {{ status_code }} ha ocurrido...
