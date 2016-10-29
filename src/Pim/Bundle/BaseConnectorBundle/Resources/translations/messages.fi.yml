@@ -125,7 +125,7 @@ pim_base_connector:
       help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
     escape:
       label: Poistu
-      help: 'Yhtä merkkiä käytetään kentän "poistu" määrittämiseen'
+      help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
     circularRefsChecked:
       label: Tarkista kehäviittaukset
       help: Jos kyllä, data prosessoidaan siten että kategorioiden välillä ei ole kehäviittauksia

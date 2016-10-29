@@ -90,16 +90,16 @@ pim.grid.mass_action.delete: Удалить
 pim.grid.mass_action.mass_edit: Массовое редактирование
 pim.grid.mass_action.sequential_edit: Последовательное редактирование
 jstree.create: Создать
-switch_on: Да
-switch_off: Нет
+switch_on: "Да"
+switch_off: "Нет"
 pim_enrich:
   item:
     list:
       delete.label: Удалить
       delete.error: Ошибка при удалении элемента
     delete:
-      confirm.content: 'Вы действительно хотите удалить {{ itemName }}? Это действие нельзя отменить'
-      confirm.title: 'Удалить {{ itemName }}'
+      confirm.content: Вы действительно хотите удалить {{ itemName }}? Это действие нельзя отменить
+      confirm.title: Удалить {{ itemName }}
   navigation:
     link:
       back_to_grid: Вернуться к списку
@@ -136,7 +136,7 @@ pim_enrich:
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - поля
-        already_in_upload: 'Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»'
+        already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»
       error:
         upload: Произошла ошибка при загрузке файла
       meta:
@@ -150,7 +150,7 @@ pim_enrich:
         groups:
           title: Группы
           modal:
-            title: 'Группа {{ group }}'
+            title: Группа {{ group }}
             view_group: Посмотреть группу
             group_label: Метка
             more_products: '{{ count }} больше продуктов...'
@@ -170,7 +170,7 @@ pim_enrich:
       locale_specific_attribute:
         unavailable: Это локализуемое поле не доступно для этого языка
       localizable:
-        channel_locale_unavailable: 'Это локализуемое поле не доступно для языка «{{ locale }}» и канала «{{ channel }}»'
+        channel_locale_unavailable: Это локализуемое поле не доступно для языка «{{ locale }}» и канала «{{ channel }}»
       media:
         upload: Перетащите чтобы загрузить, или нажмите здесь
     attribute_option:
@@ -178,7 +178,7 @@ pim_enrich:
       label: Метка
   confirmation:
     leave: Вы уверены, что хотите покинуть эту страницу?
-    discard_changes: 'Если вы покините страницу изменения будут потеряны для {{ entity }}.'
+    discard_changes: Если вы покините страницу изменения будут потеряны для {{ entity }}.
     delete_item: Подтвердить удаление
     delete:
       product_attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
@@ -209,7 +209,7 @@ pim_enrich:
           info:
             search_attributes: Поиск
             no_available_attributes: Нет больше атрибутов для добавления
-            attributes_selected: 'Выбран(o) {{ attributeCount }} атрибут(ов)'
+            attributes_selected: Выбран(o) {{ attributeCount }} атрибут(ов)
         categories:
           title: Категории
       panel:
@@ -226,8 +226,8 @@ pim_enrich:
       sequential_edit:
         info:
           products: продукты
-          previous: 'Перейти обратно к {{ product }} без сохранения.'
-          next: 'Перейти к {{ product }} без сохранения.'
+          previous: Перейти обратно к {{ product }} без сохранения.
+          next: Перейти к {{ product }} без сохранения.
         btn:
           save_and_next: Сохранить и далее
           save_and_finish: Сохранить и завершить
@@ -252,4 +252,4 @@ pim_enrich:
         confirm: Добавить
         cancel: Отмена
 pim_enrich.error:
-  exception.title: 'Ах, нет! Произошла ошибка {{ status_code }}...'
+  exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
