@@ -9,7 +9,7 @@ pim_dashboard:
   widget:
     error:
       title: Fehler beim Laden des Widgets
-      message: "Widget '%alias%' ist nicht vorhanden"
+      message: Widget '%alias%' ist nicht vorhanden
     completeness:
       title: Vollständigkeit über Ausgabekanäle und Gebietsschemata
     last_operations:
@@ -23,5 +23,5 @@ pim_dashboard:
       job_type:
         import: Import
         export: Export
-        mass_edit: Mehrere bearbeiten
+        mass_edit: Massenbearbeitung
         quick_export: Schnellexport

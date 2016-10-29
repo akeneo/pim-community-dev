@@ -81,7 +81,7 @@ user:
 Role: Rooli
 Owner: Omistaja
 General: Yleinen
-Entity: Yksikkö
+Entity: Entiteetti
 Capabilities: Ominaisuudet
 Save and close: Tallenna ja sulje
 Has role: On rooli
@@ -142,5 +142,5 @@ Username or Email: Käyttäjänimi tai sähköpostiosoite
 Forgot Password: Unohdin salasanani
 Request: Pyyntö
 Check Email: Tarkista sähköpostisi
-password_reset_email_sent: 'Sähköposti on lähetetty %email%. Se sisältää linkin jota sinun pitää klikata resetoidaksi salasanasi.'
+password_reset_email_sent: Sähköposti on lähetetty %email%. Se sisältää linkin jota sinun pitää klikata resetoidaksi salasanasi.
 Go to homepage: Siirry etusivulle
