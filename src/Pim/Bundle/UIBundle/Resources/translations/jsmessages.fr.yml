@@ -1,34 +1,34 @@
 Close: Fermer
 Update: Mettre à jour
 Selected Rows: Lignes sélectionnées
-"Yes": Oui
-Yes, Delete: Oui, supprimer
-Yes, I Agree: "Oui, je suis d'accord"
-Yes, do it: Oui, le faire
-"No": Non
-Ok, got it.: OK, compris.
-Cancel: Annuler
-Delete Confirmation: Confirmation de la suppression
-Edit: Modifier
-Unexpected error occured. Please contact system administrator.: "Une erreur s'est produite. Contactez l'administrateur système."
+"Yes": "Oui"
+"Yes, Delete": "Oui, supprimer"
+"Yes, I Agree": "Oui, je suis d'accord"
+"Yes, do it": "Oui, j'en suis sûr(e)"
+"No": "Non"
+"Ok, got it.": "OK, compris."
+"Cancel": "Annuler"
+"Delete Confirmation": "Confirmation de la suppression"
+"Edit": "Modifier"
+"Unexpected error occured. Please contact system administrator.": "Une erreur s'est produite. Contactez l'administrateur système."
 Now: Maintenant
 Prev: Préc
 Next: Suivant
-Today: "Aujourd'hui"
+Today: Aujourd'hui
 Wk: Semaine
 Done: Fait
 AM: AM
 A: A
 PM: PM
 P: P
-Choose Time: "Choisir l'heure"
+"Choose Time": "Choisir l'heure"
 Time: Temps
 Hour: Heure
 Minute: Minute
 Second: Seconde
 Millisecond: Milliseconde
 Microsecond: Microseconde
-Time Zone: Fuseau horaire
+"Time Zone": "Fuseau horaire"
 Localized value: Valeur localisée
 Columns: Colonnes
 Datagrid Configuration: Configuration du tableau
@@ -42,9 +42,9 @@ jstree:
   product:
     all: Tous les produits
     unclassified: Produits non classifiés
-  no_tree: "Pas d'arborescence disponible"
+  no_tree: Pas d'arborescence disponible
   include_sub: Inc. les sous-catégories
-  loading: Chargement ...
+  loading: Chargement...
 datetimepicker:
   days:
     Sunday: Dimanche
@@ -99,7 +99,7 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Configuation système
+      title: Configuration du système
       tab:
         system:
           title: Système
@@ -109,4 +109,9 @@ oro_config:
           system_locale: Langue
         notification:
           title: Notifications
-          system_notification: Notifications des nouvelles versions
+          system_notification: Notifications de nouvelles versions
+        loading_message:
+          title: Messages de chargement
+          label: Activer les messages au chargement
+        loading_messages:
+          label: Messages de chargement disponibles

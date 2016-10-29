@@ -9,14 +9,13 @@ pim_dashboard:
   widget:
     error:
       title: Erreur lors du chargement du widget
-      message: |-
-        Le widget "%alias%" n'existe pas
+      message: Le widget "%alias%" n'existe pas
     completeness:
-      title: Complétude par canal et locale
+      title: Complétude par canal et par locale
     last_operations:
       title: Dernières opérations
       empty: Aucune opération trouvée
-      status: Statut
+      status: État
       date: Date
       type: Type
       profile name: Nom du profil
@@ -24,5 +23,5 @@ pim_dashboard:
       job_type:
         import: Import
         export: Export
-        mass_edit: Edition de masse
+        mass_edit: Edition en masse
         quick_export: Export rapide
