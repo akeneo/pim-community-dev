@@ -14,6 +14,9 @@ confirmation:
     user: Haluatko varmasti poistaa tämän käyttäjän?
     role: Oletko varma, että haluat poistaa tämän roolin?
 pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Nopea vienti
   mass_action:
     delete:
       confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
@@ -69,7 +72,7 @@ alert:
     error_occured_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
     save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
   session_storage:
-    not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
+    not_available: 'Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.'
 confirm:
   attribute_option:
     cancel_edition_on_new_option_text: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta mahdollisuutta?
@@ -90,20 +93,25 @@ pim.grid.mass_action.delete: Poista
 pim.grid.mass_action.mass_edit: Massaedit
 pim.grid.mass_action.sequential_edit: Peräkkäiset muokkaukset
 jstree.create: Luo
-switch_on: Kyllä
-switch_off: Ei
+switch_on: "Kyllä"
+switch_off: "Ei"
 pim_enrich:
   item:
     list:
       delete.label: Poista
       delete.error: Virhe kohteen poistamisessa
     delete:
-      confirm.content: 'Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota'
-      confirm.title: 'Poista tämä {{ itemName }}'
+      confirm.content: Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota
+      confirm.title: Poista tämä {{ itemName }}
   navigation:
     link:
       back_to_grid: Takaisin ruudukkoon
   entity:
+    save:
+      label: Tallenna
+    info:
+      update_failed: Päivitys epäonnistui
+      update_successful: Päivitys onnistui
     product:
       title: tuote
       btn:
@@ -136,7 +144,7 @@ pim_enrich:
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - kentät
-        already_in_upload: 'Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"'
+        already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
       meta:
@@ -150,7 +158,7 @@ pim_enrich:
         groups:
           title: Ryhmät
           modal:
-            title: 'Ryhmä {{ group }}'
+            title: Ryhmä {{ group }}
             view_group: Näytä ryhmä
             group_label: Nimike
             more_products: '{{ count }} lisää tuotteita...'
@@ -160,17 +168,18 @@ pim_enrich:
         all: Kaikki
         all_visible: Kaikki näkyvillä olevat
         none: Ei yhtään
+        copy: Kopioi
       variant_group:
         updated_by: Päivitetty variant-ryhmittäin
         switch:
-          "yes": true
-          "no": false
+          "yes": Kyllä
+          "no": Ei
       optional_attribute:
         remove: Poista tämä attribuutti
       locale_specific_attribute:
         unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
       localizable:
-        channel_locale_unavailable: "Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'"
+        channel_locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
       media:
         upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
     attribute_option:
@@ -178,7 +187,7 @@ pim_enrich:
       label: Nimike
   confirmation:
     leave: Oletko varma että haluat poistua sivulta?
-    discard_changes: 'Menetät muutokset tähän {{ entity }}, jos poistut sivulta.'
+    discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
     delete_item: Vahvista poisto
     delete:
       product_attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
@@ -207,9 +216,11 @@ pim_enrich:
             add: Lisää
             add_attributes: Lisää attribuutteja
           info:
-            search_attributes: Etsi
+            search_attributes: Hae...
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
             attributes_selected: '{{ attributeCount }} attribuuttia valittu'
+            no_match: Vastaavuuksia ei löydy
+            load_more: Ladataan lisää tuloksia...
         categories:
           title: Kategoriat
       panel:
@@ -218,16 +229,17 @@ pim_enrich:
           info:
             no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
             no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
+          missing_values: Puuttuvat arvot
         history:
           title: Historia
       switch:
-        "no": false
-        "yes": true
+        "no": Ei
+        "yes": Kyllä
       sequential_edit:
         info:
           products: tuotteet
-          previous: 'Siirry takaisin {{ product }} tallentamatta.'
-          next: 'Siirry {{ product }} tallentamatta.'
+          previous: Siirry takaisin {{ product }} tallentamatta.
+          next: Siirry {{ product }} tallentamatta.
         btn:
           save_and_next: Tallenna ja seuraava
           save_and_finish: Tallenna ja lopeta
@@ -251,5 +263,9 @@ pim_enrich:
         title: Lisää määritteen vaihtoehto
         confirm: Lisää
         cancel: Peruuta
+    entity:
+      switch:
+        "no": Ei
+        "yes": Kyllä
 pim_enrich.error:
-  exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'
+  exception.title: Voi ei! {{ status_code }} virhe tapahtui...
