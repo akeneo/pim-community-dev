@@ -5,7 +5,6 @@ namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -23,9 +22,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var LocalizerRegistryInterface */
-    protected $localizerRegistry;
-
     /** @var string[] */
     protected $supportedFormats = ['csv', 'flat'];
 
@@ -33,12 +29,10 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     protected $precision;
 
     /**
-     * @param LocalizerRegistryInterface $localizerRegistry
-     * @param int                        $precision
+     * @param int $precision
      */
-    public function __construct(LocalizerRegistryInterface $localizerRegistry, $precision = 4)
+    public function __construct($precision = 4)
     {
-        $this->localizerRegistry = $localizerRegistry;
         $this->precision = $precision;
     }
 
@@ -113,13 +107,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                     is_object($data) ? get_class($data) : gettype($data)
                 )
             );
-        }
-
-        $localizer = $this->localizerRegistry->getLocalizer($type);
-        if (null !== $localizer) {
-            foreach ($result as $field => $data) {
-                $result[$field] = $localizer->localize($data, $context);
-            }
         }
 
         return $result;

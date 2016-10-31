@@ -18,10 +18,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
-        AttributeInterface $simpleAttribute,
-        LocalizerRegistryInterface $localizerRegistry
+        AttributeInterface $simpleAttribute
     ) {
-        $this->beConstructedWith($localizerRegistry, 4);
+        $this->beConstructedWith(4);
 
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
@@ -53,12 +52,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_null_data(
-        $localizerRegistry,
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
-        $localizerRegistry->getLocalizer(AttributeTypes::TEXT)->willReturn(null);
         $value->getData()->willReturn(null);
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
@@ -67,14 +64,12 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_integer_data(
-        $localizerRegistry,
         NumberLocalizer $numberLocalizer,
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $simpleAttribute->isDecimalsAllowed()->willReturn(false);
-        $localizerRegistry->getLocalizer(AttributeTypes::NUMBER)->willReturn($numberLocalizer);
         $context = ['decimal_separator' => '.'];
         $numberLocalizer->localize('12', $context)->willReturn(12);
 
@@ -86,14 +81,12 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_float_data_with_decimals_allowed(
-        $localizerRegistry,
         NumberLocalizer $numberLocalizer,
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $simpleAttribute->isDecimalsAllowed()->willReturn(true);
-        $localizerRegistry->getLocalizer(AttributeTypes::NUMBER)->willReturn($numberLocalizer);
         $context = ['decimal_separator' => ','];
         $numberLocalizer->localize('12.2500', $context)->willReturn('12,25');
 
@@ -106,14 +99,12 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_float_data_with_decimals_not_allowed(
-        $localizerRegistry,
         NumberLocalizer $numberLocalizer,
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $simpleAttribute->isDecimalsAllowed()->willReturn(false);
-        $localizerRegistry->getLocalizer(AttributeTypes::NUMBER)->willReturn($numberLocalizer);
         $context = ['decimal_separator' => ','];
         $numberLocalizer->localize('12', $context)->willReturn(12);
 
@@ -126,12 +117,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_string_data(
-        $localizerRegistry,
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
-        $localizerRegistry->getLocalizer(AttributeTypes::TEXT)->willReturn(null);
 
         $value->getData()->willReturn('my data');
         $value->getAttribute()->willReturn($simpleAttribute);
@@ -141,12 +130,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_boolean_data(
-        $localizerRegistry,
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::BOOLEAN);
-        $localizerRegistry->getLocalizer(AttributeTypes::BOOLEAN)->willReturn(null);
 
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
@@ -160,13 +147,11 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_collection_data(
-        $localizerRegistry,
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute,
         SerializerInterface $serializer
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
-        $localizerRegistry->getLocalizer(AttributeTypes::OPTION_MULTI_SELECT)->willReturn(null);
 
         $itemOne = new \stdClass();
         $itemTwo = new \stdClass();
@@ -181,13 +166,11 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_an_array_data(
-        $localizerRegistry,
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute,
         SerializerInterface $serializer
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
-        $localizerRegistry->getLocalizer(AttributeTypes::OPTION_MULTI_SELECT)->willReturn(null);
 
         $itemOne = new \stdClass();
         $itemTwo = new \stdClass();
@@ -202,7 +185,6 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_ordered_options_with_a_option_collection_data(
-        $localizerRegistry,
         ProductValueInterface $value,
         AttributeInterface $multiColorAttribute,
         SerializerInterface $serializer,
@@ -211,7 +193,6 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ArrayCollection $collection
     ) {
         $multiColorAttribute->getAttributeType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
-        $localizerRegistry->getLocalizer(AttributeTypes::OPTION_MULTI_SELECT)->willReturn(null);
 
         $collection->toArray()->willReturn([$redOption, $blueOption]);
         $collection->isEmpty()->willReturn(false);
@@ -239,14 +220,12 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_date_data(
-        $localizerRegistry,
         DateLocalizer $dateLocalizer,
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::DATE);
         $simpleAttribute->isDecimalsAllowed()->willReturn(false);
-        $localizerRegistry->getLocalizer(AttributeTypes::DATE)->willReturn($dateLocalizer);
         $context = ['date_format' => 'd/m/Y'];
         $dateLocalizer->localize('2000-10-28', $context)->willReturn('28/10/2000');
 
