@@ -51,6 +51,7 @@ services:
             - '@pim_serializer'
             - '@pim_serializer'
             - '@pim_enrich.resolver.locale'
+            - '@pim_catalog.builder.localizable_and_scopable_raw_values'
 
     pim_enrich.form.subscriber.add_variant_group_template:
         class: %pim_enrich.form.subscriber.add_variant_group_template.class%

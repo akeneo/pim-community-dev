@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Pim\Component\Catalog\Builder\LocalizableAndScopableRawValuesBuilder;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -28,19 +29,25 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
     /** @var LocaleResolver */
     protected $localeResolver;
 
+    /** @var LocalizableAndScopableRawValuesBuilder|null */
+    protected $missingRawValuesBuilder;
+
     /**
-     * @param NormalizerInterface   $normalizer
-     * @param DenormalizerInterface $denormalizer
-     * @param LocaleResolver        $localeResolver
+     * @param NormalizerInterface                    $normalizer
+     * @param DenormalizerInterface                  $denormalizer
+     * @param LocaleResolver                         $localeResolver
+     * @param LocalizableAndScopableRawValuesBuilder $missingRawValuesBuilder
      */
     public function __construct(
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
-        LocaleResolver $localeResolver
+        LocaleResolver $localeResolver,
+        LocalizableAndScopableRawValuesBuilder $missingRawValuesBuilder = null
     ) {
         $this->normalizer     = $normalizer;
         $this->denormalizer   = $denormalizer;
         $this->localeResolver = $localeResolver;
+        $this->missingRawValuesBuilder = $missingRawValuesBuilder;
     }
 
     /**
@@ -63,6 +70,12 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
 
         if (null === $data || !$data instanceof ProductTemplateInterface) {
             return;
+        }
+
+        $productTemplateRawValues = $data->getValuesData();
+        if (null !== $this->missingRawValuesBuilder) {
+            $productTemplateRawValues = $this->missingRawValuesBuilder->addMissing($productTemplateRawValues);
+            $data->setValuesData($productTemplateRawValues);
         }
 
         $values = $this->denormalizer->denormalize(
