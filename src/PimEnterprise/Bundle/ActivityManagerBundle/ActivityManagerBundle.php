@@ -11,6 +11,7 @@
 
 namespace Akeneo\ActivityManager\Bundle;
 
+use Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
 use Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,9 +27,8 @@ class ActivityManagerBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container
-            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
-        ;
+        $container->addCompilerPass(new ResolveDoctrineTargetModelPass());
+        $container->addCompilerPass(new RegisterCalculationStepPass());
 
         $mappingConfig = [
             realpath(__DIR__.'/Resources/config/doctrine/model') => 'Akeneo\ActivityManager\Component\Model',

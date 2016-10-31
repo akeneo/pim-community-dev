@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
+namespace Akeneo\ActivityManager\Bundle\Doctrine\Repository;
 
 use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Doctrine\ORM\EntityManager;

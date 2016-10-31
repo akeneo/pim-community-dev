@@ -1,6 +1,6 @@
 services:
     activity_manager.repository.project:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository'
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProjectRepository'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%akeneo_activity_manager.model.project.class%'
@@ -10,3 +10,8 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pim_user.entity.user.class%'
+
+    activity_manager.repository.product:
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProductRepository'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'

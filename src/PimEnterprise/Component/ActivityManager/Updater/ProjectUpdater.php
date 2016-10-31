@@ -63,6 +63,11 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 case 'locale':
                     $project->setLocale($value);
                     break;
+                case 'user_groups':
+                    foreach ($value as $userGroup) {
+                        $project->addUserGroup($userGroup);
+                    }
+                    break;
             }
         }
 

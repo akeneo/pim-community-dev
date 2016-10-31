@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\Repository;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository;
+use Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProjectRepository;
 use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;

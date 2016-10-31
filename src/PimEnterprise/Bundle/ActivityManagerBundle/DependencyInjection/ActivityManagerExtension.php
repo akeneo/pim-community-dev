@@ -37,7 +37,6 @@ class ActivityManagerExtension extends Extension
         $loader->load('readers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
-        $loader->load('steps.yml');
         $loader->load('updaters.yml');
         $loader->load('writers.yml');
     }

@@ -5,6 +5,7 @@ namespace spec\Akeneo\ActivityManager\Component\Updater;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Updater\ProjectUpdater;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -34,7 +35,8 @@ class ProjectUpdaterSpec extends ObjectBehavior
         UserInterface $user,
         DatagridView $datagridView,
         ChannelInterface $channel,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        Group $userGroup
     ) {
         $project->setLabel('Summer collection 2017')->shouldBeCalled();
         $project->setOwner($user)->shouldBeCalled();
@@ -43,6 +45,7 @@ class ProjectUpdaterSpec extends ObjectBehavior
         $project->setDatagridView($datagridView)->shouldBeCalled();
         $project->setChannel($channel)->shouldBeCalled();
         $project->setLocale($locale)->shouldBeCalled();
+        $project->addUserGroup($userGroup)->shouldBeCalled();
 
         $this->update(
             $project,
@@ -54,6 +57,7 @@ class ProjectUpdaterSpec extends ObjectBehavior
                 'datagrid_view' => $datagridView,
                 'channel' => $channel,
                 'locale' => $locale,
+                'user_groups' => [$userGroup],
             ]
         );
     }
