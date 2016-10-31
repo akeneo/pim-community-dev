@@ -29,8 +29,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         AttributeConverterInterface $localizedConverter,
         LocalizerRegistryInterface $localizerRegistry,
         CollectionFilterInterface $productValuesFilter,
-        ConverterInterface $converter,
-        $tmpStorageDir = '/tmp/pim/file_storage'
+        ConverterInterface $converter
     ) {
         $this->beConstructedWith(
             $productBuilder,
@@ -43,7 +42,6 @@ class EditCommonAttributesSpec extends ObjectBehavior
             $localizerRegistry,
             $productValuesFilter,
             $converter,
-            $tmpStorageDir,
             'edit_common_attributes'
         );
     }
@@ -97,8 +95,10 @@ class EditCommonAttributesSpec extends ObjectBehavior
         AttributeInterface $scopableAttr,
         AttributeInterface $localisableAttr,
         AttributeInterface $localiedAttr,
-        LocalizerInterface $localizer
+        LocalizerInterface $localizer,
+        ConverterInterface $converter
     ) {
+
         $attributeRepository->findOneByIdentifier('normal_attr')->willReturn($normalAttr);
         $attributeRepository->findOneByIdentifier('scopable_attr')->willReturn($scopableAttr);
         $attributeRepository->findOneByIdentifier('localisable_attr')->willReturn($localisableAttr);
@@ -135,6 +135,9 @@ class EditCommonAttributesSpec extends ObjectBehavior
                 ], 'scope' => null, 'locale' => null]
             ],
         ];
+
+        $converter->convert($rawData)->willReturn($rawData);
+
         $this->setValues(json_encode($rawData));
 
         $localizer->delocalize(
