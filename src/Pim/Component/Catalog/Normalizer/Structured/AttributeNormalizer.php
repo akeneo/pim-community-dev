@@ -15,12 +15,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AttributeNormalizer implements NormalizerInterface
 {
     const LOCALIZABLE_PATTERN = '{locale}:{value}';
-    const ITEM_SEPARATOR      = ',';
-    const GROUP_SEPARATOR     = '|';
-    const GLOBAL_SCOPE        = 'Global';
-    const CHANNEL_SCOPE       = 'Channel';
-    const ALL_LOCALES         = 'All';
-    const DATE_FORMAT         = \DateTime::ISO8601;
+    const ITEM_SEPARATOR = ',';
+    const GROUP_SEPARATOR = '|';
+    const GLOBAL_SCOPE = 'Global';
+    const CHANNEL_SCOPE = 'Channel';
+    const ALL_LOCALES = 'All';
+    const DATE_FORMAT = \DateTime::ISO8601;
 
     /** @var array */
     protected $supportedFormats = ['json', 'xml'];

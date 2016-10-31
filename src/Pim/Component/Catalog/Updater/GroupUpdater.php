@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
@@ -22,17 +23,23 @@ class GroupUpdater implements ObjectUpdaterInterface
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
-    
+
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $productQueryBuilderFactory;
+
     /**
-     * @param GroupTypeRepositoryInterface $groupTypeRepository
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param GroupTypeRepositoryInterface        $groupTypeRepository
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      */
     public function __construct(
         GroupTypeRepositoryInterface $groupTypeRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
     ) {
         $this->groupTypeRepository = $groupTypeRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
     }
 
     /**
@@ -85,6 +92,9 @@ class GroupUpdater implements ObjectUpdaterInterface
                 break;
             case 'axis':
                 $this->setAxis($group, $data);
+                break;
+            case 'products':
+                $this->setProducts($group, $data);
                 break;
         }
     }
@@ -152,5 +162,29 @@ class GroupUpdater implements ObjectUpdaterInterface
             $attributes[] = $attribute;
         }
         $group->setAxisAttributes($attributes);
+    }
+
+    /**
+     * @param GroupInterface $group
+     * @param array          $labels
+     */
+    protected function setProducts(GroupInterface $group, array $productIds)
+    {
+        foreach ($group->getProducts() as $product) {
+            $group->removeProduct($product);
+        }
+
+        if (empty($productIds)) {
+            return;
+        }
+
+        $pqb = $this->productQueryBuilderFactory->create();
+        $pqb->addFilter('id', 'IN', $productIds);
+
+        $products = $pqb->execute();
+
+        foreach ($products as $product) {
+            $group->addProduct($product);
+        }
     }
 }

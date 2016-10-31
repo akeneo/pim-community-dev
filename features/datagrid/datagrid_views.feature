@@ -15,15 +15,16 @@ Feature: Datagrid views
     And I am on the products page
 
   Scenario: Successfully display the default view
-    Then I should see the text "Views Default view"
+    Then I should see the text "Default view"
 
+  @skip-activity-manager
   Scenario: Successfully create a new view
     Given I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
-      | label | Sneakers only |
+      | new-view-label | Sneakers only |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
-    And I should see the text "Views Sneakers only"
+    And I should see the text "Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
@@ -34,13 +35,14 @@ Feature: Datagrid views
     When I apply the "Default view" view
     Then I should see products black-boots, purple-sneakers and black-sneakers
 
+  @skip-activity-manager
   Scenario: Successfully update a view
     Given I filter by "family" with operator "in list" and value "Boots"
     And I create the view:
-      | label | Some shoes |
+      | new-view-label | Some shoes |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
-    And I should see the text "Views Some shoes"
+    And I should see the text "Some shoes"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
     When I hide the filter "family"
@@ -49,24 +51,25 @@ Feature: Datagrid views
     And I update the view
     And I apply the "Some shoes" view
     Then I should be on the products page
-    And I should see the text "Views Some shoes"
+    And I should see the text "Some shoes"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
+  @skip-activity-manager
   Scenario: Successfully delete a view
     Given I filter by "family" with operator "in list" and value "Boots"
     And I create the view:
-      | label | Boots only |
+      | new-view-label | Boots only |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
-    And I should see the text "Views Boots only"
+    And I should see the text "Boots only"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
-    When I delete the view
+    When I delete the view "Boots only"
     And I confirm the deletion
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully removed"
-    And I should see the text "Views Default view"
+    And I should see the text "Default view"
     But I should not see "Boots only"
     And I should see products black-boots, purple-sneakers and black-sneakers
 
@@ -79,10 +82,11 @@ Feature: Datagrid views
     When I am on the attributes page
     Then the page size should be 50
 
+  @skip-activity-manager
   Scenario: Successfully choose my default view
     Given I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
-      | label | Sneakers only |
+      | new-view-label | Sneakers only |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page
@@ -101,16 +105,17 @@ Feature: Datagrid views
     When I logout
     And I am logged in as "Mary"
     And I am on the products page
-    Then I should see the text "Views Sneakers only"
+    Then I should see the text "Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
     When I press the "Reset" button
     Then I should see products black-boots, purple-sneakers and black-sneakers
 
+  @skip-activity-manager
   Scenario: Successfully remove my default view
     Given I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
-      | label | Sneakers only |
+      | new-view-label | Sneakers only |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page
@@ -123,10 +128,10 @@ Feature: Datagrid views
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     When I am on the products page
-    Then I should see the text "Views Sneakers only"
-    When I delete the view
+    Then I should see the text "Sneakers only"
+    When I delete the view "Sneakers only"
     And I confirm the deletion
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully removed"
-    And I should see the text "Views Default view"
+    And I should see the text "Default view"
     But I should not see the text "Sneakers only"

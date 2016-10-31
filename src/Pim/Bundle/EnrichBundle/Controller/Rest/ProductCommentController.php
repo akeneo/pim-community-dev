@@ -71,14 +71,14 @@ class ProductCommentController
         NormalizerInterface $normalizer,
         ValidatorInterface $validator
     ) {
-        $this->tokenStorage      = $tokenStorage;
-        $this->formFactory       = $formFactory;
+        $this->tokenStorage = $tokenStorage;
+        $this->formFactory = $formFactory;
         $this->productRepository = $productRepository;
         $this->commentRepository = $commentRepository;
-        $this->commentSaver      = $commentSaver;
-        $this->commentBuilder    = $commentBuilder;
-        $this->normalizer        = $normalizer;
-        $this->validator         = $validator;
+        $this->commentSaver = $commentSaver;
+        $this->commentBuilder = $commentBuilder;
+        $this->normalizer = $normalizer;
+        $this->validator = $validator;
     }
 
     /**
@@ -112,9 +112,9 @@ class ProductCommentController
     public function postAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $data    = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         $comment = $this->commentBuilder->buildComment($product, $this->getUser());
-        $form    = $this->formFactory->create('pim_comment_comment', $comment, ['csrf_protection' => false]);
+        $form = $this->formFactory->create('pim_comment_comment', $comment, ['csrf_protection' => false]);
         $form->submit($data, false);
 
         if ($form->isValid()) {
@@ -149,11 +149,11 @@ class ProductCommentController
     {
         $product = $this->findProductOr404($id);
 
-        $data           = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         $data['parent'] = $commentId;
 
         $reply = $this->commentBuilder->buildComment($product, $this->getUser());
-        $form  = $this->formFactory->create(
+        $form = $this->formFactory->create(
             'pim_comment_comment',
             $reply,
             ['is_reply' => true, 'csrf_protection' => false]

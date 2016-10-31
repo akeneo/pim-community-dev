@@ -69,7 +69,7 @@ class ProductAssociation implements ArrayConverterInterface
     public function convert(array $item, array $options = [])
     {
         $convertedItem = $this->productConverter->convert($item, $options);
-        $filteredItem  = $this->filter($convertedItem);
+        $filteredItem = $this->filter($convertedItem);
 
         return $filteredItem;
     }

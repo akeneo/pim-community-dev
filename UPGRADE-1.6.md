@@ -68,9 +68,9 @@ This modification introduces a new constraint, the minimum version of PHP for Ak
     * For the **Community Edition**, download it from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
 
     ```
-     wget http://www.akeneo.com/pim-community-standard-v1.6-latest.tar.gz
+     wget http://download.akeneo.com/pim-community-standard-v1.6-latest.tar.gz
      tar -zxf pim-community-standard-v1.6-latest.tar.gz
-     cd pim-community-standard-v1.6.*/
+     cd pim-community-standard/
     ```
 
     * For the **Enterprise Edition**, download the archive from the Partner Portal and extract:
@@ -161,11 +161,11 @@ This modification introduces a new constraint, the minimum version of PHP for Ak
         }
         ```
 
-        If your project uses the https://github.com/akeneo-labs/ExcelConnectorBundle, please use the following version,
+        If your project uses the https://github.com/akeneo-labs/ExcelConnectorBundle, this bundle is not compatible anymore and you must replace it by the https://github.com/akeneo/ExcelInitBundle,
 
         ```
         "require": {
-            "akeneo-labs/excel-connector-bundle": "1.7.*"
+            "akeneo-labs/excel-init-bundle": "1.0.*"
         }
         ```
 
@@ -181,7 +181,7 @@ This modification introduces a new constraint, the minimum version of PHP for Ak
 
         ```
         "require": {
-            "akeneo/elasticsearch-bundle": "1.3.*"
+            "akeneo/innervariation-bundle": "1.3.*"
         }
         ```
 
@@ -728,7 +728,7 @@ In the v1.6, these 3 different concerns have been extracted to be able to provid
 
 You need to define a `DefaultValuesProviderInterface` and a `ConstraintCollectionProviderInterface` to be able to run your Job.
 
-You'll find an example in the doc  https://docs.akeneo.com/master/cookbook/import_export/create-connector.html#configure-our-jobparameters
+You'll find an example in the doc  https://docs.akeneo.com/1.6/cookbook/import_export/create-connector.html#configure-our-jobparameters
 
 Case 1 - You wrote a custom import (or export) which uses the same parameters as a default import (or export).
 
@@ -827,7 +827,7 @@ If your Job needs to be configured through the UI, you also need to define a `Fo
 
 This class will allow to provide the configuration for each form field.
 
-You'll find an example in the doc https://docs.akeneo.com/master/cookbook/import_export/create-connector.html#configure-the-ui-for-our-jobparameters
+You'll find an example in the doc https://docs.akeneo.com/1.6/cookbook/import_export/create-connector.html#configure-the-ui-for-our-jobparameters
 
 You can follow the strategy described in the previous chapter, for instance, re-use existing classes for the case 1:
 
@@ -1000,7 +1000,7 @@ Go to the role profile and activate the following permissions situated in the "P
 - "Show an export profile content"
 - "Edit an export profile content"
 
-If you want to display the "Content" tab for you custom product export job profiles, you can follow the cookbook "Configure the job profile" in the documentation (https://docs.akeneo.com/master/cookbook/import_export/create-custom-step.html#configure-the-job-profile).
+If you want to display the "Content" tab for you custom product export job profiles, you can follow the cookbook "Configure the job profile" in the documentation (https://docs.akeneo.com/1.6/cookbook/import_export/create-custom-step.html#configure-the-job-profile).
 
 ### Updates for projects adding custom Mass Edit Action
 

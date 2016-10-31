@@ -32,7 +32,7 @@ class DefaultColumnSorter implements ColumnSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function sort(array $unsortedColumns)
+    public function sort(array $unsortedColumns, array $context = [])
     {
         $mainColumns = [];
         $additionalColumns = [];

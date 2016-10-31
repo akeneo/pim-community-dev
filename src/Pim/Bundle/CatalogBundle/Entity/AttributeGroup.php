@@ -67,7 +67,7 @@ class AttributeGroup implements AttributeGroupInterface
      */
     public function __construct()
     {
-        $this->attributes   = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->sortOrder = 0;
     }
@@ -255,7 +255,7 @@ class AttributeGroup implements AttributeGroupInterface
         }
 
         $translationClass = $this->getTranslationFQCN();
-        $translation      = new $translationClass();
+        $translation = new $translationClass();
         $translation->setLocale($locale);
         $translation->setForeignKey($this);
         $this->addTranslation($translation);

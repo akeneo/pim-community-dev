@@ -23,6 +23,9 @@ class Channel extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'currencies':
                 $convertedItem[$property] = implode(',', $data);
                 break;
+            case 'category':
+                $convertedItem['tree'] = $data['code'];
+                break;
             default:
                 $convertedItem[$property] = (string) $data;
         }

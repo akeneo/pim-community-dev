@@ -41,10 +41,10 @@ function(
          * @property
          */
         criteriaValueSelectors: {
-            type: '.type select:first',
+            type: '.AknFilterDate-select',
             value: {
-                start: '.start',
-                end: '.end'
+                start: '.AknFilterDate-start',
+                end: '.AknFilterDate-end'
             }
         },
 
@@ -53,7 +53,7 @@ function(
          *
          * @property
          */
-        inputClass: 'date-visual-element',
+        inputClass: 'AknFilterDate-dateInput',
 
         /**
          * Date widget options
@@ -130,15 +130,19 @@ function(
          * @protected
          */
         _displayFilterType: function(type) {
-            this.$el.find('.filter-separator').show().end().find('span').show();
+            this.$el.find('.AknFilterDate-separator').show();
+            this.$el.find(this.criteriaValueSelectors.value.end).show();
+            this.$el.find(this.criteriaValueSelectors.value.start).show();
             if (this.typeValues.moreThan == parseInt(type)) {
-                this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide();
+                this.$el.find('.AknFilterDate-separator').hide();
+                this.$el.find(this.criteriaValueSelectors.value.end).hide();
             } else if (this.typeValues.lessThan == parseInt(type)) {
-                this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.start).hide();
+                this.$el.find('.AknFilterDate-separator').hide();
+                this.$el.find(this.criteriaValueSelectors.value.start).hide();
             } else if ('empty' === type) {
-                this.$el.find('.filter-separator').hide().end()
-                    .find(this.criteriaValueSelectors.value.end).hide().end()
-                    .find(this.criteriaValueSelectors.value.start).hide();
+                this.$el.find('.AknFilterDate-separator').hide();
+                this.$el.find(this.criteriaValueSelectors.value.end).hide();
+                this.$el.find(this.criteriaValueSelectors.value.start).hide();
             }
         },
 
@@ -155,7 +159,7 @@ function(
                 })
             );
 
-            $(el).find('select:first').bind('change', _.bind(this.changeFilterType, this));
+            $(el).find(this.criteriaValueSelectors.type).bind('change', _.bind(this.changeFilterType, this));
 
             _.each(this.criteriaValueSelectors.value, function(selector, name) {
                 this.dateWidgets[name] = Datepicker.init(this.$(selector), this.datetimepickerOptions);
@@ -222,7 +226,7 @@ function(
          * @inheritDoc
          */
         _formatDisplayValue: function(value) {
-            var fakeDatepicker = Datepicker.init($('<input>'), this.datetimepickerOptions).data('datetimepicker');
+            Datepicker.init($('<input>'), this.datetimepickerOptions).data('datetimepicker');
             _.each(value.value, function(dateValue, name) {
                 if (dateValue) {
                     value.value[name] = this._formatDate(
@@ -333,7 +337,7 @@ function(
         _onValueUpdated: function(newValue, oldValue) {
             ChoiceFilter.prototype._onValueUpdated.apply(this, arguments);
             if ('empty' === newValue.type) {
-                this.$el.find('.filter-separator').hide().end()
+                this.$el.find('.AknFilterDate-separator').hide().end()
                     .find(this.criteriaValueSelectors.value.end).hide().end()
                     .find(this.criteriaValueSelectors.value.start).hide();
             } else {

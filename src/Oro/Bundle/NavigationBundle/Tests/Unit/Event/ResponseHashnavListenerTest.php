@@ -32,7 +32,7 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->response = new Response();
-        $this->request  = Request::create(self::TEST_URL);
+        $this->request = Request::create(self::TEST_URL);
         $this->request->headers->add([ResponseHashnavListener::HASH_NAVIGATION_HEADER => true]);
         $this->event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\FilterResponseEvent')
             ->disableOriginalConstructor()
@@ -46,8 +46,8 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getResponse')
             ->will($this->returnValue($this->response));
 
-        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
-        $this->templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
+        $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
+        $this->templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
         $this->listener = new ResponseHashnavListener($this->tokenStorage, $this->templating);
     }
 

@@ -49,10 +49,10 @@ class GroupHandler implements HandlerInterface
         ProductRepositoryInterface $productRepository,
         AttributeConverterInterface $localizedConverter
     ) {
-        $this->form               = $form;
-        $this->request            = $request;
-        $this->groupSaver         = $groupSaver;
-        $this->productRepository  = $productRepository;
+        $this->form = $form;
+        $this->request = $request;
+        $this->groupSaver = $groupSaver;
+        $this->productRepository = $productRepository;
         $this->localizedConverter = $localizedConverter;
     }
 
@@ -64,21 +64,11 @@ class GroupHandler implements HandlerInterface
         $this->form->setData($group);
 
         if ($this->request->isMethod('POST')) {
-            // TODO : how to fix this ? Load products when ODM storage is used to enable validation
-            if (null === $group->getProducts()) {
-                $products = $this->productRepository->findAllForGroup($group)->toArray();
-                $group->setProducts($products);
-            }
-
             $this->form->submit($this->request);
-
             if ($this->form->isValid()) {
                 $this->onSuccess($group);
 
                 return true;
-            } elseif ($group->getType()->isVariant() && $group->getId()) {
-                $products = $this->productRepository->findAllForVariantGroup($group);
-                $group->setProducts($products);
             }
         }
 
@@ -92,35 +82,7 @@ class GroupHandler implements HandlerInterface
      */
     protected function onSuccess(GroupInterface $group)
     {
-        $appendProducts = $this->form->get('appendProducts')->getData();
-        $removeProducts = $this->form->get('removeProducts')->getData();
-        $options = [
-            'add_products'    => $appendProducts,
-            'remove_products' => $removeProducts
-        ];
-        if ($group->getType()->isVariant()) {
-            $options['copy_values_to_products'] = true;
-            $this->convertLocalizedValues($group);
-        }
+        $options = ['copy_values_to_products' => true];
         $this->groupSaver->save($group, $options);
-    }
-
-    /**
-     * Convert localized values in template of a variant group
-     *
-     * @param GroupInterface $group
-     */
-    protected function convertLocalizedValues(GroupInterface $group)
-    {
-        $template = $group->getProductTemplate();
-
-        if (null === $template) {
-            return;
-        }
-
-        $options    = ['locale' => $this->request->getLocale(), 'disable_grouping_separator' => true];
-        $valuesData = $this->localizedConverter->convertToDefaultFormats($template->getValuesData(), $options);
-
-        $template->setValuesData($valuesData);
     }
 }

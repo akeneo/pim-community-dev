@@ -36,9 +36,9 @@ class AddLocaleCodeToGridListener
      */
     public function onBuildAfter(BuildAfter $event)
     {
-        $datagrid   = $event->getDatagrid();
+        $datagrid = $event->getDatagrid();
         $datasource = $datagrid->getDatasource();
-        $config     = $datagrid->getAcceptor()->getConfig();
+        $config = $datagrid->getAcceptor()->getConfig();
 
         $localeParameter = $config->offsetGetByPath(self::LOCALE_PARAMETER);
 

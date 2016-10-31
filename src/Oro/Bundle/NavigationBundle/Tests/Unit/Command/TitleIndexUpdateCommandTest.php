@@ -20,7 +20,7 @@ class TitleIndexUpdateCommandTest extends \PHPUnit_Framework_TestCase
     {
         $this->command = new TitleIndexUpdateCommand();
 
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $this->container = $this->createMock('Symfony\Component\DependencyInjection\ContainerBuilder');
         $this->command->setContainer($this->container);
     }
 
@@ -38,10 +38,10 @@ class TitleIndexUpdateCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecute($data)
     {
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
-        $route = $this->getMock('Symfony\Component\Routing\Route', [], ['/user/show/{id}']);
+        $route = $this->createMock('Symfony\Component\Routing\Route', [], ['/user/show/{id}']);
 
         $route->expects($this->once())
             ->method('getRequirements')
@@ -52,19 +52,19 @@ class TitleIndexUpdateCommandTest extends \PHPUnit_Framework_TestCase
             ->with('_controller')
             ->will($this->returnValue(''));
 
-        $routerCollection = $this->getMock('Symfony\Component\Routing\RouteCollection');
+        $routerCollection = $this->createMock('Symfony\Component\Routing\RouteCollection');
 
         $routerCollection->expects($this->once())
             ->method('all')
             ->will($this->returnValue([$route]));
 
-        $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
+        $router = $this->createMock('Symfony\Component\Routing\RouterInterface');
 
         $router->expects($this->once())
             ->method('getRouteCollection')
             ->will($this->returnValue($routerCollection));
 
-        $titleService = $this->getMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
+        $titleService = $this->createMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
         $titleService->expects($this->once())
             ->method('update');
 

@@ -207,7 +207,7 @@ define(
                 promises.push(AttributeGroupManager.getAttributeGroupsForObject(object)
                     .then(function (attributeGroups) {
                         this.getExtension('attribute-group-selector').setElements(
-                            _.indexBy(_.sortBy(attributeGroups, 'sortOrder'), 'code')
+                            _.indexBy(_.sortBy(attributeGroups, 'sort_order'), 'code')
                         );
                     }.bind(this))
                 );

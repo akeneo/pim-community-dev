@@ -54,13 +54,13 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->factory = $this->getMock('Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory');
-        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
+        $this->factory = $this->createMock('Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory');
+        $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
 
         $user = new User();
         $user->setEmail('some@email.com');
 
-        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $token->expects($this->exactly(2))
             ->method('getUser')
             ->will($this->returnValue($user));
@@ -69,7 +69,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getToken')
             ->will($this->returnValue($token));
 
-        $this->item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem');
+        $this->item = $this->createMock('Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem');
 
         $this->serializedTitle = json_encode(['titleTemplate' => 'Test title template']);
     }
@@ -138,7 +138,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
         $em->expects($this->never())
             ->method('getRepository');
 
-        $titleService = $this->getMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
+        $titleService = $this->createMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
 
         $listener = new ResponseHistoryListener($this->factory, $this->tokenStorage, $em, $titleService);
         $listener->onResponse($event);
@@ -179,7 +179,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
      */
     private function getRequest()
     {
-        $this->request = $this->getMock('Symfony\Component\HttpFoundation\Request');
+        $this->request = $this->createMock('Symfony\Component\HttpFoundation\Request');
 
         $this->request->expects($this->once())
             ->method('getRequestFormat')
@@ -204,7 +204,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
      */
     private function getResponse()
     {
-        $response = $this->getMock('Symfony\Component\HttpFoundation\Response');
+        $response = $this->createMock('Symfony\Component\HttpFoundation\Response');
 
         $response->expects($this->once())
             ->method('getStatusCode')
@@ -215,7 +215,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
 
     public function getTitleService()
     {
-        $this->titleService = $this->getMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
+        $this->titleService = $this->createMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
         $this->titleService->expects($this->once())
             ->method('getSerialized')
             ->will($this->returnValue($this->serializedTitle));

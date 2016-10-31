@@ -6,6 +6,7 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Config\FileLocator;
 
 /**
  * Configuration rest controller in charge of the system configuration managements
@@ -19,17 +20,26 @@ class ConfigurationController
     /** @var ConfigManager */
     protected $configManager;
 
+    /** @var FileLocator */
+    protected $fileLocator;
+
+    /** @var string */
+    protected $loadingMessagesFile;
+
     /** @var array */
     protected $options;
 
     /**
      * @param ConfigManager $configManager
+     * @param string        $loadingMessagesFile
      * @param array         $options
      */
-    public function __construct(ConfigManager $configManager, array $options = [])
+    public function __construct(ConfigManager $configManager, FileLocator $fileLocator, $loadingMessagesFile, array $options = [])
     {
         $this->configManager = $configManager;
-        $this->options       = $options;
+        $this->fileLocator = $fileLocator;
+        $this->loadingMessagesFile = $loadingMessagesFile;
+        $this->options = $options;
     }
 
     /**
@@ -44,10 +54,14 @@ class ConfigurationController
         $data = [];
 
         foreach ($this->options as $option) {
-            $viewKey  = $option['section'] . ConfigManager::SECTION_VIEW_SEPARATOR . $option['name'];
+            $viewKey = $option['section'] . ConfigManager::SECTION_VIEW_SEPARATOR . $option['name'];
             $modelKey = $option['section'] . ConfigManager::SECTION_MODEL_SEPARATOR . $option['name'];
+            $value    = $option['name'] === 'loading_messages' ?
+                        file_get_contents($this->getMessagesFilePath()) :
+                        $this->configManager->get($modelKey);
+
             $data[$viewKey] = [
-                'value'                  => $this->configManager->get($modelKey),
+                'value'                  => $value,
                 'scope'                  => 'app',
                 'use_parent_scope_value' => false
             ];
@@ -67,6 +81,19 @@ class ConfigurationController
     {
         $this->configManager->save(json_decode($request->getContent(), true));
 
+        $data = json_decode($request->getContent(), true);
+        file_put_contents($this->getMessagesFilePath(), $data['pim_ui___loading_messages']['value']);
+
         return $this->getAction();
+    }
+
+    /**
+     * Returns messages file path
+     *
+     * @return string
+     */
+    protected function getMessagesFilePath()
+    {
+        return $this->fileLocator->locate($this->loadingMessagesFile);
     }
 }

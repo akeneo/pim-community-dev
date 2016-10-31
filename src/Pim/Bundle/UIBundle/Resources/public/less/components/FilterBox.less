@@ -1,0 +1,32 @@
+@import '../base/variables';
+
+.AknFilterBox {
+  background: lighten(@AknGrey, 25%);;
+  padding: 20px 20px 20px 140px;
+  z-index: 800;
+  position: relative;
+  min-height: 64px;
+
+  &-addFilterButton {
+    line-height: @AknLittleButtonSize;
+    font-size: @AknFontSizeBig;
+    position: absolute;
+    left: 20px;
+    border: none;
+    background: inherit;
+  }
+
+  &-filter {
+    margin-left: 10px;
+    display: inline-block;
+  }
+
+  &-disableFilter {
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    text-align: center;
+    display: inline-block;
+    width: 20px;
+    vertical-align: middle;
+  }
+}

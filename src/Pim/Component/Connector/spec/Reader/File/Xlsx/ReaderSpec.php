@@ -17,8 +17,8 @@ class ReaderSpec extends ObjectBehavior
     function let(
         FileIteratorFactory $fileIteratorFactory,
         ArrayConverterInterface $converter,
-        StepExecution $stepExecution)
-    {
+        StepExecution $stepExecution
+    ) {
         $this->beConstructedWith($fileIteratorFactory, $converter);
         $this->setStepExecution($stepExecution);
     }
@@ -53,7 +53,7 @@ class ReaderSpec extends ObjectBehavior
         $fileIterator->current()->willReturn($data);
         $converter->convert($data, Argument::any())->willReturn($data);
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $this->read()->shouldReturn($data);
     }
@@ -79,7 +79,7 @@ class ReaderSpec extends ObjectBehavior
             'name' => 'door',
         ];
 
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
@@ -90,7 +90,7 @@ class ReaderSpec extends ObjectBehavior
         $fileIterator->current()->willReturn($data);
         $converter->convert($data, Argument::any())->willReturn($data);
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo("skip")->shouldBeCalled();
         $converter->convert($data, Argument::any())->willThrow(

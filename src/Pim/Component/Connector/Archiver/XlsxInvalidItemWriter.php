@@ -5,8 +5,6 @@ namespace Pim\Component\Connector\Archiver;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport;
-use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport;
 
 /**
  * Writer for invalid items coming from a XLSX import.
@@ -34,6 +32,7 @@ class XlsxInvalidItemWriter extends AbstractInvalidItemWriter
         $filePath = $jobParameters->get('filePath');
         $fileIterator = $this->fileIteratorFactory->create($filePath);
         $fileIterator->rewind();
+        $fileIterator->next();
 
         return $fileIterator;
     }
@@ -51,7 +50,7 @@ class XlsxInvalidItemWriter extends AbstractInvalidItemWriter
         $writeParams['withHeader'] = true;
 
         $writeJobParameters = new JobParameters($writeParams);
-        $writeJobExecution  = new JobExecution();
+        $writeJobExecution = new JobExecution();
         $writeJobExecution->setJobParameters($writeJobParameters);
 
         $stepExecution = new StepExecution('processor', $writeJobExecution);

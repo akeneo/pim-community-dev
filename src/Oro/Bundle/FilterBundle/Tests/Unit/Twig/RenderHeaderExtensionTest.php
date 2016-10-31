@@ -56,7 +56,7 @@ class RenderHeaderExtensionTest extends AbstractExtensionTestCase
             ->with($blockName, [])
             ->will($this->returnValue($blockHtml));
 
-        $environment = $this->getMock('\Twig_Environment', ['loadTemplate']);
+        $environment = $this->createMock('\Twig_Environment', ['loadTemplate']);
         $environment->expects($this->once())
             ->method('loadTemplate')
             ->with($templateName)

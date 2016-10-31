@@ -44,7 +44,7 @@ Feature: Export products with only selected attributes
     BOOT-2;;1;boots;;dry
     """
 
-  Scenario: Export products by selecting only multiple attribute using the UI
+  Scenario: Export products by selecting multiple attribute using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv                                                              |
     When I am on the "csv_footwear_product_export" export job edit page
@@ -62,7 +62,35 @@ Feature: Export products with only selected attributes
     BOOT-2;;1;boots;;dry;
     """
 
-  Scenario: Export products by selecting only any attributes using the UI
+  Scenario: Export products by selecting multiple attribute using the UI in a specific order
+    Given the following job "csv_footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv |
+    When I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
+    And I select the following attributes to export lace_color and weather_conditions
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
+    When I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contains the following headers:
+    """
+    sku;categories;enabled;family;groups;lace_color;weather_conditions
+    """
+    When I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
+    And I select the following attributes to export weather_conditions and lace_color
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
+    When I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contains the following headers:
+    """
+    sku;categories;enabled;family;groups;weather_conditions;lace_color
+    """
+
+  Scenario: Export products by selecting no attributes using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv                                                              |
     When I am on the "csv_footwear_product_export" export job edit page
@@ -79,3 +107,18 @@ Feature: Export products with only selected attributes
     BOOT-1;;;;1;boots;;;;"The boot 1";;;;;;;
     BOOT-2;;;;1;boots;;;;"The boot 2";;;;;;;dry
     """
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5941
+  Scenario: Navigate between export profile tabs
+    Given the following job "csv_footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv                                                              |
+    When I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I filter by "sku" with operator "IN" and value "BOOT-1"
+    And I press the "Save" button
+    And I should not see the text "There are unsaved changes"
+    Then I should be on the "Content" tab
+    When I visit the "History" tab
+    And I press the "Edit" button
+    Then I should see the "Save" button
+    And I should be on the "History" tab

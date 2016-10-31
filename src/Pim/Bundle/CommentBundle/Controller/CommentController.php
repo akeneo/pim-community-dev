@@ -45,9 +45,9 @@ class CommentController
         RemoverInterface $commentRemover,
         $commentClassName
     ) {
-        $this->tokenStorage     = $tokenStorage;
-        $this->doctrine         = $doctrine;
-        $this->commentRemover  = $commentRemover;
+        $this->tokenStorage = $tokenStorage;
+        $this->doctrine = $doctrine;
+        $this->commentRemover = $commentRemover;
         $this->commentClassName = $commentClassName;
     }
 

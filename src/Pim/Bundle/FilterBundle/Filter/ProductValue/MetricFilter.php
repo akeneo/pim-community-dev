@@ -52,7 +52,7 @@ class MetricFilter extends OroNumberFilter
     ) {
         parent::__construct($factory, $util);
 
-        $this->translator     = $translator;
+        $this->translator = $translator;
         $this->measureManager = $measureManager;
     }
 

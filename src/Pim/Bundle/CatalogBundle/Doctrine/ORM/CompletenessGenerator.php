@@ -52,11 +52,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function __construct(EntityManagerInterface $manager, $productClass, $productValueClass, $attributeClass)
     {
-        $this->manager           = $manager;
-        $this->connection        = $manager->getConnection();
-        $this->productClass      = $productClass;
+        $this->manager = $manager;
+        $this->connection = $manager->getConnection();
+        $this->productClass = $productClass;
         $this->productValueClass = $productValueClass;
-        $this->attributeClass    = $attributeClass;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
@@ -88,7 +88,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * applying the criteria if provided to reduce the product set.
      *
      * If the completeness is being calculated for only one product, we
-     * do not create the missing_completeness temporary table.
+     * do not create the missing_completeness and complete_price temporary tables.
      * This allows to drastically reduce the IO waits on non SSD disks.
      *
      * For completeness recalculation of channels or families, we keep
@@ -124,7 +124,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function prepareCompletePrices($criteria = [])
     {
-        $cleanupSql  = 'DROP TABLE IF EXISTS ' . self::COMPLETE_PRICES_TABLE . PHP_EOL;
+        $cleanupSql = 'DROP TABLE IF EXISTS ' . self::COMPLETE_PRICES_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
@@ -154,7 +154,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function prepareMissingCompletenesses(array $criteria = [])
     {
-        $cleanupSql  = 'DROP TABLE IF EXISTS ' . self::MISSING_TABLE . PHP_EOL;
+        $cleanupSql = 'DROP TABLE IF EXISTS ' . self::MISSING_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
@@ -295,45 +295,38 @@ MISSING_SQL;
     protected function getMainSqlPart()
     {
         return <<<MAIN_SQL
-            INSERT INTO pim_catalog_completeness (
-                locale_id, channel_id, product_id, ratio, missing_count, required_count
-            )
-            SELECT
-                l.id AS locale_id, c.id AS channel_id, p.id AS product_id,
-                (
-                    COUNT(distinct v.id)
-                    / (
-                        SELECT count(*)
-                        FROM pim_catalog_attribute_requirement r
-                        LEFT JOIN pim_catalog_attribute_locale al ON al.attribute_id = r.attribute_id
-                        WHERE family_id = p.family_id
-                            AND channel_id = c.id
-                            AND r.required = true
-                            AND (al.locale_id = l.id OR al.locale_id IS NULL)
-                    )
-                    * 100
-                ) AS ratio,
-                (
-                    (
-                        SELECT count(*)
-                        FROM pim_catalog_attribute_requirement r
-                        LEFT JOIN pim_catalog_attribute_locale al ON al.attribute_id = r.attribute_id
-                        WHERE family_id = p.family_id
-                            AND channel_id = c.id
-                            AND r.required = true
-                            AND (al.locale_id = l.id OR al.locale_id IS NULL)
-                    ) - COUNT(distinct v.id)
-                ) AS missing_count,
-                (
-                    SELECT count(*)
+    INSERT INTO pim_catalog_completeness (
+        locale_id, channel_id, product_id, ratio, missing_count, required_count
+    )
+    SELECT
+        locale_id,
+        channel_id,
+        product_id,
+        (req_values_filled / required_count * 100) as ratio,
+        (required_count - req_values_filled) as missing_count,
+        required_count
+    FROM (
+        SELECT
+            values_filled.locale_id,
+            values_filled.channel_id,
+            values_filled.product_id,
+            values_filled.req_values_filled,
+            (
+                SELECT COUNT(*)
                     FROM pim_catalog_attribute_requirement r
                     LEFT JOIN pim_catalog_attribute_locale al ON al.attribute_id = r.attribute_id
-                    WHERE family_id = p.family_id
-                        AND channel_id = c.id
-                        AND r.required = true
-                        AND (al.locale_id = l.id OR al.locale_id IS NULL)
-                ) AS required_count
-
+                    WHERE r.family_id = values_filled.family_id
+                        AND r.channel_id = values_filled.channel_id
+                        AND r.required = TRUE
+                        AND (al.locale_id = values_filled.locale_id OR al.locale_id IS NULL)
+            ) AS required_count
+        FROM (
+            SELECT
+                l.id AS locale_id,
+                c.id AS channel_id,
+                p.id AS product_id,
+                p.family_id AS family_id,
+                COUNT(DISTINCT v.id) AS req_values_filled
             FROM %missing_completeness% AS m
             JOIN pim_catalog_channel c ON c.id = m.channel_id
             JOIN pim_catalog_locale l ON l.id = m.locale_id
@@ -350,7 +343,6 @@ MISSING_SQL;
                 AND cp.channel_id = c.id
                 AND cp.locale_id = l.id
             LEFT JOIN pim_catalog_attribute_locale al ON al.attribute_id = v.attribute_id
-
             WHERE (
                 %product_value_conditions%
                 %extra_conditions%
@@ -358,8 +350,9 @@ MISSING_SQL;
             )
             AND (al.locale_id = l.id OR al.locale_id IS NULL)
             AND r.required = true
-
             GROUP BY p.id, c.id, l.id
+        ) AS values_filled
+    ) AS results
 MAIN_SQL;
     }
 
@@ -377,8 +370,8 @@ MAIN_SQL;
         return [
             '%product_value_conditions%' => implode(' OR ', $this->getProductValueConditions()),
             '%product_value_joins%'      => implode(' ', $this->getProductValueJoins()),
-            '%extra_joins%'              => implode(' ', $this->getExtraJoins()),
-            '%extra_conditions%'         => implode(' ', $this->getExtraConditions()),
+            '%extra_joins%'              => implode(' ', $this->getExtraJoins($criteria)),
+            '%extra_conditions%'         => implode(' ', $this->getExtraConditions($criteria)),
             '%missing_completeness%'     => isset($criteria['productId']) ?
                     $this->getMissingCompletenessesSQL() :
                     self::MISSING_TABLE,
@@ -397,13 +390,13 @@ MAIN_SQL;
      */
     protected function applyTableNames($sql)
     {
-        $categoryMapping  = $this->getClassMetadata($this->productClass)->getAssociationMapping('categories');
+        $categoryMapping = $this->getClassMetadata($this->productClass)->getAssociationMapping('categories');
         $categoryMetadata = $this->getClassMetadata($categoryMapping['targetEntity']);
 
-        $valueMapping  = $this->getClassMetadata($this->productClass)->getAssociationMapping('values');
+        $valueMapping = $this->getClassMetadata($this->productClass)->getAssociationMapping('values');
         $valueMetadata = $this->getClassMetadata($valueMapping['targetEntity']);
 
-        $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
+        $attributeMapping = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $this->getClassMetadata($attributeMapping['targetEntity']);
 
         return strtr(
@@ -585,7 +578,7 @@ MAIN_SQL;
 
             case ClassMetadataInfo::ONE_TO_MANY:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
-                $relatedMapping  = $relatedMetadata->getAssociationMapping($mapping['mappedBy']);
+                $relatedMapping = $relatedMetadata->getAssociationMapping($mapping['mappedBy']);
 
                 return [
                     sprintf(
@@ -600,7 +593,7 @@ MAIN_SQL;
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
 
                 $joinPattern = 'LEFT JOIN %s %s ON %s.id = v.%s';
-                $joinColumn  = $mapping['joinColumns'][0]['name'];
+                $joinColumn = $mapping['joinColumns'][0]['name'];
 
                 return [
                     sprintf(
@@ -708,17 +701,21 @@ SQL;
     }
 
     /**
+     * @param array $criteria
+     *
      * @return string[]
      */
-    protected function getExtraJoins()
+    protected function getExtraJoins(array $criteria)
     {
         return [];
     }
 
     /**
+     * @param array $criteria
+     *
      * @return string[]
      */
-    protected function getExtraConditions()
+    protected function getExtraConditions(array $criteria)
     {
         return [];
     }

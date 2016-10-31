@@ -81,16 +81,16 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         BulkObjectDetacherInterface $detacher,
         $productClassName
     ) {
-        $this->objectManager              = $objectManager;
-        $this->productSaver               = $productSaver;
-        $this->templateMediaManager       = $templateMediaManager;
-        $this->productTplApplier          = $productTplApplier;
-        $this->versionContext             = $versionContext;
-        $this->optionsResolver            = $optionsResolver;
-        $this->eventDispatcher            = $eventDispatcher;
+        $this->objectManager = $objectManager;
+        $this->productSaver = $productSaver;
+        $this->templateMediaManager = $templateMediaManager;
+        $this->productTplApplier = $productTplApplier;
+        $this->versionContext = $versionContext;
+        $this->optionsResolver = $optionsResolver;
+        $this->eventDispatcher = $eventDispatcher;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->detacher                   = $detacher;
-        $this->productClassName           = $productClassName;
+        $this->detacher = $detacher;
+        $this->productClassName = $productClassName;
     }
 
     /**
@@ -160,8 +160,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     protected function saveAssociatedProducts(GroupInterface $group)
     {
-        $productInGroup     = $group->getProducts();
-        $productsToUpdate   = $productInGroup->toArray();
+        $productInGroup = $group->getProducts();
+        $productsToUpdate = $productInGroup->toArray();
         $productToUpdateIds = array_map(function ($product) {
             return $product->getId();
         }, $productsToUpdate);
@@ -173,7 +173,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             foreach ($oldProducts as $oldProduct) {
                 if (!in_array($oldProduct->getId(), $productToUpdateIds)) {
                     $oldProduct->removeGroup($group);
-                    $productsToUpdate[]   = $oldProduct;
+                    $productsToUpdate[] = $oldProduct;
                     $productToUpdateIds[] = $oldProduct->getId();
                 }
             }

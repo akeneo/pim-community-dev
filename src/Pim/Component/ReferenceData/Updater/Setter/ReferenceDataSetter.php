@@ -37,7 +37,7 @@ class ReferenceDataSetter extends AbstractAttributeSetter
         parent::__construct($productBuilder, $attrValidatorHelper);
 
         $this->repositoryResolver = $repositoryResolver;
-        $this->supportedTypes     = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**

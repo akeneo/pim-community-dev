@@ -38,9 +38,9 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields       = $supportedFields;
-        $this->supportedOperators    = $supportedOperators;
-        $this->jobRepository         = $jobRepository;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
+        $this->jobRepository = $jobRepository;
         $this->jobInstanceRepository = $jobInstanceRepository;
     }
 

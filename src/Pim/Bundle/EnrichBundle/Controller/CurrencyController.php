@@ -37,8 +37,8 @@ class CurrencyController
      */
     public function __construct(Request $request, RouterInterface $router, SaverInterface $currencySaver)
     {
-        $this->request       = $request;
-        $this->router        = $router;
+        $this->request = $request;
+        $this->router = $router;
         $this->currencySaver = $currencySaver;
     }
 

@@ -46,9 +46,9 @@ class AssociationController
         EngineInterface $templating
     ) {
         $this->assocTypeRepository = $assocTypeRepository;
-        $this->productRepository   = $productRepository;
-        $this->productBuilder      = $productBuilder;
-        $this->templating          = $templating;
+        $this->productRepository = $productRepository;
+        $this->productBuilder = $productBuilder;
+        $this->templating = $templating;
     }
 
     /**

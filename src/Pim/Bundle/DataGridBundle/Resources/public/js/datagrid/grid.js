@@ -1,10 +1,40 @@
 /*jslint nomen: true, vars: true*/
 /*global define*/
-define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro/mediator', 'oro/loading-mask',
-    'oro/datagrid/header', 'oro/datagrid/body', 'oro/datagrid/toolbar', 'oro/datagrid/action-column',
-    'oro/datagrid/select-row-cell', 'oro/datagrid/select-all-header-cell',
-    'oro/datagrid/refresh-collection-action', 'oro/datagrid/reset-collection-action'],
-    function ($, _, Backgrid, Translator, __, mediator, LoadingMask, GridHeader, GridBody, Toolbar, ActionColumn, SelectRowCell, SelectAllHeaderCell, RefreshCollectionAction, ResetCollectionAction) {
+define(
+    [
+        'jquery',
+        'underscore',
+        'backgrid',
+        'translator',
+        'oro/translator',
+        'oro/mediator',
+        'oro/loading-mask',
+        'oro/datagrid/header',
+        'oro/datagrid/body',
+        'oro/datagrid/toolbar',
+        'oro/datagrid/action-column',
+        'oro/datagrid/select-row-cell',
+        'oro/datagrid/select-all-header-cell',
+        'oro/datagrid/refresh-collection-action',
+        'oro/datagrid/reset-collection-action'
+    ],
+    function (
+        $,
+        _,
+        Backgrid,
+        Translator,
+        __,
+        mediator,
+        LoadingMask,
+        GridHeader,
+        GridBody,
+        Toolbar,
+        ActionColumn,
+        SelectRowCell,
+        SelectAllHeaderCell,
+        RefreshCollectionAction,
+        ResetCollectionAction
+    ) {
         'use strict';
 
         /**
@@ -33,13 +63,11 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
             /** @property */
             template: _.template(
                 '<div class="toolbar"></div>' +
-                    '<div class="container-fluid">' +
-                    '<div class="grid-container">' +
-                    '<table class="grid table-hover table"></table>' +
+                '<div class="grid-container container-fluid">' +
+                    '<table class="AknGrid grid"></table>' +
                     '<div class="no-data"></div>' +
                     '<div class="loading-mask"></div>' +
-                    '</div>' +
-                    '</div>'
+                '</div>'
             ),
 
             /** @property */
@@ -74,7 +102,7 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
              */
             defaults: {
                 rowClickActionClass: 'row-click-action',
-                rowClassName:        '',
+                rowClassName:        'AknGrid-bodyRow',
                 toolbarOptions:      {addResetAction: true, addRefreshAction: true},
                 rowClickAction:      undefined,
                 multipleSorting:     true,
@@ -269,10 +297,7 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
              */
             createMassAction: function (ActionPrototype) {
                 return new ActionPrototype({
-                    datagrid:        this,
-                    launcherOptions: {
-                        className: 'btn'
-                    }
+                    datagrid: this
                 });
             },
 
@@ -289,8 +314,8 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
                         datagrid: grid,
                         launcherOptions: {
                             label: 'oro.datagrid.action.refresh',
-                            className: 'btn',
-                            iconClassName: 'icon-refresh'
+                            iconClassName: 'icon-refresh',
+                            className: 'AknActionButtonsList-button'
                         }
                     });
 
@@ -320,8 +345,8 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
                         datagrid: grid,
                         launcherOptions: {
                             label: 'oro.datagrid.action.reset',
-                            className: 'btn',
-                            iconClassName: 'icon-repeat'
+                            iconClassName: 'icon-repeat',
+                            className: 'AknActionButtonsList-button'
                         }
                     });
 

@@ -17,7 +17,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          * @property
          */
         template: _.template(
-            '<div class="btn filter-select filter-criteria-selector">' +
+            '<div class="AknActionButton filter-select filter-criteria-selector">' +
                 '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<select>' +
                     '<% _.each(options, function (option) { %>' +
@@ -84,7 +84,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          */
         widgetOptions: {
             multiple: false,
-            classes: 'select-filter-widget'
+            classes: 'AknActionButton-selectButton select-filter-widget'
         },
 
         /**
@@ -202,7 +202,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             });
 
             this.selectWidget.setViewDesign(this);
-            this.$(this.buttonSelector).append('<span class="caret"></span>');
+            this.$(this.buttonSelector).append('<span class="AknActionButton-caret AknCaret"></span>');
         },
 
         /**

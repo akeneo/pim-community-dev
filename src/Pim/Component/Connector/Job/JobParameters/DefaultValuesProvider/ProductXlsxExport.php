@@ -42,9 +42,9 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         LocaleRepositoryInterface $localeRepository,
         array $supportedJobNames
     ) {
-        $this->simpleProvider    = $simpleProvider;
+        $this->simpleProvider = $simpleProvider;
         $this->channelRepository = $channelRepository;
-        $this->localeRepository  = $localeRepository;
+        $this->localeRepository = $localeRepository;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -60,8 +60,12 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters['filePath'] = sys_get_temp_dir() . 'csv_products_export.xlsx';
         $parameters['linesPerFile'] = 10000;
 
-        $defaultChannel = $this->channelRepository->getFullChannels()[0];
-        $defaultLocaleCode = $this->localeRepository->getActivatedLocaleCodes()[0];
+        $channels = $this->channelRepository->getFullChannels();
+        $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;
+
+        $localesCodes = $this->localeRepository->getActivatedLocaleCodes();
+        $defaultLocaleCode = (0 !== count($localesCodes)) ? $localesCodes[0] : null;
+
         $parameters['filters'] = [
             'data'      => [
                 [
@@ -81,7 +85,7 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
                 ]
             ],
             'structure' => [
-                'scope'   => $defaultChannel->getCode(),
+                'scope'   => $defaultChannelCode,
                 'locales' => [$defaultLocaleCode],
             ],
         ];

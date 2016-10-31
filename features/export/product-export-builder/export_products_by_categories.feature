@@ -65,6 +65,7 @@ Feature: Export products from any given categories
     Then I should see the text "All products"
     When I press the "Select categories" button
     Then I should see the text "Categories selection"
+    And I should see the text "Master catalog"
     When I click on the "toys_games" category
     And I expand the "toys_games" category
     And I click on the "action_figures" category

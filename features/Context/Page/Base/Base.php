@@ -25,13 +25,17 @@ class Base extends Page
     protected $elements = [
         'Body'             => ['css' => 'body'],
         'Dialog'           => ['css' => 'div.modal'],
-        'Title'            => ['css' => '.navbar-title'],
+        'Title'            => ['css' => '.AknTitleContainer-title'],
         'Product title'    => ['css' => '.entity-title'],
         'HeadTitle'        => ['css' => 'title'],
         'Flash messages'   => ['css' => '.flash-messages-holder'],
-        'Navigation Bar'   => ['css' => 'header#oroplatform-header'],
+        'Navigation Bar'   => ['css' => '.AknHeader-menus'],
         'Container'        => ['css' => '#container'],
         'Locales dropdown' => ['css' => '#locale-switcher'],
+        'Tabs'             => ['css' => '#form-navbar'],
+        'Oro tabs'         => ['css' => '.navbar.scrollspy-nav'],
+        'Form tabs'        => ['css' => '.nav-tabs.form-tabs'],
+        'Active tab'       => ['css' => '.form-horizontal .tab-pane.active'],
     ];
 
     /**
@@ -170,7 +174,7 @@ class Base extends Page
     {
         $elt = $this->getElement('Title');
 
-        $subtitle  = $elt->find('css', '.sub-title');
+        $subtitle  = $elt->find('css', '.AknTitleContainer-title');
         $separator = $elt->find('css', '.separator');
         $name      = $elt->find('css', '.product-name');
 
@@ -193,13 +197,14 @@ class Base extends Page
     /**
      * Overriden for compatibility with links
      *
-     * @param string $locator
+     * @param string  $locator
+     * @param boolean $forceVisible
      *
      * @throws ElementNotFoundException
      */
-    public function pressButton($locator)
+    public function pressButton($locator, $forceVisible = false)
     {
-        $button = $this->getButton($locator);
+        $button = $forceVisible ? $this->getVisibleButton($locator) : $this->getButton($locator);
 
         if (null === $button) {
             $button = $this->find(
@@ -221,26 +226,46 @@ class Base extends Page
     /**
      * Get button
      *
-     * @param string $locator
+     * @param string  $locator
+     * @param boolean $forceVisible
      *
      * @return NodeElement|null
      */
-    public function getButton($locator)
+    public function getButton($locator, $forceVisible = false)
     {
         // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
-
         if (null === $button) {
             $button = $this->find('xpath', sprintf("//a[text() = '%s']", $locator));
         }
-
         if (null === $button) {
             $button = $this->find('css', sprintf('a[title="%s"]', $locator));
         }
-
         if (null === $button) {
             // Use Mink search, which use "contains" xpath condition
             $button = $this->findButton($locator);
+        }
+        return $button;
+    }
+
+    /**
+     * Get visible button
+     *
+     * @param string  $locator
+     *
+     * @return NodeElement|null
+     */
+    public function getVisibleButton($locator)
+    {
+        $button = $this->getFirstVisible($this->findAll('xpath', sprintf("//button[text() = '%s']", $locator)));
+        if (null === $button) {
+            $button = $this->getFirstVisible($this->findAll('xpath', sprintf("//a[text() = '%s']", $locator)));
+        }
+        if (null === $button) {
+            $button =  $this->getFirstVisible($this->findAll('css', sprintf('a[title="%s"]', $locator)));
+        }
+        if (null === $button) {
+            $button = $this->getFirstVisible($this->findAll('named', array('button', $locator)));
         }
 
         return $button;
@@ -343,10 +368,9 @@ class Base extends Page
      */
     public function clickOnAkeneoLogo()
     {
-        $this
-            ->getElement('Navigation Bar')
-            ->find('css', 'h1.logo a')
-            ->click();
+        $this->spin(function () {
+            return $this->getElement('Navigation Bar')->find('css', '.AknHeader-logo a');
+        }, 'Can not find Akeneo logo')->click();
     }
 
     /**
@@ -358,12 +382,12 @@ class Base extends Page
     public function getDropdownButtonItem($item, $button)
     {
         $dropdownToggle = $this->spin(function () use ($button) {
-            return $this->find('css', sprintf('.dropdown-toggle:contains("%s")', $button));
+            return $this->find('css', sprintf('*[data-toggle="dropdown"]:contains("%s")', $button));
         }, sprintf('Dropdown button "%s" not found', $button));
 
         $dropdownToggle->click();
 
-        $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu');
+        $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu, .AknDropdown-menu');
 
         return $this->spin(function () use ($dropdownMenu, $item) {
             return $dropdownMenu->find('css', sprintf('li:contains("%s") a', $item));
@@ -396,5 +420,119 @@ class Base extends Page
         $session->buttondown('');
         $session->moveto(['element' => $to->getID()]);
         $session->buttonup('');
+    }
+
+    /**
+     * Visit the specified tab
+     *
+     * @param string $tab
+     */
+    public function visitTab($tab)
+    {
+        $tabs = $this->getPageTabs();
+
+        $tabDom = $this->spin(function () use ($tabs, $tab) {
+            return $tabs->findLink($tab);
+        }, sprintf('Could not find a tab named "%s"', $tab));
+
+        $this->spin(function () {
+            $loading = $this->find('css', '#loading-wrapper');
+
+            return null === $loading || !$loading->isVisible();
+        }, sprintf('Could not visit tab %s because of loading wrapper', $tab));
+
+        $this->spin(function () use ($tabDom) {
+            $tabDom->click();
+
+            return $tabDom->getParent()->hasClass('active') || $tabDom->getParent()->hasClass('tab-scrollable');
+        }, sprintf('Cannot switch to the tab %s', $tab));
+    }
+
+    /**
+     * Get the tabs in the current page
+     *
+     * @return NodeElement[]
+     */
+    public function getTabs()
+    {
+        $tabs = $this->spin(function () {
+            return $this->find('css', $this->elements['Tabs']['css']);
+        }, sprintf('Cannot find "%s" element', $this->elements['Tabs']['css']));
+
+        if (null === $tabs) {
+            $tabs = $this->getElement('Oro tabs');
+        }
+
+        return $tabs->findAll('css', 'a');
+    }
+
+    /**
+     * Get the form tab containg $tab text
+     *
+     * @param string $tab
+     *
+     * @return NodeElement|null
+     */
+    public function getFormTab($tab)
+    {
+        $tabs = $this->getPageTabs();
+
+        try {
+            $node = $this->spin(function () use ($tabs, $tab) {
+                return $tabs->find('css', sprintf('a:contains("%s")', $tab));
+            }, sprintf('Cannot find form tab "%s"', $tab));
+        } catch (\Exception $e) {
+            $node = null;
+        }
+
+        return $node;
+    }
+
+    /**
+     * Get the specified tab
+     *
+     * @return NodeElement
+     */
+    public function getTab($tab)
+    {
+        return $this->find('css', sprintf('a:contains("%s")', $tab));
+    }
+
+    /**
+     * Returns the tabs of the current page, if any.
+     *
+     * @return NodeElement
+     */
+    protected function getPageTabs()
+    {
+        return $this->spin(function () {
+            $tabs = $this->find('css', $this->elements['Tabs']['css']);
+            if (null === $tabs) {
+                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
+            }
+            if (null === $tabs) {
+                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
+            }
+
+            return $tabs;
+        }, 'Cannot find any tabs in this page');
+    }
+
+    /**
+     * Returns the first visible element
+     *
+     * @param $nodeElements NodeElement[]
+     *
+     * @return NodeElement|null
+     */
+    protected function getFirstVisible(array $nodeElements)
+    {
+        foreach ($nodeElements as $nodeElement) {
+            if ($nodeElement->isVisible()) {
+                return $nodeElement;
+            }
+        }
+
+        return null;
     }
 }

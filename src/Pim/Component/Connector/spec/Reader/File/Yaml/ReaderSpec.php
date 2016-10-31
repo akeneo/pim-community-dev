@@ -39,7 +39,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
 
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalledTimes(3);
 
         $converter->convert(['sku' => 'mug_akeneo'])->willReturn(['sku' => 'mug_akeneo']);
         $converter->convert([
@@ -73,8 +73,8 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $data = [
             'sku'  => 'mug_akeneo',
@@ -132,7 +132,7 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $result = [
             'mug_akeneo' => [
@@ -163,7 +163,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('filePath')
             ->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_without_code.yml'));
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $result = [
             'mug_akeneo_blue' => [
@@ -196,7 +196,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('filePath')
             ->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
 
-        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $converter->convert(['sku' => 'mug_akeneo'])->willReturn(['sku' => 'mug_akeneo']);
         $converter->convert([

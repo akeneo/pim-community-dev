@@ -3,10 +3,12 @@
 define([
     'jquery',
     'underscore',
+    'oro/translator',
     'pim/form',
-    'text!pim/template/export/product/edit/content/data/validation'
+    'text!pim/template/export/product/edit/content/data/validation',
+    'oro/messenger'
 
-], function ($, _, BaseForm, template) {
+], function ($, _, __, BaseForm, template, messenger) {
     return BaseForm.extend({
         template: _.template(template),
         errors: [],
@@ -27,6 +29,13 @@ define([
 
         setValidationErrors: function (errors) {
             this.errors = errors;
+
+            if (!_.isEmpty(errors)) {
+                messenger.notificationFlashMessage(
+                    'error',
+                    __('error.saving.export_profile')
+                );
+            }
         },
 
         /**

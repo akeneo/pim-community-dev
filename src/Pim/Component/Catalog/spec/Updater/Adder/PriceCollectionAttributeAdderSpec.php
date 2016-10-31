@@ -186,8 +186,8 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         ProductPriceInterface $price
     ) {
         $locale = 'fr_FR';
-        $scope  = 'mobile';
-        $data   = [['data' => 123.2, 'currency' => 'EUR']];
+        $scope = 'mobile';
+        $data = [['data' => 123.2, 'currency' => 'EUR']];
 
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 

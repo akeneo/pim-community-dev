@@ -16,5 +16,23 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/enrich/group/{id}/edit';
+    protected $path = '/enrich/group/{code}/edit';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            [
+                'Main context selector' => [
+                    'css'        => '.tab-container .object-attributes .attribute-edit-actions',
+                ],
+                'Save' => ['css' => 'button.save'],
+            ]
+        );
+    }
 }

@@ -31,7 +31,7 @@ class RemoveProductValueProcessor extends AbstractProcessor
         ValidatorInterface $validator
     ) {
         $this->propertyRemover = $propertyRemover;
-        $this->validator       = $validator;
+        $this->validator = $validator;
     }
 
     /**

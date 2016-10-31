@@ -131,7 +131,7 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function createMockResource($name, $content)
     {
-        $result = $this->getMock('Assetic\Factory\Resource\ResourceInterface');
+        $result = $this->createMock('Assetic\Factory\Resource\ResourceInterface');
 
         $result->expects($this->once())
             ->method('getContent')

@@ -150,6 +150,7 @@ services:
         class: '%pim_catalog.updater.attribute_group.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_group'
 
     pim_catalog.updater.group_type:
         class: '%pim_catalog.updater.group_type.class%'
@@ -177,6 +178,7 @@ services:
         arguments:
             - '@pim_catalog.repository.group_type'
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.product_query_builder_factory'
 
     # Setters
     pim_catalog.updater.setter.registry:

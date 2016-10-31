@@ -68,7 +68,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -159,7 +159,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -251,7 +251,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -430,7 +430,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -442,7 +442,7 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
@@ -473,11 +473,11 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -574,9 +574,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -675,7 +675,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
         $product->getId()->willReturn(1);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,

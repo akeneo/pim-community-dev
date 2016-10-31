@@ -20,12 +20,12 @@ interface BinaryFamilyInterface
     /**
      * @staticvar string
      */
-    const BIT      = 'BIT';
+    const BIT = 'BIT';
 
     /**
      * @staticvar string
      */
-    const BYTE     = 'BYTE';
+    const BYTE = 'BYTE';
 
     /**
      * @staticvar string

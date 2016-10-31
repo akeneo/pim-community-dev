@@ -72,13 +72,13 @@ class UserContext
         ChoicesBuilderInterface $choicesBuilder,
         $defaultLocale
     ) {
-        $this->tokenStorage      = $tokenStorage;
-        $this->localeRepository  = $localeRepository;
+        $this->tokenStorage = $tokenStorage;
+        $this->localeRepository = $localeRepository;
         $this->channelRepository = $channelRepository;
         $this->categoryRepository= $categoryRepository;
-        $this->requestStack      = $requestStack;
-        $this->choicesBuilder    = $choicesBuilder;
-        $this->defaultLocale     = $defaultLocale;
+        $this->requestStack = $requestStack;
+        $this->choicesBuilder = $choicesBuilder;
+        $this->defaultLocale = $defaultLocale;
     }
 
     /**
@@ -182,8 +182,8 @@ class UserContext
      */
     public function getChannelChoicesWithUserChannel()
     {
-        $channels        = $this->channelRepository->findAll();
-        $channelChoices  = $this->choicesBuilder->buildChoices($channels);
+        $channels = $this->channelRepository->findAll();
+        $channelChoices = $this->choicesBuilder->buildChoices($channels);
         $userChannelCode = $this->getUserChannelCode();
 
         if (array_key_exists($userChannelCode, $channelChoices)) {
@@ -257,7 +257,7 @@ class UserContext
     public function toArray()
     {
         $channels = array_keys($this->getChannelChoicesWithUserChannel());
-        $locales  = $this->getUserLocaleCodes();
+        $locales = $this->getUserLocaleCodes();
 
         return [
             'locales'  => $locales,
@@ -333,7 +333,7 @@ class UserContext
         $token = $this->tokenStorage->getToken();
 
         if ($token !== null) {
-            $user   = $token->getUser();
+            $user = $token->getUser();
             $method = sprintf('get%s', ucfirst($optionName));
 
             if ($user && is_callable([$user, $method])) {

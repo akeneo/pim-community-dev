@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class ProductValuesDenormalizerSpec extends ObjectBehavior
 {
-    const FORMAT_CSV  = 'csv';
+    const FORMAT_CSV = 'csv';
     const VALUE_CLASS = 'Pim\Component\Catalog\Model\ProductValue';
 
     function let(DenormalizerInterface $valueDenormalizer, AttributeColumnInfoExtractor $fieldExtractor)

@@ -30,7 +30,7 @@ class OrmFilterProductDatasourceAdapter extends OrmFilterDatasourceAdapter imple
      */
     public function __construct(DatasourceInterface $datasource)
     {
-        $this->qb  = $datasource->getQueryBuilder();
+        $this->qb = $datasource->getQueryBuilder();
         $this->pqb = $datasource->getProductQueryBuilder();
         $this->expressionBuilder = null;
     }

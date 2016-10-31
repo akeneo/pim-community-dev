@@ -29,7 +29,7 @@ class CategoryItemsCounter implements CategoryItemsCounterInterface
         ItemCategoryRepositoryInterface $itemRepository,
         CategoryRepositoryInterface $categoryRepo
     ) {
-        $this->itemRepository     = $itemRepository;
+        $this->itemRepository = $itemRepository;
         $this->categoryRepository = $categoryRepo;
     }
 

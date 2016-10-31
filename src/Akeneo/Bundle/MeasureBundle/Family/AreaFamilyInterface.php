@@ -20,27 +20,27 @@ interface AreaFamilyInterface
     /**
      * @staticvar string
      */
-    const ACRE              = 'ACRE';
+    const ACRE = 'ACRE';
 
     /**
      * @staticvar string
      */
-    const ARE               = 'ARE';
+    const ARE = 'ARE';
 
     /**
      * @staticvar string
      */
-    const ARPENT            = 'ARPENT';
+    const ARPENT = 'ARPENT';
 
     /**
      * @staticvar string
      */
-    const CENTIARE          = 'CENTIARE';
+    const CENTIARE = 'CENTIARE';
 
     /**
      * @staticvar string
      */
-    const HECTARE           = 'HECTARE';
+    const HECTARE = 'HECTARE';
 
     /**
      * @staticvar string
@@ -50,27 +50,27 @@ interface AreaFamilyInterface
     /**
      * @staticvar string
      */
-    const SQUARE_CHAIN      = 'SQUARE_CHAIN';
+    const SQUARE_CHAIN = 'SQUARE_CHAIN';
 
     /**
      * @staticvar string
      */
-    const SQUARE_DECIMETER  = 'SQUARE_DECIMETER';
+    const SQUARE_DECIMETER = 'SQUARE_DECIMETER';
 
     /**
      * @staticvar string
      */
-    const SQUARE_DEKAMETER  = 'SQUARE_DEKAMETER';
+    const SQUARE_DEKAMETER = 'SQUARE_DEKAMETER';
 
     /**
      * @staticvar string
      */
-    const SQUARE_FOOT       = 'SQUARE_FOOT';
+    const SQUARE_FOOT = 'SQUARE_FOOT';
 
     /**
      * @staticvar string
      */
-    const SQUARE_FURLONG    = 'SQUARE_FURLONG';
+    const SQUARE_FURLONG = 'SQUARE_FURLONG';
 
     /**
      * @staticvar string
@@ -80,27 +80,27 @@ interface AreaFamilyInterface
     /**
      * @staticvar string
      */
-    const SQUARE_INCH       = 'SQUARE_INCH';
+    const SQUARE_INCH = 'SQUARE_INCH';
 
     /**
      * @staticvar string
      */
-    const SQUARE_KILOMETER  = 'SQUARE_KILOMETER';
+    const SQUARE_KILOMETER = 'SQUARE_KILOMETER';
 
     /**
      * @staticvar string
      */
-    const SQUARE_METER      = 'SQUARE_METER';
+    const SQUARE_METER = 'SQUARE_METER';
 
     /**
      * @staticvar string
      */
-    const SQUARE_MIL        = 'SQUARE_MIL';
+    const SQUARE_MIL = 'SQUARE_MIL';
 
     /**
      * @staticvar string
      */
-    const SQUARE_MILE       = 'SQUARE_MILE';
+    const SQUARE_MILE = 'SQUARE_MILE';
 
     /**
      * @staticvar string
@@ -110,5 +110,5 @@ interface AreaFamilyInterface
     /**
      * @staticvar string
      */
-    const SQUARE_YARD       = 'SQUARE_YARD';
+    const SQUARE_YARD = 'SQUARE_YARD';
 }

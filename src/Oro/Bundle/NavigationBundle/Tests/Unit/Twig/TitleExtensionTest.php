@@ -18,7 +18,7 @@ class TitleExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->service = $this->getMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
+        $this->service = $this->createMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
         $this->extension = new TitleExtension($this->service);
     }
 

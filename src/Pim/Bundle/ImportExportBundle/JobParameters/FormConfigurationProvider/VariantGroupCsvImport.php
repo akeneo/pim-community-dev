@@ -45,10 +45,10 @@ class VariantGroupCsvImport implements FormConfigurationProviderInterface
         array $decimalSeparators,
         array $dateFormats
     ) {
-        $this->simpleCsvImport   = $simpleCsvImport;
+        $this->simpleCsvImport = $simpleCsvImport;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
-        $this->dateFormats       = $dateFormats;
+        $this->dateFormats = $dateFormats;
     }
 
     /**
@@ -63,8 +63,8 @@ class VariantGroupCsvImport implements FormConfigurationProviderInterface
                     'choices'  => $this->decimalSeparators,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_connector.export.decimalSeparator.label',
-                    'help'     => 'pim_connector.export.decimalSeparator.help'
+                    'label'    => 'pim_connector.import.csv.decimalSeparator.label',
+                    'help'     => 'pim_connector.import.csv.decimalSeparator.help'
                 ]
             ],
             'dateFormat' => [
@@ -73,15 +73,15 @@ class VariantGroupCsvImport implements FormConfigurationProviderInterface
                     'choices'  => $this->dateFormats,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_connector.export.dateFormat.label',
-                    'help'     => 'pim_connector.export.dateFormat.help',
+                    'label'    => 'pim_connector.import.csv.dateFormat.label',
+                    'help'     => 'pim_connector.import.csv.dateFormat.help',
                 ]
             ],
             'copyValues' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.import.copyValuesToProducts.label',
-                    'help'  => 'pim_connector.import.copyValuesToProducts.help'
+                    'label' => 'pim_connector.import.csv.copyValuesToProducts.label',
+                    'help'  => 'pim_connector.import.csv.copyValuesToProducts.help'
                 ]
             ]
         ];

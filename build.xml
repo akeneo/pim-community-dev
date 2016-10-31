@@ -5,15 +5,15 @@
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
+    <target name="build-phpunit" depends="prepare,composer,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
 
-    <target name="build-coverage" depends="prepare,composer,require-mongo,coverage"/>
+    <target name="build-coverage" depends="prepare,composer,coverage"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
     <target name="build-behat-deprecated" depends="prepare-deprecated-behat,prepare,composer,vendors,install-all-behat,behat"/>
 
-    <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
+    <target name="build-behat-mongo" depends="prepare,composer,activate-mongo,vendors,install-all-behat,behat"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,php-cs-fixer,phpcpd,phpdoc"/>
 
@@ -241,8 +241,23 @@
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="henrikbjorn/phpspec-code-coverage" />
-            <arg value="1.0.*@dev" />
+            <arg value="3.0.*@dev" />
         </exec>
+
+        <replace
+                file="${basedir}/phpspec.yml.dist"
+                token="suites:"
+                failOnNoReplacements="true"
+        >
+            <replacevalue><![CDATA[formatter.name: dot
+extensions:
+    Akeneo\SkipExampleExtension: ~
+    PhpSpecCodeCoverage\CodeCoverageExtension: ~
+code_coverage:
+    format: php
+    output: app/build/coverage-parts/phpspec.php
+suites:]]></replacevalue>
+        </replace>
 
         <!--
             As long as composer does not provide an option to ignore platform dependency,
@@ -275,8 +290,6 @@
             <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
             <arg value="${basedir}/bin/phpspec" />
             <arg value="run" />
-            <arg value="-c" />
-            <arg path="${basedir}/app/phpspec.jenkins-coverage.yml" />
         </exec>
 
         <exec executable="php">
@@ -354,15 +367,6 @@
         <exec executable="bash">
             <arg value="-c"/>
             <arg value="curl -sS https://getcomposer.org/installer | php"/>
-        </exec>
-    </target>
-
-    <target name="require-mongo" description="Require the mongo bundle">
-        <exec executable="${basedir}/composer.phar" failonerror="true">
-            <arg value="require" />
-            <arg value="--no-update" />
-            <arg value="doctrine/mongodb-odm-bundle" />
-            <arg value="v3.0.1" />
         </exec>
     </target>
 

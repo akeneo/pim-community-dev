@@ -7,7 +7,6 @@ use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Context\Spin\TimeoutException;
 
 /**
  * Basic form page
@@ -27,12 +26,8 @@ class Form extends Base
 
         $this->elements = array_merge(
             [
-                'Tabs'                            => ['css' => '#form-navbar'],
-                'Oro tabs'                        => ['css' => '.navbar.scrollspy-nav'],
                 'Dialog'                          => ['css' => 'div.modal'],
-                'Form tabs'                       => ['css' => '.nav-tabs.form-tabs'],
                 'Associations list'               => ['css' => '.associations-list'],
-                'Active tab'                      => ['css' => '.form-horizontal .tab-pane.active'],
                 'Groups'                          => ['css' => '.tab-groups'],
                 'Form Groups'                     => ['css' => '.group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
@@ -66,90 +61,6 @@ class Form extends Base
     public function saveAndClose()
     {
         $this->pressButton('Save and close');
-    }
-
-    /**
-     * Visit the specified tab
-     *
-     * @param string $tab
-     */
-    public function visitTab($tab)
-    {
-        $tabs = $this->spin(function () {
-            $tabs = $this->find('css', $this->elements['Tabs']['css']);
-            if (null === $tabs) {
-                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
-            }
-            if (null === $tabs) {
-                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
-            }
-
-            return $tabs;
-        }, sprintf('Cannot find "%s" tab', $tab));
-
-        $tabDom = $this->spin(function () use ($tabs, $tab) {
-            return $tabs->findLink($tab);
-        }, sprintf('Could not find a tab named "%s"', $tab));
-
-        $this->spin(function () {
-            $loading = $this->find('css', '#loading-wrapper');
-
-            return null === $loading || !$loading->isVisible();
-        }, sprintf('Could not visit tab %s because of loading wrapper', $tab));
-
-        $this->spin(function () use ($tabDom) {
-            $tabDom->click();
-
-            return $tabDom->getParent()->hasClass('active') || $tabDom->getParent()->hasClass('tab-scrollable');
-        }, sprintf('Cannot switch to the tab %s', $tab));
-    }
-
-    /**
-     * Get the tabs in the current page
-     *
-     * @return NodeElement[]
-     */
-    public function getTabs()
-    {
-        $tabs = $this->spin(function () {
-            return $this->find('css', $this->elements['Tabs']['css']);
-        }, sprintf('Cannot find "%s" element', $this->elements['Tabs']['css']));
-
-        if (null === $tabs) {
-            $tabs = $this->getElement('Oro tabs');
-        }
-
-        return $tabs->findAll('css', 'a');
-    }
-
-    /**
-     * Get the form tab containg $tab text
-     *
-     * @param string $tab
-     *
-     * @return NodeElement|null
-     */
-    public function getFormTab($tab)
-    {
-        try {
-            $node = $this->spin(function () use ($tab) {
-                return $this->getElement('Form tabs')->find('css', sprintf('a:contains("%s")', $tab));
-            }, sprintf('Cannot find form tab "%s"', $tab));
-        } catch (\Exception $e) {
-            $node = null;
-        }
-
-        return $node;
-    }
-
-    /**
-     * Get the specified tab
-     *
-     * @return NodeElement
-     */
-    public function getTab($tab)
-    {
-        return $this->find('css', sprintf('a:contains("%s")', $tab));
     }
 
     /**

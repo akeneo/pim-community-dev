@@ -57,12 +57,12 @@ class FileController
         DefaultImageProviderInterface $defaultImageProvider,
         array $filesystemAliases
     ) {
-        $this->imagineController    = $imagineController;
-        $this->filesystemProvider   = $filesystemProvider;
-        $this->fileInfoRepository   = $fileInfoRepository;
-        $this->fileTypeGuesser      = $fileTypeGuesser;
+        $this->imagineController = $imagineController;
+        $this->filesystemProvider = $filesystemProvider;
+        $this->fileInfoRepository = $fileInfoRepository;
+        $this->fileTypeGuesser = $fileTypeGuesser;
         $this->defaultImageProvider = $defaultImageProvider;
-        $this->filesystemAliases    = $filesystemAliases;
+        $this->filesystemAliases = $filesystemAliases;
     }
 
     /**

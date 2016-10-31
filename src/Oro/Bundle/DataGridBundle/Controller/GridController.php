@@ -17,7 +17,7 @@ class GridController extends Controller
      */
     public function getAction($gridName)
     {
-        $grid   = $this->get('oro_datagrid.datagrid.manager')->getDatagrid($gridName);
+        $grid = $this->get('oro_datagrid.datagrid.manager')->getDatagrid($gridName);
         $result = $grid->getData();
 
         return new JsonResponse($result->toArray());
@@ -36,13 +36,13 @@ class GridController extends Controller
 
         /** @var MassActionParametersParser $massActionParametersParser */
         $parametersParser = $this->get('oro_datagrid.mass_action.parameters_parser');
-        $parameters       = $parametersParser->parse($request);
+        $parameters = $parametersParser->parse($request);
 
         $requestData = array_merge($request->query->all(), $request->request->all());
 
         /** @var MassActionDispatcher $massActionDispatcher */
         $massActionDispatcher = $this->get('oro_datagrid.mass_action.dispatcher');
-        $response             = $massActionDispatcher->dispatch($gridName, $actionName, $parameters, $requestData);
+        $response = $massActionDispatcher->dispatch($gridName, $actionName, $parameters, $requestData);
 
         $data = [
             'successful' => $response->isSuccessful(),

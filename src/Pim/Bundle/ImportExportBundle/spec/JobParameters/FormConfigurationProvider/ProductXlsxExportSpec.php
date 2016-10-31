@@ -42,28 +42,28 @@ class ProductXlsxExportSpec extends ObjectBehavior
             'linesPerFile' => [
                 'type'    => 'integer',
                 'options' => [
-                    'label' => 'pim_connector.export.lines_per_files.label',
-                    'help'  => 'pim_connector.export.lines_per_files.help',
+                    'label' => 'pim_connector.export.xlsx.lines_per_files.label',
+                    'help'  => 'pim_connector.export.xlsx.lines_per_files.help',
                 ]
             ],
             'filePath' => [
                 'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
+                    'label' => 'pim_connector.export.xlsx.filePath.label',
+                    'help'  => 'pim_connector.export.xlsx.filePath.help'
                 ]
             ],
             'withHeader' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help'
+                    'label' => 'pim_connector.export.xlsx.withHeader.label',
+                    'help'  => 'pim_connector.export.xlsx.withHeader.help'
                 ]
             ],
             'with_media' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.export.with_media.label',
-                    'help'  => 'pim_connector.export.with_media.help'
+                    'label' => 'pim_connector.export.xlsx.with_media.label',
+                    'help'  => 'pim_connector.export.xlsx.with_media.help'
                 ]
             ],
         ];
@@ -83,8 +83,8 @@ class ProductXlsxExportSpec extends ObjectBehavior
                     'choices'  => [',', ';'],
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_connector.export.decimalSeparator.label',
-                    'help'     => 'pim_connector.export.decimalSeparator.help'
+                    'label'    => 'pim_connector.export.xlsx.decimalSeparator.label',
+                    'help'     => 'pim_connector.export.xlsx.decimalSeparator.help'
                 ]
             ],
             'dateFormat' => [
@@ -93,15 +93,15 @@ class ProductXlsxExportSpec extends ObjectBehavior
                     'choices'  => ['yyyy-MM-dd', 'dd/MM/yyyy'],
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_connector.export.dateFormat.label',
-                    'help'     => 'pim_connector.export.dateFormat.help',
+                    'label'    => 'pim_connector.export.xlsx.dateFormat.label',
+                    'help'     => 'pim_connector.export.xlsx.dateFormat.help',
                 ]
             ],
             'linesPerFile' => [
                 'type'    => 'integer',
                 'options' => [
-                    'label' => 'pim_connector.export.lines_per_files.label',
-                    'help'  => 'pim_connector.export.lines_per_files.help',
+                    'label' => 'pim_connector.export.xlsx.lines_per_files.label',
+                    'help'  => 'pim_connector.export.xlsx.lines_per_files.help',
                 ]
             ],
         ];

@@ -38,7 +38,7 @@ class AttributeValuesResolver
         LocaleRepositoryInterface $localeRepository
     ) {
         $this->channelRepository = $channelRepository;
-        $this->localeRepository  = $localeRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -54,7 +54,7 @@ class AttributeValuesResolver
     public function resolveEligibleValues(array $attributes, array $channels = null, array $locales = null)
     {
         $this->channels = $channels;
-        $this->locales  = $locales;
+        $this->locales = $locales;
 
         $values = [];
         foreach ($attributes as $attribute) {

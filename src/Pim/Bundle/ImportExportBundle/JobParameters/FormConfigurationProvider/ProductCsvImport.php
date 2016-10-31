@@ -45,10 +45,10 @@ class ProductCsvImport implements FormConfigurationProviderInterface
         array $decimalSeparators,
         array $dateFormats
     ) {
-        $this->simpleCsvImport   = $simpleCsvImport;
+        $this->simpleCsvImport = $simpleCsvImport;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
-        $this->dateFormats       = $dateFormats;
+        $this->dateFormats = $dateFormats;
     }
 
     /**
@@ -63,8 +63,8 @@ class ProductCsvImport implements FormConfigurationProviderInterface
                     'choices'  => $this->decimalSeparators,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_connector.export.decimalSeparator.label',
-                    'help'     => 'pim_connector.export.decimalSeparator.help'
+                    'label'    => 'pim_connector.import.csv.decimalSeparator.label',
+                    'help'     => 'pim_connector.import.csv.decimalSeparator.help'
                 ]
             ],
             'dateFormat' => [
@@ -73,47 +73,47 @@ class ProductCsvImport implements FormConfigurationProviderInterface
                     'choices'  => $this->dateFormats,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_connector.export.dateFormat.label',
-                    'help'     => 'pim_connector.export.dateFormat.help',
+                    'label'    => 'pim_connector.import.csv.dateFormat.label',
+                    'help'     => 'pim_connector.import.csv.dateFormat.help',
                 ]
             ],
             'enabled' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.import.enabled.label',
-                    'help'  => 'pim_connector.import.enabled.help'
+                    'label' => 'pim_connector.import.csv.enabled.label',
+                    'help'  => 'pim_connector.import.csv.enabled.help'
                 ]
             ],
             'categoriesColumn' => [
                 'options' => [
-                    'label' => 'pim_connector.import.categoriesColumn.label',
-                    'help'  => 'pim_connector.import.categoriesColumn.help'
+                    'label' => 'pim_connector.import.csv.categoriesColumn.label',
+                    'help'  => 'pim_connector.import.csv.categoriesColumn.help'
                 ]
             ],
             'familyColumn' => [
                 'options' => [
-                    'label' => 'pim_connector.import.familyColumn.label',
-                    'help'  => 'pim_connector.import.familyColumn.help'
+                    'label' => 'pim_connector.import.csv.familyColumn.label',
+                    'help'  => 'pim_connector.import.csv.familyColumn.help'
                 ]
             ],
             'groupsColumn' => [
                 'options' => [
-                    'label' => 'pim_connector.import.groupsColumn.label',
-                    'help'  => 'pim_connector.import.groupsColumn.help'
+                    'label' => 'pim_connector.import.csv.groupsColumn.label',
+                    'help'  => 'pim_connector.import.csv.groupsColumn.help'
                 ]
             ],
             'enabledComparison' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.import.enabledComparison.label',
-                    'help'  => 'pim_connector.import.enabledComparison.help'
+                    'label' => 'pim_connector.import.csv.enabledComparison.label',
+                    'help'  => 'pim_connector.import.csv.enabledComparison.help'
                 ]
             ],
             'realTimeVersioning' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_connector.import.realTimeVersioning.label',
-                    'help'  => 'pim_connector.import.realTimeVersioning.help'
+                    'label' => 'pim_connector.import.csv.realTimeVersioning.label',
+                    'help'  => 'pim_connector.import.csv.realTimeVersioning.help'
                 ]
             ]
         ];

@@ -28,7 +28,7 @@ class NotificationExtension extends \Twig_Extension
      */
     public function __construct(UserNotificationRepositoryInterface $repository, UserContext $userContext)
     {
-        $this->repository  = $repository;
+        $this->repository = $repository;
         $this->userContext = $userContext;
     }
 

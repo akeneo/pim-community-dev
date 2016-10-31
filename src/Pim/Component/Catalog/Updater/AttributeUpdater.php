@@ -43,10 +43,10 @@ class AttributeUpdater implements ObjectUpdaterInterface
         LocaleRepositoryInterface $localeRepository,
         AttributeTypeRegistry $registry
     ) {
-        $this->attrGroupRepo     = $attrGroupRepo;
-        $this->localeRepository  = $localeRepository;
-        $this->registry          = $registry;
-        $this->accessor          = PropertyAccess::createPropertyAccessor();
+        $this->attrGroupRepo = $attrGroupRepo;
+        $this->localeRepository = $localeRepository;
+        $this->registry = $registry;
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**

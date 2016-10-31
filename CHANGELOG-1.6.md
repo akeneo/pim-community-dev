@@ -2,8 +2,53 @@
 
 ## Bug fixes
 
+- PIM-5964: Index category labels by locale code in channel normalization
+- PIM-5968: Fix default translation for attribute options when value is null
+- PIM-5897: Fix the does not contain filter to filter on product without product values
+- PIM-5566: Fix version number displayed as decimals
+- PIM-5976: Fix adding products to a group (regression following variant group ajaxification)
+- PIM-5975 & #5016: Fix attribute groups order not kept in product edit form, cheers @julienanquetil!
+
+## Functionnal improvements
+
+- PIM-5782: User can now change the attribute order on the product export builder
+
+# 1.6.2 (2016-09-02)
+
+## Bug fixes
+
+- PIM-5958: Fix tooltip for the field "attributes" in the tab "Content" of an export profile
+- PIM-5963: Fix installation on MySQL 5.7
+
+# 1.6.1 (2016-09-01)
+
+## Bug fixes
+
+- PIM-5935: Fix view all button in dashboard
+- PIM-5945: Fix tabs on user profile, DOM was not well structured
+- TIP-568: Detach version entity to improve performances on products import
+- PIM-5940: Add a flash message in case of product export builder error
+- PIM-5922: Fix the scope switcher in variant group page grid
+- PIM-5959: Change wording of XLSX to Excel on mass actions
+- PIM-5938: Fix typos in import/export tooltips
+- PIM-5966: Fix style about category filter on product export builder
+- PIM-5952: Add the information "No condition on families" in the family field of the Export Builder
+- PIM-5965: Fix the display order of the default product export filters
+
+# 1.6.0 (2016-08-30)
+
+## Bug fixes
+
+# 1.6.0-RC1 (2016-08-29)
+
+## Bug fixes
+
 - #4879: Fix collision when using several popins on the same page, cheers @dimitri-koenig!
 - PIM-5928: Export products without media
+
+## Functional improvements
+
+- PIM-5701: Add CSV and XLSX import jobs for currencies, channels, locales, group types and attribute groups
 
 # 1.6.0-ALPHA2 (2016-08-23)
 
@@ -158,7 +203,7 @@
 - Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Remove methods setShowTemplate, setEditTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Change constructor of `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`. Add `Akeneo\Bundle\BatchBundle\Connector\JobTemplateProviderInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\Csv\Writer` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher` 
+- Change constructor of `Pim\Component\Connector\Writer\File\Csv\Writer` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`
 - Change constructor of `Pim\Component\Connector\Writer\File\Csv\ProductWriter` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`, `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface` and array `$mediaAttributeTypes`
 - Change constructor of `Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`, `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface` and array `$mediaAttributeTypes`
 - Remove method `setAvailableLocales` in `Pim\Component\Catalog\Model\AttributeInterface` and `Pim\Component\Catalog\Model\AbstractAttribute`

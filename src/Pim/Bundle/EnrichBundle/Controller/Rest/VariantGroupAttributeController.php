@@ -43,10 +43,10 @@ class VariantGroupAttributeController
         AttributeRepositoryInterface $attributeRepository,
         ProductTemplateBuilderInterface $templateBuilder
     ) {
-        $this->groupRepository     = $groupRepository;
-        $this->groupSaver          = $groupSaver;
+        $this->groupRepository = $groupRepository;
+        $this->groupSaver = $groupSaver;
         $this->attributeRepository = $attributeRepository;
-        $this->templateBuilder     = $templateBuilder;
+        $this->templateBuilder = $templateBuilder;
     }
 
     /**
@@ -63,7 +63,7 @@ class VariantGroupAttributeController
      */
     public function removeAttributeAction($code, $attributeId)
     {
-        $group     = $this->findVariantGroupOr404($code);
+        $group = $this->findVariantGroupOr404($code);
         $attribute = $this->findAttributeOr404($attributeId);
 
         $template = $group->getProductTemplate();

@@ -95,6 +95,9 @@ SECOND: Seconde
 MINUTE: Minute
 HOUR: Heure
 DAY: Jour
+WEEK: Semaine
+MONTH: Mois
+YEAR: Année
 Speed: Vitesse
 FOOT_PER_SECOND: Pied par seconde
 FOOT_PER_HOUR: Pied / heure
@@ -146,3 +149,9 @@ ATM: Atmosphère
 PSI: Livre par pouce carré
 TORR: Torr
 MMHG: Millimètre de mercure
+Energy: Energie
+KILOCALORIE: kilocalorie
+KILOJOULE: kilojoule
+CaseBox: Empaquetage
+PIECE: Pièce
+DOZEN: Douzaine

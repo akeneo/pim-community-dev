@@ -30,6 +30,9 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
         attributes:
             targetEntity: Pim\Component\Catalog\Model\AttributeInterface
             mappedBy: group
+            cascade:
+                - persist
+                - detach
             orderBy:
                 sortOrder: ASC
         translations:

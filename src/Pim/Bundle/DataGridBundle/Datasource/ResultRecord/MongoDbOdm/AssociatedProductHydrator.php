@@ -38,25 +38,25 @@ class AssociatedProductHydrator implements HydratorInterface
      */
     public function hydrate($queryBuilder, array $options = [])
     {
-        $locale            = $options['locale_code'];
-        $scope             = $options['scope_code'];
-        $config            = $options['attributes_configuration'];
-        $groupId           = $options['current_group_id'];
+        $locale = $options['locale_code'];
+        $scope = $options['scope_code'];
+        $config = $options['attributes_configuration'];
+        $groupId = $options['current_group_id'];
         $associationTypeId = (int) $options['association_type_id'];
-        $currentProduct    = $options['current_product'];
+        $currentProduct = $options['current_product'];
 
-        $query           = $queryBuilder->hydrate(false)->getQuery();
+        $query = $queryBuilder->hydrate(false)->getQuery();
         $queryDefinition = $query->getQuery();
 
-        $hasCurrentProduct    = null !== $currentProduct;
+        $hasCurrentProduct = null !== $currentProduct;
         $sortedByIsAssociated = isset($queryDefinition['sort']['normalizedData.is_associated']);
-        $hasResults           = 0 !== $queryDefinition['limit'];
+        $hasResults = 0 !== $queryDefinition['limit'];
 
         if ($hasCurrentProduct && $sortedByIsAssociated && $hasResults) {
             $associatedIds = $this->getAssociatedProductIds($currentProduct, $associationTypeId);
 
-            $limit    = $queryDefinition['limit'];
-            $skip     = $queryDefinition['skip'];
+            $limit = $queryDefinition['limit'];
+            $skip = $queryDefinition['skip'];
             $rawQuery = $queryDefinition['query'];
 
             if (-1 === (int) $queryDefinition['sort']['normalizedData.is_associated']) {
@@ -87,13 +87,13 @@ class AssociatedProductHydrator implements HydratorInterface
             $attributes[$attributeConf['id']] = $attributeConf;
         }
 
-        $rows              = [];
+        $rows = [];
         $fieldsTransformer = new FieldsTransformer();
         $valuesTransformer = new ValuesTransformer();
         $familyTransformer = new FamilyTransformer();
-        $complTransformer  = new CompletenessTransformer();
+        $complTransformer = new CompletenessTransformer();
         $groupsTransformer = new GroupsTransformer();
-        $assocTransformer  = new AssociationTransformer();
+        $assocTransformer = new AssociationTransformer();
 
         foreach ($results as $result) {
             $result = $fieldsTransformer->transform($result, $locale);
@@ -295,7 +295,7 @@ class AssociatedProductHydrator implements HydratorInterface
         $queryBuilder->limit($limit);
         $queryBuilder->skip($skip);
 
-        $query   = $queryBuilder->getQuery();
+        $query = $queryBuilder->getQuery();
         $results = $query->execute()->toArray();
         foreach ($results as &$product) {
             $product['is_associated'] = $isAssociated;

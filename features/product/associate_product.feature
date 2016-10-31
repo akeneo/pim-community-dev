@@ -136,9 +136,9 @@ Feature: Associate a product
       | orange-boots |
       | white-boots  |
     And the following associations for the product "red-boots":
-      | type   | product     |
-      | X_SELL | black-boots |
-      | X_SELL | gray-boots  |
+      | type   | products     |
+      | X_SELL | black-boots  |
+      | X_SELL | gray-boots   |
     And I edit the "red-boots" product
     When I visit the "Associations" tab
     Then I should see the text "black-boots"
@@ -156,9 +156,9 @@ Feature: Associate a product
       | orange-boots |
       | white-boots  |
     And the following associations for the product "red-boots":
-      | type   | product     |
-      | X_SELL | black-boots |
-      | X_SELL | gray-boots  |
+      | type   | products     |
+      | X_SELL | black-boots  |
+      | X_SELL | gray-boots   |
     And I edit the "red-boots" product
     When I visit the "Associations" tab
     Then I should be able to sort the rows by Is associated

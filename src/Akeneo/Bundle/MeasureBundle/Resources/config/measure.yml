@@ -276,25 +276,25 @@ measures_config:
                 convert: [{'mul': 1}]
                 symbol: Ah
             MILLICOULOMB:
-                convert: [{'mul': 3600000}]
+                convert: [{'div': 3600000}]
                 symbol: mC
-            CENTIOULOMB:
-                convert: [{'mul': 360000}]
+            CENTICOULOMB:
+                convert: [{'div': 360000}]
                 symbol: cC
             DECICOULOMB:
-                convert: [{'mul': 36000}]
+                convert: [{'div': 36000}]
                 symbol: dC
             COULOMB:
-                convert: [{'mul': 3600}]
+                convert: [{'div': 3600}]
                 symbol: C
             DEKACOULOMB:
-                convert: [{'mul': 360}]
+                convert: [{'div': 360}]
                 symbol: daC
             HECTOCOULOMB:
-                convert: [{'mul': 36}]
+                convert: [{'div': 36}]
                 symbol: hC
             KILOCOULOMB:
-                convert: [{'mul': 3.6}]
+                convert: [{'div': 3.6}]
                 symbol: kC
     Duration:
         standard: SECOND
@@ -314,6 +314,15 @@ measures_config:
             DAY:
                 convert: [{'mul': 86400}]
                 symbol: d
+            WEEK:
+                convert: [{'mul': 604800}]
+                symbol: week
+            MONTH:
+                convert: [{'mul': 18748800}]
+                symbol: month
+            YEAR:
+                convert: [{'mul': 31536000}]
+                symbol: year
     Temperature:
         standard: KELVIN
         units:
@@ -443,3 +452,21 @@ measures_config:
             MMHG:
                 convert: [{'mul': 750.06375541921}]
                 symbol: mmHg
+    Energy:
+        standard: KILOCALORIE
+        units:
+            KILOCALORIE:
+                convert: [{'mul': 1}]
+                symbol: kcal
+            KILOJOULE:
+                convert: [{'mul': 4.1868}]
+                symbol: kJ
+    CaseBox:
+        standard: PIECE
+        units:
+            PIECE:
+                convert: [{'mul': 1}]
+                symbol: Pc
+            DOZEN:
+                convert: [{'mul': 12}]
+                symbol: Dz

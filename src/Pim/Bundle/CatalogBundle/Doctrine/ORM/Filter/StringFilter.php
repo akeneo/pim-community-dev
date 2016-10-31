@@ -31,9 +31,9 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -67,7 +67,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->checkValue($options['field'], $value);
         }
 
-        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
         if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
@@ -85,16 +85,33 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                     $this->qb->expr()->isNotNull($backendField),
                     $this->qb->expr()->neq($backendField, $this->qb->expr()->literal(''))
                 );
+                $this->qb->innerJoin(
+                    $this->qb->getRootAlias() . '.values',
+                    $joinAlias,
+                    'WITH',
+                    $condition
+                );
+            } elseif (Operators::DOES_NOT_CONTAIN === $operator) {
+                $whereCondition = $this->prepareCondition($backendField, $operator, $value) .
+                    ' OR ' .
+                    $this->prepareCondition($backendField, Operators::IS_NULL, null);
+
+                $this->qb->leftJoin(
+                    $this->qb->getRootAlias() . '.values',
+                    $joinAlias,
+                    'WITH',
+                    $condition
+                );
+                $this->qb->andWhere($whereCondition);
             } else {
                 $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
+                $this->qb->innerJoin(
+                    $this->qb->getRootAlias() . '.values',
+                    $joinAlias,
+                    'WITH',
+                    $condition
+                );
             }
-
-            $this->qb->innerJoin(
-                $this->qb->getRootAlias() . '.values',
-                $joinAlias,
-                'WITH',
-                $condition
-            );
         }
 
         return $this;
@@ -118,19 +135,19 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         switch ($operator) {
             case Operators::STARTS_WITH:
                 $operator = Operators::IS_LIKE;
-                $value    = $value . '%';
+                $value = $value . '%';
                 break;
             case Operators::ENDS_WITH:
                 $operator = Operators::IS_LIKE;
-                $value    = '%' . $value;
+                $value = '%' . $value;
                 break;
             case Operators::CONTAINS:
                 $operator = Operators::IS_LIKE;
-                $value    = '%' . $value . '%';
+                $value = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $operator = Operators::NOT_LIKE;
-                $value    = '%' . $value . '%';
+                $value = '%' . $value . '%';
                 break;
             case Operators::EQUALS:
                 $operator = Operators::IS_LIKE;

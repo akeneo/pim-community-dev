@@ -36,9 +36,9 @@ class AttributeGroupManager
         SaverInterface $groupSaver,
         BulkSaverInterface $attributeSaver
     ) {
-        $this->repository     = $repository;
+        $this->repository = $repository;
         $this->attributeSaver = $attributeSaver;
-        $this->groupSaver     = $groupSaver;
+        $this->groupSaver = $groupSaver;
     }
 
     /**

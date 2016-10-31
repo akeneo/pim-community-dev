@@ -103,10 +103,7 @@ class ChannelNormalizer implements NormalizerInterface
         $labels = [];
 
         foreach ($translations as $translation) {
-            $labels[] = [
-                'locale' => $translation->getLocale(),
-                'label'  => $translation->getLabel(),
-            ];
+            $labels[$translation->getLocale()] = $translation->getLabel();
         }
 
         return [

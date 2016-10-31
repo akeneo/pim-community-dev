@@ -34,7 +34,7 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
         parent::__construct($productBuilder, $attrValidatorHelper);
 
         $this->supportedFromTypes = $supportedFromTypes;
-        $this->supportedToTypes   = $supportedToTypes;
+        $this->supportedToTypes = $supportedToTypes;
     }
 
     /**
@@ -47,11 +47,11 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
         AttributeInterface $toAttribute,
         array $options = []
     ) {
-        $options    = $this->resolver->resolve($options);
+        $options = $this->resolver->resolve($options);
         $fromLocale = $options['from_locale'];
-        $toLocale   = $options['to_locale'];
-        $fromScope  = $options['from_scope'];
-        $toScope    = $options['to_scope'];
+        $toLocale = $options['to_locale'];
+        $fromScope = $options['from_scope'];
+        $toScope = $options['to_scope'];
 
         $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'reference data collection');
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'reference data collection');
@@ -73,8 +73,8 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
      */
     public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
-        $supportsFrom  = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo    = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
+        $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
         $referenceData = ($fromAttribute->getReferenceDataName() === $toAttribute->getReferenceDataName());
 
         return $supportsFrom && $supportsTo && $referenceData;
@@ -122,7 +122,7 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
      */
     protected function removeReferenceDataCollection(ProductValueInterface $toValue, AttributeInterface $toAttribute)
     {
-        $toDataGetter  = $this->getValueMethodName($toValue, $toAttribute, 'get');
+        $toDataGetter = $this->getValueMethodName($toValue, $toAttribute, 'get');
         $toDataRemover = $this->getValueMethodName($toValue, $toAttribute, 'remove', true);
 
         foreach ($toValue->$toDataGetter() as $attributeOption) {
@@ -145,7 +145,7 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
         AttributeInterface $toAttribute
     ) {
         $fromDataGetter = $this->getValueMethodName($fromValue, $fromAttribute, 'get');
-        $toDataAdder    = $this->getValueMethodName($toValue, $toAttribute, 'add', true);
+        $toDataAdder = $this->getValueMethodName($toValue, $toAttribute, 'add', true);
 
         foreach ($fromValue->$fromDataGetter() as $attributeOption) {
             $toValue->$toDataAdder($attributeOption);

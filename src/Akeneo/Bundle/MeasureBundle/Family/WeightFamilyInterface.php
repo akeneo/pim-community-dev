@@ -20,32 +20,32 @@ interface WeightFamilyInterface
     /**
      * @staticvar string
      */
-    const DENIER    = 'DENIER';
+    const DENIER = 'DENIER';
 
     /**
      * @staticvar string
      */
-    const GRAIN     = 'GRAIN';
+    const GRAIN = 'GRAIN';
 
     /**
      * @staticvar string
      */
-    const GRAM      = 'GRAM';
+    const GRAM = 'GRAM';
 
     /**
      * @staticvar string
      */
-    const KILOGRAM  = 'KILOGRAM';
+    const KILOGRAM = 'KILOGRAM';
 
     /**
      * @staticvar string
      */
-    const LIVRE     = 'LIVRE';
+    const LIVRE = 'LIVRE';
 
     /**
      * @staticvar string
      */
-    const MARC      = 'MARC';
+    const MARC = 'MARC';
 
     /**
      * @staticvar string
@@ -55,20 +55,20 @@ interface WeightFamilyInterface
     /**
      * @staticvar string
      */
-    const ONCE      = 'ONCE';
+    const ONCE = 'ONCE';
 
     /**
      * @staticvar string
      */
-    const OUNCE     = 'OUNCE';
+    const OUNCE = 'OUNCE';
 
     /**
      * @staticvar string
      */
-    const POUND     = 'POUND';
+    const POUND = 'POUND';
 
     /**
      * @staticvar string
      */
-    const TON       = 'TON';
+    const TON = 'TON';
 }

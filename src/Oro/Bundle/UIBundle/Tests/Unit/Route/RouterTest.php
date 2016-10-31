@@ -15,7 +15,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->request = $this->getMock('Symfony\Component\HttpFoundation\Request');
+        $this->request = $this->createMock('Symfony\Component\HttpFoundation\Request');
         $this->route = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Routing\Router')
             ->disableOriginalConstructor()
             ->getMock();

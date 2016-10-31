@@ -73,6 +73,8 @@ error:
         attribute_option: Error during deletion of the attribute option
     saving:
         attribute_option: Cannot save attribute option
+        export_profile: Cannot save export profile. Please check that all filters are well filled
+
 alert:
     attribute_option:
         error_occured_during_submission: An error occured during the form submission on the server
@@ -105,12 +107,12 @@ pim:
             quick_export:
                 csv_all: CSV (All attributes)
                 csv_grid_context: CSV (Grid context)
-                xlsx_all: XLSX (All attributes)
-                xlsx_grid_context: XLSX (Grid context)
-            delete: Delete
-            mass_edit: Mass Edit
-            category_edit: Category Edit
-            sequential_edit: Sequential Edit
+                xlsx_all: Excel (All attributes)
+                xlsx_grid_context: Excel (Grid context)
+            delete: Delete products
+            mass_edit: Change product information
+            category_edit: Move products in categories
+            sequential_edit: Edit products sequentially
 
 # Jstree context menu actions
 jstree.create: Create
@@ -230,6 +232,22 @@ pim_enrich:
                 created_by: Created by
                 updated: Updated
                 updated_by: Updated by
+        group:
+            title: Group
+            info:
+                deletion_successful: Group successfully deleted.
+                deletion_failed: Group could not be deleted.
+                update_successful: Group successfully updated.
+                update_failed: The group could not be updated.
+                field_not_ready: The group cannot be saved right now. The following fields are not ready: {{ fields }}
+            btn:
+                save: Save
+            meta:
+                product_count: Products
+                created: Created
+                created_by: Created by
+                updated: Updated
+                updated_by: Updated by
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
@@ -328,6 +346,18 @@ pim_enrich:
                     title: Products
                 attributes:
                     title: Attributes
+        group:
+            tab:
+                properties:
+                    title: Properties
+                    general: General properties
+                    code: Code
+                    type: Type
+                    label_translations: Label translations
+                history:
+                    title: History
+                products:
+                    title: Products
         common:
             tab:
                 attributes:
@@ -341,23 +371,23 @@ pim_enrich:
     export:
         product:
             data:
-                title: Data filters
+                title: Filter the products
             structure:
-                title: Structure filters
+                title: Filter the data
                 attributes:
                     title: Attributes
             filter:
                 channel:
                     title: Channel
-                    help: The channel you want to export
+                    help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
                 locales:
                     title: Locales
-                    help: The locales you want to export
+                    help: "The locales defines the localized product values to export. Ex: only product information in French."
                 attributes:
                     title: Attributes
                     edit: Edit
                     label: "{0} All attributes|{1} One attribute selected|]1,Inf[ {{ count }} attributes selected"
-                    help: The categories of the products you want to export
+                    help: "Select the product information to export. Ex: only the technical attributes."
                     empty: All attributes will be exported
                     modal:
                         apply: Apply
@@ -372,13 +402,13 @@ pim_enrich:
                     empty_selection: All attributes will be exported
                 family:
                     title: Family
-                    help: The families you want to export
+                    help: "Select the products to export by their family. Ex: Export only the shoes and dresses."
                     operators:
                         IN: In list
                         "NOT IN": Not in list
                         EMPTY: Products that don't have a family
                         "NOT EMPTY": Products that have a family
-                    empty_selection: Select a family
+                    empty_selection: No condition on families
                 updated:
                     title: Time condition
                     operators:
@@ -388,14 +418,14 @@ pim_enrich:
                         "SINCE LAST JOB": Updated products since last export
                 enabled:
                     title: Status
-                    help: The status of the products you want to export
+                    help: "Select the products to export by their status. Ex: Export products whatsoever their status."
                     value:
                         all: All
                         enabled: Enabled
                         disabled: Disabled
                 completeness:
                     title: Completeness
-                    help: The completeness of the products you want to export
+                    help: Select the products to export by their completeness.
                     operators:
                         ALL: No condition on completeness
                         ">=": Complete on at least one selected locale
@@ -404,7 +434,7 @@ pim_enrich:
                     empty_selection: Select a family
                 category:
                     title: Category
-                    help: The categories of the products you want to export
+                    help: Use the product categories in the tree (defined by the channel above) to select the products to export
                 identifier:
                     title: Identifier
                     help: Identifiers of products you want to export separated by commas, spaces or line breaks

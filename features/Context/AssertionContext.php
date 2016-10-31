@@ -568,7 +568,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $actualCount = (int) $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
+        $actualCount = (int) $this->getCurrentPage()->find('css', '.AknBell-countContainer')->getText();
 
         assertEquals(
             $actualCount,
@@ -594,7 +594,7 @@ class AssertionContext extends RawMinkContext
 
         // Wait for the footer of the notification panel dropdown to be loaded
         $this->spin(function () {
-            $footer  = $this->getCurrentPage()->find('css', '#header-notification-widget ul.dropdown-menu > p');
+            $footer  = $this->getCurrentPage()->find('css', '.AknNotificationsList-footer');
             $content = trim($footer->getText());
 
             return !empty($content);
@@ -608,7 +608,7 @@ class AssertionContext extends RawMinkContext
     {
         $this->iOpenTheNotificationPanel();
         $page = $this->getCurrentPage();
-        $selector = sprintf('#header-notification-widget .dropdown-menu li>a:contains("%s")', $message);
+        $selector = sprintf('.AknNotification-link:contains("%s")', $message);
 
         $link = $this->spin(function () use ($page, $selector) {
             return $page->find('css', $selector);
@@ -640,7 +640,7 @@ class AssertionContext extends RawMinkContext
         ];
 
         foreach ($table->getHash() as $data) {
-            $notifications = $notificationWidget->findAll('css', '#header-notification-widget .dropdown-menu li>a');
+            $notifications = $notificationWidget->findAll('css', '.AknNotification-link');
 
             $matchingNotification = null;
 
@@ -685,7 +685,7 @@ class AssertionContext extends RawMinkContext
             }
 
             if (isset($data['comment']) && '' !== $data['comment']) {
-                $commentNode = $matchingNotification->find('css', 'div.comment');
+                $commentNode = $matchingNotification->find('css', '.AknNotification-comment');
 
                 if (!$commentNode) {
                     throw $this->createExpectationException(

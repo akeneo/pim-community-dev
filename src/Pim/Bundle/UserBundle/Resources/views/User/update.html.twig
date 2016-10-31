@@ -16,8 +16,6 @@
         require(['jquery', 'pim/initselect2', 'datepicker', 'pim/date-context', 'jquery.jstree', 'jstree/jquery.hotkeys'],
         function ($, initSelect2, datepicker, dateContext) {
             $(function() {
-                $('.navbar-content.pull-left').css('width', '80%')
-
                 $('#{{ form.vars.id }}').find('select').addClass('select2');
                 initSelect2.init($('#{{ form.vars.id }}'));
 
@@ -67,7 +65,7 @@
                 <div class="visual">
                     <img src="{{ form.vars.value.imagePath ? form.vars.value.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/img/info-user.png') }}" alt="{{ fullname }}"/>
                 </div>
-                <div class="sub-title">{{ title|first|capitalize ~ title[1:] }}</div>
+                <div class="AknTitleContainer-title sub-title">{{ title|first|capitalize ~ title[1:] }}</div>
                 {% if form.vars.value.id %}
                     <ul class="inline">
                         <li>{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|datetime_presenter : 'N/A' }}</li>

@@ -36,7 +36,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $currencyRepository
     ) {
         $this->categoryRepository = $categoryRepository;
-        $this->localeRepository   = $localeRepository;
+        $this->localeRepository = $localeRepository;
         $this->currencyRepository = $currencyRepository;
     }
 
@@ -84,39 +84,70 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 $channel->setCode($data);
                 break;
             case 'tree':
-                $category = $this->categoryRepository->findOneByIdentifier($data);
-                if (null === $category) {
-                    throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $data));
-                }
-                $channel->setCategory($category);
+                $this->setTree($channel, $data);
                 break;
             case 'locales':
-                foreach ($data as $localeCode) {
-                    $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-                    if (null === $locale) {
-                        throw new \InvalidArgumentException(sprintf(
-                            'Locale with "%s" code does not exist',
-                            $localeCode
-                        ));
-                    }
-                    $channel->addLocale($locale);
-                }
+                $this->setLocales($channel, $data);
                 break;
             case 'currencies':
-                foreach ($data as $currencyCode) {
-                    $currency = $this->currencyRepository->findOneByIdentifier($currencyCode);
-                    if (null === $currency) {
-                        throw new \InvalidArgumentException(sprintf(
-                            'Currency with "%s" code does not exist',
-                            $currencyCode
-                        ));
-                    }
-                    $channel->addCurrency($currency);
-                }
+                $this->setCurrencies($channel, $data);
                 break;
             case 'label':
                 $channel->setLabel($data);
                 break;
+            case 'conversion_units':
+                $channel->setConversionUnits($data);
+                break;
         }
+    }
+
+    /**
+     * @param ChannelInterface $channel
+     * @param string           $treeCode
+     */
+    protected function setTree(ChannelInterface $channel, $treeCode)
+    {
+        $category = $this->categoryRepository->findOneByIdentifier($treeCode);
+        if (null === $category) {
+            throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $treeCode));
+        }
+        $channel->setCategory($category);
+    }
+
+    /**
+     * @param ChannelInterface $channel
+     * @param array            $currencyCodes
+     */
+    protected function setCurrencies(ChannelInterface $channel, array $currencyCodes)
+    {
+        $currencies = [];
+        foreach ($currencyCodes as $currencyCode) {
+            $currency = $this->currencyRepository->findOneByIdentifier($currencyCode);
+            if (null === $currency) {
+                throw new \InvalidArgumentException(sprintf('Currency with "%s" code does not exist', $currencyCode));
+            }
+
+            $currencies[] = $currency;
+        }
+
+        $channel->setCurrencies($currencies);
+    }
+
+    /**
+     * @param ChannelInterface $channel
+     * @param array            $localeCodes
+     */
+    protected function setLocales(ChannelInterface $channel, array $localeCodes)
+    {
+        $locales = [];
+        foreach ($localeCodes as $localeCode) {
+            $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+            if (null === $locale) {
+                throw new \InvalidArgumentException(sprintf('Locale with "%s" code does not exist', $localeCode));
+            }
+
+            $locales[] = $locale;
+        }
+        $channel->setLocales($locales);
     }
 }

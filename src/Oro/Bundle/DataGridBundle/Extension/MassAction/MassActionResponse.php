@@ -21,8 +21,8 @@ class MassActionResponse implements MassActionResponseInterface
     public function __construct($successful, $message, array $options = [])
     {
         $this->successful = $successful;
-        $this->message    = $message;
-        $this->options    = $options;
+        $this->message = $message;
+        $this->options = $options;
     }
 
     /**

@@ -33,97 +33,145 @@ pim_connector:
 
     ## Import/export configuration fields (for readers, processors, writers)
     export:
-        delimiter:
-            label: Delimiter
-            help: One character used to set the field delimiter
-        enclosure:
-            label: Enclosure
-            help: One character used to set the field enclosure
-        lines_per_files:
-            label: Number of lines per file
-            help: Define the limit number of lines per file
-        withHeader:
-            label: With header
-            help: Whether or not to print the column name
-        with_media:
-            label: Export files and images
-            help: Whether or not to export product files and images
-        filePath:
-            label: File path
-            help: Where to write the generated file on the file system
-        channel:
-            label: Channel
-            help: The channel you want to export
-        locales:
-            label: Locales
-            help: The locales you want to export
-            validation:
-                not_blank: One locale must be selected, please choose a locale to export.
-        decimalSeparator:
-            label: Decimal separator
-            help: Determine the decimal separator
-        dateFormat:
-            label: Date format
-            help: Determine the format of date fields
-        header:
-            label: Header
-        families:
-            label: Family
-            help: The families you want to export
-            placeholder: Choose a family
+        csv:
+            delimiter:
+                label: Delimiter
+                help: One character used to set the field delimiter
+            enclosure:
+                label: Enclosure
+                help: One character used to set the field enclosure
+            withHeader:
+                label: With header
+                help: Whether or not to print the column name
+            with_media:
+                label: Export files and images
+                help: Whether or not to export product files and images
+            filePath:
+                label: File path
+                help: Where to write the generated file on the file system
+            decimalSeparator:
+                label: Decimal separator
+                help: Determine the decimal separator
+            dateFormat:
+                label: Date format
+                help: Determine the format of date fields
+        xlsx:
+            lines_per_files:
+                label: Number of lines per file
+                help: Define the limit number of lines per file
+            withHeader:
+                label: With header
+                help: Whether or not to print the column name
+            with_media:
+                label: Export files and images
+                help: Whether or not to export product files and images
+            filePath:
+                label: File path
+                help: Where to write the generated file on the file system
+            decimalSeparator:
+                label: Decimal separator
+                help: Determine the decimal separator
+            dateFormat:
+                label: Date format
+                help: Determine the format of date fields
+        yml:
+            filePath:
+                label: File path
+                help: Where to write the generated file on the file system
     import:
-        enabled:
-            label: Enable the product
-            help: Whether or not imported product should be enabled
-        categoriesColumn:
-            label: Categories column
-            help: Name of the categories column
-        familyColumn:
-            label: Family column
-            help: Name of the family column
-        groupsColumn:
-            label: Groups column
-            help: Name of the groups column
-        filePath:
-            label: File
-            help: The CSV file to import
-        yamlFilePath:
-            label: File
-            help: The YAML file to import
-        uploadAllowed:
-            label: Allow file upload
-            help: Whether or not to allow uploading the file directly
-        delimiter:
-            label: Delimiter
-            help: One character used to set the field delimiter for CSV file
-        enclosure:
-            label: Enclosure
-            help: One character used to set the field enclosure
-        escape:
-            label: Escape
-            help: One character used to set the field escape
-        circularRefsChecked:
-            label: Check circular references
-            help: If yes, data will be processed to make sure that there are no circular references between the categories
-        realTimeVersioning:
-            label: Real time history update
-            help: Means that the product history is automatically updated, can be switched off to improve performances
-        copyValuesToProducts:
-            label: Copy variant group values to products
-            help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group
-        enabledComparison:
-            label: Compare values
-            help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
-        decimalSeparator:
-            label: Decimal separator
-            help: One character used to set the field separator for decimal
-        dateFormat:
-            label: Date format
-            help: Specify the format of any date columns in the file, e.g. here DD/MM/YYYY for a 30/04/2014 format.
+        csv:
+            enabled:
+                label: Enable the product
+                help: Whether or not imported product should be enabled
+            categoriesColumn:
+                label: Categories column
+                help: Name of the categories column
+            familyColumn:
+                label: Family column
+                help: Name of the family column
+            groupsColumn:
+                label: Groups column
+                help: Name of the groups column
+            filePath:
+                label: File
+                help: The CSV file to import
+            uploadAllowed:
+                label: Allow file upload
+                help: Whether or not to allow uploading the file directly
+            delimiter:
+                label: Delimiter
+                help: One character used to set the field delimiter for CSV file
+            enclosure:
+                label: Enclosure
+                help: One character used to set the field enclosure
+            escape:
+                label: Escape
+                help: One character used to set the field escape
+            circularRefsChecked:
+                label: Check circular references
+                help: If yes, data will be processed to make sure that there are no circular references between the categories
+            realTimeVersioning:
+                label: Real time history update
+                help: Means that the product history is automatically updated, can be switched off to improve performances
+            copyValuesToProducts:
+                label: Copy variant group values to products
+                help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group
+            enabledComparison:
+                label: Compare values
+                help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
+            decimalSeparator:
+                label: Decimal separator
+                help: One character used to set the field separator for decimal
+            dateFormat:
+                label: Date format
+                help: Specify the format of any date columns in the file, e.g. here DD/MM/YYYY for a 30/04/2014 format.
+        xlsx:
+            enabled:
+                label: Enable the product
+                help: Whether or not imported product should be enabled
+            categoriesColumn:
+                label: Categories column
+                help: Name of the categories column
+            familyColumn:
+                label: Family column
+                help: Name of the family column
+            groupsColumn:
+                label: Groups column
+                help: Name of the groups column
+            filePath:
+                label: File
+                help: The XLSX file to import
+            uploadAllowed:
+                label: Allow file upload
+                help: Whether or not to allow uploading the file directly
+            circularRefsChecked:
+                label: Check circular references
+                help: If yes, data will be processed to make sure that there are no circular references between the categories
+            realTimeVersioning:
+                label: Real time history update
+                help: Means that the product history is automatically updated, can be switched off to improve performances
+            copyValuesToProducts:
+                label: Copy variant group values to products
+                help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group
+            enabledComparison:
+                label: Compare values
+                help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
+            decimalSeparator:
+                label: Decimal separator
+                help: One character used to set the field separator for decimal
+            dateFormat:
+                label: Date format
+                help: Specify the format of any date columns in the file, e.g. here DD/MM/YYYY for a 30/04/2014 format.
+        yml:
+            filePath:
+                label: File
+                help: The YML file to import
+            uploadAllowed:
+                label: Allow file upload
+                help: Whether or not to allow uploading the file directly
 
 job_execution.summary:
     read:       read
-    read_lines: read lines
     write:      written
     skip:       skipped
     create:     created
@@ -136,6 +184,7 @@ job_execution.summary:
         title: File encoding:
         skipped: skipped, extension in white list
     product_skipped_no_diff: skipped product (no differences)
+    item_position: read lines
 
 # Job labels
 batch_jobs:
@@ -196,6 +245,41 @@ batch_jobs:
         label: Variant group import in CSV
         validation.label: File validation
         import.label: Variant group import
+    csv_channel_export:
+        label: Channel export in CSV
+        export.label: Channel export
+    csv_locale_export:
+        label: Locale export in CSV
+        export.label: Locale export
+    csv_attribute_group_export:
+        label: Attribute group export in CSV
+        export.label: Attribute group export
+    csv_currency_export:
+        label: Currency export in CSV
+        export.label: Currency export
+    csv_group_type_export:
+        label: Group type export in CSV
+        export.label: Group type export
+    csv_channel_import:
+        label: Channel import in CSV
+        validation.label: File validation
+        import.label: Channel import
+    csv_locale_import:
+        label: Locale import in CSV
+        validation.label: File validation
+        import.label: Locale import
+    csv_attribute_group_import:
+        label: Attribute group import in CSV
+        validation.label: File validation
+        import.label: Attribute group import
+    csv_currency_import:
+        label: Currency import in CSV
+        validation.label: File validation
+        import.label: Currency import
+    csv_group_type_import:
+        label: Group type import in CSV
+        validation.label: File validation
+        import.label: Group type import
     xlsx_category_import:
         label: Category import in XLSX
         validation.label: File validation
@@ -253,3 +337,38 @@ batch_jobs:
     xlsx_association_type_export:
         label: Association type export in XLSX
         export.label: Association type export in XLSX
+    xlsx_channel_export:
+        label: Channel export in XLSX
+        export.label: Channel export
+    xlsx_locale_export:
+        label: Locale export in XLSX
+        export.label: Locale export
+    xlsx_attribute_group_export:
+        label: Attribute group export in XLSX
+        export.label: Attribute group export
+    xlsx_currency_export:
+        label: Currency export in XLSX
+        export.label: Currency export
+    xlsx_group_type_export:
+        label: Group type export in XLSX
+        export.label: Group type export
+    xlsx_channel_import:
+        label: Channel import in XLSX
+        validation.label: File validation
+        import.label: Channel import
+    xlsx_locale_import:
+        label: Locale import in XLSX
+        validation.label: File validation
+        import.label: Locale import
+    xlsx_attribute_group_import:
+        label: Attribute group import in XLSX
+        validation.label: File validation
+        import.label: Attribute group import
+    xlsx_currency_import:
+        label: Currency import in XLSX
+        validation.label: File validation
+        import.label: Currency import
+    xlsx_group_type_import:
+        label: Group type import in XLSX
+        validation.label: File validation
+        import.label: Group type import

@@ -26,7 +26,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
+        $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
         $this->annotationProvider =
             $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider')
                 ->disableOriginalConstructor()
@@ -35,7 +35,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $this->logger = $this->getMock('Psr\Log\LoggerInterface');
+        $this->logger = $this->createMock('Psr\Log\LoggerInterface');
 
         $this->facade = new SecurityFacade(
             $this->tokenStorage,

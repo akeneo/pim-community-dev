@@ -42,6 +42,10 @@ define(
              */
             moveFilter: function (collection) {
                 var $grid = $('#grid-' + collection.inputName);
+
+                if (0 === $grid.length) {
+                    $grid = $('[data-type="datagrid"]:first');
+                }
                 this.$el.addClass('pull-right').insertBefore($grid.find('.actions-panel'));
 
                 var $filterChoices = $grid.find('#add-filter-select');
@@ -91,7 +95,7 @@ define(
              * @see Oro.Filter.SelectFilter
              */
             template: _.template(
-                '<div class="btn filter-select filter-criteria-selector scope-filter">' +
+                '<div class="AknActionButton filter-select filter-criteria-selector scope-filter">' +
                     '<i class="icon-eye-open" title="<%= label %>"></i>' +
                     '<select>' +
                         '<% _.each(options, function (option) { %>' +

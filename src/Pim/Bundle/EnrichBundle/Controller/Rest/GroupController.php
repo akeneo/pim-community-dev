@@ -2,12 +2,18 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Group controller
@@ -30,19 +36,54 @@ class GroupController
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var ObjectUpdaterInterface */
+    protected $updater;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var NormalizerInterface */
+    protected $violationNormalizer;
+
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var UserContext */
+    protected $userContext;
+
+    /** @var RemoverInterface */
+    protected $remover;
+
     /**
      * @param GroupRepositoryInterface   $groupRepository
      * @param ProductRepositoryInterface $productRepository
      * @param NormalizerInterface        $normalizer
+     * @param UserContext                $userContext
+     * @param ObjectUpdaterInterface     $updater
+     * @param ValidatorInterface         $validator
+     * @param NormalizerInterface        $violationNormalizer
+     * @param SaverInterface             $saver
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
         ProductRepositoryInterface $productRepository,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        UserContext $userContext,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
+        NormalizerInterface $violationNormalizer,
+        SaverInterface $saver,
+        RemoverInterface $remover
     ) {
-        $this->groupRepository   = $groupRepository;
+        $this->groupRepository = $groupRepository;
         $this->productRepository = $productRepository;
-        $this->normalizer        = $normalizer;
+        $this->normalizer = $normalizer;
+        $this->violationNormalizer = $violationNormalizer;
+        $this->updater = $updater;
+        $this->saver = $saver;
+        $this->userContext = $userContext;
+        $this->validator = $validator;
+        $this->remover = $remover;
     }
 
     /**
@@ -88,5 +129,66 @@ class GroupController
             'products'     => array_values($this->productRepository->getProductsByGroup($group, self::MAX_PRODUCTS)),
             'productCount' => $this->productRepository->getProductCountByGroup($group)
         ], 'internal_api'));
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws NotFoundHttpException     If product is not found or the user cannot see it
+     * @throws AccessDeniedHttpException If the user does not have permissions to edit the product
+     *
+     * @return JsonResponse
+     */
+    public function postAction(Request $request, $code)
+    {
+        $group = $this->groupRepository->findOneByIdentifier($code);
+        if (null === $group) {
+            throw new NotFoundHttpException(sprintf('Group with code "%s" not found', $code));
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $this->updater->update($group, $data);
+
+        $violations = $this->validator->validate($group);
+
+        if (0 < $violations->count()) {
+            $errors = $this->violationNormalizer->normalize(
+                $violations,
+                'internal_api',
+                $this->userContext->toArray()
+            );
+
+            return new JsonResponse($errors, 400);
+        }
+
+        $this->saver->save($group);
+
+        return new JsonResponse($this->normalizer->normalize(
+            $group,
+            'internal_api',
+            $this->userContext->toArray()
+        ));
+    }
+
+    /**
+     * Remove a variant group
+     *
+     * @param string $code
+     *
+     * @AclAncestor("pim_enrich_group_remove")
+     *
+     * @return JsonResponse
+     */
+    public function removeAction($code)
+    {
+        $group = $this->groupRepository->findOneByIdentifier($code);
+        if (null === $group) {
+            throw new NotFoundHttpException(sprintf('Group with code "%s" not found', $code));
+        }
+
+        $this->remover->remove($group);
+
+        return new JsonResponse();
     }
 }

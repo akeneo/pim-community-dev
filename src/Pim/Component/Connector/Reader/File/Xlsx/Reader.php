@@ -50,8 +50,8 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
         array $options = []
     ) {
         $this->fileIteratorFactory = $fileIteratorFactory;
-        $this->converter           = $converter;
-        $this->options             = $options;
+        $this->converter = $converter;
+        $this->options = $options;
     }
 
     /**
@@ -70,7 +70,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
         $this->fileIterator->next();
 
         if ($this->fileIterator->valid() && null !== $this->stepExecution) {
-            $this->stepExecution->incrementSummaryInfo('read_lines');
+            $this->stepExecution->incrementSummaryInfo('item_position');
         }
 
         $data = $this->fileIterator->current();
@@ -82,7 +82,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
         $headers = $this->fileIterator->getHeaders();
 
         $countHeaders = count($headers);
-        $countData    = count($data);
+        $countData = count($data);
 
         $this->checkColumnNumber($countHeaders, $countData, $data, $filePath);
 
@@ -145,7 +145,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
         if (null !== $exception->getViolations()) {
             throw new InvalidItemFromViolationsException(
                 $exception->getViolations(),
-                new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+                new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('item_position'))),
                 [],
                 0,
                 $exception
@@ -154,7 +154,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
 
         throw new InvalidItemException(
             $exception->getMessage(),
-            new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+            new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('item_position'))),
             [],
             0,
             $exception
@@ -174,7 +174,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
         if ($countHeaders < $countData) {
             throw new InvalidItemException(
                 'pim_connector.steps.file_reader.invalid_item_columns_count',
-                new FileInvalidItem($data, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+                new FileInvalidItem($data, ($this->stepExecution->getSummaryInfo('item_position'))),
                 [
                     '%totalColumnsCount%' => $countHeaders,
                     '%itemColumnsCount%'  => $countData,

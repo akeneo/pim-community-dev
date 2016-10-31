@@ -20,7 +20,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     Given I am logged in as "Julia"
     And I am on the products page
     And I select rows moon_boots, gold_sandals and sneakers
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
@@ -47,7 +47,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I am logged in as "Julia"
     And I am on the products page
     When I select rows gold_watch, laptop
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
@@ -69,7 +69,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I am logged in as "Julia"
     And I am on the products page
     When I select rows gold_sandals, gold_boots
-    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step

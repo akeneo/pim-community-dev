@@ -5,8 +5,10 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Manager\AttributeGroupManager;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 
 /**
  * Updates an attribute group
@@ -20,12 +22,19 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var AttributeGroupManager */
+    protected $attributeGroupRepository;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param AttributeGroupRepositoryInterface     $attributeGroupRepository
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
-    {
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        AttributeGroupRepositoryInterface $attributeGroupRepository
+    ) {
         $this->attributeRepository = $attributeRepository;
+        $this->attributeGroupRepository = $attributeGroupRepository;
     }
 
     /**
@@ -74,17 +83,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
         } elseif ('sort_order' == $field) {
             $attributeGroup->setSortOrder($data);
         } elseif ('attributes' == $field) {
-            foreach ($data as $attributeCode) {
-                $attribute = $this->findAttribute($attributeCode);
-                if (null !== $attribute) {
-                    $attributeGroup->addAttribute($attribute);
-                } else {
-                    throw new \InvalidArgumentException(sprintf(
-                        'Attribute with "%s" code does not exist',
-                        $attributeCode
-                    ));
-                }
-            }
+            $this->setAttributes($attributeGroup, $data);
         } elseif ('label' == $field) {
             foreach ($data as $locale => $label) {
                 $attributeGroup->setLocale($locale);
@@ -101,5 +100,35 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     protected function findAttribute($attributeCode)
     {
         return $this->attributeRepository->findOneByIdentifier($attributeCode);
+    }
+
+    /**
+     * @param AttributeGroupInterface $attributeGroup
+     * @param string[]                $data
+     */
+    protected function setAttributes(AttributeGroupInterface $attributeGroup, array $data)
+    {
+        if ('other' === $attributeGroup->getCode()) {
+            return;
+        }
+
+        $defaultGroup = $this->attributeGroupRepository->findDefaultAttributeGroup();
+
+        foreach ($attributeGroup->getAttributes() as $attribute) {
+            if (!in_array($attribute->getCode(), $data)) {
+                $defaultGroup->addAttribute($attribute);
+            }
+        }
+
+        foreach ($data as $attributeCode) {
+            $attribute = $this->findAttribute($attributeCode);
+            if (null === $attribute) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Attribute with "%s" code does not exist',
+                    $attributeCode
+                ));
+            }
+            $attributeGroup->addAttribute($attribute);
+        }
     }
 }

@@ -25,99 +25,140 @@
     <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
         require(
-            ['jquery', 'routing', 'oro/datagrid-builder', 'oro/pageable-collection', 'pim/datagrid/state', 'oro/datafilter/product_category-filter'],
-            function ($, Routing, datagridBuilder, PageableCollection, DatagridState, CategoryFilter) {
+            [
+                'jquery',
+                'routing',
+                'oro/datagrid-builder',
+                'oro/pageable-collection',
+                'pim/datagrid/state',
+                'oro/datafilter/product_category-filter'
+            ],
+            function (
+                $,
+                Routing,
+                datagridBuilder,
+                PageableCollection,
+                DatagridState,
+                CategoryFilter
+            ) {
                 'use strict';
+
                 $(function() {
-                    var urlParams    = {{ params|json_encode|raw }};
-                    urlParams.alias  = '{{ name }}';
-                    urlParams.params = {{ params|json_encode|raw }};
 
-                    {% set hasDefaultView = defaultView is not empty %}
-                    var viewStored = DatagridState.get('{{ name }}', ['view']);
-                    if (!viewStored.view) {
-                        DatagridState.refreshFiltersFromUrl('{{ name }}');
-                    }
+                    var defaultColumnsRoute = Routing.generate(
+                            'pim_datagrid_view_rest_default_columns',
+                            {alias: '{{ name }}' }
+                    );
 
-                    var hasDefaultView = {% if hasDefaultView %}true{% else %}false{% endif %};
-                    var state          = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
+                    $.get(defaultColumnsRoute, function (defaultColumns) {
+                        initDatagrid(defaultColumns);
+                    });
 
-                    var applyView = function (viewId) {
-                        urlParams['{{ name }}[_parameters][view][id]'] = viewId;
-                    };
+                    var initDatagrid = function (defaultColumns) {
+                        var urlParams    = {{ params|json_encode|raw }};
+                        urlParams.alias  = '{{ name }}';
+                        urlParams.params = {{ params|json_encode|raw }};
 
-                    var applyFilters = function (rawFilters) {
-                        var collection = new PageableCollection();
-                        var filters    = collection.decodeStateData(rawFilters);
-
-                        collection.processFiltersParams(urlParams, filters, '{{ name }}[_filter]');
-
-                        for (var column in filters.sorters) {
-                            urlParams['{{ name }}[_sort_by][' + column + ']'] =
-                                1 === parseInt(filters.sorters[column]) ?
-                                    'DESC' :
-                                    'ASC';
+                        {% set hasDefaultView = defaultView is not empty %}
+                        var viewStored = DatagridState.get('{{ name }}', ['view']);
+                        if (!viewStored.view) {
+                            DatagridState.refreshFiltersFromUrl('{{ name }}');
                         }
 
-                        if (undefined !== filters.pageSize) {
-                            urlParams['{{ name }}[_pager][_per_page]'] = filters.pageSize;
-                        }
+                        var hasDefaultView = {% if hasDefaultView %}true{% else %}false{% endif %};
+                        var state          = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
 
-                        if (undefined !== filters.currentPage) {
-                            urlParams['{{ name }}[_pager][_page]'] = filters.currentPage;
-                        }
-                    };
+                        var applyView = function (viewId) {
+                            urlParams['{{ name }}[_parameters][view][id]'] = viewId;
 
-                    var applyColumns = function (columns) {
-                        if (_.isArray(columns)) {
-                            columns = columns.join();
-                        }
-                        urlParams['{{ name }}[_parameters][view][columns]'] = columns;
-                    };
+                            DatagridState.set('{{ name }}', {
+                                view: viewId
+                            });
+                        };
 
-                    if (hasDefaultView &&
-                        null === state.view &&
-                        null === state.filters &&
-                        null === state.columns
-                    ) {
-                        {% if hasDefaultView %}
+                        var applyFilters = function (rawFilters) {
+                            var collection = new PageableCollection();
+                            var filters    = collection.decodeStateData(rawFilters);
+
+                            collection.processFiltersParams(urlParams, filters, '{{ name }}[_filter]');
+
+                            for (var column in filters.sorters) {
+                                urlParams['{{ name }}[_sort_by][' + column + ']'] =
+                                        1 === parseInt(filters.sorters[column]) ?
+                                                'DESC' :
+                                                'ASC';
+                            }
+
+                            if (undefined !== filters.pageSize) {
+                                urlParams['{{ name }}[_pager][_per_page]'] = filters.pageSize;
+                            }
+
+                            if (undefined !== filters.currentPage) {
+                                urlParams['{{ name }}[_pager][_page]'] = filters.currentPage;
+                            }
+
+                            DatagridState.set('{{ name }}', {
+                                filters: rawFilters
+                            });
+                        };
+
+                        var applyColumns = function (columns) {
+                            if (_.isArray(columns)) {
+                                columns = columns.join();
+                            }
+                            urlParams['{{ name }}[_parameters][view][columns]'] = columns;
+
+                            DatagridState.set('{{ name }}', {
+                                columns: columns
+                            });
+                        };
+
+                        if (hasDefaultView &&
+                                null === state.view &&
+                                null === state.filters &&
+                                null === state.columns
+                        ) {
+                            {% if hasDefaultView %}
                             applyView({{ defaultView.id }});
                             applyFilters('{{ defaultView.filters|raw }}');
                             applyColumns({{ defaultView.columns|json_encode|raw }});
-                        {% endif %}
-                    } else {
-                        if (state.view) {
-                            applyView(state.view);
+                            {% endif %}
+                        } else {
+                            if (state.view) {
+                                applyView(state.view);
+                            }
+
+                            if (state.filters) {
+                                applyFilters(state.filters);
+                            }
+
+                            if (state.columns) {
+                                applyColumns(state.columns);
+                            } else {
+                                applyColumns(defaultColumns);
+                            }
                         }
 
-                        if (state.filters) {
-                            applyFilters(state.filters);
-                        }
-
-                        if (state.columns) {
-                            applyColumns(state.columns);
-                        }
-                    }
-
-                    {% if categoryBaseRoute is not null %}
+                        {% if categoryBaseRoute is not null %}
                         var categoryFilter = new CategoryFilter(urlParams, '{{ name }}', '{{ categoryBaseRoute }}');
-                    {% endif %}
+                        {% endif %}
 
-                    $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
-                        if (state.columns) {
-                            resp.metadata.state.parameters = _.extend({}, resp.metadata.state.parameters, { view: { columns: state.columns }});
-                        }
-                        $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
+                        $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
+                            if (state.columns) {
+                                resp.metadata.state.parameters = _.extend({}, resp.metadata.state.parameters, { view: { columns: state.columns }});
+                            }
+                            $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
-                        var modules = resp.metadata.requireJSModules;
-                        modules.push('pim/datagrid/state-listener');
-                        require(modules, function () {
-                            var builders = _.toArray(arguments);
-                            $(function () {
-                                datagridBuilder(builders);
+                            var modules = resp.metadata.requireJSModules;
+                            modules.push('pim/datagrid/state-listener');
+                            require(modules, function () {
+                                var builders = _.toArray(arguments);
+                                $(function () {
+                                    datagridBuilder(builders);
+                                });
                             });
                         });
-                    });
+                    };
                 });
             }
         );

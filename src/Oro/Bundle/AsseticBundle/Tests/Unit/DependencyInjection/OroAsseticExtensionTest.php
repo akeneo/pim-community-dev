@@ -31,7 +31,7 @@ class OroAsseticExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $extension = new OroAsseticExtension();
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 
         $container->expects($this->once())
             ->method('getParameter')

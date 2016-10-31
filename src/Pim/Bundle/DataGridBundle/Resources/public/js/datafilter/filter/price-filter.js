@@ -26,8 +26,8 @@ define(
             },
 
             _onDisable: function() {
-                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="caret"></span>');
-                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="caret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="AknActionButton-caret AknCaret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="AknActionButton-caret AknCaret"></span>');
             },
 
             /**
@@ -85,35 +85,33 @@ define(
              * @inheritDoc
              */
             popupCriteriaTemplate: _.template(
-                '<div class="currencyfilter choicefilter">' +
-                    '<div class="input-prepend input-append">' +
-                        '<div class="btn-group">' +
-                            '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                '<%= _.__("Action") %>' +
-                                '<span class="caret"></span>' +
-                            '</button>' +
-                            '<ul class="dropdown-menu">' +
-                                '<% _.each(choices, function (option) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= option.value %>" data-input-toggle="true"><%= option.label %></a></li>' +
-                                '<% }); %>' +
-                            '</ul>' +
-                            '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
-                        '</div>' +
-                        '<input type="text" name="value" value="">' +
-                        '<div class="btn-group">' +
-                            '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                '<%= _.__("Currency") %>' +
-                                '<span class="caret"></span>' +
-                            '</button>' +
-                            '<ul class="dropdown-menu">' +
-                                '<% _.each(currencies, function (currency) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= currency %>"><%= currency %></a></li>' +
-                                '<% }); %>' +
-                            '</ul>' +
-                            '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
-                        '</div>' +
+                '<div class="AknFilterChoice currencyfilter choicefilter">' +
+                    '<div class="AknFilterChoice-operator AknDropdown">' +
+                        '<button class="AknActionButton AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
+                            '<%= _.__("Action") %>' +
+                            '<span class="AknActionButton-caret AknCaret"></span>' +
+                        '</button>' +
+                        '<ul class="dropdown-menu">' +
+                            '<% _.each(choices, function (option) { %>' +
+                                '<li><a class="choice_value" href="#" data-value="<%= option.value %>" data-input-toggle="true"><%= option.label %></a></li>' +
+                            '<% }); %>' +
+                        '</ul>' +
+                        '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
                     '</div>' +
-                    '<button class="btn btn-primary filter-update" type="button"><%= _.__("Update") %></button>' +
+                    '<input class="AknFilterChoice-field" type="text" name="value" value="">' +
+                    '<div class="AknDropdown">' +
+                        '<button class="AknActionButton AknActionButton--noRightBorder AknActionButton--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
+                            '<%= _.__("Currency") %>' +
+                            '<span class="AknActionButton-caret AknCaret"></span>' +
+                        '</button>' +
+                        '<ul class="dropdown-menu">' +
+                            '<% _.each(currencies, function (currency) { %>' +
+                                '<li><a class="choice_value" href="#" data-value="<%= currency %>"><%= currency %></a></li>' +
+                            '<% }); %>' +
+                        '</ul>' +
+                        '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
+                    '</div>' +
+                    '<button class="AknButton AknButton--success AknButton--little AknButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>' +
                 '</div>'
             ),
 
@@ -177,7 +175,7 @@ define(
                         }
                     } else if (value == newValue.type || value == newValue.currency) {
                         item.parent().addClass('active');
-                        item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
+                        item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknActionButton-caret AknCaret"></span>');
                     }
                 });
                 if (newValue.type === 'empty') {
@@ -211,11 +209,11 @@ define(
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 if ($(e.currentTarget).attr('data-input-toggle')) {
-                    var parentDiv = $(e.currentTarget).parent().parent().parent().parent();
+                    var filterContainer = $(e.currentTarget).closest('.AknFilterChoice');
                     if ($(e.currentTarget).attr('data-value') === 'empty') {
-                        parentDiv.find('input[name="value"]').hide();
+                        filterContainer.find(this.criteriaValueSelectors.value).hide();
                     } else {
-                        parentDiv.find('input[name="value"]').show();
+                        filterContainer.find(this.criteriaValueSelectors.value).show();
                     }
                 }
             },

@@ -32,9 +32,9 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -98,6 +98,14 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             case Operators::NOT_EQUAL:
                 $this->qb->field($field)->exists(true);
                 $this->qb->field($field)->notEqual($value);
+                break;
+            case Operators::DOES_NOT_CONTAIN:
+                $value = $this->prepareValue($operator, $value);
+                $this->qb->addAnd(
+                    $this->qb->expr()
+                        ->addOr($this->qb->expr()->field($field)->exists(false))
+                        ->addOr($this->qb->expr()->field($field)->equals($value))
+                );
                 break;
             default:
                 $value = $this->prepareValue($operator, $value);

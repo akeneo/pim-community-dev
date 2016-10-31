@@ -2,7 +2,6 @@
 
 namespace Pim\Component\User\Updater;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;

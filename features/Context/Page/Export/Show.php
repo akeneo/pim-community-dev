@@ -2,7 +2,7 @@
 
 namespace Context\Page\Export;
 
-use Context\Page\Job\Show as JobShow;
+use Context\Page\Base\Form;
 
 /**
  * Export show page
@@ -11,7 +11,7 @@ use Context\Page\Job\Show as JobShow;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Show extends JobShow
+class Show extends Form
 {
     /**
      * @var string
@@ -28,7 +28,7 @@ class Show extends JobShow
         $this->elements = array_merge(
             $this->elements,
             [
-                'Export now button' => ['css' => '.navbar-buttons .export-btn'],
+                'Export now button' => ['css' => '.AknTitleContainer-rightButtons .export-btn'],
             ]
         );
     }

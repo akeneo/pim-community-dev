@@ -50,7 +50,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
     {
         $this->converter = $converter;
         $this->codeField = $codeField;
-        $this->multiple  = $multiple;
+        $this->multiple = $multiple;
     }
 
     /**
@@ -101,7 +101,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
         if ($data = $this->yaml->current()) {
             $this->yaml->next();
             if (null !== $this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('read_lines');
+                $this->stepExecution->incrementSummaryInfo('item_position');
             }
 
             try {
@@ -176,7 +176,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
         if (null !== $exception->getViolations()) {
             throw new InvalidItemFromViolationsException(
                 $exception->getViolations(),
-                new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+                new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('item_position'))),
                 [],
                 0,
                 $exception
@@ -185,7 +185,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
 
         throw new InvalidItemException(
             $exception->getMessage(),
-            new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+            new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('item_position'))),
             [],
             0,
             $exception

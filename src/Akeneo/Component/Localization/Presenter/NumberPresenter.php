@@ -25,7 +25,7 @@ class NumberPresenter implements PresenterInterface
      */
     public function __construct(NumberFactory $numberFactory, array $attributeTypes)
     {
-        $this->numberFactory  = $numberFactory;
+        $this->numberFactory = $numberFactory;
         $this->attributeTypes = $attributeTypes;
     }
 

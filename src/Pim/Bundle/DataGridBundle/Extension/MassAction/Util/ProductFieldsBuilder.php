@@ -59,12 +59,12 @@ class ProductFieldsBuilder
         AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext
     ) {
-        $this->productRepository   = $productRepository;
+        $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->localeRepository    = $localeRepository;
-        $this->currencyRepository  = $currencyRepository;
-        $this->assocTypeRepo       = $assocTypeRepo;
-        $this->catalogContext      = $catalogContext;
+        $this->localeRepository = $localeRepository;
+        $this->currencyRepository = $currencyRepository;
+        $this->assocTypeRepo = $assocTypeRepo;
+        $this->catalogContext = $catalogContext;
     }
 
     /**
@@ -119,7 +119,7 @@ class ProductFieldsBuilder
      */
     protected function prepareFieldsList(array $attributesList = [])
     {
-        $fieldsList   = $this->prepareAttributesList($attributesList);
+        $fieldsList = $this->prepareAttributesList($attributesList);
         $fieldsList[] = ProductNormalizer::FIELD_FAMILY;
         $fieldsList[] = ProductNormalizer::FIELD_CATEGORY;
         $fieldsList[] = ProductNormalizer::FIELD_GROUPS;
@@ -142,9 +142,9 @@ class ProductFieldsBuilder
      */
     protected function prepareAttributesList(array $attributesList)
     {
-        $scopeCode   = $this->catalogContext->getScopeCode();
+        $scopeCode = $this->catalogContext->getScopeCode();
         $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
-        $fieldsList  = [];
+        $fieldsList = [];
 
         foreach ($attributesList as $attribute) {
             $attCode = $attribute->getCode();

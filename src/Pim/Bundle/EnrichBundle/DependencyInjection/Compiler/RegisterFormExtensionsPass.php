@@ -33,7 +33,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
 
         $extensionConfig = [];
         $attributeFields = [];
-        $filters         = [];
+        $filters = [];
         $files = $this->listConfigFiles($container);
 
         foreach ($files as $file) {
@@ -80,7 +80,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
             $file = $directory . '.yml';
 
             if (is_file($file)) {
-                $files[] =  new \SplFileInfo($file);
+                $files[] = new \SplFileInfo($file);
             }
 
             if (is_dir($directory)) {

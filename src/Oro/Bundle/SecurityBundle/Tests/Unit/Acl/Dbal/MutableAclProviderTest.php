@@ -44,7 +44,7 @@ class MutableAclProviderTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $strategy = $this->getMock('Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface');
+        $strategy = $this->createMock('Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface');
 
         $this->provider = new MutableAclProvider(
             $this->connection,

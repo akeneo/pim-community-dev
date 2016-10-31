@@ -16,7 +16,7 @@ class TextFilterTypeTest extends AbstractTypeTestCase
 
     protected function setUp()
     {
-        $translator             = $this->createMockTranslator();
+        $translator = $this->createMockTranslator();
         $this->formExtensions[] = new CustomFormExtension([new FilterType($translator)]);
 
         parent::setUp();
