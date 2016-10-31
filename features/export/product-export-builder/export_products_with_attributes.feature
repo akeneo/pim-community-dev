@@ -6,6 +6,12 @@ Feature: Export products with only selected attributes
 
   Background:
     Given a "footwear" catalog configuration
+    And the following attributes:
+      | code                 | label-en_US          | type         | group  |
+      | high_heel_color      | High heel color      | simpleselect | colors |
+      | high_heel_color_sole | High heel color sole | simpleselect | colors |
+    And the following "high_heel_color" attribute options: Red, Blue
+    And the following "high_heel_color_sole" attribute options: Green, Orange
     And the following products:
       | sku    | family | name-en_US | weather_conditions | categories      |
       | BOOT-1 | boots  | The boot 1 |                    | 2014_collection |
@@ -28,7 +34,7 @@ Feature: Export products with only selected attributes
 
   Scenario: Export products by selecting only one attribute using the UI
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv                                                              |
+      | filePath | %tmp%/product_export/product_export.csv |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I filter by "completeness" with operator "No condition on completeness" and value ""
@@ -46,7 +52,7 @@ Feature: Export products with only selected attributes
 
   Scenario: Export products by selecting multiple attribute using the UI
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv                                                              |
+      | filePath | %tmp%/product_export/product_export.csv |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I filter by "completeness" with operator "No condition on completeness" and value ""
@@ -92,7 +98,7 @@ Feature: Export products with only selected attributes
 
   Scenario: Export products by selecting no attributes using the UI
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv                                                              |
+      | filePath | %tmp%/product_export/product_export.csv |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I filter by "completeness" with operator "No condition on completeness" and value ""
@@ -111,7 +117,7 @@ Feature: Export products with only selected attributes
   @jira https://akeneo.atlassian.net/browse/PIM-5941
   Scenario: Navigate between export profile tabs
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv                                                              |
+      | filePath | %tmp%/product_export/product_export.csv |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I filter by "sku" with operator "IN" and value "BOOT-1"
@@ -122,3 +128,25 @@ Feature: Export products with only selected attributes
     And I press the "Edit" button
     Then I should see the "Save" button
     And I should be on the "History" tab
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5994
+  Scenario: Export the attributes only once
+    Given the following family:
+      | code       | attributes                                 | requirements-mobile                        |
+      | high_heels | sku, high_heel_color, high_heel_color_sole | sku, high_heel_color, high_heel_color_sole |
+    And the following products:
+      | sku    | family     | name-en_US     | high_heel_color | high_heel_color_sole | categories      |
+      | HEEL-1 | high_heels | The red heels  | Red             | Green                | 2014_collection |
+      | HEEL-2 | high_heels | The blue heels | Blue            | Orange               | 2014_collection |
+    And the following job "csv_footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv |
+      | filters  | {"structure": {"locales": ["en_US"], "scope": "mobile", "attributes": ["high_heel_color", "high_heel_color_sole"]}, "data": [{"field": "family.code", "operator": "IN", "value": ["high_heels"]}]} |
+    When I am on the "csv_footwear_product_export" export job page
+    And I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
+    """
+    sku;categories;enabled;family;groups;high_heel_color;high_heel_color_sole
+    HEEL-1;2014_collection;1;high_heels;;Red;Green
+    HEEL-2;2014_collection;1;high_heels;;Blue;Orange
+    """

@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-5994: fix duplication of attributes in the product export
 - PIM-6000: Fix migration from 1.5 on quick exports
 - #5198: Fix issue with the export builder time condition, cheers @Schwierig
 - #5192: Add upgrade script for missing export job, cheers @masmrlar!
