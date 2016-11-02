@@ -56,7 +56,9 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 $project->setLabel($value);
                 break;
             case 'due_date':
-                $project->setDueDate(new \DateTime($value));
+                if (!empty($value)) {
+                    $project->setDueDate(new \DateTime($value));
+                }
                 break;
             case 'description':
                 $project->setDescription($value);

@@ -13,13 +13,14 @@
         </label>
 
         <div class="validation-errors">
-            <span class="validation-errors label-errors"></span>
-            <% _.each(_.where(errors, {field: 'label'}), function (error) { %>
-                <span>
-                    <i class="icon-warning-sign"></i>
-                    <span class="error-message"><%- error.message %></span>
-                </span>
-            <% }); %>
+            <span class="validation-errors label-errors">
+                <% _.each(_.where(errors, {field: 'label'}), function (error) { %>
+                    <span>
+                        <i class="icon-warning-sign"></i>
+                        <span class="error-message"><%- error.message %></span>
+                    </span>
+                <% }); %>
+            </span>
         </div>
     </div>
 
@@ -32,13 +33,14 @@
         </label>
 
         <div class="validation-errors">
-            <span class="validation-errors due-date-errors"></span>
-            <% _.each(_.where(errors, {field: 'due_date'}), function (error) { %>
-                <span>
-                    <i class="icon-warning-sign"></i>
-                    <span class="error-message"><%- error.message %></span>
-                </span>
-            <% }); %>
+            <span class="validation-errors dueDate-errors">
+                <% _.each(_.where(errors, {field: 'dueDate'}), function (error) { %>
+                    <span>
+                        <i class="icon-warning-sign"></i>
+                        <span class="error-message"><%- error.message %></span>
+                    </span>
+                <% }); %>
+            </span>
         </div>
     </div>
 

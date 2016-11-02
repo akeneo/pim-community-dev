@@ -109,7 +109,7 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function setDueDate(\DateTime $dueDate = null)
+    public function setDueDate(\DateTime $dueDate)
     {
         $this->dueDate = $dueDate;
     }

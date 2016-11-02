@@ -138,7 +138,7 @@ define(
 
                 if (isDueDateInPast) {
                     this.validationErrors.push({
-                        field: 'due-date',
+                        field: 'dueDate',
                         message: __('activity_manager.project.due_date_past')
                     });
                 }
@@ -185,7 +185,7 @@ define(
             partialRender: function () {
                 $('.bootstrap-datetimepicker-widget:visible').hide();
                 this.$('.label-errors').empty();
-                this.$('.due-date-errors').empty();
+                this.$('.dueDate-errors').empty();
 
                 if (0 < this.validationErrors.length) {
                     _.each(this.validationErrors, function (error) {

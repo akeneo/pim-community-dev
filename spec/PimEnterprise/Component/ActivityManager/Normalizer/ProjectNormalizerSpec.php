@@ -18,7 +18,7 @@ class ProjectNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_project(ProjectInterface $project, \DateTime $datetime, UserInterface $user)
     {
-        $datetime->format('YYYY-MM-dd')->willReturn('2069-02-15');
+        $datetime->format('Y-m-d')->willReturn('2069-02-15');
         $user->getId()->willReturn(42);
 
         $project->getLabel()->willReturn('Summer collection');
@@ -30,23 +30,6 @@ class ProjectNormalizerSpec extends ObjectBehavior
             'label' => 'Summer collection',
             'description' => 'The sun is here, such is the collection!',
             'due_date' => '2069-02-15',
-            'owner' => 42,
-        ]);
-    }
-
-    function it_normalizes_a_project_without_due_date(ProjectInterface $project, UserInterface $user)
-    {
-        $user->getId()->willReturn(42);
-
-        $project->getLabel()->willReturn('Summer collection');
-        $project->getDescription()->willReturn('The sun is here, such is the collection!');
-        $project->getDueDate()->willReturn(null);
-        $project->getOwner()->willReturn($user);
-
-        $this->normalize($project)->shouldReturn([
-            'label' => 'Summer collection',
-            'description' => 'The sun is here, such is the collection!',
-            'due_date' => null,
             'owner' => 42,
         ]);
     }

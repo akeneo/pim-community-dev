@@ -19,7 +19,7 @@ Akeneo\ActivityManager\Component\Model\Project:
         dueDate:
             type: date
             column: due_date
-            nullable: true
+            nullable: false
         productFilters:
             type: array
             nullable: true

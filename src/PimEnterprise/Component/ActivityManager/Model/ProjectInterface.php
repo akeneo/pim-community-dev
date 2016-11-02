@@ -58,7 +58,7 @@ interface ProjectInterface
      *
      * @return
      */
-    public function setDueDate(\DateTime $dueDate = null);
+    public function setDueDate(\DateTime $dueDate);
 
     /**
      * @return UserInterface

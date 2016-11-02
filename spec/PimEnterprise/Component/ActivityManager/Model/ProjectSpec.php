@@ -25,7 +25,6 @@ class ProjectSpec extends ObjectBehavior
 
     function it_has_a_due_date(\DateTime $date)
     {
-        $this->setDueDate(null)->shouldReturn(null);
         $this->setDueDate($date)->shouldReturn(null);
         $this->getDueDate()->shouldReturn($date);
     }
