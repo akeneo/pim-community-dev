@@ -11,6 +11,7 @@ activity_manager:
     create_project_modal:
         label_placeholder: Name of the new project
         description_placeholder: Description of the new project
+        saved: The project has been saved, you will be notified when the calculation is done.
         title: Create project
         confirm: Save
         cancel: Cancel

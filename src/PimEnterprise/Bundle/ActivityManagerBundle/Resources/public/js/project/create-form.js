@@ -14,6 +14,7 @@ define(
         'routing',
         'pim/form',
         'oro/loading-mask',
+        'oro/messenger',
         'activity-manager/saver/project',
         'datepicker',
         'pim/date-context',
@@ -30,6 +31,7 @@ define(
         Routing,
         BaseForm,
         LoadingMask,
+        messenger,
         ProjectSaver,
         Datepicker,
         DateContext,
@@ -165,6 +167,12 @@ define(
                 this.$el.empty().append(loadingMask.render().$el.show());
 
                 return ProjectSaver.save(project)
+                    .done(function () {
+                        messenger.notificationMessage(
+                            'success',
+                            __('activity_manager.create_project_modal.saved')
+                        );
+                    })
                     .fail(function (response) {
                         if (_.isArray(response.responseJSON)) {
                             this.validationErrors = response.responseJSON;
