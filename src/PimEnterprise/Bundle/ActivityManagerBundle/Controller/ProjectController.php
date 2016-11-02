@@ -78,7 +78,6 @@ class ProjectController extends Controller
 
         $projectData['datagrid_view'] = $datagridView;
 
-
         $project = $this->container->get('activity_manager.factory.project')
             ->create();
 

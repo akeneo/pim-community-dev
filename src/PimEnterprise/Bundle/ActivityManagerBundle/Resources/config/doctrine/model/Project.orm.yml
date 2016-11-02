@@ -42,7 +42,7 @@ Akeneo\ActivityManager\Component\Model\Project:
                 locale_id:
                     nullable: false
                     referencedColumnName: id
-     oneToOne:
+    oneToOne:
         datagridView:
             targetEntity: Pim\Bundle\DataGridBundle\Entity\DatagridView
             joinColumn:
