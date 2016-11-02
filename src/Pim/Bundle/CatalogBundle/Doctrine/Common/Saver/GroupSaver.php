@@ -116,10 +116,10 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
             $this->copyVariantGroupValues($group);
-        } else {
-            if (0 < count($options['add_products'])) {
-                $this->addProducts($options['add_products']);
-            }
+        }
+
+        if (0 < count($options['add_products'])) {
+            $this->addProducts($options['add_products']);
         }
 
         if (0 < count($options['remove_products'])) {
