@@ -97,7 +97,7 @@ class MediaAttributeSetterIntegration extends TestCase
         $this->assertCommandMedia($parameters, $result, $attributeName);
     }
 
-    public function isSameMedia()
+    public function testIsSameMedia()
     {
         $attributeName = 'a_localizable_scopable_image';
 
