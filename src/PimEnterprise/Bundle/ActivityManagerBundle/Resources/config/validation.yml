@@ -1,4 +1,6 @@
 Akeneo\ActivityManager\Component\Model\Project:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
     properties:
         label:
             - NotBlank: ~
