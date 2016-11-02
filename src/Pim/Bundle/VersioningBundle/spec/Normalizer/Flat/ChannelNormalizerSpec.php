@@ -73,11 +73,11 @@ class ChannelNormalizerSpec extends ObjectBehavior
                 'code'                             => 'my_code',
                 'currencies'                       => 'EUR,USD',
                 'locales'                          => 'fr_FR,en_US,de_DE,es_ES',
-                'category_tree'                    => 'winter',
                 'label-en_US'                      => 'my_label',
                 'label-fr_FR'                      => 'mon_label',
                 'conversion_unit-weight_attribute' => 'GRAM',
                 'conversion_unit-length_attribute' => 'CENTIMETER',
+                'category'                         => 'winter',
             ]
         );
     }

@@ -38,7 +38,12 @@ class AttributeOptionNormalizer extends BaseNormalizer
             ];
         }
 
-        return parent::normalize($object, $format, $context);
+        $attributeOption = parent::normalize($object, $format, $context);
+
+        unset($attributeOption['labels']);
+        $attributeOption+= $this->normalizeLabels($object, $context);
+
+        return $attributeOption;
     }
 
     /**

@@ -12,240 +12,136 @@ class MetricNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_flat_normalization_of_product_metric()
+    function it_supports_flat_normalization_of_product_metric(MetricInterface $metric)
     {
-        $this->supportsNormalization([], 'flat')->shouldBe(true);
-        $this->supportsNormalization([], 'csv')->shouldBe(false);
-        $this->supportsNormalization(1, 'csv')->shouldBe(false);
+        $this->supportsNormalization($metric, 'flat')->shouldBe(true);
     }
 
-    function it_normalizes_metric_in_many_fields_by_default()
+    function it_does_not_support_flat_normalization_of_integer()
     {
-        $standardMetric = [
-            'a_temperature' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => [
-                        'amount' => '-176.5',
-                        'unit'   => 'CELSIUS',
-                    ],
-                ],
-            ],
-        ];
-
-        $this->normalize($standardMetric, 'flat', [])->shouldReturn(
-            [
-                'a_temperature'      => '-176.5',
-                'a_temperature-unit' => 'CELSIUS',
-            ]
-        );
+        $this->supportsNormalization(1, 'flat')->shouldBe(false);
     }
 
-    function it_normalizes_empty_metric_in_many_fields()
+    function it_normalizes_metric_in_many_fields_by_default(MetricInterface $metric)
     {
-        $standardMetric = [
-            'a_temperature' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => [
-                        'amount' => '',
-                        'unit'   => '',
-                    ],
-                ],
-            ],
-        ];
+        $metric->getData()->willReturn('72.1000');
+        $metric->getUnit()->willReturn('KILOGRAM');
 
-        $this->normalize($standardMetric, 'flat', [])->shouldReturn(
-            [
-                'a_temperature'      => '',
-                'a_temperature-unit' => '',
-            ]
-        );
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight'])
+            ->shouldReturn(['weight' => '72.1000', 'weight-unit' => 'KILOGRAM']);
     }
 
-    function it_normalizes_metric_in_one_field()
+    function it_normalizes_metric_in_many_fields(MetricInterface $metric)
     {
-        $standardMetric = [
-            'a_weight' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => [
-                        'amount' => '72.1000',
-                        'unit'   => 'KILOGRAM',
-                    ],
-                ],
-            ],
-        ];
+        $metric->getData()->willReturn('72.1000');
+        $metric->getUnit()->willReturn('KILOGRAM');
 
-        $this->normalize($standardMetric, 'flat', ['metric_format' => 'single_field'])->shouldReturn(
-            [
-                'a_weight' => '72.1000 KILOGRAM',
-            ]
-        );
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight', 'metric_format' => 'multiple_fields'])
+            ->shouldReturn(['weight' => '72.1000', 'weight-unit' => 'KILOGRAM']);
     }
 
-    function it_normalizes_empty_metric_with_a_single_field()
+    function it_normalizes_null_metric_in_many_fields(MetricInterface $metric)
     {
-        $standardMetric = [
-            'a_temperature' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => [
-                        'amount' => '',
-                        'unit'   => '',
-                    ],
-                ],
-            ],
-        ];
+        $metric->getData()->willReturn(null);
+        $metric->getUnit()->willReturn('KILOGRAM');
 
-        $this->normalize($standardMetric, 'flat', ['metric_format' => 'single_field'])->shouldReturn(
-            [
-                'a_temperature' => '',
-            ]
-        );
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight', 'metric_format' => 'multiple_fields'])
+            ->shouldReturn(['weight' => '', 'weight-unit' => '']);
     }
 
-    function it_normalizes_localizable_metric_with_a_single_field()
+    function it_normalizes_empty_metric_in_many_fields(MetricInterface $metric)
     {
-        $standardMetric = [
-            'a_weight' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => null,
-                    'data'   => [
-                        'amount' => '11.00',
-                        'unit'   => 'KILOGRAM',
-                    ],
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope'  => null,
-                    'data'   => [
-                        'amount' => '12.00',
-                        'unit'   => 'KILOGRAM',
-                    ],
-                ],
-            ],
-        ];
+        $metric->getData()->willReturn('');
+        $metric->getUnit()->willReturn('KILOGRAM');
 
-        $this->normalize($standardMetric, 'flat', ['metric_format' => 'single_field'])->shouldReturn(
-            [
-                'a_weight-fr_FR' => '11.00 KILOGRAM',
-                'a_weight-en_US' => '12.00 KILOGRAM',
-            ]
-        );
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight', 'metric_format' => 'multiple_fields'])
+            ->shouldReturn(['weight' => '', 'weight-unit' => '']);
     }
 
-    function it_normalizes_scopable_metric_with_multiple_fields()
+    function it_normalizes_metric_in_one_field(MetricInterface $metric)
     {
-        $standardMetric = [
-            'a_weight' => [
-                [
-                    'locale' => null,
-                    'scope'  => 'mobile',
-                    'data'   => [
-                        'amount' => '11.00',
-                        'unit'   => 'KILOGRAM',
-                    ],
-                ],
-                [
-                    'locale' => null,
-                    'scope'  => 'ecommerce',
-                    'data'   => [
-                        'amount' => '12.00',
-                        'unit'   => 'KILOGRAM',
-                    ],
-                ],
-            ],
-        ];
+        $metric->getData()->willReturn('72.1000');
+        $metric->getUnit()->willReturn('KILOGRAM');
 
-        $this->normalize($standardMetric, 'flat', [])->shouldReturn(
-            [
-                'a_weight-mobile'         => '11.00',
-                'a_weight-unit-mobile'    => 'KILOGRAM',
-                'a_weight-ecommerce'      => '12.00',
-                'a_weight-unit-ecommerce' => 'KILOGRAM',
-            ]
-        );
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight', 'metric_format' => 'single_field'])
+            ->shouldReturn(['weight' => '72.1000 KILOGRAM']);
     }
 
-    function it_normalizes_scopable_and_localizable_metric_with_a_single_field()
+    function it_normalizes_null_metric_in_one_fields(MetricInterface $metric)
     {
-        $standardMetric = [
-            'a_weight' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'mobile',
-                    'data'   => [
-                        'amount' => '11.00',
-                        'unit'   => 'KILOGRAM',
-                    ],
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'ecommerce',
-                    'data'   => [
-                        'amount' => '12.00',
-                        'unit'   => 'KILOGRAM',
-                    ],
-                ],
-            ],
-        ];
+        $metric->getData()->willReturn(null);
+        $metric->getUnit()->willReturn('KILOGRAM');
 
-        $this->normalize($standardMetric, 'flat', ['metric_format' => 'single_field'])->shouldReturn(
-            [
-                'a_weight-fr_FR-mobile'    => '11.00 KILOGRAM',
-                'a_weight-en_US-ecommerce' => '12.00 KILOGRAM',
-            ]
-        );
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight', 'metric_format' => 'single_field'])
+            ->shouldReturn(['weight' => '']);
     }
 
-    function it_normalizes_scopable_and_localizable_metric_with_multiple_fields()
+    function it_normalizes_empty_metric_in_one_fields(MetricInterface $metric)
     {
-        $standardMetric = [
-            'a_weight' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'mobile',
-                    'data'   => [
-                        'amount' => '11.00',
-                        'unit'   => 'KILOGRAM',
-                    ],
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'ecommerce',
-                    'data'   => [
-                        'amount' => '12.00',
-                        'unit'   => 'KILOGRAM',
-                    ],
-                ],
-            ],
-        ];
+        $metric->getData()->willReturn('');
+        $metric->getUnit()->willReturn('KILOGRAM');
 
-        $this->normalize($standardMetric, 'flat', [])->shouldReturn(
-            [
-                'a_weight-fr_FR-mobile'         => '11.00',
-                'a_weight-unit-fr_FR-mobile'    => 'KILOGRAM',
-                'a_weight-en_US-ecommerce'      => '12.00',
-                'a_weight-unit-en_US-ecommerce' => 'KILOGRAM',
-            ]
-        );
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight', 'metric_format' => 'single_field'])
+            ->shouldReturn(['weight' => '']);
     }
 
-    function it_throws_exception_when_the_context_metric_format_is_not_valid()
+    function it_normalizes_metric_with_float_data_with_decimals_allowed_by_default(MetricInterface $metric)
+    {
+        $metric->getData()->willReturn('72.1000');
+        $metric->getUnit()->willReturn('KILOGRAM');
+
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight'])
+            ->shouldReturn(['weight' => '72.1000', 'weight-unit' => 'KILOGRAM']);
+    }
+
+    function it_normalizes_metric_with_float_data_with_decimals_allowed(MetricInterface $metric)
+    {
+        $metric->getData()->willReturn('72.1000');
+        $metric->getUnit()->willReturn('KILOGRAM');
+
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight', 'decimals_allowed' => true])
+            ->shouldReturn(['weight' => '72.1000', 'weight-unit' => 'KILOGRAM']);
+    }
+
+    function it_normalizes_metric_with_float_data_with_decimals_not_allowed(MetricInterface $metric)
+    {
+        $metric->getData()->willReturn('72.0000');
+        $metric->getUnit()->willReturn('KILOGRAM');
+
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight', 'decimals_allowed' => false])
+            ->shouldReturn(['weight' => '72', 'weight-unit' => 'KILOGRAM']);
+    }
+
+    function it_throws_exception_when_the_context_field_name_key_is_not_provided(MetricInterface $metric)
     {
         $this
             ->shouldThrow(
                 new \InvalidArgumentException(
-                    'Value "foo" of "metric_format" context value is not allowed '.
+                    'Missing required "field_name" context value, got "metric_format, foo, bar"'
+                )
+            )
+            ->duringNormalize($metric, null, ['foo' => true, 'bar' => true]);
+    }
+
+    function it_throws_exception_when_the_context_metric_format_is_not_valid(MetricInterface $metric)
+    {
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    'Value "foo" of "metric_format" context value is not allowed ' .
                     '(allowed values: "single_field, multiple_fields"'
                 )
             )
-            ->duringNormalize([], 'flat', ['metric_format' => 'foo']);
+            ->duringNormalize($metric, null, ['field_name' => 'weight', 'metric_format' => 'foo']);
     }
 }

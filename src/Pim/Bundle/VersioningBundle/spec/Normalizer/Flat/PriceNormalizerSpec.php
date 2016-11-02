@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 
 class PriceNormalizerSpec extends ObjectBehavior
 {
@@ -11,211 +12,44 @@ class PriceNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_flat_normalization_of_product_price()
+    function it_supports_flat_normalization_of_product_price(ProductPriceInterface $price)
     {
-        $priceProductValue = ['data' => [['currency' => '10.00']]];
-
-        $this->supportsNormalization($priceProductValue, 'flat')->shouldBe(true);
-        $this->supportsNormalization($priceProductValue, 'csv')->shouldBe(false);
-        $this->supportsNormalization(1, 'csv')->shouldBe(false);
+        $this->supportsNormalization($price, 'flat')->shouldBe(true);
     }
 
-    function it_normalizes_a_price_standard_product_value()
+    function it_does_not_support_flat_normalization_of_integer()
     {
-        $standardPriceProductValue = [
-            "a_price" => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => [
-                        [
-                            'amount'   => '25.30',
-                            'currency' => 'GB',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $this->normalize($standardPriceProductValue, 'flat', [])->shouldReturn(
-            [
-                'a_price-GB' => '25.30',
-            ]
-        );
+        $this->supportsNormalization(1, 'flat')->shouldBe(false);
     }
 
-    function it_normalizes_empty_standard_price_product_value()
+    function it_normalizes_price(ProductPriceInterface $price)
     {
-        $standardPriceProductValue = [
-            "a_price" => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => [
-                        [
-                            'amount'   => '',
-                            'currency' => 'GB',
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $price->getData()->willReturn(25.3);
+        $price->getCurrency()->willReturn('EUR');
 
-        $this->normalize($standardPriceProductValue, 'flat', [])->shouldReturn(
-            [
-                'a_price-GB' => '',
-            ]
-        );
+        $this->normalize($price, null, ['field_name' => 'price'])->shouldReturn(['price-EUR' => '25.30']);
     }
 
-    function it_normalizes_localizable_standard_prices()
+    function it_normalizes_null_price(ProductPriceInterface $price)
     {
-        $standardPriceProductValue = [
-            "a_price" => [
-                [
-                    'locale' => 'en_US',
-                    'scope'  => null,
-                    'data'   => [
-                        [
-                            'amount'   => '25.30',
-                            'currency' => 'GB',
-                        ],
-                        [
-                            'amount'   => '15.30',
-                            'currency' => 'EUR',
-                        ],
-                    ],
-                ],
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => null,
-                    'data'   => [
-                        [
-                            'amount'   => '25.30',
-                            'currency' => 'GB',
-                        ],
-                        [
-                            'amount'   => '12.30',
-                            'currency' => 'EUR',
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $price->getData()->willReturn(null);
+        $price->getCurrency()->willReturn('EUR');
 
-        $this->normalize($standardPriceProductValue, 'flat', [])->shouldReturn(
-            [
-                'a_price-GB-en_US'  => '25.30',
-                'a_price-EUR-en_US' => '15.30',
-                'a_price-GB-fr_FR'  => '25.30',
-                'a_price-EUR-fr_FR' => '12.30',
-            ]
-        );
+        $this->normalize($price, null, ['field_name' => 'price'])->shouldReturn(['price-EUR' => '']);
     }
 
-    function it_normalizes_scopable_standard_prices()
+    function it_normalizes_empty_price(ProductPriceInterface $price)
     {
-        $standardPriceProductValue = [
-            "a_price" => [
-                [
-                    'locale' => null,
-                    'scope'  => 'ecommerce',
-                    'data'   => [
-                        [
-                            'amount'   => '25.30',
-                            'currency' => 'GB',
-                        ],
-                        [
-                            'amount'   => '10.00',
-                            'currency' => 'EUR',
-                        ],
-                    ],
-                ],
-                [
-                    'locale' => null,
-                    'scope'  => 'mobile',
-                    'data'   => [
-                        [
-                            'amount'   => '25.30',
-                            'currency' => 'GB',
-                        ],
-                        [
-                            'amount'   => '12.30',
-                            'currency' => 'EUR',
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $price->getData()->willReturn('');
+        $price->getCurrency()->willReturn('EUR');
 
-        $this->normalize($standardPriceProductValue, 'flat', [])->shouldReturn(
-            [
-                'a_price-GB-ecommerce'  => '25.30',
-                'a_price-EUR-ecommerce' => '10.00',
-                'a_price-GB-mobile'     => '25.30',
-                'a_price-EUR-mobile'    => '12.30',
-            ]
-        );
+        $this->normalize($price, null, ['field_name' => 'price'])->shouldReturn(['price-EUR' => '']);
     }
 
-    function it_normalizes_scopable_and_localizable_standard_prices()
+    function it_throws_exception_when_the_context_field_name_key_is_not_provided()
     {
-        $standardPriceProductValue = [
-            "a_price" => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'ecommerce',
-                    'data'   => [
-                        [
-                            'amount'   => '25.30',
-                            'currency' => 'GB',
-                        ],
-                        [
-                            'amount'   => '10.00',
-                            'currency' => 'EUR',
-                        ],
-                    ],
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'mobile',
-                    'data'   => [
-                        [
-                            'amount'   => '25.30',
-                            'currency' => 'GB',
-                        ],
-                        [
-                            'amount'   => '12.30',
-                            'currency' => 'EUR',
-                        ],
-                    ],
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'ecommerce',
-                    'data'   => [
-                        [
-                            'amount'   => '25.30',
-                            'currency' => 'GB',
-                        ],
-                        [
-                            'amount'   => '12.30',
-                            'currency' => 'EUR',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $this->normalize($standardPriceProductValue, 'flat', [])->shouldReturn(
-            [
-                'a_price-GB-fr_FR-ecommerce'  => '25.30',
-                'a_price-EUR-fr_FR-ecommerce' => '10.00',
-                'a_price-GB-en_US-mobile'     => '25.30',
-                'a_price-EUR-en_US-mobile'    => '12.30',
-                'a_price-GB-en_US-ecommerce'  => '25.30',
-                'a_price-EUR-en_US-ecommerce' => '12.30',
-            ]
-        );
+        $this
+            ->shouldThrow(new \InvalidArgumentException('Missing required "field_name" context value, got "foo, bar"'))
+            ->duringNormalize(false, null, ['foo' => true, 'bar' => true]);
     }
 }
