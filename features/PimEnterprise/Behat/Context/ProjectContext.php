@@ -46,6 +46,9 @@ class ProjectContext extends Context implements ContextInterface
                 case 'Locale':
                     $actualValue = $project->getLocale()->getCode();
                     break;
+                case 'Owner':
+                    $actualValue = $project->getOwner()->getUsername();
+                    break;
                 default:
                     $actualValue = $accessor->getValue($project, $propertyName);
                     break;
