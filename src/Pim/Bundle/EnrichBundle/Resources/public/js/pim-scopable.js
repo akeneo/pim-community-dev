@@ -3,15 +3,17 @@ define(
         'jquery',
         'backbone',
         'underscore',
+        'oro/translator',
         'oro/mediator',
         'wysiwyg',
         'pim/optionform',
         'pim/fileinput',
+        'oro/messenger',
         'bootstrap',
         'bootstrap.bootstrapswitch',
         'jquery.select2'
     ],
-    function ($, Backbone, _, mediator, wysiwyg, optionform, fileinput) {
+    function ($, Backbone, _, __, mediator, wysiwyg, optionform, fileinput, messenger) {
         'use strict';
         /**
          * Allow expanding/collapsing scopable fields
@@ -161,16 +163,19 @@ define(
                     this._changeDefault(options.initialScope);
                 }
 
+                mediator.off('scopablefield:changescope');
                 mediator.on('scopablefield:changescope', function (scope) {
                     this._changeDefault(scope);
                 }.bind(this));
 
+                mediator.off('scopablefield:collapse');
                 mediator.on('scopablefield:collapse', function (id) {
                     if (!id || this.$el.find('#' + id).length) {
                         this._collapse();
                     }
                 }.bind(this));
 
+                mediator.off('scopablefield:expand');
                 mediator.on('scopablefield:expand', function (id) {
                     if (!id || this.$el.find('#' + id).length) {
                         this._expand();
@@ -285,12 +290,15 @@ define(
             },
 
             _changeDefault: function (scope) {
-                this.skipUIInit = true;
-                this._toggle();
-
-                this._setFieldFirst(this.$el.find('[data-scope="' + scope + '"]:first'));
-                this._refreshFieldsDisplay();
-                this._initUI();
+                if (0 !== this.$el.find('[data-scope="' + scope + '"]:first').length) {
+                    this.skipUIInit = true;
+                    this._toggle();
+                    this._setFieldFirst(this.$el.find('[data-scope="' + scope + '"]:first'));
+                    this._refreshFieldsDisplay();
+                    this._initUI();
+                } else {
+                    messenger.notificationFlashMessage('warning', __('pim_scopable.no_value.warning'));
+                }
 
                 return this;
             },
