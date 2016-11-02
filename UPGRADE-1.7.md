@@ -24,7 +24,6 @@ The following command helps to migrate references to these classes or services.
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Normalizer\\Structured\\ChannelConfigurationNormalizer/PimEnterprise\\Component\\ProductAsset\\Normalizer\\Standard\\ChannelConfigurationNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Normalizer\\Structured\\VariationNormalizer/PimEnterprise\\Component\\ProductAsset\\Normalizer\\Standard\\VariationNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pimee_serializer\.normalizer\.structured\.attribute/pimee_catalog\.normalizer\.standard\.attribute/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pimee_serializer\.normalizer\.structured\.attribute\.class/pimee_catalog\.normalizer\.standard\.attribute\.class/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_product_asset\.normalizer\.structured\.asset/pimee_product_asset\.normalizer\.standard\.asset/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_product_asset\.normalizer\.structured\.variation/pimee_product_asset\.normalizer\.standard\.variation/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_product_asset\.normalizer\.structured\.channel_configuration/pimee_product_asset\.normalizer\.standard\.channel_configuration/g'
@@ -80,3 +79,28 @@ value:
   amount: 12
   currency: EUR
 ```
+
+### Pictures and files
+
+In the enrichment rules, the rule structure has been changed for pictures and files.
+The notion of original filename has been removed. The filename will be directly determined from the full path.
+
+In 1.6 version, the rule structure was defined like this :
+
+```
+field: small_image
+operator: CONTAIN
+value:
+  - filePath: /tmp/image.jpg
+  - originalFilename: akeneo.jpg 
+```
+
+In 1.7 version, the rule structure is defined like this :
+
+```
+field: small_image
+operator: CONTAIN
+value: /tmp/image.jpg
+```
+
+According to the full path specified in this example, the filename will be "image.jpg".
