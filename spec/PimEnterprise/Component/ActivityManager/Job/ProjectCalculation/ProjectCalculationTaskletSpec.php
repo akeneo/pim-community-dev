@@ -9,6 +9,7 @@ use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -20,9 +21,16 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         ProjectRepositoryInterface $projectRepository,
         CalculationStepInterface $chainCalculationStep,
-        SaverInterface $projectSaver
+        SaverInterface $projectSaver,
+        ObjectDetacherInterface $objectDetacher
     ) {
-        $this->beConstructedWith($productRepository, $projectRepository, $chainCalculationStep, $projectSaver);
+        $this->beConstructedWith(
+            $productRepository,
+            $projectRepository,
+            $chainCalculationStep,
+            $projectSaver,
+            $objectDetacher
+        );
     }
 
     function it_is_initializable()
@@ -45,6 +53,7 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $projectRepository,
         $chainCalculationStep,
         $projectSaver,
+        $objectDetacher,
         StepExecution $stepExecution,
         ProjectInterface $project,
         ProductInterface $product,
@@ -62,6 +71,9 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
 
         $chainCalculationStep->execute($product, $project);
         $chainCalculationStep->execute($otherProduct, $project);
+
+        $objectDetacher->detach($product)->shouldBeCalled();
+        $objectDetacher->detach($otherProduct)->shouldBeCalled();
 
         $projectSaver->save($project);
 

@@ -14,6 +14,7 @@ namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation;
 use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
@@ -35,6 +36,9 @@ class ProjectCalculationTasklet implements TaskletInterface
     /** @var SaverInterface */
     private $projectSaver;
 
+    /** @var ObjectDetacherInterface */
+    private $objectDetacher;
+
     /** @var StepExecution */
     private $stepExecution;
 
@@ -42,12 +46,14 @@ class ProjectCalculationTasklet implements TaskletInterface
         ProductRepositoryInterface $productRepository,
         ProjectRepositoryInterface $projectRepository,
         CalculationStepInterface $calculationStep,
-        SaverInterface $projectSaver
+        SaverInterface $projectSaver,
+        ObjectDetacherInterface $objectDetacher
     ) {
         $this->productRepository = $productRepository;
         $this->projectRepository = $projectRepository;
         $this->calculationStep = $calculationStep;
         $this->projectSaver = $projectSaver;
+        $this->objectDetacher = $objectDetacher;
     }
 
     /**
@@ -70,6 +76,7 @@ class ProjectCalculationTasklet implements TaskletInterface
 
         foreach ($products as $product) {
             $this->calculationStep->execute($product, $project);
+            $this->objectDetacher->detach($product);
         }
 
         $this->projectSaver->save($project);

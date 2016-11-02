@@ -124,7 +124,7 @@ interface ProjectInterface
     /**
      * Returns PQB filters in json.
      *
-     * @return string $productFilters // String or array ???
+     * @return array $productFilters
      */
     public function getProductFilters();
 

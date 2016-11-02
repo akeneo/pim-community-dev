@@ -5,16 +5,28 @@ namespace spec\Akeneo\ActivityManager\Component\Job\ProjectCalculation\Calculati
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\UserGroupCalculationStep;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 
 class UserGroupCalculationStepSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $projectUpdater)
-    {
-        $this->beConstructedWith($projectUpdater);
+    function let(
+        ObjectUpdaterInterface $projectUpdater,
+        ObjectDetacherInterface $objectDetacher,
+        CategoryAccessRepository $categoryAccessRepository,
+        AttributeGroupAccessRepository $attributeGroupAccessRepository
+    ) {
+        $this->beConstructedWith(
+            $projectUpdater,
+            $objectDetacher,
+            $categoryAccessRepository,
+            $attributeGroupAccessRepository
+        );
     }
 
     function it_is_initializable()

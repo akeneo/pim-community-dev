@@ -7,15 +7,22 @@ use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 
 class ProductRepositorySpec extends ObjectBehavior
 {
-    function let(ProductQueryBuilderFactory $productQueryBuilderFactory)
-    {
-        $this->beConstructedWith($productQueryBuilderFactory);
+    function let(
+        ProductQueryBuilderFactory $productQueryBuilderFactory,
+        CategoryAccessRepository $categoryAccessRepository
+    ) {
+        $this->beConstructedWith($productQueryBuilderFactory, $categoryAccessRepository);
     }
 
     function it_is_initializable()
@@ -30,9 +37,11 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_finds_the_product_affected_by_the_project(
         $productQueryBuilderFactory,
+        $categoryAccessRepository,
         ProductQueryBuilder $productQueryBuilder,
         ProjectInterface $project,
-        CursorInterface $products
+        CursorInterface $products,
+        UserInterface $user
     ) {
         $productQueryBuilderFactory->create()->willReturn($productQueryBuilder);
 
@@ -43,6 +52,11 @@ class ProductRepositorySpec extends ObjectBehavior
 
         $productQueryBuilder->addFilter('family.code', 'IN', 'guitar')->shouldBeCalled();
         $productQueryBuilder->addFilter('name', '=', 'Gibson Les Paul')->shouldBeCalled();
+
+        $project->getOwner()->willReturn($user);
+        $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::VIEW)->willReturn([42, 65]);
+        $productQueryBuilder->addFilter('categories.id', 'IN', [42, 65])->shouldBeCalled();
+        $productQueryBuilder->addFilter('family.id', 'NOT EMPTY', null)->shouldBeCalled();
 
         $productQueryBuilder->execute()->willReturn($products);
 
