@@ -240,8 +240,9 @@ define(
 
             /**
              * Format a date according to specified format.
-             * It instantiates a datepicker on-the-fly to perform the conversion. Not possible to use the "real" ones since
-             * we need to format a date even when the UI is not initialized yet.
+             * It instantiates a datepicker on-the-fly to perform the conversion.
+             * Not possible to use the "real" ones since we need to format a date even when the UI
+             * is not initialized yet.
              *
              * @param {String} date
              * @param {String} fromFormat
