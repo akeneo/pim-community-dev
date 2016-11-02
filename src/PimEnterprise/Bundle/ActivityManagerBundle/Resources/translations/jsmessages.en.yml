@@ -1,7 +1,7 @@
 activity_manager:
     common:
         required: Required
-    grid.view_selector.create: Create todo
+    grid.view_selector.create: Create project
     project:
         label: Label
         label_maxlength: This value is too long. It should have {{ max }} characters or less.
@@ -9,8 +9,8 @@ activity_manager:
         due_date: Due Date
         due_date_past: You can't select a date in the past.
     create_project_modal:
-        label_placeholder: Name of the new todo
-        description_placeholder: Description of the new todo
+        label_placeholder: Name of the new project
+        description_placeholder: Description of the new project
         title: Create project
         confirm: Save
         cancel: Cancel

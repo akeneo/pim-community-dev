@@ -2,7 +2,7 @@
 
 /**
  * Extension of view-selector-footer-create which add a button to create view.
- * This extension add dropdown with Create view and Create todo instead.
+ * This extension add dropdown with Create view and Create project instead.
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
