@@ -3,6 +3,7 @@ filter:
         - src/*
     excluded_paths:
         - src/*/*/*/spec/*
+        - src/*/*/*/tests/*
         - src/Pim/Bundle/JsFormValidationBundle/Generator/*
         - src/Oro/*
 
