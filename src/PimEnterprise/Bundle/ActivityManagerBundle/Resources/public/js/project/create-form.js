@@ -163,7 +163,12 @@ define(
 
                 return ProjectSaver.save(project)
                     .fail(function (response) {
-                        this.validationErrors = response.responseJSON;
+                        if (_.isArray(response.responseJSON)) {
+                            this.validationErrors = response.responseJSON;
+                        } else {
+                            this.validationErrors.push(response.responseJSON);
+                        }
+
                         this.render();
                     }.bind(this))
                     .always(function () {
