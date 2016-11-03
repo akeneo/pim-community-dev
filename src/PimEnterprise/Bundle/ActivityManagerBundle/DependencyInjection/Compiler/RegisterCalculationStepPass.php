@@ -62,6 +62,6 @@ class RegisterCalculationStepPass implements CompilerPassInterface
         krsort($calculationSteps);
         $calculationSteps = call_user_func_array('array_merge', $calculationSteps);
 
-        $container->getDefinition(static::DEFAULT_CALCULATION_STEP)->setArguments($calculationSteps);
+        $container->getDefinition(static::DEFAULT_CALCULATION_STEP)->setArguments([$calculationSteps]);
     }
 }

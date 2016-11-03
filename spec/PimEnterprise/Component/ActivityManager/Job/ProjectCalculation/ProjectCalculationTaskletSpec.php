@@ -10,6 +10,7 @@ use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -19,7 +20,7 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
 {
     function let(
         ProductRepositoryInterface $productRepository,
-        ProjectRepositoryInterface $projectRepository,
+        IdentifiableObjectRepositoryInterface $projectRepository,
         CalculationStepInterface $chainCalculationStep,
         SaverInterface $projectSaver,
         ObjectDetacherInterface $objectDetacher
@@ -65,7 +66,7 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willreturn($jobParameters);
         $jobParameters->get('project_id')->willReturn(42);
 
-        $projectRepository->find(42)->willReturn($project);
+        $projectRepository->findOneByIdentifier(42)->willReturn($project);
 
         $productRepository->findByProject($project)->willReturn([$product, $otherProduct]);
 

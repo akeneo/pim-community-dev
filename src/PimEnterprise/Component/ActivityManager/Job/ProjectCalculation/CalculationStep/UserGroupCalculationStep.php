@@ -11,84 +11,95 @@
 
 namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep;
 
+use Akeneo\ActivityManager\Component\Repository\AttributePermissionRepositoryInterface;
+use Akeneo\ActivityManager\Component\Repository\FamilyRequirementRepositoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 
 /**
+ * Find the contributor groups (user groups which have edit on the product) affected by the project
+ *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class UserGroupCalculationStep implements CalculationStepInterface
 {
-    /** @var ObjectUpdaterInterface  */
-    private $projectUpdater;
-
     /** @var ObjectDetacherInterface */
     private $objectDetacher;
 
     /** @var CategoryAccessRepository */
     private $categoryAccessRepository;
 
-    /** @var AttributeGroupAccessRepository */
-    private $attributeGroupAccessRepository;
+    /** @var FamilyRequirementRepositoryInterface */
+    private $familyRequirementRepository;
+
+    /** @var AttributePermissionRepositoryInterface */
+    private $attributePermissionRepository;
 
     public function __construct(
-        ObjectUpdaterInterface $projectUpdater,
         ObjectDetacherInterface $objectDetacher,
         CategoryAccessRepository $categoryAccessRepository,
-        AttributeGroupAccessRepository $attributeGroupAccessRepository
+        FamilyRequirementRepositoryInterface $familyRequirementRepository,
+        AttributePermissionRepositoryInterface $attributePermissionRepository
     ) {
-        $this->projectUpdater = $projectUpdater;
         $this->objectDetacher = $objectDetacher;
         $this->categoryAccessRepository = $categoryAccessRepository;
-        $this->attributeGroupAccessRepository = $attributeGroupAccessRepository;
+        $this->familyRequirementRepository = $familyRequirementRepository;
+        $this->attributePermissionRepository = $attributePermissionRepository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
-        $categories = $product->getCategories();
+        $productContributorsGroupNames = $this->findUserGroupNamesForProduct($product);
+        $attributeContributorGroups = $this->findUserGroupForAttribute($product, $project);
 
-        $productUserGroups = [];
-        foreach ($categories as $category) {
-            $productUserGroups = array_merge(
-                $productUserGroups,
-                $this->categoryAccessRepository->getGrantedUserGroups($category, Attributes::EDIT_ITEMS)
-            );
-
-            $this->objectDetacher->detach($category);
-        }
-
-        $attributeUserGroups = [];
-        $attributesRequirement = $product->getFamily()->getAttributeRequirements();
-        foreach ($attributesRequirement as $attributeRequirement) {
-            $attribute = $attributeRequirement->getAttribute();
-            $attributeGroup = $attribute->getGroup();
-            $attributeUserGroups = array_merge(
-                $attributeUserGroups,
-                $this->attributeGroupAccessRepository->getGrantedUserGroups($attributeGroup, Attributes::EDIT_ATTRIBUTES)
-            );
-            $this->objectDetacher->detach($attribute);
-        }
-
-        foreach ($productUserGroups as $userGroup) {
-            if ('All' === $userGroup->getName()) {
-                return $attributeUserGroups;
+        $allGroup = in_array('All', $productContributorsGroupNames) ? true : false;
+        foreach ($attributeContributorGroups as $attributeUserGroup) {
+            if (in_array($attributeUserGroup->getName(), $productContributorsGroupNames) || $allGroup) {
+                $project->addUserGroup($attributeUserGroup);
             }
         }
+    }
 
-        $results = [];
-        foreach ($productUserGroups as $productUserGroup) {
-            foreach ($attributeUserGroups as $attributeUserGroup) {
-                if ($attributeUserGroup->getName() === $productUserGroup->getName()) {
-                    $results[] = $attributeUserGroup;
-                }
-            }
-        }
+    /**
+     * Find contributor group names that can edit a product (category permission)
+     *
+     * @param ProductInterface $product
+     *
+     * @return string[]
+     */
+    private function findUserGroupNamesForProduct(ProductInterface $product)
+    {
+        $contributors = $this->categoryAccessRepository->getGrantedUserGroupsForProduct(
+            $product,
+            Attributes::EDIT_ITEMS
+        );
 
-        return $results;
+        return array_column($contributors, 'name');
+    }
+
+    /**
+     * Find contributor groups that can edit at least one product attribute (attribute group permission)
+     *
+     * @param ProductInterface $product
+     * @param ProjectInterface $project
+     *
+     * @return Group[]
+     */
+    private function findUserGroupForAttribute(ProductInterface $product, ProjectInterface $project)
+    {
+        $attributeGroupIdentifiers = $this->familyRequirementRepository->findAttributeGroupIdentifiers(
+            $product->getFamily(),
+            $project->getChannel()
+        );
+
+        return $this->attributePermissionRepository->findContributorsUserGroups($attributeGroupIdentifiers);
     }
 }

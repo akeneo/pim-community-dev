@@ -15,3 +15,16 @@ services:
         class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProductRepository'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
+            - '@pimee_product_asset.repository.asset_category_access'
+
+    activity_manager.repository.attribute_requirement:
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\FamilyRequirementRepository'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.attribute_requirement.class%'
+
+    activity_manager.repository.acces_group:
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\AttributePermissionRepository'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pimee_security.entity.attribute_group_access.class%'

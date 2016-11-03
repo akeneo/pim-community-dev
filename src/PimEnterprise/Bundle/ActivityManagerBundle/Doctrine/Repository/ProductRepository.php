@@ -51,7 +51,11 @@ class ProductRepository implements ProductRepositoryInterface
             $productQueryBuilder->addFilter($productFiler['field'], $productFiler['operator'], $productFiler['value']);
         }
 
-        $categoriesIds = $this->categoryAccessRepository->getGrantedCategoryIds($project->getOwner(), Attributes::VIEW);
+        $categoriesIds = $this->categoryAccessRepository->getGrantedCategoryIds(
+            $project->getOwner(),
+            Attributes::VIEW_ITEMS
+        );
+
         $productQueryBuilder->addFilter('categories.id', 'IN', $categoriesIds);
         $productQueryBuilder->addFilter('family.id', 'NOT EMPTY', null);
 

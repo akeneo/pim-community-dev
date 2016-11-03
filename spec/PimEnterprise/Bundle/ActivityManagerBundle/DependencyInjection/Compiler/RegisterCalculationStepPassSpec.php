@@ -35,11 +35,12 @@ class RegisterCalculationStepPassSpec extends ObjectBehavior
         ]);
 
         $chainCalculationStep->setArguments(Argument::that(function ($params) {
+            $calculationSteps = $params[0];
             $result =
-                $params[0] instanceof Reference &&
-                'calculation_step.bar' === $params[0]->__toString() &&
-                $params[1] instanceof Reference &&
-                'calculation_step.foo' === $params[1]->__toString()
+                $calculationSteps[0] instanceof Reference &&
+                'calculation_step.bar' === $calculationSteps[0]->__toString() &&
+                $calculationSteps[1] instanceof Reference &&
+                'calculation_step.foo' === $calculationSteps[1]->__toString()
             ;
 
             return $result;

@@ -54,7 +54,7 @@ class ProductRepositorySpec extends ObjectBehavior
         $productQueryBuilder->addFilter('name', '=', 'Gibson Les Paul')->shouldBeCalled();
 
         $project->getOwner()->willReturn($user);
-        $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::VIEW)->willReturn([42, 65]);
+        $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([42, 65]);
         $productQueryBuilder->addFilter('categories.id', 'IN', [42, 65])->shouldBeCalled();
         $productQueryBuilder->addFilter('family.id', 'NOT EMPTY', null)->shouldBeCalled();
 

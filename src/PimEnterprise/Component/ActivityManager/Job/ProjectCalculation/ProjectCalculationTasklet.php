@@ -15,6 +15,7 @@ use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
@@ -44,7 +45,7 @@ class ProjectCalculationTasklet implements TaskletInterface
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        ProjectRepositoryInterface $projectRepository,
+        IdentifiableObjectRepositoryInterface $projectRepository,
         CalculationStepInterface $calculationStep,
         SaverInterface $projectSaver,
         ObjectDetacherInterface $objectDetacher
@@ -71,7 +72,7 @@ class ProjectCalculationTasklet implements TaskletInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 
-        $project = $this->projectRepository->find($jobParameters->get('project_id'));
+        $project = $this->projectRepository->findOneByIdentifier($jobParameters->get('project_id'));
         $products = $this->productRepository->findByProject($project);
 
         foreach ($products as $product) {

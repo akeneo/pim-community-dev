@@ -4,7 +4,7 @@ namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\Repository;
 
 use Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProjectRepository;
 use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
@@ -13,7 +13,7 @@ class ProjectRepositorySpec extends ObjectBehavior
 {
     function let(EntityManager $entityManager, ClassMetadata $classMetadata)
     {
-        $entityManager->getClassMetadata()->willReturn($classMetadata);
+        $entityManager->getClassMetadata('Project')->willReturn($classMetadata);
 
         $this->beConstructedWith($entityManager, 'Project');
     }
@@ -28,9 +28,13 @@ class ProjectRepositorySpec extends ObjectBehavior
         $this->shouldImplement(ProjectRepositoryInterface::class);
     }
 
-    function it_is_a_doctrine_repository()
+    function it_is_an_object_identifiable_repository()
     {
-        $this->shouldImplement(ObjectRepository::class);
-        $this->shouldHaveType('Doctrine\ORM\EntityRepository');
+        $this->shouldImplement(IdentifiableObjectRepositoryInterface::class);
+    }
+
+    function its_identifier_is_id()
+    {
+        $this->getIdentifierProperties()->shouldReturn(['id']);
     }
 }
