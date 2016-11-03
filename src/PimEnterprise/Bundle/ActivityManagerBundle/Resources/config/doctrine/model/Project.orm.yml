@@ -11,7 +11,6 @@ Akeneo\ActivityManager\Component\Model\Project:
         label:
             type: string
             length: 100
-            unique: true
             nullable: false
         description:
             type: text
@@ -54,15 +53,18 @@ Akeneo\ActivityManager\Component\Model\Project:
                 - detach
     manyToMany:
         userGroups:
-          targetEntity: Oro\Bundle\UserBundle\Entity\Group
-          joinTable:
-            name: akeneo_activity_manager_project_user_group
-            joinColumns:
-              project_id:
-                referencedColumnName: id
-            inverseJoinColumns:
-              attribute_group_id:
-                referencedColumnName: id
-            cascade:
-                - refresh
-                - detach
+            targetEntity: Oro\Bundle\UserBundle\Entity\Group
+            joinTable:
+                name: akeneo_activity_manager_project_user_group
+                joinColumns:
+                    project_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    attribute_group_id:
+                        referencedColumnName: id
+                cascade:
+                    - refresh
+                    - detach
+    uniqueConstraints:
+        channel_locale_label_idx:
+            columns: channel_id,locale_id,label

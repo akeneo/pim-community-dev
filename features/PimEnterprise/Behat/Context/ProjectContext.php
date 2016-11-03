@@ -25,11 +25,11 @@ use Webmozart\Assert\Assert;
 class ProjectContext extends Context implements ContextInterface
 {
     /**
-     * @Then /^the project "([^"]*)" has the following properties:$/
+     * @Then /^the project "([^"]*)" for channel "([^"]*)" and locale "([^"]*)" has the following properties:$/
      */
-    public function projectHasProperties($label, TableNode $properties)
+    public function projectHasProperties($label, $channelCode, $localeCode, TableNode $properties)
     {
-        $project = $this->findProjectByLabel($label);
+        $project = $this->findProjectByLabelChannelLocale($label, $channelCode, $localeCode);
 
         $accessor = PropertyAccess::createPropertyAccessor();
 
@@ -68,11 +68,11 @@ class ProjectContext extends Context implements ContextInterface
     }
 
     /**
-     * @Given /^the project "([^"]*)" has a project datagrid view$/
+     * @Given /^the project "([^"]*)" for channel "([^"]*)" and locale "([^"]*)" has a project datagrid view$/
      */
-    public function projectHasDatagridView($label)
+    public function projectHasDatagridView($label, $channelCode, $localeCode)
     {
-        $project = $this->findProjectByLabel($label);
+        $project = $this->findProjectByLabelChannelLocale($label, $channelCode, $localeCode);
         $datagridView = $project->getDatagridView();
         $type = $datagridView->getType();
 
@@ -91,19 +91,40 @@ class ProjectContext extends Context implements ContextInterface
 
     /**
      * @param string $label
+     * @param string $channelCode
+     * @param string $localeCode
      *
      * @return ProjectInterface
      *
      * @throws \UnexpectedValueException
      */
-    private function findProjectByLabel($label)
+    private function findProjectByLabelChannelLocale($label, $channelCode, $localeCode)
     {
+        $channel = $this->getContainer()
+            ->get('pim_catalog.repository.channel')
+            ->findOneByIdentifier($channelCode);
+
+        $locale = $this->getContainer()
+            ->get('pim_catalog.repository.locale')
+            ->findOneByIdentifier($localeCode);
+
         $project = $this->getContainer()
             ->get('activity_manager.repository.project')
-            ->findOneBy(['label' => $label]);
+            ->findOneBy([
+                'label' => $label,
+                'channel' => $channel,
+                'locale' => $locale
+            ]);
 
         if (null === $project) {
-            throw new \UnexpectedValueException(sprintf('The project "%s" does not exist', $label));
+            throw new \UnexpectedValueException(
+                sprintf(
+                    'The project "%s" does not exist for channel "%s" and locale "%s"',
+                    $label,
+                    $channelCode,
+                    $localeCode
+                )
+            );
         }
 
         return $project;

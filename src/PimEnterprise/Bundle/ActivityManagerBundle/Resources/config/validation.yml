@@ -1,6 +1,6 @@
 Akeneo\ActivityManager\Component\Model\Project:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: ['label', 'channel', 'locale']
     properties:
         label:
             - NotBlank: ~
