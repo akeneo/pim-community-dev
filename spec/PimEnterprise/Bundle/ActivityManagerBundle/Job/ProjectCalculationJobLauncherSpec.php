@@ -2,13 +2,13 @@
 
 namespace spec\Akeneo\ActivityManager\Bundle\Job;
 
+use Akeneo\ActivityManager\Bundle\Doctrine\Repository\JobInstanceRepository;
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 
 class ProjectCalculationJobLauncherSpec extends ObjectBehavior
 {
@@ -29,7 +29,7 @@ class ProjectCalculationJobLauncherSpec extends ObjectBehavior
         ProjectInterface $project,
         JobInstance $jobInstance
     ) {
-        $jobInstanceRepository->findOneByIdentifier('project_calculation')->willReturn($jobInstance);
+        $jobInstanceRepository->getProjectCalculation()->willReturn($jobInstance);
 
         $filters = '[{"field":"categories.id","operator":"IN OR UNCLASSIFIED","value":[1, 2, 3, 4],'.
             '"context":{"locale":"en_US","scope":"ecommerce"}},'.

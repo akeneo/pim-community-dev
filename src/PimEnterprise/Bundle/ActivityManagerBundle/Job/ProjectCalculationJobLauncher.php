@@ -11,12 +11,11 @@
 
 namespace Akeneo\ActivityManager\Bundle\Job;
 
+use Akeneo\ActivityManager\Bundle\Doctrine\Repository\JobInstanceRepository;
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
-use Akeneo\ActivityManager\Component\Job\ProjectCalculationJobParameters;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -45,7 +44,7 @@ class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInte
      */
     public function launch(UserInterface $user, ProjectInterface $project)
     {
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(ProjectCalculationJobParameters::JOB_NAME);
+        $jobInstance = $this->jobInstanceRepository->getProjectCalculation();
 
         $filters = $project->getProductFilters();
 

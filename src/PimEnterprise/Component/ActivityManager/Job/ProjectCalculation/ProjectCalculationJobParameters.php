@@ -9,22 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Job;
+namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation;
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class ProjectCalculationJobParameters implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
 {
+    /** @var string */
+    private $projectCalculationJobName;
+
     /**
-     * Project calculation job code.
+     * @param $projectCalculationJobName
      */
-    const JOB_NAME = 'project_calculation';
+    public function __construct($projectCalculationJobName)
+    {
+        $this->projectCalculationJobName = $projectCalculationJobName;
+    }
 
     /**
      * {@inheritdoc}
@@ -41,6 +48,7 @@ class ProjectCalculationJobParameters implements DefaultValuesProviderInterface,
     {
         return new Collection([
             'fields' => [
+                'project_id' => new NotBlank(),
             ],
         ]);
     }
@@ -50,6 +58,6 @@ class ProjectCalculationJobParameters implements DefaultValuesProviderInterface,
      */
     public function supports(JobInterface $job)
     {
-        return self::JOB_NAME === $job->getName();
+        return $this->projectCalculationJobName === $job->getName();
     }
 }

@@ -5,14 +5,13 @@ namespace spec\Akeneo\ActivityManager\Bundle\EventListener;
 use Akeneo\ActivityManager\Bundle\EventListener\EventTranslationSubscriber;
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
-use Akeneo\ActivityManager\Component\Job\ProjectCalculationJobParameters;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -22,9 +21,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class EventTranslationSubscriberSpec extends ObjectBehavior
 {
-    function let(EventDispatcherInterface $eventDispatcher, ProjectRepositoryInterface $projectRepository)
-    {
-        $this->beConstructedWith($eventDispatcher, $projectRepository);
+    function let(
+        EventDispatcherInterface $eventDispatcher,
+        IdentifiableObjectRepositoryInterface $projectRepository
+    ) {
+        $this->beConstructedWith($eventDispatcher, $projectRepository, 'project_calculation');
     }
 
     function it_is_initializable()
@@ -82,9 +83,9 @@ class EventTranslationSubscriberSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('project_id')->willReturn(42);
-        $jobInstance->getCode()->willReturn(ProjectCalculationJobParameters::JOB_NAME);
+        $jobInstance->getCode()->willReturn('project_calculation');
 
-        $projectRepository->find(42)->willReturn($project);
+        $projectRepository->findOneByIdentifier(42)->willReturn($project);
 
         $eventDispatcher->dispatch(
             ProjectEvents::PROJECT_CALCULATED,

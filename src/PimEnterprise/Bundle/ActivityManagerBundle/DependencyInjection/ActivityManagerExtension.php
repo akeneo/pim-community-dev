@@ -31,7 +31,6 @@ class ActivityManagerExtension extends Extension
         $loader->load('event_listeners.yml');
         $loader->load('factories.yml');
         $loader->load('jobs.yml');
-        $loader->load('job_parameters.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');

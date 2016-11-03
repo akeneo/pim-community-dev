@@ -13,10 +13,10 @@ namespace Akeneo\ActivityManager\Bundle\EventListener;
 
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
-use Akeneo\ActivityManager\Component\Job\ProjectCalculationJobParameters;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,16 +36,22 @@ class EventTranslationSubscriber implements EventSubscriberInterface
     /** @var ProjectRepositoryInterface */
     private $projectRepository;
 
+    /** @var string */
+    private $projectCalculationJobName;
+
     /**
-     * @param EventDispatcherInterface   $eventDispatcher
-     * @param ProjectRepositoryInterface $projectRepository
+     * @param EventDispatcherInterface              $eventDispatcher
+     * @param IdentifiableObjectRepositoryInterface $projectRepository
+     * @param string                                $projectCalculationJobName
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        ProjectRepositoryInterface $projectRepository
+        IdentifiableObjectRepositoryInterface $projectRepository,
+        $projectCalculationJobName
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->projectRepository = $projectRepository;
+        $this->projectCalculationJobName = $projectCalculationJobName;
     }
 
     /**
@@ -85,13 +91,13 @@ class EventTranslationSubscriber implements EventSubscriberInterface
         $jobExecution = $jobExecutionEvent->getJobExecution();
         $jobInstance = $jobExecution->getJobInstance();
 
-        if (ProjectCalculationJobParameters::JOB_NAME !== $jobInstance->getCode()) {
+        if ($this->projectCalculationJobName !== $jobInstance->getCode()) {
             return;
         }
 
         $jobParameters = $jobExecution->getJobParameters();
         $projectId = $jobParameters->get('project_id');
-        $project = $this->projectRepository->find($projectId);
+        $project = $this->projectRepository->findOneByIdentifier($projectId);
 
         $this->eventDispatcher->dispatch(ProjectEvents::PROJECT_CALCULATED, new ProjectEvent($project));
     }

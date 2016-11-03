@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Job;
+namespace spec\Akeneo\ActivityManager\Component\Job\ProjectCalculation;
 
-use Akeneo\ActivityManager\Component\Job\ProjectCalculationJobParameters;
+use Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationJobParameters;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
@@ -11,6 +11,11 @@ use Symfony\Component\Validator\Constraints\Collection;
 
 class ProjectCalculationJobParametersSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('project_calculation');
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ProjectCalculationJobParameters::class);
@@ -38,7 +43,7 @@ class ProjectCalculationJobParametersSpec extends ObjectBehavior
 
     function it_specifies_supported_job(JobInterface $job)
     {
-        $job->getName()->willReturn(ProjectCalculationJobParameters::JOB_NAME);
+        $job->getName()->willReturn('project_calculation');
         $this->supports($job)->shouldReturn(true);
 
         $job->getName()->willReturn('other_job');
