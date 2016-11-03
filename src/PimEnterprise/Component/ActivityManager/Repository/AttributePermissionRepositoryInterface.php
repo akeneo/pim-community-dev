@@ -10,6 +10,7 @@
  */
 
 namespace Akeneo\ActivityManager\Component\Repository;
+
 use Oro\Bundle\UserBundle\Entity\Group;
 
 /**
@@ -18,7 +19,7 @@ use Oro\Bundle\UserBundle\Entity\Group;
 interface AttributePermissionRepositoryInterface
 {
     /**
-     * Find user groups which have the edit right permission on the attribute group selection
+     * Find user groups which have the edit right permission on the attribute group selection.
      *
      * @param array $attributeGroupIdentifiers
      *

@@ -10,6 +10,7 @@
  */
 
 namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep;
+
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 

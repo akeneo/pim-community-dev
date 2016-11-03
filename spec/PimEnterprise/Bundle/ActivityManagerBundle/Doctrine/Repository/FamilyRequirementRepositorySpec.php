@@ -7,7 +7,6 @@ use Akeneo\ActivityManager\Component\Repository\FamilyRequirementRepositoryInter
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FamilyRequirementRepositorySpec extends ObjectBehavior
 {

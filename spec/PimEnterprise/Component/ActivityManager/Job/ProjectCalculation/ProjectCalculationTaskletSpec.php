@@ -5,7 +5,6 @@ namespace spec\Akeneo\ActivityManager\Component\Job\ProjectCalculation;
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationTasklet;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;

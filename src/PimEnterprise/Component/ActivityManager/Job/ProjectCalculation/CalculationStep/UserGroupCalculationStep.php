@@ -14,7 +14,6 @@ namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationSte
 use Akeneo\ActivityManager\Component\Repository\AttributePermissionRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\FamilyRequirementRepositoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
@@ -22,7 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessReposito
 use PimEnterprise\Component\Security\Attributes;
 
 /**
- * Find the contributor groups (user groups which have edit on the product) affected by the project
+ * Find the contributor groups (user groups which have edit on the product) affected by the project.
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
@@ -69,7 +68,7 @@ class UserGroupCalculationStep implements CalculationStepInterface
     }
 
     /**
-     * Find contributor group names that can edit a product (category permission)
+     * Find contributor group names that can edit a product (category permission).
      *
      * @param ProductInterface $product
      *
@@ -86,7 +85,7 @@ class UserGroupCalculationStep implements CalculationStepInterface
     }
 
     /**
-     * Find contributor groups that can edit at least one product attribute (attribute group permission)
+     * Find contributor groups that can edit at least one product attribute (attribute group permission).
      *
      * @param ProductInterface $product
      * @param ProjectInterface $project

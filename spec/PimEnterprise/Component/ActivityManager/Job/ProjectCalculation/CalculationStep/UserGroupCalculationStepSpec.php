@@ -8,7 +8,6 @@ use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\AttributePermissionRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\FamilyRequirementRepositoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -57,7 +56,7 @@ class UserGroupCalculationStepSpec extends ObjectBehavior
         $categoryAccessRepository->getGrantedUserGroupsForProduct($product, Attributes::EDIT_ITEMS)
             ->willreturn([
                 ['name' => 'Redactor'],
-                ['name' => 'Catalog manager']
+                ['name' => 'Catalog manager'],
             ]);
 
         $product->getFamily()->willreturn($family);

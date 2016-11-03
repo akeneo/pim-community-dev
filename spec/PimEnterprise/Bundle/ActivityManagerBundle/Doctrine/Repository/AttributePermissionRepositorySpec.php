@@ -7,7 +7,6 @@ use Akeneo\ActivityManager\Component\Repository\AttributePermissionRepositoryInt
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AttributePermissionRepositorySpec extends ObjectBehavior
 {

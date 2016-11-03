@@ -10,6 +10,7 @@
  */
 
 namespace Akeneo\ActivityManager\Bundle\Doctrine\Repository;
+
 use Akeneo\ActivityManager\Component\Repository\FamilyRequirementRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -43,7 +44,7 @@ class FamilyRequirementRepository extends EntityRepository implements FamilyRequ
             ->andWhere('ar.required = :required')
             ->setParameters([
                 'family_code' => $family->getCode(),
-                'channel_code' =>  $channel->getCode(),
+                'channel_code' => $channel->getCode(),
                 'required' => true,
             ]);
 

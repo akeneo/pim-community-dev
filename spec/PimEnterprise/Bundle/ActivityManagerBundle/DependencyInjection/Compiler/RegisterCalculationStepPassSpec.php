@@ -31,7 +31,7 @@ class RegisterCalculationStepPassSpec extends ObjectBehavior
 
         $container->findTaggedServiceIds('activity_manager.calculation_step')->willReturn([
             'calculation_step.foo' => [['priority' => 10]],
-            'calculation_step.bar' => [['priority' => 50]]
+            'calculation_step.bar' => [['priority' => 50]],
         ]);
 
         $chainCalculationStep->setArguments(Argument::that(function ($params) {

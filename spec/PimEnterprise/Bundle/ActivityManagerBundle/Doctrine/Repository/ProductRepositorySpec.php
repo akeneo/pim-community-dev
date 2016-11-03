@@ -7,14 +7,11 @@ use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Component\Security\Attributes;
-use Prophecy\Argument;
 
 class ProductRepositorySpec extends ObjectBehavior
 {
@@ -47,7 +44,7 @@ class ProductRepositorySpec extends ObjectBehavior
 
         $project->getProductFilters()->willReturn([
             ['field' => 'family.code', 'operator' => 'IN', 'value' => 'guitar'],
-            ['field' => 'name', 'operator' => '=', 'value' => 'Gibson Les Paul']
+            ['field' => 'name', 'operator' => '=', 'value' => 'Gibson Les Paul'],
         ]);
 
         $productQueryBuilder->addFilter('family.code', 'IN', 'guitar')->shouldBeCalled();

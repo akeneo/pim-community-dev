@@ -16,24 +16,24 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Get all calculation steps to add them the chained calculation step (only this one is declared as public service)
+ * Get all calculation steps to add them the chained calculation step (only this one is declared as public service).
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class RegisterCalculationStepPass implements CompilerPassInterface
 {
     /**
-     * Default calculation step key
+     * Default calculation step key.
      */
     const DEFAULT_CALCULATION_STEP = 'activity_manager.calculation_step.chained';
 
     /**
-     * All calculation step must be tagged with "activity_manager.calculation_step"
+     * All calculation step must be tagged with "activity_manager.calculation_step".
      */
     const CALCULATION_STEP_TAG = 'activity_manager.calculation_step';
 
     /**
-     * Default priority if tagged service does not have it
+     * Default priority if tagged service does not have it.
      */
     const DEFAULT_PRIORITY = 100;
 

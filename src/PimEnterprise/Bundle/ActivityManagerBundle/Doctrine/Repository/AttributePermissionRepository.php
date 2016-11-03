@@ -10,6 +10,7 @@
  */
 
 namespace Akeneo\ActivityManager\Bundle\Doctrine\Repository;
+
 use Akeneo\ActivityManager\Component\Repository\AttributePermissionRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -40,5 +41,4 @@ class AttributePermissionRepository extends EntityRepository implements Attribut
 
         return $queryBuilder->getQuery()->getResult();
     }
-
 }

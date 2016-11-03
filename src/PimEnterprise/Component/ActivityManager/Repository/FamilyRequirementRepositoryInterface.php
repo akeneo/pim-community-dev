@@ -10,6 +10,7 @@
  */
 
 namespace Akeneo\ActivityManager\Component\Repository;
+
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
@@ -20,7 +21,7 @@ interface FamilyRequirementRepositoryInterface
 {
     /**
      * Find attribute group identifiers which have at least one attribute required
-     * by a family and a channel
+     * by a family and a channel.
      *
      * @param FamilyInterface  $family
      * @param ChannelInterface $channel
