@@ -1,4 +1,0 @@
-services:
-    activity_manager.reader.project_calculation:
-        class: 'Akeneo\ActivityManager\Component\Reader\Database\ProductReader'
-        parent: pim_connector.reader.database.product

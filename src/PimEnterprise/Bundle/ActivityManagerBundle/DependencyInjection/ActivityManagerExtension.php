@@ -33,11 +33,8 @@ class ActivityManagerExtension extends Extension
         $loader->load('jobs.yml');
         $loader->load('job_parameters.yml');
         $loader->load('normalizers.yml');
-        $loader->load('processors.yml');
-        $loader->load('readers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
         $loader->load('updaters.yml');
-        $loader->load('writers.yml');
     }
 }
