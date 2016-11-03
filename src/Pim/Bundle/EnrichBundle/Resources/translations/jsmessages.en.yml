@@ -107,6 +107,8 @@ jstree.create: Create
 switch_on: "Yes"
 switch_off: "No"
 
+pim_scopable.no_value.warning: This couple of locale and channel doesn't exist.
+
 pim_enrich:
     item:
         list:

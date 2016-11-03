@@ -1,3 +1,12 @@
+# 1.5.11 (2016-10-31)
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5993: Fix value display issues with simple/multi select attributes
+- GITHUB-5119: Remove console.log from renderExtension method of `src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form.js` Cheers @a2xchip!
+- PIM-5995: Fix issue with localizable and scopable attributes added to variant groups
+
 # 1.5.10 (2016-10-14)
 
 ## Bug fixes

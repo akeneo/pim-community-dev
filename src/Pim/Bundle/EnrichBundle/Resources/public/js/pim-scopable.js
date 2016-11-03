@@ -3,15 +3,17 @@ define(
         'jquery',
         'backbone',
         'underscore',
+        'oro/translator',
         'oro/mediator',
         'wysiwyg',
         'pim/optionform',
         'pim/fileinput',
+        'oro/messenger',
         'bootstrap',
         'bootstrap.bootstrapswitch',
         'jquery.select2'
     ],
-    function ($, Backbone, _, mediator, wysiwyg, optionform, fileinput) {
+    function ($, Backbone, _, __, mediator, wysiwyg, optionform, fileinput, messenger) {
         'use strict';
         /**
          * Allow expanding/collapsing scopable fields
@@ -287,7 +289,6 @@ define(
             _changeDefault: function (scope) {
                 this.skipUIInit = true;
                 this._toggle();
-
                 this._setFieldFirst(this.$el.find('[data-scope="' + scope + '"]:first'));
                 this._refreshFieldsDisplay();
                 this._initUI();

@@ -32,7 +32,7 @@ Feature: Editing attribute values of a variant group also updates products
       | caterpillar_boots | price              | 39.99 EUR     |        |        |
       | caterpillar_boots | rating             | 1             |        |        |
       | caterpillar_boots | name               | Old name      | en_US  |        |
-      | caterpillar_boots | description        | A product.    | en_US  | tablet |
+      | caterpillar_boots | description        | A product.    | en_US  | mobile |
     And the following products:
       | sku  | groups            | color | size |
       | boot | caterpillar_boots | black | 40   |
@@ -106,11 +106,11 @@ Feature: Editing attribute values of a variant group also updates products
       | name-en_US | In a galaxy far far away |
 
   Scenario: Change a pim_catalog_textarea attribute of a variant group
-    When I change the "tablet Description" to "The best boots!"
+    When I change the "mobile Description" to "The best boots!"
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
-      | description-en_US-tablet | The best boots! |
+      | description-en_US-mobile | The best boots! |
 
   Scenario: Change a pim_catalog_image attribute of a variant group
     When I add available attributes Side view

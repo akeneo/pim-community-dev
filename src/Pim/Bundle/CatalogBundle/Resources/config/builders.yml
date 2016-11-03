@@ -2,6 +2,7 @@ parameters:
     pim_catalog.builder.product.class:          Pim\Bundle\CatalogBundle\Builder\ProductBuilder
     pim_catalog.builder.product_template.class: Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder
     pim_catalog.builder.choices.class:          Pim\Bundle\CatalogBundle\Builder\ChoicesBuilder
+    pim_catalog.builder.localizable_and_scopable_raw_values.class: Pim\Component\Catalog\Builder\LocalizableAndScopableRawValuesBuilder
 
 services:
     pim_catalog.builder.product:
@@ -27,3 +28,10 @@ services:
 
     pim_catalog.builder.choices:
         class: %pim_catalog.builder.choices.class%
+
+    pim_catalog.builder.localizable_and_scopable_raw_values:
+        class: %pim_catalog.builder.localizable_and_scopable_raw_values.class%
+        arguments:
+            - "@pim_catalog.repository.cached_attribute"
+            - "@pim_catalog.repository.channel"
+            - "@pim_catalog.repository.locale"
