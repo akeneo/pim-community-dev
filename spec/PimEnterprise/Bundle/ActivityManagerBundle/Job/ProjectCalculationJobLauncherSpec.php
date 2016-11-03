@@ -31,19 +31,9 @@ class ProjectCalculationJobLauncherSpec extends ObjectBehavior
     ) {
         $jobInstanceRepository->getProjectCalculation()->willReturn($jobInstance);
 
-        $filters = '[{"field":"categories.id","operator":"IN OR UNCLASSIFIED","value":[1, 2, 3, 4],'.
-            '"context":{"locale":"en_US","scope":"ecommerce"}},'.
-            '{"field":"family.code","operator":"IN","value":["camcorders"],'.
-            '"context":{"locale":"en_US","scope":"ecommerce"}},{"field":"groups.id","operator":"IN","value":["1"],'.
-            '"context":{"locale":"en_US","scope":"ecommerce"}},'.
-            '{"field":"enabled","operator":"=","value":true,"context":{"locale":"en_US","scope":"ecommerce"}},'.
-            '{"field":"sku","operator":"CONTAINS","value":"128",'.
-            '"context":{"locale":"en_US","scope":"ecommerce","field":"sku"}}]';
-
         $project->getId()->willReturn(5);
-        $project->getProductFilters()->willReturn($filters);
 
-        $configuration = ['filters' => $filters, 'project_id' => 5];
+        $configuration = ['project_id' => 5];
 
         $simpleJobLauncher->launch($jobInstance, $user, $configuration)->shouldBeCalled();
 

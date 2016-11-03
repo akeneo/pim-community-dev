@@ -18,6 +18,8 @@ use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
+ * Launch the project calculation job for the a project and an user.
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInterface
@@ -29,6 +31,8 @@ class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInte
     private $jobInstanceRepository;
 
     /**
+     * Launch the job.
+     *
      * @param JobLauncherInterface  $simpleJobLauncher
      * @param JobInstanceRepository $jobInstanceRepository
      */
@@ -46,11 +50,6 @@ class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInte
     {
         $jobInstance = $this->jobInstanceRepository->getProjectCalculation();
 
-        $filters = $project->getProductFilters();
-
-        $projectId = $project->getId();
-        $configuration = ['filters' => $filters, 'project_id' => $projectId];
-
-        $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);
+        $this->simpleJobLauncher->launch($jobInstance, $user, ['project_id' => $project->getId()]);
     }
 }
