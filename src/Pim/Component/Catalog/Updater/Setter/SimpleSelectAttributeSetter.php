@@ -85,7 +85,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
             return;
         }
 
-        if (!is_string($data)) {
+        if (!is_string($data) && !is_numeric($data)) {
             throw InvalidArgumentException::stringExpected(
                 $attribute->getCode(),
                 'setter',

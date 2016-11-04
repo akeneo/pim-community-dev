@@ -19,7 +19,7 @@ class FilterExtensionSpec extends ObjectBehavior
         Manager $manager
     ) {
         $container->get('oro_datagrid.datagrid.manager')->willReturn($manager);
-        $container->get('pim_datagrid.datagrid.product.filters_configurator')->willReturn($configurator);
+        $container->get('pim_datagrid.datagrid.configuration.product.filters_configurator')->willReturn($configurator);
         $this->beConstructedWith($container);
     }
 

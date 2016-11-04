@@ -52,6 +52,8 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateFamily($family);
 
+        $options['unitary'] = true;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family, $options));
 
         $this->objectManager->persist($family);
@@ -71,6 +73,8 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         if (empty($families)) {
             return;
         }
+
+        $options['unitary'] = false;
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($families, $options));
 
