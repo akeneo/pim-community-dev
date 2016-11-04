@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Developer eXperience
+
+- Ease the override of product asset by using model parameter in the product-asset grid
+
 # 1.6.4 (2016-10-20)
 
 ## Bug fixes
