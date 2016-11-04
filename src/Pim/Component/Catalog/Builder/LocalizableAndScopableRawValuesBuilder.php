@@ -125,26 +125,33 @@ class LocalizableAndScopableRawValuesBuilder
      */
     public function addMissing(array $rawValues)
     {
-        $this->fetchChannelsAndLocales();
-
         foreach ($rawValues as $attributeCode => $value) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-            if ($attribute->isScopable() && $attribute->isLocalizable()) {
-                $rawValues[$attributeCode] = array_merge(
-                    $rawValues[$attributeCode],
-                    $this->createMissingLocalizableAndScopable($attribute, $rawValues)
-                );
-            } elseif ($attribute->isScopable()) {
-                $rawValues[$attributeCode] = array_merge(
-                    $rawValues[$attributeCode],
-                    $this->createMissingScopable($attribute, $rawValues)
-                );
-            } elseif ($attribute->isLocalizable()) {
-                $rawValues[$attributeCode] = array_merge(
-                    $rawValues[$attributeCode],
-                    $this->createMissingLocalizable($attribute, $rawValues)
-                );
+            $rawValues[$attributeCode] = $this->createMissingValues($attribute, $rawValues[$attributeCode]);
+        }
+
+        return $rawValues;
+    }
+
+    private function createMissingValues(AttributeInterface $attribute, array $rawValues)
+    {
+        $locales  = $attribute->isLocalizable() ? $this->getLocales() : [null];
+        $channels = $attribute->isScopable() ? $this->getChannels() : [null];
+
+        foreach ($channels as $channel) {
+            foreach ($locales as $locale) {
+                $localeInChannel  = null === $channel ||
+                    null === $locale ||
+                    in_array($locale, $channel->getLocales()->toArray());
+                $localeInSpecific = !$attribute->isLocaleSpecific() ||
+                    null === $locale ||
+                    in_array($locale->getCode(), $attribute->getLocaleSpecificCodes());
+                $alreadyExist = $this->alreadyExist($rawValues, $locale, $channel);
+
+                if ($localeInChannel && $localeInSpecific && !$alreadyExist) {
+                    $rawValues[] = $this->createEmptyRawValue($channel, $locale);
+                }
             }
         }
 
@@ -152,62 +159,25 @@ class LocalizableAndScopableRawValuesBuilder
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param array              $rawValues
+     * Check if a value already exist in the collection
      *
-     * @return array
+     * @param array  $rawValues
+     * @param string $locale
+     * @param string $channel
+     *
+     * @return boolean
      */
-    private function createMissingLocalizableAndScopable(AttributeInterface $attribute, array $rawValues)
+    private function alreadyExist($rawValues, $locale, $channel)
     {
-        $missings = [];
-
-        foreach ($this->channels as $channel) {
-            foreach ($channel->getLocales() as $locale) {
-                if (!$this->hasRawValue($attribute, $rawValues, $channel, $locale)) {
-                    $missings[] = $this->createEmptyRawValue($channel, $locale);
-                }
+        foreach ($rawValues as $value) {
+            if ($value['scope'] === (null !== $channel ? $channel->getCode() : null) &&
+                $value['locale'] === (null !== $locale ? $locale->getCode() : null)
+            ) {
+                return true;
             }
         }
 
-        return $missings;
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param array              $rawValues
-     *
-     * @return array
-     */
-    private function createMissingScopable(AttributeInterface $attribute, array $rawValues)
-    {
-        $missings = [];
-
-        foreach ($this->channels as $channel) {
-            if (!$this->hasRawValue($attribute, $rawValues, $channel, null)) {
-                $missings[] = $this->createEmptyRawValue($channel, null);
-            }
-        }
-
-        return $missings;
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param array              $rawValues
-     *
-     * @return array
-     */
-    private function createMissingLocalizable(AttributeInterface $attribute, array $rawValues)
-    {
-        $missings = [];
-
-        foreach ($this->locales as $locale) {
-            if (!$this->hasRawValue($attribute, $rawValues, null, $locale)) {
-                $missings[] = $this->createEmptyRawValue(null, $locale);
-            }
-        }
-
-        return $missings;
+        return false;
     }
 
     /**
@@ -238,48 +208,30 @@ class LocalizableAndScopableRawValuesBuilder
     }
 
     /**
-     * Check if the array $rawValues contains the value for the given
-     * attribute, locale and channel.
+     * Get locales only if they are not in cache (done right this time, by a javascript guy :3)
      *
-     * @param AttributeInterface $attribute
-     * @param array $rawValues
-     * @param ChannelInterface|null $channel
-     * @param LocaleInterface|null $locale
-     *
-     * @return bool
+     * @return Locales[]
      */
-    private function hasRawValue(
-        AttributeInterface $attribute,
-        array $rawValues,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
-    ) {
-        if (!isset($rawValues[$attribute->getCode()])) {
-            return false;
-        }
-
-        $channelCode = null !== $channel ? $channel->getCode() : null;
-        $localeCode = null !== $locale ? $locale->getCode() : null;
-
-        foreach ($rawValues[$attribute->getCode()] as $rawValueAttribute) {
-            if ($localeCode === $rawValueAttribute['locale'] && $channelCode === $rawValueAttribute['scope']) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Fetch all activated channels and locales. If the JS can do it, why not us huh :p?
-     */
-    private function fetchChannelsAndLocales()
+    private function getLocales()
     {
         if (null === $this->locales) {
             $this->locales = $this->localeRepository->getActivatedLocales();
         }
+
+        return $this->locales;
+    }
+
+    /**
+     * Get the list of channels
+     *
+     * @return Channel[]
+     */
+    private function getChannels()
+    {
         if (null === $this->channels) {
             $this->channels = $this->channelRepository->findAll();
         }
+
+        return $this->channels;
     }
 }

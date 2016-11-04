@@ -36,7 +36,7 @@ Feature: Execute an import with scopable or localizable data
     Then the field tablet Description should contain "new description tablet"
     And the field print Description should contain "original description print"
 
-  Scenario: Have coherent values when impJorting new variant group with localizable/scopable attributes
+  Scenario: Have coherent values when importing new variant group with localizable/scopable attributes
     Given the following attributes:
       | code             | label-en_US      | label-fr_FR      | label-de_DE        | type   | localizable | scopable | group   | metric_family | default_metric_unit |
       | sole_length      | Sole length      | Longueur semelle | Einlegesohlenlänge | metric | yes         | no       | general | Length        | CENTIMETER          |
