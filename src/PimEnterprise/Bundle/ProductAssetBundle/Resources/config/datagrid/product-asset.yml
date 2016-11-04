@@ -10,7 +10,7 @@ datagrid:
             routerEnabled: false
         source:
             type: pimee_datasource_asset
-            entity: 'PimEnterprise\Component\ProductAsset\Model\Asset'
+            entity: '%pimee_product_asset.model.asset.class%'
             repository_method: createAssetDatagridQueryBuilder
             repository_parameters:
                 - currentUser
