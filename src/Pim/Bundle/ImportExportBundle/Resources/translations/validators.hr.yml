@@ -1,0 +1,4 @@
+This directory is not writable: U ovaj direktorij nije moguće zapisivati.
+This directory is not valid: Ovaj direktorij nije valjan.
+pim_import_export.job_instance.unknown_job_definition: Nije uspjelo kreiranje %job_type% sa nepoznatom definicijom zadatka
+This code is already taken: Ovaj kod je već zauzet
