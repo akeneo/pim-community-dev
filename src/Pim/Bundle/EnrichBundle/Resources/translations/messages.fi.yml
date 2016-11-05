@@ -75,13 +75,13 @@ pim_enrich:
     legend:
       locale_not_associated: Lokaatio ei ole liitetty tähän kanavaan
   mass_edit_action:
-    limit_exceeded: 'Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi'
+    limit_exceeded: Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi
     product:
       page_title: Tuotteet
-      page_subtitle: 'Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)'
+      page_subtitle: Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)
       title: Valitse toiminto
-      subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille'
-      confirm: 'Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
+      subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille
+      confirm: Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
       steps:
         first: Valitse tuotteet
         second: Valitse toiminto
@@ -89,10 +89,10 @@ pim_enrich:
         fourth: Vahvista
     family:
       page_title: Perheet
-      page_subtitle: 'Massamuokkaa (1 tuoteperhe) | Massamuokkaa (%count% tuoteperheet)'
+      page_subtitle: Massamuokkaa (1 tuoteperhe) | Massamuokkaa (%count% tuoteperheet)
       title: Valitse toiminto
-      subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuoteperheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% tuoteperheille'
-      confirm: 'Olet päivittämässä tuoteperhettä seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuoteperheitä %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
+      subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuoteperheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% tuoteperheille
+      confirm: Olet päivittämässä tuoteperhettä seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuoteperheitä %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
       steps:
         first: Valitse tuoteperheet
         second: Valitse toiminto
@@ -102,16 +102,16 @@ pim_enrich:
       label: Muuta tilaa (päälle / pois)
       description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
       success_flash: Tuotteiden tila on muutettu
-      launched_flash: 'Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.'
+      launched_flash: Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     edit-common-attributes:
       label: Muokkaa attribuutteja
       description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
-      success_flash: 'Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä'
-      launched_flash: 'Massatoiminto "Muokkaa yleisiä attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.'
+      success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
+      launched_flash: Massatoiminto "Muokkaa yleisiä attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
       message:
         warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
-        invalid_attribute: 'Attribuutti koodilla "attribute_code" ei yhdistä valittuja tuotteita, attributti ohitettu.'
+        invalid_attribute: Attribuutti koodilla "attribute_code" ei yhdistä valittuja tuotteita, attributti ohitettu.
         no_valid_attribute: Mitään valituista attribuuteista ei voi ottaa käyttöön tällä tuotteella.
     classify:
       label: Luokittele tuotteet kategorioihin
@@ -121,12 +121,12 @@ pim_enrich:
       label: Vaihda tuoteperhettä
       description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
       success_flash: Valittujen tuotteiden perhe on vaihdettu onnistuneesti
-      launched_flash: 'Massatoiminto "Vaihda perhettä" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.'
+      launched_flash: Massatoiminto "Vaihda perhettä" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     add-to-groups:
       label: Lisää ryhmiin
       description: Valitse ryhmät joihin valitut tuotteet lisätään
       success_flash: Tuotteet lisättiin onnistuneesti valittuihin ryhmiin
-      launched_flash: 'Massatoiminto "Lisää ryhmiin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.'
+      launched_flash: Massatoiminto "Lisää ryhmiin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
       no_group: Ei ryhmää toistaiseksi, aloita luomalla ryhmä.
     add-to-variant-group:
       label: Lisää tuotevariaatioryhmään
@@ -137,19 +137,19 @@ pim_enrich:
       no_valid_variant_group: Mikään tuotevariaatioryhmä ei jaa attribuutteja valittujen tuotteiden kanssa.
       some_variant_groups_are_skipped:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
-      launched_flash: 'Massatoiminto "Lisää tuotevariaatioryhmään" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.'
+      launched_flash: Massatoiminto "Lisää tuotevariaatioryhmään" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     set-attribute-requirements:
       label: Aseta attribuuttivaatimukset
       description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
       success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
-      launched_flash: 'Bulkkitoiminto "Aseta määritteen vaatimukset" on käynnistetty. Saat ilmoituksen, kun se on valmis.'
+      launched_flash: Bulkkitoiminto "Aseta määritteen vaatimukset" on käynnistetty. Saat ilmoituksen, kun se on valmis.
     mass_action:
       quick_export:
         launched_flash: Tuotteiden vienti on parhaillaan käynnissä
   sequential_edit_action:
     product:
-      previous: 'Siirry takaisin "%product%" tallentamatta.'
-      next: 'Siirry "%product%" tallentamatta.'
+      previous: Siirry takaisin "%product%" tallentamatta.
+      next: Siirry "%product%" tallentamatta.
   acl:
     locale:
       index: Lista lokaatioista
@@ -171,7 +171,7 @@ pim_enrich:
       add_to_variant_group: Lisää tuote tuotevariaatioryhmään
       mass_edit: Tuotteen massaedit-toiminnot
       comment: Kommentoi tuotteita
-      download: Lataa tuote PDF:nä
+      download: 'Lataa tuote PDF:nä'
       history: Näytä tuotehistoria
     category:
       list: Listaa kategoriat
@@ -368,28 +368,28 @@ confirmation:
   confirm: Vahvistus
   delete: Poista vahvistus
   leave: Oletko varma että haluat poistua sivulta?
-  discard changes: 'Menetät muutokset kohteeseen %entity% jos poistut sivulta.'
+  discard changes: Menetät muutokset kohteeseen %entity% jos poistut sivulta.
   remove:
     item: Oletko varma että haluat poistaa tämän kohteen?
-    attribute: 'Oletko varma että haluat poistaa attribuutin %name%?'
-    attribute group: 'Oletko varma että haluat poistaa attribuuttiryhmän %name%?'
-    category: 'Oletko varma että haluat poistaa kategoian %name%?'
-    family: 'Oletko varma, että haluat poistaa tuoteryhmän %name%?'
-    product: 'Oletko varma, että haluat poistaa tuotteen %name%?'
-    channel: 'Oletko varma, että haluat poistaa kanavan %name%?'
-    group: 'Oletko varma, että haluat poistaa ryhmän %name%?'
-    variant group: 'Oletko varma, että haluat poistaa tuotevariaatioryhmän %name%?'
-    association type: 'Oletko varma, että haluat poistaa määritetyypin %name%?'
-    group type: 'Oletko varma, että haluat poistaa ryhmätyypin %name%?'
-    user: 'Oletko varma, että haluat poistaa käyttäjän %name%?'
+    attribute: Oletko varma että haluat poistaa attribuutin %name%?
+    attribute group: Oletko varma että haluat poistaa attribuuttiryhmän %name%?
+    category: Oletko varma että haluat poistaa kategoian %name%?
+    family: Oletko varma, että haluat poistaa tuoteryhmän %name%?
+    product: Oletko varma, että haluat poistaa tuotteen %name%?
+    channel: Oletko varma, että haluat poistaa kanavan %name%?
+    group: Oletko varma, että haluat poistaa ryhmän %name%?
+    variant group: Oletko varma, että haluat poistaa tuotevariaatioryhmän %name%?
+    association type: Oletko varma, että haluat poistaa määritetyypin %name%?
+    group type: Oletko varma, että haluat poistaa ryhmätyypin %name%?
+    user: Oletko varma, että haluat poistaa käyttäjän %name%?
   attribute group:
-    remove attribute: 'Oletko varma, että haluat poistaa attribuutin %name% tästä attribuuttiryhmästä?'
+    remove attribute: Oletko varma, että haluat poistaa attribuutin %name% tästä attribuuttiryhmästä?
   family:
-    remove attribute: 'Oletko varma, että haluat poistaa attribuutin %name% tästä tuoteperheestä?'
+    remove attribute: Oletko varma, että haluat poistaa attribuutin %name% tästä tuoteperheestä?
   product:
-    remove attribute: 'Oletko varma, että haluat poistaa attribuutin %name% tästä tuotteesta?'
+    remove attribute: Oletko varma, että haluat poistaa attribuutin %name% tästä tuotteesta?
   variant_group:
-    remove_attribute: 'Oletko varma, että haluat poistaa attribuutin %name% tästä tuotevariaatioryhmästä?'
+    remove_attribute: Oletko varma, että haluat poistaa attribuutin %name% tästä tuotevariaatioryhmästä?
 flash:
   entity:
     removed: Kohde poistettiin
@@ -398,7 +398,7 @@ flash:
     updated: Attribuutin päivittäminen onnistui
     removed: Attribuutin poistaminen onnistui
     identifier not removable: Attribuutin identifioijaa ei voi poistaa
-    used by groups: 'Attribuuttia ei voi poistaa, koska sitä käytetään %count% tuotevariaatioryhmissä'
+    used by groups: Attribuuttia ei voi poistaa, koska sitä käytetään %count% tuotevariaatioryhmissä
   attribute group:
     created: Attribuuttiryhmän luominen onnistui
     updated: Attribuuttiryhmän päivittäminen onnistui
@@ -471,7 +471,7 @@ info:
   category:
     remove children: Alakategoriat poistetaan.
     keep products: Näihin kategorioihin kuuluvia tuotteita ei poisteta.
-    products limit exceeded: 'Tämä kategoria sisältää enemmän tuotteita kuin tälle toiminnolle on sallittu (%limit% tuotteiden maksimi)'
+    products limit exceeded: Tämä kategoria sisältää enemmän tuotteita kuin tälle toiminnolle on sallittu (%limit% tuotteiden maksimi)
   product:
     no available attributes: Ei ole enää attribuutteja lisättäväksi
     no family defined: Ei perhettä määritetty
@@ -493,7 +493,7 @@ info:
   association type:
     show products: Näytä tuotteet
     show groups: Näytä ryhmät
-    remove from products: 'Sidostyypin poistaminen poistaa sen myös %count% tuotteelta.'
+    remove from products: Sidostyypin poistaminen poistaa sen myös %count% tuotteelta.
     none exist: Sidostyyppiä ei ole olemassa.
     create one: Klikkaa tästä luodaksesi sellainen
   attribute:
@@ -559,8 +559,8 @@ default: Oletusarvo
 Axis: Akseli
 Add attributes: Lisää attribuutteja
 Translate from: Käännä kielestä
-switch_on: Kyllä
-switch_off: Ei
+switch_on: "Kyllä"
+switch_off: "Ei"
 Close: Sulje
 Choose a color: Valitse väri
 Search: Etsi
@@ -592,7 +592,7 @@ General Properties: Yleiset ominaisuudet
 Group values: Ryhmän arvot
 New group: Uusi ryhmä
 Groups overview: Yleistä ryhmistä
-"Y-m-d h:i:s": V-k-p t:m:s
+'Y-m-d h:i:s': 'V-k-p t:m:s'
 Max characters: Maksimimerkkimäärä
 Validation rule: Kelpoisuussääntö
 Validation regexp: Kelpoisuuden regexp
@@ -618,48 +618,48 @@ Title: Nimike
 pim_title.attribute_group:
   index: Attribuuttiryhmät
   create: Attribuuttiryhmät | Luo
-  edit: 'Attribuuttiryhmät %group.label% | Muokkaa'
+  edit: Attribuuttiryhmät %group.label% | Muokkaa
 pim_title.category:
   index: Kategoriahierarkia
   create: Kategoriahierarkia | Luo
-  edit: 'Kategoriahierarkia %category.label% | Muokkaa'
+  edit: Kategoriahierarkia %category.label% | Muokkaa
 pim_title.attribute:
   index: Attribuutit
   create: Attribuutit | Luo
-  edit: 'Attribuutit %attribute.label% | Muokkaa'
+  edit: Attribuutit %attribute.label% | Muokkaa
 pim_title.product:
   index: Tuotteet
-  edit: 'Tuotteiden %product.sku% | Muokkaa'
+  edit: Tuotteiden %product.sku% | Muokkaa
 pim_title.family:
   index: Perheet
-  edit: 'Tuoteperheiden %family.label% | Muokkaa'
+  edit: Tuoteperheiden %family.label% | Muokkaa
 pim_title.channel:
   index: Kanavat
   create: Kanavat | Luo
-  edit: 'Kanavat %channel.label% | Muokkaa'
+  edit: Kanavat %channel.label% | Muokkaa
 pim_title.currency:
   index: Valuutat
 pim_title.locale:
   index: Alueet
 pim_title.group:
   index: Ryhmät
-  edit: 'Ryhmien %group.label% | Muokkaa'
+  edit: Ryhmien %group.label% | Muokkaa
 pim_title.variant_group:
   index: Tuotevariaatioryhmät
-  edit: 'Tuotevariaatioryhmät %group.label% | Muokkaa'
+  edit: Tuotevariaatioryhmät %group.label% | Muokkaa
 pim_title.association_type:
   index: Määritetyypit
-  edit: 'Määritetyypit %association type.label% | Muokkaa'
+  edit: Määritetyypit %association type.label% | Muokkaa
 pim_title.group_type:
   index: Ryhmätyypit
-  edit: 'Ryhmätyypit %group type.label% | Muokkaa'
+  edit: Ryhmätyypit %group type.label% | Muokkaa
 pim_title.mass_edit_action:
   choose: Massaedit | Valitse
   configure: Massaedit | Määritä
 pim_title.job_tracker:
   index: Prosessiseurain
   show: Prosessin tracker | Näytä työ
-pim_title.dashboard: Ohjauspaneeli
+pim_title.dashboard: "Ohjauspaneeli"
 pim_catalog_identifier: Tunniste
 pim_catalog_text: Teksti
 pim_catalog_textarea: Tekstialue
@@ -669,7 +669,7 @@ pim_catalog_multiselect: Monivalinta
 pim_catalog_simpleselect: Yksinkertainen valinta
 pim_catalog_file: Tiedosto
 pim_catalog_image: Kuva
-pim_catalog_boolean: Kyllä/ei
+pim_catalog_boolean: "Kyllä/ei"
 pim_catalog_date: Päivämäärä
 pim_catalog_metric: Metriikka
 pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
@@ -678,16 +678,16 @@ Activated: Aktivoitu
 Disable: Poista käytöstä
 pim_enrich.sequential_edit_action:
   product:
-    previous: 'Siirry takaisin "%product%" tallentamatta.'
-    next: 'Siirry "%product%" tallentamatta.'
+    previous: Siirry takaisin "%product%" tallentamatta.
+    next: Siirry "%product%" tallentamatta.
 pim_enrich.mass_edit_action:
-  limit_exceeded: 'Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi'
+  limit_exceeded: Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi
   product:
     page_title: Tuotteet
-    page_subtitle: 'Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)'
+    page_subtitle: Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)
     title: Valitse toiminto
-    subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille'
-    confirm: 'Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
+    subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille
+    confirm: Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
     steps:
       first: Valitse tuotteet
       second: Valitse toiminto
@@ -695,10 +695,10 @@ pim_enrich.mass_edit_action:
       fourth: Vahvista
   family:
     page_title: Perheet
-    page_subtitle: 'Massamuokkaa (1 tuoteperhe) | Massamuokkaa (%count% tuoteperheet)'
+    page_subtitle: Massamuokkaa (1 tuoteperhe) | Massamuokkaa (%count% tuoteperheet)
     title: Valitse toiminto
-    subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuoteperheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% tuoteperheille'
-    confirm: 'Olet päivittämässä tuoteperhettä seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuoteperheitä %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
+    subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuoteperheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% tuoteperheille
+    confirm: Olet päivittämässä tuoteperhettä seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuoteperheitä %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
     steps:
       first: Valitse tuoteperheet
       second: Valitse toiminto
@@ -838,13 +838,13 @@ Selected products successfully deleted: Valitut tuotteet poistettiin
 pim_mass_edit:
   notification:
     mass_edit:
-      error: '<strong>%label%</strong> massaeditointi päättyi'
-      warning: '<strong>%label%</strong>n massaeditointi päättyi, joitakin varoituksia'
-      success: '<strong>%label%</strong> massaeditointi päättyi'
+      error: <strong>%label%</strong> massaeditointi päättyi
+      warning: <strong>%label%</strong>n massaeditointi päättyi, joitakin varoituksia
+      success: <strong>%label%</strong> massaeditointi päättyi
     quick_export:
-      error: '<strong>%label%</strong>n pikavienti epäonnistui'
-      warning: '<strong>%label%</strong>n pikavienti päättyi, joitakin varoituksia'
-      success: '<strong>%label%</strong>n pikavienti päättyi'
+      error: <strong>%label%</strong>n pikavienti epäonnistui
+      warning: <strong>%label%</strong>n pikavienti päättyi, joitakin varoituksia
+      success: <strong>%label%</strong>n pikavienti päättyi
 job_execution.summary:
   mass_edited: Massamuokattu
   skip: Ohitettu
