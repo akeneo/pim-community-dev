@@ -21,26 +21,26 @@ pim_import_export:
     invalid_csv: lataa virheellisiä tietoja
   notification:
     export:
-      error: 'Vienti <strong>%label%</strong> epäonnistui'
-      warning: 'Vienti <strong>%label%</strong> päättynyt joillain varoituksilla'
-      success: 'Vienti <strong>%label%</strong> valmis'
+      error: Vienti <strong>%label%</strong> epäonnistui
+      warning: Vienti <strong>%label%</strong> päättynyt joillain varoituksilla
+      success: Vienti <strong>%label%</strong> valmis
     import:
-      error: 'Vienti <strong>%label%</strong> epäonnistui'
-      warning: 'Vienti <strong>%label%</strong> päättynyt joillain varoituksilla'
-      success: 'Vienti <strong>%label%</strong> valmis'
+      error: Vienti <strong>%label%</strong> epäonnistui
+      warning: Vienti <strong>%label%</strong> päättynyt joillain varoituksilla
+      success: Vienti <strong>%label%</strong> valmis
   list: Valitse työ
   job_profile:
     tab:
       property.title: Yleiset ominaisuudet
       history.title: Historia
 pim_title.export_profile.index: Profiilien viennin hallinta
-pim_title.export_profile.edit: 'Vie profiilit %job.label% | Muokkaa'
-pim_title.export_profile.show: 'Vie profiilit %job.label% | Näytä'
+pim_title.export_profile.edit: Vie profiilit %job.label% | Muokkaa
+pim_title.export_profile.show: Vie profiilit %job.label% | Näytä
 pim_title.export_execution.index: Vientien historia
 pim_title.export_execution.show: Vientisuoritukset | Yksityiskohdat
 pim_title.import_profile.index: Profiilien tuonnin hallinta
-pim_title.import_profile.edit: 'Vie profiilit %job.label% | Muokkaa'
-pim_title.import_profile.show: 'Tuo profiilit %job.label% | Näytä'
+pim_title.import_profile.edit: Vie profiilit %job.label% | Muokkaa
+pim_title.import_profile.show: Tuo profiilit %job.label% | Näytä
 pim_title.import_execution.index: Tuontihistoria
 pim_title.import_execution.show: Tuontisuoritukset | Yksityiskohdat
 export profile:
@@ -97,8 +97,8 @@ import now: Tuo nyt
 export now: Vie nyt
 confirmation:
   remove:
-    export profile: 'Oletko varma, että haluat poistaa vientiprofiilin %name%?'
-    import profile: 'Oletko varma, että haluat poistaa vientiprofiilin %name%?'
+    export profile: Oletko varma, että haluat poistaa vientiprofiilin %name%?
+    import profile: Oletko varma, että haluat poistaa vientiprofiilin %name%?
 flash:
   export:
     created: Vienti onnistui
@@ -122,10 +122,10 @@ pane.accordion:
 popin.create:
   export_profile.title: Luo uusi vientiprofiili
   import_profile.title: Luo uusi tuontiprofiili
-Display item: Näytä kohde
-Hide item: Piilota kohde
-Collecting data about job execution...: Kerää tietoja työsuorituksesta...
-You must select a file to upload: Valitse ladattava tiedosto
+'Display item': Näytä kohde
+'Hide item': Piilota kohde
+'Collecting data about job execution...': Kerää tietoja työsuorituksesta...
+'You must select a file to upload': Valitse ladattava tiedosto
 Download log: Latauslogi
 Show profile: Näytä profiili
 execution details: suorittamisen yksityiskohdat

@@ -104,16 +104,16 @@ pim:
       category_edit: Перемещение товаров в категориях
       sequential_edit: Редактировать продукты последовательно
 jstree.create: Создать
-switch_on: Да
-switch_off: Нет
+switch_on: "Да"
+switch_off: "Нет"
 pim_enrich:
   item:
     list:
       delete.label: Удалить
       delete.error: Ошибка при удалении элемента
     delete:
-      confirm.content: 'Вы действительно хотите удалить {{ itemName }}? Это действие нельзя отменить'
-      confirm.title: 'Удалить {{ itemName }}'
+      confirm.content: Вы действительно хотите удалить {{ itemName }}? Это действие нельзя отменить
+      confirm.title: Удалить {{ itemName }}
   navigation:
     link:
       back_to_grid: Вернуться к списку
@@ -155,7 +155,7 @@ pim_enrich:
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - поля
-        already_in_upload: 'Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»'
+        already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»
       error:
         upload: Произошла ошибка при загрузке файла
       meta:
@@ -169,7 +169,7 @@ pim_enrich:
         groups:
           title: Группы
           modal:
-            title: 'Группа {{ group }}'
+            title: Группа {{ group }}
             view_group: Посмотреть группу
             group_label: Ярлык
             more_products: '{{ count }} больше продуктов...'
@@ -190,7 +190,7 @@ pim_enrich:
       locale_specific_attribute:
         unavailable: Это локализуемое поле не доступно для этого языка
       localizable:
-        channel_locale_unavailable: 'Это локализуемое поле не доступно для языка «{{ locale }}» и канала «{{ channel }}»'
+        channel_locale_unavailable: Это локализуемое поле не доступно для языка «{{ locale }}» и канала «{{ channel }}»
       media:
         upload: Перетащите чтобы загрузить, или нажмите здесь
       create_popin:
@@ -212,7 +212,7 @@ pim_enrich:
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - поля
-        already_in_upload: 'Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»'
+        already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»
         no_attributes: Это группа вариантов пока не имеет атрибутов
       btn:
         save: Сохранить
@@ -224,7 +224,7 @@ pim_enrich:
         updated_by: Обновлена
   confirmation:
     leave: Вы уверены, что хотите покинуть эту страницу?
-    discard_changes: 'Если вы покините страницу изменения будут потеряны для {{ entity }}.'
+    discard_changes: Если вы покините страницу изменения будут потеряны для {{ entity }}.
     delete_item: Подтвердить удаление
     delete:
       attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
@@ -254,9 +254,11 @@ pim_enrich:
             add: Добавить
             add_attributes: Добавить атрибуты
           info:
-            search_attributes: Поиск
+            search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
-            attributes_selected: 'Выбран(o) {{ attributeCount }} атрибут(ов)'
+            attributes_selected: Выбран(o) {{ attributeCount }} атрибут(ов)
+            no_match: Совпадений не найдено
+            load_more: Загрузка дополнительных результатов...
         categories:
           title: Категории
       panel:
@@ -265,6 +267,7 @@ pim_enrich:
           info:
             no_family: Семейство не определено. Пожалуйста определите семейство для вычисления завершенности этого продукта.
             no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить завершенность для нового семейства.
+          missing_values: Отсутствующуют значения
         history:
           title: Журнал
       switch:
@@ -273,8 +276,8 @@ pim_enrich:
       sequential_edit:
         info:
           products: продуктов
-          previous: 'Перейти обратно к {{ product }} без сохранения.'
-          next: 'Перейти к {{ product }} без сохранения.'
+          previous: Перейти обратно к {{ product }} без сохранения.
+          next: Перейти к {{ product }} без сохранения.
         btn:
           save_and_next: Сохранить и далее
           save_and_finish: Сохранить и завершить
@@ -353,7 +356,7 @@ pim_enrich:
             title: Выбор атрибутов
         attributes_selector:
           attribute_group: Группы атрибутов
-          attributes: 'Поиск в {{ attributeCount }} атрибутах'
+          attributes: Поиск в {{ attributeCount }} атрибутах
           selected: Выбранные атрибуты
           clear: Очистить
           all_group: Все группы
@@ -462,6 +465,6 @@ pim_enrich:
             NOT EMPTY: Не является пустым
   mass_edit_action:
     edit_common_attributes:
-      description: 'Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.'
+      description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.
 pim_enrich.error:
-  exception.title: 'Ах, нет! Произошла ошибка {{ status_code }}...'
+  exception.title: Ах, нет! Произошла ошибка {{ status_code }}...

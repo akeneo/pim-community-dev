@@ -3,10 +3,10 @@ Are you sure you want to delete this item?: Êtes-vous certain(e) de vouloir sup
 Delete Error: Erreur lors de la suppression
 Are you sure you want to do remove selected items?: Êtes-vous sûr(e) de vouloir supprimer les éléments sélectionnés ?
 Selected items were removed.: Les éléments sélectionnés ont bien été supprimés.
-Selected items were not removed.: "Les éléments sélectionnés n'ont pas été supprimés."
+Selected items were not removed.: Les éléments sélectionnés n'ont pas été supprimés.
 Please, select items to remove.: Veuillez sélectionner des éléments à supprimer.
-Cannot delete item.: "Impossible de supprimer l'élément."
-Refresh Confirmation: "Confirmer l'actualisation"
+Cannot delete item.: Impossible de supprimer l'élément.
+Refresh Confirmation: Confirmer l'actualisation
 Your local changes will be lost. Are you sure you want to refresh grid?: Vos modifications locales seront perdues. Êtes-vous certain(e) de vouloir actualiser la grille ?
 Reset Confirmation: Confirmation de remise à zéro
 Your local changes will be lost. Are you sure you want to reset grid?: Vos modifications locales seront perdues. Êtes-vous certain(e) de vouloir actualiser la grille ?
@@ -17,28 +17,28 @@ remove: supprimer
 Status: État
 All: Tous
 Per page: Par page
-Mass Action Confirmation: "Confirmation de l'action de masse"
+Mass Action Confirmation: Confirmation de l'action de masse
 Mass action performed.: Action de masse effectuée.
-Mass action is not performed.: "L'action de masse n'est pas effectuée."
+Mass action is not performed.: L'action de masse n'est pas effectuée.
 Please, select items to perform mass action.: Veuillez sélectionner des éléments pour exécuter cette action de masse.
-Execution Confirmation: "Confirmation de l'exécution"
+Execution Confirmation: Confirmation de l'exécution
 Are you sure you want to do this?: Êtes-vous sûr(e) de que vouloir faire cela ?
 Action performed.: Action exécutée.
-Action is not performed.: "L'action n'a pas été exécutée."
-Please, select item to perform action.: "Veuillez sélectionner des éléments afin d'effectuer l'action."
+Action is not performed.: L'action n'a pas été exécutée.
+Please, select item to perform action.: Veuillez sélectionner des éléments afin d'effectuer l'action.
 View per page: Par page
 oro.datagrid.entityHint: Entité
 oro.datagrid.noentities: Aucun enregistrement trouvé
-oro.datagrid.noresults: Aucun résultat trouvé. Essayez de modifier vos critères de recherche.
+oro.datagrid.noresults: "Aucun résultat trouvé. Essayez de modifier vos critères de recherche."
 oro.datagrid.nocolumns: Aucune colonne configurée pour cette grille
-oro.datagrid.pagination.label: Page
-oro.datagrid.pagination.totalPages: 'de {{ totalPages }}'
-oro.datagrid.pagination.totalRecords: '{{ totalRecords }} éléments'
-oro.datagrid.action.reset: Réinitialiser
-oro.datagrid.action.refresh: Mettre à jour
-oro_datagrid.select.all: Tous
-oro_datagrid.select.visible: Tous les éléments visibles
-oro_datagrid.select.none: Aucun
+oro.datagrid.pagination.label: "Page"
+oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} éléments"
+oro.datagrid.action.reset: "Réinitialiser"
+oro.datagrid.action.refresh: "Mettre à jour"
+oro_datagrid.select.all: "Tous"
+oro_datagrid.select.visible: "Tous les éléments visibles"
+oro_datagrid.select.none: "Aucun"
 pim.grid.ajax_choice_filter.label_empty: est vide
 pim.grid.choice_filter:
   label_empty: est vide
@@ -51,7 +51,7 @@ pim_datagrid:
     label: Colonnes
     title: Sélection de colonnes
     all_groups: Tous les groupes
-    search: Recherche
+    search: Rechercher
     clear: Réinitialiser
     displayed_columns: Colonnes sélectionnées
     apply: Appliquer
@@ -63,11 +63,11 @@ pim_datagrid:
       confirm_ok: OK
       empty_selection: Aucun produit sélectionné
 pim.grid.mass_action.quick_export.title: Export rapide
-pim.grid.mass_action.quick_export.launched: "L'export rapide a été lancé"
+pim.grid.mass_action.quick_export.launched: L'export rapide a été lancé
 pim.grid.action.launch.title: Démarrer
 pim.grid.action.show.title: Afficher
 Please select view: Veuillez sélectionner une vue
 Loading...: Chargement en cours...
 View: Afficher
 from: à partir du
-to: "jusqu'au"
+to: jusqu'au

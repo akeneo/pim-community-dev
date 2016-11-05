@@ -17,6 +17,20 @@ pim_analytics:
     pim_environment: Umgebung
     pim_install_time: Installationszeit
     registered_bundles: Registrierte Bundles
+    nb_channels: Anzahl der Kanäle
+    nb_products: Anzahl der Produkte
+    nb_attributes: Anzahl der Attribute
+    nb_locales: Anzahl der Gebietsschemas
+    nb_families: Anzahl der Familien
+    nb_users: Anzahl der Benutzer
+    pim_storage_version: Speicherversion
+    os_version: OS-Version
+    php_version: PHP-Version
+    mysql_version: MySQL-Version
+    mariadb_version: MariaDB-Version
+    mongodb_version: MariaDB-Version
+    server_version: Server-Version
+    php_extensions: PHP-Erweiterungen
   acl:
     system_info:
       index: Systeminformationen
