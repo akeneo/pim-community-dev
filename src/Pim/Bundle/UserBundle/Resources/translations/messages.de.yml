@@ -2,7 +2,7 @@ pim_user:
   user:
     tab:
       general.title: Allgemein
-      additional.title: Weiteres
+      additional.title: Ergänzend
       group_and_role.title: Gruppen und Rollen
       password.title: Kennwort
       business_unit.title: Geschäftsbereich
@@ -148,5 +148,5 @@ Username or Email: Benutzername oder E-Mail
 Forgot Password: Passwort vergessen
 Request: Anfrage
 Check Email: Posteingang überprüfen
-password_reset_email_sent: 'Eine E-Mail wurde an %email% gesendet. Klicken Sie auf den Link darin, um Ihr Passwort zurückzusetzen.'
+password_reset_email_sent: Eine E-Mail wurde an %email% gesendet. Klicken Sie auf den Link darin, um Ihr Passwort zurückzusetzen.
 Go to homepage: Zurück zur Hauptseite

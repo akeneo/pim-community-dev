@@ -12,27 +12,18 @@ oro.grid.mass_action.delete.label: Löschen
 oro.grid.mass_action.delete.confirm_title: Bestätigung zur Massenlöschung
 oro.grid.mass_action.delete.confirm_content: Sind Sie sicher, dass Sie die gewählten Elemente entfernen möchten?
 oro.grid.datagrid.page_size.all: Alle
-oro.grid.mass_action.delete.success_message: '{0} Keine Entität wurde entfernt|{1} Eine Entität wurde entfernt|]1,Inf[ %count% Entitäten wurden entfernt'
+oro.grid.mass_action.delete.success_message: "{0} Keine Entität wurde entfernt|{1} Eine Entität wurde entfernt|]1,Inf[ %count% Entitäten wurden entfernt"
 datagrid_view:
-  views: Ansichten
-  default: Standardansicht
-  create: Ansicht erstellen
-  placeholder: Name der neuen Ansicht
-  remove: Diese Ansicht löschen
-  save_changes: Diese Ansicht speichern
-  choose_label: Wählen Sie eine Bezeichnung für die Ansicht
   columns:
     min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
   label:
     unique_message: Die Bezeichnung muss eindeutig sein.
     not_blank_message: Die Bezeichnung darf nicht leer sein.
-confirmation.remove.datagrid view: Sind Sie sicher, dass Sie diese Tabellen-Ansicht löschen möchten?
-flash.datagrid view:
+grid.view_selector.flash:
   created: Tabellen-Ansicht erfolgreich erstellt
-  updated: Tabellen-Ansicht erfolgreich aktualisiert
   removed: Tabellen-Ansicht erfolgreich entfernt
-  not removable: Sie haben nicht die Rechte um diese Ansicht zu entfernen
-quick_export: Schnellexport
+  not_removable: Sie haben nicht die Rechte um diese Ansicht zu entfernen
+quick_export: Schnell-Export
 import: Import
 export: Export
 mass_edit: Massenbearbeitung
