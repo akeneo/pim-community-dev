@@ -8,4 +8,4 @@ activity_manager:
             warning: Project calculation <strong>%label%</strong> finished with some warnings
             success: Project calculation <strong>%label%</strong> finished
             start:   Start
-        message: You have new products to enrich for "%project_label%". Due date is %due_date%
+        message: You have new products to enrich for "%project_label%". Due date is %due_date%.

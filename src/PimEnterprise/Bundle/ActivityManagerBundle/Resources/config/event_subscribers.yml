@@ -1,5 +1,5 @@
 parameters:
-    activity_manager.event_subscriber.job_execution_notifier.class: Akeneo\ActivityManager\Bundle\EventSubscriber\JobExecutionNotifier
+    activity_manager.event_subscriber.job_execution_notifier.class: Akeneo\ActivityManager\Bundle\EventSubscriber\ProjectJobExecutionNotifier
 
 services:
     activity_manager.event_subscriber.job_execution_notifier:

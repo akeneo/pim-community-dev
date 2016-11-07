@@ -14,7 +14,8 @@ namespace Akeneo\ActivityManager\Bundle\Factory;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 
 /**
- * Factory that creates a notification for project calculation from a job instance.
+ * Factory that creates a notification once the project is created. It notifies users that the project is ready to use.
+ * They could click on it and they will be redirected to the filtered grid.
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */

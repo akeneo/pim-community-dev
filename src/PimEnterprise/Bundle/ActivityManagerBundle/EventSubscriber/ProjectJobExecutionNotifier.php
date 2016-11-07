@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class JobExecutionNotifier implements EventSubscriberInterface
+class ProjectJobExecutionNotifier implements EventSubscriberInterface
 {
     /** @var ProjectCreatedNotificationFactory */
     private $factory;
@@ -82,12 +82,13 @@ class JobExecutionNotifier implements EventSubscriberInterface
     public function projectCreated(ProjectEvent $event)
     {
         $project = $event->getProject();
-        $view = $project->getDatagridView();
-        $filters = $view->getFilters();
 
         if (!$project instanceof ProjectInterface) {
             return;
         }
+
+        $view = $project->getDatagridView();
+        $filters = $view->getFilters();
 
         $userGroups = $project->getUserGroups();
         $owner = $project->getOwner();
@@ -97,7 +98,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
             $userGroupIds[] = $userGroup->getId();
         }
 
-        $users = $this->userRepository->findByGroupIdsOwnerExcluded($owner->getId(), $userGroupIds);
+        $users = $this->userRepository->findByGroupIdsProjectOwnerExcluded($owner->getId(), $userGroupIds);
 
         foreach ($users as $user) {
             $userLocale = $user->getUiLocale();

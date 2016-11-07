@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\ActivityManager\Bundle\EventSubscriber;
 
-use Akeneo\ActivityManager\Bundle\EventSubscriber\JobExecutionNotifier;
+use Akeneo\ActivityManager\Bundle\EventSubscriber\ProjectJobExecutionNotifier;
 use Akeneo\ActivityManager\Bundle\Factory\ProjectCreatedNotificationFactory;
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
@@ -19,7 +19,7 @@ use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class JobExecutionNotifierSpec extends ObjectBehavior
+class ProjectJobExecutionNotifierSpec extends ObjectBehavior
 {
     function let(
         ProjectCreatedNotificationFactory $factory,
@@ -33,7 +33,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(JobExecutionNotifier::class);
+        $this->shouldHaveType(ProjectJobExecutionNotifier::class);
     }
 
     function it_is_subscriber()
@@ -82,7 +82,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
             ['due_date' => '2019-12-23', 'project_label' => 'project label', 'filters' => 'filters']
         )->willReturn($notification);
 
-        $userRepository->findByGroupIdsOwnerExcluded(42, [84])->willReturn([$user]);
+        $userRepository->findByGroupIdsProjectOwnerExcluded(42, [84])->willReturn([$user]);
         $notifier->notify($notification, [$user])->shouldBeCalled();
 
         $this->projectCreated($event)->shouldReturn(null);
