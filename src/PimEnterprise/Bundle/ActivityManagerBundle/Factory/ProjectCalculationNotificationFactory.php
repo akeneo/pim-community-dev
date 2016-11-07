@@ -17,7 +17,7 @@ use Pim\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 
 /**
- * Factory that creates a notification for project calculation from a job instance
+ * Factory that creates a notification for project calculation from a job instance.
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */

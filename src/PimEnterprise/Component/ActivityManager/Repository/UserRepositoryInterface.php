@@ -20,7 +20,7 @@ use Pim\Bundle\UserBundle\Entity\UserInterface;
 interface UserRepositoryInterface extends ObjectRepository
 {
     /**
-     * Return users who are AT LEAST in one of the given $groupIds and exclude the project owner
+     * Return users who are AT LEAST in one of the given $groupIds and exclude the project owner.
      *
      * @param int   $ownerId
      * @param array $groupIds

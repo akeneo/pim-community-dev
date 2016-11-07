@@ -21,7 +21,7 @@ use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Job execution notifier
+ * Job execution notifier.
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -68,7 +68,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
     }
 
     /**
-     * Notify a user when a project is created
+     * Notify a user when a project is created.
      *
      * @param ProjectEvent $event
      */

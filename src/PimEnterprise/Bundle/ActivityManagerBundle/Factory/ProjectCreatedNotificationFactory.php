@@ -12,7 +12,7 @@
 namespace Akeneo\ActivityManager\Bundle\Factory;
 
 /**
- * Factory that creates a notification for project calculation from a job instance
+ * Factory that creates a notification for project calculation from a job instance.
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
