@@ -7,17 +7,17 @@ parameters:
     pim_serializer.encoder.json.class: Symfony\Component\Serializer\Encoder\JsonEncoder
 
     # Denormalizers
-    pim_serializer.denormalizer.product_values.class:            Pim\Component\Catalog\Denormalizer\Structured\ProductValuesDenormalizer
-    pim_serializer.denormalizer.product_value.class:             Pim\Component\Catalog\Denormalizer\Structured\ProductValueDenormalizer
-    pim_serializer.denormalizer.base_value.class:                Pim\Component\Catalog\Denormalizer\Structured\ProductValue\BaseValueDenormalizer
-    pim_serializer.denormalizer.attribute_option.class:          Pim\Component\Catalog\Denormalizer\Structured\ProductValue\AttributeOptionDenormalizer
-    pim_serializer.denormalizer.attribute_options.class:         Pim\Component\Catalog\Denormalizer\Structured\ProductValue\AttributeOptionsDenormalizer
-    pim_serializer.denormalizer.prices.class:                    Pim\Component\Catalog\Denormalizer\Structured\ProductValue\PricesDenormalizer
-    pim_serializer.denormalizer.metric.class:                    Pim\Component\Catalog\Denormalizer\Structured\ProductValue\MetricDenormalizer
-    pim_serializer.denormalizer.number.class:                    Pim\Component\Catalog\Denormalizer\Structured\ProductValue\NumberDenormalizer
-    pim_serializer.denormalizer.datetime.class:                  Pim\Component\Catalog\Denormalizer\Structured\ProductValue\DateTimeDenormalizer
-    pim_serializer.denormalizer.file.class:                      Pim\Component\Catalog\Denormalizer\Structured\ProductValue\FileDenormalizer
-    pim_serializer.denormalizer.boolean.class:                   Pim\Component\Catalog\Denormalizer\Structured\ProductValue\BooleanDenormalizer
+    pim_serializer.denormalizer.product_values.class:            Pim\Component\Catalog\Denormalizer\Standard\ProductValuesDenormalizer
+    pim_serializer.denormalizer.product_value.class:             Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer
+    pim_serializer.denormalizer.base_value.class:                Pim\Component\Catalog\Denormalizer\Standard\ProductValue\BaseValueDenormalizer
+    pim_serializer.denormalizer.attribute_option.class:          Pim\Component\Catalog\Denormalizer\Standard\ProductValue\AttributeOptionDenormalizer
+    pim_serializer.denormalizer.attribute_options.class:         Pim\Component\Catalog\Denormalizer\Standard\ProductValue\AttributeOptionsDenormalizer
+    pim_serializer.denormalizer.prices.class:                    Pim\Component\Catalog\Denormalizer\Standard\ProductValue\PricesDenormalizer
+    pim_serializer.denormalizer.metric.class:                    Pim\Component\Catalog\Denormalizer\Standard\ProductValue\MetricDenormalizer
+    pim_serializer.denormalizer.number.class:                    Pim\Component\Catalog\Denormalizer\Standard\ProductValue\NumberDenormalizer
+    pim_serializer.denormalizer.datetime.class:                  Pim\Component\Catalog\Denormalizer\Standard\ProductValue\DateTimeDenormalizer
+    pim_serializer.denormalizer.file.class:                      Pim\Component\Catalog\Denormalizer\Standard\ProductValue\FileDenormalizer
+    pim_serializer.denormalizer.boolean.class:                   Pim\Component\Catalog\Denormalizer\Standard\ProductValue\BooleanDenormalizer
 
 services:
     # Serializer, TODO : should be moved somewhere else

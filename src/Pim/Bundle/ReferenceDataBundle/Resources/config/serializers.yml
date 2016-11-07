@@ -4,8 +4,8 @@ parameters:
     pim_reference_data.normalizer.flat.reference_data.class: Pim\Component\ReferenceData\Normalizer\Flat\ReferenceDataNormalizer
 
     # Denormalizers
-    pim_reference_data.denormalizer.reference_data.class:                 Pim\Component\ReferenceData\Denormalizer\Structured\ProductValue\ReferenceDataDenormalizer
-    pim_reference_data.denormalizer.reference_data_collection.class:      Pim\Component\ReferenceData\Denormalizer\Structured\ProductValue\ReferenceDataCollectionDenormalizer
+    pim_reference_data.denormalizer.reference_data.class:                 Pim\Component\ReferenceData\Denormalizer\Standard\ProductValue\ReferenceDataDenormalizer
+    pim_reference_data.denormalizer.reference_data_collection.class:      Pim\Component\ReferenceData\Denormalizer\Standard\ProductValue\ReferenceDataCollectionDenormalizer
     pim_reference_data.denormalizer.flat.reference_data.class:            Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue\ReferenceDataDenormalizer
     pim_reference_data.denormalizer.flat.reference_data_collection.class: Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue\ReferenceDataCollectionDenormalizer
 
