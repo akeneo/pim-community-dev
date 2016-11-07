@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -26,12 +27,17 @@ class FilePresenter implements PresenterInterface
     /** @var UrlGeneratorInterface */
     protected $generator;
 
+    /** @var FileInfoRepositoryInterface */
+    protected $fileInfoRepository;
+
     /**
      * @param UrlGeneratorInterface $generator
+     * @param FileInfoRepositoryInterface $fileInfoRepository
      */
-    public function __construct(UrlGeneratorInterface $generator)
+    public function __construct(UrlGeneratorInterface $generator, FileInfoRepositoryInterface $fileInfoRepository)
     {
         $this->generator = $generator;
+        $this->fileInfoRepository = $fileInfoRepository;
     }
 
     /**
@@ -50,20 +56,19 @@ class FilePresenter implements PresenterInterface
     {
         $result = ['before' => '', 'after' => ''];
 
-        $media = $data->getMedia();
-        if (!$this->hasChanged($change, $media)) {
+        $originalMedia = $data->getMedia();
+        $changedMedia  = isset($change['data']) ? $this->fileInfoRepository->findOneByIdentifier($change['data']) : null;
+
+        if (!$this->hasChanged($changedMedia, $originalMedia)) {
             return $result;
         }
 
-        if (null !== $media && null !== $media->getKey() && null !== $media->getOriginalFilename()) {
-            $result['before'] = $this->createFileElement($media->getKey(), $media->getOriginalFilename());
+        if (null !== $originalMedia && null !== $originalMedia->getKey() && null !== $originalMedia->getOriginalFilename()) {
+            $result['before'] = $this->createFileElement($originalMedia->getKey(), $originalMedia->getOriginalFilename());
         }
 
-        if (isset($change['data']['filePath']) && isset($change['data']['originalFilename'])) {
-            $result['after'] = $this->createFileElement(
-                $change['data']['filePath'],
-                $change['data']['originalFilename']
-            );
+        if (null !== $changedMedia && null !== $changedMedia->getKey() && null !== $changedMedia->getOriginalFilename()) {
+            $result['after'] = $this->createFileElement($changedMedia->getKey(), $changedMedia->getOriginalFilename());
         }
 
         return $result;
@@ -72,16 +77,16 @@ class FilePresenter implements PresenterInterface
     /**
      * Create a file element
      *
-     * @param string $filename
+     * @param string $fileKey
      * @param string $originalFilename
      *
      * @return string
      */
-    protected function createFileElement($filename, $originalFilename)
+    protected function createFileElement($fileKey, $originalFilename)
     {
         return sprintf(
             '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
-            $this->generator->generate('pim_enrich_media_show', ['filename' => urlencode($filename)]),
+            $this->generator->generate('pim_enrich_media_show', ['filename' => urlencode($fileKey)]),
             $originalFilename
         );
     }
@@ -89,16 +94,15 @@ class FilePresenter implements PresenterInterface
     /**
      * Check diff between old and new file
      *
-     * @param array             $change
-     * @param FileInfoInterface $fileInfo
-     *
+     * @param FileInfoInterface|null $changedMedia
+     * @param FileInfoInterface|null $originalMedia
      * @return bool
      */
-    protected function hasChanged(array $change, FileInfoInterface $fileInfo = null)
+    protected function hasChanged(FileInfoInterface $changedMedia = null, FileInfoInterface $originalMedia = null)
     {
-        $dataHash = null !== $fileInfo ? $fileInfo->getHash() : null;
-        $changeHash = isset($change['data']['hash']) ? $change['data']['hash'] : null;
+        $originalHash = null !== $originalMedia ? $originalMedia->getHash() : null;
+        $changedHash  = null !== $changedMedia  ? $changedMedia->getHash()  : null;
 
-        return $dataHash !== $changeHash;
+        return $originalHash !== $changedHash;
     }
 }

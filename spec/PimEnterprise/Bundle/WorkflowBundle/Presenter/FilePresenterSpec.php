@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -10,9 +11,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class FilePresenterSpec extends ObjectBehavior
 {
-    function let(UrlGeneratorInterface $generator)
+    function let(UrlGeneratorInterface $generator, FileInfoRepositoryInterface $repository)
     {
-        $this->beConstructedWith($generator);
+        $this->beConstructedWith($generator, $repository);
     }
 
     function it_is_a_presenter()
@@ -36,12 +37,7 @@ class FilePresenterSpec extends ObjectBehavior
         $value->getMedia()->willReturn(null);
 
         $this
-            ->present($value, [
-                'data' => [
-                    'filePath' => 'key/of/the/change.jpg',
-                    'originalFilename' => 'change_bar.jpg',
-                ]
-            ])
+            ->present($value, ['data' => 'key/of/the/change.jpg'])
             ->shouldReturn(['before' => '', 'after' => '']);
     }
 
@@ -59,44 +55,46 @@ class FilePresenterSpec extends ObjectBehavior
     function it_presents_file(
         $generator,
         ProductValueInterface $value,
-        FileInfoInterface $media
+        FileInfoInterface $media,
+        FileInfoInterface $changedMedia,
+        FileInfoRepositoryInterface $repository
     ) {
+        $repository->findOneByIdentifier('key/of/the/changed/media.jpg')->willReturn($changedMedia);
+        $changedMedia->getKey()->willReturn('key/of/the/changed/media.jpg');
+        $changedMedia->getHash()->willReturn('different_hash');
+        $changedMedia->getOriginalFilename()->willReturn('changed_media.jpg');
+
         $value->getMedia()->willReturn($media);
-        $media->getKey()->willReturn('key/of/the/media.jpg');
-        $media->getHash()->willReturn('key/of/the/media.jpg');
-        $media->getOriginalFilename()->willReturn('original_foo.jpg');
+        $media->getKey()->willReturn('key/of/the/original/media.jpg');
+        $media->getHash()->willReturn('hash');
+        $media->getOriginalFilename()->willReturn('media.jpg');
 
         $generator
             ->generate(
                 'pim_enrich_media_show',
-                ['filename' => urlencode('key/of/the/media.jpg')]
+                ['filename' => urlencode('key/of/the/original/media.jpg')]
             )
-            ->willReturn('url/of/the/media.jpg');
+            ->willReturn('url/of/the/original/media.jpg');
 
         $generator
             ->generate(
                 'pim_enrich_media_show',
-                ['filename' => urlencode('key/of/the/change.jpg')]
+                ['filename' => urlencode('key/of/the/changed/media.jpg')]
             )
-            ->willReturn('url/of/the/change.jpg');
+            ->willReturn('url/of/the/changed/media.jpg');
 
         $this
-            ->present($value, [
-                'data' => [
-                    'filePath' => 'key/of/the/change.jpg',
-                    'originalFilename' => 'change_bar.jpg',
-                ]
-            ])
+            ->present($value, ['data' => 'key/of/the/changed/media.jpg'])
             ->shouldReturn([
                 'before' => sprintf(
                     '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
-                    'url/of/the/media.jpg',
-                    'original_foo.jpg'
+                    'url/of/the/original/media.jpg',
+                    'media.jpg'
                 ),
                 'after' => sprintf(
                     '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
-                    'url/of/the/change.jpg',
-                    'change_bar.jpg'
+                    'url/of/the/changed/media.jpg',
+                    'changed_media.jpg'
                 )
             ]);
     }

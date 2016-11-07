@@ -8,5 +8,6 @@ services:
         arguments:
             - '@pim_catalog.localization.presenter.registry'
             - '@pim_enrich.resolver.locale'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: twig.extension }

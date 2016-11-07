@@ -284,14 +284,10 @@ Feature: Read a single product by applying rules
             scope: tablet
           - type:  set
             field: datasheet
-            value:
-              originalFilename: akeneo.txt
-              filePath: %fixtures%/akeneo.txt
+            value: %fixtures%/akeneo.txt
           - type:  set
             field: side_view
-            value:
-              originalFilename: akeneo2.jpg
-              filePath: %fixtures%/akeneo2.jpg
+            value: %fixtures%/akeneo2.jpg
           - type:  set
             field: length
             value:
