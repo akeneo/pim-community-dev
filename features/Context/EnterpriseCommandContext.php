@@ -129,7 +129,7 @@ class EnterpriseCommandContext extends CommandContext
             $publishedProduct           = $this->getPublishedProduct($originalProduct);
             $normalizedPublishedProduct = $this->getContainer()->get('pim_serializer')->normalize(
                 $publishedProduct,
-                'json'
+                'standard'
             );
 
             $diff = static::arrayIntersect($normalizedPublishedProduct, $expectedResult);

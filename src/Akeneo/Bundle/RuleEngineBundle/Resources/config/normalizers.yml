@@ -1,7 +1,7 @@
 parameters:
     akeneo_rule_engine.normalizer.rule_collection.class: Akeneo\Bundle\RuleEngineBundle\Normalizer\RuleCollectionNormalizer
     akeneo_rule_engine.normalizer.rule_definition.class: Akeneo\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer
-    akeneo_rule_engine.normalizer.rule.class:            Akeneo\Bundle\RuleEngineBundle\Normalizer\RuleNormalizer
+    akeneo_rule_engine.normalizer.rule.class:            Akeneo\Bundle\RuleEngineBundle\Normalizer\Standard\RuleNormalizer
 
 services:
    akeneo_rule_engine.normalizer.rule_collection:
