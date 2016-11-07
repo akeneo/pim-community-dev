@@ -33,7 +33,10 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = ['code' => $object->getCode()] + $this->transNormalizer->normalize($object, $format, $context);
+        $data = [
+            'code'   => $object->getCode(),
+            'labels' => $this->transNormalizer->normalize($object, $format, $context),
+        ];
 
         return $data;
     }
