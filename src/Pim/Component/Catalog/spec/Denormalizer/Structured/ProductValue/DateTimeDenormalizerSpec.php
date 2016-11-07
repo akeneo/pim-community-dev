@@ -23,14 +23,14 @@ class DateTimeDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_date_values_from_json()
     {
-        $this->supportsDenormalization([], 'pim_catalog_date', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'pim_catalog_text', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_catalog_date', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'pim_catalog_text', 'standard')->shouldReturn(false);
         $this->supportsDenormalization([], 'pim_catalog_date', 'csv')->shouldReturn(false);
     }
 
     function it_denormalizes_data_into_a_date()
     {
-        $date = $this->denormalize('01-01-2015', 'pim_catalog_date', 'json');
+        $date = $this->denormalize('01-01-2015', 'pim_catalog_date', 'standard');
 
         $date->shouldHaveType('\DateTime');
 
@@ -39,7 +39,7 @@ class DateTimeDenormalizerSpec extends ObjectBehavior
 
     function it_returns_null_if_data_is_empty()
     {
-        $this->denormalize('', 'pim_catalog_date', 'json')->shouldReturn(null);
-        $this->denormalize(null, 'pim_catalog_date', 'json')->shouldReturn(null);
+        $this->denormalize('', 'pim_catalog_date', 'standard')->shouldReturn(null);
+        $this->denormalize(null, 'pim_catalog_date', 'standard')->shouldReturn(null);
     }
 }

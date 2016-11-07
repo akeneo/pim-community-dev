@@ -30,8 +30,8 @@ class AttributeOptionsDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_attribute_options_values_from_json()
     {
-        $this->supportsDenormalization([], 'pim_catalog_multiselect', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'foo', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_catalog_multiselect', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'foo', 'standard')->shouldReturn(false);
         $this->supportsDenormalization([], 'pim_catalog_multiselect', 'csv')->shouldReturn(false);
     }
 
@@ -44,17 +44,17 @@ class AttributeOptionsDenormalizerSpec extends ObjectBehavior
         $color->getCode()->willReturn('color');
 
         $serializer
-            ->denormalize('red', 'pim_catalog_simpleselect', 'json', ['attribute' => $color])
+            ->denormalize('red', 'pim_catalog_simpleselect', 'standard', ['attribute' => $color])
             ->shouldBeCalled()
             ->willReturn($red);
 
         $serializer
-            ->denormalize('blue', 'pim_catalog_simpleselect', 'json', ['attribute' => $color])
+            ->denormalize('blue', 'pim_catalog_simpleselect', 'standard', ['attribute' => $color])
             ->shouldBeCalled()
             ->willReturn($blue);
 
         $options = $this
-            ->denormalize(['red', 'blue'], 'pim_catalog_multiselect', 'json', ['attribute' => $color]);
+            ->denormalize(['red', 'blue'], 'pim_catalog_multiselect', 'standard', ['attribute' => $color]);
 
         $options->shouldHaveType('Doctrine\Common\Collections\ArrayCollection');
         $options->shouldHaveCount(2);

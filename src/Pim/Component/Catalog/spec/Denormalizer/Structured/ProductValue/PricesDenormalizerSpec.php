@@ -28,16 +28,16 @@ class PricesDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_price_values_from_json()
     {
-        $this->supportsDenormalization([], 'pim_catalog_price_collection', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'pim_catalog_text', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_catalog_price_collection', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'pim_catalog_text', 'standard')->shouldReturn(false);
         $this->supportsDenormalization([], 'pim_catalog_price_collection', 'csv')->shouldReturn(false);
     }
 
     function it_returns_null_if_data_is_empty()
     {
-        $this->denormalize('', 'pim_catalog_price_collection', 'json')->shouldReturn(null);
-        $this->denormalize(null, 'pim_catalog_price_collection', 'json')->shouldReturn(null);
-        $this->denormalize([], 'pim_catalog_price_collection', 'json')->shouldReturn(null);
+        $this->denormalize('', 'pim_catalog_price_collection', 'standard')->shouldReturn(null);
+        $this->denormalize(null, 'pim_catalog_price_collection', 'standard')->shouldReturn(null);
+        $this->denormalize([], 'pim_catalog_price_collection', 'standard')->shouldReturn(null);
     }
 
     function it_denormalizes_data_into_price_collection_with_en_US_locale($localizer)
@@ -60,7 +60,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
                     ]
                 ],
                 'pim_catalog_price_collection',
-                'json',
+                'standard',
                 $context
             );
 
@@ -96,7 +96,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
                     ]
                 ],
                 'pim_catalog_price_collection',
-                'json',
+                'standard',
                 $context
             );
 

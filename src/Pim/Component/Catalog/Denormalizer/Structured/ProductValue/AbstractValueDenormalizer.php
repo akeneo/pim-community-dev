@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 abstract class AbstractValueDenormalizer implements DenormalizerInterface
 {
     /** @var string[] */
-    protected $supportedFormats = ['json'];
+    protected $supportedFormats = ['standard'];
 
     /** @var string[] */
     protected $supportedTypes;

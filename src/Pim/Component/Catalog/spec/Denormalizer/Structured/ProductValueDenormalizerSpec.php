@@ -31,8 +31,8 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_product_values_from_json()
     {
-        $this->supportsDenormalization([], 'Pim\Component\Catalog\Model\ProductValue', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'Product', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'Pim\Component\Catalog\Model\ProductValue', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'Product', 'standard')->shouldReturn(false);
         $this->supportsDenormalization([], 'Pim\Component\Catalog\Model\ProductValue', 'csv')->shouldReturn(false);
     }
 
@@ -40,7 +40,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
     {
         $this
             ->shouldThrow(new InvalidArgumentException('Attribute must be passed in the context'))
-            ->duringDenormalize([], 'Pim\Component\Catalog\Model\ProductValue', 'json', []);
+            ->duringDenormalize([], 'Pim\Component\Catalog\Model\ProductValue', 'standard', []);
 
         $this
             ->shouldThrow(
@@ -48,7 +48,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
                     'Attribute must be an instance of Pim\Component\Catalog\Model\AttributeInterface, string given'
                 )
             )
-            ->duringDenormalize([], 'Pim\Component\Catalog\Model\ProductValue', 'json', ['attribute' => 'foo']);
+            ->duringDenormalize([], 'Pim\Component\Catalog\Model\ProductValue', 'standard', ['attribute' => 'foo']);
     }
 
     function it_denormalizes_json_into_product_values($serializer, AttributeInterface $attribute)
@@ -58,14 +58,14 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
         $serializer
-            ->denormalize(null, 'pim_catalog_text', 'json', Argument::type('array'))
+            ->denormalize(null, 'pim_catalog_text', 'standard', Argument::type('array'))
             ->shouldBeCalled()
             ->willReturn('foo');
 
         $value = $this->denormalize(
             [],
             'Pim\Component\Catalog\Model\ProductValue',
-            'json',
+            'standard',
             ['attribute' => $attribute]
         );
 
@@ -82,14 +82,14 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
 
         $serializer
-            ->denormalize(1, 'pim_catalog_number', 'json', Argument::type('array'))
+            ->denormalize(1, 'pim_catalog_number', 'standard', Argument::type('array'))
             ->shouldBeCalled()
             ->willReturn(1);
 
         $value = $this->denormalize(
             ['data' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'],
             'Pim\Component\Catalog\Model\ProductValue',
-            'json',
+            'standard',
             ['attribute' => $attribute]
         );
 

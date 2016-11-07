@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class UserNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = ['array', 'json', 'internal_api'];
+    protected $supportedFormats = ['array', 'standard', 'internal_api'];
 
     /**
      * {@inheritdoc}

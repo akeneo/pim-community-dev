@@ -20,6 +20,9 @@ require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
  */
 class WebApiContext extends BehatContext
 {
+    const DATE_FIELD_COMPARISON = 'this is a date formatted to ISO-8601';
+    const DATE_FIELD_PATTERN = '#[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2}$#';
+
     /** @var array */
     private $placeHolders = [];
 
@@ -151,6 +154,14 @@ class WebApiContext extends BehatContext
             );
         }
 
+        if (isset($etalon['created']) && isset($etalon['updated'])) {
+            $etalon = $this->sanitizeDateFields($etalon);
+        }
+
+        if (isset($actual['created']) && isset($actual['updated'])) {
+            $actual = $this->sanitizeDateFields($actual);
+        }
+
         assertCount(count($etalon), $actual);
         foreach ($actual as $key => $needle) {
             assertArrayHasKey($key, $etalon);
@@ -252,5 +263,34 @@ class WebApiContext extends BehatContext
     protected function addHeader($header)
     {
         $this->headers[] = $header;
+    }
+
+    /**
+     * @param string $field
+     *
+     * @return bool
+     */
+    private function assertDateFieldPattern($field)
+    {
+        return 1 === preg_match(self::DATE_FIELD_PATTERN, $field);
+    }
+
+    /**
+     * Replaces dates fields (created/updated) in the $data array by self::DATE_FIELD_COMPARISON.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    private function sanitizeDateFields(array $data)
+    {
+        if ($this->assertDateFieldPattern($data['created']) &&
+            $this->assertDateFieldPattern($data['updated'])
+        ) {
+            $data['created'] = self::DATE_FIELD_COMPARISON;
+            $data['updated'] = self::DATE_FIELD_COMPARISON;
+        }
+
+        return $data;
     }
 }

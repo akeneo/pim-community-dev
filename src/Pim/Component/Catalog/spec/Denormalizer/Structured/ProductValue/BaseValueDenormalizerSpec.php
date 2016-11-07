@@ -30,20 +30,20 @@ class BaseValueDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_basic_values_from_json()
     {
-        $this->supportsDenormalization([], 'pim_catalog_number', 'json')->shouldReturn(false);
-        $this->supportsDenormalization([], 'pim_catalog_text', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'pim_catalog_price_collection', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_catalog_number', 'standard')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_catalog_text', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'pim_catalog_price_collection', 'standard')->shouldReturn(false);
         $this->supportsDenormalization([], 'pim_catalog_boolean', 'csv')->shouldReturn(false);
     }
 
     function it_returns_data_without_any_modifications()
     {
-        $this->denormalize('foo', 'pim_catalog_text', 'json')->shouldReturn('foo');
-        $this->denormalize(1, 'pim_catalog_boolean', 'json')->shouldReturn(1);
+        $this->denormalize('foo', 'pim_catalog_text', 'standard')->shouldReturn('foo');
+        $this->denormalize(1, 'pim_catalog_boolean', 'standard')->shouldReturn(1);
     }
 
     function it_returns_null_if_data_is_an_empty_string()
     {
-        $this->denormalize('', 'pim_catalog_text', 'json')->shouldReturn(null);
+        $this->denormalize('', 'pim_catalog_text', 'standard')->shouldReturn(null);
     }
 }
