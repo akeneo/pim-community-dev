@@ -63,10 +63,7 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
                 [
                     'locale' => null,
                     'scope'  => 'mobile',
-                    'data'   => [
-                        'filePath' => '/uploads/image.jpg',
-                        'originalFilename' => 'Image.jpg'
-                    ]
+                    'data'   => '/uploads/image.jpg'
                 ]
             ]
         ];
@@ -88,7 +85,7 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
             ->setData(
                 $product,
                 'image',
-                ['filePath' => '/uploads/image.jpg', 'originalFilename' => 'Image.jpg'],
+                '/uploads/image.jpg',
                 ['locale' => null, 'scope' => 'mobile']
             )
             ->shouldBeCalled();

@@ -6,6 +6,7 @@ use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderIn
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -35,25 +36,31 @@ class GroupNormalizer implements NormalizerInterface
     /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
+    /** @var ConverterInterface */
+    protected $productValueConverter;
+
     /**
      * @param NormalizerInterface               $groupNormalizer
      * @param StructureVersionProviderInterface $structureVersionProvider
      * @param VersionManager                    $versionManager
      * @param NormalizerInterface               $versionNormalizer
      * @param AttributeConverterInterface       $localizedConverter
+     * @param ConverterInterface                $productValueConverter
      */
     public function __construct(
         NormalizerInterface $groupNormalizer,
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        AttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $productValueConverter
     ) {
         $this->groupNormalizer = $groupNormalizer;
         $this->structureVersionProvider = $structureVersionProvider;
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
         $this->localizedConverter = $localizedConverter;
+        $this->productValueConverter = $productValueConverter;
     }
 
     /**
@@ -67,6 +74,8 @@ class GroupNormalizer implements NormalizerInterface
                 $normalizedGroup['values'],
                 $context
             );
+
+            $normalizedGroup['values'] = $this->productValueConverter->convert($normalizedGroup['values']);
         }
 
         $normalizedGroup['products'] = [];

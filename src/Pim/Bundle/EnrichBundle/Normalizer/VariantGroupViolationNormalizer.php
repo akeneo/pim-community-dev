@@ -2,12 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Component\Catalog\Model\Groupinterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
  * @author    Julien Sanchez <julien@akeneo.com>
@@ -41,9 +37,7 @@ class VariantGroupViolationNormalizer implements NormalizerInterface
         foreach ($violations as $violation) {
             $path = $violation->getPropertyPath();
             if (0 === strpos($path, 'translations')) {
-                $path = $violation->getPropertyPath();
-
-                $propertyPath = str_replace('.label', '', $violation->getPropertyPath());
+                $propertyPath = str_replace('.label', '', $path);
 
                 $translation = $accessor->getValue($violation->getRoot(), $propertyPath);
 

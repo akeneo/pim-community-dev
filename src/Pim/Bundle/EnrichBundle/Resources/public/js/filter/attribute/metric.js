@@ -53,7 +53,9 @@ define([
          */
         isEmpty: function () {
             return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
-                (undefined === this.getValue() || undefined === this.getValue().data || '' === this.getValue().data);
+                (undefined === this.getValue() ||
+                undefined === this.getValue().amount ||
+                '' === this.getValue().amount);
         },
 
         /**

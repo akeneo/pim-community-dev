@@ -2,12 +2,15 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -43,6 +46,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
+    /** @var ConverterInterface */
+    protected $productValueConverter;
+
     /**
      * @param NormalizerInterface               $productNormalizer
      * @param NormalizerInterface               $versionNormalizer
@@ -51,6 +57,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param StructureVersionProviderInterface $structureVersionProvider
      * @param FormProviderInterface             $formProvider
      * @param AttributeConverterInterface       $localizedConverter
+     * @param ConverterInterface                $productValueConverter
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
@@ -59,7 +66,8 @@ class ProductNormalizer implements NormalizerInterface
         LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider,
-        AttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $productValueConverter
     ) {
         $this->productNormalizer = $productNormalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -68,6 +76,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->structureVersionProvider = $structureVersionProvider;
         $this->formProvider = $formProvider;
         $this->localizedConverter = $localizedConverter;
+        $this->productValueConverter = $productValueConverter;
     }
 
     /**
@@ -81,6 +90,8 @@ class ProductNormalizer implements NormalizerInterface
             $context
         );
 
+        $normalizedProduct['values'] = $this->productValueConverter->convert($normalizedProduct['values']);
+
         $oldestLog = $this->versionManager->getOldestLogEntry($product);
         $newestLog = $this->versionManager->getNewestLogEntry($product);
 
@@ -93,7 +104,7 @@ class ProductNormalizer implements NormalizerInterface
             'created'           => $created,
             'updated'           => $updated,
             'model_type'        => 'product',
-            'structure_version' => $this->structureVersionProvider->getStructureVersion()
+            'structure_version' => $this->structureVersionProvider->getStructureVersion(),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
