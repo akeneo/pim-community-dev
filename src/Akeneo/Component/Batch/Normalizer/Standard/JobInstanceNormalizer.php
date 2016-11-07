@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Batch\Normalizer\Structured;
+namespace Akeneo\Component\Batch\Normalizer\Standard;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,11 +14,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class JobInstanceNormalizer implements NormalizerInterface
 {
-    /**
-     * @var array
-     */
-    protected $supportedFormats = ['json', 'xml'];
-
     /**
      * {@inheritdoc}
      *
@@ -42,7 +37,7 @@ class JobInstanceNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof JobInstance && in_array($format, $this->supportedFormats);
+        return $data instanceof JobInstance && 'standard' === $format;
     }
 
     /**
