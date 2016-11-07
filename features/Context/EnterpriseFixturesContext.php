@@ -1033,10 +1033,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $rows = $table->getRows();
         array_shift($rows);
 
+        $defaultUserGroup = $this->getContainer()->get('pim_user.repository.group')->getDefaultUserGroup();
         foreach ($rows as $row) {
-            foreach (['IT support', 'Manager', 'Redactor'] as $role) {
-                $accesses->addRow([$row[0], $role, 'own']);
-            }
+            $accesses->addRow([$row[0], $defaultUserGroup->getName(), 'own']);
         }
 
         $this->createAccesses($accesses, 'product category');
