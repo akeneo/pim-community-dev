@@ -119,7 +119,7 @@ class AddVersionSubscriber implements EventSubscriber
         $changeset = [];
         if (!$this->container->get('pim_versioning.manager.version')->isRealTimeVersioning()) {
             $changeset = $this->container->get('pim_versioning.serializer')
-                ->normalize($versionable, 'csv', ['versioning' => true]);
+                ->normalize($versionable, 'flat', ['versioning' => true]);
         }
         $versions = $this->container->get('pim_versioning.manager.version')->buildVersion($versionable, $changeset);
 

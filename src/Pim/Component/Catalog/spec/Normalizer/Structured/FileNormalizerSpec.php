@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Catalog\Normalizer\Structured;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FileNormalizerSpec extends ObjectBehavior
 {

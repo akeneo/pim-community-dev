@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Catalog\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
 class AttributeGroupNormalizerSpec extends ObjectBehavior

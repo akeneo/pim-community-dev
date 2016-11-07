@@ -3,7 +3,6 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Component\Catalog\Model\LocaleInterface;
 
 class LocaleNormalizerSpec extends ObjectBehavior

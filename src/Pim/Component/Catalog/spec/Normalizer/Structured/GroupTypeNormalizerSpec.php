@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Structured;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Normalizer\Structured\GroupTypeNormalizer;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -32,6 +32,7 @@ class GroupTypeNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($currency, 'json')->shouldBe(true);
         $this->supportsNormalization($currency, 'xml')->shouldBe(true);
     }
+
     function it_normalizes_group_type($nomalizer, GroupTypeInterface $groupType)
     {
         $nomalizer->normalize(Argument::cetera())->willReturn([]);

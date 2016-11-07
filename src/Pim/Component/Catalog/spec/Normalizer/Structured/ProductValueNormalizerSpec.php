@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
@@ -66,7 +65,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($productValue, 'json', ['decimals_allowed' => false])->shouldReturn([
             'locale' => null,
             'scope'  => null,
-            'data' => '25'
+            'data'   => '25',
         ]);
     }
 

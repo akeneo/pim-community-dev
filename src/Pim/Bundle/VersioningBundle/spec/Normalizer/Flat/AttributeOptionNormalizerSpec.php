@@ -14,19 +14,14 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_csv_normalization_of_attribute_option(AttributeOptionInterface $option)
-    {
-        $this->supportsNormalization($option, 'csv')->shouldBe(true);
-    }
-
     function it_supports_flat_normalization_of_attribute_option(AttributeOptionInterface $option)
     {
         $this->supportsNormalization($option, 'flat')->shouldBe(true);
     }
 
-    function it_does_not_support_csv_normalization_of_integer()
+    function it_does_not_support_flat_normalization_of_integer()
     {
-        $this->supportsNormalization(1, 'csv')->shouldBe(false);
+        $this->supportsNormalization(1, 'flat')->shouldBe(false);
     }
 
     function it_normalizes_option_code_when_field_name_is_provided(AttributeOptionInterface $option)
@@ -56,8 +51,8 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $valueFr->getValue()->willReturn('Rouge');
 
         $this->normalize($option, null, ['locales' => ['en_US', 'fr_FR', 'de_DE']])->shouldReturn([
-            'attribute' => 'color',
             'code' => 'red',
+            'attribute' => 'color',
             'sort_order' => 1,
             'label-en_US' => 'Red',
             'label-fr_FR' => 'Rouge',
@@ -85,8 +80,8 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $valueFr->getValue()->willReturn('Rouge');
 
         $this->normalize($option, null, ['locales' => ['en_US', 'de_DE']])->shouldReturn([
-            'attribute' => 'color',
             'code' => 'red',
+            'attribute' => 'color',
             'sort_order' => 1,
             'label-en_US' => 'Red',
             'label-de_DE' => '',
@@ -117,8 +112,8 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $valueDe->getValue()->willReturn('');
 
         $this->normalize($option, null, ['locales' => []])->shouldReturn([
-            'attribute' => 'color',
             'code' => 'red',
+            'attribute' => 'color',
             'sort_order' => 1,
             'label-en_US' => 'Red',
             'label-fr_FR' => 'Rouge',

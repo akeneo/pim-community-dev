@@ -36,7 +36,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     const ITEM_SEPARATOR = ',';
 
     /** @var string[] */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['flat'];
 
     /** @var CollectionFilterInterface */
     protected $filter;
@@ -212,8 +212,8 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
                 $products[] = $product->getIdentifier();
             }
 
-            $results[$columnPrefix.'-groups'] = implode(',', $groups);
-            $results[$columnPrefix.'-products'] = implode(',', $products);
+            $results[$columnPrefix . '-groups'] = implode(',', $groups);
+            $results[$columnPrefix . '-products'] = implode(',', $products);
         }
 
         return $results;

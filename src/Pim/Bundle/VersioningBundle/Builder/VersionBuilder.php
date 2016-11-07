@@ -51,7 +51,7 @@ class VersionBuilder
         $oldSnapshot = $previousVersion ? $previousVersion->getSnapshot() : [];
 
         // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
-        $snapshot = $this->normalizer->normalize($versionable, 'csv', ['versioning' => true]);
+        $snapshot = $this->normalizer->normalize($versionable, 'flat', []);
 
         $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
 
