@@ -34,10 +34,10 @@ class FileDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_files_and_images_from_json()
     {
-        $this->supportsDenormalization([], 'pim_catalog_image', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'pim_catalog_file', 'json')->shouldReturn(true);
+        $this->supportsDenormalization([], 'pim_catalog_image', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'pim_catalog_file', 'standard')->shouldReturn(true);
         $this->supportsDenormalization([], 'pim_catalog_image', 'csv')->shouldReturn(false);
         $this->supportsDenormalization([], 'pim_catalog_file', 'csv')->shouldReturn(false);
-        $this->supportsDenormalization([], 'pim_catalog_text', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_catalog_text', 'standard')->shouldReturn(false);
     }
 }

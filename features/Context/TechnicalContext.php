@@ -36,7 +36,7 @@ class TechnicalContext extends RawMinkContext
                     $createdValue = $serializer->denormalize(
                         $valueData,
                         $productValueClass,
-                        'json',
+                        'standard',
                         ['attribute' => $attribute]
                     );
                     $newData = $serializer->normalize($createdValue, 'standard', ['entity' => 'product']);

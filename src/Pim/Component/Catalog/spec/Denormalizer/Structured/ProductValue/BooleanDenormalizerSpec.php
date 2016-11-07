@@ -23,22 +23,22 @@ class BooleanDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_boolean_values_from_json()
     {
-        $this->supportsDenormalization([], 'pim_catalog_boolean', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'pim_catalog_text', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_catalog_boolean', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'pim_catalog_text', 'standard')->shouldReturn(false);
         $this->supportsDenormalization([], 'pim_catalog_boolean', 'csv')->shouldReturn(false);
     }
 
     function it_denormalizes_data_into_a_boolean()
     {
-        $this->denormalize(1, 'pim_catalog_boolean', 'json')->shouldReturn(true);
-        $this->denormalize('1', 'pim_catalog_boolean', 'json')->shouldReturn(true);
-        $this->denormalize(0, 'pim_catalog_boolean', 'json')->shouldReturn(false);
-        $this->denormalize('0', 'pim_catalog_boolean', 'json')->shouldReturn(false);
-        $this->denormalize('foo', 'pim_catalog_boolean', 'json')->shouldReturn(true);
+        $this->denormalize(1, 'pim_catalog_boolean', 'standard')->shouldReturn(true);
+        $this->denormalize('1', 'pim_catalog_boolean', 'standard')->shouldReturn(true);
+        $this->denormalize(0, 'pim_catalog_boolean', 'standard')->shouldReturn(false);
+        $this->denormalize('0', 'pim_catalog_boolean', 'standard')->shouldReturn(false);
+        $this->denormalize('foo', 'pim_catalog_boolean', 'standard')->shouldReturn(true);
     }
 
     function it_returns_null_if_data_is_null()
     {
-        $this->denormalize(null, 'pim_catalog_boolean', 'json')->shouldReturn(null);
+        $this->denormalize(null, 'pim_catalog_boolean', 'standard')->shouldReturn(null);
     }
 }

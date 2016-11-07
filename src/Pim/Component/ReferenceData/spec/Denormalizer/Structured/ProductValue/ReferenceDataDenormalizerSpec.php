@@ -25,18 +25,18 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_supports_denormalization_of_reference_data_values_from_json()
+    function it_supports_denormalization_of_reference_data_values_from_standard()
     {
-        $this->supportsDenormalization([], 'pim_reference_data_simpleselect', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'pim_catalog_text', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_reference_data_simpleselect', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'pim_catalog_text', 'standard')->shouldReturn(false);
         $this->supportsDenormalization([], 'pim_reference_data_simpleselect', 'csv')->shouldReturn(false);
     }
 
     function it_returns_null_if_data_is_empty()
     {
-        $this->denormalize('', 'pim_reference_data_simpleselect', 'json')->shouldReturn(null);
-        $this->denormalize(null, 'pim_reference_data_simpleselect', 'json')->shouldReturn(null);
-        $this->denormalize([], 'pim_reference_data_simpleselect', 'json')->shouldReturn(null);
+        $this->denormalize('', 'pim_reference_data_simpleselect', 'standard')->shouldReturn(null);
+        $this->denormalize(null, 'pim_reference_data_simpleselect', 'standard')->shouldReturn(null);
+        $this->denormalize([], 'pim_reference_data_simpleselect', 'standard')->shouldReturn(null);
     }
 
     function it_throws_an_exception_if_there_is_no_attribute_in_context()
@@ -47,7 +47,7 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
                 [
                     'battlecruiser',
                     'pim_reference_data_simpleselect',
-                    'json',
+                    'standard',
                     ['foo' => 'bar']
                 ]
             );
@@ -61,7 +61,7 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
                 [
                     'battlecruiser',
                     'pim_reference_data_simpleselect',
-                    'json',
+                    'standard',
                     ['attribute' => 'bar']
                 ]
             );
@@ -81,7 +81,7 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
             ->denormalize(
                 'battlecruiser',
                 'pim_reference_data_simpleselect',
-                'json',
+                'standard',
                 ['attribute' => $attribute]
             )
             ->shouldReturn($battlecruiser);

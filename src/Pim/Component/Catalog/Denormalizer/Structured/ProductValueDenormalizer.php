@@ -24,7 +24,7 @@ class ProductValueDenormalizer implements SerializerAwareInterface, Denormalizer
     protected $serializer;
 
     /** @var string[] */
-    protected $supportedFormats = ['json'];
+    protected $supportedFormats = ['standard'];
 
     /**
      * @param string $entityClass

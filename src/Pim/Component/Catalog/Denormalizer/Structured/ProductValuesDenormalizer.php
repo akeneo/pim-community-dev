@@ -29,7 +29,7 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     protected $valueClass;
 
     /** @var string[] */
-    protected $supportedFormats = ['json'];
+    protected $supportedFormats = ['standard'];
 
     /**
      * @param DenormalizerInterface        $denormalizer
@@ -60,7 +60,7 @@ class ProductValuesDenormalizer implements DenormalizerInterface
                 $value = $this->denormalizer->denormalize(
                     $valueData,
                     $this->valueClass,
-                    'json',
+                    'standard',
                     ['attribute' => $attribute] + $context
                 );
 

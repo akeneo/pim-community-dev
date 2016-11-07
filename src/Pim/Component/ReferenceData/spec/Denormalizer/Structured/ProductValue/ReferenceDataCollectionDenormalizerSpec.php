@@ -24,20 +24,20 @@ class ReferenceDataCollectionDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_supports_denormalization_of_reference_data_collection_values_from_json()
+    function it_supports_denormalization_of_reference_data_collection_values_from_standard()
     {
-        $this->supportsDenormalization([], 'pim_reference_data_multiselect', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'pim_reference_data_simpleselect', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_reference_data_multiselect', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'pim_reference_data_simpleselect', 'standard')->shouldReturn(false);
         $this->supportsDenormalization([], 'pim_reference_data_multiselect', 'csv')->shouldReturn(false);
     }
 
     function it_returns_an_array_collection_if_data_is_empty()
     {
-        $this->denormalize('', 'pim_reference_data_multiselect', 'json')
+        $this->denormalize('', 'pim_reference_data_multiselect', 'standard')
             ->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
-        $this->denormalize(null, 'pim_reference_data_multiselect', 'json')
+        $this->denormalize(null, 'pim_reference_data_multiselect', 'standard')
             ->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
-        $this->denormalize([], 'pim_reference_data_multiselect', 'json')
+        $this->denormalize([], 'pim_reference_data_multiselect', 'standard')
             ->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
     }
 

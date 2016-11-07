@@ -29,8 +29,8 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_a_collection_of_product_values_from_json()
     {
-        $this->supportsDenormalization([], 'ProductValue[]', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'foo', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'ProductValue[]', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'foo', 'standard')->shouldReturn(false);
         $this->supportsDenormalization([], 'ProductValue[]', 'csv')->shouldReturn(false);
     }
 
@@ -55,16 +55,16 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
 
         $denormalizer
-            ->denormalize($data['name'][0], 'ProductValue', 'json', ['attribute' => $name])
+            ->denormalize($data['name'][0], 'ProductValue', 'standard', ['attribute' => $name])
             ->shouldBeCalled()
             ->willReturn($nameValue);
 
         $denormalizer
-            ->denormalize($data['color'][0], 'ProductValue', 'json', ['attribute' => $color])
+            ->denormalize($data['color'][0], 'ProductValue', 'standard', ['attribute' => $color])
             ->shouldBeCalled()
             ->willReturn($colorValue);
 
-        $values = $this->denormalize($data, 'ProductValue[]', 'json');
+        $values = $this->denormalize($data, 'ProductValue[]', 'standard');
 
         $values->shouldHaveCount(2);
         $values[0]->shouldBe($nameValue);

@@ -84,7 +84,7 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
 
         $productTemplate->getValuesData()->willReturn($values);
 
-        $valuesDenormalizer->denormalize($values, 'json', [])->willReturn($variantGroupValues);
+        $valuesDenormalizer->denormalize($values, 'standard', [])->willReturn($variantGroupValues);
 
         $valuesNormalizer->normalize($variantGroupValues, 'standard', [])->willReturn($values);
 

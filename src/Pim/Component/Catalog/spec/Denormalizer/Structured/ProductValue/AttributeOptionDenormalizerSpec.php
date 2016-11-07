@@ -29,8 +29,8 @@ class AttributeOptionDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_attribute_option_values_from_json()
     {
-        $this->supportsDenormalization([], 'pim_catalog_simpleselect', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'foo', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_catalog_simpleselect', 'standard')->shouldReturn(true);
+        $this->supportsDenormalization([], 'foo', 'standard')->shouldReturn(false);
         $this->supportsDenormalization([], 'pim_catalog_simpleselect', 'csv')->shouldReturn(false);
     }
 

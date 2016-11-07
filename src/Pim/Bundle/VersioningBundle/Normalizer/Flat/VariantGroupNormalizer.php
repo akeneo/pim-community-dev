@@ -48,7 +48,7 @@ class VariantGroupNormalizer extends BaseNormalizer
         }
 
         $valuesData = $variantGroup->getProductTemplate()->getValuesData();
-        $values = $this->valuesDenormalizer->denormalize($valuesData, 'ProductValue[]', 'json');
+        $values = $this->valuesDenormalizer->denormalize($valuesData, 'ProductValue[]', 'standard');
 
         $normalizedValues = [];
         foreach ($values as $value) {
