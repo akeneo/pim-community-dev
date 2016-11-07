@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Factory;
+namespace spec\Akeneo\ActivityManager\Bundle\Factory;
 
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Model\JobExecution;

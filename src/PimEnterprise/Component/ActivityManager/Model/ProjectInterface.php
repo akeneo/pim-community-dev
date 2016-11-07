@@ -11,6 +11,7 @@
 
 namespace Akeneo\ActivityManager\Component\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -116,7 +117,7 @@ interface ProjectInterface
     /**
      * Returns user groups.
      *
-     * @return Group $group
+     * @return ArrayCollection $group
      */
     public function getUserGroups();
 

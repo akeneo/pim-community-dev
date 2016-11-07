@@ -11,6 +11,7 @@
 
 namespace Akeneo\ActivityManager\Bundle\EventSubscriber;
 
+use Akeneo\ActivityManager\Bundle\Factory\ProjectCreatedNotificationFactory;
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
@@ -18,7 +19,6 @@ use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Job execution notifier
@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class JobExecutionNotifier implements EventSubscriberInterface
 {
-    /** @var */
+    /** @var ProjectCreatedNotificationFactory */
     private $factory;
 
     /** @var NotifierInterface */
@@ -40,13 +40,13 @@ class JobExecutionNotifier implements EventSubscriberInterface
     private $userRepository;
 
     /**
-     * @param  $factory
-     * @param NotifierInterface           $notifier
-     * @param ProjectRepositoryInterface  $projectRepository
-     * @param UserRepositoryInterface     $userRepository
+     * @param ProjectCreatedNotificationFactory $factory
+     * @param NotifierInterface                 $notifier
+     * @param ProjectRepositoryInterface        $projectRepository
+     * @param UserRepositoryInterface           $userRepository
      */
     public function __construct(
-        $factory,
+        ProjectCreatedNotificationFactory $factory,
         NotifierInterface $notifier,
         ProjectRepositoryInterface $projectRepository,
         UserRepositoryInterface $userRepository
@@ -75,6 +75,8 @@ class JobExecutionNotifier implements EventSubscriberInterface
     public function projectCreated(ProjectEvent $event)
     {
         $project = $event->getProject();
+        $view = $project->getDatagridView();
+        $filters = $view->getFilters();
 
         if (!$project instanceof ProjectInterface) {
             return;
@@ -90,7 +92,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
 
         $users = $this->userRepository->findByGroupIdsOwnerExcluded($owner->getId(), $userGroupIds);
 
-        $notification = $this->factory->create();
+        $notification = $this->factory->create($filters);
         $this->notifier->notify($notification, $users);
     }
 }

@@ -32,7 +32,7 @@ class ProjectCreatedNotificationFactory
     /**
      * {@inheritdoc}
      */
-    public function create()
+    public function create($filters)
     {
         $notification = new $this->notificationClass();
 
@@ -44,6 +44,7 @@ class ProjectCreatedNotificationFactory
             ->setContext([
                 'actionType' => 'project_calculation',
                 'buttonLabel' => sprintf('activity_manager.notification.%s.start', 'project_calculation'),
+                'gridParameters' => $filters,
             ]);
 
         return $notification;
