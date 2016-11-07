@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class CategoryNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = ['csv'];
+    protected $supportedFormats = ['flat'];
 
     /** @var NormalizerInterface */
     protected $categoryNormalizer;
@@ -50,20 +50,18 @@ class CategoryNormalizer implements NormalizerInterface
     {
         $normalizedCategory = $this->categoryNormalizer->normalize($category, $format, $context);
 
-        if (true === $context['versioning']) {
-            $normalizedCategory['view_permission'] = implode(
-                array_map('strval', $this->accessManager->getViewUserGroups($category)),
-                ','
-            );
-            $normalizedCategory['edit_permission'] = implode(
-                array_map('strval', $this->accessManager->getEditUserGroups($category)),
-                ','
-            );
-            $normalizedCategory['own_permission'] = implode(
-                array_map('strval', $this->accessManager->getOwnUserGroups($category)),
-                ','
-            );
-        }
+        $normalizedCategory['view_permission'] = implode(
+            array_map('strval', $this->accessManager->getViewUserGroups($category)),
+            ','
+        );
+        $normalizedCategory['edit_permission'] = implode(
+            array_map('strval', $this->accessManager->getEditUserGroups($category)),
+            ','
+        );
+        $normalizedCategory['own_permission'] = implode(
+            array_map('strval', $this->accessManager->getOwnUserGroups($category)),
+            ','
+        );
 
         return $normalizedCategory;
     }

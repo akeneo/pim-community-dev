@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class LocaleNormalizer implements NormalizerInterface
 {
     /** @var string[] */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['flat'];
 
     /** @var NormalizerInterface */
     protected $localeNormalizer;
@@ -50,16 +50,14 @@ class LocaleNormalizer implements NormalizerInterface
     {
         $normalizedLocale = $this->localeNormalizer->normalize($locale, $format, $context);
 
-        if (true === $context['versioning']) {
-            $normalizedLocale['view_permission'] = implode(
-                array_map('strval', $this->accessManager->getViewUserGroups($locale)),
-                ','
-            );
-            $normalizedLocale['edit_permission'] = implode(
-                array_map('strval', $this->accessManager->getEditUserGroups($locale)),
-                ','
-            );
-        }
+        $normalizedLocale['view_permission'] = implode(
+            array_map('strval', $this->accessManager->getViewUserGroups($locale)),
+            ','
+        );
+        $normalizedLocale['edit_permission'] = implode(
+            array_map('strval', $this->accessManager->getEditUserGroups($locale)),
+            ','
+        );
 
         return $normalizedLocale;
     }
