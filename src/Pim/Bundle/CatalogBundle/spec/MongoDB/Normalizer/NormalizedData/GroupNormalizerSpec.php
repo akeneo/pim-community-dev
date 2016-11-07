@@ -30,11 +30,11 @@ class GroupNormalizerSpec extends ObjectBehavior
         GroupInterface $group
     ) {
         $group->getCode()->willReturn('mongo');
-        $normalizer->normalize($group, 'mongodb_json', [])->willReturn(['label' => 'translations']);
+        $normalizer->normalize($group, 'mongodb_json', [])->willReturn(['en_US' => 'US Label']);
 
         $this->normalize($group, 'mongodb_json', [])->shouldReturn([
-            'code' => 'mongo',
-            'label' => 'translations'
+            'code'   => 'mongo',
+            'labels' => ['en_US' => 'US Label']
         ]);
     }
 }
