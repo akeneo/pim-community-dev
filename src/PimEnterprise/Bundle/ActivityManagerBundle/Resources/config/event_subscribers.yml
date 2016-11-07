@@ -9,5 +9,6 @@ services:
             - '@pim_notification.notifier'
             - '@activity_manager.repository.project'
             - '@activity_manager.repository.user'
+            - '@pim_catalog.localization.presenter.date'
         tags:
             - { name: kernel.event_subscriber }

@@ -17,6 +17,7 @@ use Akeneo\ActivityManager\Component\Event\ProjectEvents;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -39,22 +40,28 @@ class JobExecutionNotifier implements EventSubscriberInterface
     /** @var UserRepositoryInterface */
     private $userRepository;
 
+    /** @var PresenterInterface */
+    private $datePresenter;
+
     /**
      * @param ProjectCreatedNotificationFactory $factory
      * @param NotifierInterface                 $notifier
      * @param ProjectRepositoryInterface        $projectRepository
      * @param UserRepositoryInterface           $userRepository
+     * @param PresenterInterface                $datePresenter
      */
     public function __construct(
         ProjectCreatedNotificationFactory $factory,
         NotifierInterface $notifier,
         ProjectRepositoryInterface $projectRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        PresenterInterface $datePresenter
     ) {
         $this->factory = $factory;
         $this->notifier = $notifier;
         $this->projectRepository = $projectRepository;
         $this->userRepository = $userRepository;
+        $this->datePresenter = $datePresenter;
     }
 
     /**
@@ -92,7 +99,19 @@ class JobExecutionNotifier implements EventSubscriberInterface
 
         $users = $this->userRepository->findByGroupIdsOwnerExcluded($owner->getId(), $userGroupIds);
 
-        $notification = $this->factory->create($filters);
-        $this->notifier->notify($notification, $users);
+        foreach ($users as $user) {
+            $userLocale = $user->getUiLocale();
+            $formattedDate = $this->datePresenter->present(
+                $project->getDueDate(),
+                ['locale' => $userLocale->getCode()]
+            );
+
+            $parameters['due_date'] = $formattedDate;
+            $parameters['project_label'] = $project->getLabel();
+            $parameters['filters'] = $filters;
+
+            $notification = $this->factory->create($parameters);
+            $this->notifier->notify($notification, [$user]);
+        }
     }
 }

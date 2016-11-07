@@ -12,8 +12,10 @@ class ProjectCreatedNotificationFactorySpec extends ObjectBehavior
     }
 
     function it_returns_factory() {
-        $filters = [];
+        $parameters['due_date'] = '2019-12-23';
+        $parameters['project_label'] = 'The prject label';
+        $parameters['filters'] = 'filters';
 
-        $this->create($filters)->shouldReturnAnInstanceOf('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->create($parameters)->shouldReturnAnInstanceOf('Pim\Bundle\NotificationBundle\Entity\Notification');
     }
 }

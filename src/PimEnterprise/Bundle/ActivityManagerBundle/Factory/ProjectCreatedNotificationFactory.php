@@ -11,6 +11,8 @@
 
 namespace Akeneo\ActivityManager\Bundle\Factory;
 
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+
 /**
  * Factory that creates a notification for project calculation from a job instance.
  *
@@ -30,21 +32,25 @@ class ProjectCreatedNotificationFactory
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $parameters
+     *
+     * @return NotificationInterface
      */
-    public function create($filters)
+    public function create($parameters)
     {
         $notification = new $this->notificationClass();
 
         $notification
             ->setType('success')
-            ->setMessage('Project ready baby !!!!!!!!!!!!!!!')
-            ->setMessageParams(['%label%' => ''])
+            ->setMessage('activity_manager.notification.message')
+            ->setMessageParams(
+                ['%project_label%' => $parameters['project_label'], '%due_date%' => $parameters['due_date']]
+            )
             ->setRoute('pim_enrich_product_index')
             ->setContext([
                 'actionType' => 'project_calculation',
                 'buttonLabel' => sprintf('activity_manager.notification.%s.start', 'project_calculation'),
-                'gridParameters' => $filters,
+                'gridParameters' => $parameters['filters'],
             ]);
 
         return $notification;
