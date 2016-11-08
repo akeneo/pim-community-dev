@@ -30,7 +30,7 @@ services:
             - '%pimee_security.entity.attribute_group_access.class%'
 
     activity_manager.repository.job_instance:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\AttributePermissionRepository'
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\JobInstanceRepository'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%akeneo_batch.entity.job_instance.class%'

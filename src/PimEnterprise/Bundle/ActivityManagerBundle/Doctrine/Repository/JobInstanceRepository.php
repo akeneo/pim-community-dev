@@ -23,9 +23,16 @@ class JobInstanceRepository extends EntityRepository implements JobInstanceRepos
     /** @var string */
     private $projectCalculationJobName;
 
+    /**
+     * @param EntityManager $em
+     * @param string        $class
+     * @param string        $projectCalculationJobName
+     */
     public function __construct(EntityManager $em, $class, $projectCalculationJobName)
     {
         parent::__construct($em, $em->getClassMetadata($class));
+
+        $this->projectCalculationJobName = $projectCalculationJobName;
     }
 
     /**
