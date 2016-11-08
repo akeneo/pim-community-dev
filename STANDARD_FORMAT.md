@@ -926,3 +926,17 @@ The standard format is used to:
 * define the data expected in the `Pim\Component\Catalog\Query\ProductQueryBuilderInterface` filters
 * store variant groups values
 * store draft changes (EE)
+
+
+## Next version ?
+
+### Add more information in product format
+
+Currently, we have no information about the product values (attribute_type, etc). 
+If we want information, we have to request the database which is quite consuming. 
+We could add them, but we have to be careful as these data have not to be updated during a POST for instance.
+
+### Attribute format
+
+Currently, all options for an attribute are returned in the standard format. For instance, keys `date_min` & `date_max` are returned for a number attribute which is not relevant.
+Specific options could be return in a key `parameters` for example.
