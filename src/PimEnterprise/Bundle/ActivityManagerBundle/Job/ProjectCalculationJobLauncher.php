@@ -31,8 +31,6 @@ class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInte
     private $jobInstanceRepository;
 
     /**
-     * Launch the job.
-     *
      * @param JobLauncherInterface  $simpleJobLauncher
      * @param JobInstanceRepository $jobInstanceRepository
      */
@@ -43,6 +41,8 @@ class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInte
     }
 
     /**
+     * Launches the job.
+     *
      * @param UserInterface    $user
      * @param ProjectInterface $project
      */

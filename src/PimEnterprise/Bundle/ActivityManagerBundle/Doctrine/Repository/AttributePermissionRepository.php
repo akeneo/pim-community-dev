@@ -20,6 +20,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class AttributePermissionRepository extends EntityRepository implements AttributePermissionRepositoryInterface
 {
+    /**
+     * @param EntityManager $em
+     * @param string        $class
+     */
     public function __construct(EntityManager $em, $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));
@@ -35,7 +39,7 @@ class AttributePermissionRepository extends EntityRepository implements Attribut
         $queryBuilder->select('g')
             ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
             ->leftJoin('a.attributeGroup', 'ag')
-            ->where($queryBuilder->expr()->eq('a.editAttributes',  true))
+            ->where($queryBuilder->expr()->eq('a.editAttributes', true))
             ->andWhere($queryBuilder->expr()->in('ag.code', ':identifiers'))
             ->setParameter('identifiers', $attributeGroupIdentifiers);
 

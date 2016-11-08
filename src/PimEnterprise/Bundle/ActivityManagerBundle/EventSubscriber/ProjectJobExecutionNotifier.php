@@ -83,7 +83,7 @@ class ProjectJobExecutionNotifier implements EventSubscriberInterface
     {
         $project = $event->getProject();
 
-        if (!$project instanceof ProjectInterface) {
+        if (!$project instanceof ProjectInterface || empty($project->getUserGroups())) {
             return;
         }
 

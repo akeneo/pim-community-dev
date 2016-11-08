@@ -22,6 +22,10 @@ use Pim\Component\Catalog\Model\FamilyInterface;
  */
 class FamilyRequirementRepository extends EntityRepository implements FamilyRequirementRepositoryInterface
 {
+    /**
+     * @param EntityManager $em
+     * @param string        $class
+     */
     public function __construct(EntityManager $em, $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));
