@@ -28,6 +28,10 @@ class ProductRepository implements ProductRepositoryInterface
     /** @var CategoryAccessRepository */
     private $categoryAccessRepository;
 
+    /**
+     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+     * @param CategoryAccessRepository            $categoryAccessRepository
+     */
     public function __construct(
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         CategoryAccessRepository $categoryAccessRepository
@@ -42,8 +46,9 @@ class ProductRepository implements ProductRepositoryInterface
     public function findByProject(ProjectInterface $project)
     {
         $productQueryBuilder = $this->productQueryBuilderFactory->create();
+        $productFilers = $project->getProductFilters();
 
-        if (null === $productFilers = $project->getProductFilters()) {
+        if (null === $productFilers) {
             throw new \LogicException(sprintf('The project "%s" does not have product filters', $project->getLabel()));
         }
 
