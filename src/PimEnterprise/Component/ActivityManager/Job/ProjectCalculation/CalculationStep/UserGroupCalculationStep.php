@@ -21,7 +21,8 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessReposito
 use PimEnterprise\Component\Security\Attributes;
 
 /**
- * Find the contributor groups (user groups which have edit on the product) affected by the project.
+ * Find contributor groups (user groups which have edit on the product) affected by the project and
+ * add them to the project.
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
@@ -39,6 +40,12 @@ class UserGroupCalculationStep implements CalculationStepInterface
     /** @var AttributePermissionRepositoryInterface */
     private $attributePermissionRepository;
 
+    /**
+     * @param ObjectDetacherInterface                $objectDetacher
+     * @param CategoryAccessRepository               $categoryAccessRepository
+     * @param FamilyRequirementRepositoryInterface   $familyRequirementRepository
+     * @param AttributePermissionRepositoryInterface $attributePermissionRepository
+     */
     public function __construct(
         ObjectDetacherInterface $objectDetacher,
         CategoryAccessRepository $categoryAccessRepository,
@@ -59,9 +66,8 @@ class UserGroupCalculationStep implements CalculationStepInterface
         $productContributorsGroupNames = $this->findUserGroupNamesForProduct($product);
         $attributeContributorGroups = $this->findUserGroupForAttribute($product, $project);
 
-        $allGroup = in_array('All', $productContributorsGroupNames) ? true : false;
         foreach ($attributeContributorGroups as $attributeUserGroup) {
-            if (in_array($attributeUserGroup->getName(), $productContributorsGroupNames) || $allGroup) {
+            if (in_array($attributeUserGroup->getName(), $productContributorsGroupNames, true)) {
                 $project->addUserGroup($attributeUserGroup);
             }
         }

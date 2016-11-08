@@ -15,11 +15,16 @@ use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
+ * Used to execute an action between Project and Products. For example, extract data from Products to add informations
+ * in the Project. This action is called on the Project creation and before saving it.
+ *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 interface CalculationStepInterface
 {
     /**
+     * Execute the action.
+     *
      * @param ProductInterface $product
      * @param ProjectInterface $project
      */
