@@ -20,4 +20,5 @@ services:
     pimee_catalog_rule.writer.file.yaml_rule_definition:
         class: '%pim_connector.writer.file.yaml.class%'
         arguments:
+            - '@pim_connector.array_converter.dummy'
             - 'rules'
