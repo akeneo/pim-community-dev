@@ -15,7 +15,6 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -48,7 +47,6 @@ class ProjectCalculationJobParameters implements DefaultValuesProviderInterface,
     {
         return new Collection([
             'fields' => [
-                'project_id' => new NotBlank(),
             ],
         ]);
     }
