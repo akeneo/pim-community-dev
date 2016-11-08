@@ -4,8 +4,8 @@ activity_manager:
         label_maxlength: This value is too long. It should have {{ max }} characters or less.
     notification:
         project_calculation:
-            error:   Project calculation <strong>%label%</strong> failed
-            warning: Project calculation <strong>%label%</strong> finished with some warnings
-            success: Project calculation <strong>%label%</strong> finished
+            error:   <strong>%label%</strong> failed
+            warning: <strong>%label%</strong> finished with some warnings
+            success: <strong>%label%</strong> finished
             start:   Start
         message: You have new products to enrich for "%project_label%". Due date is %due_date%.
