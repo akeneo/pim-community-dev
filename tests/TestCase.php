@@ -36,6 +36,9 @@ class TestCase extends KernelTestCase
     /** @var int Count of test inside the same test class */
     protected static $count = 0;
 
+    /** @var string */
+    protected $fixturesDirectory;
+
     /**
      * {@inheritdoc}
      */
@@ -52,6 +55,10 @@ class TestCase extends KernelTestCase
         static::bootKernel();
 
         $this->container = static::$kernel->getContainer();
+
+        $this->fixturesDirectory = $this->getParameter('kernel.root_dir') .
+            DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'tests' .
+            DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR;
 
         self::$count++;
 

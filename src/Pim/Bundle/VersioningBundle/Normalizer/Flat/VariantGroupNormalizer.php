@@ -32,6 +32,9 @@ class VariantGroupNormalizer extends BaseNormalizer
             unset($result['values']);
         }
 
+        $result += $this->normalizeLabels($result['labels']);
+        unset($result['labels']);
+
         return $result;
     }
 
@@ -81,5 +84,21 @@ class VariantGroupNormalizer extends BaseNormalizer
         }
 
         return $flatValues;
+    }
+
+    /**
+     * @param array $labels
+     *
+     * @return array
+     */
+    protected function normalizeLabels(array $labels)
+    {
+        $flatLabels = [];
+
+        foreach ($labels as $code => $label) {
+            $flatLabels['label-' . $code] = $label;
+        }
+
+        return $flatLabels;
     }
 }

@@ -46,10 +46,12 @@ class AttributeGroupIntegration extends TestCase
                 'a_number_integer_negative',
                 'a_simple_select',
                 'a_localizable_image',
+                'a_scopable_image',
+                'a_localizable_scopable_image'
             ],
             'labels'     => [
                 'en_US' => 'Attribute group B',
-                'fr_FR' => null
+                'fr_FR' => 'Groupe d\'attribut B'
             ]
         ];
 
