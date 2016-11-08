@@ -33,7 +33,12 @@ Please execute the following commands in your project folder to update the refer
 
 #### Update references to the standardized `Pim\Component\Catalog\Normalizer\Standard` classes
 
-In order to use the standard format, Structured Normalizers have been replaced by Standard Normalizers. 
+In order to use the standard format, Structured Normalizers have been replaced by Standard Normalizers.
+To call these normalizers via the Symfony Normalizer service, the key `standard` has to be filled. Example:
+
+```
+     $this->normalizer->normalize($entity, 'standard');
+```
 
 Originally, the Normalizer `Pim\Component\Catalog\Normalizer\Structured\GroupNormalizer` was used to normalize both Groups and Variant Groups.
 This normalizer has been split in two distinct normalizers :
@@ -107,3 +112,7 @@ The following command helps to migrate references to Normalizer classes or servi
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.denormalizer\.file/pim_catalog\.denormalizer\.standard\.file/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.denormalizer\.boolean/pim_catalog\.denormalizer\.standard\.boolean/g'
 ```
+
+#### Versioning
+
+Previously, to normalize an entity for versioning, formats allowed were `flat` and `csv`. To avoid confusion, only `flat` format will be allowed.
