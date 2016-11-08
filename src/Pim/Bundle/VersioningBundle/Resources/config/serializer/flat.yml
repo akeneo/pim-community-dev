@@ -108,7 +108,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
             - '@pim_versioning.serializer.normalizer.flat.product_value'
-            - '@pim_serializer.denormalizer.product_values'
+            - '@pim_catalog.denormalizer.standard.product_values'
 
     pim_versioning.serializer.normalizer.flat.job_instance:
         class: '%pim_serializer.normalizer.flat.job_instance.class%'
