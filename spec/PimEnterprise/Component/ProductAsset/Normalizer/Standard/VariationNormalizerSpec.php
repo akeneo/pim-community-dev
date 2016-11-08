@@ -51,8 +51,8 @@ class VariationNormalizerSpec extends ObjectBehavior
         $variationFile->getKey()->willReturn('b/9/f/f/f4210_photo_mobile.jpg');
 
         $this->normalize($variation)->shouldReturn( [
-            'code'           => 'b/9/f/f/f4210_photo_mobile.jpg',
             'asset'          => 'paint',
+            'code'           => 'b/9/f/f/f4210_photo_mobile.jpg',
             'locale'         => 'en_US',
             'channel'        => 'ecommerce',
             'reference_file' => 'e/f/9/0/d15fe8_photo.jpg',
