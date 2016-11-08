@@ -18,6 +18,7 @@
 
 ## BC breaks
 
+- Change the constructor of `Pim\Component\Connector\Writer\File\Yaml\Writer` to add `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`
 - Remove useless class `Pim\Component\ReferenceData\Normalizer\Structured\ReferenceDataNormalizer`
 - Move all classes in `Pim\Component\Catalog\Denormalizer\Structured\` to `Pim\Component\Catalog\Denormalizer\Standard\`
 - Move all classes in `Pim\Component\ReferenceData\Denormalizer\Structured\` to `Pim\Component\ReferenceData\Denormalizer\Standard\`
