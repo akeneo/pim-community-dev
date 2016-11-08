@@ -21,6 +21,8 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
 
 /**
+ * Compute all CalculationStep linked to the project to complete it and save it.
+ *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class ProjectCalculationTasklet implements TaskletInterface
@@ -43,6 +45,13 @@ class ProjectCalculationTasklet implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
+    /**
+     * @param ProductRepositoryInterface            $productRepository
+     * @param IdentifiableObjectRepositoryInterface $projectRepository
+     * @param CalculationStepInterface              $calculationStep
+     * @param SaverInterface                        $projectSaver
+     * @param ObjectDetacherInterface               $objectDetacher
+     */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $projectRepository,
