@@ -325,6 +325,7 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_enrich.twig.category_extension'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.currency:
         class: '%pim_enrich.controller.rest.currency.class%'
@@ -418,6 +419,7 @@ services:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_catalog.comparator.filter.product'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
 
     pim_enrich.controller.rest.product_category:
         class: '%pim_enrich.controller.rest.product_category.class%'
@@ -437,6 +439,8 @@ services:
             - '@pim_comment.builder.comment'
             - '@pim_serializer'
             - '@validator'
+            - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_enrich.resolver.locale'
 
     pim_enrich.controller.rest.variant_group:
         class: '%pim_enrich.controller.rest.variant_group.class%'
@@ -451,6 +455,7 @@ services:
             - '@pim_catalog.validator.product'
             - '@pim_enrich.normalizer.variant_group_violation'
             - '@pim_enrich.filter.variant_group_edit_data'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
 
     pim_enrich.controller.rest.variant_group_attribute:
         scope: request

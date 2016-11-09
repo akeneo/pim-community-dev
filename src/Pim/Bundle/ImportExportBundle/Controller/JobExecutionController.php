@@ -144,7 +144,7 @@ class JobExecutionController
 
             return new JsonResponse(
                 [
-                    'jobExecution' => $this->serializer->normalize($jobExecution, 'json', $context),
+                    'jobExecution' => $this->serializer->normalize($jobExecution, 'standard', $context),
                     'hasLog'       => file_exists($jobExecution->getLogFile()),
                     'archives'     => $archives,
                 ]

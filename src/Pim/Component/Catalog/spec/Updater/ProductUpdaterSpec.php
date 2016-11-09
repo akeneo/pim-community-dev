@@ -51,8 +51,10 @@ class ProductUpdaterSpec extends ObjectBehavior
 
         $updates = [
             'groups' => ['related1', 'related2'],
-            'name' => [['data' => 'newname', 'locale' => null, 'scope' => null]],
-            'desc' => [['data' => 'newdescUS', 'locale' => 'en_US', 'scope' => null]],
+            'values' => [
+                'name' => [['data' => 'newname', 'locale' => null, 'scope' => null]],
+                'desc' => [['data' => 'newdescUS', 'locale' => 'en_US', 'scope' => null]],
+            ]
         ];
 
         $this->update($product, $updates, []);

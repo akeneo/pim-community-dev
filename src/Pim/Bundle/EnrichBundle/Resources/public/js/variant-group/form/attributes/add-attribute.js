@@ -27,7 +27,7 @@ define(
                     function (excludedAttributes) {
                         return _.union(
                             excludedAttributes,
-                            entity.axis
+                            entity.axes
                         );
                     }
                 );

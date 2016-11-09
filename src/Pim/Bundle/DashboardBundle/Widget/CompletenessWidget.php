@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DashboardBundle\Widget;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 
 /**
@@ -20,14 +21,22 @@ class CompletenessWidget implements WidgetInterface
     /** @var LocaleHelper */
     protected $localeHelper;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * @param CompletenessRepositoryInterface $completenessRepo
      * @param LocaleHelper                    $localeHelper
+     * @param UserContext                     $userContext
      */
-    public function __construct(CompletenessRepositoryInterface $completenessRepo, LocaleHelper $localeHelper)
-    {
+    public function __construct(
+        CompletenessRepositoryInterface $completenessRepo,
+        LocaleHelper $localeHelper,
+        UserContext $userContext
+    ) {
         $this->completenessRepo = $completenessRepo;
         $this->localeHelper = $localeHelper;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -59,8 +68,9 @@ class CompletenessWidget implements WidgetInterface
      */
     public function getData()
     {
-        $channels = $this->completenessRepo->getProductsCountPerChannels();
-        $completeProducts = $this->completenessRepo->getCompleteProductsCountPerChannels();
+        $userLocale = $this->userContext->getCurrentLocaleCode();
+        $channels = $this->completenessRepo->getProductsCountPerChannels($userLocale);
+        $completeProducts = $this->completenessRepo->getCompleteProductsCountPerChannels($userLocale);
 
         $data = [];
         foreach ($channels as $channel) {

@@ -24,69 +24,69 @@ class MetricComparatorSpec extends ObjectBehavior
 
     function it_get_changes_when_adding_metric_as_integer()
     {
-        $data = ['data' => ['data' => 100, 'unit' => 'KILOGRAM']];
+        $data = ['data' => ['amount' => 100, 'unit' => 'KILOGRAM']];
         $originals = [];
-        $changes = ['data' => ['data' => 100.00, 'unit' => 'KILOGRAM']];
+        $changes = ['data' => ['amount' => 100, 'unit' => 'KILOGRAM']];
 
         $this->compare($data, $originals)->shouldReturn($changes);
     }
 
     function it_get_changes_when_adding_metric_as_string()
     {
-        $data = ['data' => ['data' => '100', 'unit' => 'KILOGRAM']];
+        $data = ['data' => ['amount' => '100', 'unit' => 'KILOGRAM']];
         $originals = [];
-        $changes = ['data' => ['data' => 100.00, 'unit' => 'KILOGRAM']];
+        $changes = ['data' => ['amount' => '100', 'unit' => 'KILOGRAM']];
 
         $this->compare($data, $originals)->shouldReturn($changes);
     }
 
     function it_get_changes_when_adding_metric_as_float()
     {
-        $data = ['data' => ['data' => 100.00, 'unit' => 'KILOGRAM']];
+        $data = ['data' => ['amount' => 100.00, 'unit' => 'KILOGRAM']];
         $originals = [];
-        $changes = ['data' => ['data' => 100.00, 'unit' => 'KILOGRAM']];
+        $changes = ['data' => ['amount' => 100.00, 'unit' => 'KILOGRAM']];
 
         $this->compare($data, $originals)->shouldReturn($changes);
     }
 
     function it_get_changes_when_changing_metric_unit()
     {
-        $data = ['data' => ['data' => 100, 'unit' => 'KILOGRAM']];
-        $changes = ['data' => ['data' => 100.00, 'unit' => 'KILOGRAM']];
-        $originals = ['data' => ['data' => 100, 'unit' => 'GRAM']];
+        $data = ['data' => ['amount' => 100, 'unit' => 'KILOGRAM']];
+        $changes = ['data' => ['amount' => 100, 'unit' => 'KILOGRAM']];
+        $originals = ['data' => ['amount' => 100, 'unit' => 'GRAM']];
 
         $this->compare($data, $originals)->shouldReturn($changes);
     }
 
     function it_get_changes_when_changing_metric_data()
     {
-        $data = ['data' => ['data' => 100, 'unit' => 'KILOGRAM']];
-        $changes = ['data' => ['data' => 100.00, 'unit' => 'KILOGRAM']];
-        $originals = ['data' => ['data' => 1, 'unit' => 'KILOGRAM']];
+        $data = ['data' => ['amount' => 100, 'unit' => 'KILOGRAM']];
+        $changes = ['data' => ['amount' => 100, 'unit' => 'KILOGRAM']];
+        $originals = ['data' => ['amount' => 1, 'unit' => 'KILOGRAM']];
 
         $this->compare($data, $originals)->shouldReturn($changes);
     }
 
     function it_returns_null_when_data_and_unit_are_the_same_with_string()
     {
-        $data = ['data' => ['data' => '100', 'unit' => 'KILOGRAM']];
-        $originals = ['data' => ['data' => 100, 'unit' => 'KILOGRAM']];
+        $data = ['data' => ['amount' => '100', 'unit' => 'KILOGRAM']];
+        $originals = ['data' => ['amount' => 100, 'unit' => 'KILOGRAM']];
 
         $this->compare($data, $originals)->shouldReturn(null);
     }
 
     function it_returns_null_when_data_and_unit_are_the_same_with_integer()
     {
-        $data = ['data' => ['data' => 100, 'unit' => 'KILOGRAM']];
-        $originals = ['data' => ['data' => 100, 'unit' => 'KILOGRAM']];
+        $data = ['data' => ['amount' => 100, 'unit' => 'KILOGRAM']];
+        $originals = ['data' => ['amount' => 100, 'unit' => 'KILOGRAM']];
 
         $this->compare($data, $originals)->shouldReturn(null);
     }
 
     function it_returns_null_when_data_and_unit_are_the_same_with_float()
     {
-        $data = ['data' => ['data' => 100.00, 'unit' => 'KILOGRAM']];
-        $originals = ['data' => ['data' => 100, 'unit' => 'KILOGRAM']];
+        $data = ['data' => ['amount' => 100.00, 'unit' => 'KILOGRAM']];
+        $originals = ['data' => ['amount' => 100, 'unit' => 'KILOGRAM']];
 
         $this->compare($data, $originals)->shouldReturn(null);
     }

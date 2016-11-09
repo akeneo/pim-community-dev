@@ -136,16 +136,11 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /**
      * @param array $item
      *
-     * @return string
+     * @return string|null
      */
     protected function getIdentifier(array $item)
     {
-        $identifierProperty = $this->repository->getIdentifierProperties()[0];
-        if (!isset($item[$identifierProperty])) {
-            throw new \RuntimeException(sprintf('Identifier property "%s" is expected', $identifierProperty));
-        }
-
-        return $item[$identifierProperty][0]['data'];
+        return isset($item['identifier']) ? $item['identifier'] : null;
     }
 
     /**
@@ -169,8 +164,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     protected function filterItemData(array $item)
     {
         foreach ($this->repository->getIdentifierProperties() as $identifierProperty) {
-            unset($item[$identifierProperty]);
+            unset($item['values'][$identifierProperty]);
         }
+        unset($item['identifier']);
         unset($item['associations']);
 
         return $item;

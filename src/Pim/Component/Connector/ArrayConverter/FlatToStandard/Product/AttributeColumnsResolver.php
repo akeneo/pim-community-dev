@@ -52,8 +52,7 @@ class AttributeColumnsResolver
     public function resolveIdentifierField()
     {
         if (empty($this->identifierField)) {
-            $attribute = $this->attributeRepository->getIdentifier();
-            $this->identifierField = $attribute->getCode();
+            $this->identifierField = $this->attributeRepository->getIdentifierCode();
         }
 
         return $this->identifierField;

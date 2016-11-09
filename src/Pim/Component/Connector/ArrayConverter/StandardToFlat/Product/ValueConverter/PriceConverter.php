@@ -24,11 +24,11 @@ class PriceConverter extends AbstractValueConverter implements ValueConverterInt
      *         'scope'  => 'ecommerce',
      *         'data'   => [
      *             [
-     *                 'data'     => '10',
+     *                 'amount'   => '10',
      *                 'currency' => 'EUR'
      *             ],
      *             [
-     *                 'data'     => '9',
+     *                 'amount'   => '9',
      *                 'currency' => 'USD'
      *             ],
      *         ]
@@ -38,11 +38,11 @@ class PriceConverter extends AbstractValueConverter implements ValueConverterInt
      *         'scope'  => 'ecommerce',
      *         'data'   => [
      *             [
-     *                 'data'     => '30',
+     *                 'amount'   => '30',
      *                 'currency' => 'EUR'
      *             ],
      *             [
-     *                 'data'     => '29',
+     *                 'amount'   => '29',
      *                 'currency' => 'USD'
      *             ],
      *         ]
@@ -70,7 +70,7 @@ class PriceConverter extends AbstractValueConverter implements ValueConverterInt
 
             foreach ($value['data'] as $currency) {
                 $flatCurrencyName = sprintf('%s-%s', $flatName, $currency['currency']);
-                $convertedItem[$flatCurrencyName] = (string) $currency['data'];
+                $convertedItem[$flatCurrencyName] = (string) $currency['amount'];
             }
         }
 

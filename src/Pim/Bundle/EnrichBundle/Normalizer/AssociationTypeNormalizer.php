@@ -33,7 +33,7 @@ class AssociationTypeNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $result = $this->normalizer->normalize($object, 'json', $context);
+        $result = $this->normalizer->normalize($object, 'standard', $context);
         $result['id'] = $object->getId();
 
         return $result;

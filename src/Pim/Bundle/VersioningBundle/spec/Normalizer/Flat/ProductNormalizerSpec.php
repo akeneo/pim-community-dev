@@ -33,19 +33,14 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_csv_normalization_of_product(ProductInterface $product)
-    {
-        $this->supportsNormalization($product, 'csv')->shouldBe(true);
-    }
-
     function it_supports_flat_normalization_of_product(ProductInterface $product)
     {
         $this->supportsNormalization($product, 'flat')->shouldBe(true);
     }
 
-    function it_does_not_support_csv_normalization_of_integer()
+    function it_does_not_support_flat_normalization_of_integer()
     {
-        $this->supportsNormalization(1, 'csv')->shouldBe(false);
+        $this->supportsNormalization(1, 'flat')->shouldBe(false);
     }
 
     function it_normalizes_product(

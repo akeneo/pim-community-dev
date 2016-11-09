@@ -135,3 +135,13 @@ Feature: Datagrid views
     And I should see the flash message "Datagrid view successfully removed"
     And I should see the text "Default view"
     But I should not see the text "Sneakers only"
+
+  Scenario: Successfully change grid channel
+    Given I should see the text "Tablet"
+    And I filter by "scope" with operator "" and value "Mobile"
+    And I create the view:
+      | new-view-label | Mobile only |
+    Then I should be on the products page
+    And I should see the flash message "Datagrid view successfully created"
+    And I should see the text "Mobile only"
+    And I should see the text "Mobile"

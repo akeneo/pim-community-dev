@@ -19,15 +19,15 @@ class FamilySpec extends ObjectBehavior
         ];
 
         $item = [
-            'code'               => 'pc_monitors',
-            'attributes'         => [
+            'code'                   => 'pc_monitors',
+            'attributes'             => [
                 'sku',
                 'name',
                 'description',
                 'price'
             ],
-            'attribute_as_label' => 'name',
-            'requirements'       => [
+            'attribute_as_label'     => 'name',
+            'attribute_requirements' => [
                 'mobile' => [
                     'sku',
                     'name'
@@ -38,7 +38,7 @@ class FamilySpec extends ObjectBehavior
                     'description'
                 ],
             ],
-            'labels'             => [
+            'labels'                 => [
                 'fr_FR' => 'Moniteurs',
                 'en_US' => 'PC Monitors',
             ],

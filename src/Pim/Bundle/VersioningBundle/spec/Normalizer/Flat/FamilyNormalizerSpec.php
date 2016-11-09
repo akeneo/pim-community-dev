@@ -3,23 +3,18 @@
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
+use Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer;
 use Prophecy\Argument;
 
 class FamilyNormalizerSpec extends ObjectBehavior
 {
     function let(
-        TranslationNormalizer $normalizer,
-        CollectionFilterInterface $filter,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeRequirementRepositoryInterface $requirementsRepository
+        FamilyNormalizer $familyNormalizerStandard,
+        TranslationNormalizer $translationNormalizer
     ) {
-        $this->beConstructedWith($normalizer, $filter, $attributeRepository, $requirementsRepository);
+        $this->beConstructedWith($familyNormalizerStandard, $translationNormalizer);
     }
 
     function it_is_initializable()
@@ -32,40 +27,37 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_family_normalization_into_csv(FamilyInterface $family)
+    function it_supports_family_normalization_into_flat(FamilyInterface $family)
     {
-        $this->supportsNormalization($family, 'csv')->shouldBe(true);
+        $this->supportsNormalization($family, 'flat')->shouldBe(true);
+        $this->supportsNormalization($family, 'csv')->shouldBe(false);
         $this->supportsNormalization($family, 'json')->shouldBe(false);
         $this->supportsNormalization($family, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_family(
-        $normalizer,
-        $attributeRepository,
-        $requirementsRepository,
-        $filter,
-        FamilyInterface $family,
-        AttributeInterface $name,
-        AttributeInterface $description,
-        AttributeInterface $price
+    function it_normalizes_families(
+        FamilyNormalizer $familyNormalizerStandard,
+        TranslationNormalizer $translationNormalizer,
+        FamilyInterface $family
     ) {
-        $attributeRepository->findAttributesByFamily($family)->willReturn([$name, $description, $price]);
-        $requirementsRepository->findRequiredAttributesCodesByFamily($family)->willReturn([
-            ['attribute' => 'name', 'channel' => 'mobile'],
-            ['attribute' => 'price', 'channel' => 'ecommerce'],
-            ['attribute' => 'name', 'channel' => 'ecommerce'],
-        ]);
+        $translationNormalizer->supportsNormalization(Argument::cetera())->willReturn(true);
+        $translationNormalizer->normalize(Argument::cetera())->willReturn([]);
 
-        $filter->filterCollection([$name, $description, $price], 'pim.internal_api.attribute.view')
-            ->willReturn([$price, $name]);
+        $familyNormalizerStandard->supportsNormalization($family, 'standard')->willReturn(true);
+        $familyNormalizerStandard->normalize($family, 'standard', [])->willReturn(
+            [
+                'code'                   => 'mugs',
+                'attributes'             => ['name', 'price'],
+                'attribute_as_label'     => 'name',
+                'attribute_requirements' => [
+                    'ecommerce' => ['name', 'price'],
+                    'mobile'    => ['name'],
+                ],
+                'labels'                 => [],
+            ]
+        );
 
-        $normalizer->normalize(Argument::cetera())->willReturn([]);
-        $family->getCode()->willReturn('mugs');
-        $family->getAttributeAsLabel()->willReturn($name);
-        $name->getCode()->willReturn('name');
-        $price->getCode()->willReturn('price');
-
-        $this->normalize($family)->shouldReturn(
+        $this->normalize($family, 'flat', [])->shouldReturn(
             [
                 'code'                   => 'mugs',
                 'attributes'             => 'name,price',

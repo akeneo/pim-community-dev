@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,14 +23,16 @@ class GroupNormalizerSpec extends ObjectBehavior
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        AttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $converter
     ) {
         $this->beConstructedWith(
             $normalizer,
             $structureVersionProvider,
             $versionManager,
             $versionNormalizer,
-            $localizedConverter
+            $localizedConverter,
+            $converter
         );
     }
 
@@ -44,6 +47,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $versionManager,
         $versionNormalizer,
         $localizedConverter,
+        $converter,
         GroupInterface $tshirt,
         GroupTypeInterface $groupType,
         Version $oldestLog,
@@ -65,23 +69,24 @@ class GroupNormalizerSpec extends ObjectBehavior
             'axis' => ['color', 'size'],
             'type' => 'variant',
             'values' => [
-                'number' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
-                'metric' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
-                'prices' => ['data' => 12.5, 'locale' => null, 'scope' => null],
+                'number' => ['amount' => 12.5000, 'locale' => null, 'scope' => null],
+                'metric' => ['amount' => 12.5000, 'locale' => null, 'scope' => null],
+                'prices' => ['amount' => 12.5, 'locale' => null, 'scope' => null],
                 'date'   => ['data' => '2015-01-31', 'locale' => null, 'scope' => null],
             ]
         ];
 
         $valuesLocalized = [
-            'number' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
-            'metric' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
-            'prices' => ['data' => '12,50', 'locale' => null, 'scope' => null],
+            'number' => ['amount' => '12,5000', 'locale' => null, 'scope' => null],
+            'metric' => ['amount' => '12,5000', 'locale' => null, 'scope' => null],
+            'prices' => ['amount' => '12,50', 'locale' => null, 'scope' => null],
             'date'   => ['data' => '31/01/2015', 'locale' => null, 'scope' => null],
         ];
 
-        $normalizer->normalize($tshirt, 'json', $options)->willReturn($variantNormalized);
+        $normalizer->normalize($tshirt, 'standard', $options)->willReturn($variantNormalized);
         $localizedConverter->convertToLocalizedFormats($variantNormalized['values'], $options)
             ->willReturn($valuesLocalized);
+        $converter->convert($valuesLocalized)->willReturn($valuesLocalized);
 
         $structureVersionProvider->getStructureVersion()->willReturn(1);
         $versionManager->getOldestLogEntry($tshirt)->willReturn($oldestLog);

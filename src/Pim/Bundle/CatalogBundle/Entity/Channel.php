@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -23,9 +24,6 @@ class Channel implements ChannelInterface
     /** @var string $code */
     protected $code;
 
-    /** @var string $label */
-    protected $label;
-
     /** @var CategoryInterface $category */
     protected $category;
 
@@ -35,16 +33,25 @@ class Channel implements ChannelInterface
     /** @var ArrayCollection $locales */
     protected $locales;
 
+    /**
+     * Used locale to override Translation listener's locale
+     * this is not a mapped field of entity metadata, just a simple property
+     *
+     * @var string
+     */
+    protected $locale;
+
+    /** @var ChannelTranslation[] */
+    protected $translations;
+
     /** @var array $conversionUnits */
     protected $conversionUnits = [];
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->currencies = new ArrayCollection();
         $this->locales = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -90,9 +97,83 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslation($locale = null)
+    {
+        $locale = $locale ? $locale : $this->locale;
+        if (null === $locale) {
+            return null;
+        }
+        foreach ($this->getTranslations() as $translation) {
+            if ($translation->getLocale() == $locale) {
+                return $translation;
+            }
+        }
+
+        $translationClass = $this->getTranslationFQCN();
+        $translation = new $translationClass();
+        $translation->setLocale($locale);
+        $translation->setForeignKey($this);
+        $this->addTranslation($translation);
+
+        return $translation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addTranslation(TranslationInterface $translation)
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeTranslation(TranslationInterface $translation)
+    {
+        $this->translations->removeElement($translation);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslationFQCN()
+    {
+        return 'Pim\Bundle\CatalogBundle\Entity\ChannelTranslation';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLabel()
     {
-        return $this->label;
+        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
+
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
 
     /**
@@ -100,7 +181,7 @@ class Channel implements ChannelInterface
      */
     public function setLabel($label)
     {
-        $this->label = $label;
+        $this->getTranslation()->setLabel($label);
 
         return $this;
     }
@@ -268,7 +349,7 @@ class Channel implements ChannelInterface
      */
     public function __toString()
     {
-        return $this->label;
+        return $this->getLabel();
     }
 
     /**

@@ -94,6 +94,7 @@ define(
                         type: this.model.get('type'),
                         createdAt: this.model.get('createdAt'),
                         actionType: this.camelize(this.model.get('actionType')),
+                        buttonLabel: this.model.get('buttonLabel'),
                         actionTypeMessage: this.model.get('actionTypeMessage'),
                         showReportButton: this.model.get('showReportButton'),
                         comment: this.model.get('comment')

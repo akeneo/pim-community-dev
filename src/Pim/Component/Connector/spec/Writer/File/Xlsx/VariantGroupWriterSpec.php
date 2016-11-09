@@ -87,9 +87,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data' => [
-                            'filePath' => 'a/b/c/d/it_s_the_filename.jpg',
-                        ]
+                        'data' => 'a/b/c/d/it_s_the_filename.jpg'
                     ]
                 ]
             ]
@@ -116,9 +114,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => [
-                            'filePath' => 'wrong/path'
-                        ]
+                        'data'   => 'wrong/path'
                     ]
                 ]
             ]
@@ -159,7 +155,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
             'identifier' => 'sweaters', 'code' => 'media'
         ])->willReturn('files/sweaters/media/');
 
-        $variantStandard1['values']['media'][0]['data']['filePath'] = 'files/jackets/media/' . $originalFilename;
+        $variantStandard1['values']['media'][0]['data'] = 'files/jackets/media/' . $originalFilename;
         $arrayConverter->convert($variantStandard1, [])->willReturn($variantFlat1);
         $arrayConverter->convert($variantStandard2, [])->willReturn($variantFlat2);
 
@@ -210,9 +206,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data' => [
-                            'filePath' => 'a/b/c/d/it_s_the_filename.jpg',
-                        ]
+                        'data' => 'a/b/c/d/it_s_the_filename.jpg'
                     ]
                 ]
             ]

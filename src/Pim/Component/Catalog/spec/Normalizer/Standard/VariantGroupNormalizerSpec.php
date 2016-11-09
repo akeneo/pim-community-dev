@@ -2,18 +2,25 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VariantGroupNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslationNormalizer $translationNormalizer)
+    function let(
+        TranslationNormalizer $translationNormalizer,
+        NormalizerInterface $valuesNormalizer,
+        DenormalizerInterface $valuesDenormalizer
+    )
     {
-        $this->beConstructedWith($translationNormalizer);
+        $this->beConstructedWith($translationNormalizer, $valuesNormalizer, $valuesDenormalizer);
     }
 
     function it_is_initializable()
@@ -43,11 +50,14 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_variant_group(
         $translationNormalizer,
+        $valuesNormalizer,
+        $valuesDenormalizer,
         GroupInterface $variantGroup,
         GroupTypeInterface $variantGroupType,
         ProductTemplateInterface $productTemplate,
         AttributeInterface $color,
-        AttributeInterface $size
+        AttributeInterface $size,
+        Collection $variantGroupValues
     ) {
         $translationNormalizer->normalize($variantGroup, 'standard', [])->willReturn([]);
 
@@ -60,6 +70,8 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
         $size->getCode()->willReturn('XL');
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
+
+
         $values = [
             [
                 'name' => [
@@ -69,7 +81,12 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
                 ]
             ]
         ];
+
         $productTemplate->getValuesData()->willReturn($values);
+
+        $valuesDenormalizer->denormalize($values, 'standard', [])->willReturn($variantGroupValues);
+
+        $valuesNormalizer->normalize($variantGroupValues, 'standard', [])->willReturn($values);
 
         $this->normalize($variantGroup)->shouldReturn([
             'code'   => 'my_code',

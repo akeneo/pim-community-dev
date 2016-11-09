@@ -30,10 +30,24 @@ class PriceProperty extends FieldProperty
 
     /**
      * {@inheritdoc}
+     *
+     * Presenter works with the standard format which is for a price:
+     *   {
+     *     "amount": "",
+     *     "currency": ""
+     *   }
+     *
+     * Problem is, $value is built by a query (in ProductHydrator) and does not return the standard format.
+     * This is why we create a key "amount" to present correctly the data.
      */
     protected function convertValue($value)
     {
         $data = $this->getBackendData($value);
+
+        foreach ($data as $index => $price) {
+            $data[$index]['amount'] = $price['data'];
+            unset($price['data']);
+        }
 
         return $this->presenter->present($data, ['locale' => $this->translator->getLocale()]);
     }

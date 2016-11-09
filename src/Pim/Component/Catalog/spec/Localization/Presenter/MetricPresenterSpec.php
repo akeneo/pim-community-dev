@@ -30,7 +30,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
         $translatorProxy->trans('KILOGRAM', Argument::type('array'))->willReturn('Kilogram');
         $this
-            ->present(['data' => 12000.34, 'unit' => 'KILOGRAM'])
+            ->present(['amount' => 12000.34, 'unit' => 'KILOGRAM'])
             ->shouldReturn('12,000.34 Kilogram');
     }
 
@@ -44,7 +44,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
         $translatorProxy->trans('KILOGRAM', Argument::type('array'))->willReturn('Kilogram');
         $this
-            ->present(['data' => 12000.34, 'unit' => 'KILOGRAM'], ['locale' => 'fr_FR'])
+            ->present(['amount' => 12000.34, 'unit' => 'KILOGRAM'], ['locale' => 'fr_FR'])
             ->shouldReturn('12 000,34 Kilogram');
     }
 
@@ -59,7 +59,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
         $translatorProxy->trans('KILOGRAM', Argument::type('array'))->willReturn('Kilogram');
         $this
-            ->present(['data' => 12000.34, 'unit' => 'KILOGRAM'], ['disable_grouping_separator' => true])
+            ->present(['amount' => 12000.34, 'unit' => 'KILOGRAM'], ['disable_grouping_separator' => true])
             ->shouldReturn('12000.34 Kilogram');
     }
 }

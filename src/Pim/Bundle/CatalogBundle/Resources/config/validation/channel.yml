@@ -12,11 +12,13 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                 message: Channel code may contain only letters, numbers and underscores
             - Length:
                 max: 100
-        label:
-            - NotBlank: ~
-            - Length:
-                max: 100
         currencies:
             - Count: { min: 1 }
         locales:
             - Count: { min: 1 }
+
+Pim\Bundle\CatalogBundle\Entity\ChannelTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100

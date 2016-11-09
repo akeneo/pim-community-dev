@@ -2,6 +2,7 @@ parameters:
     pim_connector.array_converter.flat_to_standard.attribute_option.class:                        Pim\Component\Connector\ArrayConverter\FlatToStandard\AttributeOption
     pim_connector.array_converter.flat_to_standard.attribute.class:                               Pim\Component\Connector\ArrayConverter\FlatToStandard\Attribute
     pim_connector.array_converter.flat_to_standard.product.class:                                 Pim\Component\Connector\ArrayConverter\FlatToStandard\Product
+    pim_connector.array_converter.flat_to_standard.product_value.class:                           Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductValue
     pim_connector.array_converter.flat_to_standard.product_delocalized.class:                     Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductDelocalized
     pim_connector.array_converter.flat_to_standard.product_association.class:                     Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductAssociation
     pim_connector.array_converter.flat_to_standard.variant_group.class:                           Pim\Component\Connector\ArrayConverter\FlatToStandard\VariantGroup
@@ -14,6 +15,7 @@ parameters:
     pim_connector.array_converter.flat_to_standard.group_type.class:                              Pim\Component\Connector\ArrayConverter\FlatToStandard\GroupType
     pim_connector.array_converter.flat_to_standard.currency.class:                                Pim\Component\Connector\ArrayConverter\FlatToStandard\Currency
     pim_connector.array_converter.flat_to_standard.user.class:                                    Pim\Component\Connector\ArrayConverter\FlatToStandard\User
+    pim_connector.array_converter.flat_to_standard.locale.class:                                  Pim\Component\Connector\ArrayConverter\FlatToStandard\Locale
 
     pim_connector.array_converter.standard_to_flat.association_type.class:                        Pim\Component\Connector\ArrayConverter\StandardToFlat\AssociationType
     pim_connector.array_converter.standard_to_flat.attribute.class:                               Pim\Component\Connector\ArrayConverter\StandardToFlat\Attribute
@@ -41,7 +43,9 @@ parameters:
     pim_connector.array_converter.flat_to_standard.product.value_converter.simpleselect.class:    Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\SimpleSelectConverter
     pim_connector.array_converter.flat_to_standard.product.value_converter.media.class:           Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\MediaConverter
     pim_connector.array_converter.flat_to_standard.product.value_converter.text.class:            Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\TextConverter
-    pim_connector.array_converter.flat_to_standard.product.value_converter.scalar.class:          Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ScalarConverter
+    pim_connector.array_converter.flat_to_standard.product.value_converter.boolean.class:         Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\BooleanConverter
+    pim_connector.array_converter.flat_to_standard.product.value_converter.number.class:          Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\NumberConverter
+    pim_connector.array_converter.flat_to_standard.product.value_converter.date.class:            Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\DateConverter
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.registry.class:        Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry
     pim_connector.array_converter.standard_to_flat.product.value_converter.price.class:           Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\PriceConverter
@@ -51,7 +55,6 @@ parameters:
     pim_connector.array_converter.standard_to_flat.product.value_converter.media.class:           Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MediaConverter
     pim_connector.array_converter.standard_to_flat.product.value_converter.text.class:            Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\TextConverter
     pim_connector.array_converter.standard_to_flat.product.value_converter.boolean.class:         Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\BooleanConverter
-    pim_connector.array_converter.standard_to_flat.product.value_converter.number.class:          Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\NumberConverter
     pim_connector.array_converter.standard_to_flat.product.value_converter.date.class:            Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\DateConverter
 
     pim_connector.array_converter.flat_to_standard.product.field_converter.class:                 Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter
@@ -111,11 +114,9 @@ services:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat_to_standard.locale:
-        class: '%pim_connector.array_converter.dummy.class%'
+        class: '%pim_connector.array_converter.flat_to_standard.locale.class%'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
-            - ['code']
-            - ['code']
 
     pim_connector.array_converter.flat_to_standard.attribute_group:
         class: '%pim_connector.array_converter.flat_to_standard.attribute_group.class%'
@@ -137,7 +138,7 @@ services:
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
-    pim_connector.array_converter.structured.job_instance:
+    pim_connector.array_converter.standard.job_instance:
         class: '%pim_connector.array_converter.dummy.class%'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
@@ -147,14 +148,21 @@ services:
     pim_connector.array_converter.flat_to_standard.product:
         class: '%pim_connector.array_converter.flat_to_standard.product.class%'
         arguments:
-            - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
-            - '@pim_connector.array_converter.flat_to_standard.product.value_converter.registry'
             - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - '@pim_connector.array_converter.flat_to_standard.product.field_converter'
             - '@pim_connector.array_converter.flat_to_standard.product.columns_merger'
             - '@pim_connector.array_converter.flat_to_standard.product.columns_mapper'
             - '@pim_connector.array_convertor.checker.fields_requirement'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.array_converter.flat_to_standard.product_value'
+
+    pim_connector.array_converter.flat_to_standard.product_value:
+        class: '%pim_connector.array_converter.flat_to_standard.product_value.class%'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+            - '@pim_connector.array_converter.flat_to_standard.product.value_converter.registry'
+            - '@pim_connector.array_converter.flat_to_standard.product.columns_merger'
 
     pim_connector.array_converter.flat_to_standard.product_delocalized:
         class: '%pim_connector.array_converter.flat_to_standard.product_delocalized.class%'
@@ -166,14 +174,13 @@ services:
         class: '%pim_connector.array_converter.flat_to_standard.product_association.class%'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product'
-            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
 
     pim_connector.array_converter.flat_to_standard.variant_group:
         class: '%pim_connector.array_converter.flat_to_standard.variant_group.class%'
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.attribute'
-            - '@pim_connector.array_converter.flat_to_standard.product'
+            - '@pim_connector.array_converter.flat_to_standard.product_value'
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat_to_standard.group:
@@ -375,13 +382,21 @@ services:
         tags:
             - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
 
-    pim_connector.array_converter.flat_to_standard.product.value_converter.scalar:
-        class: '%pim_connector.array_converter.flat_to_standard.product.value_converter.scalar.class%'
+    pim_connector.array_converter.flat_to_standard.product.value_converter.boolean:
+        class: '%pim_connector.array_converter.flat_to_standard.product.value_converter.boolean.class%'
         parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
         arguments:
-            - ['pim_catalog_date', 'pim_catalog_boolean', 'pim_catalog_number']
+            - ['pim_catalog_boolean']
         tags:
-            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter', priority: 150 }
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.boolean:
+        class: '%pim_connector.array_converter.standard_to_flat.product.value_converter.boolean.class%'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
 
     pim_connector.array_converter.flat_to_standard.product.value_converter.media:
         class: '%pim_connector.array_converter.flat_to_standard.product.value_converter.media.class%'
@@ -399,13 +414,21 @@ services:
         tags:
             - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
 
-    pim_connector.array_converter.standard_to_flat.product.value_converter.boolean:
-        class: %pim_connector.array_converter.standard_to_flat.product.value_converter.boolean.class%
+    pim_connector.array_converter.flat_to_standard.product.value_converter.number:
+        class: '%pim_connector.array_converter.flat_to_standard.product.value_converter.number.class%'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
         arguments:
-            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
-            - ['pim_catalog_boolean']
+            - ['pim_catalog_number']
         tags:
-            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.date:
+        class: '%pim_connector.array_converter.flat_to_standard.product.value_converter.date.class%'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_date']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.date:
         class: %pim_connector.array_converter.standard_to_flat.product.value_converter.date.class%

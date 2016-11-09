@@ -9,24 +9,28 @@ class ChannelSpec extends ObjectBehavior
     function it_converts_from_standard_to_flat_format()
     {
         $expected = [
-            'code'       => 'tavern',
-            'label'      => 'Tavern',
-            'locales'    => '',
-            'currencies' => 'GLD,PST',
-            'tree'       => 'master_catalog',
-            'color'      => 'orange'
+            'code'        => 'tavern',
+            'label-en_US' => 'Tavern',
+            'label-fr_FR' => 'Taverne',
+            'locales'     => '',
+            'currencies'  => 'GLD,PST',
+            'tree'        => 'master_catalog',
+            'color'       => 'orange'
         ];
 
         $item = [
             'code'       => 'tavern',
-            'label'      => 'Tavern',
+            'labels'     => [
+                'en_US'  => 'Tavern',
+                'fr_FR'  => 'Taverne',
+            ],
             'locales'    => [],
             'currencies' => [
                 'GLD',
                 'PST'
             ],
-            'category'   => ['code' => 'master_catalog'],
-            'color'      => 'orange'
+            'category_tree'   => 'master_catalog',
+            'color'           => 'orange'
         ];
 
         $this->convert($item)->shouldReturn($expected);

@@ -60,5 +60,4 @@ Feature: Validate editing common boolean attributes of multiple products
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute Available of "boots" should be "false"
     And attribute Available of "sneakers" should be "false"
-    And the product "sandals" should not have the following values:
-      | Available |
+    And attribute Available of "sandals" should be "false"

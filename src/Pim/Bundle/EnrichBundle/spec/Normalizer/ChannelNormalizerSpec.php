@@ -35,12 +35,12 @@ class ChannelNormalizerSpec extends ObjectBehavior
         $channel->getLocales()->willReturn([$locale1, $locale2]);
         $collectionFilter->filterCollection([$locale1, $locale2], 'pim.internal_api.locale.view')
             ->willReturn([$locale1]);
-        $localeNormalizer->normalize($locale1, 'json')->willReturn([
+        $localeNormalizer->normalize($locale1, 'standard')->willReturn([
             'code' => 'fr_FR',
             'label' => 'French'
         ]);
 
-        $channelNormalizer->normalize($channel, 'json', [])->willReturn([
+        $channelNormalizer->normalize($channel, 'standard', [])->willReturn([
             'keyFromNormalizer' => 'dataFromNormalizer'
         ]);
 

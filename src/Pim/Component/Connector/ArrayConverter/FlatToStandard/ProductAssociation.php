@@ -3,7 +3,6 @@
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 
 /**
  * Product association converter
@@ -14,22 +13,15 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColum
  */
 class ProductAssociation implements ArrayConverterInterface
 {
-    /** @var Product */
+    /** @var ArrayConverterInterface */
     protected $productConverter;
 
-    /** @var AttributeColumnsResolver */
-    protected $attrColumnsResolver;
-
     /**
-     * @param Product                  $productConverter
-     * @param AttributeColumnsResolver $attrColumnsResolver
+     * @param ArrayConverterInterface $productConverter
      */
-    public function __construct(
-        Product $productConverter,
-        AttributeColumnsResolver $attrColumnsResolver
-    ) {
+    public function __construct(ArrayConverterInterface $productConverter)
+    {
         $this->productConverter = $productConverter;
-        $this->attrColumnsResolver = $attrColumnsResolver;
     }
 
     /**
@@ -53,11 +45,7 @@ class ProductAssociation implements ArrayConverterInterface
      *
      * After:
      * {
-     *      "sku": [{
-     *          "locale": null,
-     *          "scope":  null,
-     *          "data":  "MySku",
-     *      }],
+     *      "identifier": "MySku",
      *      "associations": {
      *          "XSELL": {
      *              "groups": ["akeneo_tshirt", "oro_tshirt"],
@@ -83,7 +71,7 @@ class ProductAssociation implements ArrayConverterInterface
      */
     protected function filter(array $item)
     {
-        $expectedFields = [$this->attrColumnsResolver->resolveIdentifierField(), 'associations'];
+        $expectedFields = ['identifier', 'associations'];
         foreach (array_keys($item) as $fieldName) {
             if (!in_array($fieldName, $expectedFields)) {
                 unset($item[$fieldName]);

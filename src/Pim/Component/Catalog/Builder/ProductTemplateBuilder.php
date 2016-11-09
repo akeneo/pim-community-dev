@@ -73,7 +73,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
         ];
 
         $values = $this->buildProductValuesFromTemplateValuesData($template, $attributes, $locale);
-        $valuesData = $this->normalizer->normalize($values, 'json', $options);
+        $valuesData = $this->normalizer->normalize($values, 'standard', $options);
         $template->setValuesData($valuesData);
     }
 
@@ -107,7 +107,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
             'locale'                     => $locale,
             'disable_grouping_separator' => true
         ];
-        $values = $this->denormalizer->denormalize($template->getValuesData(), 'ProductValue[]', 'json', $options);
+        $values = $this->denormalizer->denormalize($template->getValuesData(), 'ProductValue[]', 'standard', $options);
         $product = new $this->productClass();
 
         foreach ($values as $value) {

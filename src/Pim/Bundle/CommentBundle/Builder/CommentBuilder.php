@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CommentBundle\Builder;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
@@ -53,6 +54,7 @@ class CommentBuilder
         $comment->setAuthor($user);
         $comment->setCreatedAt($now);
         $comment->setRepliedAt($now);
+        $comment->setChildren(new ArrayCollection());
 
         return $comment;
     }
@@ -71,6 +73,7 @@ class CommentBuilder
         $comment->setAuthor($user);
         $comment->setCreatedAt($now);
         $comment->setRepliedAt($now);
+        $comment->setChildren(new ArrayCollection());
 
         return $comment;
     }

@@ -62,33 +62,84 @@ class Attribute implements ArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } elseif ($field === 'type') {
+        } elseif ('type' === $field) {
             $convertedItem['attribute_type'] = $data;
-        } elseif ($field === 'number_min' ||
-            $field === 'number_max' ||
-            $field === 'max_file_size'
+        } elseif ('number_min' === $field ||
+            'number_max' === $field ||
+            'max_file_size'=== $field
         ) {
-            $convertedItem[$field] = ('' === $data) ? null : (float) $data;
-        } elseif ($field === 'sort_order' ||
-            $field === 'max_characters' ||
-            $field === 'minimum_input_length'
+            $convertedItem[$field] = $this->convertFloat($data);
+        } elseif ('sort_order' === $field ||
+            'max_characters' === $field ||
+            'minimum_input_length'=== $field
         ) {
             $convertedItem[$field] = ('' === $data) ? null : (int) $data;
-        } elseif ($field === 'options' ||
-            $field === 'available_locales'
+        } elseif ('options' === $field ||
+            'available_locales' === $field ||
+            'allowed_extensions' === $field
         ) {
             $convertedItem[$field] = ('' === $data) ? [] : explode(',', $data);
-        } elseif ($field === 'date_min' ||
-            $field === 'date_max' ||
-            $field === 'reference_data_name'
+        } elseif ('date_min' === $field ||
+            'date_max'=== $field
         ) {
-            $convertedItem[$field] = ('' === $data) ? null : $data;
+            $convertedItem[$field] = $this->convertDate($data);
         } elseif (in_array($field, $booleanFields, true)) {
             $convertedItem[$field] = (bool) $data;
-        } else {
+        } elseif ('metric_family' === $field || '' !== $data) {
             $convertedItem[$field] = (string) $data;
+        } else {
+            $convertedItem[$field] = null;
         }
 
         return $convertedItem;
+    }
+
+    /**
+     * @param mixed $number
+     *
+     * @return string|null
+     */
+    protected function convertFloat($number)
+    {
+        if ('' === $number || null === $number) {
+            return null;
+        }
+
+        if (is_numeric($number)) {
+            return number_format($number, 4, '.', '');
+        }
+
+        return $number;
+    }
+
+    /**
+     * Return the value if it's not a date (launch an exception should not be done here).
+     * "2015-12-31" will be converted to "2015-12-31T00:00:00+01:00"
+     *
+     * These dates are wrong and will not converted:
+     * "2015/12/31"
+     * "2015-45-31"
+     * "not a date"
+     *
+     * @param mixed $date
+     *
+     * @return string|null
+     */
+    protected function convertDate($date)
+    {
+        if ('' === $date || null === $date) {
+            return null;
+        }
+
+        $datetime = \DateTime::createFromFormat('Y-m-d', $date);
+        $errors = \DateTime::getLastErrors();
+
+        if (0 === $errors['warning_count'] && 0 === $errors['error_count']) {
+            $datetime->setTime(0, 0, 0);
+
+            return $datetime->format('c');
+        }
+
+        return $date;
     }
 }

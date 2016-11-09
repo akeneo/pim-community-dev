@@ -21,11 +21,6 @@ class CollectionNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_csv_normalization_of_collection(Collection $collection)
-    {
-        $this->supportsNormalization($collection, 'csv')->shouldBe(true);
-    }
-
     function it_supports_flat_normalization_of_collection(Collection $collection)
     {
         $this->supportsNormalization($collection, 'flat')->shouldBe(true);

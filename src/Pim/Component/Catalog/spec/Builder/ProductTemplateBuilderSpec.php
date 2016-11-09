@@ -55,7 +55,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $options = ['locale' => 'en_US', 'disable_grouping_separator' => true];
         $template->getValuesData()->willReturn(['color' => 'bar']);
         $denormalizer
-            ->denormalize(['color' => 'bar'], 'ProductValue[]', 'json', $options)
+            ->denormalize(['color' => 'bar'], 'ProductValue[]', 'standard', $options)
             ->shouldBeCalled()->willReturn([$colorValue]);
 
         $productBuilder
@@ -66,7 +66,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $normalizer
-            ->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'json', [
+            ->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'standard', [
                 'entity'                     => 'product',
                 'locale'                     => 'en_US',
                 'disable_grouping_separator' => true

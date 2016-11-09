@@ -15,14 +15,35 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class LocaleNormalizer implements NormalizerInterface
 {
     /** @var string[] */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['flat'];
+
+    /** @var NormalizerInterface */
+    protected $standardNormalizer;
+
+    /**
+     * @param NormalizerInterface $standardNormalizer
+     */
+    public function __construct(NormalizerInterface $standardNormalizer)
+    {
+        $this->standardNormalizer = $standardNormalizer;
+    }
 
     /**
      * {@inheritdoc}
+     *
+     * @param LocaleInterface $locale
+     *
+     * @return array
      */
     public function normalize($locale, $format = null, array $context = [])
     {
-        return ['code' => $locale->getCode()];
+        $standardNormalizer = $this->standardNormalizer->normalize($locale, 'standard', $context);
+
+        $flatNormalizer = $standardNormalizer;
+
+        unset($flatNormalizer['enabled']);
+
+        return $flatNormalizer;
     }
 
     /**

@@ -80,5 +80,5 @@ Feature: Export products according to a locale policy
     When I visit the "Content" tab
     Then I should see the text "French (France)"
     When I fill in the following information:
-      | Channel | E-Commerce |
+      | Channel | Ecommerce |
     Then I should see the text "French (France) English (United States)"
