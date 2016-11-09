@@ -15,7 +15,7 @@ services:
         class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProductRepository'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
-            - '@pimee_product_asset.repository.asset_category_access'
+            - '@pimee_security.repository.category_access'
 
     activity_manager.repository.familly_requirement:
         class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\FamilyRequirementRepository'
