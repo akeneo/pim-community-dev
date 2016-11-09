@@ -22,7 +22,7 @@ services:
     pimee_catalog_rule.processor.normalization.rule_definition:
         class: '%pimee_catalog_rule.processor.normalization.rule_definition.class%'
         arguments:
-            - '@akeneo_rule_engine.normalizer.rule'
+            - '@akeneo_rule_engine.normalizer.standard.rule'
 
     # product loader
     pimee_catalog_rule.processor.product_loader:

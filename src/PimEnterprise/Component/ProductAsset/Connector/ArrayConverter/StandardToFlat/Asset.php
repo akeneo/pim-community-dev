@@ -34,7 +34,7 @@ use Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayCon
  *          'animal',
  *          'sunset',
  *      ],
- *      'end_of_use'  => '2018-02-01',
+ *      'end_of_use'  => '2018-02-01T00:00:00+01:00',
  * ]
  *
  * After:
@@ -59,8 +59,12 @@ class Asset extends AbstractSimpleArrayConverter implements ArrayConverterInterf
         switch ($field) {
             case 'code':
             case 'description':
-            case 'end_of_use':
                 $convertedItem[$field] = (string) $data;
+                break;
+            case 'end_of_use':
+                $datetime = \DateTime::createFromFormat(\DateTime::W3C, $data);
+                $convertedItem[$field] = false !== $datetime ? $datetime->format('Y-m-d') : (string) $data;
+
                 break;
             case 'localized':
                 $convertedItem[$field] = (true === $data) ? '1' : '0';

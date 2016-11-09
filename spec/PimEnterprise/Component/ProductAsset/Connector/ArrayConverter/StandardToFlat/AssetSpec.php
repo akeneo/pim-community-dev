@@ -33,7 +33,7 @@ class AssetSpec extends ObjectBehavior
                 'animal',
                 'sunset',
             ],
-            'end_of_use'  => '2018-02-01',
+            'end_of_use'  => '2018-02-01T00:00:00+02:00',
         ];
 
         $this->convert($item)->shouldReturn($expected);

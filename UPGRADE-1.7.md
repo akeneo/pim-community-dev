@@ -28,6 +28,9 @@ The following command helps to migrate references to these classes or services.
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_product_asset\.normalizer\.structured\.variation/pimee_product_asset\.normalizer\.standard\.variation/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_product_asset\.normalizer\.structured\.channel_configuration/pimee_product_asset\.normalizer\.standard\.channel_configuration/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_product_asset\.normalizer\.flat\.asset/pimee_product_asset\.normalizer\.flat\.asset/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pimee_enrich\.normalizer\.structured\.asset/pimee_enrich\.normalizer\.standard\.asset/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/akeneo_rule_engine\.normalizer\.rule:/akeneo_rule_engine\.normalizer\.standard\.rule:/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/akeneo_rule_engine\.normalizer\.rule\.class/akeneo_rule_engine\.normalizer\.standard\.rule\.class/g'
 ```
 
 ## Rule structure modifications

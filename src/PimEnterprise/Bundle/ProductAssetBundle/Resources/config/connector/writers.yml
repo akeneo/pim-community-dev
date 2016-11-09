@@ -68,4 +68,5 @@ services:
     pimee_product_asset.writer.file.yaml_asset_channel_configuration:
         class: '%pim_connector.writer.file.yaml.class%'
         arguments:
+            - '@pimee_product_asset.array_converter.standard_to_flat.channel_configuration'
             - 'asset_channel_configurations'

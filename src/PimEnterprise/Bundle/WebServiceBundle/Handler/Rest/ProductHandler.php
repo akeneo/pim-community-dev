@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Owerride product handler to apply permissions
@@ -25,19 +25,19 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductHandler extends BaseProductHandler
 {
-    /** @var SerializerInterface */
-    protected $serializer;
+    /** @var NormalizerInterface */
+    protected $normalizer;
 
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
     /**
-     * @param SerializerInterface           $serializer
+     * @param NormalizerInterface           $normalizer
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SerializerInterface $serializer, AuthorizationCheckerInterface $authorizationChecker)
+    public function __construct(NormalizerInterface $normalizer, AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->serializer = $serializer;
+        $this->normalizer = $normalizer;
         $this->authorizationChecker = $authorizationChecker;
     }
 

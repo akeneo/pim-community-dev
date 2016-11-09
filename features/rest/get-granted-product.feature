@@ -18,12 +18,12 @@ Feature: Expose product data via a REST API
     And the response should contain json:
     """
     {
+      "identifier": "sandals",
       "family":null,
       "groups":[],
       "variant_group":null,
       "categories":["sandals"],
       "enabled":true,
-      "associations":[],
       "values": {
         "sku":[
           {"locale":null,"scope":null,"data":"sandals"}
@@ -37,11 +37,14 @@ Feature: Expose product data via a REST API
         ],
         "price":[
           {"locale":null,"scope":null,"data":[
-            {"data":"20.00","currency":"EUR"},
-            {"data":"30.00","currency":"USD"}
+            {"amount":"20.00","currency":"EUR"},
+            {"amount":"30.00","currency":"USD"}
           ]}
         ]
       },
+      "created": "2016-11-08T10:43:00+01:00",
+      "updated": "2016-11-08T10:43:00+01:00",
+      "associations": [],
       "resource":"{baseUrl}/api/rest/products/sandals"
     }
     """
