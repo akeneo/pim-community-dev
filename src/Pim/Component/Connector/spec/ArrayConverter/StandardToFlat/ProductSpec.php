@@ -38,8 +38,8 @@ class ProductSpec extends ObjectBehavior
                     'locale' => 'de_DE',
                     'scope'  => 'print',
                     'data'   => [
-                        'unit' => 'KILOGRAM',
-                        'data' => '100'
+                        'unit'   => 'KILOGRAM',
+                        'amount' => '100'
                     ]
                 ]
             ]
@@ -91,7 +91,7 @@ class ProductSpec extends ObjectBehavior
                     'scope'  => 'print',
                     'data'   => [
                         'unit' => 'KILOGRAM',
-                        'data' => '100'
+                        'amount' => '100'
                     ]
                 ]
             ],

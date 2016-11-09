@@ -87,7 +87,7 @@ class MetricFilter extends OroNumberFilter
         $operator = $this->getOperator($data['type']);
         $ds->generateParameterName($this->getName());
 
-        $data['data'] = $data['value'];
+        $data['amount'] = $data['value'];
         unset($data['value']);
         unset($data['type']);
 

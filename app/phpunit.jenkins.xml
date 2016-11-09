@@ -24,6 +24,10 @@
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
 
+        <testsuite name="PIM_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Component/*/tests/integration</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/*Bundle/tests/integration</directory>
+        </testsuite>
     </testsuites>
 
     <filter>

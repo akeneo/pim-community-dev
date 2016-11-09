@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Symfony\Component\Filesystem\Filesystem;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -54,8 +54,8 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var CollectionFilterInterface */
     protected $productValuesFilter;
 
-    /** @var string */
-    protected $tmpStorageDir;
+    /** @var ConverterInterface */
+    protected $productValueConverter;
 
     /** @var string */
     protected $attributeLocale;
@@ -73,9 +73,10 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param ObjectUpdaterInterface       $productUpdater
      * @param ValidatorInterface           $productValidator
      * @param NormalizerInterface          $internalNormalizer
-     * @param AttributeConverterInterface   $localizedConverter
+     * @param AttributeConverterInterface  $localizedConverter
      * @param LocalizerRegistryInterface   $localizerRegistry
      * @param CollectionFilterInterface    $productValuesFilter
+     * @param ConverterInterface           $productValueConverter
      * @param string                       $tmpStorageDir
      * @param string                       $jobInstanceCode
      */
@@ -89,7 +90,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         AttributeConverterInterface $localizedConverter,
         LocalizerRegistryInterface $localizerRegistry,
         CollectionFilterInterface $productValuesFilter,
-        $tmpStorageDir,
+        ConverterInterface $productValueConverter,
         $jobInstanceCode
     ) {
         parent::__construct($jobInstanceCode);
@@ -99,11 +100,11 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->attributeRepository = $attributeRepository;
         $this->productUpdater = $productUpdater;
         $this->productValidator = $productValidator;
-        $this->tmpStorageDir = $tmpStorageDir;
         $this->internalNormalizer = $internalNormalizer;
         $this->localizedConverter = $localizedConverter;
         $this->localizerRegistry = $localizerRegistry;
         $this->productValuesFilter = $productValuesFilter;
+        $this->productValueConverter = $productValueConverter;
 
         $this->values = '';
     }
@@ -159,6 +160,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     {
         $data = json_decode($this->values, true);
 
+        $data = $this->productValueConverter->convert($data);
         $data = $this->filterScopableAndLocalizableData(
             $data,
             $this->getAttributeLocale(),
@@ -166,7 +168,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
         );
         $data = $this->productValuesFilter->filterCollection($data, 'pim.internal_api.product_values_data.edit');
         $data = $this->delocalizeData($data, $this->userContext->getUiLocale()->getCode());
-        $data = $this->storeUploadedFile($data);
 
         $this->values = json_encode($data);
     }
@@ -222,10 +223,11 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $data = json_decode($this->values, true);
 
         $locale = $this->userContext->getUiLocale()->getCode();
+        $data = $this->productValueConverter->convert($data);
         $data = $this->localizedConverter->convertToDefaultFormats($data, ['locale' => $locale]);
 
         $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
-        $this->productUpdater->update($product, $data);
+        $this->productUpdater->update($product, ['values' => $data]);
         $violations = $this->productValidator->validate($product);
         $violations->addAll($this->localizedConverter->getViolations());
 
@@ -277,34 +279,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function setAttributeChannel($attributeChannel)
     {
         $this->attributeChannel = $attributeChannel;
-    }
-
-    /**
-     * Before sending configuration to the job, we store uploaded files.
-     * This way, the job process can have access to uploaded files.
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function storeUploadedFile(array $data)
-    {
-        $filesystem = new Filesystem();
-
-        foreach ($data as $code => $values) {
-            foreach ($values as $index => $value) {
-                if (isset($value['data']['filePath']) && '' !== $value['data']['filePath']) {
-                    $uploadedFile = new \SplFileInfo($value['data']['filePath']);
-                    $newPath = $this->tmpStorageDir . DIRECTORY_SEPARATOR . $uploadedFile->getFilename();
-
-                    $filesystem->rename($uploadedFile->getPathname(), $newPath);
-
-                    $data[$code][$index]['data']['filePath'] = $newPath;
-                }
-            }
-        }
-
-        return $data;
     }
 
     /**

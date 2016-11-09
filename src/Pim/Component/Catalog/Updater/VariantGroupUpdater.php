@@ -74,7 +74,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      *         "en_US": "T-shirt very beautiful",
      *         "fr_FR": "T-shirt super beau"
      *     }
-     *     "axis": ["main_color", "secondary_color"],
+     *     "axes": ["main_color", "secondary_color"],
      *     "type": "VARIANT",
      *     "values": {
      *         "main_color": "white",
@@ -134,7 +134,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                 $this->setLabels($variantGroup, $data);
                 break;
 
-            case 'axis':
+            case 'axes':
                 $this->setAxes($variantGroup, $data);
                 break;
 
@@ -328,7 +328,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     protected function transformArrayToValues(array $arrayValues)
     {
         $product = $this->productBuilder->createProduct();
-        $this->productUpdater->update($product, $arrayValues);
+        $this->productUpdater->update($product, ['values' => $arrayValues]);
 
         $values = $product->getValues();
         $values->removeElement($product->getIdentifier());
@@ -383,7 +383,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
             if (null !== $value->getMedia()) {
                 $attributeCode = $value->getAttribute()->getCode();
                 foreach (array_keys($mergedValuesData[$attributeCode]) as $index) {
-                    $mergedValuesData[$attributeCode][$index]['data']['filePath'] = $value->getMedia()->getKey();
+                    $mergedValuesData[$attributeCode][$index]['data'] = $value->getMedia()->getKey();
                 }
             }
         }
@@ -392,8 +392,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param GroupInterface $group
-     * @param array          $labels
+     * @param GroupInterface $variantGroup
+     * @param array          $productIds
      */
     protected function setProducts(GroupInterface $variantGroup, array $productIds)
     {

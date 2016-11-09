@@ -1,0 +1,15 @@
+parameters:
+    pim_enrich.converter.standard_to_enrich.product_value.class: Pim\Component\Enrich\Converter\StandardToEnrich\ProductValueConverter
+    pim_enrich.converter.enrich_to_standard.product_value.class: Pim\Component\Enrich\Converter\EnrichToStandard\ProductValueConverter
+
+services:
+    pim_enrich.converter.standard_to_enrich.product_value:
+        class: '%pim_enrich.converter.standard_to_enrich.product_value.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_file_storage.repository.file_info'
+
+    pim_enrich.converter.enrich_to_standard.product_value:
+        class: '%pim_enrich.converter.enrich_to_standard.product_value.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'

@@ -6,6 +6,7 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\FOSRestController;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -85,7 +86,7 @@ class ProductController extends FOSRestController
             return new Response(sprintf('Access denied to the product "%s"', $product->getIdentifier()), 403);
         }
 
-        return new Response($serializedData);
+        return new JsonResponse($serializedData);
     }
 
     /**

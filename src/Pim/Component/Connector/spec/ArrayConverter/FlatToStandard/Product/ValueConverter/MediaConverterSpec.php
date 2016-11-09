@@ -34,7 +34,7 @@ class MediaConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => ['filePath' => $value, 'originalFilename' => basename($value)],
+            'data'   => $value,
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
@@ -50,7 +50,7 @@ class MediaConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => ['filePath' => null, 'originalFilename' => null],
+            'data'   => null,
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);

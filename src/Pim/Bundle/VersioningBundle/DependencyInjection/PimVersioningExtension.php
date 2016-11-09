@@ -55,6 +55,5 @@ class PimVersioningExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/serializer'));
         $loader->load('flat.yml');
         $loader->load('serializer.yml');
-        $loader->load('structured.yml');
     }
 }

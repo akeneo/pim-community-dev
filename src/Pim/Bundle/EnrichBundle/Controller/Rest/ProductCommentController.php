@@ -2,11 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -51,6 +53,12 @@ class ProductCommentController
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var PresenterInterface */
+    protected $datetimePresenter;
+
+    /** @var LocaleResolver */
+    protected $localeResolver;
+
     /**
      * @param TokenStorageInterface      $tokenStorage
      * @param FormFactoryInterface       $formFactory
@@ -60,6 +68,8 @@ class ProductCommentController
      * @param CommentBuilder             $commentBuilder
      * @param NormalizerInterface        $normalizer
      * @param ValidatorInterface         $validator
+     * @param PresenterInterface         $datetimePresenter
+     * @param LocaleResolver             $localeResolver
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -69,7 +79,9 @@ class ProductCommentController
         SaverInterface $commentSaver,
         CommentBuilder $commentBuilder,
         NormalizerInterface $normalizer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        PresenterInterface $datetimePresenter,
+        LocaleResolver $localeResolver
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->formFactory = $formFactory;
@@ -79,6 +91,8 @@ class ProductCommentController
         $this->commentBuilder = $commentBuilder;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
+        $this->datetimePresenter = $datetimePresenter;
+        $this->localeResolver = $localeResolver;
     }
 
     /**
@@ -98,7 +112,21 @@ class ProductCommentController
             $product->getId()
         );
 
-        return new JsonResponse($this->normalizer->normalize($comments, 'json'));
+        $context = ['locale' => $this->localeResolver->getCurrentLocale()];
+
+        $comments = $this->normalizer->normalize($comments, 'standard');
+
+        foreach ($comments as $comment) {
+            $comment['created'] = $this->datetimePresenter->present($comment['created'], $context);
+            $comment['replied'] = $this->datetimePresenter->present($comment['created'], $context);
+
+            foreach ($comment['replies'] as $reply) {
+                $reply['created'] = $this->datetimePresenter->present($reply['created'], $context);
+                $reply['replied'] = $this->datetimePresenter->present($reply['created'], $context);
+            }
+        }
+
+        return new JsonResponse($comments);
     }
 
     /**
@@ -120,7 +148,7 @@ class ProductCommentController
         if ($form->isValid()) {
             $this->commentSaver->save($comment);
 
-            return new JsonResponse($this->normalizer->normalize($comment, 'json'));
+            return new JsonResponse($this->normalizer->normalize($comment, 'standard'));
         }
 
         $violations = $this->validator->validate($comment);
@@ -169,7 +197,7 @@ class ProductCommentController
 
             $this->commentSaver->save($reply);
 
-            return new JsonResponse($this->normalizer->normalize($reply, 'json'));
+            return new JsonResponse($this->normalizer->normalize($reply, 'standard'));
         }
 
         $violations = $this->validator->validate($reply);

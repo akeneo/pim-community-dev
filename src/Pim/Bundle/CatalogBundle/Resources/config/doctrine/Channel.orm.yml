@@ -13,10 +13,6 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
             type: string
             length: 100
             unique: true
-        label:
-            type: string
-            length: 100
-            nullable: true
         conversionUnits:
             type: array
             nullable: false
@@ -58,3 +54,10 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                     locale_id:
                         referencedColumnName: id
                         onDelete: CASCADE
+    oneToMany:
+        translations:
+            targetEntity: Pim\Component\Catalog\Model\ChannelTranslationInterface
+            mappedBy: foreignKey
+            cascade:
+                - persist
+                - detach

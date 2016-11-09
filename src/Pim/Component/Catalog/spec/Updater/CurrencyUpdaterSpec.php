@@ -35,8 +35,8 @@ class CurrencyUpdaterSpec extends ObjectBehavior
         $currency->setActivated(true)->shouldBeCalled();
 
         $this->update($currency, [
-            'code' => 'USD',
-            'activated' => true
+            'code'    => 'USD',
+            'enabled' => true
         ], []);
     }
 }

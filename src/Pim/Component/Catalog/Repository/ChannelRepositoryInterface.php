@@ -68,7 +68,9 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
      * Get channel choices
      * Allow to list channels in an array like array[<code>] = <label>
      *
+     * @param string $localeCode
+     *
      * @return string[]
      */
-    public function getLabelsIndexedByCode();
+    public function getLabelsIndexedByCode($localeCode);
 }

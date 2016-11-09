@@ -60,26 +60,29 @@ class ProductReaderSpec extends ObjectBehavior
             'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
         $convertedItem = [
-            'sku' => [
-                'locale' => null,
-                'scope'  => null,
-                'data'   => 'SKU-001',
-            ],
-            'name' => [
-                'locale' => null,
-                'scope'  => null,
-                'data'   => 'door',
-            ],
-            'view' => [
-                'locale' => null,
-                'scope'  => null,
-                'data'   => 'fixtures/sku-001.jpg',
-            ],
-            'manual' => [
-                'locale' => 'fr_FR',
-                'scope'  => null,
-                'data'   => 'fixtures/sku-001.txt',
-            ],
+            'identifier' => 'SKU-001',
+            'values' => [
+                'sku' => [
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'SKU-001',
+                ],
+                'name' => [
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'door',
+                ],
+                'view' => [
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'fixtures/sku-001.jpg',
+                ],
+                'manual' => [
+                    'locale' => 'fr_FR',
+                    'scope'  => null,
+                    'data'   => 'fixtures/sku-001.txt',
+                ],
+            ]
         ];
         $converterOptions = [
             'mapping' => [
@@ -102,7 +105,7 @@ class ProductReaderSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $arrayConverter->convert($item, $converterOptions)->willReturn($convertedItem);
-        $mediaPathTransformer->transform($convertedItem, $filePath)->shouldBeCalled();
+        $mediaPathTransformer->transform($convertedItem['values'], $filePath)->shouldBeCalled();
 
         $this->read();
     }

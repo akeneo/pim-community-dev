@@ -158,7 +158,7 @@ class AttributeConverter implements AttributeConverterInterface
     protected function convertToDefaultFormat(LocalizerInterface $localizer, array $item, array $options, $path)
     {
         $violations = $localizer->validate($item['data'], $path, $options);
-        if (null !== $violations) {
+        if (null !== $violations && $violations->count() > 0) {
             $this->violations->addAll($violations);
         }
 

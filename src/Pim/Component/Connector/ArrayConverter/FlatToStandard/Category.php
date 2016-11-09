@@ -77,7 +77,7 @@ class Category implements ArrayConverterInterface
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
         } elseif ('code' === $field) {
-            $convertedItem[$field] = (string)$data;
+            $convertedItem[$field] = (string) $data;
         } elseif ('parent' === $field) {
             $convertedItem[$field] = '' === $data ? null : $data;
         }

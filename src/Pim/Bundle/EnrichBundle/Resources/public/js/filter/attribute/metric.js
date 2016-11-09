@@ -40,7 +40,7 @@ define([
                         field: this.getCode(),
                         operator: _.first(_.values(this.config.operators)),
                         value: {
-                            data: '',
+                            amount: '',
                             unit: attribute.default_metric_unit
                         }
                     });
@@ -53,7 +53,9 @@ define([
          */
         isEmpty: function () {
             return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
-                (undefined === this.getValue() || undefined === this.getValue().data || '' === this.getValue().data);
+                (undefined === this.getValue() ||
+                undefined === this.getValue().amount ||
+                '' === this.getValue().amount);
         },
 
         /**
@@ -95,7 +97,7 @@ define([
          */
         updateState: function () {
             var value = {
-                data: this.$('[name="filter-data"]').val(),
+                amount: this.$('[name="filter-data"]').val(),
                 unit: this.$('select[name="filter-unit"]').val()
             };
 

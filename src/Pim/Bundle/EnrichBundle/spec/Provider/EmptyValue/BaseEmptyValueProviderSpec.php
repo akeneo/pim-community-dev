@@ -13,7 +13,7 @@ class BaseEmptyValueProviderSpec extends ObjectBehavior
         $attribute->getDefaultMetricUnit()->willReturn('METER');
         $this->supports($attribute)->shouldReturn(true);
         $this->getEmptyValue($attribute)->shouldReturn([
-            'data' => null,
+            'amount' => null,
             'unit' => 'METER'
         ]);
 

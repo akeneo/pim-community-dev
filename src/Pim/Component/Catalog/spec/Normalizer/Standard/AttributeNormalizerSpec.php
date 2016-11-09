@@ -118,7 +118,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attributeGroup->getCode()->willReturn('size');
         $attribute->isUnique()->willReturn(true);
         $attribute->isUseableAsGridFilter()->willReturn(true);
-        $attribute->getAllowedExtensions()->willReturn(['csv', 'xml', 'json']);
+        $attribute->getAllowedExtensions()->willReturn(['csv', 'xml', 'standard']);
         $attribute->getMetricFamily()->willReturn('Length');
         $attribute->getDefaultMetricUnit()->willReturn('Centimenter');
         $attribute->getReferenceDataName()->willReturn('color');
@@ -149,7 +149,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'group'                  => 'size',
                 'unique'                 => true,
                 'useable_as_grid_filter' => true,
-                'allowed_extensions'     => ['csv', 'xml', 'json'],
+                'allowed_extensions'     => ['csv', 'xml', 'standard'],
                 'metric_family'          => 'Length',
                 'default_metric_unit'    => 'Centimenter',
                 'reference_data_name'    => 'color',

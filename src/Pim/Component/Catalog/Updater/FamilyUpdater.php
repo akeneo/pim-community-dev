@@ -98,7 +98,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
             case 'labels':
                 $this->setLabels($family, $data);
                 break;
-            case 'requirements':
+            case 'attribute_requirements':
                 $this->setAttributeRequirements($family, $data);
                 break;
             case 'attributes':

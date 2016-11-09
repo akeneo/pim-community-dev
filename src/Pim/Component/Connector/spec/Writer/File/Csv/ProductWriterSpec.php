@@ -76,6 +76,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('with_media')->willReturn(true);
 
         $productStandard1 = [
+            'identifier' => 'jackets',
             'enabled'    => true,
             'categories' => ['2015_clothes', '2016_clothes'],
             'groups'     => [],
@@ -85,47 +86,37 @@ class ProductWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => 'jackets'
+                        'data'   => 'jackets',
                     ]
                 ],
                 'description' => [
                     [
                         'locale' => 'en_US',
                         'scope'  => 'ecommerce',
-                        'data'   => [
-                            'filePath' => 'A wonderful description...',
-                        ]
+                        'data'   => 'A wonderful description...',
                     ],
                     [
                         'locale' => 'en_US',
                         'scope'  => 'mobile',
-                        'data'   => [
-                            'filePath' => 'Simple description',
-                        ]
+                        'data'   => 'Simple description',
                     ],
                     [
                         'locale' => 'fr_FR',
                         'scope'  => 'ecommerce',
-                        'data'   => [
-                            'filePath' => 'Une description merveilleuse...',
-                        ]
+                        'data'   => 'Une description merveilleuse...',
                     ],
                     [
                         'locale' => 'fr_FR',
                         'scope'  => 'mobile',
-                        'data'   => [
-                            'filePath' => 'Une simple description',
-                        ]
+                        'data'   => 'Une simple description',
                     ],
                 ],
                 'media' => [
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => [
-                            // the file paths are resolved before the conversion to the standard format
-                            'filePath' => 'files/jackets/media/it\'s the filename.jpg',
-                        ]
+                        // the file paths are resolved before the conversion to the standard format
+                        'data'   => 'files/jackets/media/it\'s the filename.jpg',
                     ]
                 ]
             ]
@@ -145,6 +136,7 @@ class ProductWriterSpec extends ObjectBehavior
         ];
 
         $productStandard2 = [
+            'identifier' => 'sweaters',
             'type'   => 'product',
             'labels' => [
                 'en_US' => 'Sweaters',
@@ -162,9 +154,7 @@ class ProductWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => [
-                            'filePath' => 'wrong/path'
-                        ]
+                        'data'   => 'wrong/path',
                     ]
                 ]
             ]
@@ -195,7 +185,6 @@ class ProductWriterSpec extends ObjectBehavior
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 
-        $attributeRepository->getIdentifierCode()->willReturn('sku');
         $attributeRepository->getAttributeTypeByCodes(['sku', 'description', 'media'])
             ->willReturn(['media' => 'pim_catalog_image']);
         $attributeRepository->getAttributeTypeByCodes(['sku', 'media'])
@@ -209,7 +198,7 @@ class ProductWriterSpec extends ObjectBehavior
             'identifier' => 'sweaters', 'code' => 'media'
         ])->willReturn('files/sweaters/media/');
 
-        $productStandard1['values']['media'][0]['data']['filePath'] = 'files/jackets/media/' . $originalFilename;
+        $productStandard1['values']['media'][0]['data'] = 'files/jackets/media/' . $originalFilename;
         $arrayConverter->convert($productStandard1, [])->willReturn($productFlat1);
         $arrayConverter->convert($productStandard2, [])->willReturn($productFlat2);
 
@@ -263,9 +252,8 @@ class ProductWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => [
-                            // the file paths are resolved before the conversion to the standard format
-                            'filePath' => 'files/jackets/media/it\'s the filename.jpg',                        ]
+                        // the file paths are resolved before the conversion to the standard format
+                        'data'   => 'files/jackets/media/it\'s the filename.jpg',
                     ]
                 ]
             ]

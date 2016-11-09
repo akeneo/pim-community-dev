@@ -14,7 +14,7 @@ Feature: Ensure versioning on channel
     Then there should be 1 update
     Then I visit the "Properties" tab
     When I fill in the following information:
-      | Default label | My mobile |
+      | English (United States) | Mobil |
     And I press the "Save" button
     Then I visit the "History" tab
     Then there should be 2 update

@@ -73,16 +73,15 @@ class ProductAssociationProcessor extends AbstractProcessor implements
             ['associations' => []],
             $item
         );
-        $identifier = $this->getIdentifier($item);
 
-        if (null === $identifier) {
+        if (!isset($item['identifier'])) {
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
 
-        $product = $this->findProduct($identifier);
+        $product = $this->findProduct($item['identifier']);
 
         if (!$product) {
-            $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $identifier));
+            $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $item['identifier']));
         }
 
         $parameters = $this->stepExecution->getJobParameters();
@@ -134,18 +133,6 @@ class ProductAssociationProcessor extends AbstractProcessor implements
     protected function updateProduct(ProductInterface $product, array $item)
     {
         $this->updater->update($product, $item);
-    }
-
-    /**
-     * @param array $item
-     *
-     * @return string
-     */
-    protected function getIdentifier(array $item)
-    {
-        $identifierProperty = $this->repository->getIdentifierProperties();
-
-        return $item[$identifierProperty[0]][0]['data'];
     }
 
     /**

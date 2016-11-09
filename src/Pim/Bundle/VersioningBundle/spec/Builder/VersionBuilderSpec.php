@@ -19,7 +19,7 @@ class VersionBuilderSpec extends ObjectBehavior
     function it_builds_versions_for_versionable_entities($normalizer, $versionFactory, ProductInterface $product, Version $version)
     {
         $product->getId()->willReturn(1);
-        $normalizer->normalize($product, 'csv', ['versioning' => true])->willReturn(['bar' => 'baz']);
+        $normalizer->normalize($product, 'flat', [])->willReturn(['bar' => 'baz']);
         $versionFactory->create(Argument::Any(), 1, 'foo', null)->willReturn($version);
         $version->setVersion(1)->willReturn($version);
         $version->setSnapshot(['bar' => 'baz'])->willReturn($version);

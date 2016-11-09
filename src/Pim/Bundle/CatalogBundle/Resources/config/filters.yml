@@ -26,7 +26,7 @@ services:
     pim_catalog.comparator.filter.product:
         class: '%pim_catalog.comparator.filter.product.class%'
         arguments:
-            - '@pim_serializer.normalizer.product_properties'
+            - '@pim_catalog.normalizer.standard.product.properties'
             - '@pim_catalog.comparator.registry'
             - '@pim_catalog.repository.attribute'
             - ['family', 'enabled', 'groups', 'variant_group', 'categories']
@@ -34,5 +34,5 @@ services:
     pim_catalog.comparator.filter.product_association:
         class: '%pim_catalog.comparator.filter.product_association.class%'
         arguments:
-            - '@pim_serializer.normalizer.product_associations'
+            - '@pim_catalog.normalizer.standard.product.associations'
             - '@pim_catalog.comparator.registry'

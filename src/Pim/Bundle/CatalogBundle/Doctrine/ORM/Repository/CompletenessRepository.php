@@ -39,18 +39,21 @@ class CompletenessRepository implements CompletenessRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getProductsCountPerChannels()
+    public function getProductsCountPerChannels($localeCode)
     {
         $sql = <<<SQL
-SELECT ch.label, COUNT(DISTINCT p.id) as total FROM pim_catalog_channel ch
+SELECT t.label, COUNT(DISTINCT p.id) as total FROM pim_catalog_channel ch
+    JOIN pim_catalog_channel_translation t ON t.foreign_key = ch.id
     JOIN %category_table% ca ON ca.root = ch.category_id
     JOIN %category_join_table% cp ON cp.category_id = ca.id
     JOIN %product_table% p ON p.id = cp.product_id
     WHERE p.is_enabled = 1
-    GROUP BY ch.id, ch.label
+    AND t.locale = '%locale%'
+    GROUP BY ch.id, t.label
 SQL;
 
         $sql = $this->applyTableNames($sql);
+        $sql = $this->applyParameters($sql, $localeCode);
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
         $stmt->execute();
@@ -61,10 +64,11 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function getCompleteProductsCountPerChannels()
+    public function getCompleteProductsCountPerChannels($localeCode)
     {
         $sql = <<<SQL
-    SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
+    SELECT t.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
+    JOIN pim_catalog_channel_translation t ON t.foreign_key = ch.id
     JOIN %category_table% ca ON ca.root = ch.category_id
     JOIN %category_join_table% cp ON cp.category_id = ca.id
     JOIN %product_table% p ON p.id = cp.product_id
@@ -73,9 +77,11 @@ SQL;
     LEFT JOIN pim_catalog_completeness co
         ON co.locale_id = lo.id AND co.channel_id = ch.id AND co.product_id = p.id AND co.ratio = 100
     WHERE p.is_enabled = 1
-    GROUP BY ch.id, lo.id, ch.label, lo.code
+    AND t.locale = '%locale%'
+    GROUP BY ch.id, lo.id, t.label, lo.code
 SQL;
         $sql = $this->applyTableNames($sql);
+        $sql = $this->applyParameters($sql, $localeCode);
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
         $stmt->execute();
@@ -111,8 +117,21 @@ SQL;
                 '%category_join_table%' => $categoryMapping['joinTable']['name'],
                 '%product_table%'       => $this->entityManager->getClassMetadata($this->productClass)->getTableName(),
                 '%product_value_table%' => $valueMetadata->getTableName(),
-                '%attribute_table%'     => $attributeMetadata->getTableName()
+                '%attribute_table%'     => $attributeMetadata->getTableName(),
             ]
         );
+    }
+
+    /**
+     * Replace parameters placeholders by their real values
+     *
+     * @param string $sql
+     * @param string $localeCode
+     *
+     * @return string
+     */
+    protected function applyParameters($sql, $localeCode)
+    {
+        return strtr($sql, ['%locale%' => $localeCode]);
     }
 }

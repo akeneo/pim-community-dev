@@ -3,7 +3,7 @@
 namespace Pim\Bundle\WebServiceBundle\Handler\Rest;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Product handler
@@ -14,15 +14,15 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductHandler
 {
-    /** @var SerializerInterface */
-    protected $serializer;
+    /** @var NormalizerInterface */
+    protected $normalizer;
 
     /**
-     * @param SerializerInterface $serializer
+     * @param NormalizerInterface $normalizer
      */
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(NormalizerInterface $normalizer)
     {
-        $this->serializer = $serializer;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -37,16 +37,17 @@ class ProductHandler
      */
     public function get(ProductInterface $product, $channels, $locales, $url)
     {
-        $data = $this->serializer->serialize(
+        $data = $this->normalizer->normalize(
             $product,
-            'json',
+            'standard',
             [
                 'locales'      => $locales,
                 'channels'     => $channels,
-                'resource'     => $url,
                 'filter_types' => ['pim.external_api.product.view']
             ]
         );
+
+        $data['resource'] = $url;
 
         return $data;
     }

@@ -67,7 +67,7 @@ class ProductTemplateMediaManager
      */
     protected function updateNormalizedValues(ProductTemplateInterface $template)
     {
-        $valuesData = $this->normalizer->normalize($template->getValues(), 'json', ['entity' => 'product']);
+        $valuesData = $this->normalizer->normalize($template->getValues(), 'standard', ['entity' => 'product']);
         $template->setValuesData($valuesData);
     }
 }

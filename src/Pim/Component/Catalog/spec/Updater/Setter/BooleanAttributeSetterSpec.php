@@ -84,39 +84,4 @@ class BooleanAttributeSetterSpec extends ObjectBehavior
         $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
-
-    function it_does_not_set_attribute_data_boolean_when_values_are_similars(
-        $builder,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        FamilyInterface $family
-    ) {
-        $family->getAttributeCodes()->willReturn(['sku', 'is_color']);
-        $product->getFamily()->willReturn($family);
-
-        $attribute->getCode()->willReturn('is_color');
-        $product->getValue('is_color', null, null)->willReturn(null);
-
-        $builder->addProductValue()->shouldNotBeCalled();
-
-        $this->setAttributeData($product, $attribute, false, ['locale' => null, 'scope' => null]);
-    }
-
-    function it_sets_attribute_when_new_value_is_different_from_product_value(
-        $builder,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        FamilyInterface $family,
-        ProductValue $productValue
-    ) {
-        $family->getAttributeCodes()->willReturn(['sku', 'is_color']);
-        $product->getFamily()->willReturn($family);
-
-        $attribute->getCode()->willReturn('is_color');
-        $product->getValue('is_color', null, null)->willReturn(null);
-
-        $builder->addProductValue($product, $attribute, null, null)->willReturn($productValue);
-
-        $this->setAttributeData($product, $attribute, true, ['locale' => null, 'scope' => null]);
-    }
 }

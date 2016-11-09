@@ -9,10 +9,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * CategoryController
- *
  * @author    Clement Gautier <clement.gautier@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -25,14 +24,22 @@ class CategoryController
     /** @var CategoryExtension */
     protected $twigExtension;
 
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
      * @param CategoryRepositoryInterface $repository
-     * @param CategoryExtension $twigExtension
+     * @param CategoryExtension           $twigExtension
+     * @param NormalizerInterface         $normalizer
      */
-    public function __construct(CategoryRepositoryInterface $repository, CategoryExtension $twigExtension)
-    {
+    public function __construct(
+        CategoryRepositoryInterface $repository,
+        CategoryExtension $twigExtension,
+        NormalizerInterface $normalizer
+    ) {
         $this->repository = $repository;
         $this->twigExtension = $twigExtension;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -70,5 +77,19 @@ class CategoryController
         }
 
         return new JsonResponse($tree);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     */
+    public function getAction($identifier)
+    {
+        $category = $this->repository->findOneByIdentifier($identifier);
+
+        $normalizedCategory = $this->normalizer->normalize($category, 'internal_api');
+
+        return new JsonResponse($normalizedCategory);
     }
 }

@@ -94,7 +94,7 @@ class ProductProcessor extends AbstractProcessor
 
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
-        $productStandard = $this->normalizer->normalize($product, 'json', $normalizerContext);
+        $productStandard = $this->normalizer->normalize($product, 'standard', $normalizerContext);
 
         if ($this->areAttributesToFilter($parameters)) {
             $productStandard = $this->filterProperties($productStandard, $parameters->get('selected_properties'));
@@ -131,7 +131,7 @@ class ProductProcessor extends AbstractProcessor
                         return in_array($attributeCode, $selectedProperties);
                     }, ARRAY_FILTER_USE_KEY
                 );
-            } elseif (in_array($codeProperty, $selectedProperties)) {
+            } elseif (in_array($codeProperty, $selectedProperties) || 'identifier' === $codeProperty) {
                 $propertiesToExport[$codeProperty] = $property;
             }
         }

@@ -27,4 +27,5 @@ parameters:
     pim_catalog.model.attribute_translation.interface:        Pim\Component\Catalog\Model\AttributeTranslationInterface
     pim_catalog.model.group_translation.interface:            Pim\Component\Catalog\Model\GroupTranslationInterface
     pim_catalog.model.group_type_translation.interface:       Pim\Component\Catalog\Model\GroupTypeTranslationInterface
+    pim_catalog.model.channel_translation.interface:          Pim\Component\Catalog\Model\ChannelTranslationInterface
 

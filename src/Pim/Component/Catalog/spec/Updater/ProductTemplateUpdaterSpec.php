@@ -54,8 +54,8 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
                     'locale' => 'fr_FR',
                     'scope'  => null,
                     'data'   => [
-                        ['data' => 10, 'currency' => 'EUR'],
-                        ['data' => 20, 'currency' => 'USD']
+                        ['amount' => 10, 'currency' => 'EUR'],
+                        ['amount' => 20, 'currency' => 'USD']
                     ]
                 ]
             ],
@@ -63,10 +63,7 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
                 [
                     'locale' => null,
                     'scope'  => 'mobile',
-                    'data'   => [
-                        'filePath' => '/uploads/image.jpg',
-                        'originalFilename' => 'Image.jpg'
-                    ]
+                    'data'   => '/uploads/image.jpg'
                 ]
             ]
         ];
@@ -80,7 +77,7 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
             ->setData(
                 $product,
                 'price',
-                [['data' => 10, 'currency' => 'EUR'], ['data' => 20, 'currency' => 'USD']],
+                [['amount' => 10, 'currency' => 'EUR'], ['amount' => 20, 'currency' => 'USD']],
                 ['locale' => 'fr_FR', 'scope' => null]
             )
             ->shouldBeCalled();
@@ -88,7 +85,7 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
             ->setData(
                 $product,
                 'image',
-                ['filePath' => '/uploads/image.jpg', 'originalFilename' => 'Image.jpg'],
+                '/uploads/image.jpg',
                 ['locale' => null, 'scope' => 'mobile']
             )
             ->shouldBeCalled();

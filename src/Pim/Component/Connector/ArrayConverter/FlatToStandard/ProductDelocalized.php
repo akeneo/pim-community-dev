@@ -37,7 +37,13 @@ class ProductDelocalized implements ArrayConverterInterface
     public function convert(array $item, array $options = [])
     {
         $standardizedItem = $this->converter->convert($item, $options);
-        $delocalizedItem = $this->delocalizer->convertToDefaultFormats($standardizedItem, $options);
+
+        if (isset($standardizedItem['values'])) {
+            $standardizedItem['values'] = $this->delocalizer->convertToDefaultFormats(
+                $standardizedItem['values'],
+                $options
+            );
+        }
 
         $violations = $this->delocalizer->getViolations();
 
@@ -50,6 +56,6 @@ class ProductDelocalized implements ArrayConverterInterface
             );
         }
 
-        return $delocalizedItem;
+        return $standardizedItem;
     }
 }

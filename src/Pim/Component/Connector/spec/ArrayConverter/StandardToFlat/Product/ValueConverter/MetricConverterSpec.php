@@ -27,8 +27,8 @@ class MetricConverterSpec extends ObjectBehavior
                 'locale' => null,
                 'scope'  => 'mobile',
                 'data'   => [
-                    'data' => '229',
-                    'unit' => 'HERTZ',
+                    'amount' => '229',
+                    'unit'   => 'HERTZ',
                 ],
             ]
         ];

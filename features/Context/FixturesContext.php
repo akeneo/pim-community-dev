@@ -453,7 +453,18 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $channel = $this->getChannel($data['code']);
 
-            assertEquals($data['label'], $channel->getLabel());
+            if (isset($data['label-en_US'])) {
+                assertEquals($data['label-en_US'], $channel->getTranslation('en_US')->getLabel());
+            }
+
+            if (isset($data['label-de_DE'])) {
+                assertEquals($data['label-de_DE'], $channel->getTranslation('de_DE')->getLabel());
+            }
+
+            if (isset($data['label-fr_FR'])) {
+                assertEquals($data['label-fr_FR'], $channel->getTranslation('fr_FR')->getLabel());
+            }
+
             assertEquals($data['tree'], $channel->getCategory()->getCode());
 
             $locales = $channel->getLocaleCodes();

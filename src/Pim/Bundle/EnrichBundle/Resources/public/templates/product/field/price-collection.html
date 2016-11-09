@@ -8,7 +8,7 @@
 <% } else { %>
     <% _.each(value.data, function (price) { %>
         <div class="input-append price-input">
-            <input type="text" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" data-currency="<%- price.currency %>" value="<%- price.data %>" <%- editMode === 'view' ? 'disabled' : '' %>>
+            <input type="text" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" data-currency="<%- price.currency %>" value="<%- price.amount %>" <%- editMode === 'view' ? 'disabled' : '' %>>
             <span class="add-on"><%- price.currency %></span>
         </div>
     <% }) %>

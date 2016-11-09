@@ -23,8 +23,8 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
      *         'locale' => 'de_DE',
      *         'scope'  => 'print',
      *         'data'   => [
-     *             'unit' => 'MEGAHERTZ',
-     *             'data' => '100'
+     *             'unit'   => 'MEGAHERTZ',
+     *             'amount' => '100'
      *         ]
      *     ]
      * ]
@@ -47,7 +47,7 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
             );
             $flatUnitName = sprintf('%s-unit', $flatName);
 
-            $convertedItem[$flatName] = (string) $value['data']['data'];
+            $convertedItem[$flatName] = (string) $value['data']['amount'];
             $convertedItem[$flatUnitName] = $value['data']['unit'];
         }
 

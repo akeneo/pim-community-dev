@@ -21,7 +21,7 @@ class PriceLocalizer extends NumberLocalizer
     {
         $violations = new ConstraintViolationList();
         foreach ($prices as $price) {
-            if (isset($price['data']) && $valid = parent::validate($price['data'], $attributeCode, $options)) {
+            if (isset($price['amount']) && $valid = parent::validate($price['amount'], $attributeCode, $options)) {
                 $violations->addAll($valid);
             }
         }
@@ -35,8 +35,8 @@ class PriceLocalizer extends NumberLocalizer
     public function delocalize($prices, array $options = [])
     {
         foreach ($prices as $index => $price) {
-            if (isset($price['data'])) {
-                $prices[$index]['data'] = parent::delocalize($price['data'], $options);
+            if (isset($price['amount'])) {
+                $prices[$index]['amount'] = parent::delocalize($price['amount'], $options);
             }
         }
 
@@ -52,11 +52,11 @@ class PriceLocalizer extends NumberLocalizer
             return parent::localize($prices, $options);
         }
 
-        if (array_key_exists('data', $prices) && array_key_exists('currency', $prices)) {
-            $prices['data'] = parent::localize($prices['data'], $options);
+        if (array_key_exists('amount', $prices) && array_key_exists('currency', $prices)) {
+            $prices['amount'] = parent::localize($prices['amount'], $options);
         } else {
             foreach ($prices as $index => $price) {
-                $prices[$index]['data'] = parent::localize($price['data'], $options);
+                $prices[$index]['amount'] = parent::localize($price['amount'], $options);
             }
         }
 

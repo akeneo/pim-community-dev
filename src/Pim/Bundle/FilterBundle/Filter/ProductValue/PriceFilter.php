@@ -37,7 +37,7 @@ class PriceFilter extends OroNumberFilter
         }
 
         $operator = $this->getOperator($data['type']);
-        $data['data'] = $data['value'];
+        $data['amount'] = $data['value'];
         unset($data['value']);
         unset($data['type']);
 

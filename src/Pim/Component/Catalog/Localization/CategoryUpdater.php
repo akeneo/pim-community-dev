@@ -36,14 +36,10 @@ class CategoryUpdater implements ObjectUpdaterInterface
      */
     public function update($category, array $data, array $options = [])
     {
-        try {
-            $this->categoryUpdater->update($category, $data, $options);
+        $this->categoryUpdater->update($category, $data, $options);
 
-            if (isset($data['labels']) && $category instanceof TranslatableInterface) {
-                $this->translatableUpdater->update($category, $data['labels']);
-            }
-        } catch (\InvalidArgumentException $e) {
-            throw new \InvalidArgumentException($e->getMessage());
+        if (isset($data['labels']) && $category instanceof TranslatableInterface) {
+            $this->translatableUpdater->update($category, $data['labels']);
         }
 
         return $this;

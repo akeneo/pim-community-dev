@@ -121,7 +121,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
              * lot of models and it causes memory leak...
              */
             if ($this->isAttributeEditable($product, $attributeCode)) {
-                $filteredValues[$attributeCode] = $values;
+                $filteredValues['values'][$attributeCode] = $values;
             }
         }
 
