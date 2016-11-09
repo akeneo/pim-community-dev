@@ -18,7 +18,7 @@ class DateDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         // We set the operator
-        $this->find('css', '.filter-select-oro')->selectOption($operator);
+        $this->find('css', '.filter-select-oro, .AknFilterDate-select')->selectOption($operator);
 
         if (false !== strstr($value, 'and')) {
             $dates = explode(' and ', $value);

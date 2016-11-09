@@ -1,0 +1,40 @@
+@import '../base/variables';
+
+.AknGridToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 10px 20px;
+
+  &-left {
+    display: flex;
+  }
+
+  &-center { }
+
+  &-right {
+    display: flex;
+  }
+
+  &-pageSize {
+    display: flex;
+    line-height: @AknLittleButtonSize - 2px;
+
+    // Label default size is overriden. TODO Remove this once we removed global label rule.
+    label {
+      font-size: @AknFontSizeSmall;
+    }
+  }
+  
+  &-actionsPanel {
+    display: flex;
+  }
+
+  &-actionButton {
+    margin-left: 5px;
+  }
+
+  &-left &-actionButton:first-child {
+    margin-left: 0;
+  }
+}

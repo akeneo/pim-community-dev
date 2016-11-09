@@ -1,0 +1,21 @@
+@import '../base/variables';
+
+.AknFilterChoice {
+  display: flex;
+  padding: 0 5px;
+
+  &-operator {
+    flex-shrink: 0;
+  }
+
+  &-field {
+    height: @AknLittleButtonSize;
+    border: 1px solid @AknBorderColor;
+    line-height: @AknLittleButtonSize;
+    padding: 0 5px;
+
+    &.select2-container {
+      padding: 0;
+    }
+  }
+}

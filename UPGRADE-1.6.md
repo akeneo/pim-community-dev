@@ -181,7 +181,7 @@ This modification introduces a new constraint, the minimum version of PHP for Ak
 
         ```
         "require": {
-            "akeneo/elasticsearch-bundle": "1.3.*"
+            "akeneo/innervariation-bundle": "1.3.*"
         }
         ```
 

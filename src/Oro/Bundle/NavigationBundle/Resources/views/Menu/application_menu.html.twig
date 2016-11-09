@@ -1,9 +1,9 @@
 {% extends 'OroNavigationBundle:Menu:menu.html.twig' %}
 
 {% block item %}
+    {%- set classes = classes|merge(['AknMainMenu-item']) %}
     {% if item.hasChildren and item.displayChildren %}
-        {%- set classes = classes|merge(['dropdown']) %}
-        {%- set childrenClasses = childrenClasses|merge(['dropdown-menu']) %}
+        {%- set childrenClasses = childrenClasses|merge(['AknMainMenu-submenu']) %}
     {% endif %}
     {{ block('item_renderer') }}
 {% endblock %}
@@ -15,5 +15,5 @@
         {'class': oro_menu.add_attribute_values(linkAttributes, 'class', ['dropdown-toggle']), 'data-toggle': 'dropdown'})
         %}
     {% endif %}
-    <a href="{{ item.uri }}"{{ oro_menu.attributes(linkAttributes) }}><span class="title">{{ block('label') }}</span></a>
+    <a class="AknMainMenu-link" href="{{ item.uri }}"{{ oro_menu.attributes(linkAttributes) }}>{{ block('label') }}</a>
 {% endblock %}

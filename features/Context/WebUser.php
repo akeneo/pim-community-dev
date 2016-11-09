@@ -1307,7 +1307,7 @@ class WebUser extends RawMinkContext
     public function iPressTheButton($button)
     {
         $this->spin(function () use ($button) {
-            $this->getCurrentPage()->pressButton($button);
+            $this->getCurrentPage()->pressButton($button, true);
 
             return true;
         }, sprintf("Can not find any '%s' button", $button));
@@ -1341,6 +1341,24 @@ class WebUser extends RawMinkContext
         $this->spin(function () use ($buttonNode) {
             return $buttonNode->hasClass('disabled');
         }, sprintf("The button '%s' is not disabled", $button));
+    }
+
+    /**
+     * @param string $button
+     *
+     * @throws TimeoutException
+     *
+     * @Given /^The button "([^"]*)" should be enabled$/
+     */
+    public function theButtonShouldBeEnabled($button)
+    {
+        $buttonNode = $this->spin(function () use ($button) {
+            return $this->getCurrentPage()->getButton($button);
+        }, sprintf("Can not find any '%s' button", $button));
+
+        $this->spin(function () use ($buttonNode) {
+            return !$buttonNode->hasClass('disabled');
+        }, sprintf("The button '%s' is not enabled", $button));
     }
 
     /**

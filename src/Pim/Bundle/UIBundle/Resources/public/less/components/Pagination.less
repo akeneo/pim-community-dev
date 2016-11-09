@@ -1,0 +1,69 @@
+@import '../base/variables';
+
+.AknPagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-input {
+    font-size: @AknDefaultFontSize;
+    width: @AknLittleButtonSize - 2px;
+    height: @AknLittleButtonSize - 2px;
+    border: none;
+    display: block;
+    text-align: center;
+  }
+
+  &-icons {
+    display: flex;
+    list-style: none;
+    line-height: @AknLittleButtonSize;
+    background: white;
+    margin: 0 5px;
+  }
+
+  &-item {
+    min-width: @AknLittleButtonSize - 5px;
+    height: @AknLittleButtonSize;
+    border-top: 1px solid @AknBorderColor;
+    border-bottom: 1px solid @AknBorderColor;
+    border-left: 1px solid @AknBorderColor;
+    text-align: center;
+
+    &:first-child {
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
+    }
+
+    &:last-child {
+      border-right: 1px solid @AknBorderColor;
+      border-top-right-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
+
+    &:hover {
+      background: @AknDefaultHoverBackground;
+    }
+  }
+
+  &-arrow {
+    &:before {
+      color: @AknDefaultFontColor;
+      font-size: @AknDefaultFontSize;
+      padding: 0;
+      text-indent: 0;
+    }
+  }
+
+  &-link {
+    display: block;
+  }
+
+  &-item--disabled &-link {
+    cursor: no-drop;
+  }
+
+  &-item--disabled &-arrow:before {
+    color: lighten(@AknDefaultFontColor, 30%);
+  }
+}

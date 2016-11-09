@@ -7,9 +7,9 @@
             {% set url = null %}
         {% endif %}
         {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-        <a class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if entity and icon %} icons-holder-text{% elseif icon %} icons-holder{% endif %} " href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
-          {% if icon %}
-            <i class="icon-{{ icon }}"></i>
+        <a class="AknButton AknButton--success{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AknButton--withIcon {% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
+        {% if icon %}
+            <i class="AknButton-icon icon-{{ icon }}"></i>
           {% endif %}
           {{ title }}
         </a>
@@ -95,32 +95,28 @@
 {% endmacro %}
 
 {% macro page_header(title, buttons, subtitle, left, right, titleButtons) %}
-    <div class="navigation clearfix navbar-extra">
-        <div class="row-fluid">
+    <div class="AknTitleContainer navigation">
+        <div>
+            {% if titleButtons is not empty %}
+                <div class="AknButtonsList AknTitleContainer-titleButtons">
+                    {{ titleButtons }}
+                </div>
+            {% endif %}
+            <div class="AknTitleContainer-title">
+                {{ title|first|capitalize ~ title[1:] }}
+                {% if subtitle is not empty %}
+                    / {{ subtitle }}
+                {% endif %}
+            </div>
+            {{ left }}
+        </div>
+        <div>
+            {{ right }}
             {% if buttons is not empty %}
-                <div class="navbar-buttons pull-right">
+                <div class="AknButtonsList AknTitleContainer-rightButtons">
                     {{ buttons }}
                 </div>
             {% endif %}
-            <div class="navbar-content pull-left">
-                <div class="navbar-title clearfix-oro">
-                    {% if titleButtons is not empty %}
-                        <div class="navbar-buttons">
-                            {{ titleButtons }}
-                        </div>
-                    {% endif %}
-                    <div class="sub-title">{{ title|first|capitalize ~ title[1:] }}</div>
-                    {% if subtitle is not empty %}
-                        <span class="separator">/</span>
-                        <div class="sub-title">{{ subtitle }}</div>
-                    {% endif %}
-                </div>
-           </div>
-           <div class="clearfix"></div>
-           <div class="navbar-content pull-left">
-               {{ left }}
-           </div>
-            {{ right }}
         </div>
     </div>
 {% endmacro %}

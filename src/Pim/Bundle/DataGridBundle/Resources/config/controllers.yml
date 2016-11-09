@@ -59,3 +59,5 @@ services:
             - '@validator'
             - '@translator'
             - '@pim_catalog.filter.chained'
+            - '@pim_datagrid.updater.datagrid_view'
+            - '@pim_datagrid.factory.datagrid_view'

@@ -1,0 +1,58 @@
+@import '../base/variables';
+
+// TODO Remove the .dropdown, .dropdown-menu ... classes. I keep it because it's used everywhere for now.
+.AknDropdown {
+  position: relative;
+
+  &-menu {
+    border: 1px solid @AknBorderColor;
+    padding: 5px 0;
+    position: absolute;
+    left: 0;
+    display: none;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    z-index: 1;
+
+    &--alignLeft { }
+
+    &--alignRight {
+      right: 0;
+      left: auto;
+    }
+
+    // TODO Remove this input too when dropdown classes will be dropped
+    input[type='search'] {
+      padding: 4px;
+      border: 1px solid @AknBorderColor;
+      height: 22px;
+      line-height: 22px;
+    }
+  }
+
+  &-menuLink {
+    padding: 0 15px;
+    display: block;
+    height: 27px;
+    line-height: 27px;
+    white-space: nowrap;
+    font-weight: normal;
+    font-size: @AknDefaultFontSize;
+
+    &:hover {
+      background: @AknDefaultHoverBackground;
+    }
+
+    &--active,
+    &--active:hover {
+      background: @AknPurple;
+      color: white;
+    }
+  }
+
+  // TODO Due to JS dropdown, we have to change it directly in the jQuery code.
+  &.open &-menu {
+    display: block;
+  }
+}

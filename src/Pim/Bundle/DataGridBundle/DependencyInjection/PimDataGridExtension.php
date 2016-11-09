@@ -30,6 +30,7 @@ class PimDataGridExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('event_listeners.yml');
         $loader->load('extensions.yml');
+        $loader->load('factories.yml');
         $loader->load('form_types.yml');
         $loader->load('formatters.yml');
         $loader->load('hydrators.yml');
@@ -44,6 +45,7 @@ class PimDataGridExtension extends Extension
         $loader->load('sorters.yml');
         $loader->load('subscribers.yml');
         $loader->load('twig.yml');
+        $loader->load('updaters.yml');
 
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

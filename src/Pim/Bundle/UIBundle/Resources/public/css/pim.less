@@ -55,65 +55,6 @@ a:focus {
   color: @akeneoDarkBlue;
 }
 
-table.grid {
-  margin-bottom: 20px;
-}
-.filter-box {
-  select.filter-select-oro {
-    width: 100px;
-    padding-right: 0;
-  }
-  .btn-group {
-    float: none;
-  }
-  .filter-item .choicefilter .input-append input {
-    margin-right: 0;
-  }
-}
-
-.grid-toolbar {
-  .pagination > ul > li .icon-chevron-left:before,
-  .pagination > ul > li .icon-chevron-right:before {
-    color: @gray;
-  }
-  @media all and (max-width: 1600px) {
-    .pagination-centered, .page-size label {
-      width: auto;
-    }
-  }
-}
-
-.actions-panel .btn-group+.btn-group {
-  margin-left: 5px;
-}
-
-.grid .action-cell {
-  vertical-align: top;
-  a.action {
-    display: table-cell;
-    i {
-      background: @akeneoGrey;
-      opacity: 0;
-      width: 26px;
-      height: 26px;
-      line-height: 26px;
-      text-align: center;
-      .border-radius(2px);
-    }
-  }
-
-  [class^='icon-'].hide-text:before {
-    color: @akeneoSlateGreyDark;
-
-  }
-}
-tr:hover>.action-cell a.action>i {
-  opacity: 0.7;
-  &:hover {
-    opacity: 1;
-  }
-}
-
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
   &.ui-state-hover, &.ui-state-active {
     background-color: @akeneoPurpleLight;
@@ -141,24 +82,6 @@ tr:hover>.action-cell a.action>i {
   &:hover, &:active {
     color: @akeneoPurpleDark;
     cursor: pointer;
-  }
-}
-
-.btn-group>.dropdown-menu li {
-  a:hover {
-    background: @whiteDarker;
-    color: @textColor;
-  }
-  &.disabled a {
-    color: @textColor + #555;
-    background: @backgroundColor-white;
-  }
-  &.select2-search-choice a {
-    padding: 0;
-    color: @textColor + #333;
-    &:hover {
-      background: transparent;
-    }
   }
 }
 
@@ -294,40 +217,6 @@ span.link-label {
 }
 
 /** Notifications *****************************************************************************************************/
-#header-notification-widget {
-  i.icon-bell {
-    font-size: @font-size-18 !important;
-    line-height: 20px;
-    height: 20px;
-    text-align: center;
-  }
-  .indicator {
-    position: absolute;
-    text-align: center;
-    right: -3px;
-    top: -7px;
-
-    .badge-square {
-      font-size: @font-size-11;
-      font-weight: initial;
-      padding: 0 3px;
-      background: @redDark;
-      box-shadow: 0 0.7px 0 RGBa(0, 0, 0, 0.3), 0 0 3px rGBa(0, 0, 0, 0.35);
-      text-shadow: 0 1px 0 darken(@red, 20%);
-    }
-  }
-
-  .mark-as-read {
-    border: none;
-    width: 100%;
-    margin: 0;
-  }
-  .dropdown-toggle {
-    width: 40px;
-    height: 40px;
-  }
-}
-
 .attribute-option-view {
   width: 100%;
   position: relative;
@@ -575,10 +464,6 @@ h3.tab-header {
       margin-left: 5px;
     }
 
-    & > * > .btn, & > * > .btn-group {
-      margin-left: 8px;
-    }
-
     & > div {
       .flex-shrink(0);
     }
@@ -747,12 +632,6 @@ h3.tab-header {
     .state {
       .flex-shrink(0);
       align-self: flex-end;
-    }
-  }
-
-  header {
-    .btn-group+h1, h1+.btn-group {
-      margin-left: 12px;
     }
   }
 
@@ -1334,6 +1213,16 @@ h3.tab-header {
       cursor: pointer;
     }
   }
+
+  .ui-multiselect-footer {
+    .btn-primary {
+      padding-right: 10px;
+    }
+
+    .icons-holder-text {
+      position: relative;
+    }
+  }
 }
 
 .form-field .select2-container {
@@ -1482,23 +1371,11 @@ h3.tab-header {
     text-transform: capitalize;
     background-image: none;
 
-    .caret {
-      margin-top: 14px;
-    }
-
     .flag-language .language {
       font-family: @sansFontFamily;
       color: @gray;
       padding-top: 1px;
     }
-  }
-}
-
-.entity-edit-form > header .actions .btn-group {
-  font-weight: 200;
-
-  &.hidden {
-    display: none;
   }
 }
 
@@ -1513,10 +1390,6 @@ h3.tab-header {
     &:not(:first-child) {
       margin-left: 0;
       border-left: none;
-    }
-
-    .caret {
-      margin: 15px 12px;
     }
   }
 }
@@ -1887,16 +1760,6 @@ h3.tab-header {
           }
         }
       }
-    }
-  }
-}
-
-.grid-view-selector {
-  .buttons {
-    display: inline-block;
-
-    .save-button a {
-      cursor: pointer;
     }
   }
 }

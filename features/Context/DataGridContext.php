@@ -581,12 +581,12 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->datagrid->sortBy($columnName, $order);
 
-        $loadlingMask = $this->datagrid
+        $loadingMask = $this->datagrid
             ->getElement('Grid container')
             ->find('css', '.loading-mask .loading-mask');
 
-        $this->spin(function () use ($loadlingMask) {
-            return !$loadlingMask->isVisible();
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
         }, '".loading-mask" is still visible');
     }
 
@@ -1019,9 +1019,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iCreateTheView(TableNode $table)
     {
         $this->getCurrentPage()->getViewSelector()->click();
+        $this->getCurrentPage()->clickCreateOnButton("Create view");
 
         return [
-            new Step\Then('I press the "Create view" button'),
             new Step\Then('I fill in the following information in the popin:', $table),
             new Step\Then('I press the "OK" button')
         ];

@@ -1,0 +1,122 @@
+/**
+    This file contains temporary fixes during the BEM implementation.
+    It contains "hard" rules to reset previous behavior during the step-by-step merges.
+
+    TODO This file has to be deleted at the end of the BEM implementation.
+ **/
+
+.scope-switcher, .locale-switcher {
+  position: relative;
+}
+.btn.btn-primary:hover {
+  background-image: none;
+  box-shadow: none;
+}
+.edit-form > header > div {
+  display: flex;
+}
+.edit-form {
+  header {
+    .btn-group {
+      position: relative;
+      display: inline-block;
+      font-size: 0;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+    .btn-group + .btn-group {
+      margin-left: 8px;
+    }
+    .status-switcher {
+      margin-left: 10px;
+    }
+    .title.entity-title > .btn-group {
+      margin-right: 10px;
+    }
+  }
+}
+.akeneo-text-field,
+.akeneo-datepicker-field,
+.akeneo-price-collection-field,
+.akeneo-metric-field {
+  input[type="text"] {
+    border: 1px solid #ccc;
+    padding: 0 5px;
+    border-radius: 2px;
+  }
+}
+.btn.btn-primary.dropdown-toggle {
+  .caret {
+    border-top-color: white;
+  }
+}
+.tabsection-content {
+  .control-group {
+    .controls {
+      input[type="text"] {
+        padding: 0 5px;
+        height: 30px;
+        border-radius: 2px;
+      }
+    }
+  }
+}
+.btn.icons-holder-text + .btn.btn-primary {
+  margin-left: 8px;
+}
+.AknTitleContainer.navigation.clearfix > .row {
+  width: 100%;
+}
+.customer-info .pull-left .clearfix .status-enabled.pull-left {
+  margin-top: 10px;
+}
+.tab-pane .control-group,
+.tabsection-content .control-group,
+.modal-body {
+  input[type="text"],
+  input[type="password"] {
+    padding: 0 5px;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+  }
+}
+.navigation.clearfix.navbar-extra .row .pull-right .pull-right {
+  display: flex;
+  .btn {
+    margin-left: 8px;
+  }
+}
+.grid-view-selector {
+  .select2-container.select-field,
+  .buttons {
+    display: inline-block;
+  }
+}
+.select2-container-multi .select2-choices .select2-search-choice {
+  height: 26px;
+  line-height: 26px;
+  padding: 0 5px 0 18px;
+  margin: 1px;
+
+  .select2-search-choice-close {
+    line-height: 18px;
+  }
+}
+.grid-view-selector {
+  .select2-container {
+    .select2-choice {
+      height: 34px;
+      line-height: 34px;
+      background: #e9ebee !important;
+      font-size: 14px;
+
+      .select2-arrow {
+        height: 34px;
+        width: 34px;
+        line-height: 34px;
+        background: #ccd1d8;
+      }
+    }
+  }
+}

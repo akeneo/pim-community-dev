@@ -93,7 +93,7 @@ class PriceCollectionAttributeCopier extends AbstractAttributeCopier
             if (null === $toValue) {
                 $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
-            $this->copyOptions($fromValue, $toValue);
+            $this->copyPrices($fromValue, $toValue);
         }
     }
 
@@ -103,7 +103,7 @@ class PriceCollectionAttributeCopier extends AbstractAttributeCopier
      * @param ProductValueInterface $fromValue
      * @param ProductValueInterface $toValue
      */
-    protected function copyOptions(ProductValueInterface $fromValue, ProductValueInterface $toValue)
+    protected function copyPrices(ProductValueInterface $fromValue, ProductValueInterface $toValue)
     {
         foreach ($fromValue->getData() as $price) {
             $this->productBuilder

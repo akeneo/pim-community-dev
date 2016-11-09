@@ -1,0 +1,90 @@
+@import '../base/variables';
+
+.AknButton {
+  background: @AknLightGray;
+  color: @AknDefaultFontColor;
+  height: @AknDefaultButtonSize;
+  line-height: @AknDefaultButtonSize;
+  font-size: @AknFontSizeBig;
+  display: inline-block;
+  padding: 0 10px;
+  border-radius: 2px;
+  border: none;
+
+  &--withIcon {
+    padding-left: 0;
+  }
+
+  &:hover {
+    background: darken(@AknLightGray, 10%);
+    color: darken(@AknDefaultFontColor, 10%);
+  }
+
+  &-icon {
+    height: @AknDefaultButtonSize;
+    width: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize;
+    background: darken(@AknLightGray, 10%);
+    text-align: center;
+    margin-left: 0;
+    margin-right: 5px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  &--success {
+    background-color: @AknGreen;
+    color: white;
+
+    &:hover {
+      background-color: darken(@AknGreen, 10%);
+      color: white;
+    }
+  }
+
+  &--success &-icon {
+    background: darken(@AknGreen, 10%);
+  }
+
+  &--grey {
+    background-color: @AknGrey;
+    color: white;
+
+    &:hover {
+      background: darken(@AknGrey, 10%);
+      color: white;
+    }
+  }
+
+  &--grey:hover &-icon {
+    background: darken(@AknGrey, 20%);
+    color: white;
+  }
+
+  &--grey &-icon {
+    background: darken(@AknGrey, 10%);
+  }
+
+  &--little {
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+  }
+
+  &--micro {
+    height: @AknMicroButtonSize;
+    line-height: @AknMicroButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--micro &-icon {
+    height: @AknMicroButtonSize;
+    width: @AknMicroButtonSize;
+    line-height: @AknMicroButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--noLeftRadius {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}

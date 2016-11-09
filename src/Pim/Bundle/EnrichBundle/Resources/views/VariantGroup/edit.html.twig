@@ -3,13 +3,12 @@
 {% block main %}
     <div id="main">
         {% block before_content %}
-        <div class="container-fluid breadcrumb-pin">
+        <div class="AknBreadcrumbContainer">
             <div id="breadcrumb">
                 {% block breadcrumb %}
                     {% placeholder breadcrumb %}
                 {% endblock breadcrumb %}
             </div>
-            {% placeholder pin_button %}
             <div id="flash-messages">
                 {% block messages %}
                     <div class="flash-messages-frame">
@@ -41,6 +40,7 @@
                     </script>
                 {% endblock messages %}
             </div>
+            {% placeholder pin_button %}
         </div>
         {% endblock before_content %}
         <div class="hash-loading-mask"></div>
