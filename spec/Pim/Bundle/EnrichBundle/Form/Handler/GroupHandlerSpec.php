@@ -3,12 +3,13 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,10 +20,11 @@ class GroupHandlerSpec extends ObjectBehavior
         Request $request,
         SaverInterface $saver,
         ProductRepositoryInterface $repository,
-        AttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter,
+        ObjectManager $objectManager
     )
     {
-        $this->beConstructedWith($form, $request, $saver, $repository, $localizedConverter);
+        $this->beConstructedWith($form, $request, $saver, $repository, $localizedConverter, $objectManager);
     }
 
     function it_is_a_handler()
@@ -34,6 +36,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $form,
         $request,
         $saver,
+        $objectManager,
         GroupInterface $group,
         GroupTypeInterface $groupType,
         ProductInterface $product,
@@ -45,6 +48,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $request->isMethod('POST')->willReturn(true);
         $group->getProducts()->willReturn([$product]);
         $group->getType()->willReturn($groupType);
+        $group->getId()->willReturn(12);
         $groupType->isVariant()->willReturn(false);
 
         $form->submit($request)->shouldBeCalled();
@@ -55,6 +59,8 @@ class GroupHandlerSpec extends ObjectBehavior
         $addedForm->getData()->willReturn([$addedProduct]);
         $removedForm->getData()->willReturn([]);
 
+        $objectManager->refresh($group)->shouldBeCalled();
+
         $saver->save($group, ['add_products' => [$addedProduct], 'remove_products' => []])->shouldBeCalled();
 
         $this->process($group)->shouldReturn(true);
@@ -64,6 +70,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $form,
         $request,
         $saver,
+        $objectManager,
         GroupInterface $group,
         GroupTypeInterface $groupType,
         ProductInterface $product,
@@ -75,6 +82,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $request->isMethod('POST')->willReturn(true);
         $group->getProducts()->willReturn([$product]);
         $group->getType()->willReturn($groupType);
+        $group->getId()->willReturn(12);
         $group->getProductTemplate()->willReturn(null);
         $groupType->isVariant()->willReturn(true);
 
@@ -85,6 +93,8 @@ class GroupHandlerSpec extends ObjectBehavior
         $form->get('removeProducts')->willReturn($removedForm);
         $addedForm->getData()->willReturn([$addedProduct]);
         $removedForm->getData()->willReturn([]);
+
+        $objectManager->refresh($group)->shouldBeCalled();
 
         $saver->save(
             $group,
