@@ -4,13 +4,13 @@ namespace spec\Pim\Bundle\WebServiceBundle\Handler\Rest;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductHandlerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
+    function let(NormalizerInterface $normalizer)
     {
-        $this->beConstructedWith($serializer);
+        $this->beConstructedWith($normalizer);
     }
 
     function it_is_initializable()
@@ -18,18 +18,17 @@ class ProductHandlerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\WebServiceBundle\Handler\Rest\ProductHandler');
     }
 
-    function it_gets_a_product($serializer, ProductInterface $product)
+    function it_gets_a_product($normalizer, ProductInterface $product)
     {
         $channels = ['ecommerce', 'print'];
         $locales = ['en_US', 'fr_FR'];
         $url = 'resource/url';
-        $serializer->serialize(
+        $normalizer->normalize(
             $product,
-            'json',
+            'standard',
             [
                 'locales'      => $locales,
                 'channels'     => $channels,
-                'resource'     => $url,
                 'filter_types' => ['pim.external_api.product.view']
             ]
         )

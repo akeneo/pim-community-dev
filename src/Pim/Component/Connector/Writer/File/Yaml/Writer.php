@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Writer\File\Yaml;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Symfony\Component\Yaml\Yaml;
 
@@ -21,16 +22,21 @@ class Writer extends AbstractFileWriter implements
 {
     const INLINE_ARRAY_LEVEL = 8;
 
+    /** @var ArrayConverterInterface */
+    protected $arrayConverter;
+
     /** @var string */
     protected $header;
 
     /**
-     * @param string $header
+     * @param ArrayConverterInterface $arrayConverter
+     * @param string                  $header
      */
-    public function __construct($header = null)
+    public function __construct(ArrayConverterInterface $arrayConverter, $header = null)
     {
         parent::__construct();
 
+        $this->arrayConverter = $arrayConverter;
         $this->header = $header;
     }
 
@@ -39,10 +45,15 @@ class Writer extends AbstractFileWriter implements
      */
     public function write(array $items)
     {
-        $data = call_user_func_array('array_merge', $items);
+        $flatItems = [];
+        foreach ($items as $item) {
+            $flatItems[] = $this->arrayConverter->convert($item);
+        }
+
+        $flatItems = call_user_func_array('array_merge', $flatItems);
         if (null !== $this->header) {
             $data = [];
-            $data[$this->header] = call_user_func_array('array_merge', $items);
+            $data[$this->header] = $flatItems;
         }
 
         $path = $this->getPath();

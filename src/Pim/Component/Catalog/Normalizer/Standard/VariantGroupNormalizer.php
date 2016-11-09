@@ -96,7 +96,7 @@ class VariantGroupNormalizer implements NormalizerInterface
         return $this->valuesNormalizer->normalize(
             $this->valuesDenormalizer->denormalize(
                 $variantGroup->getProductTemplate()->getValuesData(),
-                'json',
+                'standard',
                 []
             ),
             'standard',
