@@ -41,7 +41,7 @@ services:
         class: 'Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\UserGroupCalculationStep'
         arguments:
             - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pimee_product_asset.repository.asset_category_access'
+            - '@pimee_security.repository.category_access'
             - '@activity_manager.repository.familly_requirement'
             - '@activity_manager.repository.attribute_permission'
         public: false
