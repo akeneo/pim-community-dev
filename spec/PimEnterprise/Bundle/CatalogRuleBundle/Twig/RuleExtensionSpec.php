@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Twig;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\Formatter\Presenter\Presenter;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
@@ -11,9 +12,11 @@ use Prophecy\Argument;
 
 class RuleExtensionSpec extends ObjectBehavior
 {
-    function let(PresenterRegistryInterface $presenterRegistry, LocaleResolver $localeResolver)
-    {
-        $this->beConstructedWith($presenterRegistry, $localeResolver);
+    function let(PresenterRegistryInterface $presenterRegistry,
+                 LocaleResolver $localeResolver,
+                 AttributeRepository $attributeRepository
+    ) {
+        $this->beConstructedWith($presenterRegistry, $localeResolver, $attributeRepository);
     }
 
     function it_is_a_twig_extension()
@@ -39,38 +42,58 @@ class RuleExtensionSpec extends ObjectBehavior
         $filters[1]->getName()->shouldReturn('append_locale_and_scope_context');
     }
 
-    function it_presents_rule_action_with_scalar_value()
+    function it_presents_rule_action_with_scalar_value(AttributeRepository $attributeRepository)
     {
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
         $this->presentRuleActionValue('toto', 'unknown')->shouldReturn('toto');
     }
 
-    function it_presents_rule_action_with_array_value()
+    function it_presents_rule_action_with_array_value(AttributeRepository $attributeRepository)
     {
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
+
         $this->presentRuleActionValue(['foo', 'bar'], 'unknown')->shouldReturn('foo, bar');
     }
 
     function it_presents_rule_action_with_scalar_value_using_presenter(
         $presenterRegistry,
         $localeResolver,
-        PresenterInterface $presenter
+        PresenterInterface $presenter,
+        AttributeRepository $attributeRepository
     ) {
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present('toto', ['locale' => 'en_US'])->willReturn('expected');
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue('toto', 'attribute_code')->shouldReturn('expected');
+    }
+
+    function it_presents_rule_action_with_filepath_value(
+        $presenterRegistry,
+        PresenterInterface $presenter,
+        AttributeRepository $attributeRepository
+    ) {
+        $presenterRegistry->getPresenterByFieldCode('media_attribute_code')->willReturn(null);
+        $presenterRegistry->getPresenterByAttributeCode('media_attribute_code')->willReturn($presenter);
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
+
+        $this->presentRuleActionValue('/tmp/akeneo.jpg', 'media_attribute_code')
+            ->shouldReturn(sprintf('<i class="icon-file"></i> %s', 'akeneo.jpg'));
     }
 
     function it_presents_rule_action_with_boolean_value_using_presenter(
         $presenterRegistry,
         $localeResolver,
-        PresenterInterface $presenter
+        PresenterInterface $presenter,
+        AttributeRepository $attributeRepository
     ) {
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present(true, ['locale' => 'en_US'])->willReturn('expected');
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue(true, 'attribute_code')->shouldReturn('expected');
     }
@@ -78,12 +101,14 @@ class RuleExtensionSpec extends ObjectBehavior
     function it_presents_rule_action_with_array_value_using_presenter(
         $presenterRegistry,
         $localeResolver,
-        PresenterInterface $presenter
+        PresenterInterface $presenter,
+        AttributeRepository $attributeRepository
     ) {
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present(['foo', 'bar'], ['locale' => 'en_US'])->willReturn('foobar');
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue(['foo', 'bar'], 'attribute_code')->shouldReturn('foobar');
     }
@@ -91,22 +116,27 @@ class RuleExtensionSpec extends ObjectBehavior
     function it_presents_rule_action_with_array_value_using_presenter_returning_array(
         $presenterRegistry,
         $localeResolver,
-        PresenterInterface $presenter
+        PresenterInterface $presenter,
+        AttributeRepository $attributeRepository
     ) {
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present(['foo', 'bar'], ['locale' => 'en_US'])->willReturn(['presented foo', 'presented bar']);
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue(['foo', 'bar'], 'attribute_code')->shouldReturn('presented foo, presented bar');
     }
 
     function it_presents_rule_action_with_field(
         $presenterRegistry,
-        PresenterInterface $presenter
+        PresenterInterface $presenter,
+        AttributeRepository $attributeRepository
     ) {
         $presenterRegistry->getPresenterByFieldCode('enabled')->willReturn($presenter);
         $presenter->present(false, Argument::any())->willReturn('false');
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
+
         $this->presentRuleActionValue(false, 'enabled')->shouldReturn('false');
     }
 

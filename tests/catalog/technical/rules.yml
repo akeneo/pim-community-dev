@@ -1,0 +1,16 @@
+rules:
+  set_localized_scopable_text:
+    priority: 10
+    conditions:
+      -
+        field: categories.code
+        operator: IN
+        value:
+          - master
+    actions:
+      -
+        type:  set
+        field: a_localized_and_scopable_text_area
+        value: an other text
+        locale: en_US
+        scope: tablet

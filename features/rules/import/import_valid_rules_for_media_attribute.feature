@@ -44,9 +44,7 @@ Feature: Import rules
             actions:
                 - type:  set
                   field: side_view
-                  value:
-                       filePath:         %fixtures%/akeneo.jpg
-                       originalFilename: akeneo.jpg
+                  value: %fixtures%/akeneo.jpg
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |

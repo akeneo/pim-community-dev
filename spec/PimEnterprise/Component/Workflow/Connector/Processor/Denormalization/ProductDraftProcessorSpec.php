@@ -6,7 +6,6 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -59,13 +58,12 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         JobInstance $jobInstance
     ) {
-        $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
         $values = $this->getValues();
 
         $updater
-            ->update($product, $values['converted_values'])
+            ->update($product, $values)
             ->shouldBeCalled();
 
         $validator
@@ -79,26 +77,21 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
         $this
-            ->process($values['converted_values'])
+            ->process($values)
             ->shouldReturn($productDraft);
     }
 
-    function it_skips_a_proposal_if_there_is_no_identifier(
-        $repository,
-        ProductInterface $product
-    ) {
-        $repository->getIdentifierProperties()->willReturn(['sku']);
-        $repository->findOneByIdentifier('my-sku')->willReturn($product);
-
+    function it_skips_a_proposal_if_there_is_no_identifier()
+    {
         $values = $this->getValues();
 
-        unset($values['converted_values']['sku']);
+        unset($values['identifier']);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Identifier property "sku" is expected'))
+            ->shouldThrow(new \InvalidArgumentException('Identifier is expected'))
             ->during(
                 'process',
-                [$values['converted_values']]
+                [$values]
             );
     }
 
@@ -106,14 +99,11 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $repository,
         $stepExecution
     ) {
-        $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn(null);
 
         $values = $this->getValues();
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
-
-
 
         $this->setStepExecution($stepExecution);
         $stepExecution->getSummaryInfo('item_position')->willReturn(1);
@@ -122,7 +112,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$values['converted_values']]
+                [$values]
             );
     }
 
@@ -137,13 +127,12 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         JobInstance $jobInstance
     ) {
-        $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
         $values = $this->getValues();
 
         $updater
-            ->update($product, $values['converted_values'])
+            ->update($product, $values)
             ->shouldBeCalled();
 
         $validator
@@ -157,13 +146,14 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo('proposal_skipped')->shouldBeCalled();
 
-        $this->process($values['converted_values'])->shouldReturn(null);
+        $this->process($values)->shouldReturn(null);
     }
 
     function getValues()
     {
         return [
-            'converted_values' => [
+            'identifier' => 'my-sku',
+            'values' => [
                 'sku'          => [
                     [
                         'locale' => null,
@@ -213,7 +203,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
                         ]
                     ]
                 ],
-            ]
+            ],
         ];
     }
 }

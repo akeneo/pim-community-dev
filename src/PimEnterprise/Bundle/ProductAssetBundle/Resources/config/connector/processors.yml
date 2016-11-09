@@ -44,25 +44,25 @@ services:
     pimee_product_asset.processor.normalization.asset:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_product_asset.normalizer.structured.asset'
+            - '@pimee_product_asset.normalizer.standard.asset'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.normalization.category:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_serializer.normalizer.category'
+            - '@pim_catalog.normalizer.standard.category'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.normalization.variation:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_product_asset.normalizer.structured.variation'
+            - '@pimee_product_asset.normalizer.standard.variation'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.normalization.channel_configuration:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
-            - '@pim_product_asset.normalizer.structured.channel_configuration'
+            - '@pimee_product_asset.normalizer.standard.channel_configuration'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     # Mass Edit

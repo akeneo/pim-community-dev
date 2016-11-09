@@ -358,7 +358,7 @@ Feature: Import rules
           - type:   set
             field:  price
             value:
-              - data: 3
+              - amount: 3
                 currency: EUR
       """
     And the following yaml file to import:
@@ -409,7 +409,7 @@ Feature: Import rules
           - type:   set
             field:  length
             value:
-              data: 3
+              amount: 3
               unit: CENTIMETER
       """
     And the following yaml file to import:
@@ -616,9 +616,7 @@ Feature: Import rules
         actions:
           - type:   set
             field:  side_view
-            value:
-              originalFilename: SNKRS-1R.png
-              filePath: %fixtures%/SNKRS-1R.png
+            value:  %fixtures%/SNKRS-1R.png
       """
     And the following yaml file to import:
     """
@@ -632,9 +630,7 @@ Feature: Import rules
             actions:
                 - type:  set
                   field: side_view
-                  value:
-                      filePath:         invalid/path/to/image
-                      originalFilename: image_name
+                  value: invalid/path/to/image
         sony_beautiful_description:
             conditions:
                 - field:    side_view
@@ -644,9 +640,7 @@ Feature: Import rules
             actions:
                 - type:  set
                   field: side_view
-                  value:
-                      filePath:         invalid/path/to/image
-                      originalFilename: image_name
+                  value: invalid/path/to/image
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -660,7 +654,7 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see the text "SNKRS-1R"
 
-  Scenario: Skip rules with missing values for attribute of type media in conditions and actions
+  Scenario: Skip rules with array values for attribute of type media in conditions and actions
     Given the following product rule definitions:
       """
       sony_beautiful_description:
@@ -673,9 +667,7 @@ Feature: Import rules
         actions:
           - type:   set
             field:  side_view
-            value:
-              originalFilename: SNKRS-1R.png
-              filePath: %fixtures%/SNKRS-1R.png
+            value: %fixtures%/SNKRS-1R.png
       """
     And the following yaml file to import:
     """
@@ -707,7 +699,7 @@ Feature: Import rules
     Then I should see the text "skipped 2"
     And I should see the text "conditions[0]: The key \"value\" is missing or empty."
     And I should see the text "conditions[0]: Attribute or field \"side_view\" expects a string as data"
-    And I should see the text "actions[0]: Attribute or field \"side_view\" expects an array with the key \"filePath\" as data"
+    And I should see the text "actions[0]: Attribute or field \"side_view\" expects a string as data, \"array\" given (for setter media)"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see the text "SNKRS-1R"

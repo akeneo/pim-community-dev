@@ -25,12 +25,16 @@ class VariationNormalizer implements NormalizerInterface
     public function normalize($variation, $format = null, array $context = [])
     {
         $normalizedVariation = [
-            'code'           => $variation->getFileInfo()->getKey(),
             'asset'          => $variation->getAsset()->getCode(),
+            'code'           => null,
             'locale'         => null,
             'channel'        => null,
             'reference_file' => null,
         ];
+
+        if (null !== $variation->getFileInfo()) {
+            $normalizedVariation['code'] = $variation->getFileInfo()->getKey();
+        }
 
         if (null !== $variation->getLocale()) {
             $normalizedVariation['locale'] = $variation->getLocale()->getCode();

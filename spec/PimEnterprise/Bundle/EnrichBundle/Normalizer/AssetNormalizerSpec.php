@@ -25,18 +25,18 @@ class AssetNormalizerSpec extends ObjectBehavior
             'code'        => 'code',
             'description' => 'my description',
             'enabled'     => true,
-            'end_of_use'  => '2010-10-10',
+            'end_of_use'  => '2010-10-10T00:00:00+01:00',
         ];
 
         $result = $normalizedValues + ['references' => [], 'categories' => []];
 
-        $normalizer->normalize($asset, 'structured', [])->willReturn($normalizedValues);
+        $normalizer->normalize($asset, 'standard', [])->willReturn($normalizedValues);
         $asset->getCode()->willReturn('code');
         $asset->getDescription()->willReturn('my description');
         $asset->isEnabled()->willReturn(true);
-        $asset->getEndOfUseAt()->willReturn(new \Datetime('2010-10-10'));
+        $asset->getEndOfUseAt()->willReturn('2010-10-10T00:00:00+01:00');
         $asset->getTagCodes()->willReturn(['tag1', 'tag2', 'tag3']);
-        $asset->getCategoryCodes()->willReturn(['cat1', 'cat2', 'cat3']);
+        $asset->getCategoryCodes()->willReturn(['cat1', 'cat2', 'cat36']);
         $asset->getReferences()->willReturn(new ArrayCollection([]));
         $asset->getCategories()->willReturn(new ArrayCollection([]));
 

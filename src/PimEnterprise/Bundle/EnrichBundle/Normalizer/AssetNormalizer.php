@@ -40,7 +40,7 @@ class AssetNormalizer implements NormalizerInterface
      */
     public function normalize($asset, $format = null, array $context = [])
     {
-        $normalizedData = $this->assetNormalizer->normalize($asset, 'structured', $context);
+        $normalizedData = $this->assetNormalizer->normalize($asset, 'standard', $context);
         $normalizedData['references'] = $this->normalizeReferences($asset->getReferences());
         $normalizedData['categories'] = array_map(
             function (CategoryInterface $category) {

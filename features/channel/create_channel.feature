@@ -9,11 +9,11 @@ Feature: Create a channel
     And I am logged in as "Peter"
     When I am on the channel creation page
     And I fill in the following information:
-      | Code          | foo             |
-      | Default label | bar             |
-      | Category tree | 2014 collection |
-      | Currencies    | EUR             |
-      | Locales       | French          |
+      | Code                    | foo             |
+      | English (United States) | bar             |
+      | Category tree           | 2014 collection |
+      | Currencies              | EUR             |
+      | Locales                 | French          |
     And  I visit the "Asset transformations" tab
     Then I should see "No transformation found"
     And I press the "Save" button

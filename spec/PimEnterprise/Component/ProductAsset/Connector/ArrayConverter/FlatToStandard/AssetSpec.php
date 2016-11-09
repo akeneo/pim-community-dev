@@ -24,7 +24,7 @@ class AssetSpec extends ObjectBehavior
             'code'        => 'mycode',
             'localized'   => false,
             'description' => 'My awesome description',
-            'end_of_use'  => '2018-02-01',
+            'end_of_use'  => '2018-02-01T00:00:00+01:00',
         ]);
     }
 
