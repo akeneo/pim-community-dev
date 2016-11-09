@@ -28,7 +28,8 @@ Feature: Add products to a variant group
     And I check the row "sandal-white-37"
     And I check the row "sandal-white-38"
     And I press the "Save" button
-    Then the rows "sandal-white-37 and sandal-white-38" should be checked
+    Then I should see the text "Products: 2"
+    And the rows "sandal-white-37 and sandal-white-38" should be checked
     And the product "sandal-white-37" should have the following value:
       | name-en_US   | EN name     |
       | comment      | New comment |

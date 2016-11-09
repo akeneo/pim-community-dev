@@ -1,3 +1,7 @@
+# 1.5.x
+
+- PIM-5995: Fix issue with product count on group save
+
 # 1.5.12 (2016-11-04)
 
 - PIM-5995: Fix issue with locale specific attributes added to variant groups
