@@ -81,7 +81,8 @@
         "sensiolabs/behat-page-object-extension": "1.0.1",
         "phpspec/phpspec": "2.4.*",
         "akeneo/phpspec-skip-example-extension": "1.2.*",
-        "akeneo/php-coupling-detector": "dev-master"
+        "akeneo/php-coupling-detector": "dev-master",
+        "mikey179/vfsStream": "~1.6.4"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",

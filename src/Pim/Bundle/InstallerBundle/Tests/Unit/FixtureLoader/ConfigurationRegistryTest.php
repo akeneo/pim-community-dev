@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\InstallerBundle\Tests\Unit\FixtureLoader;
 
+use org\bovigo\vfs\vfsStream;
+
 /**
  * Tests related class
  *
@@ -167,41 +169,56 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFixtures()
     {
+        $root = vfsStream::setup('root/tmp');
+        $filePaths = [
+            $root->url() . '/tmp/entity1.format1',
+            $root->url() . '/tmp/entity1.format2',
+            $root->url() . '/tmp/entity2.format2',
+        ];
+        array_map('touch', $filePaths);
+
         $this->assertEquals(
             [
                 [
                     'name'      => 'entity1.step2',
                     'extension' => 'format1',
-                    'path'      => '/tmp/entity1.format1'
+                    'path'      => 'vfs://root/tmp/entity1.format1'
                 ],
                 [
                     'name'      => 'entity1.step2',
                     'extension' => 'format2',
-                    'path'      => '/tmp/entity1.format2'
+                    'path'      => 'vfs://root/tmp/entity1.format2'
                 ],
                 [
                     'name'      => 'entity2',
                     'extension' => 'format2',
-                    'path'      => '/tmp/entity2.format2'
+                    'path'      => 'vfs://root/tmp/entity2.format2'
                 ],
                 [
                     'name'      => 'entity1',
                     'extension' => 'format1',
-                    'path'      => '/tmp/entity1.format1'
+                    'path'      => 'vfs://root/tmp/entity1.format1'
                 ],
                 [
                     'name'      => 'entity1',
                     'extension' => 'format2',
-                    'path'      => '/tmp/entity1.format2'
+                    'path'      => 'vfs://root/tmp/entity1.format2'
                 ],
             ],
-            $this->configurationRegistry->getFixtures(
-                [
-                    '/tmp/entity1.format1',
-                    '/tmp/entity1.format2',
-                    '/tmp/entity2.format2'
-                ]
-            )
+            $this->configurationRegistry->getFixtures($filePaths)
+        );
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Error, not a file: "/tmp/entity1.format1"
+     */
+    public function testThrowException()
+    {
+        $this->configurationRegistry->getFixtures(
+            [
+                '/tmp/entity1.format1',
+            ]
         );
     }
 }
