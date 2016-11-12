@@ -140,11 +140,11 @@ pim_connector:
       help: Permite comparar entre los valores originales y valores importados. Puede acelerar la importación si los valores importados son similares a los valores originales
 job_execution.summary:
   read: leer
-  read_lines: leer líneas
+  read_lines: líneas leídas
   write: escrito
   skip: omitido
   create: creado
-  process: procesado
+  process: procesadas
   update_products: productos actualizados
   process_products: productos procesados
   skip_products: productos omitidos

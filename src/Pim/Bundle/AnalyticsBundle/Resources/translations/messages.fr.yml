@@ -15,7 +15,7 @@ pim_analytics:
     pim_version: Version
     pim_storage_driver: Stockage
     pim_environment: Environnement
-    pim_install_time: "Date d'installation"
+    pim_install_time: Date d'installation
     registered_bundles: Paquets installés
   acl:
     system_info:

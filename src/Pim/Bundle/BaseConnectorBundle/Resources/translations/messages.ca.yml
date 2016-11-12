@@ -1,0 +1,135 @@
+pim_base_connector:
+  jobs:
+    csv_product_export:
+      title: Exportar productes a CSV
+      export.title: Exportar productes
+    csv_category_export:
+      title: Exportar categories en CSV
+      export.title: Exportar categories
+    csv_attribute_export:
+      title: Exportar atributs a CSV
+      export.title: Exportar atributs
+    csv_attribute_option_export:
+      title: Exportar opcions d'atribut en CSV
+      export.title: Exportar opcions d'atribut
+    csv_association_type_export:
+      title: Exportar tipus d'associació en CSV
+      export.title: Exportar tipus d'associacions
+    csv_group_export:
+      title: Exportar grups en CSV
+      export.title: Exportar grups
+    csv_variant_group_export:
+      title: Exportar grup de variants a CSV
+      export.title: Exportar grup de variants
+    csv_product_import:
+      title: Importar producte en CSV
+      validation.title: Validar arxius
+      import.title: Importar productes
+      import_associations.title: Importar associacions
+    csv_category_import:
+      title: Importar categories en CSV
+      validation.title: Validar arxius
+      import.title: Importar categories
+    csv_attribute_import:
+      title: Importar atributs en CSV
+      validation.title: Validar arxius
+      import.title: Importar atributs
+    csv_attribute_option_import:
+      title: Importar opcions d'atribut en CSV
+      validation.title: Validar arxius
+      import.title: Importar opcions d'atribut
+    csv_association_type_import:
+      title: Importar tipus d'associació en CSV
+      validation.title: Validar arxius
+      import.title: Importar tipus d'associació
+    csv_group_import:
+      title: Importar grups en CSV
+      validation.title: Validar arxius
+      import.title: Importar grups
+    csv_variant_group_import:
+      title: Importar Grup de variants des d'un CSV
+      validation.title: Validar arxius
+      import.title: Importació de grupo de variants
+  steps:
+    dummy_reader.title: Lector de proves
+    product_reader.title: Extracció de productes
+    entity_reader.title: Extracció d'entitats
+    csv_reader:
+      title: Lector de CSV
+      invalid_item_columns_count: 'Esperem tenir %totalColumnsCount% columnes, ara tenim %itemColumnsCount% a %csvPath%:%lineno%'
+    csv_product_reader.title: Lector CSV de productes
+    csv_category_reader.title: Lector CSV de categories
+    csv_variant_group .title: Lector CSV de grups de variants
+    dummy_processor.title: Processador de proves
+    product_processor.title: Creació de productes
+    variant_group_processor.title: Creació / actualització de grup de variants
+    category_processor.title: Creació de categories
+    association_processor.title: Creació d'associacions
+    product_association_processor.title: Creació d'associacions
+    group_processor.title: Creació de grups
+    attribute_processor.title: Creació d'atributs
+    attribute_option_processor.title: Creación d'opcions d'atribut
+    heterogeneous_processor.title: Serialitzador CSV de productes
+    homogeneous_processor.title: Serialitzador CSV d'entitats
+    transformer_processor.title: Transformació
+    dummy_writer.title: Escriptor de proves
+    file_writer.title: Sortida
+    product_writer.title: Emmagatzematge de productes
+    category_writer.title: Emmagatzematge de categories
+    variant_group_writer.title: Emmagatzematge de grup variants
+    writer.title: Emmagatzematge d'entitats
+    csv_writer.title: Editor de CSV
+  export:
+    delimiter:
+      label: Delimitador
+      help: Caràcter utilitzat per definir el delimitador de camp
+    enclosure:
+      label: Enquadrament
+      help: Caràcter utilitzat per enquadrar el camp
+    withHeader:
+      label: Amb capçalera
+      help: Si vol imprimir el nom de la columna o no
+    filePath:
+      label: Ruta de l'arxiu
+      help: On guardar l'arxiu generat al servidor
+    channel:
+      label: Canal
+  import:
+    enabled:
+      label: Habilitar el producte
+      help: Habilitar o no els productes importats
+    categoriesColumn:
+      label: Columna de categories
+      help: Nom de la columna categories
+    familyColumn:
+      label: Columna de famílies
+      help: Nom de la família de columnes
+    groupsColumn:
+      label: Columna de grups
+      help: Nom de la columna de grups
+    filePath:
+      label: Arxiu
+      help: Arxiu CSV per importar
+    yamlFilePath:
+      label: Arxiu
+    uploadAllowed:
+      label: Permetre la càrrega d'arxius
+      help: Permetre o no la càrrega directa de l'arxiu
+    delimiter:
+      label: Delimitador
+      help: Caràcter utilitzat per definir el delimitador de camp
+    enclosure:
+      label: Enquadrament
+      help: Caràcter utilitzat per enquadrar el camp
+    escape:
+      label: Escapada
+      help: Caràcter per establir l'escapada del camp
+    circularRefsChecked:
+      label: Comprovar referències circulars
+      help: En cas afirmatiu, les dades seran tractades per assegurar-se que no hi ha cap referència circular entre les categories
+    realTimeVersioning:
+      label: Actualització de l'historial en temps real
+      help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
+    copyValuesToProducts:
+      label: Copia els valors de grup de variants a productes
+      help: Vol dir que els productes s'actualitzen automàticament amb valors de variants de grup, es pot deshabilitar per que només s'actualitzin les variants de grup

@@ -4,7 +4,7 @@ btn:
   cancel: Cancelar
 confirmation:
   remove:
-    comment: ¿Está seguro de que desea borrar este comentario?
+    comment: '¿Está seguro de que desea borrar este comentario?'
 flash:
   comment:
     create:
