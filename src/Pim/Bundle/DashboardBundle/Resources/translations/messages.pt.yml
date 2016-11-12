@@ -9,7 +9,7 @@ pim_dashboard:
   widget:
     error:
       title: Erro ao carregar widget
-      message: "Widget '%alias%' não existe"
+      message: Widget '%alias%' não existe
     completeness:
       title: '% de Dados completos nos Canais e Línguas'
     last_operations:

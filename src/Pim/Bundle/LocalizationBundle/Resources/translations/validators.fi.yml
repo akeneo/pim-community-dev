@@ -1,0 +1,5 @@
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Tämäntyyppinen arvo vaatii merkin {{ decimal_separator }} käyttämistä desimaalien erottelussa.
+"This type of value expects the use of dot (.) to separate decimals.": Tämäntyyppinen arvo vaatii pisteen (.) käyttöä desimaalien erottelussa.
+"This type of value expects the use of comma (,) to separate decimals.": Tämäntyyppinen arvo vaatii pilkun (,) käyttöä desimaalien erottelussa.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Tämäntyyppinen arvo vaatii arabialaisen desimaalierottimen (٫) käyttöä desimaalien erottelussa.
+"This type of value expects the use of the format {{ date_format }} for dates.": Tämäntyyppinen arvo vaatii muodon {{ date_format }} käyttöä päivämäärille.

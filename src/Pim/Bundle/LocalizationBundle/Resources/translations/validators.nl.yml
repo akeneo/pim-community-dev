@@ -1,0 +1,5 @@
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Dit type waarde verwacht een {{ decimal_separator }} om decimalen te scheiden.
+"This type of value expects the use of dot (.) to separate decimals.": Dit type waarde verwacht een punt (.) om decimalen te scheiden.
+"This type of value expects the use of comma (,) to separate decimals.": Dit type waarde verwacht een komma (,) om decimalen te scheiden.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dit type waarde verwacht een arabisch decimaal scheidingsteken (٫) om decimalen te scheiden.
+"This type of value expects the use of the format {{ date_format }} for dates.": Dit type waarde verwacht gebruik van het {{ date_format }} formaat voor datums.

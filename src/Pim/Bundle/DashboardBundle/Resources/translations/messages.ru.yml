@@ -9,7 +9,7 @@ pim_dashboard:
   widget:
     error:
       title: Ошибка при загрузке виджета
-      message: 'Виджет «%alias%» не существует'
+      message: Виджет «%alias%» не существует
     completeness:
       title: Законченность по каналам и языкам
     last_operations:
