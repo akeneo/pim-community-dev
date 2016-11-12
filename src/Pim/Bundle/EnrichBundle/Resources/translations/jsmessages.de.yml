@@ -16,7 +16,7 @@ confirmation:
 pim_datagrid:
   mass_action_group:
     quick_export:
-      label: Schnellexport
+      label: Schnell-Export
   mass_action:
     delete:
       confirm_content: Sind Sie sicher, dass Sie die ausgewählten Produkte löschen möchten?
@@ -26,7 +26,7 @@ flash:
   item:
     removed: Element erfolgreich entfernt
   association type:
-    removed: Verbindungstyp erfolgreich entfernt
+    removed: Verbindungstyp erfolgreich gelöscht
   attribute:
     removed: Attribut erfolgreich entfernt
   family:
@@ -40,13 +40,13 @@ flash:
   variant group:
     removed: Variantengruppe erfolgreich entfernt
   group type:
-    removed: Gruppentyp erfolgreich entfernt
+    removed: Gruppentyp erfolgreich gelöscht
   import profile:
     removed: Importprofil erfolgreich entfernt
   export profile:
     removed: Exportprofil erfolgreich entfernt
   user:
-    removed: Benutzer erfolgreich entfernt
+    removed: Benutzer erfolgreich gelöscht
   role:
     removed: Rolle erfolgreich entfernt
 error:
@@ -94,15 +94,15 @@ pim:
       quick_export:
         csv_all: CSV (alle Attribute)
 jstree.create: Anlegen
-switch_on: Ja
-switch_off: Nein
+switch_on: "Ja"
+switch_off: "Nein"
 pim_enrich:
   item:
     list:
       delete.label: Löschen
       delete.error: Fehler beim Löschen des Elementes
     delete:
-      confirm.content: 'Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden'
+      confirm.content: Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden
       confirm.title: '{{ itemName }} löschen'
   navigation:
     link:
@@ -128,7 +128,7 @@ pim_enrich:
       history:
         version: Version
         author: Autor
-        logged_at: Aufgezeichnet am
+        logged_at: Angemeldet am
         more: Mehr
         less: Weniger
         from: Von
@@ -145,13 +145,13 @@ pim_enrich:
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - Felder
-        already_in_upload: 'Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen'
+        already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
       meta:
-        created: Erstellt
-        created_by: Von
-        updated_by: Von
+        created: Angelegt
+        created_by: durch
+        updated_by: durch
         updated: Letzte Aktualisierung
         family:
           title: Produktfamilie
@@ -159,7 +159,7 @@ pim_enrich:
         groups:
           title: Gruppen
           modal:
-            title: 'Gruppe {{ group }}'
+            title: Gruppe {{ group }}
             view_group: Gruppe ansehen
             group_label: Bezeichnung
             more_products: '{{ count }} weitere Produkte...'
@@ -169,20 +169,20 @@ pim_enrich:
         all: Alle
         all_visible: Alle sichtbaren
         none: Keine
-        copy: Kopie
+        copy: Kopieren
       variant_group:
         updated_by: Aktualisiert durch eine Variantengruppe
         switch:
           "yes": Ja
           "no": Nein
       optional_attribute:
-        remove: Dieses Attribut entfernen
+        remove: Dieses Attribut löschen
       locale_specific_attribute:
         unavailable: Dieses vom Gebietsschema abhängige Feld ist in diesem Gebietsschema nicht verfügbar
       localizable:
-        channel_locale_unavailable: "Dieses lokalisierbare Feld ist für das Gebietsschema '{{ locale }}' und den Ausgabekanal '{{ channel }}' nicht verfügbar"
+        channel_locale_unavailable: Dieses lokalisierbare Feld ist für das Gebietsschema '{{ locale }}' und den Ausgabekanal '{{ channel }}' nicht verfügbar
       media:
-        upload: 'Upload per Drag & Drop oder hier klicken'
+        upload: Upload per Drag & Drop oder hier klicken
       create_popin:
         title: Neues Produkt anlegen
         labels:
@@ -197,8 +197,20 @@ pim_enrich:
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - Felder
-        already_in_upload: 'Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen'
+        already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
         no_attributes: Diese Variantengruppe hat noch keine Attribute
+      btn:
+        save: Speichern
+      meta:
+        product_count: Produkte
+        created: Angelegt
+        updated: Aktualisiert
+    group:
+      title: Gruppe
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - Felder
       btn:
         save: Speichern
       meta:
@@ -207,14 +219,14 @@ pim_enrich:
         updated: Aktualisiert
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
-    discard_changes: 'Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.'
+    discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
     delete_item: Löschen bestätigen
     delete:
       attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
   info:
     not_applicable: N/A
     entity:
-      updated: Es gibt ungespeicherte Änderungen.
+      updated: Es gibt ungesicherte Änderungen.
   error:
     upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
   alert:
@@ -237,7 +249,7 @@ pim_enrich:
             add_attributes: Attribute hinzufügen
           info:
             search_attributes: Suche...
-            no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
+            no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
             attributes_selected: '{{ attributeCount }} Attribute ausgewählt'
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
@@ -258,8 +270,8 @@ pim_enrich:
       sequential_edit:
         info:
           products: Produkte
-          previous: 'Zurück zu {{ product }} ohne Speichern.'
-          next: 'Weiter zu {{ product }} ohne Speichern.'
+          previous: Zurück zu {{ product }} ohne Speichern.
+          next: Weiter zu {{ product }} ohne Speichern.
         btn:
           save_and_next: Speichern und weiter
           save_and_finish: Speichern und fertigstellen
@@ -302,6 +314,18 @@ pim_enrich:
           title: Produkte
         attributes:
           title: Attribute
+    group:
+      tab:
+        properties:
+          title: Eigenschaften
+          general: Allgemeine Eigenschaften
+          code: Code
+          type: Typ
+          label_translations: Feldbezeichner-Übersetzungen
+        history:
+          title: Historie
+        products:
+          title: Produkte
     common:
       tab:
         attributes:
@@ -370,6 +394,6 @@ pim_enrich:
             EMPTY: Ist leer
   mass_edit_action:
     edit_common_attributes:
-      description: 'Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.'
+      description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
 pim_enrich.error:
-  exception.title: 'Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...'
+  exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...

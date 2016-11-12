@@ -1,0 +1,6 @@
+entity.user.name: Gebruiker
+entity.user.description: Gebruikersprofiel
+entity.role.name: Rol
+entity.role.description: gebruikersrol
+entity.group.name: Groep
+entity.group.description: Rollengroep
