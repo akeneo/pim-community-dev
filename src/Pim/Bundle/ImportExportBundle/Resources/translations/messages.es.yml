@@ -1,6 +1,8 @@
 Job: Trabajo
 Connector: Conector
 pim_import_export:
+  job: Trabajo
+  connector: Conector
   status:
     - Listo
   batch_status:
@@ -20,13 +22,13 @@ pim_import_export:
     invalid_csv: descargar datos no válidos
   notification:
     export:
-      error: 'Exportación <strong>%label%</strong> fallida'
-      warning: 'Exportación <strong>%label%</strong> terminó con algunas advertencias'
-      success: 'Exportación <strong>%label%</strong> finalizada'
+      error: Exportación <strong>%label%</strong> fallida
+      warning: Exportación <strong>%label%</strong> terminó con algunas advertencias
+      success: Exportación <strong>%label%</strong> finalizada
     import:
-      error: 'Importación <strong>%label%</strong> fallida'
-      warning: 'Importación <strong>%label%</strong> terminó con algunas advertencias'
-      success: 'Importación <strong>%label%</strong> finalizada'
+      error: Importación <strong>%label%</strong> fallida
+      warning: Importación <strong>%label%</strong> terminó con algunas advertencias
+      success: Importación <strong>%label%</strong> finalizada
   list: Seleccionar un trabajo
   job_profile:
     tab:
@@ -34,13 +36,13 @@ pim_import_export:
       history.title: Histórico
       job_content.title: Contenido
 pim_title.export_profile.index: Gestión de perfiles de exportación
-pim_title.export_profile.edit: 'Perfiles de exportación %job.label% | Editar'
-pim_title.export_profile.show: 'Perfiles de exportación %job.label% | Mostrar'
+pim_title.export_profile.edit: Perfiles de exportación %job.label% | Editar
+pim_title.export_profile.show: Perfiles de exportación %job.label% | Mostrar
 pim_title.export_execution.index: Historial de ejecuciones de exportación
 pim_title.export_execution.show: Ejecuciones de importación | Detalles
 pim_title.import_profile.index: Gestión de perfiles de exportación
-pim_title.import_profile.edit: 'Perfiles de importación %job.label% | Editar'
-pim_title.import_profile.show: 'Perfiles de importación %job.label% | Mostrar'
+pim_title.import_profile.edit: Perfiles de importación %job.label% | Editar
+pim_title.import_profile.show: Perfiles de importación %job.label% | Mostrar
 pim_title.import_execution.index: Historia de las ejecuciones de importación
 pim_title.import_execution.show: Ejecuciones de importación | Detalles
 export profile:
@@ -66,7 +68,11 @@ pim_importexport:
       edit: Editar un perfil de exportación
       remove: Quitar un perfil de exportación
       launch: Lanzar un perfil de exportación
+      property_edit: Editar las propiedades generales de un perfil de exportación
+      property_show: Mostrar las propiedades generales de un perfil de exportación
       history: Ver historial del perfil exportación
+      content_edit: Editar el contenido de un perfil de exportación
+      content_show: Mostrar el contenido de un perfil de exportación
     import_profile:
       index: Ver lista de perfiles de importación
       create: Crear un perfil de importación
@@ -91,7 +97,7 @@ pim_importexport:
 btn:
   create:
     export profile: crear perfil exportador
-    import profile: crear Perfil de importación
+    import profile: crear perfil de importación
 Upload and import now: Subir e importar ahora
 import now: Importar ahora
 export now: Exportar Ahora
@@ -125,11 +131,11 @@ pane.accordion:
 popin.create:
   export_profile.title: Crear un nuevo perfil de exportación
   import_profile.title: Crear un nuevo perfil de importación
-Display item: Mostrar elemento
-Hide item: Ocultar item
-Collecting data about job execution...: Colectando datos sobre la ejecución del trabajo...
-You must select a file to upload: Debe seleccionar un archivo para subir
-Download log: Registro de Descargas
+'Display item': Mostrar elemento
+'Hide item': Ocultar item
+'Collecting data about job execution...': Colectando datos sobre la ejecución del trabajo...
+'You must select a file to upload': Debe seleccionar un archivo para subir
+Download log: Descargar registro de log
 Show profile: Ver perfil
 execution details: detalles de ejecución
 job_execution.summary:
@@ -150,11 +156,12 @@ Summary: Resumen
 Start: Iniciar
 End: Finalizar
 set_attribute_requirements: Configurar requerimientos del atributo
-COMPLETED: FINALIZADO
+COMPLETED: COMPLETADO
 STARTING: INICIANDO
 STARTED: INICIADO
-STOPPING: DETENIENDO
+STOPPING: PARAR
 STOPPED: DETENIDO
-FAILED: FALLIDO
+FAILED: FALLO
 ABANDONED: ABANDONADO
 UNKNOWN: DESCONOCIDO
+warning.label: '¡Advertencia!'
