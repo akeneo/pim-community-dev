@@ -10,11 +10,11 @@ pim_base_connector:
       title: Export des attributs en CSV
       export.title: Export des attributs
     csv_attribute_option_export:
-      title: "Export des options d'attributs en CSV"
-      export.title: "Export des options d'attributs"
+      title: Export des options d'attributs en CSV
+      export.title: Export des options d'attributs
     csv_association_type_export:
-      title: "Export des types d'association en CSV"
-      export.title: "Export des types d'association"
+      title: Export des types d'association en CSV
+      export.title: Export des types d'association
     csv_group_export:
       title: Export des groupes en CSV
       export.title: Export de groupes
@@ -35,13 +35,13 @@ pim_base_connector:
       validation.title: Validation du fichier
       import.title: Import des attributs
     csv_attribute_option_import:
-      title: "Import des options d'attributs en CSV"
+      title: Import des options d'attributs en CSV
       validation.title: Validation du fichier
-      import.title: "Import des options d'attributs"
+      import.title: Import des options d'attributs
     csv_association_type_import:
-      title: "Import des types d'association en CSV"
+      title: Import des types d'association en CSV
       validation.title: Validation du fichier
-      import.title: "Import des types d'association"
+      import.title: Import des types d'association
     csv_group_import:
       title: Import des groupes en CSV
       validation.title: Validation du fichier
@@ -64,12 +64,12 @@ pim_base_connector:
     product_processor.title: Création des produits
     variant_group_processor.title: Création / Mise à jour des groupes de variantes
     category_processor.title: Création des catégories
-    association_processor.title: "Création d'association"
+    association_processor.title: Création d'association
     group_processor.title: Création des groupes
     attribute_processor.title: Création des attributs
-    attribute_option_processor.title: "Création des options d'attributs"
+    attribute_option_processor.title: Création des options d'attributs
     heterogeneous_processor.title: Sérialiseur de produits en CSV
-    homogeneous_processor.title: "Sérialiseur d'entités en CSV"
+    homogeneous_processor.title: Sérialiseur d'entités en CSV
     transformer_processor.title: Transformation
     dummy_writer.title: Ecriture factice
     file_writer.title: Sortie
@@ -83,7 +83,7 @@ pim_base_connector:
       label: Délimiteur
       help: Caractère unique utilisé pour délimiter les valeurs
     enclosure:
-      label: "Caractère d'encadrement"
+      label: Caractère d'encadrement
       help: Caractère unique utilisé pour encadrer les champs
     withHeader:
       label: Avec en-tête
@@ -114,23 +114,23 @@ pim_base_connector:
       label: Fichier
       help: Le fichier YAML à importer
     uploadAllowed:
-      label: "Autoriser l'envoi de fichier sur le serveur"
+      label: Autoriser l'envoi de fichier sur le serveur
       help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
     delimiter:
       label: Délimiteur
       help: Caractère unique utilisé pour délimiter les valeurs
     enclosure:
-      label: "Caractère d'encadrement"
+      label: Caractère d'encadrement
       help: Caractère unique utilisé pour encadrer les champs
     escape:
       label: Échappement
       help: Le caractère utilisé pour échapper les champs
     circularRefsChecked:
       label: Vérifiez les références circulaires
-      help: "Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories"
+      help: Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories
     realTimeVersioning:
-      label: "Mise à jour de l'historique en temps réel"
-      help: "Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances"
+      label: Mise à jour de l'historique en temps réel
+      help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
     copyValuesToProducts:
       label: Copie des valeurs liées aux groupes de variantes dans les produits
-      help: "Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes"
+      help: Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes

@@ -1,0 +1,56 @@
+Item deleted: Element suprimit
+Delete Error: Error a l'esborrar
+Are you sure you want to do remove selected items?: Esteu segur que voleu suprimir els elements seleccionats?
+Selected items were removed.: Els elements seleccionats han estat retirats.
+Selected items were not removed.: Elements seleccionats no han estat retirats.
+Please, select items to remove.: Si us plau, seleccioneu elements a eliminar.
+Cannot delete item.: No es pot suprimir l'element.
+Refresh Confirmation: Refresqui la confirmació
+Your local changes will be lost. Are you sure you want to refresh grid?: Es perdran els canvis locals. Esteu segur que voleu actualitzar la graella?
+Reset Confirmation: Reiniciar la confirmació
+Your local changes will be lost. Are you sure you want to reset grid?: Es perdran els canvis locals. Esteu segur que voleu reiniciar la graella?
+Confirmation: Confirmació
+copy: copiar
+Status: Estat
+All: Tots
+Per page: Per pàgina
+Mass Action Confirmation: Confirmació massiva de l'acció
+Mass action performed.: Acció massiva realitzada.
+Mass action is not performed.: Acció massiva no realitzada.
+Please, select items to perform mass action.: Si us plau, seleccioneu elements per dur a terme l'acció massiva.
+Execution Confirmation: Confirmació d'execució
+Are you sure you want to do this?: Esteu segur que voleu fer-ho?
+Action performed.: Acció realitzada.
+Action is not performed.: Acció no realitzada.
+Please, select item to perform action.: Si us plau, seleccioneu l'element per realitzar l'acció.
+View per page: Vista per pàgina
+oro.datagrid.entityHint: Entitat
+oro.datagrid.noentities: No s'han trobat registres
+oro.datagrid.noresults: "No s'han trobat resultats. Intenti canviar els criteris de cerca."
+oro.datagrid.nocolumns: Sense columnes configurades per aquesta graella
+oro.datagrid.pagination.label: "Pàgina"
+oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registres"
+oro.datagrid.action.reset: "Reinicia"
+oro.datagrid.action.refresh: "Actualitza"
+oro_datagrid.select.all: "Tots"
+oro_datagrid.select.visible: "Tot visible"
+pim.grid.ajax_choice_filter.label_empty: està buit
+pim.grid.choice_filter:
+  label_empty: Està buit
+  label_in_list: A la llista
+Available Columns: Columnes disponibles
+datagrid_view.columns.min_message: Heu de seleccionar almenys una columna de la graella de dades per mostrar
+pim_datagrid:
+  column_configurator:
+    title: Selecció de columna
+    all_groups: Tots els grups
+    clear: Restablir
+  mass_action:
+    delete:
+      confirm_ok: OK
+pim.grid.mass_action.quick_export.title: Exportació ràpida
+pim.grid.action.launch.title: Arrencar
+pim.grid.action.show.title: Mostrar
+Please select view: Si us plau, seleccioneu la visualització
+Loading...: Carregant...

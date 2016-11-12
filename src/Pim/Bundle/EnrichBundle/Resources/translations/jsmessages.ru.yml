@@ -88,13 +88,13 @@ pim.grid.mass_action.delete: Удалить
 pim.grid.mass_action.mass_edit: Массовое редактирование
 pim.grid.mass_action.sequential_edit: Последовательное редактирование
 jstree.create: Создать
-switch_on: Да
-switch_off: Нет
+switch_on: "Да"
+switch_off: "Нет"
 pim_enrich:
   item:
     list:
       delete.label: Удалить
       delete.error: Ошибка при удалении элемента
     delete:
-      confirm.content: 'Вы действительно хотите удалить {{ itemName }}? Это действие нельзя отменить'
-      confirm.title: 'Удалить {{ itemName }}'
+      confirm.content: Вы действительно хотите удалить {{ itemName }}? Это действие нельзя отменить
+      confirm.title: Удалить {{ itemName }}

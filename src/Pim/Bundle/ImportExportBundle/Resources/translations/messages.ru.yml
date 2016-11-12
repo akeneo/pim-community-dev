@@ -19,22 +19,22 @@ pim_import_export:
     invalid: Скачать недопустимые значения
   notification:
     export:
-      error: 'Экспорт <strong>%label%</strong> не удался'
-      warning: 'Экспорт <strong>%label%</strong> завершен с некоторыми предупреждениями'
-      success: 'Экспорт <strong>%label%</strong> завершен'
+      error: Экспорт <strong>%label%</strong> не удался
+      warning: Экспорт <strong>%label%</strong> завершен с некоторыми предупреждениями
+      success: Экспорт <strong>%label%</strong> завершен
     import:
-      error: 'Импорт <strong>%label%</strong> не удался'
-      warning: 'Импорт <strong>%label%</strong> завершен с некоторыми предупреждениями'
-      success: 'Импорт <strong>%label%</strong> завершен'
+      error: Импорт <strong>%label%</strong> не удался
+      warning: Импорт <strong>%label%</strong> завершен с некоторыми предупреждениями
+      success: Импорт <strong>%label%</strong> завершен
   list: Выберите задание
 pim_title.export_profile.index: Управление профилями экспорта
-pim_title.export_profile.edit: 'Профиль экспорта %job.label% | Редактировать'
-pim_title.export_profile.show: 'Профиль экспорта %job.label% | Показать'
+pim_title.export_profile.edit: Профиль экспорта %job.label% | Редактировать
+pim_title.export_profile.show: Профиль экспорта %job.label% | Показать
 pim_title.export_execution.index: История запусков экспорта
 pim_title.export_execution.show: Запуск экспорта | Детали
 pim_title.import_profile.index: Управление профилями импорта
-pim_title.import_profile.edit: 'Профиль импорта %job.label% | Редактировать'
-pim_title.import_profile.show: 'Профиль импорта %job.label% | Показать'
+pim_title.import_profile.edit: Профиль импорта %job.label% | Редактировать
+pim_title.import_profile.show: Профиль импорта %job.label% | Показать
 pim_title.import_execution.index: История запусков импорта
 pim_title.import_execution.show: Запуск импорта | Детали
 export profile:
@@ -92,8 +92,8 @@ import now: Импортировать сейчас
 export now: Экспортировать сейчас
 confirmation:
   remove:
-    export profile: 'Вы уверены, что хотите удалить профиль экспорта "%name%"?'
-    import profile: 'Вы уверены, что хотите удалить профиль импорта "%name%"?'
+    export profile: Вы уверены, что хотите удалить профиль экспорта "%name%"?
+    import profile: Вы уверены, что хотите удалить профиль импорта "%name%"?
 flash:
   export:
     created: Экспорт был успешно создан
@@ -117,10 +117,10 @@ pane.accordion:
 popin.create:
   export_profile.title: Создать новый профиль экспорта
   import_profile.title: Создать новый профиль импорта
-Display item: Показать элемент
-Hide item: Скрыть элемент
-Collecting data about job execution...: Сбор данных о выполнении задания...
-You must select a file to upload: Необходимо выбрать файл для загрузки
+'Display item': Показать элемент
+'Hide item': Скрыть элемент
+'Collecting data about job execution...': Сбор данных о выполнении задания...
+'You must select a file to upload': Необходимо выбрать файл для загрузки
 Download log: Журнал загрузки
 Show profile: Показать профиль
 execution details: подробности выполнения

@@ -1,0 +1,47 @@
+confirmation:
+  remove:
+    association type: Esteu segur que voleu suprimir aquest tipus d'associació?
+    attribute: Esteu segur que voleu suprimir aquest atribut?
+    family: Esteu segur que voleu suprimir aquesta família?
+    product: Esteu segur que voleu suprimir aquest producte?
+    channel: Esteu segur que voleu suprimir aquest canal?
+    group: Esteu segur que voleu suprimir aquest grup?
+    variant group: Esteu segur que voleu suprimir aquesta variant de grups?
+    group type: Esteu segur que voleu suprimir aquest tipus de grup?
+    import profile: Esteu segur que voleu suprimir aquest perfil d'importació?
+    export profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
+    user: Esteu segur que voleu eliminar aquest usuari?
+    role: Estàs segur que vols suprimir aquest rol?
+pim_datagrid:
+  mass_action:
+    delete:
+      confirm_content: Esteu segur que voleu suprimir els productes seleccionats?
+      success: Els productes seleccionats s'han eliminat correctament.
+      error: S'ha produït un error en intentar suprimir els productes seleccionats, intenteu-ho un altre cop.
+flash:
+  item:
+    removed: Element suprimit correctament
+  import profile:
+    removed: Perfil d'importació eliminat correctament
+  export profile:
+    removed: Perfil d'exportació eliminat correctament
+  role:
+    removed: Rol eliminat correctament
+error:
+  removing:
+    item: No podeu eliminar aquest element
+    association type: No podeu eliminar aquest tipus d'associació
+    attribute: No podeu eliminar aquest atribut
+    family: No podeu eliminar aquesta família
+    product: No podeu eliminar aquest producte
+    channel: No podeu eliminar aquest canal
+    group: No podeu eliminar aquest grup
+    variant group: No podeu eliminar aquesta variant de grups
+    group type: No podeu eliminar aquest tipus de grup
+    import profile: No podeu eliminar aquest perfil d'importació
+    export profile: No podeu eliminar aquest perfil d'exportació
+    user: No podeu eliminar aquest usuari
+    role: No podeu eliminar aquest rol
+    attribute_option: Error en suprimir la opció d'atribut
+pim.grid.mass_action.quick_export.csv_all: CSV (tots els atributs)
+pim.grid.mass_action.mass_edit: Edició massiva

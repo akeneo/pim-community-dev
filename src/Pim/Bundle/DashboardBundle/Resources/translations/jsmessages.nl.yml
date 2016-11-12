@@ -1,0 +1,12 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Geen bewerkingen beschikbaar
+      status: Status
+      date: Datum
+      type: Type
+      profile name: Profielnaam
+      details: Details
+      job_type:
+        import: Import
+        export: Export
