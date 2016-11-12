@@ -4,5 +4,5 @@ activity_manager:
   project:
     label: Rótulo
   create_project_modal:
-    confirm: Seguinte
+    confirm: Guardar
     cancel: Cancelar

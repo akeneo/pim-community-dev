@@ -5,5 +5,5 @@ activity_manager:
     label: Nimike
     description: Kuvaus
   create_project_modal:
-    confirm: Seuraava
+    confirm: Tallenna
     cancel: Peruuta
