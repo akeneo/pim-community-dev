@@ -1,0 +1,26 @@
+btn:
+  post: Voeg een nieuwe reactie toe
+  reply: Beantwoorden
+  cancel: Annuleren
+confirmation:
+  remove:
+    comment: Weet u zeker dat u deze reactie wilt verwijderen?
+flash:
+  comment:
+    create:
+      success: Uw reactie is succesvol aangemaakt.
+      error: Er is een fout opgetreden tijden het aanmaken van uw reactie.
+    delete:
+      success: Uw reactie is succesvol verwijdert.
+      error: Er is een fout opgetreden tijdens het verwijderen van uw reactie.
+    reply:
+      success: Uw antwoord is succesvol aangemaakt.
+      error: Er is een fout opgetreden tijdens het maken van uw antwoord.
+comment:
+  index:
+    empty: Nog geen reacties beschikbaar
+  placeholder:
+    new: Schrijf een nieuwe reactie...
+    reply: Reageer...
+pim_comment:
+  product.panel.comment.title: Reacties
