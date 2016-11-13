@@ -79,7 +79,7 @@ class DatabaseCommand extends ContainerAwareCommand
             }
             $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
         } catch (\PDOException $e) {
-            $output->writeln(' <error>Database does not exist yet</error>');
+            $output->writeln('<error>Database does not exist yet</error>');
         }
 
         $this->commandExecutor->runCommand('doctrine:database:create');
@@ -149,7 +149,10 @@ class DatabaseCommand extends ContainerAwareCommand
         }
 
         $output->writeln(
-            sprintf('<info>Load jobs for fixtures. (data set: %s)</info>', $this->getContainer()->getParameter('installer_data'))
+            sprintf(
+                '<info>Load jobs for fixtures. (data set: %s)</info>',
+                $this->getContainer()->getParameter('installer_data')
+            )
         );
         $this->getFixtureJobLoader()->loadJobInstances();
 
@@ -161,6 +164,14 @@ class DatabaseCommand extends ContainerAwareCommand
                 '--no-log'   => true,
                 '-v'         => true
             ];
+            if ($input->getOption('verbose')) {
+                $output->writeln(
+                    sprintf(
+                        'Please wait, the <comment>%s</comment> are processing...',
+                        $jobInstance->getCode()
+                    )
+                );
+            }
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
         }
         $output->writeln('');
