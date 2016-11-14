@@ -17,6 +17,20 @@ pim_analytics:
     pim_environment: Okruženje
     pim_install_time: Datum instalacije
     registered_bundles: Registrirani paketi
+    nb_channels: Broj kanala
+    nb_products: Broj proizvoda
+    nb_attributes: Broj atributa
+    nb_locales: Broj lokalnih vrijednosti
+    nb_families: Broj obitelji
+    nb_users: Broj korisnika
+    pim_storage_version: Verzija pohrane
+    os_version: Verzija OS
+    php_version: PHP verzija
+    mysql_version: MySQL verzija
+    mariadb_version: MariaDB verzija
+    mongodb_version: MongoDB verzija
+    server_version: Verzija poslužitelja
+    php_extensions: PHP ekstenzije
   acl:
     system_info:
       index: Informacije o sustavu

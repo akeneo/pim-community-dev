@@ -3,8 +3,8 @@ oro.filter.form.label_type_greater_equal: '>='
 oro.filter.form.label_type_greater_than: '>'
 oro.filter.form.label_type_less_equal: '<='
 oro.filter.form.label_type_less_than: '<'
-oro.filter.form.label_type_yes: sim
-oro.filter.form.label_type_no: não
+oro.filter.form.label_type_yes: "sim"
+oro.filter.form.label_type_no: "não"
 oro.filter.form.label_type_contains: contém
 oro.filter.form.label_type_not_contains: não contém
 oro.filter.form.label_type_equals: é igual a

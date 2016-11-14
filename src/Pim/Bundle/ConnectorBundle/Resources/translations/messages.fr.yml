@@ -13,13 +13,13 @@ pim_connector:
     product_processor.title: Création des produits
     variant_group_processor.title: Création / Mise à jour des groupes de variantes
     category_processor.title: Création des catégories
-    association_processor.title: "Création d'association"
+    association_processor.title: Création d'association
     product_association_processor.title: Création des associations
     group_processor.title: Création des groupes
     attribute_processor.title: Création des attributs
-    attribute_option_processor.title: "Création des options d'attributs"
+    attribute_option_processor.title: Création des options d'attributs
     heterogeneous_processor.title: Sérialiseur de produits en CSV
-    homogeneous_processor.title: "Sérialiseur d'entités en CSV"
+    homogeneous_processor.title: Sérialiseur d'entités en CSV
     transformer_processor.title: Transformation
     dummy_writer.title: Ecriture factice
     file_writer.title: Sortie
@@ -34,7 +34,7 @@ pim_connector:
         label: Délimiteur
         help: Caractère unique utilisé pour délimiter les valeurs
       enclosure:
-        label: "Caractère d'encadrement"
+        label: Caractère d'encadrement
         help: Caractère unique utilisé pour encadrer les champs
       withHeader:
         label: Avec en-tête
@@ -92,29 +92,29 @@ pim_connector:
         label: Fichier
         help: Le fichier CSV à importer
       uploadAllowed:
-        label: "Autoriser l'envoi de fichier sur le serveur"
+        label: Autoriser l'envoi de fichier sur le serveur
         help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
       delimiter:
         label: Délimiteur
         help: Caractère unique utilisé comme délimiteur de champ pour les fichiers CSV
       enclosure:
-        label: "Caractère d'encadrement"
+        label: Caractère d'encadrement
         help: Caractère unique utilisé pour encadrer les champs
       escape:
         label: Échappement
         help: Le caractère utilisé pour échapper les champs
       circularRefsChecked:
         label: Vérifiez les références circulaires
-        help: "Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories"
+        help: Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories
       realTimeVersioning:
-        label: "Mise à jour de l'historique en temps réel"
-        help: "Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances"
+        label: Mise à jour de l'historique en temps réel
+        help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
       copyValuesToProducts:
         label: Copie des valeurs liées aux groupes de variantes dans les produits
-        help: "Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes"
+        help: Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes
       enabledComparison:
         label: Comparer les valeurs
-        help: "Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine"
+        help: Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine
       decimalSeparator:
         label: Séparateur de décimales
         help: Caractère unique utilisé comme séparateur de décimales
@@ -138,20 +138,20 @@ pim_connector:
         label: Fichier
         help: Le fichier XLSX à importer
       uploadAllowed:
-        label: "Autoriser l'envoi de fichier sur le serveur"
+        label: Autoriser l'envoi de fichier sur le serveur
         help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
       circularRefsChecked:
         label: Vérifiez les références circulaires
-        help: "Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories"
+        help: Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories
       realTimeVersioning:
-        label: "Mise à jour de l'historique en temps réel"
-        help: "Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances"
+        label: Mise à jour de l'historique en temps réel
+        help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
       copyValuesToProducts:
         label: Copie des valeurs liées aux groupes de variantes dans les produits
-        help: "Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes"
+        help: Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes
       enabledComparison:
         label: Comparer les valeurs
-        help: "Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine"
+        help: Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine
       decimalSeparator:
         label: Séparateur de décimales
         help: Caractère unique utilisé comme séparateur de décimales
@@ -163,7 +163,7 @@ pim_connector:
         label: Fichier
         help: Le fichier YAML à importer
       uploadAllowed:
-        label: "Autoriser l'envoi de fichier sur le serveur"
+        label: Autoriser l'envoi de fichier sur le serveur
         help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
 job_execution.summary:
   read: lu(s)
@@ -191,11 +191,11 @@ batch_jobs:
     label: Export des attributs en CSV
     export.label: Export des attributs
   csv_attribute_option_export:
-    label: "Export des options d'attributs en CSV"
-    export.label: "Export des options d'attributs"
+    label: Export des options d'attributs en CSV
+    export.label: Export des options d'attributs
   csv_association_type_export:
-    label: "Export des types d'association en CSV"
-    export.label: "Export des types d'association"
+    label: Export des types d'association en CSV
+    export.label: Export des types d'association
   csv_group_export:
     label: Export des groupes en CSV
     export.label: Export de groupes
@@ -219,13 +219,13 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des attributs
   csv_attribute_option_import:
-    label: "Import des options d'attributs en CSV"
+    label: Import des options d'attributs en CSV
     validation.label: Validation du fichier
-    import.label: "Import des options d'attributs"
+    import.label: Import des options d'attributs
   csv_association_type_import:
-    label: "Import des types d'association en CSV"
+    label: Import des types d'association en CSV
     validation.label: Validation du fichier
-    import.label: "Import des types d'association"
+    import.label: Import des types d'association
   csv_family_import:
     label: Import des familles en CSV
     validation.label: Validation du fichier
@@ -245,8 +245,8 @@ batch_jobs:
     label: Export des locales en CSV
     export.label: Export des locales
   csv_attribute_group_export:
-    label: "Export des groupes d'attributs en CSV"
-    export.label: "Export des groupes d'attributs"
+    label: Export des groupes d'attributs en CSV
+    export.label: Export des groupes d'attributs
   csv_currency_export:
     label: Export des devises en CSV
     export.label: Export des devises
@@ -262,9 +262,9 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des locales
   csv_attribute_group_import:
-    label: "Import des groupes d'attributs en CSV"
+    label: Import des groupes d'attributs en CSV
     validation.label: Validation du fichier
-    import.label: "Import des groupes d'attributs"
+    import.label: Import des groupes d'attributs
   csv_currency_import:
     label: Import des devises en CSV
     validation.label: Validation du fichier
@@ -278,17 +278,17 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des catégories
   xlsx_association_type_import:
-    label: "Import des types d'association en XLSX"
+    label: Import des types d'association en XLSX
     validation.label: Validation du fichier
-    import.label: "Import des types d'association"
+    import.label: Import des types d'association
   xlsx_attribute_import:
     label: Import des attributs en XLSX
     validation.label: Validation du fichier
     import.label: Import des attributs
   xlsx_attribute_option_import:
-    label: "Import des options d'attributs en XLSX"
+    label: Import des options d'attributs en XLSX
     validation.label: Validation du fichier
-    import.label: "Import des options d'attributs"
+    import.label: Import des options d'attributs
   xlsx_family_import:
     label: Import des familles en XLSX
     validation.label: Validation du fichier
@@ -325,11 +325,11 @@ batch_jobs:
     label: Export des attributs en XLSX
     export.label: Export des attributs en XLSX
   xlsx_attribute_option_export:
-    label: "Export des options d'attributs en XLSX"
-    export.label: "Export des options d'attributs en XLSX"
+    label: Export des options d'attributs en XLSX
+    export.label: Export des options d'attributs en XLSX
   xlsx_association_type_export:
-    label: "Export des types d'association en XLSX"
-    export.label: "Export des types d'association en XLSX"
+    label: Export des types d'association en XLSX
+    export.label: Export des types d'association en XLSX
   xlsx_channel_export:
     label: Export des canaux en XLSX
     export.label: Export des canaux
@@ -337,8 +337,8 @@ batch_jobs:
     label: Export des locales en XLSX
     export.label: Export des locales
   xlsx_attribute_group_export:
-    label: "Export des groupes d'attributs en XLSX"
-    export.label: "Export des groupes d'attributs"
+    label: Export des groupes d'attributs en XLSX
+    export.label: Export des groupes d'attributs
   xlsx_currency_export:
     label: Export des devises en XLSX
     export.label: Export des devises
@@ -354,9 +354,9 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des locales
   xlsx_attribute_group_import:
-    label: "Import des groupes d'attributs en XLSX"
+    label: Import des groupes d'attributs en XLSX
     validation.label: Validation du fichier
-    import.label: "Import des groupes d'attributs"
+    import.label: Import des groupes d'attributs
   xlsx_currency_import:
     label: Import des devises en XLSX
     validation.label: Validation du fichier
