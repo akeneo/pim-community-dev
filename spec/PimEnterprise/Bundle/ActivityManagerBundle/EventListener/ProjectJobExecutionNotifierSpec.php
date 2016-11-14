@@ -82,7 +82,7 @@ class ProjectJobExecutionNotifierSpec extends ObjectBehavior
             ['due_date' => '2019-12-23', 'project_label' => 'project label', 'filters' => 'filters']
         )->willReturn($notification);
 
-        $userRepository->findUserToNotify(42, [84])->willReturn([$user]);
+        $userRepository->findContributorToNotify(42, [84])->willReturn([$user]);
         $notifier->notify($notification, [$user])->shouldBeCalled();
 
         $this->projectCreated($event)->shouldReturn(null);
