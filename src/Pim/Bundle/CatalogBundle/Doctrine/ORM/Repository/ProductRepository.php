@@ -169,8 +169,9 @@ class ProductRepository extends EntityRepository implements
         $this->addJoinToValueTables($qb);
         $rootAlias = current($qb->getRootAliases());
         $qb->andWhere(
-            $qb->expr()->in($rootAlias.'.id', $ids)
+            $qb->expr()->in($rootAlias.'.id', ':product_ids')
         );
+        $qb->setParameter('product_ids', $ids);
 
         return $qb->getQuery()->execute();
     }
