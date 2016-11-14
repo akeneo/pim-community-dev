@@ -12,7 +12,7 @@
 namespace Akeneo\ActivityManager\Component\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -27,5 +27,5 @@ interface UserRepositoryInterface extends ObjectRepository
      *
      * @return UserInterface[]
      */
-    public function findByGroupIdsProjectOwnerExcluded($ownerId, array $groupIds);
+    public function findContributorToNotify($ownerId, array $groupIds);
 }

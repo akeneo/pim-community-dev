@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Factory;
+namespace Akeneo\ActivityManager\Bundle\Notification;
 
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 

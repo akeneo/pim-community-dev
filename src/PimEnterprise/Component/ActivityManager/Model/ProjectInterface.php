@@ -98,7 +98,7 @@ interface ProjectInterface
     /**
      * @param DatagridView $datagridView
      */
-    public function setDatagridView($datagridView);
+    public function setDatagridView(DatagridView $datagridView);
 
     /**
      * Add a new user group to the Project.
@@ -129,7 +129,7 @@ interface ProjectInterface
     public function getProductFilters();
 
     /**
-     * @param string $productFilters
+     * @param array $productFilters
      */
-    public function setProductFilters($productFilters);
+    public function setProductFilters(array $productFilters);
 }

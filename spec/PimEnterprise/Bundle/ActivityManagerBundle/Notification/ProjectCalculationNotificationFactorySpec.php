@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Factory;
+namespace spec\Akeneo\ActivityManager\Bundle\Notification;
 
+use Akeneo\ActivityManager\Bundle\Notification\ProjectCalculationNotificationFactory;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -14,13 +15,18 @@ class ProjectCalculationNotificationFactorySpec extends ObjectBehavior
         $this->beConstructedWith(['project_calculation'], 'Pim\Bundle\NotificationBundle\Entity\Notification');
     }
 
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(ProjectCalculationNotificationFactory::class);
+    }
+
     function it_supports_type()
     {
         $this->supports('project_calculation')->shouldReturn(true);
         $this->supports('import')->shouldReturn(false);
     }
 
-    function it_returns_factory(
+    function it_creates_a_notification(
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         BatchStatus $batchStatus
@@ -35,7 +41,7 @@ class ProjectCalculationNotificationFactorySpec extends ObjectBehavior
         $this->create($jobExecution)->shouldReturnAnInstanceOf('Pim\Bundle\NotificationBundle\Entity\Notification');
     }
 
-    function it_throws_an_exception_if_param_is_not_an_exception()
+    function it_throws_an_exception_if_param_is_not_a_job_exception()
     {
         $this->shouldThrow(
             new \InvalidArgumentException('Expects a Akeneo\Component\Batch\Model\JobExecution, "stdClass" provided')

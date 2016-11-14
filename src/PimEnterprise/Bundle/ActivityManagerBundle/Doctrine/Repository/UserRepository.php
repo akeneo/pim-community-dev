@@ -33,7 +33,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findByGroupIdsProjectOwnerExcluded($projectOwnerId, array $groupIds)
+    public function findContributorToNotify($projectOwnerId, array $groupIds)
     {
         $qb = $this->createQueryBuilder('u');
         $qb->leftJoin('u.groups', 'g');

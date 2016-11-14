@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\EventSubscriber;
+namespace Akeneo\ActivityManager\Bundle\EventListener;
 
-use Akeneo\ActivityManager\Bundle\Factory\ProjectCreatedNotificationFactory;
+use Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory;
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
@@ -98,7 +98,7 @@ class ProjectJobExecutionNotifier implements EventSubscriberInterface
             $userGroupIds[] = $userGroup->getId();
         }
 
-        $users = $this->userRepository->findByGroupIdsProjectOwnerExcluded($owner->getId(), $userGroupIds);
+        $users = $this->userRepository->findContributorToNotify($owner->getId(), $userGroupIds);
 
         foreach ($users as $user) {
             $userLocale = $user->getUiLocale();

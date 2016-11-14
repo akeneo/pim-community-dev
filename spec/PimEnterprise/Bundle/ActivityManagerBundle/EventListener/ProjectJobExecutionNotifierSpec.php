@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\EventSubscriber;
+namespace spec\Akeneo\ActivityManager\Bundle\EventListener;
 
-use Akeneo\ActivityManager\Bundle\EventSubscriber\ProjectJobExecutionNotifier;
-use Akeneo\ActivityManager\Bundle\Factory\ProjectCreatedNotificationFactory;
+use Akeneo\ActivityManager\Bundle\EventListener\ProjectJobExecutionNotifier;
+use Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory;
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
@@ -82,7 +82,7 @@ class ProjectJobExecutionNotifierSpec extends ObjectBehavior
             ['due_date' => '2019-12-23', 'project_label' => 'project label', 'filters' => 'filters']
         )->willReturn($notification);
 
-        $userRepository->findByGroupIdsProjectOwnerExcluded(42, [84])->willReturn([$user]);
+        $userRepository->findUserToNotify(42, [84])->willReturn([$user]);
         $notifier->notify($notification, [$user])->shouldBeCalled();
 
         $this->projectCreated($event)->shouldReturn(null);

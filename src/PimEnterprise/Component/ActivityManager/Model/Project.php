@@ -173,7 +173,7 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function setDatagridView($datagridView)
+    public function setDatagridView(DatagridView $datagridView)
     {
         $this->datagridView = $datagridView;
     }
@@ -215,7 +215,7 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function setProductFilters($productFilters)
+    public function setProductFilters(array $productFilters)
     {
         $this->productFilters = $productFilters;
     }

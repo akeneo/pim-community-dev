@@ -20,7 +20,9 @@ use Doctrine\ORM\EntityRepository;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectRepository extends EntityRepository implements ProjectRepositoryInterface, IdentifiableObjectRepositoryInterface
+class ProjectRepository extends EntityRepository implements
+    ProjectRepositoryInterface,
+    IdentifiableObjectRepositoryInterface
 {
     public function __construct(EntityManager $em, $class)
     {

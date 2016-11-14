@@ -38,39 +38,49 @@ class ProjectUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
-            switch ($field) {
-                case 'label':
-                    $project->setLabel($value);
-                    break;
-                case 'due_date':
-                    $project->setDueDate(new \DateTime($value));
-                    break;
-                case 'description':
-                    $project->setDescription($value);
-                    break;
-                case 'owner':
-                    $project->setOwner($value);
-                    break;
-                case 'datagrid_view':
-                    $project->setDatagridView($value);
-                    break;
-                case 'product_filters':
-                    $project->setProductFilters($value);
-                    break;
-                case 'channel':
-                    $project->setChannel($value);
-                    break;
-                case 'locale':
-                    $project->setLocale($value);
-                    break;
-                case 'user_groups':
-                    foreach ($value as $userGroup) {
-                        $project->addUserGroup($userGroup);
-                    }
-                    break;
-            }
+            $this->setData($project, $field, $value);
         }
 
         return $this;
+    }
+
+    /**
+     * @param ProjectInterface $project
+     * @param string           $field
+     * @param mixed            $value
+     */
+    private function setData(ProjectInterface $project, $field, $value)
+    {
+        switch ($field) {
+            case 'label':
+                $project->setLabel($value);
+                break;
+            case 'due_date':
+                $project->setDueDate(new \DateTime($value));
+                break;
+            case 'description':
+                $project->setDescription($value);
+                break;
+            case 'owner':
+                $project->setOwner($value);
+                break;
+            case 'datagrid_view':
+                $project->setDatagridView($value);
+                break;
+            case 'product_filters':
+                $project->setProductFilters($value);
+                break;
+            case 'channel':
+                $project->setChannel($value);
+                break;
+            case 'locale':
+                $project->setLocale($value);
+                break;
+            case 'user_groups':
+                foreach ($value as $userGroup) {
+                    $project->addUserGroup($userGroup);
+                }
+                break;
+        }
     }
 }

@@ -41,10 +41,7 @@ class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInte
     }
 
     /**
-     * Launches the job.
-     *
-     * @param UserInterface    $user
-     * @param ProjectInterface $project
+     * {@inheritdoc}
      */
     public function launch(UserInterface $user, ProjectInterface $project)
     {
