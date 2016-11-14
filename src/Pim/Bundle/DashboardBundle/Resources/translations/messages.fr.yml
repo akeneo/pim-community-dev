@@ -9,8 +9,7 @@ pim_dashboard:
   widget:
     error:
       title: Erreur lors du chargement du widget
-      message: |-
-        Le widget "%alias%" n'existe pas
+      message: Le widget "%alias%" n'existe pas
     completeness:
       title: Complétude par canal et par locale
     last_operations:
