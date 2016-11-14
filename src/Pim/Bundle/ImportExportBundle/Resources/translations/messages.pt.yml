@@ -18,22 +18,22 @@ pim_import_export:
     invalid: transferir dados inválidos
   notification:
     export:
-      error: 'Falha ao exportar <strong>%label%</strong>'
-      warning: 'Exportar <strong>%label%</strong> terminou com alguns avisos'
-      success: 'Exportação de <strong>%label%</strong> terminado com sucesso'
+      error: Falha ao exportar <strong>%label%</strong>
+      warning: Exportar <strong>%label%</strong> terminou com alguns avisos
+      success: Exportação de <strong>%label%</strong> terminado com sucesso
     import:
-      error: 'Importação de <strong>%label%</strong> falhado'
-      warning: 'Importar <strong>%label%</strong> terminou com alguns avisos'
-      success: 'Importação de <strong>%label%</strong> terminado com sucesso'
+      error: Importação de <strong>%label%</strong> falhado
+      warning: Importar <strong>%label%</strong> terminou com alguns avisos
+      success: Importação de <strong>%label%</strong> terminado com sucesso
   list: Selecione uma tarefa
 pim_title.export_profile.index: Gestão de perfis de exportação
-pim_title.export_profile.edit: 'Exportar perfis %job.label% | Editar'
-pim_title.export_profile.show: 'Exportar perfis %job.label% | Mostrar'
+pim_title.export_profile.edit: Exportar perfis %job.label% | Editar
+pim_title.export_profile.show: Exportar perfis %job.label% | Mostrar
 pim_title.export_execution.index: Histórico de exportações realizadas
 pim_title.export_execution.show: Execução de exportações | Detalhes
 pim_title.import_profile.index: Gestão de perfis de importação
-pim_title.import_profile.edit: 'Importar perfis %job.label% | Editar'
-pim_title.import_profile.show: 'Importar perfis %job.label% | Mostrar'
+pim_title.import_profile.edit: Importar perfis %job.label% | Editar
+pim_title.import_profile.show: Importar perfis %job.label% | Mostrar
 pim_title.import_execution.index: Histórico importações realizadas
 pim_title.import_execution.show: Execução de importações | Detalhes
 export profile:
@@ -91,17 +91,19 @@ import now: Importar agora
 export now: Exportar agora
 confirmation:
   remove:
-    export profile: 'Tem certeza que deseja eliminar o perfil de exportação %name%?'
-    import profile: 'Tem certeza que deseja eliminar o perfil de importação %name%?'
+    export profile: Tem certeza que deseja eliminar o perfil de exportação %name%?
+    import profile: Tem certeza que deseja eliminar o perfil de importação %name%?
 flash:
   export:
     created: A exportação foi criada com sucesso
     removed: A exportação foi removida
     updated: A exportação foi atualizada com sucesso
+    running: A exportação está a ser executada
   import:
     created: A importação foi criada com sucesso
     removed: A importação foi removida
     updated: A exportação foi atualizada com sucesso
+    running: A importação está a ser executada
 pim_menu:
   item:
     export_history: Histórico de exportações
@@ -116,10 +118,10 @@ pane.accordion:
 popin.create:
   export_profile.title: Criar um novo perfil de exportação
   import_profile.title: Criar um novo perfil de importação
-Display item: Mostrar item
-Hide item: Esconder Item
-Collecting data about job execution...: A recolher dados sobre a execução da tarefa...
-You must select a file to upload: Deve selecionar um ficheiro para enviar
+'Display item': Mostrar item
+'Hide item': Esconder Item
+'Collecting data about job execution...': A recolher dados sobre a execução da tarefa...
+'You must select a file to upload': Deve selecionar um ficheiro para enviar
 Download log: Transferir log
 Show profile: Ver perfil
 execution details: detalhes de execução
@@ -139,3 +141,12 @@ Status: Estado
 Summary: Resumo
 Start: Início
 End: Fim
+set_attribute_requirements: Estabelecer requisitos do atributo
+COMPLETED: CONCLUÍDO
+STARTING: A COMEÇAR
+STARTED: COMEÇOU
+STOPPING: A PARAR
+STOPPED: PAROU
+FAILED: FALHOU
+ABANDONED: ABANDONADO
+UNKNOWN: DESCONHECIDO

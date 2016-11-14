@@ -1,0 +1,6 @@
+entity.user.name: Korisnik
+entity.user.description: Korisnički profil
+entity.role.name: Rola
+entity.role.description: korisnička rola
+entity.group.name: Grupa
+entity.group.description: Rola grupe
