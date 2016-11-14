@@ -40,7 +40,7 @@ pim_connector:
       import.title: Импорт типов ассоциаций
     csv_family_import:
       title: Импорт семейств из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт семейств
     csv_group_import:
       title: Импорт группы из CSV
@@ -95,6 +95,8 @@ pim_connector:
     channel:
       label: Канал
       help: Канал, который вы хотите экспортировать
+    header:
+      label: Заголовок
   import:
     enabled:
       label: Активировать продукт
@@ -145,7 +147,17 @@ pim_connector:
       label: Формат даты
       help: Укажите формат столбцов дат в файле, например здесь дд/мм/гггг для формата 31/04/2014.
 job_execution.summary:
+  read: прочитано
   read_lines: прочитанных строк
+  write: записано
+  skip: пропущено
+  create: создано
   process: обработано
+  update_products: обновленных продуктов
   process_products: обработанных продуктов
+  skip_products: пропущенных продуктов
+  displayed: отображены первые предупреждения
+  charset_validator:
+    title: 'Кодировка файла:'
+    skipped: пропущено, расширение из белого списка
   product_skipped_no_diff: пропущен продукт (без разницы)
