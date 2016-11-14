@@ -5,7 +5,7 @@ services:
             - '%akeneo_activity_manager.model.project.class%'
 
     activity_manager.factory.project_calculation_notification:
-        class: 'Akeneo\ActivityManager\Bundle\Factory\ProjectCalculationNotificationFactory'
+        class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCalculationNotificationFactory'
         arguments:
             - ['project_calculation']
             - '%pim_notification.entity.notification.class%'
@@ -13,6 +13,6 @@ services:
             - { name: pim_notification.factory.notification }
 
     activity_manager.factory.project_created_notification:
-        class: 'Akeneo\ActivityManager\Bundle\Factory\ProjectCreatedNotificationFactory'
+        class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory'
         arguments:
             - '%pim_notification.entity.notification.class%'
