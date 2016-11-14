@@ -1,3 +1,0 @@
-services:
-    activity_manager.updater.project:
-        class: 'Akeneo\ActivityManager\Component\Updater\ProjectUpdater'

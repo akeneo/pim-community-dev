@@ -1,10 +1,5 @@
 services:
-    activity_manager.repository.project:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProjectRepository'
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '%akeneo_activity_manager.model.project.class%'
-
+    ### Repositories
     activity_manager.repository.user:
         class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\UserRepository'
         arguments:
@@ -35,3 +30,34 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '%akeneo_batch.entity.job_instance.class%'
             - '%activity_manager.project_calculation.job_name%'
+
+    ### Notifications
+    activity_manager.factory.project_calculation_notification:
+        class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCalculationNotificationFactory'
+        arguments:
+            - ['project_calculation']
+            - '%pim_notification.entity.notification.class%'
+        tags:
+            - { name: pim_notification.factory.notification }
+
+    activity_manager.factory.project_created_notification:
+        class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory'
+        arguments:
+            - '%pim_notification.entity.notification.class%'
+
+    activity_manager.event_subscriber.project_creation_notifier:
+        class: 'Akeneo\ActivityManager\Bundle\EventListener\ProjectCreationNotifierSubscriber'
+        arguments:
+            - '@activity_manager.factory.project_created_notification'
+            - '@pim_notification.notifier'
+            - '@activity_manager.repository.project'
+            - '@activity_manager.repository.user'
+            - '@pim_catalog.localization.presenter.date'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ### Datagrid
+    activity_manager.converter.filter:
+        class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterConverter'
+        arguments:
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'

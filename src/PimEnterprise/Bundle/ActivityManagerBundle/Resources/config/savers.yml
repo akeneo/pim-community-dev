@@ -1,7 +1,0 @@
-services:
-    activity_manager.saver.project:
-        class: '%akeneo_storage_utils.saver.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%akeneo_activity_manager.model.project.interface%'
