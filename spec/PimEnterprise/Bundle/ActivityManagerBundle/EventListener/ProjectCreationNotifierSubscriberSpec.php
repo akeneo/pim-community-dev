@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\ActivityManager\Bundle\EventListener;
 
-use Akeneo\ActivityManager\Bundle\EventListener\ProjectJobExecutionNotifier;
+use Akeneo\ActivityManager\Bundle\EventListener\ProjectCreationNotifierSubscriber;
 use Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory;
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
@@ -19,7 +19,7 @@ use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ProjectJobExecutionNotifierSpec extends ObjectBehavior
+class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
 {
     function let(
         ProjectCreatedNotificationFactory $factory,
@@ -33,7 +33,7 @@ class ProjectJobExecutionNotifierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProjectJobExecutionNotifier::class);
+        $this->shouldHaveType(ProjectCreationNotifierSubscriber::class);
     }
 
     function it_is_subscriber()

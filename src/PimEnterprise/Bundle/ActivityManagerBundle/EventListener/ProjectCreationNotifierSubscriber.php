@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectJobExecutionNotifier implements EventSubscriberInterface
+class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
 {
     /** @var ProjectCreatedNotificationFactory */
     private $factory;
