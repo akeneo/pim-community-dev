@@ -113,7 +113,7 @@ class ProjectContext extends Context implements ContextInterface
             ->findOneBy([
                 'label' => $label,
                 'channel' => $channel,
-                'locale' => $locale
+                'locale' => $locale,
             ]);
 
         if (null === $project) {

@@ -11,6 +11,7 @@
 
 namespace Akeneo\ActivityManager\Component\Repository;
 
+use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 
@@ -22,10 +23,9 @@ interface UserRepositoryInterface extends ObjectRepository
     /**
      * Return users who are AT LEAST in one of the given $groupIds and exclude the project owner.
      *
-     * @param int   $ownerId
-     * @param array $groupIds
+     * @param ProjectInterface $project
      *
      * @return UserInterface[]
      */
-    public function findContributorToNotify($ownerId, array $groupIds);
+    public function findContributorToNotify(ProjectInterface $project);
 }

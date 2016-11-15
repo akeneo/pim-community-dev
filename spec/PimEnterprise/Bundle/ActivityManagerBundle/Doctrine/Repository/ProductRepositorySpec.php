@@ -8,6 +8,8 @@ use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
@@ -38,9 +40,20 @@ class ProductRepositorySpec extends ObjectBehavior
         ProductQueryBuilder $productQueryBuilder,
         ProjectInterface $project,
         CursorInterface $products,
-        UserInterface $user
+        UserInterface $user,
+        ChannelInterface $channel,
+        LocaleInterface $locale
     ) {
-        $productQueryBuilderFactory->create()->willReturn($productQueryBuilder);
+        $project->getLocale()->willReturn($locale);
+        $project->getChannel()->willReturn($channel);
+
+        $locale->getCode()->willReturn('en_US');
+        $channel->getCode()->willReturn('ecommerce');
+
+        $productQueryBuilderFactory->create([
+            'default_locale' => 'en_US',
+            'default_scope' => 'ecommerce',
+        ])->willReturn($productQueryBuilder);
 
         $project->getProductFilters()->willReturn([
             ['field' => 'family.code', 'operator' => 'IN', 'value' => 'guitar'],

@@ -14,7 +14,6 @@ namespace Akeneo\ActivityManager\Bundle\EventListener;
 use Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory;
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
@@ -83,22 +82,10 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
     {
         $project = $event->getProject();
 
-        if (!$project instanceof ProjectInterface || empty($project->getUserGroups())) {
-            return;
-        }
-
         $view = $project->getDatagridView();
         $filters = $view->getFilters();
 
-        $userGroups = $project->getUserGroups();
-        $owner = $project->getOwner();
-
-        $userGroupIds = [];
-        foreach ($userGroups as $userGroup) {
-            $userGroupIds[] = $userGroup->getId();
-        }
-
-        $users = $this->userRepository->findContributorToNotify($owner->getId(), $userGroupIds);
+        $users = $this->userRepository->findContributorToNotify($project);
 
         foreach ($users as $user) {
             $userLocale = $user->getUiLocale();

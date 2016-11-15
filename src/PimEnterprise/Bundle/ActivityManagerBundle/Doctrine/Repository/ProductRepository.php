@@ -45,12 +45,16 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function findByProject(ProjectInterface $project)
     {
-        $productQueryBuilder = $this->productQueryBuilderFactory->create();
         $productFilers = $project->getProductFilters();
 
         if (null === $productFilers) {
             throw new \LogicException(sprintf('The project "%s" does not have product filters', $project->getLabel()));
         }
+
+        $productQueryBuilder = $this->productQueryBuilderFactory->create([
+            'default_locale' => $project->getLocale()->getCode(),
+            'default_scope' => $project->getChannel()->getCode(),
+        ]);
 
         foreach ($productFilers as $productFiler) {
             $productQueryBuilder->addFilter($productFiler['field'], $productFiler['operator'], $productFiler['value']);

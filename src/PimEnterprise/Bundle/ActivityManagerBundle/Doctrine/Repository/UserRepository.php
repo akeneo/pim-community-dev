@@ -11,10 +11,12 @@
 
 namespace Akeneo\ActivityManager\Bundle\Doctrine\Repository;
 
+use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\UserBundle\Entity\Group;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -33,13 +35,21 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findContributorToNotify($projectOwnerId, array $groupIds)
+    public function findContributorToNotify(ProjectInterface $project)
     {
         $qb = $this->createQueryBuilder('u');
-        $qb->leftJoin('u.groups', 'g');
-        $qb->where('u.id != :ownerId');
-        $qb->andWhere($qb->expr()->in('g.id', $groupIds));
-        $qb->setParameter('ownerId', $projectOwnerId);
+
+        $groupIds = array_map(function (Group $userGroup) {
+            return $userGroup->getId();
+        }, $project->getUserGroups()->toArray());
+
+        if (empty($groupIds)) {
+            return [];
+        }
+
+        $qb->leftJoin('u.groups', 'g')
+            ->where($qb->expr()->neq('u.id', $project->getOwner()->getId()))
+            ->andWhere($qb->expr()->in('g.id', $groupIds));
 
         return $qb->getQuery()->getResult();
     }
