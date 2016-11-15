@@ -1,5 +1,9 @@
 # 1.6.x
 
+## Bug fixes
+
+- PIM-6011: Fix an error 500 on asset's view screen caused by a typo
+
 ## Developer eXperience
 
 - Ease the override of product asset by using model parameter in the product-asset grid
