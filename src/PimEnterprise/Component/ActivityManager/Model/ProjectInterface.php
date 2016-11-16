@@ -16,6 +16,7 @@ use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 /**
@@ -142,4 +143,19 @@ interface ProjectInterface
      * @param array $productFilters
      */
     public function setProductFilters(array $productFilters);
+
+    /**
+     * @param ProductInterface $product
+     */
+    public function addProduct(ProductInterface $product);
+
+    /**
+     * @param ArrayCollection $products
+     */
+    public function setProducts(ArrayCollection $products);
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getProducts();
 }
