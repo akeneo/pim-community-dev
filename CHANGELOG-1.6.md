@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6000: Fix migration from 1.5 on quick exports
+- #5198: Fix issue with the export builder time condition, cheers @Schwierig
 
 # 1.6.4 (2016-10-20)
 
