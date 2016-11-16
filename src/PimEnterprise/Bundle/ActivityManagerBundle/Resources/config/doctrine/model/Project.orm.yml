@@ -69,6 +69,19 @@ Akeneo\ActivityManager\Component\Model\Project:
                 cascade:
                     - refresh
                     - detach
+        products:
+            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            joinTable:
+                name: akeneo_activity_manager_project_product
+                joinColumns:
+                    project_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    product_id:
+                        referencedColumnName: id
+                cascade:
+                    - refresh
+                    - detach
     uniqueConstraints:
         channel_locale_label_idx:
             columns: channel_id,locale_id,label

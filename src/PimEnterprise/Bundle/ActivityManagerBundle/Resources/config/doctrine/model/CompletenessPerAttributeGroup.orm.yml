@@ -1,0 +1,63 @@
+Akeneo\ActivityManager\Component\Model\CompletenessPerAttributeGroup:
+    type: entity
+    table: akeneo_activity_manager_completeness_pre_processing
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - channel_id
+                - locale_id
+                - product_id
+                - attribute_group_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        hasAtLeastOneRequiredAttributeFilled:
+            type: boolean
+            column: in_progress
+        complete:
+            type: boolean
+    manyToOne:
+        locale:
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
+            joinColumns:
+                locale_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+            cascade:
+                - persist
+                - detach
+        channel:
+            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
+            joinColumns:
+                channel_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+            cascade:
+                - persist
+                - detach
+        product:
+            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            joinColumns:
+                product_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+            cascade:
+                - persist
+                - detach
+        attributeGroup:
+            targetEntity: Pim\Component\Catalog\Model\AttributeGroupInterface
+            joinColumns:
+                attribute_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+            cascade:
+                - persist
+                - detach
