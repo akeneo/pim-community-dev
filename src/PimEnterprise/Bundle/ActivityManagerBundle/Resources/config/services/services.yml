@@ -1,3 +1,6 @@
+parameters:
+    pim_datagrid.datagrid.configuration.product.context_configurator.class: Akeneo\ActivityManager\Bundle\Datagrid\ContextConfigurator
+
 services:
     ### Repositories
     activity_manager.repository.user:
@@ -31,6 +34,12 @@ services:
             - '%akeneo_batch.entity.job_instance.class%'
             - '%activity_manager.project_calculation.job_name%'
 
+    activity_manager.repository.attribute:
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\AttributeRepository'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.attribute.class%'
+
     ### Notifications
     activity_manager.factory.project_calculation_notification:
         class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCalculationNotificationFactory'
@@ -61,3 +70,17 @@ services:
         class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterConverter'
         arguments:
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+
+    pim_datagrid.extension.filter:
+        class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterExtension'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+            - '@translator'
+            - '@pim_datagrid.datasource.adapter_resolver'
+            - '@activity_manager.repository.attribute'
+            - '@pimee_security.repository.attribute_group_access'
+            - '@pim_user.context.user'
+            - '@pim_datagrid.repository.datagrid_view'
+            - '@activity_manager.repository.project'
+        tags:
+             - { name: oro_datagrid.extension }

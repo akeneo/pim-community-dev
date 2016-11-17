@@ -24,6 +24,10 @@ class ProjectRepository extends EntityRepository implements
     ProjectRepositoryInterface,
     IdentifiableObjectRepositoryInterface
 {
+    /**
+     * @param EntityManager $em
+     * @param string        $class
+     */
     public function __construct(EntityManager $em, $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));

@@ -122,7 +122,7 @@ interface ProjectInterface
     public function getUserGroups();
 
     /**
-     * Returns PQB filters in json.
+     * Returns PQB filters in php array format.
      *
      * @return array $productFilters
      */
