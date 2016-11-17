@@ -1,6 +1,7 @@
 # 1.5.x
 
 - PIM-5995: Fix issue with product count on group save
+- PIM-6006: Fix small memory leak when iterating over products cursor
 
 # 1.5.12 (2016-11-04)
 
