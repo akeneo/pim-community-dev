@@ -25,16 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 class ProjectController extends Controller
 {
     /**
-     * @param string $label
-     *
-     * @return Response
-     */
-    public function showAction($label)
-    {
-        return $this->render('ActivityManagerBundle:Project:show.html.twig', ['label' => $label]);
-    }
-
-    /**
      * @param Request $request
      *
      * @return JsonResponse
@@ -66,6 +56,7 @@ class ProjectController extends Controller
         if (isset($projectData['datagrid_view'])) {
             $datagridViewData = $projectData['datagrid_view'];
             $datagridViewData['type'] = DatagridViewTypes::PROJECT_VIEW;
+            $datagridViewData['owner'] = $projectData['owner'];
             $datagridViewData['label'] = sprintf('Project %s', time());
             $datagridViewData['datagrid_alias'] = 'product-grid';
         }
@@ -109,5 +100,32 @@ class ProjectController extends Controller
         }
 
         return new JsonResponse($errors, 400);
+    }
+
+    /**
+     * Returns Projects in terms of search and options.
+     * Options accept 'limit' => (int) and 'page' => (int) and 'user' => UserInterface
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function searchAction(Request $request)
+    {
+        $projectRepository = $this->container->get('activity_manager.repository.project');
+        $serializer = $this->container->get('pim_internal_api_serializer');
+
+        $projects = $projectRepository->findBySearch(
+            $request->query->get('search'),
+            [
+                'limit' => $request->query->get('limit'),
+                'page' => $request->query->get('page'),
+                'user' => $this->getUser()
+            ]
+        );
+
+        $normalizedProjects = $serializer->normalize($projects, 'internal_api');
+
+        return new JsonResponse($normalizedProjects, 200);
     }
 }

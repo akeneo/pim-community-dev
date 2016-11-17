@@ -14,16 +14,21 @@ namespace Akeneo\ActivityManager\Component\Normalizer;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Normalize a Project from an object to an array. Uses to expose Project to front-end for example.
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class ProjectNormalizer implements NormalizerInterface
+class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @var array $supportedFormats */
     protected $supportedFormats = ['internal_api'];
+
+    /** @var SerializerInterface */
+    private $serializer;
 
     /**
      * {@inheritdoc}
@@ -34,6 +39,9 @@ class ProjectNormalizer implements NormalizerInterface
      *     'description' => (string),
      *     'due_date' => (string),
      *     'owner' => (int),
+     *     'channel' => [] internal_api format,
+     *     'locale' => [] internal_api format,
+     *     'datagridView' => [] internal_api format
      * ]
      */
     public function normalize($project, $format = null, array $context = [])
@@ -53,6 +61,13 @@ class ProjectNormalizer implements NormalizerInterface
             'description' => $project->getDescription(),
             'due_date' => $project->getDueDate()->format('Y-m-d'),
             'owner' => $project->getOwner()->getId(),
+            'channel' => $this->serializer->normalize($project->getChannel(), $format, $context),
+            'locale' => $this->serializer->normalize($project->getLocale(), $format, $context),
+            'datagridView' => $this->serializer->normalize(
+                $project->getDatagridView(),
+                $format,
+                $context
+            ),
         ];
     }
 
@@ -62,5 +77,13 @@ class ProjectNormalizer implements NormalizerInterface
     public function supportsNormalization($project, $format = null)
     {
         return $project instanceof ProjectInterface && in_array($format, $this->supportedFormats);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSerializer(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
     }
 }

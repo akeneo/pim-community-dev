@@ -1,9 +1,9 @@
-activity_manager_project_show:
-    path: /projects/{label}
-    defaults: { _controller: ActivityManagerBundle:Project:show }
-    methods: [GET]
-
 activity_manager_project_create:
     path: /projects
     defaults: { _controller: ActivityManagerBundle:Project:create, _format: json }
     methods: [POST]
+
+activity_manager_project_search:
+    path: /projects/search
+    defaults: { _controller: ActivityManagerBundle:Project:search, _format: json }
+    methods: [GET]
