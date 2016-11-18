@@ -100,9 +100,9 @@ MONTH: Mois
 YEAR: Année
 Speed: Vitesse
 FOOT_PER_SECOND: Pied par seconde
-FOOT_PER_HOUR: Pied / heure
+FOOT_PER_HOUR: Pied par heure
 KILOMETER_PER_HOUR: Kilomètre par heure
-METER_PER_HOUR: Mètre / heure
+METER_PER_HOUR: Mètre par heure
 METER_PER_MINUTE: Mètre par minute
 METER_PER_SECOND: Mètre par seconde
 MILE_PER_HOUR: Mile par heure
@@ -152,6 +152,6 @@ MMHG: Millimètre de mercure
 Energy: Energie
 KILOCALORIE: kilocalorie
 KILOJOULE: kilojoule
-CaseBox: Empaquetage
-PIECE: Pièce
+CaseBox: Emballage
+PIECE: Unité
 DOZEN: Douzaine

@@ -1,0 +1,6 @@
+No products to remove: Não há produtos para remover
+"dot (.)": ponto (.)
+"comma (,)": vírgula (,)
+pim_catalog:
+  constraint:
+    product_identifier: Estes identificadores "%s" não existem.

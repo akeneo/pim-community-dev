@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: Dashboard
+  title: Ohjauspaneeli
   version: Versio
   link.label:
     product: Tuotteiden hallinta
@@ -9,7 +9,7 @@ pim_dashboard:
   widget:
     error:
       title: Virhe ladatessa widgettiä
-      message: 'Widgettiä "%alias%" ei ole'
+      message: Widgettiä "%alias%" ei ole
     completeness:
       title: Kanavien ja lokaatioiden täyttöaste
     last_operations:
