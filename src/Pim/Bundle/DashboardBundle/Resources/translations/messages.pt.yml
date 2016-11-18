@@ -1,27 +1,27 @@
 pim_dashboard:
-  title: Painel
+  title: Painel de controle
   version: Versão
   link.label:
-    product: Gerir produtos
-    category: Gerir categorias
-    attribute: Gerir atributos
-    family: Gerir famílias
+    product: Gerenciar Produtos
+    category: Gerenciar Categorias
+    attribute: Gerenciar Atributos
+    family: Gerenciar Familias
   widget:
     error:
       title: Erro ao carregar widget
-      message: "Widget '%alias%' não existe"
+      message: O widget '%alias%' não existe
     completeness:
-      title: '% de Dados completos nos Canais e Línguas'
+      title: Plenitude Sobre Canais e Locais
     last_operations:
-      title: Últimas operações
-      empty: Nenhuma operação encontrada
-      status: Estado
+      title: Últimas Operações
+      empty: Nenhuma Operação Encontrada
+      status: Status
       date: Data
       type: Tipo
-      profile name: Nome do Perfil
+      profile name: Nome do Profile
       details: Detalhes
       job_type:
-        import: Importação
-        export: Exportação
-        mass_edit: Edição em massa
-        quick_export: Exportação rápida
+        import: Importar
+        export: Exportar
+        mass_edit: Edição em Massa
+        quick_export: Exportação Rápida

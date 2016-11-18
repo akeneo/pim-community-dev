@@ -1,39 +1,39 @@
-User: Utilizador
-Run demo: Executar demonstração
+User: Usuário
+Run demo: Executar demo
 Product: Produto
 Attribute list: Lista de atributos
-Attribute Group list: Lista de Grupos de Atributos
-Users: Utilizadores
+Attribute Group list: Lista de grupo de atributos
+Users: Usuários
 Roles: Funções
 Groups: Grupos
 Configuration: Configuração
 Currency list: Lista de moedas
-Locale list: Lista de linguagens
-Logged in as: Iniciou sessão como
-Logout: Terminar sessão
-Login: Início de sessão
+Locale list: Lista de localidades
+Logged in as: Conectado como
+Logout: Sair
+Login: Entrar
 Previous: Anterior
-Next: Seguinte
+Next: Próximo
 Channel list: Lista de canais
-Select file: Selecionar ficheiro
-Change file: Alterar ficheiro
-Remove file: Eliminar ficheiro
-Delete: Eliminar
-Save: Guardar
+Select file: Selecionar arquivo
+Change file: Alterar arquivo
+Remove file: Remover arquivo
+Delete: Excluir
+Save: Salvar
 Cancel: Cancelar
 Get help: Obter ajuda
-My User: A minha conta
-oro.form.choose_value: Escolher um valor...
-Read more: Ler mais
+My User: Minha Conta
+oro.form.choose_value: Escolha um valor...
+Read more: Leia mais
 oro.form.click_here_to_select: Clique aqui para selecionar...
 Add: Adicionar
-Learn how to use this space: Aprenda a usar este espaço
-How To Use Pinbar: Como usar o Pinbar
+"Learn how to use this space": "Aprenda a usar este espaço"
+"How To Use Pinbar": "Como Usar a Pinbar"
 Pinbar: Pinbar
 Favorites: Favoritos
-Most Viewed: Mais Vistos
-Add this page to favorites: Adicione esta página aos favoritos
-Minimize the window to the pinbar: Minimizar a janela para o pinbar
-Loading ...: A carregar ...
-"Yes": Sim
-"No": Não
+Most Viewed: Mais vistos
+"Add this page to favorites": "Adicione esta página aos favoritos"
+"Minimize the window to the pinbar": "Minimizar a janela para a Pinbar"
+"Loading ...": "Carregando ..."
+"Yes": "Sim"
+"No": "Não"

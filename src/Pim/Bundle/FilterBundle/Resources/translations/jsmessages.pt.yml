@@ -1,14 +1,14 @@
 Close: Fechar
 Update: Atualizar
 Now: Agora
-Selected Rows: Linhas Selecionadas
+Selected Rows: Linhas selecionadas
 more than: Mais do que
-less than: Menos que
+less than: Menos de
 before: antes
-after: depois
-from: desde
-to: até
+after: após
+from: de
+to: para
 and: e
 system_filter_group: Sistema
-oro_filter.filters.manage: Gerir filtros
-oro_filter.placeholder.all: Tudo
+oro_filter.filters.manage: Gerenciar filtros
+oro_filter.placeholder.all: Todos

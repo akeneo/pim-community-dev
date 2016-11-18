@@ -1,6 +1,9 @@
-No products to remove: Não há produtos para remover
-dot (.): ponto (.)
+No products to remove: Não existem produtos a serem removidos
+"dot (.)": ponto (.)
 "comma (,)": vírgula (,)
 pim_catalog:
   constraint:
-    product_identifier: 'Estes identificadores "%s" não existem.'
+    product_identifier: Esses identificadores "%s" não existem.
+    200: Ocorreu um erro interno
+    201: Ocorreu um erro interno
+    205: Ocorreu um erro interno
