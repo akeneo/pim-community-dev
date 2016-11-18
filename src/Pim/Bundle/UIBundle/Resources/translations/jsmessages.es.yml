@@ -1,16 +1,16 @@
 Close: Cerrar
 Update: Actualizar
 Selected Rows: Filas seleccionadas
-"Yes": SÍ
-Yes, Delete: Sí, eliminar
-Yes, I Agree: Sí, estoy de acuerdo
-Yes, do it: Sí, hazlo
-"No": 'No'
-Ok, got it.: De acuerdo.
-Cancel: Cancelar
-Delete Confirmation: Confirmación de eliminación
-Edit: Editar
-Unexpected error occured. Please contact system administrator.: Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema.
+"Yes": "SÍ"
+"Yes, Delete": "Sí, eliminar"
+"Yes, I Agree": "Sí, estoy de acuerdo"
+"Yes, do it": "Sí, hazlo"
+"No": "No"
+"Ok, got it.": "De acuerdo."
+"Cancel": "Cancelar"
+"Delete Confirmation": "Confirmación de eliminación"
+"Edit": "Editar"
+"Unexpected error occured. Please contact system administrator.": "Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema."
 Now: Ahora
 Prev: Ant
 Next: Siguiente
@@ -21,14 +21,14 @@ AM: AM
 A: A
 PM: PM
 P: P
-Choose Time: Selecciona Hora
+"Choose Time": "Selecciona Hora"
 Time: Tiempo
 Hour: Hora
 Minute: Minuto
 Second: Segundo
 Millisecond: Milisegundo
 Microsecond: Microsegundo
-Time Zone: Zona Horaria
+"Time Zone": "Zona Horaria"
 Localized value: Valor localizado
 Columns: Columnas
 Datagrid Configuration: Configuración de Grilla
@@ -44,7 +44,7 @@ jstree:
     unclassified: Productos sin clasificar
   no_tree: Ningún árbol disponible
   include_sub: Incluir subcategorías
-  loading: Cargando...
+  loading: Cargando ...
 datetimepicker:
   days:
     Sunday: Domingo
@@ -88,7 +88,7 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Abr
-    May: May
+    May: Mayo
     Jun: Jun
     Jul: Jul
     Aug: Ago
@@ -99,14 +99,19 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Configuración del sitema
+      title: Configuración del sistema
       tab:
         system:
           title: Sistema
       group:
         localization:
           title: Localización
-          system_locale: Idioma
+          system_locale: idioma
         notification:
           title: Notificaciones
           system_notification: Notificaciones de nuevas versiones
+        loading_message:
+          title: Cargando mensajes
+          label: Activar los mensajes de carga
+        loading_messages:
+          label: Mensajes de carga disponibles

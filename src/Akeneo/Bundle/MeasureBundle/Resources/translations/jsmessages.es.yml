@@ -95,6 +95,9 @@ SECOND: Segundo
 MINUTE: Minuto
 HOUR: Hora
 DAY: Día
+WEEK: Semana
+MONTH: Mes
+YEAR: Año
 Speed: Velocidad
 FOOT_PER_SECOND: Pie por segundo
 FOOT_PER_HOUR: Pie por hora
@@ -130,7 +133,7 @@ Weight: Peso
 DENIER: Denier
 GRAIN: Granulado
 GRAM: Gramo
-KILOGRAM: Kilogramo
+KILOGRAM: Kilogramos
 LIVRE: Libra
 MARC: Marc
 MILLIGRAM: Miligramo
@@ -146,3 +149,9 @@ ATM: Atmósfera
 PSI: Libra por pulgada cuadrada
 TORR: Torr
 MMHG: milímetro de mercurio
+Energy: Energía
+KILOCALORIE: kilo caloría
+KILOJOULE: kilojulio
+CaseBox: Embalaje
+PIECE: Pieza
+DOZEN: Docena

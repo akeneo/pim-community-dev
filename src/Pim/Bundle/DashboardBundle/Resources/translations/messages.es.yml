@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: Tablero
+  title: Cartelera
   version: Versión
   link.label:
     product: Gestionar productos
@@ -9,7 +9,7 @@ pim_dashboard:
   widget:
     error:
       title: Error al cargar el widget
-      message: 'No existe el widget "%alias%"'
+      message: No existe el widget "%alias%"
     completeness:
       title: Integridad por Canales y Locales
     last_operations:

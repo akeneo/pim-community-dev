@@ -1,6 +1,8 @@
 Job: Zadanie
 Connector: Wtyczka
 pim_import_export:
+  job: Zadanie
+  connector: Wtyczka
   status:
     - Gotowe
   batch_status:
@@ -13,32 +15,32 @@ pim_import_export:
     7: PORZUCONE
     8: NIEZNANY
   download_archive:
-    archive: pobierz utworzone archiwum|pobierz utworzone archiwa
     output: pobierz utworzony plik|pobierz utworzone pliki
     input: pobierz wczytany plik|pobierz wczytane pliki
-    invalid: pobierz nieprawidłowe dane
+    invalid_xlsx: pobierz nieprawidłowe dane
+    invalid_csv: pobierz nieprawidłowe dane
   notification:
     export:
-      error: 'Eksport <strong>%label%</strong> nie powiódł się'
-      warning: 'Eksport <strong>%label%</strong> zakończony z ostrzeżeniami'
-      success: 'Eksport <strong>%label%</strong> zakończony'
+      error: Eksport <strong>%label%</strong> nie powiódł się
+      warning: Eksport <strong>%label%</strong> zakończony z ostrzeżeniami
+      success: Eksport <strong>%label%</strong> zakończony
     import:
-      error: 'Import <strong>%label%</strong> nie powiódł się'
-      warning: 'Import <strong>%label%</strong> zakończony z ostrzeżeniami'
-      success: 'Import <strong>%label%</strong> zakończony'
+      error: Import <strong>%label%</strong> nie powiódł się
+      warning: Import <strong>%label%</strong> zakończony z ostrzeżeniami
+      success: Import <strong>%label%</strong> zakończony
   list: Wybierz zadanie
   job_profile:
     tab:
       property.title: Ustawienia ogólne
       history.title: Historia
 pim_title.export_profile.index: Zarządzanie profilami eksportu
-pim_title.export_profile.edit: 'Profile eksportu %job.label% | Edytuj'
-pim_title.export_profile.show: 'Profile eksportu %job.label% | Pokaż'
+pim_title.export_profile.edit: Profile eksportu %job.label% | Edytuj
+pim_title.export_profile.show: Profile eksportu %job.label% | Pokaż
 pim_title.export_execution.index: Historia wykonanych eksportów
 pim_title.export_execution.show: Wykonane eksporty | Szczegóły
 pim_title.import_profile.index: Zarządzanie profilami importu
-pim_title.import_profile.edit: 'Profile importu %job.label% | Edytuj'
-pim_title.import_profile.show: 'Profile importu %job.label% | Pokaż'
+pim_title.import_profile.edit: Profile importu %job.label% | Edytuj
+pim_title.import_profile.show: Profile importu %job.label% | Pokaż
 pim_title.import_execution.index: Historia wykonanych importów
 pim_title.import_execution.show: Wykonane importy | Szczegóły
 export profile:
@@ -90,14 +92,13 @@ btn:
   create:
     export profile: utwórz profil eksportu
     import profile: utwórz profil importu
-Upload and import: Załaduj i importuj
 Upload and import now: Załaduj pliki i importuj teraz
 import now: Importuj teraz
 export now: Eksportuj teraz
 confirmation:
   remove:
-    export profile: 'Czy na pewno chcesz usunąć profil eksportu %name%?'
-    import profile: 'Czy na pewno chcesz usunąć profil importu %name%?'
+    export profile: Czy na pewno chcesz usunąć profil eksportu %name%?
+    import profile: Czy na pewno chcesz usunąć profil importu %name%?
 flash:
   export:
     created: Eksport został pomyślnie utworzony
@@ -123,10 +124,10 @@ pane.accordion:
 popin.create:
   export_profile.title: Utwórz nowy profil eksportu
   import_profile.title: Utwórz nowy profil importu
-Display item: Pokaż element
-Hide item: Ukryj element
-Collecting data about job execution...: Zbieranie danych o wykonywaniu zadania...
-You must select a file to upload: Musisz wybrać plik do przesłania
+'Display item': Pokaż element
+'Hide item': Ukryj element
+'Collecting data about job execution...': Zbieranie danych o wykonywaniu zadania...
+'You must select a file to upload': Musisz wybrać plik do przesłania
 Download log: Pobierz dziennik
 Show profile: Pokaż profil
 execution details: szczegóły wykonania
@@ -147,6 +148,7 @@ Status: Status
 Summary: Podsumowanie
 Start: Start
 End: Koniec
+set_attribute_requirements: Określ wymagania atrybutów
 COMPLETED: WYKONANO
 STARTING: ROZPOCZYNANIE
 STARTED: ROZPOCZĘTE

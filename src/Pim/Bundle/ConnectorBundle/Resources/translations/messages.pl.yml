@@ -26,98 +26,139 @@ pim_connector:
     product_writer.title: Magazyn produktów
     category_writer.title: Magazyn kategorii
     variant_group_writer.title: Magazyn grup wariantów
+    writer.title: Jednostki składowania
     csv_writer.title: Zapis Csv
   export:
-    delimiter:
-      label: Separator
-      help: Jeden znak używany do rozdzielenia poszczególnych pól
-    enclosure:
-      label: Ogranicznik wartości pola
-      help: Znak użyty do rozgraniczenia wartości pola
-    withHeader:
-      label: Z nagłówkiem
-      help: Drukować, czy nie nazwę kolumny
-    filePath:
-      label: Ścieżka do pliku
-      help: Gdzie zapisać utworzony plik w systemie plików
-    channel:
-      label: Kanał
-      help: Kanał, który chcesz wyeksportować
-    locales:
-      label: Ustawienia regionalne
-    status:
-      label: Status
-      choice:
-        enabled: Włączony
-        disabled: Nieaktywny
-        all: Wszystkie
-    completeness:
-      label: Kompletność
-    decimalSeparator:
-      label: Separator dziesiętny
-      help: Określ separator dziesiętny
-    dateFormat:
-      label: Format daty
-      help: Określ format pola Data
-    header:
-      label: Nagłówek
+    csv:
+      delimiter:
+        label: Separator
+        help: Jeden znak używany do rozdzielenia poszczególnych pól
+      enclosure:
+        label: Ogranicznik wartości pola
+        help: Znak użyty do rozgraniczenia wartości pola
+      withHeader:
+        label: Z nagłówkiem
+        help: Drukować, czy nie nazwę kolumny
+      filePath:
+        label: Ścieżka do pliku
+        help: Gdzie zapisać utworzony plik w systemie plików
+      decimalSeparator:
+        label: Separator dziesiętny
+        help: Określ separator dziesiętny
+      dateFormat:
+        label: Format daty
+        help: Określ format pola Data
+    xlsx:
+      withHeader:
+        label: Z nagłówkiem
+        help: Drukować, czy nie nazwę kolumny
+      filePath:
+        label: Ścieżka do pliku
+        help: Gdzie zapisać utworzony plik w systemie plików
+      decimalSeparator:
+        label: Separator dziesiętny
+        help: Określ separator dziesiętny
+      dateFormat:
+        label: Format daty
+        help: Określ format pola Data
+    yml:
+      filePath:
+        label: Ścieżka do pliku
+        help: Gdzie zapisać utworzony plik w systemie plików
   import:
-    enabled:
-      label: Włącz produkt
-      help: Czy zaimportowane produkty mają zostać włączone, czy nie
-    categoriesColumn:
-      label: Kolumna Kategorii
-      help: Nazwa kolumny kategorii
-    familyColumn:
-      label: Kolumna rodziny
-      help: Nazwa kolumny rodziny produktu
-    groupsColumn:
-      label: Kolumna grup
-      help: Nazwa kolumny grup
-    filePath:
-      label: Plik
-      help: Plik CSV do importu
-    yamlFilePath:
-      label: Plik
-      help: Plik YAML do importu
-    uploadAllowed:
-      label: Zezwól na załadowanie pliku
-      help: Czy zezwolić na wgrywanie plików bezpośrednio, czy nie
-    delimiter:
-      label: Separator
-      help: Znak użyty do rozgraniczenia poszczególnych pól w pliku CSV
-    enclosure:
-      label: Ogranicznik wartości pola
-      help: Znak użyty do rozgraniczenia wartości pola
-    escape:
-      label: Znak ucieczki
-      help: Znak ucieczki powodujący inną niż domyślna interpretację znaku lub sekwencji znaków po nim następujących
-    circularRefsChecked:
-      label: Sprawdzanie odwołań cyklicznych
-      help: Gdy włączony, dane zostaną sprawdzone pod kątem zawartości cyklicznych odwołań pomiędzy kategoriami
-    realTimeVersioning:
-      label: Aktualizacja historii w czasie rzeczywistym
-      help: Oznacza że historia dla produktu będzie aktualizowana automatycznie, wyłącz w celu poprawy wydajności
-    copyValuesToProducts:
-      label: Skopiuj wartości z grup wariantów na produkty
-      help: Oznacza, że produkty zostaną automatycznie zaktualizowane o wartości z grup wariantów, wyłącz w celu aktualizacji tylko samych grup wariantów
-    enabledComparison:
-      label: Porównaj wartości
-      help: Włącza porównanie wartości istniejących z importowanymi. Przyśpiesza proces importu, jeżeli wartości importowane są bardzo podobne do istniejących
-    decimalSeparator:
-      label: Separator dziesiętny
-      help: Znak użyty do rozgraniczenia wartości dziesiętnych
-    dateFormat:
-      label: Format daty
-      help: Określ format daty dla kolumn w pliku, np. DD/MM/RRRR dla 30/04/2014.
+    csv:
+      enabled:
+        label: Włącz produkt
+        help: Czy zaimportowane produkty mają zostać włączone, czy nie
+      categoriesColumn:
+        label: Kolumna Kategorii
+        help: Nazwa kolumny kategorii
+      familyColumn:
+        label: Kolumna rodziny
+        help: Nazwa kolumny rodziny produktu
+      groupsColumn:
+        label: Kolumna grup
+        help: Nazwa kolumny grup
+      filePath:
+        label: Plik
+        help: Plik CSV do importu
+      uploadAllowed:
+        label: Zezwól na załadowanie pliku
+        help: Czy zezwolić na wgrywanie plików bezpośrednio, czy nie
+      delimiter:
+        label: Separator
+        help: Znak użyty do rozgraniczenia poszczególnych pól w pliku CSV
+      enclosure:
+        label: Ogranicznik wartości pola
+        help: Znak użyty do rozgraniczenia wartości pola
+      escape:
+        label: Znak ucieczki
+        help: Znak ucieczki powodujący inną niż domyślna interpretację znaku lub sekwencji znaków po nim następujących
+      circularRefsChecked:
+        label: Sprawdzanie odwołań cyklicznych
+        help: Gdy włączony, dane zostaną sprawdzone pod kątem zawartości cyklicznych odwołań pomiędzy kategoriami
+      realTimeVersioning:
+        label: Aktualizacja historii w czasie rzeczywistym
+        help: Oznacza że historia dla produktu będzie aktualizowana automatycznie, wyłącz w celu poprawy wydajności
+      copyValuesToProducts:
+        label: Skopiuj wartości z grup wariantów na produkty
+        help: Oznacza, że produkty zostaną automatycznie zaktualizowane o wartości z grup wariantów, wyłącz w celu aktualizacji tylko samych grup wariantów
+      enabledComparison:
+        label: Porównaj wartości
+        help: Włącza porównanie wartości istniejących z importowanymi. Przyśpiesza proces importu, jeżeli wartości importowane są bardzo podobne do istniejących
+      decimalSeparator:
+        label: Separator dziesiętny
+        help: Znak użyty do rozgraniczenia wartości dziesiętnych
+      dateFormat:
+        label: Format daty
+    xlsx:
+      enabled:
+        label: Włącz produkt
+        help: Czy zaimportowane produkty mają zostać włączone, czy nie
+      categoriesColumn:
+        label: Kolumna Kategorii
+        help: Nazwa kolumny kategorii
+      familyColumn:
+        label: Kolumna rodziny
+        help: Nazwa kolumny rodziny produktu
+      groupsColumn:
+        label: Kolumna grup
+        help: Nazwa kolumny grup
+      filePath:
+        label: Plik
+      uploadAllowed:
+        label: Zezwól na załadowanie pliku
+        help: Czy zezwolić na wgrywanie plików bezpośrednio, czy nie
+      circularRefsChecked:
+        label: Sprawdzanie odwołań cyklicznych
+        help: Gdy włączony, dane zostaną sprawdzone pod kątem zawartości cyklicznych odwołań pomiędzy kategoriami
+      realTimeVersioning:
+        label: Aktualizacja historii w czasie rzeczywistym
+        help: Oznacza że historia dla produktu będzie aktualizowana automatycznie, wyłącz w celu poprawy wydajności
+      copyValuesToProducts:
+        label: Skopiuj wartości z grup wariantów na produkty
+        help: Oznacza, że produkty zostaną automatycznie zaktualizowane o wartości z grup wariantów, wyłącz w celu aktualizacji tylko samych grup wariantów
+      enabledComparison:
+        label: Porównaj wartości
+        help: Włącza porównanie wartości istniejących z importowanymi. Przyśpiesza proces importu, jeżeli wartości importowane są bardzo podobne do istniejących
+      decimalSeparator:
+        label: Separator dziesiętny
+        help: Znak użyty do rozgraniczenia wartości dziesiętnych
+      dateFormat:
+        label: Format daty
+    yml:
+      filePath:
+        label: Plik
+      uploadAllowed:
+        label: Zezwól na załadowanie pliku
+        help: Czy zezwolić na wgrywanie plików bezpośrednio, czy nie
 job_execution.summary:
   read: odczytano
-  read_lines: odczytane wiersze
   write: zapisano
-  skip: pominięte
+  skip: pominięto
   create: utworzono
   process: przetworzono
-  update_products: zaktualizowane produkty
+  update_products: zaktualizowano produktów
   process_products: produkty przetworzone
   skip_products: pominięte produkty
   displayed: pierwsze ostrzeżenie wyświetlone
@@ -125,6 +166,7 @@ job_execution.summary:
     title: 'Strona kodowa pliku:'
     skipped: pominięte, rozszerzenie na białej liście
   product_skipped_no_diff: produkt pominięty (brak różnic)
+  item_position: odczytane wiersze
 batch_jobs:
   csv_product_export:
     label: Eksport produktów do CSV
@@ -183,6 +225,16 @@ batch_jobs:
     label: Import grup wariantów z CSV
     validation.label: Sprawdzanie pliku
     import.label: Import grup wariantów
+  csv_channel_import:
+    validation.label: Sprawdzanie pliku
+  csv_locale_import:
+    validation.label: Sprawdzanie pliku
+  csv_attribute_group_import:
+    validation.label: Sprawdzanie pliku
+  csv_currency_import:
+    validation.label: Sprawdzanie pliku
+  csv_group_type_import:
+    validation.label: Sprawdzanie pliku
   xlsx_category_import:
     validation.label: Sprawdzanie pliku
     import.label: Import kategorii
@@ -217,3 +269,13 @@ batch_jobs:
     export.label: Eksport rodziny
   xlsx_category_export:
     export.label: Eksport kategorii
+  xlsx_channel_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_locale_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_attribute_group_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_currency_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_group_type_import:
+    validation.label: Sprawdzanie pliku
