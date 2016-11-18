@@ -1748,7 +1748,6 @@ class WebUser extends RawMinkContext
             try {
                 $checkbox = $this->spin(function () use ($category) {
                     return $category->find('css', '.jstree-checkbox');
-
                 });
             } catch (\Exception $e) {
                 $checkbox = null;

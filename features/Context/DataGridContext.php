@@ -788,7 +788,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->spin(function () {
             $this->getSession()->getPage()->clickLink('Refresh');
-            
+
             return true;
         });
     }
@@ -800,7 +800,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->wait();
         $link = $this->spin(function () {
-           return $this->getSession()->getPage()->findLink('Back to grid');
+            return $this->getSession()->getPage()->findLink('Back to grid');
         });
         $link->click();
         $this->wait();
