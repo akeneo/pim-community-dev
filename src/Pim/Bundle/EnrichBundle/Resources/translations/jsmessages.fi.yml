@@ -14,6 +14,11 @@ confirmation:
     user: Haluatko varmasti poistaa tämän käyttäjän?
     role: Oletko varma, että haluat poistaa tämän roolin?
 pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Massatoimenpiteet
+    quick_export:
+      label: Nopea vienti
   mass_action:
     delete:
       confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
@@ -64,12 +69,13 @@ error:
     attribute_option: Määriteasetuksen poistossa virhe
   saving:
     attribute_option: Määriteasennusta ei voi tallentaa
+    export_profile: Vientiprofiilia ei voi tallentaa. Tarkista että suodattimet on täytetty oikein
 alert:
   attribute_option:
     error_occured_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
     save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
   session_storage:
-    not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
+    not_available: 'Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.'
 confirm:
   attribute_option:
     cancel_edition_on_new_option_text: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta mahdollisuutta?
@@ -90,21 +96,33 @@ pim:
     mass_action:
       quick_export:
         csv_all: CSV (kaikki määritteet)
+        csv_grid_context: CSV (Ruudukon konteksti)
+        xlsx_all: Excel (Kaikki attribuutit)
+        xlsx_grid_context: Excel (Ruudukon konteksti)
+      delete: Poista tuotteet
+      mass_edit: Muuta tuotteiden tietoja
+      category_edit: Siirrä tuotteita kategorioihin
+      sequential_edit: Muokkaa tuotteita peräkkäin
 jstree.create: Luo
-switch_on: Kyllä
-switch_off: Ei
+switch_on: "Kyllä"
+switch_off: "Ei"
 pim_enrich:
   item:
     list:
       delete.label: Poista
       delete.error: Virhe kohteen poistamisessa
     delete:
-      confirm.content: 'Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota'
-      confirm.title: 'Poista tämä {{ itemName }}'
+      confirm.content: Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota
+      confirm.title: Poista tämä {{ itemName }}
   navigation:
     link:
       back_to_grid: Takaisin ruudukkoon
   entity:
+    save:
+      label: Tallenna
+    info:
+      update_failed: Päivitys epäonnistui
+      update_successful: Päivitys onnistui
     product:
       title: tuote
       btn:
@@ -137,7 +155,7 @@ pim_enrich:
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - kentät
-        already_in_upload: 'Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"'
+        already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
       meta:
@@ -151,7 +169,7 @@ pim_enrich:
         groups:
           title: Ryhmät
           modal:
-            title: 'Ryhmä {{ group }}'
+            title: Ryhmä {{ group }}
             view_group: Näytä ryhmä
             group_label: Nimike
             more_products: '{{ count }} lisää tuotteita...'
@@ -161,17 +179,18 @@ pim_enrich:
         all: Kaikki
         all_visible: Kaikki näkyvillä olevat
         none: Ei yhtään
+        copy: Kopioi
       variant_group:
         updated_by: Päivitetty variant-ryhmittäin
         switch:
-          "yes": true
-          "no": false
+          "yes": Kyllä
+          "no": Ei
       optional_attribute:
         remove: Poista määrite
       locale_specific_attribute:
         unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
       localizable:
-        channel_locale_unavailable: "Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'"
+        channel_locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
       media:
         upload: Vedä ja pudota ladattavaksi tai klikkaa tästä
       create_popin:
@@ -184,21 +203,28 @@ pim_enrich:
       code: Koodi
       label: Nimike
     variant_group:
+      title: Tuotevariaatioryhmä
       info:
+        deletion_successful: Tuotevariaatioryhmä poistettiin onnistuneesti.
+        deletion_failed: Tuotevariaatioryhmää ei voitu poistaa.
+        update_successful: Tuotevariaatioryhmä päivitetty onnistuneesti.
+        update_failed: Tuotevariaatioryhmää ei voitu päivittää.
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - kentät
-        already_in_upload: 'Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"'
+        already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
         no_attributes: Tällä tuotevariaatioryhmällä ei ole attribuutteja vielä
       btn:
         save: Tallenna
       meta:
         product_count: Tuotteet
         created: Luotu
+        created_by: Luoja
         updated: Päivitetty
+        updated_by: Päivittäjä
   confirmation:
     leave: Oletko varma, että haluat poistua tältä sivulta?
-    discard_changes: 'Menetät muutokset tähän {{ entity }}, jos poistut sivulta.'
+    discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
     delete_item: Vahvista poisto
     delete:
       attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
@@ -212,6 +238,7 @@ pim_enrich:
     not_allowed: Et saa käyttää tätä sivua
     error_occured: Virhe ladattaessa sivua
   form:
+    required: (vaadittu)
     product:
       tab:
         associations:
@@ -228,9 +255,9 @@ pim_enrich:
             add_attributes: Lisää määritteet
           info:
             search_attributes: Hae...
-            no_available_attributes: Ei ole enää attribuutteja lisättäväksi
+            no_available_attributes: Määritteitä ei ole enää lisättävänä
             attributes_selected: '{{ attributeCount }} attribuuttia valittu'
-            no_match: Vastaavuuksia ei löydy
+            no_match: Ei hakutuloksia
             load_more: Ladataan lisää tuloksia...
         categories:
           title: Kategoriat
@@ -240,16 +267,17 @@ pim_enrich:
           info:
             no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
             no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
+          missing_values: Puuttuvat arvot
         history:
           title: Historiatiedot
       switch:
-        "no": false
-        "yes": true
+        "no": Ei
+        "yes": Kyllä
       sequential_edit:
         info:
           products: tuotteet
-          previous: 'Siirry takaisin {{ product }} tallentamatta.'
-          next: 'Siirry {{ product }} tallentamatta.'
+          previous: Siirry takaisin {{ product }} tallentamatta.
+          next: Siirry {{ product }} tallentamatta.
         btn:
           save_and_next: Tallenna ja seuraava
           save_and_finish: Tallenna ja lopeta
@@ -303,60 +331,140 @@ pim_enrich:
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
   export:
     product:
+      data:
+        title: Suodata tuotteet
       structure:
+        title: Suodata arvot
         attributes:
           title: Attribuutit
       filter:
         channel:
           title: Kanava
+          help: Kanava määrittää tuotearvojen laajuuden, arvojen lokaation ja tuotepuun, jolla rajataan mukaan otettavat tuotteet.
         locales:
           title: Alueet
+          help: 'Lokaatiot määrittävät minkäkieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot.'
         attributes:
           title: Attribuutit
           edit: Muokkaa
+          label: '{0} Kaikki attribuutit|{1} Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu'
+          help: 'Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit.'
+          empty: Kaikki attribuutit viedään
           modal:
             apply: Valitse
             cancel: Peruuta
+            title: Attribuuttivalinta
         attributes_selector:
           attribute_group: Attribuuttiryhmät
+          attributes: Etsi {{ attributeCount }} attribuutista
+          selected: Valitut attribuutit
           clear: Tyhjennä
           all_group: Kaikki ryhmät
+          empty_selection: Kaikki attribuutit viedään
         family:
           title: Perhe
+          help: 'Valitse vietävät tuotteet perheen mukaan. Esim: vie vain kengät ja hameet.'
           operators:
             IN: Luettelossa
+            NOT IN: Ei luettelossa
+            EMPTY: Perheettömät tuotteet
+            NOT EMPTY: Perheelliset tuotteet
+          empty_selection: Ei perhe-ehtoja
+        updated:
+          title: Aikaehto
+          operators:
+            ALL: Ei aikaehtoa
+            SINCE LAST N DAYS: Tuotteet päivitetty viimeisen n päivän aikana (esim. 6)
+            >: Tämän päivän jälkeen päivitetyt tuotteet
+            SINCE LAST JOB: Viime viennin jälkeen päivitetyt tuotteet
         enabled:
           title: Status
+          help: 'Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta.'
           value:
             all: Kaikki
             enabled: Käytössä
             disabled: Poistettu käytöstä
         completeness:
           title: Valmistumisaste
+          help: Valitse vietävät tuotteet valmiusasteen perusteella.
+          operators:
+            ALL: Ei valmiusaste-ehtoa
+            >=: Valmis ainakin yhdessä valituista lokaatioista
+            GREATER OR EQUALS THAN ON ALL LOCALES: Valmis kaikissa valituissa lokaatiossa
+            LOWER THAN ON ALL LOCALES: Ei valmis kaikissa lokaatioissa
+          empty_selection: Valitse perhe
+        category:
+          title: Kategoria
+          help: Käytä puun tuotekategorioita (määritelty yllä olevan kanavan mukaan) valitaksesi vietävät tuotteet
         identifier:
           title: Tunniste
+          help: Vietävien tuotteiden tunnisteet eroteltuna pilkuilla, välilyönneillä tai rivinvaihdoilla
         metric:
           operators:
+            =: Yhtäsuuri kuin
+            !=: Erisuuri kuin
+            >=: Suurempi tai yhtäsuuri kuin
+            >: Suurempi kuin
+            <=: Pienempi tai yhtäsuuri kuin
+            <: Pienempi kuin
             EMPTY: Tyhjä
+            NOT EMPTY: Ei tyhjä
         string:
           operators:
             ALL: Kaikki
+            CONTAINS: Sisältää
+            DOES NOT CONTAIN: Ei sisällä
+            =: Yhtä kuin
+            STARTS WITH: Alkaa
+            ENDS WITH: Päättyy
             EMPTY: Tyhjä
+            NOT EMPTY: Ei tyhjä
         price-collection:
           operators:
+            =: Yhtäsuuri kuin
+            !=: Erisuuri kuin
+            >=: Suurempi tai yhtäsuuri kuin
+            >: Suurempi kuin
+            <=: Pienempi tai yhtäsuuri kuin
+            <: Pienempi kuin
             EMPTY: Tyhjä
+            NOT EMPTY: Ei tyhjä
         multi_select:
           operators:
             IN: Luettelossa
             EMPTY: Tyhjä
+            NOT EMPTY: Ei tyhjä
         media:
           operators:
+            CONTAINS: Sisältää
+            DOES NOT CONTAIN: Ei sisällä
+            =: Yhtä kuin
+            STARTS WITH: Alkaa
+            ENDS WITH: Päättyy
             EMPTY: Tyhjä
+            NOT EMPTY: Ei tyhjä
         date:
           operators:
+            >: Suurempi kuin
+            <: Pienempi kuin
+            =: Yhtä kuin
+            !=: Erisuuri kuin
+            BETWEEN: Välillä
+            NOT BETWEEN: Ei välillä
             EMPTY: Tyhjä
+            NOT EMPTY: Ei tyhjä
         number:
           operators:
+            =: Yhtä kuin
+            !=: Erisuuri kuin
+            >=: Suurempi tai yhtäsuuri kuin
+            >: Suurempi kuin
+            <=: Pienempi tai yhtäsuuri kuin
+            <: Pienempi kuin
             EMPTY: Tyhjä
+            NOT EMPTY: Ei tyhjä
+  mass_edit_action:
+    edit_common_attributes:
+      description: Tuoteruudukosta valitun tuotteen attribuutit muokataan seuraavilla tiedoilla lokaatiolle <span class="highlight">{{ locale }}</span> ja kanavalle <span class="highlight">{{ channel }}</span>.
 pim_enrich.error:
-  exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'
+  exception.title: Voi ei! {{ status_code }} virhe tapahtui...
