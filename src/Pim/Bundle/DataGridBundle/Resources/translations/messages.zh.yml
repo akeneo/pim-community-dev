@@ -1,0 +1,38 @@
+"oro_datagrid.no_data_hint %entityHint%": 没有 %entityHint% 存在。
+oro_datagrid.not_found_hint: 未找到任何结果。请试着改变您的搜索条件。
+oro_datagrid.label_add_filter: 管理过滤器
+oro_datagrid.label_loading_mask: 正在加载
+oro.grid.mass_action.selected_rows: 选定的行
+oro.grid.mass_action.confirm_title: 批处理确认
+oro.grid.mass_action.confirm_content: 您是否确认要这样做？
+oro.grid.mass_action.confirm_ok: 是，继续
+oro.grid.mass_action.error_title: 批处理错误
+oro.grid.mass_action.error_content: 不能执行批处理
+oro.grid.mass_action.delete.label: 删除
+oro.grid.mass_action.delete.confirm_title: 批量删除确认
+oro.grid.mass_action.delete.confirm_content: 您确定要删除所选的项目吗?
+oro.grid.datagrid.page_size.all: 所有
+oro.grid.mass_action.delete.success_message: "{0} 没有实体被删除 |{1} 一个实体被删除 |]1，Inf [%count% 实体被删除"
+datagrid_view:
+  views: 视图
+  default: 默认视图
+  create: 创建视图
+  placeholder: 新视图的名称
+  remove: 删除此视图
+  save_changes: 保存此视图
+  choose_label: 选择视图的标签
+  columns:
+    min_message: 您必须选择至少一个要显示的 datagrid 列
+  label:
+    unique_message: 标签名称必须是唯一的
+    not_blank_message: 标题不得为空。
+confirmation.remove.datagrid view: 您是否确定要删除此数据视图?
+flash.datagrid view:
+  created: 数据视图已创建
+  updated: 数据视图已更新
+  removed: 数据视图已删除
+  not removable: 你没有权限删除此视图
+quick_export: 快速导出
+import: 导入
+export: 导出
+mass_edit: 批量编辑
