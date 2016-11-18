@@ -71,13 +71,13 @@ pim_enrich:
     legend:
       locale_not_associated: Ustawienie regionalne nie jest powiązana z tym kanałem
   mass_edit_action:
-    limit_exceeded: 'Proszę wybrać mniej niż %limit% elementów do edycji'
+    limit_exceeded: Proszę wybrać mniej niż %limit% elementów do edycji
     product:
       page_title: Produkty
-      page_subtitle: 'Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)'
+      page_subtitle: Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)
       title: Wybierz działanie
-      subtitle: 'Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach'
-      confirm: 'Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.'
+      subtitle: Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach
+      confirm: Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.
       steps:
         first: Wybierz produkty
         second: Wybierz działanie
@@ -85,10 +85,10 @@ pim_enrich:
         fourth: Potwierdź
     family:
       page_title: Rodziny
-      page_subtitle: 'Masowa edycja (1 rodzina) | Masowa edycja (%count% rodzin)'
+      page_subtitle: Masowa edycja (1 rodzina) | Masowa edycja (%count% rodzin)
       title: Wybierz działanie
-      subtitle: 'Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin'
-      confirm: 'Zamierzasz zaktualizować rodzinę o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% rodzin o następujące informacje, proszę potwierdź.'
+      subtitle: Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin
+      confirm: Zamierzasz zaktualizować rodzinę o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% rodzin o następujące informacje, proszę potwierdź.
       steps:
         first: Wybierz rodziny
         second: Wybierz działanie
@@ -98,49 +98,51 @@ pim_enrich:
       label: Zmiana statusu (Włącz / Wyłącz)
       description: Wybrane produkty zostaną włączone lub wyłączone.
       success_flash: Status produktu (produktów) został zmieniony
-      launched_flash: 'Masowe zadanie "zmiany statusu" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      launched_flash: Masowe zadanie "zmiany statusu" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     edit-common-attributes:
       label: Edytuj atrybuty
       empty: Proszę wybrać atrybut(y), które chcesz edytować
       success_flash: Zadanie aktualizacji statusu produktów jest aktualnie wykonywane
-      launched_flash: 'Zadanie masowej "edycji wspólnych atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      launched_flash: Zadanie masowej "edycji wspólnych atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
       message:
         warning: Brak wspólnych atrybutów dla zaznaczonych produktów. Proszę wybierz inne produkty.
-        invalid_attribute: 'Atrybut o kodzie "attribute_code" nie jest wspólnym atrybutem zaznaczonych produktów, został pominięty.'
+        invalid_attribute: Atrybut o kodzie "attribute_code" nie jest wspólnym atrybutem zaznaczonych produktów, został pominięty.
         no_valid_attribute: Żaden z wybranych atrybutów nie może zostać zastosowany do tego produktu.
     classify:
       label: Klasyfikuj produkty w kategorie
       description: Produkty zostanie umieszczony w następujących kategoriach, istniejące rozmieszczenie nie zostanie zmienione.
       success_flash: Produkt(y) został(y) zaklasyfikowane do wybranych kategorii
-      launched_flash: 'Zadanie masowej "klasyfikacji" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
     change-family:
       label: Zmień rodzinę produktów
       description: Rodzina wybranych produktów zostanie zamieniona na wybraną rodzinę
       success_flash: Rodzina wybranego produktu(ów) została zmieniona pomyślnie
-      launched_flash: 'Zadanie masowej "zmiany rodziny" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      launched_flash: Zadanie masowej "zmiany rodziny" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     add-to-groups:
       label: Dodaj do grup
       description: Wybierz grupy, do których chcesz dodać wybrane produkty
       success_flash: Produkty zostały pomyślnie dodane do wybranych grup
-      launched_flash: 'Masowe zadanie "dodaj do grup" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      launched_flash: Masowe zadanie "dodaj do grup" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
       no_group: Żadna grupa nie istnieje. Proszę zacznij od utworzenia jednej.
     add-to-variant-group:
       label: Dodaj do grupy wariantów
       description: Wybierz grupę wariantów, do której chcesz dodać wybrane produkty
       success_flash: Produkty zostały pomyślnie dodane do wybranej grupy wariantów
       no_variant_group: Żadna grupa wariantów nie istnieje. Proszę zacznij od utworzenia jednej.
-      launched_flash: 'Masowe zadanie "dodaj do grupy wariantów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      some_variant_groups_are_skipped:
+        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
+      launched_flash: Masowe zadanie "dodaj do grupy wariantów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     set-attribute-requirements:
+      label: Określ wymagania atrybutów
       description: Poniższe wymagania atrybutów zostaną zastosowane do wybranych rodzin
       success_flash: Wymagania atrybutów zostały zastosowane do wybranych rodzin
-      launched_flash: 'Masowe zadanie "określone wymagania atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      launched_flash: Masowe zadanie "określone wymagania atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     mass_action:
       quick_export:
         launched_flash: Zadanie eksportu produktów jest aktualnie wykonywane
   sequential_edit_action:
     product:
-      previous: 'Przejdź z powrotem do "%product%" bez zapisywania.'
-      next: 'Przejdź do "%product%" bez zapisywania.'
+      previous: Przejdź z powrotem do "%product%" bez zapisywania.
+      next: Przejdź do "%product%" bez zapisywania.
   acl:
     locale:
       index: Przeglądanie ustawień regionalnych
@@ -358,28 +360,28 @@ confirmation:
   confirm: Potwierdzenie
   delete: Potwierdzenie usunięcia
   leave: Czy na pewno chcesz opuścić tę stronę?
-  discard changes: 'Utracisz wszystkie zmiany w %entity%, jeśli opuścisz tę stronę.'
+  discard changes: Utracisz wszystkie zmiany w %entity%, jeśli opuścisz tę stronę.
   remove:
     item: Czy na pewno chcesz usunąć ten element?
-    attribute: 'Czy na pewno chcesz usunąć atrybut %name%?'
-    attribute group: 'Czy na pewno chcesz usunąć grupę atrybutów %name%?'
-    category: 'Czy na pewno chcesz usunąć kategorię %name%?'
-    family: 'Czy na pewno chcesz usunąć rodzinę %name%?'
-    product: 'Czy na pewno chcesz usunąć produkt %name%?'
-    channel: 'Czy na pewno chcesz usunąć kanał %name%?'
-    group: 'Czy na pewno chcesz usunąć grupę %name%?'
-    variant group: 'Czy na pewno chcesz usunąć grupę wariantów %name%?'
-    association type: 'Czy na pewno chcesz usunąć typ powiązania %name%?'
-    group type: 'Czy na pewno chcesz usunąć typ grupy %name%?'
-    user: 'Czy na pewno chcesz usunąć użytkownika %name%?'
+    attribute: Czy na pewno chcesz usunąć atrybut %name%?
+    attribute group: Czy na pewno chcesz usunąć grupę atrybutów %name%?
+    category: Czy na pewno chcesz usunąć kategorię %name%?
+    family: Czy na pewno chcesz usunąć rodzinę %name%?
+    product: Czy na pewno chcesz usunąć produkt %name%?
+    channel: Czy na pewno chcesz usunąć kanał %name%?
+    group: Czy na pewno chcesz usunąć grupę %name%?
+    variant group: Czy na pewno chcesz usunąć grupę wariantów %name%?
+    association type: Czy na pewno chcesz usunąć typ powiązania %name%?
+    group type: Czy na pewno chcesz usunąć typ grupy %name%?
+    user: Czy na pewno chcesz usunąć użytkownika %name%?
   attribute group:
-    remove attribute: 'Czy na pewno chcesz usunąć atrybut %name% z tej grupy atrybutów?'
+    remove attribute: Czy na pewno chcesz usunąć atrybut %name% z tej grupy atrybutów?
   family:
-    remove attribute: 'Czy na pewno chcesz usunąć atrybut %name% z tej rodziny?'
+    remove attribute: Czy na pewno chcesz usunąć atrybut %name% z tej rodziny?
   product:
-    remove attribute: 'Czy na pewno chcesz usunąć atrybut %name% z tego produktu?'
+    remove attribute: Czy na pewno chcesz usunąć atrybut %name% z tego produktu?
   variant_group:
-    remove_attribute: 'Czy na pewno chcesz usunąć atrybut %name% z tej grupy wariantów?'
+    remove_attribute: Czy na pewno chcesz usunąć atrybut %name% z tej grupy wariantów?
 flash:
   entity:
     removed: Element został usunięty
@@ -388,7 +390,7 @@ flash:
     updated: Atrybut został pomyślnie zaktualizowany
     removed: Atrybut został pomyślnie usunięty
     identifier not removable: Atrybut identyfikujący nie może zostać usunięty
-    used by groups: 'Ten atrybut nie może być usunięty, ponieważ jest on używany przez %count% grupy wariant(ów)'
+    used by groups: Ten atrybut nie może być usunięty, ponieważ jest on używany przez %count% grupy wariant(ów)
   attribute group:
     created: Grupa atrybutów została pomyślnie utworzona
     updated: Grupa atrybutów została pomyślnie zaktualizowana
@@ -461,7 +463,7 @@ info:
   category:
     remove children: Wszystkie podkategorie zostaną usunięte .
     keep products: Produkty w tych kategoriach nie zostaną usunięte.
-    products limit exceeded: 'Ta kategoria zawiera więcej produktów niż dozwolonych dla tej operacji (%limit% maksymalnie produktów)'
+    products limit exceeded: Ta kategoria zawiera więcej produktów niż dozwolonych dla tej operacji (%limit% maksymalnie produktów)
   product:
     no available attributes: Nie ma więcej atrybutów do dodania
     no family defined: Brak zdefiniowanej rodziny
@@ -475,6 +477,7 @@ info:
     disable: Wyłącz
     disabled: Nieaktywny
   group:
+    axis: 'Zmiana osi: %attributes%'
     select products: Wybierz produkty, które powinny należeć do tej grupy.
     selectable products: Następujące produkty do wyboru mają określone wartości dla każdej osi.
     no group types: Nie istnieją żadne typy grup, kliknij tutaj aby utworzyć nową
@@ -482,7 +485,7 @@ info:
   association type:
     show products: Pokaż produkty
     show groups: Pokaż grupy
-    remove from products: 'Usunięcie typu skojarzenia skutkuje usunięciem go z %count% produktów.'
+    remove from products: Usunięcie typu skojarzenia skutkuje usunięciem go z %count% produktów.
     none exist: Brak typów powiązań.
     create one: Kliknij tutaj aby utworzyć jedno
   attribute:
@@ -545,10 +548,11 @@ default: Domyślny
 Axis: Oś
 Add attributes: Dodaj atrybuty
 Translate from: Przetłumacz z
-switch_on: Tak
-switch_off: Nie
+switch_on: "Tak"
+switch_off: "Nie"
 Close: Zamknij
 Choose a color: Wybierz kolor
+Search: Szukaj
 Choose the attribute type: Wybierz typ atrybutu
 Choose the attribute group: Wybierz grupę atrybutów
 Drop a file or click here: Upuścić plik lub kliknij tutaj
@@ -573,7 +577,7 @@ General Properties: Ogólne Właściwości
 Group values: Wartości grupy
 New group: Nowa grupa
 Groups overview: Przegląd grup
-"Y-m-d h:i:s": Y-m-d h:i:s
+'Y-m-d h:i:s': 'Y-m-d h:i:s'
 Max characters: Maksymalna liczba znaków
 Validation rule: Reguła sprawdzania poprawności
 Validation regexp: Wyrażenie regularne
@@ -589,6 +593,7 @@ Default metric unit: Domyślna jednostka metryczna
 Max file size: Maksymalny rozmiar pliku (MB)
 Allowed extensions: Dozwolone rozszerzenia
 None: Brak
+E-mail: E-mail
 URL: URL
 Regular expression: Wyrażenie regularne
 Minimum input length: Minimalna długość danych wejściowych
@@ -598,69 +603,76 @@ Title: Tytuł
 pim_title.attribute_group:
   index: Grupy Atrybutów
   create: Grupy atrybutów | Utwórz
-  edit: 'Grupy atrybutów %group.label% | Edycja'
+  edit: Grupy atrybutów %group.label% | Edycja
 pim_title.category:
   index: Drzewo kategorii
   create: Drzewa kategorii | Utwórz
-  edit: 'Drzewa kategorii %category.label% | Edycja'
+  edit: Drzewa kategorii %category.label% | Edycja
 pim_title.attribute:
   index: Atrybuty
   create: Atrybuty | Utwórz
-  edit: 'Atrybuty %attribute.label% | Edycja'
+  edit: Atrybuty %attribute.label% | Edycja
 pim_title.product:
   index: Produkty
-  edit: 'Produkty %product.sku% | Edycja'
+  edit: Produkty %product.sku% | Edycja
 pim_title.family:
   index: Rodziny
-  edit: 'Rodziny %family.label% | Edycja'
+  edit: Rodziny %family.label% | Edycja
 pim_title.channel:
   index: Kanały
   create: Kanały | Utwórz
-  edit: 'Kanały %channel.label% | Edycja'
+  edit: Kanały %channel.label% | Edycja
 pim_title.currency:
   index: Waluty
 pim_title.locale:
   index: Ustawienia regionalne
 pim_title.group:
   index: Grupy
-  edit: 'Grupy %group.label% | Edycja'
+  edit: Grupy %group.label% | Edycja
 pim_title.variant_group:
   index: Grupy wariantów
-  edit: 'Grupy wariantów %group.label% | Edycja'
+  edit: Grupy wariantów %group.label% | Edycja
 pim_title.association_type:
   index: Typy powiązań
-  edit: 'Typy powiązań %association type.label% | Edycja'
+  edit: Typy powiązań %association type.label% | Edycja
 pim_title.group_type:
   index: Typy grup
-  edit: 'Typy grupy %group type.label% | Edycja'
+  edit: Typy grupy %group type.label% | Edycja
 pim_title.mass_edit_action:
   choose: Edycja Masowa | Wybierz
   configure: Edycja Masowa | Konfiguruj
 pim_title.job_tracker:
   index: Śledzenie procesu
   show: Śledzenie procesu | Pokaż zadanie
-pim_title.dashboard: Kokpit
+pim_title.dashboard: "Kokpit"
 pim_catalog_identifier: Identyfikator
 pim_catalog_text: Tekst
 pim_catalog_textarea: Pole tekstowe
+pim_catalog_number: Liczba
+pim_catalog_price_collection: Cena
+pim_catalog_multiselect: Wielokrotny wybór
+pim_catalog_simpleselect: Pojedynczy wybór
 pim_catalog_file: Plik
 pim_catalog_image: Obrazek
+pim_catalog_boolean: "Tak/Nie"
+pim_catalog_date: Data
+pim_catalog_metric: Miara
 pim_reference_data_simpleselect: Referencja pojedynczy wybór
 pim_reference_data_multiselect: Referencja wielokrotny wybór
 Activated: Aktywowany
 Disable: Wyłącz
 pim_enrich.sequential_edit_action:
   product:
-    previous: 'Przejdź z powrotem do "%product%" bez zapisywania.'
-    next: 'Przejdź do "%product%" bez zapisywania.'
+    previous: Przejdź z powrotem do "%product%" bez zapisywania.
+    next: Przejdź do "%product%" bez zapisywania.
 pim_enrich.mass_edit_action:
-  limit_exceeded: 'Proszę wybrać mniej niż %limit% elementów do edycji'
+  limit_exceeded: Proszę wybrać mniej niż %limit% elementów do edycji
   product:
     page_title: Produkty
-    page_subtitle: 'Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)'
+    page_subtitle: Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)
     title: Wybierz działanie
-    subtitle: 'Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach'
-    confirm: 'Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.'
+    subtitle: Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach
+    confirm: Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.
     steps:
       first: Wybierz produkty
       second: Wybierz działanie
@@ -668,10 +680,10 @@ pim_enrich.mass_edit_action:
       fourth: Potwierdź
   family:
     page_title: Rodziny
-    page_subtitle: 'Masowa edycja (1 rodzina) | Masowa edycja (%count% rodzin)'
+    page_subtitle: Masowa edycja (1 rodzina) | Masowa edycja (%count% rodzin)
     title: Wybierz działanie
-    subtitle: 'Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin'
-    confirm: 'Zamierzasz zaktualizować rodzinę o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% rodzin o następujące informacje, proszę potwierdź.'
+    subtitle: Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin
+    confirm: Zamierzasz zaktualizować rodzinę o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% rodzin o następujące informacje, proszę potwierdź.
     steps:
       first: Wybierz rodziny
       second: Wybierz działanie
@@ -702,6 +714,7 @@ pim_enrich.mass_edit_action:
     description: Wybierz grupy, do których chcesz dodać wybrane produkty
     success_flash: Produkty zostały pomyślnie dodane do wybranych grup
   set-attribute-requirements:
+    label: Określ wymagania atrybutów
     description: Poniższe wymagania atrybutów zostaną zastosowane do wybranych rodzin
     success_flash: Wymagania atrybutów zostały zastosowane do wybranych rodzin
 To enable: Do włączenia
@@ -785,6 +798,7 @@ Currency: Waluta
 oro.locale:
   address_format:
     region_name_type:
+      parish: parafia
       state: Stan
       island: wyspa
       county: hrabstwo
@@ -803,13 +817,13 @@ Selected products successfully deleted: Wybrane produkty zostały pomyślnie usu
 pim_mass_edit:
   notification:
     mass_edit:
-      error: 'Masowa edycja <strong>%label%</strong> nie powiodła się'
-      warning: 'Masowa edycja <strong>%label%</strong> zakończona z ostrzeżeniami'
-      success: 'Masowa edycja <strong>%label%</strong> zakończona'
+      error: Masowa edycja <strong>%label%</strong> nie powiodła się
+      warning: Masowa edycja <strong>%label%</strong> zakończona z ostrzeżeniami
+      success: Masowa edycja <strong>%label%</strong> zakończona
     quick_export:
-      error: 'Szybki eksport <strong>%label%</strong> nie powiódł się'
-      warning: 'Szybki eksport <strong>%label%</strong> zakończony z ostrzeżeniami'
-      success: 'Szybki eksport <strong>%label%</strong> zakończony'
+      error: Szybki eksport <strong>%label%</strong> nie powiódł się
+      warning: Szybki eksport <strong>%label%</strong> zakończony z ostrzeżeniami
+      success: Szybki eksport <strong>%label%</strong> zakończony
 job_execution.summary:
   mass_edited: Masowa edycja
   skip: Pominięte
