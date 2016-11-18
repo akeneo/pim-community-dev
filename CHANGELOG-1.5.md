@@ -1,4 +1,4 @@
-# 1.5.x
+# 1.5.13 (2016-11-18)
 
 - PIM-6005: Boost product export performances by loading less products at the same time
 - PIM-5995: Fix issue with product count on group save
