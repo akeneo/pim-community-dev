@@ -1,0 +1,100 @@
+confirmation:
+  remove:
+    item: Jeste li sigurni da želite izbrisati ovu stavku?
+    association type: Jeste li sigurni da želite izbrisati ovaj tip pridruživanja?
+    attribute: Jeste li sigurni da želite izbrisati ovaj atribut?
+    family: Jeste li sigurni da želite izbrisati ovu obitelj?
+    product: Jeste li sigurni da želite izbrisati ovaj proizvod?
+    channel: Jeste li sigurni da želite izbrisati ovaj kanal?
+    group: Jeste li sigurni da želite izbrisati ovu grupu?
+    variant group: Jeste li sigurni da želite izbrisati ovu varijantu grupe?
+    group type: Jeste li sigurni da želite izbrisati ovaj tip grupe?
+    import profile: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
+    export profile: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
+    user: Jeste li sigurni da želite izbrisati ovog korisnika?
+    role: Jeste li sigurni da želite izbrisati ovu rolu?
+pim_datagrid:
+  mass_action:
+    delete:
+      confirm_content: Jeste li sigurni da želite izbrisati odabrane proizvode?
+      success: Odabrani proizvodi su uspješno izbrisani.
+      error: Dogodila se pogreška prilikom pokušaja brisanja odabranih proizvoda, molimo pokušajte ponovo.
+flash:
+  item:
+    removed: Stavka je uspješno uklonjena
+  association type:
+    removed: Tip pridruživanja je uspješno uklonjen
+  attribute:
+    removed: Atribut je uspješno uklonjen
+  family:
+    removed: Obitelj je uspješno uklonjena
+  product:
+    removed: Proizvod je uspješno uklonjen
+  channel:
+    removed: Kanal je uspješno uklonjen
+  group:
+    removed: Grupa je uspješno uklonjena
+  variant group:
+    removed: Varijanta grupe je uspješno uklonjena
+  group type:
+    removed: Tip grupe je uspješno uklonjen
+  import profile:
+    removed: Profil uvoza je uspješno uklonjen
+  export profile:
+    removed: Profil izvoza je uspješno uklonjen
+  user:
+    removed: Korisnik je uspješno uklonjen
+  role:
+    removed: Rola je uspješno uklonjena
+error:
+  removing:
+    item: Ne možete izbrisati ovu stavku
+    association type: Ne možete izbrisati ovaj tip pridruživanja
+    attribute: Ne možete izbrisati ovaj atribut
+    family: Ne možete izbrisati ovu obitelj
+    product: Ne možete izbrisati ovaj proizvod
+    channel: Ne možete izbrisati ovaj kanal
+    group: Ne možete izbrisati ovu grupu
+    variant group: Ne možete izbrisati ovu varijantu grupe
+    group type: Ne možete izbrisati ovaj tip grupe
+    import profile: Ne možete izbrisati ovaj profil uvoza
+    export profile: Ne možete izbrisati ovaj profil izvoza
+    user: Ne može se izbrisati ovog korisnika
+    role: Ne možete izbrisati ovu rolu
+    attribute_option: Pogreška tijekom brisanja opcije atributa
+  saving:
+    attribute_option: Nije moguće spremiti opciju atributa
+alert:
+  attribute_option:
+    error_occured_during_submission: Došlo je do pogreške tijekom slanja obrasca na poslužitelj
+    save_before_edit_other: Spremite vaše izmjene drugih redaka prije uređivanja ovoga
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Upozorenje, izgubit ćete nespremljene podatke. Jeste li sigurni da želite prekinuti promjenu ove nove opcije?
+    cancel_edition_on_new_option_title: Odustani od izmjena
+label:
+  attribute_option:
+    add_option: Dodati mogućnost
+Code: Kod
+Edit: Uredi
+Delete: Obriši
+Edit attributes of the product: Uređivanje atributa proizvoda
+Classify the product: Klasifikacija proizvoda
+Delete the product: Brisanje proizvoda
+Change status: Promjena statusa
+Toggle status: Uključivanje/isključivanje statusa
+pim.grid.mass_action.quick_export.csv_all: CSV (Svi atributi)
+pim.grid.mass_action.delete: Obriši
+pim.grid.mass_action.mass_edit: Masovno uređivanje
+pim.grid.mass_action.sequential_edit: Sekvencijalno uređivanje
+jstree.create: Kreiraj
+switch_on: "Da"
+switch_off: "Ne"
+pim_enrich:
+  item:
+    list:
+      delete.label: Obriši
+      delete.error: Pogreška tijekom brisanje stavke
+    delete:
+      confirm.content: Jeste li sigurni da želite izbrisati ovaj {{ itemName }}? Nije moguće poništiti ovu akciju
+      confirm.title: Izbrisati ovaj {{ itemName }}

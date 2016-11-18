@@ -1,0 +1,13 @@
+confirmation:
+  confirm: Confirmació
+Channel: Canal
+E-mail: Correu electrònic
+pim_catalog_number: Nombre
+pim_catalog_price_collection: Preu
+pim_catalog_multiselect: Selecció múltiple
+pim_catalog_simpleselect: Selecció simple
+pim_catalog_file: Arxiu
+pim_catalog_boolean: "Sí/No"
+pim_catalog_date: Data
+pim_catalog_metric: Mètrica
+Status: Estat

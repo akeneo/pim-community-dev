@@ -1,12 +1,98 @@
+confirmation:
+  remove:
+    item: Weet u zeker dat u dit item wilt verwijderen?
+    association type: Weet u zeker dat u dit associatietype wilt verwijderen?
+    attribute: Weet u zeker dat u attribuut wilt verwijderen?
+    family: Weet u zeker dat u deze familie wilt verwijderen?
+    product: Weet u zeker dat u dit product wilt verwijderen?
+    channel: Weet u zeker dat u dit kanaal wilt verwijderen?
+    group: Weet u zeker dat u deze groep wilt verwijderen?
+    variant group: Weet u zeker dat u deze variantgroep wilt verwijderen?
+    group type: Weet u zeker dat u dit groepstype wilt verwijderen?
+    import profile: Weet u zeker dat u dit importprofiel wilt verwijderen?
+    export profile: Weet u zeker dat u dit exportprofiel wilt verwijderen?
+    user: Weet u zeker dat u deze gebruiker wilt verwijderen?
+    role: Weet u zeker dat u deze rol wilt verwijderen?
+pim_datagrid:
+  mass_action:
+    delete:
+      confirm_content: Weet u zeker dat u de geselecteerde producten wilt verwijderen?
+      success: Geselecteerde producten succesvol verwijderd.
+      error: Er is een fout opgetreden tijdens het verwijderen van de geselecteerde producten, probeer het opnieuw.
+flash:
+  item:
+    removed: Item succesvol verwijderd
+  association type:
+    removed: Associatietype succesvol verwijderd
+  attribute:
+    removed: Attribuut succesvol verwijderd
+  family:
+    removed: Familie succesvol verwijderd
+  product:
+    removed: Product succesvol verwijderd
+  channel:
+    removed: Kanaal succesvol verwijderd
+  group:
+    removed: Groep succesvol verwijderd
+  variant group:
+    removed: Variantgroep succesvol verwijderd
+  group type:
+    removed: Groepstype succesvol verwijderd
+  import profile:
+    removed: Importprofiel succesvol verwijderd
+  export profile:
+    removed: Exportprofiel succesvol verwijderd
+  user:
+    removed: Gebruiker succesvol verwijderd
+  role:
+    removed: Rol succesvol verwijderd
+error:
+  removing:
+    item: Kan dit item niet verwijderen
+    association type: Kan deze associatie niet verwijderen
+    attribute: Kan dit attribuut niet verwijderen
+    family: Kan deze familie niet verwijderen
+    product: Kan dit product niet verwijderen
+    channel: Kan dit kanaal niet verwijderen
+    group: Kan deze groep niet verwijderen
+    variant group: Kan deze variantgroep niet verwijderen
+    group type: Kan dit groepstype niet verwijderen
+    import profile: Kan dit importprofiel niet verwijderen
+    export profile: Kan dit exportprofiel niet verwijderen
+    user: Kan deze gebruiker niet verwijderen
+    role: Kan deze rol niet verwijderen
+    attribute_option: Fout tijdens verwijderen van de attribuut-optie
+  saving:
+    attribute_option: Kan attribuut-optie niet opslaan
+alert:
+  attribute_option:
+    error_occured_during_submission: Er is een fout op de server opgetreden bij het versturen van het formulier
+    save_before_edit_other: Registreer uw wijzigingen op de andere tijden voordat u deze rij wizigd
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: 'Let op: De niet opgeslagen gegevens gaan verloren. Weet u zeker dat u wijzigingen voor deze optie wilt annuleren ?'
+    cancel_edition_on_new_option_title: Wijziging annuleren
+label:
+  attribute_option:
+    add_option: Optie toevoegen
+Code: Code
+Edit: Bewerken
+Delete: Verwijderen
+Edit attributes of the product: Bewerken van attributen van het product
+Classify the product: Classificeren van het product
+Delete the product: Het product verwijderen
+Change status: Status wijzigen
+Toggle status: Schakel status
+pim.grid.mass_action.delete: Verwijderen
+pim.grid.mass_action.mass_edit: Massa bewerken
+jstree.create: Aanmaken
+switch_on: "Ja"
+switch_off: "Nee"
 pim_enrich:
-  entity:
-    product:
-      variant_group:
-        switch:
-          "yes": true
-          "no": false
-  form:
-    product:
-      switch:
-        "no": false
-        "yes": true
+  item:
+    list:
+      delete.label: Verwijderen
+      delete.error: Fout tijdens item verwijderen
+    delete:
+      confirm.content: Weet u zeker dat u {{ itemName }} wilt verwijderen? Het is niet mogelijk om deze actie ongedaan te maken
+      confirm.title: Verwijder deze {{ itemName }}
