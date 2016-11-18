@@ -93,15 +93,15 @@ pim.grid.mass_action.delete: Löschen
 pim.grid.mass_action.mass_edit: Massenbearbeitung
 pim.grid.mass_action.sequential_edit: Sequentielles Bearbeiten
 jstree.create: Anlegen
-switch_on: Ja
-switch_off: Nein
+switch_on: "Ja"
+switch_off: "Nein"
 pim_enrich:
   item:
     list:
       delete.label: Löschen
       delete.error: Fehler beim Löschen des Elementes
     delete:
-      confirm.content: 'Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden'
+      confirm.content: Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden
       confirm.title: '{{ itemName }} löschen'
   navigation:
     link:
@@ -144,7 +144,7 @@ pim_enrich:
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - Felder
-        already_in_upload: 'Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen'
+        already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
       meta:
@@ -158,7 +158,7 @@ pim_enrich:
         groups:
           title: Gruppen
           modal:
-            title: 'Gruppe {{ group }}'
+            title: Gruppe {{ group }}
             view_group: Gruppe ansehen
             group_label: Bezeichnung
             more_products: '{{ count }} weitere Produkte...'
@@ -179,15 +179,15 @@ pim_enrich:
       locale_specific_attribute:
         unavailable: Dieses vom Gebietsschema abhängige Feld ist in diesem Gebietsschema nicht verfügbar
       localizable:
-        channel_locale_unavailable: "Dieses lokalisierbare Feld ist für das Gebietsschema '{{ locale }}' und den Ausgabekanal '{{ channel }}' nicht verfügbar"
+        channel_locale_unavailable: Dieses lokalisierbare Feld ist für das Gebietsschema '{{ locale }}' und den Ausgabekanal '{{ channel }}' nicht verfügbar
       media:
-        upload: 'Upload per Drag & Drop oder hier klicken'
+        upload: Upload per Drag & Drop oder hier klicken
     attribute_option:
       code: Code
       label: Bezeichnung
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
-    discard_changes: 'Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.'
+    discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
     delete_item: Löschen bestätigen
     delete:
       product_attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
@@ -238,8 +238,8 @@ pim_enrich:
       sequential_edit:
         info:
           products: Produkte
-          previous: 'Zurück zu {{ product }} ohne Speichern.'
-          next: 'Weiter zu {{ product }} ohne Speichern.'
+          previous: Zurück zu {{ product }} ohne Speichern.
+          next: Weiter zu {{ product }} ohne Speichern.
         btn:
           save_and_next: Speichern und weiter
           save_and_finish: Speichern und fertigstellen
@@ -269,6 +269,6 @@ pim_enrich:
         "yes": Ja
   mass_edit_action:
     edit_common_attributes:
-      description: 'Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.'
+      description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
 pim_enrich.error:
-  exception.title: 'Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...'
+  exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...

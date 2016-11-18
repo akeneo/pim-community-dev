@@ -1,12 +1,268 @@
+confirmation:
+  remove:
+    item: Weet u zeker dat u dit item wilt verwijderen?
+    association type: Weet u zeker dat u dit associatietype wilt verwijderen?
+    attribute: Weet u zeker dat u attribuut wilt verwijderen?
+    family: Weet u zeker dat u deze familie wilt verwijderen?
+    product: Weet u zeker dat u dit product wilt verwijderen?
+    channel: Weet u zeker dat u dit kanaal wilt verwijderen?
+    group: Weet u zeker dat u deze groep wilt verwijderen?
+    variant group: Weet u zeker dat u deze variantgroep wilt verwijderen?
+    group type: Weet u zeker dat u dit groepstype wilt verwijderen?
+    import profile: Weet u zeker dat u dit importprofiel wilt verwijderen?
+    export profile: Weet u zeker dat u dit exportprofiel wilt verwijderen?
+    user: Weet u zeker dat u deze gebruiker wilt verwijderen?
+    role: Weet u zeker dat u deze rol wilt verwijderen?
+pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Snelle Export
+  mass_action:
+    delete:
+      confirm_content: Weet u zeker dat u de geselecteerde producten wilt verwijderen?
+      success: Geselecteerde producten succesvol verwijderd.
+      error: Er is een fout opgetreden tijdens het verwijderen van de geselecteerde producten, probeer het opnieuw.
+flash:
+  item:
+    removed: Item succesvol verwijderd
+  association type:
+    removed: Associatietype succesvol verwijderd
+  attribute:
+    removed: Attribuut succesvol verwijderd
+  family:
+    removed: Familie succesvol verwijderd
+  product:
+    removed: Product succesvol verwijderd
+  channel:
+    removed: Kanaal succesvol verwijderd
+  group:
+    removed: Groep succesvol verwijderd
+  variant group:
+    removed: Variantgroep succesvol verwijderd
+  group type:
+    removed: Groepstype succesvol verwijderd
+  import profile:
+    removed: Importprofiel succesvol verwijderd
+  export profile:
+    removed: Exportprofiel succesvol verwijderd
+  user:
+    removed: Gebruiker succesvol verwijderd
+  role:
+    removed: Rol succesvol verwijderd
+error:
+  removing:
+    item: Kan dit item niet verwijderen
+    association type: Kan deze associatie niet verwijderen
+    attribute: Kan dit attribuut niet verwijderen
+    family: Kan deze familie niet verwijderen
+    product: Kan dit product niet verwijderen
+    channel: Kan dit kanaal niet verwijderen
+    group: Kan deze groep niet verwijderen
+    variant group: Kan deze variantgroep niet verwijderen
+    group type: Kan dit groepstype niet verwijderen
+    import profile: Kan dit importprofiel niet verwijderen
+    export profile: Kan dit exportprofiel niet verwijderen
+    user: Kan deze gebruiker niet verwijderen
+    role: Kan deze rol niet verwijderen
+    attribute_option: Fout tijdens verwijderen van de attribuut-optie
+  saving:
+    attribute_option: Kan attribuut-optie niet opslaan
+alert:
+  attribute_option:
+    error_occured_during_submission: Er is een fout op de server opgetreden bij het versturen van het formulier
+    save_before_edit_other: Registreer uw wijzigingen op de andere tijden voordat u deze rij wizigd
+  session_storage:
+    not_available: Jouw webbrowser lijkt niet compatibel te zijn met sessionStorage. Gelieve uw beheerder te contacteren
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: 'Let op: De niet opgeslagen gegevens gaan verloren. Weet u zeker dat u wijzigingen voor deze optie wilt annuleren ?'
+    cancel_edition_on_new_option_title: Wijziging annuleren
+label:
+  attribute_option:
+    add_option: Optie toevoegen
+Code: Code
+Edit: Bewerken
+Delete: Verwijderen
+Edit attributes of the product: Bewerken van attributen van het product
+Classify the product: Classificeren van het product
+Delete the product: Het product verwijderen
+Change status: Status wijzigen
+Toggle status: Schakel status
+pim.grid.mass_action.delete: Verwijderen
+pim.grid.mass_action.mass_edit: Massa bewerken
+jstree.create: Aanmaken
+switch_on: "Ja"
+switch_off: "Nee"
 pim_enrich:
+  item:
+    list:
+      delete.label: Verwijderen
+      delete.error: Fout tijdens item verwijderen
+    delete:
+      confirm.content: Weet u zeker dat u {{ itemName }} wilt verwijderen? Het is niet mogelijk om deze actie ongedaan te maken
+      confirm.title: Verwijder deze {{ itemName }}
+  navigation:
+    link:
+      back_to_grid: Terug naar raster
   entity:
+    save:
+      label: Opslaan
+    info:
+      update_failed: Update niet geslaagd
+      update_successful: Update met succes voltooid
     product:
+      title: product
+      btn:
+        enable: Inschakelen
+        enabled: Ingeschakeld
+        disable: Uitschakelen
+        disabled: Uitgeschakeld
+        download_pdf: PDF
+        compare_translate: Vergelijk / Vertaal
+        delete: Verwijderen
+        save: Opslaan
+        save_and_back: Opslaan en terug naar raster
+      history:
+        version: Versie
+        author: Auteur
+        logged_at: Gelogged op
+        more: Meer
+        less: Minder
+        from: Van
+        modified: Gewijzigd
+        property: Eigenschap
+        old_values: Oude waarden
+        new_values: Nieuwe waarden
+        actions: Acties
+      info:
+        deletion_successful: Product met succes verwijderd.
+        deletion_failed: Het product kon niet worden verwijderd.
+        update_successful: Product succesvol bijgewerkt.
+        update_failed: Het product kon niet geüpdatet worden.
+        field_not_ready:
+          The product cannot be saved right now. The following fields are not ready:
+            - velden
+        already_in_upload: Voor dit attribuut is al een bestand geüpload in de locale "{{ locale }}" en scope "{{ scope }}"
+      error:
+        upload: Er deed zich een fout voor tijdens het uploaden van dit bestand
+      meta:
+        created: Aangemaakt
+        created_by: Door
+        updated_by: Door
+        updated: Laatst bijgewerkt
+        family:
+          title: Familie
+          none: Geen
+        groups:
+          title: Groepen
+          modal:
+            title: Groep {{ group }}
+            view_group: Bekijk groep
+            group_label: Label
+            more_products: '{{ count }} extra producten...'
+            close: Sluiten
+      copy:
+        select: Selecteer
+        all: Alle
+        all_visible: Alle zichtbare
+        none: Geen
+        copy: Kopieer
       variant_group:
+        updated_by: Geüpdatet door variant groep
         switch:
-          "yes": true
-          "no": false
+          "yes": Ja
+          "no": Nee
+      optional_attribute:
+        remove: Dit attribuut verwijderen
+      locale_specific_attribute:
+        unavailable: Dit specifiek veld van de landinstelling is niet beschikbaar in deze landinstelling
+      localizable:
+        channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
+    attribute_option:
+      code: Code
+      label: Label
+  confirmation:
+    leave: Weet u zeker dat u deze pagina wilt verlaten?
+    discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
+    delete_item: Verwijderen bevestigen
+  info:
+    not_applicable: Niet beschikbaar
+    entity:
+      updated: Er zijn niet-opgeslagen wijzigingen.
+  error:
+    upload: Er deed zich een fout voor tijdens het upload van het bestand
+  alert:
+    not_allowed: U heeft geen toegang tot deze pagina
+    error_occured: Er deed zich een four voor tijdens het laden van de pagina
   form:
     product:
+      tab:
+        associations:
+          title: Koppelingen
+          info:
+            none_exist: Er bestaan geen associatietypes.
+            show_products: Toon producten
+            show_groups: Toon groepen
+            number_of_associations: '{{ productCount }} producten en {{ groupCount }} groepen'
+        attributes:
+          title: Attributen
+          btn:
+            add: Toevoegen
+            add_attributes: Attributen toevoegen
+          info:
+            search_attributes: Zoeken...
+            no_available_attributes: Er zijn geen attributen meer om toe te voegen
+            attributes_selected: '{{ attributeCount }} attribu(u) t(en) geselecteerd'
+            no_match: Geen overeenkomsten gevonden
+            load_more: Meer resultaten laden...
+        categories:
+          title: Categorieën
+      panel:
+        completeness:
+          title: Volledigheid
+          info:
+            no_family: Geen familie gedefinieerd. Gelieve een familie te definiëren om de volledigheid van dit product te berekenen.
+            no_completeness: Je hebt zonet de familie van dit product gewijzigd. Gelieve dit eerst te bewaren om de volledigheid van de nieuwe familie te berekenen.
+          missing_values: Ontbrekende waarden
+        history:
+          title: Geschiedenis
       switch:
-        "no": false
-        "yes": true
+        "no": Nee
+        "yes": Ja
+      sequential_edit:
+        info:
+          products: producten
+          previous: Ga terug naar {{ product }} zonder te bewaren.
+          next: Ga naar {{ product }} zonder te bewaren.
+        btn:
+          save_and_next: Opslaan en volgende
+          save_and_finish: Opslaan en afsluiten
+      change_family:
+        modal:
+          title: Wijzig de productfamilie
+          merge_attributes: Huidige attributen zullen worden samengevoegd met degenen in de nieuwe familie.
+          keep_attributes: Er zullen geen attributen worden verwijderd.
+          change_family_to: Wijzig de familie naar
+          empty_selection: Kies een familie
+      flash:
+        attribute_deletion_error: Er deed zich een fout voor tijdens het verwijderen van het attribuut
+      mass_edit:
+        select_attributes: Selecteer attributen
+        select: Selecteer
+    attribute_option:
+      flash:
+        option_created: Attribuut optie succesvol aangemaakt
+        error_creating_option: Er deed zich een fout voor tijdens uw poging om een attribuut optie te creëren
+      add_option_modal:
+        title: Voeg attribuut optie toe
+        confirm: Toevoegen
+        cancel: Annuleren
+    entity:
+      switch:
+        "no": Nee
+        "yes": Ja
+  mass_edit_action:
+    edit_common_attributes:
+      description: Het attribuut van het geselecteerde product zal worden gewijzigd met de volgende data voor de landinstelling <span class="highlight">{{ locale }}</span> en het kanaal <span class="highlight">{{ channel }}</span> gekozen in het product raster.
+pim_enrich.error:
+  exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
