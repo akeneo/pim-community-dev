@@ -4,6 +4,7 @@ Feature: Export attributes
   As a product manager
   I need to be able to export attributes
 
+  @ce
   Scenario: Successfully export attributes in CSV
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_attribute_export" configuration:
@@ -14,7 +15,7 @@ Feature: Export attributes
     And I wait for the "csv_footwear_attribute_export" job to finish
     Then exported file of "csv_footwear_attribute_export" should contain:
     """
-    type;code;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;available_locales;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;max_file_size;minimum_input_length;localizable;scopable;sort_order;is_read_only
+    type;code;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;available_locales;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;max_file_size;minimum_input_length;localizable;scopable;sort_order
     pim_catalog_identifier;sku;SKU;info;;1;1;;;;;;0;;;;;;;;;;;0;0;0;0;0
     pim_catalog_text;name;Name;info;;0;1;;;;;;0;;;;;;;;;;;0;1;0;0;0
     pim_catalog_simpleselect;manufacturer;Manufacturer;info;;0;1;;;;;;0;;;;;;;;;;;0;0;0;0;0
