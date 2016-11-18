@@ -1,36 +1,37 @@
 Close: Fechar
 Update: Atualizar
-Selected Rows: Linhas Selecionadas
-"Yes": Sim
-Yes, Delete: Sim, Eliminar
-Yes, I Agree: Sim, Eu Concordo
-Yes, do it: Sim, avançar
-"No": Não
-Ok, got it.: Ok, entendi.
-Cancel: Cancelar
-Delete Confirmation: Confirmar Eliminação
-Edit: Editar
-Unexpected error occured. Please contact system administrator.: Ocorreu um erro inesperado. Por favor, contate o administrador do sistema.
+Selected Rows: Linhas selecionadas
+"Yes": "Sim"
+"Yes, Delete": "Sim, Excluir"
+"Yes, I Agree": "Sim, Eu Concordo"
+"Yes, do it": "Sim, faça"
+"No": "Não"
+"Ok, got it.": "Ok. Eu entendi."
+"Cancel": "Cancelar"
+"Delete Confirmation": "Confirmação de Exclusão"
+"Edit": "Editar"
+"Unexpected error occured. Please contact system administrator.": "Ocorreu um erro inesperado. Por favor, contate o administrador do sistema."
 Now: Agora
 Prev: Anterior
-Next: Seguinte
+Next: Próximo
 Today: Hoje
-Done: Terminado
-AM: AM
+Wk: Sem.
+Done: Cocluído
+AM: Antes do meio-dia
 A: A
-PM: PM
+PM: Depois do meio-dia
 P: P
-Choose Time: Escolher Hora
-Time: Horas
+"Choose Time": "Selecione a hora"
+Time: Horário
 Hour: Hora
 Minute: Minuto
 Second: Segundo
 Millisecond: Milissegundo
 Microsecond: Microssegundo
-Time Zone: Fuso Horário
-Localized value: Valor multi-linguagem
+"Time Zone": "Fuso Horário"
+Localized value: Valor localizado
 Columns: Colunas
-Datagrid Configuration: Configuração da grelha de dados
+Datagrid Configuration: Configuração do Datagrid
 Apply: Aplicar
 Action: Ação
 Unit: Unidade
@@ -41,17 +42,17 @@ jstree:
   product:
     all: Todos os produtos
     unclassified: Produtos não classificados
-  no_tree: Nenhuma árvore disponível
+  no_tree: Nenhuma árvore de classificação disponível
   include_sub: Incluir subcategorias
-  loading: A carregar ...
+  loading: Carregando ...
 datetimepicker:
   days:
     Sunday: Domingo
     Monday: Segunda
     Tuesday: Terça
-    Wednesday: Quarta
-    Thursday: Quinta
-    Friday: Sexta
+    Wednesday: Quarta-Feira
+    Thursday: Quinta-Feira
+    Friday: Sexta-Feira
     Saturday: Sábado
   daysShort:
     Sun: Dom
@@ -87,7 +88,7 @@ datetimepicker:
     Feb: Fev
     Mar: Mar
     Apr: Abr
-    May: Mai
+    May: Maio
     Jun: Jun
     Jul: Jul
     Aug: Ago
@@ -98,10 +99,14 @@ datetimepicker:
 oro_config:
   form:
     config:
+      title: Configuração do sistema
       tab:
         system:
           title: Sistema
       group:
+        localization:
+          title: Localização
+          system_locale: Idioma
         notification:
           title: Notificações
-          system_notification: Notificações de novas versões
+          system_notification: Notificação de nova versão

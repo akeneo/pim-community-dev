@@ -5,22 +5,23 @@ pim_user:
       additional.title: Adicional
       group_and_role.title: Grupos e Funções
       password.title: Senha
-      email_synchronization.title: Configurações de sincronização de e-mail
+      business_unit.title: Unidades de Negócios
+      email_synchronization.title: Configurações de sincronização de E-Mail
       interfaces.title: Interfaces
 oro.user.controller:
-  group.message.saved: Grupo gravado
-  role.message.saved: Função guardada
-  user.message.saved: Utilizador gravado
-  status.message.saved: Estado gravado
+  group.message.saved: Grupo salvo
+  role.message.saved: Função salva
+  user.message.saved: Usuário salvo
+  status.message.saved: Status salvo
 oro.user.grid.users:
   columns:
-    username: Nome de utilizador
-    email: Email
+    username: Nome de usuário
+    email: E-Mail
     firstName: Primeiro nome
-    lastName: Último nome
+    lastName: Sobrenome
     createdAt: Criado em
     updatedAt: Atualizado em
-    enabled: Estado
+    enabled: Status
 oro.user.grid.roles:
   columns:
     label: Rótulo
@@ -28,53 +29,56 @@ oro.user.grid.groups:
   columns:
     name: Nome
 pim_title:
-  user.index: Utilizadores
+  user.index: Usuários
   user_role.index: Funções
   user_group.index: Grupos
   system_configuration.index: Configuração
-user.title: Utilizador
-user.overview: Utilizador
-Users Management: Gestão de Utilizadores
-Create user: Criar utilizador
-btn.create.user: Criar utilizador
-New user: Novo utilizador
+user.title: Usuário
+user.overview: Usuário
+Users Management: Gerenciamento de usuários
+Create user: Criar usuário
+btn.create.user: Criar usuário
+New user: Novo usuário
 Additional: Adicional
 Groups and Roles: Grupos e Funções
-Username: Nome do Utilizador
+Username: Nome de usuário
 Password: Senha
-Re-enter password: Digite a senha novamente
+Re-enter password: Redigite a senha
 Name prefix: Prefixo do nome
 First name: Primeiro nome
 Middle name: Nome do meio
-Last name: Último nome
+Last name: Sobrenome
 Name suffix: Sufixo do nome
 Date of birth: Data de nascimento
 Avatar: Avatar
-Additional emails: E-mails adicionais
-Add another email: Adicionar outro e-mail
-Catalog locale: Linguagem do catálogo
-Catalog scope: Âmbito do catálogo
-Default tree: Árvore padrão
-Email synchronization settings: Configurações de sincronização de e-mail
+Additional emails: E-Mails adicionais
+Add another email: Adicionar outro E-Mail
+Catalog locale: Catalogar localidade
+Catalog scope: Catalogar escopo
+Default tree: Árvore Padrão
+Business Units: Unidades de Negócios
+Email synchronization settings: Configurações de sincronização de E-Mail
 Host: Servidor
 Port: Porta
-Last logged in: Último registo de ínicio de sessão
-Login count: Contagem de logins
-Additional Information: Informação Adicional
+Ssl: SSL
+Last logged in: Último acesso em
+Login count: Contagem de acessos
+Additional Information: Informações Adicionais
 Interfaces: Interfaces
-Basic Information: Informação básica
-Contact Information: Informações de contacto
-User name: Nome de utilizador
-Birthday: Aniversário
-API key: Chave de API
+Basic Information: Informações Básicas
+Contact Information: Informações para Contato
+User name: Nome de usuário
+Birthday: Data de Nascimento
+API key: Chave da API
 Ui locale: Linguagem do UI
 UI locale: Linguagem do UI
+User salt: Sal de usuário
 Current password: Senha atual
 New password: Nova senha
 Repeat new password: Nova senha (repetir)
 Generate key: Gerar chave
 Primary: primário
-Removed user: Utilizador removido
+Removed user: Usuário removido
 user:
   product_grid_filters: Filtros da grelha de produtos
   default_product_grid_view:
@@ -82,66 +86,68 @@ user:
   default_grid_view:
     none: Nenhum
 Role: Função
-Owner: Dono
+Owner: Proprietário
 General: Geral
 Entity: Entidade
-Capabilities: Funcionalidades
-Save and close: Gravar e Fechar
+Capabilities: Capacidades
+Save and close: Salvar e Fechar
 Has role: Tem função
 role:
-  title: função
-  overview: função
-  edit: Editar um função
-  create: Criar função
-btn.create.role: Criar função
+  title: papel
+  overview: papel
+  edit: Editar Papel
+  create: Criar papel
+btn.create.role: Criar papel
 rights:
   action: Permissões
 oro_security:
   acl_group:
-    user: Utilizadores
+    user: Usuários
     role: Funções
-    group: Grupos de utilizadores
+    group: Grupo de usuários
   acl:
     user:
-      view: Listar utilizadores
-      create: Criar utilizador
-      edit: Editar utilizador
-      delete: Remover utilizador
+      view: Lista de Usuários
+      create: Criar um usuário
+      edit: Editar usuários
+      delete: Remover um usuário
     role:
-      view: Listar funções
-      create: Criar função
-      edit: Editar funções
-      delete: Remover função
+      view: Listar papéis
+      create: Criar papel
+      edit: Editar papéis
+      delete: Remover um papél
     group:
-      view: Listar grupos de utilizadores
-      create: Criar grupo de utilizadores
-      edit: Editar grupo de utilizadores
-      delete: Remover grupo de utilizadores
+      view: Lista de Grupo de usuários
+      create: Criar um grupo de usuário
+      edit: Editar Grupos de Usuários
+      delete: Remover um grupo de usuário
 (default): Permissão padrão nas entidades
-VIEW: Ver
+VIEW: Visão
 CREATE: Criar
 EDIT: Editar
-DELETE: Eliminar
+DELETE: Excluir
 ASSIGN: Atribuir
-SHARE: Partilhar
+SHARE: Compartilhar
 oro:
   security:
     access-level:
-      BASIC: Utilizador
+      BASIC: Usuário
+      LOCAL: Unidade de negócios
+      DEEP: Divisão
       GLOBAL: Organização
       SYSTEM: Sistema
       NONE: Nenhum
 Create group: Criar grupo
 btn.create.user-group: Criar grupo
-Has group: Tem grupo
-Save and Close: Gravar e Fechar
+Has group: Possui grupo
+Save and Close: Salvar e Fechar
 user-group.overview: Grupos
-Log in: Iniciar a sessão
-Remember me on this computer: Lembrar-me neste computador
-Forgot your password?: Esqueceu-se da sua senha?
-Username or Email: Nome de Utilizador ou E-mail
-Forgot Password: Esqueci-me da Password
-Request: Pedido
-Check Email: Verificar E-mail
-password_reset_email_sent: 'Foi enviado um e-mail para %email%. Ele contém um link que deve clicar para redefinir a sua senha.'
-Go to homepage: Ir para a página inicial
+Log in: Entrar
+Remember me on this computer: Lembrar neste computador
+Forgot your password?: Esqueceu a senha?
+Username or Email: Usuário ou Email
+Forgot Password: Esqueci a senha
+Request: Requisição
+Check Email: Verificar Email
+password_reset_email_sent: Um email foi enviado para %email%. Nele contém um link que você deve clicar para resetar sua senha.
+Go to homepage: Ir para Página Inícial

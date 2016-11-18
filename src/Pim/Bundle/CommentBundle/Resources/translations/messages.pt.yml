@@ -1,25 +1,25 @@
 btn:
-  post: Adicionar um novo comentário
+  post: Adicionar novo comentário
   reply: Responder
 confirmation:
   remove:
-    comment: Tem a certeza que quer apagar este comentário?
+    comment: Tem certeza que deseja remover esse comentário?
 flash:
   comment:
     create:
-      success: O seu comentário foi criado com êxito.
-      error: Ocorreu um erro durante a criação do seu comentário.
+      success: Seu comentário foi criado com sucesso.
+      error: Ocorreu um erro ao criar seu comentário.
     delete:
-      success: O seu comentário foi eliminado com êxito.
-      error: Ocorreu um erro durante a eliminação do seu comentário.
+      success: Seu comentário foi deletado com sucesso.
+      error: Ocorreu um erro ao deletar seu comentário.
     reply:
-      success: A sua resposta foi criada com êxito.
-      error: Ocorreu um erro durante a criação da sua resposta.
+      success: Sua resposta foi criada com sucesso.
+      error: Ocorreu um erro ao tentar criar sua resposta.
 comment:
   index:
     empty: Nenhum comentário encontrado.
   placeholder:
-    new: Escrever um novo comentário...
-    reply: Responder a este comentário...
+    new: Escrever novo comentário...
+    reply: Responder esse comentário...
 pim_comment:
   product.tab.comment.title: Comentários
