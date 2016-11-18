@@ -145,7 +145,12 @@
 
                         $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
                             if (state.columns) {
-                                resp.metadata.state.parameters = _.extend({}, resp.metadata.state.parameters, { view: { columns: state.columns }});
+                                resp.metadata.state.parameters = _.extend({}, resp.metadata.state.parameters, {
+                                    view: {
+                                        columns: state.columns,
+                                        id: state.view
+                                    }
+                                });
                             }
                             $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
