@@ -11,7 +11,8 @@
 
 namespace Akeneo\ActivityManager\Bundle\Datagrid;
 
-use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as EnterpriseContextConfigurator;
+use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator
+    as EnterpriseContextConfigurator;
 
 /**
  * Override of the Enterprise ContextConfigurator of the datagrid.
