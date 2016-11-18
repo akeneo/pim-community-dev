@@ -60,7 +60,7 @@ Akeneo\ActivityManager\Component\Model\Project:
                     project_id:
                         referencedColumnName: id
                 inverseJoinColumns:
-                    attribute_group_id:
+                    user_group_id:
                         referencedColumnName: id
                 cascade:
                     - refresh
