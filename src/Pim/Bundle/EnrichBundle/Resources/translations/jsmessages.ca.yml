@@ -1,0 +1,270 @@
+confirmation:
+  remove:
+    item: Esteu segur que voleu eliminar aquest element?
+    association type: Esteu segur que voleu suprimir aquest tipus d'associació?
+    attribute: Esteu segur que voleu suprimir aquest atribut?
+    family: Esteu segur que voleu suprimir aquesta família?
+    product: Esteu segur que voleu suprimir aquest producte?
+    channel: Esteu segur que voleu suprimir aquest canal?
+    group: Esteu segur que voleu suprimir aquest grup?
+    variant group: Esteu segur que voleu suprimir aquesta variant de grups?
+    group type: Esteu segur que voleu suprimir aquest tipus de grup?
+    import profile: Esteu segur que voleu suprimir aquest perfil d'importació?
+    export profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
+    user: Esteu segur que voleu eliminar aquest usuari?
+    role: Estàs segur que vols suprimir aquest rol?
+pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Exportació ràpida
+  mass_action:
+    delete:
+      confirm_content: Esteu segur que voleu suprimir els productes seleccionats?
+      success: Els productes seleccionats s'han eliminat correctament.
+      error: S'ha produït un error en intentar suprimir els productes seleccionats, intenteu-ho un altre cop.
+flash:
+  item:
+    removed: Element suprimit correctament
+  association type:
+    removed: Tipus d'associació suprimit correctament
+  attribute:
+    removed: Atribut suprimit correctament
+  family:
+    removed: Família eliminada correctament
+  product:
+    removed: Producte suprimit correctament
+  channel:
+    removed: Canal suprimit correctament
+  group:
+    removed: Grup suprimit correctament
+  variant group:
+    removed: Grup de variants suprimit correctament
+  group type:
+    removed: Tipus de grup suprimit correctament
+  import profile:
+    removed: Perfil d'importació eliminat correctament
+  export profile:
+    removed: Perfil d'exportació eliminat correctament
+  user:
+    removed: Usuari suprimit correctament
+  role:
+    removed: Rol eliminat correctament
+error:
+  removing:
+    item: No podeu eliminar aquest element
+    association type: No podeu eliminar aquest tipus d'associació
+    attribute: No podeu eliminar aquest atribut
+    family: No podeu eliminar aquesta família
+    product: No podeu eliminar aquest producte
+    channel: No podeu eliminar aquest canal
+    group: No podeu eliminar aquest grup
+    variant group: No podeu eliminar aquesta variant de grups
+    group type: No podeu eliminar aquest tipus de grup
+    import profile: No podeu eliminar aquest perfil d'importació
+    export profile: No podeu eliminar aquest perfil d'exportació
+    user: No podeu eliminar aquest usuari
+    role: No podeu eliminar aquest rol
+    attribute_option: Error en suprimir la opció d'atribut
+  saving:
+    attribute_option: No es pot desar aquesta opció d'atribut
+alert:
+  attribute_option:
+    error_occured_during_submission: S'ha produït un error durant l'enviament del formulari al servidor
+    save_before_edit_other: Si us plau registri les seves modificacions a les altres files abans d'editar aquesta
+  session_storage:
+    not_available: El navegador web no sembla compatible amb sessionStorage. Contacteu amb l'administrador
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: 'Alerta: perdreu les dades no desades. Esteu segur que voleu cancel·lar la modificació d''aquesta nova opció ?'
+    cancel_edition_on_new_option_title: '﻿Cancel·lar la modificació'
+label:
+  attribute_option:
+    add_option: Afegir una opció
+Code: Codi
+Edit: Editar
+Delete: Suprimir
+Edit attributes of the product: Editar els atributs del producte
+Classify the product: Classificar el producte
+Delete the product: Eliminar el producte
+Change status: Canviar l'estat
+Toggle status: Tancar estat
+pim.grid.mass_action.quick_export.csv_all: CSV (tots els atributs)
+pim.grid.mass_action.delete: Suprimir
+pim.grid.mass_action.mass_edit: Edició massiva
+jstree.create: Crear
+switch_on: "Sí"
+switch_off: "No"
+pim_enrich:
+  item:
+    list:
+      delete.label: Suprimir
+      delete.error: Error suprimint l'element
+    delete:
+      confirm.content: Esteu segur que voleu suprimir aquest {{ itemName }}? Aquesta acció no es pot desfer
+      confirm.title: Suprimir aquest {{ itemName }}
+  navigation:
+    link:
+      back_to_grid: Tornar a la quadrícula
+  entity:
+    save:
+      label: Desar
+    info:
+      update_failed: Actualització fallida
+      update_successful: Actualització completada
+    product:
+      title: producte
+      btn:
+        enable: Habilitar
+        enabled: Habilitat
+        disable: Deshabilitar
+        disabled: Deshabilitat
+        download_pdf: PDF
+        compare_translate: Comparar / traduir
+        delete: Suprimir
+        save: Desar
+        save_and_back: Desar i tornar a la quadrícula
+      history:
+        version: Versió
+        author: Autor/a
+        logged_at: Connectat a
+        more: Més
+        less: Menys
+        from: Des de
+        modified: Modificat
+        property: Propietat
+        old_values: Valors antics
+        new_values: Valors nous
+      info:
+        deletion_successful: Producte suprimit correctament.
+        deletion_failed: No s'ha pogut suprimir el producte.
+        update_successful: Producte actualitzat correctament.
+        update_failed: El producte podria no actualitzar-se.
+        field_not_ready:
+          The product cannot be saved right now. The following fields are not ready:
+            - camps
+        already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
+      error:
+        upload: S'ha produït un error durant la carrega
+      meta:
+        created: Creat
+        created_by: Per
+        updated_by: Per
+        updated: Darrera actualització
+        family:
+          title: Família
+          none: Cap
+        groups:
+          title: Grups
+          modal:
+            title: Grup {{ group }}
+            view_group: Veure grup
+            group_label: Etiqueta
+            more_products: '{{ count }} més productes...'
+            close: Tancar
+      copy:
+        select: Seleccionar
+        all: Tots
+        all_visible: Tot visible
+        none: Cap
+        copy: Copiar
+      variant_group:
+        updated_by: Actualitzat per un grup de variants
+        switch:
+          "yes": Sí
+          "no": No
+      optional_attribute:
+        remove: Eliminar aquest atribut
+      locale_specific_attribute:
+        unavailable: Aquest camp específic no està disponible per aquesta configuració regional
+      localizable:
+        channel_locale_unavailable: Aquest camp regionalitzable no està disponible per la configuració regional '{{ locale }}' i el canal '{{ channel }}'
+      media:
+        upload: Arrossegueu-lo aquí per penjar o feu-hi clic
+    attribute_option:
+      code: Codi
+      label: Etiqueta
+  confirmation:
+    leave: Esteu segur que voleu sortir d'aquesta pàgina?
+    discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
+    delete_item: Confirmar l'eliminació
+  info:
+    not_applicable: N/D
+    entity:
+      updated: Hi ha canvis sense guardar.
+  error:
+    upload: S'ha produït un error penjant el fitxer
+  alert:
+    not_allowed: No té permís per accedir a aquesta pàgina
+    error_occured: S'ha produït un error durant la càrrega de la pàgina
+  form:
+    product:
+      tab:
+        associations:
+          title: Associacions
+          info:
+            none_exist: No existeix cap tipus d'associació.
+            show_products: Mostrar productes
+            show_groups: Mostrar grups
+            number_of_associations: productes {{ productCount }} i {{ groupCount }} grups
+        attributes:
+          title: Atributs
+          btn:
+            add: Afegir
+            add_attributes: Afegir atributs
+          info:
+            search_attributes: Cercar...
+            no_available_attributes: No hi ha més atributs a afegir
+            attributes_selected: '{{ attributeCount }} attribut(s) seleccionats'
+            no_match: No s’han trobat coincidències
+            load_more: Carregant més resultats...
+        categories:
+          title: Categories
+      panel:
+        completeness:
+          title: Integritat
+          info:
+            no_family: No hi ha cap família definida. Si us plau, defineixi una família per calcular la integritat d'aquest producte.
+            no_completeness: Tot just ha canviat la família del producte. Deseu-lo per calcular la integritat de la nova família.
+          missing_values: Valors perduts
+        history:
+          title: Històric
+      switch:
+        "no": No
+        "yes": Sí
+      sequential_edit:
+        info:
+          products: productes
+          previous: Tornar a {{ product }} sense desar-lo.
+          next: Vés a {{ product }} sense desar-lo.
+        btn:
+          save_and_next: Guardar i seguir
+          save_and_finish: Desa i finalitza
+      change_family:
+        modal:
+          title: Canviar la família del producte
+          merge_attributes: Els atributs actuals es combinaran amb els de la nova família.
+          keep_attributes: No s'eliminarà cap atribut.
+          change_family_to: Canviar la família a
+          empty_selection: Trieu una família
+      flash:
+        attribute_deletion_error: S'ha produït un error durant la supressió de l'atribut
+      mass_edit:
+        select_attributes: Seleccionar atributs
+        select: Seleccionar
+    attribute_option:
+      flash:
+        option_created: Opció d'atribut creat correctament
+        error_creating_option: Ha succeït un error intentant crear la opció d'atribut
+      add_option_modal:
+        title: Afegir opció d'atribut
+        confirm: Afegir
+        cancel: Cancelar
+    entity:
+      switch:
+        "no": No
+        "yes": Sí
+  mass_edit_action:
+    edit_common_attributes:
+      description: Els atributs del producte seleccionat s'editaran amb les següents dades per la configuració regional <span class="highlight">{{ locale }}</span> i el canal <span class="highlight">{{ channel }}</span>, seleccionats a la quadrícula de productes.
+pim_enrich.error:
+  exception.title: Oh no! S'ha produït un error de {{ status_code }}...
