@@ -88,13 +88,13 @@ pim.grid.mass_action.delete: Usuń
 pim.grid.mass_action.mass_edit: Edycja masowa
 pim.grid.mass_action.sequential_edit: Sekwencyjna Edycja
 jstree.create: Utwórz
-switch_on: Tak
-switch_off: Nie
+switch_on: "Tak"
+switch_off: "Nie"
 pim_enrich:
   item:
     list:
       delete.label: Usuń
       delete.error: Błąd podczas usuwania elementu
     delete:
-      confirm.content: 'Czy na pewno chcesz usunąć ten {{ itemName }}? Operacji nie można cofnąć'
-      confirm.title: 'Usunąć ten {{ itemName }}'
+      confirm.content: Czy na pewno chcesz usunąć ten {{ itemName }}? Operacji nie można cofnąć
+      confirm.title: Usunąć ten {{ itemName }}
