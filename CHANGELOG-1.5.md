@@ -1,5 +1,6 @@
 # 1.5.x
 
+- PIM-6005: Boost product export performances by loading less products at the same time
 - PIM-5995: Fix issue with product count on group save
 - PIM-6006: Fix small memory leak when iterating over products cursor
 
