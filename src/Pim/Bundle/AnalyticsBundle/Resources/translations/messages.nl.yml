@@ -1,0 +1,25 @@
+pim_analytics:
+  new_patch_available: Nieuwe patch beschikbaar
+  system_config:
+    group:
+      notification.title: Meldingen
+      version_update.title: Versie updates
+    form:
+      version_update.label: Meldingen nieuwe versies
+      version_update.tooltip: Controleer of er nieuwe patches beschikbaar zijn
+  system_info:
+    title: Systeeminformatie
+    download: TXT
+  info_type:
+    pim_edition: Editie
+    pim_version: Versie
+    pim_storage_driver: Opslag
+    pim_environment: Omgeving
+    pim_install_time: Tijd van installatie
+    registered_bundles: Geregistreerde bundels
+  acl:
+    system_info:
+      index: Systeeminformatie
+pim_menu:
+  item:
+    system_info: Systeeminformatie

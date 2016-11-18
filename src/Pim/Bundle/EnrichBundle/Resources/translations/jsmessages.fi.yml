@@ -69,7 +69,7 @@ alert:
     error_occured_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
     save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
   session_storage:
-    not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
+    not_available: 'Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.'
 confirm:
   attribute_option:
     cancel_edition_on_new_option_text: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta mahdollisuutta?
@@ -90,16 +90,16 @@ pim.grid.mass_action.delete: Poista
 pim.grid.mass_action.mass_edit: Massaedit
 pim.grid.mass_action.sequential_edit: Peräkkäiset muokkaukset
 jstree.create: Luo
-switch_on: Kyllä
-switch_off: Ei
+switch_on: "Kyllä"
+switch_off: "Ei"
 pim_enrich:
   item:
     list:
       delete.label: Poista
       delete.error: Virhe kohteen poistamisessa
     delete:
-      confirm.content: 'Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota'
-      confirm.title: 'Poista tämä {{ itemName }}'
+      confirm.content: Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota
+      confirm.title: Poista tämä {{ itemName }}
   navigation:
     link:
       back_to_grid: Takaisin ruudukkoon
@@ -136,7 +136,7 @@ pim_enrich:
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - kentät
-        already_in_upload: 'Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"'
+        already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
       meta:
@@ -150,7 +150,7 @@ pim_enrich:
         groups:
           title: Ryhmät
           modal:
-            title: 'Ryhmä {{ group }}'
+            title: Ryhmä {{ group }}
             view_group: Näytä ryhmä
             group_label: Nimike
             more_products: '{{ count }} lisää tuotteita...'
@@ -170,7 +170,7 @@ pim_enrich:
       locale_specific_attribute:
         unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
       localizable:
-        channel_locale_unavailable: "Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'"
+        channel_locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
       media:
         upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
     attribute_option:
@@ -178,7 +178,7 @@ pim_enrich:
       label: Nimike
   confirmation:
     leave: Oletko varma että haluat poistua sivulta?
-    discard_changes: 'Menetät muutokset tähän {{ entity }}, jos poistut sivulta.'
+    discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
     delete_item: Vahvista poisto
     delete:
       product_attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
@@ -226,8 +226,8 @@ pim_enrich:
       sequential_edit:
         info:
           products: tuotteet
-          previous: 'Siirry takaisin {{ product }} tallentamatta.'
-          next: 'Siirry {{ product }} tallentamatta.'
+          previous: Siirry takaisin {{ product }} tallentamatta.
+          next: Siirry {{ product }} tallentamatta.
         btn:
           save_and_next: Tallenna ja seuraava
           save_and_finish: Tallenna ja lopeta
@@ -252,4 +252,4 @@ pim_enrich:
         confirm: Lisää
         cancel: Peruuta
 pim_enrich.error:
-  exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'
+  exception.title: Voi ei! {{ status_code }} virhe tapahtui...
