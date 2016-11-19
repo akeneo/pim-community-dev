@@ -1,3 +1,12 @@
+pim_user:
+  user:
+    tab:
+      general.title: 全般
+      additional.title: 追加
+      group_and_role.title: グループとロール
+      password.title: パスワード
+      business_unit.title: 部署
+      email_synchronization.title: メール同期設定
 oro.user.controller:
   group.message.saved: グループが保存されました
   role.message.saved: ロールを保存しました
@@ -50,7 +59,6 @@ Business Units: 部署
 Email synchronization settings: メール同期設定
 Host: ホスト
 Port: ポート
-Ssl: Ssl
 Last logged in: 最終ログイン
 Login count: ログイン回数
 Additional Information: 追加情報
@@ -62,6 +70,9 @@ API key: API キー
 Generate key: キーを生成
 Primary: プライマリ
 Removed user: 削除されたユーザ
+user:
+  default_grid_view:
+    none: なし
 Role: ロール
 Owner: オーナー
 General: 全般
@@ -126,5 +137,5 @@ Username or Email: ユーザー名またはメールアドレス
 Forgot Password: パスワードを忘れた
 Request: リクエスト
 Check Email: メールをチェック
-password_reset_email_sent: 'メールが %email% 宛に送信されました。パスワードをリセットするためのリンクが含まれています。'
+password_reset_email_sent: メールが %email% 宛に送信されました。パスワードをリセットするためのリンクが含まれています。
 Go to homepage: ホームページに移動

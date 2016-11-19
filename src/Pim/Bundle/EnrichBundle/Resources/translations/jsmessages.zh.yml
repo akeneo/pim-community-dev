@@ -1,0 +1,270 @@
+confirmation:
+  remove:
+    item: 确实要删除这个项目吗?
+    association type: 确实要删除这个相关类型吗?
+    attribute: 确定要删除这个属性吗？
+    family: 确定要删除这个分类吗？
+    product: 确定要删除这个产品吗？
+    channel: 确定要删除这个频道吗？
+    group: 确定要删除这个组吗？
+    variant group: 确定要删除这多个组吗？
+    group type: 确定要删除这个组类型吗？
+    import profile: 确定要删除这个导入配置文件吗？
+    export profile: 确定要删除这个导出配置文件吗？
+    user: 确定要删除这个用户吗？
+    role: 确定要删除这个角色吗？
+pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: 快速导出
+  mass_action:
+    delete:
+      confirm_content: 您确定需要删除选定的产品吗？
+      success: 选定的产品被成功删除。
+      error: 删除选定的产品时发生错误，请重试。
+flash:
+  item:
+    removed: 项目已删除
+  association type:
+    removed: 关联类型已删除
+  attribute:
+    removed: 属性已删除
+  family:
+    removed: 产品族已删除
+  product:
+    removed: 产品已删除
+  channel:
+    removed: 通道已删除
+  group:
+    removed: 分组已删除
+  variant group:
+    removed: 属性组已删除
+  group type:
+    removed: 分组类型已删除
+  import profile:
+    removed: 导入配置文件已删除
+  export profile:
+    removed: 导出配置文件已删除
+  user:
+    removed: 用户已删除
+  role:
+    removed: 角色已删除
+error:
+  removing:
+    item: 不能删除此项目
+    association type: 不能删除此关联类型
+    attribute: 不能删除该属性
+    family: 不能删除这个分类
+    product: 不能删除这个产品
+    channel: 不能删除此频道
+    group: 不能删除这个组
+    variant group: 不能删除这个变量组
+    group type: 不能删除这个组类型
+    import profile: 不能删除这个导入配置文件
+    export profile: 不能删除这个导出配置文件
+    user: 不能删除这个用户
+    role: 不能删除这个角色
+    attribute_option: 在属性选项删除错误
+  saving:
+    attribute_option: 无法保存属性选项
+alert:
+  attribute_option:
+    error_occured_during_submission: 表单提交给服务器时发生错误
+    save_before_edit_other: 请在编辑这一条行项目之前，请登记您对其他行的修改
+  session_storage:
+    not_available: 您的 web 浏览器似乎并不与 sessionStorage 兼容。请联系您的管理员联系
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: 警告，您将丢失未保存的数据。确实要取消对该新选项的修改吗？
+    cancel_edition_on_new_option_title: 取消更改
+label:
+  attribute_option:
+    add_option: 添加一个选项
+Code: 代码
+Edit: 编辑
+Delete: 删除
+Edit attributes of the product: 编辑产品属性
+Classify the product: 产品分类
+Delete the product: 删除产品
+Change status: 更改状态
+Toggle status: 切换状态
+pim.grid.mass_action.quick_export.csv_all: CSV （所有属性）
+pim.grid.mass_action.delete: 删除
+pim.grid.mass_action.mass_edit: 批量编辑
+jstree.create: 创建
+switch_on: "是"
+switch_off: "否　"
+pim_enrich:
+  item:
+    list:
+      delete.label: 删除
+      delete.error: 删除项目时出错
+    delete:
+      confirm.content: 是否确实要删除此 {{ itemName }}？不能撤消此操作！
+      confirm.title: 删除 {{ itemName }}
+  navigation:
+    link:
+      back_to_grid: 返回到列表
+  entity:
+    save:
+      label: 保存
+    info:
+      update_failed: 更新失败
+      update_successful: 分组已更新
+    product:
+      title: 产品
+      btn:
+        enable: 启用
+        enabled: 已启用
+        disable: 禁用
+        disabled: 已禁用
+        download_pdf: PDF
+        compare_translate: 比较/翻译
+        delete: 删除
+        save: 保存
+        save_and_back: 保存并返回到列表
+      history:
+        version: 版本
+        author: 作者
+        logged_at: 登录
+        more: 更多
+        less: 更少
+        from: 从
+        modified: 已修改
+        property: 属性
+        old_values: 原值
+        new_values: 新值
+      info:
+        deletion_successful: 产品被成功删除。
+        deletion_failed: 产品不能被删除。
+        update_successful: 产品更新成功。
+        update_failed: 产品不能更新。
+        field_not_ready:
+          The product cannot be saved right now. The following fields are not ready:
+            - 字段
+        already_in_upload: 在针对本地化语言"{{ locale }}"和"{{ scope }}"范围中的这个属性中，一个文件已经在上传。
+      error:
+        upload: 上传文件时发生错误
+      meta:
+        created: 已创建
+        created_by: 由
+        updated_by: 由
+        updated: 上次更新
+        family:
+          title: 产品族
+          none: 无
+        groups:
+          title: 分组
+          modal:
+            title: 组 {{ group }}
+            view_group: 查看组
+            group_label: 标签
+            more_products: '{{ count }} 更多产品...'
+            close: 关闭
+      copy:
+        select: 选择
+        all: 所有
+        all_visible: 所有可见的
+        none: 无
+        copy: 复制
+      variant_group:
+        updated_by: 创建属性组
+        switch:
+          "yes": 是
+          "no": 否　
+      optional_attribute:
+        remove: 删除此属性
+      locale_specific_attribute:
+        unavailable: 在此本地化语言中，特定的字段在此不可用。
+      localizable:
+        channel_locale_unavailable: 这个可本地化的字段不能用于本地化语言 '{{ locale }}' 和 '{{ channel }}' 通道
+      media:
+        upload: 拖放式操作可上传或点击这里
+    attribute_option:
+      code: 代码
+      label: 标签
+  confirmation:
+    leave: 你确定你要离开此页面？
+    discard_changes: 如果你离开页面，将丢失更改 {{ entity }}。
+    delete_item: 确定删除
+  info:
+    not_applicable: 不适用
+    entity:
+      updated: 更新未保存。
+  error:
+    upload: 上传文件的过程中出错
+  alert:
+    not_allowed: 你不是允许访问此页
+    error_occured: 在页面加载时出错
+  form:
+    product:
+      tab:
+        associations:
+          title: 关联
+          info:
+            none_exist: 没有关联的类型存在。
+            show_products: 显示产品
+            show_groups: 显示组
+            number_of_associations: '{{ productCount }} 产品和 {{ groupCount }} 组'
+        attributes:
+          title: 属性
+          btn:
+            add: 增加
+            add_attributes: 添加属性
+          info:
+            search_attributes: 搜索...
+            no_available_attributes: 没有需要添加的属性
+            attributes_selected: '{{ attributeCount }} 属性选择'
+            no_match: 未找到匹配项
+            load_more: 正在加载更多的结果...
+        categories:
+          title: 分类
+      panel:
+        completeness:
+          title: 完整性
+          info:
+            no_family: 没有定义品类。请定义一个品类来计算这个产品的完成度。
+            no_completeness: 你只是改变了产品的品类。请先保存来计算在该品类下的数据完整性。
+          missing_values: 缺失的值
+        history:
+          title: 历史
+      switch:
+        "no": 否　
+        "yes": 是
+      sequential_edit:
+        info:
+          products: 产品
+          previous: 向后跳到 {{ product }} 而不保存。
+          next: 跳到 {{ product }} 而不保存。
+        btn:
+          save_and_next: 保存和下一步
+          save_and_finish: 保存并完成
+      change_family:
+        modal:
+          title: 变更产品族
+          merge_attributes: 当前属性将被合并到新的产品族
+          keep_attributes: 没有属性将被删除。
+          change_family_to: 变更产品族到
+          empty_selection: 选择一个品类
+      flash:
+        attribute_deletion_error: 删除属性的过程中出错
+      mass_edit:
+        select_attributes: 选择属性
+        select: 选择
+    attribute_option:
+      flash:
+        option_created: 属性选项成功创建
+        error_creating_option: 试图创建属性选项时的时出错
+      add_option_modal:
+        title: 添加属性选项
+        confirm: 增加
+        cancel: 取消
+    entity:
+      switch:
+        "no": 否　
+        "yes": 是
+  mass_edit_action:
+    edit_common_attributes:
+      description: 使用产品网格中的本地化语言 <span class="highlight">{{ locale }}</span> 和通道 <span class="highlight">{{ channel }}</span>对应的数据，对所选的产品属性进行编辑
+pim_enrich.error:
+  exception.title: 我靠 ！{{ status_code }} 出错了...
