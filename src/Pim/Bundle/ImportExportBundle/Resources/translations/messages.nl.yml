@@ -1,6 +1,8 @@
 Job: Taak
 Connector: Connector
 pim_import_export:
+  job: Taak
+  connector: Connector
   status:
     - Gereed
   batch_status:
@@ -13,27 +15,44 @@ pim_import_export:
     7: AFGEBROKEN
     8: ONBEKEND
   download_archive:
-    archive: download gegenereerd bestand | download gegenereerde bestanden
     output: download gegenereerd bestand | download gegenereerde bestanden
     input: download ingelezen bestand | download ingelezen bestanden
-    invalid: download ongeldige data
+    invalid_xlsx: download ongeldige data
+    invalid_csv: download ongeldige data
+  notification:
+    export:
+      error: Export <strong>%label%</strong> mislukt
+      warning: Export <strong>%label%</strong> met enkele waarschuwingen beëindigd
+      success: Export <strong>%label%</strong> beëindigd
+    import:
+      error: Import <strong>%label%</strong> mislukt
+      warning: Import <strong>%label%</strong> met enkele waarschuwingen beëindigd
+      success: Import <strong>%label%</strong> beëindigd
+  list: Selecteer een taak
+  job_profile:
+    tab:
+      property.title: Algemene eigenschappen
+      history.title: Geschiedenis
+      job_content.title: Inhoud
 pim_title.export_profile.index: Beheer van exportprofielen
-pim_title.export_profile.edit: 'Exportprofielen %job.label% | Bewerken'
-pim_title.export_profile.show: 'Exportprofielen %job.label% | Tonen'
+pim_title.export_profile.edit: Exportprofielen %job.label% | Bewerken
+pim_title.export_profile.show: Exportprofielen %job.label% | Tonen
 pim_title.export_execution.index: Exportverwerkingen geschiedenis
 pim_title.export_execution.show: Exportverwerkingen | Details
 pim_title.import_profile.index: Beheer van importprofielen
-pim_title.import_profile.edit: 'Importprofielen %job.label% | Bewerken'
-pim_title.import_profile.show: 'Importprofielen %job.label% | Tonen'
+pim_title.import_profile.edit: Importprofielen %job.label% | Bewerken
+pim_title.import_profile.show: Importprofielen %job.label% | Tonen
 pim_title.import_execution.index: Importverwerkingen geschiedenis
 pim_title.import_execution.show: Importverwerkingen | Details
 export profile:
+  title: Profiel exporteren
   overview: exportprofiel overzicht
   create: exportprofiel toevoegen
   edit: exportprofiel bewerken
 export report:
   overview: Exporteer rapporten
 import profile:
+  title: Profiel importeren
   overview: importprofiel overzicht
   create: importprofiel toevoegen
   edit: importprofiel bewerken
@@ -48,6 +67,11 @@ pim_importexport:
       edit: Een exportprofiel bewerken
       remove: Een exportprofiel verwijderen
       launch: Start een exportprofiel
+      property_edit: Wijzig de algemene eigenschappen van een exportprofiel
+      property_show: Toon de algemene eigenschappen van een exportprofiel
+      history: Bekijk geschiedenis van exportprofiel
+      content_edit: Wijzig de inhoud van een exportprofiel
+      content_show: Toon inhoud van exportprofiel
     import_profile:
       index: Bekijk importprofielen lijst
       create: Importprofiel aanmaken
@@ -55,6 +79,7 @@ pim_importexport:
       edit: Een importprofiel bewerken
       remove: Een importprofiel verwijderen
       launch: Start een importprofiel
+      history: Bekijk geschiedenis van importprofiel
     export_execution:
       index: Bekijk export-rapporten lijst
       show: Bekijk export-rapport details
@@ -65,24 +90,31 @@ pim_importexport:
       show: Bekijk import-rapport details
       dl_log: Import-logboek downloaden
       dl_files: Geïmporteerde bestanden downloaden
+  acl_group:
+    export: Exportprofielen
+    import: Importprofielen
 btn:
   create:
-    export profile: Exportprofiel aanmaken
-    import profile: Importprofiel aanmaken
-Upload and import: Uploaden en importeren
+    export profile: exportprofiel toevoegen
+    import profile: importprofiel toevoegen
+Upload and import now: Uploaden en nu importeren
+import now: Nu importeren
+export now: Nu exporteren
 confirmation:
   remove:
-    export profile: 'Weet u zeker dat u het exportprofiel %name% wilt verwijderen?'
-    import profile: 'Weet u zeker dat u het importprofiel %name% wilt verwijderen?'
+    export profile: Weet u zeker dat u het exportprofiel %name% wilt verwijderen?
+    import profile: Weet u zeker dat u het importprofiel %name% wilt verwijderen?
 flash:
   export:
     created: De export is succesvol aangemaakt
     removed: De export is verwijderd
     updated: De export is succesvol bijgewerkt
+    running: De export is bezig
   import:
     created: De import is succesvol aangemaakt
     removed: De import is verwijderd
     updated: De import is succesvol bijgewerkt
+    running: De import is bezig
 pim_menu:
   item:
     export_history: Exportgeschiedenis
@@ -94,10 +126,40 @@ History: Geschiedenis
 pane.accordion:
   properties: Eigenschappen
   global_settings: Algemene instellingen
+  filters: Filters
 popin.create:
   export_profile.title: Een nieuw exportprofiel aanmaken
   import_profile.title: Een nieuw importprofiel aanmaken
-Display item: Object weergeven
-Hide item: Object verbergen
-Collecting data about job execution...: Gegevens verzamelen over taakverwerking...
-You must select a file to upload: U moet een bestand selecteren om te uploaden
+'Display item': Object weergeven
+'Hide item': Object verbergen
+'Collecting data about job execution...': Gegevens verzamelen over taakverwerking...
+'You must select a file to upload': U moet een bestand selecteren om te uploaden
+Download log: Logbestand downloaden
+Show profile: Profiel weergeven
+execution details: verwerkingsdetails
+job_execution.summary:
+  read: lezen
+  write: geschreven
+  skip: overgeslagen
+  create: gecreëerd
+  update: geüpdatet
+  update_products: geüpdatete producten
+  skip_products: overgeslagen producten
+  displayed: eerste waarschuwingen weergegeven
+  charset_validator:
+    title: 'Bestandscodering:'
+    skipped: overgeslagen, extensie in whitelist
+Step: Stap
+Status: Status
+Summary: Samenvatting
+Start: Start
+End: Einde
+COMPLETED: VOLTOOID
+STARTING: BEZIG MET STARTEN
+STARTED: GESTART
+STOPPING: BEZIG MET STOPPEN
+STOPPED: GESTOPT
+FAILED: MISLUKT
+ABANDONED: AFGEBROKEN
+UNKNOWN: ONBEKEND
+warning.label: Waarschuwing
