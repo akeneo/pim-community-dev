@@ -1,7 +1,7 @@
 Item deleted: Elemento eliminado
-Are you sure you want to delete this item?: ¿Está seguro de que desea borrar este elemento?
+Are you sure you want to delete this item?: '¿Está seguro de que desea borrar este elemento?'
 Delete Error: Error al eliminar
-Are you sure you want to do remove selected items?: ¿Está seguro que desea eliminar los elementos seleccionados?
+Are you sure you want to do remove selected items?: '¿Está seguro que desea eliminar los elementos seleccionados?'
 Selected items were removed.: Los elementos seleccionados fueron eliminados.
 Selected items were not removed.: Los elementos seleccionados no se eliminaron.
 Please, select items to remove.: Por favor, seleccionar los elementos a eliminar.
@@ -13,37 +13,38 @@ Your local changes will be lost. Are you sure you want to reset grid?: Se perder
 Confirmation: Confirmación
 edit: editar
 copy: copiar
-remove: quitar
+remove: eliminar
 Status: Estado
 All: Todos
 Per page: Por página
-Mass Action Confirmation: Confirmación de acción en masa
+Mass Action Confirmation: Confirmación de acción de masiva
 Mass action performed.: Acción en masa realizada.
 Mass action is not performed.: Acción en masa no realizada.
 Please, select items to perform mass action.: Por favor, seleccionar los elementos para realizar la acción en masa.
 Execution Confirmation: Confirmación de la ejecución
-Are you sure you want to do this?: ¿Estás seguro que desea hacer esto?
+Are you sure you want to do this?: '¿Está seguro de quere hacer esto?'
 Action performed.: Acción realizada.
 Action is not performed.: Acción no realizada.
 Please, select item to perform action.: Por favor, seleccione elemento para realizar la acción.
 View per page: Vista por página
 oro.datagrid.entityHint: Entidad
 oro.datagrid.noentities: No se encontraron registros
-oro.datagrid.noresults: No se encontraron resultados. Intenta cambiar el criterio de búsqueda.
+oro.datagrid.noresults: "No se encontraron resultados. Intente cambiar el criterio de búsqueda."
 oro.datagrid.nocolumns: Sin columnas configuradas para esta grilla
-oro.datagrid.pagination.label: Página
-oro.datagrid.pagination.totalPages: 'de {{ totalPages }}'
-oro.datagrid.pagination.totalRecords: '{{ totalRecords }} registros'
-oro.datagrid.action.reset: Reinicia
-oro.datagrid.action.refresh: Actualizar
-oro_datagrid.select.all: Todo
-oro_datagrid.select.visible: Todo visible
-oro_datagrid.select.none: Nignuno
+oro.datagrid.pagination.label: "Página"
+oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registros"
+oro.datagrid.action.reset: "Reiniciar"
+oro.datagrid.action.refresh: "Actualizar"
+oro_datagrid.select.all: "Todos"
+oro_datagrid.select.visible: "Todo lo visible"
+oro_datagrid.select.none: "Ninguno"
 pim.grid.ajax_choice_filter.label_empty: está vacía
 pim.grid.choice_filter:
   label_empty: está vacía
   label_in_list: en la lista
 Available Columns: Columnas disponibles
+Displayed Columns: Columnas seleccionadas
 datagrid_view.columns.min_message: Debe seleccionar al menos una columna de datagrid para mostrar
 pim_datagrid:
   column_configurator:
@@ -52,9 +53,10 @@ pim_datagrid:
     all_groups: Todos los grupos
     search: Buscar
     clear: Restablecer
+    displayed_columns: Columnas seleccionadas
     apply: Aplicar
     cancel: Cancelar
-    remove_column: Eliminar
+    remove_column: Quitar
   mass_action:
     delete:
       confirm_title: Confirmación de borrado
@@ -66,6 +68,20 @@ pim.grid.action.launch.title: Ejecutar
 pim.grid.action.show.title: Mostrar
 Please select view: Por favor, seleccione Vista
 Loading...: Cargando...
-View: Visualizar
+View: Vista
 from: desde
 to: hasta
+grid.view_selector:
+  default_view: Vista por defecto
+  save_changes: Guardar esta vista
+  remove: Eliminar esta vista
+  create_view: Crear vista
+  create: Crear
+  search: Buscar
+  views: Vistas
+  placeholder: Nombre de la nueva vista
+  choose_label: Elija una etiqueta para la vista
+  confirmation:
+    remove: '¿Está seguro que desea eliminar este punto de vista del datagrid?'
+    delete: Confirmación de borrado
+grid.view_selector.flash.updated: Vista de grilla de datos actualizada correctamente
