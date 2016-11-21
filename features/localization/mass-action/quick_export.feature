@@ -22,8 +22,8 @@ Feature: Quick export many products with localized attributes from datagrid
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                  |
-      | success | Exportation rapide CSV product quick export est terminée |
+      | type    | message                                              |
+      | success | L'export rapide CSV product quick export est terminé |
     When I go on the last executed job resume of "csv_product_quick_export"
     Then I should see "TERMINÉ"
     And the name of the exported file of "csv_product_quick_export" should be "products_export_en_US_mobile.csv"
@@ -39,13 +39,13 @@ Feature: Quick export many products with localized attributes from datagrid
   Scenario: Successfully quick export XLSX products with localized attributes
     Given I am on the products page
     When I select rows boots, sneakers, sandals and pump
-    And I press "XLSX (tous les attributs)" on the "Export rapide" dropdown button
+    And I press "Excel (tous les attributs)" on the "Export rapide" dropdown button
     And I wait for the "xlsx_product_quick_export" quick export to finish
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                   |
-      | success | Exportation rapide XLSX product quick export est terminée |
+      | type    | message                                               |
+      | success | L'export rapide XLSX product quick export est terminé |
     When I go on the last executed job resume of "xlsx_product_quick_export"
     Then I should see "TERMINÉ"
     And the name of the exported file of "xlsx_product_quick_export" should be "products_export_en_US_mobile.xlsx"

@@ -117,7 +117,18 @@
         var regex = new RegExp(term.replace(rEscape, "\\$&"), 'gi');
 
         this._trigger("filter", e, $.map(cache, function(v, i) {
+          var found = false;
           if(v.search(regex) !== -1) {
+            found = true;
+          } else {
+            // look for 'value' attibute if innerHTML doesn't match
+            var val = rows.eq(i).find('input').attr('value');
+            if(val.search(regex) !== -1) {
+              found = true;
+            }
+          }
+
+          if(found) {
             rows.eq(i).show();
             return inputs.get(i);
           }

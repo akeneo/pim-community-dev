@@ -91,12 +91,11 @@ class BatchCommand extends ContainerAwareCommand
 
         $job = $this->getJobRegistry()->get($jobInstance->getJobName());
         $jobParamsFactory = $this->getJobParametersFactory();
+        $rawParameters = $jobInstance->getRawParameters();
         if ($config = $input->getOption('config')) {
-            $rawParameters = $this->decodeConfiguration($config);
-            $jobParameters = $jobParamsFactory->create($job, $rawParameters);
-        } else {
-            $jobParameters = $jobParamsFactory->create($job, $jobInstance->getRawParameters());
+            $rawParameters = array_merge($rawParameters, $this->decodeConfiguration($config));
         }
+        $jobParameters = $jobParamsFactory->create($job, $rawParameters);
         $validator = $this->getValidator();
 
         // Override mail notifier recipient email

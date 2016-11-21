@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Context for commands
@@ -216,5 +217,17 @@ class CommandContext extends PimContext
     protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
+    }
+
+    /**
+     * @When /^I run '([^\']*)'$/
+     */
+    public function iRun($command)
+    {
+        $pathFinder   = new PhpExecutableFinder();
+        $php          = $pathFinder->find();
+        $rootDir      = $this->getRootDir();
+        $command      = $this->replacePlaceholders($command);
+        $this->output = shell_exec(sprintf('%s %s/console %s', $php, $rootDir, $command));
     }
 }

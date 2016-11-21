@@ -1,13 +1,24 @@
-# 1.6.x
+# 1.6.4 (2016-10-20)
 
 ## Bug fixes
 
+- #4987: Fix hardcoded image URLs in the dashboard, cheers @julienanquetil!
+- PIM-5978 : Fix missing products in the variant group edit form
+
+# 1.6.3 (2016-09-22)
+
+## Bug fixes
+
+- PIM-5947: Add default file path in new export jobs
 - PIM-5964: Index category labels by locale code in channel normalization
 - PIM-5968: Fix default translation for attribute options when value is null
 - PIM-5897: Fix the does not contain filter to filter on product without product values
 - PIM-5566: Fix version number displayed as decimals
 - PIM-5976: Fix adding products to a group (regression following variant group ajaxification)
 - PIM-5975 & #5016: Fix attribute groups order not kept in product edit form, cheers @julienanquetil!
+- #4994: Fix grid filter selection in the user profile, cheers @julienanquetil!
+- PIM-5978: Fix missing currencies
+- #4993: Fix XLSX product import with numeric value for simpleselect codes, cheers @julienanquetil!
 
 ## Functionnal improvements
 

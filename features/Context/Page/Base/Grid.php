@@ -706,6 +706,23 @@ class Grid extends Index
     }
 
     /**
+     * Set the content of filter search
+     *
+     * @param string $text
+     */
+    public function typeInManageFilterInput($text)
+    {
+        $manageFilters = $this->getElement('Manage filters');
+        if (!$manageFilters->isVisible()) {
+            $this->clickFiltersList();
+        }
+
+        $manageFilters
+            ->find('css', 'input')
+            ->setValue($text);
+    }
+
+    /**
      * Select a row
      *
      * @param string $value
