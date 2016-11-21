@@ -73,4 +73,3 @@ Feature: Enforce no permissions for an asset category
     And I should see the flash message "Tree successfully updated"
     Then I should see the "images" category under the "asset_main_catalog" category
     And I should see the "print" category under the "asset_main_catalog" category
-    And I expand the "asset_main_catalog" category
