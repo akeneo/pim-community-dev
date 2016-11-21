@@ -94,16 +94,16 @@ pim:
       quick_export:
         csv_all: CSV (todos os atributos)
 jstree.create: Criar
-switch_on: Sim
-switch_off: Não
+switch_on: "Sim"
+switch_off: "Não"
 pim_enrich:
   item:
     list:
       delete.label: Eliminar
       delete.error: Erro durante a eliminação do item
     delete:
-      confirm.content: 'Tem certeza que deseja eliminar este {{ itemName }}? Não é possível desfazer essa ação'
-      confirm.title: 'Eliminar este {{ itemName }}'
+      confirm.content: Tem certeza que deseja eliminar este {{ itemName }}? Não é possível desfazer essa ação
+      confirm.title: Eliminar este {{ itemName }}
   navigation:
     link:
       back_to_grid: Voltar à grelha
@@ -140,7 +140,7 @@ pim_enrich:
         field_not_ready:
           The product cannot be saved right now. The following fields are not ready:
             - campos
-        already_in_upload: 'Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"'
+        already_in_upload: Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"
       error:
         upload: Ocorreu um erro no envio do ficheiro
       meta:
@@ -154,7 +154,7 @@ pim_enrich:
         groups:
           title: Grupos
           modal:
-            title: 'Grupo {{ group }}'
+            title: Grupo {{ group }}
             view_group: Visualizar grupo
             group_label: Rótulo
             more_products: '{{ count }} mais produtos...'
@@ -175,7 +175,7 @@ pim_enrich:
       locale_specific_attribute:
         unavailable: Este campo de linguagem específica não está disponível nesta linguagem
       localizable:
-        channel_locale_unavailable: "Este campo localizável não está disponível para a linguagem '{{ locale }}' e canal '{{ channel }}'"
+        channel_locale_unavailable: Este campo localizável não está disponível para a linguagem '{{ locale }}' e canal '{{ channel }}'
       media:
         upload: Arraste e solte para fazer o envio ou clique aqui
       create_popin:
@@ -192,7 +192,7 @@ pim_enrich:
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - campos
-        already_in_upload: 'Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"'
+        already_in_upload: Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"
         no_attributes: Este grupo variante ainda não tem atributos
       btn:
         save: Guardar
@@ -202,7 +202,7 @@ pim_enrich:
         updated: Atualizado
   confirmation:
     leave: Tem certeza que deseja sair desta página?
-    discard_changes: 'Irá perderá as alterações para {{ entity }}, se abandonar a página.'
+    discard_changes: Irá perderá as alterações para {{ entity }}, se abandonar a página.
     delete_item: Confirmar eliminação
   info:
     not_applicable: N/A
@@ -251,8 +251,8 @@ pim_enrich:
       sequential_edit:
         info:
           products: produtos
-          previous: 'Voltar ao {{ product }} sem gravar.'
-          next: 'Saltar para o {{ product }} sem gravar.'
+          previous: Voltar ao {{ product }} sem gravar.
+          next: Saltar para o {{ product }} sem gravar.
         btn:
           save_and_next: Gravar e avançar
           save_and_finish: Gravar e terminar
@@ -349,6 +349,6 @@ pim_enrich:
             ALL: Tudo
   mass_edit_action:
     edit_common_attributes:
-      description: 'Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.'
+      description: Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.
 pim_enrich.error:
-  exception.title: 'Ora bolas! Ocorreu o erro {{ status_code }}...'
+  exception.title: Ora bolas! Ocorreu o erro {{ status_code }}...

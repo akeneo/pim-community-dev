@@ -23,8 +23,8 @@ Feature: Edit a product
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:
-      | Heel color  | Red              |
-      | Sole fabric | [neoprene], Silk |
+      | Heel color  | Red            |
+      | Sole fabric | neoprene, Silk |
     When I save the product
     Then I should be on the product "high-heels" edit page
     Then the product Heel color should be "red"
@@ -51,11 +51,13 @@ Feature: Edit a product
     And the following product values:
       | product    | attribute   | value          |
       | high-heels | heel_color  | Red            |
-      | high-heels | sole_fabric | Neoprene, Silk |
+      | high-heels | sole_fabric | neoprene, Silk |
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:
       | Sole fabric |  |
+    Then I should see the text "There are unsaved changes."
+    And the product Sole fabric should be ""
     When I save the product
     Then I should be on the product "high-heels" edit page
     Then the product Sole fabric should be ""

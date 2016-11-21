@@ -84,6 +84,25 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
             ->duringSetAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
+    function it_does_not_throw_an_error_if_attribute_is_a_numeric(
+        $attrOptionRepository,
+        AttributeInterface $attribute,
+        ProductInterface $product,
+        AttributeOptionInterface $attributeOption
+    ) {
+        $data = 70;
+
+        $attrOptionRepository
+            ->findOneByIdentifier('attributeCode.red')
+            ->willReturn($attributeOption);
+
+        $this
+            ->shouldNotThrow(
+                InvalidArgumentException::stringExpected('attributeCode', 'setter', 'simple select', gettype($data))
+            )
+            ->duringSetAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
+    }
+
     function it_throws_an_error_if_the_attribute_data_option_does_not_exist(
         AttributeInterface $attribute,
         ProductInterface $product

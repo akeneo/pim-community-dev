@@ -26,7 +26,6 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/product.csv
             decimalSeparator: .
             filters:
                 data:
@@ -256,7 +255,6 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath:   /tmp/product.xlsx
             filters:
                 data:
                     -
@@ -440,7 +438,6 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/channel.csv
     csv_currency_export:
         connector: Akeneo CSV Connector
         alias:     csv_currency_export
@@ -450,7 +447,6 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/currency.csv
     csv_locale_export:
         connector: Akeneo CSV Connector
         alias:     csv_locale_export
@@ -460,7 +456,6 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/locale.csv
     csv_group_type_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_type_export
@@ -470,7 +465,6 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/group_type.csv
     csv_attribute_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_group_export
@@ -480,7 +474,6 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/attribute_group.csv
     csv_currency_import:
         connector: Akeneo CSV Connector
         alias:     csv_currency_import
@@ -573,7 +566,6 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/channel.xlsx
             linesPerFile: 10000
     xlsx_currency_export:
         connector: Akeneo XLSX Connector
@@ -582,7 +574,6 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/currency.xlsx
             linesPerFile: 10000
     xlsx_locale_export:
         connector: Akeneo XLSX Connector
@@ -591,7 +582,6 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/locale.xlsx
             linesPerFile: 10000
     xlsx_group_type_export:
         connector: Akeneo XLSX Connector
@@ -600,7 +590,6 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/group_type.xlsx
             linesPerFile: 10000
     xlsx_attribute_group_export:
         connector: Akeneo XLSX Connector
@@ -609,5 +598,4 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/attribute_group.xlsx
             linesPerFile: 10000

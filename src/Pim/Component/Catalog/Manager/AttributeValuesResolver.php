@@ -54,7 +54,7 @@ class AttributeValuesResolver
     public function resolveEligibleValues(array $attributes, array $channels = null, array $locales = null)
     {
         $this->channels = $channels;
-        $this->locales = $locales;
+        $this->locales  = $locales;
 
         $values = [];
         foreach ($attributes as $attribute) {
@@ -73,7 +73,10 @@ class AttributeValuesResolver
                     'scope'     => null
                 ];
             }
-            $values = array_merge($values, $this->filterExpectedValues($attribute, $requiredValues));
+            $expectedValues = $this->filterExpectedValues($attribute, $requiredValues);
+            foreach ($expectedValues as $expectedValue) {
+                $values[] = $expectedValue;
+            }
         }
 
         return $values;

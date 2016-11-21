@@ -3,6 +3,7 @@
 namespace Context\Page\Family;
 
 use Context\Page\Base\Form;
+use Context\Spin\SpinCapableTrait;
 
 /**
  * Family edit page
@@ -13,6 +14,8 @@ use Context\Page\Base\Form;
  */
 class Edit extends Form
 {
+    use SpinCapableTrait;
+
     /**
      * @var string
      */
@@ -168,6 +171,12 @@ class Edit extends Form
     {
         $cell        = $this->getAttributeRequirementCell($attribute, $channel);
         $requirement = $cell->find('css', 'i');
+
+        $loadingMask = $this->find('css', '.hash-loading-mask .loading-mask');
+
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
+        }, '".loading-mask" is still visible');
 
         $requirement->click();
     }
