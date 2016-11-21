@@ -1757,7 +1757,6 @@ class FixturesContext extends BaseFixturesContext
 
         $data = array_merge(
             [
-                'label'      => null,
                 'currencies' => null,
                 'locales'    => null,
                 'tree'       => null,
@@ -1768,7 +1767,6 @@ class FixturesContext extends BaseFixturesContext
         $channel = new Channel();
 
         $channel->setCode($data['code']);
-        $channel->setLabel($data['label']);
 
         foreach ($this->listToArray($data['currencies']) as $currencyCode) {
             $channel->addCurrency($this->getCurrency(['code' => explode(',', $currencyCode)]));
@@ -1780,6 +1778,14 @@ class FixturesContext extends BaseFixturesContext
 
         if ($data['tree']) {
             $channel->setCategory($this->getCategory($data['tree']));
+        }
+
+        foreach ($data as $key => $value) {
+            $matches = null;
+            if (preg_match('/label-(<?locale>\d+)/', $key, $matches)) {
+                $channel->setLocale($matches['locale']);
+                $channel->setLabel($value);
+            }
         }
 
         $this->validate($channel);
