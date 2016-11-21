@@ -1,6 +1,6 @@
 Akeneo\ActivityManager\Component\Model\CompletenessPerAttributeGroup:
     type: entity
-    table: akeneo_activity_manager_completeness_pre_processing
+    table: akeneo_activity_manager_completeness_per_attribute_group
     changeTrackingPolicy: DEFERRED_EXPLICIT
     uniqueConstraints:
         searchunique_idx:

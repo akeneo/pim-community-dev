@@ -27,6 +27,11 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
+    activity_manager.repository.native_sql.project_completeness:
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProjectCompletenessRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
     ### Updater
     activity_manager.updater.project:
         class: 'Akeneo\ActivityManager\Component\Updater\ProjectUpdater'

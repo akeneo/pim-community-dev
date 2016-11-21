@@ -7,6 +7,7 @@ use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 
@@ -36,7 +37,6 @@ class UserRepositorySpec extends ObjectBehavior
 
     function it_is_a_doctrine_repository()
     {
-        $this->shouldImplement(ObjectRepository::class);
-        $this->shouldHaveType('Doctrine\ORM\EntityRepository');
+        $this->shouldHaveType(EntityRepository::class);
     }
 }

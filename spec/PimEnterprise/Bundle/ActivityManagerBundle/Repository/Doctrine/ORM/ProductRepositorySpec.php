@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 
@@ -37,7 +38,7 @@ class ProductRepositorySpec extends ObjectBehavior
     function it_finds_the_product_affected_by_the_project(
         $productQueryBuilderFactory,
         $categoryAccessRepository,
-        ProductQueryBuilder $productQueryBuilder,
+        ProductQueryBuilderInterface $productQueryBuilder,
         ProjectInterface $project,
         CursorInterface $products,
         UserInterface $user,
