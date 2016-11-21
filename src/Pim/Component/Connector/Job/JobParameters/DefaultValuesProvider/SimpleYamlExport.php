@@ -31,7 +31,7 @@ class SimpleYamlExport implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         return [
-            'filePath' => null,
+            'filePath' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.yml',
         ];
     }
 

@@ -37,9 +37,14 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->directory);
 
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $attributeRepository, $fileExporterPath, [
-            'pim_catalog_file', 'pim_catalog_image'
-        ]);
+        $this->beConstructedWith(
+            $arrayConverter,
+            $bufferFactory,
+            $flusher,
+            $attributeRepository,
+            $fileExporterPath,
+            [ 'pim_catalog_file', 'pim_catalog_image']
+        );
     }
 
     function letGo()
@@ -67,7 +72,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.xlsx');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_variant_group.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
@@ -133,7 +138,8 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
-        $jobInstance->getCode()->willReturn('csv_variant_group_export');
+        $jobInstance->getCode()->willReturn('xlsx_variant_group_export');
+        $jobInstance->getLabel()->willReturn('XLSX Variant group export');
 
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
@@ -180,13 +186,14 @@ class VariantGroupWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
+        JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.xlsx');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_variant_group.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
@@ -224,7 +231,9 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $items = [$variantStandard1];
 
         $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn(null);
+        $jobInstance->getLabel()->willReturn('XLSX Variant group export');
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 
@@ -248,6 +257,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
+        JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
@@ -256,13 +266,15 @@ class VariantGroupWriterSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('job_label');
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->get('filePath')->willReturn('my/file/path/%job_label%_export.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
@@ -271,7 +283,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
             Argument::type('array'),
             Argument::type('string'),
             -1
-        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
+        )->willReturn(['my/file/path/job_label_export1.xlsx', 'my/file/path/job_label_export2.xlsx']);
 
         $this->initialize();
         $this->flush();

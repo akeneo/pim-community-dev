@@ -126,4 +126,12 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     {
         $this->getMainContext()->wait($condition);
     }
+
+    /**
+     * @return string
+     */
+    protected function getRootDir()
+    {
+        return $this->kernel->getRootDir();
+    }
 }

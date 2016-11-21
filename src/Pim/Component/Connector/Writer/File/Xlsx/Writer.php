@@ -43,9 +43,9 @@ class Writer extends AbstractFileWriter implements
     protected $bufferFactory;
 
     /**
-     * @param ArrayConverterInterface   $arrayConverter
-     * @param BufferFactory             $bufferFactory
-     * @param FlatItemBufferFlusher     $flusher
+     * @param ArrayConverterInterface $arrayConverter
+     * @param BufferFactory           $bufferFactory
+     * @param FlatItemBufferFlusher   $flusher
      */
     public function __construct(
         ArrayConverterInterface $arrayConverter,

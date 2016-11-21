@@ -139,17 +139,18 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
             $dispatcher->dispatch(JsfvEvents::preProcess, $preProcessEvent);
             // @codingStandardsIgnoreEnd
 
-            if (!empty($metadata->constraints)) {
-                foreach ($metadata->constraints as $constraint) {
+            if ($metadata->hasConstraints()) {
+                foreach ($metadata->getConstraints() as $constraint) {
                     $constraintName = $this->getConstraintName($constraint);
-                    if ($constraintName == 'UniqueEntity') {
+                    if ('UniqueEntity' === $constraintName) {
                         if (is_array($constraint->fields)) {
                             //It has not been implemented yet
                         } elseif (is_string($constraint->fields)) {
-                            if (!isset($aConstraints[$constraint->fields])) {
-                                $aConstraints[$constraint->fields] = [];
-                            }
                             $aConstraints[$constraint->fields][] = $constraint;
+                        }
+                    } elseif ('NotBlankProperties' === $constraintName) {
+                        foreach ($constraint->properties as $property) {
+                            $aConstraints[$property][] = $constraint;
                         }
                     }
                 }
@@ -160,7 +161,6 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
          * PIM-4443: we removed the original $metadata->getters implementation to avoid issues with
          * cascade validation and getter (validation of the code of the attribute group of an attribute)
          */
-
         if (isset($entityName)) {
             $constraintsTarget = $metadata->properties;
         } else {
@@ -209,6 +209,16 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
                     }
                     // we look through each field constraint
                     foreach ($constraintList as $constraint) {
+                        $this->addFieldConstraint(
+                            $formField,
+                            $fieldsConstraints,
+                            $constraint
+                        );
+                    }
+                } elseif ('reference_data_name' === $formField->vars['name'] &&
+                    !empty($aConstraints[$formField->vars['name']])
+                ) {
+                    foreach ($aConstraints[$formField->vars['name']] as $constraint) {
                         $this->addFieldConstraint(
                             $formField,
                             $fieldsConstraints,

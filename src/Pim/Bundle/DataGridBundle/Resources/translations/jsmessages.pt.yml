@@ -29,16 +29,16 @@ Please, select item to perform action.: Por favor, selecione o item para executa
 View per page: Visualizações por página
 oro.datagrid.entityHint: Entidade
 oro.datagrid.noentities: Nenhum registo encontrado
-oro.datagrid.noresults: Nenhum resultado encontrado. Tente mudar seus critérios de pesquisa.
+oro.datagrid.noresults: "Nenhum resultado encontrado. Tente mudar seus critérios de pesquisa."
 oro.datagrid.nocolumns: Não há colunas configuradas para esta grelha
-oro.datagrid.pagination.label: Página
-oro.datagrid.pagination.totalPages: 'de {{ totalPages }}'
-oro.datagrid.pagination.totalRecords: '{{ totalRecords }} registos'
-oro.datagrid.action.reset: Reset / Restaurar
-oro.datagrid.action.refresh: Atualizar
-oro_datagrid.select.all: Tudo
-oro_datagrid.select.visible: Tudo visível
-oro_datagrid.select.none: Nenhum
+oro.datagrid.pagination.label: "Página"
+oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registos"
+oro.datagrid.action.reset: "Reset / Restaurar"
+oro.datagrid.action.refresh: "Atualizar"
+oro_datagrid.select.all: "Tudo"
+oro_datagrid.select.visible: "Tudo visível"
+oro_datagrid.select.none: "Nenhum"
 pim.grid.ajax_choice_filter.label_empty: está vazio
 pim.grid.choice_filter:
   label_empty: está vazio

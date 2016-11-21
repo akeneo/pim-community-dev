@@ -66,7 +66,7 @@ example two import jobs running in parallel:
     4. Job A persists the product, the new product value is inserted with id 32
     5. Job B persists the product, the new product value is inserted with id 33
 
-As there currently no easy way to prevent that, here is a command that can search product value duplications and
+As there is currently no easy way to prevent that, here is a command that can search product value duplications and
 delete them.
 Two product values are considered as duplicated when they have the same attribute_id, entity_id, locale_code and
 scope code.
