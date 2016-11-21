@@ -3,11 +3,12 @@
 namespace spec\Pim\Component\Connector\Writer\File\Csv;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
@@ -37,11 +38,16 @@ class WriterSpec extends ObjectBehavior
         $bufferFactory,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('job_label');
+        $jobParameters->get('filePath')->willReturn('my/file/path/%job_label%_%datetime%.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->get('withHeader')->willReturn(true);
 
@@ -109,7 +115,9 @@ class WriterSpec extends ObjectBehavior
         $flusher,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
     ) {
         $this->setStepExecution($stepExecution);
 
@@ -119,8 +127,11 @@ class WriterSpec extends ObjectBehavior
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->get('filePath')->willReturn('my/file/path/%job_label%_%datetime%.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('job_label');
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 

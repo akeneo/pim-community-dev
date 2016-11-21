@@ -1,0 +1,25 @@
+btn:
+  post: Afegir un nou comentari
+  reply: Respondre
+confirmation:
+  remove:
+    comment: Està segur que vol suprimir aquest comentari?
+flash:
+  comment:
+    create:
+      success: El seu comentari s'ha creat correctament.
+      error: S'ha produït un error durant la creació del seu comentari.
+    delete:
+      success: El seu comentari s'ha suprimit correctament.
+      error: S'ha produït un error durant la supressió del seu comentari.
+    reply:
+      success: La seva resposta s'ha creat amb èxit.
+      error: S'ha produït un error durant la creació de la seva resposta.
+comment:
+  index:
+    empty: No s'han trobar comentaris.
+  placeholder:
+    new: Escriure un comentari nou...
+    reply: Respondre a aquest comentari...
+pim_comment:
+  product.tab.comment.title: Comentaris

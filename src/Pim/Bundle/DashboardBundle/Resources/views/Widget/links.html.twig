@@ -2,7 +2,7 @@
     <div class="span12 shortcuts text-center">
         {% for link in links %}
             <a href="{{ path(link.route) }}" class="btn shortcut" title="{{ link.label|trans }}">
-                <img src="/bundles/pimdashboard/images/{{ link.image }}"/>
+                <img src="{{ asset('bundles/pimdashboard/images/' ~ link.image) }}"/>
                 {{ link.label|trans }}
             </a>
         {% endfor %}

@@ -30,3 +30,12 @@ Feature: Display many datagrid filters
     And I am on the products page
     Then I should see product les-paul
     And I should see product telecaster
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5536
+  Scenario: Successfully search an attribute from its code
+    Given the "apparel" catalog configuration
+    And I am logged in as "Mary"
+    And I am on the products page
+    When I type "number_in_stock" in the manage filter input
+    And I could see "Number in stock" in the manage filters list
+

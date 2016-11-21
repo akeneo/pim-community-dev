@@ -32,6 +32,26 @@ final class StorageEvents
     const POST_REMOVE = 'akeneo.storage.post_remove';
 
     /**
+     * This event is thrown before several objects get removed.
+     *
+     * The event listener receives an
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_REMOVE_ALL = 'akeneo.storage.pre_remove_all';
+
+    /**
+     * This event is thrown after several objects have been removed.
+     *
+     * The event listener receives an
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_REMOVE_ALL = 'akeneo.storage.post_remove_all';
+
+    /**
      * This event is thrown before an object gets saved.
      *
      * The event listener receives an
