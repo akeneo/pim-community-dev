@@ -152,7 +152,6 @@ class ProductUpdater implements ObjectUpdaterInterface
         $authorizedCodes = (null !== $family) ? $family->getAttributeCodes() : [];
         $isFamilyAttribute = in_array($attributeCode, $authorizedCodes);
 
-            error_log(print_r($values, true));
         foreach ($values as $value) {
             $hasValue = $product->getValue($attributeCode, $value['locale'], $value['scope']);
             $providedData = ('' === $value['data'] || [] === $value['data'] || null === $value['data']) ? false : true;
