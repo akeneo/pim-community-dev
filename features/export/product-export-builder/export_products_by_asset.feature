@@ -6,11 +6,14 @@ Feature: Export products according to multi select reference data values
 
   Background:
     Given the "clothing" catalog configuration
+    And the following family:
+      | code  | label-en_US | attributes      |
+      | shirt | Shirt       | sku, front_view |
     And the following products:
-      | sku     | front_view | categories      |
-      | shirt-1 | akene      | 2014_collection |
-      | shirt-2 | dog        | 2014_collection |
-      | shirt-3 |            | 2014_collection |
+      | sku     | front_view | categories      | family |
+      | shirt-1 | akene      | 2014_collection | shirt  |
+      | shirt-2 | dog        | 2014_collection | shirt  |
+      | shirt-3 |            | 2014_collection | shirt  |
     And the following jobs:
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
