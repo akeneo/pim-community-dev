@@ -25,21 +25,25 @@ pimee_product_asset:
   mass_upload:
     menu: Cargar recursos
     btn:
+      remove_all_files: Eliminar todos los archivos
       delete: Eliminar
       import: Importar
       upload: Cargar
     success:
       new: Un nuevo recurso será creado
+      imported: Archivos importados para el procesamiento de recursos
       canceled: Carga cancelada con éxito
       deleted: Fichero cargado eliminado con éxito
     error:
       list: Imposible de leer los ficheros ya cargados
       upload: Un error ocurrió al intentar cargar el fichero
       delete: Imposible eliminar el fichero del servidor
+      import: Se ha producido un error durante la importación
       filename: Nombre de fichero inválido para el recurso
       code: Formato de código inválido para el recurso
       locale: Un recurso existe pero no se puede traducir
       invalid_locale: El local está desactivado o es inválido
+      exists: Un fichero con el mismo nombre ya está importado
       conflicts: Conflicto de nombre de ficheros
     grid:
       medias: medias
@@ -57,6 +61,14 @@ pimee_product_asset:
       uploading: Cargando
       error: Error
       success: Éxito
+    drag_and_drop: Arrastre y deje caer sus archivos aquí
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Está seguro de que desea eliminar los recursos seleccionados?
+        success: Recursos seleccionados eliminados exitosamente.
+        error: Se ha producido un error al intentar eliminar los recursos seleccionados, por favor inténtelo de nuevo.
+        empty_selection: Ningún recurso seleccionado
 pim_dashboard:
   widget:
     last_operations:

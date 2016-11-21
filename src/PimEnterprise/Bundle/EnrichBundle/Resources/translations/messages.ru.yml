@@ -1,13 +1,194 @@
+pim_title.locale:
+  edit: 'Локали %locale.code% | Изменить'
+Permissions: Права доступа
+pane.accordion.permissions: Права доступа
+attribute group.permissions:
+  view.label: Разрешено просматривать атрибуты
+  view.help: Разрешить просмотр продуктов в этой группе атрибутов
+  edit.label: Разрешено изменение атрибутов
+  edit.help: Разрешить редактирование атрибутов в данной группе атрибутов
+  no_access_to_attributes: Вы не имеете прав доступа к атрибутам этого продукта. Пожалуйста, обратитесь к администратору.
+category.permissions:
+  view.label: Разрешено просматривать товары
+  view.help: Разрешить просмотр продуктов в этой категории
+  edit.label: Разрешено редактирование товаров
+  edit.help: Разрешить редактирование продуктов в этой категории (подразумевает права на просмотр)
+  own.label: Разрешено владеть продуктами
+  own.help: Разрешено публиковать, снимать с публикации, классифицировать, ассоциировать и писать обзоры на продукты в этой категории (подразумевает права на изменение)
+  no_access_to_products: Вы не имеете прав доступа к продуктам в деревьях категорий. Пожалуйста, обратитесь к вашему администратору
+  apply_on_children.label: Применить изменения на дочерние элементы
+  apply_on_children.help: Копирование изменений прав доступа на все дочерние элементы, при этом существующие права сохраняются
+locale.permissions:
+  view.label: Разрешено просматривать информацию о продукте
+  view.help: Разрешить просмотр сведений о продукте в этой локали
+  edit.label: Разрешено редактировать информацию о продукте
+  edit.help: Разрешить редактирование сведений о продукте в этой локали (подразумевает права на просмотр)
+  no_access_to_products: Вы не имеете прав доступа к данным продукта ни в одной локали. Пожалуйста, обратитесь к вашему администратору
+btn:
+  save working copy: Сохранить рабочую копию
+  save draft: Сохранить черновик
+  save working copy and next: Сохранить рабочую копию и перейти к следующему
+  save draft and next: Сохранить черновик и перейти к следующему
+  save working copy and finish: Сохранить рабочую копию и закончить
+  save draft and finish: Сохранить черновик и закончить
+  send for approval: Отправить на утверждение
+  sent for approval: Отправлено на утверждение
 pim_enrich:
   mass_edit_action:
     product:
+      not_editable: 'Вы не имеете прав на изменение продуктов "%identifiers%".'
       page_title: Продукты
+      page_subtitle: 'Массовое редактирование (1 продукт)|Массовое редактирование (%count% продуктов)'
+      title: Выберите операцию
+      subtitle: 'Выберите операцию, которую вы хотите применить для выбранного продукта|Выберите операцию, которую вы хотите применить для %count% выбранных продуктов'
+      confirm: 'Вы собираетесь обновить продукт со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% продуктов со следующей информацией, пожалуйста, подтвердите.'
+      steps:
+        first: Выберите продукты
+        second: Выберите операцию
+        third: Настройка
+        fourth: Подтверждение
+    publish:
+      label: Опубликовать продукты
+      description: Опубликовать выбранные продукты, при этом текущие опубликованные данные будут перезаписаны текущей рабочей копией.
+      success_flash: Выбранные продукты были успешно опубликованы.
+      launched_flash: Процесс публикации товара(ов) выполняется в данный момент.
+      message:
+        error: Вы не владелец продукта, вы не можете его опубликовать.
+        warning: 'Вы не являетесь владельцем всех выбранных продуктов. Вы не можете опубликовать продукты "%notGranted%".'
+        info: '%nbProducts% выбранных продуктов будет опубликовано.'
+      not_editable: 'Вы не имеете прав на изменение продуктов "%identifiers%".'
+    unpublish:
+      label: Снять продукты с публикации
+      description: Снять выбранные продукты с публикации, текущий опубликованные данные будут удалены.
+      success_flash: Выбранные продукты были успешно сняты с публикации.
+      launched_flash: Процесс снятия товара(ов) с публикации выполняется в данный момент.
+      message:
+        error: Вы не владелец продукта, вы не можете снять его с публикации.
+        warning: 'Вы не являетесь владельцем всех выбранных продуктов. Вы не можете снять продукты "%notGranted%" с публикации.'
+        info: '%nbProducts% выбранных продуктов будет снять с публикации.'
+      not_editable: 'Вы не имеете прав на изменение продуктов "%identifiers%".'
+    classify:
+      message:
+        error: Вы не владелец продукта, вы не можете классифицировать его.
+        warning: 'Вы не являетесь владельцем всех выбранных продуктов. Вы не можете классифицировать продукты "%notGranted%".'
+    edit_common_attributes:
+      message:
+        error: Вы не владелец продукта, вы не можете редактировать его.
+flash.product.updated: Рабочая копия продукта была обновлена
+flash.product_draft.updated: Черновик был успешно сохранен
+flash.locale.updated: Локаль и права доступа были обновлены
 pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Права доступа
+  product:
+    tab:
+      proposal.title: Предложения
+  category:
+    tab:
+      permission.title: Права доступа
+  locale:
+    tab:
+      permission.title: Права доступа
+  channel:
+    tab:
+      asset_transformation.title: Преобразования активов
+  acl.product_ownership.title: Владение
+  attributes:
+    empty: Пусто
+  groups:
+    label: Группы владельцы
+    empty: Пусто
   asset_transformation:
+    not_found: Преобразования не найдены
     title:
       transformation: Преобразование
       options: Параметры
+    colorspace:
+      title: Цветовое пространство
+      options:
+        colorspace: '%value% цветовое пространство'
+    resize:
+      title: Изменение размера
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+    resolution:
+      title: Разрешение
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Маштабирование
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+        ratio: '%value%% соотношение'
+    thumbnail:
+      title: Миниатюра изображения
+      options:
+        width: 'Ширина %value%px'
+        height: 'Высота %value%px'
+add_product_value_with_permission_and_rules:
+  steps.perform: Добавить значение продукта
+update_product_value_with_permission_and_rules:
+  steps.perform: Обновить значение продукта
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Изменить общие атрибуты
+  steps.edit_common_attributes_processor.title: Изменить общие атрибуты
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: 'Добавить значение продукта с проверкой прав доступа & применением правил'
+    perform.label: Добавить значение продукта
+    execute_rules.label: Выполнение правил
+  update_product_value_with_permission_and_rules:
+    label: 'Обновить значение продукта с проверкой прав доступа & применением правил'
+    perform.label: Обновить значение продукта
+    execute_rules.label: Выполнение правил
+  remove_product_value_with_permission_and_rules:
+    label: 'Удалить значение продукта с проверкой прав доступа & применением правил'
+    perform.label: Удалить значение продукта
+    execute_rules.label: Выполнение правил
+  edit_common_attributes_with_permission_and_rules:
+    label: 'Редактировать общие атрибуты с проверкой прав доступа & применением правил'
+    perform.label: Изменить общие атрибуты
+    execute_rules.label: Выполнение правил
+    clean.label: Очистить временные файлы
+  add_to_variant_group_with_rules:
+    label: Добавить продукты в группу вариантов с применением правил
+    perform.label: Добавить продукты в группу вариантов
+    execute_rules.label: Выполнение правил
+  csv_published_product_quick_export:
+    export.label: Быстрый экспорт опубликованных товаров в CSV
+    perform:
+      label: Быстрый экспорт опубликованных товаров в CSV
+  csv_published_product_grid_context_quick_export:
+    export.label: Быстрый экспорт контекста сетки опубликованных товаров в CSV
+    perform:
+      label: Быстрый экспорт контекста сетки опубликованных товаров в CSV
+  xlsx_published_product_quick_export:
+    export.label: Быстрый экспорт опубликованных товаров в XLSX
+    perform:
+      label: Быстрый экспорт опубликованных товаров в XLSX
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
+    perform:
+      label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
+add_to_variant_group_with_rules:
+  steps.perform: Добавить продукты в группу вариантов
+  steps.excluded.title: Исключенные продукты
+  steps.duplicated.title: Продублированные оси
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Изменить общие атрибуты
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Добавить значение продукта с правами доступа
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Обновить значение продукта с правами доступа
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Удалить значение продукта с правами доступа
+edit_common_attributes_with_permission: Редактировать общие атрибуты с правами доступа
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Редактировать общие атрибуты с правами доступа
 job_execution.summary:
   mass_published: Продукт опубликован
   mass_unpublished: Продукт снят с публикации
   proposal: Предложение создано
+  proposal_deleted: удалено
+pim_assets_collection: Коллекция медиафайлов
+pim_enrich_attribute_form:
+  isReadOnly: Только для чтения

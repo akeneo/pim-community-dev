@@ -140,15 +140,36 @@ pimee_product_asset:
   mass_edit_action:
     asset:
       page_title: Recursos
+      page_subtitle: 'Edición en masa (1 recurso)|Edición en masa (%count% recursos)'
       steps:
+        first: Elegir recurso
         second: Configurar
         third: Confirmar
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Mueve recursos a categorías
+      description: Los recursos se colocarán en las siguientes categorías, la posición actual se perderá
+      success_flash: El/los recurso(s) ha(n) sido trasladado(s) a las categorías seleccionadas
+      launched_flash: 'La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.'
+    add-tags-to-assets:
+      label: Añadir etiquetas a los recursos
+      description: Las etiquetas se agregarán a los recursos. Si algunas etiquetas no existen, se crearán.
+      success_flash: La(s) etiqueta(s) se ha(n) agregado a los recursos
+      message.error: La etiqueta proporcionada no existe
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Clasificar
+      add_tags_to_assets: Añadir etiquetas
 btn.create.asset: Crear un recurso
 btn.drag_or_upload: Arrastrar y soltar un fichero o haga clic aquí
 job_execution.summary:
   variations_not_generated: Variaciones no generadas
   pimee_product_asset.mass_upload.new: Recurso creado desde el fichero
   pimee_product_asset.mass_upload.updated: Recurso cargado
+  error: Error en el proceso de archivo de recursos
+  skipped_assets: Recursos omitidos
 assets_mass_upload.steps:
   asset_mass_upload.title: Carga masiva de recursos
 import_asset.steps.channel_configuration_processor.title: Configuración de procesos de canal
@@ -212,3 +233,7 @@ batch_jobs:
   xlsx_asset_variation_export:
     label: Exportar categoría de recursos en XLSX
     export.label: Exportar categoría de recursos en XLSX
+  classify_assets:
+    perform.label: Mueve recursos a categorías
+  add_tags_to_assets:
+    perform.label: Añadir etiquetas a los recursos

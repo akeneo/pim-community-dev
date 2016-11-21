@@ -31,5 +31,5 @@ Feature: Revert product attributes to a previous version
     And I open the history
     Then I should see 2 versions in the history
     When I revert the product version number 1
-    And the product "short" should have the following values:
+    Then the product "short" should have the following values:
     | handmade |  |

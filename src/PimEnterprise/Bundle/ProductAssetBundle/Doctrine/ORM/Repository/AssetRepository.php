@@ -137,7 +137,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
         }
 
         if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
-            $qb->andWhere('f.code in (:codes)');
+            $qb->andWhere(sprintf('%s.code in (:codes)', $this->getAlias()));
             $qb->setParameter('codes', $options['identifiers']);
         }
 
