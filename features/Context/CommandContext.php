@@ -218,16 +218,4 @@ class CommandContext extends PimContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
-
-    /**
-     * @When /^I run '([^\']*)'$/
-     */
-    public function iRun($command)
-    {
-        $pathFinder   = new PhpExecutableFinder();
-        $php          = $pathFinder->find();
-        $rootDir      = $this->getRootDir();
-        $command      = $this->replacePlaceholders($command);
-        $this->output = shell_exec(sprintf('%s %s/console %s', $php, $rootDir, $command));
-    }
 }
