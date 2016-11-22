@@ -10,6 +10,11 @@ config:
                         urls:
                             list: activity_manager_project_search
                             get: activity_manager_project_search # TODO: CHANGE THIS IN AMS-22
+                project:
+                    module: activity-manager/project/fetcher
+                    options:
+                        urls:
+                            list: activity_manager_project_search
 
     map:
         '*':
@@ -21,6 +26,15 @@ config:
         # Forms
         activity-manager/grid/view-selector/footer/create/project: activitymanager/js/grid/view-selector-footer-create-project
         activity-manager/project/create-form: activitymanager/js/project/create-form
+        activity-manager/project/fetcher: activitymanager/js/fetcher/project-fetcher
+        activity-manager/widget/project-widget: activitymanager/js/widget/project-widget
+        activity-manager/widget/project-selector: activitymanager/js/widget/project-selector
+        activity-manager/widget/project-selector-line: activitymanager/js/widget/project-selector-line
+        activity-manager/widget/contributor-selector: activitymanager/js/widget/contributor-selector
+        activity-manager/widget/contributor-selector-line: activitymanager/js/widget/contributor-selector-line
+        activity-manager/widget/project-due-date: activitymanager/js/widget/project-due-date
+        activity-manager/widget/project-completeness-data: activitymanager/js/widget/project-completeness-data
+        activity-manager/widget/project-description: activitymanager/js/widget/project-description
         activity-manager/grid/view-selector/selector: activitymanager/js/grid/view-selector
         pim/grid/view-selector/line: activitymanager/js/grid/view-selector-line
 
@@ -32,3 +46,12 @@ config:
         activity-manager/templates/grid/view-selector/footer/create/project: activitymanager/templates/grid/view-selector-footer-create-project.html
         activity-manager/templates/field-error: activitymanager/templates/field-error.html
         activity-manager/templates/grid/view-selector/line-project: activitymanager/templates/grid/view-selector-line-project.html
+        activity-manager/templates/widget/project-widget: activitymanager/templates/widget/project-widget.html
+        activity-manager/templates/widget/project-widget-empty: activitymanager/templates/widget/project-widget-empty.html
+        activity-manager/templates/widget/project-selector: activitymanager/templates/widget/project-selector.html
+        activity-manager/templates/widget/project-selector-line: activitymanager/templates/widget/project-selector-line.html
+        activity-manager/templates/widget/contributor-selector: activitymanager/templates/widget/contributor-selector.html
+        activity-manager/templates/widget/contributor-selector-line: activitymanager/templates/widget/contributor-selector-line.html
+        activity-manager/templates/widget/project-due-date: activitymanager/templates/widget/project-due-date.html
+        activity-manager/templates/widget/project-completeness-data: activitymanager/templates/widget/project-completeness-data.html
+        activity-manager/templates/widget/project-description: activitymanager/templates/widget/project-description.html

@@ -1,0 +1,23 @@
+<div class="AknProjectWidget-boxContainer">
+    <span class="AknProjectWidget-boxLabel"><%- todoLabel %></span>
+    <div class="AknProjectWidget-box AknProjectWidget-box--important">
+        <div class="AknProjectWidget-boxData activity-manager-completeness-todo"><%- todo %></div>
+        <%- percentageToEnrich %>
+    </div>
+</div>
+
+<div class="AknProjectWidget-boxContainer">
+    <span class="AknProjectWidget-boxLabel"><%- inProgressLabel %></span>
+    <div class="AknProjectWidget-box AknProjectWidget-box--warning">
+        <div class="AknProjectWidget-boxData activity-manager-completeness-in-progress"><%- inProgress %></div>
+        <%- percentageInProgress %>
+    </div>
+</div>
+
+<div class="AknProjectWidget-boxContainer">
+    <span class="AknProjectWidget-boxLabel"><%- doneLabel %></span>
+    <div class="AknProjectWidget-box AknProjectWidget-box--success">
+        <div class="AknProjectWidget-boxData activity-manager-completeness-done"><%- done %></div>
+        <%- percentageDone %>
+    </div>
+</div>

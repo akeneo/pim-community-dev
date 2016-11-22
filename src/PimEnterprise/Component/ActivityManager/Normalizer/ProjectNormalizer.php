@@ -37,9 +37,10 @@ class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
      * returns
      * [
      *     'label' => (string),
+     *     'code' => (string),
      *     'description' => (string),
      *     'due_date' => (string),
-     *     'owner' => (int),
+     *     'owner' => [] internal_api format,
      *     'channel' => [] internal_api format,
      *     'locale' => [] internal_api format,
      *     'datagridView' => [] internal_api format
@@ -63,7 +64,7 @@ class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
             'code' => $project->getCode(),
             'description' => $project->getDescription(),
             'due_date' => $project->getDueDate()->format('Y-m-d'),
-            'owner' => $project->getOwner()->getId(),
+            'owner' => $this->serializer->normalize($project->getOwner(), $format, $context),
             'channel' => $this->serializer->normalize($project->getChannel(), $format, $context),
             'locale' => $this->serializer->normalize($project->getLocale(), $format, $context),
             'datagridView' => $this->serializer->normalize(

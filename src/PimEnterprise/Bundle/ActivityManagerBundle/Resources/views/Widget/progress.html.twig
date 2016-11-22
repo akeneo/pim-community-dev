@@ -1,0 +1,22 @@
+{% extends 'PimDashboardBundle:Widget:base.html.twig' %}
+
+{% set widgetTitle = 'activity_manager.widget.title'|trans %}
+
+{% set widgetContent %}
+    <div id="activity-manager-widget" class="AknProjectWidget"></div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/dashboard/widget-container', 'activity-manager/widget/project-widget'],
+            function ($, widgetContainer, ProjectWidget) {
+                'use strict';
+                $(function () {
+                    var options = {el: '#activity-manager-widget', alias: 'project_progress'};
+                    var widget = widgetContainer.getWidget(options, ProjectWidget);
+
+                    widget.render().delayedLoad();
+                });
+            }
+        );
+    </script>
+{% endset %}

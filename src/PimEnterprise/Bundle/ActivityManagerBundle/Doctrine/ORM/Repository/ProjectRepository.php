@@ -71,9 +71,10 @@ class ProjectRepository extends EntityRepository implements
         $searchResolver = $this->configureSearchOptions();
         $options = $searchResolver->resolve($options);
 
-        $qb = $this->createQueryBuilder('proj');
+        $qb = $this->createQueryBuilder('project');
+        $qb->distinct(true);
         if (null !== $search && '' !== $search) {
-            $qb->where('proj.label LIKE :search')->setParameter('search', sprintf('%%%s%%', $search));
+            $qb->where('project.label LIKE :search')->setParameter('search', sprintf('%%%s%%', $search));
         }
 
         $userGroups = $options['user']->getGroups();
@@ -82,13 +83,14 @@ class ProjectRepository extends EntityRepository implements
                 return $userGroup->getId();
             }, $userGroups->toArray());
 
-            $qb->innerJoin('proj.userGroups', 'u_groups')
+            $qb->innerJoin('project.userGroups', 'u_groups')
                 ->andWhere('u_groups.id IN (:groups)')
                 ->setParameter('groups', $userGroupsId);
         }
 
         $qb->setMaxResults($options['limit']);
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
+        $qb->orderBy('project.dueDate');
 
         return $qb->getQuery()->execute();
     }

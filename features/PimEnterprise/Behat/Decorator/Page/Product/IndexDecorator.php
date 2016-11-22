@@ -35,4 +35,21 @@ class IndexDecorator extends ElementDecorator
             ['Akeneo\ActivityManager\Behat\Decorator\Element\Grid\ViewSelectorCreateButtonDecorator']
         );
     }
+
+    /**
+     * Return the decorated Activity Manager widget
+     *
+     * @return ElementDecorator
+     */
+    public function getActivityManagerWidget()
+    {
+        $widget = $this->spin(function () {
+            return $this->find('css', '#activity-manager-widget');
+        }, 'Activity Manager widget not found.');
+
+        return $this->decorate(
+            $widget,
+            ['Akeneo\ActivityManager\Behat\Decorator\Element\Widget\WidgetDecorator']
+        );
+    }
 }

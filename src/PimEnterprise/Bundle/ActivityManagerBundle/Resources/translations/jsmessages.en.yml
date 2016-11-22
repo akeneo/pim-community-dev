@@ -15,6 +15,21 @@ activity_manager:
         title: Create project
         confirm: Save
         cancel: Cancel
+    widget:
+        no_project: You have no current project.
+        description: Description
+        due_date: Due date
+        todo: TODO
+        in_progress: IN PROGRESS
+        done: DONE
+        all_contributors: All contributors
+        placeholder:
+            contributor_selector: Search contributor
+            project_selector: Search project
+        progress:
+            to_enrich: PRODUCTS TO ENRICH
+            in_progress: PRODUCTS IN PROGRESS
+            done: PRODUCTS DONE
 
 pim_datagrid:
     view_selector:

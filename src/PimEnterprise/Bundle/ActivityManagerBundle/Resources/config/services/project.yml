@@ -52,6 +52,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    ### Widget
+    activity_manager.widget.progress:
+        class: Akeneo\ActivityManager\Bundle\Widget\ProjectProgressWidget
+        tags:
+            - { name: pim_dashboard.widget, position: 15 }
+
     ### Voter
     activity_manager.voter.project:
         class: 'Akeneo\ActivityManager\Component\Voter\ProjectVoter'
