@@ -34,6 +34,8 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
     /**
      * Get the file path in which to write the data
      *
+     * @param array $placeholders
+     *
      * @return string
      */
     public function getPath(array $placeholders = [])

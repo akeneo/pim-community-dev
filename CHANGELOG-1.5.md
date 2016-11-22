@@ -31,10 +31,6 @@
 
 - Add a duplicated product values cleaning command
 
-## Technical improvements
-
-- Add a duplicated product values cleaning command
-
 # 1.5.7 (2016-07-19)
 
 # 1.5.6 (2016-07-06)

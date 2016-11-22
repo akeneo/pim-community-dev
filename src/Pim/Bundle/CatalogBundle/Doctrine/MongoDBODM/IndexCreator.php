@@ -9,7 +9,6 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -118,8 +117,6 @@ class IndexCreator
      * Indexes will be created on the normalizedData part for:
      * - completenesses
      * - localizable attributes
-     *
-     * @param LocaleInterface $locale
      */
     public function ensureIndexesFromLocale()
     {
