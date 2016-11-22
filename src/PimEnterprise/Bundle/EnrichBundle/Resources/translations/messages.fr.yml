@@ -39,12 +39,12 @@ pim_enrich:
       not_editable: |-
         Vous n'avez pas le droit de modifier les produits "%identifiers%".
       page_title: Produits
-      page_subtitle: 'Edition de masse (1 produit)|Edition de masse (%count% produits)'
+      page_subtitle: 'Édition en masse (1 produit)|Édition en masse (%count% produits)'
       title: Choisir une opération
-      subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné| Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
-      confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% produits avec les renseignements suivants, merci de confirmer.'
+      subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné|Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
+      confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.'
       steps:
-        first: Choisissez des produits
+        first: Choisir des produits
         second: Choisir une opération
         third: Configurer
         fourth: Confirmer
@@ -138,7 +138,7 @@ pimee_enrich:
 add_product_value_with_permission_and_rules:
   steps.perform: Ajouter une valeur de produit
 update_product_value_with_permission_and_rules:
-  steps.perform: Mise à jour de la valeur produit
+  steps.perform: Mise à jour de la valeur du produit
 edit_common_attributes_with_permission_and_rules:
   steps.perform: Modifier les attributs communs
   steps.edit_common_attributes_processor.title: Modifier les attributs communs
@@ -149,7 +149,7 @@ batch_jobs:
     execute_rules.label: Exécution des règles
   update_product_value_with_permission_and_rules:
     label: Mettre à jour une valeur de produit avec vérification des permissions et application des règles
-    perform.label: Mise à jour de la valeur produit
+    perform.label: Mise à jour de la valeur du produit
     execute_rules.label: Exécution des règles
   remove_product_value_with_permission_and_rules:
     label: Supprime une valeur de produit avec vérification des permissions et application des règles

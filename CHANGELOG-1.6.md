@@ -2,7 +2,25 @@
 
 ## Bug fixes
 
+- PIM-6011: Fix an error 500 on asset's view screen caused by a typo
+
+## Developer eXperience
+
+- Ease the override of product asset by using model parameter in the product-asset grid
+
+# 1.6.4 (2016-10-20)
+
+## Bug fixes
+
+- PIM-5981: Fix wording issue on asset bulk action
+- PIM-5988: Fix Product Assets controller & repository to correctly add assets by their code
+
+# 1.6.3 (2016-09-22)
+
+## Bug fixes
+
 - PIM-5821: Apply rights on locale specific values during quick export
+- PIM-5978: Fix missing currencies
 
 # 1.6.2 (2016-09-02)
 

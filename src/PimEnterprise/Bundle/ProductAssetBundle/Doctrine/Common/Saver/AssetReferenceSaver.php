@@ -59,6 +59,8 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateReference($reference);
 
+        $options['unitary'] = true;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($reference, $options));
 
         $this->objectManager->persist($reference);
@@ -76,17 +78,22 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
      */
     public function saveAll(array $references, array $options = [])
     {
+        $options['unitary'] = false;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($references, $options));
+
         foreach ($references as $reference) {
             $this->validateReference($reference);
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($reference, $options));
             $this->objectManager->persist($reference);
         }
+
         $this->objectManager->flush();
 
         foreach ($references as $reference) {
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($reference, $options));
         }
+
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($references, $options));
     }
 

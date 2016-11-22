@@ -27,8 +27,8 @@ Feature: Revert a product to a previous version
     And I wait to be on the "red-heels" product page
     And I add available attributes Main color and Main fabric
     And I fill in the following information:
-      | Main color  | [red]                          |
-      | Main fabric | Cashmerewool, [neoprene], Silk |
+      | Main color  | [red]                        |
+      | Main fabric | Cashmerewool, neoprene, Silk |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
 
@@ -64,7 +64,7 @@ Feature: Revert a product to a previous version
     And I add available attribute color
     And I visit the "Other" group
     And I fill in the following information:
-      | Main fabric | Cashmerewool, [neoprene] |
+      | Main fabric | Cashmerewool, neoprene |
     And I save the product
     Then I should not see the text "There are unsaved changes."
     When I open the history

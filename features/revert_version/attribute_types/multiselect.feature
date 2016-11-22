@@ -67,7 +67,7 @@ Feature: Revert product attributes to a previous version
       | 1       | SKU                | t-shirt  |
       | 1       | family             | tees     |
       | 1       | enabled            | 1        |
-    Then the product "t-shirt" should have the following values:
+    And the product "t-shirt" should have the following values:
     | weather_conditions | [dry], [cold] |
     When I am on the "marcel" product page
     And I visit the "Attributes" tab
@@ -92,5 +92,5 @@ Feature: Revert product attributes to a previous version
       | 1       | SKU                | marcel   |
       | 1       | family             | tees     |
       | 1       | enabled            | 1        |
-    Then the product "marcel" should have the following values:
+    And the product "marcel" should have the following values:
     | weather_conditions |  |

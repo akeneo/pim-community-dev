@@ -1,0 +1,12 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Предложения для рассмотрения
+      date: Дата
+      author: Автор
+      product: Продукт
+      review: Обзор
+      empty: Нет черновиков для рассмотрения
+  version:
+    community_edition: CE
+    enterprise_edition: EE

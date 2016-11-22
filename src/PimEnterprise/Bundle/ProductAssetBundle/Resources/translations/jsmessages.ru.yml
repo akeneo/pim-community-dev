@@ -1,6 +1,76 @@
 pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Управление активами
+        panel:
+          basket:
+            title: Корзина
+            empty_basket: Корзина пуста
+        manage_asset:
+          title: Управление активами
+          cancel: Отменить
+          confirm: Подтвердить
+  enrich_asset:
+    grid:
+      edit: Редактирование свойств актива
+  enrich_variation:
+    popin:
+      delete:
+        title: Отменить подтверждение
+        message: Вы действительно хотите удалить этот элемент?
+      reset:
+        title: Сбросить вариации
+        message: Вы уверен, что хотите сбросить все вариации?
   mass_upload:
+    menu: Добавить активы
     btn:
+      remove_all_files: Удалить все файлы
+      delete: Удалить
       import: Импорт
+      upload: Загрузить
+    success:
+      new: Будет создан новый актив
+      imported: Файлы, импортированные для обработки активов
+      canceled: Загрузка успешно отмененa
+      deleted: Загруженный файл успешно удален
+    error:
+      list: Невозможно читать уже загруженные файлы
+      upload: Произошла ошибка при загрузке
+      delete: Не удается удалить файл с сервера
+      import: Произошла ошибка во время импорта
+      filename: Недопустимое имя файла для актива
+      code: Недопустимый формат кода для актива
+      locale: Актив существует, но не является локализуемым
+      invalid_locale: Локаль отключена или недопустна
+      exists: Файл с таким же именем уже импортирован
+      conflicts: Конфликт имен файлов
+    grid:
+      medias: медиафайлы
+      filename: имя файла
+      filetype: тип файла
+      status: статус
+      progress: прогресс
+      actions: действия
     action:
+      cancel: oтменить
       remove: Удалить
+    status:
+      added: Добавлено
+      queued: Поставлено в очередь
+      uploading: Загрузка
+      error: Ошибка
+      success: Успешно
+    drag_and_drop: Перетащите активы или нажмите здесь
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Вы уверены, что хотите удалить выбранные активы?
+        success: Выбранные активы успешно удалены.
+        error: Произошла ошибка при попытке удаления выбранных активов, пожалуйста, попробуйте еще раз.
+        empty_selection: Ничего не выбрано
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Массовая загрузка

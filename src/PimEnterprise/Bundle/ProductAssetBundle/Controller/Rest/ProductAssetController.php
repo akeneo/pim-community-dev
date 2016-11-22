@@ -52,8 +52,8 @@ class ProductAssetController
     {
         $options = $request->query->get('options', ['limit' => 20]);
 
-        if ($request->request->has('identifiers')) {
-            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
+        if ($request->query->has('identifiers')) {
+            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
         }
 
         $assets = $this->assetRepository->findEntitiesBySearch(

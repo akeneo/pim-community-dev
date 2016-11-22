@@ -34,7 +34,7 @@ Feature: Submit a modification on reference data for a product draft
 
   @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a multi reference data change
-    Given I change the "Sole fabric" to "[kevlar], [wool]"
+    Given I change the "Sole fabric" to "kevlar, wool"
     And I save the product
     Then I should not see the text "There are unsaved changes."
     And the product "my-vans" should have the following values:

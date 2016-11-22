@@ -1,0 +1,8 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Дата
+      author: Автор
+      product: Продукт
+      review: Обзор
+      empty: Нет предложений для обзора
