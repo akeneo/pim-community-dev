@@ -107,7 +107,7 @@ class ProductDraftController
         LocaleRepositoryInterface $localeRepository,
         UserContext $userContext,
         CollectionFilterInterface $collectionFilter,
-        SearchableRepositoryInterface $attributeSearchableRepository = null
+        SearchableRepositoryInterface $attributeSearchableRepository
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->repository = $repository;
@@ -308,12 +308,7 @@ class ProductDraftController
 
         $token = $this->tokenStorage->getToken();
         $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
-
-        if (null !== $this->attributeSearchableRepository) {
-            $attributes = $this->attributeSearchableRepository->findBySearch($search, $options);
-        } else {
-            $attributes = [];
-        }
+        $attributes = $this->attributeSearchableRepository->findBySearch($search, $options);
 
         $normalizedAttributes = [];
         foreach ($attributes as $attribute) {
