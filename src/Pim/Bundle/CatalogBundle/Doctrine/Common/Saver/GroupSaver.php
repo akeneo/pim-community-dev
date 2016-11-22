@@ -108,7 +108,19 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group, $options));
+        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
+            $this->copyVariantGroupValues($group);
+        }
+
+        if (0 < count($options['add_products'])) {
+            $this->addProducts($options['add_products']);
+        }
+
+        if (0 < count($options['remove_products'])) {
+            $this->removeProducts($options['remove_products']);
+        }
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
     }
 
     /**
