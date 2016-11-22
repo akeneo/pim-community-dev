@@ -12,7 +12,7 @@ oro.grid.mass_action.delete.label: Poista
 oro.grid.mass_action.delete.confirm_title: Massapoiston vahvistus
 oro.grid.mass_action.delete.confirm_content: Oletko varma, että haluat poistaa valitut kohteet?
 oro.grid.datagrid.page_size.all: Kaikki
-oro.grid.mass_action.delete.success_message: '{0} yksiköitä ei poistettu|{1} yksi kokonaisuus poistettiin|] 1, Inf [%count% yksiköt poistettiin'
+oro.grid.mass_action.delete.success_message: "{0} yksiköitä ei poistettu|{1} yksi kokonaisuus poistettiin|] 1, Inf [%count% yksiköt poistettiin"
 datagrid_view:
   views: Näkymät
   default: Oletusnäkymä

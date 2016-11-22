@@ -3,11 +3,12 @@
 namespace spec\Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
@@ -42,12 +43,17 @@ class WriterSpec extends ObjectBehavior
         $bufferFactory,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
         JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('XLSX Group export');
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn('%job_label%_group.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
 
         $groups = [
@@ -113,6 +119,8 @@ class WriterSpec extends ObjectBehavior
         $flusher,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
         JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);
@@ -120,8 +128,11 @@ class WriterSpec extends ObjectBehavior
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('XLSX Group export');
         $jobParameters->get('linesPerFile')->willReturn(2);
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->get('filePath')->willReturn('my/file/path/foo/%job_label%_group.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);

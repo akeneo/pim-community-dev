@@ -143,5 +143,5 @@ Username or Email: Nome de Utilizador ou E-mail
 Forgot Password: Esqueci-me da Password
 Request: Pedido
 Check Email: Verificar E-mail
-password_reset_email_sent: 'Foi enviado um e-mail para %email%. Ele contém um link que deve clicar para redefinir a sua senha.'
+password_reset_email_sent: Foi enviado um e-mail para %email%. Ele contém um link que deve clicar para redefinir a sua senha.
 Go to homepage: Ir para a página inicial

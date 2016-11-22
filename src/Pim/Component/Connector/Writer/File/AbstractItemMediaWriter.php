@@ -56,6 +56,9 @@ abstract class AbstractItemMediaWriter implements
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
 
+    /** @var string Datetime format for the file path placeholder */
+    protected $datetimeFormat = 'Y-m-d_H-i-s';
+
     /**
      * @param ArrayConverterInterface            $arrayConverter
      * @param BufferFactory                      $bufferFactory
@@ -148,13 +151,29 @@ abstract class AbstractItemMediaWriter implements
     /**
      * Get the file path in which to write the data
      *
+     * @param array $placeholders
+     *
      * @return string
      */
-    public function getPath()
+    public function getPath(array $placeholders = [])
     {
         $parameters = $this->stepExecution->getJobParameters();
+        $filePath = $parameters->get('filePath');
 
-        return $parameters->get('filePath');
+        if (false !== strpos($filePath, '%')) {
+            $defaultPlaceholders = ['%datetime%' => date($this->datetimeFormat), '%job_label%' => ''];
+            $jobExecution = $this->stepExecution->getJobExecution();
+
+            if (isset($placeholders['%job_label%'])) {
+                $placeholders['%job_label%'] = $this->sanitize($placeholders['%job_label%']);
+            } elseif (null !== $jobExecution->getJobInstance()) {
+                $defaultPlaceholders['%job_label%'] = $this->sanitize($jobExecution->getJobInstance()->getLabel());
+            }
+            $replacePairs = array_merge($defaultPlaceholders, $placeholders);
+            $filePath = strtr($filePath, $replacePairs);
+        }
+
+        return $filePath;
     }
 
     /**
@@ -312,5 +331,17 @@ abstract class AbstractItemMediaWriter implements
         if ($this->localFs->exists($workingFilesDirectory)) {
             $this->localFs->mirror($workingFilesDirectory, $outputFilesDirectory);
         }
+    }
+
+    /**
+     * Replace [^A-Za-z0-9\.] from a string by '_'
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function sanitize($value)
+    {
+        return preg_replace('#[^A-Za-z0-9\.]#', '_', $value);
     }
 }

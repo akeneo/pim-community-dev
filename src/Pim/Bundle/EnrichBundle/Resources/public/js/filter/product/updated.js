@@ -124,9 +124,9 @@ define([
                 value = '';
             }
 
-            if ('SINCE LAST JOB' !== operator && 'SINCE LAST N DAYS' !== operator) {
+            if ('>' === operator) {
                 value = this.formatDate(value, DateContext.get('date').format, this.modelDateFormat);
-            } else {
+            } else if ('SINCE LAST JOB' === operator) {
                 value = this.getParentForm().getFormData().jobCode;
             }
 

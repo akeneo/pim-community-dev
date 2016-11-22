@@ -3,6 +3,7 @@
 namespace Context\Page\Batch;
 
 use Context\Page\Base\Wizard;
+use Context\Spin\SpinCapableTrait;
 
 /**
  * Edit common attributes page
@@ -13,6 +14,8 @@ use Context\Page\Base\Wizard;
  */
 class SetAttributeRequirements extends Wizard
 {
+    use SpinCapableTrait;
+
     protected $elements = [
         'Available attributes button'     => ['css' => 'button:contains("Select attributes")'],
         'Available attributes add button' => ['css' => '.pimmultiselect a:contains("Select")'],
@@ -28,6 +31,12 @@ class SetAttributeRequirements extends Wizard
     {
         $cell        = $this->getAttributeRequirementCell($attribute, $channel);
         $requirement = $cell->find('css', 'i');
+
+        $loadingMask = $this->find('css', '.hash-loading-mask .loading-mask');
+
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
+        }, '".loading-mask" is still visible');
 
         $requirement->click();
     }

@@ -73,3 +73,18 @@ Feature: Import XLSX products
     Then there should be 1 product
     And the english tablet name of "123" should be "456"
     And the english tablet description of "123" should be "7890"
+
+  Scenario: Successfully import a csv file for a product with a numeric data for an simple select attribute
+    Given the following XLSX file to import:
+      """
+      sku;rating
+      renault-kangoo;5
+      """
+    And the following job "xlsx_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "xlsx_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "xlsx_footwear_product_import" job to finish
+    Then there should be 1 products
+    And the product "renault-kangoo" should have the following value:
+      | rating | [5] |

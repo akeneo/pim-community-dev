@@ -12,7 +12,7 @@ oro.grid.mass_action.delete.label: Eliminar
 oro.grid.mass_action.delete.confirm_title: Confirmação de remoção em massa
 oro.grid.mass_action.delete.confirm_content: Tem certeza que deseja eliminar os itens selecionados?
 oro.grid.datagrid.page_size.all: Tudo
-oro.grid.mass_action.delete.success_message: '{0} Nenhuma entidade foi removida | {1} Uma entidade foi removida | ]1,Inf[ %count% entidades foram removidas'
+oro.grid.mass_action.delete.success_message: "{0} Nenhuma entidade foi removida | {1} Uma entidade foi removida | ]1,Inf[ %count% entidades foram removidas"
 datagrid_view:
   views: Visualizações
   default: Vista por defeito

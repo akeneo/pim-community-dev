@@ -18,4 +18,23 @@ Channel list: Список каналов
 Select file: Выберите файл
 Change file: Изменить файл
 Remove file: Удалить файл
+Delete: Удалить
+Save: Сохранить
+Cancel: Отмена
+Get help: Получить помощь
+My User: Мой аккаунт
 oro.form.choose_value: Выберите значение...
+Read more: Читать далее
+oro.form.click_here_to_select: Для выбора нажмите здесь...
+Add: Добавить
+"Learn how to use this space": "Узнайте, как использовать это пространство"
+"How To Use Pinbar": "Как пользоваться Pinbar"
+Pinbar: Pinbar
+Favorites: Избранное
+Most Viewed: Самое просматриваемое
+"Add this page to favorites": "Добавьте эту страницу в избранное"
+"Minimize the window to the pinbar": "Сверните окно в pinbar"
+"Loading ...": "Загрузка ..."
+"Yes": "Да"
+"No": "Нет"
+required: (требуется)

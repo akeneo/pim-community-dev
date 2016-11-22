@@ -1,0 +1,18 @@
+job_execution:
+  summary:
+    display_item: Prikaz stavke
+    hide_item: Sakrij stavku
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Odabir kategorija
+          cancel: Poništi
+          confirm: Potvrdi
+        label: '{0} svi proizvodi |{1} jedna kategorija odabrana |] 1, Inf [{{ count }} odabranih kategorija'
+        edit: Uredi
+        title: Odaberi kategorije
+    locales:
+      validation:
+        not_blank: Mora biti odabrana barem jedan lokalni parametar, odaberite lokalni parametar za izvoz.
