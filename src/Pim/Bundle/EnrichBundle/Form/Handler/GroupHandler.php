@@ -3,8 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -35,9 +33,6 @@ class GroupHandler implements HandlerInterface
     /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
-    /** @var ObjectManager */
-    protected $objectManager;
-
     /**
      * Constructor for handler
      *
@@ -46,22 +41,19 @@ class GroupHandler implements HandlerInterface
      * @param SaverInterface              $groupSaver
      * @param ProductRepositoryInterface  $productRepository
      * @param AttributeConverterInterface $localizedConverter
-     * @param ObjectManager               $objectManager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         SaverInterface $groupSaver,
         ProductRepositoryInterface $productRepository,
-        AttributeConverterInterface $localizedConverter,
-        ObjectManager $objectManager
+        AttributeConverterInterface $localizedConverter
     ) {
-        $this->form = $form;
-        $this->request = $request;
-        $this->groupSaver = $groupSaver;
-        $this->productRepository = $productRepository;
+        $this->form               = $form;
+        $this->request            = $request;
+        $this->groupSaver         = $groupSaver;
+        $this->productRepository  = $productRepository;
         $this->localizedConverter = $localizedConverter;
-        $this->objectManager = $objectManager;
     }
 
     /**
@@ -111,10 +103,6 @@ class GroupHandler implements HandlerInterface
             $this->convertLocalizedValues($group);
         }
         $this->groupSaver->save($group, $options);
-
-        if ($group->getId()) {
-            $this->objectManager->refresh($group);
-        }
     }
 
     /**
