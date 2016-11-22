@@ -30,6 +30,7 @@ Feature: Import attribute options
     And I fill in the following information in the popin:
       | SKU | caterpillar |
     And I press the "Save" button in the popin
+    And I should be on the product "caterpillar" edit page
     And I am on the "caterpillar" product page
     When I add available attributes fruit
     And I change the "[fruit]" to "[kiwi]"

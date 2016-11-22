@@ -15,11 +15,6 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class NotBlankPropertiesValidator extends ConstraintValidator
 {
-    const REFERENCE_DATA_TYPES = [
-        AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
-        AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
-    ];
-
     /**
      * {@inheritdoc}
      */
@@ -27,7 +22,10 @@ class NotBlankPropertiesValidator extends ConstraintValidator
     {
         $properties = $constraint->properties;
         $values = $value->getProperties();
-        if (in_array($value->getAttributeType(), self::REFERENCE_DATA_TYPES)) {
+        if (in_array($value->getAttributeType(), [
+            AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
+            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
+        ])) {
             foreach ($properties as $propertyCode) {
                 if (array_key_exists($propertyCode, $values) && null === $values[$propertyCode]) {
                     $this->context->buildViolation($constraint->message)->addViolation();
