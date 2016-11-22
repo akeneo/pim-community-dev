@@ -35,9 +35,9 @@ Feature: Execute an import with scopable or localizable data
 
   Scenario: Have coherent values when importing new variant group with localizable/scopable attributes
     Given the following attributes:
-      | code             | label-en_US      | label-fr_FR      | label-de_DE        | type   | localizable | scopable | group   | metric_family | default_metric_unit |
-      | sole_length      | Sole length      | Longueur semelle | Einlegesohlenlänge | metric | yes         | no       | general | Length        | CENTIMETER          |
-      | packaging_weight | Packaging weight | Poids packaging  | Verpackungsgewicht | metric | no          | yes      | general | Weight        | KILOGRAM            |
+      | code             | label-en_US      | label-fr_FR      | type   | localizable | scopable | group   | metric_family | default_metric_unit |
+      | sole_length      | Sole length      | Longueur semelle | metric | yes         | no       | general | Length        | CENTIMETER          |
+      | packaging_weight | Packaging weight | Poids packaging        | metric | no          | yes      | general | Weight        | KILOGRAM            |
     And the following CSV file to import:
       """
       code;type;label-en_US;axis;description-en_US-tablet;sole_length-en_US;packaging_weight-tablet
@@ -56,6 +56,7 @@ Feature: Execute an import with scopable or localizable data
     And the field tablet Packaging weight should contain "1230"
     And the field print Packaging weight should contain ""
     And the field Sole length should contain "10"
-    When I switch the locale to "de_DE"
-    Then the field ecommerce Beschreibung should contain ""
-    And the field print Beschreibung should contain ""
+    When I switch the locale to "fr_FR"
+    Then the field tablet Description should contain ""
+    And the field print Description should contain ""
+    And the field Longueur semelle should contain ""

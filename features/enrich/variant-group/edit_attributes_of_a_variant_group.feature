@@ -75,14 +75,13 @@ Feature: Edit attributes of a variant group
     When I switch the scope to "tablet"
     Then the variant group Description should be "British tablet description"
 
-  # Temporary disabling Behat
-  @skip
   Scenario: Display a message when variant group has no attributes
     Given I am on the "jackets" variant group page
     And I visit the "Attributes" tab
     And I switch the scope to "tablet"
     And I switch the locale to "fr_FR"
     And I switch the scope to "Tablet"
-    Then I should see the text "This couple of locale and channel doesn't exist."    When I am on the "sweaters" variant group page
+    Then I should see the text "This couple of locale and channel doesn't exist."
+    When I am on the "sweaters" variant group page
     And I visit the "Attributes" tab
     Then I should see the text "This variant group has no attributes yet"
