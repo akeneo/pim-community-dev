@@ -123,4 +123,3 @@ Feature: Enforce no permissions for a category
     And I should see the flash message "Tree successfully updated"
     Then I should see the "winter_collection" category under the "2014_collection" category
     And I should see the "summer_collection" category under the "2014_collection" category
-    And I expand the "2014_collection" category
