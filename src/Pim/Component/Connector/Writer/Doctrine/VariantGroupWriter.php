@@ -42,11 +42,11 @@ class VariantGroupWriter extends BaseWriter
      */
     public function write(array $variantGroups)
     {
+        parent::write($variantGroups);
+
         if ($this->isCopyValues()) {
             $this->copyValuesToProducts($variantGroups);
         }
-
-        parent::write($variantGroups);
     }
 
     /**
