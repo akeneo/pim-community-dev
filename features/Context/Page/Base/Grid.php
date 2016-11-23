@@ -924,17 +924,28 @@ class Grid extends Index
     {
         $selector = $this->getDropdownSelector();
 
-        $dropdown = $this->spin(function () use ($selector) {
-            return $selector->find('css', 'button.dropdown-toggle');
-        }, 'Dropdown row selector not found');
+        $this->spin(function () use ($selector, $item) {
+            $loadingWrapper = $this->find('css', '#loading-wrapper');
+            if ((null !== $loadingWrapper) && $loadingWrapper->isVisible()) {
+                return false;
+            }
 
-        $dropdown->click();
+            $dropdown = $selector->find('css', 'button.dropdown-toggle');
+            if (null === $dropdown) {
+                return false;
+            }
 
-        $listItem = $this->spin(function () use ($dropdown, $item) {
-            return $dropdown->getParent()->find('css', sprintf('li:contains("%s") a', $item));
-        }, sprintf('Item "%s" of dropdown row selector not found', $item));
+            $dropdown->click();
 
-        $listItem->click();
+            $listItem = $dropdown->getParent()->find('css', sprintf('li:contains("%s") a', $item));
+            if (null === $listItem) {
+                return false;
+            }
+
+            $listItem->click();
+
+            return true;
+        }, sprintf('Dropdown row selector or item "%s" not found', $item));
     }
 
     /**
