@@ -1,24 +1,8 @@
-# 1.5.13 (2016-11-18)
-
-## Bug fixes
-
-- PIM-6005: Boost product export performances by loading less products at the same time
-- PIM-5995: Fix issue with product count on group save
-- PIM-6006: Fix small memory leak when iterating over products cursor
-
-# 1.5.12 (2016-11-04)
-
-## Bug fixes
-
-- PIM-5995: Fix issue with locale specific attributes added to variant groups
-
-# 1.5.11 (2016-10-31)
+# 1.5.x
 
 ## Bug fixes
 
 - PIM-5993: Fix value display issues with simple/multi select attributes
-- GITHUB-5119: Remove console.log from renderExtension method of `src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form.js` Cheers @a2xchip!
-- PIM-5995: Fix issue with localizable and scopable attributes added to variant groups
 
 # 1.5.10 (2016-10-14)
 
