@@ -5,7 +5,9 @@ $phpVersion = getenv('TRAVIS_PHP_VERSION');
 
 printf('Current branch inspected : %s' . PHP_EOL, $branch);
 
-$finder = \Symfony\CS\Finder\DefaultFinder::create()->files();
+$finder = \Symfony\CS\Finder\DefaultFinder::create()
+    ->files()
+    ->exclude('app/check.php');
 $fixers = require __DIR__ . '/.php_cs-fixers.php';
 
 if (is_numeric(getenv('TRAVIS_PULL_REQUEST'))) {
@@ -18,7 +20,7 @@ if (is_numeric(getenv('TRAVIS_PULL_REQUEST'))) {
 }
 
 foreach ($diff as $idx => $filename) {
-    if (($filename !== 'app/check.php') && file_exists($filename)) {
+    if ($filename !== 'app/check.php') {
         printf('Parsed file : %s' . PHP_EOL, $filename);
     } else {
         printf('Excluded file : %s' . PHP_EOL, $filename);

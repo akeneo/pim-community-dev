@@ -124,8 +124,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I should see the flash message "Variant group successfully updated"
     And I should not see the text "There are unsaved changes."
     When I am on the "boot" product page
-    Then the product "boot" should have the following values:
-      | description-en_US-tablet | The best boots! |
+    Then the field Description should contain "The best boots!"
 
   Scenario: Change a pim_catalog_image attribute of a variant group
     When I add available attributes Side view
