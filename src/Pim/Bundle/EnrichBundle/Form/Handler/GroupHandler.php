@@ -49,10 +49,10 @@ class GroupHandler implements HandlerInterface
         ProductRepositoryInterface $productRepository,
         AttributeConverterInterface $localizedConverter
     ) {
-        $this->form = $form;
-        $this->request = $request;
-        $this->groupSaver = $groupSaver;
-        $this->productRepository = $productRepository;
+        $this->form               = $form;
+        $this->request            = $request;
+        $this->groupSaver         = $groupSaver;
+        $this->productRepository  = $productRepository;
         $this->localizedConverter = $localizedConverter;
     }
 
