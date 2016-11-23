@@ -81,7 +81,7 @@ Feature: Edit attributes of a variant group
     And I visit the "Attributes" tab
     And I switch the scope to "tablet"
     And I switch the locale to "fr_FR"
-    Then I should see the text "This couple of locale and channel doesn't exist."
+    Then I should see the text "This localizable field is not available for locale 'fr_FR' and channel 'tablet'"
     When I am on the "sweaters" variant group page
     And I visit the "Attributes" tab
     Then I should see the text "This variant group has no attributes yet"

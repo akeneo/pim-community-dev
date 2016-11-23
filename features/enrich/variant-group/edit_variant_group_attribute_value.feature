@@ -119,7 +119,7 @@ Feature: Editing attribute values of a variant group also updates products
     Then the field Name should contain "In a galaxy far far away"
 
   Scenario: Change a pim_catalog_textarea attribute of a variant group
-    When I change the "tablet Description" to "The best boots!"
+    When I change the "Description" to "The best boots!"
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
     And I should not see the text "There are unsaved changes."
