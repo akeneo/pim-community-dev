@@ -13,7 +13,7 @@ namespace Akeneo\ActivityManager\Bundle\Datagrid;
 
 use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
 use Akeneo\ActivityManager\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -48,7 +48,7 @@ class FilterExtension extends EnterpriseFilterExtension
     /** @var DatagridViewRepositoryInterface */
     protected $datagridViewRepository;
 
-    /** @var ProjectRepositoryInterface */
+    /** @var ObjectRepository */
     protected $projectRepository;
 
     /**
@@ -59,7 +59,7 @@ class FilterExtension extends EnterpriseFilterExtension
      * @param AttributeGroupAccessRepository  $accessRepository
      * @param UserContext                     $userContext
      * @param DatagridViewRepositoryInterface $datagridViewRepository
-     * @param ProjectRepositoryInterface      $projectRepository
+     * @param ObjectRepository                $projectRepository
      */
     public function __construct(
         RequestParameters $requestParams,
@@ -69,7 +69,7 @@ class FilterExtension extends EnterpriseFilterExtension
         AttributeGroupAccessRepository $accessRepository,
         UserContext $userContext,
         DatagridViewRepositoryInterface $datagridViewRepository,
-        ProjectRepositoryInterface $projectRepository
+        ObjectRepository $projectRepository
     ) {
         parent::__construct($requestParams, $translator, $adapterResolver);
 

@@ -16,7 +16,6 @@ use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 /**
@@ -54,16 +53,12 @@ class Project implements ProjectInterface
     /** @var ArrayCollection */
     private $userGroups;
 
-    /** @var ArrayCollection */
-    private $products;
-
     /** @var string */
     private $productFilters;
 
     public function __construct()
     {
         $this->userGroups = new ArrayCollection();
-        $this->products = new ArrayCollection();
     }
 
     /**
@@ -242,29 +237,5 @@ class Project implements ProjectInterface
     public function setProductFilters(array $productFilters)
     {
         $this->productFilters = $productFilters;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addProduct(ProductInterface $product)
-    {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-        }
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function setProducts(ArrayCollection $products)
-    {
-        $this->products = $products;
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function getProducts()
-    {
-        return $this->products;
     }
 }

@@ -14,7 +14,6 @@ namespace Akeneo\ActivityManager\Bundle\EventListener;
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
@@ -33,7 +32,7 @@ class EventTranslationSubscriber implements EventSubscriberInterface
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    /** @var ProjectRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     private $projectRepository;
 
     /** @var string */

@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\Repository;
+namespace spec\Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\Repository\FamilyRequirementRepository;
+use Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\FamilyRequirementRepository;
 use Akeneo\ActivityManager\Component\Repository\FamilyRequirementRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;

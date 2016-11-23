@@ -49,6 +49,11 @@ class ProjectContext extends Context implements ContextInterface
                 case 'Owner':
                     $actualValue = $project->getOwner()->getUsername();
                     break;
+                case 'Products':
+                    $productIdentifiers = explode(',', $expectedValue);
+                    $actualValue = $project->getProducts()->count();
+                    $expectedValue = count($productIdentifiers);
+                    break;
                 default:
                     $actualValue = $accessor->getValue($project, $propertyName);
                     break;

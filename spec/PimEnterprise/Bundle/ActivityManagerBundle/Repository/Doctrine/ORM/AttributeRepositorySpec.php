@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\Repository;
+namespace spec\Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\Repository\AttributeRepository;
+use Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\AttributeRepository;
 use Akeneo\ActivityManager\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;

@@ -11,11 +11,13 @@
 
 namespace Akeneo\ActivityManager\Component\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-interface ProjectRepositoryInterface extends ObjectRepository
+interface ProjectRepositoryInterface
 {
+    public function addProduct(ProjectInterface $project, ProductInterface $product);
 }

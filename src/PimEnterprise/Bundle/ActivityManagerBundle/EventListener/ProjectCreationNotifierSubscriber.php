@@ -14,7 +14,6 @@ namespace Akeneo\ActivityManager\Bundle\EventListener;
 use Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory;
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
@@ -33,9 +32,6 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
     /** @var NotifierInterface */
     private $notifier;
 
-    /** @var ProjectRepositoryInterface */
-    private $projectRepository;
-
     /** @var UserRepositoryInterface */
     private $userRepository;
 
@@ -45,20 +41,17 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
     /**
      * @param ProjectCreatedNotificationFactory $factory
      * @param NotifierInterface                 $notifier
-     * @param ProjectRepositoryInterface        $projectRepository
      * @param UserRepositoryInterface           $userRepository
      * @param PresenterInterface                $datePresenter
      */
     public function __construct(
         ProjectCreatedNotificationFactory $factory,
         NotifierInterface $notifier,
-        ProjectRepositoryInterface $projectRepository,
         UserRepositoryInterface $userRepository,
         PresenterInterface $datePresenter
     ) {
         $this->factory = $factory;
         $this->notifier = $notifier;
-        $this->projectRepository = $projectRepository;
         $this->userRepository = $userRepository;
         $this->datePresenter = $datePresenter;
     }

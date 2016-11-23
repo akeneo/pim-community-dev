@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\Repository;
+namespace spec\Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\Repository\AttributePermissionRepository;
+use Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\AttributePermissionRepository;
 use Akeneo\ActivityManager\Component\Repository\AttributePermissionRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;

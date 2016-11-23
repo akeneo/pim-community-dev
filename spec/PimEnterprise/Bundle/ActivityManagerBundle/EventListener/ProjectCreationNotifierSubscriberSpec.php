@@ -7,7 +7,6 @@ use Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory
 use Akeneo\ActivityManager\Component\Event\ProjectEvent;
 use Akeneo\ActivityManager\Component\Event\ProjectEvents;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
@@ -23,11 +22,10 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
     function let(
         ProjectCreatedNotificationFactory $factory,
         NotifierInterface $notifier,
-        ProjectRepositoryInterface $projectRepository,
         UserRepositoryInterface $userRepository,
         PresenterInterface $datePresenter
     ) {
-        $this->beConstructedWith($factory, $notifier, $projectRepository, $userRepository, $datePresenter);
+        $this->beConstructedWith($factory, $notifier, $userRepository, $datePresenter);
     }
 
     function it_is_initializable()

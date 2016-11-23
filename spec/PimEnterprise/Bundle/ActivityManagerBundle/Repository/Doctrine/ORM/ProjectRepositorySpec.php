@@ -1,9 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\Repository;
+namespace spec\Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProjectRepository;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
+use Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\ProjectRepository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManager;
@@ -22,11 +21,6 @@ class ProjectRepositorySpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(ProjectRepository::class);
-    }
-
-    function it_is_a_project_repository()
-    {
-        $this->shouldImplement(ProjectRepositoryInterface::class);
     }
 
     function it_is_an_object_identifiable_repository()

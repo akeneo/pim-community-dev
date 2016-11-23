@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Doctrine\Repository;
+namespace Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM;
 
 use Akeneo\ActivityManager\Component\Repository\AttributePermissionRepositoryInterface;
 use Doctrine\ORM\EntityManager;

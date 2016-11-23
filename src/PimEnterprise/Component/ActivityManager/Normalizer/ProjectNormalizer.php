@@ -14,6 +14,7 @@ namespace Akeneo\ActivityManager\Component\Normalizer;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -27,7 +28,7 @@ class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var array $supportedFormats */
     protected $supportedFormats = ['internal_api'];
 
-    /** @var SerializerInterface */
+    /** @var Serializer */
     private $serializer;
 
     /**

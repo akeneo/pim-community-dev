@@ -12,7 +12,6 @@
 namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation;
 
 use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -30,7 +29,7 @@ class ProjectCalculationTasklet implements TaskletInterface
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    /** @var ProjectRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     private $projectRepository;
 
     /** @var CalculationStepInterface */
