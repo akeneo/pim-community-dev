@@ -1,10 +1,20 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5990: Fix persist order causing issue on variant group import with associated products
+
 # 1.5.13 (2016-11-18)
+
+## Bug fixes
 
 - PIM-6005: Boost product export performances by loading less products at the same time
 - PIM-5995: Fix issue with product count on group save
 - PIM-6006: Fix small memory leak when iterating over products cursor
 
 # 1.5.12 (2016-11-04)
+
+## Bug fixes
 
 - PIM-5995: Fix issue with locale specific attributes added to variant groups
 
