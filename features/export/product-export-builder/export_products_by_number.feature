@@ -7,8 +7,8 @@ Feature: Export product by attribute number
   Background:
     Given a "footwear" catalog configuration
     And the following family:
-      | code | requirements-mobile |
-      | CD   | sku                 |
+      | code | requirements-mobile | attributes      |
+      | CD   | sku                 | number_in_stock |
     And the following products:
       | sku              | enabled | family | categories      | number_in_stock |
       | CD-RATM          | 1       | CD     | 2014_collection | 17500           |

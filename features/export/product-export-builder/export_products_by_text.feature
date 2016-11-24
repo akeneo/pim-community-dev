@@ -7,8 +7,8 @@ Feature: Export products according to text attribute filter
   Background:
     Given a "footwear" catalog configuration
     And the following family:
-      | code    | requirements-mobile |
-      | rangers | sku, name           |
+      | code    | requirements-mobile | attributes |
+      | rangers | sku                 | comment    |
     And the following products:
       | sku      | enabled | family  | categories        | comment         | name-en_US |
       | SNKRS-1B | 1       | rangers | summer_collection | Awesome         |            |

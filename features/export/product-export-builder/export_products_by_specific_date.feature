@@ -88,9 +88,9 @@ Feature: Export products according to a date
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
       """
-      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;PACK-groups;PACK-products;price-EUR;price-USD;rating;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-products;top_view;UPSELL-groups;UPSELL-products;weather_conditions;X_SELL-groups;X_SELL-products
-      SNKRS-1B;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
-      SNKRS-1R;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
+      sku;categories;enabled;family;groups;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+      SNKRS-1B;summer_collection;1;sneakers;;black;;;;"Model 1";50.00;70.00;;;45;;
+      SNKRS-1R;summer_collection;1;sneakers;;red;;;;"Model 1";50.00;70.00;;;45;;
       """
     When the following job "csv_footwear_product_export" configuration:
       | filters | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "<", "value": "2016-04-25 00:00:00"}]} |
