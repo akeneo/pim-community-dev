@@ -12,7 +12,6 @@
 namespace Akeneo\ActivityManager\Bundle\Doctrine\Repository;
 
 use Akeneo\ActivityManager\Component\Repository\AttributeRepositoryInterface;
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 

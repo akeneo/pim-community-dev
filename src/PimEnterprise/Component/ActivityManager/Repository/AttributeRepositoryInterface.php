@@ -17,7 +17,7 @@ namespace Akeneo\ActivityManager\Component\Repository;
 interface AttributeRepositoryInterface
 {
     /**
-     * Find codes of attributes usable in grid
+     * Find codes of attributes usable in grid.
      *
      * @param array|null $groupIds
      *
@@ -26,7 +26,7 @@ interface AttributeRepositoryInterface
     public function findAttributeCodesUseableInGrid($groupIds = null);
 
     /**
-     * Find ALL attribute codes
+     * Find ALL attribute codes.
      *
      * @return array
      */

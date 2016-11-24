@@ -15,7 +15,6 @@ use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Project controller.
@@ -104,7 +103,7 @@ class ProjectController extends Controller
 
     /**
      * Returns Projects in terms of search and options.
-     * Options accept 'limit' => (int) and 'page' => (int) and 'user' => UserInterface
+     * Options accept 'limit' => (int) and 'page' => (int) and 'user' => UserInterface.
      *
      * @param Request $request
      *
@@ -120,7 +119,7 @@ class ProjectController extends Controller
             [
                 'limit' => $request->query->get('limit'),
                 'page' => $request->query->get('page'),
-                'user' => $this->getUser()
+                'user' => $this->getUser(),
             ]
         );
 
