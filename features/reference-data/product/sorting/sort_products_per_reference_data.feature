@@ -23,5 +23,5 @@ Feature: Sort products
   Scenario: Successfully sort products by simple reference data
     Given I am on the products page
     And the grid should contain 2 elements
-    And I display the columns sku, sole_color, heel_color and sole_fabric
+    And I display the columns SKU, Sole color, Heel color and Sole fabric
     And I sort by "Sole color" value ascending

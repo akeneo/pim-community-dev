@@ -813,6 +813,20 @@ class Grid extends Index
     }
 
     /**
+     * Return the labels of current columns
+     *
+     * @return string[]
+     */
+    public function getColumnLabels()
+    {
+        $headers = $this->getColumnHeaders(false, false);
+
+        return array_map(function (NodeElement $column) {
+            return  $column->getText();
+        }, $headers);
+    }
+
+    /**
      * Get rows
      *
      * @return NodeElement[]
@@ -922,13 +936,33 @@ class Grid extends Index
     }
 
     /**
-     * Hide a grid column
+     * Show grid columns
      *
-     * @param string $column
+     * @param string[] $columns
      */
-    public function hideColumn($column)
+    public function showColumns($columns)
     {
-        return $this->getElement('Configuration Popin')->hideColumn($column);
+        return $this->getElement('Configuration Popin')->showColumns($columns);
+    }
+
+    /**
+     * Hide grid columns
+     *
+     * @param string[] $columns
+     */
+    public function hideColumns($columns)
+    {
+        return $this->getElement('Configuration Popin')->hideColumns($columns);
+    }
+
+    /**
+     * Validate the columns selection
+     *
+     * @param string[] $columns
+     */
+    public function validateColumnsPopin()
+    {
+        $this->getElement('Configuration Popin')->apply();
     }
 
     /**

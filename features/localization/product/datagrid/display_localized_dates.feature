@@ -13,7 +13,7 @@ Feature: Localize dates in the product grid
   Scenario: Successfully show English format dates for English UI
     Given I am logged in as "Julia"
     When I am on the products page
-    And I display the columns sku, destocking_date
+    And I display the columns SKU, Destocking date
     Then the row "sandals" should contain:
       | column          | value      |
       | Destocking date | 01/31/2015 |
@@ -21,7 +21,7 @@ Feature: Localize dates in the product grid
   Scenario: Successfully show French format numbers for French UI
     Given I am logged in as "Julien"
     When I am on the products page
-    And I display the columns sku, destocking_date
+    And I display the columns SKU, Destocking date
     Then the row "sandals" should contain:
       | column          | value      |
       | Destocking date | 31/01/2015 |
@@ -30,7 +30,7 @@ Feature: Localize dates in the product grid
     Given I am logged in as "Julia"
     And I add the "french" locale to the "mobile" channel
     And I am on the products page
-    And I display the columns sku, destocking_date
+    And I display the columns SKU, Destocking date
     When I switch the locale to "fr_FR"
     Then the row "sandals" should contain:
       | column            | value      |

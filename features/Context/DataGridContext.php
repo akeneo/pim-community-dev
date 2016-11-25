@@ -5,6 +5,7 @@ namespace Context;
 use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Base\Grid;
@@ -194,7 +195,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function theRowShouldContain($code, TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->assertColumnContainsValue($code, $data['column'], $data['value']);
+            $this->spin(function () use ($code, $data) {
+                $this->assertColumnContainsValue($code, $data['column'], $data['value']);
+
+                return true;
+            });
         }
     }
 
@@ -407,22 +412,25 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iDisplayTheColumns($gridLabel, $columns)
     {
-        $gridLabel = (null === $gridLabel || '' === $gridLabel) ? 'products' : $gridLabel;
-        $gridName = $this->getGridName($gridLabel);
+        $currentColumns = $this->datagrid->getColumnLabels();
+        $expectedColumns = $this->getMainContext()->listToArray($columns);
 
-        $columns = $this->getMainContext()->listToArray($columns);
+        $currentColumns = array_map('strtolower', $currentColumns);
+        $expectedColumns = array_map('strtolower', $expectedColumns);
 
-        $this->getMainContext()->executeScript(
-            sprintf('sessionStorage.setItem("%s.columns", "%s");', $gridName, implode(',', $columns))
-        );
+        $columnsToAdd = array_diff($expectedColumns, $currentColumns);
+        $columnsToRemove = array_diff($currentColumns, $expectedColumns);
 
-        $this->getMainContext()->reload();
-
-        $this->wait();
+        $this->datagrid->openColumnsPopin();
+        $this->datagrid->showColumns($columnsToAdd);
+        $this->datagrid->hideColumns($columnsToRemove);
+        $this->datagrid->validateColumnsPopin();
     }
 
     /**
      * @param string $columns
+     *
+     * @throws ExpectationException
      *
      * @Then /^I should see the columns? (.*)$/
      */
@@ -460,6 +468,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $order
      * @param string $columnName
+     *
+     * @throws ExpectationException
      *
      * @Then /^the rows should be sorted (ascending|descending) by (.*)$/
      */
@@ -921,7 +931,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @Then /^I refresh the grid$/
      */
-    public function iRefrestTheGrid()
+    public function iRefreshTheGrid()
     {
         $this->spin(function () {
             $this->getSession()->getPage()->clickLink('Refresh');
@@ -1121,7 +1131,24 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCreateTheView(TableNode $table)
     {
-        $this->getCurrentPage()->find('css', '#create-view')->click();
+        $button = $this->spin(function () {
+            $button = $this->getCurrentPage()->find('css', '#create-view');
+            if (null !== $button && $button->isVisible()) {
+                return $button;
+            }
+
+            return false;
+        }, 'Create view button not found');
+
+        $this->spin(function () use ($button) {
+            $button->click();
+            $modalHeader = $this->getCurrentPage()->find(
+                'css',
+                '.modal-header:contains("Choose a label for the view")'
+            );
+
+            return null !== $modalHeader;
+        }, 'Impossible to open the create view popin');
 
         return [
             new Step\Then('I fill in the following information in the popin:', $table),

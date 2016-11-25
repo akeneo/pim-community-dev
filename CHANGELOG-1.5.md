@@ -7,6 +7,7 @@
 - PIM-6013: Fix attribute options on localizable and scopable attributes simple select and multi select
 - PIM-6002: Fix characters escapment with usage of quote in attribute option
 - PIM-5997: Restrict to 25 characters the role label
+- PIM-5862: Fix product grid display on a custom user view
 
 # 1.5.13 (2016-11-18)
 

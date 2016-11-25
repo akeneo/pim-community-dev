@@ -25,7 +25,7 @@ Feature: Display reference data in the grid
       | high-heels | sole_fabric | cashmerewool, neoprene |
       | high-heels | sole_color  | red                    |
     And I am on the products page
-    When I display the columns sku, sole_color and sole_fabric
+    When I display the columns SKU, Sole color and Sole fabric
     Then the row "high-heels" should contain:
       | column      | value                    |
       | Sole color  | Red                      |
@@ -50,7 +50,7 @@ Feature: Display reference data in the grid
       | high-heels | cap_color   | Purple        | tablet | en_US  |
       | high-heels | cap_color   | Orange        | mobile | en_US  |
     And I am on the products page
-    When I display the columns sku, cap_color and lace_fabric
+    When I display the columns SKU, Cap color and Lace fabric
     Then the row "high-heels" should contain:
       | column      | value         |
       | Cap color   | Purple        |
