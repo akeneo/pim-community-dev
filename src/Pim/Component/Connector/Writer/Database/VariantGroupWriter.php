@@ -52,15 +52,15 @@ class VariantGroupWriter implements ItemWriterInterface, StepExecutionAwareInter
      */
     public function write(array $variantGroups)
     {
+        $this->incrementCount($variantGroups);
+        $this->bulkSaver->saveAll($variantGroups);
+        $this->bulkDetacher->detachAll($variantGroups);
+
         $jobParameters = $this->stepExecution->getJobParameters();
         $isCopyValues = $jobParameters->get('copyValues');
         if ($isCopyValues) {
             $this->copyValuesToProducts($variantGroups);
         }
-
-        $this->incrementCount($variantGroups);
-        $this->bulkSaver->saveAll($variantGroups);
-        $this->bulkDetacher->detachAll($variantGroups);
     }
 
     /**

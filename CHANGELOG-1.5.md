@@ -1,3 +1,10 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5990: Fix persist order causing issue on variant group import with associated products
+- PIM-5989: Fix attribute options on localizable and scopable attributes simple select
+
 # 1.5.13 (2016-11-18)
 
 ## Bug fixes

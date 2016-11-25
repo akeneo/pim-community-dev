@@ -7,8 +7,8 @@ Feature: Export products according to price attribute filter
   Background:
     Given a "footwear" catalog configuration
     And the following family:
-      | code    | requirements-mobile |
-      | rangers | sku, name           |
+      | code    | requirements-mobile | attributes |
+      | rangers | sku                 | price      |
     And the following products:
       | sku      | enabled | family  | categories        | price          |
       | SNKRS-1B | 1       | rangers | summer_collection | 20 EUR, 30 USD |
@@ -18,7 +18,7 @@ Feature: Export products according to price attribute filter
 
   Scenario: Successfully export products by their price values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                                       |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "price", "operator": ">", "value": {"amount": 20, "currency": "EUR"}}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
