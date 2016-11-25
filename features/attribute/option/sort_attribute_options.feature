@@ -1,5 +1,5 @@
 @javascript
-Feature: Sortd attribute options
+Feature: Sort attribute options
   In order to define choices for a choice attribute
   As a product manager
   I need to sort options for attributes of type "Multi select" and "Simple select"
