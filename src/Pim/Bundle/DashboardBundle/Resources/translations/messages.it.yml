@@ -9,8 +9,11 @@ pim_dashboard:
   widget:
     error:
       title: Errore durante il caricamento dei widget
-      message: "Il widget '%alias%' non esiste"
+      message: Il widget '%alias%' non esiste
     completeness:
       title: Percentuale di completamento per canale e localizzazione
     last_operations:
       title: Ultime operazioni
+      status: Stato
+      date: Data
+      type: Tipo

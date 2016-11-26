@@ -1,0 +1,14 @@
+An identifier attribute already exists.: Um atributo identificador já existe.
+Attribute code may contain only letters, numbers and underscore: O código do atributo só pode conter letras, números e sublinhado
+This attribute type can't be used as a grid filter: Este tipo de atributo não pode ser usado como um filtro de grelha
+This code is not available: Este código não está disponível
+This attribute type must be required: Este tipo de atributo deve ser obrigatório
+This attribute type can't be required: Este tipo de atributo não pode ser obrigatório
+This attribute type can't have unique value: Este tipo de atributo não pode ter valor único
+No default value may be specified for this attribute type: Nenhum valor padrão pode ser especificado para este tipo de atributo
+This value should be Yes or No: Este valor deve ser Sim ou Não
+This value should not be blank: Este valor não deve estar em branco
+Option code may contain only letters, numbers and underscores: O código da opção só pode conter letras, números e sublinhados
+This value should not be a decimal.: Este valor não deve ser um número decimal.
+file.extensions.message: 'Extensão de ficheiro não permitida (extensões permitidas: %extensions%).'
+regex.comma_or_semicolon.message: Este campo não deve conter qualquer vírgula ou ponto e vírgula.

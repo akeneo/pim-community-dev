@@ -1,0 +1,43 @@
+Close: 关闭
+Update: 升级
+Selected Rows: 选定的行
+"Yes": "是"
+"Yes, Delete": "是的，删除"
+"Yes, I Agree": "是的，我同意"
+"Yes, do it": "是，继续"
+"No": "否　"
+"Ok, got it.": "好的，知道了"
+"Cancel": "取消"
+"Delete Confirmation": "确认删除"
+"Edit": "编辑"
+"Unexpected error occured. Please contact system administrator.": "发生意外错误。请与系统管理员联系。"
+Now: 现在
+Prev: 上一个
+Next: 下一页
+Today: 今天
+Wk: 周
+Done: 已完成
+AM: 上午
+A: A
+PM: 下午
+P: P
+"Choose Time": "选择时间"
+Time: 时间
+Hour: 小时
+Minute: 分钟
+Second: 秒
+Millisecond: 毫秒
+Microsecond: 微秒
+"Time Zone": "时区"
+Localized value: 本地化的值
+Columns: 列
+Datagrid Configuration: Datagrid 配置
+Apply: 应用
+Action: 操作
+Unit: 单位
+Currency: 货币
+jstree:
+  all: 所有产品
+  unclassified: 未分类的产品
+  no_tree: 没有可用的树
+  include_sub: 包括子类别
