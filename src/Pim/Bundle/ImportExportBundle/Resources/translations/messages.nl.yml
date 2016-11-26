@@ -15,7 +15,6 @@ pim_import_export:
     7: AFGEBROKEN
     8: ONBEKEND
   download_archive:
-    archive: download gegenereerd archief | download gegenereerde archieven
     output: download gegenereerd bestand | download gegenereerde bestanden
     input: download ingelezen bestand | download ingelezen bestanden
     invalid_xlsx: download ongeldige data
@@ -96,8 +95,8 @@ pim_importexport:
     import: Importprofielen
 btn:
   create:
-    export profile: Exportprofiel aanmaken
-    import profile: Importprofiel aanmaken
+    export profile: exportprofiel toevoegen
+    import profile: importprofiel toevoegen
 Upload and import now: Uploaden en nu importeren
 import now: Nu importeren
 export now: Nu exporteren
@@ -155,7 +154,6 @@ Status: Status
 Summary: Samenvatting
 Start: Start
 End: Einde
-set_attribute_requirements: Stel attribuutvereisten in
 COMPLETED: VOLTOOID
 STARTING: BEZIG MET STARTEN
 STARTED: GESTART

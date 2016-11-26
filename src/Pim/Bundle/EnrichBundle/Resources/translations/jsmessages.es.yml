@@ -85,7 +85,7 @@ label:
     add_option: Agregar una opción
 Code: Código
 Edit: Editar
-Delete: Borrar
+Delete: Eliminar
 Edit attributes of the product: Editar atributos del producto
 Classify the product: Clasificar el producto
 Delete the product: Eliminar el producto
@@ -104,7 +104,7 @@ pim:
       category_edit: Mover producto en categorías
       sequential_edit: Editar productos secuencialmente
 jstree.create: Crear
-switch_on: "Sí"
+switch_on: "SÍ"
 switch_off: "No"
 pim_enrich:
   item:
@@ -138,15 +138,15 @@ pim_enrich:
       history:
         version: Versión
         author: Autor
-        logged_at: Conectado el
+        logged_at: Sesión iniciada el
         more: Más
         less: Menos
         from: De
         modified: Modificado
         property: Propiedad
-        old_values: Valores antiguos
+        old_values: Viejos valores
         new_values: Nuevos valores
-        actions: Actiones
+        actions: Acciones
       info:
         deletion_successful: Producto eliminado con éxito.
         deletion_failed: El producto no puede ser eliminado.
@@ -165,7 +165,7 @@ pim_enrich:
         updated: Última actualización
         family:
           title: Familia
-          none: Ninguna
+          none: Ninguno
         groups:
           title: Grupos
           modal:
@@ -175,24 +175,24 @@ pim_enrich:
             more_products: '{{ count }} productos adiciones...'
             close: Cerrar
       copy:
-        select: Seleccionar
-        all: Todo
+        select: Seleccione
+        all: Todos
         all_visible: Todo lo visible
         none: Ninguno
         copy: Copiar
       variant_group:
         updated_by: Actualizado por grupo de variantes
         switch:
-          "yes": Sí
+          "yes": SÍ
           "no": No
       optional_attribute:
-        remove: Suprimir este atributo
+        remove: Quitar este atributo
       locale_specific_attribute:
         unavailable: Este campo específico de local no está disponible en este local
       localizable:
         channel_locale_unavailable: Este campo traducible no está disponible para el local '{{ locale }}' y el canal '{{ channel }}'
       media:
-        upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
+        upload: Arrastrar y soltar para cargar o haga clic aquí
       create_popin:
         title: Crear un nuevo producto
         labels:
@@ -222,14 +222,32 @@ pim_enrich:
         created_by: Creado por
         updated: Actualizado
         updated_by: Actualizado por
+    group:
+      title: Grupo
+      info:
+        deletion_successful: Grupo eliminado.
+        deletion_failed: No se pudo eliminar el grupo.
+        update_successful: El grupo se ha actualizado correctamente.
+        update_failed: El grupo no puede ser actualizado.
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - campos
+      btn:
+        save: Guardar
+      meta:
+        product_count: Productos
+        created: Creado
+        created_by: Creado por
+        updated: Actualizado
+        updated_by: Actualizado por
   confirmation:
-    leave: '¿Está usted seguro que desea abandonar esta página?'
+    leave: '¿Está seguro que desea salir de esta página?'
     discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
     delete_item: Confirmar la eliminación
     delete:
       attribute: '¿Está usted seguro que desea eliminar el atributo de este producto?'
   info:
-    not_applicable: N/A
+    not_applicable: N / A
     entity:
       updated: Hay cambios sin guardar.
   error:
@@ -244,8 +262,8 @@ pim_enrich:
         associations:
           title: Asociaciones
           info:
-            none_exist: Ningún tipo de asociaciones existente.
-            show_products: Mostrar productos
+            none_exist: No existe ningún tipo de asociación.
+            show_products: Mostrar Productos
             show_groups: Mostrar grupos
             number_of_associations: '{{ productCount }} productos y {{ groupCount }} grupos'
         attributes:
@@ -255,9 +273,9 @@ pim_enrich:
             add_attributes: Agregar atributos
           info:
             search_attributes: Buscar...
-            no_available_attributes: No hay más atributos a agregar
+            no_available_attributes: No hay más atributos para agregar
             attributes_selected: '{{ attributeCount }} atributo(s) seleccionado(s)'
-            no_match: No se encontraron coincidencias
+            no_match: No se encuentran coincidencias
             load_more: Cargando más resultados...
         categories:
           title: Categorías
@@ -269,10 +287,10 @@ pim_enrich:
             no_completeness: Usted cambió la familia del producto. Por favor guarde los cambios en primero para calcular la completitud para esta nueva familia.
           missing_values: Valores faltantes
         history:
-          title: Historial
+          title: Histórico
       switch:
         "no": No
-        "yes": Sí
+        "yes": SÍ
       sequential_edit:
         info:
           products: productos
@@ -283,16 +301,16 @@ pim_enrich:
           save_and_finish: Guardar y finalizar
       change_family:
         modal:
-          title: Cambiar la familia del producto
-          merge_attributes: Los atributos actuales serán fusionados con los de la nueva familia.
-          keep_attributes: Ningún atributo será suprimido.
-          change_family_to: Cambiar la familia a
-          empty_selection: Seleccionar familia
+          title: Cambiar familia del producto
+          merge_attributes: Atributos actuales se combinarán con los de la nueva familia.
+          keep_attributes: No se eliminarán atributos.
+          change_family_to: Cambiar familia a
+          empty_selection: Elija una familia
       flash:
         attribute_deletion_error: Un error ha ocurrido durante la eliminación del atributo
       mass_edit:
         select_attributes: Seleccionar atributos
-        select: Seleccionar
+        select: Seleccione
     attribute_option:
       flash:
         option_created: Opción del atributo creada con éxito
@@ -304,7 +322,7 @@ pim_enrich:
     entity:
       switch:
         "no": No
-        "yes": Sí
+        "yes": SÍ
     variant_group:
       tab:
         properties:
@@ -320,6 +338,18 @@ pim_enrich:
           title: Productos
         attributes:
           title: Atributos
+    group:
+      tab:
+        properties:
+          title: Propiedades
+          general: Propiedades generales
+          code: Código
+          type: Tipo
+          label_translations: Traducciones de etiqueta
+        history:
+          title: Histórico
+        products:
+          title: Productos
     common:
       tab:
         attributes:
@@ -401,8 +431,8 @@ pim_enrich:
           help: Los identificadores de productos que desea exportar separados por comas, espacios o saltos de línea
         metric:
           operators:
-            =: Es igual a
-            !=: No es igual a
+            =: Es igual que
+            !=: No es igual que
             >=: Mayor o igual que
             >: Mayor que
             <=: Menor o igual que
