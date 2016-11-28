@@ -46,3 +46,15 @@ Feature: Edit attribute options
     And I edit the "green" option and turn it to "yellow"
     Then I should see "yellow"
     Then I should not see "green"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6002
+  Scenario: Successfully edit an attribute option value containing a quote
+    Given I create the following attribute options:
+      | Code  | en_US |
+      | red   | r"ed  |
+      | blue  | blue  |
+      | green | green |
+    And I save the attribute
+    And I wait for options to load
+    And I edit the code "red" to turn it to "red" and cancel
+    Then I should see the text "r\"ed"
