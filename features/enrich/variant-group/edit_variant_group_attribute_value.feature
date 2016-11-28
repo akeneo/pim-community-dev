@@ -115,6 +115,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I add available attributes Simple
     And I change the "Simple" to "red"
     And I save the variant group
+    And I wait for the options to load
     And I switch the locale to "fr_FR"
     When I change the "Simple" to "blue"
     And I save the variant group
