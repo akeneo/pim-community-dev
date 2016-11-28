@@ -63,8 +63,8 @@ Feature: Export products according to a completeness policy
     And I wait for the "csv_product_export" job to finish
     Then exported file of "csv_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;name-en_US;name-fr_FR
-      empty;default;1;localized;;;
+      sku;categories;enabled;family;groups
+      empty;default;1;localized;
       """
 
   @ce

@@ -7,8 +7,8 @@ Feature: Export product by attribute date
   Background:
     Given a "footwear" catalog configuration
     And the following family:
-      | code | requirements-mobile |
-      | CD   | sku                 |
+      | code | requirements-mobile | attributes      |
+      | CD   | sku                 | destocking_date |
     And the following products:
       | sku              | enabled | family | categories      | destocking_date |
       | CD-RATM          | 1       | CD     | 2014_collection | 2016-08-13      |

@@ -65,7 +65,7 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
                 }));
             }
 
-            return $sortedColumns;
+            return array_unique($sortedColumns);
         }
 
         array_unshift($this->firstDefaultColumns, $identifier);

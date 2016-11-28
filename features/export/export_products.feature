@@ -217,7 +217,7 @@ Feature: Export products
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;123;categories;color;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;name-fr_FR;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+    sku;123;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
     SNKRS-1B;aaa;summer_collection;black;;;1;sneakers;;;;"Model 1";;50.00;70.00;;;45;;
     SNKRS-1R;bbb;summer_collection;red;;;1;sneakers;;;;"Model 1";;50.00;70.00;;;45;;
     SNKRS-1C;ccc;summer_collection;charcoal;;;1;sneakers;;;;"Model 1";;55.00;75.00;;;45;;
@@ -279,9 +279,9 @@ Feature: Export products
     And I wait for the "tablet_product_export" job to finish
     Then exported file of "tablet_product_export" should contain:
     """
-    sku;categories;color;cost-EUR;cost-GBP;cost-USD;description-en_GB-tablet;description-en_US-tablet;enabled;family;groups;image;name-en_GB;name-en_US;price-EUR;price-GBP;price-USD;release_date-tablet;size;weight;weight-unit
-    tshirt-yellow;men_2013,men_2014,men_2015;yellow;10.00;20.00;30.00;;A stylish yellow t-shirt;1;tshirts;;files/tshirt-yellow/image/SNKRS-1R.png;Yellow t-shirt;Yellow t-shirt;10.00;9.00;15.00;2016-10-12;size_M;5;KILOGRAM
-    tshirt-green;men_2013,men_2014,men_2015;green;;;;;;1;tshirts;;;Green t-shirt;Green t-shirt;10.00;9.00;15.00;;size_L;;
+    sku;categories;color;cost-EUR;cost-GBP;cost-USD;description-en_US-tablet;enabled;family;groups;image;name-en_US;price-EUR;price-GBP;price-USD;release_date-tablet;size;weight;weight-unit
+    tshirt-yellow;men_2013,men_2014,men_2015;yellow;10.00;20.00;30.00;;A stylish yellow t-shirt;1;tshirts;;files/tshirt-yellow/image/SNKRS-1R.png;Yellow t-shirt;10.00;9.00;15.00;2016-10-12;size_M;5;KILOGRAM
+    tshirt-green;men_2013,men_2014,men_2015;green;;;;;;1;tshirts;;;Green t-shirt;10.00;9.00;15.00;;size_L;;
     """
 
   Scenario: Successfully export products with an empty array of attributes
