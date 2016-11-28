@@ -64,7 +64,9 @@ define(
                     return this;
                 }
 
-                this.$el.closest('.AknTabContainer-panels')[this.getCurrentPanelCode() ? 'removeClass' : 'addClass']('AknTabContainer-panels--closed');
+                this.$el.closest('.AknTabContainer-panels')[this.getCurrentPanelCode() ? 'removeClass' : 'addClass'](
+                    'AknTabContainer-panels--closed'
+                );
 
                 var currentPanel = _.findWhere(this.panels, {code: this.getCurrentPanelCode()});
                 this.$el.html(

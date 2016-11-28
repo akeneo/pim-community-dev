@@ -405,7 +405,7 @@ class AssertionContext extends RawMinkContext
                 );
             }
             if (!$row->hasClass('expanded')) {
-                $row->click();
+                $row->find('css', '.icon-chevron-right')->click();
             }
             if (isset($data['author'])) {
                 $author = $row->find('css', 'td.author')->getText();
@@ -421,12 +421,10 @@ class AssertionContext extends RawMinkContext
                 );
             }
 
-            $changeset = $row->getParent()->find('css', 'tr.changeset:not(.hide) tbody');
-            if (!$changeset) {
-                throw $this->createExpectationException(
-                    sprintf('No changeset found for version %s', $data['version'])
-                );
-            }
+            $changeset = $this->spin(function () use ($row) {
+                return $row->getParent()->find('css', 'tr.changeset:not(.hide) tbody');
+            }, sprintf('No changeset found for version %s', $data['version']));
+
             $changesetRows = $changeset->findAll('css', 'tr');
             if (!$changesetRows) {
                 throw $this->createExpectationException(
@@ -435,7 +433,6 @@ class AssertionContext extends RawMinkContext
             }
 
             $matchingRow = null;
-            $parsedText = '';
             $parsedTexts = [];
             foreach ($changesetRows as $row) {
                 $innerHtml = $row->find('css', 'td:first-of-type')->getHtml();

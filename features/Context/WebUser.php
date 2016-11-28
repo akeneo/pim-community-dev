@@ -178,18 +178,22 @@ class WebUser extends RawMinkContext
     public function iOpenTheHistory()
     {
         $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
-        $this->getMainContext()->executeScript("$('.panel-pane.history-panel').css({'height': '90%'});");
-
         $this->getMainContext()->spin(function () {
-            $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
+            $fullPanel = $this->getCurrentPage()->find(
+                'css',
+                '.AknTabContainer-contentThreeColumns.AknTabContainer-contentThreeColumns--fullPanel'
+            );
 
-            if ($expandHistory && $expandHistory->isValid()) {
-                $expandHistory->click();
+            if ((null === $fullPanel) || !$fullPanel->isVisible()) {
+                $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
+                if (null !== $expandHistory && $expandHistory->isVisible()) {
+                    $expandHistory->click();
+                }
 
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }, 'Cannot expand history');
 
         $this->wait();

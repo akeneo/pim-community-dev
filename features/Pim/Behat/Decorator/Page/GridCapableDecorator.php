@@ -44,10 +44,35 @@ class GridCapableDecorator extends ElementDecorator
     public function getViewSelector()
     {
         $viewSelector = $this->spin(function () {
-            return $this->find('css', $this->selectors['View selector']);
+            $result = $this->find('css', $this->selectors['View selector']);
+            if ((null === $result) || !$result->isVisible()) {
+                return false;
+            }
+
+            return $result;
         }, 'View selector not found.');
 
         return $this->decorate($viewSelector, $this->viewSelectorDecorators);
+    }
+
+    /**
+     * This method opens the view selector and ensure the drop is displayed
+     *
+     * @throws TimeoutException
+     */
+    public function openViewSelector()
+    {
+        $viewSelector = $this->getViewSelector();
+        $this->spin(function () use ($viewSelector) {
+            $result = $this->find('css', '.select2-drop.grid-view-selector');
+            if ((null === $result) || !$result->isVisible()) {
+                $viewSelector->find('css', '.select2-arrow')->click();
+
+                return false;
+            }
+
+            return true;
+        }, 'Could not open view selector');
     }
 
     /**
@@ -56,7 +81,7 @@ class GridCapableDecorator extends ElementDecorator
     public function clickCreateOnButton($button)
     {
         $button = $this->spin(function () use ($button) {
-            return $this->find('css', sprintf('.create-button:contains("%s")', $button));
+            return $this->find('css', sprintf('.create-button .select-view-action-list:contains("%s")', $button));
         }, sprintf('Button "%s" not found.', $button));
 
         $button->click();

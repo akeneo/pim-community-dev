@@ -322,8 +322,8 @@ class ProductEditForm extends Form
     protected function fillMultiSelectField(NodeElement $fieldContainer, $values)
     {
         $element = $this->spin(function () use ($fieldContainer) {
-            return $fieldContainer->find('css', '.AknFieldContainer-formField');
-        }, 'Can not find the formField container.');
+            return $fieldContainer->find('css', '.AknFieldContainer-formField .select2-container');
+        }, 'Can not find the select2 container.');
 
         $field = $this->decorate(
             $element,
