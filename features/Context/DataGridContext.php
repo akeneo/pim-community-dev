@@ -412,7 +412,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iDisplayTheColumns($gridLabel, $columns)
     {
-        $currentColumns = $this->datagrid->getColumnLabels();
+        $currentColumns = $this->datagrid->getCurrentColumnLabels();
         $expectedColumns = $this->getMainContext()->listToArray($columns);
 
         $currentColumns = array_map('strtolower', $currentColumns);
@@ -422,8 +422,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $columnsToRemove = array_diff($currentColumns, $expectedColumns);
 
         $this->datagrid->openColumnsPopin();
-        $this->datagrid->showColumns($columnsToAdd);
-        $this->datagrid->hideColumns($columnsToRemove);
+        $this->datagrid->addColumns($columnsToAdd);
+        $this->datagrid->removeColumns($columnsToRemove);
         $this->datagrid->validateColumnsPopin();
     }
 
@@ -439,8 +439,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $columns = $this->getMainContext()->listToArray($columns);
 
         $expectedColumns = count($columns);
-
-        $this->wait('$("table.grid").length > 0');
 
         $countColumns = $this->datagrid->countColumns();
         if ($expectedColumns !== $countColumns) {
@@ -1131,7 +1129,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCreateTheView(TableNode $table)
     {
-        $button = $this->spin(function () {
+        $createViewButton = $this->spin(function () {
             $button = $this->getCurrentPage()->find('css', '#create-view');
             if (null !== $button && $button->isVisible()) {
                 return $button;
@@ -1140,8 +1138,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             return false;
         }, 'Create view button not found');
 
-        $this->spin(function () use ($button) {
-            $button->click();
+        $this->spin(function () use ($createViewButton) {
+            $createViewButton->click();
             $modalHeader = $this->getCurrentPage()->find(
                 'css',
                 '.modal-header:contains("Choose a label for the view")'

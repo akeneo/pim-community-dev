@@ -23,7 +23,7 @@ class ConfigurationPopin extends Element
     /**
      * @param string[] $labels
      */
-    public function showColumns($labels)
+    public function addColumns($labels)
     {
         $searchInput = $this->spin(function () {
             return $this->find('css', 'input[type="search"]');
@@ -43,7 +43,7 @@ class ConfigurationPopin extends Element
     /**
      * @param string[] $labels
      */
-    public function hideColumns($labels)
+    public function removeColumns($labels)
     {
         $dropZone = $this->spin(function () {
             return $this->find('css', '#column-list');
@@ -93,7 +93,7 @@ class ConfigurationPopin extends Element
     protected function getItemForLabel($label)
     {
         return $this->spin(function () use ($label) {
-            $items = $this->findAll('css', 'li');
+            $items = $this->findAll('css', '.ui-sortable-handle');
 
             foreach ($items as $item) {
                 if (strtolower($label) === strtolower($item->getText())) {

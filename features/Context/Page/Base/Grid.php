@@ -39,7 +39,7 @@ class Grid extends Index
                 'Filters'               => ['css' => 'div.filter-box'],
                 'Grid toolbar'          => ['css' => 'div.grid-toolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
-                'Configure columns'     => ['css' => 'a:contains("Columns")'],
+                'Configure columns'     => ['css' => '#configure-columns'],
                 'View selector'         => ['css' => '#view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],
@@ -433,22 +433,21 @@ class Grid extends Index
      * @param bool   $withHidden
      * @param bool   $withActions
      *
-     * @throws \InvalidArgumentException
-     *
      * @return int
      */
     public function getColumnPosition($columnName, $withHidden, $withActions)
     {
-        $headers = $this->getColumnHeaders($withHidden, $withActions);
-        foreach ($headers as $position => $header) {
-            if (strtolower($columnName) === strtolower($header->getText())) {
-                return $position;
-            }
-        }
+        return $this->spin(function () use ($columnName, $withHidden, $withActions) {
+            $headers = $this->getColumnHeaders($withHidden, $withActions);
 
-        throw new \InvalidArgumentException(
-            sprintf('Could not find a column header "%s"', $columnName)
-        );
+            foreach ($headers as $position => $header) {
+                if (strtolower($columnName) === strtolower($header->getText())) {
+                    return $position;
+                }
+            }
+
+            return false;
+        }, sprintf('Could not find a column header "%s"', $columnName));
     }
 
     /**
@@ -767,15 +766,10 @@ class Grid extends Index
     protected function getColumnHeaders($withHidden = false, $withActions = true)
     {
         $head    = $this->getGrid()->find('css', 'thead');
-        $headers = $head->findAll('css', 'th');
-
-        if (!$withActions) {
-            $headers = array_filter($headers, function ($header) {
-                return false === strpos($header->getAttribute('class'), 'action-column') &&
-                    false === strpos($header->getAttribute('class'), 'select-all-header-cell') &&
-                    null === $header->find('css', 'input[type="checkbox"]');
-            });
-        }
+        $headers = $head->findAll(
+            'css',
+            $withActions ? 'th' : 'th:not(.action-column):not(.select-all-header-cell)'
+        );
 
         if ($withHidden) {
             return $headers;
@@ -794,22 +788,21 @@ class Grid extends Index
      *
      * @param string $columnName
      *
-     * @throws \InvalidArgumentException
-     *
      * @return NodeElement
      */
     public function getColumnHeader($columnName)
     {
-        $headers = $this->getColumnHeaders(true);
-        foreach ($headers as $header) {
-            if (strtolower($columnName) === strtolower($header->getText())) {
-                return $header;
-            }
-        }
+        return $this->spin(function () use ($columnName) {
+            $headers = $this->getColumnHeaders(true);
 
-        throw new \InvalidArgumentException(
-            sprintf('Could not find column header "%s"', $columnName)
-        );
+            foreach ($headers as $header) {
+                if (strtolower($columnName) === strtolower($header->getText())) {
+                    return $header;
+                }
+            }
+
+            return false;
+        }, sprintf('Could not find column header "%s"', $columnName));
     }
 
     /**
@@ -817,12 +810,12 @@ class Grid extends Index
      *
      * @return string[]
      */
-    public function getColumnLabels()
+    public function getCurrentColumnLabels()
     {
         $headers = $this->getColumnHeaders(false, false);
 
         return array_map(function (NodeElement $column) {
-            return  $column->getText();
+            return $column->getText();
         }, $headers);
     }
 
@@ -936,23 +929,23 @@ class Grid extends Index
     }
 
     /**
-     * Show grid columns
+     * Add grid columns
      *
      * @param string[] $columns
      */
-    public function showColumns($columns)
+    public function addColumns($columns)
     {
-        return $this->getElement('Configuration Popin')->showColumns($columns);
+        return $this->getElement('Configuration Popin')->addColumns($columns);
     }
 
     /**
-     * Hide grid columns
+     * Remove grid columns
      *
      * @param string[] $columns
      */
-    public function hideColumns($columns)
+    public function removeColumns($columns)
     {
-        return $this->getElement('Configuration Popin')->hideColumns($columns);
+        return $this->getElement('Configuration Popin')->removeColumns($columns);
     }
 
     /**

@@ -46,7 +46,6 @@ Feature: Display product attributes in the grid
     And I am logged in as "Mary"
     And I am on the products page
     When I display the columns SKU, Side view and Top view
-    And I wait 60 seconds
     Then the row "sneakers" should contain the images:
       | column    | title      |
       | Side view | akeneo.jpg |

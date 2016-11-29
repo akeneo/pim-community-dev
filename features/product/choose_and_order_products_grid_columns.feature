@@ -39,7 +39,8 @@ Feature: Choose and order product grids columns
       | sandal1 | sandal one | summer_collection |
       | sandal2 | sandal two | summer_collection |
     And I display the columns SKU, Family and Name
-    Then I should see the columns Sku, Family and Name
-    Then I should be able to use the following filters:
+    And I am on the products page
+    Then I should see the columns SKU, Family and Name
+    And I should be able to use the following filters:
       | filter   | value             | result                 |
       | category | summer_collection | sandal one, sandal two |
