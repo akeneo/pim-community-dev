@@ -23,7 +23,7 @@ define([
 
         return Backbone.View.extend({
             tagName: 'div',
-            className: 'field-container',
+            className: 'AknFieldContainer field-container',
             options: {},
             attributes: function () {
                 return {

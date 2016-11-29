@@ -10,42 +10,4 @@
   margin-left: auto;
   text-align: center;
   width: 600px;
-  .progress-striped {
-    width: 300px;
-    margin-left: 150px;
-    .bar {
-      #gradient > .striped(@blue, -45deg);
-    }
-  }
-  .progress.active .bar {
-    -webkit-animation: progress-bar-stripes 1s linear infinite;
-       -moz-animation: progress-bar-stripes 1s linear infinite;
-            animation: progress-bar-stripes 1s linear infinite;
-  }
-}
-
-@-webkit-keyframes progress-bar-stripes {
-  from { background-position: 0 0; }
-  to { background-position: 40px 0; }
-}
-
-@-moz-keyframes progress-bar-stripes {
-  from { background-position: 0 0; }
-  to { background-position: 40px 0; }
-}
-
-@keyframes progress-bar-stripes {
-  from { background-position: 0 0; }
-  to { background-position: 40px 0; }
-}
-
-.progress-disabled .bar,
-.progress .bar-disabled {
-  background-color: @color-ccc;
-  background-image: -moz-linear-gradient(top, @color-bbb, @color-ccc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@color-bbb), to(@color-ccc));
-  background-image: -webkit-linear-gradient(top, @color-bbb, @color-ccc);
-  background-image: -o-linear-gradient(top, @color-bbb, @color-ccc);
-  background-image: linear-gradient(to bottom, @color-bbb, @color-ccc);
-  background-repeat: repeat-x;
 }

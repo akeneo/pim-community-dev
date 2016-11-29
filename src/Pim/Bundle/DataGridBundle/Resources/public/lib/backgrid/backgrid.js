@@ -1561,6 +1561,7 @@ var Row = Backgrid.Row = Backbone.View.extend({
 
   /** @property */
   tagName: "tr",
+  className: 'AknGrid-bodyRow',
 
   requiredOptions: ["columns", "model"],
 
@@ -1686,6 +1687,7 @@ var EmptyRow = Backgrid.EmptyRow = Backbone.View.extend({
 
   /** @property */
   tagName: "tr",
+  className: 'AknGrid-bodyRow',
 
   /** @property */
   emptyText: null,

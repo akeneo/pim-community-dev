@@ -139,8 +139,6 @@ define(
                                     $valuesPanel.append(field.$el);
                                 }
                             }.bind(this));
-
-                            this.resize();
                         }.bind(this));
                     this.delegateEvents();
 
@@ -148,18 +146,6 @@ define(
                 }.bind(this));
 
                 return this;
-            },
-
-            /**
-             * Resize method to update the container size
-             */
-            resize: function () {
-                var valuesContainer = this.$('.object-values');
-                if (valuesContainer.length && this.getRoot().$el.length && valuesContainer.offset()) {
-                    valuesContainer.css(
-                        {'height': ($(window).height() - valuesContainer.offset().top - 4) + 'px'}
-                    );
-                }
             },
 
             /**
@@ -434,6 +420,9 @@ define(
              */
             comparisonChange: function (open) {
                 this.$el[open ? 'addClass' : 'removeClass']('comparison-mode');
+                this.$el.find('.AknAttributeActions')[open ? 'addClass' : 'removeClass'](
+                    'AknAttributeActions--comparisonMode'
+                );
             }
         });
     }

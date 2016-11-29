@@ -1,14 +1,14 @@
-<header>
-    <ul class="nav nav-tabs form-tabs">
+<header class="AknHorizontalTabnav">
+    <ul class="AknHorizontalTabnav-list nav nav-tabs form-tabs">
         <% _.each(tabs, function (tab) { %>
-            <li <% if (currentTab === tab.code) { %> class="active"<% } %> data-tab="<%- tab.code %>">
-                <a href="javascript:void(0);"><%- tab.label %></a>
+            <li class="AknHorizontalTabnav-item<% if (currentTab === tab.code) { %> active<% } %>" data-tab="<%- tab.code %>">
+                <a class="AknHorizontalTabnav-link <% if (currentTab === tab.code) { %> AknHorizontalTabnav-link--active<% } %>" href="javascript:void(0);"><%- tab.label %></a>
             </li>
         <% }); %>
     </ul>
     <span data-drop-zone="side-buttons"></span>
 </header>
-<div class="form-container form-horizontal <%- fullPanel ? 'full-panel' : '' %>">
-    <div data-drop-zone="container" class="tab-container tab-content"></div>
-    <div data-drop-zone="panels" class="panels"></div>
+<div class="AknTabContainer-contentThreeColumns form-container form-horizontal <%- fullPanel ? 'AknTabContainer-contentThreeColumns--fullPanel full-panel' : '' %>">
+    <div data-drop-zone="container" class="AknTabContainer-notPanels tab-container tab-content"></div>
+    <div data-drop-zone="panels" class="AknTabContainer-panels AknTabContainer-panels--closed panels"></div>
 </div>

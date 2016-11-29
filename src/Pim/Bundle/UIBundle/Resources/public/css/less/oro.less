@@ -39,11 +39,7 @@ html {
   padding: 0;
   height: 100%;
 }
-a:hover,
-a:active,
-a:focus {
-  text-decoration: none;
-}
+
 #main {
   background-color: @white;
 }
@@ -75,7 +71,6 @@ a:focus {
   -o-transition: none;
   transition: none;
   color: @gray;
-  #gradient > .vertical(@whiteDark, @whiteDarker);
 }
 .btn:active {
   #gradient > .vertical(@grayLighter, @whiteDarker);
@@ -289,28 +284,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
   padding: 0 5px;
   line-height: 26px;
 }
-.grid-container {
-  width: 100%;
-  margin-top: 10px;
-  overflow: visible;
-
-  // This next line is very important because the Loading mask is in absolute position and NEED this. Elsewhere, the loading mask takes the entire page.
-  position: relative;
-
-  .table-bordered {
-    border-left:1px solid @color-ddd;
-    -webkit-border-radius: 0;
-       -moz-border-radius: 0;
-            border-radius: 0;
-    td,
-    th { border-left:0; }
-    .boolean-cell {
-      input[type='checkbox'],
-      input[type='radio'] { margin-top:0; }
-    }
-  }
-}
-
 #loading-wrapper {
   background: @black;
   opacity: 0.6;
@@ -369,94 +342,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
   display: block;
 }
 
-.customer-info {
-  padding-left: 60px;
-  padding-bottom: 0;
-  line-height: 18px;
-  .separator {
-    float: left;
-    padding: 0 3px;
-    color: @akeneoPurple;
-    font-size: @font-size-18;
-  }
-  .user-name {
-    margin: 0 10px 5px 0;
-    font-size: @font-size-17;
-    line-height: 18px;
-    float: left;
-  }
-  .visual {
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    width: 60px;
-    margin: 0 0 0 -60px;
-    img {
-      margin-top:-3px;
-      .border-radius(3px);
-      width: 45px;
-    }
-  }
-  .nav {
-    margin: 0;
-  }
-  ul.inline {
-    margin-bottom:0;
-    color: @color-777;
-    li {
-      padding: 0 10px;
-      border-left: 1px solid @grayLighter;
-      font-size: @font-size-11;
-      line-height: 14px;
-      &:first-child {
-        padding: 0 10px 0 0;
-        border: 0;
-      }
-    }
-  }
-}
-.scrollspy-nav {
-  background-color: @whiteDarker;
-  border-bottom: 1px solid @color-ccc;
-  margin-bottom: 0;
-  .box-shadow(0 2px 0 rgba(0, 0, 0, .03));
-  .navbar-inner {
-    padding: 0;
-    border: 0;
-    background: 0;
-    .container-fluid {
-      padding:0 15px;
-      .nav {
-        > li a {
-          padding:5px 15px;
-          color:@gray;
-          font-size: @font-size-13;
-        }
-        > li a:hover {
-          border-bottom:3px solid @color-ddd;
-          background:none;
-          padding-bottom:2px;
-          color: @color-444 !important;
-        }
-        .active a,
-        .active a:hover {
-          border-bottom:3px solid @gray;
-          background:none;
-          padding-bottom:2px;
-          color:@grayDarker;
-          font-weight:bold;
-        }
-      }
-    }
-  }
-}
-.customer-info-actions {
-  background-color: @whiteDarker;
-  border-bottom: 1px solid @grayLighter;
-  .alert {
-    margin-bottom: 0;
-  }
-}
 .scrollspy {
   position: relative;
   overflow: auto;
@@ -478,14 +363,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
 label.required em,
 .form-horizontal label.required em {
   font-style: normal;
-}
-
-input, textarea { width:280px; }
-textarea {
-  height: 150px;
-  resize: vertical;
-  text-align: justify;
-  vertical-align: top;
 }
 .scrollspy .responsive-section:nth-of-type(1) .scrollspy-title {
   display: none;
@@ -590,61 +467,6 @@ select:focus:invalid:focus {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
   color: @gray;
 }
-.alert-error > ul{
-  margin-bottom: 0;
-}
-#flash-messages {
-  .alert {
-    margin: 3px 0 0;
-    background-color: @warningBackground;
-    background-image: url('../../img/warning-ico.png');
-    background-position: 10px 48%;
-    background-repeat: no-repeat;
-    padding: 3px 35px 1px 37px;
-    border:1px solid rgba(241,216,103,.3);
-    text-shadow: 0 1px 0 rgba(255,255,255,.5);
-    .close {
-      font-size: @font-size-18;
-      color: @warningClose;
-      opacity: 1;
-    }
-  }
-  .alert-success {
-    background-color: @successBackground;
-    background-image: url('../../img/sucsses-ico.png');
-    border:1px solid rgba(77,161,36,.3);
-    color: @successText;
-    .close {
-      color: @successClose;
-    }
-  }
-  .alert-danger,
-  .alert-error {
-    background-image: url('../../img/error-ico.png');
-    background-color: @errorBackground;
-    border:1px solid rgba(203,17,17,.3);
-    color: @errorText;
-    .close {
-      color: @errorClose;
-    }
-  }
-  .alert-empty {
-    display: none;
-  }
-}
-#flash-messages{
-  overflow: hidden;
-}
-.flash-messages-frame {
-  position: fixed;
-  top: 74px;
-  left: 25%;
-  z-index: 500;
-  width: 50%;
-  margin:auto;
-  .box-sizing(border-box);
-  padding: 0 10px;
-}
 
 /* validation-error */
 .validation-error .error {
@@ -690,18 +512,6 @@ label.checkbox.error,
 label.radio.error {
   padding-right: 12px;
 }
-.scrollable-container {
-  .oro-subtitle {
-    margin:0 5px 0 -25px;
-    line-height: 28px;
-    font-size: @font-size-20;
-    padding: 0;
-  }
-}
-.customer-info.customer-simple {
-   padding: 6px 0 0;
-}
-
 .input-append .add-on,
 .input-prepend .add-on {
   height:32px;

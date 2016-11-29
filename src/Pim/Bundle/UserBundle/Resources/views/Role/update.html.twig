@@ -98,90 +98,91 @@
         {% endfor %}
         {% set tabs = tabs|merge(['Users']) %}
 
-        {{ elements.form_navbar(tabs, '') }}
+        <div class="AknTabContainer">
+            {{ elements.form_navbar(tabs, '') }}
+            <div class="AknTabContainer-content tab-content oro-tab-form">
 
-        <div class="row-fluid tab-content oro-tab-form">
+                {{ elements.form_errors(form) }}
 
-            {{ elements.form_errors(form) }}
+                <div class="tab-pane active" id="general">
+                    {{ form_row(form.label) }}
+                    {% if form.owner is defined %}
+                        {{ form_row(form.owner, {attr : { class: 'hide' }}) }}
+                    {% endif %}
+                </div>
 
-            <div class="tab-pane active" id="general">
-                {{ form_row(form.label) }}
-                {% if form.owner is defined %}
-                    {{ form_row(form.owner, {attr : { class: 'hide' }}) }}
-                {% endif %}
-            </div>
+                {% set groups = acl_groups() %}
 
-            {% set groups = acl_groups() %}
-
-            {% for privilegeBlock, privilegeConfig in privilegesConfig %}
-                <div class="tab-pane" id="rights-{{ privilegeBlock }}">
-                    {% if 'groups' == privilegeConfig.view_type %}
-                        <div class="tab-groups">
-                            <ul class="nav nav-list">
-                                {% for group in groups %}
-                                    <li class="tab{{ loop.index == 1 ? ' active' : '' }}">
-                                        <a href="#tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">
-                                            <i class="acl-group-permission-toggle"></i>
-                                            {{ group|trans }}
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                                {% for child in form[privilegeBlock].children|reverse if child.vars.value.group not in groups and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
-                                    {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
+                {% for privilegeBlock, privilegeConfig in privilegesConfig %}
+                    <div class="tab-pane" id="rights-{{ privilegeBlock }}">
+                        {% if 'groups' == privilegeConfig.view_type %}
+                            <div class="tab-groups">
+                                <ul class="nav nav-list">
+                                    {% for group in groups %}
+                                        <li class="tab{{ loop.index == 1 ? ' active' : '' }}">
+                                            <a href="#tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">
+                                                <i class="acl-group-permission-toggle"></i>
+                                                <span>{{ group|trans }}</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                    {% for child in form[privilegeBlock].children|reverse if child.vars.value.group not in groups and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
+                                        {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
+                                        <li class="tab">
+                                            <a href="#tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" data-toggle="tab">
+                                                <i class="acl-group-permission-toggle"></i>
+                                                <span>{{ groupName|trans }}</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
                                     <li class="tab">
-                                        <a href="#tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" data-toggle="tab">
+                                        <a href="#tabs-group-system" data-toggle="tab">
                                             <i class="acl-group-permission-toggle"></i>
-                                            {{ groupName|trans }}
+                                            <span>{{ 'System'|trans }}</span>
                                         </a>
                                     </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content">
+                                {% for group in groups %}
+                                    <div id="tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane fullheight">
+                                        <h3>{{ group|trans }}</h3>
+                                        <div class="acl-group">
+                                            {% for child in form[privilegeBlock].children if child.vars.value.group == group %}
+                                                {{ form_widget(child) }}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
                                 {% endfor %}
-                                <li class="tab">
-                                    <a href="#tabs-group-system" data-toggle="tab">
-                                        <i class="acl-group-permission-toggle"></i>
-                                        {{ 'System'|trans }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="tab-content">
-                            {% for group in groups %}
-                                <div id="tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane fullheight">
-                                    <h3>{{ group|trans }}</h3>
+                                {% for child in form[privilegeBlock].children if child.vars.value.group not in groups and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
+                                    {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
+                                    <div id="tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" class="tab-pane fullheight">
+                                        <h3>{{ groupName|trans }}</h3>
+                                        <div class="acl-group">
+                                            {{ form_widget(child) }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div id="tabs-group-system" class="tab-pane fullheight">
+                                    <h3>{{ 'System'|trans }}</h3>
                                     <div class="acl-group">
-                                        {% for child in form[privilegeBlock].children if child.vars.value.group == group %}
+                                        {% for child in form[privilegeBlock].children if child.vars.value.group not in groups and (child.vars.value.extensionKey != 'entity' or child.vars.value.identity.name == '(default)') %}
                                             {{ form_widget(child) }}
                                         {% endfor %}
                                     </div>
                                 </div>
-                            {% endfor %}
-                            {% for child in form[privilegeBlock].children if child.vars.value.group not in groups and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
-                                {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
-                                <div id="tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" class="tab-pane fullheight">
-                                    <h3>{{ groupName|trans }}</h3>
-                                    <div class="acl-group">
-                                        {{ form_widget(child) }}
-                                    </div>
-                                </div>
-                            {% endfor %}
-                            <div id="tabs-group-system" class="tab-pane fullheight">
-                                <h3>{{ 'System'|trans }}</h3>
-                                <div class="acl-group">
-                                    {% for child in form[privilegeBlock].children if child.vars.value.group not in groups and (child.vars.value.extensionKey != 'entity' or child.vars.value.identity.name == '(default)') %}
-                                        {{ form_widget(child) }}
-                                    {% endfor %}
-                                </div>
                             </div>
-                        </div>
-                    {% else %}
-                        {{ form_widget(form[privilegeBlock]) }}
-                    {% endif %}
-                </div>
-            {% endfor %}
+                        {% else %}
+                            {{ form_widget(form[privilegeBlock]) }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
 
-            <div class="tab-pane" id="users">
-                {{ dataGrid.renderGrid('pim-role-user-grid', {role_id: entityId}) }}
-                {{ form_widget(form.appendUsers, {'id': 'roleAppendUsers'}) }}
-                {{ form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}) }}
+                <div class="tab-pane" id="users">
+                    {{ dataGrid.renderGrid('pim-role-user-grid', {role_id: entityId}) }}
+                    {{ form_widget(form.appendUsers, {'id': 'roleAppendUsers'}) }}
+                    {{ form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}) }}
+                </div>
             </div>
         </div>
 

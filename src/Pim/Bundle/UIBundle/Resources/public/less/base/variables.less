@@ -1,6 +1,7 @@
 // Font
 @AknDefaultFont: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
 @AknDefaultFontColor: #555;
+@AknLightFontColor: lighten(@AknDefaultFontColor, 20%);
 @AknDarkFontColor: darken(@AknDefaultFontColor, 10%);
 
 // Font sizes
@@ -19,13 +20,19 @@
 @AknOrange: #f8b43f;
 @AknRed: #d36050;
 @AknPurple: #52267D;
+@AknBlue: #4992C7;
 @AknGrey: #A1A9B7;
 @AknBorderColor: lighten(@AknGrey, 15%);
 @AknDefaultHoverBackground: @AknLightGray;
 
 // Sizes
+@AknTabHeight: 46px;
 @AknDefaultButtonSize: 34px;
 @AknLittleButtonSize: 30px;
 @AknIconSize: 26px;
 @AknMicroButtonSize: 22px;
 @AknMainMenuHeight: 50px;
+@AknFormHeight: @AknDefaultButtonSize;
+@AknPefFormWidth: 500px;
+@smallProgressBarHeight: 16px;
+@microProgressBarHeight: 8px;

@@ -1,0 +1,21 @@
+@import '../../base/variables';
+
+.AknButtonsList {
+  @marginSpace: 6px;
+
+  display: flex;
+
+  &-item { }
+
+  &--isHidden {
+    display: none;
+  }
+
+  &--withSpace &-item:not(:first-child) {
+    margin-left: @marginSpace / 2;
+  }
+
+  &--withSpace &-item:not(:last-child) {
+    margin-right: @marginSpace / 2;
+  }
+}

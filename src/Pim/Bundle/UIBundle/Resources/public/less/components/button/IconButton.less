@@ -1,4 +1,4 @@
-@import '../base/variables';
+@import '../../base/variables';
 
 .AknIconButton {
   color: lighten(@AknGrey, 25%);
@@ -25,6 +25,16 @@
 
     &:hover {
       background-color: @AknGrey;
+      color: white;
+    }
+  }
+
+  &--grey {
+    background-color: @AknGrey;
+    color: white;
+
+    &:hover {
+      background: darken(@AknGrey, 10%);
       color: white;
     }
   }

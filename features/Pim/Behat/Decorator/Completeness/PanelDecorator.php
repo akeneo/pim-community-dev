@@ -75,7 +75,7 @@ class PanelDecorator extends ElementDecorator
     protected function getScopeData(NodeElement $scopeBlock)
     {
         $ratio = $scopeBlock ? $scopeBlock->find('css', '.literal-progress')->getHtml() : '';
-        $state = $scopeBlock ? explode('-', $scopeBlock->find('css', '.progress')->getAttribute('class'))[1] : '';
+        $state = $this->getState($scopeBlock);
 
         $missingValuesBlocks = $scopeBlock ? $scopeBlock->findAll('css', '.missing-attributes [data-attribute]') : [];
 
@@ -93,5 +93,27 @@ class PanelDecorator extends ElementDecorator
             'state'          => $state,
             'missing_values' => $missingValues
         ];
+    }
+
+    /**
+     * Get the state of a completeness from its progressbar classes.
+     *
+     * @param NodeElement $scopeBlock
+     *
+     * @return string|null
+     */
+    protected function getState(NodeElement $scopeBlock)
+    {
+        $stateClasses = [
+            'AknProgress--warning' => 'warning',
+            'AknProgress--apply'   => 'success',
+        ];
+        foreach ($stateClasses as $stateClass => $state) {
+            if ($scopeBlock->find('css', '.progress')->hasClass($stateClass)) {
+                return $state;
+            }
+        }
+
+        return null;
     }
 }

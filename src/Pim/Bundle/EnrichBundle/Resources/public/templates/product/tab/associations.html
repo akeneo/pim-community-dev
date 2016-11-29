@@ -7,15 +7,16 @@
 <% } else { %>
     <div class="tabbable tabs-left">
         <div class="sidebar">
-            <ul class="associations-list nav nav-tabs tab-groups">
+            <ul class="AknVerticalNavtab associations-list nav nav-tabs tab-groups">
+                <li class="AknVerticalNavtab-item AknVerticalNavtab-header header"></li>
                 <% _.each(associationTypes, function (associationType) { %>
-                    <li data-association-type="<%- associationType.code %>"<% if (associationType.code === currentAssociationType) { %> class="active"<% } %>>
-                        <a href="#"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></a>
+                    <li class="AknVerticalNavtab-item<% if (associationType.code === currentAssociationType) { %> AknVerticalNavtab-item--active active<% } %>" data-association-type="<%- associationType.code %>">
+                        <a class="AknVerticalNavtab-link" href="#"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></a>
                     </li>
                 <% }); %>
             </ul>
         </div>
-        <div class="tab-content">
+        <div class="AknTabContainer-content tab-content">
             <div class="association-product-grid<% if ('products' !== currentAssociationTarget) { %> hide<% } %>">
                 <div id="grid-association-product-grid" data-type="datagrid"></div>
             </div>

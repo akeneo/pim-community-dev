@@ -3,38 +3,6 @@
 
 /* Basic Form *******************************************************************************************************/
 
-// Form navbar
-#form-navbar li {
-  a {
-    padding-bottom: 4px;
-    color: @textColor;
-    background-color: transparent;
-    border-bottom: 3px solid transparent;
-    &:hover {
-      border-bottom: 3px solid @textColor + #999;
-    }
-  }
-  &.active a {
-    border-bottom: 3px solid @textColor + #111;
-  }
-  a.error {
-    border-bottom: none;
-    color: @redDark;
-    font-weight: bold;
-    &:before {
-      display: inline-block;
-      margin-right: 5px;
-      font-family: 'FontAwesome';
-      font-style: normal;
-      text-decoration: inherit;
-      -webkit-font-smoothing: antialiased;
-      content: "\f06a";
-      text-indent: 0;
-      speak: none;
-    }
-  }
-}
-
 .icons-container {
   display: inline-block;
   margin-top: 6px;
@@ -113,8 +81,6 @@
 
 .tabsections {
   .tabsection {
-    border: 1px solid @akeneoGreyLighter;
-
     .tabsection-title {
       &:not(:empty) {
         height: 44px;
@@ -122,7 +88,6 @@
         background-color: @akeneoGreyLighter;
         line-height: 44px;
       }
-
 
       .add-attribute .select2-container {
         margin: 0 5px 5px;
@@ -137,7 +102,6 @@
 
 .oro-tab-form {
   & > .tab-pane {
-    border: 1px solid @akeneoGreyLighter;
     padding-bottom: 10px;
 
     .control-group {
@@ -175,9 +139,6 @@ a.accordion-toggle {
 .form-horizontal .control-group:not(:empty) {
   margin-bottom: 15px;
   label.control-label {
-    &:not(.add-on) {
-      max-height: 25px;
-    }
     &:after {
       content: '';
     }
@@ -324,9 +285,6 @@ a.add-attribute-option {
     &.no-label .control-group {
       label.control-label {
         width: 30px;
-        &.add-on {
-          width: 25px;
-        }
       }
       .controls {
         margin-left: 40px;
@@ -512,9 +470,6 @@ table i {
       }
     }
   }
-  .tab-content {
-    border-left: 1px solid @color-bbb;
-  }
   .tab-pane h3 {
     padding-left: 20px;
     margin-top: 0;
@@ -540,9 +495,6 @@ table i {
   .datepicker {
     &.input-large {
       width: 200px;
-    }
-    &.add-on {
-      background-color: @white;
     }
   }
 }
@@ -618,10 +570,7 @@ table.comparison .no-label .attribute-field.scopable {
   margin-bottom: 20px;
   >div {
     &:first-of-type .controls {
-      .control-label.add-on {
-        background-color: @backgroundColor-white;
-        border-top-left-radius: 3px;
-      }
+      .control-label
       input, select, textarea {
         border-top-right-radius: 3px;
       }
@@ -630,16 +579,14 @@ table.comparison .no-label .attribute-field.scopable {
       }
     }
     &:last-of-type .controls {
-      .control-label.add-on {
-        border-bottom-left-radius: 3px;
-      }
+      .control-label
       input, select, textarea {
         border-bottom-right-radius: 3px;
       }
     }
     &:not(.first):not(:first-of-type) {
       &>.control-group {
-        .control-label.add-on, input, select, textarea {
+        input, select, textarea {
           border-top: 0;
         }
       }
@@ -650,28 +597,10 @@ table.comparison .no-label .attribute-field.scopable {
     font-size: @font-size-14;
     .user-select(none);
   }
-  label.control-label.add-on {
-    width: 25px;
-    margin-bottom: 0;
-    font-weight: bold;
-    text-align: center;
-    background-color: @whiteDark;
-    border-right-width: 0;
-    border-radius: 0;
-    .user-select(none);
-  }
   .control-group {
     margin: 0;
     &>.controls.input-prepend {
       position: relative;
-      .control-label.add-on {
-        position: absolute;
-        height: 100%;
-        font-size: @font-size-15;
-        &[style] {
-          text-shadow: none;
-        }
-      }
       .scopable-input {
         position: relative;
         left: 25px;
@@ -1134,9 +1063,6 @@ table#progress-table {
   .entity-edit-form {
     min-height: 300px;
   }
-  .entity-edit-form .tabs-left > .sidebar > .nav-tabs li.header {
-    border-left: 0;
-  }
   hr {
     height: 3px;
     background-color: lighten(@color-light_grey, 2%);
@@ -1146,9 +1072,6 @@ table#progress-table {
   .tab-content {
     padding: 0;
     border-left: solid 1px @color-ccc;
-  }
-  header {
-    display: none;
   }
 }
 

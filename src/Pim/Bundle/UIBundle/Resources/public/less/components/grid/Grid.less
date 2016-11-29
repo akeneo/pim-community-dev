@@ -1,4 +1,4 @@
-@import '../base/variables';
+@import '../../base/variables';
 
 .AknGrid {
   width: 100%;
@@ -7,7 +7,9 @@
     border-bottom: 1px solid @AknBorderColor;
   }
 
-  &-bodyCell, &-headerCell {
+  &-bodyCell,
+  &-headerCell {
+    vertical-align: top;
     line-height: 24px;
     padding: 12px 10px;
   }
@@ -18,6 +20,11 @@
   }
 
   &-bodyCell {
+    &--full, &--toto {
+      padding: 10px 20px;
+      background: @AknDefaultHoverBackground;
+    }
+
     &--actions {
       opacity: 0;
       width: 1px;
@@ -56,5 +63,22 @@
   &-headerCell--descending &-caret {
     border-bottom: 4px solid @AknDefaultFontColor;
     border-top: none;
+  }
+
+  &--condensed {
+    border: 1px solid @AknBorderColor;
+    width: auto;
+  }
+
+  &--condensed &-bodyCell,
+  &--condensed &-headerCell {
+    line-height: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background: white;
+  }
+
+  &--unclickable &-bodyRow:hover &-bodyCell {
+    cursor: default;
   }
 }

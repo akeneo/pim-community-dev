@@ -351,7 +351,7 @@ class Form extends Base
                 return $field;
             }
             echo "retry find file input" . PHP_EOL;
-        }, sprintf('Cannot find "%s" element', $locator));
+        }, sprintf('Cannot find "%s" file field', $locator));
 
         $field->attachFile($path);
         $this->getSession()->executeScript('$(\'.edit .field-input input[type="file"]\').trigger(\'change\');');

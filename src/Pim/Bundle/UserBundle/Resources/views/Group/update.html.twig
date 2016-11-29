@@ -7,6 +7,25 @@
 {% set gridName = 'pim-group-user-grid' %}
 {% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
 
+{% set breadcrumbs = {} %}
+{% if entityId %}
+    {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('oro_user_group_index'),
+        'indexLabel': 'Groups'|trans,
+        'entityTitle': form.vars.value.name
+    }
+    %}
+{% else %}
+    {% block breadcrumbs %}
+        {{ title }}
+    {% endblock breadcrumbs %}
+{% endif %}
+
+{% block back %}
+    {{ elements.backLink(path('oro_user_group_index')) }}
+{% endblock %}
+
 {% block navButtons %}
     {% if entityId and resource_granted('pim_user_group_remove') %}
         {{ UI.deleteButton({
@@ -21,31 +40,9 @@
             'label': 'Delete'
         }) }}
     {% endif %}
-    {{ UI.button({'path' : path('oro_user_group_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
     {{ UI.saveAndStayButton('pim_user_group_edit') }}
     {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
-
-{% block pageHeader %}
-    {% if entityId %}
-        {% set breadcrumbs = {
-            'entity':      form.vars.value,
-            'indexPath':   path('oro_user_group_index'),
-            'indexLabel': 'Groups'|trans,
-            'entityTitle': form.vars.value.name
-        }
-        %}
-        {{ parent() }}
-    {% else %}
-        <div class="pull-left">
-            <div class="container-fluid">
-                <div class="container-fluid">
-                    <h1 class="oro-subtitle">{{ title }}</h1>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-{% endblock pageHeader %}
 
 {% block content_data %}
     {% set id = 'group-profile' %}

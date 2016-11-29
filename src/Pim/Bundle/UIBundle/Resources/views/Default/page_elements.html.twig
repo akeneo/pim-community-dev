@@ -7,7 +7,7 @@
             {% set url = null %}
         {% endif %}
         {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-        <a class="AknButton AknButton--success{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AknButton--withIcon {% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
+        <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AknButton--withIcon {% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
         {% if icon %}
             <i class="AknButton-icon icon-{{ icon }}"></i>
           {% endif %}
@@ -62,7 +62,9 @@
 {% macro backLink(url, title) %}
 {% spaceless %}
     {% set title = title|default('btn.to grid') %}
-    <a class="btn icons-holder back-link" href="{{ url }}" title="{{ title|trans|capitalize }}"><i class="icon-chevron-left"></i></a>
+    <a class="AknTitleContainer-backLink back-link" title="{{ title|trans|capitalize }}" href="{{ url }}">
+        <i class="icon-chevron-left"></i>
+    </a>
 {% endspaceless %}
 {% endmacro %}
 
@@ -94,45 +96,60 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro page_header(title, buttons, subtitle, left, right, titleButtons) %}
-    <div class="AknTitleContainer navigation">
-        <div>
-            {% if titleButtons is not empty %}
-                <div class="AknButtonsList AknTitleContainer-titleButtons">
-                    {{ titleButtons }}
-                </div>
+{% macro page_header(title, buttons, titleButtons, meta, right, backButton) %}
+    <header class="AknTitleContainer navigation">
+        <div class="AknTitleContainer-backContainer" data-drop-zone="back">
+            {% if backButton is not empty %}
+                {{ backButton }}
             {% endif %}
-            <div class="AknTitleContainer-title">
-                {{ title|first|capitalize ~ title[1:] }}
-                {% if subtitle is not empty %}
-                    / {{ subtitle }}
-                {% endif %}
+        </div>
+        <div class="AknTitleContainer-contentContainer">
+            <div class="AknTitleContainer-mainLine">
+                <div class="AknTitleContainer-titleContainer" data-drop-zone="title">
+                    <h2 class="AknTitleContainer-title">
+                        {% block title %}
+                            {{ title }}
+                        {% endblock title %}
+                    </h2>
+                    {% if titleButtons is not empty %}
+                        <div class="AknTitleContainer-titleButtons">
+                            {{ titleButtons }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
+                    {% block navButtons %}{% endblock navButtons %}
+                    {{ right }}
+                    {% if buttons is not empty %}
+                        <div class="AknButtonsList AknTitleContainer-rightButtons">
+                            {{ buttons }}
+                        </div>
+                    {% endif %}
+                </div>
             </div>
-            {{ left }}
-        </div>
-        <div>
-            {{ right }}
-            {% if buttons is not empty %}
-                <div class="AknButtonsList AknTitleContainer-rightButtons">
-                    {{ buttons }}
+            <div class="AknTitleContainer-metaLine">
+                <div class="AknTitleContainer-meta">
+                    {{ meta }}
                 </div>
-            {% endif %}
+            </div>
         </div>
-    </div>
+    </header>
 {% endmacro %}
 
 {% macro form_navbar(tabs, translationSuffix = '.title') %}
-    <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
+    <div id="form-navbar" class="AknHorizontalTabnav scrollspy-nav">
         <div class="navbar-inner">
             <div class="row-fluid">
                 {% if tabs is not empty %}
-                    <ul class="nav">
+                    <ul class="AknHorizontalTabnav-list nav nav-tabs">
                         {% if tabs is iterable %}
                             {% for tab in tabs %}
-                                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ tab|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tab ~ translationSuffix)|trans }}</a></li>
+                                <li class="AknHorizontalTabnav-item{% if loop.first %} AknHorizontalTabnav-item--active active{% endif %}">
+                                    <a class="AknHorizontalTabnav-link" href="#{{ tab|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tab ~ translationSuffix)|trans }}</a>
+                                </li>
                             {% endfor %}
                         {% else %}
-                            <li class="active"><a href="#{{ tabs|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tabs ~ translationSuffix)|trans }}</a></li>
+                            <li class="AknHorizontalTabnav-item AknHorizontalTabnav-item--active active"><a href="#{{ tabs|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tabs ~ translationSuffix)|trans }}</a></li>
                         {% endif %}
                     </ul>
                 {% endif %}
@@ -330,3 +347,37 @@
         {{ buttonLabel|trans|capitalize }}
     </a>
 {% endspaceless %}{% endmacro %}
+
+{% macro flashMessagesContainer() %}
+    <div id="flash-messages" class="AknBreadcrumbContainer-flashContainer">
+        {% block messages %}
+            <div class="flash-messages-holder AknBreadcrumbContainer-flashList"></div>
+            <script type="text/template" id="message-item-template">
+                <div class="AknFlash alert <% if (type) {  %><%= 'alert-' + type + ' AknFlash--' + type %><% } %> fade in top-messages">
+                    <button type="button" class="AknFlash-closeButton close" data-dismiss="alert">&times;</button>
+                    <div class="message"><%= message %></div>
+                </div>
+            </script>
+            <script type="text/javascript">
+                require(
+                    ['jquery', 'oro/messenger'],
+                    function($, messenger) {
+                        messenger.setup({
+                            container: '#flash-messages .flash-messages-holder',
+                            template: _.template($.trim($('#message-item-template').html()))
+                        });
+                        {% if app.session.flashbag.peekAll|length > 0 %}
+                            $(function() {
+                                {% for type, messages in app.session.flashbag.all %}
+                                    {% for message in messages %}
+                                        messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
+                                    {% endfor %}
+                                {% endfor %}
+                            });
+                        {% endif %}
+                    }
+                );
+            </script>
+        {% endblock messages %}
+    </div>
+{% endmacro %}

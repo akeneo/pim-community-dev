@@ -1028,7 +1028,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCreateTheView(TableNode $table)
     {
-        $this->getCurrentPage()->getViewSelector()->click();
+        $this->getCurrentPage()->openViewSelector();
         $this->getCurrentPage()->clickCreateOnButton("Create view");
 
         return [

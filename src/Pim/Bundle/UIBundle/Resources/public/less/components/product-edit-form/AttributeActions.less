@@ -1,0 +1,38 @@
+@import '../../base/variables';
+
+.AknAttributeActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &-editActions {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    align-items: center;
+  }
+
+  &-copyActions {
+    order: 10;
+    display: flex;
+    padding-left: 10px;
+    justify-content: space-between;
+  }
+
+  &-otherActions {
+    display: flex;
+  }
+
+  &-contextSelectors {
+    display: flex;
+  }
+
+  &--comparisonMode &-editActions {
+    border-right: 1px solid @AknBorderColor;
+    max-width: @AknPefFormWidth + 30px;
+  }
+
+  &--comparisonMode &-copyActions {
+    flex-grow: 1;
+  }
+}

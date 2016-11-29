@@ -1,6 +1,6 @@
-<div class="metric-container">
-    <input id="<%- fieldId %>" type="text" class="data" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" value="<%- value.data.amount %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
-    <select class="unit select-field" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>>
+<div class="AknMetricField metric-container">
+    <input class="AknTextField AknTextField--noRightRadius data" id="<%- fieldId %>" type="text" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" value="<%- value.data.amount %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
+    <select class="AknMetricField-unit unit select-field" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>>
         <% _.each(_.keys(measures[attribute.metric_family].units), function(unit) { %>
             <option value="<%- unit %>"<% if (value.data.unit === unit) { %> selected<% } %>><%- _.__(unit) %></option>
         <% }); %>

@@ -1,4 +1,4 @@
-@import '../base/variables';
+@import '../../base/variables';
 
 .AknButton {
   background: @AknLightGray;
@@ -6,16 +6,20 @@
   height: @AknDefaultButtonSize;
   line-height: @AknDefaultButtonSize;
   font-size: @AknFontSizeBig;
+  min-width: @AknDefaultButtonSize;
   display: inline-block;
   padding: 0 10px;
   border-radius: 2px;
   border: none;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
 
   &--withIcon {
     padding-left: 0;
   }
 
-  &:hover {
+  &:hover, &--active {
     background: darken(@AknLightGray, 10%);
     color: darken(@AknDefaultFontColor, 10%);
   }
@@ -32,32 +36,29 @@
     border-bottom-left-radius: 2px;
   }
 
-  &--success {
+  // Apply color
+  &--apply {
     background-color: @AknGreen;
     color: white;
-
-    &:hover {
-      background-color: darken(@AknGreen, 10%);
-      color: white;
-    }
   }
 
-  &--success &-icon {
+  &--apply:hover, &--apply&--active {
+    background-color: darken(@AknGreen, 10%);
+    color: white;
+  }
+
+  &--apply &-icon {
     background: darken(@AknGreen, 10%);
   }
 
+  // Grey color
   &--grey {
     background-color: @AknGrey;
     color: white;
-
-    &:hover {
-      background: darken(@AknGrey, 10%);
-      color: white;
-    }
   }
 
-  &--grey:hover &-icon {
-    background: darken(@AknGrey, 20%);
+  &--grey:hover, &--grey&--active {
+    background: darken(@AknGrey, 10%);
     color: white;
   }
 
@@ -65,14 +66,40 @@
     background: darken(@AknGrey, 10%);
   }
 
+  // Red color
+  &--important {
+    background-color: @AknRed;
+    color: white;
+  }
+
+  &--important:hover, &--important&--active {
+    background: darken(@AknRed, 10%);
+    color: white;
+  }
+
+  &--important &-icon {
+    background: darken(@AknRed, 10%);
+  }
+
+  //Sizes
   &--little {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
+    min-width: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--little &-icon {
+    height: @AknLittleButtonSize;
+    width: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
   }
 
   &--micro {
     height: @AknMicroButtonSize;
     line-height: @AknMicroButtonSize;
+    min-width: @AknMicroButtonSize;
     font-size: @AknDefaultFontSize;
   }
 

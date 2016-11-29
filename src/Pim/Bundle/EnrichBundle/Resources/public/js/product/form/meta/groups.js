@@ -43,7 +43,7 @@ define(
     ) {
         var FormView = BaseForm.extend({
             tagName: 'span',
-            className: 'product-groups',
+            className: 'AknTitleContainer-metaItem product-groups',
             template: _.template(formTemplate),
             modalTemplate: _.template(modalTemplate),
             events: {

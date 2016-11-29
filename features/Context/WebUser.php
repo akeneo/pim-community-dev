@@ -178,18 +178,22 @@ class WebUser extends RawMinkContext
     public function iOpenTheHistory()
     {
         $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
-        $this->getMainContext()->executeScript("$('.panel-pane.history-panel').css({'height': '90%'});");
-
         $this->getMainContext()->spin(function () {
-            $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
+            $fullPanel = $this->getCurrentPage()->find(
+                'css',
+                '.AknTabContainer-contentThreeColumns.AknTabContainer-contentThreeColumns--fullPanel'
+            );
 
-            if ($expandHistory && $expandHistory->isValid()) {
-                $expandHistory->click();
+            if ((null === $fullPanel) || !$fullPanel->isVisible()) {
+                $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
+                if (null !== $expandHistory && $expandHistory->isVisible()) {
+                    $expandHistory->click();
+                }
 
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }, 'Cannot expand history');
 
         $this->wait();
@@ -1205,7 +1209,10 @@ class WebUser extends RawMinkContext
     public function iRemoveTheFile($field)
     {
         $this->wait();
-        $script = sprintf("$('label:contains(\"%s\")').parents('.form-field').find('.clear-field').click();", $field);
+        $script = sprintf(
+            "$('label:contains(\"%s\")').parents('.AknFieldContainer-formField').find('.clear-field').click();",
+            $field
+        );
         if (!$this->getMainContext()->executeScript($script)) {
             $this->getCurrentPage()->removeFileFromField($field);
         }
@@ -1231,9 +1238,9 @@ class WebUser extends RawMinkContext
             );
             $this->wait();
             $this->getCurrentPage()
-                ->find('css', sprintf('div.preview span:contains("%s")', $link))
+                ->find('css', sprintf('.preview .filename:contains("%s")', $link))
                 ->getParent()
-                ->find('css', sprintf('span.open-media', $link))
+                ->find('css', sprintf('.open-media', $link))
                 ->click();
         } catch (UnsupportedDriverActionException $e) {
             throw $this->createExpectationException('You must use selenium for this feature.');

@@ -1,6 +1,6 @@
 <% _.each(elements, function (element) { %>
-    <li data-element="<%- element.code %>" class="<%- current === element.code ? 'active' : '' %>">
-        <a>
+    <li class="AknVerticalNavtab-item <%- current === element.code ? 'active' : '' %>" data-element="<%- element.code %>">
+        <a class="AknVerticalNavtab-link <%- current === element.code ? 'AknVerticalNavtab-link--active' : '' %>">
             <span class="group-label"><%- element.label %></span>
             <span class="badge-elements-container">
                 <% _.each(badges[element.code], function(badge, type) { %>

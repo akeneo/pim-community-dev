@@ -41,15 +41,14 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id), titleButtons) }}
 
-        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
-
-        <div class="tabsections tab-content">
-
-            {{ elements.form_errors(form) }}
-
-            {{ view_elements(form.vars.id ~ '.form_tab') }}
-
+        <div class="AknTabContainer">
+            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
+            <div class="AknTabContainer-content tabsections tab-content">
+                {{ elements.form_errors(form) }}
+                {{ view_elements(form.vars.id ~ '.form_tab') }}
+            </div>
         </div>
+
     {{ form_end(form) }}
 {% endblock %}
 

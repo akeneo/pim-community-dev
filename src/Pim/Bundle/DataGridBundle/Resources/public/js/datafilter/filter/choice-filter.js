@@ -31,7 +31,7 @@ function($, _, __, app, TextFilter, initSelect2) {
                     '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
                 '</div>' +
                 '<input type="text" class="AknFilterChoice-field select-field" name="value" value="">' +
-                '<button class="AknButton AknButton--success AknButton--little AknButton--noLeftRadius filter-update" type="button"><%- _.__("Update") %></button>' +
+                '<button class="AknButton AknButton--apply AknButton--little AknButton--noLeftRadius filter-update" type="button"><%- _.__("Update") %></button>' +
             '</div>'
         ),
 

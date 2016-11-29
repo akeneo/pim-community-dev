@@ -170,12 +170,13 @@ class ProductEditForm extends Form
         }
 
         $labelNode = $this->spin(function () use ($label) {
-            return $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
+            return $this->find('css', sprintf('.AknFieldContainer .AknFieldContainer-label:contains("%s")', $label));
         }, 'Cannot find the field label');
 
-        $container = $this->spin(function () use ($labelNode) {
-            return $labelNode->getParent()->getParent()->getParent();
-        }, sprintf('Cannot find parents for "%s" field', $label));
+        $container = $labelNode;
+        while (!$container->hasClass('AknFieldContainer') && null !== $container->getParent()) {
+            $container = $container->getParent();
+        }
 
         $container->name = $label;
 
@@ -201,8 +202,12 @@ class ProductEditForm extends Form
         }
 
         $subContainer = $this->spin(function () use ($label, $copy) {
-            return $this->findFieldContainer($label)
-                ->find('css', $copy ? '.copy-container .form-field' : '.form-field');
+            $selector = '.AknFieldContainer-formField';
+            if (false !== $copy) {
+                $selector = '.copy-container ' . $selector;
+            }
+
+            return $this->findFieldContainer($label)->find('css', $selector);
         }, sprintf('Cannot find "%s" sub container', $label));
 
         $field = $this->spin(function () use ($subContainer) {
@@ -313,7 +318,7 @@ class ProductEditForm extends Form
     protected function fillMultiSelectField(NodeElement $fieldContainer, $values)
     {
         $element = $this->spin(function () use ($fieldContainer) {
-            return $fieldContainer->find('css', '.select2-container');
+            return $fieldContainer->find('css', '.AknFieldContainer-formField .select2-container');
         }, 'Can not find the select2 container.');
 
         $field = $this->decorate(
@@ -424,7 +429,7 @@ class ProductEditForm extends Form
         if ($isLabel) {
             $formFieldWrapper = $fieldContainer->getParent()->getParent();
         } else {
-            $formFieldWrapper = $fieldContainer->find('css', 'div.form-field');
+            $formFieldWrapper = $fieldContainer->find('css', '.AknFieldContainer-formField');
         }
 
         if ($formFieldWrapper->hasClass('akeneo-datepicker-field')) {
@@ -524,8 +529,12 @@ class ProductEditForm extends Form
     public function compareFieldValue($label, $expected, $copy = false)
     {
         $fieldContainer = $this->findFieldContainer($label);
-        $fieldType      = $this->getFieldType($fieldContainer);
-        $subContainer   = $fieldContainer->find('css', $copy ? '.copy-container .form-field' : '.form-field');
+        $fieldType = $this->getFieldType($fieldContainer);
+        $subContainerSelector = '.AknFieldContainer-formField';
+        if (false !== $copy) {
+            $subContainerSelector = '.copy-container ' . $subContainerSelector;
+        }
+        $subContainer = $fieldContainer->find('css', $subContainerSelector);
 
         switch ($fieldType) {
             case 'textArea':
@@ -659,7 +668,7 @@ class ProductEditForm extends Form
     protected function getMediaFieldValue(NodeElement $subContainer)
     {
         $widget = $this->spin(function () use ($subContainer) {
-            return $subContainer->find('css', '.field-input .media-uploader');
+            return $subContainer->find('css', '.field-input .AknMediaField');
         }, 'Cannot find ".media-uploader" in media field');
 
         $filenameNode = $widget->find('css', '.filename');

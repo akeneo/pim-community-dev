@@ -19,7 +19,7 @@ define(
     function ($, _, Backbone, BaseForm, mediator, template) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'panel-container closed',
+            className: 'AknPanelContainer panel-container',
             events: {
                 'click > header > .close': 'closePanel'
             },
@@ -30,8 +30,6 @@ define(
             initialize: function () {
                 this.panels = [];
 
-                window.addEventListener('resize', this.resize.bind(this));
-
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
@@ -40,7 +38,6 @@ define(
              */
             configure: function () {
                 this.onExtensions('panel:register', this.registerPanel.bind(this));
-                this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.resize);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -64,7 +61,9 @@ define(
                     return this;
                 }
 
-                this.$el[this.getCurrentPanelCode() ? 'removeClass' : 'addClass']('closed');
+                this.$el.closest('.AknTabContainer-panels')[this.getCurrentPanelCode() ? 'removeClass' : 'addClass'](
+                    'AknTabContainer-panels--closed'
+                );
 
                 var currentPanel = _.findWhere(this.panels, {code: this.getCurrentPanelCode()});
                 this.$el.html(
@@ -83,7 +82,6 @@ define(
                 $(this.getParent().getZone('side-buttons')).append(selectorExtension.$el);
 
                 this.delegateEvents();
-                this.resize();
 
                 return this;
             },
@@ -128,18 +126,6 @@ define(
                 }
 
                 this.render();
-            },
-
-            /**
-             * Resize the panel to fit the pef
-             */
-            resize: function () {
-                var panelContent = this.$('.panel-content');
-                if (panelContent.length) {
-                    panelContent.css(
-                        {'height': ($(window).height() - panelContent.offset().top - 4) + 'px'}
-                    );
-                }
             }
         });
     }
