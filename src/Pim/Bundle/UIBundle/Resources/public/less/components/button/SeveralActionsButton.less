@@ -1,13 +1,12 @@
 @import '../../base/variables';
 
-// TOTO Rename this AllSelector into other thing
-.AknAllSelector {
+.AknSeveralActionsButton {
   @radius: 2px;
 
   display: flex;
   text-transform: none;
 
-  &-left, &-right {
+  &-mainAction, &-caretContainer {
     height: @AknDefaultButtonSize;
     line-height: @AknDefaultButtonSize;
     font-size: @AknFontSizeBig;
@@ -15,14 +14,14 @@
     border: none;
   }
 
-  &-left {
+  &-mainAction {
     background: @AknGrey;
     border-top-left-radius: @radius;
     border-bottom-left-radius: @radius;
     padding: 0 10px;
   }
 
-  &-right {
+  &-caretContainer {
     width: @AknDefaultButtonSize;
     background: darken(@AknGrey, 10%);
     border-top-right-radius: @radius;
@@ -35,7 +34,7 @@
     margin-top: @AknDefaultButtonSize;
   }
 
-  &--success &-left {
+  &--success &-mainAction {
     background-color: @AknGreen;
     color: white;
 
@@ -45,17 +44,17 @@
     }
   }
 
-  &--success &-right {
+  &--success &-caretContainer {
     background: darken(@AknGreen, 10%);
   }
 
-  &--little &-left {
+  &--little &-mainAction {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
     font-size: @AknDefaultFontSize;
   }
 
-  &--little &-right {
+  &--little &-caretContainer {
     height: @AknLittleButtonSize;
     width: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
@@ -66,7 +65,7 @@
     margin-top: @AknLittleButtonSize;
   }
 
-  &-left + *:not(&-right) {
+  &-mainAction + *:not(&-caretContainer) {
     border-top-right-radius: @radius;
     border-bottom-right-radius: @radius;
   }

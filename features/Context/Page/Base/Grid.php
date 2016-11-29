@@ -911,7 +911,7 @@ class Grid extends Index
     protected function getDropdownSelector()
     {
         return $this->spin(function () {
-            return $this->getElement('Grid')->find('css', '.AknAllSelector');
+            return $this->getElement('Grid')->find('css', '.AknSeveralActionsButton');
         }, 'Grid dropdown row selector not found');
     }
 

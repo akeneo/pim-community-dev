@@ -34,7 +34,7 @@ css:
         - bundles/pimui/less/base/general.less
         - bundles/pimui/less/components/button/ActionButton.less
         - bundles/pimui/less/components/button/ActionButtonsList.less
-        - bundles/pimui/less/components/button/AllSelector.less
+        - bundles/pimui/less/components/button/SeveralActionsButton.less
         - bundles/pimui/less/components/button/Button.less
         - bundles/pimui/less/components/button/ButtonsList.less
         - bundles/pimui/less/components/button/DropdownButton.less

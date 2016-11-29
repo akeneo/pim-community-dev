@@ -1,13 +1,13 @@
 <% if (primaryButton) { %>
-    <button class="AknAllSelector-left <%- primaryButton.className || '' %>">
+    <button class="AknSeveralActionsButton-mainAction <%- primaryButton.className || '' %>">
         <%- primaryButton.label %>
     </button>
 <%  } %>
 <% if (secondaryButtons && secondaryButtons.length) { %>
-    <button  class="AknAllSelector-right" data-toggle="dropdown">
+    <button  class="AknSeveralActionsButton-caretContainer" data-toggle="dropdown">
         <span class="AknCaret AknCaret--inverse"></span>
     </button>
-    <ul class="AknAllSelector-menu AknDropdown-menu AknDropdown-menu--alignRight">
+    <ul class="AknSeveralActionsButton-menu AknDropdown-menu AknDropdown-menu--alignRight">
         <% _.each(secondaryButtons, function (btn) { %>
             <li>
                 <button type="button" class="AknDropdown-menuLink <%- btn.className || '' %>">
