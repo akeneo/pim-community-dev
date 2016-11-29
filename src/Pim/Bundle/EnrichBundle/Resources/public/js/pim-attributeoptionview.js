@@ -58,7 +58,7 @@ define(
                 '<td class="field-cell">' +
                     '<% if (item.optionValues[locale]) { %>' +
                         '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" ' +
-                            'value="<%= item.optionValues[locale].value %>"/>' +
+                            'value="<%- item.optionValues[locale].value %>"/>' +
                     '<% } else { %>' +
                         '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" ' +
                             'value=""/>' +
