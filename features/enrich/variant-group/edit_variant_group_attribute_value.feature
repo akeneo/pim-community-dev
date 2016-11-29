@@ -37,8 +37,10 @@ Feature: Editing attribute values of a variant group also updates products
       | sku  | groups            | color | size |
       | boot | caterpillar_boots | black | 40   |
     And the following attributes:
-      | code                  | label-en_US           | type | group | allowedExtensions    |
-      | technical_description | Technical description | file | media | gif,png,jpeg,jpg,txt |
+      | code                         | label-en_US           | label-fr_FR           | type         | group     | allowedExtensions    | localizable | available_locales |
+      | technical_description        | Technical description | Description technique | file         | media     | gif,png,jpeg,jpg,txt |             |                   |
+      | simple_select_local_specific | Simple                | Simple                | simpleselect | marketing |                      | yes         | fr_FR,en_US       |
+      | multi_select_local_specific  | Multi                 | Multi                 | multiselect  | marketing |                      | yes         | fr_FR,en_US       |
     And I am logged in as "Julia"
     And I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
@@ -109,6 +111,33 @@ Feature: Editing attribute values of a variant group also updates products
     When I am on the "boot" product page
     And I visit the "Marketing" group
     Then the field Rating should contain "5 stars"
+
+  Scenario: Change a pim_catalog_simpleselect attribute of a variant group
+    Given I set the "English (United States), French (France)" locales to the "mobile" channel
+    And I am on the "simple_select_local_specific" attribute page
+    And I visit the "Values" tab
+    And I create the following attribute options:
+      | Code  |
+      | red   |
+      | blue  |
+      | green |
+    When I am on the "caterpillar_boots" variant group page
+    And I visit the "Attributes" tab
+    And I visit the "Marketing" group
+    And I add available attributes Simple
+    And I change the "Simple" to "red"
+    And I save the variant group
+    And I wait for the options to load
+    And I switch the locale to "fr_FR"
+    When I change the "Simple" to "blue"
+    And I save the variant group
+    Then I should see the flash message "Variant group successfully updated"
+    When I am on the "boot" product page
+    And I visit the "Marketing" group
+    And I switch the scope to "mobile"
+    Then I should see the text "[red]"
+    When I switch the locale to "fr_FR"
+    Then I should see the text "[blue]"
 
   Scenario: Change a pim_catalog_text attribute of a variant group
     When I change the "Name" to "In a galaxy far far away"

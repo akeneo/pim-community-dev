@@ -18,12 +18,26 @@ define(
         'pim/security-context',
         'pim/initselect2',
         'pim/user-context',
-        'pim/i18n'
+        'pim/i18n',
+        'pim/attribute-manager'
     ],
-    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2, UserContext, i18n) {
+    function (
+        $,
+        Field,
+        _,
+        fieldTemplate,
+        Routing,
+        createOption,
+        SecurityContext,
+        initSelect2,
+        UserContext,
+        i18n,
+        AttributeManager
+    ) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             choicePromise: null,
+            promiseIdentifiers: null,
             events: {
                 'change .field-input:first input.select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
@@ -106,12 +120,20 @@ define(
                             }.bind(this)
                         },
                         initSelection: function (element, callback) {
-                            if (null === this.choicePromise) {
+                            var identifiers = AttributeManager.getValue(
+                                this.model.attributes.values,
+                                this.attribute,
+                                UserContext.get('catalogLocale'),
+                                UserContext.get('catalogScope')
+                            ).data;
+
+                            if (null === this.choicePromise || this.promiseIdentifiers !== identifiers) {
                                 this.choicePromise = $.get(choiceUrl, {
                                     options: {
-                                        identifiers: this.model.attributes.values[0].data
+                                        identifiers: identifiers
                                     }
                                 });
+                                this.promiseIdentifiers = identifiers;
                             }
 
                             this.choicePromise.then(function (results) {

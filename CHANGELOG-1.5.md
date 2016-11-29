@@ -4,6 +4,8 @@
 
 - PIM-5990: Fix persist order causing issue on variant group import with associated products
 - PIM-5989: Fix attribute options on localizable and scopable attributes simple select
+- PIM-6013: Fix attribute options on localizable and scopable attributes simple select and multi select
+- PIM-6002: Fix characters escapment with usage of quote in attribute option
 
 # 1.5.13 (2016-11-18)
 
