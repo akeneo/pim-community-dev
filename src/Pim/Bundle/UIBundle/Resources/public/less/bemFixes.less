@@ -56,13 +56,13 @@
   }
 }
 .select2-container-multi .select2-choices .select2-search-choice {
-  height: 26px;
-  line-height: 26px;
-  padding: 0 5px 0 18px;
+  height: 30px;
+  line-height: 28px;
+  padding: 0 5px 0 20px;
   margin: 1px;
 
   .select2-search-choice-close {
-    line-height: 18px;
+    line-height: 20px;
   }
 }
 .grid-view-selector {
@@ -100,11 +100,14 @@
 #product-categories {
   height: 100%;
 }
-.tab-container.tab-content {
-  flex-grow: 1;
+.AknFieldContainer-formField.akeneo-media-uploader-field.view .clear-field {
+  display: none;
 }
 
 /** Bootstrap */
+.tab-container.tab-content {
+  flex-grow: 1;
+}
 .tab-content > .tab-pane {
   display: none;
 }
@@ -113,4 +116,7 @@
 }
 .tab-content > .active {
   display: block;
+}
+.tab-pane .control-group .select2-choices input[type="text"] {
+  border:none;
 }

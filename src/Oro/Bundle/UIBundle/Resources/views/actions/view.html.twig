@@ -24,11 +24,11 @@
         {% set title %}
             {% block breadcrumbs %}
                 {% if breadcrumbs.indexLabel is defined %}
-                    {%- if breadcrumbs.indexPath is defined -%}
+                    {% if breadcrumbs.indexPath is defined %}
                         <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
-                    {%- else -%}
+                    {% else %}
                         {{ breadcrumbs.indexLabel|trans }}
-                    {%- endif -%}
+                    {% endif %}
                     <span class="separator">/</span>
                 {% endif %}
                 {% if breadcrumbs.additional is defined %}

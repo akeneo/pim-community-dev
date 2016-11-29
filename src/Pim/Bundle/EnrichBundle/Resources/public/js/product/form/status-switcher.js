@@ -45,8 +45,9 @@ define(
                 this.$el.html(this.template({
                     status: status
                 }));
-                this.$el.addClass(status ? 'AknDropdownButton--apply' : 'AknDropdownButton--important');
-                this.$el.removeClass(status ? 'AknDropdownButton--important' : 'AknDropdownButton--apply');
+                this.$el
+                    .addClass(status ? 'AknDropdownButton--apply' : 'AknDropdownButton--important')
+                    .removeClass(status ? 'AknDropdownButton--important' : 'AknDropdownButton--apply');
                 this.delegateEvents();
 
                 return this;

@@ -106,7 +106,7 @@ class PanelDecorator extends ElementDecorator
     {
         $stateClasses = [
             'AknProgress--warning' => 'warning',
-            'AknProgress--apply' => 'success',
+            'AknProgress--apply'   => 'success',
         ];
         foreach ($stateClasses as $stateClass => $state) {
             if ($scopeBlock->find('css', '.progress')->hasClass($stateClass)) {

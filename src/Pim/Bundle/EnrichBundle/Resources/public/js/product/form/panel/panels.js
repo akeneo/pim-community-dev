@@ -30,8 +30,6 @@ define(
             initialize: function () {
                 this.panels = [];
 
-                window.addEventListener('resize', this.resize.bind(this));
-
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
@@ -40,7 +38,6 @@ define(
              */
             configure: function () {
                 this.onExtensions('panel:register', this.registerPanel.bind(this));
-                this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.resize);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -85,7 +82,6 @@ define(
                 $(this.getParent().getZone('side-buttons')).append(selectorExtension.$el);
 
                 this.delegateEvents();
-                this.resize();
 
                 return this;
             },
@@ -130,13 +126,6 @@ define(
                 }
 
                 this.render();
-            },
-
-            /**
-             * Resize the panel to fit the pef
-             */
-            resize: function () {
-                /* TODO Remove this function */
             }
         });
     }

@@ -7,7 +7,6 @@ define([
         'oro/translator'
     ],
     function (
-
         _,
         BaseForm,
         Grid,

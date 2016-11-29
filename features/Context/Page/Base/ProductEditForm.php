@@ -178,10 +178,6 @@ class ProductEditForm extends Form
             $container = $container->getParent();
         }
 
-        if (!$container->hasClass('AknFieldContainer')) {
-            throw new ElementNotFoundException($this->getSession(), 'compound field', 'class', 'AknFieldContainer');
-        }
-
         $container->name = $label;
 
         return $container;
@@ -208,7 +204,7 @@ class ProductEditForm extends Form
         $subContainer = $this->spin(function () use ($label, $copy) {
             $selector = '.AknFieldContainer-formField';
             if (false !== $copy) {
-                $selector = sprintf('.copy-container %s', $selector);
+                $selector = '.copy-container ' . $selector;
             }
 
             return $this->findFieldContainer($label)->find('css', $selector);
@@ -533,11 +529,12 @@ class ProductEditForm extends Form
     public function compareFieldValue($label, $expected, $copy = false)
     {
         $fieldContainer = $this->findFieldContainer($label);
-        $fieldType      = $this->getFieldType($fieldContainer);
-        $subContainer   = $fieldContainer->find(
-            'css',
-            $copy ? '.copy-container .AknFieldContainer-formField' : '.AknFieldContainer-formField'
-        );
+        $fieldType = $this->getFieldType($fieldContainer);
+        $subContainerSelector = '.AknFieldContainer-formField';
+        if (false !== $copy) {
+            $subContainerSelector = '.copy-container ' . $subContainerSelector;
+        }
+        $subContainer = $fieldContainer->find('css', $subContainerSelector);
 
         switch ($fieldType) {
             case 'textArea':

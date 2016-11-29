@@ -301,7 +301,7 @@ class Edit extends ProductEditForm
     {
         $el = $this->getElement('Status switcher');
 
-        $this->getProductSwitcherCaret()->click();
+        $this->getProductStatusSwitcherCaret()->click();
         $button = $el->find('css', 'ul a[data-status="disable"]');
         if ($button) {
             $button->click();
@@ -319,7 +319,7 @@ class Edit extends ProductEditForm
     {
         $el = $this->getElement('Status switcher');
 
-        $this->getProductSwitcherCaret()->click();
+        $this->getProductStatusSwitcherCaret()->click();
         $button = $el->find('css', 'ul a[data-status="enable"]');
         if ($button) {
             $button->click();
@@ -675,7 +675,7 @@ class Edit extends ProductEditForm
      *
      * @return NodeElement
      */
-    protected function getProductSwitcherCaret()
+    protected function getProductStatusSwitcherCaret()
     {
         $el = $this->getElement('Status switcher');
 

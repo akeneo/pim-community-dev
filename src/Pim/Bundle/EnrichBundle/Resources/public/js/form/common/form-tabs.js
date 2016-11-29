@@ -122,16 +122,7 @@ define(
                 var currentTab = this.getExtension(this.getCurrentTab());
                 if (currentTab && _.isFunction(currentTab.resize)) {
                     currentTab.resize();
-                } else {
-                    this.resizeContainer();
                 }
-            },
-
-            /**
-             * Default resize method
-             */
-            resizeContainer: function () {
-                /* TODO Remove this function */
             },
 
             /**

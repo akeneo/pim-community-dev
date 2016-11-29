@@ -39,7 +39,7 @@
                 <% _.each(versions, function(version) { %>
                     <tr data-version="<%- version.version %>" data-version-id="<%- version.id %>" class="AknGrid-bodyRow product-version">
                         <td class="AknGrid-bodyCell version">
-                            <span>
+                            <span class="version-expander">
                                 <i class="icon-chevron-right"></i>
                             </span>
                             <%- version.version %>
@@ -51,7 +51,7 @@
                     </tr>
                     <tr class="AknGrid-bodyRow changeset hide">
                         <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="<%- hasAction ? '6' : '5' %>">
-                            <table class="AknGrid AknGrid--subGrid table-history-details">
+                            <table class="AknGrid AknGrid--condensed table-history-details">
                                 <thead>
                                     <tr>
                                         <th class="AknGrid-headerCell property"><%- _.__('pim_enrich.entity.product.history.property') %></th>

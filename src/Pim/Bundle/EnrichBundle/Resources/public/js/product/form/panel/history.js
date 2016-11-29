@@ -77,7 +77,6 @@ define(
 
                             this.delegateEvents();
                             this.renderExtensions();
-                            this.getParent().resize();
 
                             this.delegateEvents();
                         }.bind(this));
@@ -214,6 +213,7 @@ define(
             toggleVersion: function (event) {
                 var $row = $(event.currentTarget).closest('.AknGrid-bodyRow');
                 var $body = $row.closest('.AknGrid');
+
                 $body.find('tr.changeset').addClass('hide');
                 $body.find('i.icon-chevron-down').toggleClass('icon-chevron-right icon-chevron-down');
 

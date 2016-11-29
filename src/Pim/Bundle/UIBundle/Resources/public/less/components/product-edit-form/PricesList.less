@@ -5,8 +5,8 @@
   flex-wrap: wrap;
 
   &-item {
-    // The container is 500px wide, we can insert 3 prices in it.
-    width: (500px - 2*8px)/3;
+    // We have to insert 3 prices in the PEF width
+    width: (@AknPefFormWidth - 2*8px)/3;
     display: flex;
 
     &:not(:last-child) {

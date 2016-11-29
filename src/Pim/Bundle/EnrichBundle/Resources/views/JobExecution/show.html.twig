@@ -54,7 +54,7 @@
                 <td class="AknGrid-bodyCell"><%= stepExecution.status %></td>
                 <td class="AknGrid-bodyCell">
                     <% if (_.size(stepExecution.summary) > 0) { %>
-                        <table class="AknGrid AknGrid--subGrid">
+                        <table class="AknGrid AknGrid--condensed">
                             <% _.each(stepExecution.summary, function (value, key) { %>
                                 <tr class="AknGrid-bodyRow">
                                     <td class="AknGrid-bodyCell"><%= key %></td>
@@ -86,7 +86,7 @@
                                 data-hide-label="<%= hideLabel %>">
                                 <%= showLabel %>
                             </a>
-                            <table class="AknGrid AknGrid--subGrid AknGrid--unclickable hide">
+                            <table class="AknGrid AknGrid--condensed AknGrid--unclickable hide">
                                 <% _.each(warning.item, function (value, key) { %>
                                     <tr class="AknGrid-bodyRow">
                                         <td class="AknGrid-bodyCell"><%= key %></td>

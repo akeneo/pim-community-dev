@@ -107,9 +107,10 @@ define(
                 this.state.set('currentTree', event.currentTarget.dataset.tree);
                 this.state.set('currentTreeId', event.currentTarget.dataset.treeId);
                 this.treeAssociate.switchTree(event.currentTarget.dataset.treeId);
-                $(event.currentTarget).siblings('.AknVerticalNavtab-item')
+                $(event.currentTarget)
+                    .addClass('AknVerticalNavtab-item--active')
+                    .siblings('.AknVerticalNavtab-item')
                     .removeClass('AknVerticalNavtab-item--active');
-                $(event.currentTarget).addClass('AknVerticalNavtab-item--active');
             },
 
             updateModel: function (event) {

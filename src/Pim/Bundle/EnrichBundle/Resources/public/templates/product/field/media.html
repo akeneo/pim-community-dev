@@ -11,7 +11,7 @@
             <% mediaPreviewUrl   = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'preview') %>
             <% mediaDownloadUrl  = mediaUrlGenerator.getMediaDownloadUrl(value.data.filePath) %>
             <% if ('pim_catalog_image' === attribute.type && null != mediaThumbnailUrl) { %>
-                <div class="AknMediaField-thumb file"><img src="<%- mediaThumbnailUrl %>"/></div>
+                <div class="AknMediaField-thumb file"><img src="<%- mediaThumbnailUrl %>" class="AknMediaField-image"/></div>
             <% } else { %>
                 <div class="AknMediaField-thumb file"><i class="AknMediaField-icon icon icon-file"></i></div>
             <% } %>

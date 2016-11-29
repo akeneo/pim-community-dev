@@ -122,7 +122,7 @@
                                         <li class="tab{{ loop.index == 1 ? ' active' : '' }}">
                                             <a href="#tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">
                                                 <i class="acl-group-permission-toggle"></i>
-                                                {{ group|trans }}
+                                                <span>{{ group|trans }}</span>
                                             </a>
                                         </li>
                                     {% endfor %}
@@ -131,14 +131,14 @@
                                         <li class="tab">
                                             <a href="#tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" data-toggle="tab">
                                                 <i class="acl-group-permission-toggle"></i>
-                                                {{ groupName|trans }}
+                                                <span>{{ groupName|trans }}</span>
                                             </a>
                                         </li>
                                     {% endfor %}
                                     <li class="tab">
                                         <a href="#tabs-group-system" data-toggle="tab">
                                             <i class="acl-group-permission-toggle"></i>
-                                            {{ 'System'|trans }}
+                                            <span>{{ 'System'|trans }}</span>
                                         </a>
                                     </li>
                                 </ul>

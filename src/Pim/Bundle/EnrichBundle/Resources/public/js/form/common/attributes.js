@@ -139,8 +139,6 @@ define(
                                     $valuesPanel.append(field.$el);
                                 }
                             }.bind(this));
-
-                            this.resize();
                         }.bind(this));
                     this.delegateEvents();
 
@@ -148,13 +146,6 @@ define(
                 }.bind(this));
 
                 return this;
-            },
-
-            /**
-             * Resize method to update the container size
-             */
-            resize: function () {
-                /* TODO Remove this function */
             },
 
             /**

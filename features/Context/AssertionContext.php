@@ -3,12 +3,10 @@
 namespace Context;
 
 use Behat\Behat\Context\Step\Then;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\Mink\Exception\ResponseTextException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -405,7 +403,7 @@ class AssertionContext extends RawMinkContext
                 );
             }
             if (!$row->hasClass('expanded')) {
-                $row->find('css', '.icon-chevron-right')->click();
+                $row->find('css', '.version-expander')->click();
             }
             if (isset($data['author'])) {
                 $author = $row->find('css', 'td.author')->getText();
@@ -421,16 +419,9 @@ class AssertionContext extends RawMinkContext
                 );
             }
 
-            $changeset = $this->spin(function () use ($row) {
-                return $row->getParent()->find('css', 'tr.changeset:not(.hide) tbody');
+            $changesetRows = $this->spin(function () use ($row) {
+                return $row->getParent()->findAll('css', '.changeset:not(.hide) tbody tr');
             }, sprintf('No changeset found for version %s', $data['version']));
-
-            $changesetRows = $changeset->findAll('css', 'tr');
-            if (!$changesetRows) {
-                throw $this->createExpectationException(
-                    sprintf('No changeset rows found for version %s', $data['version'])
-                );
-            }
 
             $matchingRow = null;
             $parsedTexts = [];
@@ -714,7 +705,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldNotSeeDefaultAvatar()
     {
-        $this->assertSession()->elementAttributeNotContains('css', 'img.AknTitleContainer-avatar', 'src', 'user-info.png');
+        $this->assertSession()->elementAttributeNotContains('css', '.AknTitleContainer-avatar', 'src', 'user-info.png');
     }
 
     /**
