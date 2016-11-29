@@ -658,7 +658,7 @@ class Edit extends ProductEditForm
     public function getSaveAndBackButton()
     {
         $submit = $this->spin(function () {
-            return $this->find('css', '.AknSeveralActionsButton.AknSeveralActionsButton--success');
+            return $this->find('css', '.AknSeveralActionsButton.AknSeveralActionsButton--apply');
         }, 'Submit button not found');
 
         $submit->find('css', '.AknSeveralActionsButton-caretContainer')->click();
