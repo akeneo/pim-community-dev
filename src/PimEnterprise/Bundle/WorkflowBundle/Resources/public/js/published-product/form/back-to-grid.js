@@ -8,16 +8,21 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
         'text!pim/template/form/back-to-grid',
         'routing',
         'pim/user-context',
         'oro/navigation'
     ],
-    function (_, BaseForm, template, Routing, UserContext, Navigation) {
+    function (_, __, BaseForm, template, Routing, UserContext, Navigation) {
         return BaseForm.extend({
-            className: 'btn-group',
+            tagName: 'a',
+            className: 'AknTitleContainer-backLink back-link',
             template: _.template(template),
+            attributes: {
+                title: __('pim_enrich.navigation.link.back_to_grid')
+            },
 
             /**
              * @inheritdoc
@@ -33,16 +38,15 @@ define(
              * @inheritdoc
              */
             render: function () {
-                this.$el.html(this.template({
-                    path: Routing.generate(
-                        'pimee_workflow_published_product_index',
-                        {
-                            dataLocale: UserContext.get('catalogLocale')
-                        }
-                    )
-                }));
+                this.$el.html(this.template());
+                this.$el.attr('href', Routing.generate(
+                    'pimee_workflow_published_product_index',
+                    {
+                        dataLocale: UserContext.get('catalogLocale')
+                    }
+                ));
 
-                Navigation.getInstance().processClicks(this.$('a'));
+                Navigation.getInstance().processClicks(this.$el);
 
                 return this;
             }

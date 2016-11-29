@@ -87,7 +87,7 @@ class Edit extends Form
         $variationContainer = $this->findVariationContainer($channel);
 
         $generateButton = $this->spin(function () use ($variationContainer) {
-            return $variationContainer->find('css', '.asset-generator a');
+            return $variationContainer->find('css', '.file-uploader');
         }, 'Generate variation button not found.');
 
         $generateButton->click();
@@ -105,8 +105,9 @@ class Edit extends Form
     public function deleteVariationFile($channel)
     {
         $variationContainer = $this->findVariationContainer($channel);
+
         $deleteButton = $this->spin(function () use ($variationContainer) {
-            return $variationContainer->find('css', 'div.variation button.delete');
+            return $variationContainer->find('css', '.delete');
         }, 'Delete variation button not found.');
 
         $deleteButton->click();
@@ -187,18 +188,20 @@ class Edit extends Form
      */
     public function findVariationContainer($channel)
     {
-        $allVariationsContainer = $this->spin(function () {
-            return $this->findAll('css', 'div.variation');
-        }, 'Cannot find the variation containers');
+        return $this->spin(function () use ($channel) {
+            $title = $this->find('css', sprintf('.variation h4:contains("%s")', $channel));
 
-        foreach ($allVariationsContainer as $container) {
-            $title = $this->find('css', sprintf('h4:contains("%s")', $channel));
-            if (null !== $title) {
-                return $container;
+            if ($title !== null) {
+                $result = $title;
+                while (!$result->hasClass('variation')) {
+                    $result = $result->getParent();
+                }
+
+                return $result;
             }
-        }
 
-        throw new ElementNotFoundException($this->getSession(), sprintf('variation %s container', $channel));
+            return null;
+        }, sprintf('Can not find Variation container of "%s"', $channel));
     }
 
     /**

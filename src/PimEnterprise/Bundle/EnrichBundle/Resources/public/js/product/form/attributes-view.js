@@ -50,8 +50,6 @@ define(
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
 
-                window.addEventListener('resize', this.resize.bind(this));
-                this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.resize);
                 FieldManager.clearFields();
 
                 this.onExtensions('group:change', this.render.bind(this));
@@ -74,7 +72,6 @@ define(
                 this.rendering = true;
                 this.getConfig().done(function () {
                     this.$el.html(this.template({}));
-                    this.resize();
                     var product = this.getFormData();
                     AttributeManager.getValues(product).then(function (values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
@@ -109,14 +106,6 @@ define(
                 }.bind(this));
 
                 return this;
-            },
-            resize: function () {
-                var productValuesContainer = this.$('.object-values');
-                if (productValuesContainer.length && this.getRoot().$el.length && productValuesContainer.offset()) {
-                    productValuesContainer.css(
-                        {'height': ($(window).height() - productValuesContainer.offset().top - 4) + 'px'}
-                    );
-                }
             },
             renderField: function (product, attributeCode, values) {
                 return FieldManager.getField(attributeCode).then(function (field) {

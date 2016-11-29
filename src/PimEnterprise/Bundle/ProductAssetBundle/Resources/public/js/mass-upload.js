@@ -49,9 +49,9 @@ define(
             rowTemplate: _.template(rowTemplate),
 
             events: {
-                'click .navbar-buttons .start:not(.disabled)': 'startAll',
-                'click .navbar-buttons .cancel:not(.disabled)': 'cancelAll',
-                'click .navbar-buttons .import:not(.disabled)': 'importAll'
+                'click .AknTitleContainer .start:not(.disabled)': 'startAll',
+                'click .AknTitleContainer .cancel:not(.disabled)': 'cancelAll',
+                'click .AknTitleContainer .import:not(.disabled)': 'importAll'
             },
 
             /**
@@ -60,7 +60,7 @@ define(
             render: function () {
                 this.$el.html(this.pageTemplate({__: __}));
 
-                $navbarButtons = $('.navbar-buttons');
+                $navbarButtons = $('.AknTitleContainer-rightButtons');
                 $importButton = $navbarButtons.find('.import');
                 $startButton = $navbarButtons.find('.start');
                 $cancelButton = $navbarButtons.find('.cancel');

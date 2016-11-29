@@ -1,24 +1,38 @@
-<div class="navigation clearfix navbar-extra">
-    <div class="navbar-buttons pull-right">
-        <button class="btn cancel icons-holder-text hide" type="reset">
-            <i class="icon-remove"></i>
-            <%- __('pimee_product_asset.mass_upload.btn.remove_all_files') %>
-        </button>
-        <button class="btn btn-publish start icons-holder-text disabled" type="submit">
-            <i class="icon-play"></i>
-            <%- __('pimee_product_asset.mass_upload.btn.upload') %>
-        </button>
-        <button class="btn btn-primary import disabled icons-holder-text">
-            <i class="icon-cogs"></i>
-            <%- __('pimee_product_asset.mass_upload.btn.import') %>
-        </button>
-    </div>
-    <div class="navbar-content pull-left">
-        <div class="navbar-title clearfix-oro">
-            <div class="sub-title"><%- __('pimee_product_asset.mass_upload.menu') %></div>
+<header class="AknTitleContainer navigation">
+    <div class="AknTitleContainer-contentContainer">
+        <div class="AknTitleContainer-backContainer" data-drop-zone="back"></div>
+        <div class="AknTitleContainer-contentContainer">
+            <div class="AknTitleContainer-mainLine">
+                <div class="AknTitleContainer-titleContainer" data-drop-zone="title">
+                    <h2 class="AknTitleContainer-title">
+                        <%- __('pimee_product_asset.mass_upload.menu') %>
+                    </h2>
+                </div>
+                <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
+                    <div class="AknButtonsList AknTitleContainer-rightButtons">
+                        <button class="btn cancel icons-holder-text hide" type="reset">
+                            <i class="icon-remove"></i>
+                            <%- __('pimee_product_asset.mass_upload.btn.remove_all_files') %>
+                        </button>
+                        <button class="btn btn-publish start icons-holder-text disabled" type="submit">
+                            <i class="icon-play"></i>
+                            <%- __('pimee_product_asset.mass_upload.btn.upload') %>
+                        </button>
+                        <button class="btn btn-primary import disabled icons-holder-text">
+                            <i class="icon-cogs"></i>
+                            <%- __('pimee_product_asset.mass_upload.btn.import') %>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="AknTitleContainer-metaLine">
+                <div class="AknTitleContainer-meta">
+
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</header>
 
 <div class="row-fluid buffer-top">
     <div class="control-group upload-zone-container">
@@ -34,21 +48,19 @@
     </div>
 </div>
 
-<div class="container-fluid">
-    <div class="grid-container">
-        <table class="grid table table-striped files">
-            <thead>
-            <tr>
-                <th class="preview"><%- __('pimee_product_asset.mass_upload.grid.medias') %></th>
-                <th class="filename"><%- __('pimee_product_asset.mass_upload.grid.filename') %></th>
-                <th class="filetype"><%- __('pimee_product_asset.mass_upload.grid.filetype') %></th>
-                <th class="status"><%- __('pimee_product_asset.mass_upload.grid.status') %></th>
-                <th class="dz-progress-wrapper"><%- __('pimee_product_asset.mass_upload.grid.progress') %></th>
-                <th class="action-cell"><%- __('pimee_product_asset.mass_upload.grid.actions') %></th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
+<div class="AknGridContainer grid-container">
+    <table class="AknGrid grid files">
+        <thead>
+        <tr>
+            <th class="AknGrid-headerCell preview"><%- __('pimee_product_asset.mass_upload.grid.medias') %></th>
+            <th class="AknGrid-headerCell filename"><%- __('pimee_product_asset.mass_upload.grid.filename') %></th>
+            <th class="AknGrid-headerCell filetype"><%- __('pimee_product_asset.mass_upload.grid.filetype') %></th>
+            <th class="AknGrid-headerCell status"><%- __('pimee_product_asset.mass_upload.grid.status') %></th>
+            <th class="AknGrid-headerCell dz-progress-wrapper"><%- __('pimee_product_asset.mass_upload.grid.progress') %></th>
+            <th class="AknGrid-headerCell action-cell"><%- __('pimee_product_asset.mass_upload.grid.actions') %></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </div>
