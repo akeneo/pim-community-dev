@@ -668,7 +668,7 @@ class ProductEditForm extends Form
     protected function getMediaFieldValue(NodeElement $subContainer)
     {
         $widget = $this->spin(function () use ($subContainer) {
-            return $subContainer->find('css', '.field-input .media-uploader');
+            return $subContainer->find('css', '.field-input .AknMediaField');
         }, 'Cannot find ".media-uploader" in media field');
 
         $filenameNode = $widget->find('css', '.filename');
