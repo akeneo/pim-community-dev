@@ -4,8 +4,7 @@
 
 {% block content %}
     {% set title %}
-        {{ 'pimee_product_asset.enrich_asset.view.title'|trans }}
-        {{ asset.code }}
+        {{ 'pimee_product_asset.enrich_asset.view.title'|trans }} / {{ asset.code }}
     {% endset %}
 
     {% set backButton %}
@@ -21,7 +20,7 @@
 
     {{ elements.page_header(title, null, null, meta, null, backButton) }}
 
-    <div class="form-horizontal product-edit product-view asset">
+    <div class="AknTabContainer form-horizontal product-edit product-view asset">
         <div class="layout-content">
             {% set form_tabs = ['pimee_product_asset.tabs.variations', 'pimee_product_asset.tabs.properties'] %}
             {{ elements.form_navbar(form_tabs) }}

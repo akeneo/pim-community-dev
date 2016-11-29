@@ -8,7 +8,9 @@ define(
             filePrompt: _.template(
                 '<img src="/bundles/pimui/images/upload.png" alt="upload icon"><span><%= message %></span>'
             ),
-            fileInfo: _.template('<span><%= message %>&nbsp;<i class="icon icon-trash"></i></span>'),
+            fileInfo: _.template(
+                '<span><%= message %>&nbsp;<i class="icon icon-trash"></i></span>'
+            ),
             events: {
                 'change input[type=file]': 'onFileChanged',
                 'click .icon-trash': 'resetFile'
@@ -31,7 +33,7 @@ define(
              */
             setFileInformations: function (file) {
                 var $inputContainer = this.getUploaderContainer(file);
-                var $label = $inputContainer.find('.uploader');
+                var $label = $inputContainer.find('.AknMediaField-emptyContainer');
                 if (file.value) {
                     var basename = this.basename(file.value);
                     $label.empty();
