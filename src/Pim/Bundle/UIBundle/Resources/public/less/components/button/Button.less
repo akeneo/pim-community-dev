@@ -1,6 +1,8 @@
 @import '../../base/variables';
 
 .AknButton {
+  @padding: 14px;
+
   // Default button color is light gray
   background: @AknLightGray;
   color: @AknDefaultFontColor;
@@ -9,7 +11,7 @@
   font-size: @AknFontSizeBig;
   min-width: @AknDefaultButtonSize;
   display: inline-block;
-  padding: 0 10px;
+  padding: 0 @padding;
   border-radius: 2px;
   border: none;
   cursor: pointer;
@@ -32,7 +34,7 @@
     background: darken(@AknLightGray, 10%);
     text-align: center;
     margin-left: 0;
-    margin-right: 10px;
+    margin-right: @padding;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
