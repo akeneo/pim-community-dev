@@ -159,7 +159,7 @@ class EnterpriseWebUser extends BaseWebUser
     public function iPressTheSendForApprovalButton()
     {
         $this->iPressTheButton("Send for approval");
-        $this->iPressTheButton("Send");
+        $this->iPressTheButtonInThePopin("Send");
     }
 
     /**

@@ -23,7 +23,7 @@ class Index extends Grid
 
         $this->elements = array_merge(
             [
-                'Execute rules' => ['css' => '.btn .execute-all-rules'],
+                'Execute rules' => ['css' => '.execute-all-rules'],
             ],
             $this->elements
         );
