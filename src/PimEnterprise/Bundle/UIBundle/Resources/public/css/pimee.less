@@ -36,35 +36,6 @@
     width: 15%;
   }
 
-  .action-cell {
-    .btn {
-      width: 22px;
-      height: 22px;
-      padding: 0;
-      line-height: 22px;
-
-      [class^='icon-']:before {
-        color: @akeneoLight;
-      }
-
-      &.partial-reject-link {
-        background-color: @red;
-
-        &:hover {
-          background-color: @redDarker;
-        }
-      }
-
-      &.partial-approve-link {
-        background-color: @green;
-
-        &:hover {
-          background-color: @greenDarker;
-        }
-      }
-    }
-  }
-
   &.readonly {
     opacity: 0.6;
   }
@@ -94,96 +65,6 @@
   text-shadow: none;
 }
 
-.btn-publish, .btn-unpublish {
-  padding: 0 10px 0 44px;
-  background-color: @blue;
-  position: relative;
-  background-image: none;
-  line-height: 34px;
-  height: 34px;
-  border: none;
-  color: white;
-
-  i {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 34px;
-    height: 34px;
-    line-height: 34px;
-    margin: 0;
-    background-color: @blueDark;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-  }
-
-  &:hover, &:focus {
-    background-color: @blueDark;
-    color: white;
-  }
-
-  &.disabled {
-    background-color: @blueLighter;
-    color: white;
-
-    i {
-      background-color: @blueLighter;
-    }
-
-    &:hover {
-      background-color: @blueLighter;
-    }
-
-  }
-}
-
-.btn-group.btn-dropdown {
-  .btn.dropdown-publish {
-    background-color: @blue;
-    color: white;
-
-    .caret {
-      border-top: 4px solid white;
-    }
-  }
-
-  &.open {
-    .btn.dropdown-publish {
-      background-color: @blueDark;
-    }
-  }
-}
-
-.btn.submit-draft {
-  &:not(.disabled) {
-    position: relative;
-    background-image: none;
-    background-color: @blue;
-    line-height: 34px;
-    height: 34px;
-    color: white;
-    border: none;
-    padding: 0 10px 0 44px;
-  }
-
-  i {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 34px;
-    height: 34px;
-    line-height: 34px;
-    margin: 0;
-    background-color: @blueDark;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-  }
-
-  &:hover {
-    background-color: @blueDark;
-  }
-}
-
 .meta {
   .published-version, .product-owner-groups {
     flex-shrink: 0;
@@ -198,14 +79,6 @@
     padding: 5px;
     .display-flex();
     .justify-content(flex-end);
-
-    .btn {
-      background-image: none;
-      padding: 3px 15px;
-      height: 35px;
-      text-shadow: none;
-      box-shadow: none;
-    }
   }
 
   ul {
