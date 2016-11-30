@@ -85,13 +85,6 @@ a {
   font-size: @font-size-14;
 }
 
-.btn.scope-filter {
-  height: @buttonHeight;
-  min-width: 130px;
-  padding-right: 0;
-  padding-left: 5px;
-}
-
 /** widgets **********************************************************************************************************/
 .configuration {
   width: 100%;
@@ -191,12 +184,6 @@ span.link-label {
   &.in-edition {
     tr:not(.in-edition) td {
       opacity: 0.65;
-
-      .btn {
-        cursor: default;
-        background-image: none;
-        box-shadow: none;
-      }
     }
   }
 
@@ -230,18 +217,6 @@ span.link-label {
 
     .tooltip {
       white-space: normal;
-    }
-  }
-
-  .btn-small {
-    margin-right: 3px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-
-    i {
-      width: 10px;
     }
   }
 
@@ -308,12 +283,6 @@ h3.tab-header {
   }
 }
 
-.akeneo-multi-select-field .btn.add-attribute-option {
-  height: 34px;
-  width: 34px;
-  line-height: 34px;
-}
-
 .field-input .unavailable {
   color: @color-form-info;
 }
@@ -348,10 +317,6 @@ h3.tab-header {
   }
 
   .ui-multiselect-footer {
-    .btn-primary {
-      padding-right: 10px;
-    }
-
     .icons-holder-text {
       position: relative;
     }
@@ -364,25 +329,13 @@ h3.tab-header {
 }
 
 .entity-edit-form {
-  & > header .btn {
-    background-image: none;
-    text-shadow: none;
-    box-shadow: none;
-  }
-
-  .btn-success {
-    background: @green;
-    color: white;
-    border: 1px solid @greenDark;
-  }
-
   .dropdown-menu {
     a:hover .language {
       color: white;
     }
   }
 
-  .dropdown-toggle, .btn, .dropdown-menu {
+  .dropdown-toggle, .dropdown-menu {
     text-transform: capitalize;
     background-image: none;
 
@@ -408,7 +361,6 @@ h3.tab-header {
     }
   }
 }
-
 
 .status-switcher.btn-dropdown {
   &.enabled > a, & > .enabled {
@@ -489,9 +441,6 @@ h3.tab-header {
     label {
       line-height: 36px;
     }
-  }
-  .modal-footer .btn-primary {
-    background-color: @green;
   }
 }
 
