@@ -11,11 +11,15 @@
     display: none;
   }
 
-  &--withSpace &-item:not(:first-child) {
-    margin-left: @marginSpace / 2;
+  &--right {
+    justify-content: flex-end;
   }
 
-  &--withSpace &-item:not(:last-child) {
-    margin-right: @marginSpace / 2;
+  &--withSpace:not(&--right) &-item {
+    margin-right: @marginSpace;
+  }
+
+  &--withSpace&--right &-item {
+    margin-left: @marginSpace;
   }
 }

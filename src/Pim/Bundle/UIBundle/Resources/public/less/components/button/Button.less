@@ -1,6 +1,7 @@
 @import '../../base/variables';
 
 .AknButton {
+  // Default button color is light gray
   background: @AknLightGray;
   color: @AknDefaultFontColor;
   height: @AknDefaultButtonSize;
@@ -31,7 +32,7 @@
     background: darken(@AknLightGray, 10%);
     text-align: center;
     margin-left: 0;
-    margin-right: 5px;
+    margin-right: 10px;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
@@ -66,7 +67,7 @@
     background: darken(@AknGrey, 10%);
   }
 
-  // Red color
+  // Important color
   &--important {
     background-color: @AknRed;
     color: white;
@@ -81,7 +82,22 @@
     background: darken(@AknRed, 10%);
   }
 
-  //Sizes
+  // Action color
+  &--action {
+    background-color: @AknBlue;
+    color: white;
+  }
+
+  &--action:hover, &--action&--active {
+    background: darken(@AknBlue, 10%);
+    color: white;
+  }
+
+  &--action &-icon {
+    background: darken(@AknBlue, 10%);
+  }
+
+  // Sizes
   &--little {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
@@ -114,4 +130,9 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
+}
+
+.btn {
+  background: red !important;
+  display: block !important;
 }
