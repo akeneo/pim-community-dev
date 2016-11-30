@@ -89,3 +89,19 @@ Feature: Edit common attributes of many products at once
     And the english tablet Description of "boots" should be "Bar"
     And the english mobile Description of "pump" should be "Foo"
     And the english tablet Description of "pump" should be "Bar"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6008
+  Scenario: Successfully mass edit scoped product values with special chars
+    Given I set product "pump" family to "boots"
+    When I mass-edit products boots and pump
+    And I choose the "Edit common attributes" operation
+    And I display the Description attribute
+    And I change the Description to "&$@(B°ar'<"
+    And I switch the scope to "mobile"
+    And I change the "Description" to ">§€")F*o'o"
+    And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
+    Then the english mobile Description of "boots" should be ">§€")F*o'o"
+    And the english tablet Description of "boots" should be "&$@(B°ar'<"
+    And the english mobile Description of "pump" should be ">§€")F*o'o"
+    And the english tablet Description of "pump" should be "&$@(B°ar'<"
