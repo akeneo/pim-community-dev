@@ -41,8 +41,8 @@ class AttributeSelectorDecorator extends ElementDecorator
     public function close()
     {
         $button = $this->spin(function () {
-            return $this->find('css', '.btn.ok');
-        }, 'Cannot find the button ".btn.ok"');
+            return $this->find('css', '.modal-footer .ok');
+        }, 'Cannot find the close button');
 
         $button->click();
     }
@@ -53,8 +53,8 @@ class AttributeSelectorDecorator extends ElementDecorator
     public function clear()
     {
         $button = $this->spin(function () {
-            return $this->find('css', '.btn.clear');
-        }, 'Cannot find the button ".btn.clear"');
+            return $this->find('css', '.reset, .clear');
+        }, 'Cannot find the clear button');
 
         $button->click();
     }

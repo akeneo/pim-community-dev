@@ -1062,8 +1062,8 @@ class WebUser extends RawMinkContext
         $this->getCurrentPage()->fillPopinFields($table->getRowsHash());
 
         $addButton = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.modal .btn.ok');
-        }, 'Cannot find ".modal .btn.ok" element in attribute modal');
+            return $this->getCurrentPage()->find('css', '.modal .ok');
+        }, 'Cannot find validate button in attribute modal');
 
         $addButton->click();
 
@@ -1941,7 +1941,9 @@ class WebUser extends RawMinkContext
     public function iMoveOnToTheNextStep()
     {
         $this->scrollContainerTo(900);
-        $this->wait('$(".btn.next").length > 0');
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.next');
+        }, 'Could not find next button');
         $this->getCurrentPage()->next();
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();

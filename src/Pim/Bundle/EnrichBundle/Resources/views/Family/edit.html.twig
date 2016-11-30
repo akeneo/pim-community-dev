@@ -33,10 +33,12 @@
                     'pim_enrich_family_remove',
                     path('pim_enrich_family_index'),
                     'confirmation.remove.family'|trans({ '%name%': form.vars.value.label }),
-                    'flash.family.removed'|trans
+                    'flash.family.removed'|trans,
+                    '',
+                    'AknButtonsList-item'
                 ) }}
             {% endif %}
-            {{ elements.submitBtn('', 'ok') }}
+            {{ elements.submitBtn('', 'ok', 'AknButtonsList-item') }}
         {% endset %}
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id), titleButtons) }}

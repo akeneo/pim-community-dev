@@ -37,7 +37,7 @@ class Form extends Base
                 'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
                 'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
                 'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid, .tab-container .history'],
-                'Save'                            => ['css' => 'button.btn-submit'],
+                'Save'                            => ['css' => '.AknButton--apply'],
                 'Panel sidebar'                   => [
                     'css'        => '.edit-form > .content',
                     'decorators' => ['Pim\Behat\Decorator\Page\PanelableDecorator']

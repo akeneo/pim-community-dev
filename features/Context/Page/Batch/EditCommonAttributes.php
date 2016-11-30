@@ -29,8 +29,8 @@ class EditCommonAttributes extends ProductEditForm
         $this->elements = array_merge(
             $this->elements,
             [
-                'Next'                      => ['css' => '.configuration .btn-primary'],
-                'Confirm'                   => ['css' => '.confirmation .btn-primary'],
+                'Next'                      => ['css' => '.configuration .AknButton--apply'],
+                'Confirm'                   => ['css' => '.confirmation .AknButton--apply'],
                 'Available attributes form' => [
                     'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes',
                 ],

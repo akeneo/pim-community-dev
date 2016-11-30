@@ -28,9 +28,11 @@
                 'pim_enrich_associationtype_remove',
                 path('pim_enrich_associationtype_index'),
                 confirmationMessage,
-                'flash.association type.removed'|trans
+                'flash.association type.removed'|trans,
+                '',
+                'AknButtonsList-item'
             ) }}
-            {{ elements.submitBtn('', 'ok') }}
+            {{ elements.submitBtn('', 'ok', 'AknButtonsList-item') }}
         {% endset %}
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id), titleButtons) }}
