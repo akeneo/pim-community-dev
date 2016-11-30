@@ -91,7 +91,7 @@
                 {{ elements.link(
                     'Cancel'|trans,
                     path('oro_user_profile_view', {'id': form.vars.value.id}),
-                    {icon: 'chevron-left'}
+                    { icon: 'chevron-left', class:'AknButtonsList-item AknButton--grey' }
                 ) }}
             {% endif %}
             {{ elements.submitBtn('', 'ok', 'AknButtonsList-item') }}
