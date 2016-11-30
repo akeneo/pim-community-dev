@@ -1346,7 +1346,7 @@ class WebUser extends RawMinkContext
         }, sprintf("Can not find any '%s' button", $button));
 
         $this->spin(function () use ($buttonNode) {
-            return $buttonNode->hasClass('disabled');
+            return $buttonNode->hasClass('disabled') || $buttonNode->hasClass('AknButton--disabled');
         }, sprintf("The button '%s' is not disabled", $button));
     }
 

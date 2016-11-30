@@ -1,7 +1,8 @@
 @import '../../base/variables';
 
 .AknButton {
-  @padding: 14px;
+  @darken: 10%;
+  @lighten: 20%;
 
   // Default button color is light gray
   background: @AknLightGray;
@@ -11,7 +12,7 @@
   font-size: @AknFontSizeBig;
   min-width: @AknDefaultButtonSize;
   display: inline-block;
-  padding: 0 @padding;
+  padding: 0 @AknButtonsPadding;
   border-radius: 2px;
   border: none;
   cursor: pointer;
@@ -22,21 +23,28 @@
     padding-left: 0;
   }
 
-  &:hover, &--active {
-    background: darken(@AknLightGray, 10%);
-    color: darken(@AknDefaultFontColor, 10%);
+  &:hover,
+  &--active {
+    background: darken(@AknLightGray, @darken);
+    color: darken(@AknDefaultFontColor, @darken);
   }
 
   &-icon {
     height: @AknDefaultButtonSize;
     width: @AknDefaultButtonSize;
     line-height: @AknDefaultButtonSize;
-    background: darken(@AknLightGray, 10%);
+    background: darken(@AknLightGray, @darken);
     text-align: center;
     margin-left: 0;
-    margin-right: @padding;
+    margin-right: @AknButtonsPadding;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
+  }
+
+  &--disabled,
+  &--disabled &-icon {
+    background: lighten(@AknLightGray, @lighten);
+    cursor: no-drop;
   }
 
   // Apply color
@@ -45,13 +53,17 @@
     color: white;
   }
 
-  &--apply:hover, &--apply&--active {
-    background-color: darken(@AknGreen, 10%);
+  &--apply:hover,
+  &--apply&--active,
+  &--apply &-icon {
+    background: darken(@AknGreen, @darken);
     color: white;
   }
 
-  &--apply &-icon {
-    background: darken(@AknGreen, 10%);
+  &--apply&--disabled,
+  &--apply&--disabled &-icon {
+    background: lighten(@AknGreen, @lighten);
+    cursor: no-drop;
   }
 
   // Grey color
@@ -60,13 +72,17 @@
     color: white;
   }
 
-  &--grey:hover, &--grey&--active {
-    background: darken(@AknGrey, 10%);
+  &--grey:hover,
+  &--grey&--active,
+  &--grey &-icon {
+    background: darken(@AknGrey, @darken);
     color: white;
   }
 
-  &--grey &-icon {
-    background: darken(@AknGrey, 10%);
+  &--grey&--disabled,
+  &--grey&--disabled &-icon {
+    background: lighten(@AknGrey, @lighten);
+    cursor: no-drop;
   }
 
   // Important color
@@ -75,13 +91,17 @@
     color: white;
   }
 
-  &--important:hover, &--important&--active {
-    background: darken(@AknRed, 10%);
+  &--important:hover,
+  &--important&--active,
+  &--important &-icon {
+    background: darken(@AknRed, @darken);
     color: white;
   }
 
-  &--important &-icon {
-    background: darken(@AknRed, 10%);
+  &--important&--disabled,
+  &--important&--disabled &-icon {
+    background: lighten(@AknRed, @lighten);
+    cursor: no-drop;
   }
 
   // Action color
@@ -90,13 +110,17 @@
     color: white;
   }
 
-  &--action:hover, &--action&--active {
-    background: darken(@AknBlue, 10%);
+  &--action:hover,
+  &--action&--active,
+  &--action &-icon {
+    background: darken(@AknBlue, @darken);
     color: white;
   }
 
-  &--action &-icon {
-    background: darken(@AknBlue, 10%);
+  &--action&--disabled,
+  &--action&--disabled &-icon {
+    background: lighten(@AknBlue, @lighten);
+    cursor: no-drop;
   }
 
   // Sizes
@@ -131,6 +155,10 @@
   &--noLeftRadius {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+  }
+
+  &--hidden {
+    display: none;
   }
 }
 

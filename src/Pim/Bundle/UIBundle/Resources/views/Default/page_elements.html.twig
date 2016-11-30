@@ -342,8 +342,8 @@
 {% macro confirmLink(url, redirectUrl, successMessage, buttonLabel, buttonIcon, message, buttonClass, title) %}{% spaceless %}
     {% import _self as this %}
     {% set buttonLabel = 'btn.' ~ buttonLabel %}
-    <a class="btn {{ buttonClass }} icons-holder-text no-hash" title="{{ buttonLabel|trans|capitalize }}" {{this.confirmLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
-        <i class="icon-{{ buttonIcon }}"></i>
+    <a class="AknButton AknButton--withIcon {{ buttonClass }}" title="{{ buttonLabel|trans|capitalize }}" {{this.confirmLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
+        <i class="AknButton-icon icon-{{ buttonIcon }}"></i>
         {{ buttonLabel|trans|capitalize }}
     </a>
 {% endspaceless %}{% endmacro %}

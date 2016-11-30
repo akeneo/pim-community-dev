@@ -1,15 +1,15 @@
 <% hidden = !icon && !iconClassName && !label %>
-<<%- tagName %> href="<%= link %>" class="<%- className %><% if (hidden) { %>  AknIconsList-item--hidden<% } %><% if (!enabled) { %> disabled<% } %>"
+<<%- tagName %> href="<%= link %>" class="<%- className %><% if (hidden) { %> AknIconsList-item--hidden<% } %><% if (!enabled) { %> disabled<% } %>"
     <% _.each(attributes, function(attribute, name) { %>
         <%- name %>="<%- attribute %>"
     <% }) %>
     title="<%- label %>"
 >
     <% if (icon) { %>
-        <i class="icon-<%- icon %> hide-text"><%- label %></i>
+        <i class="AknIconsList-icon icon-<%- icon %>"></i>
     <% } else { %>
         <% if (iconClassName) { %>
-            <i class="<%- iconClassName %>"></i>
+            <i class="AknIconsList-icon <%- iconClassName %>"></i>
         <% } %>
         <%- label %>
     <% } %>

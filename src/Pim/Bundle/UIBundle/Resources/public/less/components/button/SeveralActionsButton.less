@@ -18,7 +18,7 @@
     background: @AknGrey;
     border-top-left-radius: @radius;
     border-bottom-left-radius: @radius;
-    padding: 0 10px;
+    padding: 0 @AknButtonsPadding;
   }
 
   &-caretContainer {
@@ -46,6 +46,20 @@
 
   &--apply &-caretContainer {
     background: darken(@AknGreen, 10%);
+  }
+
+  &--action &-mainAction {
+    background-color: @AknBlue;
+    color: white;
+
+    &:hover {
+      background-color: darken(@AknBlue, 10%);
+      color: white;
+    }
+  }
+
+  &--action &-caretContainer {
+    background: darken(@AknBlue, 10%);
   }
 
   &--little &-mainAction {
