@@ -169,14 +169,6 @@ span.link-label {
   table-layout: fixed;
   min-height: 100px;
 
-  input[type="text"] {
-    padding: 2px 3px;
-    font-size: @font-size-12;
-    width: 100%;
-    box-sizing: border-box;
-    height: 26px;
-  }
-
   .handle {
     margin-right:3px;
   }
@@ -546,18 +538,6 @@ h3.tab-header {
   @operator-width: 100px;
   .operator {
     width: @operator-width;
-  }
-
-  .operator ~ input[type="text"],
-  .operator ~ input[type="password"],
-  .operator ~ input[type="date"],
-  .operator ~ input[type="number"],
-  .operator ~ input[type="email"],
-  .operator ~ input[type="url"],
-  .operator ~ input[type="search"],
-  .operator ~ .start-date-wrapper input[type="text"],
-  .operator + select + .select2-container {
-    width: @max-field-width - @operator-width;
   }
 }
 

@@ -68,26 +68,6 @@
     margin-top: 0;
   }
 
-  input[type="text"],
-  input[type="password"] {
-    padding: 0 16px;
-    height: 38px;
-    border-radius: 2px;
-    background: @akeneoGrey;
-    border: none;
-    color: @akeneoDarkBlue;
-    font-size: @font-size-14;
-    &:-webkit-autofill {
-      background-color: @akeneoGrey !important;
-      color: @gray !important;
-      -webkit-box-shadow: 0 0 0 1000px @akeneoGrey inset !important;
-      -webkit-text-fill-color: @akeneoDarkBlue !important;
-    }
-    &::-webkit-input-placeholder {
-      color: @akeneoSlateGrey;
-    }
-  }
-
   h2 {
     text-transform: uppercase;
     font-size: @font-size-15;
@@ -99,13 +79,6 @@
 .form-signin {
   .form-row {
     display: flex;
-
-    input[type="text"],
-    input[type="password"] {
-      width: auto;
-      margin-right: 5px;
-      flex-grow: 1;
-    }
   }
 
   .remember-me, .signin-help {
@@ -125,10 +98,6 @@
 }
 
 .form-reset {
-  input[type="text"] {
-    width: 418px;
-  }
-
   .cancel {
     float: right;
   }

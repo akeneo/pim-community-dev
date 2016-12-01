@@ -49,6 +49,7 @@ css:
         - bundles/pimui/less/components/grid/Pagination.less
         - bundles/pimui/less/components/product-edit-form/AttributeActions.less
         - bundles/pimui/less/components/product-edit-form/CompletenessBlock.less
+        - bundles/pimui/less/components/product-edit-form/ComparableFields.less
         - bundles/pimui/less/components/product-edit-form/FieldContainer.less
         - bundles/pimui/less/components/product-edit-form/HorizontalTabnav.less
         - bundles/pimui/less/components/product-edit-form/MediaField.less
