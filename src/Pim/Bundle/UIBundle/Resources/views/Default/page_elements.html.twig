@@ -185,29 +185,6 @@
     </div>
 {% endmacro %}
 
-{% macro accordion(items = {}, counter = 1, no_buffer = false, name = null) %}
-    {% set name = name ? name ~ '-' : '' %}
-    <div class="accordion">
-        {% for title, content in items %}
-            {% if content|trim is not empty %}
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" href="#{{ name }}collapse-{{ counter }}-{{ loop.index }}">
-                        <i class="icon-chevron-down"></i>
-                        {{ title|trans }}
-                    </a>
-                </div>
-                <div id="{{ name }}collapse-{{ counter }}-{{ loop.index }}" class="accordion-body in">
-                    <div class="accordion-inner{{ no_buffer ? '-unbuffered' : '' }}">
-                        {{ content|raw }}
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-        {% endfor %}
-    </div>
-{% endmacro %}
-
 {% macro updated(formId) %}
 {% spaceless %}
     <div id="entity-updated" class="pull-right">
