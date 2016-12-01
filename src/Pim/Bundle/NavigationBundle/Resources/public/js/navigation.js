@@ -532,7 +532,7 @@ define(function (require) {
          */
         processPinButton: function(data) {
             if (data.showPinButton) {
-                this.selectorCached.pinButtonsContainer.removeClass('AknButtonsList--isHidden');
+                this.selectorCached.pinButtonsContainer.removeClass('AknButtonsList--hide');
                 /**
                  * Setting serialized titles for pinbar and favourites buttons
                  */
@@ -543,7 +543,7 @@ define(function (require) {
                 }
                 this.setPinButtonsData('title-rendered-short', data.titleShort);
             } else {
-                this.selectorCached.pinButtonsContainer.addClass('AknButtonsList--isHidden');
+                this.selectorCached.pinButtonsContainer.addClass('AknButtonsList--hide');
             }
         },
 
