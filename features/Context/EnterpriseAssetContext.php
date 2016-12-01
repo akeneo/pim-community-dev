@@ -286,7 +286,7 @@ class EnterpriseAssetContext extends RawMinkContext
         $currentPage  = $this->getCurrentPage();
 
         $actionButton = $this->spin(function () use ($currentPage, $action) {
-            $node = $currentPage->find('css', sprintf('.%s:not(.disabled)', $action));
+            $node = $currentPage->find('css', sprintf('.%s:not(.disabled):not(.AknButton--disabled)', $action));
 
             return (null !== $node && $node->isVisible()) ? $node : null;
         }, sprintf('Unable to find the %s button for mass upload', $action));
@@ -305,7 +305,7 @@ class EnterpriseAssetContext extends RawMinkContext
 
         if ('delete' === $action) {
             $actionButton = $this->spin(function () use ($currentPage) {
-                return $currentPage->find('css', '.btn.delete');
+                return $currentPage->find('css', '.delete');
             }, sprintf('Unable to find the %s button for upload', $action));
         }
         $actionButton->click();

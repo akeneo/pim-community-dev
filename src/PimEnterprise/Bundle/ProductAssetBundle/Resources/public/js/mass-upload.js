@@ -49,9 +49,9 @@ define(
             rowTemplate: _.template(rowTemplate),
 
             events: {
-                'click .AknTitleContainer .start:not(.disabled)': 'startAll',
-                'click .AknTitleContainer .cancel:not(.disabled)': 'cancelAll',
-                'click .AknTitleContainer .import:not(.disabled)': 'importAll'
+                'click .AknTitleContainer .start:not(.AknButton--disabled)': 'startAll',
+                'click .AknTitleContainer .cancel:not(.AknButton--disabled)': 'cancelAll',
+                'click .AknTitleContainer .import:not(.AknButton--disabled)': 'importAll'
             },
 
             /**
@@ -88,13 +88,13 @@ define(
 
                 myDropzone.on('removedfile', function () {
                     if (0 === myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length) {
-                        $importButton.addClass('disabled');
+                        $importButton.addClass('AknButton--disabled');
                     }
                     if (0 === myDropzone.getFilesWithStatus(Dropzone.ADDED).length) {
-                        $startButton.addClass('disabled');
+                        $startButton.addClass('AknButton--disabled');
                     }
                     if (0 === myDropzone.files.length) {
-                        $cancelButton.addClass('hide');
+                        $cancelButton.addClass('AknButton--hidden');
                     }
                 }.bind(this));
 
@@ -111,8 +111,8 @@ define(
                             filename: encodeURIComponent(file.name)
                         })
                     ).done(function () {
-                        $startButton.removeClass('disabled');
-                        $cancelButton.removeClass('hide');
+                        $startButton.removeClass('AknButton--disabled');
+                        $cancelButton.removeClass('AknButton--hidden');
                     }).fail(function (response) {
                         file.status = Dropzone.ERROR;
                         var message = 'pimee_product_asset.mass_upload.error.filename';
@@ -154,9 +154,9 @@ define(
 
                 myDropzone.on('queuecomplete', function () {
                     if (myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length > 0) {
-                        $importButton.removeClass('disabled');
+                        $importButton.removeClass('AknButton--disabled');
                     }
-                    $startButton.addClass('disabled');
+                    $startButton.addClass('AknButton--disabled');
                 }.bind(this));
 
                 /**
@@ -227,7 +227,7 @@ define(
              * Cancel all uploads and delete already uploaded files
              */
             cancelAll: function () {
-                $importButton.addClass('disabled');
+                $importButton.addClass('AknButton--disabled');
                 this.myDropzone.removeAllFiles(true);
                 messenger.notificationFlashMessage(
                     'success',
@@ -239,7 +239,7 @@ define(
              * Import uploaded files for asset processing
              */
             importAll: function () {
-                $importButton.addClass('disabled');
+                $importButton.addClass('AknButton--disabled');
                 $.get(
                     Routing.generate('pimee_product_asset_mass_upload_rest_import')
                 ).done(function (response) {

@@ -1,12 +1,20 @@
 {% if jobInstance.status != constant('Akeneo\\Component\\Batch\\Model\\JobInstance::STATUS_IN_PROGRESS') and
     is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT'), jobInstance)
     and resource_granted('pim_importexport_' ~ jobInstance.type ~ '_profile_edit') %}
-    {{ elements.link('Edit', editRoute, { icon: 'pencil' }) }}
+    {{ elements.link(
+        'Edit',
+        editRoute,
+        { icon: 'pencil', class: 'AknButton--action AkButtonsList-item' }
+    ) }}
 {% endif %}
 
 {% if is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EXECUTE'), jobInstance)
     and resource_granted('pim_importexport_' ~ jobInstance.type ~ '_profile_launch') %}
     {% if violations|length == 0 %}
-        {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: action ~ '-btn btn-primary'}) }}
+        {{ elements.link(
+            action~' now',
+            launchRoute,
+            { icon: 'cogs', class: 'AknButton--apply AknButtonsList-item' }
+        ) }}
     {% endif %}
 {% endif %}

@@ -190,7 +190,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $steps[] = new Step\Given(sprintf('I fill in this comment in the popin: "%s"', $comment));
             }
 
-            $steps[] = new Step\Given('I press the "Send" button');
+            $steps[] = new Step\Given('I press the "Send" button in the popin');
         }
         $steps[] = new Step\Given('I logout');
 
