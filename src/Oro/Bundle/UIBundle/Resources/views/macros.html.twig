@@ -52,16 +52,14 @@
         ]
 #}
 {% macro button(parameters) %}
-    <div class="pull-left btn-group icons-holder">
-        <a href="{{ parameters.path }}"
-           class="btn back icons-holder-text {{ parameters.aClass is defined? parameters.aClass : '' }}"
-           title="{{ parameters.title|trans }}">
-            {% if parameters.iClass is defined %}
-                <i class="{{ parameters.iClass }} hide-text" >{{ parameters.label|trans }}</i>
-            {% endif %}
-            {{ parameters.label|trans }}
-        </a>
-    </div>
+    <a href="{{ parameters.path }}"
+       class="AknButton{% if parameters.iClass is defined %} AknButton--withIcon{% endif %} {{ parameters.aClass is defined? parameters.aClass : '' }}"
+       title="{{ parameters.title|trans }}">
+        {% if parameters.iClass is defined %}
+            <i class="AknButton-icon {{ parameters.iClass }}" ></i>
+        {% endif %}
+        {{ parameters.label|trans }}
+    </a>
 {% endmacro %}
 
 {#
@@ -78,33 +76,31 @@
         ]
 #}
 {% macro deleteButton(parameters) %}
-    <div class="pull-left btn-group icons-holder">
-        <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined? parameters.aCss : '' }}"
-            {% if (parameters.id is defined) %}
-                id="{{ parameters.id }}"
-            {% endif %}
-            {% if (parameters.dataId is defined) %}
-                data-id="{{ parameters.dataId }}"
-            {% endif %}
-       data-message="{{ parameters.dataMessage|trans }}"
-       data-success-message="{{ parameters.successMessage|default('Item deleted')|trans }}"
-            {% if (parameters.dataUrl is defined) %}
-                data-url="{{ parameters.dataUrl }}"
-            {% endif %}
-            {% if parameters.dataRedirect is defined %}
-                data-redirect="{{ parameters.dataRedirect  }}"
-            {% endif %}
-            {% if parameters.data is defined %}
-                {% for dataItemName,dataItemValue in parameters.data %}
-                    data-{{ dataItemName }}="{{ dataItemValue|raw }}"
-                {% endfor %}
-            {% endif %}
-            {% if (parameters.title is defined) %}
-                title="{{ parameters.title|trans }}"
-            {% endif %}
-            ><i class="icon-trash"></i>{{ parameters.label|trans -}}
-        </a>
-    </div>
+    <a href="javascript: void(0);" class="AknButton AknButton--important AknButton--withIcon {{ parameters.aCss is defined? parameters.aCss : '' }}"
+        {% if (parameters.id is defined) %}
+            id="{{ parameters.id }}"
+        {% endif %}
+        {% if (parameters.dataId is defined) %}
+            data-id="{{ parameters.dataId }}"
+        {% endif %}
+   data-message="{{ parameters.dataMessage|trans }}"
+   data-success-message="{{ parameters.successMessage|default('Item deleted')|trans }}"
+        {% if (parameters.dataUrl is defined) %}
+            data-url="{{ parameters.dataUrl }}"
+        {% endif %}
+        {% if parameters.dataRedirect is defined %}
+            data-redirect="{{ parameters.dataRedirect  }}"
+        {% endif %}
+        {% if parameters.data is defined %}
+            {% for dataItemName,dataItemValue in parameters.data %}
+                data-{{ dataItemName }}="{{ dataItemValue|raw }}"
+            {% endfor %}
+        {% endif %}
+        {% if (parameters.title is defined) %}
+            title="{{ parameters.title|trans }}"
+        {% endif %}
+        ><i class="AknButton-icon icon-trash"></i>{{ parameters.label|trans -}}
+    </a>
 {% endmacro %}
 
 {#
@@ -117,22 +113,34 @@
         ]
 #}
 {% macro buttonType(parameters) %}
-    <div class="btn-group">
-        <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}{% if (parameters.action is defined) %} action-button{% endif %}"
-                {% if (parameters.action is defined) %}data-action="{{ parameters.action }}"{% endif %}>
-            {% if (parameters.iClass is defined) %}<i class="{{ parameters.iClass }}"></i>{% endif %}
-            {{ parameters.label|trans }}
-        </button>
-    </div>
+    <button
+            type="{{ parameters.type }}"
+            class="AknButton{% if (parameters.iClass is defined) %} AknButton--withIcon{% endif %}{% if (parameters.class is defined) %} {{ parameters.class }}{% endif %}{% if (parameters.action is defined) %} action-button{% endif %}"
+            {% if (parameters.action is defined) %}data-action="{{ parameters.action }}"{% endif %}>
+        {% if (parameters.iClass is defined) %}<i class="AknButton-icon {{ parameters.iClass }}"></i>{% endif %}
+        {{ parameters.label|trans }}
+    </button>
 {% endmacro %}
 
 {% macro saveAndCloseButton(label = 'Save and Close') %}
-    {{ _self.buttonType({'type': 'submit', 'class': 'btn-primary icons-holder-text', 'label': label, 'iClass': 'icon-ok'}) }}
+    {{ _self.buttonType({
+        'type': 'submit',
+        'class': 'AknButton--apply AknButtonsList-item',
+        'label': label,
+        'iClass': 'icon-ok'
+    }) }}
 {% endmacro %}
 
 {% macro saveAndStayButton(acl = '', label = 'Save') %}
     {% if acl is empty or resource_granted(acl) %}
-        {{ _self.buttonType({'type': 'button', 'class': 'btn-primary btn-submit icons-holder-text', 'label': label, 'action': 'save_and_stay', 'iClass': 'icon-ok'}) }}
+        {{ _self.buttonType({
+            'type': 'button',
+            'class': 'AknButton--apply AknButtonsList-item',
+            'label': label,
+            'action':
+            'save_and_stay',
+            'iClass': 'icon-ok'
+        }) }}
     {% endif %}
 {% endmacro %}
 

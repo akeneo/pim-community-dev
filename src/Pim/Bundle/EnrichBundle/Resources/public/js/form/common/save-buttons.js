@@ -18,8 +18,7 @@ define(
     ],
     function ($, _, Backbone, mediator, BaseForm, template) {
         return BaseForm.extend({
-            className: 'AknSeveralActionsButton AknSeveralActionsButton--apply ' +
-                'AknTitleContainer-rightButton AknDropdown',
+            className: 'AknTitleContainer-rightButton',
             template: _.template(template),
             buttonDefaults: {
                 priority: 100,

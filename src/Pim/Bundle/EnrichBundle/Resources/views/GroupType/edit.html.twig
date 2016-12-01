@@ -27,10 +27,12 @@
                     'pim_enrich_grouptype_remove',
                     path('pim_enrich_grouptype_index'),
                     confirmationMessage,
-                    'flash.group type.removed'|trans
+                    'flash.group type.removed'|trans,
+                    '',
+                    'AknButtonsList-item'
                 ) }}
             {% endif %}
-            {{ elements.submitBtn('', 'ok') }}
+            {{ elements.submitBtn('', 'ok', 'AknButtonsList-item') }}
         {% endset %}
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id), titleButtons) }}

@@ -12,7 +12,11 @@
     {% set buttons %}
         <span id="archives"></span>
         <span id="log"></span>
-        {{ elements.link('Show profile', path(show_profile_route, { 'id': execution.jobInstance.id }), { icon: 'eye-open', class: 'btn-show' }) }}
+        {{ elements.link(
+            'Show profile',
+            path(show_profile_route, { 'id': execution.jobInstance.id }),
+            { icon: 'eye-open', class: 'AknButton AknButton--action AknButtonsList-item' })
+        }}
     {% endset %}
 
     {% set left %}
@@ -146,9 +150,10 @@
             <% if (_.size(archive.files) === 1) { %>
 
                 <% _.each(archive.files, function (file, key) { %>
-                     <a class="btn no-hash icons-holder-text btn-download" title="<%= archive.label %>"
-                     href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
-                         <i class="icon-download-alt"></i> <%= archive.label %>
+                     <a class="AknButton AknButton--withIcon AknButton--grey AknButtonsList-item"
+                        title="<%= archive.label %>"
+                        href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
+                         <i class="AknButton-icon icon-download-alt"></i> <%= archive.label %>
                      </a>
                 <% }); %>
 
@@ -178,8 +183,10 @@
     <script type="text/template" id="job-execution-log-button">
         {% block job_execution_log_button %}
         <% if (hasLog) { %>
-            <a class="btn no-hash icons-holder-text btn-download" title="<%= downloadLabel %>" href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
-                <i class="icon-download-alt"></i>
+            <a class="AknButton AknButton--grey AknButton--withIcon AknButtonsList-item"
+               title="<%= downloadLabel %>"
+               href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
+                <i class="AknButton-icon icon-download-alt"></i>
                 <%= downloadLabel %>
             </a>
         <% } %>

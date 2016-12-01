@@ -1062,8 +1062,8 @@ class WebUser extends RawMinkContext
         $this->getCurrentPage()->fillPopinFields($table->getRowsHash());
 
         $addButton = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.modal .btn.ok');
-        }, 'Cannot find ".modal .btn.ok" element in attribute modal');
+            return $this->getCurrentPage()->find('css', '.modal .ok');
+        }, 'Cannot find validate button in attribute modal');
 
         $addButton->click();
 
@@ -1346,7 +1346,7 @@ class WebUser extends RawMinkContext
         }, sprintf("Can not find any '%s' button", $button));
 
         $this->spin(function () use ($buttonNode) {
-            return $buttonNode->hasClass('disabled');
+            return $buttonNode->hasClass('disabled') || $buttonNode->hasClass('AknButton--disabled');
         }, sprintf("The button '%s' is not disabled", $button));
     }
 
@@ -1941,7 +1941,9 @@ class WebUser extends RawMinkContext
     public function iMoveOnToTheNextStep()
     {
         $this->scrollContainerTo(900);
-        $this->wait('$(".btn.next").length > 0');
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.next');
+        }, 'Could not find next button');
         $this->getCurrentPage()->next();
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();

@@ -30,10 +30,6 @@ h5 {
 h6 {
   font-size: @font-size-12;
 }
-.btn {
-  border: 1px solid @color-ccc;
-  border-bottom-color: @color-bbb;
-}
 html {
   margin: 0;
   padding: 0;
@@ -47,53 +43,6 @@ html {
   margin-top:-1px;
   .border-radius(0);
   z-index: 900;
-}
-
-// Bootstrap - Buttons
-.btn {
-  .border-radius(@baseBtnBorderRadius);
-  padding: 0 12px;
-  height: 28px;
-  line-height: 26px;
-  font-size: @font-size-14;
-  font-weight:bold;
-  background-repeat: none;
-  display: inline-block;
-  #gradient > .vertical(@whiteDark, @grayLighter);
-  color: @gray;
-}
-.btn:hover,
-.btn:focus {
-  text-decoration: none;
-  background-position: 0 0;
-  -webkit-transition: none;
-  -moz-transition: none;
-  -o-transition: none;
-  transition: none;
-  color: @gray;
-}
-.btn:active {
-  #gradient > .vertical(@grayLighter, @whiteDarker);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-.btn-small {
-  height: 24px;
-  line-height: 24px;
-  font-size: @font-size-13;
-}
-.btn-large {
-  font-size: @font-size-15;
-  min-width: 90px;
-  padding: 0 20px;
-  height: 34px;
-  line-height: 32px;
-  font-weight: bold;
-}
-.btn-mini {
-  height: 22px;
-  line-height: 20px;
-  font-size: @font-size-11;
-  padding: 0 6px;
 }
 
 // Bootstrap - Form
@@ -309,31 +258,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
 }
 .navigation {
   position: relative;
-  .icons-holder-text.btn {
-    [class^='icon-'].hide-text {
-      float:left;
-      margin:0;
-      &:before {
-        display:inline-block;
-        font-size: @font-size-16;
-      }
-    }
-    .icon-chevron-left.hide-text {
-      &:before {
-        font-size: @font-size-11;
-        line-size:19px;
-      }
-    }
-    &.btn-success,
-    &.btn-primary,
-    &.btn-danger {
-      [class^='icon-'].hide-text {
-        &:before {
-          color:@white;
-        }
-      }
-    }
-  }
 }
 
 .dropdown:after {
@@ -405,10 +329,6 @@ label.required em,
   .oro-action {
     width: 100%;
     margin: 0;
-    .btn {
-      outline: none;
-      position: static;
-    }
   }
 }
 .filter-criteria {

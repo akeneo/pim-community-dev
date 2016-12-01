@@ -12,8 +12,8 @@
 {% endset %}
 
 {% set buttons %}
-    {{ elements.deleteLink(removeRoute, removeAcl, indexRoute, removeMessage, removeSuccessMessage) }}
-    {{ elements.submitBtn('', 'ok') }}
+    {{ elements.deleteLink(removeRoute, removeAcl, indexRoute, removeMessage, removeSuccessMessage, '', 'AknButtonsList-item') }}
+    {{ elements.submitBtn('', 'ok', 'AknButtonsList-item') }}
 {% endset %}
 
 {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id), titleButtons) }}

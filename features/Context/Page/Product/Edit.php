@@ -611,8 +611,8 @@ class Edit extends ProductEditForm
         $this->fillSelectField($selectContainer, $family);
 
         $validationButton = $this->spin(function () {
-            return $this->find('css', '.modal .btn.ok');
-        }, 'Cannot find ".modal .btn.ok" button in family modal');
+            return $this->find('css', '.modal .ok');
+        }, 'Cannot find validation button in family modal');
 
         $validationButton->click();
 

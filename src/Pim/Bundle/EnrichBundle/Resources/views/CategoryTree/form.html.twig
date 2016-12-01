@@ -34,6 +34,7 @@
                     {
                         'icon':  'trash',
                         'title': 'btn.delete',
+                        'class': 'AknButton--important AknButtonsList-item',
                         'attr': {
                             'data-title':   'confirmation.delete'|trans,
                             'data-dialog':  'alert',
@@ -47,13 +48,15 @@
                     'pim_enrich_product_category_remove',
                     form.vars.value.parent ? path(route ~ '_categorytree_edit', { id: form.vars.value.parent.id }) : path(route ~ '_categorytree_create'),
                     'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
-                    ~ 'info.category.remove children'|trans ~ '<br />'
-                    ~ 'info.category.keep products'|trans,
-                    (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans
+                        ~ 'info.category.remove children'|trans ~ '<br />'
+                        ~ 'info.category.keep products'|trans,
+                    (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans,
+                    '',
+                    'AknButtonsList-item'
                 ) }}
             {% endif %}
         {% endif %}
-        {{ elements.submitBtn('', 'ok') }}
+        {{ elements.submitBtn('', 'ok', 'AknButtonsList-item') }}
     {% endset %}
 
     {% set titleButtons %}

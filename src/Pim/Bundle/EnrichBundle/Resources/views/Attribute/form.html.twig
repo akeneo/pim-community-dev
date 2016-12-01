@@ -27,10 +27,12 @@
                     'pim_enrich_attribute_remove',
                     path('pim_enrich_attribute_index'),
                     'confirmation.remove.attribute'|trans({ '%name%': form.vars.value.label }),
-                    'flash.attribute.removed'|trans
+                    'flash.attribute.removed'|trans,
+                    '',
+                    'AknButtonsList-item'
                 ) }}
             {% endif %}
-            {{ elements.submitBtn('', 'ok') }}
+            {{ elements.submitBtn('', 'ok', 'AknButtonsList-item') }}
         {% endset %}
 
         {% set left %}
