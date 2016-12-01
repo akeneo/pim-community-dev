@@ -37,5 +37,5 @@ Feature: Sort products per attributes
     And I press the "Save" button
     And I am on the products page
     And the grid should contain 5 elements
-    And I display the columns sku, label, family, status, complete, created, updated, groups and handmade
+    And I display the columns SKU, Label, Family, Status, Complete, Created at, Updated at, Groups and Handmade
     And I should be able to sort the rows by Handmade
