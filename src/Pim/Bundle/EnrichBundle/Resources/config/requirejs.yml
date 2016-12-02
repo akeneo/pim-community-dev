@@ -402,6 +402,7 @@ config:
         pim/template/product/field/text:                     pimenrich/templates/product/field/text.html
         pim/template/product/field/textarea:                 pimenrich/templates/product/field/textarea.html
         pim/template/product-create-popin:                   pimenrich/templates/product/create-popin.html
+        pim/template/product-create-error:                   pimenrich/templates/product/create-error.html
         pim/template/attribute-option/form:                  pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:      pimenrich/templates/attribute-option/validation-error.html
         pim/template/i18n/flag:                              pimenrich/templates/i18n/flag.html

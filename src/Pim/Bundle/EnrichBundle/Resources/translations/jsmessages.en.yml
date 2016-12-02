@@ -56,6 +56,8 @@ flash:
         removed: Role successfully removed
 
 error:
+    creating:
+        product: There may not be any SKU attribute configured in the PIM, or you may not have the access rights to edit it.
     removing:
         item:             Cannot delete this item
         association type: Cannot delete this association type
