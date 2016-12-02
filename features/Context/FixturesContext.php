@@ -705,7 +705,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
      */
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
