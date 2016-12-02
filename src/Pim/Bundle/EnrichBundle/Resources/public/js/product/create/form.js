@@ -111,7 +111,7 @@ define(
                         this.initSelect2();
 
                         return this.renderExtensions();
-                    }.bind(this), function() {
+                    }.bind(this), function () {
                         this.$el.html(
                             this.template({
                                 message: __('error.creating.product')
