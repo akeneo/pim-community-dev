@@ -108,7 +108,9 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
 
         $associationMappings = array_filter(
             $class->associationMappings,
-            function ($assoc) { return $assoc['isCascadeDetach']; }
+            function ($assoc) {
+                return $assoc['isCascadeDetach'];
+            }
         );
 
         foreach ($associationMappings as $assoc) {
