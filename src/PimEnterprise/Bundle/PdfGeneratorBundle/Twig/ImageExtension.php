@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\PdfGeneratorBundle\Twig;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use \Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension as BaseImageExtension;
+use Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension as BaseImageExtension;
 
 /**
  * This class manage images from product values to get paths for render in PDF. It extends CE class to add path

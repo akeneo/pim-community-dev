@@ -23,8 +23,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductValueAttributeGroupRightFilter extends AbstractFilter implements CollectionFilterInterface,
-ObjectFilterInterface
+class ProductValueAttributeGroupRightFilter extends AbstractFilter implements
+    CollectionFilterInterface,
+    ObjectFilterInterface
 {
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;

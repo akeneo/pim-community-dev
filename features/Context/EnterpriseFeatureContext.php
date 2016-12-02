@@ -6,8 +6,8 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use PimEnterprise\Behat\Context\JobContext;
 use PimEnterprise\Behat\Context\HookContext;
+use PimEnterprise\Behat\Context\JobContext;
 
 /**
  * A context for creating entities

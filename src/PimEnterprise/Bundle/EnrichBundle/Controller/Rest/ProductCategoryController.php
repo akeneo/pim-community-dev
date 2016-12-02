@@ -60,9 +60,10 @@ class ProductCategoryController extends BaseProductCategoryController
         foreach ($trees as $tree) {
             $category = $tree['tree'];
 
-            if (null === $this->objectFilter || (null !== $this->objectFilter &&
-                !$this->objectFilter->filterObject($category, 'pim.internal_api.product_category.view'))) {
-
+            if (null === $this->objectFilter || (
+                null !== $this->objectFilter &&
+                !$this->objectFilter->filterObject($category, 'pim.internal_api.product_category.view')
+            )) {
                 $result['trees'][] = [
                     'id'         => $category->getId(),
                     'code'       => $category->getCode(),
