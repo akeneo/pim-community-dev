@@ -1,7 +1,9 @@
-<label class="control-label required" for="pim_enrich.export.product.filter.locales">
-    <%- __('pim_enrich.export.product.filter.locales.title') %> <em><%- __('pim_enrich.form.required') %></em>
-</label>
-<div class="controls">
+<div class="AknFieldContainer-header">
+    <label class="control-label required" for="pim_enrich.export.product.filter.locales">
+        <%- __('pim_enrich.export.product.filter.locales.title') %> <em><%- __('pim_enrich.form.required') %></em>
+    </label>
+</div>
+<div class="AknFieldContainer-inputContainer">
     <select class="select2" multiple <%- isEditable ? '' : 'disabled' %> id="pim_enrich.export.product.filter.locales">
         <% _.each(availableLocales, function (locale) { %>
             <option value="<%- locale.code %>" <%- _.contains(locales, locale.code) ? 'selected' : '' %>><%- locale.label %></option>
@@ -10,6 +12,8 @@
     <div class="icons-container">
         <i class="icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="<%- __('pim_enrich.export.product.filter.locales.help') %>"></i>
     </div>
+</div>
+<div class="AknFieldContainer-footer">
     <span class="below-input">
         <span class="validation-errors">
             <% errors.forEach(function (error) { %>

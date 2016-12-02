@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Context;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -125,5 +126,25 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     protected function wait($condition = null)
     {
         $this->getMainContext()->wait($condition);
+    }
+
+    /**
+     * @param $node  NodeElement
+     * @param $class string
+     *
+     * @return NodeElement|null
+     */
+    protected function getClosest($node, $class)
+    {
+        $result = $node->getParent();
+        while ($result !== null && !$result->hasClass($class)) {
+            try {
+                $result = $result->getParent();
+            } catch (InvalidSelector $e) {
+                $result = null;
+            }
+        }
+
+        return $result;
     }
 }

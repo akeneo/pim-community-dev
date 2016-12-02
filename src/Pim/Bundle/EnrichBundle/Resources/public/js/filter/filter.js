@@ -16,7 +16,7 @@ define([
     filterTemplate
 ) {
     return BaseForm.extend({
-        className: 'control-group filter-item',
+        className: 'AknFieldContainer control-group filter-item',
         elements: {},
         editable: true,
         removable: false,

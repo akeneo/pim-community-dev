@@ -10,6 +10,7 @@ use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use WebDriver\Exception\InvalidSelector;
 
 /**
  * Base page
@@ -330,21 +331,14 @@ class Base extends Page
      */
     public function cancelDialog()
     {
-        $element = $this->getElement('Dialog');
+        $this->spin(function () {
+            $element = $this->getElement('Dialog');
+            if (null === $element) {
+                return null;
+            }
 
-        if (null === $element) {
-            throw new \Exception('Could not find dialog window');
-        }
-
-        // TODO: Use the 'Cancel' button instead of the 'Close' button
-        // (waiting for BAP to get the 'Cancel' button on grid actions)
-        $button = $element->find('css', 'a.close');
-
-        if (null === $button) {
-            throw new \Exception('Could not find the cancel button');
-        }
-
-        $button->click();
+            return $element->find('css', '.cancel');
+        }, 'Could not find the cancel button')->click();
     }
 
     /**
@@ -531,5 +525,25 @@ class Base extends Page
         }
 
         return null;
+    }
+
+    /**
+     * @param $node  NodeElement
+     * @param $class string
+     *
+     * @return NodeElement|null
+     */
+    protected function getClosest($node, $class)
+    {
+        $result = $node->getParent();
+        while ($result !== null && !$result->hasClass($class)) {
+            try {
+                $result = $result->getParent();
+            } catch (InvalidSelector $e) {
+                $result = null;
+            }
+        }
+
+        return $result;
     }
 }

@@ -164,7 +164,7 @@ class VariantGroupContext extends PimContext
         }, 'Unable to find a label containing "Axis"');
 
         $field = $this->spin(function () use ($node) {
-            return $node->getParent()->find('css', 'input');
+            return $this->getClosest($node, 'AknFieldContainer')->find('css', 'input');
         }, 'Unable to find an input in the parent of the label "Axis"');
 
         assertTrue($field->hasAttribute('disabled'), 'Expecting field "Axis" to be disabled.');

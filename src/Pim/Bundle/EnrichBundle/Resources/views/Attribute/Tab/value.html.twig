@@ -20,7 +20,7 @@
                 <div class="well">{{ 'save_attribute_before_manage_option'|trans }}</div>
             {% endif %}
         {% endset %}
-        {% set accordionContent = accordionContent|merge({ 'pane.accordion.options': elements.form_container(optionsContent) }) %}
+        {% set accordionContent = accordionContent|merge({ 'pane.accordion.options': optionsContent }) %}
     {% endif %}
 
     {{ elements.tabSections(accordionContent) }}
