@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5996: Fix boolean values publishment
+
 # 1.5.14 (2016-12-01)
 
 # 1.5.13 (2016-11-18)
