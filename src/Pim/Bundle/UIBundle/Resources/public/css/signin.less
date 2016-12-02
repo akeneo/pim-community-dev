@@ -60,14 +60,8 @@
 
 .form-signin, .form-reset {
   .AknButton {
-    text-transform: uppercase;
-    font-size: @font-size-13;
-    height: 38px;
-    border-radius: 2px;
-    margin-right: 0;
-    margin-top: 0;
+    flex-shrink: 0;
   }
-
   h2 {
     text-transform: uppercase;
     font-size: @font-size-15;
@@ -79,6 +73,10 @@
 .form-signin {
   .form-row {
     display: flex;
+
+    & > input {
+      margin-right: 5px;
+    }
   }
 
   .remember-me, .signin-help {

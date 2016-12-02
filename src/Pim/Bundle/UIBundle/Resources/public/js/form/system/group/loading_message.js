@@ -32,7 +32,7 @@ define([
                     'loading_messages': this.getFormData().pim_ui___loading_messages.value
                 }));
 
-                this.$('.switch').bootstrapSwitch();
+                this.$el.find('.switch').bootstrapSwitch();
 
                 this.delegateEvents();
 

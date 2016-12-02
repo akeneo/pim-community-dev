@@ -44,7 +44,7 @@
   &--disabled,
   &--disabled &-icon {
     background: lighten(@AknLightGray, @lighten);
-    cursor: no-drop;
+    cursor: not-allowed;
   }
 
   // Apply color
@@ -63,7 +63,7 @@
   &--apply&--disabled,
   &--apply&--disabled &-icon {
     background: lighten(@AknGreen, @lighten);
-    cursor: no-drop;
+    cursor: not-allowed;
   }
 
   // Grey color
@@ -82,7 +82,7 @@
   &--grey&--disabled,
   &--grey&--disabled &-icon {
     background: lighten(@AknGrey, @lighten);
-    cursor: no-drop;
+    cursor: not-allowed;
   }
 
   // Important color
@@ -101,7 +101,7 @@
   &--important&--disabled,
   &--important&--disabled &-icon {
     background: lighten(@AknRed, @lighten);
-    cursor: no-drop;
+    cursor: not-allowed;
   }
 
   // Action color
@@ -120,7 +120,7 @@
   &--action&--disabled,
   &--action&--disabled &-icon {
     background: lighten(@AknBlue, @lighten);
-    cursor: no-drop;
+    cursor: not-allowed;
   }
 
   // Sizes
@@ -159,5 +159,9 @@
 
   &--hidden {
     display: none;
+  }
+
+  &--uppercase {
+    text-transform: uppercase;
   }
 }

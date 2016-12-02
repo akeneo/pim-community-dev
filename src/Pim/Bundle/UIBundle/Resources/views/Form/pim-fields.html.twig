@@ -93,9 +93,11 @@
 {% endblock form_end %}
 
 {% block form_row_field %}
-    <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-        {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
-        <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
+    <div class="AknFieldContainer{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+        <div class="AknFieldContainer-header">
+            {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'AknFieldContainer-label control-label' })}) }}
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input{% if errors|length > 0 %} validation-error{% endif %}">
             {{ form_widget(form) }}
             {% if form.children|length == 0 %}
                 {{ block('form_info') }}
@@ -191,11 +193,18 @@
 {% block pim_translatable_field_row %}
     {{ form_errors(form) }}
     {% for translation in form %}
-    <div class="control-group">
-        {{ form_label(translation) }}
-        <div class="controls">
-            {{ form_errors(translation) }}
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            {{ form_label(translation) }}
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input{% if errors|length > 0 %} validation-error{% endif %}">
             {{ form_widget(translation) }}
+            {% if form.children|length == 0 %}
+                {{ block('form_info') }}
+            {% endif %}
+        </div>
+        <div class="AknFieldContainer-footer">
+            {{ form_errors(translation) }}
         </div>
     </div>
     {% endfor %}
@@ -266,18 +275,6 @@
 {% endblock %}
 
 {% block widget_attributes %}
-{% if attr.size is not defined %}
-    {% if attr.class is defined %}
-        {% if 'input-' not in attr.class %}
-            {% set class = attr.class ~ ' input-large' %}
-        {% else %}
-            {% set class = attr.class %}
-        {% endif %}
-    {% else %}
-        {% set class = 'input-large' %}
-    {% endif %}
-    {% set attr = attr|merge({'class': class }) %}
-{% endif %}
 {% spaceless %}
     id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
@@ -416,3 +413,18 @@
 {% block select_family_type_row %}
     {{ block('form_row_field') }}
 {% endblock %}
+
+{%- block form_widget_simple -%}
+    {% if attr.class is defined %}
+        {% if 'input-' not in attr.class %}
+            {% set class = attr.class ~ ' AknTextField' %}
+        {% else %}
+            {% set class = attr.class %}
+        {% endif %}
+    {% else %}
+        {% set class = ' AknTextField' %}
+    {% endif %}
+    {% set attr = attr|merge({'class': class }) %}
+    {%- set type = type|default('text') -%}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple -%}

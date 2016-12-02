@@ -167,32 +167,6 @@ a.add-attribute-option {
   border-radius: 3px;
 }
 
-/* bootstrapSwitch */
-.has-switch {
-  margin-right: 3px;
-  margin-bottom: -6px;
-  border-radius: 0;
-
-  label {
-    z-index: 10;
-  }
-  span {
-    padding: 4px 7px;
-    font-size: @font-size-12;
-    font-weight: bold;
-    &.switch-primary, &.switch-left {
-      background-color: @green;
-      background-image: none;
-      border-radius: 0;
-      text-shadow: none;
-    }
-  }
-  &>div.switch-off,
-  &>div.switch-on {
-    height: 26px;
-  }
-}
-
 #channel-switcher {
   .dropdown-toggle {
     border-right: 0;
@@ -331,9 +305,6 @@ a.add-attribute-option {
     width: 200px;
     text-align: left;
   }
-  input {
-    width: 300px;
-  }
 }
 
 /* Attribute Form ***************************************************************************************************/
@@ -419,17 +390,6 @@ table i {
 .submit-form .dropdown-menu.right-align {
   right: 0;
   left: auto;
-}
-
-.attribute-field {
-  .input-large {
-    width: 350px;
-  }
-  .datepicker {
-    &.input-large {
-      width: 200px;
-    }
-  }
 }
 
 .ui-datepicker-today .ui-state-default {
@@ -539,9 +499,6 @@ table.comparison .no-label .attribute-field.scopable {
         left: 25px;
       }
     }
-  }
-  textarea.input-large {
-    width: 350px;
   }
   div.controls {
     input, select, textarea {
@@ -1130,9 +1087,6 @@ button.view-button {
 
 /** datetimepicker views *********************************************************************************************/
 .bootstrap-datetimepicker-widget {
-  .has-switch {
-    display: table-cell;
-  }
   ul {
     margin: 0;
     padding: 0;

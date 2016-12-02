@@ -5,7 +5,7 @@
     {% endset %}
 
     {{ elements.tabSections({
-        'pane.accordion.general_properties': generalProperties,
-        'pane.accordion.locale_values': form_row(form.label)
+        'pane.accordion.general_properties': elements.form_container(generalProperties),
+        'pane.accordion.locale_values': elements.form_container(form_row(form.label))
     }) }}
 </div>

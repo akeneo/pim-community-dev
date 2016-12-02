@@ -13,4 +13,10 @@
     border-bottom-right-radius: 0;
     border-right: none;
   }
+
+  &[readonly],
+  &[disabled] {
+    background: @AknDisabledInputColor;
+    cursor: not-allowed;
+  }
 }
