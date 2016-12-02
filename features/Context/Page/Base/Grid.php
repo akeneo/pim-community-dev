@@ -765,11 +765,21 @@ class Grid extends Index
      */
     protected function getColumnHeaders($withHidden = false, $withActions = true)
     {
-        $head    = $this->getGrid()->find('css', 'thead');
-        $headers = $head->findAll(
-            'css',
-            $withActions ? 'th' : 'th:not(.action-column):not(.select-all-header-cell)'
-        );
+        $head     = $this->getGrid()->find('css', 'thead');
+        $selector = '//th';
+        if (!$withActions) {
+            // This selector is equivalent to css selector
+            // ':not(.action-column):not(.select-all-header-cell):not(:has(input))'
+            // but we have to do it in xpath because :has() is neither supported by current
+            // browsers nor emulated by Selenium.
+            $selector .= '['.
+                'not(contains(@class, \'action-column\')) '.
+                'and not(contains(@class, \'select-all-header-cell\')) '.
+                'and not(input)'.
+            ']';
+        }
+
+        $headers = $head->findAll('xpath', $selector);
 
         if ($withHidden) {
             return $headers;
