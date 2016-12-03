@@ -45,12 +45,6 @@ pim_connector:
       filePath:
         label: Bestandspad
         help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
-      decimalSeparator:
-        label: Decimaal scheidingsteken
-        help: Bepaal het decimaal scheidingsteken
-      dateFormat:
-        label: Datumnotatie
-        help: Bepaal het formaat van de datumvelden
     xlsx:
       lines_per_files:
         label: Aantal regels per bestand
@@ -64,12 +58,6 @@ pim_connector:
       filePath:
         label: Bestandspad
         help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
-      decimalSeparator:
-        label: Decimaal scheidingsteken
-        help: Bepaal het decimaal scheidingsteken
-      dateFormat:
-        label: Datumnotatie
-        help: Bepaal het formaat van de datumvelden
     yml:
       filePath:
         label: Bestandspad
@@ -95,7 +83,6 @@ pim_connector:
         help: Of direct uploaden van het bestand is toegestaan
       delimiter:
         label: Scheidingsteken
-        help: Eén teken wordt gebruikt om het veldscheidingsteken voor een CSV-file in te stellen
       enclosure:
         label: Omsluiting
         help: Eén teken voor gebruik als omsluitingsteken voor het veld
@@ -108,14 +95,7 @@ pim_connector:
       realTimeVersioning:
         label: Real-time geschiedenis bijwerken
         help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
-      enabledComparison:
-        label: Vergelijk de waarden
-        help: Activeer de vergelijking tussen originele en geïmporteerde waarden. Kan import versnellen als geïmporteerde waarden erg gelijkaardig zijn aan originele waarden
-      decimalSeparator:
-        label: Decimaal scheidingsteken
-        help: Eén karakter wordt gebruik om het veldscheidingsteken voor decimalen in te stellen
       dateFormat:
-        label: Datumnotatie
         help: Specificeer het formaat van eender welke datumkolom in het bestand, bv. DD/MM/JJJJ voor een 30/04/2014 formaat.
     xlsx:
       enabled:
@@ -142,14 +122,7 @@ pim_connector:
       realTimeVersioning:
         label: Real-time geschiedenis bijwerken
         help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
-      enabledComparison:
-        label: Vergelijk de waarden
-        help: Activeer de vergelijking tussen originele en geïmporteerde waarden. Kan import versnellen als geïmporteerde waarden erg gelijkaardig zijn aan originele waarden
-      decimalSeparator:
-        label: Decimaal scheidingsteken
-        help: Eén karakter wordt gebruik om het veldscheidingsteken voor decimalen in te stellen
       dateFormat:
-        label: Datumnotatie
         help: Specificeer het formaat van eender welke datumkolom in het bestand, bv. DD/MM/JJJJ voor een 30/04/2014 formaat.
     yml:
       filePath:
@@ -159,20 +132,20 @@ pim_connector:
         label: Bestanden uploaden toestaan
         help: Of direct uploaden van het bestand is toegestaan
 job_execution.summary:
-  read: lees
-  read_lines: lees de lijnen
+  read: lezen
   write: geschreven
   skip: overgeslagen
-  create: creëren
+  create: gecreëerd
   process: verwerkt
   update_products: geüpdatete producten
   process_products: verwerkte producten
   skip_products: overgeslagen producten
-  displayed: eerst waarschuwingen weergegeven
+  displayed: eerste waarschuwingen weergegeven
   charset_validator:
     title: 'Bestandscodering:'
     skipped: overgeslagen, extensie in whitelist
   product_skipped_no_diff: overgeslagen product (geen verschillen)
+  item_position: lees de lijnen
 batch_jobs:
   csv_product_export:
     label: Productexport in CSV
@@ -192,9 +165,6 @@ batch_jobs:
   csv_group_export:
     label: Groepexport in CSV
     export.label: Groepexport
-  csv_family_export:
-    label: Familie export in CSV
-    export.label: Familie export
   csv_product_import:
     label: Productimport in CSV
     import.label: Productimport
@@ -211,42 +181,9 @@ batch_jobs:
   csv_association_type_import:
     label: Associatietype-import in CSV
     import.label: Associatietype-import
-  csv_family_import:
-    label: Familie import in CSV
-    import.label: Familie import
   csv_group_import:
     label: Groep importeren in CSV
     import.label: Groep importeren
-  csv_channel_export:
-    label: Kanaal export in CSV
-    export.label: Kanaal export
-  csv_locale_export:
-    label: Locale export in CSV
-    export.label: Locale export
-  csv_attribute_group_export:
-    label: Attribuut groep export in CSV
-    export.label: Attritbuut groep export
-  csv_currency_export:
-    label: Valuta export in CSV
-    export.label: Valuta export
-  csv_group_type_export:
-    label: Groepstype export in CSV
-    export.label: Groepstype export
-  csv_channel_import:
-    label: Kanaal import in CSV
-    import.label: Kanaal import
-  csv_locale_import:
-    label: Locale import in CSV
-    import.label: Locale import
-  csv_attribute_group_import:
-    label: Attribuut groep import in CSV
-    import.label: Attritbuut groep import
-  csv_currency_import:
-    label: Valuta import in CSV
-    import.label: Valuta import
-  csv_group_type_import:
-    label: Groepstype-import in CSV
-    import.label: Groep type import
   xlsx_category_import:
     label: Categorie import in XLSX
     import.label: Categorie-import
@@ -261,7 +198,6 @@ batch_jobs:
     import.label: Attribuutoptie-import
   xlsx_family_import:
     label: Familie import in XLSX
-    import.label: Familie import
   xlsx_product_export:
     label: Product export in XLSX
     export.label: Productexport
@@ -282,7 +218,6 @@ batch_jobs:
     import.label: Variant Groep import
   xlsx_family_export:
     label: Familie export in XLSX
-    export.label: Familie export
   xlsx_category_export:
     label: Categorie export in XLSX
     export.label: Categorie-export
@@ -295,33 +230,3 @@ batch_jobs:
   xlsx_association_type_export:
     label: Associatie type export in XLSX
     export.label: Associatie type export in XLSX
-  xlsx_channel_export:
-    label: Kanaal export in XLSX
-    export.label: Kanaal export
-  xlsx_locale_export:
-    label: Locale export in XLSX
-    export.label: Locale export
-  xlsx_attribute_group_export:
-    label: Attribuut groep export in XLSX
-    export.label: Attritbuut groep export
-  xlsx_currency_export:
-    label: Valuta export in XLSX
-    export.label: Valuta export
-  xlsx_group_type_export:
-    label: Groep type export in XLSX
-    export.label: Groep type export
-  xlsx_channel_import:
-    label: Kanaal import in XLSX
-    import.label: Kanaal import
-  xlsx_locale_import:
-    label: Locale import in XLSX
-    import.label: Locale import
-  xlsx_attribute_group_import:
-    label: Attribuut groep import in XLSX
-    import.label: Attritbuut groep import
-  xlsx_currency_import:
-    label: Valuta import in XLSX
-    import.label: Valuta import
-  xlsx_group_type_import:
-    label: Groepstype-import in XLSX
-    import.label: Groep type import

@@ -2,7 +2,7 @@ pim_user:
   user:
     tab:
       general.title: Algemeen
-      additional.title: Aanvullend
+      additional.title: Extra
       group_and_role.title: Groepen en rollen
       password.title: Wachtwoord
       business_unit.title: Bedrijfsdivisies
