@@ -67,7 +67,7 @@ pim_base_connector:
     association_processor.title: Tworzenie powiązania
     group_processor.title: Tworzenie grupy
     attribute_processor.title: Tworzenie atrybutu
-    attribute_option_processor.title: Tworzenie ustawień atrybuty
+    attribute_option_processor.title: Tworzenie ustawień atrybutu
     heterogeneous_processor.title: Serializator produktu CSV
     homogeneous_processor.title: Serializator encji CSV
     transformer_processor.title: Transformacja
@@ -76,6 +76,7 @@ pim_base_connector:
     product_writer.title: Magazyn produktów
     category_writer.title: Magazyn kategorii
     variant_group_writer.title: Magazyn grup wariantów
+    writer.title: Jednostki składowania
     csv_writer.title: Zapis Csv
   export:
     delimiter:
