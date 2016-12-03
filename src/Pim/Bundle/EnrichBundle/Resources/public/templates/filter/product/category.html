@@ -1,12 +1,8 @@
-<div class="flex-space-between input-like <%- !isEditable ? 'disabled' : '' %>">
-    <span class="form-control">
-        <%- labelInfo %>
-    </span>
+<div class="AknTextField <%- !isEditable ? 'AknTextField--disabled' : 'AknTextField--withRightButton' %>">
+    <%- labelInfo %>
     <% if (isEditable) { %>
-    <div class="input-group-btn">
-        <button type="button" class="AknButton AknButton--action AknButton--withIcon AknButton--little edit" title="<%- titleEdit %>">
-            <i class="AknButton-icon icon-pencil"></i><%- labelEdit %>
-        </button>
-    </div>
+    <button type="button" class="AknButton AknButton--action AknButton--withIcon AknButton--little edit" title="<%- titleEdit %>">
+        <i class="AknButton-icon icon-pencil"></i><%- labelEdit %>
+    </button>
     <% } %>
 </div>
