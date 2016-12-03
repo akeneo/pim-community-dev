@@ -30,7 +30,7 @@ class Creation extends Form
             [
                 'attribute_option_table' => ['css' => '#attribute-option-grid table'],
                 'attribute_options'      => ['css' => '#attribute-option-grid tbody tr'],
-                'add_option_button'      => ['css' => '#attribute-option-grid .btn.option-add'],
+                'add_option_button'      => ['css' => '#attribute-option-grid .option-add'],
                 'new_option'             => ['css' => '.in-edition']
             ]
         );

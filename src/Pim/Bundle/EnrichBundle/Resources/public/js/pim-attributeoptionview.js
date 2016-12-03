@@ -45,29 +45,33 @@ define(
                 '</td>' +
                 '<% }); %>' +
                 '<td>' +
-                    '<span class="btn btn-small edit-row"><i class="icon-pencil"></i></span>' +
-                    '<span class="btn btn-small delete-row"><i class="icon-trash"></i></span>' +
+                    '<div class="AknIconsList">' +
+                        '<span class="AknIconsList-item AknIconsList-item--action edit-row"><i class="AknIconsList-icon icon-pencil"></i></span>' +
+                        '<span class="AknIconsList-item AknIconsList-item--important delete-row"><i class="AknIconsList-icon icon-trash"></i></span>' +
+                    '</div>' +
                 '</td>'
             ),
             editTemplate: _.template(
                 '<td class="field-cell">' +
-                    '<input type="text" class="attribute_option_code exclude" value="<%= item.code %>"/>' +
+                    '<input type="text" class="AknTextField attribute_option_code exclude" value="<%= item.code %>"/>' +
                     '<i class="validation-tooltip hidden" data-placement="top" data-toggle="tooltip"></i>' +
                 '</td>' +
                 '<% _.each(locales, function (locale) { %>' +
                 '<td class="field-cell">' +
                     '<% if (item.optionValues[locale]) { %>' +
-                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" ' +
+                        '<input type="text" class="AknTextField attribute-option-value exclude" data-locale="<%= locale %>" ' +
                             'value="<%= item.optionValues[locale].value %>"/>' +
                     '<% } else { %>' +
-                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" ' +
+                        '<input type="text" class="AknTextField attribute-option-value exclude" data-locale="<%= locale %>" ' +
                             'value=""/>' +
                     '<% } %>' +
                 '</td>' +
                 '<% }); %>' +
                 '<td>' +
-                    '<span class="btn btn-small update-row"><i class="icon-ok"></i></span>' +
-                    '<span class="btn btn-small show-row"><i class="icon-remove"></i></span>' +
+                    '<div class="AknIconsList">' +
+                        '<span class="AknIconsList-item AknIconsList-item--apply update-row"><i class="AknIconsList-icon icon-ok"></i></span>' +
+                        '<span class="AknIconsList-item AknIconsList-item--important show-row"><i class="AknIconsList-icon icon-remove"></i></span>' +
+                    '</div>' +
                 '</td>'
             ),
             events: {
@@ -273,7 +277,7 @@ define(
                 '<tfoot>' +
                     '<tr>' +
                         '<td colspan="<%= 2 + locales.length %>">' +
-                            '<span class="btn option-add pull-right"><%= add_option_label %></span>' +
+                            '<span class="AknButton AknButton--grey AknButton--little option-add"><%= add_option_label %></span>' +
                         '</td>' +
                     '</tr>' +
                 '</tfoot>'
