@@ -1,0 +1,4 @@
+job_execution:
+  summary:
+    display_item: 显示条目
+    hide_item: 隐藏条目

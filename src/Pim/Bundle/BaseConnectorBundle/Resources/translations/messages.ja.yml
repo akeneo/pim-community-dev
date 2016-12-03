@@ -43,6 +43,8 @@ pim_base_connector:
       title: グループをCSVでインポート
       validation.title: ファイルの検証
       import.title: グループのインポート
+    csv_variant_group_import:
+      validation.title: ファイルの検証
   steps:
     dummy_reader.title: ダミーリーダー
     product_reader.title: 製品抽出
@@ -56,6 +58,7 @@ pim_base_connector:
     product_processor.title: 製品の作成
     category_processor.title: カテゴリの作成
     association_processor.title: 関連付けの作成
+    product_association_processor.title: 関連付けの作成
     group_processor.title: グループの作成
     attribute_processor.title: 属性の作成
     attribute_option_processor.title: 属性オプションの作成
@@ -95,9 +98,11 @@ pim_base_connector:
       label: ファミリー列
       help: ファミリー列の名前
     groupsColumn:
-      label: 'グループ]列'
-      help: 'グループ]列の名前'
+      label: グループ]列
+      help: グループ]列の名前
     filePath:
+      label: ファイル
+    yamlFilePath:
       label: ファイル
     uploadAllowed:
       label: ファイルのアップロードを許可

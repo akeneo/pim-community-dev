@@ -134,6 +134,7 @@ pim_enrich:
         property: Propietat
         old_values: Valors antics
         new_values: Valors nous
+        actions: Accions
       info:
         deletion_successful: Producte suprimit correctament.
         deletion_failed: No s'ha pogut suprimir el producte.
