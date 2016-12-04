@@ -404,6 +404,9 @@ config:
         pim/template/product-create-popin:                   pimenrich/templates/product/create-popin.html
         pim/template/attribute-option/form:                  pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:      pimenrich/templates/attribute-option/validation-error.html
+        pim/template/attribute-option/index:                 pimenrich/templates/attribute-option/index.html
+        pim/template/attribute-option/edit:                  pimenrich/templates/attribute-option/edit.html
+        pim/template/attribute-option/show:                  pimenrich/templates/attribute-option/show.html
         pim/template/i18n/flag:                              pimenrich/templates/i18n/flag.html
         pim/template/error/error:                            pimenrich/templates/error/error.html
 

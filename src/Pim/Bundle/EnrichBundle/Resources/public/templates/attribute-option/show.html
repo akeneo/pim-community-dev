@@ -1,0 +1,19 @@
+<td>
+    <span class="handle"><i class="icon-reorder"></i></span>
+    <span class="option-code"><%= item.code %></span>
+</td>
+<% _.each(locales, function (locale) { %>
+    <td>
+        <% if (item.optionValues[locale]) { %>
+            <span title="<%= item.optionValues[locale].value %>">
+                <%= item.optionValues[locale].value %>
+            </span>
+        <% } %>
+    </td>
+<% }); %>
+<td>
+    <div class="AknIconsList">
+        <span class="AknIconsList-item AknIconsList-item--action edit-row"><i class="AknIconsList-icon icon-pencil"></i></span>
+        <span class="AknIconsList-item AknIconsList-item--important delete-row"><i class="AknIconsList-icon icon-trash"></i></span>
+    </div>
+</td>

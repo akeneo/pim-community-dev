@@ -1,0 +1,21 @@
+<td class="field-cell">
+    <input type="text" class="AknTextField attribute_option_code exclude" value="<%= item.code %>"/>
+    <i class="validation-tooltip hidden" data-placement="top" data-toggle="tooltip"></i>
+</td>
+<% _.each(locales, function (locale) { %>
+    <td class="field-cell">
+        <% if (item.optionValues[locale]) { %>
+            <input type="text" class="AknTextField attribute-option-value exclude" data-locale="<%= locale %>"
+                value="<%= item.optionValues[locale].value %>"/>
+        <% } else { %>
+            <input type="text" class="AknTextField attribute-option-value exclude" data-locale="<%= locale %>"
+        value=""/>
+        <% } %>
+    </td>
+<% }); %>
+<td>
+    <div class="AknIconsList">
+        <span class="AknIconsList-item AknIconsList-item--apply update-row"><i class="AknIconsList-icon icon-ok"></i></span>
+        <span class="AknIconsList-item AknIconsList-item--important show-row"><i class="AknIconsList-icon icon-remove"></i></span>
+    </div>
+</td>

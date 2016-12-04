@@ -73,7 +73,7 @@ class Creation extends Form
         foreach ($labels as $locale => $label) {
             $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale))->setValue($label);
         }
-        $row->find('css', '.btn.update-row')->click();
+        $row->find('css', '.update-row')->click();
     }
 
     /**
@@ -88,7 +88,7 @@ class Creation extends Form
 
         $row->find('css', '.edit-row')->click();
         $row->find('css', '.attribute_option_code')->setValue($newValue);
-        $row->find('css', '.btn.update-row')->click();
+        $row->find('css', '.update-row')->click();
     }
 
     /**
@@ -103,7 +103,7 @@ class Creation extends Form
 
         $row->find('css', '.edit-row')->click();
         $row->find('css', '.attribute_option_code')->setValue($newValue);
-        $row->find('css', '.btn.show-row')->click();
+        $row->find('css', '.show-row')->click();
     }
 
     /**
@@ -150,7 +150,7 @@ class Creation extends Form
     public function removeOption($optionName)
     {
         $optionRow = $this->getOptionElement($optionName);
-        $deleteBtn = $optionRow->find('css', '.btn.delete-row');
+        $deleteBtn = $optionRow->find('css', '.delete-row');
 
         if ($deleteBtn === null) {
             throw new \InvalidArgumentException(
