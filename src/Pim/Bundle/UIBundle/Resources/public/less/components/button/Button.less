@@ -8,7 +8,7 @@
   background: @AknLightGray;
   color: @AknDefaultFontColor;
   height: @AknDefaultButtonSize;
-  line-height: @AknDefaultButtonSize;
+  line-height: @AknDefaultButtonSize - 2px;
   font-size: @AknFontSizeBig;
   min-width: @AknDefaultButtonSize;
   display: inline-block;
@@ -16,7 +16,7 @@
   border-radius: 2px;
   border: none;
   cursor: pointer;
-  text-align: center;
+  text-align: left;
   white-space: nowrap;
 
   &--withIcon {
@@ -126,7 +126,7 @@
   // Sizes
   &--little {
     height: @AknLittleButtonSize;
-    line-height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize - 2px;
     min-width: @AknLittleButtonSize;
     font-size: @AknDefaultFontSize;
   }
@@ -140,7 +140,7 @@
 
   &--micro {
     height: @AknMicroButtonSize;
-    line-height: @AknMicroButtonSize;
+    line-height: @AknMicroButtonSize - 2px;
     min-width: @AknMicroButtonSize;
     font-size: @AknDefaultFontSize;
   }
