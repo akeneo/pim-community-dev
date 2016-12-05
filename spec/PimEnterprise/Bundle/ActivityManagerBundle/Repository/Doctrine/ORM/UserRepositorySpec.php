@@ -5,7 +5,6 @@ namespace spec\Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM;
 use Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\UserRepository;
 use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;

@@ -10,6 +10,7 @@
  */
 
 namespace Akeneo\ActivityManager\Component\Repository;
+
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 
 /**
@@ -18,7 +19,7 @@ use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 interface ProjectCompletenessRepositoryInterface
 {
     /**
-     * Get the project completeness for a contributor
+     * Get the project completeness for a contributor.
      *
      * @param ProjectInterface $project
      * @param int|null         $userId

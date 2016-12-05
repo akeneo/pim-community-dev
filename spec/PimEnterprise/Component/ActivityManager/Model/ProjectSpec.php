@@ -9,7 +9,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 class ProjectSpec extends ObjectBehavior

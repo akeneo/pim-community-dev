@@ -10,7 +10,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;

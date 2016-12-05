@@ -23,9 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectRepository extends EntityRepository implements
-    IdentifiableObjectRepositoryInterface,
-    SearchableRepositoryInterface
+class ProjectRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface, SearchableRepositoryInterface
 {
     /**
      * @param EntityManager $em
