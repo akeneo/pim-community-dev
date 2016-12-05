@@ -21,18 +21,9 @@ interface ProjectCompletenessRepositoryInterface
      * Get the project completeness for a contributor
      *
      * @param ProjectInterface $project
-     * @param int              $userId
+     * @param int|null         $userId
      *
      * @return array
      */
-    public function getContributorCompleteness(ProjectInterface $project, $userId);
-
-    /**
-     * Get the project completeness for a project creator
-     *
-     * @param ProjectInterface $project
-     *
-     * @return array
-     */
-    public function getProjectCompleteness(ProjectInterface $project);
+    public function getProjectCompleteness(ProjectInterface $project, $userId = null);
 }

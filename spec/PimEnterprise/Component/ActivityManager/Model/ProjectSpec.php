@@ -75,11 +75,4 @@ class ProjectSpec extends ObjectBehavior
         $this->removeUserGroup($otherGroup)->shouldReturn(null);
         $this->getUserGroups()->toArray()->shouldReturn([$group]);
     }
-
-    function it_has_a_unique_product(ProductInterface $product, ProductInterface $otherProduct)
-    {
-        $this->addProduct($product)->shouldReturn(null);
-        $this->addProduct($otherProduct)->shouldReturn(null);
-        $this->getProducts()->toArray()->shouldReturn([$product, $otherProduct]);
-    }
 }

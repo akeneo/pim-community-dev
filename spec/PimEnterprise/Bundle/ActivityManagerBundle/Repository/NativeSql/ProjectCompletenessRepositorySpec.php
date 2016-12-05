@@ -6,7 +6,6 @@ use Akeneo\ActivityManager\Bundle\Repository\NativeSql\ProjectCompletenessReposi
 use Akeneo\ActivityManager\Component\Repository\ProjectCompletenessRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 
 class ProjectCompletenessRepositorySpec extends ObjectBehavior

@@ -28,13 +28,10 @@ class ProjectCompletenessController extends Controller
     public function showAction(Project $project, Request $request)
     {
         $contributorId = $request->get('contributor_id');
-        $projectCompletenessRepository = $this->get('activity_manager.repository.project_completeness');
 
-        if ($this->getUser()->getId() === $project->getOwner()->getId() && null === $contributorId) {
-            $projectCompleteness = $projectCompletenessRepository->getProjectCreatorCompleteness($project);
-        } else {
-            $projectCompleteness = $projectCompletenessRepository->getContributorCompleteness($project, $contributorId);
-        }
+        // TODO manage security
+        $projectCompleteness = $this->get('activity_manager.repository.native_sql.project_completeness')
+            ->getProjectCompleteness($project, $contributorId);
 
         return new JsonResponse($projectCompleteness);
     }

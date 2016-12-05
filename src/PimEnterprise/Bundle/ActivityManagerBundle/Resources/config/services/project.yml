@@ -28,7 +28,7 @@ services:
             - '@doctrine.orm.default_entity_manager'
 
     activity_manager.repository.native_sql.project_completeness:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProjectCompletenessRepository'
+        class: 'Akeneo\ActivityManager\Bundle\Repository\NativeSql\ProjectCompletenessRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
 

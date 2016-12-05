@@ -143,19 +143,4 @@ interface ProjectInterface
      * @param array $productFilters
      */
     public function setProductFilters(array $productFilters);
-
-    /**
-     * @param ProductInterface $product
-     */
-    public function addProduct(ProductInterface $product);
-
-    /**
-     * @param ArrayCollection $products
-     */
-    public function setProducts(ArrayCollection $products);
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getProducts();
 }
