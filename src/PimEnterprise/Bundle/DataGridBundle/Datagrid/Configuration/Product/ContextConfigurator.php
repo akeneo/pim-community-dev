@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -54,9 +55,18 @@ class ContextConfigurator extends BaseContextConfigurator
         RequestParameters $requestParams,
         UserContext $userContext,
         AttributeGroupAccessRepository $accessRepository,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        GroupRepositoryInterface $productGroupRepository = null
     ) {
-        parent::__construct($productRepository, $attributeRepository, $requestParams, $userContext, $objectManager);
+        parent::__construct(
+            $productRepository,
+            $attributeRepository,
+            $requestParams,
+            $userContext,
+            $objectManager,
+            $productGroupRepository
+        );
+
         $this->accessRepository = $accessRepository;
     }
 
@@ -71,18 +81,15 @@ class ContextConfigurator extends BaseContextConfigurator
     }
 
     /**
-     * Override to filter per permissions per groups too
+     * {@inheritdoc}
      *
-     * @param string[] $attributeCodes
-     *
-     * @return integer[]
+     * Override to apply rights on attributes
      */
-    protected function getAttributeIds($attributeCodes = null)
+    protected function getAttributeIdsUseableInGrid($attributeCodes = null)
     {
-        $groupIds     = $this->getGrantedGroupIds();
-        $attributeIds = $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes, $groupIds);
+        $groupIds = $this->getGrantedGroupIds();
 
-        return $attributeIds;
+        return $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes, $groupIds);
     }
 
     /**
