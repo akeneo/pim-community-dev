@@ -1,12 +1,12 @@
 <td>
     <span class="handle"><i class="icon-reorder"></i></span>
-    <span class="option-code"><%= item.code %></span>
+    <span class="option-code"><%- item.code %></span>
 </td>
 <% _.each(locales, function (locale) { %>
     <td>
         <% if (item.optionValues[locale]) { %>
-            <span title="<%= item.optionValues[locale].value %>">
-                <%= item.optionValues[locale].value %>
+            <span title="<%- item.optionValues[locale].value %>">
+                <%- item.optionValues[locale].value %>
             </span>
         <% } %>
     </td>
