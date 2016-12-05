@@ -37,11 +37,11 @@
 </script>
 
 <div class="tab-pane tab-permission {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
-    {{ elements.tabSections({ '': form_widget(form.permissions) }) }}
+    {{ elements.tabSections({ '': elements.form_container(form_widget(form.permissions)) }) }}
 </div>
 {% if form.permissions is defined %}
     <div class="tab-pane" id="permissions">
-        {{ elements.tabSections({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
+        {{ elements.tabSections({ 'pane.accordion.permissions': elements.form_container(form_widget(form.permissions)) }) }}
     </div>
 {% endif %}
 

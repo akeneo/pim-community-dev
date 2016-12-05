@@ -26,7 +26,6 @@ define(
         Dialog
     ) {
         return BaseForm.extend({
-            className: 'btn-group btn-dropdown',
             template: _.template(template),
             events: {
                 'click .publish-product:not(.disabled)': 'publish',
