@@ -6,11 +6,14 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use Context\Traits\ClosestTrait;
 use Pim\Behat\Context\PimContext;
 use Pim\Component\Catalog\Model\GroupInterface;
 
 class VariantGroupContext extends PimContext
 {
+    use ClosestTrait;
+
     use SpinCapableTrait;
 
     /**

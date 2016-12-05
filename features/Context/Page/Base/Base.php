@@ -10,7 +10,6 @@ use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use WebDriver\Exception\InvalidSelector;
 
 /**
  * Base page
@@ -525,25 +524,5 @@ class Base extends Page
         }
 
         return null;
-    }
-
-    /**
-     * @param $node  NodeElement
-     * @param $class string
-     *
-     * @return NodeElement|null
-     */
-    protected function getClosest($node, $class)
-    {
-        $result = $node->getParent();
-        while ($result !== null && !$result->hasClass($class)) {
-            try {
-                $result = $result->getParent();
-            } catch (InvalidSelector $e) {
-                $result = null;
-            }
-        }
-
-        return $result;
     }
 }

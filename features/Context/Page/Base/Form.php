@@ -7,6 +7,7 @@ use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Traits\ClosestTrait;
 
 /**
  * Basic form page
@@ -17,6 +18,8 @@ use Behat\Mink\Exception\ExpectationException;
  */
 class Form extends Base
 {
+    use ClosestTrait;
+
     /**
      * {@inheritdoc}
      */
