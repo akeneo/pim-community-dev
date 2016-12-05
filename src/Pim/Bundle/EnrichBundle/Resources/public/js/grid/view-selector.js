@@ -179,7 +179,7 @@ define(
                         }
 
                         // If we clicked on something else than the line (eg. a button), we don't capture the event
-                        if (null === target || target.hasClass('select2-result-label-view')) {
+                        if (null === target || target.hasClass('grid-view-selector-line-overlay')) {
                             return fn.apply(this, arguments);
                         }
                     };
@@ -191,6 +191,9 @@ define(
                 }.bind(this));
 
                 var $menu = this.$('.select2-drop');
+                var $search = this.$('.select2-search');
+
+                $search.prepend($('<i class="icon-search"></i>'));
 
                 FormBuilder.buildForm('pim-grid-view-selector-footer').then(function (form) {
                     form.setParent(this);

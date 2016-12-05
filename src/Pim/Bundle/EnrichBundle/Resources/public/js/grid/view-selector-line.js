@@ -41,7 +41,8 @@ define(
              */
             render: function () {
                 this.$el.html(this.template({
-                    view: this.datagridView
+                    view: this.datagridView,
+                    isCurrent: this.getRoot().currentView.id == this.datagridView.id
                 }));
 
                 this.renderExtensions();
