@@ -1,10 +1,8 @@
 {% set title = (entityName ~ '.title')|trans ~ ' - ' ~ jobInstance.label ~ ' [' ~ jobInstance.code ~ ']' %}
 
 {% set left %}
-    <ul class="inline">
-        <li>{{ 'pim_import_export.job'|trans }}: {{ job.name|trans }}</li>
-        <li>{{ 'pim_import_export.connector'|trans }}: {{ jobInstance.connector|trans }}</li>
-    </ul>
+    <span class="AknTitleContainer-metaItem">{{ 'pim_import_export.job'|trans }}: {{ job.name|trans }}</span>
+    <span class="AknTitleContainer-metaItem">{{ 'pim_import_export.connector'|trans }}: {{ jobInstance.connector|trans }}</span>
 {% endset %}
 
 {% set titleButtons %}

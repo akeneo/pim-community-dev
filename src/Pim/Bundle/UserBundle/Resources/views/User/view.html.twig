@@ -76,8 +76,8 @@
 
 {% block stats %}
     {{ parent() }}
-    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? entity.lastLogin|datetime_presenter : 'N/A' }}</li>
-    <li>{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</li>
+    <span class="AknTitleContainer-metaItem">{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? entity.lastLogin|datetime_presenter : 'N/A' }}</span>
+    <span class="AknTitleContainer-metaItem">{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</span>
 {% endblock stats %}
 
 {% block content_data %}

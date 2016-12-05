@@ -1,9 +1,15 @@
-<div class="system-locale-field">
-    <label for="system-locale"><%- _.__('oro_config.form.config.group.localization.system_locale') %></label>
+<div class="AknFormContainer">
+    <div class="AknFieldContainer system-locale-field">
+        <div class="AknFieldContainer-header">
+            <label for="system-locale"><%- _.__('oro_config.form.config.group.localization.system_locale') %></label>
+        </div>
 
-    <select class="select2 select-field" name="system-locale">
-    <% _.each(locales, function(label, code) { %>
-        <option value="<%- code %>" <%- code === selected ? 'selected' : '' %>><%- label %></option>
-    <% }); %>
-    </select>
+        <div class="AknFieldContainer-inputContainer">
+            <select class="select2 select-field" name="system-locale">
+            <% _.each(locales, function(label, code) { %>
+                <option value="<%- code %>" <%- code === selected ? 'selected' : '' %>><%- label %></option>
+            <% }); %>
+            </select>
+        </div>
+    </div>
 </div>

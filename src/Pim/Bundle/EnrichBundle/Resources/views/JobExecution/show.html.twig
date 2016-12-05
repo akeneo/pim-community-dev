@@ -14,9 +14,9 @@
     {% endset %}
 
     {% set left %}
-        <ul class="inline" id="status">
-           <li>{{ 'Status'|trans }}: ...</li>
-       </ul>
+        <div id="status">
+           <span clas="AknTitleContainer-metaItem">{{ 'Status'|trans }}: ...</span>
+       </div>
     {% endset %}
 
     {{ elements.page_header(title, buttons, '', left, null, titleButtons) }}

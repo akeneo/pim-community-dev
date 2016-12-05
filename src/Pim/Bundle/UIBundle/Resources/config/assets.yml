@@ -29,6 +29,7 @@ css:
         - bundles/pimui/css/buttons.less
     bem:
         - bundles/pimui/less/base/general.less
+        - bundles/pimui/less/base/icons.less
         - bundles/pimui/less/components/button/ActionButton.less
         - bundles/pimui/less/components/button/ActionButtonsList.less
         - bundles/pimui/less/components/button/SeveralActionsButton.less

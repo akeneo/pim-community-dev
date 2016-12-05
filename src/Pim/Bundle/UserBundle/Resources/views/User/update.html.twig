@@ -62,12 +62,10 @@
 
         {% set meta %}
             {% if form.vars.value.id %}
-                <ul class="inline">
-                    <li>{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|datetime_presenter : 'N/A' }}</li>
-                    <li>{{ 'Updated'|trans }}: {{ form.vars.value.updatedAt ? form.vars.value.updatedAt|datetime_presenter : 'N/A' }}</li>
-                    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|datetime_presenter : 'N/A' }}</li>
-                    <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
-                </ul>
+                <span class="AknTitleContainer-metaItem">{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|datetime_presenter : 'N/A' }}</span>
+                <span class="AknTitleContainer-metaItem">{{ 'Updated'|trans }}: {{ form.vars.value.updatedAt ? form.vars.value.updatedAt|datetime_presenter : 'N/A' }}</span>
+                <span class="AknTitleContainer-metaItem">{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|datetime_presenter : 'N/A' }}</span>
+                <span class="AknTitleContainer-metaItem">{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</span>
             {% endif %}
         {% endset %}
 
