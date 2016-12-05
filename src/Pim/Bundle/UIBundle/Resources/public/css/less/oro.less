@@ -5,16 +5,6 @@
 * {
   box-sizing:border-box;
 }
-body {
-  font-family: @baseFontFamily;
-  font-size: @baseFontSize;
-  line-height: 20px;
-  color: @bodyColor;
-  margin: 0;
-  padding: 0 ;
-  min-width: 980px;
-  background:@white;
-}
 h2 {
   font-size: @font-size-27;
 }
@@ -46,54 +36,8 @@ html {
 }
 
 // Bootstrap - Form
-label, input, button, select, textarea {
-  font-size: @font-size-12;
-}
-
-.form-horizontal .control-label {
-  font-size: @font-size-12;
-}
 .control-group .controls p.control-label{
   width: auto;
-}
-
-.form-horizontal {
-  .control-group {
-    & + .control-group {
-      padding-top: 5px;
-    }
-
-    label.control-label {
-      box-sizing: border-box;
-      display: block;
-      height: 20px;
-      line-height: 20px;
-      margin-bottom: 5px;
-      width: 100%;
-      -webkit-box-flex: 1;
-      padding-top: 0;
-
-      &:after {
-        content:":";
-      }
-    }
-
-    .controls {
-      margin-left: 0;
-
-      input[type="text"],
-      input[type="password"],
-      input[type="date"],
-      input[type="number"],
-      input[type="email"],
-      input[type="url"],
-      input[type="search"],
-      textarea {
-        width: @max-field-width;
-        font-size: @font-size-12;
-      }
-    }
-  }
 }
 
 input[type='checkbox'] + label { margin-bottom:2px; }
@@ -158,9 +102,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
   background-color: @red;
 }
 /* general style classes */
-.input-large {
-  width: 300px;
-}
 .extra-list {
   margin: 0;
   padding: 0;
@@ -447,19 +388,8 @@ label.radio.error {
   top: -3px;
 }
 
-.form-horizontal .control-group {
-  margin: 0;
-  max-width:700px;
-}
 .form-container .control-group {
   margin: 0 0 10px;
-}
-.ui-widget,
-.ui-widget input,
-.ui-widget select,
-.ui-widget textarea,
-.ui-widget button {
-  font-family:@baseFontFamily !important;
 }
 
 span.validation-failed {

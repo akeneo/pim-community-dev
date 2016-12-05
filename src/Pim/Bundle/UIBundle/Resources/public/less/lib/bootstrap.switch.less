@@ -1,0 +1,27 @@
+@import '../base/variables';
+
+/* Overrides src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-switch/bootstrap.switch.css */
+.has-switch {
+  height: @AknFormHeight;
+  border-color: @AknBorderColor;
+  border-radius: 2px;
+
+  .switch-on,
+  .switch-off,
+  label.switch-small,
+  span.switch-small {
+    height: @AknFormHeight - 2px;
+    line-height: @AknFormHeight - 2px;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  &.switch-small {
+    min-width: 100px;
+  }
+
+  label,
+  span {
+    width: 100% / 3;
+  }
+}

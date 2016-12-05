@@ -28,7 +28,7 @@ define(
     ) {
         return BaseForm.extend({
             config: {},
-            className: 'control-group',
+            className: 'AknFieldContainer',
             template: _.template(template),
 
             /**

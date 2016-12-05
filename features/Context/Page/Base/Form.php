@@ -7,6 +7,7 @@ use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Traits\ClosestTrait;
 
 /**
  * Basic form page
@@ -17,6 +18,8 @@ use Behat\Mink\Exception\ExpectationException;
  */
 class Form extends Base
 {
+    use ClosestTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -677,9 +680,9 @@ class Form extends Base
             $for = $label->getAttribute('for');
 
             if (0 === strpos($for, 's2id_')) {
-                if ($label->getParent()->find('css', '.select2-container-multi')) {
+                if ($this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container-multi')) {
                     return 'multiSelect2';
-                } elseif ($label->getParent()->find('css', 'select')) {
+                } elseif ($this->getClosest($label, 'AknFieldContainer')->find('css', 'select')) {
                     return 'select';
                 }
 
@@ -719,7 +722,7 @@ class Form extends Base
     protected function fillMultiSelect2Field(NodeElement $label, $value)
     {
         $field = $this->decorate(
-            $label->getParent()->find('css', '.select2-container'),
+            $this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container'),
             ['Pim\Behat\Decorator\Field\Select2Decorator']
         );
 
@@ -737,7 +740,10 @@ class Form extends Base
     protected function fillSelect2Field(NodeElement $label, $value)
     {
         if (trim($value)) {
-            if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
+            $container = $this->getClosest($label, 'AknFieldContainer');
+            $link = $container->find('css', '.select2-choice');
+
+            if (null !== $link) {
                 $link->click();
                 $this->getSession()->wait($this->getTimeout(), '!$.active');
 
@@ -751,7 +757,7 @@ class Form extends Base
             }
 
             throw new \InvalidArgumentException(
-                sprintf('Could not find select2 widget inside %s', $label->getParent()->getHtml())
+                sprintf('Could not find select2 widget inside %s', $container->getHtml())
             );
         }
     }
@@ -764,7 +770,7 @@ class Form extends Base
      */
     protected function fillSelectField(NodeElement $label, $value)
     {
-        $field = $label->getParent()->find('css', 'select');
+        $field = $this->getClosest($label, 'AknFieldContainer')->find('css', 'select');
 
         $field->selectOption($value);
     }

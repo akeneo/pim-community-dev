@@ -20,8 +20,6 @@ css:
         - bundles/pimui/css/form.less
         - bundles/pimui/css/wizard.less
         - bundles/pimui/css/tree.less
-        - bundles/pimui/css/dialog.less
-        - bundles/pimui/css/modal.less
         - bundles/pimui/css/progress.less
         - bundles/pimui/css/pim.less
         - bundles/pimui/css/signin.less
@@ -29,7 +27,6 @@ css:
         - bundles/pimui/css/style.less
         - bundles/pimui/css/tabnav.less
         - bundles/pimui/css/buttons.less
-        - bundles/pimui/css/accordion.less
     bem:
         - bundles/pimui/less/base/general.less
         - bundles/pimui/less/components/button/ActionButton.less
@@ -50,7 +47,9 @@ css:
         - bundles/pimui/less/components/grid/Pagination.less
         - bundles/pimui/less/components/product-edit-form/AttributeActions.less
         - bundles/pimui/less/components/product-edit-form/CompletenessBlock.less
+        - bundles/pimui/less/components/product-edit-form/ComparableFields.less
         - bundles/pimui/less/components/product-edit-form/FieldContainer.less
+        - bundles/pimui/less/components/product-edit-form/FormContainer.less
         - bundles/pimui/less/components/product-edit-form/HorizontalTabnav.less
         - bundles/pimui/less/components/product-edit-form/MediaField.less
         - bundles/pimui/less/components/product-edit-form/MetricField.less
@@ -75,4 +74,7 @@ css:
         - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/TitleContainer.less
         - bundles/pimui/less/components/UserMenu.less
+        - bundles/pimui/less/lib/bootstrap.switch.less
+        - bundles/pimui/less/lib/dialog.less
+        - bundles/pimui/less/lib/modal.less
         - bundles/pimui/less/bemFixes.less

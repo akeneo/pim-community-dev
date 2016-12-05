@@ -32,7 +32,7 @@ define(
         AttributeSelector
     ) {
         return BaseForm.extend({
-            className: 'control-group attributes',
+            className: 'AknFieldContainer attributes',
             template: _.template(template),
             events: {
                 'click button': 'openSelector'

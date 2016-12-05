@@ -81,15 +81,6 @@ a.accordion-toggle {
   }
 }
 
-.form-horizontal .control-group:not(:empty) {
-  margin-bottom: 15px;
-  label.control-label {
-    &:after {
-      content: '';
-    }
-  }
-}
-
 .scrollspy .form-horizontal .control-group:not(:empty) {
   margin-bottom: 0;
 }
@@ -165,32 +156,6 @@ a.add-attribute-option {
 }
 .input-prepend a.add-attribute-option {
   border-radius: 3px;
-}
-
-/* bootstrapSwitch */
-.has-switch {
-  margin-right: 3px;
-  margin-bottom: -6px;
-  border-radius: 0;
-
-  label {
-    z-index: 10;
-  }
-  span {
-    padding: 4px 7px;
-    font-size: @font-size-12;
-    font-weight: bold;
-    &.switch-primary, &.switch-left {
-      background-color: @green;
-      background-image: none;
-      border-radius: 0;
-      text-shadow: none;
-    }
-  }
-  &>div.switch-off,
-  &>div.switch-on {
-    height: 26px;
-  }
 }
 
 #channel-switcher {
@@ -326,54 +291,10 @@ a.add-attribute-option {
   }
 }
 
-/* Accordion ********************************************************************************************************/
-.accordion-inner {
-  td { border: none; }
-}
-.accordion-inner-unbuffered {
-  padding: 0;
-  border-top: 1px solid @grayLighter;
-}
-
 .form-inline {
   label {
     width: 200px;
     text-align: left;
-  }
-  input {
-    width: 300px;
-  }
-}
-
-/* Attribute Form ***************************************************************************************************/
-
-.attribute-choice {
-  background: transparent;
-  height: 50px;
-  line-height: 48px;
-  padding-left: 10px;
-  &:hover {
-    background-image: none;
-    background-color: @akeneoPurpleLighter;
-    -webkit-transition: background-color 0.5s;
-    -moz-transition: background-color 0.5s;
-    -o-transition: background-color 0.5s;
-    -ms-transition: background-color 0.5s;
-    transition: background-color 0.5s;  }
-  i {
-    line-height: 34px;
-    font-size: @font-size-20;
-  }
-}
-.attribute-type-selector {
-  display: table;
-  margin-bottom: -10px;
-  &>div {
-    width: 49%;
-    margin-bottom: 10px;
-    &:nth-child(even) {
-      margin-left: 2%;
-    }
   }
 }
 
@@ -428,17 +349,6 @@ table i {
 .submit-form .dropdown-menu.right-align {
   right: 0;
   left: auto;
-}
-
-.attribute-field {
-  .input-large {
-    width: 350px;
-  }
-  .datepicker {
-    &.input-large {
-      width: 200px;
-    }
-  }
 }
 
 .ui-datepicker-today .ui-state-default {
@@ -548,9 +458,6 @@ table.comparison .no-label .attribute-field.scopable {
         left: 25px;
       }
     }
-  }
-  textarea.input-large {
-    width: 350px;
   }
   div.controls {
     input, select, textarea {
@@ -934,11 +841,6 @@ button.pimmultiselect {
       display: none;
     }
   }
-  .scopable-input input[type=text] {
-    height: 20px;
-    margin-left: -1px;
-    border-radius: 0;
-  }
 }
 .attribute-field.scopable>div:not(.first) .controls.metric input {
   height: 21px;
@@ -1144,9 +1046,6 @@ button.view-button {
 
 /** datetimepicker views *********************************************************************************************/
 .bootstrap-datetimepicker-widget {
-  .has-switch {
-    display: table-cell;
-  }
   ul {
     margin: 0;
     padding: 0;
@@ -1166,16 +1065,4 @@ button.view-button {
 
 .tabbable.properties .accordion, .tabbable.history .grid-drop {
   width: 100%;
-}
-
-.job-profile-content-tab {
-  .control-group {
-    max-width: 100%;
-    .control-label.required {
-      font-weight: bold;
-    }
-    .filter-input {
-      display: inline-block;
-    }
-  }
 }

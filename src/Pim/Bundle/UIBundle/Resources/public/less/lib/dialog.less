@@ -1,0 +1,69 @@
+@import '../base/variables';
+
+/* jQuery UI dialog */
+
+.ui-dialog {
+  z-index: 950;
+
+  .ui-widget-header {
+    background: @AknPurple;
+    font-size: @AknTitleFontSize;
+    height: @AknMainMenuHeight;
+    line-height: @AknMainMenuHeight;
+    color: white;
+    padding: 0 16px;
+    font-weight:normal;
+    border: none;
+  }
+
+  .ui-dialog-titlebar-close {
+    display: none;
+  }
+
+  .row-fluid {
+    padding: 10px 20px;
+  }
+
+  .ui-dialog-buttonset {
+    border-top: 1px solid @AknBorderColor;
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 10px 20px;
+  }
+
+  .btn {
+    color: white;
+    height: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize;
+    font-size: @AknFontSizeBig;
+    min-width: @AknDefaultButtonSize;
+    padding: 0 @AknButtonsPadding;
+    display: inline-block;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    margin-left: 10px;
+
+    &.btn-primary {
+      background-color: @AknGreen;
+
+      &:hover {
+        background: darken(@AknGreen, 10%);
+      }
+    }
+
+    &:not(.btn-primary) {
+      background-color: @AknGrey;
+
+      &:hover {
+        background: darken(@AknGrey, 10%);
+      }
+    }
+  }
+}
+
+.ui-widget-overlay {
+  background: black;
+}

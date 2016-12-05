@@ -193,21 +193,21 @@ class Base extends Page
      */
     public function pressButton($locator, $forceVisible = false)
     {
-        $button = $forceVisible ? $this->getVisibleButton($locator) : $this->getButton($locator);
+        $button = $this->spin(function () use ($locator, $forceVisible) {
+            $result = $forceVisible ? $this->getVisibleButton($locator) : $this->getButton($locator);
 
-        if (null === $button) {
-            $button = $this->find(
-                'named',
-                [
-                    'link',
-                    $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
-                ]
-            );
-        }
+            if (null === $result) {
+                $result = $this->find(
+                    'named',
+                    [
+                        'link',
+                        $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
+                    ]
+                );
+            }
 
-        if (null === $button) {
-            throw new ElementNotFoundException($this->getSession(), 'button', 'id|name|title|alt|value', $locator);
-        }
+            return $result;
+        }, sprintf('Can not find any "%s" button', $locator));
 
         $button->click();
     }
@@ -330,21 +330,14 @@ class Base extends Page
      */
     public function cancelDialog()
     {
-        $element = $this->getElement('Dialog');
+        $this->spin(function () {
+            $element = $this->getElement('Dialog');
+            if (null === $element) {
+                return null;
+            }
 
-        if (null === $element) {
-            throw new \Exception('Could not find dialog window');
-        }
-
-        // TODO: Use the 'Cancel' button instead of the 'Close' button
-        // (waiting for BAP to get the 'Cancel' button on grid actions)
-        $button = $element->find('css', 'a.close');
-
-        if (null === $button) {
-            throw new \Exception('Could not find the cancel button');
-        }
-
-        $button->click();
+            return $element->find('css', '.cancel');
+        }, 'Could not find the cancel button')->click();
     }
 
     /**

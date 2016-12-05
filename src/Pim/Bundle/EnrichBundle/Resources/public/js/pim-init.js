@@ -25,13 +25,6 @@ define(
                     }
                 });
 
-                // Toogle accordion icon
-                $target.find('.accordion').on('show hide', function (e) {
-                    $(e.target).siblings('.accordion-heading')
-                        .find('.accordion-toggle i')
-                        .toggleClass('icon-chevron-down icon-chevron-right');
-                });
-
                 var $localizableIcon = $('<i>', {
                     'class': 'icon-globe',
                     'attr': {

@@ -7,4 +7,10 @@
   border-radius: 2px;
   padding: 8px;
   height: 150px;
+
+  &[readonly],
+  &[disabled] {
+    background: @AknDisabledInputColor;
+    cursor: not-allowed;
+  }
 }

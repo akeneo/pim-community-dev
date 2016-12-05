@@ -15,11 +15,21 @@
     justify-content: flex-end;
   }
 
-  &--withSpace:not(&--right) &-item {
+  &--withSpace:not(&--right):not(&--twoColumns) &-item {
     margin-right: @marginSpace;
   }
 
-  &--withSpace&--right &-item {
+  &--withSpace&--right:not(&--twoColumns) &-item {
     margin-left: @marginSpace;
+  }
+
+  &--twoColumns {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  &--twoColumns &-item {
+    flex-basis: 49%;
+    margin-bottom: @marginSpace;
   }
 }

@@ -16,7 +16,7 @@ define([
     filterTemplate
 ) {
     return BaseForm.extend({
-        className: 'control-group filter-item',
+        className: 'AknFieldContainer control-group filter-item',
         elements: {},
         editable: true,
         removable: false,
@@ -222,7 +222,7 @@ define([
 
                     this.$el.html(this.filterTemplate(templateContext));
                     this.$('.remove').on('click', this.removeFilter.bind(this));
-                    this.$('.filter-input').append(this.renderInput(templateContext));
+                    this.$('.filter-input').replaceWith(this.renderInput(templateContext));
 
                     this.renderElements();
                     this.postRender(templateContext);

@@ -2,6 +2,7 @@
 
 .AknTextField {
   height: @AknFormHeight;
+  line-height: @AknFormHeight;
   color: @AknDefaultFontColor;
   border: 1px solid @AknBorderColor;
   width: 100%;
@@ -12,5 +13,19 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-right: none;
+  }
+
+  &--withRightButton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1px;
+  }
+
+  &--disabled,
+  &[readonly],
+  &[disabled] {
+    background: @AknDisabledInputColor;
+    cursor: not-allowed;
   }
 }

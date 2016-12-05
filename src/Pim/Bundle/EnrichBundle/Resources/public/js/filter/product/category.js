@@ -19,7 +19,7 @@ define([
     return BaseFilter.extend({
         shortname: 'category',
         template: _.template(template),
-        className: 'control-group filter-item category-filter',
+        className: 'AknFieldContainer control-group filter-item category-filter',
         events: {
             'click button': 'openSelector'
         },

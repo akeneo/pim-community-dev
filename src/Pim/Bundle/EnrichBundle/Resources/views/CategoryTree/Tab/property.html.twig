@@ -7,5 +7,8 @@
         {{ form_row(form.label) }}
     {% endset %}
 
-    {{ elements.tabSections({ 'pane.accordion.general_properties': generalProperties, 'pane.accordion.node_values': nodeValues }) }}
+    {{ elements.tabSections({
+        'pane.accordion.general_properties': elements.form_container(generalProperties),
+        'pane.accordion.node_values': elements.form_container(nodeValues)
+    }) }}
 </div>

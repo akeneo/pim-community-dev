@@ -42,7 +42,7 @@ class Edit extends ProductEditForm
                 'Copy source dropdown'    => ['css' => '.attribute-copy-actions .source-switcher'],
                 'Status switcher'         => ['css' => '.status-switcher'],
                 'Image preview'           => ['css' => '#lbImage'],
-                'Form fields'             => ['css' => '.AknFieldContainer-formField'],
+                'Form fields'             => ['css' => '.AknComparableFields'],
                 'Completeness'            => [
                     'css'        => '.completeness-panel',
                     'decorators' => [

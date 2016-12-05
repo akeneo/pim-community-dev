@@ -170,14 +170,10 @@ class ProductEditForm extends Form
         }
 
         $labelNode = $this->spin(function () use ($label) {
-            return $this->find('css', sprintf('.AknFieldContainer .AknFieldContainer-label:contains("%s")', $label));
+            return $this->find('css', sprintf('.AknComparableFields .AknFieldContainer-label:contains("%s")', $label));
         }, 'Cannot find the field label');
 
-        $container = $labelNode;
-        while (!$container->hasClass('AknFieldContainer') && null !== $container->getParent()) {
-            $container = $container->getParent();
-        }
-
+        $container = $this->getClosest($labelNode, 'AknComparableFields');
         $container->name = $label;
 
         return $container;
@@ -202,7 +198,7 @@ class ProductEditForm extends Form
         }
 
         $subContainer = $this->spin(function () use ($label, $copy) {
-            $selector = '.AknFieldContainer-formField';
+            $selector = '.AknFieldContainer';
             if (false !== $copy) {
                 $selector = '.copy-container ' . $selector;
             }
@@ -318,7 +314,7 @@ class ProductEditForm extends Form
     protected function fillMultiSelectField(NodeElement $fieldContainer, $values)
     {
         $element = $this->spin(function () use ($fieldContainer) {
-            return $fieldContainer->find('css', '.AknFieldContainer-formField .select2-container');
+            return $fieldContainer->find('css', '.AknFieldContainer .select2-container');
         }, 'Can not find the select2 container.');
 
         $field = $this->decorate(
@@ -429,7 +425,7 @@ class ProductEditForm extends Form
         if ($isLabel) {
             $formFieldWrapper = $fieldContainer->getParent()->getParent();
         } else {
-            $formFieldWrapper = $fieldContainer->find('css', '.AknFieldContainer-formField');
+            $formFieldWrapper = $fieldContainer->find('css', '.AknFieldContainer');
         }
 
         if ($formFieldWrapper->hasClass('akeneo-datepicker-field')) {
@@ -530,7 +526,7 @@ class ProductEditForm extends Form
     {
         $fieldContainer = $this->findFieldContainer($label);
         $fieldType = $this->getFieldType($fieldContainer);
-        $subContainerSelector = '.AknFieldContainer-formField';
+        $subContainerSelector = '.AknFieldContainer';
         if (false !== $copy) {
             $subContainerSelector = '.copy-container ' . $subContainerSelector;
         }
