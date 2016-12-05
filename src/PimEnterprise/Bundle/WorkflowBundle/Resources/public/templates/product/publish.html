@@ -1,5 +1,5 @@
 <% if (product.meta.published) { %>
-    <div class="AknSeveralActionsButton AknSeveralActionsButton--action AknDropdown">
+    <div class="AknSeveralActionsButton AknSeveralActionsButton--action AknTitleContainer-rightButton AknDropdown">
         <button class="AknSeveralActionsButton-mainAction publish-product <%- (product.meta.published.version === product.meta.updated.version) ? 'disabled' : '' %>">
             <%- _.__('pimee_enrich.entity.product.btn.publish_this_version') %>
         </button>
@@ -11,7 +11,7 @@
         </ul>
     </div>
 <% } else { %>
-    <button class="AknButton AknButton--action AknButton--withIcon publish-product">
+    <button class="AknButton AknButton--action AknButton--withIcon AknTitleContainer-rightButton publish-product">
         <i class="AknButton-icon icon-cloud-upload"></i><%- _.__('pimee_enrich.entity.product.btn.publish') %>
     </button>
 <% } %>

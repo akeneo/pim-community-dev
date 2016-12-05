@@ -26,6 +26,6 @@
     </script>
 
     <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}">
-        {{ elements.tabSections( { '': form_widget(form.permissions) }, 1, false, 'permission' ) }}
+        {{ elements.tabSections( { '': elements.form_container(form_widget(form.permissions)) }) }}
     </div>
 {% endif %}
