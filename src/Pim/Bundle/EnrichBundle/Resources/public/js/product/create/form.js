@@ -113,7 +113,7 @@ define(
                         return this.renderExtensions();
                     }.bind(this), function () {
                         this.$el.html(
-                            this.template({
+                            this.errorTemplate({
                                 message: __('error.creating.product')
                             })
                         );
