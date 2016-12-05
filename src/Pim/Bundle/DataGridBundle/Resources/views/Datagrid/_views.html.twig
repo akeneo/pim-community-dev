@@ -79,6 +79,10 @@ require(
             activeViewId = $activeView.val();
         }
 
+        if (null === DatagridState.get('{{ alias }}', 'view') && 0 !== +activeViewId) {
+            activateView(activeViewId);
+        }
+
         var activeViewLabel = $activeView.text();
 
         var $removeLink = $('#remove-view');
@@ -97,7 +101,6 @@ require(
                     });
                 });
             });
-            activateView(activeViewId);
         }
 
         var truncateTitle = function(title) {

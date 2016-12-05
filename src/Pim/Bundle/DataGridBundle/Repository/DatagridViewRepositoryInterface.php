@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
@@ -27,6 +28,8 @@ interface DatagridViewRepositoryInterface
      *
      * @param UserInterface $user
      * @param string        $alias
+     *
+     * @return ArrayCollection
      */
     public function findDatagridViewByUserAndAlias(UserInterface $user, $alias);
 }

@@ -168,7 +168,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $data = $this->delocalizeData($data, $this->userContext->getUiLocale()->getCode());
         $data = $this->storeUploadedFile($data);
 
-        $this->values = json_encode($data);
+        $this->values = json_encode($data, JSON_HEX_APOS);
     }
 
     /**
