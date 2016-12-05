@@ -16,7 +16,7 @@ class DatabaseCommand extends PimDatabaseCommand
 
         $output->writeln('<info>Initialize activity manager </info>');
 
-        $sql = <<<'SQL'
+        $sql = <<<SQL
 DROP TABLE IF EXISTS `akeneo_activity_manager_completeness_per_attribute_group`;
 CREATE TABLE `akeneo_activity_manager_completeness_per_attribute_group` (
     `locale_id` INT NOT NULL,

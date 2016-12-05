@@ -28,7 +28,7 @@ class ProjectCompletenessController extends Controller
      */
     public function showAction(Project $project, Request $request)
     {
-        $contributorId = $request->get('contributor_id');
+        $contributorId = (int) $request->get('contributor_id');
 
         // TODO manage security
         $projectCompleteness = $this->get('activity_manager.repository.native_sql.project_completeness')
