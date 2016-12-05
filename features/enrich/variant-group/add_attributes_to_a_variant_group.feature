@@ -87,7 +87,7 @@ Feature: Add attributes to a variant group
     And I should see "EUR, USD" currencies on the Price price field
 
   @javascript @jira https://akeneo.atlassian.net/browse/PIM-5208
-  Scenario: View only attribute filters that are usable as grid filters and view varient axes in columns
+  Scenario: View only attribute filters that are usable as grid filters and view variant axes in columns
     Given the following attributes:
       | code                       | label-en_US                | type         | group  | useable_as_grid_filter |
       | high_heel_main_color       | High heel main color       | simpleselect | colors | yes                    |
@@ -108,5 +108,4 @@ Feature: Add attributes to a variant group
     When I am on the "high_heels" variant group page
     Then I should see the available filters High heel main color and High heel secondary fabric
     And I should not see the available filters High heel main fabric and High heel secondary color
-    And I should see the columns In group, Sku, High heel main color, Label, Family, Status, Complete, Created at and Updated at
-
+    And I should see the columns In group, Sku, High heel main color, High heel main fabric, Label, Family, Status, Complete, Created at and Updated at
