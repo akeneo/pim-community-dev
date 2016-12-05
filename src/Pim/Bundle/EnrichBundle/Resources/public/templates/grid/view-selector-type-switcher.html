@@ -1,0 +1,14 @@
+<div class="AknDropdown btn-group">
+    <button class="AknActionButton view-selector-type-switcher" title="" data-toggle="dropdown">
+        <%- __('pim_datagrid.view_selector.' + currentViewType).toUpperCase() %> <i class="AknActionButton-caret AknCaret"></i>
+    </button>
+    <ul class="AknDropdown-menu">
+        <% viewTypes.forEach(function (type) { %>
+        <li>
+            <a href="javascript:void(0);" data-action="switchViewType" data-value="<%- type %>" class="AknDropdown-menuLink" title="<%- __('pim_datagrid.view_selector.' + type).toUpperCase() %>">
+                <%- __('pim_datagrid.view_selector.' + type).toUpperCase() %>
+            </a>
+        </li>
+        <% });  %>
+    </ul>
+</div>
