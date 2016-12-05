@@ -1,40 +1,59 @@
 #!groovy
 
-stage('Build') {
-    userInput = input(message: 'Launch tests?', parameters: [
-        [
-            $class: 'ChoiceParameterDefinition',
-            name: 'storage',
-            choices: 'odm\norm',
-            description: 'Storage used for the build, MongoDB (default) or MySQL'
-        ],
-        [
-            $class: 'ChoiceParameterDefinition',
-            name: 'edition',
-            choices: 'ee\nce',
-            description: 'Run behat tests on EE or CE edition'
-        ],
-        [
-            $class: 'TextParameterDefinition',
-            name: 'features',
-            defaultValue: 'features,vendor/akeneo/pim-community-dev/features',
-            description: 'Behat scenarios to build'
-        ]
-    ])
+def editions = ["ee", "ce"]
+def storages = ["orm", "odm"]
+def features = "features,vendor/akeneo/pim-community-dev/features"
+def automaticBranches = ["1.4", "1.5", "1.6", "master"]
+def behatAttempts = 5
+
+stage('build') {
+    if (!automaticBranches.contains(env.BRANCH_NAME)) {
+        userInput = input(message: 'Launch tests?', parameters: [
+            [
+                $class: 'ChoiceParameterDefinition',
+                name: 'storage',
+                choices: 'odm\norm',
+                description: 'Storage used for the build, MongoDB (default) or MySQL'
+            ],
+            [
+                $class: 'ChoiceParameterDefinition',
+                name: 'edition',
+                choices: 'ee\nce',
+                description: 'Run behat tests on EE or CE edition'
+            ],
+            [
+                $class: 'TextParameterDefinition',
+                name: 'features',
+                defaultValue: 'features,vendor/akeneo/pim-community-dev/features',
+                description: 'Behat scenarios to build'
+            ]
+        ])
+
+        storages = [userInput['storage']]
+        editions = [userInput['edition']]
+        features = userInput['features']
+    }
 
     node {
         deleteDir()
         checkout scm
 
-        if ('ce' != userInput['edition']) {
-            stash "pim_community_dev"
-        }
+        stash "pim_community_dev"
 
         // Install needed dependencies
-        sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
-        sh "app/console oro:requirejs:generate-config"
+        sh "composer update --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
 
         stash "project_files"
+    }
+
+    node('docker') {
+        deleteDir()
+        docker.image('carcel/php:5.4').inside {
+            unstash "project_files"
+            sh "composer run-script post-update-cmd"
+            sh "app/console oro:requirejs:generate-config"
+            stash "project_files"
+        }
     }
 }
 
@@ -43,14 +62,31 @@ def tasks = [:]
 
 tasks['php-cs-fixer'] = {
     stage('php-cs-fixer') {
+
+        def fixers = [
+            '-concat_without_spaces',
+            '-empty_return',
+            '-multiline_array_trailing_comma',
+            '-phpdoc_short_description',
+            '-single_quote',
+            '-trim_array_spaces',
+            '-operators_spaces',
+            '-unary_operators_spaces',
+            '-unalign_double_arrow',
+            'align_double_arrow',
+            'newline_after_open_tag',
+            'ordered_use',
+            'phpdoc_order'
+        ]
+
         parallel 'php-cs-fixer-with-php-5.4': {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:5.4').inside {
                     unstash "project_files"
                     sh "composer global require friendsofphp/php-cs-fixer ^1.12"
-                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2"
-                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2"
+                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
+                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
                 }
             }
         },
@@ -60,8 +96,8 @@ tasks['php-cs-fixer'] = {
                 docker.image('carcel/php:5.5').inside {
                     unstash "project_files"
                     sh "composer global require friendsofphp/php-cs-fixer ^1.12"
-                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2"
-                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2"
+                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
+                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
                 }
             }
         },
@@ -71,8 +107,8 @@ tasks['php-cs-fixer'] = {
                 docker.image('carcel/php:5.6').inside {
                     unstash "project_files"
                     sh "composer global require friendsofphp/php-cs-fixer ^1.12"
-                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2"
-                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2"
+                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
+                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
                 }
             }
         }
@@ -181,62 +217,65 @@ tasks['jasmine'] = {
     }
 }
 
-tasks['functional_tests'] = {
-    stage('behat') {
-        node {
-            deleteDir()
-
-            if ('ce' == userInput['edition']) {
-                unstash "project_files"
-
-                tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
-            } else {
-                // Checkout pim-enterprise-dev
-                checkout([$class:            'GitSCM',
-                          branches:          [[name: '1.4']],
-                          userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
-                ])
-
-                // Install dependencies then unstash the CE PR branch directly into the vendors
-                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                dir('vendor/akeneo/pim-community-dev') {
+tasks["behat"] = {
+    node {
+        for (storage in storages) {
+            for (edition in editions) {
+                stage("behat-${edition}-${storage}") {
                     deleteDir()
-                    unstash "pim_community_dev"
+
+                    if ('ce' == edition) {
+                       unstash "project_files"
+
+                       tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
+                    } else {
+                       // Checkout pim-enterprise-dev
+                       checkout([$class:            'GitSCM',
+                                 branches:          [[name: '1.4']],
+                                 userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+                       ])
+
+                       // Install dependencies then unstash the CE PR branch directly into the vendors
+                       sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                       dir('vendor/akeneo/pim-community-dev') {
+                           deleteDir()
+                           unstash "pim_community_dev"
+                       }
+
+                       tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
+                    }
+
+                    // Create mysql hostname (MySQL docker container name)
+                    mysqlHostName = "mysql_akeneo_job_pim-community-dev_job_${env.JOB_BASE_NAME}_${env.BUILD_NUMBER}_behat-${edition}-${storage}"
+
+                    // Configure the PIM
+                    sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
+                    sh "sed -i \"s#database_host: .*#database_host: ${mysqlHostName}#g\" app/config/parameters_test.yml"
+                    if ('ce' == edition) {
+                       sh "printf \"    installer_data: 'PimInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
+                    } else {
+                       sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
+                    }
+
+                    // Activate MongoDB if needed
+                    if ('odm' == storage) {
+                       sh "sed -i \"s@// new Doctrine@new Doctrine@g\" app/AppKernel.php"
+                       sh "sed -i \"s@# mongodb_database: .*@mongodb_database: akeneo_pim@g\" app/config/pim_parameters.yml"
+                       sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://mongodb:27017'@g\" app/config/pim_parameters.yml"
+                       sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
+                    }
+
+                    sh "mkdir -p app/build/logs/behat"
+                    sh "mkdir -p app/build/logs/consumer"
+                    sh "mkdir -p app/build/screenshots"
+
+                    sh "cp behat.ci.yml behat.yml"
+                    sh "/usr/bin/php7.0 /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE} ${env.BUILD_NUMBER} ${storage} ${features} akeneo/job/pim-community-dev/job/${env.JOB_BASE_NAME} ${behatAttempts} 5.6 5.5 \"${tags}\" \"behat-${edition}-${storage}\""
+
+                    archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png,app/build/logs/consumer/*.log'
+                    junit 'app/build/logs/behat/*.xml'
                 }
-
-                tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
             }
-
-            // Create mysql hostname (MySQL docker container name)
-            mysqlHostName = "mysql_akeneo_job_pim-community-dev_job_${env.JOB_BASE_NAME}_${env.BUILD_NUMBER}"
-
-            // Configure the PIM
-            sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
-            sh "sed -i \"s#database_host: .*#database_host: ${mysqlHostName}#g\" app/config/parameters_test.yml"
-            if ('ce' == userInput['edition']) {
-                sh "printf \"    installer_data: 'PimInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
-            } else {
-                sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
-            }
-
-            // Activate MongoDB if needed
-            if ('odm' == userInput['storage']) {
-                sh "sed -i \"s@// new Doctrine@new Doctrine@g\" app/AppKernel.php"
-                sh "sed -i \"s@# mongodb_database: .*@mongodb_database: akeneo_pim@g\" app/config/pim_parameters.yml"
-                sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://mongodb:27017'@g\" app/config/pim_parameters.yml"
-                sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
-            }
-
-            sh "mkdir -p app/build/logs/behat"
-            sh "mkdir -p app/build/logs/consumer"
-            sh "mkdir -p app/build/screenshots"
-
-            sh "cp behat.ci.yml behat.yml"
-
-            sh "/usr/bin/php7.0 /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE} ${env.BUILD_NUMBER} ${userInput['storage']} ${userInput['features']} akeneo/job/pim-community-dev/job/${env.JOB_BASE_NAME} 3 5.6 5.5 \"${tags}\""
-
-            step([$class: 'ArtifactArchiver', allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png,app/build/logs/consumer/*.log', defaultExcludes: false, excludes: null])
-            step([$class: 'JUnitResultArchiver', testResults: 'app/build/logs/behat/*.xml'])
         }
     }
 }
