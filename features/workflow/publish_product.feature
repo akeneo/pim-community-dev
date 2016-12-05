@@ -106,6 +106,27 @@ Feature: Publish a product
     And I should not see "February 02, 2013"
     And I should not see "akeneo.jpg"
 
+  @jira https://akeneo.atlassian.net/browse/PIM-5996
+  Scenario: Successfully publish a product containing boolean attributes
+    Given the following attributes:
+      | code       | label-en_US | type    |
+      | waterproof | Waterproof  | boolean |
+    And the following product:
+      | sku       | family  | name-en_US |
+      | my-jacket | jackets | Jackets    |
+    And the following family:
+      | code | label-en_US | attributes      |
+      | baz  | Baz         | sku, waterproof |
+    And the following product values:
+      | product   | attribute  | value |
+      | my-jacket | handmade   | 1     |
+      | my-jacket | waterproof | 0     |
+    And I edit the "my-jacket" product
+    When I press the "Publish" button
+    And I confirm the publishing
+    Then attribute Handmade of published "my-jacket" should be "true"
+    And attribute Waterproof of published "my-jacket" should be "false"
+
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Fail to delete attribute options if it's used by a published product
     Given the following attributes:

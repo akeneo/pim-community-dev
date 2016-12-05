@@ -311,11 +311,32 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\Product
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
      */
     public function getPublished($sku)
     {
         $published = $this->getPublishedProductManager()->findByIdentifier($sku);
+
+        if (!$published) {
+            throw new \InvalidArgumentException(sprintf('Could not find a published product with sku "%s"', $sku));
+        }
+
+        $this->refresh($published);
+
+        return $published;
+    }
+
+    /**
+     * @param string $sku
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     */
+    public function getPublishedByOriginal($sku)
+    {
+        $originalProduct = $this->getProduct($sku);
+        $published       = $this->getPublishedProductManager()->findPublishedProductByOriginal($originalProduct);
 
         if (!$published) {
             throw new \InvalidArgumentException(sprintf('Could not find a published product with sku "%s"', $sku));
@@ -341,6 +362,20 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         return $productDraft;
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $identifier
+     * @param string $value
+     *
+     * @Then /^attribute (\w+) of published "([^"]*)" should be "([^"]*)"$/
+     */
+    public function attributeOfPublishedShouldBe($attribute, $identifier, $value)
+    {
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
+        $productValue = $this->getPublishedProductValue($identifier, strtolower($attribute));
+        $this->assertDataEquals($productValue->getData(), $value);
     }
 
     /**
@@ -526,6 +561,36 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     );
             }
         }
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Pim\Component\Catalog\Model\ProductValueInterface
+     */
+    protected function getPublishedProductValue($identifier, $attribute, $locale = null, $scope = null)
+    {
+        if (null === $product = $this->getPublishedByOriginal($identifier)) {
+            throw new \InvalidArgumentException(sprintf('Could not find published product with original identifier "%s"', $identifier));
+        }
+
+        if (null === $value = $product->getValue($attribute, $locale, $scope)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
+                    $attribute,
+                    $locale,
+                    $scope
+                )
+            );
+        }
+
+        return $value;
     }
 
     /**
