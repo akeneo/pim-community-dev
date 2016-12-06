@@ -27,7 +27,7 @@ config:
         pim/export/product/edit/content:
             forwarded-events:
                 'pim_enrich:form:filter:extension:add': 'pim_enrich:form:filter:extension:add'
-        pim/grid/view-selector:
+        pim/grid/view-selector/selector:
             view_types:
                 - 'view'
             forwarded-events:
@@ -341,7 +341,7 @@ config:
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base
 
         # Grid view selector
-        pim/grid/view-selector: pimenrich/js/grid/view-selector
+        pim/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pim/grid/view-selector/footer: pimenrich/js/grid/view-selector-footer
         pim/grid/view-selector/footer/create: pimenrich/js/grid/view-selector-footer-create
         pim/grid/view-selector/footer/create/view: pimenrich/js/grid/view-selector-footer-create-view
