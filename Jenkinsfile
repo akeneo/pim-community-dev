@@ -1,41 +1,52 @@
 #!groovy
 
-stage('Prepare build') {
-    userInput = input(message: 'Launch tests?', parameters: [
-        [
-            $class: 'TextParameterDefinition',
-            name: 'ce_branch',
-            defaultValue: '',
-            description: 'Community Edition branch used for the build (ONLY if you created a CE branch for this PR, let blank otherwise)'
-        ],
-        [
-            $class: 'TextParameterDefinition',
-            name: 'ce_owner',
-            defaultValue: 'akeneo',
-            description: 'Owner of the repository on GitHub (ONLY if you work from a forked repository AND you specified a "ce_branch")'
-        ],
-        [
-            $class: 'ChoiceParameterDefinition',
-            name: 'storage',
-            choices: 'odm\norm',
-            description: 'Storage used for the build, MongoDB (default) or MySQL'
-        ],
-        [
-            $class: 'TextParameterDefinition',
-            name: 'features',
-            defaultValue: 'features,vendor/akeneo/pim-community-dev/features',
-            description: 'Behat scenarios to build'
-        ]
-    ])
+def ceBranch = "1.4.x-dev"
+def ceOwner = "akeneo"
+def features = "features,vendor/akeneo/pim-community-dev/features"
+def automaticBranches = ["1.4", "1.5", "1.6", "master"]
+def storages = ["orm", "odm"]
+def behatAttempts = 5
+
+stage('build') {
+    if (!automaticBranches.contains(env.BRANCH_NAME)) {
+        userInput = input(message: 'Launch tests?', parameters: [
+            [
+                $class: 'TextParameterDefinition',
+                name: 'ce_branch',
+                defaultValue: '1.4.x-dev',
+                description: 'Community Edition branch used for the build (ONLY if you created a CE branch for this PR, let blank otherwise)'
+            ],
+            [
+                $class: 'TextParameterDefinition',
+                name: 'ce_owner',
+                defaultValue: 'akeneo',
+                description: 'Owner of the repository on GitHub (ONLY if you work from a forked repository AND you specified a "ce_branch")'
+            ],
+            [
+                $class: 'ChoiceParameterDefinition',
+                name: 'storage',
+                choices: 'odm\norm',
+                description: 'Storage used for the build, MongoDB (default) or MySQL'
+            ],
+            [
+                $class: 'TextParameterDefinition',
+                name: 'features',
+                defaultValue: 'features,vendor/akeneo/pim-community-dev/features',
+                description: 'Behat scenarios to build'
+            ]
+        ])
+
+        ceBranch = userInput['ce_branch']
+        ceOwner = userInput['ce_owner']
+        features = userInput['features']
+        storages = [userInput['storage']]
+    }
 
     node {
         deleteDir()
         checkout scm
 
-        // Set composer.json
-        if ('' != userInput['ce_branch']) {
-            sh "composer require --no-update \"${userInput['ce_owner']}/pim-community-dev\":\"dev-${userInput['ce_branch']}\""
-        }
+        sh "composer require --no-update \"${ceOwner}/pim-community-dev\":\"${ceBranch}\""
 
         // Install needed dependencies
         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
@@ -153,42 +164,48 @@ tasks['jasmine'] = {
     }
 }
 
-tasks['functional_tests'] = {
-    stage('behat') {
-        node {
-            deleteDir()
-            unstash "project_files"
+tasks["behat"] = {
+    node {
+        for (storage in storages) {
+            stage("behat-${storage}") {
+                deleteDir()
+                unstash "project_files"
 
-            tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
+                tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
 
-            // Create mysql hostname (MySQL docker container name)
-            mysqlHostName = "mysql_akeneo_job_pim-enterprise-dev_job_${env.JOB_BASE_NAME}_${env.BUILD_NUMBER}"
+                // Create mysql hostname (MySQL docker container name)
+                mysqlHostName = "mysql_akeneo_job_pim-enterprise-dev_job_${env.JOB_BASE_NAME}_${env.BUILD_NUMBER}_behat-${storage}"
 
-            // Configure the PIM
-            sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
-            sh "sed -i \"s#database_host: .*#database_host: ${mysqlHostName}#g\" app/config/parameters_test.yml"
-            sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
+                // Configure the PIM
+                sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
+                sh "sed -i \"s#database_host: .*#database_host: ${mysqlHostName}#g\" app/config/parameters_test.yml"
+                sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
 
-            // Activate MongoDB if needed
-            if ('odm' == userInput['storage']) {
-                sh "sed -i \"s@// new Doctrine@new Doctrine@g\" app/AppKernel.php"
-                sh "sed -i \"s@# mongodb_database: .*@mongodb_database: akeneo_pim@g\" app/config/pim_parameters.yml"
-                sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://mongodb:27017'@g\" app/config/pim_parameters.yml"
-                sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
+                // Activate MongoDB if needed
+                if ('odm' == storage) {
+                    sh "sed -i \"s@// new Doctrine@new Doctrine@g\" app/AppKernel.php"
+                    sh "sed -i \"s@# mongodb_database: .*@mongodb_database: akeneo_pim@g\" app/config/pim_parameters.yml"
+                    sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://mongodb:27017'@g\" app/config/pim_parameters.yml"
+                    sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
+                }
+
+                sh "mkdir -p app/build/logs/behat"
+                sh "mkdir -p app/build/logs/consumer"
+                sh "mkdir -p app/build/screenshots"
+
+                sh "cp behat.ci.yml behat.yml"
+                sh "/usr/bin/php7.0 /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE} ${env.BUILD_NUMBER} ${storage} ${features} akeneo/job/pim-enterprise-dev/job/${env.JOB_BASE_NAME} ${behatAttempts} 5.6 5.5 \"${tags}\" \"behat-${storage}\""
+
+                stash "project_files"
             }
-
-            sh "mkdir -p app/build/logs/behat"
-            sh "mkdir -p app/build/logs/consumer"
-            sh "mkdir -p app/build/screenshots"
-
-            sh "cp behat.ci.yml behat.yml"
-
-            sh "/usr/bin/php7.0 /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE} ${env.BUILD_NUMBER} ${userInput['storage']} ${userInput['features']} akeneo/job/pim-enterprise-dev/job/${env.JOB_BASE_NAME} 3 5.6 5.5 \"${tags}\""
-
-            step([$class: 'ArtifactArchiver', allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png,app/build/logs/consumer/*.log', defaultExcludes: false, excludes: null])
-            step([$class: 'JUnitResultArchiver', testResults: 'app/build/logs/behat/*.xml'])
         }
     }
 }
 
 parallel tasks
+
+node {
+    unstash "project_files"
+    archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png,app/build/logs/consumer/*.log'
+    junit 'app/build/logs/behat/*.xml'
+}
