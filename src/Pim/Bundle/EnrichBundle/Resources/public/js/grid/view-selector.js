@@ -191,6 +191,9 @@ define(
                 }.bind(this));
 
                 var $menu = this.$('.select2-drop');
+                var $search = this.$('.select2-search');
+
+                $search.append($('<div>').html('ALLEZ COUCOU'));
 
                 FormBuilder.buildForm('pim-grid-view-selector-footer').then(function (form) {
                     form.setParent(this);
@@ -239,6 +242,7 @@ define(
                         this.currentView.columns = datagridState.columns.split(',');
                     }
 
+                    this.model.set('type', initView.type);
                     this.getRoot().trigger('grid:view-selector:initialized', this.currentView);
 
                     return initView;
@@ -257,7 +261,8 @@ define(
                     id: 0,
                     text: __('grid.view_selector.default_view'),
                     columns: this.defaultColumns,
-                    filters: ''
+                    filters: '',
+                    type: 'view'
                 };
             },
 
@@ -365,6 +370,7 @@ define(
                 return $.extend(true, {}, this.config.searchParameters, {
                     search: term,
                     alias: this.gridAlias,
+                    type: this.model.get('type'),
                     options: {
                         limit: this.resultsPerPage,
                         page: page
