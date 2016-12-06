@@ -27,7 +27,7 @@
                     <%= operation.statusLabel %>
                 </span>
             </td>
-            <td class="AknGrid-bodyCell"">
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
                 <a class="AknButton AknButton--little AknButton--grey show-details-btn" href="javascript:void(0);"
                 data-id="<%= operation.id %>"
                 data-operation-type="<%= operation.type %>">
@@ -39,8 +39,10 @@
     </tbody>
 <% } else if (options.contentLoaded) {%>
     <tr>
-        <th class="text-center">
-            <%= __('pim_dashboard.widget.last_operations.empty') %>
-        </th>
+        <td class="AknGrid-bodyCell AknGrid-bodyCell--full">
+            <div class="AknMessageBox AknMessageBox--centered">
+                <%= __('pim_dashboard.widget.last_operations.empty') %>
+            </div>
+        </td>
     </tr>
 <% } %>

@@ -103,7 +103,7 @@ define(
 
                 var $jobTrackerBtn = $(this.jobTrackerBtnTemplate({ title: this.viewAllTitle }));
 
-                this.$el.parent().siblings('.widget-header').append($jobTrackerBtn);
+                this.$el.closest('.AknWidget').find('.widget-actions').prepend($jobTrackerBtn);
                 $jobTrackerBtn.on('click', this.showTracker.bind(this));
             },
 

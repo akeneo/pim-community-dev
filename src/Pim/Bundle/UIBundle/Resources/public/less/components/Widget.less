@@ -1,0 +1,23 @@
+@import '../base/variables';
+
+.AknWidget {
+  width: @AknCenteredContentWidth;
+  margin: 10px auto;
+
+  &-header {
+    color: @AknPurple;
+    border-bottom: 3px solid @AknPurple;
+    font-size: @AknFontSizeBig;
+    text-transform: uppercase;
+    line-height: 44px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-content {
+    position: relative; // For loading mask
+    min-height: 50px; // For loading mask
+  }
+}

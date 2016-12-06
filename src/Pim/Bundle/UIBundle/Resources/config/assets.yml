@@ -42,6 +42,7 @@ css:
         - bundles/pimui/less/components/grid/FilterDate.less
         - bundles/pimui/less/components/grid/FilterMetric.less
         - bundles/pimui/less/components/grid/Grid.less
+        - bundles/pimui/less/components/grid/GridsLine.less
         - bundles/pimui/less/components/grid/GridContainer.less
         - bundles/pimui/less/components/grid/GridToolbar.less
         - bundles/pimui/less/components/grid/Pagination.less
@@ -64,6 +65,7 @@ css:
         - bundles/pimui/less/components/Breadcrumb.less
         - bundles/pimui/less/components/BreadcrumbContainer.less
         - bundles/pimui/less/components/Caret.less
+        - bundles/pimui/less/components/DashboardButtons.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/Flash.less
         - bundles/pimui/less/components/Header.less
@@ -75,6 +77,7 @@ css:
         - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/TitleContainer.less
         - bundles/pimui/less/components/UserMenu.less
+        - bundles/pimui/less/components/Widget.less
         - bundles/pimui/less/lib/bootstrap.switch.less
         - bundles/pimui/less/lib/dialog.less
         - bundles/pimui/less/lib/modal.less

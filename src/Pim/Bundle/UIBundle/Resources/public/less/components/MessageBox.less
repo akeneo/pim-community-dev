@@ -1,9 +1,9 @@
 @import '../base/variables';
 
 .AknMessageBox {
-  border: @AknBorderColor;
+  border: 1px solid @AknBorderColor;
   color: @AknDefaultFontColor;
-  background: white;
+  background: @AknLightGray;
   border-radius: 2px;
   padding: 10px;
   display: flex;
@@ -37,6 +37,10 @@
 
   &-list {
     list-style: disc inside none;
+  }
+
+  &--centered {
+    text-align: center;
   }
 
   & + & {

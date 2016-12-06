@@ -1,0 +1,17 @@
+@import '../../base/variables';
+
+.AknGridsLine {
+  @margin: 10px;
+
+  display: flex;
+  margin: @margin 0;
+
+  &-item {
+    border: 10px solid lighten(@AknGrey, 30%);
+    flex-grow: 1;
+  }
+
+  &-item + &-item {
+    margin-left: @margin;
+  }
+}

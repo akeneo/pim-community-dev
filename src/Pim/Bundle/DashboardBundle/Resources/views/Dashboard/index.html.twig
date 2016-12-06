@@ -1,20 +1,19 @@
 {% extends bap.layout %}
 
 {% block content %}
-    <div class="dashboard header">
-        <h3>{{ 'pim_dashboard.title'|trans }}</h3>
-    </div>
+    <header class="AknTitleContainer navigation">
+        {#<div class="AknTitleContainer-contentContainer">#}
+            {#<div class="AknTitleContainer-mainLine">#}
+                <div class="AknTitleContainer-titleContainer" data-drop-zone="title">
+                    <h2 class="AknTitleContainer-title">{{ 'pim_dashboard.title'|trans }}</h2>
+                </div>
+            {#</div>#}
+        {#</div>#}
+    </header>
 
-    <div class="scrollable-container quick-launchpad dashboard">
-        <div class="container">
-            <div class="row">
-                {{ render(controller('pim_dashboard.controller.widget:listAction')) }}
-            </div>
-        </div>
-
-        <div class="version-container muted">
-            {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
-            {% embed 'PimAnalyticsBundle:Update:last_patch.html.twig' %}{% endembed %}
-        </div>
+    <div>
+        {{ render(controller('pim_dashboard.controller.widget:listAction')) }}
+        {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
+        {% embed 'PimAnalyticsBundle:Update:last_patch.html.twig' %}{% endembed %}
     </div>
 {% endblock %}
