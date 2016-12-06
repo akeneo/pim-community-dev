@@ -62,6 +62,7 @@ define([
                 var urlParams    = params;
                 urlParams.alias  = alias;
                 urlParams.params = _.clone(params);
+                urlParams[alias] = _.clone(params);
 
                 $.get(Routing.generate('pim_datagrid_load', urlParams)).then(function (response) {
                     this.$el.find('.grid-drop').data({
