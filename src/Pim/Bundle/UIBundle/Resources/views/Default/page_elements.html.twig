@@ -187,8 +187,8 @@
 {% macro updated(formId) %}
 {% spaceless %}
     <div id="entity-updated" class="pull-right">
-        <span class="label label-warning">
-            <i class="icon icon-circle"></i>
+        <span class="AknBadge AknBadge--warning">
+            <i class="AknBadge-icon icon-circle"></i>
             {{ 'info.updated'|trans }}
         </span>
     </div>
@@ -301,9 +301,9 @@
     {% if form.enabled is defined %}
         <div class="status-enabled pull-left">
             {% if form.enabled.vars.value %}
-                <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
+                <div class="AknBadge AknBadge--rounded AknBadge--enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
             {% else %}
-                <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
+                <div class="AknBadge AknBadge--rounded AknBadge--disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
             {% endif %}
         </div>
     {% endif %}

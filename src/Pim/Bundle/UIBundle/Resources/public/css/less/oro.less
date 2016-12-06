@@ -97,10 +97,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
   #gradient > .vertical(@grayLighter, @white);
 }
 
-.label-important,
-.badge-important {
-  background-color: @red;
-}
 /* general style classes */
 .extra-list {
   margin: 0;
@@ -132,41 +128,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
   box-shadow: none;
   color: @white;
 }
-
-.badge-enabled,
-.badge-disabled {
-  padding: 3px 10px 3px 5px;
-  font-size: @font-size-12;
-  font-weight: normal;
-}
-.badge-enabled {
-  background-color: @greenLighter;
-  color: @greenDarker;
-}
-.badge-disabled {
-  color: @color-aaa;
-  background-color: @whiteDark;
-}
-.status-disabled {
-  margin-top:-4px;
-  color: @color-aaa;
-  text-shadow:none;
-  padding:3px 10px 3px 5px;
-}
-.status-enabled {
-  margin-top:-4px;
-  color: @greenDarker;
-  text-shadow:none;
-  padding:3px 10px 3px 5px;
-}
-.status-disabled,
-.status-enabled {
-  [class^='icon-']:before {
-    font-size: @font-size-12;
-  }
-}
-.status-enabled [class^='icon-']:before { color:@greenDark; }
-.status-disabled [class^='icon-']:before { color:@redDark; }
 
 .dib {
   display: inline-block;

@@ -574,97 +574,6 @@
   border-right-width: 0;
 }
 
-.label,
-.badge {
-  display: inline-block;
-  padding: 2px 4px;
-  font-size: @font-size-12;
-  font-weight: bold;
-  line-height: 14px;
-  color: @white;
-  white-space: nowrap;
-  vertical-align: baseline;
-  background-color: #999999;
-}
-
-.label {
-  -webkit-border-radius: 2px;
-     -moz-border-radius: 2px;
-          border-radius: 2px;
-}
-
-.badge {
-  padding-right: 9px;
-  padding-left: 9px;
-  -webkit-border-radius: 9px;
-     -moz-border-radius: 9px;
-          border-radius: 9px;
-}
-
-.label:empty,
-.badge:empty {
-  display: none;
-}
-
-a.label:hover,
-a.label:focus,
-a.badge:hover,
-a.badge:focus {
-  color: @white;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.label-important,
-.badge-important {
-  background-color: @red;
-}
-
-.label-important[href],
-.badge-important[href] {
-  background-color: @redDarker;
-}
-
-.label-warning,
-.badge-warning {
-  background-color: @yellow;
-}
-
-.label-warning[href],
-.badge-warning[href] {
-  background-color: @yellowDarker;
-}
-
-.label-success,
-.badge-success {
-  background-color: @green;
-}
-
-.label-success[href],
-.badge-success[href] {
-  background-color: @greenDarker;
-}
-
-.label-info,
-.badge-info {
-  background-color: @blue;
-}
-
-.label-info[href],
-.badge-info[href] {
-  background-color: @blueDarker;
-}
-
-.label-inverse,
-.badge-inverse {
-  background-color: #333333;
-}
-
-.label-inverse[href],
-.badge-inverse[href] {
-  background-color: #1a1a1a;
-}
-
 .hide {
   display: none;
 }
@@ -675,4 +584,9 @@ a.badge:focus {
 
 .invisible {
   visibility: hidden;
+}
+
+.fade {
+  opacity: 0;
+  transition: opacity 0.15s linear;
 }
