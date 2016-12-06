@@ -1,3 +1,9 @@
+# 1.6.X
+
+## Bug fixes
+
+- PIM-6027: Fix export builder filter on category with code as integer
+
 # 1.6.5 (2016-11-25)
 
 ## Bug fixes
