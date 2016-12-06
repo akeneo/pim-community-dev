@@ -145,8 +145,8 @@ Feature: Datagrid views
     When I create the view:
       | label | With name |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
-    When I am on my profile page
+    And I should see the flash message "Datagrid view successfully created"
+    When I am on the my account page
     And I press the "Edit" button
     And I visit the "Additional" tab
     Then I should see the text "Default product grid view"

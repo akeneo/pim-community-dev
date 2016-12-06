@@ -183,7 +183,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 $this->assertColumnContainsValue($code, $data['column'], $data['value']);
 
                 return true;
-            });
+            }, sprintf('Expecting column "%" to contain "%s" on row %s', $data['column'], $data['value'], $code));
         }
     }
 
