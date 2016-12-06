@@ -68,20 +68,20 @@ class SimpleJobLauncher implements JobLauncherInterface
 
         $emailParameter = '';
         if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {
-            $emailParameter = sprintf('--email="%s"', $user->getEmail());
+            $emailParameter = sprintf('--email=%s', escapeshellarg($user->getEmail()));
             unset($configuration['send_email']);
         }
 
-        $encodedConfiguration = addslashes(json_encode($configuration));
+        $encodedConfiguration = json_encode($configuration, JSON_HEX_APOS);
         $cmd = sprintf(
             '%s %s/console akeneo:batch:job --env=%s %s %s %s %s >> %s/logs/batch_execute.log 2>&1',
             $pathFinder->find(),
             $this->rootDir,
             $this->environment,
             $emailParameter,
-            $jobInstance->getCode(),
+            escapeshellarg($jobInstance->getCode()),
             $executionId,
-            !empty($configuration) ? sprintf('--config="%s"', $encodedConfiguration) : '',
+            !empty($configuration) ? sprintf('--config=%s', escapeshellarg($encodedConfiguration)) : '',
             $this->rootDir
         );
 
