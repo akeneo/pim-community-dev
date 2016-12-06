@@ -15,10 +15,12 @@ use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -41,19 +43,31 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     {
         $qb = $this->createQueryBuilder('u');
 
-        $groupIds = array_map(function (Group $userGroup) {
-            return $userGroup->getId();
-        }, $project->getUserGroups()->toArray());
-
-        if (empty($groupIds)) {
-            return [];
-        }
+        $groupIdentifiers = $this->extraContributorGroupIdentifier($project);
 
         $qb->leftJoin('u.groups', 'g')
             ->where($qb->expr()->neq('u.id', $project->getOwner()->getId()))
-            ->andWhere($qb->expr()->in('g.id', $groupIds));
+            ->andWhere($qb->expr()->in('g.id', $groupIdentifiers));
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isProjectContributor(ProjectInterface $project, UserInterface $user)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $groupIdentifiers = $this->extraContributorGroupIdentifier($project);
+
+        $qb->leftJoin('u.groups', 'g')
+            ->where($qb->expr()->eq('u.id', $user->getId()))
+            ->andWhere($qb->expr()->in('g.id', $groupIdentifiers));
+
+        $contributor = $qb->getQuery()->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
+
+        return null !== $contributor;
     }
 
     /**
@@ -108,5 +122,25 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $searchResolver->setAllowedTypes('project', ProjectInterface::class);
 
         return $searchResolver;
+    }
+
+    /**
+     * Extra the contributor group identifier.
+     *
+     * @param ProjectInterface $project
+     *
+     * @return array
+     */
+    private function extraContributorGroupIdentifier(ProjectInterface $project)
+    {
+        $groupIdentifiers = array_map(function (Group $userGroup) {
+            return $userGroup->getId();
+        }, $project->getUserGroups()->toArray());
+
+        if (empty($groupIdentifiers)) {
+            return [];
+        }
+
+        return $groupIdentifiers;
     }
 }

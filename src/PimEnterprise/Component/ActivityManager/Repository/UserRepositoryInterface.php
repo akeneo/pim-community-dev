@@ -13,7 +13,7 @@ namespace Akeneo\ActivityManager\Component\Repository;
 
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -28,4 +28,12 @@ interface UserRepositoryInterface extends ObjectRepository
      * @return UserInterface[]
      */
     public function findContributorsToNotify(ProjectInterface $project);
+
+    /**
+     * @param ProjectInterface $project
+     * @param UserInterface    $user
+     *
+     * @return bool
+     */
+    public function isProjectContributor(ProjectInterface $project, UserInterface $user);
 }

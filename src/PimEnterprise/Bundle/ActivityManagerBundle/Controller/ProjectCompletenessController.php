@@ -31,10 +31,10 @@ class ProjectCompletenessController extends Controller
     {
         $this->denyAccessUnlessGranted([ProjectVoter::OWN, ProjectVoter::CONTRIBUTE], $project);
 
-        $contributorId = $this->isGranted(ProjectVoter::OWN, $project) ? (int) $request->get('contributor_id') : null;
+        $contributor = $this->isGranted(ProjectVoter::OWN, $project) ? $request->get('contributor') : null;
 
         $projectCompleteness = $this->get('activity_manager.repository.native_sql.project_completeness')
-            ->getProjectCompleteness($project, $contributorId);
+            ->getProjectCompleteness($project, $contributor);
 
         return new JsonResponse($projectCompleteness);
     }

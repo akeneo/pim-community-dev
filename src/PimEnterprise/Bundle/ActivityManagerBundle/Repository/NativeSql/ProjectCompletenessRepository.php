@@ -14,7 +14,6 @@ namespace Akeneo\ActivityManager\Bundle\Repository\NativeSql;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\ProjectCompletenessRepositoryInterface;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -35,23 +34,23 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function getProjectCompleteness(ProjectInterface $project, $userId = null)
+    public function getProjectCompleteness(ProjectInterface $project, $username = null)
     {
-        $query = $this->buildSqlQuery($userId);
-        $parameters = $this->buildQueryParameters($project, $userId);
+        $query = $this->buildSqlQuery($username);
+        $parameters = $this->buildQueryParameters($project, $username);
 
         return $this->entityManger->getConnection()->fetchAssoc($query, $parameters);
     }
 
     /**
-     * Build your query parameters
+     * Build your query parameters.
      *
      * @param ProjectInterface $project
-     * @param int|null         $userId
+     * @param int|null         $username
      *
      * @return array
      */
-    private function buildQueryParameters(ProjectInterface $project, $userId = null)
+    private function buildQueryParameters(ProjectInterface $project, $username = null)
     {
         $parameters = [
             'project_id' => $project->getId(),
@@ -59,26 +58,26 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
             'locale_id' => $project->getLocale()->getId(),
         ];
 
-        if (null !== $userId) {
-            $parameters['user_id'] = $userId;
+        if (null !== $username) {
+            $parameters['username'] = $username;
         }
 
         return $parameters;
     }
 
     /**
-     * Build the project completeness query
+     * Build the project completeness query.
      *
-     * @param int|null $userId
+     * @param int|null $username
      *
      * @return string
      */
-    private function buildSqlQuery($userId = null)
+    private function buildSqlQuery($username = null)
     {
         $extraTableJoins = $extraConditions = '';
 
-        if (null !== $userId) {
-            $extraTableJoins = <<<SQL
+        if (null !== $username) {
+            $extraTableJoins = <<<'SQL'
 INNER JOIN `pimee_security_attribute_group_access` AS `attribute_group_access`
     ON `attribute_group_access`.`attribute_group_id` = `completeness_per_attribute_group`.`attribute_group_id`
 INNER JOIN `oro_user_access_group` AS `user_group`
@@ -87,8 +86,8 @@ INNER JOIN `oro_user` AS `user`
     ON `user_group`.`user_id` = `user`.`id`
 SQL;
 
-            $extraConditions = <<<SQL
-AND `user`.`id` = :user_id
+            $extraConditions = <<<'SQL'
+AND `user`.`username` = :username
 SQL;
         }
 

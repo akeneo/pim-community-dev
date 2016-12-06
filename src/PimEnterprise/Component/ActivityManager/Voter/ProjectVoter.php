@@ -13,12 +13,11 @@ namespace Akeneo\ActivityManager\Component\Voter;
 
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 
 /**
- * Project voter, allow to know if a project is owned by the owner or a user can contribute
+ * Project voter, allow to know if a project is owned by the owner or a user can contribute.
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
@@ -70,10 +69,7 @@ class ProjectVoter extends AbstractVoter
             case self::OWN:
                 return $project->getOwner()->getId() === $user->getId();
             case self::CONTRIBUTE:
-                $projectUsers = $this->userRepository->findContributorToNotify($project);
-                $projectUsers = new ArrayCollection($projectUsers);
-
-                return $projectUsers->contains($user);
+                return $this->userRepository->isProjectContributor($project, $user);
         }
     }
 }

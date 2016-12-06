@@ -59,10 +59,9 @@ class ProjectVoterSpec extends ObjectBehavior
         ProjectInterface $project,
         UserInterface $contributor
     ) {
-        $contributor->getId()->willReturn(13);
         $token->getUser()->willReturn($contributor);
 
-        $userRepository->findContributorToNotify($project)->willReturn([$contributor]);
+        $userRepository->isProjectContributor($project, $contributor)->willReturn(true);
 
         $this->vote($token, $project, [ProjectVoter::CONTRIBUTE])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
@@ -72,10 +71,9 @@ class ProjectVoterSpec extends ObjectBehavior
         TokenInterface $token,
         ProjectInterface $project,
         UserInterface $owner,
-        UserInterface $contributor,
         UserInterface $otherUser
     ) {
-        $contributor->getId()->willReturn(13);
+        $otherUser->getId()->willReturn(13);
         $token->getUser()->willReturn($otherUser);
 
         $owner->getId()->willReturn(42);
@@ -83,11 +81,9 @@ class ProjectVoterSpec extends ObjectBehavior
 
         $this->vote($token, $project, [ProjectVoter::OWN])->shouldReturn(VoterInterface::ACCESS_DENIED);
 
-        $contributor->getId()->willReturn(13);
-        $token->getUser()->willReturn($contributor);
+        $token->getUser()->willReturn($otherUser);
 
-        $otherUser->getId()->willReturn(1337);
-        $userRepository->findContributorToNotify($project)->willReturn([$otherUser]);
+        $userRepository->isProjectContributor($project, $otherUser)->willReturn(false);
 
         $this->vote($token, $project, [ProjectVoter::CONTRIBUTE])->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
