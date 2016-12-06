@@ -73,7 +73,7 @@ define(
              * @param {Object} data
              */
             checkNode: function (data) {
-                var code = data.rslt.obj.data('code');
+                var code = String(data.rslt.obj.data('code'));
                 // All products case
                 if ('' === code) {
                     // Uncheck other nodes
