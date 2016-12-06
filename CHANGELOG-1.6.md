@@ -4,6 +4,7 @@
 
 - PIM-6027: Fix export builder filter on category with code as integer
 - PIM-6018: Prevent the import of an attribute identifier if not usable as grid filter
+- PIM-6022: Fix shell command injection in mass-edit
 
 # 1.6.5 (2016-11-25)
 
