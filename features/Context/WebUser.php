@@ -1586,10 +1586,9 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeCategoryCount($count)
     {
-        $badge = $this->getCurrentPage()->find('css', sprintf('span.badge:contains("%d")', $count));
-        if (!$badge) {
-            throw $this->createExpectationException('Category badge not found');
-        }
+        $this->spin(function () use ($count) {
+            return $this->getCurrentPage()->find('css', sprintf('.AknBadge:contains("%d")', $count));
+        }, sprintf('Can not find any badge with count "%s"', $count));
     }
 
     /**

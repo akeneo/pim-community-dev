@@ -11,10 +11,11 @@
     padding: 0 0 0 @AknButtonsPadding;
     display: inline-block;
     cursor: pointer;
+  }
 
-    &:hover {
-      background: lighten(@AknGrey, 15%);
-    }
+  &-button:hover,
+  &.open &-button {
+    background: lighten(@AknGrey, 15%);
   }
 
   &-caretContainer {
@@ -39,11 +40,8 @@
     color: darken(@AknGreen, 20%);
   }
 
-  &--apply:hover &-button {
-    background: lighten(@AknGreen, 20%);
-  }
-
-  &--apply:hover &-caretContainer {
+  &--apply:hover &-button,
+  &--apply.open &-button {
     background: lighten(@AknGreen, 20%);
   }
 
@@ -58,11 +56,8 @@
     color: darken(@AknRed, 20%);
   }
 
-  &--important:hover &-button {
-    background: lighten(@AknRed, 20%);
-  }
-
-  &--important:hover &-caretContainer {
+  &--important:hover &-button,
+  &--important.open &-button {
     background: lighten(@AknRed, 20%);
   }
 

@@ -10,13 +10,13 @@
                 </tr>
                 <% _.each(channelResult.locales, function (localeResult, locale) { %>
                     <tr class="AknGrid-bodyRow">
-                        <td class="AknGrid-bodyCell"><%- locale %></td>
+                        <td class="AknGrid-bodyCell locale"><%- locale %></td>
                         <td class="AknGrid-bodyCell">
                             <div class="AknProgress <%- localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>">
                                 <div class="AknProgress-bar" style="width: <%= localeResult.ratio %>%"></div>
                             </div>
                         </td>
-                        <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
+                        <td class="AknGrid-bodyCell AknGrid-bodyCell--right total">
                             <%- localeResult.complete %>/<%- channelResult.total %>
                         </td>
                     </tr>

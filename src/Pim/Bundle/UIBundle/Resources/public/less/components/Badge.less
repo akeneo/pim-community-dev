@@ -58,6 +58,19 @@
     color: darken(@AknOrange, 20%);
   }
 
+  &--grey {
+    background: @AknGrey;
+    color: white;
+
+    &:hover {
+      background: darken(@AknGrey, 10%);
+    }
+  }
+
+  &--grey &-icon {
+    color: white;
+  }
+
   &--rounded {
     border-radius: 100px;
     padding-left: 9px;

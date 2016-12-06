@@ -7,7 +7,7 @@
                     <a class="AknVerticalNavtab-link" href="javascript:void(0);" id="<%- treeLinkSelector + tree.id %>">
                         <i class="icon-ok <%- tree.associated ? 'green' : 'gray' %>"></i>
                         <%- tree.label %>
-                        <span class="badge" data-tree-id="<%- tree.code %>"><%- categoriesCount[tree.id] %></span>
+                        <span class="AknBadge AknBadge--grey" data-tree-id="<%- tree.code %>"><%- categoriesCount[tree.id] %></span>
                     </a>
                 </li>
             <% }); %>

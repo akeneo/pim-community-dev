@@ -2,7 +2,10 @@
 
 namespace Context\Page\Element;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
+use Context\Traits\ClosestTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 /**
@@ -14,6 +17,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
  */
 class CompletenessWidget extends Element
 {
+    use ClosestTrait;
+
     use SpinCapableTrait;
 
     /** @var array */
@@ -28,11 +33,7 @@ class CompletenessWidget extends Element
      */
     public function getChannelCompleteness($channel)
     {
-        $cell = $this->spin(function () use ($channel) {
-            return $this->find('css', sprintf('.header:contains("%s") .pull-right', $channel));
-        }, sprintf('Could not find channel "%s"', $channel));
-
-        return $cell->getText();
+        return $this->getChannelNode($channel)->find('css', '.AknGrid-headerCell--right')->getText();
     }
 
     /**
@@ -45,12 +46,12 @@ class CompletenessWidget extends Element
      */
     public function getLocalizedChannelCompleteness($channel, $locale)
     {
-        $localeLines = $this->findAll('css', sprintf('.channel:contains("%s") tr', $channel));
+        $localeLines = $this->getChannelNode($channel)->findAll('css', sprintf('tr', $channel));
         foreach ($localeLines as $localeLine) {
-            $localeCell = $localeLine->find('css', 'td.locale');
+            $localeCell = $localeLine->find('css', '.locale');
             if (null !== $localeCell) {
                 if ($localeCell->getText() === $locale) {
-                    return $localeLine->find('css', 'td.total')->getText();
+                    return $localeLine->find('css', '.total')->getText();
                 }
             }
         }
@@ -58,5 +59,24 @@ class CompletenessWidget extends Element
         throw new \InvalidArgumentException(
             sprintf('Could not find locale "%s" for channel "%s"', $locale, $channel)
         );
+    }
+
+    /**
+     * @param $channel
+     *
+     * @throws TimeoutException
+     *
+     * @return NodeElement
+     */
+    protected function getChannelNode($channel)
+    {
+        return $this->spin(function () use ($channel) {
+            $headerCell = $this->find('css', sprintf('.AknGrid-headerCell:contains("%s")', $channel));
+            if (null !== $headerCell) {
+                return $this->getClosest($headerCell, 'AknGrid');
+            }
+
+            return null;
+        }, sprintf('Could not find completeness widget for channel %s', $channel));
     }
 }
