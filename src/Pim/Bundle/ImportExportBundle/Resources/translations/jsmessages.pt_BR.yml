@@ -1,0 +1,17 @@
+job_execution:
+  summary:
+    display_item: Mostrar item
+    hide_item: Esconder item
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Seleção de categorias
+          cancel: Cancelar
+          confirm: Confirmar
+        edit: Editar
+        title: Selecionar categorias
+    locales:
+      validation:
+        not_blank: Uma linguagem deve ser selecionada, por favor, escolha uma para exportar.
