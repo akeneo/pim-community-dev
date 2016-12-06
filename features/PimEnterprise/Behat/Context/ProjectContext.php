@@ -49,11 +49,6 @@ class ProjectContext extends Context implements ContextInterface
                 case 'Owner':
                     $actualValue = $project->getOwner()->getUsername();
                     break;
-                case 'Products':
-                    $productIdentifiers = explode(',', $expectedValue);
-                    $actualValue = $project->getProducts()->count();
-                    $expectedValue = count($productIdentifiers);
-                    break;
                 default:
                     $actualValue = $accessor->getValue($project, $propertyName);
                     break;
@@ -114,7 +109,7 @@ class ProjectContext extends Context implements ContextInterface
             ->findOneByIdentifier($localeCode);
 
         $project = $this->getContainer()
-            ->get('activity_manager.repository.project')
+            ->get('activity_manager.repository.doctrine.project')
             ->findOneBy([
                 'label' => $label,
                 'channel' => $channel,

@@ -104,7 +104,7 @@ class ProjectController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $projectRepository = $this->container->get('activity_manager.repository.project');
+        $projectRepository = $this->container->get('activity_manager.repository.doctrine.project');
         $serializer = $this->container->get('pim_internal_api_serializer');
         $options = $request->query->get('options', ['limit' => 20, 'page' => 1]);
 
