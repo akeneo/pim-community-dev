@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6016: Add a missing validation on asset attributes import
+
 # 1.6.5 (2016-11-25)
 
 ## Bug fixes

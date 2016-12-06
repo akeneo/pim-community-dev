@@ -1,0 +1,8 @@
+services:
+    pim_catalog.validator.constraint.is_reference_data_configured:
+        class: '%pim_catalog.validator.constraint.is_reference_data_configured.class%'
+        arguments:
+            - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect', 'pim_assets_collection']
+            - '@?pim_reference_data.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_is_reference_data_configured_validator }

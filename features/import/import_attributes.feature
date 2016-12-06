@@ -22,10 +22,10 @@ Feature: Import attributes
     When I am on the "csv_footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_attribute_import" job to finish
-    Then I should see "skipped 3"
-    Then I should see "The assets collection attribute can not be scopable nether localizable: [scopable_localizable_attribute]"
-    And I should see "The assets collection attribute can not be scopable nether localizable: [scopable_attribute]"
-    And I should see "The assets collection attribute can not be scopable nether localizable: [localizable_attribute]"
+    Then I should see the text "skipped 3"
+    And I should see the text "The assets collection attribute can not be scopable nether localizable: [scopable_localizable_attribute]"
+    And I should see the text "The assets collection attribute can not be scopable nether localizable: [scopable_attribute]"
+    And I should see the text "The assets collection attribute can not be scopable nether localizable: [localizable_attribute]"
 
   Scenario: Successfully import attribute with read only parameter
     Given the "clothing" catalog configuration
@@ -47,3 +47,37 @@ Feature: Import attributes
     Then there should be the following attributes:
       | type | code       | label-en_US  | group   | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | reference_data_name | is_read_only | sort_order |
       | text | shortname  | Shortname    | info    | 0      | 1                      | 1           | 0        |                    |               |                     |                     | 1            | 2          |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6016
+  Scenario: Fail to import assets without reference_data_name
+    Given the "clothing" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;sort_order
+      pim_assets_collection;assets;;info;0;0;;;;;0;0;1
+      """
+    And the following job "csv_clothing_attribute_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_clothing_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "csv_clothing_attribute_import" job to finish
+    Then I should see the text "skipped 1"
+    And I should see the text "Reference data \"\" does not exist. Allowed values are: fabrics, color, assets: [assets]"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6016
+  Scenario: Fail to import assets without reference_data_name column
+    Given the "clothing" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;localizable;scopable;sort_order
+      pim_assets_collection;assets;;info;0;0;;;;0;0;1
+      """
+    And the following job "csv_clothing_attribute_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_clothing_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "csv_clothing_attribute_import" job to finish
+    Then I should see the text "skipped 1"
+    And I should see the text "Reference data \"\" does not exist. Allowed values are: fabrics, color, assets: [assets]"
