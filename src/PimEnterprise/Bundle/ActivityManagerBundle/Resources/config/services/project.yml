@@ -56,3 +56,12 @@ services:
             - '%activity_manager.project_calculation.job_name%'
         tags:
             - { name: kernel.event_subscriber }
+
+    ### Voter
+    activity_manager.voter.project:
+        class: 'Akeneo\ActivityManager\Component\Voter\ProjectVoter'
+        arguments:
+            - '@activity_manager.repository.user'
+        public: false
+        tags:
+            - { name: security.voter }

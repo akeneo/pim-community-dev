@@ -12,6 +12,7 @@
 namespace Akeneo\ActivityManager\Bundle\Controller;
 
 use Akeneo\ActivityManager\Component\Model\Project;
+use Akeneo\ActivityManager\Component\Voter\ProjectVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,9 +29,10 @@ class ProjectCompletenessController extends Controller
      */
     public function showAction(Project $project, Request $request)
     {
-        $contributorId = (int) $request->get('contributor_id');
+        $this->denyAccessUnlessGranted([ProjectVoter::OWN, ProjectVoter::CONTRIBUTE], $project);
 
-        // TODO manage security
+        $contributorId = $this->isGranted(ProjectVoter::OWN, $project) ? (int) $request->get('contributor_id') : null;
+
         $projectCompleteness = $this->get('activity_manager.repository.native_sql.project_completeness')
             ->getProjectCompleteness($project, $contributorId);
 
