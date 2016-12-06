@@ -49,8 +49,7 @@ class ProjectRepository extends EntityRepository implements
     /**
      * Allow to find projects by search on label, on projects that a user can access and paginate results.
      *
-     * @param string|null $search
-     * @param array|null  $options
+     * {@inheritdoc}
      *
      * @return ProjectInterface[]
      */
@@ -91,7 +90,7 @@ class ProjectRepository extends EntityRepository implements
         return $this->find($identifier);
     }
 
-    /***
+    /**
      * Initialize, configure and returns an options resolver for findBySearch query.
      *
      * @return OptionsResolver

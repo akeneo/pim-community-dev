@@ -127,4 +127,33 @@ class ProjectController extends Controller
 
         return new JsonResponse($normalizedProjects, 200);
     }
+
+    /**
+     * Returns users that belong to the project.
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function searchUserAction(Request $request)
+    {
+        $projectRepository = $this->container->get('activity_manager.repository.project');
+        $userRepository = $this->container->get('activity_manager.repository.user');
+        $serializer = $this->container->get('pim_internal_api_serializer');
+
+        $project = $projectRepository->findOneByIdentifier($request->query->get('projectId'));
+
+        $users = $userRepository->findBySearch(
+            $request->query->get('search'),
+            [
+                'limit' => $request->query->get('limit'),
+                'page' => $request->query->get('page'),
+                'project' => $project,
+            ]
+        );
+
+        $normalizedProjects = $serializer->normalize($users, 'internal_api');
+
+        return new JsonResponse($normalizedProjects, 200);
+    }
 }

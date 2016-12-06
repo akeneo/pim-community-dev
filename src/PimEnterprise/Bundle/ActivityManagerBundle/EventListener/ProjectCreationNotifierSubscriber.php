@@ -85,7 +85,7 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
         $view = $project->getDatagridView();
         $filters = $view->getFilters();
 
-        $users = $this->userRepository->findContributorToNotify($project);
+        $users = $this->userRepository->findContributorsToNotify($project);
 
         foreach ($users as $user) {
             $userLocale = $user->getUiLocale();

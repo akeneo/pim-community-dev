@@ -27,5 +27,5 @@ interface UserRepositoryInterface extends ObjectRepository
      *
      * @return UserInterface[]
      */
-    public function findContributorToNotify(ProjectInterface $project);
+    public function findContributorsToNotify(ProjectInterface $project);
 }
