@@ -1,0 +1,24 @@
+pim_analytics:
+  new_patch_available: Nova atualização disponível
+  system_config:
+    group:
+      notification.title: Notificações
+      version_update.title: Atualização de versão
+    form:
+      version_update.label: Notificações de novas versões
+      version_update.tooltip: Enviar pedido a um servidor remoto para obter informações sobre a existência de novas actualizações
+  system_info:
+    title: Informações do Sistema
+    download: TXT
+  info_type:
+    pim_edition: Edição
+    pim_storage_driver: Armazenamento
+    pim_environment: Ambiente
+    pim_install_time: Tempo de instalação
+    registered_bundles: Pacotes (bundles) registados
+  acl:
+    system_info:
+      index: Informações do Sistema
+pim_menu:
+  item:
+    system_info: Informações do Sistema

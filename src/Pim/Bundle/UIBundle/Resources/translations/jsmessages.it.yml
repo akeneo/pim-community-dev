@@ -1,19 +1,19 @@
 Close: Chiudi
 Update: Carica
 Selected Rows: Righe selezionate
-"Yes": Sì
-Yes, Delete: Sì, elimina
-Yes, I Agree: "Sì, sono d'accordo"
-Yes, do it: Sì, prosegui
-"No": 'No'
-Ok, got it.: Ok, capito.
-Cancel: Cancella
-Delete Confirmation: Conferma cancellazione
-Edit: Modifica
-Unexpected error occured. Please contact system administrator.: "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
+"Yes": "Sì"
+"Yes, Delete": "Sì, elimina"
+"Yes, I Agree": "Sì, sono d'accordo"
+"Yes, do it": "Sì, prosegui"
+"No": "No"
+"Ok, got it.": "Ok, capito."
+"Cancel": "Cancella"
+"Delete Confirmation": "Conferma cancellazione"
+"Edit": "Modifica"
+"Unexpected error occured. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
 Now: Ora
 Prev: Precedente
-Next: Prossimo
+Next: Successivo
 Today: Oggi
 Wk: Wk
 Done: Completato
@@ -21,14 +21,13 @@ AM: AM
 A: A
 PM: PM
 P: P
-Choose Time: "Scegli l'ora"
+"Choose Time": "Scegli l'ora"
 Time: Ora
 Hour: Ora
 Minute: Minuti
 Second: Secondi
-Millisecond: Millisecondi
 Microsecond: Microsecondi
-Time Zone: Fuso orario
+"Time Zone": "Fuso orario"
 Localized value: Valori localizzati
 Columns: Colonne
 Datagrid Configuration: Configurazione tabella di dati
@@ -39,3 +38,17 @@ Currency: Valuta
 jstree:
   no_tree: Nessuna struttura disponibile
   include_sub: Includere le sotto-categorie
+  loading: Caricamento in corso ...
+oro_config:
+  form:
+    config:
+      title: Configurazione del sistema
+      tab:
+        system:
+          title: Sistema
+      group:
+        localization:
+          title: Localizzazione
+          system_locale: Lingua
+        notification:
+          title: Notifiche

@@ -13,18 +13,17 @@ pim_import_export:
     7: ABBANDONATO
     8: SCONOSCIUTO
   download_archive:
-    archive: scaricare il file generato |scaricare i files generati
     output: scaricare il file generato |scaricare i files generati
     input: scaricare il file letto |scaricare i files letti
     invalid: Scarica dati non validi
 pim_title.export_profile.index: Gestione profili di esportazione
-pim_title.export_profile.edit: 'Esportare profili %job.label% | Modifica'
-pim_title.export_profile.show: 'Esportare profili %job.label% | Visualizza'
+pim_title.export_profile.edit: Esportare profili %job.label% | Modifica
+pim_title.export_profile.show: Esportare profili %job.label% | Visualizza
 pim_title.export_execution.index: Esportare la cronologia delle esecuzioni
 pim_title.export_execution.show: Esecuzioni di esportazione | Dettagli
 pim_title.import_profile.index: Gestione profili di importazione
-pim_title.import_profile.edit: 'Importare i profili %job.label% | Modifica'
-pim_title.import_profile.show: 'Importare i profili %job.label% | Visualizza'
+pim_title.import_profile.edit: Importare i profili %job.label% | Modifica
+pim_title.import_profile.show: Importare i profili %job.label% | Visualizza
 pim_title.import_execution.index: Importare la cronologia delle esecuzioni
 pim_title.import_execution.show: Importare le esecuzioni | Dettagli
 export profile:
@@ -60,37 +59,37 @@ pim_importexport:
     export_execution:
       index: Vedi la lista dei rapporti di esportazione
       show: Vedi il dettaglio del rapporto di esportazione
-      dl_log: "Scarica il report log dell'esportazione"
+      dl_log: Scarica il report log dell'esportazione
       dl_files: Scarica file esportati
     import_execution:
       index: Visualizza la lista dei rapporti importazione
       show: Visualizza i dettagli del rapporto di importazione
-      dl_log: "Scarica il report log dell'importazione"
+      dl_log: Scarica il report log dell'importazione
       dl_files: Scarica i file importati
   acl_group:
     export: Profili di esportazione
     import: Profili di importazione
 btn:
   create:
-    export profile: crea un profilo di esportazione
-    import profile: crea un profilo di importazione
+    export profile: crea il profilo di esportazione
+    import profile: crea il profilo di importazione
 Upload and import: Carica e importa
 Upload and import now: Carica e importa ora
 import now: Importa ora
 export now: Esporta ora
 confirmation:
   remove:
-    export profile: 'Sei sicuro di voler cancellare il profilo di esportazione %name%?'
-    import profile: 'Sei sicuro di voler cancellare il profilo di importazione %name%?'
+    export profile: Sei sicuro di voler cancellare il profilo di esportazione %name%?
+    import profile: Sei sicuro di voler cancellare il profilo di importazione %name%?
 flash:
   export:
-    created: "L'esportazione è stata creata con successo"
-    removed: "L'esportazione è stata rimossa"
-    updated: "L'esportazione è stata creata con successo"
+    created: L'esportazione è stata creata con successo
+    removed: L'esportazione è stata rimossa
+    updated: L'esportazione è stata creata con successo
   import:
-    created: "L'importazione è stata creata con successo"
-    removed: "L'importazione è stata rimossa"
-    updated: "L'importazione è stato caricata con successo"
+    created: L'importazione è stata creata con successo
+    removed: L'importazione è stata rimossa
+    updated: L'importazione è stato caricata con successo
 pim_menu:
   item:
     export_history: Cronologia esportazioni
@@ -105,10 +104,10 @@ pane.accordion:
 popin.create:
   export_profile.title: Crea un nuovo profilo di esportazione
   import_profile.title: Crea un nuovo profilo di importazione
-Display item: Visualizza articoli
-Hide item: Nascondi articoli
-Collecting data about job execution...: "Raccolta di dati sull'esecuzione del lavoro..."
-You must select a file to upload: È necessario selezionare un file da caricare
+'Display item': Visualizza articoli
+'Hide item': Nascondi articoli
+'Collecting data about job execution...': Raccolta di dati sull'esecuzione del lavoro...
+'You must select a file to upload': È necessario selezionare un file da caricare
 Download log: Protocollo download
 Show profile: Visualizza profilo
 execution details: dettagli esecuzione
@@ -123,3 +122,12 @@ Status: Stato
 Summary: Riepilogo
 Start: Inizio
 End: Fine
+set_attribute_requirements: Impostare gli attributi richiesti
+COMPLETED: COMPLETATO
+STARTING: A PARTIRE DA
+STARTED: INIZIATO
+STOPPING: ARRESTO
+STOPPED: FERMATO
+FAILED: NON RIUSCITA
+ABANDONED: ABBANDONATO
+UNKNOWN: SCONOSCIUTO
