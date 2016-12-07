@@ -57,7 +57,7 @@ flash:
 
 error:
     creating:
-        product: There may not be any identifier attribute configured in the PIM, or you may not have the access rights to edit it.
+        product: No attribute is configured as a product identifier or you don't have the rights to edit it.
     removing:
         item:             Cannot delete this item
         association type: Cannot delete this association type
