@@ -100,7 +100,7 @@ class ProjectRepository extends EntityRepository implements
         $searchResolver = new OptionsResolver();
 
         $searchResolver->setRequired(['user']);
-        $searchResolver->setDefault('limit', 1);
+        $searchResolver->setDefault('limit', 20);
         $searchResolver->setDefault('page', 1);
         $searchResolver->setAllowedTypes('limit', 'numeric');
         $searchResolver->setAllowedTypes('page', 'numeric');

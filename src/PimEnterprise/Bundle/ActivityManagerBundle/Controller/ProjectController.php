@@ -12,6 +12,9 @@
 namespace Akeneo\ActivityManager\Bundle\Controller;
 
 use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
+use Akeneo\ActivityManager\Component\Model\Project;
+use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,12 +116,13 @@ class ProjectController extends Controller
     {
         $projectRepository = $this->container->get('activity_manager.repository.project');
         $serializer = $this->container->get('pim_internal_api_serializer');
+        $options = $request->query->get('options', ['limit' => 20, 'page' => 1]);
 
         $projects = $projectRepository->findBySearch(
             $request->query->get('search'),
             [
-                'limit' => $request->query->get('limit'),
-                'page' => $request->query->get('page'),
+                'limit' => $options['limit'],
+                'page' => $options['page'],
                 'user' => $this->getUser(),
             ]
         );
@@ -132,22 +136,29 @@ class ProjectController extends Controller
      * Returns users that belong to the project.
      *
      * @param Request $request
+     * @param int     $projectId
      *
      * @return JsonResponse
      */
-    public function searchUserAction(Request $request)
+    public function searchContributorsAction($projectId, Request $request)
     {
         $projectRepository = $this->container->get('activity_manager.repository.project');
         $userRepository = $this->container->get('activity_manager.repository.user');
         $serializer = $this->container->get('pim_internal_api_serializer');
 
-        $project = $projectRepository->findOneByIdentifier($request->query->get('projectId'));
+        $project = $projectRepository->findOneByIdentifier($projectId);
+
+        if (null === $project) {
+            return new JsonResponse(null, 404);
+        }
+
+        $options = $request->query->get('options', ['limit' => 20, 'page' => 1]);
 
         $users = $userRepository->findBySearch(
             $request->query->get('search'),
             [
-                'limit' => $request->query->get('limit'),
-                'page' => $request->query->get('page'),
+                'limit' => $options['limit'],
+                'page' => $options['page'],
                 'project' => $project,
             ]
         );

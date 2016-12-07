@@ -8,7 +8,9 @@ activity_manager_project_search:
     defaults: { _controller: ActivityManagerBundle:Project:search, _format: json }
     methods: [GET]
 
-activity_manager_project_user_search:
-    path: /project/user/search
-    defaults: { _controller: ActivityManagerBundle:Project:searchUser, _format: json }
+activity_manager_project_contributors_search:
+    path: /project/{projectId}/contributors
+    defaults: { _controller: ActivityManagerBundle:Project:searchContributors, _format: json }
     methods: [GET]
+    requirements:
+        id: \d+

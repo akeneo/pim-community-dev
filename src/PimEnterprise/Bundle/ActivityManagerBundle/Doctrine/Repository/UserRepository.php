@@ -57,6 +57,8 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
+     * Allow to find contributors that belong to a project.
+     *
      * {@inheritdoc}
      */
     public function findBySearch($search = null, array $options = [])
@@ -77,7 +79,6 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
         $qb->leftJoin('u.groups', 'g');
         $qb->andWhere($qb->expr()->in('g.id', $groupIds));
-        $qb->andWhere($qb->expr()->neq('u.id', $project->getOwner()->getId()));
 
         $qb->setMaxResults($options['limit']);
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
@@ -100,7 +101,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $searchResolver = new OptionsResolver();
 
         $searchResolver->setRequired(['project']);
-        $searchResolver->setDefault('limit', 1);
+        $searchResolver->setDefault('limit', 20);
         $searchResolver->setDefault('page', 1);
         $searchResolver->setAllowedTypes('limit', 'numeric');
         $searchResolver->setAllowedTypes('page', 'numeric');
