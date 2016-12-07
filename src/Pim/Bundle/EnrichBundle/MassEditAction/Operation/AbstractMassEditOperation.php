@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 /**
- * A basic implementation of the MassEditOperation
+ * A basic implementation of the MassEditOperation.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -70,12 +70,10 @@ abstract class AbstractMassEditOperation implements
     public function getBatchConfig()
     {
         return addslashes(
-            json_encode(
-                [
+            json_encode([
                     'filters' => $this->getFilters(),
                     'actions' => $this->getActions(),
-                ]
-            )
+                ], JSON_HEX_APOS)
         );
     }
 

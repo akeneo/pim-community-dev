@@ -99,7 +99,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'current_locale'    => 'en_US'
                     ]
                 ]
-            )
+            , JSON_HEX_APOS)
         );
 
         $violations = new ConstraintViolationList([]);
@@ -147,7 +147,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'current_locale'    => 'en_US'
                     ]
                 ]
-            )
+            , JSON_HEX_APOS)
         );
 
         $violations = new ConstraintViolationList([]);
@@ -197,7 +197,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'current_locale'    => 'en_US'
                     ]
                 ]
-            )
+            , JSON_HEX_APOS)
         );
 
         $validator->validate($product)->willReturn($violations);
