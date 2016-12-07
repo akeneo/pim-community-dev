@@ -1,6 +1,8 @@
 {% extends 'PimEnrichBundle:MassEditAction:product/configure.html.twig' %}
 
 {% block formContent %}
-    {{ view_elements('pim_mass_edit.warning') }}
-    {{ form_row(form.operation.groups) }}
+    <div class="AknFormContainer">
+        {{ view_elements('pim_mass_edit.warning') }}
+        {{ form_row(form.operation.groups) }}
+    </div>
 {% endblock %}

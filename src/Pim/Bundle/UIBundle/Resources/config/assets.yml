@@ -18,7 +18,6 @@ css:
         - bundles/pimui/css/pinbar.less
         - bundles/pimui/css/select2.less
         - bundles/pimui/css/form.less
-        - bundles/pimui/css/wizard.less
         - bundles/pimui/css/tree.less
         - bundles/pimui/css/progress.less
         - bundles/pimui/css/pim.less
@@ -80,4 +79,5 @@ css:
         - bundles/pimui/less/lib/bootstrap.switch.less
         - bundles/pimui/less/lib/dialog.less
         - bundles/pimui/less/lib/modal.less
+        - bundles/pimui/less/lib/wizard.less
         - bundles/pimui/less/bemFixes.less

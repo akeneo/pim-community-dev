@@ -160,7 +160,7 @@
 
 {% macro form_errors(form) %}
     {% if form.vars.errors|length %}
-        <div class="alert alert-error fade in top-messages">
+        <div class="AknMessageBox AknMessageBox--error fade in top-messages">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <div class="message">
                 {{ form_errors(form) }}
