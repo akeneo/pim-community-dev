@@ -12,14 +12,14 @@
 namespace Akeneo\ActivityManager\Bundle\Repository\NativeSql;
 
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
+use Akeneo\ActivityManager\Component\Repository\ProjectProductRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ProjectRepository implements ProjectRepositoryInterface
+class ProjectProductRepository implements ProjectProductRepositoryInterface
 {
     /** @var EntityManagerInterface */
     private $objectManager;
@@ -32,6 +32,9 @@ class ProjectRepository implements ProjectRepositoryInterface
         $this->objectManager = $objectManager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function addProduct(ProjectInterface $project, ProductInterface $product)
     {
         $this->objectManager->getConnection()->insert('akeneo_activity_manager_project_product', [

@@ -17,6 +17,6 @@ activity_manager_project_contributors_search:
 
 ### Project Completeness
 activity_manager_project_completeness_show:
-    path: /projects/{id}/completeness
+    path: /projects/{projectId}/completeness
     defaults: { _controller: ActivityManagerBundle:ProjectCompleteness:show, _format: json }
     methods: [GET]

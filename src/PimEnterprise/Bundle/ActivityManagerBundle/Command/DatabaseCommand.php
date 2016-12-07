@@ -1,14 +1,31 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\ActivityManager\Bundle\Command;
 
 use Pim\Bundle\InstallerBundle\Command\DatabaseCommand as PimDatabaseCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * All tables are not mapped to doctrine entity, we need to create some sql manually.
+ *
+ * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
+ */
 class DatabaseCommand extends PimDatabaseCommand
 {
     /**
      * {@inheritdoc}
+     *
+     * akeneo_activity_manager_completeness_per_attribute_group is table used to calculate the project completeness.
+     * akeneo_activity_manager_project_product allow to to know the product affected a project.
      */
     protected function createNotMappedTables(OutputInterface $output)
     {

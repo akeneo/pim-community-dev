@@ -12,7 +12,7 @@
 namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep;
 
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
+use Akeneo\ActivityManager\Component\Repository\ProjectProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -20,13 +20,13 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class ProductCalculationStep implements CalculationStepInterface
 {
-    /** @var ProjectRepositoryInterface */
+    /** @var ProjectProductRepositoryInterface */
     private $projectRepository;
 
     /**
-     * @param ProjectRepositoryInterface $projectRepository
+     * @param ProjectProductRepositoryInterface $projectRepository
      */
-    public function __construct(ProjectRepositoryInterface $projectRepository)
+    public function __construct(ProjectProductRepositoryInterface $projectRepository)
     {
         $this->projectRepository = $projectRepository;
     }

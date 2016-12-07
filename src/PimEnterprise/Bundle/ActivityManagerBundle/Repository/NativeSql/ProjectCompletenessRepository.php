@@ -82,12 +82,15 @@ INNER JOIN `pimee_security_attribute_group_access` AS `attribute_group_access`
     ON `attribute_group_access`.`attribute_group_id` = `completeness_per_attribute_group`.`attribute_group_id`
 INNER JOIN `oro_user_access_group` AS `user_group`
     ON `user_group`.`group_id` = `attribute_group_access`.`user_group_id`
+INNER JOIN `akeneo_activity_manager_project_user_group` AS `project_contributor_group`
+    ON `project`.`id` = `project_contributor_group`.`project_id` AND `project_contributor_group`.`user_group_id` = `user_group`.`group_id`
 INNER JOIN `oro_user` AS `user`
     ON `user_group`.`user_id` = `user`.`id`
 SQL;
 
             $extraConditions = <<<'SQL'
 AND `user`.`username` = :username
+AND `attribute_group_access`.`edit_attributes` = 1
 SQL;
         }
 

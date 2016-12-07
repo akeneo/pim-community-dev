@@ -17,7 +17,13 @@ use Pim\Component\Catalog\Model\ProductInterface;
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-interface ProjectRepositoryInterface
+interface ProjectProductRepositoryInterface
 {
+    /**
+     * Add a product to a project.
+     *
+     * @param ProjectInterface $project
+     * @param ProductInterface $product
+     */
     public function addProduct(ProjectInterface $project, ProductInterface $product);
 }

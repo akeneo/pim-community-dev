@@ -23,15 +23,30 @@ use Symfony\Component\HttpFoundation\Request;
 class ProjectCompletenessController extends Controller
 {
     /**
-     * @param Project $project
+     * @param int     $projectId
+     * @param Request $request
      *
      * @return JsonResponse
      */
-    public function showAction(Project $project, Request $request)
+    public function showAction($projectId, Request $request)
     {
+        $project = $this->container->get('activity_manager.repository.doctrine.project')
+            ->findOneByIdentifier($projectId);
+
+        if (null === $project) {
+            return new JsonResponse(null, 404);
+        }
+
         $this->denyAccessUnlessGranted([ProjectVoter::OWN, ProjectVoter::CONTRIBUTE], $project);
 
-        $contributor = $this->isGranted(ProjectVoter::OWN, $project) ? $request->get('contributor') : null;
+        $contributor = null;
+        if ($this->isGranted(ProjectVoter::OWN, $project)) {
+            $contributor = $request->get('contributor');
+        }
+
+        if ($this->isGranted(ProjectVoter::CONTRIBUTE, $project)) {
+            $contributor = $this->getUser()->getUsername();
+        }
 
         $projectCompleteness = $this->get('activity_manager.repository.native_sql.project_completeness')
             ->getProjectCompleteness($project, $contributor);

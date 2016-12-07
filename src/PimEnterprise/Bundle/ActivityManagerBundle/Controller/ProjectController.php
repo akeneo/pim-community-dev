@@ -132,7 +132,7 @@ class ProjectController extends Controller
      */
     public function searchContributorsAction($projectCode, Request $request)
     {
-        $projectRepository = $this->container->get('activity_manager.repository.project');
+        $projectRepository = $this->container->get('activity_manager.repository.doctrine.project');
         $userRepository = $this->container->get('activity_manager.repository.user');
         $serializer = $this->container->get('pim_internal_api_serializer');
 

@@ -14,7 +14,6 @@ services:
             - '@activity_manager.calculation_step.chained'
             - '@activity_manager.saver.project'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@doctrine.orm.entity_manager'
 
     ### Steps
     activity_manager.step.project_calculation:

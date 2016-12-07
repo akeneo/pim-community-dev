@@ -14,6 +14,7 @@ namespace Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
@@ -24,6 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class ProjectRepository extends EntityRepository implements
+    ObjectRepository,
     IdentifiableObjectRepositoryInterface,
     SearchableRepositoryInterface
 {

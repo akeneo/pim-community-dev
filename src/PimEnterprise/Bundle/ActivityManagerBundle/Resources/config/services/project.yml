@@ -23,7 +23,7 @@ services:
             - '%akeneo_activity_manager.model.project.class%'
 
     activity_manager.repository.native_sql.project:
-        class: 'Akeneo\ActivityManager\Bundle\Repository\NativeSql\ProjectRepository'
+        class: 'Akeneo\ActivityManager\Bundle\Repository\NativeSql\ProjectProductRepository'
         arguments:
             - '@doctrine.orm.default_entity_manager'
 

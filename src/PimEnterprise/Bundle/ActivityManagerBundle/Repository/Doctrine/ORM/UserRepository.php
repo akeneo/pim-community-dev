@@ -43,7 +43,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     {
         $qb = $this->createQueryBuilder('u');
 
-        $groupIdentifiers = $this->extraContributorGroupIdentifier($project);
+        $groupIdentifiers = $this->extractContributorGroupIdentifier($project);
 
         $qb->leftJoin('u.groups', 'g')
             ->where($qb->expr()->neq('u.id', $project->getOwner()->getId()))
@@ -59,7 +59,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     {
         $qb = $this->createQueryBuilder('u');
 
-        $groupIdentifiers = $this->extraContributorGroupIdentifier($project);
+        $groupIdentifiers = $this->extractContributorGroupIdentifier($project);
 
         $qb->leftJoin('u.groups', 'g')
             ->where($qb->expr()->eq('u.id', $user->getId()))
@@ -131,7 +131,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      *
      * @return array
      */
-    private function extraContributorGroupIdentifier(ProjectInterface $project)
+    private function extractContributorGroupIdentifier(ProjectInterface $project)
     {
         $groupIdentifiers = array_map(function (Group $userGroup) {
             return $userGroup->getId();
