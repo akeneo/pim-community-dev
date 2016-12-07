@@ -688,9 +688,10 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
             0 => "en_US"
           ]
           "category_tree" => "master"
-          "conversion_units" => array:2 [
+          "conversion_units" => array:3 [
             "a_metric" => "KILOWATT"
             "a_metric_negative" => "CELSIUS"
+            "a_metric_to_not_convert" => null
           ]
         ]
 
