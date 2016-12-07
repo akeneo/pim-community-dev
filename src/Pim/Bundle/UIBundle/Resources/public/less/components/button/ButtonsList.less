@@ -5,7 +5,11 @@
 
   display: flex;
 
-  &-item { }
+  &-item {
+    &--hide {
+      display: none;
+    }
+  }
 
   &--hide {
     display: none;
@@ -13,6 +17,10 @@
 
   &--right {
     justify-content: flex-end;
+  }
+
+  &--centered {
+    justify-content: center;
   }
 
   &--withSpace:not(&--right):not(&--twoColumns) &-item {

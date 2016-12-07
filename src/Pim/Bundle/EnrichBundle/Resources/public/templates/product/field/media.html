@@ -17,12 +17,12 @@
             <% } %>
             <div class="AknMediaField-info info">
                 <div class="filename" title="<%- value.data.originalFilename %>"><%- value.data.originalFilename %></div>
-                <div class="AknIconsList AknIconsList--centered actions">
+                <div class="AknButtonsList AknButtonsList--withSpace AknButtonsList--centered actions">
                     <% if ('pim_catalog_image' === attribute.type && null != mediaPreviewUrl) { %>
-                        <span class="AknIconsList-item open-media"><i class="icon icon-eye-open"></i></span>
+                        <span class="AknButtonsList-item AknIconButton AknIconButton--grey open-media"><i class="icon icon-eye-open"></i></span>
                     <% } %>
-                    <a href="<%- mediaDownloadUrl %>" class="AknIconsList-item download-file" download><i class="icon icon-cloud-download"></i></a>
-                    <span class="AknIconsList-item clear-field"><i class="icon icon-trash"></i></span>
+                    <a href="<%- mediaDownloadUrl %>" class="AknButtonsList-item AknIconButton AknIconButton--grey download-file" download><i class="icon icon-cloud-download"></i></a>
+                    <span class="AknButtonsList-item AknIconButton AknIconButton--grey clear-field"><i class="icon icon-trash"></i></span>
                 </div>
             </div>
         </div>

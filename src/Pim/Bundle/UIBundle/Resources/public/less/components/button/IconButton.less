@@ -39,4 +39,31 @@
       color: white;
     }
   }
+
+  &--important {
+    background-color: @AknRed;
+    color: white;
+
+    &:hover {
+      background: darken(@AknRed, 10%);
+      color: white;
+    }
+  }
+
+  &--apply {
+    background-color: @AknGreen;
+    color: white;
+
+    &:hover {
+      background: darken(@AknGreen, 10%);
+      color: white;
+    }
+  }
+
+  &--little {
+    font-size: @AknDefaultFontSize;
+    width: @AknMicroButtonSize;
+    height: @AknMicroButtonSize;
+    line-height: @AknMicroButtonSize;
+  }
 }
