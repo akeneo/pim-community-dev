@@ -5,6 +5,7 @@ namespace Context;
 use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Base\Grid;
@@ -178,7 +179,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function theRowShouldContain($code, TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->assertColumnContainsValue($code, $data['column'], $data['value']);
+            $this->spin(function () use ($code, $data) {
+                $this->assertColumnContainsValue($code, $data['column'], $data['value']);
+
+                return true;
+            }, sprintf('Expecting column "%" to contain "%s" on row %s', $data['column'], $data['value'], $code));
         }
     }
 
@@ -411,18 +416,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iDisplayTheColumns($gridLabel, $columns)
     {
-        $gridLabel = (null === $gridLabel || '' === $gridLabel) ? 'products' : $gridLabel;
-        $gridName = $this->getGridName($gridLabel);
+        $currentColumns = $this->datagrid->getCurrentColumnLabels();
+        $expectedColumns = $this->getMainContext()->listToArray($columns);
 
-        $columns = $this->getMainContext()->listToArray($columns);
+        $currentColumns = array_map('strtolower', $currentColumns);
+        $expectedColumns = array_map('strtolower', $expectedColumns);
 
-        $this->getMainContext()->executeScript(
-            sprintf('sessionStorage.setItem("%s.columns", "%s");', $gridName, implode(',', $columns))
-        );
+        $columnsToAdd = array_diff($expectedColumns, $currentColumns);
+        $columnsToRemove = array_diff($currentColumns, $expectedColumns);
 
-        $this->getMainContext()->reload();
-
-        $this->wait();
+        $this->datagrid->openColumnsPopin();
+        $this->datagrid->addColumns($columnsToAdd);
+        $this->datagrid->removeColumns($columnsToRemove);
+        $this->datagrid->validateColumnsPopin();
     }
 
     /**
@@ -437,8 +443,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $columns = $this->getMainContext()->listToArray($columns);
 
         $expectedColumns = count($columns);
-
-        $this->wait('$("table.grid").length > 0');
 
         $countColumns = $this->datagrid->countColumns();
         if ($expectedColumns !== $countColumns) {
@@ -466,6 +470,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $order
      * @param string $columnName
+     *
+     * @throws ExpectationException
      *
      * @Then /^the rows should be sorted (ascending|descending) by (.*)$/
      */

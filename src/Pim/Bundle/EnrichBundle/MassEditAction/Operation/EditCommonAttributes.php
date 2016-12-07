@@ -169,7 +169,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $data = $this->productValuesFilter->filterCollection($data, 'pim.internal_api.product_values_data.edit');
         $data = $this->delocalizeData($data, $this->userContext->getUiLocale()->getCode());
 
-        $this->values = json_encode($data);
+        $this->values = json_encode($data, JSON_HEX_APOS);
     }
 
     /**

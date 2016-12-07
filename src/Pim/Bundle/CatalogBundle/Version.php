@@ -12,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.6.4';
+    const VERSION = '1.6.5';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Wackiki Wabbit';

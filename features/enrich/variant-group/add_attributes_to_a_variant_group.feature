@@ -8,7 +8,6 @@ Feature: Add attributes to a variant group
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Display available attributes for a variant group
     Given the following attribute:
       | code   | label-en_US | unique | group     |
@@ -106,4 +105,4 @@ Feature: Add attributes to a variant group
     When I am on the "high_heels" variant group page
     Then I should see the available filters high_heel_main_color and high_heel_secondary_fabric
     And I should not see the available filters High heel main fabric and High heel secondary color
-    And I should see the columns In group, Sku, High heel main color, Label, Family, Status, Complete, Created at and Updated at
+    And I should see the columns In group, Sku, High heel main color, High heel main fabric, Label, Family, Status, Complete, Created at and Updated at

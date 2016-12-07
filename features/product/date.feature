@@ -23,7 +23,7 @@ Feature: Check that imported date is properly displayed
 
   Scenario: Successfully display a date in the grid (PIM-2971)
     Given I am on the products page
-    And I display the columns sku, family, release, complete, created and updated
+    And I display the columns SKU, Family, Release, Complete, Created at and Updated at
     Then the row "postit" should contain:
      | column  | value      |
      | release | 05/01/2014 |
