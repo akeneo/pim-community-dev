@@ -1210,7 +1210,7 @@ class WebUser extends RawMinkContext
     {
         $this->wait();
         $script = sprintf(
-            "$('label:contains(\"%s\")').parents('.AknFieldContainer-formField').find('.clear-field').click();",
+            "$('label:contains(\"%s\")').parents('.AknFieldContainer').find('.clear-field').click();",
             $field
         );
         if (!$this->getMainContext()->executeScript($script)) {

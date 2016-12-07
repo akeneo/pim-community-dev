@@ -1,5 +1,37 @@
 @import 'variables';
 
+@font-face {
+  font-family: 'Lato';
+  src: url('/bundles/pimui/fonts/Lato-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/bundles/pimui/fonts/Lato-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+html {
+  font-size: 100%;
+  margin: 0;
+  padding: 0 ;
+}
+
+body {
+  color: @AknDefaultFontColor;
+  font-family: @AknDefaultFont;
+  font-size: @AknDefaultFontSize;
+  background-color: white;
+  line-height: 20px;
+  min-width: 980px;
+  min-height: 600px;
+  margin: 0;
+  padding: 0;
+}
+
 ul, ol, menu {
   padding: 0;
   margin: 0;

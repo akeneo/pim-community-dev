@@ -216,6 +216,7 @@ pim_enrich:
         attribute_option:
             code: Code
             label: Label
+            actions: Actions
         variant_group:
             title: Variant group
             info:

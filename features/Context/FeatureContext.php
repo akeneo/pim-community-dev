@@ -359,7 +359,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             parent::assertPageContainsText($text);
 
             return true;
-        }, "Spining for asserting page contains text $text");
+        }, sprintf('Current page does not contains "%s"', $text));
     }
 
     /**

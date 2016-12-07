@@ -4,26 +4,9 @@
 /* General **********************************************************************************************************/
 
 body {
-  color: @textColor;
-  background-color: @backgroundColor-white;
-
   &.konami:hover {
     cursor: url("/bundles/pimui/images/unicorn-akeneo_43.png"), pointer !important;
   }
-}
-
-@font-face {
-  font-family: 'Lato';
-  src: url('/bundles/pimui/fonts/Lato-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Lato';
-  src: url('/bundles/pimui/fonts/Lato-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
 }
 
 a {
@@ -169,14 +152,6 @@ span.link-label {
   table-layout: fixed;
   min-height: 100px;
 
-  input[type="text"] {
-    padding: 2px 3px;
-    font-size: @font-size-12;
-    width: 100%;
-    box-sizing: border-box;
-    height: 26px;
-  }
-
   .handle {
     margin-right:3px;
   }
@@ -245,10 +220,6 @@ span.link-label {
   .action {
     width: 94px;
   }
-}
-
-body {
-  min-height: 600px;
 }
 
 h3.tab-header {
@@ -485,22 +456,6 @@ h3.tab-header {
   justify-content: space-between;
 }
 
-.input-like {
-  padding: 0 3px 10px 3px;
-  width: @max-field-width;
-  box-sizing: content-box;
-  font-size: @font-size-12;
-
-  &.disabled {
-    background-color: @color-disabled;
-  }
-
-  .form-control {
-    line-height: 28px;
-    padding-left: 7px;
-  }
-}
-
 .filter-input {
   .select2-container-multi {
     .select2-search-field input {
@@ -525,16 +480,6 @@ h3.tab-header {
   }
 }
 
-.attributes .input-like, [data-type="akeneo-product-category-filter"] .filter-input .input-like {
-  padding: 1px 1px 1px 0;
-  border: 1px solid @color-ddd;
-  box-sizing: border-box;
-}
-
-.attributes .input-like {
-  margin-left: 0;
-}
-
 [data-type="akeneo-attribute-select-reference-data"] .filter-input,
 [data-type="akeneo-attribute-select"] .filter-input,
 [data-type="akeneo-attribute-string"] .filter-input,
@@ -546,18 +491,6 @@ h3.tab-header {
   @operator-width: 100px;
   .operator {
     width: @operator-width;
-  }
-
-  .operator ~ input[type="text"],
-  .operator ~ input[type="password"],
-  .operator ~ input[type="date"],
-  .operator ~ input[type="number"],
-  .operator ~ input[type="email"],
-  .operator ~ input[type="url"],
-  .operator ~ input[type="search"],
-  .operator ~ .start-date-wrapper input[type="text"],
-  .operator + select + .select2-container {
-    width: @max-field-width - @operator-width;
   }
 }
 

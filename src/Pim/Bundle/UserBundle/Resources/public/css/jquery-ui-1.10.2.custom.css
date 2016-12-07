@@ -9,14 +9,6 @@
 
 /* Component containers
 ----------------------------------*/
-.ui-widget input,
-.ui-widget select,
-.ui-widget textarea,
-.ui-widget-content {
-	border: 1px solid #aaaaaa;
-	background: #ffffff;
-	color: #222222;
-}
 .ui-widget-content a {
 	color: #222222;
 }

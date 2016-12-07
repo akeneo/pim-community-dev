@@ -691,6 +691,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
           "conversion_units" => array:2 [
             "a_metric" => "KILOWATT"
             "a_metric_negative" => "CELSIUS"
+          ]
         ]
 
 | type             | data structure | data example                                   | notes                                                                                                                                                                                                                                                  |

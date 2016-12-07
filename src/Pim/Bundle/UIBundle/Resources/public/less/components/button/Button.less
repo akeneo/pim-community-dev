@@ -8,7 +8,7 @@
   background: @AknLightGray;
   color: @AknDefaultFontColor;
   height: @AknDefaultButtonSize;
-  line-height: @AknDefaultButtonSize;
+  line-height: @AknDefaultButtonSize - 2px;
   font-size: @AknFontSizeBig;
   min-width: @AknDefaultButtonSize;
   display: inline-block;
@@ -16,7 +16,7 @@
   border-radius: 2px;
   border: none;
   cursor: pointer;
-  text-align: center;
+  text-align: left;
   white-space: nowrap;
 
   &--withIcon {
@@ -44,7 +44,7 @@
   &--disabled,
   &--disabled &-icon {
     background: lighten(@AknLightGray, @lighten);
-    cursor: no-drop;
+    cursor: not-allowed;
   }
 
   // Apply color
@@ -63,7 +63,7 @@
   &--apply&--disabled,
   &--apply&--disabled &-icon {
     background: lighten(@AknGreen, @lighten);
-    cursor: no-drop;
+    cursor: not-allowed;
   }
 
   // Grey color
@@ -82,7 +82,7 @@
   &--grey&--disabled,
   &--grey&--disabled &-icon {
     background: lighten(@AknGrey, @lighten);
-    cursor: no-drop;
+    cursor: not-allowed;
   }
 
   // Important color
@@ -101,7 +101,7 @@
   &--important&--disabled,
   &--important&--disabled &-icon {
     background: lighten(@AknRed, @lighten);
-    cursor: no-drop;
+    cursor: not-allowed;
   }
 
   // Action color
@@ -120,13 +120,13 @@
   &--action&--disabled,
   &--action&--disabled &-icon {
     background: lighten(@AknBlue, @lighten);
-    cursor: no-drop;
+    cursor: not-allowed;
   }
 
   // Sizes
   &--little {
     height: @AknLittleButtonSize;
-    line-height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize - 2px;
     min-width: @AknLittleButtonSize;
     font-size: @AknDefaultFontSize;
   }
@@ -140,7 +140,7 @@
 
   &--micro {
     height: @AknMicroButtonSize;
-    line-height: @AknMicroButtonSize;
+    line-height: @AknMicroButtonSize - 2px;
     min-width: @AknMicroButtonSize;
     font-size: @AknDefaultFontSize;
   }
@@ -159,5 +159,9 @@
 
   &--hidden {
     display: none;
+  }
+
+  &--uppercase {
+    text-transform: uppercase;
   }
 }

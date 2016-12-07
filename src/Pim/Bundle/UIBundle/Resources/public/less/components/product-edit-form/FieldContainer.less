@@ -1,29 +1,12 @@
 @import '../../base/variables';
 
 .AknFieldContainer {
-  display: flex;
-
-  &-formField {
-    width: @AknPefFormWidth;
-    margin-bottom: 20px;
-
-    &--comparisonMode {
-      margin-left: 5px;
-    }
-  }
+  margin-bottom: 20px;
 
   &-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  &-comparisonContainer {
-    margin-left: 20px;
-  }
-
-  &-copyContainer {
-    display: flex;
   }
 
   &-label {
@@ -37,5 +20,9 @@
   &-footer {
     color: @AknLightFontColor;
     font-size: @AknFontSizeSmall;
+  }
+
+  &-inputContainer {
+    display: flex;
   }
 }

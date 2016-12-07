@@ -107,10 +107,18 @@
                 {{ elements.form_errors(form) }}
 
                 <div class="tab-pane active" id="general">
-                    {{ form_row(form.label) }}
-                    {% if form.owner is defined %}
-                        {{ form_row(form.owner, {attr : { class: 'hide' }}) }}
-                    {% endif %}
+                    <div class="tabsections">
+                        <div class="tabsection">
+                            <div class="tabsection-content">
+                                <div class="AknFormContainer">
+                                    {{ form_row(form.label) }}
+                                    {% if form.owner is defined %}
+                                        {{ form_row(form.owner, {attr : { class: 'hide' }}) }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {% set groups = acl_groups() %}

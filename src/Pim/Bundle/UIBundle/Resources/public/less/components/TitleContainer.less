@@ -68,9 +68,8 @@
   &-meta {
     font-size: @AknFontSizeSmall;
     color: lighten(@AknDefaultFontColor, 15%);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    flex-wrap: wrap;
+    line-height: 23px;
   }
 
   &-metaItem:not(:first-child):before {
