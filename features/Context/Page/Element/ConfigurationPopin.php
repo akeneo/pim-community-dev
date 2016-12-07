@@ -2,6 +2,9 @@
 
 namespace Context\Page\Element;
 
+use Behat\Mink\Element\NodeElement;
+use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 /**
@@ -13,85 +16,92 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
  */
 class ConfigurationPopin extends Element
 {
-    /** @var array */
+    use SpinCapableTrait;
+
     protected $selector = ['css' => '.modal'];
 
     /**
-     * Hide a column by dragging to the bucket
-     *
-     * @param string $label
+     * @param string[] $labels
      */
-    public function hideColumn($label)
+    public function addColumns($labels)
     {
-        $this->getColumn($label)->dragTo($this->getBucket());
-        $this->apply();
+        $searchInput = $this->spin(function () {
+            return $this->find('css', 'input[type="search"]');
+        }, 'Column search input not found');
+
+        $dropZone = $this->spin(function () {
+            return $this->find('css', '#column-selection');
+        }, 'Cannot find the drop zone');
+
+        foreach ($labels as $label) {
+            $searchInput->setValue($label);
+            $item = $this->getItemForLabel($label);
+            $this->dragElementTo($item, $dropZone);
+        }
     }
 
     /**
-     * Move a column
-     *
-     * @param string $source
-     * @param string $target
+     * @param string[] $labels
      */
-    public function moveColumn($source, $target)
+    public function removeColumns($labels)
     {
-        $this->getColumn($source)->dragTo($this->getColumn($target));
-        $this->apply();
-    }
+        $dropZone = $this->spin(function () {
+            return $this->find('css', '#column-list');
+        }, 'Cannot find the drop zone');
 
-    /**
-     * Get the whole columns container or a specific item
-     *
-     * @param string $label
-     *
-     * @return Element
-     *
-     * @throw ElementNotFoundException
-     */
-    protected function getColumn($label = null)
-    {
-        if ($label) {
-            $column = $this->find('css', sprintf('#columns li:contains("%s")', $label));
-        } else {
-            $column = $this->find('css', '#columns');
+        foreach ($labels as $label) {
+            $item = $this->getItemForLabel($label);
+            $this->dragElementTo($item, $dropZone);
         }
-
-        if (!$column) {
-            throw new \Exception('Columns container is not available');
-        }
-
-        return $column;
-    }
-
-    /**
-     * Get the whole bucket container or a specific item
-     *
-     * @param string $label
-     *
-     * @return Element
-     *
-     * @throw ElementNotFoundException
-     */
-    protected function getBucket($label = null)
-    {
-        if ($label) {
-            $bucket = $this->find('css', sprintf('#bucket li:contains("%s")', $label));
-        } else {
-            $bucket = $this->find('css', '#bucket');
-        }
-
-        if (!$bucket) {
-            throw new \Exception('Bucket container is not available');
-        }
-
-        return $bucket;
     }
 
     /**
      * Apply the configuration
      */
-    protected function apply()
+    public function apply()
     {
-        $this->find('css', '.btn.ok')->click();
+        $this->find('css', '.ok')->click();
+    }
+
+    /**
+     * Drags an element on another one.
+     * Works better than the standard dragTo.
+     *
+     * @param $element
+     * @param $dropZone
+     */
+    protected function dragElementTo($element, $dropZone)
+    {
+        $session = $this->getSession()->getDriver()->getWebDriverSession();
+
+        $from = $session->element('xpath', $element->getXpath());
+        $to = $session->element('xpath', $dropZone->getXpath());
+
+        $session->moveto(['element' => $from->getID()]);
+        $session->buttondown('');
+        $session->moveto(['element' => $to->getID()]);
+        $session->buttonup('');
+    }
+
+    /**
+     * @param string $label
+     *
+     * @throws TimeoutException
+     *
+     * @return NodeElement
+     */
+    protected function getItemForLabel($label)
+    {
+        return $this->spin(function () use ($label) {
+            $items = $this->findAll('css', '.ui-sortable-handle');
+
+            foreach ($items as $item) {
+                if (strtolower($label) === strtolower($item->getText())) {
+                    return $item;
+                }
+            }
+
+            return false;
+        }, sprintf('Cannot find the column "%s" in the list', $label));
     }
 }

@@ -42,7 +42,7 @@ trait SpinCapableTrait
             $looping = true;
         } while (
             microtime(true) < $end &&
-            !$result &&
+            (null === $result || false === $result || [] === $result) &&
             !$previousException instanceof TimeoutException
         );
 
@@ -54,7 +54,7 @@ trait SpinCapableTrait
             $message = (null !== $previousException) ? $previousException->getMessage() : 'no message';
         }
 
-        if (!$result) {
+        if (null === $result || false === $result || [] === $result) {
             $infos = sprintf('Spin : timeout of %d excedeed, with message : %s', $timeout, $message);
             throw new TimeoutException($infos, 0, $previousException);
         }
