@@ -4,7 +4,7 @@
 <div class="horizontal">
     <label>{{ user.api ? user.api.apiKey : 'N/A' }}</label>
     {% if resource_granted('pim_user_user_edit') %}
-        <a class="btn btn-small no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
+        <a class="AknButton AknButton--grey AknButton--little no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
            data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
             {{ 'Generate key'|trans }}
         </a>
