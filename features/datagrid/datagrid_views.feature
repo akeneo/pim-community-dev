@@ -149,7 +149,7 @@ Feature: Datagrid views
     And I display the columns SKU, Name and Family
     Then I should see the text "purple-sneakers"
     When I create the view:
-      | label | With name |
+      | new-view-label | With name |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     When I am on the my account page
