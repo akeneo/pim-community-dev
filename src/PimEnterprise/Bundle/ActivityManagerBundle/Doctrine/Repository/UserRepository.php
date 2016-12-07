@@ -83,7 +83,8 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
 
         if (null !== $search && '' !== $search) {
-            $qb->where('u.username LIKE :search')->setParameter('search', sprintf('%%%s%%', $search));
+            $qb->where('CONCAT(u.firstName, \' \', u.lastName) LIKE :search')
+                ->setParameter('search', sprintf('%%%s%%', $search));
         }
 
         return $qb->getQuery()->execute();
