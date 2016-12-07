@@ -74,6 +74,9 @@ config:
         oro/modal:                     pimui/js/modal
         oro/delete-confirmation:       pimui/js/delete-confirmation
         oro/tools:                     pimui/js/tools
+        highlight:                     pimui/js/lib/highlight/highlight
+        pimui/highlight:               pimui/js/lib/highlight/index
+        highligh/languages/xml:        pimui/js/lib/highlight/languages/xml
 
         oro/form/state:                pimui/js/form/state.js
 

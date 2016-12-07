@@ -27,6 +27,7 @@ css:
         - bundles/pimui/css/style.less
         - bundles/pimui/css/tabnav.less
         - bundles/pimui/css/buttons.less
+        - bundles/pimui/css/highlight/solarized.css
     bem:
         - bundles/pimui/less/base/general.less
         - bundles/pimui/less/components/button/ActionButton.less

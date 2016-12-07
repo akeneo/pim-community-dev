@@ -1,0 +1,149 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+<div class="AknStyleContainer">
+    <h3>Breadcrumd</h3>
+{% set breadcrumb %}<div class="AknBreadcrumbContainer">
+    <div class="AknBreadcrumb">
+        <div class="AknBreadcrumb-item">First item</div>
+        <div class="AknBreadcrumb-item">Second item</div>
+        <div class="AknBreadcrumb-item">Last item</div>
+    </div>
+</div>{% endset %}
+    {{ breadcrumb }}
+
+    <h4>Code:</h4>
+    <pre><code class="html">{{ breadcrumb|escape }}</code></pre>
+
+
+    <h3>Dropdown</h3>
+{% set breadcrumb %}<div class="AknDropdown AknDropdownButton">
+    <div class="AknDropdownButton-button" data-toggle="dropdown">
+        My dropdown <div class="AknDropdownButton-caretContainer"><i class="AknCaret AknCaret--big"></i></div>
+    </div>
+    <ul class="AknDropdown-menu">
+        <li><a class="AknDropdown-menuLink" href="#">First item</a></li>
+        <li><a class="AknDropdown-menuLink AknDropdown-menuLink--active" href="#">Selected item</a></li>
+        <li><a class="AknDropdown-menuLink" href="#">Last item</a></li>
+    </ul>
+</div>{% endset %}
+    {{ breadcrumb }}
+
+    <h4>Code:</h4>
+    <pre><code class="html">{{ breadcrumb|escape }}</code></pre>
+
+
+    <h3>Message box</h3>
+{% set messageBox %}<div class="AknMessageBox AknMessageBox--warning">
+    <span class="AknMessageBox-title title">Warning</span>
+    <ul class="AknMessageBox-list">
+        <li>First warning</li>
+        <li>Second warning</li>
+        <li>Last warning</li>
+    </ul>
+</div>{% endset %}
+    {{ messageBox }}
+
+    <h4>Code:</h4>
+    <pre><code class="html">{{ messageBox|escape }}</code></pre>
+
+
+    <h3>Notification</h3>
+{% set notification %}
+<ol>
+    <li class="AknNotification">
+        <a href="#" class="AknNotification-link AknNotification-link--new">
+            <div class="AknNotification-header">
+                <div class="AknNotification-icon AknNotification-icon--export"><i class="AknNotification-status AknNotification-status--success icon-ok"></i></div>
+                <div class="AknNotification-metas">
+                    <time class="AknNotification-time">2016-12-06 14:44:28</time>
+                    <span class="AknNotification-title">Export</span>
+                </div>
+                <i class="AknIconButton AknIconButton--light icon-trash"></i>
+            </div>
+            <div class="AknNotification-message">Export <strong>Demo CSV association type export</strong> finished</div>
+            <div class="AknNotification-comment">This is a notification comment</div>
+            <button class="AknNotification-button AknButton AknButton--micro AknButton--grey AknButton--withIcon">
+                <i class="AknButton-icon icon-file-text-alt"></i> Report
+            </button>
+        </a>
+    </li>
+</ol>
+{% endset %}
+    {{ notification }}
+
+    <h4>Code:</h4>
+    <pre><code class="html">{{ notification|escape }}</code></pre>
+
+
+    <h3>Progress bar</h3>
+{% set progress %}
+<div class="AknMediaField-progress AknProgress AknProgress--micro" style="opacity: 1;">
+    <div class="AknProgress-bar bar" data-ratio="15" style="width: 15%;" ></div>
+</div>
+<div class="AknMediaField-progress AknProgress AknProgress--small" style="opacity: 1;">
+    <div class="AknProgress-bar bar" data-ratio="25" style="width: 25%;" ></div>
+</div>
+<div class="AknMediaField-progress AknProgress AknProgress--warning" style="opacity: 1;">
+    <div class="AknProgress-bar bar" data-ratio="50" style="width: 50%;" ></div>
+</div>
+<div class="AknMediaField-progress AknProgress AknProgress--apply" style="opacity: 1;">
+    <div class="AknProgress-bar bar" data-ratio="75" style="width: 75%;" ></div>
+</div>
+<div class="AknMediaField-progress AknProgress AknProgress--main" style="opacity: 1;">
+    <div class="AknProgress-bar bar" data-ratio="90" style="width: 90%;" ></div>
+</div>
+{% endset %}
+    {{ progress }}
+
+    <h4>Code:</h4>
+    <pre><code class="html">{{ progress|escape }}</code></pre>
+
+
+    <h3>Title container</h3>
+{% set titleContainer %}
+<div class="AknButton">Button</div>
+<div class="AknButton AknButton--active">Button active</div>
+<div class="AknButton AknButton--withIcon"><i class="AknButton-icon icon-trash"></i>Button with icon</div>
+<div class="AknButton AknButton--disabled">Button disabled</div>
+<div class="AknButton AknButton--apply">Button apply</div>
+<div class="AknButton AknButton--grey">Button grey</div>
+<div class="AknButton AknButton--important">Button important</div>
+<div class="AknButton AknButton--action">Button action</div>
+<div class="AknButton AknButton--little">Button little</div>
+<div class="AknButton AknButton--micro">Button micro</div>
+<div class="AknButton AknButton--noLeftRadius">Button no left radius</div>
+<div class="AknButton AknButton--hidden">Button hidden</div>
+<div class="AknButton AknButton--uppercase">Button uppercase</div>
+{% endset %}
+    {{ titleContainer }}
+
+    <h4>Code:</h4>
+    <pre><code class="html">{{ titleContainer|escape }}</code></pre>
+
+
+    <h3>Icon list</h3>
+{% set iconList %}<div class="AknIconsList">
+    <span class="AknIconsList-item AknIconsList-item--apply update-row"><i class="AknIconsList-icon icon-ok"></i></span>
+    <span class="AknIconsList-item AknIconsList-item--important show-row"><i class="AknIconsList-icon icon-remove"></i></span>
+</div>{% endset %}
+    {{ iconList }}
+
+    <h4>Code:</h4>
+    <pre><code class="html">{{ iconList|escape }}</code></pre>
+</div>
+
+<style>
+.AknStyleContainer {
+    padding: 0 20px;
+}
+</style>
+<script>
+    require(['pimui/highlight'], function () {
+        hljs.initHighlightingOnLoad();
+    })
+</script>
+
+
+{% endblock %}
