@@ -453,13 +453,19 @@ measures_config:
                 convert: [{'mul': 750.06375541921}]
                 symbol: mmHg
     Energy:
-        standard: KILOCALORIE
+        standard: JOULE
         units:
-            KILOCALORIE:
+            JOULE:
                 convert: [{'mul': 1}]
+                symbol: J
+            CALORIE:
+                convert: [{'mul': 4.184}]
+                symbol: cal
+            KILOCALORIE:
+                convert: [{'mul': 4184}]
                 symbol: kcal
             KILOJOULE:
-                convert: [{'mul': 4.1868}]
+                convert: [{'mul': 1000}]
                 symbol: kJ
     CaseBox:
         standard: PIECE
