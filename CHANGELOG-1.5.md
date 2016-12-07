@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-5996: Fix boolean values publishment
+- PIM-5996: Fix boolean values publication
 
 # 1.5.14 (2016-12-01)
 
