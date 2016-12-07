@@ -193,3 +193,88 @@ i.remove-attribute {
 .select2-results .select2-result-label {
   min-height: 0;
 }
+
+.AknProjectWidget {
+  .select2-container {
+    border: none;
+    background: none;
+
+    .select2-arrow {
+      background: none;
+      padding-left: 10px;
+      top: 2px;
+    }
+  }
+
+  .select2-container-active {
+    .select2-choice,
+    .select2-choices {
+      border: none;
+      box-shadow: none;
+    }
+  }
+
+  &-select2Dropdown {
+    padding: 5px;
+    border: 1px solid #ccd1d8 !important; //@AknBorderColor
+    margin-top: 5px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    min-width: 300px;
+
+    .select2-search {
+      margin: 10px 0;
+    }
+
+    .select2-input, .select2-focused {
+      border: 1px solid #A1A9B7 !important; //@AknBorderColor
+      box-shadow: none !important;
+      background-color: #F1F4F9 !important; //@AknGrey
+      color: #555; //@AknDefaultFontColor
+      padding-left: 34px; //@AknDefaultButtonSize
+      font-size: 14px; //@AknFontSizeBig
+      line-height: 30px; //@AknLittleButtonSize
+    }
+
+    .select2-highlighted {
+      background-color: #F1F4F9; //@AknGrey
+    }
+
+    &--arrowRight::before {
+      position: absolute;
+      right: 10px;
+      top: -6px;
+      content: "";
+      display: block;
+      width: 10px;
+      height: 10px;
+      background-color: #fff;
+      transform: rotate(45deg);
+      border-top: solid 1px #ccd1d8; //@AknBorderColor
+      border-left: solid 1px #ccd1d8; //@AknBorderColor
+    }
+
+    &--arrowLeft::before {
+      position: absolute;
+      left: 10px;
+      top: -6px;
+      content: "";
+      display: block;
+      width: 10px;
+      height: 10px;
+      background-color: #fff;
+      transform: rotate(45deg);
+      border-top: solid 1px #ccd1d8; //@AknBorderColor
+      border-left: solid 1px #ccd1d8; //@AknBorderColor
+    }
+  }
+
+  &-select2SearchIcon {
+    position: absolute;
+    top: 11px;
+    left: 10px;
+    font-size: 19px; //@AknBigIconFontSize
+    color: #A1A9B7; //@AknBorderColor
+  }
+}

@@ -1,0 +1,122 @@
+@import "../base/variables";
+
+.AknProjectWidget {
+  border: 1px solid @AknBorderColor;
+  padding: 15px;
+
+  &-boxes {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-boxContainer {
+    flex-basis: 32.5%;
+    text-align: center;
+    font-size: @AknFontSizeBig;
+  }
+
+  &-boxLabel {
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  &-box {
+    border: 1px solid @AknBorderColor;
+    padding: 40px 0 30px;
+    font-weight: bold;
+
+    &--important {
+      border-bottom: 4px solid @AknRed;
+    }
+
+    &--warning {
+      border-bottom: 4px solid @AknOrange;
+    }
+
+    &--success {
+      border-bottom: 4px solid @AknGreen;
+    }
+  }
+
+  &-boxData {
+    font-size: @AknHugeFontSize;
+    line-height: @AknHugeFontSize;
+    padding-bottom: 15px;
+    font-weight: normal;
+    color: @AknGrey;
+  }
+
+  &-resume {
+    font-size: @AknFontSizeBig;
+    margin-top: 10px;
+  }
+
+  &-resumeTitle {
+    color: @AknDarkBlue;
+    border-bottom: 1px solid @AknBorderColor;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+
+  &-topBar {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid @AknPurple;
+    margin-bottom: 10px;
+    align-items: center;
+    padding-bottom: 10px;
+  }
+
+  &-toolContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-tool {
+    margin-right: 15px;
+  }
+
+  &-mainSelectorCurrent {
+    color: @AknDefaultFontColor;
+    font-size: @AknFontSizeBig;
+  }
+
+  &-mainSelectorCurrentTitle {
+    color: @AknPurple;
+    font-size: @AknTitleFontSize;
+    font-weight: bold;
+    font-variant: small-caps;
+  }
+
+  &-secondarySelectorCurrentTitle {
+    font-size: @AknTitleFontSize;
+    font-weight: bold;
+    font-variant: small-caps;
+  }
+
+  &-mainSelectorLine,
+  &-secondarySelectorLine {
+    display: flex;
+    justify-content: space-between;
+    color: @AknGrey;
+    line-height: 24px;
+  }
+
+  &-mainSelectorLineTitle,
+  &-secondarySelectorLineTitle {
+    color: @AknDarkBlue;
+    min-width: 150px;
+  }
+
+  &-info {}
+
+  &-infoLabel {
+    padding-right: 5px;
+  }
+
+  &-emptyWidget {
+    width: 225px;
+    font-size: @AknTitleFontSize;
+    margin: 50px auto;
+  }
+}
