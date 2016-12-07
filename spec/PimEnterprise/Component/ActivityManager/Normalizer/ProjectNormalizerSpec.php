@@ -10,14 +10,10 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Serializer;
 
 class ProjectNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer)
-    {
-        $this->beConstructedWith($normalizer);
-    }
-
     function it_is_a_project_normalizer()
     {
         $this->shouldHaveType(ProjectNormalizer::class);
@@ -25,14 +21,16 @@ class ProjectNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_project(
-        $normalizer,
         ProjectInterface $project,
         \DateTime $datetime,
         UserInterface $user,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        DatagridView $datagridView
+        DatagridView $datagridView,
+        Serializer $serializer
     ) {
+        $this->setSerializer($serializer);
+
         $datetime->format('Y-m-d')->willReturn('2069-02-15');
         $user->getId()->willReturn(42);
 
@@ -44,9 +42,9 @@ class ProjectNormalizerSpec extends ObjectBehavior
         $project->getLocale()->willReturn($locale);
         $project->getDatagridView()->willReturn($datagridView);
 
-        $normalizer->normalize($channel, 'standard', [])->willReturn(['code' => 'ecommerce']);
-        $normalizer->normalize($locale, 'standard', [])->willReturn(['code' => 'fr_FR']);
-        $normalizer->normalize($datagridView, 'internal_api', [])->willReturn(['label' => 'The OMG view']);
+        $serializer->normalize($channel, 'internal_api', [])->willReturn(['code' => 'ecommerce']);
+        $serializer->normalize($locale, 'internal_api', [])->willReturn(['code' => 'fr_FR']);
+        $serializer->normalize($datagridView, 'internal_api', [])->willReturn(['label' => 'The OMG view']);
 
         $this->normalize($project, 'internal_api')->shouldReturn([
             'label' => 'Summer collection',
