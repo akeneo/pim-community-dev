@@ -107,8 +107,8 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $this->getSession()->visit($this->locatePath('/user/logout'));
 
         $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.title-box');
-        }, 'Cannot find ".title-box" element in login page');
+            return $this->getSession()->getPage()->find('css', '.AknLogin-title');
+        }, 'Cannot open the login page');
 
         $this->getSession()->getPage()->fillField('_username', $username);
         $this->getSession()->getPage()->fillField('_password', $username);

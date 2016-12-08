@@ -125,6 +125,20 @@
   }
 
   // Sizes
+  &--big {
+    height: @AknBigButtonSize;
+    line-height: @AknBigButtonSize;
+    min-width: @AknBigButtonSize;
+    font-size: @AknFontSizeBig;
+  }
+
+  &--big &-icon {
+    height: @AknBigButtonSize;
+    width: @AknBigButtonSize;
+    line-height: @AknBigButtonSize;
+    font-size: @AknFontSizeBig;
+  }
+
   &--small {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;

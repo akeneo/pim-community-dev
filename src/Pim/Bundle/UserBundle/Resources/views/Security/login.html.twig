@@ -9,34 +9,33 @@
     </script>
 {% endblock %}
 
-{% block bodyClass %}login-page{% endblock %}
+{% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="title-box">
+<div class="AknLogin-mainContainer container">
+    <div class="AknLogin-title">
         {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
     </div>
 
     {% if error %}
-        <div class="alert alert-error">
-            <button data-dismiss="alert" class="close" type="button">&times;</button>
-            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="AknMessageBox AknMessageBox--error">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
         </div>
     {% endif %}
 
     <form action="{{ path('oro_user_security_check') }}" method="post" class="form-signin form-inline">
         <fieldset>
-            <div class="form-row">
-                <input class="AknTextField" type="text" id="prependedInput" autofocus="autofocus" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" size="1"/>
-                <input class="AknTextField" type="password" id="prependedInput2" name="_password" required="required" placeholder="{{ 'Password'|trans }}" autocomplete="off" size="1"/>
-                <button class="AknButton AknButton--apply AknButton--uppercase" type="submit" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
+            <div class="AknLogin-form">
+                <input class="AknLogin-formInput" type="text" id="prependedInput" autofocus="autofocus" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" size="1"/>
+                <input class="AknLogin-formInput" type="password" id="prependedInput2" name="_password" required="required" placeholder="{{ 'Password'|trans }}" autocomplete="off" size="1"/>
+                <button class="AknButton AknButton--apply AknButton--big AknButton--uppercase" type="submit" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
             </div>
-            <div class="form-row">
+            <div class="AknLogin-form">
                 <label class="checkbox remember-me">
-                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'Remember me on this computer'|trans }}
+                    <input class="AknLogin-checkbox" type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'Remember me on this computer'|trans }}
                 </label>
                 <div class="signin-help">
-                    <a href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
+                    <a class="AknLogin-link" href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
                 </div>
             </div>
         </fieldset>
@@ -45,7 +44,7 @@
     </form>
 </div>
 
-<div class="version-container muted">
+<div class="AknLogin-footer AknFooter version-container muted">
     {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
 </div>
 
