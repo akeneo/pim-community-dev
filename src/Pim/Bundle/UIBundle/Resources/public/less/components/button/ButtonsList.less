@@ -6,6 +6,8 @@
   display: flex;
 
   &-item {
+    margin-right: @marginSpace;
+
     &--hide {
       display: none;
     }
@@ -19,16 +21,18 @@
     justify-content: flex-end;
   }
 
+  &--right &-item {
+    margin-right: 0;
+    margin-left: @marginSpace;
+  }
+
   &--centered {
     justify-content: center;
   }
 
-  &--withSpace:not(&--right):not(&--twoColumns) &-item {
-    margin-right: @marginSpace;
-  }
-
-  &--withSpace&--right:not(&--twoColumns) &-item {
-    margin-left: @marginSpace;
+  &--centered &-item {
+    margin-right: @marginSpace / 2;
+    margin-left: @marginSpace / 2;
   }
 
   &--twoColumns {
@@ -37,7 +41,6 @@
   }
 
   &--twoColumns &-item {
-    flex-basis: 49%;
-    margin-bottom: @marginSpace;
+    margin-left: 0;
   }
 }

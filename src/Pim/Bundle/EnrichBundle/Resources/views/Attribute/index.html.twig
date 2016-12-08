@@ -7,7 +7,7 @@
     {{ parent() }}
     {% if resource_granted('pim_enrich_attribute_create') %}
         {% set modalContent %}
-            <div class="AknButtonsList AknButtonsList--withSpace AknButtonsList--twoColumns">
+            <div class="AknButtonsList AknButtonsList--twoColumns">
                 {% for code, label in attributeTypes %}
                     {% set attributeTypes = attributeTypes|merge({ (code): label|trans }) %}
                 {% endfor %}

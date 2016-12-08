@@ -16,7 +16,7 @@ define(
     function (_, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknButtonsList AknButtonsList--withSpace panel-selector btn-group',
+            className: 'AknButtonsList panel-selector btn-group',
             events: {
                 'click button': 'changePanel'
             },

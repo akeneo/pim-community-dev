@@ -18,7 +18,7 @@
             </div>
             <div class="AknWidget-content AknWidget-content--withPadding">
                 {{ form_widget(form.operationAlias) }}
-                <div class="AknButtonsList AknButtonsList--withSpace AknButtonsList--right configuration">
+                <div class="AknButtonsList AknButtonsList--right configuration">
                     {{ elements.link('btn.cancel', path(canceledPath), {icon: 'chevron-left', class: 'AknButtonsList-item btn-cancel'}) }}
                     {{ elements.submitBtn('btn.next', 'chevron-right', 'AknButtonsList-item') }}
                 </div>
