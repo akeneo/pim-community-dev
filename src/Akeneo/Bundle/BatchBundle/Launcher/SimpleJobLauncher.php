@@ -53,7 +53,7 @@ class SimpleJobLauncher implements JobLauncherInterface
         //TODO we should not rely on such test
         $emailParameter = '';
         if ($this->isConfigTrue('email') && method_exists($user, 'getEmail')) {
-            $emailParameter = sprintf('--email="%s"', $user->getEmail());
+            $emailParameter = sprintf('--email=%s', escapeshellarg($user->getEmail()));
         }
 
         $cmd = sprintf(
@@ -62,9 +62,9 @@ class SimpleJobLauncher implements JobLauncherInterface
             $this->rootDir,
             $this->environment,
             $emailParameter,
-            $jobInstance->getCode(),
+            escapeshellarg($jobInstance->getCode()),
             $executionId,
-            !empty($rawConfiguration) ? sprintf('--config="%s"', $rawConfiguration) : '',
+            !empty($rawConfiguration) ? sprintf('--config=%s', escapeshellarg($rawConfiguration)) : '',
             $this->rootDir
         );
 
