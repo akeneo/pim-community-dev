@@ -40,12 +40,13 @@ class ProjectCompletenessController extends Controller
         $this->denyAccessUnlessGranted([ProjectVoter::OWN, ProjectVoter::CONTRIBUTE], $project);
 
         $contributor = null;
-        if ($this->isGranted(ProjectVoter::OWN, $project)) {
-            $contributor = $request->get('contributor');
-        }
 
         if ($this->isGranted(ProjectVoter::CONTRIBUTE, $project)) {
             $contributor = $this->getUser()->getUsername();
+        }
+
+        if ($this->isGranted(ProjectVoter::OWN, $project)) {
+            $contributor = $request->get('contributor');
         }
 
         $projectCompleteness = $this->get('activity_manager.repository.native_sql.project_completeness')

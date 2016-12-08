@@ -22,7 +22,7 @@ interface ProjectCompletenessRepositoryInterface
      * Get the project completeness for a contributor.
      *
      * @param ProjectInterface $project
-     * @param int|null         $username
+     * @param string|null      $username
      *
      * @return array
      */

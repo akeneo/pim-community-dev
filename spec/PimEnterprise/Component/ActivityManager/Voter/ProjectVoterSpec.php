@@ -27,14 +27,14 @@ class ProjectVoterSpec extends ObjectBehavior
         $this->shouldHaveType(VoterInterface::class);
     }
 
-    function it_has_own_and_read_attribute()
+    function it_has_own_and_contribute_attribute()
     {
         $this->supportsAttribute(ProjectVoter::OWN)->shouldReturn(true);
         $this->supportsAttribute(ProjectVoter::CONTRIBUTE)->shouldReturn(true);
         $this->supportsAttribute('wrong_attribute')->shouldReturn(false);
     }
 
-    function it_only_work_with_project()
+    function it_only_works_with_project()
     {
         $this->supportsClass(ProjectInterface::class)->shouldReturn(true);
         $this->supportsClass('OtherClass')->shouldReturn(false);

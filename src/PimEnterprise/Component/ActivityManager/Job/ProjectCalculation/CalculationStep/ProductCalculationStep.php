@@ -16,6 +16,8 @@ use Akeneo\ActivityManager\Component\Repository\ProjectProductRepositoryInterfac
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
+ * Add the product to the current project.
+ *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class ProductCalculationStep implements CalculationStepInterface

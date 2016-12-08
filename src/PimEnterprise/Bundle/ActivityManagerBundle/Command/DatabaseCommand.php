@@ -11,6 +11,7 @@
 
 namespace Akeneo\ActivityManager\Bundle\Command;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Pim\Bundle\InstallerBundle\Command\DatabaseCommand as PimDatabaseCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -24,8 +25,8 @@ class DatabaseCommand extends PimDatabaseCommand
     /**
      * {@inheritdoc}
      *
-     * akeneo_activity_manager_completeness_per_attribute_group is table used to calculate the project completeness.
-     * akeneo_activity_manager_project_product allow to to know the product affected a project.
+     * akeneo_activity_manager_completeness_per_attribute_group is the table used to calculate the project completeness.
+     * akeneo_activity_manager_project_product allows to know the product affected a project.
      */
     protected function createNotMappedTables(OutputInterface $output)
     {
@@ -51,8 +52,6 @@ ALTER TABLE `akeneo_activity_manager_completeness_per_attribute_group`
 ALTER TABLE `akeneo_activity_manager_completeness_per_attribute_group` 
     ADD CONSTRAINT FK_BEBC782072F5A1AA FOREIGN KEY (`channel_id`) REFERENCES `pim_catalog_channel` (id);
 ALTER TABLE `akeneo_activity_manager_completeness_per_attribute_group` 
-    ADD CONSTRAINT FK_BEBC78204584665A FOREIGN KEY (`product_id`) REFERENCES `pim_catalog_product` (id);
-ALTER TABLE `akeneo_activity_manager_completeness_per_attribute_group` 
     ADD CONSTRAINT FK_BEBC782062D643B7 FOREIGN KEY (`attribute_group_id`) REFERENCES `pim_catalog_attribute_group` (id);
 
 DROP TABLE IF EXISTS `akeneo_activity_manager_project_product`;
@@ -64,9 +63,18 @@ CREATE TABLE `akeneo_activity_manager_project_product` (
 
 ALTER TABLE `akeneo_activity_manager_project_product`
     ADD CONSTRAINT FK_E004BCB8166D1F9C FOREIGN KEY (`project_id`) REFERENCES `akeneo_activity_manager_project` (id);
+
+SQL;
+
+        if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $this->getStorageDriver()) {
+            $sql = <<<SQL
+$sql
+ALTER TABLE `akeneo_activity_manager_completeness_per_attribute_group` 
+    ADD CONSTRAINT FK_BEBC78204584665A FOREIGN KEY (`product_id`) REFERENCES `pim_catalog_product` (id);
 ALTER TABLE `akeneo_activity_manager_project_product`
     ADD CONSTRAINT FK_E004BCB84584665A FOREIGN KEY (`product_id`) REFERENCES `pim_catalog_product` (id);
 SQL;
+        }
 
         $this->getContainer()
             ->get('doctrine')

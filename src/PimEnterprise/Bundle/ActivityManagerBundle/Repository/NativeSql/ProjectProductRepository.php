@@ -17,6 +17,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
+ * The relationship between the project and the products are not mapped that why we use native SQL queries to do that.
+ *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class ProjectProductRepository implements ProjectProductRepositoryInterface

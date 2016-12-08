@@ -125,7 +125,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * Extra the contributor group identifier.
+     * Extract the contributor group identifiers.
      *
      * @param ProjectInterface $project
      *

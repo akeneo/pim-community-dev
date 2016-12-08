@@ -46,7 +46,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
      * Build your query parameters.
      *
      * @param ProjectInterface $project
-     * @param int|null         $username
+     * @param string|null      $username
      *
      * @return array
      */
@@ -68,7 +68,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     /**
      * Build the project completeness query.
      *
-     * @param int|null $username
+     * @param string|null $username
      *
      * @return string
      */

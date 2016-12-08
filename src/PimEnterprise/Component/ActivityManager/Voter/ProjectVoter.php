@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 
 /**
- * Project voter, allow to know if a project is owned by the owner or a user can contribute.
+ * Project voter, allow to know if a user has own and/or contribute access to a project.
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
@@ -56,8 +56,8 @@ class ProjectVoter extends AbstractVoter
     /**
      * {@inheritdoc}
      *
-     * @param $project ProjectInterface
-     * @param $user    UserInterface|null
+     * @param ProjectInterface   $project
+     * @param UserInterface|null $user
      */
     protected function isGranted($attribute, $project, $user = null)
     {
