@@ -81,7 +81,7 @@ class ProjectCalculationTasklet implements TaskletInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 
-        $project = $this->projectRepository->findOneByIdentifier($jobParameters->get('project_id'));
+        $project = $this->projectRepository->findOneByIdentifier($jobParameters->get('project_code'));
         $products = $this->productRepository->findByProject($project);
 
         foreach ($products as $product) {

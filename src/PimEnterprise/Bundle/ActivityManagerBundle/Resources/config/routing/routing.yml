@@ -9,8 +9,7 @@ activity_manager_project_search:
     methods: [GET]
 
 activity_manager_project_contributors_search:
-    path: /project/{projectId}/contributors
+    path: /project/{projectCode}/contributors
     defaults: { _controller: ActivityManagerBundle:Project:searchContributors, _format: json }
     methods: [GET]
-    requirements:
-        id: \d+
+

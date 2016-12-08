@@ -31,9 +31,9 @@ class ProjectCalculationJobLauncherSpec extends ObjectBehavior
     ) {
         $jobInstanceRepository->getProjectCalculation()->willReturn($jobInstance);
 
-        $project->getId()->willReturn(5);
+        $project->getCode()->willReturn('project_code');
 
-        $configuration = ['project_id' => 5];
+        $configuration = ['project_code' => 'project_code'];
 
         $simpleJobLauncher->launch($jobInstance, $user, $configuration)->shouldBeCalled();
 

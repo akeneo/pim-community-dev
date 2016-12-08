@@ -58,6 +58,7 @@ class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         return [
             'label' => $project->getLabel(),
+            'code' => $project->getCode(),
             'description' => $project->getDescription(),
             'due_date' => $project->getDueDate()->format('Y-m-d'),
             'owner' => $project->getOwner()->getId(),

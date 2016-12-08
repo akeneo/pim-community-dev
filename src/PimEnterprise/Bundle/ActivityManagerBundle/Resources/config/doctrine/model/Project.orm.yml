@@ -8,6 +8,10 @@ Akeneo\ActivityManager\Component\Model\Project:
             id: true
             generator:
                 strategy: AUTO
+        code:
+            type: string
+            length: 150
+            nullable: false
         label:
             type: string
             length: 100

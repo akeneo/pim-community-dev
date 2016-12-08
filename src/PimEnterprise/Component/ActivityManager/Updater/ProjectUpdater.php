@@ -14,6 +14,7 @@ namespace Akeneo\ActivityManager\Component\Updater;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Gedmo\Sluggable\Util\Urlizer;
 
 /**
  * Project updater is able to hydrate a project with given parameters.
@@ -40,6 +41,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
         foreach ($data as $field => $value) {
             $this->setData($project, $field, $value);
         }
+
+        $this->generateCode($project);
 
         return $this;
     }
@@ -84,5 +87,24 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 }
                 break;
         }
+    }
+
+    /**
+     * Generate the project code from the project label, channel and the locale.
+     *
+     * @param ProjectInterface $project
+     */
+    private function generateCode(ProjectInterface $project)
+    {
+        $projectCode = Urlizer::transliterate(
+            sprintf(
+                '%s %s %s',
+                $project->getLabel(),
+                $project->getChannel()->getCode(),
+                $project->getLocale()->getCode()
+            )
+        );
+
+        $project->setCode($projectCode);
     }
 }

@@ -13,8 +13,6 @@ namespace Akeneo\ActivityManager\Bundle\Controller;
 
 use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
 use Akeneo\ActivityManager\Component\Model\Project;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,7 +85,7 @@ class ProjectController extends Controller
             $this->container->get('activity_manager.launcher.job.project_calculation')
                 ->launch($this->getUser(), $project);
 
-            $normalizedProject = $this->container->get('activity_manager.normalizer.project')
+            $normalizedProject = $this->container->get('pim_internal_api_serializer')
                 ->normalize($project, 'internal_api');
 
             return new JsonResponse($normalizedProject, 201);
@@ -136,17 +134,17 @@ class ProjectController extends Controller
      * Returns users that belong to the project.
      *
      * @param Request $request
-     * @param int     $projectId
+     * @param string  $projectCode
      *
      * @return JsonResponse
      */
-    public function searchContributorsAction($projectId, Request $request)
+    public function searchContributorsAction($projectCode, Request $request)
     {
         $projectRepository = $this->container->get('activity_manager.repository.project');
         $userRepository = $this->container->get('activity_manager.repository.user');
         $serializer = $this->container->get('pim_internal_api_serializer');
 
-        $project = $projectRepository->findOneByIdentifier($projectId);
+        $project = $projectRepository->findOneByIdentifier($projectCode);
 
         if (null === $project) {
             return new JsonResponse(null, 404);

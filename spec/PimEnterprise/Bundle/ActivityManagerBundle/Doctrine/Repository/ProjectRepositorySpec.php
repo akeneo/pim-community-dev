@@ -41,6 +41,6 @@ class ProjectRepositorySpec extends ObjectBehavior
 
     function its_identifier_is_id()
     {
-        $this->getIdentifierProperties()->shouldReturn(['id']);
+        $this->getIdentifierProperties()->shouldReturn(['code']);
     }
 }

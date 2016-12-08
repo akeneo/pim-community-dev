@@ -43,7 +43,17 @@ class ProjectRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return ['id'];
+        return ['code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return ProjectInterface
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        return $this->findOneBy(['code' => $identifier]);
     }
 
     /**
@@ -78,16 +88,6 @@ class ProjectRepository extends EntityRepository implements
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
 
         return $qb->getQuery()->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return ProjectInterface
-     */
-    public function findOneByIdentifier($identifier)
-    {
-        return $this->find($identifier);
     }
 
     /**

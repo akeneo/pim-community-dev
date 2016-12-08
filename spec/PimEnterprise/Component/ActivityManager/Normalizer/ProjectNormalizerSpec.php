@@ -35,6 +35,7 @@ class ProjectNormalizerSpec extends ObjectBehavior
         $user->getId()->willReturn(42);
 
         $project->getLabel()->willReturn('Summer collection');
+        $project->getCode()->willReturn('summer-collection-ecommerce-fr-fr');
         $project->getDescription()->willReturn('The sun is here, such is the collection!');
         $project->getDueDate()->willReturn($datetime);
         $project->getOwner()->willReturn($user);
@@ -48,12 +49,13 @@ class ProjectNormalizerSpec extends ObjectBehavior
 
         $this->normalize($project, 'internal_api')->shouldReturn([
             'label' => 'Summer collection',
+            'code' => 'summer-collection-ecommerce-fr-fr',
             'description' => 'The sun is here, such is the collection!',
             'due_date' => '2069-02-15',
             'owner' => 42,
             'channel' => ['code' => 'ecommerce'],
             'locale' => ['code' => 'fr_FR'],
-            'datagridView' => ['label' => 'The OMG view']
+            'datagridView' => ['label' => 'The OMG view'],
         ]);
     }
 

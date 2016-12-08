@@ -31,6 +31,16 @@ interface ProjectInterface
     /**
      * @return string
      */
+    public function getCode();
+
+    /**
+     * @param string $code
+     */
+    public function setCode($code);
+
+    /**
+     * @return string
+     */
     public function getLabel();
 
     /**

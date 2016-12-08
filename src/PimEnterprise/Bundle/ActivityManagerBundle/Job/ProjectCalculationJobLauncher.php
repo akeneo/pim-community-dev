@@ -47,6 +47,6 @@ class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInte
     {
         $jobInstance = $this->jobInstanceRepository->getProjectCalculation();
 
-        $this->simpleJobLauncher->launch($jobInstance, $user, ['project_id' => $project->getId()]);
+        $this->simpleJobLauncher->launch($jobInstance, $user, ['project_code' => $project->getCode()]);
     }
 }

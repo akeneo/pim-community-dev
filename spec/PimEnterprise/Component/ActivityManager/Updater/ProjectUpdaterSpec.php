@@ -47,6 +47,14 @@ class ProjectUpdaterSpec extends ObjectBehavior
         $project->setLocale($locale)->shouldBeCalled();
         $project->addUserGroup($userGroup)->shouldBeCalled();
 
+        $project->getLabel()->willReturn('Summer collection 2017');
+        $project->getChannel()->willReturn($channel);
+        $project->getLocale()->willReturn($locale);
+        $locale->getCode()->willReturn('fr_FR');
+        $channel->getCode()->willReturn('print');
+
+        $project->setCode('summer-collection-2017-print-fr-fr')->shouldBeCalled();
+
         $this->update(
             $project,
             [

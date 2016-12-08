@@ -82,10 +82,10 @@ class EventTranslationSubscriberSpec extends ObjectBehavior
         $jobExecutionEvent->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('project_id')->willReturn(42);
+        $jobParameters->get('project_code')->willReturn('code');
         $jobInstance->getCode()->willReturn('project_calculation');
 
-        $projectRepository->findOneByIdentifier(42)->willReturn($project);
+        $projectRepository->findOneByIdentifier('code')->willReturn($project);
 
         $eventDispatcher->dispatch(
             ProjectEvents::PROJECT_CALCULATED,

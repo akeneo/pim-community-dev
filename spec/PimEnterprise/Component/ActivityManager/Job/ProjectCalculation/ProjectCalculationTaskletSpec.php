@@ -63,9 +63,9 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
 
         $stepExecution->getJobParameters()->willreturn($jobParameters);
-        $jobParameters->get('project_id')->willReturn(42);
+        $jobParameters->get('project_code')->willReturn('project_code');
 
-        $projectRepository->findOneByIdentifier(42)->willReturn($project);
+        $projectRepository->findOneByIdentifier('project_code')->willReturn($project);
 
         $productRepository->findByProject($project)->willReturn([$product, $otherProduct]);
 
