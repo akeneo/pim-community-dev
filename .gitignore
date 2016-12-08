@@ -21,3 +21,4 @@ behat.yml
 composer.phar
 composer.lock
 node_modules/
+.grunt
