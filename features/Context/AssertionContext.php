@@ -489,6 +489,21 @@ class AssertionContext extends RawMinkContext
 
     /**
      * @param string $fileName
+     *
+     * @Given /^file "([^"]*)" should not exist$/
+     *
+     * @throws ExpectationException
+     */
+    public function fileShouldNotExist($fileName)
+    {
+        $fileName = $this->replacePlaceholders($fileName);
+        if (file_exists($fileName)) {
+            throw $this->createExpectationException(sprintf('File %s exists.', $fileName));
+        }
+    }
+
+    /**
+     * @param string $fileName
      * @param int    $rows
      *
      * @Given /^file "([^"]*)" should contain (\d+) rows$/

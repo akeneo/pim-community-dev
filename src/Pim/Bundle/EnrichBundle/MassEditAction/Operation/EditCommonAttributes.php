@@ -242,7 +242,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
             }
         }
 
-        $this->values = json_encode($data, JSON_HEX_APOS);
+        $this->values = json_encode($data);
     }
 
     /**

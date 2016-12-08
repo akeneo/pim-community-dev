@@ -73,10 +73,10 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
             $pathFinder->find(),
             $this->rootDir,
             $this->environment,
-            $this->isConfigTrue('email') ? sprintf('--email="%s"', $user->getEmail()) : '',
-            $jobInstance->getCode(),
+            $this->isConfigTrue('email') ? sprintf('--email=%s', escapeshellarg($user->getEmail())) : '',
+            escapeshellarg($jobInstance->getCode()),
             $executionId,
-            !empty($rawConfiguration) ? sprintf('--config="%s"', $rawConfiguration) : '',
+            !empty($rawConfiguration) ? sprintf('--config=%s', escapeshellarg($rawConfiguration)) : '',
             $this->rootDir
         );
         
