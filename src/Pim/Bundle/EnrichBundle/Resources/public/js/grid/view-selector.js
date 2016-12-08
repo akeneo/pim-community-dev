@@ -223,7 +223,9 @@ define(
                     var typeSwitcher = new ViewSelectorTypeSwitcher(this.viewTypes);
                     $search.append(typeSwitcher.render().$el);
 
-                    typeSwitcher.listenTo(typeSwitcher, 'grid:view-selector:switch-type', this.switchViewType.bind(this));
+                    typeSwitcher.listenTo(
+                        typeSwitcher, 'grid:view-selector:switch-type', this.switchViewType.bind(this)
+                    );
                     typeSwitcher.setCurrentViewType(this.currentViewType);
 
                     $search.find('.select2-input').addClass('with-dropdown');
