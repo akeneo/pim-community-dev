@@ -23,7 +23,7 @@ class InvalidItemFromViolationsException extends BaseInvalidItemException
 
     /**
      * @param ConstraintViolationListInterface|null $violations
-     * @param array                                 $item
+     * @param InvalidItemInterface                  $item
      * @param array                                 $messageParameters
      * @param int                                   $code
      * @param \Exception|null                       $previous
