@@ -51,6 +51,18 @@ interface ProductInterface extends
     public function getIdentifier();
 
     /**
+     * @return array
+     */
+    public function getRawValues();
+
+    /**
+     * @param array $rawValues
+     *
+     * @return ProductValueInterface
+     */
+    public function setRawValues(array $rawValues);
+
+    /**
      * Get values
      *
      * @return ArrayCollection | ProductValueInterface[]
