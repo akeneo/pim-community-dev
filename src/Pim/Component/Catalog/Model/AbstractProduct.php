@@ -19,6 +19,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var int|string */
     protected $id;
 
+    /** @var array */
+    protected $rawValues;
+
     /** @var \Datetime $created */
     protected $created;
 
@@ -312,6 +315,24 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRawValues()
+    {
+        return $this->rawValues;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRawValues(array $rawValues)
+    {
+        $this->rawValues = $rawValues;
+
+        return $this;
     }
 
     /**

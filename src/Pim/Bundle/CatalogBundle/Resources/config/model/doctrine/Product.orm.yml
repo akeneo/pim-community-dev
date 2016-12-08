@@ -12,6 +12,9 @@ Pim\Component\Catalog\Model\Product:
         enabled:
             type: boolean
             column: is_enabled
+        rawValues:
+            type: json_array
+            column: raw_values
         created:
             type: datetime
         updated:

@@ -20,6 +20,7 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
+            - '@pim_serializer'
 
     pim_catalog.saver.group:
         class: '%pim_catalog.saver.group.class%'
