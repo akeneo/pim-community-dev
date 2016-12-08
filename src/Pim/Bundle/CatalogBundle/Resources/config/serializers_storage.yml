@@ -1,0 +1,8 @@
+parameters:
+    pim_catalog.normalizer.storage.product.product_values.class: Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer
+
+services:
+    pim_catalog.normalizer.storage.product.product_values:
+        class: '%pim_catalog.normalizer.storage.product.product_values.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
@@ -32,9 +31,9 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     protected $eventDispatcher;
 
     /**
-     * @param ObjectManager                  $om
-     * @param CompletenessManager            $completenessManager
-     * @param EventDispatcherInterface       $eventDispatcher
+     * @param ObjectManager            $om
+     * @param CompletenessManager      $completenessManager
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectManager $om,

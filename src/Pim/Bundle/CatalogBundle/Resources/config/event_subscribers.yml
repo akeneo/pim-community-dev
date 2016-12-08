@@ -9,6 +9,7 @@ parameters:
     pim_catalog.event_subscriber.category.check_channels.class:      Pim\Bundle\CatalogBundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
     pim_catalog.event_subscriber.currency_disabling.class:           Pim\Bundle\CatalogBundle\EventSubscriber\CurrencyDisablingSubscriber
     pim_catalog.event_subscriber.reset_unique_validation.class:      Pim\Bundle\CatalogBundle\EventSubscriber\ResetUniqueValidationSubscriber
+    pim_catalog.event_subscriber.compute_product_raw_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductRawValuesSubscriber
 
 services:
     # Subscribers
@@ -83,3 +84,10 @@ services:
             - '@pim_catalog.validator.unique_value_set'
         tags:
            - { name: kernel.event_listener, event: akeneo.storage.post_save_all }
+
+    pim_catalog.event_subscriber.compute_product_raw_values:
+        class: '%pim_catalog.event_subscriber.compute_product_raw_values.class%'
+        arguments:
+            - '@pim_serializer'
+        tags:
+            - { name: kernel.event_subscriber }
