@@ -34,6 +34,7 @@ class GridCapableDecorator extends ElementDecorator
     /** @var array */
     protected $viewSelectorDecorators = [
         'Pim\Behat\Decorator\Field\Select2Decorator',
+        'Pim\Behat\Decorator\Grid\ViewTypeSwitcherDecorator',
     ];
 
     /**
