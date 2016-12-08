@@ -6,6 +6,7 @@ CENTIARE: Metr kwadratowy
 HECTARE: Hektar
 SQUARE_CENTIMETER: Centymetr kwadratowy
 SQUARE_DECIMETER: Decymetr kwadratowy
+SQUARE_DEKAMETER: Ar
 SQUARE_FOOT: Stopa kwadratowa
 SQUARE_FURLONG: Furlong kwadratowy
 SQUARE_HECTOMETER: Hektometr kwadratowy
@@ -67,7 +68,10 @@ Temperature: Temperatura
 CELSIUS: Celsjusz
 FAHRENHEIT: Fahrenheit
 KELVIN: Kelwin
+RANKINE: Rankine
 Volume: Objętość
+BARREL: Baryłka
+CENTILITER: Centylitr
 CUBIC_CENTIMETER: Centymetr sześcienny
 CUBIC_DECIMETER: Decymetr sześcienny
 CUBIC_FOOT: Stopa sześcienna
@@ -80,10 +84,12 @@ GALLON: Galon
 LITER: Litr
 MILLILITER: Mililitr
 OUNCE: Uncja
+PINT: Półkwarta
 Weight: Masa
 GRAIN: Gran
 GRAM: Gram
 KILOGRAM: Kilogram
 MILLIGRAM: Miligram
+ONCE: Raz
 POUND: Funt
 TON: Tona
