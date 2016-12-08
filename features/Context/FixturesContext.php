@@ -671,7 +671,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^attribute (\w+) of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^attribute (\w+) of "([^"]*)" should be "(.*)"$/
      */
     public function theOfShouldBe($attribute, $identifier, $value)
     {
@@ -686,7 +686,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^the (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^the (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
      */
     public function theLocalizableOfShouldBe($lang, $attribute, $identifier, $value)
     {

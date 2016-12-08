@@ -100,7 +100,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'attribute_channel' => null
                     ]
                 ]
-            )
+            , JSON_HEX_APOS)
         );
 
         $violations = new ConstraintViolationList([]);
@@ -150,7 +150,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'attribute_channel' => null
                     ]
                 ]
-            )
+            , JSON_HEX_APOS)
         );
 
         $violations = new ConstraintViolationList([]);
@@ -202,7 +202,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'attribute_channel' => null
                     ]
                 ]
-            )
+            , JSON_HEX_APOS)
         );
 
         $validator->validate($product)->willReturn($violations);
