@@ -5,7 +5,7 @@ Are you sure you want to do remove selected items?: Sei sicuro di che voler rimu
 Selected items were removed.: Gli articoli selezionati sono stati rimossi.
 Selected items were not removed.: Gli articoli selezionati non sono stati rimossi.
 Please, select items to remove.: Per favore, selezionare gli articoli da rimuovere.
-Cannot delete item.: "Non è possibile eliminare l'articolo."
+Cannot delete item.: Non è possibile eliminare l'articolo.
 Refresh Confirmation: Aggiornare la conferma
 Your local changes will be lost. Are you sure you want to refresh grid?: Le modifiche locali non state salvate. Sei sicuro di voler aggiornare la griglia senza salvare?
 Reset Confirmation: Conferma reset
@@ -20,28 +20,37 @@ Per page: Per pagina
 Mass Action Confirmation: Conferma azione di massa
 Mass action performed.: Azione di massa eseguita.
 Mass action is not performed.: Azione di massa non eseguita.
-Please, select items to perform mass action.: "Per favore, selezionare gli articoli per eseguire l'azione di massa."
+Please, select items to perform mass action.: Per favore, selezionare gli articoli per eseguire l'azione di massa.
 Execution Confirmation: Conferma esecuzione
 Are you sure you want to do this?: Sei sicuro di voler proseguire?
 Action performed.: Azione eseguita.
 Action is not performed.: Azione non eseguita.
-Please, select item to perform action.: "Per favore, seleziona l'articolo per eseguire l'azione."
+Please, select item to perform action.: Per favore, seleziona l'articolo per eseguire l'azione.
 View per page: Mostra per pagina
 oro.datagrid.entityHint: Entità
 oro.datagrid.noentities: Nessun record trovato
 oro.datagrid.nocolumns: Nessuna colonna configurata per questa griglia
-oro.datagrid.pagination.label: Pagina
-oro.datagrid.pagination.totalPages: 'di {{ totalPages }}'
-oro.datagrid.pagination.totalRecords: '{{ totalRecords }} record'
-oro.datagrid.action.reset: Azzera
-oro.datagrid.action.refresh: Aggiorna
-oro_datagrid.select.all: Tutto
-oro_datagrid.select.visible: Tutti visibili
-oro_datagrid.select.none: Nessun
+oro.datagrid.pagination.label: "Pagina"
+oro.datagrid.pagination.totalPages: "di {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} record"
+oro.datagrid.action.reset: "Azzera"
+oro.datagrid.action.refresh: "Aggiorna"
+oro_datagrid.select.all: "Tutto"
+oro_datagrid.select.visible: "Tutti visibili"
+oro_datagrid.select.none: "Nessun"
 pim.grid.ajax_choice_filter.label_empty: è vuoto
 Available Columns: Colonne disponibili
-Displayed Columns: Colonne visualizzate
-datagrid_view.columns.min_message: È necessario selezionare almeno una colonna di dati da visualizzare
+datagrid_view.columns.min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
+pim_datagrid:
+  column_configurator:
+    label: Colonne
+    search: Ricerca
+    apply: Applica
+    cancel: Cancella
+    remove_column: Rimuovere
 pim.grid.mass_action.quick_export.title: Esportazione rapida
 pim.grid.action.launch.title: Lancia
 pim.grid.action.show.title: Visualizza
+View: Visualizzazione
+from: Da
+to: A
