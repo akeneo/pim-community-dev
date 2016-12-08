@@ -1,0 +1,16 @@
+@import '../base/variables';
+
+.AknFooter {
+  text-align: center;
+  color: @AknGrey;
+
+  &-item {
+    display: inline-block;
+  }
+
+  &-item + &-item {
+    &:before {
+      content: " | ";
+    }
+  }
+}

@@ -7,8 +7,8 @@
         </div>
     </header>
 
-    <div>
-        {{ render(controller('pim_dashboard.controller.widget:listAction')) }}
+    {{ render(controller('pim_dashboard.controller.widget:listAction')) }}
+    <div class="AknFooter">
         {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
         {% embed 'PimAnalyticsBundle:Update:last_patch.html.twig' %}{% endembed %}
     </div>
