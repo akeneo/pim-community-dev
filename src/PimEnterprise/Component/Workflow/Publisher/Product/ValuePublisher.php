@@ -67,7 +67,7 @@ class ValuePublisher implements PublisherInterface
             $copiedData = $originalData;
         }
 
-        if ($copiedData) {
+        if (null !== $copiedData) {
             $publishedValue->setData($copiedData);
         }
 

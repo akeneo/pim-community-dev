@@ -81,18 +81,15 @@ class ContextConfigurator extends BaseContextConfigurator
     }
 
     /**
-     * Override to filter per permissions per groups too
+     * {@inheritdoc}
      *
-     * @param string[] $attributeCodes
-     *
-     * @return int[]
+     * Override to apply rights on attributes
      */
-    protected function getAttributeIds($attributeCodes = null)
+    protected function getAttributeIdsUseableInGrid($attributeCodes = null)
     {
         $groupIds = $this->getGrantedGroupIds();
-        $attributeIds = $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes, $groupIds);
 
-        return $attributeIds;
+        return $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes, $groupIds);
     }
 
     /**
