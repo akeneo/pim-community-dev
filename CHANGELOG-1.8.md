@@ -2,7 +2,7 @@
 
 ## BC breaks
 
-- Add method `setValues` to `Pim\Component\Catalog\Model\ProductInterface`
+- Add method `setValues` and `setIdentifier` to `Pim\Component\Catalog\Model\ProductInterface`
 - Remove method `setNormalizedData` from `Pim\Component\Catalog\Model\ProductInterface`
 - Change method `fetchAll` of `Pim\Component\Connector\Processor\BulkMediaFetcher` to use a `Pim\Component\Catalog\Model\ProductValueCollectionInterface` instead of an `Doctrine\Common\Collections\ArrayCollection`
 - Remove method `markIndexedValuesOutdated` of `Pim\Component\Catalog\Model\ProductInterface` and `Pim\Component\Catalog\Model\AbstractProduct` 
