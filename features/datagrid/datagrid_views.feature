@@ -29,14 +29,14 @@ Feature: Datagrid views
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
-  @unstable # This failing test will be fixed with http://github.com/akeneo/pim-community-dev/pull/5228
   Scenario: Successfully apply a view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Boots"
     Then I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
     When I apply the "Default view" view
-    Then I should see products black-boots, purple-sneakers and black-sneakers
+    Then I should be on the products page
+    And I should see products black-boots, purple-sneakers and black-sneakers
 
   @skip-activity-manager
   Scenario: Successfully update a view

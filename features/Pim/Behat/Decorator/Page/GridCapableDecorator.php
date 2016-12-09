@@ -135,6 +135,8 @@ class GridCapableDecorator extends ElementDecorator
             return $widget->find('css', sprintf('.select2-result-label:contains("%s")', $viewLabel));
         }, sprintf('Row "%s" in view selector not found.', $viewLabel));
 
+        $row->mouseOver();
+
         $deleteButton = $this->spin(function () use ($row) {
             return $this->find('css', '[data-action="prompt-deletion"]');
         }, sprintf('Delete button not found on row "%s"', $viewLabel));
