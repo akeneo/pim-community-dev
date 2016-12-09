@@ -1,32 +1,31 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
+namespace spec\PimEnterprise\Component\Workflow\Publisher\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
+use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;
 use Prophecy\Argument;
 
 class ValuePublisherSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\ValuePublisher');
+        $this->shouldHaveType('PimEnterprise\Component\Workflow\Publisher\Product\ValuePublisher');
     }
 
     public function it_is_a_publisher()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
+        $this->shouldBeAnInstanceOf('PimEnterprise\Component\Workflow\Publisher\PublisherInterface');
     }
 
     public function let(PublisherInterface $publisher)
     {
         $this->beConstructedWith(
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue',
+            'PimEnterprise\Component\Workflow\Model\PublishedProductValue',
             $publisher
         );
     }
@@ -49,7 +48,7 @@ class ValuePublisherSpec extends ObjectBehavior
 
         $published = $this->publish($productValue);
 
-        $published->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue');
+        $published->shouldHaveType('PimEnterprise\Component\Workflow\Model\PublishedProductValue');
 
         $published->getData()->shouldReturn(true);
         $published->getAttribute()->shouldReturn($attribute);
@@ -75,7 +74,7 @@ class ValuePublisherSpec extends ObjectBehavior
 
         $published = $this->publish($productValue);
 
-        $published->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue');
+        $published->shouldHaveType('PimEnterprise\Component\Workflow\Model\PublishedProductValue');
 
         $published->getData()->shouldReturn(false);
         $published->getAttribute()->shouldReturn($attribute);
@@ -99,7 +98,7 @@ class ValuePublisherSpec extends ObjectBehavior
 
         $published = $this->publish($productValue);
 
-        $published->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue');
+        $published->shouldHaveType('PimEnterprise\Component\Workflow\Model\PublishedProductValue');
 
         $published->getData()->shouldReturn('string_product_value');
         $published->getAttribute()->shouldReturn($attribute);
@@ -130,7 +129,7 @@ class ValuePublisherSpec extends ObjectBehavior
 
         $published = $this->publish($productValue);
 
-        $published->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue');
+        $published->shouldHaveType('PimEnterprise\Component\Workflow\Model\PublishedProductValue');
 
         $published->getData()->shouldReturn($object);
         $published->getAttribute()->shouldReturn($attribute);
@@ -170,7 +169,7 @@ class ValuePublisherSpec extends ObjectBehavior
 
         $published = $this->publish($productValue);
 
-        $published->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue');
+        $published->shouldHaveType('PimEnterprise\Component\Workflow\Model\PublishedProductValue');
 
         $prices = $published->getData()->toArray();
         $prices->shouldReturn(['EUR' => $price2, 'USD' => $price1]);
