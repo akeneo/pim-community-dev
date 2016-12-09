@@ -81,6 +81,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var array */
     protected $normalizedData;
 
+    /** @var string */
+    protected $identifier;
+
     /**
      * Constructor
      */
@@ -415,6 +418,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
+        //TODO: drop it
         foreach ($this->values as $value) {
             if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getAttributeType()) {
                 return $value;
@@ -422,6 +426,14 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         throw new MissingIdentifierException($this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
     }
 
     /**
