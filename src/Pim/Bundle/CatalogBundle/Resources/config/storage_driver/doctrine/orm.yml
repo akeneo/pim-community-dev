@@ -7,6 +7,7 @@ parameters:
     pim_catalog.repository.product_category.class:                   Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository
     pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
     pim_catalog.event_subscriber.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventSubscriber\ORM\InjectProductReferenceSubscriber
+    pim_catalog.event_subscriber.orm.load_product_values.class:      Pim\Bundle\CatalogBundle\EventSubscriber\ORM\LoadProductValuesSubscriber
     pim_catalog.event_subscriber.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventSubscriber\ORM\MetricBaseValuesSubscriber
 
     pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\ProductIdFilter
@@ -56,6 +57,13 @@ services:
             - '%pim_catalog.entity.product.class%'
         tags:
             - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_subscriber.orm.load_product_values:
+        class: '%pim_catalog.event_subscriber.orm.load_product_values.class%'
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: 'doctrine.event_subscriber' }
 
     pim_catalog.repository.product:
         class: '%pim_catalog.repository.product.class%'

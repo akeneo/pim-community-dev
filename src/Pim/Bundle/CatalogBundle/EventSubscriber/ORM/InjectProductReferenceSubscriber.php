@@ -12,6 +12,8 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
+ * TODO: should be deleted
+ *
  * Inject Product references into entities that needs them.
  * We break the mapping between entities and Products because products
  * can be in ORM or in ODM

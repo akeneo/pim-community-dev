@@ -81,3 +81,4 @@ Pim\Component\Catalog\Model\Product:
                 - persist
                 - refresh
                 - detach
+
