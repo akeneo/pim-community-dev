@@ -1060,6 +1060,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @Then /^I select all products$/
+     * @When /^I select all families$/
      */
     public function iSelectAll()
     {
