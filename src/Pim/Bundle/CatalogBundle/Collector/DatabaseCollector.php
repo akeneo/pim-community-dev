@@ -125,7 +125,8 @@ class DatabaseCollector extends DataCollector
      */
     public function getProductValueCount()
     {
-        return $this->productValueRepository->count();
+        return 0;
+//        return $this->productValueRepository->count();
     }
 
     /**
