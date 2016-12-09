@@ -311,8 +311,7 @@ define(
                     id: 0,
                     text: __('grid.view_selector.default_view'),
                     columns: this.defaultColumns,
-                    filters: '',
-                    type: 'view'
+                    filters: ''
                 };
             },
 
