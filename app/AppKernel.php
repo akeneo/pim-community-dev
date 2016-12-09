@@ -21,7 +21,7 @@ class AppKernel extends Kernel
     {
         return [
             // your app bundles should be registered here
-            new Acme\Bundle\AppBundle\AcmeAppBundle(),
+//            new Acme\Bundle\AppBundle\AcmeAppBundle(),
         ];
     }
 
