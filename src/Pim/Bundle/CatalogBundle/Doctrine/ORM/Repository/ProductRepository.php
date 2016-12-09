@@ -252,7 +252,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return [$this->attributeRepository->getIdentifierCode()];
+        return ['identifier'];
     }
 
     /**
@@ -430,17 +430,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        $pqb = $this->queryBuilderFactory->create();
-        $qb = $pqb->getQueryBuilder();
-        $attribute = $this->getIdentifierAttribute();
-        $pqb->addFilter($attribute->getCode(), Operators::EQUALS, $identifier);
-        $result = $qb->getQuery()->execute();
-
-        if (empty($result)) {
-            return null;
-        }
-
-        return reset($result);
+        return $this->findOneBy(['identifier' => $identifier]);
     }
 
     /**
