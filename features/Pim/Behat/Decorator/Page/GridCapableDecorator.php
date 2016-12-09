@@ -34,7 +34,6 @@ class GridCapableDecorator extends ElementDecorator
     /** @var array */
     protected $viewSelectorDecorators = [
         'Pim\Behat\Decorator\Field\Select2Decorator',
-        'Pim\Behat\Decorator\Grid\ViewTypeSwitcherDecorator',
     ];
 
     /**
@@ -164,5 +163,43 @@ class GridCapableDecorator extends ElementDecorator
         );
 
         return $this->decorate($grid->getParent()->getParent()->getParent(), $this->gridDecorators);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @throws TimeoutException
+     */
+    public function switchViewType($type)
+    {
+        $widget = $this->getViewSelector()->getWidget();
+
+        $viewTypeSwitcher = $this->spin(function () use ($widget) {
+            return $widget->find('css', '.view-selector-type-switcher');
+        }, 'Cannot find the View Type Switcher in the View Selector.');
+
+        $viewTypeSwitcher->click();
+
+        $viewType = $this->spin(function () use ($widget, $type) {
+            return $widget->find('css', sprintf('[data-action="switchViewType"][title="%s"]', $type));
+        }, sprintf('Cannot find element in the View Type Switcher dropdown with name "%s".', $type));
+
+        $viewType->click();
+    }
+
+    /**
+     * @throws TimeoutException
+     *
+     * @return string
+     */
+    public function getCurrentViewType()
+    {
+        $widget = $this->getViewSelector()->getWidget();
+
+        $viewTypeSwitcher = $this->spin(function () use ($widget) {
+            return $widget->find('css', '.view-selector-type-switcher');
+        }, 'Cannot find the View Type Switcher in the View Selector.');
+
+        return $viewTypeSwitcher->getText();
     }
 }
