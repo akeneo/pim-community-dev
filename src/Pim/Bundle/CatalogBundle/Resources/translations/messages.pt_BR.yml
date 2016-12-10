@@ -1,0 +1,23 @@
+No products to remove: Não existem produtos a serem removidos
+"dot (.)": ponto (.)
+"comma (,)": vírgula (,)
+pim_catalog:
+  constraint:
+    product_identifier: Esses identificadores "%s" não existem.
+    0: Ocorreu um erro inesperado.
+    100: Valor não esperado
+    101: Este campo espera um valor numérico.
+    102: Este campo espera um valor numérico.
+    103: Este campo espera um valor numérico.
+    104: Este campo espera um valor numérico.
+    105: Este campo espera um valor numérico.
+    106: Este campo espera um valor numérico.
+    107: Este campo espera uma matriz de matrizes como valor.
+    200: Ocorreu um erro interno
+    201: Ocorreu um erro interno
+    202: Este campo espera um valor numérico.
+    203: Este campo espera um valor numérico.
+    204: Este campo espera um valor numérico.
+    205: Ocorreu um erro interno
+    300: Este campo espera um código de entidade válida.
+    301: Este campo espera um código de entidade válida.
