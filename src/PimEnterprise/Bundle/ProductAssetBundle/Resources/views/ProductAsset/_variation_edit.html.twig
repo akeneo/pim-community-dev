@@ -7,7 +7,7 @@
             {% if variationModel.fileInfo %}
                 {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_core.html.twig' %}
                     {% block variation_buttons %}
-                        <button class="AknButtonsList-item AknButton AknButton--important AknButton--withIcon AknButton--little delete"
+                        <button class="AknButtonList-item AknButton AknButton--important AknButton--withIcon AknButton--small delete"
                                 data-href="{{ path('pimee_product_asset_variation_delete', {'id': variationModel.id}) }}">
                             <i class="AknButton-icon icon-trash"></i>
                             {{ 'btn.delete'|trans|capitalize }}

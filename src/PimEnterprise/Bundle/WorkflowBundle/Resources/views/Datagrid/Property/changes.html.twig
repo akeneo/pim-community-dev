@@ -39,9 +39,9 @@
                         </th>
                         <th class="AknGrid-headerCell action-cell">
                             {% if canReview %}
-                                <div class="AknButtonsList AknButtonsList--right">
+                                <div class="AknButtonList AknButtonList--right">
                                     <button
-                                        class="AknButtonsList-item AknIconButton AknIconButton--apply AknIconButton--little partial-approve-link"
+                                        class="AknButtonList-item AknIconButton AknIconButton--apply AknIconButton--small partial-approve-link"
                                         data-product="{{ record.rootEntity.product.identifier }}"
                                         data-scope="{{ change.scope }}"
                                         data-locale="{{ change.locale }}"
@@ -53,7 +53,7 @@
                                         <i class="icon-ok"></i>
                                     </button>
                                     <button
-                                        class="AknButtonsList-item AknIconButton AknIconButton--important AknIconButton--little partial-reject-link"
+                                        class="AknButtonList-item AknIconButton AknIconButton--important AknIconButton--small partial-reject-link"
                                         data-product="{{ record.rootEntity.product.identifier }}"
                                         data-scope="{{ change.scope }}"
                                         data-locale="{{ change.locale }}"

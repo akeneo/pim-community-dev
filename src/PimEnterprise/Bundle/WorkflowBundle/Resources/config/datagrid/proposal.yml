@@ -55,14 +55,14 @@ datagrid:
                 label: pimee_workflow.product_draft.action.approve
                 launcherOptions:
                     iconClassName: AknButton-icon icon-ok
-                    className: AknButton AknButton--apply AknButton--withIcon AknButton--little
+                    className: AknButton AknButton--apply AknButton--withIcon AknButton--small
                 link: approve_link
             refuse:
                 type: reject-proposal
                 label: pimee_workflow.product_draft.action.refuse
                 launcherOptions:
                     iconClassName: AknButton-icon icon-remove
-                    className: AknButton AknButton--important AknButton--withIcon AknButton--little
+                    className: AknButton AknButton--important AknButton--withIcon AknButton--small
                 link: refuse_link
         action_configuration: '@pimee_datagrid.datagrid.configuration.proposal.grid_helper->getActionConfigurationClosure'
         mass_actions_groups:
