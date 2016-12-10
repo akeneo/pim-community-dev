@@ -5,13 +5,14 @@
   width: @AknIconSize;
   height: @AknIconSize;
   line-height: @AknIconSize;
+  font-size: @AknLittleIconFontSize;
   border: none;
   background: white;
   display: inline-block;
   padding: 0;
-  font-size: @AknLittleIconFontSize;
   border-radius: 2px;
   text-align: center;
+  transition: background 0.1s ease;
 
   &:hover {
     background: lighten(@AknGrey, 25%);
@@ -38,5 +39,36 @@
       background: darken(@AknGrey, 10%);
       color: white;
     }
+  }
+
+  &--important {
+    background-color: @AknRed;
+    color: white;
+
+    &:hover {
+      background: darken(@AknRed, 10%);
+      color: white;
+    }
+  }
+
+  &--apply {
+    background-color: @AknGreen;
+    color: white;
+
+    &:hover {
+      background: darken(@AknGreen, 10%);
+      color: white;
+    }
+  }
+
+  &--small {
+    font-size: @AknDefaultFontSize;
+    width: @AknMicroButtonSize;
+    height: @AknMicroButtonSize;
+    line-height: @AknMicroButtonSize;
+  }
+
+  &--hide {
+    display: none;
   }
 }

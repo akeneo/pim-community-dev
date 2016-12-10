@@ -18,6 +18,7 @@
   cursor: pointer;
   text-align: left;
   white-space: nowrap;
+  transition: background 0.1s ease;
 
   &--withIcon {
     padding-left: 0;
@@ -124,14 +125,14 @@
   }
 
   // Sizes
-  &--little {
+  &--small {
     height: @AknLittleButtonSize;
-    line-height: @AknLittleButtonSize - 2px;
+    line-height: @AknLittleButtonSize;
     min-width: @AknLittleButtonSize;
     font-size: @AknDefaultFontSize;
   }
 
-  &--little &-icon {
+  &--small &-icon {
     height: @AknLittleButtonSize;
     width: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;

@@ -1,0 +1,41 @@
+@import '../../base/variables';
+
+.AknCommentPanel {
+  @avatarSize: @AknMicroButtonSize;
+
+  &-thread {
+    margin-top: 10px;
+  }
+
+  &-item {
+    border-left: 1px solid @AknBorderColor;
+    border-top: 1px solid @AknBorderColor;
+    border-right: 1px solid @AknBorderColor;
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+  }
+
+  &-avatar {
+    width: @avatarSize;
+    height: @avatarSize;
+    border: 1px solid @AknBorderColor;
+    border-radius: 2px;
+    margin-right: 5px;
+  }
+
+  &-author {
+    flex-grow: 1;
+  }
+
+  &-icon {
+    margin-left: 5px;
+  }
+
+  &-message {
+    padding: 5px;
+  }
+}

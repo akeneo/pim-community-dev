@@ -112,7 +112,7 @@
                         {% endblock title %}
                     </h2>
                     {% if titleButtons is not empty %}
-                        <div class="AknTitleContainer-titleButtons">
+                        <div class="AknTitleContainer-titleButtons" data-drop-zone="title-buttons">
                             {{ titleButtons }}
                         </div>
                     {% endif %}
@@ -121,7 +121,7 @@
                     {% block navButtons %}{% endblock navButtons %}
                     {{ right }}
                     {% if buttons is not empty %}
-                        <div class="AknButtonsList AknButtonsList--withSpace AknButtonsList--right AknTitleContainer-rightButtons">
+                        <div class="AknButtonList AknButtonsList--right AknTitleContainer-rightButtons">
                             {{ buttons }}
                         </div>
                     {% endif %}
@@ -160,7 +160,7 @@
 
 {% macro form_errors(form) %}
     {% if form.vars.errors|length %}
-        <div class="alert alert-error fade in top-messages">
+        <div class="AknMessageBox AknMessageBox--error fade in top-messages">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <div class="message">
                 {{ form_errors(form) }}
@@ -187,8 +187,8 @@
 {% macro updated(formId) %}
 {% spaceless %}
     <div id="entity-updated" class="pull-right">
-        <span class="label label-warning">
-            <i class="icon icon-circle"></i>
+        <span class="AknBadge AknBadge--warning">
+            <i class="AknBadge-icon icon-circle"></i>
             {{ 'info.updated'|trans }}
         </span>
     </div>
@@ -301,9 +301,9 @@
     {% if form.enabled is defined %}
         <div class="status-enabled pull-left">
             {% if form.enabled.vars.value %}
-                <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
+                <div class="AknBadge AknBadge--rounded AknBadge--enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
             {% else %}
-                <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
+                <div class="AknBadge AknBadge--rounded AknBadge--disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
             {% endif %}
         </div>
     {% endif %}

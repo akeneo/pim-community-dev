@@ -11,14 +11,12 @@
         {% endset %}
 
         {% set meta %}
-            <ul class="inline">
-                {% block stats %}
-                    {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
-                        <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|datetime_presenter : 'N/A' }}</li>
-                        <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|datetime_presenter : 'N/A' }}</li>
-                    {% endif %}
-                {% endblock stats %}
-            </ul>
+            {% block stats %}
+                {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
+                    <span class="AknTitleContainer-metaItem">{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|datetime_presenter : 'N/A' }}</span>
+                    <span class="AknTitleContainer-metaItem">{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|datetime_presenter : 'N/A' }}</span>
+                {% endif %}
+            {% endblock stats %}
         {% endset %}
 
         {% set title %}

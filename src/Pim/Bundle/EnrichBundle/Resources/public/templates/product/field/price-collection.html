@@ -1,16 +1,16 @@
-<div class="AknPricesList">
+<div class="AknPriceList">
     <% if (!value.data) { %>
         <% _.each(currencies, function (currency) { %>
-            <div class="AknPricesList-item price-input">
+            <div class="AknPriceList-item price-input">
                 <input class="AknTextField AknTextField--noRightRadius" type="text" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" data-currency="<%- currency.code %>" value="" <%- editMode === 'view' ? 'disabled' : '' %> size="1">
-                <span class="AknPricesList-currency"><%- currency.code %></span>
+                <span class="AknPriceList-currency"><%- currency.code %></span>
             </div>
         <% }) %>
     <% } else { %>
         <% _.each(value.data, function (price) { %>
-            <div class="AknPricesList-item price-input">
+            <div class="AknPriceList-item price-input">
                 <input class="AknTextField AknTextField--noRightRadius" type="text" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" data-currency="<%- price.currency %>" value="<%- price.amount %>" <%- editMode === 'view' ? 'disabled' : '' %> size="1">
-                <span class="AknPricesList-currency"><%- price.currency %></span>
+                <span class="AknPriceList-currency"><%- price.currency %></span>
             </div>
         <% }) %>
     <% } %>

@@ -29,7 +29,7 @@ define(
                 'click .comment-create .send-comment': 'saveComment',
                 'click .remove-comment': 'removeComment',
                 'click .comment-thread .send-comment': 'saveReply',
-                'click .comment-thread .cancel-comment': 'cancelComment'
+                'click .comment-thread .cancel-comment, .comment-create .cancel-comment': 'cancelComment'
             },
             initialize: function () {
                 this.comment = new Backbone.Model();
@@ -77,14 +77,17 @@ define(
                 var $element = $(event.currentTarget).parents('.comment-thread, .comment-create');
                 if ($element.find('textarea').val()) {
                     $element.addClass('active');
+                    $element.find('.AknButtonList').removeClass('AknButtonList--hide');
                 } else {
                     $element.removeClass('active');
+                    $element.find('.AknButtonList').addClass('AknButtonList--hide');
                 }
             },
             cancelComment: function (event) {
                 var $element = $(event.currentTarget).parents('.comment-thread, .comment-create');
                 $element.find('textarea').val('');
                 $element.removeClass('active');
+                $element.find('.AknButtonList').addClass('AknButtonList--hide');
             },
             saveComment: function () {
                 $.ajax({

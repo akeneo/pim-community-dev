@@ -190,7 +190,7 @@ function ($, _, Backgrid, SelectRowCell) {
             // It's not clear for now, how mass selection will be designed,
             // thus implementation is done just to check functionality.
             // For future render method will depend on options or will be empty
-            this.$el.empty().append('<div class="AknSeveralActionsButton AknSeveralActionsButton--little AknDropdown">\
+            this.$el.empty().append('<div class="AknSeveralActionsButton AknSeveralActionsButton--small AknDropdown">\
                 <button type="button" class="AknSeveralActionsButton-mainAction" data-select-all>'+_.__('oro_datagrid.select.all')+'</button>\
                 <button type="button" class="AknSeveralActionsButton-caretContainer dropdown-toggle" data-toggle="dropdown">\
                     <i class="AknCaret AknCaret--inverse"></i>\

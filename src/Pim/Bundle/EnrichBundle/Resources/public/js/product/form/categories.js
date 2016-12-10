@@ -170,7 +170,7 @@ define(
              * @param {integer} categoryCount
              */
             updateCategoryBadge: function (rootTreeCode, categoryCount) {
-                this.$('li[data-tree=' + rootTreeCode +  ']').find('.badge').html(categoryCount);
+                this.$('li[data-tree=' + rootTreeCode +  ']').find('.AknBadge').html(categoryCount);
             },
 
             /**

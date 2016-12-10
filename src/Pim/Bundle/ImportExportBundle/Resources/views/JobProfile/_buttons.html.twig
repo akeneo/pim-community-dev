@@ -1,6 +1,6 @@
 {% if jobInstance.status != constant('Akeneo\\Component\\Batch\\Model\\JobInstance::STATUS_IN_PROGRESS') %}
-    {{ elements.link('Edit', editRoute, { icon: 'pencil', class: 'AknButtonsList-item AknButton--action' }) }}
+    {{ elements.link('Edit', editRoute, { icon: 'pencil', class: 'AknButtonList-item AknButton--action' }) }}
 {% endif %}
 {% if violations|length == 0 %}
-    {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: 'AknButtonsList-item AknButton--apply'}) }}
+    {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: 'AknButtonList-item AknButton--apply'}) }}
 {% endif %}

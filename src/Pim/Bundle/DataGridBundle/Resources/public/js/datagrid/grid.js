@@ -65,7 +65,7 @@ define(
                 '<div class="toolbar"></div>' +
                 '<div class="AknGridContainer grid-container container-fluid">' +
                     '<table class="AknGrid grid"></table>' +
-                    '<div class="no-data"></div>' +
+                    '<div class="no-data AknMessageBox AknMessageBox--centered"></div>' +
                     '<div class="loading-mask"></div>' +
                 '</div>'
             ),
@@ -315,7 +315,7 @@ define(
                         launcherOptions: {
                             label: 'oro.datagrid.action.refresh',
                             iconClassName: 'icon-refresh',
-                            className: 'AknActionButtonsList-button'
+                            className: 'AknActionButtonList-button'
                         }
                     });
 
@@ -346,7 +346,7 @@ define(
                         launcherOptions: {
                             label: 'oro.datagrid.action.reset',
                             iconClassName: 'icon-repeat',
-                            className: 'AknActionButtonsList-button'
+                            className: 'AknActionButtonList-button'
                         }
                     });
 

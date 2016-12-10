@@ -2,6 +2,7 @@
 
 .AknGrid {
   width: 100%;
+  border-collapse: collapse;
 
   &-bodyRow {
     border-bottom: 1px solid @AknBorderColor;
@@ -9,9 +10,10 @@
 
   &-bodyCell,
   &-headerCell {
-    vertical-align: top;
-    line-height: 24px;
+    vertical-align: middle;
+    line-height: 16px;
     padding: 12px 10px;
+    transition: background 0.1s ease;
   }
 
   &-bodyRow:hover &-bodyCell {
@@ -20,13 +22,17 @@
   }
 
   &-bodyCell {
-    &--full, &--toto {
+    &--full {
       padding: 10px 20px;
-      background: @AknDefaultHoverBackground;
+      background: white;
     }
 
     &--actions {
       opacity: 0;
+      width: 1px;
+    }
+
+    &--checkbox {
       width: 1px;
     }
   }
@@ -47,6 +53,13 @@
     // TODO To remove when we will remove the global 'a' rule
     a {
       color: @AknDefaultFontColor;
+    }
+  }
+
+  &-bodyCell,
+  &-headerCell {
+    &--right {
+      text-align: right;
     }
   }
 

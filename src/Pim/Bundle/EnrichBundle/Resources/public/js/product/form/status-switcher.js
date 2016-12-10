@@ -21,7 +21,7 @@ define(
         template
     ) {
         return BaseForm.extend({
-            className: 'AknDropdownButton AknDropdown AknTitleContainer-titleButtons status-switcher',
+            className: 'AknDropdownButton AknDropdown status-switcher',
             template: _.template(template),
             events: {
                 'click .AknDropdown-menuLink': 'updateStatus'

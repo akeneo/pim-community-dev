@@ -63,6 +63,7 @@
   &-titleButtons {
     margin-left: 10px;
     display: flex;
+    order: 10;
   }
 
   &-meta {
@@ -70,6 +71,7 @@
     color: lighten(@AknDefaultFontColor, 15%);
     flex-wrap: wrap;
     line-height: 23px;
+    flex-grow: 1;
   }
 
   &-metaItem:not(:first-child):before {

@@ -1,34 +1,34 @@
 <% if (!_.isEmpty(data)) { %>
     <thead>
         <tr>
-            <th>
+            <th class="AknGrid-headerCell">
                 <%= __('pim_dashboard.widget.last_operations.date') %>
             </th>
-            <th>
+            <th class="AknGrid-headerCell">
                 <%= __('pim_dashboard.widget.last_operations.type') %>
             </th>
-            <th>
+            <th class="AknGrid-headerCell">
                 <%= __('pim_dashboard.widget.last_operations.profile name') %>
             </th>
-            <th>
+            <th class="AknGrid-headerCell">
                 <%= __('pim_dashboard.widget.last_operations.status') %>
             </th>
-            <th></th>
+            <th class="AknGrid-headerCell"></th>
         </tr>
     </thead>
     <tbody>
     <% _.each(data, function (operation) { %>
-        <tr>
-            <td> <%= operation.date %></td>
-            <td> <%= __('pim_dashboard.widget.last_operations.job_type.'+operation.type) %></td>
-            <td><%= operation.label %></td>
-            <td>
-                <span class="label <%= operation.labelClass %>">
+        <tr class="AknGrid-bodyRow">
+            <td class="AknGrid-bodyCell"> <%= operation.date %></td>
+            <td class="AknGrid-bodyCell"> <%= __('pim_dashboard.widget.last_operations.job_type.'+operation.type) %></td>
+            <td class="AknGrid-bodyCell"><%= operation.label %></td>
+            <td class="AknGrid-bodyCell">
+                <span class="AknBadge <%= operation.labelClass %>">
                     <%= operation.statusLabel %>
                 </span>
             </td>
-            <td class="text-right">
-                <a class="AknButton AknButton--grey s   how-details-btn" href="javascript:void(0);"
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
+                <a class="AknButton AknButton--small AknButton--grey show-details-btn" href="javascript:void(0);"
                 data-id="<%= operation.id %>"
                 data-operation-type="<%= operation.type %>">
                     <%= __('pim_dashboard.widget.last_operations.details') %>
@@ -39,8 +39,10 @@
     </tbody>
 <% } else if (options.contentLoaded) {%>
     <tr>
-        <th class="text-center">
-            <%= __('pim_dashboard.widget.last_operations.empty') %>
-        </th>
+        <td class="AknGrid-bodyCell AknGrid-bodyCell--full">
+            <div class="AknMessageBox AknMessageBox--centered">
+                <%= __('pim_dashboard.widget.last_operations.empty') %>
+            </div>
+        </td>
     </tr>
 <% } %>

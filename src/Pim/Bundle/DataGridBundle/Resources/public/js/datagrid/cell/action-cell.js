@@ -76,8 +76,11 @@ define(
             createLaunchers: function() {
                 return _.map(this.actions, function(action) {
                     var launcherClass = action.launcherOptions.className;
+                    if (_.isUndefined(launcherClass) || ('' === launcherClass) || ('no-hash' === launcherClass)) {
+                        launcherClass = 'AknIconButton AknIconButton--small AknIconButton--grey';
+                    }
                     return action.createLauncher({
-                        className: (undefined !== launcherClass ? launcherClass : '') + ' AknIconsList-item'
+                        className: launcherClass + ' AknButtonList-item'
                     });
                 });
             },
@@ -87,7 +90,7 @@ define(
              */
             render: function () {
                 this.$el.empty();
-                var iconsList = $('<div>').addClass('AknIconsList');
+                var iconsList = $('<div>').addClass('AknButtonList AknButtonList--right');
                 if (!_.isEmpty(this.launchers)) {
                     _.each(this.launchers, function(launcher) {
                         iconsList.append(launcher.render().$el);

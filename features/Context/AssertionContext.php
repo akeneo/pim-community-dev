@@ -582,7 +582,7 @@ class AssertionContext extends RawMinkContext
 
         // Wait for the footer of the notification panel dropdown to be loaded
         $this->spin(function () {
-            $footer  = $this->getCurrentPage()->find('css', '.AknNotificationsList-footer');
+            $footer  = $this->getCurrentPage()->find('css', '.AknNotificationList-footer');
             $content = trim($footer->getText());
 
             return !empty($content);

@@ -50,10 +50,11 @@
                     {{ 'attribute group.suggest creation'|trans }}
                     {% if resource_granted('pim_enrich_attributegroup_create') %}
                         <br/>
-                        <br/>
                         {{ 'attribute group.or'|trans }}
-                        <a href="{{ path('pim_enrich_attributegroup_create') }}">
-                            <span class="label link-label large">{{ 'attribute group.create new'|trans }}</span>
+                        <br/>
+                        <a class="AknButton AknButton--withIcon AknButton--apply" href="{{ path('pim_enrich_attributegroup_create') }}">
+                            <i class="AknButton-icon icon-plus"></i>
+                            {{ 'attribute group.create new'|trans }}
                         </a>
                     {% endif %}
                 </div>

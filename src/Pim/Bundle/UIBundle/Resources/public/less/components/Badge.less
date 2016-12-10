@@ -1,0 +1,73 @@
+@import '../base/variables';
+
+.AknBadge {
+  line-height: @AknDefaultFontSize;
+  font-size: @AknDefaultFontSize;
+  background: @AknLightGray;
+  color: @AknDefaultFontColor;
+  display: inline-block;
+  border-radius: 2px;
+  padding: 4px;
+  transition: background 0.1s ease-in;
+  white-space: nowrap;
+
+  &-icon {
+    margin: 0 5px 0 0;
+  }
+
+  &--enabled,
+  &--success {
+    background: lighten(@AknGreen, 30%);
+    color: darken(@AknGreen, 20%);
+
+    &:hover {
+      background: lighten(@AknGreen, 20%);
+    }
+  }
+
+  &--enabled &-icon,
+  &--success &-icon {
+    color: darken(@AknGreen, 20%);
+  }
+
+  &--disabled,
+  &--important {
+    background: lighten(@AknRed, 30%);
+    color: darken(@AknRed, 20%);
+
+    &:hover {
+      background: lighten(@AknRed, 20%);
+    }
+  }
+
+  &--disabled &-icon,
+  &--important &-icon {
+    color: darken(@AknRed, 20%);
+  }
+
+  &--warning {
+    background: lighten(@AknOrange, 30%);
+    color: darken(@AknOrange, 20%);
+
+    &:hover {
+      background: lighten(@AknOrange, 20%);
+    }
+  }
+
+  &--warning &-icon {
+    color: darken(@AknOrange, 20%);
+  }
+
+  &--grey {
+    background: @AknGrey;
+    color: white;
+
+    &:hover {
+      background: darken(@AknGrey, 10%);
+    }
+  }
+
+  &--grey &-icon {
+    color: white;
+  }
+}

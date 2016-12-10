@@ -111,7 +111,7 @@ define(
                         '</ul>' +
                         '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
                     '</div>' +
-                    '<button class="AknButton AknButton--apply AknButton--little AknButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>' +
+                    '<button class="AknButton AknButton--apply AknButton--small AknButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>' +
                 '</div>'
             ),
 

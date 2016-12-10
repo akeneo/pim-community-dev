@@ -262,7 +262,7 @@ class Grid extends Index
     public function findAction($element, $actionName)
     {
         $rowElement = $this->getRow($element);
-        $action     = $rowElement->find('css', sprintf('.AknIconsList-item[title="%s"]', $actionName));
+        $action     = $rowElement->find('css', sprintf('.AknButtonList-item[title="%s"]', $actionName));
 
         return $action;
     }

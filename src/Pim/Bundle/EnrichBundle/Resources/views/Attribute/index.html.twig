@@ -7,13 +7,13 @@
     {{ parent() }}
     {% if resource_granted('pim_enrich_attribute_create') %}
         {% set modalContent %}
-            <div class="AknButtonsList AknButtonsList--withSpace AknButtonsList--twoColumns">
+            <div class="AknButtonList AknButtonList--twoColumns">
                 {% for code, label in attributeTypes %}
                     {% set attributeTypes = attributeTypes|merge({ (code): label|trans }) %}
                 {% endfor %}
 
                 {% for code, label in attributeTypes|sort %}
-                    <a class="AknButtonsList-item AknButton AknButton--withIcon attribute-choice" href="{{ path('pim_enrich_attribute_create', { attribute_type: code }) }}">
+                    <a class="AknButtonList-item AknButton AknButton--withIcon attribute-choice" href="{{ path('pim_enrich_attribute_create', { attribute_type: code }) }}">
                         <i class="AknButton-icon icon-{{ attribute_icon(code) }}"></i>
                         {{ label }}
                     </a>

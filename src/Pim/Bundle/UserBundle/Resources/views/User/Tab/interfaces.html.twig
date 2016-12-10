@@ -1,3 +1,5 @@
 <div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
-    {{ form_row(form.uiLocale) }}
+    <div class="AknFieldContainer">
+        {{ form_row(form.uiLocale) }}
+    </div>
 </div>
