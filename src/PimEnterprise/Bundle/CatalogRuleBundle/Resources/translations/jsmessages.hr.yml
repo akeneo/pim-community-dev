@@ -1,0 +1,53 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Kod
+      condition.label: Stanje
+      action.label: Akcija
+      no_rule_yet.label: Nema pravila za sada
+  rule:
+    condition:
+      if.label: ako
+    action:
+      then.label: tada
+      set_value.label: je postavljen u
+      copy_value.label: kopira se u
+      set.label: je postavljen u
+      copy.label: kopira se u
+      add.label: dodaje se u
+      remove.label: je uklonjen iz
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Potvrda izvršenja
+          confirm_content: Jeste li sigurni da želite izvršiti pravilo?
+          confirm_ok: OK
+      mass_edit_action:
+        confirm_title: Potvrda izračuna
+        confirm_content: Sigurno želite izračunati zahvaćene proizvode za pravila?
+        confirm_ok: OK
+      mass_action:
+        execute:
+          confirm_ok: OK
+          confirm_title: Potvrda izvršenja
+          confirm_content: Jeste li sigurni da želite izvršiti odabrana pravila?
+          success: Pokrenuta je masovna radnja izvršenja odabranih pravila. Biti ćete obaviješteni kad bude gotovo
+          error: Došlo je do pogreške tijekom izvođenja pravila.
+          empty_selection: Nije odabrano niti jedno pravilo.
+        delete:
+          confirm_ok: OK
+          confirm_title: Potvrdi brisanje
+          confirm_content: Jeste li sigurni da želite obrisati odabrana pravila?
+          success: Uspješno ste izbrisali pravila.
+          error: Došlo je do pogreške tijekom brisanja pravila.
+          empty_selection: Nije odabrano niti jedno pravilo.
+confirmation:
+  remove:
+    rule: Jeste li sigurni da želite izbrisati ovo pravilo? Nije moguće poništiti ovu akciju
+flash:
+  rule:
+    removed: Pravilo uspješno uklonjeno
+    impacted_product_count: Pokrenuta je masovna radnja izračuna zahvaćenih proizvoda za pravila. Biti ćete obaviješteni kad bude gotovo.
+    executed: Izvođenje pravila je pokrenuto. Biti ćete obaviješteni kad bude gotovo.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Postavke pravila

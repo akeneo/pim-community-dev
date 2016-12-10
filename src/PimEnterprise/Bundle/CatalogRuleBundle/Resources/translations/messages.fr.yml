@@ -19,29 +19,29 @@ pimee_catalog_rule:
         delete: Supprimer les règles sélectionnées
   actions:
     type:
-      copy: 'Alors %from_field% est copié dans %to_field%'
-      copy_value: 'Alors %from_field% est copié dans %to_field%'
-      set: 'Alors %value% est défini dans %field%'
-      set_value: 'Alors %value% est défini dans %field%'
-      add: 'Alors %value% est ajouté à %field%'
-      remove: 'Alors %value% est retiré de %field%'
+      copy: Alors %from_field% est copié dans %to_field%
+      copy_value: Alors %from_field% est copié dans %to_field%
+      set: Alors %value% est défini dans %field%
+      set_value: Alors %value% est défini dans %field%
+      add: Alors %value% est ajouté à %field%
+      remove: Alors %value% est retiré de %field%
   condition:
-    label: 'Si %field% %operator% %value%'
+    label: Si %field% %operator% %value%
     operators:
       STARTS WITH: commence par
       ENDS WITH: finit par
       CONTAINS: contient
       DOES NOT CONTAIN: ne contient pas
       EMPTY: est vide
-      NOT EMPTY: "n'est pas vide"
+      NOT EMPTY: n'est pas vide
       IN: est dans
-      NOT IN: "n'est pas dans"
+      NOT IN: n'est pas dans
       IN CHILDREN: est dans les enfants
-      NOT IN CHILDREN: "n'est pas dans les enfants"
-      UNCLASSIFIED: "n'est pas classifié"
-      IN OR UNCLASSIFIED: "n'est pas classifié ou bien est dans"
+      NOT IN CHILDREN: n'est pas dans les enfants
+      UNCLASSIFIED: n'est pas classifié
+      IN OR UNCLASSIFIED: n'est pas classifié ou bien est dans
       BETWEEN: est entre
-      NOT BETWEEN: "n'est pas entre"
+      NOT BETWEEN: n'est pas entre
       =: est égal à
       !=: est différent de
       >: est supérieur à
@@ -65,10 +65,10 @@ pimee_catalog_rule:
       rule.view_permissions: Voir les règles
   product:
     tooltip:
-      product_attribute_affected_by_a_rule.content: "La valeur de cet attribut peut provenir d'une ou plusieurs règles <strong>%rule%</strong>. Cela signifie que - dans le cas ou une règle peut s'appliquer -  vos modifications seront écrasées."
-      variant_attribute_affected_by_a_rule.content: "Les valeurs d'attributs liées à un groupe de variantes sont prioritaires sur les valeurs d'attributs du produit. Cela signifie que chaque valeur d'attribut du groupe de variante remplacera systématiquement la valeur d'attribut du produit. La/les règle(s) <strong>%rule%</strong> ne seront pas appliquées au produit."
+      product_attribute_affected_by_a_rule.content: La valeur de cet attribut peut provenir d'une ou plusieurs règles <strong>%rule%</strong>. Cela signifie que - dans le cas ou une règle peut s'appliquer -  vos modifications seront écrasées.
+      variant_attribute_affected_by_a_rule.content: Les valeurs d'attributs liées à un groupe de variantes sont prioritaires sur les valeurs d'attributs du produit. Cela signifie que chaque valeur d'attribut du groupe de variante remplacera systématiquement la valeur d'attribut du produit. La/les règle(s) <strong>%rule%</strong> ne seront pas appliquées au produit.
       loading.title: Chargement en cours...
-    history: 'Application de la règle "%rule%"'
+    history: Application de la règle "%rule%"
   product_value:
     tooltip:
       affected_by.title: 'Champ affecté par une ou plusieurs règles :'
@@ -79,14 +79,14 @@ pimee_catalog_rule:
     rules_execution.title: Exécution des règles
   notification:
     rule:
-      executed: "L'exécution des règles est terminée"
-      launched: "L'exécution des règles est en cours, vous serez notifié(e) lorsque cela sera terminé."
+      executed: L'exécution des règles est terminée
+      launched: L'exécution des règles est en cours, vous serez notifié(e) lorsque cela sera terminé.
     mass_edit_rule:
       success: Le calcul du nombre de produits affectés par les règles est terminé
       error: Une erreur que s’est produite lors du calcul du nombre de produits affectés par les règles
   popin:
     execute_rules:
-      confirm_title: "Confirmation de l'exécution"
+      confirm_title: Confirmation de l'exécution
       confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre un certain temps)
 btn:
   Execute rules: Exécuter les règles

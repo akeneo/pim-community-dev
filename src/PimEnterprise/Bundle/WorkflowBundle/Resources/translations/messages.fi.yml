@@ -17,7 +17,7 @@ pimee_workflow:
       can_not_be_deleted: Ei voi poistaa
     action:
       remove: Poista
-      partial_approve: 'Hyväksy muutokset tuote-%product% %attribute% attribuuttiin'
+      partial_approve: Hyväksy muutokset tuote-%product% %attribute% attribuuttiin
     notification:
       approve: '%owner% hyväksyi ehdotuksenne tuotteeseen %product%'
       refuse: '%owner% on hylännyt ehdotuksen koskien tuotetta %product%'
@@ -27,7 +27,7 @@ pimee_workflow:
         draft_not_ready: Tämä ehdotus ei ole valmis hyväksyttäväksi
         not_product_owner: Et omista tuotetta, joka liittyy tähän ehdotukseen
         cannot_edit_attributes: Et voi muokata määritteitä, joita tämä ehdotus muokkaa
-        invalid_draft: 'Tätä ehdotusta ei voi käyttää seuraavan virheen vuoksi. %error%'
+        invalid_draft: Tätä ehdotusta ei voi käyttää seuraavan virheen vuoksi. %error%
   proposal:
     to_review: '%author.firstname% %author.lastname% on lähettänyt ehdotuksen tarkistaa tuotteen %product.label%'
     original_value: Alkuperäinen
@@ -65,11 +65,11 @@ pimee_workflow_product_draft_notification_remove: Ehdotus poistettu
 flash:
   product:
     published: Tuote on julkaistu onnistuneesti.
-    unpublished: 'Tuotteen tila on muutettu onnistuneesti tilaan "Julkaisematon".'
+    unpublished: Tuotteen tila on muutettu onnistuneesti tilaan "Julkaisematon".
   product_draft:
     approve:
       success: Ehdotus on otettu käyttöön onnistuneesti.
-      error: 'Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi. %error%'
+      error: Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi. %error%
     refuse:
       success: Ehdotus on hylätty.
     remove:
@@ -81,22 +81,22 @@ pim_menu:
 pim_title:
   published_product:
     index: Julkaistut tuotteet
-    view: 'Julkaistut tuotteet %product.sku% | Näkymä'
+    view: Julkaistut tuotteet %product.sku% | Näkymä
   product:
-    dispatch: 'Tuotteet %product.sku%'
-    show: 'Tuotteet %product.sku% | Näytä'
+    dispatch: Tuotteet %product.sku%
+    show: Tuotteet %product.sku% | Näytä
   proposal:
     index: Ehdotukset
 btn.editworkingcopy: Muokkaa työn alla olevaa kopiota
 confirmation:
   product:
     publish: Oletko varma, että haluat julkaista tämän tuotteen?
-    unpublish: 'Oletko varma, että haluat muuttaa tuotteen tilan tilaan "Julkaisematon"?'
+    unpublish: Oletko varma, että haluat muuttaa tuotteen tilan tilaan "Julkaisematon"?
 proposal.overview: Ehdotukset
 Attributes.title: Ominaisuudet
 Completeness.title: Valmistumisaste
 publish_product.steps.publish_product_tasklet.title: Julkaise tuote
-unpublish_product.steps.unpublish_product_tasklet.title: 'Muuta tuote tilaan "Julkaisematon"'
+unpublish_product.steps.unpublish_product_tasklet.title: Muuta tuote tilaan "Julkaisematon"
 approve_product_draft.steps.approve.title: Hyväksy ehdotus
 approve_product_draft.steps.refuse.title: Hylkää ehdotus
 job_execution.summary:

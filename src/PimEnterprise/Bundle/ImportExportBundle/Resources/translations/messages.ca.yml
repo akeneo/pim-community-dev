@@ -1,0 +1,7 @@
+job_profile.permissions:
+  execute.label: Autoritzat per executar el perfil d'aquesta tasca
+  edit.label: Autoritzat per editar el perfil d'aquesta tasca
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: Permisos

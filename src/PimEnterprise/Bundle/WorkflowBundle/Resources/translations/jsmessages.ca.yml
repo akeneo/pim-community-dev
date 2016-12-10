@@ -1,0 +1,40 @@
+View the product: Veure el producte
+Unpublish the product: Despublicar aquest producte
+Approve: Aprobar
+Refuse: Rebutjar
+Approve selected: Aprovar la selecció
+Refuse selected: Rebutja els seleccionats
+oro:
+  datagrid:
+    noentities:
+      proposal: No hi ha cap proposta per revisar.
+    noresults:
+      proposal: No hi ha cap proposta per revisar. Intentar canviar els criteris de cerca.
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Editar la còpia de treball
+    proposal:
+      modal.title: Deixa un comentari (opcional - 255 caràcters màx.)
+  proposal:
+    mass_action_group:
+      review:
+        label: Acció massiva
+    partial_accept:
+      modal.title: Aprovar informació parcial
+      modal.label: Deixa un comentari (opcional)
+      modal.error: S'ha produït un error, la proposta no ha estat parcialment aprovada
+      modal.success: La proposta ha estat validada de forma parcialment correcta
+    partial_approve:
+      modal:
+        title: Aprovar parcialment els canvis
+        label: Deixa un comentari (opcional)
+        error: S'ha produït un error, la proposta no ha estat parcialment aprovada
+        success: Els canvis han estat aprovats correctament
+    partial_reject:
+      modal:
+        title: Rebutjar canvis parcialment
+        label: Deixa un comentari (opcional)
+        error: S'ha produït un error, la proposta no ha estat rebutjada parcialment
+        success: Els canvis han estat rebutjats correctament

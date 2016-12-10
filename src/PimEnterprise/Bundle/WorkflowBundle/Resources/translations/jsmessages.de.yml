@@ -16,7 +16,7 @@ pimee_workflow:
       btn:
         original_product: Arbeitskopie bearbeiten
     proposal:
-      modal.title: 'Kommentar hinterlassen (optional - max. 255 Zeichen)'
+      modal.title: Kommentar hinterlassen (optional - max. 255 Zeichen)
   proposal:
     mass_action_group:
       review:

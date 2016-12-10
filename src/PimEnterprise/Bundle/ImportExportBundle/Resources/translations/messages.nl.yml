@@ -1,0 +1,7 @@
+job_profile.permissions:
+  execute.label: Toegestaan om profiel uit te voeren
+  edit.label: Toegestaan om profiel te wijzigen
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: Machtigingen

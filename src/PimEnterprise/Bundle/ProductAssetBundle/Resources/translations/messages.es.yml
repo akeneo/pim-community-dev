@@ -63,12 +63,12 @@ pimee_product_asset:
   enrich_variation:
     flash:
       transformation:
-        invalid_options: 'Imposible de generar la varación %channel% de debido a opciones inválidas.'
-        image_width_error: 'Imposible de generar la variación %channel% debido a que la imagen cargada tiene un ancho menor que el solicitado por la transformación.'
-        image_height_error: 'Imposible de generar la variación %channel% debido a que la imagen cargada tiene un alto menor que el solicitado por la transformación.'
-        not_applicable: 'Imposible generar la variación %channel%.'
-        non_registered: 'Ninguna %transformation% transformación registrada por el mime type %mimeType%. Imposible de generar la variación %channel%.'
-        error: 'Imposible de generar la variación %channel%.'
+        invalid_options: Imposible de generar la varación %channel% de debido a opciones inválidas.
+        image_width_error: Imposible de generar la variación %channel% debido a que la imagen cargada tiene un ancho menor que el solicitado por la transformación.
+        image_height_error: Imposible de generar la variación %channel% debido a que la imagen cargada tiene un alto menor que el solicitado por la transformación.
+        not_applicable: Imposible generar la variación %channel%.
+        non_registered: Ninguna %transformation% transformación registrada por el mime type %mimeType%. Imposible de generar la variación %channel%.
+        error: Imposible de generar la variación %channel%.
         success: Los ficheros de variaciones han sido creados con éxito.
       update:
         success: El fichero de variación ha sido actualizado.
@@ -82,8 +82,8 @@ pimee_product_asset:
   menu: Recursos
   page_tab:
     title:
-      view: 'Recurso de producto %asset.code% | Ver'
-      edit: 'Recurso de producto %asset.code% | Editar'
+      view: Recurso de producto %asset.code% | Ver
+      edit: Recurso de producto %asset.code% | Editar
       index: Recursos de productos
   code:
     label: Código
@@ -140,7 +140,8 @@ pimee_product_asset:
   mass_edit_action:
     asset:
       page_title: Recursos
-      page_subtitle: 'Edición en masa (1 recurso)|Edición en masa (%count% recursos)'
+      page_subtitle: Edición en masa (1 recurso)|Edición en masa (%count% recursos)
+      confirm: Está a punto de actualizar un recurso con la siguiente información, por favor confirme.|Estás a punto de actualizar %count% recursos con la siguiente información, por favor confirme.
       steps:
         first: Elegir recurso
         second: Configurar
@@ -148,20 +149,22 @@ pimee_product_asset:
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
-      label: Mueve recursos a categorías
+      label: Mover recursos a categorías
       description: Los recursos se colocarán en las siguientes categorías, la posición actual se perderá
       success_flash: El/los recurso(s) ha(n) sido trasladado(s) a las categorías seleccionadas
-      launched_flash: 'La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.'
+      launched_flash: La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.
     add-tags-to-assets:
       label: Añadir etiquetas a los recursos
       description: Las etiquetas se agregarán a los recursos. Si algunas etiquetas no existen, se crearán.
       success_flash: La(s) etiqueta(s) se ha(n) agregado a los recursos
+      launched_flash: La acción en masa "añadir a recursos" ha sido lanzada. Será notificado una vez finalizada.
       message.error: La etiqueta proporcionada no existe
 pim:
   grid:
     mass_action:
       mass_classify_assets: Clasificar
       add_tags_to_assets: Añadir etiquetas
+      delete_assets: Eliminar recursos
 btn.create.asset: Crear un recurso
 btn.drag_or_upload: Arrastrar y soltar un fichero o haga clic aquí
 job_execution.summary:
@@ -234,6 +237,6 @@ batch_jobs:
     label: Exportar categoría de recursos en XLSX
     export.label: Exportar categoría de recursos en XLSX
   classify_assets:
-    perform.label: Mueve recursos a categorías
+    perform.label: Mover recursos a categorías
   add_tags_to_assets:
     perform.label: Añadir etiquetas a los recursos

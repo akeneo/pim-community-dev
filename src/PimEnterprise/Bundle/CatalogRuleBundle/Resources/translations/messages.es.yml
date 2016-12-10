@@ -19,14 +19,14 @@ pimee_catalog_rule:
         delete: Eliminar la(s) regla(s) seleccionada(s)
   actions:
     type:
-      copy: 'Entonces %from_field% es copiado en %to_field%'
-      copy_value: 'Entonces %from_field% es copiado en %to_field%'
-      set: 'Entonces %value% es establecido en %field%'
-      set_value: 'Entonces %value% es establecido en %field%'
-      add: 'Entonces %value% es agregado en %field%'
-      remove: 'Entonces %value% es elimiado de %field%'
+      copy: Entonces %from_field% es copiado en %to_field%
+      copy_value: Entonces %from_field% es copiado en %to_field%
+      set: Entonces %value% es establecido en %field%
+      set_value: Entonces %value% es establecido en %field%
+      add: Entonces %value% es agregado en %field%
+      remove: Entonces %value% es elimiado de %field%
   condition:
-    label: 'Si %field% %operator% %value%'
+    label: Si %field% %operator% %value%
     operators:
       STARTS WITH: comienza con
       ENDS WITH: termina por
@@ -65,10 +65,10 @@ pimee_catalog_rule:
       rule.view_permissions: Ver reglas
   product:
     tooltip:
-      product_attribute_affected_by_a_rule.content: 'El valor de este atributo puede provenir de las reglas <strong>%rule%</strong>. Esto significa que si las condiciones de la regla son válidas, su modificación será invalidada.'
-      variant_attribute_affected_by_a_rule.content: 'Los atributos de grupo de variantes tienen prioridad sobre los atributos de productos. Esto significa que cada atributo de este grupo de variantes sustituirá el valor correspondiente en el producto especificado. La regla <strong>%rule%</strong>, no será aplicada en los productos.'
+      product_attribute_affected_by_a_rule.content: El valor de este atributo puede provenir de las reglas <strong>%rule%</strong>. Esto significa que si las condiciones de la regla son válidas, su modificación será invalidada.
+      variant_attribute_affected_by_a_rule.content: Los atributos de grupo de variantes tienen prioridad sobre los atributos de productos. Esto significa que cada atributo de este grupo de variantes sustituirá el valor correspondiente en el producto especificado. La regla <strong>%rule%</strong>, no será aplicada en los productos.
       loading.title: Cargando...
-    history: 'Regla aplicada "%rule%"'
+    history: Regla aplicada "%rule%"
   product_value:
     tooltip:
       affected_by.title: 'Afectada por la(s) regla(s):'
@@ -87,7 +87,7 @@ pimee_catalog_rule:
   popin:
     execute_rules:
       confirm_title: Confirmación de ejecución
-      confirm_content: ¿Está seguro que desea ejecutar todas las reglas? (esto puede tomar algún tiempo)
+      confirm_content: '¿Está seguro que desea ejecutar todas las reglas? (esto puede tomar algún tiempo)'
 btn:
   Execute rules: Ejecutar reglas
 rule: Configuración de reglas

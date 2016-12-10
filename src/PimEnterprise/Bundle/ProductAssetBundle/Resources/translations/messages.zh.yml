@@ -1,0 +1,45 @@
+pimee_product_asset:
+  enrich_asset:
+    button:
+      delete: 删除
+    view:
+      code: 代码
+  popin.create:
+    is_localized: 可本地化
+  code:
+    label: 代码
+  status:
+    label: 状态
+  createdAt:
+    label: 创建于
+  tabs:
+    properties.title: 属性
+    categories.title: 分类
+  mass_upload:
+    import: 导入
+  mass_edit_action:
+    asset:
+      steps:
+        second: 配置
+        third: 确认
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      launched_flash: 批量操作"移动到目录"已经启动。完成后会通知您。
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    validation.label: 文件验证
+  csv_asset_import:
+    validation.label: 文件验证
+  csv_tag_import:
+    validation.label: 文件验证
+  csv_asset_category_import:
+    validation.label: 文件验证
+  csv_asset_configuration_import:
+    validation.label: 文件验证
+  xlsx_tag_import:
+    validation.label: 文件验证
+  xlsx_asset_import:
+    validation.label: 文件验证
+  xlsx_asset_category_import:
+    validation.label: 文件验证
