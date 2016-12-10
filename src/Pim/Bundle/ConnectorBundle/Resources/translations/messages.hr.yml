@@ -166,9 +166,8 @@ pim_connector:
         label: Omogući prijenos datoteke
         help: Omogući izravno učitavanje datoteke
 job_execution.summary:
-  read: čitanje
-  read_lines: čitanje redaka
-  write: napisano
+  read: pročitano
+  write: upisano
   skip: preskočeno
   create: kreirano
   process: obrađeno
@@ -180,6 +179,7 @@ job_execution.summary:
     title: 'Kod datoteke:'
     skipped: preskočeno, ekstenzija u bijeloj listi
   product_skipped_no_diff: preskočeni proizvodi (bez razlike)
+  item_position: čitanje redaka
 batch_jobs:
   csv_product_export:
     label: Izvoz proizvoda u CSV

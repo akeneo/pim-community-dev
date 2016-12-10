@@ -15,7 +15,6 @@ pim_import_export:
     7: ABANDONAT
     8: DESCONEGUT
   download_archive:
-    archive: descarregar l' arxiu generat | descarregar arxius generats
     output: descarregar fitxer generat|descarregar fitxers generats
     input: descarregar fitxer llegit|descarregar fitxers llegits
     invalid_xlsx: descarregar dades no vàlides
@@ -92,13 +91,13 @@ pim_importexport:
       dl_log: Descarregar informe de registres d'importació
       dl_files: Descarregar arxius importats
   acl_group:
-    export: Exportar perfils
+    export: Perfils d'exportació
     import: Perfils d'importació
 btn:
   create:
     export profile: crear perfil d'exportació
     import profile: crear perfil d'importació
-Upload and import now: Penjar i importar ara
+Upload and import now: Carregar i importar ara
 import now: Importar ara
 export now: Exportar ara
 confirmation:
@@ -134,7 +133,7 @@ popin.create:
 'Display item': Visualitzar element
 'Hide item': Amagar element
 'Collecting data about job execution...': Recollida de dades sobre l'execució del job...
-'You must select a file to upload': Heu de seleccionar un arxiu per penjar
+'You must select a file to upload': Heu de seleccionar un arxiu per carregar
 Download log: Descarregar registre
 Show profile: Mostrar perfil
 execution details: detalls d'execució

@@ -84,8 +84,8 @@ label:
   attribute_option:
     add_option: Dodati mogućnost
 Code: Kod
-Edit: Uređivanje
-Delete: Brisanje
+Edit: Uredi
+Delete: Obriši
 Edit attributes of the product: Uređivanje atributa proizvoda
 Classify the product: Klasifikacija proizvoda
 Delete the product: Brisanje proizvoda
@@ -103,13 +103,13 @@ pim:
       mass_edit: Promijeni informacije o proizvodu
       category_edit: Premjesti proizvode u kategorije
       sequential_edit: Sekvencijalno uređivanje proizvoda
-jstree.create: Kreiranje
+jstree.create: Kreiraj
 switch_on: "Da"
 switch_off: "Ne"
 pim_enrich:
   item:
     list:
-      delete.label: Brisanje
+      delete.label: Obriši
       delete.error: Pogreška tijekom brisanje stavke
     delete:
       confirm.content: Jeste li sigurni da želite izbrisati ovaj {{ itemName }}? Nije moguće poništiti ovu akciju
@@ -138,7 +138,7 @@ pim_enrich:
       history:
         version: Verzija
         author: Autor
-        logged_at: Zabilježeno na
+        logged_at: Prijavljen u
         more: Više
         less: Manje
         from: Od
@@ -160,9 +160,9 @@ pim_enrich:
         upload: Došlo je do pogreške tijekom prijenosa datoteke
       meta:
         created: Kreirano
-        created_by: Od strane
-        updated_by: Od strane
-        updated: Zadnja izmjena
+        created_by: Od
+        updated_by: Od
+        updated: Posljednje Ažuriranje
         family:
           title: Obitelj
           none: Niti jedan
@@ -202,6 +202,7 @@ pim_enrich:
     attribute_option:
       code: Kod
       label: Oznaka
+      actions: Akcije
     variant_group:
       title: Varijanta grupa
       info:
@@ -214,6 +215,24 @@ pim_enrich:
             - polja
         already_in_upload: Datoteka je već procesu prijenosa za ovaj atribut u lokalizaciji "{{ locale }}" i opsegu "{{ scope }}"
         no_attributes: Ova varijanta grupe još nema atribute
+      btn:
+        save: Spremi
+      meta:
+        product_count: Proizvodi
+        created: Kreirano
+        created_by: Kreirao korisnik
+        updated: Ažurirano
+        updated_by: Ažurirao korisnik
+    group:
+      title: Grupa
+      info:
+        deletion_successful: Grupa je uspješno obrisana.
+        deletion_failed: Nije moguće izbrisati grupu.
+        update_successful: Grupa je uspješno ažurirana.
+        update_failed: Grupa se ne može ažurirati.
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - polja
       btn:
         save: Spremi
       meta:
@@ -244,7 +263,7 @@ pim_enrich:
         associations:
           title: Povezanost
           info:
-            none_exist: Ne postoji tip povezanosti.
+            none_exist: Ne postoji tip pridruživanja.
             show_products: Prikaži proizvode
             show_groups: Prikaži grupe
             number_of_associations: '{{ productCount }} proizvoda i {{ groupCount }} grupe'
@@ -300,7 +319,7 @@ pim_enrich:
       add_option_modal:
         title: Dodaj opciju atributa
         confirm: Dodaj
-        cancel: Odustani
+        cancel: Poništi
     entity:
       switch:
         "no": Ne
@@ -320,6 +339,18 @@ pim_enrich:
           title: Proizvodi
         attributes:
           title: Atributi
+    group:
+      tab:
+        properties:
+          title: Svojstva
+          general: Opća svojstva
+          code: Kod
+          type: Tip
+          label_translations: Prijevodi oznaka
+        history:
+          title: Povijest
+        products:
+          title: Proizvodi
     common:
       tab:
         attributes:
