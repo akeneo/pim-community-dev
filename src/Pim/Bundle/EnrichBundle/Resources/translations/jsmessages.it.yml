@@ -13,17 +13,21 @@ confirmation:
     export profile: Sei sicuro di voler eliminare questo profilo di esportazione?
     user: Sei sicuro di voler eliminare questo utente?
     role: Sei sicuro di voler eliminare questo ruolo?
+pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Esportazione rapida
 flash:
   item:
     removed: Articolo rimosso con successo
   association type:
     removed: Tipo di associazione rimossa con successo
   attribute:
-    removed: Attributo rimosso con successo
+    removed: Attributo eliminato con successo
   family:
     removed: Famiglia rimossa con successo
   product:
-    removed: Prodotto rimosso con successo
+    removed: Articolo rimosso con successo
   channel:
     removed: Canale rimosso con successo
   group:
@@ -55,28 +59,122 @@ error:
     export profile: Non è possibile eliminare questo profilo di esportazione
     user: Non è possibile eliminare questo utente
     role: Non è possibile eliminare questo ruolo
+Code: Codice
 Edit: Modifica
-Delete: Elimina
+Delete: Eliminare
 Edit attributes of the product: Modificare gli attributi del prodotto
 Classify the product: Classificare il prodotto
 Delete the product: Eliminare il prodotto
 Change status: Modificare lo stato
 Toggle status: Stato di conversione
 pim.grid.mass_action.quick_export.csv_all: CSV (tutti gli attributi)
-pim.grid.mass_action.delete: Elimina
+pim.grid.mass_action.delete: Eliminare
 pim.grid.mass_action.mass_edit: Modifica di massa
-jstree.create: Creare
-switch_on: Sì
-switch_off: 'No'
+jstree.create: Crea
+switch_on: "Sì"
+switch_off: "No"
 pim_enrich:
+  item:
+    list:
+      delete.label: Eliminare
   entity:
+    save:
+      label: Salva
     product:
+      title: Articoli
+      btn:
+        enable: Attiva
+        enabled: Attivato
+        disable: Disabilita
+        disabled: Disabilitato
+        delete: Eliminare
+        save: Salva
+      history:
+        version: Versione
+        author: Autore
+        logged_at: Loggato il
+        old_values: Vecchi valori
+        new_values: Nuovi valori
+      meta:
+        created: Creato
+        created_by: Di
+        updated_by: Di
+        updated: Ultimo aggiornamento
+        family:
+          title: Famiglia
+          none: Nessun
+        groups:
+          title: Gruppi
+          modal:
+            view_group: Visualizzazione gruppo
+            group_label: Etichetta
+            close: Chiudi
+      copy:
+        select: Selezionare
+        all: Tutto
+        all_visible: Tutti visibili
+        none: Nessun
+        copy: Copia
       variant_group:
         switch:
-          "yes": true
-          "no": false
+          "yes": Sì
+          "no": No
+      optional_attribute:
+        remove: Rimuovere l'attributo
+    attribute_option:
+      code: Codice
+      label: Etichetta
+  confirmation:
+    leave: Sei sicuro di voler lasciare questa pagina?
+  info:
+    not_applicable: N/A
+    entity:
+      updated: Ci sono modifiche non salvate.
   form:
     product:
+      tab:
+        associations:
+          title: Associazioni
+          info:
+            none_exist: Nessun tipo di associazione esistente.
+            show_products: Mostra articoli
+            show_groups: Mostra gruppi
+        attributes:
+          title: Attributi
+          btn:
+            add: Aggiungi
+            add_attributes: Aggiungi attributi
+          info:
+            no_available_attributes: Non ci sono altri attributi da aggiungere
+            no_match: Nessuna corrispondenza trovata
+        categories:
+          title: Categorie
+      panel:
+        completeness:
+          title: Completamento
+        history:
+          title: Cronologia
       switch:
-        "no": false
-        "yes": true
+        "no": No
+        "yes": Sì
+      sequential_edit:
+        info:
+          products: Articoli
+      change_family:
+        modal:
+          title: Cambiare la famiglia dell'articolo
+          merge_attributes: Gli attributi correnti verranno uniti a quelli della nuova famiglia.
+          keep_attributes: Nessun attributo verrà rimosso.
+          change_family_to: Cambiare la famiglia in
+          empty_selection: Scegli una famiglia
+      mass_edit:
+        select_attributes: Selezionare gli attributi
+        select: Selezionare
+    attribute_option:
+      add_option_modal:
+        confirm: Aggiungi
+        cancel: Cancella
+    entity:
+      switch:
+        "no": No
+        "yes": Sì

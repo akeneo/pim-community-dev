@@ -1,3 +1,12 @@
+pim_user:
+  user:
+    tab:
+      general.title: Generale
+      additional.title: Aggiuntive
+      group_and_role.title: Gruppi e Ruoli
+      password.title: Password
+      business_unit.title: Business Unit
+      email_synchronization.title: Impostazioni per la sincronizzazione email
 oro.user.controller:
   group.message.saved: Gruppo salvato
   role.message.saved: Ruolo salvato
@@ -24,8 +33,10 @@ pim_title:
   user_group.index: Gruppi
   system_configuration.index: Configurazione
 user.title: Utente
+user.overview: Utente
 Users Management: Gestione degli utenti
 Create user: Crea utente
+btn.create.user: Crea utente
 New user: Nuovo utente
 Additional: Aggiuntive
 Groups and Roles: Gruppi e Ruoli
@@ -48,7 +59,6 @@ Business Units: Business Unit
 Email synchronization settings: Impostazioni per la sincronizzazione email
 Host: Host
 Port: Port
-Ssl: Ssl
 Last logged in: Ultimo accesso
 Login count: Conteggio login
 Additional Information: Informazioni aggiuntive
@@ -60,17 +70,22 @@ API key: Chiave API
 Generate key: Genera chiave
 Primary: primaria
 Removed user: Utente rimosso
+user:
+  default_grid_view:
+    none: Nessun
 Role: Ruolo
 Owner: Proprietario
 General: Generale
-Entity: Soggetto
+Entity: Entità
 Capabilities: Funzionalità
 Save and close: Salva e chiudi
 Has role: Ha il ruolo
 role:
   title: ruolo
+  overview: ruolo
   edit: Modifica ruolo
   create: Crea Ruolo
+btn.create.role: Crea Ruolo
 rights:
   action: Autorizzazioni
 oro_security:
@@ -98,7 +113,7 @@ oro_security:
 VIEW: Visualizzazione
 CREATE: Crea
 EDIT: Modifica
-DELETE: Elimina
+DELETE: Eliminare
 ASSIGN: Assegna
 SHARE: Condividi
 oro:
@@ -111,8 +126,10 @@ oro:
       SYSTEM: Sistema
       NONE: Nessun
 Create group: Crea gruppo
+btn.create.user-group: Crea gruppo
 Has group: Ha gruppo
 Save and Close: Salva e chiudi
+user-group.overview: Gruppi
 Log in: Accedi
 Remember me on this computer: Ricordami su questo computer
 Forgot your password?: Hai dimenticato la password?
@@ -120,5 +137,5 @@ Username or Email: Nome utente o Email
 Forgot Password: Password Dimenticata
 Request: Richiesta
 Check Email: Controlla la tua email
-password_reset_email_sent: 'Una email è stata inviata a %email%. Cliccare sul link contenuto per reimpostare la password.'
+password_reset_email_sent: Una email è stata inviata a %email%. Cliccare sul link contenuto per reimpostare la password.
 Go to homepage: Vai alla Homepage

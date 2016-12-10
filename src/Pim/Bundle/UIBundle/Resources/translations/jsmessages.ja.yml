@@ -1,16 +1,16 @@
 Close: 閉じる
 Update: 更新
 Selected Rows: 選択した行
-"Yes": はい
-Yes, Delete: はい、削除します
-Yes, I Agree: はい、同意します。
-Yes, do it: はい、実行します
-"No": いいえ
-Ok, got it.: はい、わかりました。
-Cancel: キャンセル
-Delete Confirmation: 削除の確認
-Edit: 編集
-Unexpected error occured. Please contact system administrator.: 予期しないエラーが発生しました。システム管理者に問い合わせてください。
+"Yes": "はい"
+"Yes, Delete": "はい、削除します"
+"Yes, I Agree": "はい、同意します。"
+"Yes, do it": "はい、実行します"
+"No": "いいえ"
+"Ok, got it.": "はい、わかりました。"
+"Cancel": "キャンセル"
+"Delete Confirmation": "削除の確認"
+"Edit": "編集"
+"Unexpected error occured. Please contact system administrator.": "予期しないエラーが発生しました。システム管理者に問い合わせてください。"
 Now: 今
 Prev: 前
 Next: 次
@@ -21,14 +21,14 @@ AM: 午前
 A: A
 PM: 午後
 P: P
-Choose Time: 時間を選択
+"Choose Time": "時間を選択"
 Time: 時間
 Hour: 時
 Minute: 分
 Second: 秒
 Millisecond: ミリ秒
 Microsecond: マイクロ秒
-Time Zone: タイムゾーン
+"Time Zone": "タイムゾーン"
 Localized value: ローカライズした値
 Columns: 列
 Datagrid Configuration: データグリッド設定
@@ -39,3 +39,15 @@ Currency: 通貨
 jstree:
   no_tree: 利用できるツリーがありません
   include_sub: サブカテゴリを含む
+  loading: 読み込み中...
+oro_config:
+  form:
+    config:
+      title: システム設定
+      tab:
+        system:
+          title: システム
+      group:
+        localization:
+          title: ローカライズ
+          system_locale: 言語
