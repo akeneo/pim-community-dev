@@ -39,29 +39,29 @@
                 {% endblock %}
             </div>
             <div class="AknWidget-footer">
-                <div class="AknButtonsList AknButtonsList--right configuration">
+                <div class="AknButtonList AknButtonList--right configuration">
                     {{ elements.link(
-                    'btn.back',
-                    path(backButtonRoute, queryParams),
-                    {'class': 'btn-cancel AknButtonsList-item', 'icon': 'chevron-left'}
+                        'btn.back',
+                        path(backButtonRoute, queryParams),
+                        {'class': 'btn-cancel AknButtonList-item', 'icon': 'chevron-left'}
                     ) }}
                     {{ elements.link(
-                    'btn.next',
-                    null,
-                    {'class': ['next btn-next AknButton--apply AknButtonsList-item'], 'icon': 'chevron-right'}
+                        'btn.next',
+                        null,
+                        {'class': ['next btn-next AknButton--apply AknButtonList-item'], 'icon': 'chevron-right'}
                     ) }}
                 </div>
 
-                <div class="AknButtonsList AknButtonsList--right confirmation AknButtonsList--hide">
+                <div class="AknButtonList AknButtonList--right confirmation AknButtonList--hide">
                     {{ elements.link(
-                    'btn.cancel',
-                    null,
-                    {'class': 'cancel btn-cancel AknButtonsList-item', 'icon': 'chevron-left'}
+                        'btn.cancel',
+                        null,
+                        {'class': 'cancel btn-cancel AknButtonList-item', 'icon': 'chevron-left'}
                     ) }}
                     {{ elements.submitBtn(
-                    'btn.confirm',
-                    'ok',
-                    'AknButtonsList-item'
+                        'btn.confirm',
+                        'ok',
+                        'AknButtonList-item'
                     ) }}
                 </div>
             </div>
@@ -150,16 +150,16 @@
                     $('a.next').on('click', function() {
                         $('.wizard').wizard({ currentStep: {{ nextStepNumber|default(4) }} });
                         disableForm();
-                        $('.configuration').addClass('AknButtonsList--hide');
-                        $('.AknButtonsList.confirmation').removeClass('AknButtonsList--hide');
+                        $('.configuration').addClass('AknButtonList--hide');
+                        $('.AknButtonList.confirmation').removeClass('AknButtonList--hide');
                         $('.AknMessageBox.confirmation').removeClass('AknMessageBox--hide');
                     });
 
                     $('a.cancel').on('click', function() {
                         $('.wizard').wizard({ currentStep: {{ previousStepNumber|default(3) }} });
                         enableForm();
-                        $('.configuration').removeClass('AknButtonsList--hide');
-                        $('.AknButtonsList.confirmation').addClass('AknButtonsList--hide');
+                        $('.configuration').removeClass('AknButtonList--hide');
+                        $('.AknButtonList.confirmation').addClass('AknButtonList--hide');
                         $('.AknMessageBox.confirmation').addClass('AknMessageBox--hide');
                     });
                 });

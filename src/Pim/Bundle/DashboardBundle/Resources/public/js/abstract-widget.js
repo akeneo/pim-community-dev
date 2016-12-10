@@ -32,7 +32,7 @@ define(
             needsData: true,
 
             refreshBtnTemplate: _.template(
-                '<span class="AknButtonsList-item AknIconButton AknIconButton--grey btn-refresh">' +
+                '<span class="AknButtonList-item AknIconButton AknIconButton--grey btn-refresh">' +
                     '<i class="icon-refresh"></i>' +
                 '</span>'
             ),

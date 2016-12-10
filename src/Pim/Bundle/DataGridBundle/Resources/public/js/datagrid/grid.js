@@ -315,7 +315,7 @@ define(
                         launcherOptions: {
                             label: 'oro.datagrid.action.refresh',
                             iconClassName: 'icon-refresh',
-                            className: 'AknActionButtonsList-button'
+                            className: 'AknActionButtonList-button'
                         }
                     });
 
@@ -346,7 +346,7 @@ define(
                         launcherOptions: {
                             label: 'oro.datagrid.action.reset',
                             iconClassName: 'icon-repeat',
-                            className: 'AknActionButtonsList-button'
+                            className: 'AknActionButtonList-button'
                         }
                     });
 

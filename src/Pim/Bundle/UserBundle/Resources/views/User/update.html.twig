@@ -82,17 +82,17 @@
                     'confirmation.remove.user'|trans({ '%name%': fullname }),
                     'flash.user.removed'|trans,
                     '',
-                    'AknButtonsList-item'
+                    'AknButtonList-item'
                 ) }}
             {% endif %}
             {% if form.vars.value.id %}
                 {{ elements.link(
                     'Cancel'|trans,
                     path('oro_user_profile_view', {'id': form.vars.value.id}),
-                    { icon: 'chevron-left', class:'AknButtonsList-item AknButton--grey' }
+                    { icon: 'chevron-left', class:'AknButtonList-item AknButton--grey' }
                 ) }}
             {% endif %}
-            {{ elements.submitBtn('', 'ok', 'AknButtonsList-item') }}
+            {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
         {% endset %}
 
         {{ elements.page_header(title, buttons, null, meta, elements.updated(form.vars.id), back) }}

@@ -34,7 +34,7 @@
                     {
                         'icon':  'trash',
                         'title': 'btn.delete',
-                        'class': 'AknButton--important AknButtonsList-item',
+                        'class': 'AknButton--important AknButtonList-item',
                         'attr': {
                             'data-title':   'confirmation.delete'|trans,
                             'data-dialog':  'alert',
@@ -52,11 +52,11 @@
                         ~ 'info.category.keep products'|trans,
                     (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans,
                     '',
-                    'AknButtonsList-item'
+                    'AknButtonList-item'
                 ) }}
             {% endif %}
         {% endif %}
-        {{ elements.submitBtn('', 'ok', 'AknButtonsList-item') }}
+        {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
     {% endset %}
 
     {% set titleButtons %}

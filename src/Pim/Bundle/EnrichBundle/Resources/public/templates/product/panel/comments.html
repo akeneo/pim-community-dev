@@ -1,11 +1,11 @@
-<div class="AknCommentPanel">
+<div class="AknCommentPanel comment-threads">
     <ol>
         <li class="comment-create">
             <form>
-                <textarea class="AknTextareaField AknTextareaField--little new-comment-value" placeholder="<%- _.__('comment.placeholder.new') %>"></textarea>
-                <span class="AknButtonsList AknButtonsList--hide AknButtonsList--right comment-buttons">
-                    <input class="AknButtonsList-item AknButton AknButton--little AknButton--important cancel-comment" type="reset" value="<%- _.__('btn.cancel') %>">
-                    <button class="AknButtonsList-item AknButton AknButton--little AknButton--apply send-comment"><%- _.__('btn.post') %></button>
+                <textarea class="AknTextareaField AknTextareaField--small new-comment-value" placeholder="<%- _.__('comment.placeholder.new') %>"></textarea>
+                <span class="AknButtonList AknButtonList--hide AknButtonList--right comment-buttons">
+                    <input class="AknButtonList-item AknButton AknButton--small AknButton--important cancel-comment" type="reset" value="<%- _.__('btn.cancel') %>">
+                    <button class="AknButtonList-item AknButton AknButton--small AknButton--apply send-comment"><%- _.__('btn.post') %></button>
                 </span>
             </form>
         </li>
@@ -19,7 +19,7 @@
                                 <span class="AknCommentPanel-author author"><strong><%- comment.author.fullName %></strong></span>
                                 <span class="AknCommentPanel-date date"><%- comment.created %></span>
                                 <% if (comment.author.username === currentUser.username) { %>
-                                    <span class="AknCommentPanel-icon AknIconButton AknIconButton--little AknIconButton--grey remove-comment" title="Delete" data-comment-id="<%- comment.id %>">
+                                    <span class="AknCommentPanel-icon AknIconButton AknIconButton--small AknIconButton--grey remove-comment" title="Delete" data-comment-id="<%- comment.id %>">
                                         <i class="icon-trash"></i>
                                     </span>
                                 <% } %>
@@ -33,7 +33,7 @@
                                     <span class="AknCommentPanel-author author"><strong><%- reply.author.fullName %></strong></span>
                                     <span class="AknCommentPanel-date date"><%- reply.created %></span>
                                     <% if (reply.author.username === currentUser.username) { %>
-                                        <span class="AknCommentPanel-icon AknIconButton AknIconButton--little AknIconButton--grey remove-comment" title="Delete" data-comment-id="<%- reply.id %>">
+                                        <span class="AknCommentPanel-icon AknIconButton AknIconButton--small AknIconButton--grey remove-comment" title="Delete" data-comment-id="<%- reply.id %>">
                                             <i class="icon-trash"></i>
                                         </span>
                                     <% } %>
@@ -42,10 +42,10 @@
                             </li>
                         <% }); %>
                         <li class="reply-to-comment">
-                            <textarea class="AknTextareaField AknTextareaField--little" name="body" required="required" placeholder="<%- _.__('comment.placeholder.reply') %>"></textarea>
-                            <span class="AknButtonsList AknButtonsList--hide AknButtonsList--right comment-buttons">
-                               <button class="AknButtonsList-item AknButton AknButton--important AknButton--little cancel-comment" type="reset"><%- _.__('btn.cancel') %></button>
-                               <button class="AknButtonsList-item AknButton AknButton--apply AknButton--little send-comment"><%- _.__('btn.reply') %></button>
+                            <textarea class="AknTextareaField AknTextareaField--small" name="body" required="required" placeholder="<%- _.__('comment.placeholder.reply') %>"></textarea>
+                            <span class="AknButtonList AknButtonList--hide AknButtonList--right comment-buttons">
+                               <button class="AknButtonList-item AknButton AknButton--important AknButton--small cancel-comment" type="reset"><%- _.__('btn.cancel') %></button>
+                               <button class="AknButtonList-item AknButton AknButton--apply AknButton--small send-comment"><%- _.__('btn.reply') %></button>
                             </span>
                         </li>
                     </ol>

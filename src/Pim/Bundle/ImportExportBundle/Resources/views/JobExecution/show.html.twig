@@ -15,7 +15,7 @@
         {{ elements.link(
             'Show profile',
             path(show_profile_route, { 'id': execution.jobInstance.id }),
-            { icon: 'eye-open', class: 'AknButton AknButton--action AknButtonsList-item' })
+            { icon: 'eye-open', class: 'AknButton AknButton--action AknButtonList-item' })
         }}
     {% endset %}
 
@@ -150,7 +150,7 @@
             <% if (_.size(archive.files) === 1) { %>
 
                 <% _.each(archive.files, function (file, key) { %>
-                     <a class="AknButton AknButton--withIcon AknButton--grey AknButtonsList-item"
+                     <a class="AknButton AknButton--withIcon AknButton--grey AknButtonList-item"
                         title="<%= archive.label %>"
                         href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
                          <i class="AknButton-icon icon-download-alt"></i> <%= archive.label %>
@@ -183,7 +183,7 @@
     <script type="text/template" id="job-execution-log-button">
         {% block job_execution_log_button %}
         <% if (hasLog) { %>
-            <a class="AknButton AknButton--grey AknButton--withIcon AknButtonsList-item"
+            <a class="AknButton AknButton--grey AknButton--withIcon AknButtonList-item"
                title="<%= downloadLabel %>"
                href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
                 <i class="AknButton-icon icon-download-alt"></i>

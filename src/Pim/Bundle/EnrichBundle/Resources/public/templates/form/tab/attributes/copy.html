@@ -1,10 +1,10 @@
 <% if (!copying) { %>
-    <div class="AknButton AknButton--grey AknButton--little start-copying"><%- _.__('pim_enrich.entity.product.btn.compare_translate') %></div>
+    <div class="AknButton AknButton--grey AknButton--small start-copying"><%- _.__('pim_enrich.entity.product.btn.compare_translate') %></div>
 <% } else { %>
-    <div data-drop-zone="context-selectors" class="AknButtonsList AknAttributeActions-contextSelectors context-selectors"></div>
+    <div data-drop-zone="context-selectors" class="AknButtonList AknAttributeActions-contextSelectors context-selectors"></div>
     <div data-drop-zone="other-actions" class="AknAttributeActions-otherActions other-actions">
-        <div data-drop-zone="copy-actions" class="AknButtonsList AknButtonsList--right AknAttributeActions-copyActions copy-actions">
-            <div class="AknButtonsList-item AknDropdown AknDropdownButton AknDropdownButton--little selection-dropdown">
+        <div data-drop-zone="copy-actions" class="AknButtonList AknButtonList--right AknAttributeActions-copyActions copy-actions">
+            <div class="AknButtonList-item AknDropdown AknDropdownButton AknDropdownButton--small selection-dropdown">
                 <a class="AknDropdownButton-button" data-toggle="dropdown" href="#">
                     <%- _.__('pim_enrich.entity.product.copy.select') %>
                     <div class="AknDropdownButton-caretContainer">
@@ -19,8 +19,8 @@
                     </li>
                 </ul>
             </div>
-            <div class="AknButtonsList-item AknButton AknButton--little AknButton--apply copy"><%- _.__('pim_enrich.entity.product.copy.copy') %></div>
-            <div class="AknButtonsList-item AknIconButton AknIconButton--grey stop-copying"><i class="icon-remove"></i></div>
+            <div class="AknButtonList-item AknButton AknButton--small AknButton--apply copy"><%- _.__('pim_enrich.entity.product.copy.copy') %></div>
+            <div class="AknButtonList-item AknIconButton AknIconButton--grey stop-copying"><i class="icon-remove"></i></div>
         </div>
     </div>
 <% } %>

@@ -20,7 +20,7 @@ function($, _, Backbone, __) {
                 '<button data-toggle="dropdown" class="AknActionButton <% if (disabled) { %>disabled<% } %>">' +
                     '<%=  currentSizeLabel %><span class="AknActionButton-caret AknCaret"></span>' +
                 '</button>' +
-                '<ul class="AknDropdown-menu AknDropdown-menu--alignRight">' +
+                '<ul class="AknDropdown-menu AknDropdown-menu--right">' +
                     '<% _.each(items, function (item) { %>' +
                         '<li><a  class="AknDropdown-menuLink" href="#" data-size="' + '<% if (item.size == undefined) { %><%= item %><% } else { %><%= item.size %><% } %>' + '">' +
                         '<% if (item.label == undefined) { %><%= item %><% } else { %><%= item.label %><% } %></a></li>' +

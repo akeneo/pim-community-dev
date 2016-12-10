@@ -125,7 +125,7 @@
 {% macro saveAndCloseButton(label = 'Save and Close') %}
     {{ _self.buttonType({
         'type': 'submit',
-        'class': 'AknButton--apply AknButtonsList-item',
+        'class': 'AknButton--apply AknButtonList-item',
         'label': label,
         'iClass': 'icon-ok'
     }) }}
@@ -135,7 +135,7 @@
     {% if acl is empty or resource_granted(acl) %}
         {{ _self.buttonType({
             'type': 'button',
-            'class': 'AknButton--apply AknButtonsList-item',
+            'class': 'AknButton--apply AknButtonList-item',
             'label': label,
             'action':
             'save_and_stay',

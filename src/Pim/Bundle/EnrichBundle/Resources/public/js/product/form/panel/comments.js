@@ -77,17 +77,17 @@ define(
                 var $element = $(event.currentTarget).parents('.comment-thread, .comment-create');
                 if ($element.find('textarea').val()) {
                     $element.addClass('active');
-                    $element.find('.AknButtonsList').removeClass('AknButtonsList--hide');
+                    $element.find('.AknButtonList').removeClass('AknButtonList--hide');
                 } else {
                     $element.removeClass('active');
-                    $element.find('.AknButtonsList').addClass('AknButtonsList--hide');
+                    $element.find('.AknButtonList').addClass('AknButtonList--hide');
                 }
             },
             cancelComment: function (event) {
                 var $element = $(event.currentTarget).parents('.comment-thread, .comment-create');
                 $element.find('textarea').val('');
                 $element.removeClass('active');
-                $element.find('.AknButtonsList').addClass('AknButtonsList--hide');
+                $element.find('.AknButtonList').addClass('AknButtonList--hide');
             },
             saveComment: function () {
                 $.ajax({

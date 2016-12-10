@@ -29,10 +29,10 @@ css:
     bem:
         - bundles/pimui/less/base/general.less
         - bundles/pimui/less/components/button/ActionButton.less
-        - bundles/pimui/less/components/button/ActionButtonsList.less
+        - bundles/pimui/less/components/button/ActionButtonList.less
         - bundles/pimui/less/components/button/SeveralActionsButton.less
         - bundles/pimui/less/components/button/Button.less
-        - bundles/pimui/less/components/button/ButtonsList.less
+        - bundles/pimui/less/components/button/ButtonList.less
         - bundles/pimui/less/components/button/DropdownButton.less
         - bundles/pimui/less/components/button/IconButton.less
         - bundles/pimui/less/components/grid/FilterBox.less
@@ -54,7 +54,7 @@ css:
         - bundles/pimui/less/components/product-edit-form/MediaField.less
         - bundles/pimui/less/components/product-edit-form/MetricField.less
         - bundles/pimui/less/components/product-edit-form/PanelContainer.less
-        - bundles/pimui/less/components/product-edit-form/PricesList.less
+        - bundles/pimui/less/components/product-edit-form/PriceList.less
         - bundles/pimui/less/components/product-edit-form/TabHeader.less
         - bundles/pimui/less/components/product-edit-form/TextareaField.less
         - bundles/pimui/less/components/product-edit-form/TextField.less
@@ -72,7 +72,7 @@ css:
         - bundles/pimui/less/components/MessageBox.less
         - bundles/pimui/less/components/MainMenu.less
         - bundles/pimui/less/components/Notification.less
-        - bundles/pimui/less/components/NotificationsList.less
+        - bundles/pimui/less/components/NotificationList.less
         - bundles/pimui/less/components/Progress.less
         - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/TitleContainer.less

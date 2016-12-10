@@ -15,7 +15,7 @@
 
     {% set left %}
         <div id="status">
-           <span clas="AknTitleContainer-metaItem">{{ 'Status'|trans }}: ...</span>
+           <span class="AknTitleContainer-metaItem">{{ 'Status'|trans }}: ...</span>
        </div>
     {% endset %}
 
@@ -145,7 +145,7 @@
 
                 <% _.each(archive.files, function (file, key) { %>
                      <a
-                         class="AknButton AknButton--grey AknButton--withIcon AknButtonsList-item" title="<%= archive.label %>"
+                         class="AknButton AknButton--grey AknButton--withIcon AknButtonList-item" title="<%= archive.label %>"
                          href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
                          <i class="AknButton-icon icon-download-alt"></i> <%= archive.label %>
                      </a>
@@ -177,7 +177,7 @@
     <script type="text/template" id="job-execution-log-button">
         {% block job_execution_log_button %}
         <% if (hasLog) { %>
-            <a class="AknButton AknButton--grey AknButton--withIcon AknButtonsList-item" title="<%= downloadLabel %>" href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
+            <a class="AknButton AknButton--grey AknButton--withIcon AknButtonList-item" title="<%= downloadLabel %>" href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
                 <i class="AknButton-icon icon-download-alt"></i>
                 <%= downloadLabel %>
             </a>
