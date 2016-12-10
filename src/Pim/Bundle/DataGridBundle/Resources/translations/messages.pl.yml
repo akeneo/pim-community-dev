@@ -12,7 +12,7 @@ oro.grid.mass_action.delete.label: Usuń
 oro.grid.mass_action.delete.confirm_title: Potwierdzenie Masowego Usuwania
 oro.grid.mass_action.delete.confirm_content: Czy na pewno chcesz usunąć wybrane elementy?
 oro.grid.datagrid.page_size.all: Wszystkie
-oro.grid.mass_action.delete.success_message: '{0} Żaden rekord nie został usunięty|{1} Jeden rekord został usunięty|]1,4] %count% rekordy zostały usunięte|[5,Inf[ %count% rekordów zostało usuniętych'
+oro.grid.mass_action.delete.success_message: "{0} Żaden rekord nie został usunięty|{1} Jeden rekord został usunięty|]1,4] %count% rekordy zostały usunięte|[5,Inf[ %count% rekordów zostało usuniętych"
 datagrid_view:
   views: Widoki
   create: Utwórz widok
