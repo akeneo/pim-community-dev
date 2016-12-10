@@ -2,6 +2,6 @@
     {% if form.vars.value.id %}
     {{ render(controller('pimee_enrich.controller.channel_transformation:viewAction', {'id': form.vars.value.id})) }}
     {% else %}
-    <div class="no-data">{{ 'pimee_enrich.asset_transformation.not_found'|trans }}</div>
+    <div class="no-data AknMessageBox AknMessageBox--centered">{{ 'pimee_enrich.asset_transformation.not_found'|trans }}</div>
     {% endif %}
 </div>

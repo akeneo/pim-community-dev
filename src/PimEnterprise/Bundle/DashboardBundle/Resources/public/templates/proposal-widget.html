@@ -1,26 +1,26 @@
 <% if (!_.isEmpty(data)) { %>
 <thead>
     <tr>
-        <th><%- __('pimee_dashboard.widget.product_drafts.date') %></th>
-        <th><%- __('pimee_dashboard.widget.product_drafts.author') %></th>
-        <th><%- __('pimee_dashboard.widget.product_drafts.product') %></th>
-        <th></th>
+        <th class="AknGrid-headerCell"><%- __('pimee_dashboard.widget.product_drafts.date') %></th>
+        <th class="AknGrid-headerCell"><%- __('pimee_dashboard.widget.product_drafts.author') %></th>
+        <th class="AknGrid-headerCell"><%- __('pimee_dashboard.widget.product_drafts.product') %></th>
+        <th class="AknGrid-headerCell"></th>
     </tr>
 </thead>
 <tbody>
 <% _.each(data, function (proposal) { %>
-    <tr>
-        <td>
+    <tr class="AknGrid-bodyRow">
+        <td class="AknGrid-bodyCell">
             <%- proposal.createdAt %>
         </td>
-        <td><%- proposal.authorFullName %></td>
-        <td>
+        <td class="AknGrid-bodyCell"><%- proposal.authorFullName %></td>
+        <td class="AknGrid-bodyCell">
             <a class="product-label" href='#' data-id="<%- proposal.productId %>">
                 <%- proposal.productLabel %>
             </a>
         </td>
-        <td class="text-right">
-            <a class="product-review btn btn-large btn-download" data-product-review-url="<%- proposal.productReviewUrl %>">
+        <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
+            <a class="AknButton AknButton--grey AknButton--small product-review" data-product-review-url="<%- proposal.productReviewUrl %>">
                 <%- __('pimee_dashboard.widget.product_drafts.review') %>
             </a>
         </td>
@@ -29,8 +29,10 @@
 </tbody>
 <% } else if (options.contentLoaded) {%>
     <tr>
-        <th class="text-center">
-            <%- __('pimee_dashboard.widget.product_drafts.empty') %>
-        </th>
+        <td class="AknGrid-bodyCell AknGrid-bodyCell--full">
+            <div class="AknMessageBox AknMessageBox--centered">
+                <%- __('pimee_dashboard.widget.product_drafts.empty') %>
+            </div>
+        </td>
     </tr>
 <% } %>

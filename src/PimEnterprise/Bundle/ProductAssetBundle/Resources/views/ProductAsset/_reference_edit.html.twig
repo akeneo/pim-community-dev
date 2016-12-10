@@ -22,12 +22,12 @@
                     {% if referenceModel.fileInfo %}
                         {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
                             {% block reference_buttons %}
-                                <button class="AknButtonsList-item AknButton AknButton--important AknButton--withIcon AknButton--little delete"
+                                <button class="AknButtonList-item AknButton AknButton--important AknButton--withIcon AknButton--small delete"
                                         data-href="{{ path('pimee_product_asset_reference_delete', {'id': referenceModel.id}) }}" >
                                     <i class="AknButton-icon icon-trash"></i>
                                     {{ 'btn.delete'|trans|capitalize }}
                                 </button>
-                                <button class="AknButtonsList-item AknButton AknButton--action AknButton--withIcon AknButton--little reset-variations"
+                                <button class="AknButtonList-item AknButton AknButton--action AknButton--withIcon AknButton--small reset-variations"
                                         data-href="{{ path('pimee_product_asset_variations_reset', {'id': referenceModel.id}) }}" >
                                     <i class="AknButton-icon icon-repeat"></i>
                                     {{ 'pimee_product_asset.enrich_asset.button.reset_variations'|trans }}

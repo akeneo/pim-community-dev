@@ -19,7 +19,7 @@
                 )
             %}
             <table
-                class="table table-bordered proposal-changes{% if not canReview %} readonly{% endif %}"
+                class="AknGrid AknGrid--condensed proposal-changes{% if not canReview %} readonly{% endif %}"
                 data-product="{{ record.rootEntity.product.identifier }}"
                 data-scope="{{ change.scope }}"
                 data-locale="{{ change.locale }}"
@@ -29,31 +29,19 @@
             >
                 <thead>
                     <tr>
-                        <th class="label-cell">{{ get_attribute_label_from_code(code) }}</th>
-                        <th>
+                        <th class="AknGrid-headerCell label-cell">{{ get_attribute_label_from_code(code) }}</th>
+                        <th class="AknGrid-headerCell">
                             {{ change.locale|pretty_locale_name }}
 
                             {% if change.scope is not null %}
                                 - {{ change.scope }}
                             {% endif %}
                         </th>
-                        <th class="action-cell">
+                        <th class="AknGrid-headerCell action-cell">
                             {% if canReview %}
-                                <div class="AknIconsList">
+                                <div class="AknButtonList AknButtonList--right">
                                     <button
-                                        class="AknIconsList-item AknIconsList-item--important partial-reject-link"
-                                        data-product="{{ record.rootEntity.product.identifier }}"
-                                        data-scope="{{ change.scope }}"
-                                        data-locale="{{ change.locale }}"
-                                        data-attribute="{{ code }}"
-                                        data-product-draft="{{ record.rootEntity.id }}"
-                                        data-author="{{ record.rootEntity.author }}"
-                                        data-action="reject"
-                                        title="{{ 'pimee_workflow.product_draft.action.partial_reject'|trans({'%attribute%': code, '%product%': record.rootEntity.product.identifier}) }}">
-                                        <i class="AknIconsList-icon icon-remove"></i>
-                                    </button>
-                                    <button
-                                        class="AknIconsList-item AknIconsList-item--apply partial-approve-link"
+                                        class="AknButtonList-item AknIconButton AknIconButton--apply AknIconButton--small partial-approve-link"
                                         data-product="{{ record.rootEntity.product.identifier }}"
                                         data-scope="{{ change.scope }}"
                                         data-locale="{{ change.locale }}"
@@ -62,7 +50,19 @@
                                         data-author="{{ record.rootEntity.author }}"
                                         data-action="approve"
                                         title="{{ 'pimee_workflow.product_draft.action.partial_approve'|trans({'%attribute%': code, '%product%': record.rootEntity.product.identifier}) }}">
-                                        <i class="AknIconsList-icon icon-ok"></i>
+                                        <i class="icon-ok"></i>
+                                    </button>
+                                    <button
+                                        class="AknButtonList-item AknIconButton AknIconButton--important AknIconButton--small partial-reject-link"
+                                        data-product="{{ record.rootEntity.product.identifier }}"
+                                        data-scope="{{ change.scope }}"
+                                        data-locale="{{ change.locale }}"
+                                        data-attribute="{{ code }}"
+                                        data-product-draft="{{ record.rootEntity.id }}"
+                                        data-author="{{ record.rootEntity.author }}"
+                                        data-action="reject"
+                                        title="{{ 'pimee_workflow.product_draft.action.partial_reject'|trans({'%attribute%': code, '%product%': record.rootEntity.product.identifier}) }}">
+                                        <i class="icon-remove"></i>
                                     </button>
                                 </div>
                             {% endif %}
@@ -71,25 +71,25 @@
                 </thead>
                 <tbody>
                     {% if product_draft_change.before != product_draft_change.after %}
-                        <tr>
-                            <td>{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
-                            <td class="original-value" colspan="2">
+                        <tr class="AknGrid-bodyRow">
+                            <td class="AknGrid-bodyCell">{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
+                            <td class="AknGrid-bodyCell original-value" colspan="2">
                                 <span class="alert-error">
                                     {{ product_draft_change.before|raw }}
                                 </span>
                             </td>
                         </tr>
-                        <tr>
-                            <td>{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
-                            <td class="new-value" colspan="2">
+                        <tr class="AknGrid-bodyRow">
+                            <td class="AknGrid-bodyCell">{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
+                            <td class="AknGrid-bodyCell new-value" colspan="2">
                                 <span class="alert-success">
                                     {{ product_draft_change.after|raw }}
                                 </span>
                             </td>
                         </tr>
                     {% else %}
-                        <tr>
-                            <td colspan="3"><em>{{ 'pimee_workflow.proposal.no_diff'|trans({'%value%': change.data }) }}</em></td>
+                        <tr class="AknGrid-bodyRow">
+                            <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="3"><em>{{ 'pimee_workflow.proposal.no_diff'|trans({'%value%': change.data }) }}</em></td>
                         </tr>
                     {% endif %}
                 </tbody>
