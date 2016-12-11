@@ -1,4 +1,4 @@
-"oro_datagrid.no_data_hint %entityHint%": 'Nessun %entityHint% esistente.'
+"oro_datagrid.no_data_hint %entityHint%": Nessun %entityHint% esistente.
 oro_datagrid.label_add_filter: Gestione filtri
 oro_datagrid.label_loading_mask: Caricamento in corso . . .
 oro.grid.mass_action.selected_rows: Righe selezionate
@@ -6,27 +6,28 @@ oro.grid.mass_action.confirm_title: Conferma azione di massa
 oro.grid.mass_action.confirm_content: Sei sicuro di voler proseguire?
 oro.grid.mass_action.confirm_ok: Sì, prosegui
 oro.grid.mass_action.error_title: Errore azione di massa
-oro.grid.mass_action.error_content: "Non è possibile eseguire l'azione di massa"
+oro.grid.mass_action.error_content: Non è possibile eseguire l'azione di massa
 oro.grid.mass_action.delete.label: Eliminare
 oro.grid.mass_action.delete.confirm_title: Conferma azione eliminazione di massa
 oro.grid.mass_action.delete.confirm_content: Sei sicuro di voler rimuovere gli articoli selezionati?
 oro.grid.datagrid.page_size.all: Tutto
-oro.grid.mass_action.delete.success_message: '{0} nessuna entità rimossa|{1} una entità rimossa|]1, Inf[%count% entità sono state rimosse'
+oro.grid.mass_action.delete.success_message: "{0} nessuna entità rimossa|{1} una entità rimossa|]1, Inf[%count% entità sono state rimosse"
 datagrid_view:
   views: Visualizzazione
-  default: Visualizzazione predefinita personalizzata
   create: Creare vista
   placeholder: Nome della nuova visualizzazione
   remove: Eliminare questa visualizzazione
-  choose_label: "Scegliere un'etichetta per la visualizzazione"
+  choose_label: Scegliere un'etichetta per la visualizzazione
   columns:
     min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
   label:
-    unique_message: "L'etichetta deve essere univoca"
-    not_blank_message: "L'etichetta non può essere vuota"
+    unique_message: L'etichetta deve essere univoca
+    not_blank_message: L'etichetta non può essere vuota
 confirmation.remove.datagrid view: Sei sicuro di voler eliminare questa visualizzazione della griglia di dati?
 flash.datagrid view:
   created: La griglia di dati è stata creata con successo
   updated: La griglia di dati è stata caricata con successo
   removed: La griglia di dati è stata rimossa con successo
-  not removable: "Non hai l'autorizzazione per rimuovere questa visualizzazione"
+  not removable: Non hai l'autorizzazione per rimuovere questa visualizzazione
+quick_export: Esportazione rapida
+mass_edit: Modifica di massa
