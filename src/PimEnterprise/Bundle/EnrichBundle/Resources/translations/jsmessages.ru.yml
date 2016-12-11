@@ -2,17 +2,17 @@ View the product: Просмотреть продукт
 pimee_enrich.product_history.action.revert: Вернуться к этой версии
 permission-changes:
   category:
-    grant: 'Группа <strong>{{ group }} будет {{ permission }}</strong> в этой категории'
-    revoke: 'Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой категории'
+    grant: Группа <strong>{{ group }} будет {{ permission }}</strong> в этой категории
+    revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой категории
   locale:
-    grant: 'Группа <strong>{{ group }} будет {{ permission }}</strong> в этой локали'
-    revoke: 'Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой локали'
+    grant: Группа <strong>{{ group }} будет {{ permission }}</strong> в этой локали
+    revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой локали
   attribute group:
-    grant: 'Группа <strong>{{ group }} будет {{ permission }}</strong> в этой группе атрибутов'
-    revoke: 'Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой группе атрибутов'
+    grant: Группа <strong>{{ group }} будет {{ permission }}</strong> в этой группе атрибутов
+    revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой группе атрибутов
   job profile:
-    grant: 'Группа <strong>{{ group }} будет {{ permission }}</strong>'
-    revoke: 'Группа <strong>{{ group }} не будет {{ permission }}</strong>'
+    grant: Группа <strong>{{ group }} будет {{ permission }}</strong>
+    revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong>
 pimee_enrich:
   entity:
     product:
@@ -69,7 +69,7 @@ pimee_enrich:
         source:
           working_copy: Рабочая копия
           draft: Мои черновики
-          draft_of: 'Черновики пользователя {{ author }}'
+          draft_of: Черновики пользователя {{ author }}
     product_draft:
       info:
         update_successful: Черновик продукта успешно сохранен
@@ -90,7 +90,7 @@ pimee_enrich:
         send_for_approval: Отправить на утверждение
         cancel: Отмена
         confirm: Отправить
-        title: 'Комментировать ваше предложение (необязательно - 255 символов макс.)'
+        title: Комментировать ваше предложение (необязательно - 255 символов макс.)
         characters: знаков
       confirmation:
         discard_changes: Несохраненные изменения будут потеряны. Вы уверены, что хотите отправить черновик для утверждения без несохраненных изменений?

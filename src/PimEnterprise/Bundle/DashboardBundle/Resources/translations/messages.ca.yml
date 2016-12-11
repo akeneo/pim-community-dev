@@ -1,0 +1,12 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Propostes per revisar
+      date: Data
+      author: Autor/a
+      product: Producte
+      review: Revisar
+      empty: No hi ha cap esborrany de producte per revisar
+  version:
+    community_edition: CE
+    enterprise_edition: EE

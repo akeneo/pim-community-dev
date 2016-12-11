@@ -2,17 +2,17 @@ View the product: Näytä tuote
 pimee_enrich.product_history.action.revert: Palaa tähän versioon
 permission-changes:
   category:
-    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tässä kategoriassa'
-    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tässä kategoriassa'
+    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tässä kategoriassa
+    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tässä kategoriassa
   locale:
-    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tällä alueella'
-    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tällä alueella'
+    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tällä alueella
+    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tällä alueella
   attribute group:
-    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä'
-    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä'
+    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä
+    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä
   job profile:
-    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>'
-    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>'
+    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>
+    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>
 pimee_enrich:
   entity:
     product:
@@ -90,7 +90,7 @@ pimee_enrich:
         send_for_approval: Lähetä hyväksyttäväksi
         cancel: Hylkää
         confirm: Lähetä
-        title: 'Kommentoi ehdotustasi (valinnainen - 255 merkkiä max)'
+        title: Kommentoi ehdotustasi (valinnainen - 255 merkkiä max)
         characters: merkkiä
       confirmation:
         discard_changes: Tallentamattomat muutokset menetetään. Oletko varma että haluat lähettää luonnoksesi hyväksyttäväksi ilman tallentamattomia muutoksia?

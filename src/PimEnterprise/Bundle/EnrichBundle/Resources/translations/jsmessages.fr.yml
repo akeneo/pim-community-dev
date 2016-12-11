@@ -2,17 +2,17 @@ View the product: Voir le produit
 pimee_enrich.product_history.action.revert: Restaurer cette version
 permission-changes:
   category:
-    grant: 'Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans cette catégorie'
-    revoke: 'Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans cette catégorie'
+    grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans cette catégorie
+    revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans cette catégorie
   locale:
-    grant: 'Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans cette locale'
-    revoke: 'Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans cette locale'
+    grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans cette locale
+    revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans cette locale
   attribute group:
-    grant: "Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans ce groupe d'attributs"
-    revoke: "Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans ce groupe d'attributs"
+    grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans ce groupe d'attributs
+    revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans ce groupe d'attributs
   job profile:
-    grant: 'Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong>'
-    revoke: 'Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong>'
+    grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong>
+    revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong>
 pimee_enrich:
   entity:
     product:
@@ -55,7 +55,7 @@ pimee_enrich:
               success: La proposition a été supprimée.
       confirmation:
         revert:
-          title: "Confirmer la restauration d'une version antérieure"
+          title: Confirmer la restauration d'une version antérieure
           content: Êtes-vous sûr de vouloir restaurer le produit dans cette version ?
         publish:
           title: Publier ce produit
@@ -69,11 +69,11 @@ pimee_enrich:
         source:
           working_copy: Version de travail
           draft: Mon brouillon
-          draft_of: 'Brouillon de {{ author }}'
+          draft_of: Brouillon de {{ author }}
     product_draft:
       info:
         update_successful: Le brouillon a bien été enregistré
-        update_failed: "Le brouillon du produit n'a pas pu être mis à jour"
+        update_failed: Le brouillon du produit n'a pas pu être mis à jour
         value_modified: Cette valeur est modifiée par le brouillon actuel
       flash:
         sent_for_approval: Le brouillon a été envoyé pour validation
@@ -90,7 +90,7 @@ pimee_enrich:
         send_for_approval: Envoyer pour approbation
         cancel: Annuler
         confirm: Envoyer
-        title: 'Commenter votre proposition (facultatif - 255 caractères max.)'
+        title: Commenter votre proposition (facultatif - 255 caractères max.)
         characters: caractères.
       confirmation:
         discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications ?

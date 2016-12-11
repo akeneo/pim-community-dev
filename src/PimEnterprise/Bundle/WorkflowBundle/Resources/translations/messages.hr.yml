@@ -1,0 +1,32 @@
+pimee_workflow:
+  product_draft:
+    author: Autor
+    status:
+      label: Status
+    action:
+      remove: Ukloni
+  product:
+    permission:
+      label: Dozvole
+      edit: Uredi
+      view: Prikaz
+  mass_edit_action:
+    published:
+      title: Odabiri operaciju
+      steps:
+        first: Odabir objavljenih proizvoda
+        second: Odabiri operaciju
+        third: Konfiguriraj
+        fourth: Potvrdi
+flash:
+  product_draft:
+    remove:
+      success: Prijedlog je uklonjen.
+Attributes.title: Atributi
+Completeness.title: Potpunost
+batch_jobs:
+  csv_published_product_export:
+    label: Izvoz objavljenih proizvoda u CSV
+    export.label: Izvoz objavljenih proizvoda
+  xlsx_published_product_export:
+    export.label: Izvoz objavljenih proizvoda

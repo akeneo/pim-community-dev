@@ -1,0 +1,53 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Codi
+      condition.label: Condició
+      action.label: Acció
+      no_rule_yet.label: Cap regla de moment
+  rule:
+    condition:
+      if.label: si
+    action:
+      then.label: llavors
+      set_value.label: es troba en
+      copy_value.label: es copia en
+      set.label: es troba en
+      copy.label: es copia en
+      add.label: s'afegeix a
+      remove.label: s'elimina de
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Executar la confirmació
+          confirm_content: Esteu segur que voleu executar la regla?
+          confirm_ok: OK
+      mass_edit_action:
+        confirm_title: Confirmació de càlcul
+        confirm_content: Esteu segur que voleu calcular els productes afectats per la regla?
+        confirm_ok: OK
+      mass_action:
+        execute:
+          confirm_ok: OK
+          confirm_title: Executar la confirmació
+          confirm_content: Esteu segur que voleu executar les regles seleccionades?
+          success: L'acció massiva per executar les regles seleccionades s'ha posat en marxa. Se li notificarà quan finalitzi
+          error: S'ha produït un error durant l'execució de les regles.
+          empty_selection: No hi ha cap regla seleccionada.
+        delete:
+          confirm_ok: OK
+          confirm_title: Confirmació de l'eliminació
+          confirm_content: Esteu segur que voleu suprimir les regles seleccionades?
+          success: Heu suprimit les regles correctament.
+          error: S'ha produït un error durant l'execució de les regles.
+          empty_selection: No hi ha cap regla seleccionada.
+confirmation:
+  remove:
+    rule: Esteu segur que voleu suprimir aquesta norma? No us en podreu fer enrera
+flash:
+  rule:
+    removed: Rol eliminat correctament
+    impacted_product_count: S'ha engegat l'acció massiva per calcular els productes afectats per la regla. Se li notificarà quan finalitzi.
+    executed: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuració de les regles

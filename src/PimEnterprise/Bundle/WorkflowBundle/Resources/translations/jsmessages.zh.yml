@@ -1,0 +1,26 @@
+View the product: 查看产品
+Unpublish the product: 取消发布产品
+Approve: 批准
+Refuse: 拒绝
+Approve selected: 批准所选
+Refuse selected: 拒绝所选
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: 编辑工作副本
+    proposal:
+      modal.title: 留下你的评论 (可选-255 字符最大)
+  proposal:
+    partial_accept:
+      modal.title: 批准部分信息
+      modal.label: 留下你的评论 (可选)
+      modal.error: 出现了一个错误，该建议不被部分批准
+      modal.success: 部分成功地验证了这项建议
+    partial_approve:
+      modal:
+        label: 留下你的评论 (可选)
+        error: 出现了一个错误，该建议不被部分批准
+    partial_reject:
+      modal:
+        label: 留下你的评论 (可选)

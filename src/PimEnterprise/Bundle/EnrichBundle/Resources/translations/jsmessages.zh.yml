@@ -1,0 +1,23 @@
+View the product: 查看产品
+pimee_enrich.product_history.action.revert: 恢复到此版本
+permission-changes:
+  category:
+    grant: 分组<strong>{{ group }}</strong> 将会在这一类别中 <strong> {{ permission }}</strong>
+    revoke: 分组<strong>{{ group }}</strong>将不会在这一类别中<strong>{{ permission }}</strong>
+pimee_enrich:
+  entity:
+    product:
+      btn:
+        publish: 发布
+        unpublish: 取消发布
+      meta:
+        draft:
+          in_progress: 正在处理
+          sent_for_approval: 等待审核中
+          working_copy: 工作副本
+      copy:
+        source:
+          working_copy: 工作副本
+    product_draft:
+      modal:
+        cancel: 取消

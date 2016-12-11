@@ -1,0 +1,52 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Code
+      condition.label: Voorwaarde
+      action.label: Actie
+      no_rule_yet.label: Geen regel voor nu
+  rule:
+    condition:
+      if.label: Als
+    action:
+      then.label: vervolgens
+      set_value.label: is ingesteld in
+      copy_value.label: is gekopieerd naar
+      set.label: is ingesteld in
+      copy.label: is gekopieerd naar
+      add.label: is toegevoegd aan
+      remove.label: is verwijderd van
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Bevestiging uitvoeren
+          confirm_content: Bent u zeker dat u deze regel wilt verwijderen?
+          confirm_ok: OK
+      mass_edit_action:
+        confirm_title: Bevestiging berekening
+        confirm_ok: OK
+      mass_action:
+        execute:
+          confirm_ok: OK
+          confirm_title: Bevestiging uitvoeren
+          confirm_content: Bent u zeker dat u de geselecteerde regels wilt uitvoeren?
+          success: De massa actie om de geselecteerde regels uit te voeren is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid
+          error: Er deed zich een fout voor tijdens de uitvoering van de regels.
+          empty_selection: Geen regels geselecteerd.
+        delete:
+          confirm_ok: OK
+          confirm_title: Bevestig verwijderen
+          confirm_content: Bent u zeker dat u de geselecteerde regels wilt verwijderen?
+          success: U verwijderde de geselecteerde regels met succes.
+          error: Er deed zich een fout voor tijdens het verwijderen van de regels.
+          empty_selection: Geen regels geselecteerd.
+confirmation:
+  remove:
+    rule: Bent u zeker dat u deze regel wilt verwijderen? Het is niet mogelijk om deze actie ongedaan te maken
+flash:
+  rule:
+    removed: Regel succesvol verwijderd
+    impacted_product_count: De massa actie om de beïnvloede producten te berekenen is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+    executed: De uitvoering van de regel is gelanceerd. U wordt op de hoogte gebracht wanneer dit is voltooid.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regelinstellingen
