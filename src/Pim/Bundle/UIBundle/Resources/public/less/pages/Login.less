@@ -1,0 +1,66 @@
+@import '../base/variables';
+
+.AknLogin {
+  color: @AknGrey;
+  background: linear-gradient(to bottom, #112539 0,#76324d 86%,#d1706a 100%);
+  background-image: url("/bundles/pimui/images/background_login.png");
+  background-position: bottom center;
+  background-size: cover;
+  height: 100%;
+  min-height: 280px;
+
+  &-link {
+    color: @AknGrey;
+  }
+
+  &-mainContainer {
+    padding-top: 100px;
+    width: 520px;
+    margin: auto;
+  }
+
+  &-title {
+    text-align: center;
+  }
+
+  &-form {
+    font-size: @AknFontSizeBig;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    text-shadow: 1px 1px 2px black;
+  }
+
+  &-formInput {
+    color: @AknDefaultFontColor;
+    border: 1px solid @AknGrey;
+    background-color: @AknGrey;
+    -webkit-box-shadow: 0 0 0 1000px @AknGrey inset;
+    -webkit-text-fill-color: @AknDarkBlue;
+    font-size: @AknFontSizeBig;
+    height: @AknBigButtonSize;
+    line-height: @AknBigButtonSize;
+    flex-grow: 1;
+    margin-right: 10px;
+    border-radius: 2px;
+    padding: 0 10px;
+  }
+
+  &-subTitle {
+    font-size: 16px;
+    margin: 5px 0;
+    font-weight: normal;
+    text-transform: uppercase;
+  }
+
+  &-checkbox {
+    position: relative;
+    top: 2px;
+  }
+
+  &-footer {
+    position: absolute;
+    bottom: 35px;
+    width: 100%;
+  }
+}

@@ -21,7 +21,6 @@ css:
         - bundles/pimui/css/tree.less
         - bundles/pimui/css/progress.less
         - bundles/pimui/css/pim.less
-        - bundles/pimui/css/signin.less
         - bundles/pimui/css/flags.less
         - bundles/pimui/css/style.less
         - bundles/pimui/css/tabnav.less
@@ -82,4 +81,5 @@ css:
         - bundles/pimui/less/lib/dialog.less
         - bundles/pimui/less/lib/modal.less
         - bundles/pimui/less/lib/wizard.less
+        - bundles/pimui/less/pages/Login.less
         - bundles/pimui/less/bemFixes.less
