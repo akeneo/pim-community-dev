@@ -75,11 +75,11 @@ pim_enrich:
     legend:
       locale_not_associated: Ustawienie regionalne nie jest powiązana z tym kanałem
   mass_edit_action:
-    limit_exceeded: 'Proszę wybrać mniej niż %limit% elementów do edycji'
+    limit_exceeded: Proszę wybrać mniej niż %limit% elementów do edycji
     product:
       page_title: Produkty
       title: Wybierz działanie
-      subtitle: 'Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach'
+      subtitle: Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach
       steps:
         first: Wybierz produkty
         second: Wybierz działanie
@@ -88,7 +88,7 @@ pim_enrich:
     family:
       page_title: Rodziny
       title: Wybierz działanie
-      subtitle: 'Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin'
+      subtitle: Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin
       steps:
         first: Wybierz rodziny
         second: Wybierz działanie
@@ -98,31 +98,32 @@ pim_enrich:
       label: Zmiana statusu (Włącz / Wyłącz)
       description: Wybrane produkty zostaną włączone lub wyłączone.
       success_flash: Status produktu (produktów) został zmieniony
-      launched_flash: 'Masowe zadanie "zmiany statusu" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      launched_flash: Masowe zadanie "zmiany statusu" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     edit-common-attributes:
       label: Edytuj atrybuty
       description: Atrybuty wybranych produktów zostaną zaktualizowane o następujące wartości, przy wybranym ustawieniu regionalnym.
       success_flash: Zadanie aktualizacji statusu produktów jest aktualnie wykonywane
-      launched_flash: 'Zadanie masowej "edycji wspólnych atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      launched_flash: Zadanie masowej "edycji wspólnych atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
       message:
         no_valid_attribute: Żaden z wybranych atrybutów nie może zostać zastosowany do tego produktu.
-    classify:
-      launched_flash: 'Zadanie masowej "klasyfikacji" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
     change-family:
       description: Rodzina wybranych produktów zostanie zamieniona na wybraną rodzinę
       success_flash: Rodzina wybranego produktu(ów) została zmieniona pomyślnie
-      launched_flash: 'Zadanie masowej "zmiany rodziny" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      launched_flash: Zadanie masowej "zmiany rodziny" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     add-to-groups:
       label: Dodaj do grup
       description: Wybierz grupy, do których chcesz dodać wybrane produkty
       success_flash: Produkty zostały pomyślnie dodane do wybranych grup
-      launched_flash: 'Masowe zadanie "dodaj do grup" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      launched_flash: Masowe zadanie "dodaj do grup" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     add-to-variant-group:
-      launched_flash: 'Masowe zadanie "dodaj do grupy wariantów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      some_variant_groups_are_skipped:
+        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
+      launched_flash: Masowe zadanie "dodaj do grupy wariantów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     set-attribute-requirements:
+      label: Określ wymagania atrybutów
       description: Poniższe wymagania atrybutów zostaną zastosowane do wybranych rodzin
       success_flash: Wymagania atrybutów zostały zastosowane do wybranych rodzin
-      launched_flash: 'Masowe zadanie "określone wymagania atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      launched_flash: Masowe zadanie "określone wymagania atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
   acl:
     locale:
       index: Przeglądanie ustawień regionalnych
@@ -340,28 +341,28 @@ confirmation:
   confirm: Potwierdzenie
   delete: Potwierdzenie usunięcia
   leave: Czy na pewno chcesz opuścić tę stronę?
-  discard changes: 'Utracisz wszystkie zmiany w %entity%, jeśli opuścisz tę stronę.'
+  discard changes: Utracisz wszystkie zmiany w %entity%, jeśli opuścisz tę stronę.
   remove:
     item: Czy na pewno chcesz usunąć ten element?
-    attribute: 'Czy na pewno chcesz usunąć atrybut %name%?'
-    attribute group: 'Czy na pewno chcesz usunąć grupę atrybutów %name%?'
-    category: 'Czy na pewno chcesz usunąć kategorię %name%?'
-    family: 'Czy na pewno chcesz usunąć rodzinę %name%?'
-    product: 'Czy na pewno chcesz usunąć produkt %name%?'
-    channel: 'Czy na pewno chcesz usunąć kanał %name%?'
-    group: 'Czy na pewno chcesz usunąć grupę %name%?'
-    variant group: 'Czy na pewno chcesz usunąć grupę wariantów %name%?'
-    association type: 'Czy na pewno chcesz usunąć typ powiązania %name%?'
-    group type: 'Czy na pewno chcesz usunąć typ grupy %name%?'
-    user: 'Czy na pewno chcesz usunąć użytkownika %name%?'
+    attribute: Czy na pewno chcesz usunąć atrybut %name%?
+    attribute group: Czy na pewno chcesz usunąć grupę atrybutów %name%?
+    category: Czy na pewno chcesz usunąć kategorię %name%?
+    family: Czy na pewno chcesz usunąć rodzinę %name%?
+    product: Czy na pewno chcesz usunąć produkt %name%?
+    channel: Czy na pewno chcesz usunąć kanał %name%?
+    group: Czy na pewno chcesz usunąć grupę %name%?
+    variant group: Czy na pewno chcesz usunąć grupę wariantów %name%?
+    association type: Czy na pewno chcesz usunąć typ powiązania %name%?
+    group type: Czy na pewno chcesz usunąć typ grupy %name%?
+    user: Czy na pewno chcesz usunąć użytkownika %name%?
   attribute group:
-    remove attribute: 'Czy na pewno chcesz usunąć atrybut %name% z tej grupy atrybutów?'
+    remove attribute: Czy na pewno chcesz usunąć atrybut %name% z tej grupy atrybutów?
   family:
-    remove attribute: 'Czy na pewno chcesz usunąć atrybut %name% z tej rodziny?'
+    remove attribute: Czy na pewno chcesz usunąć atrybut %name% z tej rodziny?
   product:
-    remove attribute: 'Czy na pewno chcesz usunąć atrybut %name% z tego produktu?'
+    remove attribute: Czy na pewno chcesz usunąć atrybut %name% z tego produktu?
   variant_group:
-    remove_attribute: 'Czy na pewno chcesz usunąć atrybut %name% z tej grupy wariantów?'
+    remove_attribute: Czy na pewno chcesz usunąć atrybut %name% z tej grupy wariantów?
 flash:
   entity:
     removed: Element został usunięty
@@ -370,7 +371,7 @@ flash:
     updated: Atrybut został pomyślnie zaktualizowany
     removed: Atrybut został pomyślnie usunięty
     identifier not removable: Atrybut identyfikujący nie może zostać usunięty
-    used by groups: 'Ten atrybut nie może być usunięty, ponieważ jest on używany przez %count% grupy wariant(ów)'
+    used by groups: Ten atrybut nie może być usunięty, ponieważ jest on używany przez %count% grupy wariant(ów)
   attribute group:
     created: Grupa atrybutów została pomyślnie utworzona
     updated: Grupa atrybutów została pomyślnie zaktualizowana
@@ -443,7 +444,7 @@ info:
   category:
     remove children: Wszystkie podkategorie zostaną usunięte .
     keep products: Produkty w tych kategoriach nie zostaną usunięte.
-    products limit exceeded: 'Ta kategoria zawiera więcej produktów niż dozwolonych dla tej operacji (%limit% maksymalnie produktów)'
+    products limit exceeded: Ta kategoria zawiera więcej produktów niż dozwolonych dla tej operacji (%limit% maksymalnie produktów)
   product:
     no available attributes: Nie ma więcej atrybutów do dodania
     no family defined: Brak zdefiniowanej rodziny
@@ -457,6 +458,7 @@ info:
     disable: Wyłącz
     disabled: Nieaktywny
   group:
+    axis: 'Zmiana osi: %attributes%'
     select products: Wybierz produkty, które powinny należeć do tej grupy.
     selectable products: Następujące produkty do wyboru mają określone wartości dla każdej osi.
     no group types: Nie istnieją żadne typy grup, kliknij tutaj aby utworzyć nową
@@ -464,7 +466,7 @@ info:
   association type:
     show products: Pokaż produkty
     show groups: Pokaż grupy
-    remove from products: 'Usunięcie typu skojarzenia skutkuje usunięciem go z %count% produktów.'
+    remove from products: Usunięcie typu skojarzenia skutkuje usunięciem go z %count% produktów.
     none exist: Brak typów powiązań.
     create one: Kliknij tutaj aby utworzyć jedno
   attribute:
@@ -527,10 +529,11 @@ default: Domyślny
 Axis: Oś
 Add attributes: Dodaj atrybuty
 Translate from: Przetłumacz z
-switch_on: Tak
-switch_off: Nie
+switch_on: "Tak"
+switch_off: "Nie"
 Close: Zamknij
 Choose a color: Wybierz kolor
+Search: Szukaj
 Choose the attribute type: Wybierz typ atrybutu
 Choose the attribute group: Wybierz grupę atrybutów
 Drop a file or click here: Upuścić plik lub kliknij tutaj
@@ -559,7 +562,7 @@ General Properties: Ogólne Właściwości
 Group values: Wartości grupy
 New group: Nowa grupa
 Groups overview: Przegląd grup
-"Y-m-d h:i:s": Y-m-d h:i:s
+'Y-m-d h:i:s': 'Y-m-d h:i:s'
 Max characters: Maksymalna liczba znaków
 Validation rule: Reguła sprawdzania poprawności
 Validation regexp: Wyrażenie regularne
@@ -574,6 +577,7 @@ Default metric unit: Domyślna jednostka metryczna
 Max file size: Maksymalny rozmiar pliku (MB)
 Allowed extensions: Dozwolone rozszerzenia
 None: Brak
+E-mail: E-mail
 URL: URL
 Regular expression: Wyrażenie regularne
 Minimum input length: Minimalna długość danych wejściowych
@@ -583,7 +587,7 @@ Title: Tytuł
 pim_title.attribute_group:
   index: Grupy Atrybutów
   create: Grupy atrybutów | Utwórz
-  edit: 'Grupy atrybutów %group.label% | Edycja'
+  edit: Grupy atrybutów %group.label% | Edycja
 pim_title.category:
   index: Drzewo kategorii
   create: Drzewa kategorii | Utwórz
@@ -612,20 +616,27 @@ pim_title.group_type:
 pim_title.mass_edit_action:
   choose: Edycja Masowa | Wybierz
   configure: Edycja Masowa | Konfiguruj
-pim_title.dashboard: Kokpit
+pim_title.dashboard: "Kokpit"
 pim_catalog_identifier: Identyfikator
 pim_catalog_text: Tekst
 pim_catalog_textarea: Pole tekstowe
+pim_catalog_number: Liczba
+pim_catalog_price_collection: Cena
+pim_catalog_multiselect: Wielokrotny wybór
+pim_catalog_simpleselect: Pojedynczy wybór
 pim_catalog_file: Plik
 pim_catalog_image: Obrazek
+pim_catalog_boolean: "Tak/Nie"
+pim_catalog_date: Data
+pim_catalog_metric: Miara
 Activated: Aktywowany
 Disable: Wyłącz
 pim_enrich.mass_edit_action:
-  limit_exceeded: 'Proszę wybrać mniej niż %limit% elementów do edycji'
+  limit_exceeded: Proszę wybrać mniej niż %limit% elementów do edycji
   product:
     page_title: Produkty
     title: Wybierz działanie
-    subtitle: 'Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach'
+    subtitle: Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach
     steps:
       first: Wybierz produkty
       second: Wybierz działanie
@@ -634,7 +645,7 @@ pim_enrich.mass_edit_action:
   family:
     page_title: Rodziny
     title: Wybierz działanie
-    subtitle: 'Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin'
+    subtitle: Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin
     steps:
       first: Wybierz rodziny
       second: Wybierz działanie
@@ -657,6 +668,7 @@ pim_enrich.mass_edit_action:
     description: Wybierz grupy, do których chcesz dodać wybrane produkty
     success_flash: Produkty zostały pomyślnie dodane do wybranych grup
   set-attribute-requirements:
+    label: Określ wymagania atrybutów
     description: Poniższe wymagania atrybutów zostaną zastosowane do wybranych rodzin
     success_flash: Wymagania atrybutów zostały zastosowane do wybranych rodzin
 To enable: Do włączenia
@@ -740,6 +752,7 @@ Currency: Waluta
 oro.locale:
   address_format:
     region_name_type:
+      parish: parafia
       state: Stan
       island: wyspa
       county: hrabstwo

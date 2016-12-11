@@ -98,6 +98,8 @@ pim_connector:
       help: On guardar l'arxiu generat al servidor
     channel:
       label: Canal
+    header:
+      label: Capçalera
   import:
     enabled:
       label: Habilitar el producte
@@ -145,6 +147,7 @@ pim_connector:
       help: Caràcter utilitzat per definir el separador de camps com a decimal
     dateFormat:
       label: Format de data
+      help: 'Especifiqueu el format de les columnes de data a l''arxiu, per exemple: DD/MM/AAAA per un format 31/04/2014.'
 job_execution.summary:
   read: llegir
   read_lines: llegir les línies
