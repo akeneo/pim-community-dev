@@ -19,11 +19,11 @@ flash:
   association type:
     removed: Tipo di associazione rimossa con successo
   attribute:
-    removed: Attributo rimosso con successo
+    removed: Attributo eliminato con successo
   family:
     removed: Famiglia rimossa con successo
   product:
-    removed: Prodotto rimosso con successo
+    removed: Articolo rimosso con successo
   channel:
     removed: Canale rimosso con successo
   group:
@@ -55,28 +55,21 @@ error:
     export profile: Non è possibile eliminare questo profilo di esportazione
     user: Non è possibile eliminare questo utente
     role: Non è possibile eliminare questo ruolo
+Code: Codice
 Edit: Modifica
-Delete: Elimina
+Delete: Eliminare
 Edit attributes of the product: Modificare gli attributi del prodotto
 Classify the product: Classificare il prodotto
 Delete the product: Eliminare il prodotto
 Change status: Modificare lo stato
 Toggle status: Stato di conversione
 pim.grid.mass_action.quick_export.csv_all: CSV (tutti gli attributi)
-pim.grid.mass_action.delete: Elimina
+pim.grid.mass_action.delete: Eliminare
 pim.grid.mass_action.mass_edit: Modifica di massa
-jstree.create: Creare
-switch_on: Sì
-switch_off: 'No'
+jstree.create: Crea
+switch_on: "Sì"
+switch_off: "No"
 pim_enrich:
-  entity:
-    product:
-      variant_group:
-        switch:
-          "yes": true
-          "no": false
-  form:
-    product:
-      switch:
-        "no": false
-        "yes": true
+  item:
+    list:
+      delete.label: Eliminare

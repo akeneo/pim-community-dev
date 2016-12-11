@@ -1,0 +1,99 @@
+confirmation:
+  remove:
+    item: 确实要删除这个项目吗?
+    association type: 确实要删除这个相关类型吗?
+    attribute: 确定要删除这个属性吗？
+    family: 确定要删除这个分类吗？
+    product: 确定要删除这个产品吗？
+    channel: 确定要删除这个频道吗？
+    group: 确定要删除这个组吗？
+    variant group: 确定要删除这多个组吗？
+    group type: 确定要删除这个组类型吗？
+    import profile: 确定要删除这个导入配置文件吗？
+    export profile: 确定要删除这个导出配置文件吗？
+    user: 确定要删除这个用户吗？
+    role: 确定要删除这个角色吗？
+pim_datagrid:
+  mass_action:
+    delete:
+      confirm_content: 您确定需要删除选定的产品吗？
+      success: 选定的产品被成功删除。
+      error: 删除选定的产品时发生错误，请重试。
+flash:
+  item:
+    removed: 项目已删除
+  association type:
+    removed: 关联类型已删除
+  attribute:
+    removed: 属性已删除
+  family:
+    removed: 产品族已删除
+  product:
+    removed: 产品已删除
+  channel:
+    removed: 通道已删除
+  group:
+    removed: 分组已删除
+  variant group:
+    removed: 属性组已删除
+  group type:
+    removed: 分组类型已删除
+  import profile:
+    removed: 导入配置文件已删除
+  export profile:
+    removed: 导出配置文件已删除
+  user:
+    removed: 用户已删除
+  role:
+    removed: 角色已删除
+error:
+  removing:
+    item: 不能删除此项目
+    association type: 不能删除此关联类型
+    attribute: 不能删除该属性
+    family: 不能删除这个分类
+    product: 不能删除这个产品
+    channel: 不能删除此频道
+    group: 不能删除这个组
+    variant group: 不能删除这个变量组
+    group type: 不能删除这个组类型
+    import profile: 不能删除这个导入配置文件
+    export profile: 不能删除这个导出配置文件
+    user: 不能删除这个用户
+    role: 不能删除这个角色
+    attribute_option: 在属性选项删除错误
+  saving:
+    attribute_option: 无法保存属性选项
+alert:
+  attribute_option:
+    error_occured_during_submission: 表单提交给服务器时发生错误
+    save_before_edit_other: 请在编辑这一条行项目之前，请登记您对其他行的修改
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: 警告，您将丢失未保存的数据。确实要取消对该新选项的修改吗？
+    cancel_edition_on_new_option_title: 取消更改
+label:
+  attribute_option:
+    add_option: 添加一个选项
+Code: 代码
+Edit: 编辑
+Delete: 删除
+Edit attributes of the product: 编辑产品属性
+Classify the product: 产品分类
+Delete the product: 删除产品
+Change status: 更改状态
+Toggle status: 切换状态
+pim.grid.mass_action.quick_export.csv_all: CSV （所有属性）
+pim.grid.mass_action.delete: 删除
+pim.grid.mass_action.mass_edit: 批量编辑
+jstree.create: 创建
+switch_on: "是"
+switch_off: "否　"
+pim_enrich:
+  item:
+    list:
+      delete.label: 删除
+      delete.error: 删除项目时出错
+    delete:
+      confirm.content: 是否确实要删除此 {{ itemName }}？不能撤消此操作！
+      confirm.title: 删除 {{ itemName }}
