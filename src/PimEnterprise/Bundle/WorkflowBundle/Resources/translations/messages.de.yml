@@ -25,8 +25,8 @@ pimee_workflow:
       approve: Alle genehmigen
       refuse: Alle ablehnen
       remove: Entfernen
-      partial_approve: 'Änderungen des Attributs %attribute% von Produkt %product% genehmigen'
-      partial_reject: 'Ablehnen der Änderung vom Attribut %attribute% am Produkt-%product%'
+      partial_approve: Änderungen des Attributs %attribute% von Produkt %product% genehmigen
+      partial_reject: Ablehnen der Änderung vom Attribut %attribute% am Produkt-%product%
     notification:
       partial_approve: '%owner% hat Wert(e) für %attributes% für das Produkt %product% akzeptiert'
       partial_approve_number: '%owner% hat Werte für %attributes_count% Attribute, für das Produkt %product% akzeptiert'
@@ -44,15 +44,15 @@ pimee_workflow:
         draft_not_ready: Dieser Vorschlag ist noch nicht bereit um genehmigt zu werden
         not_product_owner: Sie besitzen das Produkt welches zu diesem Vorschlag gehört nicht
         cannot_edit_attributes: Sie können die Attribute, welche durch diesen Vorschlag geändert wurden, nicht bearbeiten
-        invalid_draft: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
+        invalid_draft: Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%
   proposal:
     to_review: '%author.firstname% %author.lastname% hat einen Vorschlag für das Produkt %product.label% übermittelt'
     individual_import: '%author.firstname% %author.lastname% hat Vorschläge aus Job-Import zur Überprüfung geschickt'
     generic_import: Sie haben Vorschläge aus Job-Import zum Prüfen
     original_value: Original
     new_value: Neu
-    no_diff: 'Der Wert "%value%" ist im Vorschlag und der Arbeitskopie identisch.'
-    draft_in_progress: 'Für dieses Produkt existiert ein Entwurf von %author%.'
+    no_diff: Der Wert "%value%" ist im Vorschlag und der Arbeitskopie identisch.
+    draft_in_progress: Für dieses Produkt existiert ein Entwurf von %author%.
   published_product:
     index: Veröffentlichte Produkte
     title: Veröffentlichtes Produkt
@@ -95,7 +95,7 @@ flash:
   product_draft:
     approve:
       success: Der Vorschlag wurde erfolgreich freigegeben.
-      error: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
+      error: Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%
     refuse:
       success: Der Vorschlag wurde abgelehnt.
     remove:
@@ -107,10 +107,10 @@ pim_menu:
 pim_title:
   published_product:
     index: Veröffentlichte Produkte
-    view: 'Veröffentlichte Produkte %product.sku% | Ansehen'
+    view: Veröffentlichte Produkte %product.sku% | Ansehen
   product:
-    dispatch: 'Produkte %product.sku%'
-    show: 'Produkte %product.sku% | Zeigen'
+    dispatch: Produkte %product.sku%
+    show: Produkte %product.sku% | Zeigen
   proposal:
     index: Vorschläge
 btn.editworkingcopy: Arbeitskopie bearbeiten

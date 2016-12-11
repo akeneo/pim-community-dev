@@ -1,0 +1,147 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Enriquir recurs
+      create: Crear un recurs
+      remove: Eliminar recurs
+      categories_view: Consultar les categories d'un recurs
+      mass_upload: Carregar recursos en massa
+    category_asset_picker:
+      list: Llistar categories de recursos en el selector de recursos
+    category:
+      create: Crear una categoria de recursos
+      edit: Editar una categoria de recursos
+      list: Llistar categories de recursos
+      remove: Eliminar una categoria de recursos
+      manage: Administrar els permisos de categoria de recursos
+      history: Veure l'històric de categories de recursos
+  acl_group:
+    asset: Recursos de producte
+    category: Categories de recursos
+  enrich_asset:
+    button:
+      delete: Suprimir
+      generate_from_reference: Generar des de la referència
+      reset_variations: Reiniciar variacions
+    confirmation.remove: Esteu segur que voleu suprimir el recurs "%asset%"?
+    grid:
+      edit: Edita les propietats del recurs
+    view:
+      title: Recurs de producte
+      code: Codi
+      description: Descripció
+      end_of_use: Final d'ús a
+      reference: Referència
+      filename: Nom d’arxiu
+      width: Amplada
+      height: Alçada
+      resolution: Resolució
+      colors: Espai de color
+      filesize: Mida de l'arxiu
+      filetype: Tipus d'arxiu
+      actions: Accions
+      download: Descarregar
+      tag: Etiquetes
+      no_reference: Encara no s'ha carregat cap arxiu de referència.
+      no_variation: Encara no s'ha generat cap arxiu de variació.
+    flash:
+      update:
+        success: El recurs ha estat actualitzat.
+        error: No s'ha actualitzat el recurs. S'ha produït un error.
+      create:
+        success: S'ha creat el recurs.
+        error: No s'ha creat el recurs. S'ha produït un error.
+      remove:
+        success: S'ha eliminat el recurs.
+  enrich_reference:
+    flash:
+      delete:
+        success: S'ha esborrat l'arxiu de referència.
+        error: No s'ha esborrat l'arxiu de referència.. S'ha produït un error.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: No es pot generar la variació %channel%. Hi ha opcions no vàlides.
+        image_width_error: No es pot generar la variació %channel% perquè la imatge carregada té una amplada més petita del mínim per a la transformació.
+        image_height_error: No es pot generar la variació %channel% perquè la imatge carregada té una alçada més petita del mínim per a la transformació.
+        not_applicable: No es pot generar la variació %channel%.
+        non_registered: No s'ha registrat cap transformació %transformation% per la mime type %mimeType%. No es pot generar la variació %channel%.
+        error: No es pot generar la variació %channel%.
+        success: Els arxius de variació s'han generat correctament.
+      update:
+        success: S'ha actualitzat l'arxiu de variació.
+        error: No s'ha actualitzat l'arxiu de variació. S'ha produït un error.
+      delete:
+        success: L'arxiu de variació ha estat esborrat.
+        error: No s'ha esborrat l'arxiu de variació. S'ha produït un error.
+  popin.create:
+    title: Crear un nou recurs
+    is_localized: Configurable regionalment
+  menu: Recursos
+  page_tab:
+    title:
+      view: Recurs de producte %asset.code% | Veure
+      edit: Recurs de producte %asset.code% | Editar
+      index: Recursos de producte
+  code:
+    label: Codi
+  thumbnail:
+    label: Miniatura
+  status:
+    label: Estat
+  description:
+    label: Descripció
+  endOfUse:
+    label: Final d'ús
+  createdAt:
+    label: Creat el
+  updatedAt:
+    label: Darrera actualització a
+  tags:
+    label: Etiquetes
+  tabs:
+    properties.title: Propietats
+    variations.title: Variacions
+    categories.title: Categories
+  validation:
+    code:
+      not_empty: Codi obligatori. No es pot deixar buit.
+      unique: El codi ha de ser únic.
+      new_generation: N'hem generat un de nou per a vostè.
+  jobs:
+    assets_mass_upload.title: Carregar recursos en massa
+  notAvailable:
+    label: no disponible
+  asset:
+    title: Recurs
+  mass_upload:
+    menu: Carregar recursos
+    new: Es crearà un nou recurs
+    add_files: afegir arxius
+    start: Iniciar càrrega
+    cancel: Cancel·lar càrrega
+    executed: Càrrega en massa executada
+    error:
+      upload: S'ha produït un error durant la càrrega
+      code: Format de codi invàlid pel recurs
+      localizable: Ja existeix un recurs però no se li pot aplicar cap configuració regional
+      invalid_locale: La configuració regional està desactivada o no és vàlida
+  category:
+    menu: Categories de recursos
+    permissions:
+      view.label: Teniu permisos per veure recursos
+      view.help: Teniu permisos per veure recursos en aquesta categoria
+      edit.label: Teniu permisos per editar recursos
+      edit.help: Teniu permisos per editar els productes en aquesta categoria (això implica tenir permisos per la vista)
+      no_access_to_products: No teniu accés als recursos de qualsevol dels arbres, contacteu amb l'administrador
+      apply_on_children.label: Aplicar canvis en els fills
+      apply_on_children.help: Copiar els canvis de permisos a tots els fills. Se'n mantindran tots els seus permisos actuals
+btn.create.asset: Crear un recurs
+btn.drag_or_upload: Arrossegui aquí un arxiu o feu-hi clic
+job_execution.summary:
+  variations_not_generated: No s'han generat variacions
+  pimee_product_asset.mass_upload.new: Recurs creat des de l'arxiu
+  pimee_product_asset.mass_upload.updated: Recurs actualitzat
+assets_mass_upload.steps:
+  asset_mass_upload.title: Carregar recursos en massa
+mass_upload: Recursos de càrrega en massa

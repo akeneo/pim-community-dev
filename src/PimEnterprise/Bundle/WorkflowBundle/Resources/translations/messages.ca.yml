@@ -1,0 +1,135 @@
+pimee_workflow:
+  product_draft:
+    author: Autor/a
+    created: Proposat a
+    changes: Canvis
+    locale: Context configuració regional
+    product:
+      label: Etiqueta de producte
+    attribute:
+      label: Atribut
+    status:
+      label: Estat
+      working_copy: Còpia en procés
+      in_progress: En procés
+      ready: En espera d'aprovació
+      can_be_partially_reviewed: Es pot revisar parcialment
+      can_not_be_approved: No es pot revisar
+      can_not_be_deleted: No es pot suprimir
+    status_message:
+      can_be_partially_reviewed: Pots revisar aquesta proposta només parcialment perquè alguns canvis fan referència a valors que no pots editar. Contacta amb l'administrador per canviar els teus permisos.
+      can_not_be_approved: No pots revisar aquesta proposta perquè tots els canvis fan referència a valors que no pots editar. Contacta amb l'administrador per canviar els teus permisos.
+      can_not_be_deleted: No pots eliminar aquesta proposta perquè tots els canvis fan referència a valors que no pots editar. Contacta amb l'administrador per canviar els teus permisos.
+      in_progress: Aquesta proposta està actualment en procés i encara no s'ha enviat.
+    action:
+      approve: Aprovar tot
+      refuse: Refusar tot
+      remove: Eliminar
+      partial_approve: Aprovar canvis de l'atribut %attribute% del producte %product%
+      partial_reject: Refusar canvis de l'atribut %attribute% del producte %product%
+    notification:
+      partial_approve: '%owner% ha acceptat el/s valor/s per a %attributes% pel producte %product%'
+      partial_approve_number: '%owner% ha acceptat els valors pels atributs %attributes_count% pel producte %product%'
+      partial_reject: '%owner% ha rebutjat el/s valor/s per a %attributes% pel producte %product%'
+      partial_reject_number: '%owner% ha rebutjat els valors pels atributs %attributes_count% pel producte %product%'
+      approve: '%owner% ha acceptat la seva proposta pel producte %product%'
+      refuse: '%owner% ha rebutjat la proposta pel producte %product%'
+      remove: '%owner% ha rebutjat la proposta pel producte %product%'
+    mass_review_action:
+      approve: Aprovar els seleccionats
+      refuse: Rebutjar els seleccionats
+      error:
+        draft_not_ready: Aquesta proposta no està preparada per ser aprovada
+        not_product_owner: No teniu el producte relacionat a aquesta proposta
+        cannot_edit_attributes: No podeu editar els atributs modificats per aquesta proposta
+        invalid_draft: Aquesta proposta no es pot aplicar a causa de l'error següent. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% ha enviat una proposta de revisió pel producte %product.label%'
+    individual_import: '%author.firstname% %author.lastname% ha enviat propostes a revisar de la tasca d''importació'
+    generic_import: Teniu propostes per revisar de la tasca d'importació
+    original_value: Original
+    new_value: Nou
+    no_diff: El valor "%value%" és el mateix entre la proposta i la còpia de treball.
+    draft_in_progress: Un projecte està en marxa per %author% i per a aquest producte.
+  published_product:
+    index: Productes publicats
+    title: Producte publicat
+  acl.published_product:
+    index: Administrar productes publicats
+  product:
+    permission:
+      label: Permisos
+      own: Revisió / publicar
+      edit: Editar
+      view: Veure
+  jobs:
+    csv_product_proposal_import:
+      title: Importació de proposta de producte en CSV
+      import.title: Importació de proposta de producte
+    approve_product_draft:
+      title: Aprovar proposta
+      perform.title: Aprovar proposta
+    refuse_product_draft:
+      title: Rebutjar les propostes
+      perform.title: Rebutjar les propostes
+  steps:
+    product_draft_processor.title: Processador de proposta
+    approve.title: Aprovar proposta
+    refuse.title: Rebutjar proposta
+pimee_workflow_product_draft_notification_new_proposal: Nova proposta
+pimee_workflow_import_notification_new_proposals: Importar noves propostes
+btn.publish: Publicar
+btn.unpublish: Despublicar
+pimee_workflow_product_draft_notification_partial_approve: Proposta aprovada parcialment
+pimee_workflow_product_draft_notification_partial_reject: Proposta rebutjada parcialment
+pimee_workflow_product_draft_notification_approve: Proposta aprovada
+pimee_workflow_product_draft_notification_refuse: Proposta rebutjada
+pimee_workflow_product_draft_notification_remove: Proposta esborrada
+flash:
+  product:
+    published: El producte ha estat publicat amb èxit.
+    unpublished: El producte ha estat despublicat amb èxit.
+  product_draft:
+    approve:
+      success: La proposta s'ha aplicat amb èxit.
+      error: La proposta no es pot aplicar a causa de l'error següent. %error%
+    refuse:
+      success: La proposta ha estat rebutjada.
+    remove:
+      success: La proposta ha estat eliminada.
+pim_menu:
+  item:
+    published_product: Productes publicats
+    proposal: Propostes
+pim_title:
+  published_product:
+    index: Productes publicats
+    view: Productes publicats %product.sku% | Veure
+  product:
+    dispatch: Productes %product.sku%
+    show: Productes %product.sku% | Mostrar
+  proposal:
+    index: Propostes
+btn.editworkingcopy: Editar la còpia de treball
+confirmation:
+  product:
+    publish: Esteu segur que voleu publicar aquest producte ?
+    unpublish: Esteu segur que voleu despublicar aquest producte ?
+proposal.overview: Propostes
+Attributes.title: Atributs
+Completeness.title: Integritat
+publish_product.steps.publish_product_tasklet.title: Publicar el producte
+unpublish_product.steps.unpublish_product_tasklet.title: Despublicar els productes
+approve_product_draft.steps.approve.title: Aprovar la proposta
+approve_product_draft.steps.refuse.title: Rebutjar la proposta
+job_execution.summary:
+  approved: aprovat
+  refused: rebutjat
+  mass_published: Producte publicat
+  mass_unpublished: Producte despublicat
+  proposal: Proposta creada
+  proposal_deleted: proposta suprimida
+  proposal_updated: proposta actualitzada
+  proposal_created: proposta creada
+  proposal_skipped: proposta omesa (no hi ha diferències)
+published products: Productes publicats

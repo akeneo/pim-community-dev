@@ -2,17 +2,17 @@ View the product: Produkt ansehen
 pimee_enrich.product_history.action.revert: Diese Version wiederherstellen
 permission-changes:
   category:
-    grant: 'Die Gruppe <strong>{{ group }}</strong> wird in dieser Kategorie <strong>{{ permission }}</strong> sein'
-    revoke: 'Die Gruppe <strong>{{ group }}</strong> wird in dieser Kategorie nicht <strong>{{ permission }}</strong> sein'
+    grant: Die Gruppe <strong>{{ group }}</strong> wird in dieser Kategorie <strong>{{ permission }}</strong> sein
+    revoke: Die Gruppe <strong>{{ group }}</strong> wird in dieser Kategorie nicht <strong>{{ permission }}</strong> sein
   locale:
-    grant: 'Die Gruppe <strong>{{ group }}</strong> wird in diesem Gebietsschema <strong>{{ permission }}</strong> sein'
-    revoke: 'Die Gruppe <strong>{{ group }}</strong> wird in diesem Gebietsschema nicht <strong>{{ permission }}</strong> sein'
+    grant: Die Gruppe <strong>{{ group }}</strong> wird in diesem Gebietsschema <strong>{{ permission }}</strong> sein
+    revoke: Die Gruppe <strong>{{ group }}</strong> wird in diesem Gebietsschema nicht <strong>{{ permission }}</strong> sein
   attribute group:
-    grant: 'Die Gruppe <strong>{{ group }}</strong> wird <strong>{{ permission }}</strong> innerhalb dieser Attributgruppe sein'
-    revoke: 'Die Gruppe <strong>{{ group }}</strong> wird nicht <strong>{{ permission }}</strong> innerhalb dieser Attributgruppe sein'
+    grant: Die Gruppe <strong>{{ group }}</strong> wird <strong>{{ permission }}</strong> innerhalb dieser Attributgruppe sein
+    revoke: Die Gruppe <strong>{{ group }}</strong> wird nicht <strong>{{ permission }}</strong> innerhalb dieser Attributgruppe sein
   job profile:
-    grant: 'Die Gruppe <strong>{{ group }}</strong> wird <strong>{{ permission }}</strong> sein'
-    revoke: 'Die Gruppe <strong>{{ group }}</strong> wird nicht <strong>{{ permission }}</strong> sein'
+    grant: Die Gruppe <strong>{{ group }}</strong> wird <strong>{{ permission }}</strong> sein
+    revoke: Die Gruppe <strong>{{ group }}</strong> wird nicht <strong>{{ permission }}</strong> sein
 pimee_enrich:
   entity:
     product:
@@ -69,7 +69,7 @@ pimee_enrich:
         source:
           working_copy: Arbeitskopie
           draft: Mein Entwurf
-          draft_of: 'Entwurf von {{ author }}'
+          draft_of: Entwurf von {{ author }}
     product_draft:
       info:
         update_successful: Produktentwurf wurde erfolgreich gespeichert
@@ -90,7 +90,7 @@ pimee_enrich:
         send_for_approval: Zur Freigabe senden
         cancel: Abbrechen
         confirm: Senden
-        title: 'Kommentar zu Ihrem Vorschlag (optional - max. 255 Zeichen)'
+        title: Kommentar zu Ihrem Vorschlag (optional - max. 255 Zeichen)
         characters: Zeichen.
       confirmation:
         discard_changes: Ungespeicherte Änderungen gehen verloren. Sind Sie sicher, dass Sie den Produktentwurf mit den ungespeicherten Anpassungen zur Freigabe senden möchten?

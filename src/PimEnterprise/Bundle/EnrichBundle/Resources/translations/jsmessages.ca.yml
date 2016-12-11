@@ -1,0 +1,97 @@
+View the product: Veure el producte
+pimee_enrich.product_history.action.revert: Tornar a aquesta versió
+permission-changes:
+  category:
+    grant: El grup <strong>{{ group }} serà {{ permission }}</strong> en aquesta categoria
+    revoke: El grup <strong>{{ group }} no serà {{ permission }}</strong> en aquesta categoria
+  locale:
+    grant: El grup <strong>{{ group }} serà {{ permission }}</strong> en aquesta configuració regional
+    revoke: El grup <strong>{{ group }} no serà {{ permission }}</strong> en aquesta configuració regional
+  attribute group:
+    grant: El grup <strong>{{ group }} serà {{ permission }}</strong> en aquest grup d'atributs
+    revoke: El grup <strong>{{ group }} no serà {{ permission }}</strong> en aquest grup d'atributs
+  job profile:
+    grant: El grup <strong>{{ group }} serà {{ permission }}</strong>
+    revoke: El grup <strong>{{ group }} no serà {{ permission }}</strong>
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Publicat
+        revert: Restaurar
+      smart_attribute:
+        come_from: 'Aquest atribut pot ser actualitzat per una regla:'
+      btn:
+        publish: Publicar
+        publish_this_version: Publicar aquesta versió
+        unpublish: Despublicar
+        save_draft: Desar l'esborrany
+      flash:
+        product_unpublished: Producte despublicat amb èxit
+        product_published: Producte publicat amb èxit
+        product_not_published: No s'ha pogut publicar aquest producte
+        product_not_unpublished: No s'ha pogut despublicar aquest producte
+        product_reverted: Producte restaurat amb èxit
+      meta:
+        published: Versió publicada
+        owner_groups: Grups de propietaris
+        draft_status: Estat del projecte
+        draft:
+          in_progress: En procés
+          sent_for_approval: En espera d'aprovació
+          working_copy: Còpia de treball
+      tab:
+        proposals:
+          title: Propostes
+          messages:
+            approve:
+              success: La proposta s'ha aplicat amb èxit.
+              error:
+                The proposal can't be applied due to the following error:
+                  - error
+            reject:
+              success: La proposta ha estat rebutjada.
+            remove:
+              success: La proposta ha estat eliminada.
+      confirmation:
+        revert:
+          title: Restaurar la confirmació
+          content: Esteu segur que voleu restaurar el producte a aquesta versió?
+        publish:
+          title: Publicar aquest producte
+          content: Esteu segur que voleu publicar aquest producte?
+        unpublish:
+          title: Despublicar aquest producte
+          content: Esteu segur que voleu despublicar aquest producte?
+      info:
+        update_successful: La còpia de treball del producte s'ha actualitzat
+      copy:
+        source:
+          working_copy: Còpia de treball
+          draft: El meu projecte
+          draft_of: projecte de {{ author }}
+    product_draft:
+      info:
+        update_successful: El projecte de producte s'ha desat correctament
+        update_failed: El projecte de producte no s'ha pogut actualitzar
+        value_modified: Aquest valor és modificat pel projecte actual 
+      flash:
+        sent_for_approval: Projecte de producte enviat per la seva aprovació
+        draft_not_sendable: No podeu enviar aquest projecte per a la seva aprovació
+      btn:
+        send_for_approval: Enviar per a la seva aprovació
+        sent_for_approval: Enviat per a la seva aprovació
+      modal:
+        accept_proposal: Acceptar la proposta
+        accept_selected_proposal: Acceptar la proposta seleccionada|Acceptar les propostes seleccionades
+        reject_proposal: Rebutjar la proposta
+        reject_selected_proposal: Rebutjar la proposta seleccionada|Rebutjar les propostes seleccionades
+        remove_proposal: Eliminar proposta
+        send_for_approval: Enviar per a la seva aprovació
+        cancel: Cancelar
+        confirm: Enviar
+        title: Comenteu la seva proposta (opcional - 255 caràcters màx.)
+        characters: caràcters
+      confirmation:
+        discard_changes: Esteu segur que voleu enviar el seu projecte a aprovació sense canvis no desats? Aquests canvis es perdran.
+        discard_changes_title: Esteu segur que voleu enviar aquest projecte?

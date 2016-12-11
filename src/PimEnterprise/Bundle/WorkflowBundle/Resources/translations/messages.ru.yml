@@ -6,25 +6,50 @@ pimee_workflow:
     locale: Контекст локали
     product:
       label: Ярлык продукта
+    attribute:
+      label: Атрибут
     status:
       label: Статус
       working_copy: Рабочая копия
       in_progress: В процессе
       ready: В ожидании утверждения
+      can_be_partially_reviewed: Может быть частично пересмотрен
       can_not_be_approved: Не может быть пересмотрен
       can_not_be_deleted: Не может быть удален
+    status_message:
+      can_be_partially_reviewed: Вы можете просмотреть это предложение только частично потому, что некоторые изменения применяются на значения, которые Вы не можете менять. Обратитесь к администратору для изменения ваших прав.
+      can_not_be_approved: Вы не можете просмотреть это предложение потому, что некоторые изменения применяются на значения, которые Вы не можете менять. Обратитесь к администратору для изменения ваших прав.
+      can_not_be_deleted: Вы не можете удалить это предложение потому, что некоторые изменения применяются на значения, которые Вы не можете менять. Обратитесь к администратору для изменения ваших прав.
     action:
-      approve: Одобрить
-      refuse: Отклонить
+      approve: Утвердить все
+      refuse: Отклонить все
       remove: Удалить
+      partial_approve: Утвердить изменения на атрибута %attribute% продукта %product%
+      partial_reject: Отклонить изменения атрибута %attribute% продукта %product%
+    notification:
+      partial_approve: '%owner% принял значения для %attributes% продукта %product%'
+      partial_approve_number: '%owner% принял значения %attributes_count% атрибутов для продукта %product%'
+      partial_reject: '%owner% отклонил значения для %attributes% продукта %product%'
+      partial_reject_number: '%owner% отклонил значения %attributes_count% атрибутов для продукта %product%'
+      approve: '%owner% принял Ваше предложение %product%'
+      refuse: '%owner% отклонил Ваше предложение %product%'
+      remove: '%owner% удалил Ваше предложение %product%'
     mass_review_action:
-      approve: Одобрить выделенное
-      refuse: Отклонить выбраннoе
+      approve: Подтвердите все выбранное
+      refuse: Отклонить все выбранное
       error:
         draft_not_ready: Это предложение не готово быть принятым
         not_product_owner: Вы не являетесь владельцем продукта, относяющемуся к этому предложению
         cannot_edit_attributes: Нельзя редактировать атрибуты изменяемые этим предложением
-        invalid_draft: 'Это предложение не может быть применено из-за следующей ошибки. %error%'
+        invalid_draft: Это предложение не может быть применено из-за следующей ошибки. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% направил предложение о пересмотре для %product.label% продукта'
+    individual_import: '%author.firstname% %author.lastname% отправил предложения на рассмотр через импорт'
+    generic_import: Имеются предложения на рассмотр через импорт
+    original_value: Исходное
+    new_value: Новое
+    no_diff: Значение «%value%» одинаковое в предложении и в рабочей копии.
+    draft_in_progress: Черновик в ходу у %author% для этого продукта.
   published_product:
     index: Опубликованные продукты
     title: Опубликованный продукт
@@ -48,8 +73,17 @@ pimee_workflow:
       perform.title: Отклонить предложения
   steps:
     product_draft_processor.title: Процессор предложений
+    approve.title: Принять предложение
+    refuse.title: Отклонить предложение
+pimee_workflow_product_draft_notification_new_proposal: Новое предложение
+pimee_workflow_import_notification_new_proposals: Новые предложения для импорта
 btn.publish: Опубликовать
 btn.unpublish: Снять с публикации
+pimee_workflow_product_draft_notification_partial_approve: Частичное одобрение предложения
+pimee_workflow_product_draft_notification_partial_reject: Предложение частично одобрено
+pimee_workflow_product_draft_notification_approve: Предложение одобрено
+pimee_workflow_product_draft_notification_refuse: Предложение отклонено
+pimee_workflow_product_draft_notification_remove: Предложение удаленo
 flash:
   product:
     published: Продукт был успешно опубликован.
@@ -57,9 +91,11 @@ flash:
   product_draft:
     approve:
       success: Предложение было успешно применено.
-      error: 'Это предложение нельзя применить из-за следующей ошибки. %error%'
+      error: Это предложение нельзя применить из-за следующей ошибки. %error%
     refuse:
       success: Это предложение было отклонено.
+    remove:
+      success: Предложение было удалено.
 pim_menu:
   item:
     published_product: Опубликованные продукты
@@ -67,10 +103,10 @@ pim_menu:
 pim_title:
   published_product:
     index: Опубликованные продукты
-    view: 'Опубликованные продукты %product.sku% | Просмотр'
+    view: Опубликованные продукты %product.sku% | Просмотр
   product:
-    dispatch: 'Продукты %product.sku%'
-    show: 'Продукты %product.sku% | Показать'
+    dispatch: Продукты %product.sku%
+    show: Продукты %product.sku% | Показать
   proposal:
     index: Предложения
 btn.editworkingcopy: Редактировать рабочую копию
@@ -95,3 +131,4 @@ job_execution.summary:
   proposal_updated: обновленных предложений
   proposal_created: созданных предложений
   proposal_skipped: пропущенных предложений (без изменений)
+published products: Опубликованные продукты

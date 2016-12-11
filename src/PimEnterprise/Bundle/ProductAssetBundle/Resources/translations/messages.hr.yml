@@ -1,0 +1,144 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Obogatiti imovinu
+      create: Kreiraj imovinu
+      remove: Ukloni imovinu
+      categories_view: Pogledajte kategorije imovine
+      mass_upload: Masovni prijenos imovine
+    category_asset_picker:
+      list: Uvrsti kategorije imovine u birač imovine
+    category:
+      create: Kreiraj kategoriju imovine
+      edit: Uredi kategoriju imovine
+      list: Izlistaj kategorije imovine
+      remove: Ukloni kategoriju imovine
+      manage: Upravljanje dozvola za kategorije imovine
+      history: Prikaži povijest kategorije imovine
+  acl_group:
+    asset: Proizvod imovina
+    category: Kategorije imovine
+  enrich_asset:
+    button:
+      upload: Prijenos
+      delete: Obriši
+      download: Preuzimanje
+      generate_from_reference: Generiraj iz referentne vrijednosti
+      reset_variations: Vrati izvorne varijacije
+    confirmation.remove: Jeste li sigurni da želite ukloniti imovinu "%asset%"?
+    grid:
+      edit: Uredi svojstva imovine
+    view:
+      title: Proizvod imovine
+      code: Kod
+      description: Opis
+      end_of_use: Kraj korištenja u
+      reference: Referenca
+      filename: Naziv datoteke
+      width: Širina
+      height: Visina
+      resolution: Razlučivost
+      colors: Raspon boja
+      filesize: Veličina datoteke
+      filetype: Vrsta datoteke
+      actions: Akcije
+      download: Preuzimanje
+      tag: Tagovi
+      no_reference: Datoteka reference još nije prenesena.
+      no_variation: Datoteka varijante još nije generirana.
+    flash:
+      update:
+        success: Imovina je ažurirana.
+        error: Imovina nije ažurirana. Pojavila se pogreška.
+      create:
+        success: Imovina je kreirana.
+        error: Imovine nije kreirana. Pojavila se pogreška.
+      remove:
+        success: Imovina je uklonjena.
+  enrich_reference:
+    flash:
+      delete:
+        success: Datoteka referece je obrisana.
+        error: Datoteka reference nije obrisana. Pojavila se pogreška.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Nije moguće generirati varijaciju %channel% uslijed neispravnih opcija.
+        image_width_error: Nije moguće generirati varijaciju %channel% jer prenesena slika ima manju širinu nego što zahtjeva transformacija.
+        image_height_error: Nije moguće generirati varijaciju %channel% jer prenesena slika ima manju visinu nego što zahtjeva transformacija.
+        not_applicable: Nije moguće generirati varijaciju %channel%.
+        non_registered: Nije registrirana niti jedna %transformation% transformacija za mime tip %mimeType%. Nije moguće generirati varijaciju %channel%.
+        error: Nije moguće generirati varijaciju %channel%.
+        success: Datoteke varijacije je uspješno generirana.
+      update:
+        success: Datoteka varijacije je uspješno ažurirana.
+        error: Datoteka varijacije nije ažurirana. Pojavila se pogreška.
+      delete:
+        success: Datoteka varijacije je obrisana.
+        error: Datoteka varijacije nije obrisana. Pojavila se pogreška.
+  popin.create:
+    title: Kreiraj novu imovinu
+    is_localized: Moguće je lokalizirati
+  menu: Imovine
+  page_tab:
+    title:
+      view: Proizvod imovine %asset.code% | Prikaz
+      edit: Proizvod imovine %asset.code% | Uredi
+      index: Proizvod imovina
+  code:
+    label: Kod
+  thumbnail:
+    label: Minijatura
+  status:
+    label: Status
+  description:
+    label: Opis
+  endOfUse:
+    label: Kraj korištenja
+  createdAt:
+    label: Kreirano u
+  updatedAt:
+    label: Posljednja promjena u
+  tags:
+    label: Tagovi
+  tabs:
+    properties.title: Svojstva
+    variations.title: Varijacije
+    categories.title: Kategorije
+  validation:
+    code:
+      not_empty: Kod je potreban. Ne može biti prazan.
+      unique: Kod mora biti jedinstven.
+      new_generation: Generirali smo novi za Vas.
+  jobs:
+    assets_mass_upload.title: Masovni prijenos imovine
+  notAvailable:
+    label: nije dostupno
+  asset:
+    title: Imovina
+  mass_upload:
+    menu: Prijenos imovine
+    new: Nova imovina će se kreirati
+    add_files: dodaj datoteke
+    start: Počni prijenos
+    cancel: Odustani od prijenosa
+    executed: Masovni Prijenos izvršen
+    error:
+      upload: Dogodila se pogreška tijekom prijenosa
+      code: Nije valjan oblik zapisa za imovinu
+      localizable: Imovina postoji ali nije moguće lokalizirati
+      invalid_locale: Lokacija je onemogućena ili nije valjana
+  category:
+    menu: Kategorije imovine
+    permissions:
+      view.label: Dozvoljen pregled imovine
+      view.help: Dozvoli prikaz imovina u ovoj kategoriji
+      edit.label: Dozvoljeno uređivanje imovina
+      edit.help: Dozvoli uređivanje imovina u ovoj kategoriji (podrazumijeva dozvolu za prikaz)
+      no_access_to_products: Nemate pristup za imovine u nijednom stablu, obratite se administratoru
+      apply_on_children.label: Primjena promjena na djecu
+      apply_on_children.help: Kopirajte dozvole promjene na svu djecu, postojeće dozvole na djecu su očuvane
+btn.create.asset: Kreiraj imovinu
+assets_mass_upload.steps:
+  asset_mass_upload.title: Masovni prijenos imovine
+mass_upload: Masovni prenesi imovine

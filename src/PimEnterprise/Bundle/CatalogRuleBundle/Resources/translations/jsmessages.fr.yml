@@ -4,7 +4,7 @@ pimee_catalog_rule:
       code.label: Code
       condition.label: Condition
       action.label: Action
-      no_rule_yet.label: "Il n'y a aucune règle pour l'instant"
+      no_rule_yet.label: Il n'y a aucune règle pour l'instant
   rule:
     condition:
       if.label: Si
@@ -17,7 +17,7 @@ pimee_catalog_rule:
       add.label: est ajouté dans
 confirmation:
   remove:
-    rule: "Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action"
+    rule: Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action
 flash:
   rule:
     removed: Règle supprimée avec succès

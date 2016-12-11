@@ -63,12 +63,12 @@ pimee_product_asset:
   enrich_variation:
     flash:
       transformation:
-        invalid_options: 'Imposible de generar la varación %channel% de debido a opciones inválidas.'
-        image_width_error: 'Imposible de generar la variación %channel% debido a que la imagen cargada tiene un ancho menor que el solicitado por la transformación.'
-        image_height_error: 'Imposible de generar la variación %channel% debido a que la imagen cargada tiene un alto menor que el solicitado por la transformación.'
-        not_applicable: 'Imposible generar la variación %channel%.'
-        non_registered: 'Ninguna %transformation% transformación registrada por el mime type %mimeType%. Imposible de generar la variación %channel%.'
-        error: 'Imposible generar la variación %channel%.'
+        invalid_options: Imposible de generar la varación %channel% de debido a opciones inválidas.
+        image_width_error: Imposible de generar la variación %channel% debido a que la imagen cargada tiene un ancho menor que el solicitado por la transformación.
+        image_height_error: Imposible de generar la variación %channel% debido a que la imagen cargada tiene un alto menor que el solicitado por la transformación.
+        not_applicable: Imposible generar la variación %channel%.
+        non_registered: Ninguna %transformation% transformación registrada por el mime type %mimeType%. Imposible de generar la variación %channel%.
+        error: Imposible generar la variación %channel%.
         success: Los ficheros de variaciones han sido creados con éxito.
       update:
         success: El fichero de variación ha sido actualizado.
@@ -82,8 +82,8 @@ pimee_product_asset:
   menu: Recursos
   page_tab:
     title:
-      view: 'Recurso de producto %asset.code% | Ver'
-      edit: 'Recurso de producto %asset.code% | Editar'
+      view: Recurso de producto %asset.code% | Ver
+      edit: Recurso de producto %asset.code% | Editar
       index: Recursos de productos
   code:
     label: Código
@@ -133,6 +133,7 @@ pimee_product_asset:
     add_files: agregar ficheros
     start: Comenzar carga
     cancel: Cancelar carga
+    schedule: programar
     executed: Carga en masa iniciada
     error:
       upload: Un error ha ocurrido al intentar cargar

@@ -25,14 +25,14 @@ pimee_product_asset:
       download: Herunterladen
       generate_from_reference: Aus Referenz generieren
       reset_variations: Variationen zurücksetzen
-    confirmation.remove: 'Sind Sie sicher, dass Sie das Asset "%asset%" entfernen möchten?'
+    confirmation.remove: Sind Sie sicher, dass Sie das Asset "%asset%" entfernen möchten?
     grid:
       edit: Eigenschaften des Assets bearbeiten
     view:
       title: Produktasset
       code: Code
       description: Beschreibung
-      end_of_use: 'Gültig bis  '
+      end_of_use: Gültig bis  
       reference: Verwendungszweck
       filename: Dateiname
       width: Breite
@@ -63,12 +63,12 @@ pimee_product_asset:
   enrich_variation:
     flash:
       transformation:
-        invalid_options: 'Erstellen der Variation %channel% aufgrund ungültiger Optionen nicht möglich.'
-        image_width_error: 'Erstellen der Variation %channel% nicht möglich, da das hochgeladene Bild eine geringere Breite aufweist, als die Umwandlung erfordert.'
-        image_height_error: 'Erstellen der Variation %channel% nicht möglich, da das hochgeladene Bild eine geringere Höhe aufweist, als die Umwandlung erfordert.'
-        not_applicable: 'Erstellen der Variation %channel% nicht möglich.'
-        non_registered: 'Keine %transformation% Umwandlung für Mime Typ %mimeType% registriert. Erstellen der Variation %channel% nicht möglich.'
-        error: 'Erstellen der Variation %channel% nicht möglich.'
+        invalid_options: Erstellen der Variation %channel% aufgrund ungültiger Optionen nicht möglich.
+        image_width_error: Erstellen der Variation %channel% nicht möglich, da das hochgeladene Bild eine geringere Breite aufweist, als die Umwandlung erfordert.
+        image_height_error: Erstellen der Variation %channel% nicht möglich, da das hochgeladene Bild eine geringere Höhe aufweist, als die Umwandlung erfordert.
+        not_applicable: Erstellen der Variation %channel% nicht möglich.
+        non_registered: Keine %transformation% Umwandlung für Mime Typ %mimeType% registriert. Erstellen der Variation %channel% nicht möglich.
+        error: Erstellen der Variation %channel% nicht möglich.
         success: Variationsdateien wurden erfolgreich generiert.
       update:
         success: Variationsdatei wurde aktualisiert.
@@ -82,8 +82,8 @@ pimee_product_asset:
   menu: Assets
   page_tab:
     title:
-      view: 'Produktasset %asset.code% | Ansehen'
-      edit: 'Produktasset %asset.code% | Bearbeiten'
+      view: Produktasset %asset.code% | Ansehen
+      edit: Produktasset %asset.code% | Bearbeiten
       index: Produktassets
   code:
     label: Code
@@ -150,7 +150,7 @@ pimee_product_asset:
       apply_on_children.label: Änderung auf die Kindelemente anwenden
       apply_on_children.help: Die Änderungen an den Berechtigungen auf alle Kindelemente kopieren. Bestehende Berechtigungen bei Kindelementen werden beibehalten.
 btn.create.asset: Asset erstellen
-btn.drag_or_upload: 'Drag & Drop einer Datei oder hier klicken'
+btn.drag_or_upload: Drag & Drop einer Datei oder hier klicken
 job_execution.summary:
   asset_file_processed: Assetdatei verarbeitet
   variations_not_generated: Variationen nicht generiert

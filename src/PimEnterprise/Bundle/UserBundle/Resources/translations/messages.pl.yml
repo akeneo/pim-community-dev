@@ -1,8 +1,14 @@
 user:
+  email:
+    notifications: Powiadomienia e-mail
   proposals:
     notifications:
+      to_review: Kiedy nowa propozycja do przeglądu
+      state: Kiedy propozycja jest akceptowana lub odrzucona
       "yes": true
       "no": false
+  default_published_product_grid_view:
+    label: Domyślny widok opublikowanych produktów
 pimee_user:
   user:
     tab:

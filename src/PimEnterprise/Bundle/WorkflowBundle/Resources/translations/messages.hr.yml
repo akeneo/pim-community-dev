@@ -1,0 +1,18 @@
+pimee_workflow:
+  product_draft:
+    author: Autor
+    status:
+      label: Status
+    action:
+      remove: Ukloni
+  product:
+    permission:
+      label: Dozvole
+      edit: Uredi
+      view: Prikaz
+flash:
+  product_draft:
+    remove:
+      success: Prijedlog je uklonjen.
+Attributes.title: Atributi
+Completeness.title: Potpunost

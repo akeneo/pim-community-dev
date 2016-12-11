@@ -1,0 +1,49 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        panel:
+          basket:
+            title: Mandje
+            empty_basket: Mandje is leeg
+        manage_asset:
+          cancel: Annuleren
+  enrich_variation:
+    popin:
+      delete:
+        title: Bevestig verwijderen
+        message: Weet u zeker dat u dit item wilt verwijderen?
+      reset:
+        title: Stel variaties opnieuw in
+        message: Weet u zeker dat u alle variaties wilt resetten?
+  mass_upload:
+    btn:
+      delete: Verwijderen
+    success:
+      canceled: Uploaden met succes geannuleerd
+      deleted: Geüploade bestand succesvol verwijderd
+    error:
+      list: Kan de reeds geüploade bestanden niet lezen
+      delete: Kan bestand niet verwijderen van server
+      conflicts: Bestandsnamen conflict
+    grid:
+      medias: media
+      filename: bestandsnaam
+      filetype: bestandstype
+      status: status
+      progress: vooruitgang
+      actions: acties
+    action:
+      cancel: Annuleren
+      delete: Verwijderen
+    status:
+      added: Toegevoegd
+      queued: In wachtrij gezet
+      uploading: Aan het uploaden
+      error: Fout
+      success: Geslaagd
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Massa upload

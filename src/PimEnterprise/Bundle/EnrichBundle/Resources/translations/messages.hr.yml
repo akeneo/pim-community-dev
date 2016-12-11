@@ -1,0 +1,145 @@
+pim_title.locale:
+  edit: Lokacije %locale.code% | Uredi
+Permissions: Dozvole
+pane.accordion.permissions: Dozvole
+attribute group.permissions:
+  view.label: Dozvoljen pregled svojstava
+  view.help: Dopusti pregled proizvoda iz ove grupe atributa
+  edit.label: Dozvoljeno uređivanje atributa
+  edit.help: Dopusti uređivanje proizvoda iz ove grupe atributa
+  no_access_to_attributes: Nemate pristup za nijedan atribut ovog proizvoda. Obratite se administratoru.
+category.permissions:
+  view.label: Dozvoljen pregled proizvoda
+  view.help: Dopustiti pregled proizvoda u ovoj kategoriji
+  edit.label: Dopušteno uređivanje proizvoda
+  edit.help: Dopusti uređivanje proizvoda u ovoj kategoriji (podrazumijeva dozvolu za prikaz)
+  own.label: Dozvoljeno za vlastite proizvode
+  own.help: Dozvoljen pregled, objava, poništenje objave, klasificirati, povezati proizvode u ovoj kategoriji (podrazumijeva dozvolu za uređivanje)
+  no_access_to_products: Nemate pristup za proizvode u nijednom stablu, obratite se administratoru
+  apply_on_children.label: Primjena promjena na djecu
+  apply_on_children.help: Kopirajte dozvole promjene na svu djecu, postojeće dozvole na djecu su očuvane
+locale.permissions:
+  view.label: Dozvoljen pregled informacija o proizvodu
+  view.help: Dopusti pregled informacija o proizvodu u ovoj lokaciji
+  edit.label: Dozvoljeno uređivanje informacija o proizvodu
+  edit.help: Dopusti uređivanje informacija proizvoda u ovoj lokaciji (podrazumijeva dozvolu za prikaz)
+  no_access_to_products: Nemate pristup do podataka o proizvodu u bilo kojoj aktiviranoj lokaciji, obratite se administratoru
+btn:
+  save working copy: Spremi radnu kopiju
+  save draft: Spremi skicu
+  save working copy and next: Spremi radnu kopiju i kreni dalje
+  save draft and next: Spremi skice i kreni dalje
+  save working copy and finish: Spremi radnu kopiju i završi
+  save draft and finish: Spremi skicu i završi
+  send for approval: Slanje na odobrenje
+  sent for approval: Poslano na odobrenje
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Nemate dozvolu za uređivanje proizvoda "%identifiers%".
+    publish:
+      label: Objavljivanje proizvoda
+      description: Objavi odabrane proizvode, trenutno objavljeni podaci biti će obrisani prema trenutnoj radnoj kopiji.
+      success_flash: Odabrani proizvodi su uspješno objavljeni.
+      launched_flash: Proces objavljivanja proizvoda se trenutno izvodi.
+      message:
+        error: Niste vlasnik proizvoda, ne možete ih objaviti.
+        warning: Niste vlasnik svih odabranih proizvoda, ne možete objaviti "%notGranted%".
+        info: '%nbProducts% odabranih proizvoda će biti objavljeno.'
+      not_editable: Nemate dozvolu za uređivanje proizvoda "%identifiers%".
+    published_product:
+      title: Odabiri operaciju
+      steps:
+        first: Odabir objavljenih proizvoda
+        second: Odabiri operaciju
+        third: Konfiguriraj
+        fourth: Potvrdi
+    unpublish:
+      label: Poništi objave proizvoda
+      description: Poništi objavu odabranih proizvoda, trenutno objavljeni podaci će biti izbrisani.
+      success_flash: Uspješno je poništena objava odabranih proizvoda.
+      launched_flash: Trenutno se izvodi proces poništavanja obavljivanja proizvoda.
+      message:
+        error: Niste vlasnik proizvoda, ne možete im poništiti objavljivanje.
+        warning: Niste vlasnik svih odabranih proizvoda, ne možete poništiti objavljivanje proizvoda "%notGranted%".
+        info: Za %nbProducts% odabranih proizvoda će biti poništena objava.
+      not_editable: Nemate dozvolu za uređivanje proizvoda "%identifiers%".
+    classify:
+      message:
+        error: Niste vlasnik proizvoda, ne možete ih klasificirati.
+        warning: Niste vlasnik svih odabranih proizvoda, ne možete klasificirati proizvode "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Niste vlasnik proizvoda, ne možete ih mjenjati.
+pim_enrich.mass_edit_action:
+  limit_exceeded: Odaberi manje od %limit% stvari za uređivanje
+  product:
+    page_title: Proizvodi
+    page_subtitle: Masovno uređivanje (1 proizvod) | Masovno uređivanje (%count% proizvoda)
+    title: Odabiri operaciju
+    subtitle: Odaberi operaciju koju želiš obaviti na odabranom proizvodu| Odaberi operaciju koju želiš izvesti na %count% odabranih proizvoda
+    confirm: Spremate se ažurirati proizvod sa sljedećim podacima, molimo vas da potvrdite. | Spremate se ažurirati %count% proizvoda sa sljedećim podacima, molimo vas da potvrdite.
+    steps:
+      first: Odaberi proizvode
+      second: Odabiri operaciju
+      third: Konfiguriraj
+      fourth: Potvrdi
+flash.product.updated: Radna kopija proizvoda je ažurirana
+flash.product_draft.updated: Nacrt je uspješno spremljen
+flash.locale.updated: Lokacija i dozvole su ažurirane
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Dozvole
+  category:
+    tab:
+      permission.title: Dozvole
+  locale:
+    tab:
+      permission.title: Dozvole
+  channel:
+    tab:
+      asset_transformation.title: Transformacije imovine
+  acl.product_ownership.title: Vlasništvo
+  attributes:
+    empty: niti jedan
+  groups:
+    label: vlasničke grupe
+    empty: niti jedan
+  asset_transformation:
+    not_found: Nisu pronađene transformacije
+    title:
+      transformation: Transformacije
+      options: Opcije
+    colorspace:
+      title: Prostor boja
+      options:
+        colorspace: '%value% prostoar boja'
+    resize:
+      title: Promjena veličine
+      options:
+        width: '% value%px širina'
+        height: '% value%px visina'
+    resolution:
+      title: Razlučivost
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skala
+      options:
+        width: '% value%px širina'
+        height: '% value%px visina'
+        ratio: '%value%% omjer'
+    thumbnail:
+      title: Minijatura
+      options:
+        width: '% value%px širina'
+        height: '% value%px visina'
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Dodaj vrijednost proizvoda sa dozvolom
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ažuriraj vrijednost proizvoda sa dozvolom
+edit_common_attributes_with_permission: Promijeni vrijednost proizvoda sa dozvolom
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Promijeni vrijednost proizvoda sa dozvolom
+job_execution.summary:
+  proposal_deleted: obrisano
+pim_assets_collection: Popis imovine

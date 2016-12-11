@@ -1,0 +1,52 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Gestió de recursos
+        panel:
+          basket:
+            title: Cistella
+            empty_basket: La cistella és buida
+        manage_asset:
+          title: Gestió de recursos
+          cancel: Cancelar
+          confirm: Confirmar
+  enrich_asset:
+    grid:
+      edit: Edita les propietats del recurs
+  enrich_variation:
+    popin:
+      delete:
+        title: Confirmació de l'eliminació
+        message: Esteu segur que voleu eliminar aquest element?
+      reset:
+        title: Reiniciar variacions
+        message: Esteu segur que voleu reiniciar totes les variacions?
+  mass_upload:
+    btn:
+      delete: Suprimir
+      start: Iniciar càrrega
+    success:
+      new: Es crearà un nou recurs
+    error:
+      upload: S'ha produït un error durant la càrrega
+      delete: No es pot eliminar aquest arxiu del servidor
+      filename: Aquest nom de fitxer no és vàlid pel recurs
+      code: Format de codi invàlid pel recurs
+      locale: Ja existeix un recurs però no se li pot aplicar cap configuració regional
+      invalid_locale: La configuració regional està desactivada o no és vàlida
+      conflicts: Conflicte de nom d'arxius
+    grid:
+      filename: nom d'arxiu
+      filetype: tipus d'arxiu
+      status: estat
+      progress: progrés
+      actions: accions
+    action:
+      cancel: Cancelar
+      delete: Suprimir
+    status:
+      added: Afegit|Afegides
+      queued: En cua
+      error: Error
+      success: Correcte

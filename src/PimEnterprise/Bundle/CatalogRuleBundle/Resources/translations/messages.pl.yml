@@ -5,19 +5,42 @@ pimee_catalog_rule:
         delete: Usuń
       column:
         code: Kod
+        conditions: Stan
         actions: Akcja
+  actions:
+    type:
+      copy: Następnie %from_field% jest kopiowane do %to_field%
+      copy_value: Następnie %from_field% jest kopiowane do %to_field%
+      set: Następnie %value% jest umieszczona w %field%
+      set_value: Następnie %value% jest umieszczona w %field%
+      add: Następnie %value% jest dodawana do %field%
   condition:
     operators:
       STARTS WITH: zaczyna się od
       ENDS WITH: kończy się na
       CONTAINS: zawiera
       DOES NOT CONTAIN: nie zawiera
+      IN: w
+      NOT IN: nie w
+      UNCLASSIFIED: jest niesklasyfikowany
       BETWEEN: pomiędzy
       NOT BETWEEN: nie pomiędzy
+      =: jest równe
+      >: większy niż
       <: mniej niż
+  acl_group:
+    rule: Reguły
+  acl:
+    rule:
+      view_permissions: Zobacz reguły
+      delete_permissions: Usuwanie reguł
   attribute:
+    tab:
+      rule.title: Reguły
     grid:
       is_smart.label: Inteligentne
+    acl:
+      rule.view_permissions: Zobacz reguły
   product:
     tooltip:
       loading.title: Ładuję...

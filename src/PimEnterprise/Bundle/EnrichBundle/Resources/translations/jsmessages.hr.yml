@@ -1,0 +1,97 @@
+View the product: Pogledaj proizvod
+pimee_enrich.product_history.action.revert: Vrati na ovu verziju
+permission-changes:
+  category:
+    grant: Grupa <strong>{{ group }}</strong> će <strong>biti {{ permission }}</strong> u ovoj kategoriji
+    revoke: Grupa <strong>{{ group }}</strong> neće <strong>biti {{ permission }}</strong> u ovoj kategoriji
+  locale:
+    grant: Grupa <strong>{{ group }}</strong> će <strong>biti {{ permission }}</strong> u ovom lokalu
+    revoke: Grupa <strong>{{ group }}</strong> neće <strong>biti {{ permission }}</strong> u ovom lokalu
+  attribute group:
+    grant: Grupa <strong>{{ group }}</strong> će <strong>biti {{ permission }}</strong> u ovoj grupi atributa
+    revoke: Grupa <strong>{{ group }}</strong> neće <strong>biti {{ permission }}</strong> u ovoj grupi atributa
+  job profile:
+    grant: Grupa <strong>{{ group }}</strong> će <strong>biti {{ permission }}</strong>
+    revoke: Grupa <strong>{{ group }}</strong> neće <strong>biti {{ permission }}</strong>
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Objavljeno
+        revert: Vrati
+      smart_attribute:
+        come_from: 'Ovaj atribut se može ažurirati prema pravilu:'
+      btn:
+        publish: Objavi
+        publish_this_version: Objavi ovu verziju
+        unpublish: Poništi objavu
+        save_draft: Spremi skicu
+      flash:
+        product_unpublished: Proizvodu uspješno maknuta objava
+        product_published: Proizvod uspješno objavljen
+        product_not_published: Nije uspjela objava ovog proizvoda
+        product_not_unpublished: Nije uspjelo poništavanje objave ovog proizvoda
+        product_reverted: Proizvod je uspješno vraćen
+      meta:
+        published: Objavljena verzija
+        owner_groups: Vlasnik grupe
+        draft_status: Status skice
+        draft:
+          in_progress: U tijeku
+          sent_for_approval: Čeka na odobrenje
+          working_copy: Radna kopija
+      tab:
+        proposals:
+          title: Prijedlozi
+          messages:
+            approve:
+              success: Prijedlog je uspješno primijenjen.
+              error:
+                The proposal can't be applied due to the following error:
+                  - greška
+            reject:
+              success: Prijedlog je odbijen.
+            remove:
+              success: Prijedlog je uklonjen.
+      confirmation:
+        revert:
+          title: Potvrda vraćanja
+          content: Jeste li sigurni da želite vratiti proizvod na ovu verziju?
+        publish:
+          title: Objavite ovaj proizvod
+          content: Jeste li sigurni da želite objaviti ovaj proizvod?
+        unpublish:
+          title: Poništite objavu ovog proizvoda
+          content: Jeste li sigurni da želite poništiti objavu ovog proizvoda?
+      info:
+        update_successful: Radna kopija proizvoda je ažurirana
+      copy:
+        source:
+          working_copy: Radna kopija
+          draft: Moj nacrt
+          draft_of: Nacrt od {{ author }}
+    product_draft:
+      info:
+        update_successful: Nacrt proizvoda je uspješno spremljen
+        update_failed: Nacrt proizvoda nije moguće ažurirati
+        value_modified: Ovu vrijednost je izmijenio trenutni nacrt
+      flash:
+        sent_for_approval: Nacrt proizvoda je poslan na odobrenje
+        draft_not_sendable: Ne možete poslati ovaj nacrt za odobrenje
+      btn:
+        send_for_approval: Slanje na odobrenje
+        sent_for_approval: Poslano na odobrenje
+      modal:
+        accept_proposal: Prihvatiti prijedlog
+        accept_selected_proposal: Prihvatite odabrane prijedloge
+        reject_proposal: Odbiti prijedlog
+        reject_selected_proposal: Odbacite odabrane prijedloge
+        remove_proposal: Uklanjanje prijedloga
+        send_for_approval: Slanje na odobrenje
+        cancel: Poništi
+        confirm: Pošaljite
+        title: Komentirajte vaš prijedlog (opcionalno - max. 255 znakova)
+        characters: znakova.
+      confirmation:
+        discard_changes: Nespremljene promjene bit će izgubljene. Jeste li sigurni da želite poslati vaš nacrt za odobrenje bez nespremljene promjene?
+        discard_changes_title: Jeste li sigurni da želite poslati ovaj nacrt?

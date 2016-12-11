@@ -1,0 +1,9 @@
+user:
+  proposals:
+    notifications:
+      "yes": true
+      "no": false
+pimee_user:
+  user:
+    tab:
+      notifications.title: Notificações
