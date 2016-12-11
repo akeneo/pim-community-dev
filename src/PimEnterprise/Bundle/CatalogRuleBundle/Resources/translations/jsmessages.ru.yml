@@ -12,3 +12,12 @@ pimee_catalog_rule:
       then.label: Тогда
       set_value.label: установлено в
       copy_value.label: копируется в
+      set.label: установлено в
+      copy.label: копируется в
+      add.label: Добавлено в
+confirmation:
+  remove:
+    rule: Вы уверены, что хотите удалить это правило? Это действие отменить невозможно
+flash:
+  rule:
+    removed: Роль успешно удалена

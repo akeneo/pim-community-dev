@@ -1,0 +1,6 @@
+pimee_enrich.acl.locale.edit_permissions: Beheer lokale rechten
+pimee_enrich.acl.category.edit_permissions: Beheer rechten categorieën
+pimee_enrich.acl.attribute_group.edit_permissions: Beheer rechten attribuutgroep
+pimee_importexport.acl.export_profile.edit_permissions: Beheer rechten export profielen
+pimee_importexport.acl.import_profile.edit_permissions: Beheer rechten import profielen
+pimee_enrich.groups.label: Eigenaar groepen

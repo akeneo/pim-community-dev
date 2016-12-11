@@ -10,13 +10,13 @@ pimee_catalog_rule:
         actions: Aktion
   actions:
     type:
-      copy: 'Dann wird %from_field% in %to_field% kopiert.'
-      copy_value: 'Dann wird %from_field% in %to_field% kopiert.'
-      set: 'Dann wird %value% in %field% gesetzt.'
-      set_value: 'Dann wird %value% in %field% gesetzt.'
-      add: 'Dann wird %value% in %field% hinzugefügt'
+      copy: Dann wird %from_field% in %to_field% kopiert.
+      copy_value: Dann wird %from_field% in %to_field% kopiert.
+      set: Dann wird %value% in %field% gesetzt.
+      set_value: Dann wird %value% in %field% gesetzt.
+      add: Dann wird %value% in %field% hinzugefügt
   condition:
-    label: 'Wenn %field% %operator% %value%'
+    label: Wenn %field% %operator% %value%
     operators:
       STARTS WITH: beginnt mit
       ENDS WITH: endet mit
@@ -50,10 +50,10 @@ pimee_catalog_rule:
       rule.view_permissions: Regeln ansehen
   product:
     tooltip:
-      product_attribute_affected_by_a_rule.content: 'Die Werten von diesen Attributen können von der/den Regel(n) <strong>%rule%</strong> stammen. Das bedeutet, dass wenn die Bedingungen der Regel gültig sind, Ihre Änderungen überschrieben werden.'
-      variant_attribute_affected_by_a_rule.content: 'Variantengruppen-Attribute haben in den Produktattributen Priorität. Das bedeutet, dass jedes Attribut dieser Variantengruppe die entsprechenden Werte in den betreffenden Produkten überschreiben wird. Die Regel/n <strong>%rule%</strong>, wird/werden nicht auf die Produkte angewendet.'
+      product_attribute_affected_by_a_rule.content: Die Werten von diesen Attributen können von der/den Regel(n) <strong>%rule%</strong> stammen. Das bedeutet, dass wenn die Bedingungen der Regel gültig sind, Ihre Änderungen überschrieben werden.
+      variant_attribute_affected_by_a_rule.content: Variantengruppen-Attribute haben in den Produktattributen Priorität. Das bedeutet, dass jedes Attribut dieser Variantengruppe die entsprechenden Werte in den betreffenden Produkten überschreiben wird. Die Regel/n <strong>%rule%</strong>, wird/werden nicht auf die Produkte angewendet.
       loading.title: Lädt...
-    history: 'Angewandte Regel "%rule%"'
+    history: Angewandte Regel "%rule%"
   product_value:
     tooltip:
       affected_by.title: 'Von Regel(n) betroffen:'

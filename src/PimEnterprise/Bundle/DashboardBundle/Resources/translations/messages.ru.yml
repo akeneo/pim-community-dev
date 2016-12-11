@@ -1,6 +1,7 @@
 pimee_dashboard:
   widget:
     product_drafts:
+      title: Предложения для рассмотрения
       date: Дата
       author: Автор
       product: Продукт

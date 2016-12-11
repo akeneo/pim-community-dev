@@ -2,16 +2,40 @@ pimee_product_asset:
   form:
     product:
       asset:
+        manage: Zarządzaj zasobami
+        panel:
+          basket:
+            title: Kosz
+            empty_basket: Koszyk jest pusty
         manage_asset:
+          title: Zarządzaj zasobami
           cancel: Anuluj
           confirm: Potwierdź
   enrich_variation:
     popin:
       delete:
         title: Potwierdzenie usunięcia
+        message: Czy na pewno chcesz usunąć ten element ?
   mass_upload:
     btn:
+      cancel: Anuluj wysyłanie
       delete: Usuń
+      start: Zacznij wysyłanie
+    error:
+      delete: Nie można usunąć pliku z serwera
+      conflicts: Konflikt nazw plików
+    grid:
+      filename: nazwa pliku
+      filetype: typ pliku
+      status: status
+      progress: postęp
+      actions: działania
     action:
       cancel: Anuluj
       delete: Usuń
+    status:
+      added: Dodane
+      queued: W kolejce
+      uploading: Przesyłanie
+      error: Błąd
+      success: Zakończono sukcesem

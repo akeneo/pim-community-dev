@@ -1,0 +1,23 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Code
+      condition.label: Voorwaarde
+      action.label: Actie
+      no_rule_yet.label: Geen regel voor nu
+  rule:
+    condition:
+      if.label: Als
+    action:
+      then.label: vervolgens
+      set_value.label: is ingesteld in
+      copy_value.label: is gekopieerd naar
+      set.label: is ingesteld in
+      copy.label: is gekopieerd naar
+      add.label: is toegevoegd aan
+confirmation:
+  remove:
+    rule: Bent u zeker dat u deze regel wilt verwijderen? Het is niet mogelijk om deze actie ongedaan te maken
+flash:
+  rule:
+    removed: Regel succesvol verwijderd

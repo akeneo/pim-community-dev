@@ -1,0 +1,95 @@
+pimee_workflow:
+  product_draft:
+    author: Auteur
+    created: Voorgesteld op
+    changes: Wijzigingen
+    locale: Context vertaling
+    product:
+      label: Product label
+    attribute:
+      label: Attribuut
+    status:
+      label: Status
+      working_copy: Werkkopie
+      in_progress: In uitvoering
+      ready: Wachtend op goedkeuring
+      can_be_partially_reviewed: Can gedeeltelijk worden nagekeken
+      can_not_be_approved: Kan niet worden nagekeken
+      can_not_be_deleted: Kan niet worden verwijderd
+    status_message:
+      can_be_partially_reviewed: U kan dit voorstel enkel gedeeltelijk nakijken, omdat sommige wijzigingen van toepassing zijn op waardes die je niet kan bewerken. Gelieve contact op te nemen met uw beheerder om uw rechten aan te passen.
+      can_not_be_approved: U kan dit voorstel niet nakijken, omdat alle wijzigingen van toepassing zijn op waardes die je niet kan bewerken. Gelieve contact op te nemen met uw beheerder om uw rechten aan te passen.
+      can_not_be_deleted: U kan dit voorstel niet verwijderen, omdat alle wijzigingen van toepassing zijn op waardes die je niet kan bewerken. Gelieve contact op te nemen met uw beheerder om uw rechten aan te passen.
+    action:
+      approve: Keur alles goed
+      refuse: Keur alles af
+      remove: Verwijderen
+      partial_approve: Voer wijzigingen door voor attribuut %attribute% van het product %product%
+      partial_reject: Keur wijzigingen af voor attribuut %attribute% van het product %product%
+    notification:
+      partial_approve: '%owner% heeft waarde(s) geaccepteerd voor %attributes% van het product %product%'
+      partial_approve_number: '%owner% heeft waardes geaccepteerd voor %attributes_count% attributen van het product %product%'
+      partial_reject: '%owner% heeft waarde(s) afgekeurd voor %attributes% van het product %product%'
+      partial_reject_number: '%owner% heeft waardes afgekeurd voor %attributes_count% attributen van het product %product%'
+      approve: '%owner% heeft je voorstel geaccepteerd voor het product %product%'
+      refuse: '%owner% heeft je voorstel afgekeurd voor het product %product%'
+      remove: '%owner% heeft je voorstel verwijderd voor het product %product%'
+    mass_review_action:
+      approve: Alle geselecteerde goedkeuren
+      refuse: Alle geselecteerde afkeuren
+      error:
+        draft_not_ready: Het voorstel is niet klaar om goedgekeurd te worden
+        not_product_owner: Je bent geen beheerder van het product dat gerelateerd is aan dit voorstel
+  proposal:
+    to_review: '%author.firstname% %author.lastname% heeft voorgesteld om product %product.label% na te kijken'
+    original_value: Origineel
+    new_value: Nieuw
+  published_product:
+    index: Gepubliceerde producten
+    title: Gepubliceerd product
+  acl.published_product:
+    index: Gepubliceerde producten beheren
+  product:
+    permission:
+      label: Machtigingen
+      own: Review / publiceren
+      edit: Bewerken
+      view: Bekijken
+  steps:
+    refuse.title: Keur voorstel af
+pimee_workflow_product_draft_notification_new_proposal: Nieuw voorstel
+btn.publish: Publiceren
+btn.unpublish: Depubliceer
+pimee_workflow_product_draft_notification_partial_approve: Voorstel gedeeltelijk goedgekeurd
+pimee_workflow_product_draft_notification_partial_reject: Voorstel gedeeltelijk afgekeurd
+pimee_workflow_product_draft_notification_approve: Voorstel goedgekeurd
+pimee_workflow_product_draft_notification_refuse: Voorstel afgekeurd
+pimee_workflow_product_draft_notification_remove: Voorstel verwijderd
+flash:
+  product:
+    published: Het product is succesvol gepubliceerd.
+  product_draft:
+    remove:
+      success: Het voorstel is verwijderd.
+pim_menu:
+  item:
+    published_product: Gepubliceerde producten
+    proposal: Voorstellen
+pim_title:
+  published_product:
+    index: Gepubliceerde producten
+    view: Gepubliceerde producten %product.sku% | Bekijk
+  product:
+    dispatch: Producten %product.sku%
+    show: Producten %product.sku% | Toon
+  proposal:
+    index: Voorstellen
+btn.editworkingcopy: Wijzig werkkopie
+confirmation:
+  product:
+    publish: Weet u zeker dat u dit product wilt publiceren?
+    unpublish: Weet u zeker dat u dit product wilt depubliceren?
+proposal.overview: Voorstellen
+Attributes.title: Attributen
+Completeness.title: Volledigheid
+published products: Gepubliceerde producten

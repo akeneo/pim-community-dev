@@ -2,4 +2,17 @@ pimee_catalog_rule:
   attribute:
     list:
       code.label: Kod
+      condition.label: Stan
       action.label: Akcja
+      no_rule_yet.label: Aktualnie brak reguł
+  rule:
+    condition:
+      if.label: jeżeli
+    action:
+      then.label: następnie
+      copy_value.label: jest kopiowany do
+      copy.label: jest kopiowany do
+      add.label: jest dodany do
+flash:
+  rule:
+    removed: Regóła usunięta pomyślnie

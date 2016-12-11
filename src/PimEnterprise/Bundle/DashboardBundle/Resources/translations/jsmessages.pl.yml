@@ -1,5 +1,8 @@
 pimee_dashboard:
   widget:
     product_drafts:
+      date: Data
       author: Autor
       product: Produkt
+      review: Opinia
+      empty: Brak propozycji do przeglądu

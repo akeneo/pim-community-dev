@@ -1,8 +1,16 @@
 user:
+  email:
+    notifications: Obavijesti e-poštom
   proposals:
     notifications:
+      to_review: Kada recenzirati novi prijedlog
+      state: Kada se prijedlog prihvaća ili odbacuje
       "yes": true
       "no": false
+  asset_delay_reminder: Odgoda podsjećanja o imovini (u danima)
+  default_published_product_grid_view:
+    label: Zadani prikaz prikaza tablice objavljenih proizvoda
+Default asset tree: Zadano stablo imovine
 pimee_user:
   user:
     tab:

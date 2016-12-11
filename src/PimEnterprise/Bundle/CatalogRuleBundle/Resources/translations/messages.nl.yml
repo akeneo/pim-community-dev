@@ -1,0 +1,53 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Verwijderen
+      title: Regels
+      column:
+        code: Code
+        conditions: Voorwaarde
+        actions: Actie
+  condition:
+    operators:
+      STARTS WITH: begint met
+      ENDS WITH: eindigt op
+      CONTAINS: bevat
+      DOES NOT CONTAIN: bevat geen
+      IN: in
+      NOT IN: niet in
+      UNCLASSIFIED: is niet-geclassificeerd
+      IN OR UNCLASSIFIED: is niet-geclassificeerd of in
+      BETWEEN: tussen
+      NOT BETWEEN: niet tussen
+      =: is gelijk aan
+      >: groter dan
+      >=: is gelijk aan of groter dan
+      <: minder dan
+      <=: is gelijk aan of minder dan
+  acl_group:
+    rule: Regels
+  acl:
+    rule:
+      view_permissions: Regels weergeven
+      delete_permissions: Verwijder regels
+  attribute:
+    tab:
+      rule.title: Regels
+    grid:
+      is_smart.label: Slim
+    acl:
+      rule.view_permissions: Regels weergeven
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: De waarde van deze kenmerk kan afkomstig zijn van de regel(s) <strong>%rule%</strong>. Dit betekent dat als de voorwaarde voor de regel geldig zijn, uw wijzigingen zal worden overschreven.
+      variant_attribute_affected_by_a_rule.content: Variant groep kenmerken hebben voorrang op de kenmerken van de producten. Dit betekent dat elk kenmerk van deze variant groep de overeenkomende waarde in de staande producten overschrijft. De regel(s) <strong>%rule%</strong>, zal niet worden toegepast op de producten.
+      loading.title: Laden...
+    history: Toegepaste regel "%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: 'Beïnvloed door regel(s):'
+  steps:
+    product_rule_definition_reader.title: Product regel importeer lezer
+    rule_definition_processor.title: Product regel importeer processor
+    product_rule_definition_writer.title: Product regel importeer schrijver

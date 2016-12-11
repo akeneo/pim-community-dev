@@ -1,4 +1,12 @@
 pimee_dashboard:
   widget:
     product_drafts:
+      title: Prijedlog za recenziju
       date: Datum
+      author: Autor
+      product: Proizvod
+      review: Recenzija
+      empty: Nema skice proizvoda za recenziju
+  version:
+    community_edition: CE
+    enterprise_edition: EE

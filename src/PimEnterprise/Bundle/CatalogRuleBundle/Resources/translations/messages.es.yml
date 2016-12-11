@@ -10,13 +10,13 @@ pimee_catalog_rule:
         actions: Acción
   actions:
     type:
-      copy: 'Entonces %from_field% es copiado en %to_field%'
-      copy_value: 'Entonces %from_field% es copiado en %to_field%'
-      set: 'Entonces %value% es establecido en %field%'
-      set_value: 'Entonces %value% es establecido en %field%'
-      add: 'Entonces %value% es agregado en %field%'
+      copy: Entonces %from_field% es copiado en %to_field%
+      copy_value: Entonces %from_field% es copiado en %to_field%
+      set: Entonces %value% es establecido en %field%
+      set_value: Entonces %value% es establecido en %field%
+      add: Entonces %value% es agregado en %field%
   condition:
-    label: 'Si %field% %operator% %value%'
+    label: Si %field% %operator% %value%
     operators:
       STARTS WITH: comienza con
       ENDS WITH: termina con
@@ -51,10 +51,10 @@ pimee_catalog_rule:
       rule.view_permissions: Ver reglas
   product:
     tooltip:
-      product_attribute_affected_by_a_rule.content: 'El valor de este atributo puede provenir de las reglas <strong>%rule%</strong>. Esto significa que si las condiciones de la regla son válidas, su modificación será invalidada.'
-      variant_attribute_affected_by_a_rule.content: 'Los atributos de grupo de variantes tienen prioridad sobre los atributos de productos. Esto significa que cada atributo de este grupo de variantes sustituirá el valor correspondiente en el producto especificado. La regla <strong>%rule%</strong>, no será aplicada en los productos.'
+      product_attribute_affected_by_a_rule.content: El valor de este atributo puede provenir de las reglas <strong>%rule%</strong>. Esto significa que si las condiciones de la regla son válidas, su modificación será invalidada.
+      variant_attribute_affected_by_a_rule.content: Los atributos de grupo de variantes tienen prioridad sobre los atributos de productos. Esto significa que cada atributo de este grupo de variantes sustituirá el valor correspondiente en el producto especificado. La regla <strong>%rule%</strong>, no será aplicada en los productos.
       loading.title: Cargando...
-    history: 'Regla aplicada "%rule%"'
+    history: Regla aplicada "%rule%"
   product_value:
     tooltip:
       affected_by.title: 'Afectada por la(s) regla(s):'

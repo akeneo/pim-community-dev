@@ -1,0 +1,8 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Data
+      author: Autor/a
+      product: Producte
+      review: Revisar
+      empty: No hi ha propostes per revisar

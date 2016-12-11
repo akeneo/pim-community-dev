@@ -1,0 +1,24 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Enriquecer Asset
+  enrich_asset:
+    button:
+      delete: Eliminar
+    view:
+      code: Código
+  popin.create:
+    is_localized: Multilingue
+  code:
+    label: Código
+  status:
+    label: Estado
+  createdAt:
+    label: Criado em
+  tabs:
+    properties.title: Propriedades
+    categories.title: Categorias
+  category:
+    permissions:
+      apply_on_children.label: Aplicar alterações na filha
+      apply_on_children.help: Copiar as alterações de permissões em todas as filhas, as permissões existentes nas filhas são mantidas

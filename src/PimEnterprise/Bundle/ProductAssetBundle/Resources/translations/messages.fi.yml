@@ -25,7 +25,7 @@ pimee_product_asset:
       download: Lataa
       generate_from_reference: Luo viittauksesta
       reset_variations: Nollaa variaatiot
-    confirmation.remove: 'Oletko varma, että haluat poistaa resurssin "%asset%" ?'
+    confirmation.remove: Oletko varma, että haluat poistaa resurssin "%asset%" ?
     grid:
       edit: Muokkaa resurssin ominaisuuksia
     view:
@@ -63,12 +63,12 @@ pimee_product_asset:
   enrich_variation:
     flash:
       transformation:
-        invalid_options: 'Virheellisten asetusten takia variaatio %channel% n luominen on mahdotonta.'
-        image_width_error: 'Variaatio %channel% n luominen on mahdotonta, koska tuotu kuva on liian kapea.'
-        image_height_error: 'Variaatio %channel% n luominen on mahdotonta, koska tuotu kuva on liian matala.'
-        not_applicable: 'Variaatio %channel% n luominen on mahdotonta.'
+        invalid_options: Virheellisten asetusten takia variaatio %channel% n luominen on mahdotonta.
+        image_width_error: Variaatio %channel% n luominen on mahdotonta, koska tuotu kuva on liian kapea.
+        image_height_error: Variaatio %channel% n luominen on mahdotonta, koska tuotu kuva on liian matala.
+        not_applicable: Variaatio %channel% n luominen on mahdotonta.
         non_registered: '%transformation% muutosta ei rekisteröity mime tyypille %mimeType%. Mahdotonta luoda variaatio %channel%.'
-        error: 'Variaatio %channel% n luominen on mahdotonta.'
+        error: Variaatio %channel% n luominen on mahdotonta.
         success: Variaatiotiedoston luotu onnistuneesti.
       update:
         success: Variaatiotiedosto päivitetty.
@@ -82,8 +82,8 @@ pimee_product_asset:
   menu: Resurssit
   page_tab:
     title:
-      view: 'Tuoteresurssi %asset.code% | Näkymä'
-      edit: 'Tuoteresurssi %asset.code% | Muokkaa'
+      view: Tuoteresurssi %asset.code% | Näkymä
+      edit: Tuoteresurssi %asset.code% | Muokkaa
       index: Tuoteresurssit
   code:
     label: Koodi
