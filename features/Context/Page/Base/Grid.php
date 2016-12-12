@@ -781,6 +781,8 @@ class Grid extends Index
      * @param bool $withHidden
      * @param bool $withActions
      *
+     * @throws \InvalidArgumentException
+     *
      * @return NodeElement[]
      */
     protected function getColumnHeaders($withHidden = false, $withActions = true)
@@ -797,6 +799,10 @@ class Grid extends Index
                 'and not(contains(@class, \'select-all-header-cell\')) '.
                 'and not(input)'.
             ']';
+        }
+
+        if (null === $head) {
+            throw new \InvalidArgumentException('Cannot find grid head.');
         }
 
         $headers = $head->findAll('xpath', $selector);
