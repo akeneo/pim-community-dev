@@ -30,6 +30,9 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     /** @var ArrayCollection */
     protected $families;
 
+    /** @var JobConfigurationRepositoryInterface */
+    protected $jobConfigurationRepo;
+
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 

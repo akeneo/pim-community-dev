@@ -51,21 +51,21 @@ Feature: Mass Edit Families
   Scenario: Successfully mass edit more than 10 families
     Given the "default" catalog configuration
     And the following families:
-    | code     |
-    | first    |
-    | second   |
-    | third    |
-    | fourth   |
-    | fifth    |
-    | sixth    |
-    | seventh  |
-    | eigth    |
-    | ninth    |
-    | tenth    |
-    | eleventh |
+      | code     |
+      | first    |
+      | second   |
+      | third    |
+      | fourth   |
+      | fifth    |
+      | sixth    |
+      | seventh  |
+      | eight    |
+      | ninth    |
+      | tenth    |
+      | eleventh |
     And I am logged in as "Julia"
     And I am on the families page
-    When I mass-edit families first, second, third, fourth, fifth, sixth, seventh, eigth, ninth, tenth and eleventh
+    When I mass-edit families first, second, third, fourth, fifth, sixth, seventh, eight, ninth, tenth and eleventh
     Then I should see "Mass Edit (11 families)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4203
@@ -76,3 +76,22 @@ Feature: Mass Edit Families
     When I sort by "label" value ascending
     And I mass-edit families boots, sneakers and sandals
     Then I should see "Mass Edit (3 families)"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6026
+  Scenario: Successfully mass edit more families than the batch size limit
+    Given the "default" catalog configuration
+    And 110 generated families
+    And the following attributes:
+      | code | label | type |
+      | name | Name  | text |
+    And I am logged in as "Julia"
+    And I am on the families page
+    When I select all families
+    And I press mass-edit button
+    And I choose the "Set attribute requirements" operation
+    And I display the Name attribute
+    And I move on to the next step
+    And I wait for the "set-attribute-requirements" mass-edit job to finish
+    Then I should see notification:
+      | type    | message                                              |
+      | success | Mass edit Set family attribute requirements finished |
