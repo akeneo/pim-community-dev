@@ -40,11 +40,11 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity instanceof GroupInterface && $entity->getType()->isVariant()) {
-            $this->validateVariantGroup($entity, $constraint);
-        } elseif ($entity instanceof ProductInterface) {
-            $this->validateProduct($entity, $constraint);
-        }
+//        if ($entity instanceof GroupInterface && $entity->getType()->isVariant()) {
+//            $this->validateVariantGroup($entity, $constraint);
+//        } elseif ($entity instanceof ProductInterface) {
+//            $this->validateProduct($entity, $constraint);
+//        }
     }
 
     /**
