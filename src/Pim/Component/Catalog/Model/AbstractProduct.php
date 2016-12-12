@@ -288,14 +288,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
-        //TODO: drop it
-        foreach ($this->values as $value) {
-            if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getAttributeType()) {
-                return $value;
-            }
-        }
-
-        throw new MissingIdentifierException($this);
+        return $this->identifier;
     }
 
     /**
@@ -374,7 +367,7 @@ abstract class AbstractProduct implements ProductInterface
             }
         }
 
-        return (string) $this->getIdentifier()->getData();
+        return (string) $this->getIdentifier();
     }
 
     /**
@@ -670,6 +663,6 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getReference()
     {
-        return $this->getIdentifier()->getData();
+        return $this->getIdentifier();
     }
 }

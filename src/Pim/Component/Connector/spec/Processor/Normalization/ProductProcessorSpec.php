@@ -144,7 +144,6 @@ class ProductProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ProductValueInterface $identifier,
         ProductValueCollectionInterface $valuesCollection,
         ExecutionContext $executionContext
     ) {
@@ -164,9 +163,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
-        $product->getIdentifier()->willReturn($identifier);
+        $product->getIdentifier()->willReturn('AKIS_XS');
         $product->getValues()->willReturn($valuesCollection);
-        $identifier->getData()->willReturn('AKIS_XS');
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -215,7 +213,6 @@ class ProductProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ProductValueInterface $identifier,
         ProductValueCollectionInterface $valuesCollection,
         ExecutionContext $executionContext
     ) {
@@ -235,9 +232,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
-        $product->getIdentifier()->willReturn($identifier);
+        $product->getIdentifier()->willReturn('AKIS_XS');
         $product->getValues()->willReturn($valuesCollection);
-        $identifier->getData()->willReturn('AKIS_XS');
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);

@@ -59,8 +59,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     {
         $context = $this->resolveContext($context);
 
-        $results = $this->serializer->normalize($object->getIdentifier(), $format, $context);
-
+        $results = [];
         $results[self::FIELD_FAMILY] = $this->normalizeFamily($object->getFamily());
         $results[self::FIELD_GROUPS] = $this->normalizeGroups($object->getGroupCodes());
         $results[self::FIELD_CATEGORY] = $this->normalizeCategories($object->getCategoryCodes());

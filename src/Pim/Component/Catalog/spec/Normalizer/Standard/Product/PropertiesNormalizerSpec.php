@@ -46,8 +46,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         FamilyInterface $family,
         ProductValueCollection $values,
-        \ArrayIterator $iterator,
-        ProductValueInterface $identifier
+        \ArrayIterator $iterator
     ) {
         $values->getIterator()->willReturn($iterator);
 
@@ -57,10 +56,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
         $product->isEnabled()->willReturn(true);
-
-        $product->getIdentifier()->willReturn($identifier);
-        $identifier->getData()->willReturn('my_code');
-
+        $product->getIdentifier()->willReturn('my_code');
         $product->getValues()->willReturn($values);
 
         $filter->filterCollection($values, 'pim.transform.product_value.structured', Argument::type('array'))
