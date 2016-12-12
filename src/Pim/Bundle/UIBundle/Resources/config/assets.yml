@@ -21,7 +21,6 @@ css:
         - bundles/pimui/css/pim.less
         - bundles/pimui/css/style.less
         - bundles/pimui/css/tabnav.less
-        - bundles/pimui/css/buttons.less
     bem:
         - bundles/pimui/less/base/general.less
         - bundles/pimui/less/components/button/ActionButton.less
