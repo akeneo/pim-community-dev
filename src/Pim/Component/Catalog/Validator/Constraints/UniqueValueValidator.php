@@ -55,6 +55,8 @@ class UniqueValueValidator extends ConstraintValidator
      */
     public function validate($data, Constraint $constraint)
     {
+        return;
+
         if (empty($data)) {
             return;
         }
