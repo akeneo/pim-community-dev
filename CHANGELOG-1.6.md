@@ -2,6 +2,12 @@
 
 ## Bug fixes
 
+- PIM-6016: Add a missing validation on asset attributes import
+
+# 1.6.5 (2016-11-25)
+
+## Bug fixes
+
 - PIM-6011: Fix an error 500 on asset's view screen caused by a typo
 
 ## Developer eXperience
