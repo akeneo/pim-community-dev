@@ -1,3 +1,10 @@
 No products to remove: Brak produktów do usunięcia
-dot (.): kropka (.)
-comma (,): przecinek (,)
+"dot (.)": kropka (.)
+"comma (,)": przecinek (,)
+pim_catalog:
+  constraint:
+    0: Wystąpił nieoczekiwany błąd.
+    100: Nieoczekiwana wartość
+    200: Wystąpił błąd wewnętrzny
+    201: Wystąpił błąd wewnętrzny
+    205: Wystąpił błąd wewnętrzny

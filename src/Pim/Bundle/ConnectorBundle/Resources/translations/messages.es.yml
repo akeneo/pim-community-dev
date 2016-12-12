@@ -167,7 +167,6 @@ pim_connector:
         help: Permitir o no cargar el fichero directamente
 job_execution.summary:
   read: leer
-  read_lines: líneas leídas
   write: escrito
   skip: omitido
   create: creado
@@ -175,11 +174,12 @@ job_execution.summary:
   update_products: productos actualizados
   process_products: productos procesados
   skip_products: productos omitidos
-  displayed: primeras alertas mostradas
+  displayed: primeras advertencias mostradas
   charset_validator:
-    title: 'Codificación del archivo:'
-    skipped: omitido, extensión en la lista blanca
+    title: 'Codificación de Archivo:'
+    skipped: omitido, extensión en lista blanca
   product_skipped_no_diff: producto omitido (ninguna diferencia)
+  item_position: líneas leídas
 batch_jobs:
   csv_product_export:
     label: Exportar productos a CSV
@@ -260,7 +260,7 @@ batch_jobs:
   csv_locale_import:
     label: Importar locales en CSV
     validation.label: Validación de archivo
-    import.label: Importar canales
+    import.label: Importar locales
   csv_attribute_group_import:
     label: Importar grupo de atributos en CSV
     validation.label: Validación de archivo

@@ -190,8 +190,6 @@ pim_enrich:
         unavailable: Dit specifiek veld van de landinstelling is niet beschikbaar in deze landinstelling
       localizable:
         channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
-      media:
-        upload: Klik-en-sleep om te uploaden of klik hier
       create_popin:
         title: Een nieuw product aanmaken
         labels:
@@ -201,6 +199,7 @@ pim_enrich:
     attribute_option:
       code: Code
       label: Label
+      actions: Acties
     variant_group:
       title: Variant groep
       info:
@@ -221,12 +220,24 @@ pim_enrich:
         created_by: Aangemaakt door
         updated: Bijgewerkt
         updated_by: Bijgewerkt door
+    group:
+      title: Groep
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - velden
+      btn:
+        save: Opslaan
+      meta:
+        product_count: Producten
+        created: Aangemaakt
+        created_by: Aangemaakt door
+        updated: Bijgewerkt
+        updated_by: Bijgewerkt door
   confirmation:
     leave: Weet u zeker dat u deze pagina wilt verlaten?
     discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
     delete_item: Verwijderen bevestigen
-    delete:
-      attribute: Bent u zeker dat u dit attribuut wil verwijderen van het product?
   info:
     not_applicable: Niet beschikbaar
     entity:
@@ -319,6 +330,18 @@ pim_enrich:
           title: Producten
         attributes:
           title: Attributen
+    group:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemene eigenschappen
+          code: Code
+          type: Type
+          label_translations: Labelvertalingen
+        history:
+          title: Geschiedenis
+        products:
+          title: Producten
     common:
       tab:
         attributes:
@@ -366,7 +389,6 @@ pim_enrich:
             NOT IN: Niet in de lijst
             EMPTY: Producten die geen familie hebben
             NOT EMPTY: Producten die een familie hebben
-          empty_selection: Geen voorwaarde voor families
         updated:
           title: Tijdsvoorwaarde
           operators:
