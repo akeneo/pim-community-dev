@@ -200,6 +200,8 @@ class Product implements ArrayConverterInterface
             true;
         $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
+        $options['mapping'] = isset($options['mapping']) ? $options['mapping'] : [];
+        $options['mapping'][$this->attributeRepository->getIdentifierCode()] = 'identifier';
 
         return $options;
     }
@@ -262,19 +264,7 @@ class Product implements ArrayConverterInterface
         }
 
         $convertedValues = $this->productValueConverter->convert($convertedValues);
-
-        if (empty($convertedValues)) {
-            throw new \LogicException('Cannot find any values. There should be at least one identifier attribute');
-        }
-
         $convertedItem['values'] = $convertedValues;
-
-        $identifierCode = $this->attributeRepository->getIdentifierCode();
-        if (!isset($convertedItem['values'][$identifierCode])) {
-            throw new \LogicException(sprintf('Unable to find the column "%s"', $identifierCode));
-        }
-
-        $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'];
 
         return $convertedItem;
     }
@@ -310,7 +300,7 @@ class Product implements ArrayConverterInterface
      */
     protected function validateItem(array $item, $withRequiredSku)
     {
-        $requiredFields = $withRequiredSku ? [$this->attrColumnsResolver->resolveIdentifierField()] : [];
+        $requiredFields = $withRequiredSku ? ['identifier'] : [];
         $this->fieldChecker->checkFieldsPresence($item, $requiredFields);
         $this->validateOptionalFields($item);
         $this->validateFieldValueTypes($item);
@@ -324,7 +314,7 @@ class Product implements ArrayConverterInterface
     protected function validateOptionalFields(array $item)
     {
         $optionalFields = array_merge(
-            ['family', 'enabled', 'categories', 'groups'],
+            ['family', 'enabled', 'categories', 'groups', 'identifier'],
             $this->attrColumnsResolver->resolveAttributeColumns(),
             $this->getOptionalAssociationFields()
         );
