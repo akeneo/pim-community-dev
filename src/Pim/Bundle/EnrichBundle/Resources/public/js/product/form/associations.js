@@ -263,9 +263,9 @@ define(
                 }.bind(this));
 
                 $(event.currentTarget)
-                    .addClass('hide')
+                    .addClass('AknButton--hidden')
                     .siblings('.target-button')
-                    .removeClass('hide');
+                    .removeClass('AknButton--hidden');
 
                 this.updateListenerSelectors();
 

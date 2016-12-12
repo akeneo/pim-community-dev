@@ -96,7 +96,7 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro page_header(title, buttons, titleButtons, meta, right, backButton) %}
+{% macro page_header(title, buttons, titleButtons, meta, right, backButton, state) %}
     <header class="AknTitleContainer navigation">
         <div class="AknTitleContainer-backContainer" data-drop-zone="back">
             {% if backButton is not empty %}
@@ -130,6 +130,9 @@
             <div class="AknTitleContainer-metaLine">
                 <div class="AknTitleContainer-meta">
                     {{ meta }}
+                </div>
+                <div class="AknTitleContainer-state">
+                    {{ state }}
                 </div>
             </div>
         </div>
@@ -186,7 +189,7 @@
 
 {% macro updated(formId) %}
 {% spaceless %}
-    <div id="entity-updated" class="pull-right">
+    <div id="entity-updated">
         <span class="AknBadge AknBadge--warning">
             <i class="AknBadge-icon icon-circle"></i>
             {{ 'info.updated'|trans }}

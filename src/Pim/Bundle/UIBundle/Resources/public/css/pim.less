@@ -1,39 +1,12 @@
 @import 'less/variables';
 @import 'less/mixins';
 
-/* General **********************************************************************************************************/
-
-body {
-  &.konami:hover {
-    cursor: url("/bundles/pimui/images/unicorn-akeneo_43.png"), pointer !important;
-  }
-}
-
-a {
-  color: @akeneoPurpleDark;
-}
-
-.badge-square {
-  border-radius: 2px;
-}
-
 /* Typography *******************************************************************************************************/
-
-.highlight {
-  font-weight: bold;
-  color: @akeneoPurple;
-}
-
 .no-margin {
   margin: 0;
 }
 
 /* Grids */
-.table-hover tbody tr:hover > td {
-  background-color: @akeneoLight;
-  color: @akeneoDarkBlue;
-}
-
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
   &.ui-state-hover, &.ui-state-active {
     background-color: @akeneoPurpleLight;
@@ -56,23 +29,11 @@ a {
   }
 }
 
-.dropdown-menu>li>a, .dropdown-menu>li.active>a {
-  color: @akeneoPurpleLight;
-  &:hover, &:active {
-    color: @akeneoPurpleDark;
-    cursor: pointer;
-  }
-}
-
 .icon-collapse-alt, .icon-expand-alt {
   font-size: @font-size-14;
 }
 
 /** widgets **********************************************************************************************************/
-ul.inline .tooltip-inner {
-    text-align: left;
-}
-
 span.link-label {
   padding-right: 8px;
   padding-left: 8px;
@@ -232,7 +193,7 @@ h3.tab-header {
     align-items: center;
 
     .select-field {
-      .flex(1);
+      flex: 1;
     }
   }
 }
@@ -246,12 +207,12 @@ h3.tab-header {
 }
 
 .validation-errors {
-  .display-flex();
-  .flex-direction(column);
+  display: flex;
+  flex-direction: column;
 
   & > span {
-    .display-flex();
-    .align-items(baseline);
+    display: flex;
+    align-items: baseline;
     margin-top: 3px;
 
     & > * {
@@ -278,8 +239,7 @@ h3.tab-header {
 }
 
 .select2-search input {
-  .border-radius(0);
-  .box-sizing();
+  border-radius: 0;
 }
 
 .entity-edit-form {
@@ -306,7 +266,7 @@ h3.tab-header {
     padding: 0;
 
     &:first-child {
-      .display-flex();
+      display: flex;
     }
 
     &:not(:first-child) {

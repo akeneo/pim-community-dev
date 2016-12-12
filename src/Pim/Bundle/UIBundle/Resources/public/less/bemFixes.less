@@ -104,3 +104,169 @@
 .AknWidget .AknTitleContainer {
   display: none; // To hide title container on mass edit / attributes
 }
+
+// For the centered text
+.fullwidth {
+  width: 100%;
+}
+
+// Tabs
+.tabsections {
+  .tabsection {
+    .tabsection-title {
+      &:not(:empty) {
+        padding: 0 20px;
+        background-color: lighten(@AknGrey, 25%);
+        line-height: 44px;
+      }
+    }
+
+    .tabsection-content {
+      padding: 20px 20px 10px;
+    }
+  }
+}
+
+// Just a gray text in the variant group tab header, move to tabs
+.no-attribute {
+  color: @AknSlateGrey;
+  font-size: 13px;
+  padding-top: 13px;
+  margin-right: 10px;
+}
+
+// When you add an attribute in variant group in the FieldContainer.
+i.remove-attribute {
+  cursor: pointer;
+}
+
+// Attribute group edit, for the left menu
+.handle {
+  cursor: move;
+}
+
+// Family attribute requirements
+.attribute-requirement {
+  .required {
+    font-size: @AknFontSizeBig;
+    color: @AknGreen;
+  }
+  .non-required {
+    color: @AknGrey;
+  }
+}
+
+// Family attributes to transform to ActionButton (select2 job)
+button.pimmultiselect { }
+
+// Role update permissions
+.tab-groups {
+  float:left;
+  min-width: 120px;
+  i.validation-tooltip {
+    display: block;
+    float: right;
+    margin-top: 4px;
+    margin-right: -8px;
+  }
+}
+
+// Column configurator
+.column-configurator-modal .modal-body {
+  padding: 0;
+  background-color: white;
+}
+#column-configurator {
+  h4 {
+    height: 52px;
+    line-height: 30px;
+    margin: 0;
+    padding: 10px;
+    color: @AknLightGray;
+    border-left: 1px solid @AknBorderColor;
+    border-bottom: 1px solid @AknBorderColor;
+  }
+  i.icon-search {
+    font-size: @AknTitleFontSize;
+  }
+  input[type="search"] {
+    width: 80%;
+    border: none;
+    outline: none;
+    margin: 0;
+    background: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+  }
+  .span4 {
+    float: left;
+    margin-left: 0;
+    width: 100% / 3;
+    &:last-of-type {
+      background-color: white;
+    }
+  }
+  ul {
+    padding: 10px;
+    margin: 0;
+    overflow-y: auto;
+    list-style-type: none;
+    font-size: @AknDefaultFontSize;
+    border-left: 1px solid @AknBorderColor;
+    li {
+      cursor: pointer;
+      padding: 15px 10px;
+      border: 1px solid @AknBorderColor;
+      &:not(:first-of-type) {
+        border-top: none;
+      }
+      &.filtered {
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+        padding: 0;
+        border: none;
+      }
+      i {
+        font-size: @AknFontSizeBig;
+        color: @AknDefaultFontColor;
+        padding-right: 8px;
+      }
+    }
+    &.connected-sortable li {
+      background-color: @AknLightGray;
+      .action i {
+        margin: 0 2px;
+        padding: 3px 8px;
+        color: @AknGrey;
+        border: 1px solid @AknBorderColor;
+        border-radius: 3px;
+      }
+      &:hover .action i {
+        background-color: white;
+        &:hover {
+          background-color: @AknLightGray;
+        }
+      }
+    }
+    &#column-list li .action {
+      display: none;
+    }
+  }
+  .nav-list {
+    .badge-transparent {
+      border-radius: 5px;
+      border: 1px solid @AknBorderColor;
+      background: transparent;
+      color: @AknLightGray;
+      font-size: @AknFontSizeBig;
+      text-shadow: initial;
+    }
+    li {
+      &.active {
+        background-color: @AknLightGray;
+      }
+    }
+  }
+}

@@ -95,7 +95,7 @@
             {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, meta, elements.updated(form.vars.id), back) }}
+        {{ elements.page_header(title, buttons, null, meta, null, back, elements.updated(form.vars.id)) }}
 
         <div class="AknTabContainer">
             {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}

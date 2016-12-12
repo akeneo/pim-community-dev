@@ -12,11 +12,11 @@
            </span>
         </div>
         <div>
-            <button type="button" class="AknButton AknButton--grey AknButton--small AknButton--withIcon target-button target-button <% if ('products' === currentAssociationTarget) { %> hide<% } %>" data-association-target="products">
+            <button type="button" class="AknButton AknButton--grey AknButton--small AknButton--withIcon target-button target-button <% if ('products' === currentAssociationTarget) { %> AknButton--hidden<% } %>" data-association-target="products">
                 <i class="AknButton-icon icon-random"></i>
                 <%- _.__('pim_enrich.form.product.tab.associations.info.show_products') %>
             </button>
-            <button type="button" class="AknButton AknButton--grey AknButton--small AknButton--withIcon target-button target-button <% if ('groups' === currentAssociationTarget) { %> hide<% } %>" data-association-target="groups">
+            <button type="button" class="AknButton AknButton--grey AknButton--small AknButton--withIcon target-button target-button <% if ('groups' === currentAssociationTarget) { %> AknButton--hidden<% } %>" data-association-target="groups">
                 <i class="AknButton-icon icon-random"></i>
                 <%- _.__('pim_enrich.form.product.tab.associations.info.show_groups') %>
             </button>

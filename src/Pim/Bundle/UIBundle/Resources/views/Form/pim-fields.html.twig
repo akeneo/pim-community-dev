@@ -144,12 +144,12 @@
 {% block form_info %}
     {% spaceless %}
         {% if type is not defined or type != 'hidden' %}
-            <div class="icons-container">
+            <div class="AknFieldContainer-iconsContainer icons-container">
                 {% if help is defined %}
-                    <i class="icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
+                    <i class="AknIconButton icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
                 {% endif %}
                 {% if from_variant is defined %}
-                    <i class="icon-lock" data-trigger="hover" data-toggle="popover" data-placement="right" data-title="{{ 'pim_enrich.product_value.tooltip.from_variant.title'|trans }}" data-content="{{ 'pim_enrich.product_value.tooltip.from_variant.content'|trans }} : {{ from_variant.code }}" data-container="body"></i>
+                    <i class="AknIconButton icon-lock" data-trigger="hover" data-toggle="popover" data-placement="right" data-title="{{ 'pim_enrich.product_value.tooltip.from_variant.title'|trans }}" data-content="{{ 'pim_enrich.product_value.tooltip.from_variant.content'|trans }} : {{ from_variant.code }}" data-container="body"></i>
                 {% endif %}
                 {{ form_errors(form) }}
             </div>
