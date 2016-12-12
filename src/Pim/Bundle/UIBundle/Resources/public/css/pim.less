@@ -169,7 +169,9 @@ span.link-label {
     line-height: 12px;
     vertical-align: middle;
     padding: 3px;
-    .text-overflow();
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     .tooltip {
       white-space: normal;
@@ -292,7 +294,7 @@ h3.tab-header {
     background-image: none;
 
     .flag-language .language {
-      font-family: @sansFontFamily;
+      font-family: @baseFontFamily;
       color: @gray;
       padding-top: 1px;
     }

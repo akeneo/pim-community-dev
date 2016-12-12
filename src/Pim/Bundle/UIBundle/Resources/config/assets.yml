@@ -1,6 +1,6 @@
 css:
     lib:
-        - bundles/pimui/lib/bootstrap/css/bootstrap.less
+        - bundles/pimui/lib/bootstrap/less/bootstrap.less
         - bundles/pimui/lib/font-awesome/css/font-awesome.css
         - bundles/pimui/lib/bootstrap-switch/bootstrap.switch.css
         - bundles/pimui/lib/bootstrap-datetimepicker/css/bootstrap-datepicker.css
