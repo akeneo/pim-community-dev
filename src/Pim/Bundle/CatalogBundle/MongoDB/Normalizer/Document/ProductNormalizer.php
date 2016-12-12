@@ -84,7 +84,8 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             $data['created'] = $this->mongoFactory->createMongoDate();
         }
 
-        $data['updated'] = $this->mongoFactory->createMongoDate();
+        $product->setUpdated(new \DateTime());
+        $data['updated'] = $this->normalizer->normalize($product->getUpdated(), self::FORMAT, $context);
 
         if (null !== $product->getFamily()) {
             $data['family'] = $product->getFamily()->getId();
