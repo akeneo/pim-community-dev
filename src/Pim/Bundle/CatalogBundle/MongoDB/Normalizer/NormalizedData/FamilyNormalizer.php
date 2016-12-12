@@ -33,7 +33,11 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = ['code' => $object->getCode()] + $this->transNormalizer->normalize($object, $format, $context);
+        $data = [
+            'code'   => $object->getCode(),
+            'labels' => $this->transNormalizer->normalize($object, $format, $context)
+        ];
+
         $data['attributeAsLabel'] = ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : null;
 
         return $data;

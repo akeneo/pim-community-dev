@@ -19,7 +19,7 @@ Feature: Quick export products according to the product grid context
 
   Scenario: Successfully quick export products from grid context as a CSV file
     Given I am on the products page
-    And I display the columns sku, name, label, family, categories, color, completeness, groups, price, size, created and updated, description, weight
+    And I display the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created at and Updated at, Description and Weight
     And I select rows boots, sneakers, pump
     When I press "CSV (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
@@ -33,15 +33,15 @@ Feature: Quick export products according to the product grid context
     And the name of the exported file of "csv_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.csv"
     And exported file of "csv_product_grid_context_quick_export" should contain:
     """
-    sku;categories;color;family;groups;name-en_US;price-EUR;price-USD;size;description-en_US-tablet;weight;weight-unit
-    boots;winter_collection;black;boots;;Amazing boots;20;25;40;Mob;20;GRAM
-    sneakers;summer_collection;white;sneakers;;Sneakers;50;60;42;ylette;4;GRAM
-    pump;summer_collection;blue;Pump;;;15;20;41;;;
+    sku;color;family;groups;name-en_US;price-EUR;price-USD;size;description-en_US-tablet;weight;weight-unit
+    boots;black;boots;;Amazing boots;20;25;40;Mob;20;GRAM
+    sneakers;white;sneakers;;Sneakers;50;60;42;ylette;4;GRAM
+    pump;blue;Pump;;;15;20;41;;;
     """
 
   Scenario: Successfully quick export products from grid context as a XSLX file
     Given I am on the products page
-    And I display the columns sku, name, label,family, categories, color, completeness, groups, price, size, created and updated, description, weight
+    And I display the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created at, Updated at, Description and Weight
     And I select rows boots, sneakers, pump
     When I press "Excel (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "xlsx_product_grid_context_quick_export" quick export to finish
@@ -54,7 +54,7 @@ Feature: Quick export products according to the product grid context
     Then I should see "COMPLETED"
     And the name of the exported file of "xlsx_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.xlsx"
     And exported xlsx file of "xlsx_product_grid_context_quick_export" should contain:
-      | sku      | categories        | color | family   | groups | name-en_US    | price-EUR | price-USD | size | description-en_US-tablet | weight | weight-unit |
-      | boots    | winter_collection | black | boots    |        | Amazing boots | 20        | 25        | 40   | Mob                      | 20     | GRAM        |
-      | sneakers | summer_collection | white | sneakers |        | Sneakers      | 50        | 60        | 42   | ylette                   | 4      | GRAM        |
-      | pump     | summer_collection | blue  |          |        | Pump          | 15        | 20        | 41   |                          |        |             |
+      | sku      | color | family   | groups | name-en_US    | price-EUR | price-USD | size | description-en_US-tablet | weight | weight-unit |
+      | boots    | black | boots    |        | Amazing boots | 20        | 25        | 40   | Mob                      | 20     | GRAM        |
+      | sneakers | white | sneakers |        | Sneakers      | 50        | 60        | 42   | ylette                   | 4      | GRAM        |
+      | pump     | blue  |          |        | Pump          | 15        | 20        | 41   |                          |        |             |

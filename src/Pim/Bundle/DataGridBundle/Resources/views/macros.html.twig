@@ -143,6 +143,8 @@
                         var categoryFilter = new CategoryFilter(urlParams, '{{ name }}', '{{ categoryBaseRoute }}');
                         {% endif %}
 
+                        state = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
+
                         $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
                             if (state.columns) {
                                 resp.metadata.state.parameters = _.extend({}, resp.metadata.state.parameters, {

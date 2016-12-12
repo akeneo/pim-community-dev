@@ -152,6 +152,18 @@ Feature: Edit common attributes of many products at once
     Then the metric "heel_height" of products highheels, blue_highheels should be "12"
     And the metric "heel_height" of products sandals should be "3"
 
+  @jira https://akeneo.atlassian.net/browse/PIM-6008
+  Scenario: Successfully mass edit scoped product values with special chars
+    Given I set product "pump" family to "boots"
+    When I mass-edit products boots and pump
+    And I choose the "Edit common attributes" operation
+    And I display the Description attribute
+    And I change the Description to "&$@(B°ar'<"
+    And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And the english tablet Description of "boots" should be "&$@(B°ar'<"
+    And the english tablet Description of "pump" should be "&$@(B°ar'<"
+
   Scenario: Successfully mass edit products and the completeness should be computed
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel

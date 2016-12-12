@@ -34,11 +34,11 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $sku->getCode()->willReturn('sku');
         $family->getCode()->willReturn('mongo');
         $family->getAttributeAsLabel()->willReturn($sku);
-        $normalizer->normalize($family, 'mongodb_json', [])->willReturn(['label' => 'translations']);
+        $normalizer->normalize($family, 'mongodb_json', [])->willReturn(['en_US' => 'Family label']);
 
         $this->normalize($family, 'mongodb_json', [])->shouldReturn([
             'code' => 'mongo',
-            'label' => 'translations',
+            'labels' => ['en_US' => 'Family label'],
             'attributeAsLabel' => 'sku'
         ]);
     }

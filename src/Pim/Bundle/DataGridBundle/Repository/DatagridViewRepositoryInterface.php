@@ -29,6 +29,8 @@ interface DatagridViewRepositoryInterface
      * @param UserInterface $user
      * @param string        $alias
      *
+     * @return ArrayCollection
+     *
      * @deprecated Please use DatagridViewRepositoryInterface::findDatagridViewBySearch instead
      */
     public function findDatagridViewByUserAndAlias(UserInterface $user, $alias);
