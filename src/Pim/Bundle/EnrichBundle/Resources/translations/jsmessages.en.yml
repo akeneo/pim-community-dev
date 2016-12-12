@@ -56,6 +56,8 @@ flash:
         removed: Role successfully removed
 
 error:
+    creating:
+        product: No attribute is configured as a product identifier or you don't have the rights to edit it.
     removing:
         item:             Cannot delete this item
         association type: Cannot delete this association type
