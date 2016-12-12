@@ -42,32 +42,11 @@ html {
 
 input[type='checkbox'] + label { margin-bottom:2px; }
 
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus,
-.dropdown-submenu:hover > a,
-.dropdown-submenu:focus > a,
-.dropdown-menu > .active > a,
-.dropdown-menu > .active > a:hover,
-.dropdown-menu > .active > a:focus {
-  background:@whiteDarker;
-}
 
 // Bootstrap - Table
 .table thead th { padding-top:2px; padding-bottom:2px; }
 
 // FontAwesome
-[class^="icon-"],
-[class*=" icon-"] {
-  display:inline-block !important;
-}
-[class^='icon-'].hide-text:after,
-[class^='icon-'].hide-text:before {
-  padding:0;
-  text-indent:0;
-  font-size: @font-size-14;
-  color: @gray;
-
-}
 
 // GLOBAL LAYOUT ELEMENTS
 .navbar-inner {
@@ -107,9 +86,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
   overflow: hidden;
 }
 
-.tab-content > .tab-pane {
-  padding: 0;
-}
 
 [class^="icon-"], [class*=" icon-"] {
   margin: 0 3px;
@@ -134,29 +110,6 @@ input[type='checkbox'] + label { margin-bottom:2px; }
   vertical-align: top;
   padding: 0 5px;
   line-height: 26px;
-}
-#loading-wrapper {
-  background: @black;
-  opacity: 0.6;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 999;
-}
-.loading-frame {
-  position: absolute;
-  top: 40%;
-  left: 48%;
-  width: 180px;
-  z-index: 9999;
-  .box {
-    background: @white;
-    font-size: @font-size-14;
-    font-weight: bold;
-    line-height:  24px;
-  }
 }
 .navigation {
   position: relative;

@@ -6,7 +6,8 @@
     {% set listAttributes = listAttributes|merge(
         {
             'class': oro_menu.add_attribute_values(listAttributes, 'class', ['AknDropdown-menu AknDropdown-menu--right dropdown-menu']),
-            'role': 'menu', 'aria-labelledby': 'dropdownMenu'
+            'role': 'menu',
+            'aria-labelledby': 'dropdownMenu'
         }
     ) %}
     {{ block('list') -}}

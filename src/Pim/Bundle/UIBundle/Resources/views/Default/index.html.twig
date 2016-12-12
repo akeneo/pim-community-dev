@@ -35,20 +35,18 @@
     </head>
     <body class="{% block bodyClass %}{% endblock %}">
     {% placeholder after_body_start %}
-    <div id="progressbar">
-        <h3>
-            {% if oro_config_value('pim_ui.loading_message_enabled') %}
-                {{ loading_message() }}
-            {% else %}
-                {% trans %}Loading ...{% endtrans %}
-            {% endif %}
-        </h3>
+    <div id="progressbar" class="AknDefault-progressContainer">
+        {% if oro_config_value('pim_ui.loading_message_enabled') %}
+            {{ loading_message() }}
+        {% else %}
+            {% trans %}Loading ...{% endtrans %}
+        {% endif %}
         <div class="AknProgress AknProgress--main progress">
             <div class="AknProgress-bar bar" style="width: 90%;"></div>
         </div>
     </div>
-    <div id="page" style="display:none;">
-        <div id="top-page">
+    <div id="page" style="display:none;" class="AknDefault-page">
+        <div id="top-page" class="AknDefault-topPage">
             {% block header %}
                 <header class="AknHeader">
                     {% placeholder before_navigation %}

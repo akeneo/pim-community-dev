@@ -20,8 +20,8 @@ class UserMenuBuilder implements BuilderInterface
                 'route'          => 'oro_user_security_logout',
                 'check_access'   => false,
                 'linkAttributes' => [
-                    'class' => 'no-hash'
-                ]
+                    'class' => 'AknDropdown-menuLink no-hash'
+                ],
             ]
         );
     }

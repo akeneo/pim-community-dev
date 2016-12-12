@@ -125,21 +125,6 @@ th label {
   text-align: center;
 }
 
-.table-condensed:not(.grid) {
-  td, th.center {
-    text-align: center;
-  }
-}
-
-.table-vertically-condensed > tbody > tr > td {
-  padding: 5px 10px;
-}
-
-.table-striped tbody>tr:nth-child(even)>td,
-.table-light tbody tr {
-  background-color: @backgroundColor-white;
-}
-
 .fullwidth {
   width: 100%;
 }
@@ -183,33 +168,6 @@ a.add-attribute-option {
   }
 }
 
-.comparison {
-  width: 100%;
-  td {
-    width: 50%;
-    vertical-align: top;
-    border-right: 1px solid darken(@color-light_grey, 5%);
-    &.no-label .control-group {
-      label.control-label {
-        width: 30px;
-      }
-      .controls {
-        margin-left: 40px;
-        &.metric {
-          margin-left: 10px;
-        }
-      }
-    }
-  }
-}
-
-#lbCenter {
-  z-index: 1000;
-}
-
-#lbOverlay {
-  z-index: 900;
-}
 
 .control-group.upload-zone-container {
   width: 900px;
