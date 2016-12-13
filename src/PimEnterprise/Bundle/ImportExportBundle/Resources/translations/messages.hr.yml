@@ -1,0 +1,7 @@
+job_profile.permissions:
+  execute.label: Dopušteno izvoditi profil zadatka
+  edit.label: Dopušteno uređivati profil zadatka
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: Dozvole

@@ -1,0 +1,97 @@
+View the product: Exibir o produto
+pimee_enrich.product_history.action.revert: Reverter para esta versão
+permission-changes:
+  category:
+    grant: O grupo <strong>{{ group }}</strong> vai <strong>ser {{ permission }}</strong> nesta categoria
+    revoke: O grupo <strong>{{ group }}</strong> não vai <strong>ser {{ permission }}</strong> nesta categoria
+  locale:
+    grant: O grupo <strong>{{ group }}</strong> vai <strong>ser {{ permission }}</strong> neste local
+    revoke: O grupo <strong>{{ group }}</strong> não vai <strong> ser {{ permission }}</strong> neste local
+  attribute group:
+    grant: O grupo <strong>{{ group }}</strong> vai <strong>ser {{ permission }}</strong> neste grupo de atributo
+    revoke: O grupo <strong>{{ group }}</strong> não vai <strong>ser {{ permission }}</strong> neste grupo de atributo
+  job profile:
+    grant: O grupo <strong>{{ group }}</strong> vai <strong>ser {{ permission }}</strong>
+    revoke: O grupo <strong>{{ group }}</strong> não vai <strong>ser {{ permission }}</strong>
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Publicado
+        revert: Reverter
+      smart_attribute:
+        come_from: 'Este atributo pode ser atualizado por uma regra:'
+      btn:
+        publish: Publicar
+        publish_this_version: Publicar esta versão
+        unpublish: Cancelar a publicação
+        save_draft: Guardar rascunho
+      flash:
+        product_unpublished: Publicação de produto cancelada com sucesso
+        product_published: Produto publicado com sucesso
+        product_not_published: Falhou a publicação deste produto
+        product_not_unpublished: Falha ao cancelar a publicação deste produto
+        product_reverted: Produto revertido com sucesso
+      meta:
+        published: Versão publicada
+        owner_groups: Grupos de proprietário
+        draft_status: Estado do rascunho
+        draft:
+          in_progress: Em progresso
+          sent_for_approval: À espera de aprovação
+          working_copy: Cópia de trabalho
+      tab:
+        proposals:
+          title: Propostas
+          messages:
+            approve:
+              success: A proposta foi aplicada com sucesso.
+              error:
+                The proposal can't be applied due to the following error:
+                  - erro
+            reject:
+              success: A proposta foi recusada.
+            remove:
+              success: A proposta foi removida.
+      confirmation:
+        revert:
+          title: Confirmar reversão
+          content: Tem a certeza que deseja reverter o produto para esta versão?
+        publish:
+          title: Publicar este produto
+          content: Tem a certeza que deseja publicar este produto?
+        unpublish:
+          title: Cancelar a publicação do produto
+          content: Tem certeza que deseja cancelar a publicação deste produto?
+      info:
+        update_successful: Cópia de trabalho do produto foi atualizada
+      copy:
+        source:
+          working_copy: Cópia de trabalho
+          draft: Meu rascunho
+          draft_of: rascunho de {{ author }}
+    product_draft:
+      info:
+        update_successful: O rascunho de produto foi guardado com sucesso
+        update_failed: O rascunho de produto não pôde ser atualizado
+        value_modified: Este valor é modificado pelo rascunho atual
+      flash:
+        sent_for_approval: Rascunho de produto enviado para aprovação
+        draft_not_sendable: Não pode enviar este racunho para aprovação
+      btn:
+        send_for_approval: Enviar para aprovação
+        sent_for_approval: Enviado para aprovação
+      modal:
+        accept_proposal: Aceitar a proposta
+        accept_selected_proposal: Aceitar proposta(s) selecionada(s)
+        reject_proposal: Rejeitar a proposta
+        reject_selected_proposal: Rejeitar proposta(s) selecionada(s)
+        remove_proposal: Rejeitar a proposta
+        send_for_approval: Enviar para aprovação
+        cancel: Cancelar
+        confirm: Enviar
+        title: Comente a sua proposta (opcional - 255 caracteres máx.)
+        characters: caracteres.
+      confirmation:
+        discard_changes: As alterações não guardadas serão perdidas. Tem certeza de que deseja enviar a sua proposta para aprovação sem as alterações não guardadas?
+        discard_changes_title: Tem certeza de que deseja enviar esta proposta?

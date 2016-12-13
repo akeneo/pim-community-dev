@@ -16,7 +16,7 @@ pimee_workflow:
       btn:
         original_product: Editar copia de trabajo
     proposal:
-      modal.title: 'Hacer un comentario (opcional - 255 caracteres max.)'
+      modal.title: Hacer un comentario (opcional - 255 caracteres max.)
   proposal:
     mass_action_group:
       review:

@@ -21,30 +21,30 @@ pimee_catalog_rule:
       actions:
         execute:
           confirm_title: Confirmación de ejecución
-          confirm_content: ¿Está seguro que desea ejecutar esta regla?
+          confirm_content: '¿Está seguro que desea ejecutar esta regla?'
           confirm_ok: OK
       mass_edit_action:
         confirm_title: Confirmación de cálculo
-        confirm_content: ¿Está seguro que desea calcular los productos afectados por la regla?
+        confirm_content: '¿Está seguro que desea calcular los productos afectados por la regla?'
         confirm_ok: OK
       mass_action:
         execute:
           confirm_ok: OK
           confirm_title: Confirmación de ejecución
-          confirm_content: ¿Está seguro que desea ejecutar las reglas seleccionadas?
+          confirm_content: '¿Está seguro que desea ejecutar las reglas seleccionadas?'
           success: La acción en masa para ejecutar las reglas seleccionadas ha sido lanzada. Será notificado una vez finalizada
           error: Ha ocurrido un error durante la ejecución de las reglas.
           empty_selection: Ninguna regla seleccionada.
         delete:
           confirm_ok: OK
           confirm_title: Confirmación de borrado
-          confirm_content: ¿Está seguro que desea eliminar las reglas seleccionadas?
+          confirm_content: '¿Está seguro que desea eliminar las reglas seleccionadas?'
           success: Ha eliminado las reglas.
           error: Ha ocurrido un error durante la eliminación de las reglas.
           empty_selection: Ninguna regla seleccionada.
 confirmation:
   remove:
-    rule: ¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción
+    rule: '¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción'
 flash:
   rule:
     removed: Regla eliminada con éxito

@@ -4,17 +4,17 @@ pimee_product_asset:
       index: Enrichir les ressources
       create: Créer une ressource
       remove: Supprimer une ressource
-      categories_view: "Consulter les catégories d'une ressource"
+      categories_view: Consulter les catégories d'une ressource
       mass_upload: Envoi en masse des ressources
     category_asset_picker:
-      list: "Liste les catégories de ressources dans le sélecteur d'éléments"
+      list: Liste les catégories de ressources dans le sélecteur d'éléments
     category:
       create: Créer une catégorie de ressources
       edit: Editer une catégorie de ressources
       list: Liste des catégories de ressources
       remove: Supprimer une catégorie de ressources
       manage: Gérer les autorisations de category de ressources
-      history: "Afficher l'historique des catégories de ressources"
+      history: Afficher l'historique des catégories de ressources
   acl_group:
     asset: Ressources du produit
     category: Catégories de ressources
@@ -25,14 +25,14 @@ pimee_product_asset:
       download: Télécharger
       generate_from_reference: Générer depuis la référence
       reset_variations: Réinitialiser les variations
-    confirmation.remove: 'Êtes-vous sûr de que vouloir supprimer la ressource «%asset% » ?'
+    confirmation.remove: Êtes-vous sûr de que vouloir supprimer la ressource «%asset% » ?
     grid:
       edit: Editer les propriétés de la ressource
     view:
       title: Ressources du produit
       code: Code
       description: Description
-      end_of_use: "Fin de l'utilisation"
+      end_of_use: Fin de l'utilisation
       reference: Référence
       filename: Nom du fichier
       width: Largeur 
@@ -44,57 +44,57 @@ pimee_product_asset:
       actions: Actions
       download: Téléchargement
       tag: Mots clés
-      no_reference: "Aucun fichier de référence n'a encore été téléchargé."
-      no_variation: "Aucun fichier de variation n'a été généré pour le moment."
+      no_reference: Aucun fichier de référence n'a encore été téléchargé.
+      no_variation: Aucun fichier de variation n'a été généré pour le moment.
     flash:
       update:
         success: Ressource a été mise à jour.
-        error: "Ressource n'a pas été mise à jour. Une erreur s'est produite."
+        error: Ressource n'a pas été mise à jour. Une erreur s'est produite.
       create:
         success: Ressource a été créée.
-        error: "Ressource n'a pas été mise à jour. Une erreur s'est produite."
+        error: Ressource n'a pas été mise à jour. Une erreur s'est produite.
       remove:
         success: Ressource a été supprimée.
   enrich_reference:
     flash:
       delete:
         success: Le fichier de référence a été supprimé.
-        error: "Le fichier de référence n'a pas été supprimé. Une erreur s'est produite."
+        error: Le fichier de référence n'a pas été supprimé. Une erreur s'est produite.
   enrich_variation:
     flash:
       transformation:
-        invalid_options: 'Impossible de générer la variation pour le canal %channel%, la configuration est erronée.'
-        image_width_error: "Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une largeur inférieure à celle requise par la transformation."
-        image_height_error: "Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une hauteur inférieure à celle requise par la transformation."
-        not_applicable: 'Impossible de générer la variation pour le canal %channel%.'
-        non_registered: 'Aucune transformation %transformation% enregistrée pour le mime type %mimeType%. Impossible de générer la variation pour le canal %channel%.'
-        error: 'Impossible de générer la variation pour le canal %channel%.'
+        invalid_options: Impossible de générer la variation pour le canal %channel%, la configuration est erronée.
+        image_width_error: Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une largeur inférieure à celle requise par la transformation.
+        image_height_error: Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une hauteur inférieure à celle requise par la transformation.
+        not_applicable: Impossible de générer la variation pour le canal %channel%.
+        non_registered: Aucune transformation %transformation% enregistrée pour le mime type %mimeType%. Impossible de générer la variation pour le canal %channel%.
+        error: Impossible de générer la variation pour le canal %channel%.
         success: Les fichiers de variation ont été générés avec succès.
       update:
         success: Le fichier de variation a été mis à jour.
-        error: "Fichier de variation n'a pas été mis à jour. Une erreur s'est produite."
+        error: Fichier de variation n'a pas été mis à jour. Une erreur s'est produite.
       delete:
         success: Le fichier de variation a été supprimé.
-        error: "Le fichier de variation n'a pas été supprimé. Une erreur s'est produite."
+        error: Le fichier de variation n'a pas été supprimé. Une erreur s'est produite.
   popin.create:
     title: Créer une nouvelle ressource
     is_localized: Localisable
   menu: Ressources
   page_tab:
     title:
-      view: 'Ressource produit %asset.code% | Vue'
-      edit: 'Ressource produit %asset.code% | Edition'
+      view: Ressource produit %asset.code% | Vue
+      edit: Ressource produit %asset.code% | Edition
       index: Ressources du produit
   code:
     label: Code
   thumbnail:
     label: Miniature
   status:
-    label: État
+    label: Statut
   description:
     label: Description
   endOfUse:
-    label: "Fin de l'utilisation"
+    label: Fin de l'utilisation
   createdAt:
     label: Crée le
   updatedAt:
@@ -123,25 +123,25 @@ pimee_product_asset:
     import: Import
     executed: Téléchargement massif exécuté
     error:
-      upload: "Une erreur s'est produite lors du téléchargement"
+      upload: Une erreur s'est produite lors du téléchargement
       code: Format de code non valide pour la ressource
-      localizable: "Une ressource existe mais n'est pas traduisible"
+      localizable: Une ressource existe mais n'est pas traduisible
       invalid_locale: Les paramètres régionaux sont désactivés ou non valides
   category:
     menu: Catégories de ressources
     permissions:
       view.label: Permettre de voir les ressources
       view.help: Permet de voir les ressources classées dans cette catégorie
-      edit.label: "Permettre d'éditer les ressources"
-      edit.help: "Permet d'éditer les ressources classées dans cette catégorie (implique la permission de voir)"
-      no_access_to_products: "Vous n'avez accès à aucune ressource dans aucune arborescence, contactez votre administrateur pour résoudre le problème"
+      edit.label: Permettre d'éditer les ressources
+      edit.help: Permet d'éditer les ressources classées dans cette catégorie (implique la permission de voir)
+      no_access_to_products: Vous n'avez accès à aucune ressource dans aucune arborescence, contactez votre administrateur pour résoudre le problème
       apply_on_children.label: Appliquer les changements aux sous-catégories
       apply_on_children.help: Appliquer les changements de permissions à toutes les sous-catégories, les permissions existantes sur les sous-catégories sont conservées
   mass_edit_action:
     asset:
       page_title: Ressources
-      page_subtitle: 'Edition de masse (1 ressource)|Edition de masse (%count% ressources)'
-      confirm: 'Vous êtes sur le point de mettre à jour une ressource avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour %count% ressources avec les renseignements suivants, merci de confirmer.'
+      page_subtitle: Edition de masse (1 ressource)|Edition de masse (%count% ressources)
+      confirm: Vous êtes sur le point de mettre à jour une ressource avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour %count% ressources avec les renseignements suivants, merci de confirmer.
       steps:
         first: Choisir les ressources
         second: Configurer
@@ -150,22 +150,21 @@ pim_enrich:
   mass_edit_action:
     asset-classify-move:
       label: Déplacer des ressources vers des catégories
-      description: "Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera perdu"
+      description: Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera perdu
       success_flash: La (les) ressource(s) ont été déplacées dans les catégories sélectionnées
-      launched_flash: |-
-        L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+      launched_flash: L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     add-tags-to-assets:
       label: Ajouter des mots clés aux ressources
       description: Les mots clés seront ajoutés aux ressources. Les mots clés inconnus seront créés.
       success_flash: Le(s) mot(s) clé(s) ont été ajoutés aux ressources
-      launched_flash: |-
-        L'action de masse "Ajouter des mots clés aux ressources" a été lancée. Vous serez notifié lorsque la modification sera terminée.
-      message.error: "Le mot clé fourni n'existe pas"
+      launched_flash: L'action de masse "Ajouter des mots clés aux ressources" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+      message.error: Le mot clé fourni n'existe pas
 pim:
   grid:
     mass_action:
       mass_classify_assets: Classer
       add_tags_to_assets: Ajouter des mots-clés
+      delete_assets: Supprimer les ressources
 btn.create.asset: Créer une ressource
 btn.drag_or_upload: Glisser-déposer un fichier ou cliquer ici
 job_execution.summary:

@@ -1,0 +1,75 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Gestió de recursos
+        panel:
+          basket:
+            title: Cistella
+            empty_basket: La cistella és buida
+        manage_asset:
+          title: Gestió de recursos
+          cancel: Cancelar
+          confirm: Confirmar
+  enrich_asset:
+    grid:
+      edit: Edita les propietats del recurs
+  enrich_variation:
+    popin:
+      delete:
+        title: Confirmació de l'eliminació
+        message: Esteu segur que voleu eliminar aquest element?
+      reset:
+        title: Reiniciar variacions
+        message: Esteu segur que voleu reiniciar totes les variacions?
+  mass_upload:
+    menu: Carregar recursos
+    btn:
+      remove_all_files: Eliminar tots els arxius
+      delete: Suprimir
+      import: Importar
+      upload: Carregar
+    success:
+      new: Es crearà un nou recurs
+      imported: Arxius importats per al recurs actiu
+      canceled: L'intent de càrrega ha estat cancel·lat correctament
+      deleted: L'arxiu carregat s'ha eliminat correctament
+    error:
+      list: No es poden llegir els arxius que s'han carregat
+      upload: S'ha produït un error en la càrrega
+      delete: No es pot eliminar aquest arxiu del servidor
+      import: S'ha produït un error durant la importació
+      filename: Aquest nom de fitxer no és vàlid pel recurs
+      code: Aquest codi de format no és vàlid pel recurs
+      locale: Ja existeix un recurs però no se li pot aplicar cap configuració regional
+      invalid_locale: La configuració regional està desactivada o no és vàlida
+      exists: Ja s'ha importat un arxiu amb el mateix nom
+      conflicts: Conflicte de nom d'arxius
+    grid:
+      filename: nom d'arxiu
+      filetype: tipus d'arxiu
+      status: estat
+      progress: progrés
+      actions: accions
+    action:
+      cancel: Cancelar
+      remove: Eliminar
+    status:
+      added: Afegit|Afegides
+      queued: En cua
+      uploading: Carregant
+      error: Error
+      success: Correcte
+    drag_and_drop: Arrossegueu-hi els seus recursos o feu clic aquí
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Està segur que vol eliminar els recursos seleccionats?
+        success: Recursos seleccionats correctament.
+        error: S'ha produït un error en intentar suprimir els recursos seleccionats, torneu-ho a intentar.
+        empty_selection: No hi ha cap recurs seleccionat
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Carregar en massa
