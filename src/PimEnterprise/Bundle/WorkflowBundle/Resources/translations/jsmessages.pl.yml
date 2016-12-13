@@ -1,0 +1,30 @@
+View the product: Zobacz produkt
+Unpublish the product: Cofnij publikację produktu
+Approve: Zatwierdź
+Refuse: Odrzucić
+Approve selected: Zatwierdź wybrane
+Refuse selected: Odrzuć wybrane
+oro:
+  datagrid:
+    noentities:
+      proposal: Brak propozycji do przeglądu.
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Edytuj kopię roboczą
+  proposal:
+    mass_action_group:
+      review:
+        label: Masowe działania
+    partial_accept:
+      modal.label: Zostaw komentarz (opcjonalnie)
+      modal.error: Wystąpił błąd, propozycja nie została częściowo zatwierdzona
+    partial_approve:
+      modal:
+        title: Częściowo zaakceptuj zmiany
+        label: Zostaw komentarz (opcjonalnie)
+        error: Wystąpił błąd, propozycja nie została częściowo zatwierdzona
+    partial_reject:
+      modal:
+        label: Zostaw komentarz (opcjonalnie)
