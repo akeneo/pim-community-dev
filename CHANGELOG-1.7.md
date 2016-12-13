@@ -5,6 +5,7 @@
 - #5038: Fixed job name visibility checker to also check additional config
 - #5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
 - #5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
+- #5337 Fixed Widget Registry. Priority is now taken in account.
 
 ## Functional improvements
 
