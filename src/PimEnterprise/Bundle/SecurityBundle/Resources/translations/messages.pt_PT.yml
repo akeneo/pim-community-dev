@@ -1,0 +1,6 @@
+pimee_enrich.acl.locale.edit_permissions: Gerir permissões locais
+pimee_enrich.acl.category.edit_permissions: Gerir permissões de categoria
+pimee_enrich.acl.attribute_group.edit_permissions: Gerir permissões de grupo de atributo
+pimee_importexport.acl.export_profile.edit_permissions: Gerir permissões de perfil de exportação
+pimee_importexport.acl.import_profile.edit_permissions: Gerir permissões do perfil de importação
+pimee_enrich.groups.label: Grupos de proprietário
