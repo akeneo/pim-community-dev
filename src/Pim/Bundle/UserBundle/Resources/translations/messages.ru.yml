@@ -2,11 +2,11 @@ pim_user:
   user:
     tab:
       general.title: Основные
-      additional.title: Дополнительные
+      additional.title: Дополнительно
       group_and_role.title: Группы и роли
       password.title: Пароль
-      business_unit.title: Бизнес-подразделения
-      email_synchronization.title: Настройки синхронизации email
+      business_unit.title: Бизнес-единицы
+      email_synchronization.title: Параметры синхронизации email
       interfaces.title: Интерфейсы
 oro.user.controller:
   group.message.saved: Группа сохранена
@@ -19,12 +19,12 @@ oro.user.grid.users:
     email: Email
     firstName: Имя
     lastName: Фамилия
-    createdAt: Дата создания
-    updatedAt: Дата обновления
-    enabled: Состояние
+    createdAt: Создано
+    updatedAt: Обновлено
+    enabled: Статус
 oro.user.grid.roles:
   columns:
-    label: Ярлык
+    label: Метка
 oro.user.grid.groups:
   columns:
     name: Имя
@@ -88,7 +88,7 @@ user:
 Role: Роль
 Owner: Владелец
 General: Основные
-Entity: Сущность
+Entity: Объект
 Capabilities: Способности
 Save and close: Сохранить и закрыть
 Has role: Имеет роль
@@ -124,7 +124,7 @@ oro_security:
 (default): Разрешения по умолчанию на сущности
 VIEW: Просмотр
 CREATE: Создать
-EDIT: Изменить
+EDIT: Редактировать
 DELETE: Удалить
 ASSIGN: Назначить
 SHARE: Поделиться

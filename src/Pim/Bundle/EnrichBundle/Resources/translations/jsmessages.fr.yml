@@ -28,17 +28,17 @@ flash:
   item:
     removed: Elément supprimé avec succès
   association type:
-    removed: Le type d'association a bien été supprimé
+    removed: Le type d'association est supprimé avec succès
   attribute:
-    removed: L'attribut a bien été supprimé
+    removed: Attribut supprimé avec succès
   family:
-    removed: La famille a bien été supprimée
+    removed: Famille supprimée avec succès
   product:
-    removed: Le produit a bien été supprimé
+    removed: Produit supprimé avec succès
   channel:
-    removed: Le canal a bien été supprimé
+    removed: Canal supprimé avec succès
   group:
-    removed: Le groupe a bien été supprimé
+    removed: Groupe supprimé avec succès
   variant group:
     removed: Le groupe de variantes a bien été supprimé
   group type:
@@ -48,7 +48,7 @@ flash:
   export profile:
     removed: Le profil d'export a bien été supprimé
   user:
-    removed: L'utilisateur a bien été supprimé
+    removed: Utilisateur supprimé avec succès
   role:
     removed: Le rôle a bien été supprimé
 error:
@@ -84,7 +84,7 @@ label:
   attribute_option:
     add_option: Ajouter une option
 Code: Code
-Edit: Éditer
+Edit: Modifier
 Delete: Supprimer
 Edit attributes of the product: Modifier les attributs du produit
 Classify the product: Classer le produit
@@ -128,7 +128,7 @@ pim_enrich:
       btn:
         enable: Activer
         enabled: Activé
-        disable: Desactiver
+        disable: Désactiver
         disabled: Désactivé
         download_pdf: PDF
         compare_translate: Comparer / traduire
@@ -138,7 +138,7 @@ pim_enrich:
       history:
         version: Version
         author: Auteur
-        logged_at: Connecté le
+        logged_at: Connecté(e) le
         more: Plus
         less: Moins
         from: De
@@ -222,14 +222,32 @@ pim_enrich:
         created_by: Créé par
         updated: Mis à jour
         updated_by: Mis à jour par
+    group:
+      title: Groupe
+      info:
+        deletion_successful: Groupe supprimé avec succès.
+        deletion_failed: Le groupe n'a pas pu être supprimé.
+        update_successful: Groupe mis à jour avec succès.
+        update_failed: Le groupe n'a pas pu être mis à jour.
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - champs
+      btn:
+        save: Enregistrer
+      meta:
+        product_count: Produits
+        created: Créé
+        created_by: Créé par
+        updated: Mis à jour
+        updated_by: Mis à jour par
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
     delete_item: Supprimer l'élément.
     delete:
-      attribute: Êtes-vous sûr(e) de que vouloir supprimer cet attribut du produit ?
+      attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
   info:
-    not_applicable: Inconnu
+    not_applicable: N/A
     entity:
       updated: Des modifications n'ont pas encore été sauvegardées.
   error:
@@ -320,6 +338,18 @@ pim_enrich:
           title: Produits
         attributes:
           title: Attributs
+    group:
+      tab:
+        properties:
+          title: Propriétés
+          general: Propriétés générales
+          code: Code
+          type: Type
+          label_translations: Traduction des libellés
+        history:
+          title: Historique
+        products:
+          title: Produits
     common:
       tab:
         attributes:
