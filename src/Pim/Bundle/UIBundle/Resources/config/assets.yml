@@ -69,6 +69,7 @@ css:
         - bundles/pimui/less/components/Flash.less
         - bundles/pimui/less/components/Footer.less
         - bundles/pimui/less/components/Header.less
+        - bundles/pimui/less/components/LoadingMask.less
         - bundles/pimui/less/components/MessageBox.less
         - bundles/pimui/less/components/MainMenu.less
         - bundles/pimui/less/components/Notification.less

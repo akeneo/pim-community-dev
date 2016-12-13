@@ -111,6 +111,10 @@
 }
 
 // Tabs
+.tab-content > .tab-pane {
+  padding: 0;
+}
+
 .tabsections {
   .tabsection {
     .tabsection-title {
@@ -213,4 +217,19 @@ button.pimmultiselect { }
 // Variant group show history (same in groups)
 .form-container .history > div {
   width: 100%;
+}
+
+// Filters boolean
+.ui-multiselect-menu.select-filter-widget {
+  margin-top: -3px;
+}
+.ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
+  color: @AknDefaultFontColor !important;
+  font-weight: normal;
+  cursor: pointer;
+}
+.ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label.ui-state-hover,
+.ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label.ui-state-active {
+  background: @AknPurple;
+  color: @AknDefaultFontColor;
 }

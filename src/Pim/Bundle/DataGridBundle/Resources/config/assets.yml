@@ -2,6 +2,5 @@ css:
     grids:
         - bundles/pimdatagrid/lib/multiselect/jquery.multiselect.css
         - bundles/pimdatagrid/lib/multiselect/jquery.multiselect.filter.css
-        - bundles/pimdatagrid/css/grid.less
     filters:
         - bundles/pimdatagrid/css/filter.less
