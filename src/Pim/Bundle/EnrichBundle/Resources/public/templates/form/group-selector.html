@@ -4,7 +4,7 @@
             <span class="group-label"><%- element.label %></span>
             <span class="badge-elements-container">
                 <% _.each(badges[element.code], function(badge, type) { %>
-                    <span class="<%- type %>-badge label"><%- badge %></span>
+                    <span class="AknBadge AknBadge--<%- type %> <%- type %>-badge label"><%- badge %></span>
                 <% }) %>
             </span>
         </a>

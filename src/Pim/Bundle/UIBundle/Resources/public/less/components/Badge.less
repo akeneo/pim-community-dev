@@ -10,6 +10,7 @@
   padding: 4px;
   transition: background 0.1s ease-in;
   white-space: nowrap;
+  margin: 0 4px;
 
   &-icon {
     margin: 0 5px 0 0;
@@ -31,7 +32,8 @@
   }
 
   &--disabled,
-  &--important {
+  &--important,
+  &--invalid {
     background: lighten(@AknRed, 30%);
     color: darken(@AknRed, 20%);
 
@@ -41,7 +43,8 @@
   }
 
   &--disabled &-icon,
-  &--important &-icon {
+  &--important &-icon,
+  &--invalid &-icon {
     color: darken(@AknRed, 20%);
   }
 

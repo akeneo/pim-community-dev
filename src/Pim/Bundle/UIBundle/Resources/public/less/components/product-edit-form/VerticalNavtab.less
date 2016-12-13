@@ -24,8 +24,10 @@
     color: @AknDefaultFontColor;
     background: lighten(@AknGrey, 30%);
     padding: 0 20px;
-    display: block;
+    display: flex;
+    justify-content: space-between;
     cursor: pointer;
+    align-items: center;
 
     &:hover:not(&--active) {
       background: @AknDefaultHoverBackground;
