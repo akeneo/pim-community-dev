@@ -103,7 +103,7 @@ class ProductController extends FOSRestController
         $url = $this->generateUrl(
             'oro_api_get_product',
             [
-                'identifier' => $product->getIdentifier()->getData()
+                'identifier' => $product->getIdentifier()
             ],
             true
         );
