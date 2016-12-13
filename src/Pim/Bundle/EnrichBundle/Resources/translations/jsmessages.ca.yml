@@ -157,7 +157,7 @@ pim_enrich:
             - camps
         already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
       error:
-        upload: S'ha produït un error durant la carrega
+        upload: S'ha produït un error durant la càrrega
       meta:
         created: Creat
         created_by: Per
@@ -192,7 +192,7 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Aquest camp regionalitzable no està disponible per la configuració regional '{{ locale }}' i el canal '{{ channel }}'
       media:
-        upload: Arrossegar i deixar per penjar o feu clic aquí
+        upload: Arrossegueu-lo aquí per carregar o feu-hi clic
       create_popin:
         title: Crear un nou producte
         labels:
@@ -233,7 +233,7 @@ pim_enrich:
     entity:
       updated: Hi ha canvis sense guardar.
   error:
-    upload: S'ha produït un error penjant el fitxer
+    upload: S'ha produït un error carregant el fitxer
   alert:
     not_allowed: No té permís per accedir a aquesta pàgina
     error_occured: S'ha produït un error durant la càrrega de la pàgina

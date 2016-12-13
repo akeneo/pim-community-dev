@@ -13,19 +13,18 @@ pim_import_export:
     7: 中断
     8: 不明
   download_archive:
-    archive: 生成したファイルをダウンロード | 生成したファイルをダウンロード
     output: 生成したファイルをダウンロード | 生成したファイルをダウンロード
     input: 読み込んだファイルをダウンロード | 読み込んだファイルをダウンロード
     invalid: 無効なデータをダウンロード
   notification:
     export:
-      error: 'エクスポート<strong>%label%</strong> が失敗しました'
-      warning: 'エクスポート <strong>%label%</strong> がいくつかのエラーで終了しました'
-      success: 'エクスポート <strong>%label%</strong> が完了しました'
+      error: エクスポート<strong>%label%</strong> が失敗しました
+      warning: エクスポート <strong>%label%</strong> がいくつかのエラーで終了しました
+      success: エクスポート <strong>%label%</strong> が完了しました
     import:
-      error: 'インポート <strong>%label%</strong> が失敗しました'
-      warning: 'インポート <strong>%label%</strong> がいくつかのエラーで終了しました'
-      success: 'インポート <strong>%label%</strong> が完了しました'
+      error: インポート <strong>%label%</strong> が失敗しました
+      warning: インポート <strong>%label%</strong> がいくつかのエラーで終了しました
+      success: インポート <strong>%label%</strong> が完了しました
 pim_title.export_profile.index: エクスポート プロファイルの管理
 pim_title.export_profile.edit: '%job.label% のエクスポート プロファイル |編集'
 pim_title.export_profile.show: '%job.label% のエクスポート プロファイル |表示'
@@ -91,8 +90,8 @@ import now: 今すぐインポート
 export now: 今すぐエクスポート
 confirmation:
   remove:
-    export profile: 'エクスポート プロファイル %name% を削除してもよろしいですか。'
-    import profile: 'インポート プロファイル %name% を削除してもよろしいですか。'
+    export profile: エクスポート プロファイル %name% を削除してもよろしいですか。
+    import profile: インポート プロファイル %name% を削除してもよろしいですか。
 flash:
   export:
     created: エクスポートが正常に作成されました。
@@ -116,10 +115,10 @@ pane.accordion:
 popin.create:
   export_profile.title: 新しいエクスポート プロファイルを作成
   import_profile.title: 新しいインポート プロファイルを作成
-Display item: アイテムを表示
-Hide item: アイテムを隠す
-Collecting data about job execution...: ジョブの実行に関するデータを収集しています...
-You must select a file to upload: アップロードするファイルを選択してください
+'Display item': アイテムを表示
+'Hide item': アイテムを隠す
+'Collecting data about job execution...': ジョブの実行に関するデータを収集しています...
+'You must select a file to upload': アップロードするファイルを選択してください
 Download log: ログをダウンロード
 Show profile: プロファイルを表示
 execution details: 実行の詳細
@@ -137,3 +136,12 @@ Status: ステータス
 Summary: サマリ
 Start: 開始
 End: 終了
+set_attribute_requirements: 属性の要件を設定
+COMPLETED: 完了
+STARTING: 開始中
+STARTED: 開始
+STOPPING: 停止中
+STOPPED: 停止済
+FAILED: 失敗
+ABANDONED: 中断
+UNKNOWN: 不明
