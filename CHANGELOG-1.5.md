@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6026: Fix an error on family mass edit that occurs when working on more families than the mass edit batch size
+- PIM-5991: Focus on wysiwig field when clicking on the product edit form completeness link
 
 # 1.5.14 (2016-12-01)
 

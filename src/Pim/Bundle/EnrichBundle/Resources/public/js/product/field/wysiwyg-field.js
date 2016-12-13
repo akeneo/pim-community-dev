@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Textarea field
+ * Wysiwyg field
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @author    Filips Alpe <filips@akeneo.com>
@@ -24,9 +24,17 @@ define(
             events: {
                 'change .field-input:first textarea:first': 'updateModel'
             },
+
+            /**
+             * @inheritDoc
+             */
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
+
+            /**
+             * @inheritDoc
+             */
             postRender: function () {
                 this.$('textarea').summernote({
                     disableResizeEditor: true,
@@ -40,11 +48,22 @@ define(
                     ]
                 }).on('summernote.blur', this.updateModel.bind(this));
             },
+
+            /**
+             * @inheritDoc
+             */
             updateModel: function () {
                 var data = this.$('.field-input:first textarea:first').code();
                 data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);
+            },
+
+            /**
+             * @inheritDoc
+             */
+            setFocus: function () {
+                this.$('.field-input:first .note-editable').trigger('focus');
             }
         });
     }
