@@ -6,8 +6,8 @@ require_once __DIR__ . '/../SchemaHelper.php';
 require_once __DIR__ . '/../UpgradeHelper.php';
 
 use Doctrine\DBAL\Driver\Connection;
+use Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer;
 use Pim\Upgrade\SchemaHelper;
-use Pim\Upgrade\ValuesAsJson\ProductValuesNormalizer;
 
 $kernel = new AppKernel('prod', false);
 $kernel->loadClassCache();
@@ -64,7 +64,7 @@ echo "Done :)\n";
 function prepareProductTable(Connection $db, $productTable)
 {
     $db->exec("ALTER TABLE $productTable ADD identifier VARCHAR(255) NOT NULL");
-    $db->exec("ALTER TABLE $productTable ADD raw_values LONGTEXT NOT NULL COMMENT '(DC2Type:json_array)'");
+    $db->exec("ALTER TABLE $productTable ADD raw_values JSON NOT NULL COMMENT '(DC2Type:json_array)'");
 }
 
 function createUniqueIndexOnIdentifier(Connection $db, $productTable)
