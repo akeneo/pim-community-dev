@@ -3,14 +3,15 @@
 [class^="icon-"],
 [class*=" icon-"] {
   display:inline-block !important;
+  margin: 0 3px;
 }
 
 [class^='icon-'].hide-text:after,
 [class^='icon-'].hide-text:before {
-  padding:0;
-  text-indent:0;
   font-size: @AknFontSizeBig;
   color: @AknSlateGrey;
+  padding:0;
+  text-indent:0;
 }
 
 .icon-category,
@@ -21,9 +22,11 @@
   margin-right: 5px;
   margin-left: -1px;
 }
+
 .icon-category {
   background-image: url("../images/small-icon-category.png");
 }
+
 .icon-product {
   background-image: url("../images/small-icon-product.png");
 }

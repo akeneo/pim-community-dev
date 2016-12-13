@@ -34,6 +34,7 @@
     min-height: 100px;
   }
 
+  // TODO Move this into another module
   &-list {
     min-height: 3 * @itemHeight;
     display: flex;
@@ -68,6 +69,15 @@
 
     &.active {
       background: white;
+    }
+  }
+
+  &-itemLink {
+    color: @AknDefaultFontColor;
+    flex-grow: 1;
+
+    &:hover {
+      color: darken(@AknDefaultFontColor, 20%);
     }
   }
 

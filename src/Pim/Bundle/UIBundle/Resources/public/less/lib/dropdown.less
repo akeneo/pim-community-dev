@@ -4,8 +4,40 @@
 .dropdown-menu > li.active > a {
   color: lighten(@AknPurple, 20%);
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     color: darken(@AknPurple, 10%);
     cursor: pointer;
   }
+}
+
+.dropdown-menu {
+  margin-top:-1px;
+  border-radius: 0;
+  z-index: 900;
+}
+
+.dropdown-menu {
+  .divider {
+    border-bottom-color: @AknBorderColor;
+    margin:4px 0;
+  }
+}
+
+.dropdown:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-submenu:hover > a,
+.dropdown-submenu:focus > a {
+  background: @AknDefaultHoverBackground;
+  color: @AknDefaultFontColor;
+}
+.dropdown-menu > li > a,
+.dropdown-menu > li.active > a {
+  color: @AknDefaultFontColor;
 }

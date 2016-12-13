@@ -49,11 +49,9 @@
 
     {% endblock pageHeader %}
 
-    <div class="layout-content scrollable-container">
-        {% block content_data %}
-            {{ UI.scrollData(id, data) }}
-        {% endblock content_data %}
-    </div>
+    {% block content_data %}
+        {{ UI.scrollData(id, data) }}
+    {% endblock content_data %}
 </div>
 
 {% endblock content %}
