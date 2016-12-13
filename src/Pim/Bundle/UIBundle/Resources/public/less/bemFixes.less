@@ -216,7 +216,7 @@ i.remove-attribute {
 
   &-select2Dropdown {
     padding: 5px;
-    border: 1px solid #ccd1d8 !important; //@AknBorderColor
+    border: 1px solid @AknBorderColor !important;
     margin-top: 5px;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
@@ -228,17 +228,17 @@ i.remove-attribute {
     }
 
     .select2-input, .select2-focused {
-      border: 1px solid #A1A9B7 !important; //@AknBorderColor
+      border: 1px solid @AknBorderColor !important;
       box-shadow: none !important;
-      background-color: #F1F4F9 !important; //@AknGrey
-      color: #555; //@AknDefaultFontColor
-      padding-left: 34px; //@AknDefaultButtonSize
-      font-size: 14px; //@AknFontSizeBig
-      line-height: 30px; //@AknLittleButtonSize
+      background-color: @AknLightGray !important;
+      color: @AknDefaultFontColor;
+      padding-left: @AknDefaultButtonSize;
+      font-size: @AknFontSizeBig;
+      line-height: @AknLittleButtonSize;
     }
 
     .select2-highlighted {
-      background-color: #F1F4F9; //@AknGrey
+      background-color: @AknLightGray;
     }
 
     &--arrowRight::before {
@@ -249,10 +249,10 @@ i.remove-attribute {
       display: block;
       width: 10px;
       height: 10px;
-      background-color: #fff;
+      background-color: white;
       transform: rotate(45deg);
-      border-top: solid 1px #ccd1d8; //@AknBorderColor
-      border-left: solid 1px #ccd1d8; //@AknBorderColor
+      border-top: solid 1px @AknBorderColor;
+      border-left: solid 1px @AknBorderColor;
     }
 
     &--arrowLeft::before {
@@ -263,10 +263,10 @@ i.remove-attribute {
       display: block;
       width: 10px;
       height: 10px;
-      background-color: #fff;
+      background-color: white;
       transform: rotate(45deg);
-      border-top: solid 1px #ccd1d8; //@AknBorderColor
-      border-left: solid 1px #ccd1d8; //@AknBorderColor
+      border-top: solid 1px @AknBorderColor;
+      border-left: solid 1px @AknBorderColor;
     }
   }
 
@@ -274,7 +274,7 @@ i.remove-attribute {
     position: absolute;
     top: 11px;
     left: 10px;
-    font-size: 19px; //@AknBigIconFontSize
-    color: #A1A9B7; //@AknBorderColor
+    font-size: @AknBigIconFontSize;
+    color: @AknBorderColor;
   }
 }
