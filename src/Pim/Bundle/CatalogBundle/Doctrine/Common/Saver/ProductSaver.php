@@ -57,6 +57,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($product, array $options = [])
     {
+        $this->computeRawValues($product);
         $this->validateProduct($product);
 
         $options['unitary'] = true;
@@ -64,7 +65,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
         //$this->completenessManager->schedule($product);
-        $this->computeRawValues($product);
 
         $this->objectManager->persist($product);
         $this->objectManager->flush();
@@ -88,6 +88,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
         foreach ($products as $product) {
+            $this->computeRawValues($product);
             $this->validateProduct($product);
 
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
