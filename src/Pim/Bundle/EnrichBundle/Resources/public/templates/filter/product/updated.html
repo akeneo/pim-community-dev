@@ -5,10 +5,12 @@
         </option>
     <% }); %>
 </select>
-<% if ('>' === operator) { %>
-    <span class="date-wrapper">
-        <input name="filter-value-updated" class="add-on value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- value ? value : '' %>">
-    </span>
-<% } else if ('SINCE LAST N DAYS' === operator) { %>
-    <input name="filter-value-updated" type="text" value="<%- value ? value : '' %>"<%- isEditable ? '' : ' disabled' %>>
-<% } %>
+<div class="AknFieldContainer-iconsContainer">
+    <% if ('>' === operator) { %>
+        <span class="date-wrapper">
+            <input name="filter-value-updated" class="AknTextField add-on value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- value ? value : '' %>">
+        </span>
+    <% } else if ('SINCE LAST N DAYS' === operator) { %>
+        <input name="filter-value-updated" class="AknTextField" type="text" value="<%- value ? value : '' %>"<%- isEditable ? '' : ' disabled' %>>
+    <% } %>
+</div>
