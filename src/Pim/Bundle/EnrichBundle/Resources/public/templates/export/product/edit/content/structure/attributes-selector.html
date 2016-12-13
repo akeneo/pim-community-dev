@@ -1,40 +1,42 @@
-<div class="attribute-groups">
-    <header><%- __('pim_enrich.export.product.filter.attributes_selector.attribute_group') %></header>
-    <div data-scroll-container="attribute-groups">
-        <ul>
-            <li class="<%- null === currentGroup ? 'selected' : '' %>" data-attribute-group-code=""><%- __('pim_enrich.export.product.filter.attributes_selector.all_group') %></li>
+<div class="AknColumnConfigurator-column attribute-groups">
+    <header class="AknColumnConfigurator-columnHeader"><%- __('pim_enrich.export.product.filter.attributes_selector.attribute_group') %></header>
+    <div data-scroll-container="attribute-groups" class="AknColumnConfigurator-listContainer">
+        <ul class="AknColumnConfigurator-list">
+            <li class="AknColumnConfigurator-listItem AknColumnConfigurator-listItem--selectable <%- null === currentGroup ? 'selected active' : '' %>" data-attribute-group-code=""><%- __('pim_enrich.export.product.filter.attributes_selector.all_group') %></li>
             <% _.each(attributeGroups, function (attributeGroup) { %>
-                <li class="<%- currentGroup === attributeGroup.code ? 'selected' : '' %>" data-attribute-group-code="<%- attributeGroup.code %>">
+                <li class="AknColumnConfigurator-listItem AknColumnConfigurator-listItem--selectable <%- currentGroup === attributeGroup.code ? 'selected active' : '' %>" data-attribute-group-code="<%- attributeGroup.code %>">
                     <%- i18n.getLabel(attributeGroup.labels, userContext.get('uiLocale'), attributeGroup.code) %>
                 </li>
             <% }); %>
         </ul>
     </div>
 </div>
-<div class="attributes">
-    <header>
-        <input type="text" placeholder="<%- __('pim_enrich.export.product.filter.attributes_selector.attributes', {attributeCount: attributeCount}) %>" class="search-field"/>
+<div class="AknColumnConfigurator-column attributes">
+    <header class="AknColumnConfigurator-columnHeader">
+        <i class="AknColumnConfigurator-searchIcon icon-search"></i>
+        <input class="AknTextField  AknColumnConfigurator-searchInput search-field" type="text" placeholder="<%- __('pim_enrich.export.product.filter.attributes_selector.attributes', {attributeCount: attributeCount}) %>"/>
     </header>
-    <div data-scroll-container="attributes">
-        <ul>
-        </ul>
+    <div data-scroll-container="attributes" class="AknColumnConfigurator-listContainer">
+        <ul class="AknColumnConfigurator-list"></ul>
     </div>
 </div>
-<div class="selected-attributes">
-    <header>
+<div class="AknColumnConfigurator-column selected-attributes">
+    <header class="AknColumnConfigurator-columnHeader">
         <span><%- __('pim_enrich.export.product.filter.attributes_selector.selected') %></span>
         <span class="AknButton AknButton--grey clear"><%- __('pim_enrich.export.product.filter.attributes_selector.clear') %></span>
     </header>
-    <div data-scroll-container="selected-attributes">
-        <span class="empty-message <%- 0 === selectedAttributes.length ? 'empty' : '' %>"><%- __('pim_enrich.export.product.filter.attributes_selector.empty_selection') %></span>
-        <ul>
-            <% _.each(selectedAttributes, function (attribute) { %>
-                <li class="<%- currentGroup === attribute.code ? 'selected' : '' %>" data-attribute-code="<%- attribute.code %>">
-                    <i class="icon-reorder"></i>
-                    <span class="attribute-label"><%- i18n.getLabel(attribute.labels, userContext.get('uiLocale'), attribute.code) %></span>
-                    <span class="remove"><i class="icon-trash"></i></span>
+    <div data-scroll-container="selected-attributes" class="AknColumnConfigurator-listContainer">
+        <span class="AknMessageBox AknMessageBox--centered empty-message <%- 0 === selectedAttributes.length ? '' : 'AknMessageBox--hide' %>"><%- __('pim_enrich.export.product.filter.attributes_selector.empty_selection') %></span>
+        <ul class="AknColumnConfigurator-list"><!--
+            --><% _.each(selectedAttributes, function (attribute) { %>
+                <li class="AknColumnConfigurator-listItem AknColumnConfigurator-listItem--movable <%- currentGroup === attribute.code ? 'selected' : '' %>" data-attribute-code="<%- attribute.code %>">
+                    <div>
+                        <i class="icon-reorder"></i>
+                        <span class="attribute-label"><%- i18n.getLabel(attribute.labels, userContext.get('uiLocale'), attribute.code) %></span>
+                    </div>
+                    <span class="AknIconButton AknIconButton--grey AknIconButton--small remove"><i class="icon-trash"></i></span>
                 </li>
-            <% }); %>
-        </ul>
+            <% }); %><!--
+        --></ul>
     </div>
 </div>

@@ -110,7 +110,7 @@ define(
                     okCloses: false,
                     cancelText: _.__('pim_enrich.export.product.filter.attributes.modal.cancel'),
                     title: _.__('pim_enrich.export.product.filter.attributes.modal.title'),
-                    content: '<div class="attribute-selector"></div>',
+                    content: '<div class="AknColumnConfigurator attribute-selector"></div>',
                     okText: _.__('pim_enrich.export.product.filter.attributes.modal.apply')
                 });
 

@@ -58,6 +58,7 @@ css:
         - bundles/pimui/less/components/Breadcrumb.less
         - bundles/pimui/less/components/BreadcrumbContainer.less
         - bundles/pimui/less/components/Caret.less
+        - bundles/pimui/less/components/ColumnConfigurator.less
         - bundles/pimui/less/components/DashboardButtons.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/Flash.less

@@ -48,8 +48,8 @@ define(
             initialize: function () {
                 this.listenTo(this, 'selected:update:after', function (selected) {
                     this.$('.empty-message')
-                        .addClass(0 === selected.length ? 'empty' : '')
-                        .removeClass(0 === selected.length ? '' : 'empty');
+                        .addClass(0 === selected.length ? '' : 'AknMessageBox--hide')
+                        .removeClass(0 === selected.length ? 'AknMessageBox--hide' : '');
                 });
             },
 
@@ -159,8 +159,8 @@ define(
              * Called on each render, each, search event and each scroll event
              */
             updateAttributeList: function () {
-                var attributeContainer = this.$('.attributes > div');
-                var attributeList = attributeContainer.children('ul');
+                var attributeContainer = this.$('.attributes > .AknColumnConfigurator-listContainer');
+                var attributeList = attributeContainer.children('.AknColumnConfigurator-list');
 
                 var needFetching = 0 > (
                     attributeList.height() - attributeContainer.scrollTop() - 2 * attributeContainer.height()

@@ -59,7 +59,7 @@ define(
             ),
 
             configuratorTemplate: _.template(
-                '<div id="column-configurator" class="row-fluid"></div>'
+                '<div id="column-configurator" class="AknColumnConfigurator"></div>'
             ),
 
             initialize: function (options) {

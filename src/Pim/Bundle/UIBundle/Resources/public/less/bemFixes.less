@@ -161,112 +161,12 @@ button.pimmultiselect { }
 
 // Role update permissions
 .tab-groups {
-  float:left;
+  float: left;
   min-width: 120px;
   i.validation-tooltip {
     display: block;
     float: right;
     margin-top: 4px;
     margin-right: -8px;
-  }
-}
-
-// Column configurator
-.column-configurator-modal .modal-body {
-  padding: 0;
-  background-color: white;
-}
-#column-configurator {
-  h4 {
-    height: 52px;
-    line-height: 30px;
-    margin: 0;
-    padding: 10px;
-    color: @AknLightGray;
-    border-left: 1px solid @AknBorderColor;
-    border-bottom: 1px solid @AknBorderColor;
-  }
-  i.icon-search {
-    font-size: @AknTitleFontSize;
-  }
-  input[type="search"] {
-    width: 80%;
-    border: none;
-    outline: none;
-    margin: 0;
-    background: transparent;
-    font-size: inherit;
-    font-weight: inherit;
-    color: inherit;
-  }
-  .span4 {
-    float: left;
-    margin-left: 0;
-    width: 100% / 3;
-    &:last-of-type {
-      background-color: white;
-    }
-  }
-  ul {
-    padding: 10px;
-    margin: 0;
-    overflow-y: auto;
-    list-style-type: none;
-    font-size: @AknDefaultFontSize;
-    border-left: 1px solid @AknBorderColor;
-    li {
-      cursor: pointer;
-      padding: 15px 10px;
-      border: 1px solid @AknBorderColor;
-      &:not(:first-of-type) {
-        border-top: none;
-      }
-      &.filtered {
-        opacity: 0;
-        height: 0;
-        overflow: hidden;
-        padding: 0;
-        border: none;
-      }
-      i {
-        font-size: @AknFontSizeBig;
-        color: @AknDefaultFontColor;
-        padding-right: 8px;
-      }
-    }
-    &.connected-sortable li {
-      background-color: @AknLightGray;
-      .action i {
-        margin: 0 2px;
-        padding: 3px 8px;
-        color: @AknGrey;
-        border: 1px solid @AknBorderColor;
-        border-radius: 3px;
-      }
-      &:hover .action i {
-        background-color: white;
-        &:hover {
-          background-color: @AknLightGray;
-        }
-      }
-    }
-    &#column-list li .action {
-      display: none;
-    }
-  }
-  .nav-list {
-    .badge-transparent {
-      border-radius: 5px;
-      border: 1px solid @AknBorderColor;
-      background: transparent;
-      color: @AknLightGray;
-      font-size: @AknFontSizeBig;
-      text-shadow: initial;
-    }
-    li {
-      &.active {
-        background-color: @AknLightGray;
-      }
-    }
   }
 }

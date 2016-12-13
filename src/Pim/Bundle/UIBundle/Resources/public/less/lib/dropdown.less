@@ -1,5 +1,9 @@
-.dropdown-menu>li>a, .dropdown-menu>li.active>a {
+@import '../base/variables';
+
+.dropdown-menu > li > a,
+.dropdown-menu > li.active > a {
   color: lighten(@AknPurple, 20%);
+
   &:hover, &:active {
     color: darken(@AknPurple, 10%);
     cursor: pointer;

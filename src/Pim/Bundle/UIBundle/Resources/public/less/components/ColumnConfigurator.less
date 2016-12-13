@@ -1,0 +1,84 @@
+@import '../base/variables';
+
+.AknColumnConfigurator {
+  @itemHeight: 50px;
+
+  display: flex;
+
+  &-column {
+    flex-basis: 100% / 3;
+    border-left: 1px solid @AknBorderColor;
+    border-top: 1px solid @AknBorderColor;
+    border-bottom: 1px solid @AknBorderColor;
+
+    &:last-child {
+      border-right: 1px solid @AknBorderColor;
+    }
+  }
+
+  &-columnHeader {
+    height: @itemHeight;
+    padding: (@itemHeight - @AknFormHeight) / 2;
+    border-bottom: 1px solid @AknBorderColor;
+    font-size: @AknFontSizeBig;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &-listContainer {
+    max-height: @AknMaxModalHeight;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 10px;
+    min-height: 100px;
+  }
+
+  &-list {
+    min-height: 3 * @itemHeight;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    height: auto !important; // Bootstrap adds an height in JS for nav-list, we have to remove it.
+  }
+
+  &-listItem {
+    background: lighten(@AknGrey, 30%);
+    border: 1px solid @AknBorderColor;
+    height: @itemHeight;
+    line-height: 50px;
+    margin: 0 0 -1px 0;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+    align-items: center;
+
+    &--selectable {
+      cursor: pointer;
+    }
+
+    &--movable {
+      cursor: move;
+    }
+
+    &--hide {
+      display: none;
+    }
+
+    &.active {
+      background: white;
+    }
+  }
+
+  &-searchInput {
+    font-size: @AknFontSizeBig;
+    padding-left: 32px;
+  }
+
+  &-searchIcon {
+    font-size: @AknTitleFontSize;
+    position: absolute;
+    margin-left: 10px;
+  }
+}

@@ -44,9 +44,9 @@ define([
 
             this.$('#column-list').find('li').each(function () {
                 if (matchesSearch($(this).data('value')) || matchesSearch($(this).text())) {
-                    $(this).removeClass('hide');
+                    $(this).removeClass('AknColumnConfigurator-listItem--hide');
                 } else {
-                    $(this).addClass('hide');
+                    $(this).addClass('AknColumnConfigurator-listItem--hide');
                 }
             });
         },
@@ -57,13 +57,13 @@ define([
             $(e.currentTarget).addClass('active').siblings('.active').removeClass('active');
 
             if (_.isUndefined(filter)) {
-                this.$('#column-list li').removeClass('filtered');
+                this.$('#column-list li').removeClass('AknColumnConfigurator-listItem--hide');
             } else {
                 this.$('#column-list').find('li').each(function () {
                     if (filter === $(this).data('group')) {
-                        $(this).removeClass('filtered');
+                        $(this).removeClass('AknColumnConfigurator-listItem--hide');
                     } else {
-                        $(this).addClass('filtered');
+                        $(this).addClass('AknColumnConfigurator-listItem--hide');
                     }
                 });
             }
@@ -150,12 +150,14 @@ define([
         validateSubmission: function () {
             if (this.collection.where({displayed: true}).length) {
                 this.$('.alert').hide();
+                this.$('.AknMessageBox--error').addClass('AknMessageBox--hide');
                 this.$el.closest('.modal')
                     .find('.btn.ok:not(.btn-primary)')
                     .addClass('btn-primary')
                     .attr('disabled', false);
             } else {
                 this.$('.alert').show();
+                this.$('.AknMessageBox--error').removeClass('AknMessageBox--hide');
                 this.$el.closest('.modal')
                     .find('.btn.ok.btn-primary')
                     .removeClass('btn-primary')
