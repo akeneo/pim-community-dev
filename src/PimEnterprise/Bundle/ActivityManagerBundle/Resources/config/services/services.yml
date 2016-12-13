@@ -4,38 +4,38 @@ parameters:
 services:
     ### Repositories
     activity_manager.repository.user:
-        class: 'Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\UserRepository'
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\UserRepository'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pim_user.entity.user.class%'
 
     activity_manager.repository.product:
-        class: 'Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\ProductRepository'
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProductRepository'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pimee_security.repository.category_access'
 
     activity_manager.repository.familly_requirement:
-        class: 'Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\FamilyRequirementRepository'
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\FamilyRequirementRepository'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pim_catalog.entity.attribute_requirement.class%'
 
     activity_manager.repository.attribute_permission:
-        class: 'Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\AttributePermissionRepository'
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\AttributePermissionRepository'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pimee_security.entity.attribute_group_access.class%'
 
     activity_manager.repository.job_instance:
-        class: 'Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\JobInstanceRepository'
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\JobInstanceRepository'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%akeneo_batch.entity.job_instance.class%'
             - '%activity_manager.project_calculation.job_name%'
 
     activity_manager.repository.attribute:
-        class: 'Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\AttributeRepository'
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\AttributeRepository'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pim_catalog.entity.attribute.class%'
@@ -80,6 +80,6 @@ services:
             - '@pimee_security.repository.attribute_group_access'
             - '@pim_user.context.user'
             - '@pim_datagrid.repository.datagrid_view'
-            - '@activity_manager.repository.doctrine.project'
+            - '@activity_manager.repository.project'
         tags:
              - { name: oro_datagrid.extension }

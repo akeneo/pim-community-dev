@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\ActivityManager\Bundle\Job;
 
-use Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\JobInstanceRepository;
+use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\JobInstanceRepository;
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;

@@ -16,19 +16,14 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     ### Repository
-    activity_manager.repository.doctrine.project:
-        class: 'Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\ProjectRepository'
+    activity_manager.repository.project:
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%akeneo_activity_manager.model.project.class%'
 
-    activity_manager.repository.native_sql.project:
-        class: 'Akeneo\ActivityManager\Bundle\Repository\NativeSql\ProjectProductRepository'
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-
-    activity_manager.repository.native_sql.project_completeness:
-        class: 'Akeneo\ActivityManager\Bundle\Repository\NativeSql\ProjectCompletenessRepository'
+    activity_manager.repository.project_completeness:
+        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectCompletenessRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
 
@@ -52,7 +47,7 @@ services:
         class: 'Akeneo\ActivityManager\Bundle\EventListener\EventTranslationSubscriber'
         arguments:
             - '@event_dispatcher'
-            - '@activity_manager.repository.doctrine.project'
+            - '@activity_manager.repository.project'
             - '%activity_manager.project_calculation.job_name%'
         tags:
             - { name: kernel.event_subscriber }

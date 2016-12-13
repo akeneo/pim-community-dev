@@ -109,7 +109,7 @@ class ProjectContext extends Context implements ContextInterface
             ->findOneByIdentifier($localeCode);
 
         $project = $this->getContainer()
-            ->get('activity_manager.repository.doctrine.project')
+            ->get('activity_manager.repository.project')
             ->findOneBy([
                 'label' => $label,
                 'channel' => $channel,

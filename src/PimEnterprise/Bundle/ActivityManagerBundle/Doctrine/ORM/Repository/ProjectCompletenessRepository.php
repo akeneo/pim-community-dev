@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Repository\NativeSql;
+namespace Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Repository\ProjectCompletenessRepositoryInterface;

@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM;
+namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM\UserRepository;
+use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\UserRepository;
 use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManager;

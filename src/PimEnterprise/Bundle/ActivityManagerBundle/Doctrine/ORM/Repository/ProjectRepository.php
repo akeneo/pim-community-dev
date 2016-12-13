@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Repository\Doctrine\ORM;
+namespace Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -19,6 +20,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -27,7 +29,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ProjectRepository extends EntityRepository implements
     ObjectRepository,
     IdentifiableObjectRepositoryInterface,
-    SearchableRepositoryInterface
+    SearchableRepositoryInterface,
+    ProjectRepositoryInterface
 {
     /**
      * @param EntityManager $em
@@ -88,6 +91,17 @@ class ProjectRepository extends EntityRepository implements
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addProduct(ProjectInterface $project, ProductInterface $product)
+    {
+        $this->_em->getConnection()->insert('akeneo_activity_manager_project_product', [
+            'project_id' => $project->getId(),
+            'product_id' => $product->getId(),
+        ]);
     }
 
     /**

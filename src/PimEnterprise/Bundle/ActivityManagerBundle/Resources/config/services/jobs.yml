@@ -10,7 +10,7 @@ services:
         class: 'Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationTasklet'
         arguments:
             - '@activity_manager.repository.product'
-            - '@activity_manager.repository.doctrine.project'
+            - '@activity_manager.repository.project'
             - '@activity_manager.calculation_step.chained'
             - '@activity_manager.saver.project'
             - '@akeneo_storage_utils.doctrine.object_detacher'
@@ -51,7 +51,7 @@ services:
     activity_manager.calculation_step.product:
         class: 'Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\ProductCalculationStep'
         arguments:
-            - '@activity_manager.repository.native_sql.project'
+            - '@activity_manager.repository.project'
         public: false
         tags:
             - { name: activity_manager.calculation_step, priority: 500  }

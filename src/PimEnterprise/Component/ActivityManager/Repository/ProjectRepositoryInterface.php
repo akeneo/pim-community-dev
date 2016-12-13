@@ -17,7 +17,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-interface ProjectProductRepositoryInterface
+interface ProjectRepositoryInterface
 {
     /**
      * Add a product to a project.

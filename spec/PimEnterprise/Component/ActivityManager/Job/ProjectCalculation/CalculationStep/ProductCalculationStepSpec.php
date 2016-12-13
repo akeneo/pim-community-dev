@@ -5,13 +5,13 @@ namespace spec\Akeneo\ActivityManager\Component\Job\ProjectCalculation\Calculati
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\ProductCalculationStep;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectProductRepositoryInterface;
+use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 class ProductCalculationStepSpec extends ObjectBehavior
 {
-    function let(ProjectProductRepositoryInterface $projectRepository)
+    function let(ProjectRepositoryInterface $projectRepository)
     {
         $this->beConstructedWith($projectRepository);
     }

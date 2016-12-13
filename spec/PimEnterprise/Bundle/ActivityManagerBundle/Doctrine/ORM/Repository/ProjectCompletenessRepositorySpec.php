@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\Repository;
+namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\ActivityManager\Bundle\Repository\NativeSql\ProjectCompletenessRepository;
+use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectCompletenessRepository;
 use Akeneo\ActivityManager\Component\Repository\ProjectCompletenessRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -23,10 +23,5 @@ class ProjectCompletenessRepositorySpec extends ObjectBehavior
     function it_is_a_project_completeness_repository()
     {
         $this->shouldImplement(ProjectCompletenessRepositoryInterface::class);
-    }
-
-    function it_is_a_doctrine_repository()
-    {
-        $this->shouldHaveType(EntityRepository::class);
     }
 }

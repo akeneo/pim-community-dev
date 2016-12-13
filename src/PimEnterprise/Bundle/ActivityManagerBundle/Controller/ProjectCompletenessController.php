@@ -30,7 +30,7 @@ class ProjectCompletenessController extends Controller
      */
     public function showAction($projectId, Request $request)
     {
-        $project = $this->container->get('activity_manager.repository.doctrine.project')
+        $project = $this->container->get('activity_manager.repository.project')
             ->findOneByIdentifier($projectId);
 
         if (null === $project) {
@@ -49,7 +49,7 @@ class ProjectCompletenessController extends Controller
             $contributor = $request->get('contributor');
         }
 
-        $projectCompleteness = $this->get('activity_manager.repository.native_sql.project_completeness')
+        $projectCompleteness = $this->get('activity_manager.repository.project_completeness')
             ->getProjectCompleteness($project, $contributor);
 
         return new JsonResponse($projectCompleteness);
