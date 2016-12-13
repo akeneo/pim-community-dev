@@ -153,20 +153,20 @@ pim_connector:
         label: Datei-Upload erlauben
         help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
 job_execution.summary:
-  read: gelesen
-  read_lines: gelesene Zeilen
+  read: Lesen
   write: geschrieben
   skip: übersprungen
   create: erstellt
   process: verarbeitet
-  update_products: aktualisierte Produkte
+  update_products: Aktualisierte Produkte
   process_products: verarbeitete Produkte
-  skip_products: übersprungene Produkte
+  skip_products: Übersprungene Produkte
   displayed: Die ersten Warnungen angezeigt
   charset_validator:
     title: 'Datei Zeichenkodierung:'
     skipped: übersprungen, Erweiterung in der Whitelist
   product_skipped_no_diff: Übersprungenes Produkt (keine Unterschiede)
+  item_position: gelesene Zeilen
 batch_jobs:
   csv_product_export:
     label: Produkt-Export als CSV-Datei

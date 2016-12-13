@@ -15,11 +15,11 @@ pim_import_export:
     7: ABANDONNÉ
     8: INCONNU
   download_archive:
-    archive: Télécharger le fichier généré|Télécharger les fichiers générés
+    archive: Télécharger l'archive générée|Télécharger les archives générées
     output: Télécharger le fichier généré|Télécharger les fichiers générés
     input: Télécharger le fichier lu|Télécharger les fichiers lus
-    invalid_xlsx: télécharger les données invalides
-    invalid_csv: télécharger les données invalides
+    invalid_xlsx: Télécharger données invalides
+    invalid_csv: Télécharger données invalides
   notification:
     export:
       error: L'export de <strong>%label%</strong> a échoué
@@ -155,7 +155,7 @@ Status: État
 Summary: Résumé
 Start: Début
 End: Fin
-set_attribute_requirements: Configurer les exigences d'attributs des familles
+set_attribute_requirements: Choisir les attributs requis
 COMPLETED: TERMINÉ
 STARTING: DÉMARRAGE EN COURS
 STARTED: DÉMARRÉ
