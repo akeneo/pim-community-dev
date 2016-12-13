@@ -1,4 +1,111 @@
 pim_enrich:
+  product:
+    tab:
+      attribute.title: 属性
+      category.title: カテゴリ
+      completeness.title: 完全性
+      history.title: 履歴
+  attribute:
+    tab:
+      parameter.title: パラメータ
+      value.title: 値
+      history.title: 履歴
+  attribute_group:
+    tab:
+      property.title: プロパティ
+      attribute.title: 属性
+      history.title: 履歴
+  family:
+    tab:
+      property.title: プロパティ
+      attribute.title: 属性
+      history.title: 履歴
+  association_type:
+    tab:
+      property.title: プロパティ
+      history.title: 履歴
+  group_type:
+    tab:
+      property.title: プロパティ
+  channel:
+    tab:
+      property.title: プロパティ
+      history.title: 履歴
+  category:
+    tab:
+      property.title: プロパティ
+      history.title: 履歴
+  locale:
+    tab:
+      property.title: プロパティ
+      permission.title: パーミッション
+  group:
+    type:
+      VARIANT: バリアント
+      ADDITIONAL: 追加
+    tab:
+      product.title: 製品
+      property.title: プロパティ
+      history.title: 履歴
+  variant_group:
+    type:
+      VARIANT: バリアント
+      ADDITIONAL: 追加
+    tab:
+      product.title: 製品
+      property.title: プロパティ
+      history.title: 履歴
+      attribute.title: 属性
+  mass_edit_action:
+    limit_exceeded: '%limit% 件以下の編集対象アイテムを選択してください'
+    product:
+      page_title: 製品
+      page_subtitle: 一括編集(1件)|一括編集(%count% 件)
+      title: 操作を選択
+      subtitle: 選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください
+      confirm: 更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。
+      steps:
+        first: 商品を選択してください
+        second: 操作を選択
+        third: 構成
+        fourth: 確認
+    family:
+      page_title: ファミリー
+      page_subtitle: 一括編集(1 件)|一括編集 (%count% 件)
+      title: 操作を選択
+      subtitle: 選択したファミリーで実行したい操作を選択してください | 選択した %count% 件のファミリーで実行したい操作を選択してください
+      confirm: 更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。
+      steps:
+        first: ファミリーを選択
+        second: 操作を選択
+        third: 構成
+        fourth: 確認
+    change-status:
+      label: ステータスの変更 (有効/無効)
+      description: 選択した製品は有効または無効になります。
+      success_flash: 製品の状態を変更しました
+    edit-common-attributes:
+      empty: 編集する属性を選択してください
+    classify:
+      label: 製品をカテゴリに分類
+      description: 製品は以下のカテゴリに配置されます、既存の表示順が保持されます。
+      success_flash: 選択したカテゴリに製品が分類されました
+    change-family:
+      label: 製品のファミリーを変更
+      description: 選択した製品のファミリーを選択したファミリーに変更します
+      success_flash: 選択した製品のファミリーを変更しました
+    add-to-groups:
+      label: グループに追加
+      description: 選択した製品を追加するグループを選択します
+      success_flash: 製品を選択したグループに追加しました
+    set-attribute-requirements:
+      label: 属性の要件を設定
+      description: 以下の属性要件が選択したファミリーに適用されます
+      success_flash: 選択したファミリーに適用された属性要件
+  sequential_edit_action:
+    product:
+      previous: '"%product%" を保存せずにスキップします。'
+      next: '"%product%" を保存せずにスキップします。'
   acl:
     locale:
       index: ロケール一覧
@@ -85,9 +192,10 @@ pim_enrich:
     currency: 通貨
     family: ファミリー
     group: グループ
+    variant_group: バリアントグループ
     group_type: グループタイプ
     locale: ロケール
-    product: 商品
+    product: 製品
 attribute:
   title: 属性
   overview: 属性の概要
@@ -172,8 +280,8 @@ btn:
     product: 製品を作成
     group: グループを作成
     variant group: バリアントグループを作成
-    association type: 関連タイプ作成
-    group type: グループタイプ作成
+    association type: 関連タイプの作成
+    group type: グループタイプの作成
   edit: 編集
   save: 保存
   save and back: 保存してグリッドに戻る
@@ -193,26 +301,26 @@ confirmation:
   confirm: 確認
   delete: 削除の確認
   leave: このページから移動してもよろしいですか？
-  discard changes: 'このページから移動する場合は %entity% に対する変更が失われます。'
+  discard changes: このページから移動する場合は %entity% に対する変更が失われます。
   remove:
     item: このアイテムを削除してもよろしいですか?
-    attribute: '属性 %name% を削除してもよろしいですか。'
-    attribute group: '属性グループ %name% を削除してもよろしいですか。'
-    category: 'カテゴリー %name% を削除してもよろしいですか。'
-    family: 'ファミリー %name% を削除してもよろしいですか。'
-    product: '製品 %name% を削除してもよろしいですか。'
-    channel: 'チャンネル %name% を削除してもよろしいですか。'
-    group: 'グループ %name% を削除してもよろしいですか。'
-    variant group: 'バリアント グループ %name% を削除してもよろしいですか。'
-    association type: '関連タイプ %name% を削除してもよろしいですか。'
-    group type: 'グループタイプ %name% を削除してもよろしいですか。'
-    user: 'ユーザー %name% を削除してもよろしいですか。'
+    attribute: 属性 %name% を削除してもよろしいですか。
+    attribute group: 属性グループ %name% を削除してもよろしいですか。
+    category: カテゴリー %name% を削除してもよろしいですか。
+    family: ファミリー %name% を削除してもよろしいですか。
+    product: 製品 %name% を削除してもよろしいですか。
+    channel: チャンネル %name% を削除してもよろしいですか。
+    group: グループ %name% を削除してもよろしいですか。
+    variant group: バリアント グループ %name% を削除してもよろしいですか。
+    association type: 関連タイプ %name% を削除してもよろしいですか。
+    group type: グループタイプ %name% を削除してもよろしいですか。
+    user: ユーザー %name% を削除してもよろしいですか。
   attribute group:
-    remove attribute: '属性 %name% をこの属性グループから削除してもよろしいですか。'
+    remove attribute: 属性 %name% をこの属性グループから削除してもよろしいですか。
   family:
-    remove attribute: '属性 %name% をこのファミリーから削除してもよろしいですか。'
+    remove attribute: 属性 %name% をこのファミリーから削除してもよろしいですか。
   product:
-    remove attribute: '属性 %name% この製品から削除してもよろしいですか。'
+    remove attribute: 属性 %name% この製品から削除してもよろしいですか。
 flash:
   entity:
     removed: 項目が削除されました
@@ -221,7 +329,7 @@ flash:
     updated: 属性を更新しました
     removed: 属性を削除しました
     identifier not removable: 識別子の属性は削除できません
-    used by groups: 'この属性は %count% 件のバリアントグループが使用しているために削除できません。'
+    used by groups: この属性は %count% 件のバリアントグループが使用しているために削除できません。
   attribute group:
     created: 属性グループを作成しました
     updated: 属性グループを作成しました
@@ -360,7 +468,6 @@ Defaultvalue: 標準の値
 Variant: バリアント
 Smart: スマート
 Useable as grid column: グリッド列として使用可能
-Useable as grid filter: グリッドフィルターとして使用可能
 Family: ファミリー
 Available locales: 使用可能なロケール
 Locale specific: ロケール固有
@@ -368,8 +475,8 @@ default: デフォルト
 Axis: 軸
 Add attributes: 属性を追加
 Translate from: 言語の選択
-switch_on: はい
-switch_off: いいえ
+switch_on: "はい"
+switch_off: "いいえ"
 Close: 閉じる
 Search: 検索
 Choose the attribute type: 属性の種類を選択
@@ -396,7 +503,7 @@ General Properties: 全般プロパティ
 Group values: グループ値
 New group: 新しいグループ
 Groups overview: グループの概要
-"Y-m-d h:i:s": Y-m-d h:i:s
+'Y-m-d h:i:s': 'Y-m-d h:i:s'
 Max characters: 最大文字数
 Validation rule: 値チェックルール
 Validation regexp: 正規表現による値チェック
@@ -422,45 +529,45 @@ Title: タイトル
 pim_title.attribute_group:
   index: 属性グループ
   create: 属性グループ |作成
-  edit: '属性グループ %group.label% |編集'
+  edit: 属性グループ %group.label% |編集
 pim_title.category:
   index: カテゴリツリー
   create: カテゴリ ツリー |作成
-  edit: 'カテゴリツリー %category.label% |編集'
+  edit: カテゴリツリー %category.label% |編集
 pim_title.attribute:
   index: 属性
   create: 属性 |作成
-  edit: '属性 %attribute.label% |編集'
+  edit: 属性 %attribute.label% |編集
 pim_title.product:
   index: 製品
-  edit: '製品 %product.sku% |編集'
+  edit: 製品 %product.sku% |編集
 pim_title.family:
   index: ファミリー
-  edit: 'ファミリー %family.label% |編集'
+  edit: ファミリー %family.label% |編集
 pim_title.channel:
   index: チャンネル
   create: チャンネル |作成
-  edit: 'チャンネル %channel.label% |編集'
+  edit: チャンネル %channel.label% |編集
 pim_title.currency:
   index: 通貨
 pim_title.locale:
   index: ロケール
 pim_title.group:
   index: グループ
-  edit: 'グループ %group.label% |編集'
+  edit: グループ %group.label% |編集
 pim_title.variant_group:
   index: バリアントグループ
-  edit: 'バリアントグループ %group.label% |編集'
+  edit: バリアントグループ %group.label% |編集
 pim_title.association_type:
   index: 関連タイプ
-  edit: '関連タイプ %association type.label% |編集'
+  edit: 関連タイプ %association type.label% |編集
 pim_title.group_type:
   index: グループタイプ
-  edit: 'グループタイプ %group type.label% |編集'
+  edit: グループタイプ %group type.label% |編集
 pim_title.mass_edit_action:
   choose: 一括編集 |選択
   configure: 一括編集 |構成
-pim_title.dashboard: ダッシュ ボード
+pim_title.dashboard: "ダッシュ ボード"
 pim_catalog_identifier: 識別子
 pim_catalog_text: テキスト
 pim_catalog_textarea: テキスト エリア
@@ -470,7 +577,7 @@ pim_catalog_multiselect: 複数選択
 pim_catalog_simpleselect: 単純選択
 pim_catalog_file: ファイル
 pim_catalog_image: イメージ
-pim_catalog_boolean: Yes/No
+pim_catalog_boolean: "Yes/No"
 pim_catalog_date: 日付
 pim_catalog_metric: メトリック
 Activated: アクティベート
@@ -482,11 +589,11 @@ pim_enrich.sequential_edit_action:
 pim_enrich.mass_edit_action:
   limit_exceeded: '%limit% 件以下の編集対象アイテムを選択してください'
   product:
-    page_title: 商品
-    page_subtitle: '一括編集(1件)|一括編集(%count% 件)'
+    page_title: 製品
+    page_subtitle: 一括編集(1件)|一括編集(%count% 件)
     title: 操作を選択
-    subtitle: '選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください'
-    confirm: '更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。'
+    subtitle: 選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください
+    confirm: 更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。
     steps:
       first: 商品を選択してください
       second: 操作を選択
@@ -494,10 +601,10 @@ pim_enrich.mass_edit_action:
       fourth: 確認
   family:
     page_title: ファミリー
-    page_subtitle: '一括編集(1 件)|一括編集 (%count% 件)'
+    page_subtitle: 一括編集(1 件)|一括編集 (%count% 件)
     title: 操作を選択
-    subtitle: '選択したファミリーで実行したい操作を選択してください | 選択した %count% 件のファミリーで実行したい操作を選択してください'
-    confirm: '更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。'
+    subtitle: 選択したファミリーで実行したい操作を選択してください | 選択した %count% 件のファミリーで実行したい操作を選択してください
+    confirm: 更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。
     steps:
       first: ファミリーを選択
       second: 操作を選択
@@ -509,7 +616,6 @@ pim_enrich.mass_edit_action:
     success_flash: 製品の状態を変更しました
   edit-common-attributes:
     label: 共通の属性を編集
-    description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
     empty: 編集する属性を選択してください
     success_flash: 製品属性が更新されました
   classify:
@@ -623,9 +729,11 @@ oro.locale:
   form:
     tooltip:
       locale: 数値、住所、名前、日付の書式設定に使用するロケール オプションを選択します
-      location: "ロケーションは '住所の国で住所を整形' オプションが無効である場合に住所の整形に使用されます"
+      location: ロケーションは '住所の国で住所を整形' オプションが無効である場合に住所の整形に使用されます
       format_address_by_address_country: このオプションを有効にすると、住所は関連する国に基づいて整形されます。無効にすると、住所はあなたのロケーションに基づいて整形されます。
       language: 使用したいシステムの言語を選択
       timezone: 日付と時刻を表示する時間帯を選択
       currency: 既定の通貨を選択
 Selected products successfully deleted: 選択した製品が正常に削除されました
+edit_common_attributes.steps.edit_common_attributes_processor.title: 共通の属性を編集
+edit_common_attributes: 共通の属性を編集
