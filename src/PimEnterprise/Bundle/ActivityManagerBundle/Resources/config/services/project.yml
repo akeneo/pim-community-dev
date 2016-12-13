@@ -25,6 +25,9 @@ services:
     ### Updater
     activity_manager.updater.project:
         class: 'Akeneo\ActivityManager\Component\Updater\ProjectUpdater'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
 
     ### Saver
     activity_manager.saver.project:

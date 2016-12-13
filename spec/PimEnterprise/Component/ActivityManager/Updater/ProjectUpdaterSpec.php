@@ -4,6 +4,7 @@ namespace spec\Akeneo\ActivityManager\Component\Updater;
 
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Akeneo\ActivityManager\Component\Updater\ProjectUpdater;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
@@ -15,6 +16,13 @@ use Prophecy\Argument;
 
 class ProjectUpdaterSpec extends ObjectBehavior
 {
+    function let(
+        IdentifiableObjectRepositoryInterface $channelRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository
+    ) {
+        $this->beConstructedWith($channelRepository, $localeRepository);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ProjectUpdater::class);
@@ -31,6 +39,8 @@ class ProjectUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_a_project_properties(
+        $channelRepository,
+        $localeRepository,
         ProjectInterface $project,
         UserInterface $user,
         DatagridView $datagridView,
@@ -38,6 +48,8 @@ class ProjectUpdaterSpec extends ObjectBehavior
         LocaleInterface $locale,
         Group $userGroup
     ) {
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($locale);
         $project->setLabel('Summer collection 2017')->shouldBeCalled();
         $project->setOwner($user)->shouldBeCalled();
         $project->setDueDate(Argument::type(\DateTime::class))->shouldBeCalled();
@@ -63,8 +75,8 @@ class ProjectUpdaterSpec extends ObjectBehavior
                 'description' => 'My description',
                 'owner' => $user,
                 'datagrid_view' => $datagridView,
-                'channel' => $channel,
-                'locale' => $locale,
+                'channel' => 'ecommerce',
+                'locale' => 'en_US',
                 'user_groups' => [$userGroup],
             ]
         );

@@ -40,17 +40,9 @@ class ProjectController extends Controller
         $filters = $this->container->get('activity_manager.converter.filter')
             ->convert($request, $filters);
 
-        $channelCode = $datagridViewFilters['f']['scope']['value'];
-        $channel = $this->container->get('pim_catalog.repository.channel')
-            ->findOneByIdentifier($channelCode);
-
-        $locale = $this->container->get('pim_catalog.repository.locale')
-            ->findOneByIdentifier($projectData['locale']);
-
         $projectData['product_filters'] = $filters;
         $projectData['owner'] = $this->getUser();
-        $projectData['channel'] = $channel;
-        $projectData['locale'] = $locale;
+        $projectData['channel'] = $datagridViewFilters['f']['scope']['value'];
 
         $datagridViewData = [];
         if (isset($projectData['datagrid_view'])) {

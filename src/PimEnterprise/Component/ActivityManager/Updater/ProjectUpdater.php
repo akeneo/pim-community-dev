@@ -12,6 +12,7 @@
 namespace Akeneo\ActivityManager\Component\Updater;
 
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Gedmo\Sluggable\Util\Urlizer;
@@ -23,6 +24,24 @@ use Gedmo\Sluggable\Util\Urlizer;
  */
 class ProjectUpdater implements ObjectUpdaterInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $channelRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $localeRepository;
+
+    /**
+     * @param IdentifiableObjectRepositoryInterface $channelRepository
+     * @param IdentifiableObjectRepositoryInterface $localeRepository
+     */
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $channelRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository
+    ) {
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -76,10 +95,12 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 $project->setProductFilters($value);
                 break;
             case 'channel':
-                $project->setChannel($value);
+                $channel = $this->channelRepository->findOneByIdentifier($value);
+                $project->setChannel($channel);
                 break;
             case 'locale':
-                $project->setLocale($value);
+                $locale = $this->localeRepository->findOneByIdentifier($value);
+                $project->setLocale($locale);
                 break;
             case 'user_groups':
                 foreach ($value as $userGroup) {
