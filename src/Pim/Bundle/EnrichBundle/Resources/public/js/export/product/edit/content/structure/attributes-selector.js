@@ -160,7 +160,7 @@ define(
              */
             updateAttributeList: function () {
                 var attributeContainer = this.$('.attributes > .AknColumnConfigurator-listContainer');
-                var attributeList = attributeContainer.children('.AknColumnConfigurator-list');
+                var attributeList = attributeContainer.children('.AknVerticalList');
 
                 var needFetching = 0 > (
                     attributeList.height() - attributeContainer.scrollTop() - 2 * attributeContainer.height()
