@@ -5,18 +5,15 @@ css:
         - bundles/pimui/lib/bootstrap-switch/bootstrap.switch.css
         - bundles/pimui/lib/bootstrap-datetimepicker/css/bootstrap-datepicker.css
         - bundles/pimui/lib/select2/select2.css
-        - bundles/pimui/lib/jstree/themes/default/style.css
         - bundles/pimui/lib/slimbox2/slimbox2.css
         - bundles/pimui/lib/summernote/summernote.css
     pim_ui:
         - bundles/pimui/css/less/oro.less
-        - bundles/pimui/css/sidebarized.less
         - bundles/pimui/css/jquery-ui.grid.less
         - bundles/pimui/css/icons.less
         - bundles/pimui/css/header.less
         - bundles/pimui/css/pinbar.less
         - bundles/pimui/css/select2.less
-        - bundles/pimui/css/tree.less
         - bundles/pimui/css/pim.less
         - bundles/pimui/css/style.less
         - bundles/pimui/css/tabnav.less
@@ -78,6 +75,8 @@ css:
         - bundles/pimui/less/lib/dropdown.less
         - bundles/pimui/less/lib/flags.less
         - bundles/pimui/less/lib/font-awesome.less
+        - bundles/pimui/less/lib/jquery.jstree.less
+        - bundles/pimui/less/lib/jquery.sidebarize.less
         - bundles/pimui/less/lib/modal.less
         - bundles/pimui/less/lib/slimbox2.less
         - bundles/pimui/less/lib/wizard.less

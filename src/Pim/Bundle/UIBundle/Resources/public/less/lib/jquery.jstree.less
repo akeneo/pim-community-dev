@@ -1,0 +1,74 @@
+@import '../base/variables';
+
+.jstree.jstree-default {
+  a {
+    color: @AknDefaultFontColor !important;
+  }
+
+  .jstree-tree-toolbar {
+    padding: 6.5px;
+    margin-bottom: 10px;
+    background: lighten(@AknGrey, 25%);
+  }
+
+  .jstree-hovered {
+    background: inherit !important;
+    border: inherit !important;
+  }
+
+  .jstree-clicked {
+    color: @AknPurple !important;
+    background: inherit !important;
+    border: inherit !important;
+    padding: 0 !important;
+    font-weight: bold;
+  }
+
+  li.jstree-open {
+    > a:not(.jstree-loading) .jstree-icon {
+      background: url("../../images/jstree/folder_standard_opened.png") 0 0 no-repeat;
+    }
+
+    > a.jstree-clicked {
+      .jstree-icon {
+        background: url("../../images/jstree/folder_selected_opened.png") 0 0 no-repeat;
+      }
+    }
+  }
+
+  li.jstree-closed {
+    > a:not(.jstree-loading) .jstree-icon {
+      background: url("../../images/jstree/folder_standard_closed.png") 0 0 no-repeat;
+    }
+
+    > a.jstree-clicked {
+      .jstree-icon {
+        background: url("../../images/jstree/folder_selected_closed.png") 0 0 no-repeat;
+      }
+    }
+  }
+
+  li.jstree-leaf {
+    > a:not(.jstree-loading) .jstree-icon {
+      background: url("../../images/jstree/folder_leaf.png") 0 0 no-repeat;
+    }
+
+    > a.jstree-clicked {
+      .jstree-icon {
+        background: url("../../images/jstree/folder_selected_leaf.png") 0 0 no-repeat;
+      }
+    }
+  }
+
+  li.jstree-unclassified {
+    > a:not(.jstree-loading) .jstree-icon {
+      background: url("../../images/jstree/folder_unclassified.png") 0 0 no-repeat;
+    }
+
+    > a.jstree-clicked {
+      .jstree-icon {
+        background: url("../../images/jstree/folder_selected_closed.png") 0 0 no-repeat;
+      }
+    }
+  }
+}
