@@ -187,3 +187,30 @@ button.pimmultiselect { }
 .responsive-section .inner-grid {
   margin:-20px -20px 20px -20px;
 }
+
+// For the select2 items on PEF
+.akeneo-simple-select-field,
+.akeneo-multi-select-field {
+  .field-input {
+    display: flex;
+    align-items: center;
+
+    .select-field {
+      flex: 1;
+    }
+  }
+}
+
+// For the green ticks on PEF tabs
+.entity-edit-form {
+  .tabs-left > .sidebar > .nav-tabs a {
+    .green {
+      color: @AknGreen;
+    }
+  }
+}
+
+// Variant group show history (same in groups)
+.form-container .history > div {
+  width: 100%;
+}

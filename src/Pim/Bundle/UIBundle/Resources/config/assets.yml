@@ -8,13 +8,10 @@ css:
         - bundles/pimui/lib/slimbox2/slimbox2.css
         - bundles/pimui/lib/summernote/summernote.css
     pim_ui:
-        - bundles/pimui/css/less/oro.less
         - bundles/pimui/css/jquery-ui.grid.less
-        - bundles/pimui/css/icons.less
         - bundles/pimui/css/header.less
         - bundles/pimui/css/pinbar.less
         - bundles/pimui/css/select2.less
-        - bundles/pimui/css/pim.less
         - bundles/pimui/css/style.less
         - bundles/pimui/css/tabnav.less
 
