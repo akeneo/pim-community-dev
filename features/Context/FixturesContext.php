@@ -123,6 +123,7 @@ class FixturesContext extends BaseFixturesContext
         $uniqueValueSet->reset();
 
         $this->refresh($product);
+        $this->buildProductHistory($product);
 
         return $product;
     }
@@ -182,13 +183,28 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * Generates a given number of families.
+     *
+     * @param int $familyNumber
+     *
+     * @Given /^([0-9]+) generated families$/
+     */
+    public function generatedFamilies($familyNumber)
+    {
+        for ($i = 1; $i <= $familyNumber; $i++) {
+            $familyCode = sprintf('family_%d', $i);
+            $this->createFamily($familyCode);
+        }
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following attribute groups?:$/
      */
     public function theFollowingAttributeGroups(TableNode $table)
     {
-        foreach ($table->getHash() as $index => $data) {
+        foreach ($table->getHash() as $data) {
             $this->createAttributeGroup($data);
         }
     }
@@ -1415,7 +1431,14 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theHistoryOfTheProductHasBeenBuilt($identifier)
     {
-        $product = $this->getProduct($identifier);
+        $this->buildProductHistory($this->getProduct($identifier));
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    protected function buildProductHistory(ProductInterface $product)
+    {
         $this->getVersionManager()->setRealTimeVersioning(true);
         $versions = $this->getVersionManager()->buildPendingVersions($product);
         foreach ($versions as $version) {

@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6026: Fix an error on family mass edit that occurs when working on more families than the mass edit batch size
+
 # 1.5.14 (2016-12-01)
 
 ## Bug fixes
