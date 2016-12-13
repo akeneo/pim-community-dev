@@ -123,6 +123,7 @@ class FixturesContext extends BaseFixturesContext
         $uniqueValueSet->reset();
 
         $this->refresh($product);
+        $this->buildProductHistory($product);
 
         return $product;
     }
@@ -1430,7 +1431,14 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theHistoryOfTheProductHasBeenBuilt($identifier)
     {
-        $product = $this->getProduct($identifier);
+        $this->buildProductHistory($this->getProduct($identifier));
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    protected function buildProductHistory(ProductInterface $product)
+    {
         $this->getVersionManager()->setRealTimeVersioning(true);
         $versions = $this->getVersionManager()->buildPendingVersions($product);
         foreach ($versions as $version) {
