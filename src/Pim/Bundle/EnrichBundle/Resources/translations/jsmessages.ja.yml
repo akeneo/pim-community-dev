@@ -13,6 +13,10 @@ confirmation:
     export profile: このエクスポートプロファイルを削除してもよろしいですか。
     user: このユーザーを削除してもよろしいですか?
     role: このロールを削除してもよろしいですか？
+pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: クイック エクスポート
 flash:
   item:
     removed: アイテムを削除しました
@@ -81,17 +85,110 @@ pim.grid.mass_action.delete: 削除
 pim.grid.mass_action.mass_edit: 一括編集
 pim.grid.mass_action.sequential_edit: シーケンシャル編集
 jstree.create: 作成
-switch_on: はい
-switch_off: いいえ
+switch_on: "はい"
+switch_off: "いいえ"
 pim_enrich:
+  item:
+    list:
+      delete.label: 削除
   entity:
+    save:
+      label: 保存
     product:
+      title: 商品
+      btn:
+        enable: 有効
+        enabled: 有効
+        disable: 無効
+        disabled: 無効
+        download_pdf: PDF
+        delete: 削除
+        save: 保存
+      history:
+        version: バージョン
+        author: 作成者
+        logged_at: ログイン日
+        old_values: 古い値
+        new_values: 新しい値
+      meta:
+        created: 作成日時
+        created_by: 投稿
+        updated_by: 投稿
+        updated: 最終更新
+        family:
+          title: ファミリー
+          none: なし
+        groups:
+          title: グループ
+          modal:
+            view_group: 表示グループ
+            group_label: ラベル
+            close: 閉じる
+      copy:
+        select: 選択
+        all: すべて
+        all_visible: すべて表示
+        none: なし
+        copy: コピー
       variant_group:
         switch:
-          "yes": true
-          "no": false
+          "yes": はい
+          "no": いいえ
+      optional_attribute:
+        remove: 属性を削除
+    attribute_option:
+      code: コード
+      label: ラベル
+  confirmation:
+    leave: このページから移動してもよろしいですか？
+  info:
+    not_applicable: N/A
+    entity:
+      updated: 保存されていない変更があります。
   form:
     product:
+      tab:
+        associations:
+          info:
+            none_exist: 関連タイプがありません。
+            show_products: 製品を表示
+            show_groups: グループを表示
+        attributes:
+          title: 属性
+          btn:
+            add: 追加
+            add_attributes: 属性を追加
+          info:
+            no_available_attributes: これ以上追加する属性はありません
+            no_match: 一致するものがみつかりません
+        categories:
+          title: カテゴリ
+      panel:
+        completeness:
+          title: 完全性
+        history:
+          title: 履歴
       switch:
-        "no": false
-        "yes": true
+        "no": いいえ
+        "yes": はい
+      sequential_edit:
+        info:
+          products: 製品
+      change_family:
+        modal:
+          title: 製品ファミリーを変更
+          merge_attributes: 現在の属性は新しいファミリーのものとマージされます。
+          keep_attributes: 削除する属性はありません。
+          change_family_to: ファミリーを変更
+          empty_selection: ファミリーを選択してください
+      mass_edit:
+        select_attributes: 属性の選択
+        select: 選択
+    attribute_option:
+      add_option_modal:
+        confirm: 追加
+        cancel: キャンセル
+    entity:
+      switch:
+        "no": いいえ
+        "yes": はい

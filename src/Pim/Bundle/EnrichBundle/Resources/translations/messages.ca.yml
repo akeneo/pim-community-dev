@@ -358,7 +358,7 @@ btn:
     variant group: crear grup de variants
     association type: crear tipus d'associació
     group type: crear tipus de grup
-    drag_or_upload: Arrossegueu-lo aquí per penjar o feu-hi clic
+    drag_or_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
   edit: editar
   save: guardar
   save and back: guardar i tornar a la quadrícula
