@@ -16,7 +16,7 @@ function ($, _, __, app, mediator, messenger) {
             var el = $(this);
 
             $.get(el.attr('href'), function (data) {
-                el.prev().text(data);
+                el.closest('.AknFieldContainer').find('.AknTextField').text(data);
                 var messageText = el.attr('data-message') + ' <strong>' + data + '</strong>';
                 messenger.notificationFlashMessage('success', messageText);
             });

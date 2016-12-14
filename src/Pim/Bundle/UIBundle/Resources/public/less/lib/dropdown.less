@@ -37,7 +37,15 @@
   background: @AknDefaultHoverBackground;
   color: @AknDefaultFontColor;
 }
+
 .dropdown-menu > li > a,
 .dropdown-menu > li.active > a {
   color: @AknDefaultFontColor;
+}
+
+.dropdown-menu > li.active > a,
+.dropdown-menu > li.active > a:hover,
+.dropdown-menu > li.active > a:focus {
+  background: @AknPurple;
+  color: white;
 }

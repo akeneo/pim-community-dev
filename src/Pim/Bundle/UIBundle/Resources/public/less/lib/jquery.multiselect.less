@@ -1,0 +1,89 @@
+@import '../base/variables';
+
+.ui-multiselect {
+  height: @AknLittleButtonSize;
+  line-height: @AknLittleButtonSize;
+  font-size: @AknDefaultFontSize;
+  border: 1px solid @AknBorderColor;
+  color: @AknDefaultFontColor;
+  background-color: white;
+  border-radius: 2px;
+  font-weight: normal;
+  padding: 0 10px !important;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+  white-space: nowrap;
+  outline: none;
+}
+
+.ui-multiselect-menu {
+  padding: 0;
+  max-width: 235px;
+
+  .ui-multiselect-header {
+    padding: 2px;
+    margin-bottom: 0;
+    border: none;
+    background-color: @AknBorderColor;
+  }
+
+  .ui-multiselect-filter input {
+    height: @AknFormHeight;
+    line-height: @AknFormHeight;
+    color: @AknDefaultFontColor;
+    border: 1px solid @AknBorderColor;
+    font-size: @AknDefaultFontSize;
+    border-radius: 2px;
+    padding: 0 8px;
+    margin: 0;
+  }
+
+  .ui-multiselect-checkboxes {
+    border-left: 1px solid @AknBorderColor;
+    border-right: 1px solid @AknBorderColor;
+    border-bottom: 1px solid @AknBorderColor;
+    padding: 0 10px 10px 10px;
+  }
+
+  .ui-multiselect-checkboxes label {
+    padding: 0;
+  }
+
+  .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label a {
+    text-align: left;
+    text-transform: uppercase;
+    padding: 0;
+  }
+
+  .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label {
+    border: none;
+    padding-top: 10px;
+  }
+
+  .ui-multiselect-checkboxes label input {
+    top: 2px;
+    margin-right: 5px;
+  }
+
+  .ui-multiselect-footer {
+    text-align: right;
+
+    .btn.btn-small {
+      padding: 0 @AknButtonsPadding;
+      height: @AknLittleButtonSize;
+      line-height: @AknLittleButtonSize;
+      min-width: @AknLittleButtonSize;
+      font-size: @AknDefaultFontSize;
+      background-color: @AknGreen;
+      display: inline-block;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      white-space: nowrap;
+      transition: background 0.1s ease;
+      color: white;
+    }
+  }
+}

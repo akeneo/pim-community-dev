@@ -18,28 +18,28 @@
 {% block formContent %}
     {# Requirements grid #}
     {% set columnWidth = 10 %}
-    <table class="table groups attributes">
+    <table class="AknGrid table groups attributes">
         <thead>
-            <th width="10%">{{ 'Label'|trans|upper }}</th>
+            <th class="AknGrid-headerCell">{{ 'Label'|trans|upper }}</th>
             {% for channel in form.operation.vars.value.channels %}
-                <th class="channel" width="{{ columnWidth }}%">{{ channel.label|upper }}</th>
+                <th class="AknGrid-headerCell AknGrid-headerCell--center channel" width="{{ columnWidth }}%">{{ channel.label|upper }}</th>
             {% endfor %}
-            <th width="5%">&nbsp;</th>
+            <th class="AknGrid-headerCell">&nbsp;</th>
         </thead>
         {% for groupLabel, attributes in form.operation.vars.value.attributes %}
         <tbody>
-            <tr class="hide group">
-                <td colspan="10"><i class="icon-collapse-alt"></i>{{ groupLabel }}</td>
+            <tr class="AknGrid-bodyRow hide group">
+                <td class="AknGrid-bodyCell" colspan="10"><i class="icon-collapse-alt"></i>{{ groupLabel }}</td>
             </tr>
             {% for attribute in attributes %}
-            <tr class="hide attribute" data-code="{{ attribute.code }}">
-                <td>{{ attribute.label }}</td>
+            <tr class="AknGrid-bodyRow hide attribute" data-code="{{ attribute.code }}">
+                <td class="AknGrid-bodyCell">{{ attribute.label }}</td>
                 {% for channel in form.operation.vars.value.channels %}
-                    <td>
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--center">
                         {{ form_widget(form.operation.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}
                     </td>
                 {% endfor %}
-                <td>
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
                     <i class="icon-trash remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
                 </td>
             </tr>

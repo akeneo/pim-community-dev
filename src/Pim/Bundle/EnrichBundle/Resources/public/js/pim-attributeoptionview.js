@@ -227,7 +227,7 @@ define(
 
         var ItemCollectionView = Backbone.View.extend({
             tagName: 'table',
-            className: 'table table-bordered table-stripped attribute-option-view',
+            className: 'AknGrid table attribute-option-view',
             template: _.template(
                 '<!-- Pim/Bundle/EnrichBundle/Resources/public/js/pim-attributeoptionview.js -->' +
                 '<colgroup>' +
@@ -237,20 +237,20 @@ define(
                 '</colgroup>' +
                 '<thead>' +
                     '<tr>' +
-                        '<th><%= code_label %></th>' +
+                        '<th class="AknGrid-headerCell"><%= code_label %></th>' +
                         '<% _.each(locales, function (locale) { %>' +
-                        '<th>' +
+                        '<th class="AknGrid-headerCell">' +
                             '<%= locale %>' +
                         '</th>' +
                         '<% }); %>' +
-                        '<th>Action</th>' +
+                        '<th class="AknGrid-headerCell AknGrid-headerCell--right">Action</th>' +
                     '</tr>' +
                 '</thead>' +
                 '<tbody></tbody>' +
                 '<tfoot>' +
                     '<tr>' +
-                        '<td colspan="<%= 2 + locales.length %>">' +
-                            '<span class="btn option-add pull-right"><%= add_option_label %></span>' +
+                        '<td class="AknGrid-bodyCell AknGrid-bodyCell--right" colspan="<%= 2 + locales.length %>">' +
+                            '<span class="AknButton AknButton--grey AknButton--small option-add"><%= add_option_label %></span>' +
                         '</td>' +
                     '</tr>' +
                 '</tfoot>'

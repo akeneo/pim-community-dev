@@ -31,8 +31,7 @@ class Form extends Base
             [
                 'Dialog'                          => ['css' => 'div.modal'],
                 'Associations list'               => ['css' => '.associations-list'],
-                'Groups'                          => ['css' => '.tab-groups'],
-                'Form Groups'                     => ['css' => '.group-selector'],
+                'Groups'                          => ['css' => '.tab-groups, .AknVerticalNavtab'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -167,30 +166,32 @@ class Form extends Base
             $groups = $this->find('css', $this->elements['Groups']['css']);
 
             if (null === $groups) {
-                $groups = $this->getElement('Form Groups');
-
-                $groupsContainer = $groups->find('css', sprintf('.group-label:contains("%s")', $group));
-                $button = null;
-
-                if (null !== $groupsContainer) {
-                    $button = $groupsContainer->getParent();
-                }
-
-                if (null === $button) {
-                    $labels = array_map(function ($element) {
-                        return $element->getText();
-                    }, $groups->findAll('css', '.group-label'));
-
-                    throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
-                        $group,
-                        implode(', ', $labels)
-                    ));
-                }
-
-                $button->click();
-            } else {
-                $groups->clickLink($group);
+                return null;
             }
+
+            $groupsContainer = $groups->find('css', sprintf(
+                '.AknVerticalNavtab-link:contains("%s"), .group-label:contains("%s")',
+                $group,
+                $group
+            ));
+
+            $button = null;
+            if (null !== $groupsContainer) {
+                $button = $groupsContainer->getParent();
+            }
+
+            if (null === $button) {
+                $labels = array_map(function ($element) {
+                    return $element->getText();
+                }, $groups->findAll('css', '.group-label'));
+
+                throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
+                    $group,
+                    implode(', ', $labels)
+                ));
+            }
+
+            $button->click();
 
             return true;
         }, 'Cannot find the group selector.');
@@ -310,7 +311,7 @@ class Form extends Base
 
             $label->click();
         }
-
+        
         $this->getElement('Available attributes add button')->press();
     }
 
