@@ -5,15 +5,15 @@
 {% oro_title_set({params : {"%username%": fullname }}) %}
 
 {% macro api_data_block(user) %}
-<div class="horizontal">
-    <label>{{ user.api ? user.api.apiKey : 'N/A' }}</label>
+    <div class="AknTextField AknTextField--disabled">{{ user.api ? user.api.apiKey : 'N/A' }}</div>
     {% if resource_granted('pim_user_user_edit') %}
-        <a class="btn btn-small no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
-           data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
-            {{ 'Generate key'|trans }}
-        </a>
+        <div class="AknFieldContainer-iconsContainer">
+            <a class="AknButton AknButton--grey AknButton" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
+               data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
+                {{ 'Generate key'|trans }}
+            </a>
+        </div>
     {% endif %}
-</div>
 {% endmacro %}
 
 {% block navButtons %}
