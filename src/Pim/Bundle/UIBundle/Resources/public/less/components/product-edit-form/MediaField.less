@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-radius: 2px;
 
   &-fileUploaderInput {
     position: absolute;
@@ -19,12 +20,12 @@
   }
 
   &-emptyContainer {
+    padding-top: @AknMicroProgressBarHeight + 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-grow: 1;
-    padding-top: @AknMicroProgressBarHeight + 10px;
   }
 
   &-preview {
@@ -50,8 +51,8 @@
   }
 
   &-progress {
-    opacity: 0;
     flex-basis: @AknMicroProgressBarHeight;
+    opacity: 0;
     margin: 0 10px 5px;
   }
 
@@ -62,5 +63,19 @@
 
   &-uploadIcon {
     height: 50px;
+  }
+
+  &-trashIcon {
+    background: lighten(@AknGrey, 15%);
+    font-size: @AknTitleFontSize;
+    padding: ((@height - @AknTitleFontSize) / 2) 0;
+    position: absolute;
+    height: 100%;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    right: 0;
+    width: 40px;
+    vertical-align: middle;
+    text-align: center;
   }
 }
