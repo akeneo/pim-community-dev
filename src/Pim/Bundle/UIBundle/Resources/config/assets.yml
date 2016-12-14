@@ -23,6 +23,7 @@ css:
         - bundles/pimui/less/lib/jquery.jstree.less
         - bundles/pimui/less/lib/jquery.sidebarize.less
         - bundles/pimui/less/lib/modal.less
+        - bundles/pimui/less/lib/navs.less
         - bundles/pimui/less/lib/slimbox2.less
         - bundles/pimui/less/lib/wizard.less
     bem:

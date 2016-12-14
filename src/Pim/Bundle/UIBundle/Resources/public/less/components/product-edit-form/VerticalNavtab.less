@@ -4,6 +4,7 @@
   border-left: 1px solid @AknBorderColor;
   border-right: 1px solid @AknBorderColor;
   margin-right: -1px;
+  padding: 0;
 
   &-header {
     background: lighten(@AknGrey, 30%);
@@ -38,5 +39,10 @@
   &-item--active &-link {
     background: white;
     font-weight: bold;
+  }
+
+  &--condensed &-link {
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
   }
 }
