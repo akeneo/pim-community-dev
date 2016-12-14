@@ -150,15 +150,13 @@
         data - array with data fields (i.e. form_row() or attibuteRow() data)
         isForm - flag what scroll block mut contain the form
 #}
-{% macro scrollSubblock(title, data, isForm) %}
+{% macro scrollSubblock(title, data, isForm, class) %}
     <div class="tabsection">
         {% if title|length %}<div class="tabsection-title">{{ title|trans }}</div>{% endif %}
-        <div class="tabsection-content">
-            <div class="AknFormContainer">
-                {% for dataBlock in data %}
-                    {{ dataBlock|raw }}
-                {% endfor %}
-            </div>
+        <div class="tabsection-content {{ class }}">
+            {% for dataBlock in data %}
+                {{ dataBlock|raw }}
+            {% endfor %}
         </div>
     </div>
 {% endmacro %}
@@ -181,7 +179,12 @@
     <div id="{{ blockId }}" class="tab-pane {% if isActive %}active{% endif %}">
         <div class="tabsections">
             {% for subblock in subblocks %}
-                {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, true) }}
+                {{ _self.scrollSubblock(
+                    subblock.title|length ? subblock.title : null,
+                    subblock.data,
+                    isForm,
+                    subblock.class is defined ? subblock.class : ''
+                ) }}
             {% endfor %}
         </div>
     </div>

@@ -93,6 +93,7 @@
             'subblocks': [
                 {
                     'title': 'Basic Information'|trans,
+                    'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': [
                         UI.attibuteRow('User name'|trans, entity.username),
                         entity.namePrefix ? UI.attibuteRow('Name prefix'|trans, entity.namePrefix),
@@ -106,6 +107,7 @@
                 },
                 {
                     'title': 'Contact Information'|trans,
+                    'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': dataSubBlocks
                 }
             ]
@@ -138,6 +140,10 @@
         ]) %}
     {% endfor %}
 
+    {% set additionalData = additionalData|merge([
+        UI.attibuteRow('User salt'|trans, entity.salt)
+    ]) %}
+
     {% set additional = [
         {
             'title': 'Additional Information'|trans,
@@ -145,13 +151,8 @@
             'subblocks': [
                 {
                     'title': '',
+                    'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': additionalData
-                },
-                {
-                    'title': '',
-                    'data': [
-                        UI.attibuteRow('User salt'|trans, entity.salt)
-                    ]
                 }
             ]
         }
@@ -164,6 +165,7 @@
             'subblocks': [
                 {
                     'title': '',
+                    'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': [
                         UI.attibuteRow('UI locale'|trans, entity.uiLocale.getName),
                     ]

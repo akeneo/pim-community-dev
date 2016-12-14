@@ -12,8 +12,6 @@ css:
         - bundles/pimui/css/header.less
         - bundles/pimui/css/pinbar.less
         - bundles/pimui/css/select2.less
-        - bundles/pimui/css/style.less
-        - bundles/pimui/css/tabnav.less
 
         - bundles/pimui/less/lib/bootstrap.switch.less
         - bundles/pimui/less/lib/dialog.less
@@ -25,6 +23,7 @@ css:
         - bundles/pimui/less/lib/modal.less
         - bundles/pimui/less/lib/navs.less
         - bundles/pimui/less/lib/slimbox2.less
+        - bundles/pimui/less/lib/tabs.less
         - bundles/pimui/less/lib/wizard.less
     bem:
         - bundles/pimui/less/base/general.less
