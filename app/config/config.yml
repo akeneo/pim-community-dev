@@ -82,3 +82,8 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
+pim_elastic_search:
+    client:
+        product:
+            index_name: %pim_elastic_search_product_index%
+        config: ~
