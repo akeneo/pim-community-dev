@@ -59,7 +59,7 @@
         "symfony/symfony": "2.7.2",
         "twig/extensions": "1.2.0",
         "box/spout": "2.5.0",
-        "akeneo/elasticsearch-bundle": "1.3.*"
+        "akeneo/elasticsearch-bundle": "dev-poc-single-storage"
     },
     "require-dev": {
         "phpunit/phpunit": "5.4.*",
