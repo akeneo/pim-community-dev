@@ -71,9 +71,16 @@ interface ProductInterface extends
     /**
      * Get values
      *
-     * @return ArrayCollection | ProductValueInterface[]
+     * @return ProductValueInterface[]
      */
     public function getValues();
+
+    /**
+     * Get values
+     *
+     * @return ProductValueInterface[]
+     */
+    public function setValues(array $values);
 
     /**
      * Get value related to attribute code
@@ -87,6 +94,8 @@ interface ProductInterface extends
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null);
 
     /**
+     * TODO: this one should be removed
+     *
      * Add value, override to deal with relation owner side
      *
      * @param ProductValueInterface $value
@@ -96,6 +105,9 @@ interface ProductInterface extends
     public function addValue(ProductValueInterface $value);
 
     /**
+     *
+     * TODO: this one should be removed
+     *
      * Remove value
      *
      * @param ProductValueInterface $value
@@ -292,6 +304,8 @@ interface ProductInterface extends
     public function isAttributeEditable(AttributeInterface $attribute);
 
     /**
+     * TODO: this one should be removed
+     *
      * Mark the indexed as outdated
      *
      * @return ProductInterface
@@ -308,6 +322,8 @@ interface ProductInterface extends
     public function getLabel($locale = null);
 
     /**
+     * TODO: this one should be removed?
+     *
      * @param mixed $normalizedData
      */
     public function setNormalizedData($normalizedData);

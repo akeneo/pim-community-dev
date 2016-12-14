@@ -64,6 +64,8 @@ class FieldConverter
             return [$column => (bool) $value];
         } elseif ('family' === $column) {
             return [$column => $value];
+        } elseif ('identifier' === $column) {
+            return [$column => $value];
         }
 
         throw new \LogicException(sprintf('No converters found for attribute type "%s"', $column));
@@ -78,7 +80,7 @@ class FieldConverter
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 
-        $fields = array_merge(['categories', 'groups', 'enabled', 'family'], $associationFields);
+        $fields = array_merge(['categories', 'groups', 'enabled', 'family', 'identifier'], $associationFields);
 
         return in_array($column, $fields);
     }

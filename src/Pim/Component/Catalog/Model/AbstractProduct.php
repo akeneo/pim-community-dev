@@ -42,13 +42,25 @@ abstract class AbstractProduct implements ProductInterface
      */
     protected $scope;
 
-    /** @var ArrayCollection */
+    /**
+     * Not persisted. Post loaded via the $rawValues.
+     *
+     * @var ProductValueInterface
+     */
     protected $values;
 
-    /** @var array */
+    /**
+     * TODO: this one should be removed
+     *
+     * @var array
+     */
     protected $indexedValues;
 
-    /** @var bool */
+    /**
+     * TODO: this one should be removed
+     *
+     * @var bool
+     */
     protected $indexedValuesOutdated = true;
 
     /** @var FamilyInterface $family */
@@ -78,7 +90,11 @@ abstract class AbstractProduct implements ProductInterface
     /** @var ArrayCollection $completenesses */
     protected $completenesses;
 
-    /** @var array */
+    /**
+     * TODO: should be removed?
+     *
+     * @var array
+     */
     protected $normalizedData;
 
     /** @var string */
@@ -89,7 +105,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function __construct()
     {
-        $this->values = new ArrayCollection();
+        $this->values = [];
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
         $this->groups = new ArrayCollection();
@@ -286,6 +302,8 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
+     * TODO: this one should be reworked to use rawValues
+     *
      * {@inheritdoc}
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
@@ -418,14 +436,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
-        //TODO: drop it
-        foreach ($this->values as $value) {
-            if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getAttributeType()) {
-                return $value;
-            }
-        }
-
-        throw new MissingIdentifierException($this);
+        return $this->identifier;
     }
 
     /**
@@ -462,6 +473,14 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         return $values;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValues(array $values)
+    {
+        $this->values = $values;
     }
 
     /**
@@ -504,7 +523,7 @@ abstract class AbstractProduct implements ProductInterface
             }
         }
 
-        return (string) $this->getIdentifier()->getData();
+        return (string) $this->getIdentifier();
     }
 
     /**
@@ -800,7 +819,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getReference()
     {
-        return $this->getIdentifier()->getData();
+        return $this->getIdentifier();
     }
 
     /**
@@ -809,5 +828,10 @@ abstract class AbstractProduct implements ProductInterface
     public function setNormalizedData($normalizedData)
     {
         $this->normalizedData = $normalizedData;
+    }
+
+    public function loadValues()
+    {
+        $foo = 'bar';
     }
 }

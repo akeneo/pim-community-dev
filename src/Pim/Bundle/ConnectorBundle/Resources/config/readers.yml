@@ -32,7 +32,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
-            - true
+            - false
 
     pim_connector.reader.database.family:
         class: '%pim_connector.reader.database.class%'

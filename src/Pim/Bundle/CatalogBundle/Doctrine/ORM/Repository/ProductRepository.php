@@ -166,7 +166,7 @@ class ProductRepository extends EntityRepository implements
     public function findByIds(array $productIds)
     {
         $qb = $this->createQueryBuilder('Product');
-        $this->addJoinToValueTables($qb);
+        //$this->addJoinToValueTables($qb);
         $rootAlias = current($qb->getRootAliases());
         $qb->andWhere(
             $qb->expr()->in($rootAlias.'.id', ':product_ids')
@@ -252,7 +252,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return [$this->attributeRepository->getIdentifierCode()];
+        return ['identifier'];
     }
 
     /**
@@ -430,17 +430,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        $pqb = $this->queryBuilderFactory->create();
-        $qb = $pqb->getQueryBuilder();
-        $attribute = $this->getIdentifierAttribute();
-        $pqb->addFilter($attribute->getCode(), Operators::EQUALS, $identifier);
-        $result = $qb->getQuery()->execute();
-
-        if (empty($result)) {
-            return null;
-        }
-
-        return reset($result);
+        return $this->findOneBy(['identifier' => $identifier]);
     }
 
     /**
@@ -465,23 +455,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByWithValues($id)
     {
-        $productQb = $this->queryBuilderFactory->create();
-        $qb = $productQb->getQueryBuilder();
-        $rootAlias = current($qb->getRootAliases());
-        $this->addJoinToValueTables($qb);
-        $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
-        $qb->addSelect('Value');
-        $qb->addSelect('Attribute');
-        $qb->addSelect('AttributeLocales');
-        $qb->leftJoin('Attribute.group', 'AttributeGroup');
-        $qb->addSelect('AttributeGroup');
-        $qb->andWhere(
-            $qb->expr()->eq($rootAlias.'.id', $id)
-        );
-
-        return $qb
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $this->findOneById($id);
     }
 
     /**
