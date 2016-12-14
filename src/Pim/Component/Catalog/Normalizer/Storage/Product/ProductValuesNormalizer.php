@@ -31,8 +31,8 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
             $stdValue = $this->serializer->normalize($value, 'standard', $context);
 
             $attribute = $value->getAttribute()->getCode();
-            $channel = null !== $stdValue['scope'] ? $stdValue['scope'] : '<all_channels>';
-            $locale = null !== $stdValue['locale'] ? $stdValue['locale'] : '<all_locales>';
+            $channel = null !== $stdValue['scope'] ? $stdValue['scope']->getCode() : '<all_channels>';
+            $locale = null !== $stdValue['locale'] ? $stdValue['locale']->getCode() : '<all_locales>';
 
             $result[$attribute][$channel][$locale] = $stdValue['data'];
         }
