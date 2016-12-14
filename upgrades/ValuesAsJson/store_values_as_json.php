@@ -6,7 +6,7 @@ require_once __DIR__ . '/../SchemaHelper.php';
 require_once __DIR__ . '/../UpgradeHelper.php';
 
 use Doctrine\DBAL\Driver\Connection;
-use Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer;
+use Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer;
 use Pim\Upgrade\SchemaHelper;
 
 $kernel = new AppKernel('prod', false);
