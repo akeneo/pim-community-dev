@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\UIBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
@@ -18,29 +17,6 @@ class AjaxOptionControllerSpec extends ObjectBehavior
     function let(RegistryInterface $doctrine, ConfigurationRegistryInterface $registry)
     {
         $this->beConstructedWith($doctrine, $registry);
-    }
-
-    function it_returns_options_with_option_repository(
-        $doctrine,
-        Request $request,
-        ParameterBag $query,
-        OptionRepositoryInterface $repository
-    ) {
-        $request->query = $query;
-        $query->get('search')->willReturn('hello');
-        $query->get('referenceDataName')->willReturn(null);
-        $query->get('class')->willReturn('Foo\Bar');
-
-        $doctrine->getRepository('Foo\Bar')->willReturn($repository);
-
-        $query->get('dataLocale')->willReturn('fr_FR');
-        $query->get('collectionId')->willReturn(42);
-        $query->get('options', [])->willReturn([]);
-
-        $repository->getOptions('fr_FR', 42, 'hello', [])->shouldBeCalled();
-        $query->get('isCreatable')->willReturn(false);
-
-        $this->listAction($request);
     }
 
     function it_returns_options_with_reference_data_repository(
