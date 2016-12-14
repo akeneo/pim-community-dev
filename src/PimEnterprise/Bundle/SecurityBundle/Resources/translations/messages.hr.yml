@@ -1,0 +1,6 @@
+pimee_enrich.acl.locale.edit_permissions: Upravljanje dozvolama za lokalizaciju
+pimee_enrich.acl.category.edit_permissions: Upravljanje dozvolama za kategoriju
+pimee_enrich.acl.attribute_group.edit_permissions: Upravljanje dozvolama atributa grupe
+pimee_importexport.acl.export_profile.edit_permissions: Upravljanje dozvolama za izvoz profila
+pimee_importexport.acl.import_profile.edit_permissions: Upravljanje dozvolama za uvoz profila
+pimee_enrich.groups.label: Vlasnik grupe

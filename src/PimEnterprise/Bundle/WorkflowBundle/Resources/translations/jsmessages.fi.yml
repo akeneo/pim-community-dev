@@ -10,7 +10,7 @@ pimee_workflow:
       btn:
         original_product: Muokkaa työstämääsi kopiota
     proposal:
-      modal.title: 'Jätä kommentti (valinnainen - 255 merkkiä max.)'
+      modal.title: Jätä kommentti (valinnainen - 255 merkkiä max.)
   proposal:
     partial_accept:
       modal.title: Hyväksy osittaisia tietoja

@@ -1,0 +1,76 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Upravljanje imovinom
+        panel:
+          basket:
+            title: Košarica
+            empty_basket: Košarica je prazna
+        manage_asset:
+          title: Upravljanje imovinom
+          cancel: Poništi
+          confirm: Potvrdi
+  enrich_asset:
+    grid:
+      edit: Uredi svojstva imovine
+  enrich_variation:
+    popin:
+      delete:
+        title: Potvrdi brisanje
+        message: Jeste li sigurni da želite izbrisati ovu stavku?
+      reset:
+        title: Vrati izvorne varijacije
+        message: Jeste li sigurni da želite vratiti sve varijacije?
+  mass_upload:
+    menu: Prijenos imovine
+    btn:
+      remove_all_files: Uklonite sve datoteke
+      delete: Obriši
+      import: Uvoz
+      upload: Prijenos
+    success:
+      new: Stvorit će se nova imovina
+      imported: Obrada uvezenih datoteka za imovinu
+      canceled: Prijenos je uspješno otkazan
+      deleted: Učitana datoteka uspješno izbrisana
+    error:
+      list: Nije moguće pročitati već prenesene datoteke
+      upload: Dogodila se pogreška tijekom prijenosa
+      delete: Ne može se izbrisati datoteka sa poslužitelja
+      import: Došlo je do pogreške tijekom uvoza
+      filename: Nije valjan naziv datoteke za imovinu
+      code: Nije valjan oblik zapisa za imovinu
+      locale: Imovina postoji ali nije moguće lokalizirati
+      invalid_locale: Lokacija je onemogućena ili nije valjana
+      exists: Datoteka s istim nazivom već uvezena
+      conflicts: Konflikt imena datoteka
+    grid:
+      medias: mediji
+      filename: naziv datoteke
+      filetype: vrsta datoteke
+      status: status
+      progress: napredak
+      actions: akcije
+    action:
+      cancel: Poništi
+      remove: Ukloni
+    status:
+      added: Dodano
+      queued: U redu čekanja
+      uploading: Prenošenje
+      error: Pogreška
+      success: Uspjeh
+    drag_and_drop: Povucite i ispustite vaše imovine ili kliknite ovdje
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Jeste li sigurni da želite izbrisati odabrane imovine?
+        success: Odabrana imovina je uspješno izbrisana.
+        error: Dogodila pogreška prilikom pokušaja brisanja odabrane imovine, pokušajte ponovno.
+        empty_selection: Nije odabrana niti jedna imovina
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Masovni prijenos

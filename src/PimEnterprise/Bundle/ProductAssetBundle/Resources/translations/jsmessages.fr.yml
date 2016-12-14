@@ -36,12 +36,12 @@ pimee_product_asset:
       deleted: Le fichier téléchargé a été supprimé
     error:
       list: Impossible de lire les fichiers déjà téléchargés
-      upload: "Une erreur s'est produite lors du téléchargement"
+      upload: Une erreur s'est produite lors du téléchargement
       delete: Impossible de supprimer le fichier du serveur
-      import: "Une erreur s'est produite lors de l'import"
+      import: Une erreur s'est produite lors de l'import
       filename: Nom de fichier incorrect pour la ressource
       code: Format de code non valide pour la ressource
-      locale: "Une ressource existe mais n'est pas traduisible"
+      locale: Une ressource existe mais n'est pas traduisible
       invalid_locale: Les paramètres régionaux sont désactivés ou non valides
       exists: Un fichier ayant le même nom est déjà importé
       conflicts: Conflit de noms de fichiers
@@ -67,7 +67,7 @@ pimee_product_asset:
       delete:
         confirm_content: Êtes-vous sûr de vouloir supprimer les ressources sélectionnées ?
         success: Les ressources sélectionnées ont été supprimées.
-        error: "Une erreur s'est produite lors de la suppression des ressources sélectionnées, merci d'essayer à nouveau."
+        error: Une erreur s'est produite lors de la suppression des ressources sélectionnées, merci d'essayer à nouveau.
         empty_selection: Aucune ressource choisie
 pim_dashboard:
   widget:

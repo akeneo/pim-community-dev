@@ -1,0 +1,61 @@
+pimee_workflow:
+  product_draft:
+    author: 作者
+    created: 提出了在
+    changes: 更改
+    locale: 区域设置上下文
+    product:
+      label: 产品标签
+    attribute:
+      label: 属性
+    status:
+      label: 状态
+      working_copy: 工作副本
+      in_progress: 正在处理
+      ready: 等待审核中
+      can_not_be_approved: 不能审查
+      can_not_be_deleted: 不能删除
+    action:
+      remove: 删除
+      partial_approve: 批准更改的属性 %attribute% 的产品 %product%
+    notification:
+      approve: '%owner% 已接受你的建议对产品 %product%'
+      refuse: '%owner% 拒绝了你的产品 %product% 的建议'
+      remove: '%owner% 已删除您的产品 %product% 的建议'
+    mass_review_action:
+      error:
+        draft_not_ready: 这项建议是不准备批准
+        not_product_owner: 你并不拥有这项建议与相关产品
+        cannot_edit_attributes: 您不能编辑修改的这项建议的属性
+        invalid_draft: 由于以下错误，这项建议不能应用。%error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% 已发送，检讨为产品 %product.label% 的建议'
+    original_value: 源语言
+    new_value: 新增功能
+  published_product:
+    index: 已发布的产品
+    title: 已发布的产品
+  acl.published_product:
+    index: 管理已发布的产品
+  product:
+    permission:
+      label: 权限
+      own: 审查/发布
+      edit: 编辑
+      view: 视图
+  steps:
+    product_draft_processor.title: 建议处理器
+  mass_edit_action:
+    published:
+      title: 选择操作
+      steps:
+        second: 选择操作
+        third: 配置
+        fourth: 确认
+pimee_workflow_product_draft_notification_new_proposal: 新建议
+btn.publish: 发布
+btn.unpublish: 取消发布
+pimee_workflow_product_draft_notification_partial_approve: 建议部分批准
+pimee_workflow_product_draft_notification_approve: 建议批准
+Attributes.title: 属性
+Completeness.title: 完整性

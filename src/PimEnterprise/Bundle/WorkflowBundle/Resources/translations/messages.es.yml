@@ -1,7 +1,7 @@
 pimee_workflow:
   product_draft:
     author: Autor
-    created: Propuesto en
+    created: Propuesto el
     changes: Cambios
     locale: Configuración regional
     product:
@@ -25,8 +25,8 @@ pimee_workflow:
       approve: Aprobar todos
       refuse: Rechazar todos
       remove: Eliminar
-      partial_approve: 'Aprobar cambios en atributo %attribute% de el producto %product%'
-      partial_reject: 'Rechazar cambios en atributo %attribute% del producto %product%'
+      partial_approve: Aprobar cambios en atributo %attribute% de el producto %product%
+      partial_reject: Rechazar cambios en atributo %attribute% del producto %product%
     notification:
       partial_approve: '%owner% ha aceptado el(los) valor(es) para el(los) %attributes% para el producto %product%'
       partial_approve_number: '%owner% ha aceptado %attributes_count% valores para los atributos para el producto %product%'
@@ -44,15 +44,15 @@ pimee_workflow:
         draft_not_ready: Esta propuesta no está lista para ser aprobada
         not_product_owner: Usted no es propietario del producto asociado a esta proposición
         cannot_edit_attributes: Usted no puede editar los atributos modificados en esta propuesta
-        invalid_draft: 'Esta propuesta no puede aplicarse debido al siguiente error. %error%'
+        invalid_draft: Esta propuesta no puede aplicarse debido al siguiente error. %error%
   proposal:
     to_review: '%author.firstname% %author.lastname% ha enviado una propuesta a revisar por el producto %product.label%'
     individual_import: '%author.firstname% %author.lastname% ha enviado propuestas a revisar desde una importación'
     generic_import: Usted tiene propuestas provenientes de una importación a revisar
     original_value: Original
     new_value: Nuevo
-    no_diff: 'El valor "%value%" es el mismo entre la propuesta y la copia de trabajo.'
-    draft_in_progress: 'Hay un borrador en curso por %author% para este producto.'
+    no_diff: El valor "%value%" es el mismo entre la propuesta y la copia de trabajo.
+    draft_in_progress: Hay un borrador en curso por %author% para este producto.
   published_product:
     index: Productos publicados
     title: Producto publicado
@@ -71,8 +71,12 @@ pimee_workflow:
   mass_edit_action:
     published:
       page_title: Productos publicados
+      page_subtitle: Edición en masa (1 producto publicado)|Edición en masa (%count% productos publicados)
       title: Elegir operación
+      subtitle: Seleccione la operación que desea ejecutar en el producto publicado que ha seleccionado|Seleccione la operación que desea ejecutar en los %count% productos publicados que ha seleccionado
+      confirm: Está a punto de actualizar un producto publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos publicados con la siguiente información, por favor confirme.
       steps:
+        first: Seleccione los productos publicados
         second: Elegir operación
         third: Configurar
         fourth: Confirmar
@@ -93,7 +97,7 @@ flash:
   product_draft:
     approve:
       success: La propuesta ha sido aplicada exitosamente.
-      error: 'La propuesta no puede ser aplicada debido al siguiente error. %error%'
+      error: La propuesta no puede ser aplicada debido al siguiente error. %error%
     refuse:
       success: La propuesta ha sido rechazada.
     remove:
@@ -105,17 +109,17 @@ pim_menu:
 pim_title:
   published_product:
     index: Productos publicados
-    view: 'Publicado %product.sku% publicado | Vista'
+    view: Publicado %product.sku% publicado | Vista
   product:
-    dispatch: 'Productos %product.sku%'
-    show: 'Productos %product.sku% | Mostrar'
+    dispatch: Productos %product.sku%
+    show: Productos %product.sku% | Mostrar
   proposal:
     index: Propuestas
 btn.editworkingcopy: Editar copia de trabajo
 confirmation:
   product:
-    publish: ¿Está seguro que desea publicar este producto?
-    unpublish: ¿Está seguro que desea quitar la publicación este producto ?
+    publish: '¿Está seguro que desea publicar este producto?'
+    unpublish: '¿Está seguro que desea quitar la publicación este producto ?'
 proposal.overview: Propuestas
 Attributes.title: Atributos
 Completeness.title: Completitud
@@ -136,7 +140,7 @@ job_execution.summary:
 published products: Productos publicados
 batch_jobs:
   csv_published_product_export:
-    label: Exportación en CSV de productos publicados
+    label: Exportar productos publicados en CSV
     export.label: Exportación de productos publicados
   csv_product_proposal_import:
     label: Importación de propuesta de producto en CSV

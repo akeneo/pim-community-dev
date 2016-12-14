@@ -1,0 +1,117 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Suprimir
+        execute: Executar
+      title: Regles
+      column:
+        code: Codi
+        conditions: Condició
+        actions: Acció
+        impacted_product_count:
+          label: Productes afectats
+          count: '{0,1}%count% producte afectat |] 1, Inf [%count% productes afectats'
+          no_yet_calculated: No s'ha calculat encara
+      mass_edit_action:
+        impacted_product_count: Calcula els productes afectats
+        execute: Executar les regles seleccionades
+        delete: Suprimir les regles seleccionades
+  actions:
+    type:
+      copy: Llavors %from_field% es copia en %to_field%
+      copy_value: Llavors %from_field% es copia en %to_field%
+      set: Llavors %value% es col·loca a %field%
+      set_value: Llavors %value% es col·loca a %field%
+      add: Llavors %value% s'afegeix a %field%
+      remove: Llavors %value% s'elimina de %field%
+  condition:
+    label: Si %field% %operator% %value%
+    operators:
+      STARTS WITH: s'inicia amb
+      ENDS WITH: acaba amb
+      CONTAINS: conté
+      DOES NOT CONTAIN: no conté
+      EMPTY: està buit
+      NOT EMPTY: no és buit
+      IN: en
+      NOT IN: no en
+      IN CHILDREN: als fills
+      NOT IN CHILDREN: no als fills
+      UNCLASSIFIED: està sense classificar
+      IN OR UNCLASSIFIED: està sense classificar o en
+      BETWEEN: entre
+      NOT BETWEEN: no entre
+      =: és igual a
+      !=: no és igual
+      >: més gran que
+      >=: és igual o superior a
+      <: menys que
+      <=: és igual o menor que
+  acl_group:
+    rule: Regles
+  acl:
+    rule:
+      view_permissions: Veure regles
+      delete_permissions: Eliminar regles
+      impacted_product_count_permissions: Calcula els productes afectats per les regles
+      execute_permissions: Executar regles
+  attribute:
+    tab:
+      rule.title: Regles
+    grid:
+      is_smart.label: Intel·ligent
+    acl:
+      rule.view_permissions: Veure regles
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: El valor d'aquest atribut pot venir de les regles <strong>%rule%</strong>. Això significa que si les condicions de la regla són vàlides, la seva modificació serà anul·lada.
+      variant_attribute_affected_by_a_rule.content: Els atributs de la variant grups tenen prioritat sobre els atributs de productes. Això significa que cada atribut d'aquesta variant grups invalidarà el valor corresponent en els productes continguts. No s'aplicaran les regles <strong>%rule%</strong> sobre els productes.
+      loading.title: Carregant...
+    history: Regla "%rule%" aplicada
+  product_value:
+    tooltip:
+      affected_by.title: 'Afectat per les regles:'
+  steps:
+    product_rule_definition_reader.title: Lector de regles d'importació de productes
+    rule_definition_processor.title: Processador de regles d'importació de productes
+    product_rule_definition_writer.title: Editor de regles d'importació de productes
+    rules_execution.title: Execució de les regles
+  notification:
+    rule:
+      executed: Ha acabat l'execució de les regles
+      launched: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
+    mass_edit_rule:
+      success: Ha finalitzat el càlcul dels productes afectats per les regles
+      error: S'ha produït un error durant el càlcul dels productes afectats per les regles
+  popin:
+    execute_rules:
+      confirm_title: Executar la confirmació
+      confirm_content: Esteu segur que voleu executar totes les regles? (podria trigar molt de temps)
+btn:
+  Execute rules: Executar regles
+rule: Configuració de les regles
+mass_edit_rule: Configuració de les regles
+job_execution.summary.rule_calculated: Quantitat de regles
+batch_jobs:
+  yml_rule_import:
+    label: Importació de regla en YAML
+    import.label: Importació de la regla
+  yml_rule_export:
+    label: Exportació de la regla en YAML
+    export.label: Exportació de la regla
+  rule_impacted_product_count:
+    label: Productes afectats per les regles
+    perform.label: Comptar productes afectats
+  csv_product_import_with_rules:
+    label: Importació de productes amb regles a CSV
+    execute_rules.label: Execució de les regles
+    validation.label: Validar arxius
+    import.label: Importar productes
+    import_associations.label: Importar associacions
+  xlsx_product_import_with_rules:
+    label: Importació de productes amb regles a XLSX
+    execute_rules.label: Execució de les regles
+    validation.label: Validar arxius
+    import.label: Importar productes
+    import_associations.label: Importar associacions

@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: 'Locales %locale.code% | Editar'
+  edit: Locales %locale.code% | Editar
 Permissions: Permisiones
 pane.accordion.permissions: Permisiones
 attribute group.permissions:
@@ -36,12 +36,12 @@ btn:
 pim_enrich:
   mass_edit_action:
     product:
-      not_editable: 'Usted no tiene el permiso para editar los productos "%identifiers%".'
+      not_editable: Usted no tiene el permiso para editar los productos "%identifiers%".
       page_title: Productos
-      page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% de productos)'
+      page_subtitle: Edición masiva (1 producto) |Edición masiva (%count% productos)
       title: Elegir operación
-      subtitle: 'Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados'
-      confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
+      subtitle: Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados
+      confirm: Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.
       steps:
         first: Elegir productos
         second: Elegir operación
@@ -54,9 +54,9 @@ pim_enrich:
       launched_flash: El trabajo de publicación de productos está ejecutándose.
       message:
         error: Usted no es el dueño de este producto, no puede publicarlo.
-        warning: 'Usted no es el dueño de los productos seleccionados. No puede publicar los productos "%notGranted%".'
-        info: 'Los productos %nbProducts% seleccionados serán publicados.'
-      not_editable: 'Usted no tiene el permiso de editar los productos "%identifiers%".'
+        warning: Usted no es el dueño de los productos seleccionados. No puede publicar los productos "%notGranted%".
+        info: Los productos %nbProducts% seleccionados serán publicados.
+      not_editable: Usted no tiene el permiso de editar los productos "%identifiers%".
     unpublish:
       label: Quitar publicación de productos
       description: Quitar publicación de los productos seleccionados, la información publicada será eliminada.
@@ -64,13 +64,13 @@ pim_enrich:
       launched_flash: El trabajo de quitar la publicación de productos está actualmente en ejecución.
       message:
         error: Usted no es el dueño del producto, no puede publicarlo.
-        warning: 'Usted no es el dueño de los productos seleccionados. No puede quitar la publicación de los productos "%notGranted%".'
-        info: 'Los %nbProducts% productos seleccionados serán quitados de la publicación.'
-      not_editable: 'No tiene permisos para editar los productos "%identifiers%".'
+        warning: Usted no es el dueño de los productos seleccionados. No puede quitar la publicación de los productos "%notGranted%".
+        info: Los %nbProducts% productos seleccionados serán quitados de la publicación.
+      not_editable: No tiene permisos para editar los productos "%identifiers%".
     classify:
       message:
         error: Usted no es el dueño del producto, no puede clasificarlo.
-        warning: 'Usted no es el dueño de estos productos seleccionados. No puede clasificar los productos "%notGranted%".'
+        warning: Usted no es el dueño de estos productos seleccionados. No puede clasificar los productos "%notGranted%".
     edit_common_attributes:
       message:
         error: Usted no es el dueño del producto, no puede editarlo.
@@ -107,12 +107,12 @@ pimee_enrich:
     colorspace:
       title: Espacio de color
       options:
-        colorspace: 'Espacio de color %value%'
+        colorspace: Espacio de color %value%
     resize:
       title: Redimensionar
       options:
-        width: 'Px ancho %value%'
-        height: 'Alto px %value%'
+        width: Px ancho %value%
+        height: Alto px %value%
     resolution:
       title: Resolución
       options:
@@ -121,14 +121,14 @@ pimee_enrich:
     scale:
       title: Escala
       options:
-        width: 'Ancho px %value%'
-        height: 'Alto px %value%'
-        ratio: 'Ratio %value%%'
+        width: Ancho px %value%
+        height: Alto px %value%
+        ratio: Ratio %value%%
     thumbnail:
       title: Miniatura
       options:
-        width: 'Ancho px %value%'
-        height: 'Alto px %value%'
+        width: Ancho px %value%
+        height: Alto px %value%
 add_product_value_with_permission_and_rules:
   steps.perform: Agregar un valor de producto
 update_product_value_with_permission_and_rules:

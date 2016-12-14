@@ -5,4 +5,4 @@ pimee_dashboard:
       author: Auteur
       product: Produit
       review: Examiner
-      empty: "Il n'y a aucune proposition à examiner"
+      empty: Il n'y a aucune proposition à examiner

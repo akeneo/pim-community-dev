@@ -19,14 +19,14 @@ pimee_catalog_rule:
         delete: Удалить выбранные правила
   actions:
     type:
-      copy: 'Тогда %from_field% копируется в %to_field%'
-      copy_value: 'Тогда %from_field% копируется в %to_field%'
-      set: 'Тогда %value% устанавливается в %field%'
-      set_value: 'Тогда %value% устанавливается в %field%'
-      add: 'Тогда %value% добавляется к %field%'
-      remove: 'Тогда %value% удаляется из %field%'
+      copy: Тогда %from_field% копируется в %to_field%
+      copy_value: Тогда %from_field% копируется в %to_field%
+      set: Тогда %value% устанавливается в %field%
+      set_value: Тогда %value% устанавливается в %field%
+      add: Тогда %value% добавляется к %field%
+      remove: Тогда %value% удаляется из %field%
   condition:
-    label: 'Если %field% %operator% %value%'
+    label: Если %field% %operator% %value%
     operators:
       STARTS WITH: начинается с
       ENDS WITH: заканчивается на
@@ -65,10 +65,10 @@ pimee_catalog_rule:
       rule.view_permissions: Просмотр правил
   product:
     tooltip:
-      product_attribute_affected_by_a_rule.content: 'Значение этого атрибута может быть получено из правил(а) <strong>%rule%</strong>. Это значит, что если условия верны, то ваши настройки будут перезаписаны.'
-      variant_attribute_affected_by_a_rule.content: 'Атрибуты групп вариантов имеют приоритет над атрибутами продуктов. Это значит, что каждый атрибут группы вариантов будет перезаписывать соответствующее значение продукта. Правила <strong>%rule%</strong> не будут применяться к продуктам.'
+      product_attribute_affected_by_a_rule.content: Значение этого атрибута может быть получено из правил(а) <strong>%rule%</strong>. Это значит, что если условия верны, то ваши настройки будут перезаписаны.
+      variant_attribute_affected_by_a_rule.content: Атрибуты групп вариантов имеют приоритет над атрибутами продуктов. Это значит, что каждый атрибут группы вариантов будет перезаписывать соответствующее значение продукта. Правила <strong>%rule%</strong> не будут применяться к продуктам.
       loading.title: Загрузка...
-    history: 'Применено правило "%rule%"'
+    history: Применено правило "%rule%"
   product_value:
     tooltip:
       affected_by.title: 'Под влиянием правил(а):'
