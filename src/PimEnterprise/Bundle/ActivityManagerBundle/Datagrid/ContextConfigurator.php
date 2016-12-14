@@ -29,7 +29,7 @@ class ContextConfigurator extends EnterpriseContextConfigurator
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeIds($attributeCodes = null)
+    protected function getAttributeIdsUseableInGrid($attributeCodes = null)
     {
         return $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes);
     }
