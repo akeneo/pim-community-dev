@@ -51,7 +51,7 @@ define(
                         viewTypes: this.viewTypes
                     }));
 
-                    this.$('.AknActionButton').dropdown();
+                    this.$('.view-selector-type-switcher').dropdown();
                     this.renderExtensions();
                 }
 
@@ -66,7 +66,7 @@ define(
              */
             switchViewType: function (event) {
                 var viewType = $(event.target).data('value');
-                this.$('.AknActionButton').dropdown('toggle');
+                this.$('.view-selector-type-switcher').dropdown('toggle');
                 this.setCurrentViewType(viewType);
 
                 this.trigger('grid:view-selector:switch-type', viewType);

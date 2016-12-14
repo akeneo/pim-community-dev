@@ -1,6 +1,8 @@
 extensions:
     pim-grid-view-selector:
         module: pim/grid/view-selector/selector
+        config:
+            viewTypes: ['view']
 
     pim-grid-view-selector-footer:
         module: pim/grid/view-selector/footer

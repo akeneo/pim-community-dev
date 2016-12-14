@@ -60,14 +60,21 @@ define(
             /**
              * {@inheritdoc}
              */
+            initialize: function (meta) {
+                this.config = meta.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function (gridAlias) {
                 this.gridAlias = gridAlias;
 
                 if (_.has(module.config(), 'forwarded-events')) {
                     this.forwardMediatorEvents(module.config()['forwarded-events']);
                 }
-
-                this.viewTypes = module.config().view_types;
 
                 this.listenTo(this.getRoot(), 'grid:view-selector:view-created', this.onViewCreated.bind(this));
                 this.listenTo(this.getRoot(), 'grid:view-selector:view-saved', this.onViewSaved.bind(this));
@@ -188,11 +195,11 @@ define(
                     }.bind(this)
                 };
 
-                this.$select2Instance = initSelect2.init($select, options);
+                this.select2Instance = initSelect2.init($select, options);
 
                 // Select2 catches ALL events when user clicks on an element in the dropdown list.
                 // This method bypasses it to allow to click on sub-elements such as buttons, link...
-                var select2 = this.$select2Instance.data('select2');
+                var select2 = this.select2Instance.data('select2');
                 select2.onSelect = (function (fn) {
                     return function (data, options) {
                         var target = null;
@@ -208,7 +215,7 @@ define(
                     };
                 })(select2.onSelect);
 
-                this.$select2Instance.on('select2-selecting', function (event) {
+                this.select2Instance.on('select2-selecting', function (event) {
                     var view = event.object;
                     this.selectView(view);
                 }.bind(this));
@@ -219,8 +226,8 @@ define(
                 $search.prepend($('<i class="icon-search"></i>'));
 
                 // If more than 1 view type, we display the view type switcher module
-                if (this.viewTypes.length > 1) {
-                    var typeSwitcher = new ViewSelectorTypeSwitcher(this.viewTypes);
+                if (this.config.viewTypes.length > 1) {
+                    var typeSwitcher = new ViewSelectorTypeSwitcher(this.config.viewTypes);
                     $search.append(typeSwitcher.render().$el);
 
                     typeSwitcher.listenTo(
@@ -249,9 +256,9 @@ define(
                 this.currentViewType = selectedType;
 
                 // Force the trigger of the search of select2
-                var searchTerm = this.$select2Instance.data('select2').search.val();
-                this.$select2Instance.select2('search', '');
-                this.$select2Instance.select2('search', searchTerm);
+                var searchTerm = this.select2Instance.data('select2').search.val();
+                this.select2Instance.select2('search', '');
+                this.select2Instance.select2('search', searchTerm);
             },
 
             /**
@@ -385,8 +392,8 @@ define(
              * Close the Select2 instance of this View Selector
              */
             closeSelect2: function () {
-                if (null !== this.$select2Instance) {
-                    this.$select2Instance.select2('close');
+                if (null !== this.select2Instance) {
+                    this.select2Instance.select2('close');
                 }
             },
 

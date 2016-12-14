@@ -28,8 +28,6 @@ config:
             forwarded-events:
                 'pim_enrich:form:filter:extension:add': 'pim_enrich:form:filter:extension:add'
         pim/grid/view-selector/selector:
-            view_types:
-                - 'view'
             forwarded-events:
                 'grid:product-grid:state_changed': 'grid:product-grid:state_changed'
         pim/variant-group-manager:
