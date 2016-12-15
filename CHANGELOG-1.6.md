@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6035: Fix an issue with locale switcher when a user does not have access to first locale of the list
+
 # 1.6.6 (2016-12-08)
 
 ## Bug fixes
