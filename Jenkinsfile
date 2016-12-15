@@ -1,6 +1,6 @@
 #!groovy
 
-# C ke de lamou
+# C ke de lamourrrrrrrrrrrrrrrrrrrrrrrrr
 
 def editions = ["ee", "ce"]
 def storages = ["orm", "odm"]
