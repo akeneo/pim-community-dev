@@ -40,7 +40,7 @@ class JobNameVisibilityChecker implements VisibilityCheckerInterface
         $jobInstance = $context['jobInstance'];
 
         $jobNames = $this->jobNames;
-        if (isset ($config['job_names'])) {
+        if (isset($config['job_names'])) {
             $jobNames = array_merge($jobNames, $config['job_names']);
         }
 
