@@ -6,7 +6,7 @@
   }
 
   &.select2-drop {
-    width: 400px !important;
+    width: 400px !important; // The select2 lib sets the width with JS methods.
 
     .select2-search {
       padding: 6px;
@@ -14,13 +14,13 @@
       border-top: 1px solid @AknBorderColor;
       border-bottom: 1px solid @AknBorderColor;
 
-      .AknDropdown {
+      .view-selector-type-dropdown {
         position: absolute;
         top: 6px;
         right: 6px;
       }
 
-      .AknActionButton {
+      .view-selector-type-switcher {
         height: 38px;
         border-radius: 0;
         border: 1px solid #aaa;
@@ -86,16 +86,6 @@
               flex-direction: row-reverse;
               align-items: center;
               align-content: center;
-
-              .grid-view-selector-line-btn-remove {
-                background-color: @AknRed;
-                color: #ffffff;
-
-                &:hover {
-                  background-color: darken(@AknRed, 20%);
-                  background-image: none;
-                }
-              }
             }
           }
         }
