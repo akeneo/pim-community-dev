@@ -1,48 +1,59 @@
 parameters:
-    pim_datagrid.datagrid.configuration.product.context_configurator.class: Akeneo\ActivityManager\Bundle\Datagrid\ContextConfigurator
+    pim_datagrid.datagrid.configuration.product.context_configurator.class: 'Akeneo\ActivityManager\Bundle\Datagrid\ContextConfigurator'
+    activity_manager.repository.user.class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\UserRepository'
+    activity_manager.repository.product.class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProductRepository'
+    activity_manager.repository.familly_requirement.class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\FamilyRequirementRepository'
+    activity_manager.repository.attribute_permission.class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\AttributePermissionRepository'
+    activity_manager.repository.job_instance.class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\JobInstanceRepository'
+    activity_manager.repository.attribute.class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\AttributeRepository'
+    activity_manager.factory.project_calculation_notification.class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCalculationNotificationFactory'
+    activity_manager.factory.project_created_notification.class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory'
+    activity_manager.event_subscriber.project_creation_notifier.class: 'Akeneo\ActivityManager\Bundle\EventListener\ProjectCreationNotifierSubscriber'
+    activity_manager.converter.filter.class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterConverter'
+    pim_datagrid.extension.filter.class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterExtension'
 
 services:
     ### Repositories
     activity_manager.repository.user:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\UserRepository'
+        class: '%activity_manager.repository.user.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pim_user.entity.user.class%'
 
     activity_manager.repository.product:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProductRepository'
+        class: '%activity_manager.repository.product.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pimee_security.repository.category_access'
 
     activity_manager.repository.familly_requirement:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\FamilyRequirementRepository'
+        class: '%activity_manager.repository.familly_requirement.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pim_catalog.entity.attribute_requirement.class%'
 
     activity_manager.repository.attribute_permission:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\AttributePermissionRepository'
+        class: '%activity_manager.repository.attribute_permission.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pimee_security.entity.attribute_group_access.class%'
 
     activity_manager.repository.job_instance:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\JobInstanceRepository'
+        class: '%activity_manager.repository.job_instance.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%akeneo_batch.entity.job_instance.class%'
             - '%activity_manager.project_calculation.job_name%'
 
     activity_manager.repository.attribute:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\AttributeRepository'
+        class: '%activity_manager.repository.attribute.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pim_catalog.entity.attribute.class%'
 
     ### Notifications
     activity_manager.factory.project_calculation_notification:
-        class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCalculationNotificationFactory'
+        class: '%activity_manager.factory.project_calculation_notification.class%'
         arguments:
             - ['project_calculation']
             - '%pim_notification.entity.notification.class%'
@@ -50,12 +61,12 @@ services:
             - { name: pim_notification.factory.notification }
 
     activity_manager.factory.project_created_notification:
-        class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory'
+        class: '%activity_manager.factory.project_created_notification.class%'
         arguments:
             - '%pim_notification.entity.notification.class%'
 
     activity_manager.event_subscriber.project_creation_notifier:
-        class: 'Akeneo\ActivityManager\Bundle\EventListener\ProjectCreationNotifierSubscriber'
+        class: '%activity_manager.event_subscriber.project_creation_notifier.class%'
         arguments:
             - '@activity_manager.factory.project_created_notification'
             - '@pim_notification.notifier'
@@ -66,12 +77,12 @@ services:
 
     ### Datagrid
     activity_manager.converter.filter:
-        class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterConverter'
+        class: '%activity_manager.converter.filter.class%'
         arguments:
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
 
     pim_datagrid.extension.filter:
-        class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterExtension'
+        class: '%pim_datagrid.extension.filter.class.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
             - '@translator'

@@ -1,6 +1,11 @@
 parameters:
-    akeneo_activity_manager.model.project.class: Akeneo\ActivityManager\Component\Model\Project
-    akeneo_activity_manager.model.project.interface: Akeneo\ActivityManager\Component\Model\ProjectInterface
+    akeneo_activity_manager.model.project.class: 'Akeneo\ActivityManager\Component\Model\Project'
+    akeneo_activity_manager.model.project.interface: 'Akeneo\ActivityManager\Component\Model\ProjectInterface'
+
+    activity_manager.normalizer.project.class: 'Akeneo\ActivityManager\Component\Normalizer\ProjectNormalizer'
+    activity_manager.repository.project.class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProjectRepository'
+    activity_manager.updater.project.class: 'Akeneo\ActivityManager\Component\Updater\ProjectUpdater'
+    activity_manager.event_listener.event_translation.class: 'Akeneo\ActivityManager\Bundle\EventListener\EventTranslationSubscriber'
 
 services:
     ### Factory
@@ -11,13 +16,13 @@ services:
 
     ### Normalizer
     activity_manager.normalizer.project:
-        class: 'Akeneo\ActivityManager\Component\Normalizer\ProjectNormalizer'
+        class: '%activity_manager.normalizer.project.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     ### Repository
     activity_manager.repository.project:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository'
+        class: '%activity_manager.repository.project.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%akeneo_activity_manager.model.project.class%'
@@ -29,7 +34,7 @@ services:
 
     ### Updater
     activity_manager.updater.project:
-        class: 'Akeneo\ActivityManager\Component\Updater\ProjectUpdater'
+        class: '%activity_manager.updater.project.class%'
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
@@ -44,7 +49,7 @@ services:
 
     ### Subscribers
     activity_manager.event_listener.event_translation:
-        class: 'Akeneo\ActivityManager\Bundle\EventListener\EventTranslationSubscriber'
+        class: '%activity_manager.event_listener.event_translation.class%'
         arguments:
             - '@event_dispatcher'
             - '@activity_manager.repository.project'
