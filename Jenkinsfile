@@ -1,6 +1,5 @@
 #!groovy
 
-
 def editions = ["ee", "ce"]
 def storages = ["orm", "odm"]
 def features = "features,vendor/akeneo/pim-community-dev/features"
