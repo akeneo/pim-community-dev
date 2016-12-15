@@ -30,6 +30,10 @@ class ChainedFilter implements CollectionFilterInterface, ObjectFilterInterface
             }
         }
 
+        if (is_array($collection)) {
+            $collection = array_values($collection);
+        }
+
         return $collection;
     }
 
