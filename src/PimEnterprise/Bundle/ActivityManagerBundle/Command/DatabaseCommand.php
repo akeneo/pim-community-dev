@@ -106,7 +106,6 @@ ALTER TABLE `akeneo_activity_manager_project_product`
 SQL;
         }
 
-
         $this->getContainer()
             ->get('doctrine')
             ->getConnection()

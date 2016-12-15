@@ -2,7 +2,6 @@
 
 namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\JobInstanceRepository;
 use Akeneo\ActivityManager\Component\Repository\JobInstanceRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;

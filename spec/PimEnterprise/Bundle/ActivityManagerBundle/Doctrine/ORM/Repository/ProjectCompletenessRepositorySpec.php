@@ -5,7 +5,6 @@ namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
 use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectCompletenessRepository;
 use Akeneo\ActivityManager\Component\Repository\ProjectCompletenessRepositoryInterface;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
 
 class ProjectCompletenessRepositorySpec extends ObjectBehavior
