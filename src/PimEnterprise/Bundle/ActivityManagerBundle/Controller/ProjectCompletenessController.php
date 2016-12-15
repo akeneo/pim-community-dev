@@ -23,15 +23,15 @@ use Symfony\Component\HttpFoundation\Request;
 class ProjectCompletenessController extends Controller
 {
     /**
-     * @param int     $projectId
+     * @param int     $projectCode
      * @param Request $request
      *
      * @return JsonResponse
      */
-    public function showAction($projectId, Request $request)
+    public function showAction($projectCode, Request $request)
     {
         $project = $this->container->get('activity_manager.repository.project')
-            ->findOneByIdentifier($projectId);
+            ->findOneByIdentifier($projectCode);
 
         if (null === $project) {
             return new JsonResponse(null, 404);
