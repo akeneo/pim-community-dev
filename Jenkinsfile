@@ -26,6 +26,18 @@ stage('build') {
                 name: 'features',
                 defaultValue: 'features,vendor/akeneo/pim-community-dev/features',
                 description: 'Behat scenarios to build'
+            ],
+            [
+                $class: 'ChoiceParameterDefinition',
+                name: 'php_version',
+                choices: '5.6\n7.0\n7.1',
+                description: 'PHP version to run behat with'
+            ],
+            [
+                $class: 'ChoiceParameterDefinition',
+                name: 'mysql_version',
+                choices: '5.5\n5.7',
+                description: 'MySQL version to run behat with'
             ]
         ])
 
@@ -271,7 +283,7 @@ tasks["behat"] = {
                     sh "mkdir -p app/build/screenshots"
 
                     sh "cp behat.ci.yml behat.yml"
-                    sh "/usr/bin/php7.0 /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE} ${env.BUILD_NUMBER} ${storage} ${features} akeneo/job/pim-community-dev/job/${env.JOB_BASE_NAME} ${behatAttempts} 5.6 5.5 \"${tags}\" \"behat-${edition}-${storage}\""
+                    sh "/usr/bin/php7.0 /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE} ${env.BUILD_NUMBER} ${storage} ${features} akeneo/job/pim-community-dev/job/${env.JOB_BASE_NAME} ${behatAttempts} ${php_version} ${mysql_version} \"${tags}\" \"behat-${edition}-${storage}\""
 
                     archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png,app/build/logs/consumer/*.log'
                     junit 'app/build/logs/behat/*.xml'
