@@ -79,32 +79,32 @@ tasks['php-cs-fixer'] = {
             'phpdoc_order'
         ]
 
-        parallel 'php-cs-fixer-with-php-5.4': {
-            node('docker') {
-                deleteDir()
-                docker.image('carcel/php:5.4').inside {
-                    unstash "project_files"
-                    sh "composer global require friendsofphp/php-cs-fixer ^1.12"
-                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
-                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
-                }
-            }
-        },
-        'php-cs-fixer-with-php-5.5': {
-            node('docker') {
-                deleteDir()
-                docker.image('carcel/php:5.5').inside {
-                    unstash "project_files"
-                    sh "composer global require friendsofphp/php-cs-fixer ^1.12"
-                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
-                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
-                }
-            }
-        },
-        'php-cs-fixer-with-php-5.6': {
+        parallel 'php-cs-fixer-with-php-5.6': {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:5.6').inside {
+                    unstash "project_files"
+                    sh "composer global require friendsofphp/php-cs-fixer ^1.12"
+                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
+                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
+                }
+            }
+        },
+        'php-cs-fixer-with-php-7.0': {
+            node('docker') {
+                deleteDir()
+                docker.image('carcel/php:7.0').inside {
+                    unstash "project_files"
+                    sh "composer global require friendsofphp/php-cs-fixer ^1.12"
+                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
+                    sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
+                }
+            }
+        },
+        'php-cs-fixer-with-php-7.1': {
+            node('docker') {
+                deleteDir()
+                docker.image('carcel/php:7.1').inside {
                     unstash "project_files"
                     sh "composer global require friendsofphp/php-cs-fixer ^1.12"
                     sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
@@ -130,69 +130,70 @@ tasks['grunt-codestyle'] = {
 
 tasks['phpunit'] = {
     stage('phpunit') {
-        parallel 'phpunit-with-php-5.4': {
-            node('docker') {
-                deleteDir()
-                docker.image('carcel/php:5.4').inside {
-                    unstash "project_files"
-                    sh "composer global require phpunit/phpunit 3.7.*"
-                    sh "/home/docker/.composer/vendor/phpunit/phpunit/composer/bin/phpunit -c app/phpunit.jenkins.xml --testsuite PIM_Unit_Test"
-                }
-            }
-        },
-        'phpunit-with-php-5.5': {
-            node('docker') {
-                deleteDir()
-                docker.image('carcel/php:5.5').inside {
-                    unstash "project_files"
-                    sh "composer global require phpunit/phpunit 3.7.*"
-                    sh "/home/docker/.composer/vendor/phpunit/phpunit/composer/bin/phpunit -c app/phpunit.jenkins.xml --testsuite PIM_Unit_Test"
-                }
-            }
-        },
-        'phpunit-with-php-5.6': {
+        parallel 'phpunit-with-php-5.6': {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:5.6').inside {
+                    unstash "project_files"
+                    sh "composer global require phpunit/phpunit 3.7.*"
+                    sh "/home/docker/.composer/vendor/phpunit/phpunit/composer/bin/phpunit -c app/phpunit.jenkins.xml --testsuite PIM_Unit_Test"
+                }
+            }
+        },
+        'phpunit-with-php-7.0': {
+            node('docker') {
+                deleteDir()
+                docker.image('carcel/php:7.0').inside {
+                    unstash "project_files"
+                    sh "composer global require phpunit/phpunit 3.7.*"
+                    sh "/home/docker/.composer/vendor/phpunit/phpunit/composer/bin/phpunit -c app/phpunit.jenkins.xml --testsuite PIM_Unit_Test"
+                }
+            }
+        },
+        'phpunit-with-php-7.1': {
+            node('docker') {
+                deleteDir()
+                docker.image('carcel/php:7.1').inside {
                     unstash "project_files"
                     sh "composer global require phpunit/phpunit 3.7.*"
                     sh "/home/docker/.composer/vendor/phpunit/phpunit/composer/bin/phpunit -c app/phpunit.jenkins.xml --testsuite PIM_Unit_Test"
                 }
             }
         }
+
     }
 }
 
 tasks['phpspec'] = {
     stage('phpspec') {
-        parallel 'phpspec-with-php-5.4': {
-            node('docker') {
-                deleteDir()
-                docker.image('carcel/php:5.4').inside {
-                    unstash "project_files"
-                    sh "composer global require phpspec/phpspec 2.1.*"
-                    sh "composer global require akeneo/phpspec-skip-example-extension 1.1.*"
-                    sh "cp app/config/parameters.yml app/config/parameters_test.yml"
-                    sh "/home/docker/.composer/vendor/phpspec/phpspec/bin/phpspec run --no-interaction --format=dot"
-                }
-            }
-        },
-        'phpspec-with-php-5.5': {
-            node('docker') {
-                deleteDir()
-                docker.image('carcel/php:5.5').inside {
-                    unstash "project_files"
-                    sh "composer global require phpspec/phpspec 2.1.*"
-                    sh "composer global require akeneo/phpspec-skip-example-extension 1.1.*"
-                    sh "cp app/config/parameters.yml app/config/parameters_test.yml"
-                    sh "/home/docker/.composer/vendor/phpspec/phpspec/bin/phpspec run --no-interaction --format=dot"
-                }
-            }
-        },
-        'phpspec-with-php-5.6': {
+        parallel 'phpspec-with-php-5.6': {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:5.6').inside {
+                    unstash "project_files"
+                    sh "composer global require phpspec/phpspec 2.1.*"
+                    sh "composer global require akeneo/phpspec-skip-example-extension 1.1.*"
+                    sh "cp app/config/parameters.yml app/config/parameters_test.yml"
+                    sh "/home/docker/.composer/vendor/phpspec/phpspec/bin/phpspec run --no-interaction --format=dot"
+                }
+            }
+        },
+        'phpspec-with-php-7.0': {
+            node('docker') {
+                deleteDir()
+                docker.image('carcel/php:7.0').inside {
+                    unstash "project_files"
+                    sh "composer global require phpspec/phpspec 2.1.*"
+                    sh "composer global require akeneo/phpspec-skip-example-extension 1.1.*"
+                    sh "cp app/config/parameters.yml app/config/parameters_test.yml"
+                    sh "/home/docker/.composer/vendor/phpspec/phpspec/bin/phpspec run --no-interaction --format=dot"
+                }
+            }
+        },
+        'phpspec-with-php-7.1': {
+            node('docker') {
+                deleteDir()
+                docker.image('carcel/php:7.1').inside {
                     unstash "project_files"
                     sh "composer global require phpspec/phpspec 2.1.*"
                     sh "composer global require akeneo/phpspec-skip-example-extension 1.1.*"
