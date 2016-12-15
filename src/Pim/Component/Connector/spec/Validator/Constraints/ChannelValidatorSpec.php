@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Connector\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Connector\Validator\Constraints\Channel;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
@@ -35,7 +36,7 @@ class ChannelValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_there_is_no_channel_choices($channelRepository, Constraint $constraint)
     {
-        $channelRepository->getLabelsIndexedByCode()->willReturn([]);
+        $channelRepository->getChannelCodes()->willReturn([]);
 
         $this
             ->shouldThrow(new ConstraintDefinitionException('No channel is set in the application'))
@@ -48,7 +49,7 @@ class ChannelValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $channelRepository->getLabelsIndexedByCode()->willReturn(['mobile' => 'mobile']);
+        $channelRepository->getChannelCodes()->willReturn(['mobile']);
 
         $context->buildViolation(Argument::cetera())
             ->shouldBeCalled()

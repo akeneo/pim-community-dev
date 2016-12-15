@@ -1,0 +1,73 @@
+@import '../../base/variables';
+
+.AknDropdownButton {
+  &-button {
+    background: lighten(@AknGrey, 25%);
+    height: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize - 2px;
+    font-size: @AknFontSizeBig;
+    border: 1px solid @AknBorderColor;
+    border-radius: 2px;
+    padding: 0 0 0 @AknButtonsPadding;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  &-button:hover,
+  &.open &-button {
+    background: lighten(@AknGrey, 15%);
+  }
+
+  &-caretContainer {
+    width: @AknDefaultButtonSize - 2px;
+    height: @AknDefaultButtonSize - 2px;
+    background: lighten(@AknGrey, 15%);
+    margin-left: @AknButtonsPadding;
+    display: inline-block;
+    text-align: center;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+
+  &--apply &-button {
+    background: lighten(@AknGreen, 30%);
+    color: darken(@AknGreen, 20%);
+    border: 1px solid darken(@AknGreen, 10%);
+  }
+
+  &--apply &-caretContainer {
+    background: lighten(@AknGreen, 20%);
+    color: darken(@AknGreen, 20%);
+  }
+
+  &--apply:hover &-button,
+  &--apply.open &-button {
+    background: lighten(@AknGreen, 20%);
+  }
+
+  &--important &-button {
+    background: lighten(@AknRed, 30%);
+    color: darken(@AknRed, 20%);
+    border: 1px solid darken(@AknRed, 10%);
+  }
+
+  &--important &-caretContainer {
+    background: lighten(@AknRed, 20%);
+    color: darken(@AknRed, 20%);
+  }
+
+  &--important:hover &-button,
+  &--important.open &-button {
+    background: lighten(@AknRed, 20%);
+  }
+
+  &--small &-button {
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+  }
+
+  &--small &-caretContainer {
+    width: @AknLittleButtonSize - 2px;
+    height: @AknLittleButtonSize - 2px;
+  }
+}

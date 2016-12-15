@@ -5,15 +5,17 @@ namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer;
+
 use Prophecy\Argument;
 
 class CategoryNormalizerSpec extends ObjectBehavior
 {
     function let(
-        TranslationNormalizer $transnormalizer,
-        CategoryInterface $clothes
+        CategoryNormalizer $categoryNormalizerStandard,
+        TranslationNormalizer $translationNormalizer
     ) {
-        $this->beConstructedWith($transnormalizer);
+        $this->beConstructedWith($categoryNormalizerStandard, $translationNormalizer);
     }
 
     function it_is_initializable()
@@ -26,26 +28,43 @@ class CategoryNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_category_normalization_into_csv($clothes)
-    {
-        $this->supportsNormalization($clothes, 'csv')->shouldBe(true);
+    function it_supports_category_normalization_into_flat(
+        CategoryInterface $clothes
+    ) {
+        $this->supportsNormalization($clothes, 'flat')->shouldBe(false);
+        $this->supportsNormalization($clothes, 'csv')->shouldBe(false);
         $this->supportsNormalization($clothes, 'json')->shouldBe(false);
         $this->supportsNormalization($clothes, 'xml')->shouldBe(false);
     }
 
     function it_normalizes_category(
-        $transnormalizer,
-        $clothes,
-        CategoryInterface $catalog
+        CategoryNormalizer $categoryNormalizerStandard,
+        TranslationNormalizer $translationNormalizer,
+        CategoryInterface $clothes
     ) {
-        $transnormalizer->normalize(Argument::cetera())->willReturn([]);
-        $clothes->getCode()->willReturn('clothes');
-        $clothes->getParent()->willReturn($catalog);
-        $catalog->getCode()->willReturn('Master catalog');
+        $translationNormalizer->supportsNormalization(Argument::cetera())->willReturn(true);
+        $translationNormalizer->normalize(Argument::cetera())->willReturn(
+            [
+                'label-en_US' => 'My category',
+            ]
+        );
+
+        $categoryNormalizerStandard->supportsNormalization($clothes, 'standard')->willReturn(true);
+        $categoryNormalizerStandard->normalize($clothes, 'standard', [])->willReturn(
+            [
+                'code'   => 'clothes',
+                'parent' => 'Master catalog',
+                'labels' => [
+                    'en_US' => 'My category',
+                ],
+            ]
+        );
+
         $this->normalize($clothes)->shouldReturn(
             [
-                'code'    => 'clothes',
-                'parent'  => 'Master catalog'
+                'code'        => 'clothes',
+                'parent'      => 'Master catalog',
+                'label-en_US' => 'My category',
             ]
         );
     }

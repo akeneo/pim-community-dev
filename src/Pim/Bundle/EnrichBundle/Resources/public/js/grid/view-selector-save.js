@@ -15,7 +15,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/grid/view-selector-save',
+        'text!pim/template/grid/view-selector/save',
         'pim/datagrid/state',
         'pim/dialog',
         'routing',

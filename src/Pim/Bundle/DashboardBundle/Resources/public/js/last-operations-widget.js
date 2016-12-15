@@ -13,13 +13,13 @@ define(
 
         return AbstractWidget.extend({
             labelClasses: {
-                1: 'success',
-                3: 'info',
-                4: 'important',
-                5: 'important',
-                6: 'important',
-                7: 'important',
-                8: 'inverse'
+                1: 'AknBadge--success',
+                3: '',
+                4: 'AknBadge--important',
+                5: 'AknBadge--important',
+                6: 'AknBadge--important',
+                7: 'AknBadge--important',
+                8: 'AknBadge--error'
             },
 
             viewAllTitle: 'Show job tracker',
@@ -103,7 +103,7 @@ define(
 
                 var $jobTrackerBtn = $(this.jobTrackerBtnTemplate({ title: this.viewAllTitle }));
 
-                this.$el.parent().siblings('.widget-header').append($jobTrackerBtn);
+                this.$el.closest('.AknWidget').find('.widget-actions').prepend($jobTrackerBtn);
                 $jobTrackerBtn.on('click', this.showTracker.bind(this));
             },
 
@@ -115,7 +115,7 @@ define(
 
                 _.each(data, function (operation) {
                     operation.labelClass = this.labelClasses[operation.status] ?
-                        'label-' + this.labelClasses[operation.status]
+                        this.labelClasses[operation.status]
                         : '';
                     operation.statusLabel = operation.statusLabel.slice(0, 1).toUpperCase() +
                         operation.statusLabel.slice(1).toLowerCase();

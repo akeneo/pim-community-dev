@@ -19,7 +19,7 @@ Feature: Browse products by locale and scope
       | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    | large.jpeg      | small.jpeg   |
     And I am logged in as "Mary"
     And I am on the products page
-    And I display the columns sku, name, image, description and family
+    And I display the columns SKU, Name, Image, Description and Family
 
   @skip
   Scenario: Successfully display english data on products page

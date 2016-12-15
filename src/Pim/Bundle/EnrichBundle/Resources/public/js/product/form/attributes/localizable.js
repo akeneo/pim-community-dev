@@ -69,7 +69,7 @@ define(
                     channel: context.scope,
                     locale: context.locale
                 });
-                var element = '<span class="unavailable">' + message + '</span>';
+                var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>';
 
                 field.addElement(
                     'field-input',

@@ -141,6 +141,8 @@ services:
 
     pim_connector.writer.file.yaml:
         class: '%pim_connector.writer.file.yaml.class%'
+        arguments:
+            - '@pim_connector.array_converter.dummy'
 
     pim_connector.writer.file.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'

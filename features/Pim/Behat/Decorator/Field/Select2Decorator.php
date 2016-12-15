@@ -37,7 +37,7 @@ class Select2Decorator extends ElementDecorator
             $this->spin(function () use ($widget, $value) {
                 $result = $widget->find('css', sprintf('.select2-result-label:contains("%s")', $value));
 
-                if (null !== $result) {
+                if (null !== $result && $result->isVisible()) {
                     $result->click();
 
                     return true;

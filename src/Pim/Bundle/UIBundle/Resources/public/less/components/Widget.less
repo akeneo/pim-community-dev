@@ -1,0 +1,38 @@
+@import '../base/variables';
+
+.AknWidget {
+  width: @AknCenteredContentWidth;
+  margin: 20px auto;
+
+  &-header {
+    color: @AknPurple;
+    border-bottom: 3px solid @AknPurple;
+    font-size: @AknFontSizeBig;
+    text-transform: uppercase;
+    line-height: 44px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-subTitle {
+    padding: 5px 0;
+    border-bottom: 1px solid @AknPurple;
+  }
+
+  &-content {
+    position: relative; // For loading mask
+    min-height: 50px; // For loading mask
+
+    &--withPadding {
+      padding: 10px;
+    }
+  }
+
+  &-footer {
+    border-top: 1px solid @AknBorderColor;
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+}

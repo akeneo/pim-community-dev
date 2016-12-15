@@ -1,0 +1,24 @@
+@import '../../base/variables';
+
+.AknActionButtonList {
+  border: 1px solid @AknBorderColor;
+  font-size: @AknDefaultFontSize;
+  line-height: @AknLittleButtonSize;
+  height: @AknLittleButtonSize;
+  border-radius: 2px;
+  overflow: hidden;
+
+  &-button {
+    display: inline-block;
+    padding: 0 10px;
+    color: @AknDefaultFontColor;
+
+    &:hover {
+      background: @AknDefaultHoverBackground;
+    }
+  }
+
+  &-button + &-button {
+    border-left: 1px solid @AknBorderColor;
+  }
+}

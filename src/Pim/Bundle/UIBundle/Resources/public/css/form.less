@@ -3,38 +3,6 @@
 
 /* Basic Form *******************************************************************************************************/
 
-// Form navbar
-#form-navbar li {
-  a {
-    padding-bottom: 4px;
-    color: @textColor;
-    background-color: transparent;
-    border-bottom: 3px solid transparent;
-    &:hover {
-      border-bottom: 3px solid @textColor + #999;
-    }
-  }
-  &.active a {
-    border-bottom: 3px solid @textColor + #111;
-  }
-  a.error {
-    border-bottom: none;
-    color: @redDark;
-    font-weight: bold;
-    &:before {
-      display: inline-block;
-      margin-right: 5px;
-      font-family: 'FontAwesome';
-      font-style: normal;
-      text-decoration: inherit;
-      -webkit-font-smoothing: antialiased;
-      content: "\f06a";
-      text-indent: 0;
-      speak: none;
-    }
-  }
-}
-
 .icons-container {
   display: inline-block;
   margin-top: 6px;
@@ -51,78 +19,13 @@
 }
 
 .form-row {
-  button.btn {
-    height: 32px;
-    line-height: 32px;
-  }
-  .btn {
-    margin-top: 8px;
-    margin-right: 8px;
-    font-weight: bold;
-  }
   h3 {
     padding-left: 20px;
   }
 }
 
-.btn-primary {
-  text-shadow: 0 1px 0 darken(@btnPrimaryBackgroundLight, 16%);
-  #gradient > .vertical(@btnPrimaryBackgroundLight, darken(@btnPrimaryBackgroundLight, 5%));
-  border-color: darken(@btnPrimaryBackgroundLight, 7%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%);
-  .box-shadow(inset 0 1px 0 0 lighten(@btnPrimaryBackgroundLight, 7%));
-  .border-radius(4px);
-  color: @white;
-  font-weight: bold;
-  &:hover {
-    color: @white;
-    #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 4%));
-    .box-shadow(inset 0 1px 0 0 @btnPrimaryBackgroundLight);
-  }
-  &:active,
-  &:focus {
-    color: @white;
-    #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 10%));
-    .box-shadow(inset 0 1px 4px 0 darken(@btnPrimaryBackgroundLight, 10%));
-  }
-}
-
-.btn-info {
-  color: @backgroundColor-white;
-  text-shadow: 0 1px 0 darken(@btnInfoBackgroundLight, 16%);
-  #gradient > .vertical(@btnInfoBackgroundLight, darken(@btnInfoBackgroundLight, 5%));
-  border-color: darken(@btnInfoBackgroundLight, 7%) darken(@btnInfoBackgroundLight, 10%) darken(@btnInfoBackgroundLight, 10%) darken(@btnInfoBackgroundLight, 10%);
-  .box-shadow(inset 0 1px 0 0 lighten(@btnInfoBackgroundLight, 7%));
-  &:hover {
-    #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 4%));
-    .box-shadow(inset 0 1px 0 0 @btnInfoBackgroundLight);
-    color: @white;
-  }
-  &:active,
-  &:focus {
-    #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 10%));
-    .box-shadow(inset 0 1px 4px 0 darken(@btnInfoBackgroundLight, 10%));
-    color: @white;
-  }
-  &.disabled {
-    background-color: lighten(@btnInfoBackgroundLight, 10%);
-  }
-}
-.btn.hide {
-  display: none;
-}
-
-.navbar-buttons .btn-group>.btn {
-  font-size: @font-size-14;
-}
-
-.btn-group.open .btn-primary.dropdown-toggle {
-  background-color: @greenDark
-}
-
 .tabsections {
   .tabsection {
-    border: 1px solid @akeneoGreyLighter;
-
     .tabsection-title {
       &:not(:empty) {
         height: 44px;
@@ -131,24 +34,8 @@
         line-height: 44px;
       }
 
-
       .add-attribute .select2-container {
         margin: 0 5px 5px;
-      }
-
-      #locale-switcher .btn.dropdown-toggle,
-      #attribute-buttons button {
-        background: white;
-        height: 30px;
-        line-height: 30px;
-        margin-top: -4px;
-
-        & > i {
-          background: @akeneoGreySuperLight;
-          height: 30px;
-          width: 30px;
-          line-height: 30px;
-        }
       }
     }
 
@@ -160,7 +47,6 @@
 
 .oro-tab-form {
   & > .tab-pane {
-    border: 1px solid @akeneoGreyLighter;
     padding-bottom: 10px;
 
     .control-group {
@@ -190,21 +76,6 @@ a.accordion-toggle {
 
 .accordion-group {
   margin: 10px;
-  li span.label {
-    margin-bottom: 5px;
-  }
-}
-
-.form-horizontal .control-group:not(:empty) {
-  margin-bottom: 15px;
-  label.control-label {
-    &:not(.add-on) {
-      max-height: 25px;
-    }
-    &:after {
-      content: '';
-    }
-  }
 }
 
 .scrollspy .form-horizontal .control-group:not(:empty) {
@@ -284,35 +155,6 @@ a.add-attribute-option {
   border-radius: 3px;
 }
 
-/* bootstrapSwitch */
-.has-switch {
-  margin-right: 3px;
-  margin-bottom: -6px;
-  border-radius: 0;
-
-  label {
-    z-index: 10;
-  }
-  span {
-    padding: 4px 7px;
-    font-size: @font-size-12;
-    font-weight: bold;
-    &.switch-primary, &.switch-left {
-      background-color: @green;
-      background-image: none;
-      border-radius: 0;
-      text-shadow: none;
-    }
-  }
-  &>div.switch-off,
-  &>div.switch-on {
-    height: 26px;
-  }
-}
-div.btn-group > .has-switch {
-  display: block;
-}
-
 #channel-switcher {
   .dropdown-toggle {
     border-right: 0;
@@ -350,9 +192,6 @@ div.btn-group > .has-switch {
     &.no-label .control-group {
       label.control-label {
         width: 30px;
-        &.add-on {
-          width: 25px;
-        }
       }
       .controls {
         margin-left: 40px;
@@ -449,73 +288,14 @@ div.btn-group > .has-switch {
   }
 }
 
-/* Accordion ********************************************************************************************************/
-.accordion-inner {
-  td { border: none; }
-}
-.accordion-inner-unbuffered {
-  padding: 0;
-  border-top: 1px solid @grayLighter;
-}
-
-.form-inline {
-  label {
-    width: 200px;
-    text-align: left;
-  }
-  input {
-    width: 300px;
-  }
-}
-
-/* Attribute Form ***************************************************************************************************/
-
-.attribute-choice {
-  background: transparent;
-  height: 50px;
-  line-height: 48px;
-  padding-left: 10px;
-  &:hover {
-    background-image: none;
-    background-color: @akeneoPurpleLighter;
-    -webkit-transition: background-color 0.5s;
-    -moz-transition: background-color 0.5s;
-    -o-transition: background-color 0.5s;
-    -ms-transition: background-color 0.5s;
-    transition: background-color 0.5s;  }
-  i {
-    line-height: 34px;
-    font-size: @font-size-20;
-  }
-}
-.attribute-type-selector {
-  display: table;
-  margin-bottom: -10px;
-  &>div {
-    width: 49%;
-    margin-bottom: 10px;
-    &:nth-child(even) {
-      margin-left: 2%;
-    }
-  }
-}
-
 /* Sortable table */
 table.ui-sortable, tbody.ui-sortable {
   td.handle {
     line-height: 30px;
   }
-  td a.btn {
-    height: @buttonHeight;
-  }
-}
-
-table i {
-  color: @textColor;
 }
 
 /* Product edit form - common */
-
 .classify, .product-edit, .form-tabbed {
   margin-bottom: 0;
   .nav-list {
@@ -538,9 +318,6 @@ table i {
       }
     }
   }
-  .tab-content {
-    border-left: 1px solid @color-bbb;
-  }
   .tab-pane h3 {
     padding-left: 20px;
     margin-top: 0;
@@ -557,20 +334,6 @@ table i {
 .submit-form .dropdown-menu.right-align {
   right: 0;
   left: auto;
-}
-
-.attribute-field {
-  .input-large {
-    width: 350px;
-  }
-  .datepicker {
-    &.input-large {
-      width: 200px;
-    }
-    &.add-on {
-      background-color: @white;
-    }
-  }
 }
 
 .ui-datepicker-today .ui-state-default {
@@ -644,10 +407,7 @@ table.comparison .no-label .attribute-field.scopable {
   margin-bottom: 20px;
   >div {
     &:first-of-type .controls {
-      .control-label.add-on {
-        background-color: @backgroundColor-white;
-        border-top-left-radius: 3px;
-      }
+      .control-label
       input, select, textarea {
         border-top-right-radius: 3px;
       }
@@ -656,16 +416,14 @@ table.comparison .no-label .attribute-field.scopable {
       }
     }
     &:last-of-type .controls {
-      .control-label.add-on {
-        border-bottom-left-radius: 3px;
-      }
+      .control-label
       input, select, textarea {
         border-bottom-right-radius: 3px;
       }
     }
     &:not(.first):not(:first-of-type) {
       &>.control-group {
-        .control-label.add-on, input, select, textarea {
+        input, select, textarea {
           border-top: 0;
         }
       }
@@ -676,36 +434,15 @@ table.comparison .no-label .attribute-field.scopable {
     font-size: @font-size-14;
     .user-select(none);
   }
-  label.control-label.add-on {
-    width: 25px;
-    margin-bottom: 0;
-    font-weight: bold;
-    text-align: center;
-    background-color: @whiteDark;
-    border-right-width: 0;
-    border-radius: 0;
-    .user-select(none);
-  }
   .control-group {
     margin: 0;
     &>.controls.input-prepend {
       position: relative;
-      .control-label.add-on {
-        position: absolute;
-        height: 100%;
-        font-size: @font-size-15;
-        &[style] {
-          text-shadow: none;
-        }
-      }
       .scopable-input {
         position: relative;
         left: 25px;
       }
     }
-  }
-  textarea.input-large {
-    width: 350px;
   }
   div.controls {
     input, select, textarea {
@@ -752,50 +489,6 @@ h1 {
   line-height: 33px;
   color: @akeneoPurple;
 }
-
-.navbar-extra {
-  padding: 10px 7px 10px 12px;
-}
-.navbar-content ul.inline {
-  margin-top: 10px;
-}
-.navbar-content, .content {
-  line-height: 18px;
-  .sub-title {
-    float: left;
-    font-size: @font-size-18;
-    color: @textColor + #555;
-  }
-  .separator {
-    float: left;
-    padding: 0 3px;
-    font-size: @font-size-18;
-    color: @grayLight;
-  }
-  ul.inline {
-    color: @textColor + #333;
-    margin-bottom: 0;
-    li {
-      padding: 0 10px;
-      font-size: @font-size-11;
-      line-height: 14px;
-      border-left: 1px solid @grayLighter;
-    }
-    li:first-of-type {
-      padding-left:0;
-      border-left: none;
-    }
-  }
-  .product-name {
-    float: left;
-    font-size: @font-size-14;
-    font-weight: bold;
-    line-height: 20px;
-  }
-}
-.navbar-title {
-  line-height: 35px;
-}
 .tab-groups {
   float:left;
   min-width: 120px;
@@ -821,9 +514,6 @@ h1 {
   .buffer-extra-left {padding-left:50px;}
   .left-aligned {text-align: left;}
   .right-aligned {text-align: right;}
-}
-.unspaced {
-  margin: 0;
 }
 span.muted.small {
   font-size: @font-size-14;
@@ -857,7 +547,7 @@ div.dropdown-menu.channel {
   min-width: 210px;
 }
 
-#locale-switcher, #comparison-switcher {
+#comparison-switcher {
   span.dropdown-toggle {
     padding: 0px 44px 0px 10px;
     height: 34px;
@@ -925,23 +615,8 @@ div.dropdown-menu.channel {
   margin-right: 10px;
 }
 
-.flag-language {
-  color: @textColor;
-  background-color: transparent;
-  border: none;
-}
-
 .flag {
   display: inline-block;
-}
-
-.language {
-  display: inline-block;
-  padding-left: 5px;
-  font-family: @sansFontFamily;
-  font-size: @font-size-12;
-  color: @textColor + #333;
-  vertical-align: bottom;
 }
 
 #comparison-switcher .dropdown-toggle .flag-language {
@@ -961,19 +636,6 @@ div.dropdown-menu.channel {
   cursor: default;
   opacity: 0;
   display: none;
-
-  .label-warning {
-    color: @color-form-info;
-    text-shadow: none;
-    background-color: @yellowLighter;
-    border-radius: 10px;
-    font-weight: 400;
-    padding: 2px 10px 2px 2px;
-
-    .icon {
-      color: @yellow;
-    }
-  }
 }
 
 /* Product edit form - categories/associations tab */
@@ -1148,11 +810,6 @@ button.pimmultiselect {
       display: none;
     }
   }
-  .scopable-input input[type=text] {
-    height: 20px;
-    margin-left: -1px;
-    border-radius: 0;
-  }
 }
 .attribute-field.scopable>div:not(.first) .controls.metric input {
   height: 21px;
@@ -1219,9 +876,6 @@ table#progress-table {
   .entity-edit-form {
     min-height: 300px;
   }
-  .entity-edit-form .tabs-left > .sidebar > .nav-tabs li.header {
-    border-left: 0;
-  }
   hr {
     height: 3px;
     background-color: lighten(@color-light_grey, 2%);
@@ -1231,9 +885,6 @@ table#progress-table {
   .tab-content {
     padding: 0;
     border-left: solid 1px @color-ccc;
-  }
-  header {
-    display: none;
   }
 }
 
@@ -1364,9 +1015,6 @@ button.view-button {
 
 /** datetimepicker views *********************************************************************************************/
 .bootstrap-datetimepicker-widget {
-  .has-switch {
-    display: table-cell;
-  }
   ul {
     margin: 0;
     padding: 0;
@@ -1386,16 +1034,4 @@ button.view-button {
 
 .tabbable.properties .accordion, .tabbable.history .grid-drop {
   width: 100%;
-}
-
-.job-profile-content-tab {
-  .control-group {
-    max-width: 100%;
-    .control-label.required {
-      font-weight: bold;
-    }
-    .filter-input {
-      display: inline-block;
-    }
-  }
 }

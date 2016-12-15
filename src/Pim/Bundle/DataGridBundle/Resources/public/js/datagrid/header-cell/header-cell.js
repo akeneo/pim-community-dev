@@ -17,7 +17,7 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
             '<% if (sortable) { %>' +
                 '<a href="#">' +
                     '<%= label %> ' +
-                    '<span class="caret"></span>' +
+                    '<span class="AknGrid-caret caret"></span>' +
                 '</a>' +
             '<% } else { %>' +
                 '<span><%= label %></span>' + // wrap label into span otherwise underscore will not render it

@@ -75,6 +75,6 @@ class FilterExtension extends Twig_Extension
      */
     final protected function getFiltersConfigurator()
     {
-        return $this->container->get('pim_datagrid.datagrid.product.filters_configurator');
+        return $this->container->get('pim_datagrid.datagrid.configuration.product.filters_configurator');
     }
 }

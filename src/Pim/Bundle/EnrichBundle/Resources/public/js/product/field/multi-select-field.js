@@ -17,12 +17,27 @@ define(
         'pim/attribute-option/create',
         'pim/security-context',
         'pim/initselect2',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/i18n',
+        'pim/attribute-manager'
     ],
-    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2, UserContext) {
+    function (
+        $,
+        Field,
+        _,
+        fieldTemplate,
+        Routing,
+        createOption,
+        SecurityContext,
+        initSelect2,
+        UserContext,
+        i18n,
+        AttributeManager
+    ) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             choicePromise: null,
+            promiseIdentifiers: null,
             events: {
                 'change .field-input:first input.select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
@@ -74,31 +89,68 @@ define(
                     var options = {
                         ajax: {
                             url: choiceUrl,
+                            quietMillis: 250,
                             cache: true,
-                            data: function (term) {
+                            data: function (term, page) {
                                 return {
                                     search: term,
                                     options: {
-                                        locale: UserContext.get('catalogLocale')
+                                        limit: 20,
+                                        locale: UserContext.get('catalogLocale'),
+                                        page: page
                                     }
                                 };
-                            },
-                            results: function (data) {
+                            }.bind(this),
+                            results: function (response) {
+                                if (response.results) {
+                                    response.more = 20 === _.keys(response.results).length;
+
+                                    return response;
+                                }
+
+                                var data = {
+                                    more: 20 === _.keys(response).length,
+                                    results: []
+                                };
+                                _.each(response, function (value) {
+                                    data.results.push(this.convertBackendItem(value));
+                                }.bind(this));
+
                                 return data;
-                            }
+                            }.bind(this)
                         },
                         initSelection: function (element, callback) {
-                            if (null === this.choicePromise) {
-                                this.choicePromise = $.get(choiceUrl);
+                            var identifiers = AttributeManager.getValue(
+                                this.model.attributes.values,
+                                this.attribute,
+                                UserContext.get('catalogLocale'),
+                                UserContext.get('catalogScope')
+                            ).data;
+
+                            if (null === this.choicePromise || this.promiseIdentifiers !== identifiers) {
+                                this.choicePromise = $.get(choiceUrl, {
+                                    options: {
+                                        identifiers: identifiers
+                                    }
+                                });
+                                this.promiseIdentifiers = identifiers;
                             }
 
-                            this.choicePromise.then(function (response) {
-                                var results = response.results;
+                            this.choicePromise.then(function (results) {
+                                if (_.has(results, 'results')) {
+                                    results = results.results;
+                                }
+
                                 var choices = _.map($(element).val().split(','), function (choice) {
+                                    var option = _.findWhere(results, {code: choice});
+                                    if (option) {
+                                        return this.convertBackendItem(option);
+                                    }
+
                                     return _.findWhere(results, {id: choice});
-                                });
-                                callback(choices);
-                            });
+                                }.bind(this));
+                                callback(_.compact(choices));
+                            }.bind(this));
                         }.bind(this),
                         multiple: true
                     };
@@ -115,12 +167,9 @@ define(
             getChoiceUrl: function () {
                 return $.Deferred().resolve(
                     Routing.generate(
-                        'pim_ui_ajaxentity_list',
+                        'pim_enrich_attributeoption_get',
                         {
-                            'class': 'PimCatalogBundle:AttributeOption',
-                            'dataLocale': this.context.locale,
-                            'collectionId': this.attribute.id,
-                            'options': {'type': 'code'}
+                            identifier: this.attribute.code
                         }
                     )
                 ).promise();
@@ -138,6 +187,20 @@ define(
                 this.choicePromise = null;
 
                 this.setCurrentValue(data);
+            },
+
+            /**
+             * Convert the item returned from the backend to fit select2 needs
+             *
+             * @param {object} item
+             *
+             * @return {object}
+             */
+            convertBackendItem: function (item) {
+                return {
+                    id: item.code,
+                    text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code)
+                };
             }
         });
     }

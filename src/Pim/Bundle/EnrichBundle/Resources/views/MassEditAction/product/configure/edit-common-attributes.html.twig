@@ -56,7 +56,7 @@
 
                                 $('#mass-edit-common-attribute-description').html(_.__(
                                     'pim_enrich.mass_edit_action.edit_common_attributes.description',
-                                    {'locale': locale.label, 'channel': channel.label}
+                                    {'locale': locale.label, 'channel': channel.labels[UserContext.get('catalogLocale')]}
                                 ));
                             });
                         });
@@ -66,5 +66,5 @@
 {% endblock %}
 
 {% block formDescription %}
-    <h4 id="mass-edit-common-attribute-description"></h4>
+    <div id="mass-edit-common-attribute-description"></div>
 {% endblock %}

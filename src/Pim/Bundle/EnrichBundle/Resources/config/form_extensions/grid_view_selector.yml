@@ -3,22 +3,34 @@ extensions:
         module: pim/grid/view-selector
 
     pim-grid-view-selector-footer:
-        module: pim/grid/view-selector-footer
+        module: pim/grid/view-selector/footer
+
+    pim-grid-view-selector-footer-create:
+        module: pim/grid/view-selector/footer/create
+        parent: pim-grid-view-selector-footer
+        targetZone: buttons
+        position: 100
+
+    pim-grid-view-selector-footer-create-view:
+        module: pim/grid/view-selector/footer/create/view
+        parent: pim-grid-view-selector-footer-create
+        targetZone: action-list
+        position: 100
 
     pim-grid-view-selector-line:
-        module: pim/grid/view-selector-line
+        module: pim/grid/view-selector/line
 
     pim-grid-view-selector-current:
-        module: pim/grid/view-selector-current
+        module: pim/grid/view-selector/current
 
     pim-grid-view-selector-line-remove:
-        module: pim/grid/view-selector-line-remove
+        module: pim/grid/view-selector/line/remove
         parent: pim-grid-view-selector-line
         targetZone: after
         position: 100
 
     pim-grid-view-selector-save:
-        module: pim/grid/view-selector-save
+        module: pim/grid/view-selector/save
         parent: pim-grid-view-selector
         targetZone: buttons
         position: 100

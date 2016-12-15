@@ -1,13 +1,25 @@
 <% _.each(associationTypes, function (associationType) { %>
-     <div data-association-type="<%- associationType.code %>" class="tab-pane association-type<% if (associationType.code === currentAssociationType) { %> active<% } %>">
-        <h3 class="tab-header unspaced">
-            <%- associationType.labels[locale] || '[' + associationType.code + ']'  %>
-            <span class="muted small">
+    <div class="AknTabHeader association-type<% if (associationType.code !== currentAssociationType) { %> AknTitleContainer--hidden<% } %>" data-association-type="<%- associationType.code %>">
+        <div>
+            <h3 class="AknTabHeader-title">
+                <%- associationType.labels[locale] || '[' + associationType.code + ']'  %>
+            </h3>
+            <span class="AknTabHeader-subTitle">
                 <%- _.__(
                     'pim_enrich.form.product.tab.associations.info.number_of_associations',
                     { productCount: associationType.productCount, groupCount: associationType.groupCount }
                 ) %>
-            </span>
-        </h3>
-    </div>
+           </span>
+        </div>
+        <div>
+            <button type="button" class="AknButton AknButton--grey AknButton--small AknButton--withIcon target-button target-button <% if ('products' === currentAssociationTarget) { %> hide<% } %>" data-association-target="products">
+                <i class="AknButton-icon icon-random"></i>
+                <%- _.__('pim_enrich.form.product.tab.associations.info.show_products') %>
+            </button>
+            <button type="button" class="AknButton AknButton--grey AknButton--small AknButton--withIcon target-button target-button <% if ('groups' === currentAssociationTarget) { %> hide<% } %>" data-association-target="groups">
+                <i class="AknButton-icon icon-random"></i>
+                <%- _.__('pim_enrich.form.product.tab.associations.info.show_groups') %>
+            </button>
+        </div>
+   </div>
 <% }); %>

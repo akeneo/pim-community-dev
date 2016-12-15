@@ -18,7 +18,7 @@ define(
     function ($, _, BaseForm, mediator, template) {
         return BaseForm.extend({
             tagName: 'ul',
-            className: 'nav nav-tabs group-selector',
+            className: 'AknVerticalNavtab nav nav-tabs group-selector',
             template: _.template(template),
             elements: [],
             badges: {},

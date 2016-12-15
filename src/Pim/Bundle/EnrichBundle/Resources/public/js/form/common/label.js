@@ -12,7 +12,7 @@ define(
     function (BaseForm, UserContext) {
         return BaseForm.extend({
             tagName: 'h1',
-            className: 'object-label',
+            className: 'AknTitleContainer-title',
 
             /**
              * {@inheritdoc}

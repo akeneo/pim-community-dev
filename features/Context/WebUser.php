@@ -178,18 +178,22 @@ class WebUser extends RawMinkContext
     public function iOpenTheHistory()
     {
         $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
-        $this->getMainContext()->executeScript("$('.panel-pane.history-panel').css({'height': '90%'});");
-
         $this->getMainContext()->spin(function () {
-            $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
+            $fullPanel = $this->getCurrentPage()->find(
+                'css',
+                '.AknTabContainer-contentThreeColumns.AknTabContainer-contentThreeColumns--fullPanel'
+            );
 
-            if ($expandHistory && $expandHistory->isValid()) {
-                $expandHistory->click();
+            if ((null === $fullPanel) || !$fullPanel->isVisible()) {
+                $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
+                if (null !== $expandHistory && $expandHistory->isVisible()) {
+                    $expandHistory->click();
+                }
 
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }, 'Cannot expand history');
 
         $this->wait();
@@ -805,7 +809,7 @@ class WebUser extends RawMinkContext
      *
      *
      * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
-     * @When /^I change the "(?P<field>[^"]*)" to "([^"]*)"$/
+     * @When /^I change the "(?P<field>[^"]*)" to "(.*)"$/
      * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
      * @When /^I change the (?P<field>\w+) to an invalid value$/
      */
@@ -1058,8 +1062,8 @@ class WebUser extends RawMinkContext
         $this->getCurrentPage()->fillPopinFields($table->getRowsHash());
 
         $addButton = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.modal .btn.ok');
-        }, 'Cannot find ".modal .btn.ok" element in attribute modal');
+            return $this->getCurrentPage()->find('css', '.modal .ok');
+        }, 'Cannot find validate button in attribute modal');
 
         $addButton->click();
 
@@ -1205,7 +1209,10 @@ class WebUser extends RawMinkContext
     public function iRemoveTheFile($field)
     {
         $this->wait();
-        $script = sprintf("$('label:contains(\"%s\")').parents('.form-field').find('.clear-field').click();", $field);
+        $script = sprintf(
+            "$('label:contains(\"%s\")').parents('.AknFieldContainer').find('.clear-field').click();",
+            $field
+        );
         if (!$this->getMainContext()->executeScript($script)) {
             $this->getCurrentPage()->removeFileFromField($field);
         }
@@ -1231,9 +1238,9 @@ class WebUser extends RawMinkContext
             );
             $this->wait();
             $this->getCurrentPage()
-                ->find('css', sprintf('div.preview span:contains("%s")', $link))
+                ->find('css', sprintf('.preview .filename:contains("%s")', $link))
                 ->getParent()
-                ->find('css', sprintf('span.open-media', $link))
+                ->find('css', sprintf('.open-media', $link))
                 ->click();
         } catch (UnsupportedDriverActionException $e) {
             throw $this->createExpectationException('You must use selenium for this feature.');
@@ -1307,7 +1314,7 @@ class WebUser extends RawMinkContext
     public function iPressTheButton($button)
     {
         $this->spin(function () use ($button) {
-            $this->getCurrentPage()->pressButton($button);
+            $this->getCurrentPage()->pressButton($button, true);
 
             return true;
         }, sprintf("Can not find any '%s' button", $button));
@@ -1339,8 +1346,26 @@ class WebUser extends RawMinkContext
         }, sprintf("Can not find any '%s' button", $button));
 
         $this->spin(function () use ($buttonNode) {
-            return $buttonNode->hasClass('disabled');
+            return $buttonNode->hasClass('disabled') || $buttonNode->hasClass('AknButton--disabled');
         }, sprintf("The button '%s' is not disabled", $button));
+    }
+
+    /**
+     * @param string $button
+     *
+     * @throws TimeoutException
+     *
+     * @Given /^The button "([^"]*)" should be enabled$/
+     */
+    public function theButtonShouldBeEnabled($button)
+    {
+        $buttonNode = $this->spin(function () use ($button) {
+            return $this->getCurrentPage()->getButton($button);
+        }, sprintf("Can not find any '%s' button", $button));
+
+        $this->spin(function () use ($buttonNode) {
+            return !$buttonNode->hasClass('disabled');
+        }, sprintf("The button '%s' is not enabled", $button));
     }
 
     /**
@@ -1369,6 +1394,7 @@ class WebUser extends RawMinkContext
         }, sprintf('Cannot find "%s" button label in modal', $buttonLabel));
 
         $buttonElement->press();
+
         $this->wait();
     }
 
@@ -1560,10 +1586,9 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeCategoryCount($count)
     {
-        $badge = $this->getCurrentPage()->find('css', sprintf('span.badge:contains("%d")', $count));
-        if (!$badge) {
-            throw $this->createExpectationException('Category badge not found');
-        }
+        $this->spin(function () use ($count) {
+            return $this->getCurrentPage()->find('css', sprintf('.AknBadge:contains("%d")', $count));
+        }, sprintf('Can not find any badge with count "%s"', $count));
     }
 
     /**
@@ -1915,7 +1940,9 @@ class WebUser extends RawMinkContext
     public function iMoveOnToTheNextStep()
     {
         $this->scrollContainerTo(900);
-        $this->wait('$(".btn.next").length > 0');
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.next');
+        }, 'Could not find next button');
         $this->getCurrentPage()->next();
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();

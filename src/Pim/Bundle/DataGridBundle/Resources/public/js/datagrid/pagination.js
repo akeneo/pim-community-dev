@@ -15,7 +15,7 @@ function($, _, Backbone) {
         tagName: 'div',
 
         /** @property */
-        className: 'pagination pagination-centered',
+        className: 'AknPagination',
 
         /** @property */
         windowSize: 10,
@@ -28,11 +28,11 @@ function($, _, Backbone) {
 
         /** @property */
         template: _.template(
-            '<label class="dib">Page:</label>' +
-            '<ul class="icons-holder">' +
+            '<label>Page:</label>' +
+            '<ul class="AknPagination-icons">' +
                 '<% _.each(handles, function (handle) { %>' +
-                    '<li <% if (handle.className) { %>class="<%= handle.className %>"<% } %>>' +
-                        '<a href="#" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
+                    '<li class="AknPagination-item <% if (handle.className) { %><%= handle.className %><% } %>">' +
+                        '<a href="#" class="AknPagination-link" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
                             '<% if (handle.wrapClass) {%>' +
                                 '<i <% if (handle.wrapClass) { %>class="<%= handle.wrapClass %>"<% } %>>' +
                                     '<%= handle.label %>' +
@@ -44,7 +44,7 @@ function($, _, Backbone) {
                     '</li>' +
                 '<% }); %>' +
             '</ul>' +
-            '<label class="dib">of <%= state.totalPages ? state.totalPages : 1 %> | <%= state.totalRecords %> records</label>'
+            '<label>of <%= state.totalPages ? state.totalPages : 1 %> | <%= state.totalRecords %> records</label>'
         ),
 
         /** @property */
@@ -56,11 +56,11 @@ function($, _, Backbone) {
         fastForwardHandleConfig: {
             prev: {
                 label: 'Prev',
-                wrapClass: 'icon-chevron-left hide-text'
+                wrapClass: 'AknPagination-arrow icon-chevron-left hide-text'
             },
             next: {
                 label: 'Next',
-                wrapClass: 'icon-chevron-right hide-text'
+                wrapClass: 'AknPagination-arrow icon-chevron-right hide-text'
             }
         },
 
@@ -182,7 +182,7 @@ function($, _, Backbone) {
                 handles.unshift({
                     label: _.has(ffConfig.prev, 'label') ? ffConfig.prev.label : undefined,
                     wrapClass: _.has(ffConfig.prev, 'wrapClass') ? ffConfig.prev.wrapClass : undefined,
-                    className: collection.hasPrevious() ? undefined : "disabled"
+                    className: collection.hasPrevious() ? undefined : "AknPagination-item--disabled"
                 });
             }
 
@@ -190,7 +190,7 @@ function($, _, Backbone) {
                 handles.push({
                     label: _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined,
                     wrapClass: _.has(ffConfig.next, 'wrapClass') ? ffConfig.next.wrapClass : undefined,
-                    className: collection.hasNext() ? void 0 : "disabled"
+                    className: collection.hasNext() ? void 0 : "AknPagination-item--disabled"
                 });
             }
 

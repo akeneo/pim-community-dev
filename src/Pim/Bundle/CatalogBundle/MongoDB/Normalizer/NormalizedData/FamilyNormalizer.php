@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
+use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -33,7 +33,11 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = ['code' => $object->getCode()] + $this->transNormalizer->normalize($object, $format, $context);
+        $data = [
+            'code'   => $object->getCode(),
+            'labels' => $this->transNormalizer->normalize($object, $format, $context)
+        ];
+
         $data['attributeAsLabel'] = ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : null;
 
         return $data;

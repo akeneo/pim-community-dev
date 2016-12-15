@@ -1,0 +1,16 @@
+<% if (!isMultiple) { %>
+    <div class="btn btn-primary pull-right icons-holder-text create-button">
+        <i class="icon-plus"></i><span data-drop-zone="action-list"></span>
+    </div>
+<% } else if (isMultiple) { %>
+    <div class="btn-group create-group">
+        <div class="btn-primary dropdown-toggle action btn create-button create-dropdown" data-toggle="dropdown">
+            <%- createButtonTitle %>
+        </div>
+        <div class="btn dropdown-toggle create-carret" data-toggle="dropdown">
+            <span class="caret"></span>
+        </div>
+
+        <ul class="dropdown-menu AknDropdown-menu--right" data-drop-zone="action-list"></ul>
+    </div>
+<% } %>

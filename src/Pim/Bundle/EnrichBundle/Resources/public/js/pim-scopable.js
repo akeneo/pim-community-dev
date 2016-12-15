@@ -280,7 +280,6 @@ define(
             _changeDefault: function (scope) {
                 this.skipUIInit = true;
                 this._toggle();
-
                 this._setFieldFirst(this.$el.find('[data-scope="' + scope + '"]:first'));
                 this._refreshFieldsDisplay();
                 this._initUI();

@@ -1,11 +1,10 @@
 parameters:
-    pim_enrich.form.subscriber.add_attribute_type.class:         Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
-    pim_enrich.form.subscriber.add_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
-    pim_enrich.form.subscriber.family_disable_fields_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber
+    pim_enrich.form.subscriber.add_attribute_type.class:                Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
+    pim_enrich.form.subscriber.add_attribute_requirements.class:        Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
+    pim_enrich.form.subscriber.family_disable_fields_subscriber.class:  Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber
     pim_enrich.form.subscriber.family_attribute_label_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber
-    pim_enrich.form.subscriber.set_attribute_group_sort_order.class: Pim\Bundle\EnrichBundle\Form\Subscriber\SetAttributeGroupSortOrderSubscriber
-    pim_enrich.form.subscriber.add_variant_group_template.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddVariantGroupTemplateSubscriber
-    pim_enrich.form.subscriber.add_variant_group_axes.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddVariantGroupAxesSubscriber
+    pim_enrich.form.subscriber.set_attribute_group_sort_order.class:    Pim\Bundle\EnrichBundle\Form\Subscriber\SetAttributeGroupSortOrderSubscriber
+    pim_enrich.form.subscriber.add_variant_group_axes.class:            Pim\Bundle\EnrichBundle\Form\Subscriber\AddVariantGroupAxesSubscriber
 
 services:
     # Subscribers
@@ -37,11 +36,6 @@ services:
         class: '%pim_enrich.form.subscriber.set_attribute_group_sort_order.class%'
         arguments:
             - '@pim_catalog.repository.attribute_group'
-
-    pim_enrich.form.subscriber.add_variant_group_template:
-        class: '%pim_enrich.form.subscriber.add_variant_group_template.class%'
-        arguments:
-            - '@pim_user.context.user'
 
     pim_enrich.form.subscriber.add_variant_group_axes:
         class: '%pim_enrich.form.subscriber.add_variant_group_axes.class%'

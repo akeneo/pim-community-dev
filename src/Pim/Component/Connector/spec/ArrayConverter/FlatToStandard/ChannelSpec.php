@@ -22,25 +22,29 @@ class ChannelSpec extends ObjectBehavior
     function it_converts_an_item_to_standard_format()
     {
         $item = [
-            'code'       => 'ecommerce',
-            'label'      => 'Ecommerce',
-            'locales'    => 'en_US,fr_FR',
-            'currencies' => 'EUR,USD',
-            'tree'       => 'master_catalog',
+            'code'        => 'ecommerce',
+            'label-fr_FR' => 'Ecommerce',
+            'label-en_US' => 'Ecommerce',
+            'locales'     => 'en_US,fr_FR',
+            'currencies'  => 'EUR,USD',
+            'tree'        => 'master_catalog',
             'conversion_units' => 'weight: GRAM,maximum_scan_size:KILOMETER, display_diagonal:DEKAMETER, viewing_area: DEKAMETER'
         ];
 
         $result = [
-            'code'       => 'ecommerce',
-            'label'      => 'Ecommerce',
-            'locales'    => ['en_US', 'fr_FR'],
-            'currencies' => ['EUR', 'USD'],
-            'tree'       => 'master_catalog',
+            'labels'           => [
+                'fr_FR' => 'Ecommerce',
+                'en_US' => 'Ecommerce',
+            ],
+            'code'             => 'ecommerce',
+            'locales'          => ['en_US', 'fr_FR'],
+            'currencies'       => ['EUR', 'USD'],
+            'category_tree'    => 'master_catalog',
             'conversion_units' => [
-                'weight' => 'GRAM',
+                'weight'            => 'GRAM',
                 'maximum_scan_size' => 'KILOMETER',
-                'display_diagonal' => 'DEKAMETER',
-                'viewing_area' => 'DEKAMETER'
+                'display_diagonal'  => 'DEKAMETER',
+                'viewing_area'      => 'DEKAMETER'
             ]
         ];
 

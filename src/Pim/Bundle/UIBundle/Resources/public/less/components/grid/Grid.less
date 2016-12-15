@@ -1,0 +1,97 @@
+@import '../../base/variables';
+
+.AknGrid {
+  width: 100%;
+  border-collapse: collapse;
+
+  &-bodyRow {
+    border-bottom: 1px solid @AknBorderColor;
+  }
+
+  &-bodyCell,
+  &-headerCell {
+    vertical-align: middle;
+    line-height: 16px;
+    padding: 12px 10px;
+    transition: background 0.1s ease;
+  }
+
+  &-bodyRow:hover &-bodyCell {
+    background: @AknDefaultHoverBackground;
+    cursor: pointer;
+  }
+
+  &-bodyCell {
+    &--full {
+      padding: 10px 20px;
+      background: white;
+    }
+
+    &--actions {
+      opacity: 0;
+      width: 1px;
+    }
+
+    &--checkbox {
+      width: 1px;
+    }
+  }
+
+  &-bodyRow:hover &-bodyCell--actions {
+    opacity: 1;
+  }
+
+  &-headerCell {
+    color: @AknDefaultFontColor;
+    border-bottom: solid 2px @AknDarkBlue;
+    font-size: @AknFontSizeSmall;
+    font-weight: bold;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    // TODO To remove when we will remove the global 'a' rule
+    a {
+      color: @AknDefaultFontColor;
+    }
+  }
+
+  &-bodyCell,
+  &-headerCell {
+    &--right {
+      text-align: right;
+    }
+  }
+
+  &-caret {
+    margin-left: 5px;
+    display: none;
+  }
+
+  &-headerCell--ascending &-caret,
+  &-headerCell--descending &-caret {
+    display: inline-block;
+  }
+
+  &-headerCell--descending &-caret {
+    border-bottom: 4px solid @AknDefaultFontColor;
+    border-top: none;
+  }
+
+  &--condensed {
+    border: 1px solid @AknBorderColor;
+    width: auto;
+  }
+
+  &--condensed &-bodyCell,
+  &--condensed &-headerCell {
+    line-height: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background: white;
+  }
+
+  &--unclickable &-bodyRow:hover &-bodyCell {
+    cursor: default;
+  }
+}

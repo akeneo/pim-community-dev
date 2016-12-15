@@ -124,7 +124,7 @@ class NormalizeConfigurationExtension extends \Twig_Extension
         foreach ($violations as $violation) {
             if (preg_match(sprintf('/\[.\]%s$/', $element), $violation->getPropertyPath())) {
                 $messages[] = sprintf(
-                    '<span class="label label-important">%s</span>',
+                    '<span class="AknBadge AknBadge--important">%s</span>',
                     $this->translator->trans($violation->getMessage())
                 );
             }

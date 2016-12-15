@@ -21,7 +21,7 @@ define([
             'change .field-input:first input[type="text"]': 'updateModel'
         },
         renderInput: function (context) {
-            context.value.data = _.sortBy(context.value.data, 'currency');
+            context.value.amount = _.sortBy(context.value.amount, 'currency');
 
             return this.fieldTemplate(context);
         },
@@ -32,7 +32,7 @@ define([
                 var $input = $(input);
                 var inputData = $input.val();
                 prices.push({
-                    data: '' === inputData ? null : inputData,
+                    amount: '' === inputData ? null : inputData,
                     currency: $input.data('currency')
                 });
             }.bind(this));

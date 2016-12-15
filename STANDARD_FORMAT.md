@@ -513,7 +513,7 @@ When the `decimal_allowed` attribute property is set to true, they are represent
           "group" => "other"
           "unique" => false
           "useable_as_grid_filter" => false
-          "allowed_extensions" => null
+          "allowed_extensions" => []
           "metric_family" => null
           "default_metric_unit" => null
           "reference_data_name" => null
@@ -545,7 +545,7 @@ When the `decimal_allowed` attribute property is set to true, they are represent
 | group                  | string         | `"other"`                          | it represents the *code* of the object *Pim\Component\Catalog\Model\GroupInterface*                                                                                                    |
 | unique                 | boolean        | `false`                            |                                                                                                                                                                                        |
 | useable_as_grid_filter | boolean        | `true`                             |                                                                                                                                                                                        |
-| allowed_extensions     | string         | `"pdf,doc"`                        | Extensions separated by commas                                                                                                                                                         |
+| allowed_extensions     | string[]       | `[0 => "pdf", 1 => "doc"]`         | List of extensions                                                                                                                                                                     |
 | metric_family          | string         | `"Power"`                          | it represents the constant *FAMILY* in classes of *Akeneo/Bundle/MeasureBundle/Family/*                                                                                                |
 | default_metric_unit    | string         | `"watt"`                           | it represents one of the constant in classes of *Akeneo/Bundle/MeasureBundle/Family/*, except *FAMILY*                                                                                 |
 | reference_data_name    | string         | `"color"`                          | it represents the *code* of the object *Pim\Component\ReferenceData\Model\ReferenceDataInterface*                                                                                      |
@@ -554,8 +554,8 @@ When the `decimal_allowed` attribute property is set to true, they are represent
 | validation_rule        | string         | `"email"`                          |                                                                                                                                                                                        |
 | validation_regexp      | string         | `"[0-9]"`                          |                                                                                                                                                                                        |
 | wysiwyg_enabled        | boolean        | `false`                            |                                                                                                                                                                                        |
-| number_min             | integer        | `10`                               |                                                                                                                                                                                        |
-| number_max             | integer        | `25`                               |                                                                                                                                                                                        |
+| number_min             | string         | `"10"`                             |                                                                                                                                                                                        |
+| number_max             | string         | `"25"`                             |                                                                                                                                                                                        |
 | decimals_allowed       | boolean        | `true`                             |                                                                                                                                                                                        |
 | negative_allowed       | boolean        | `false`                            |                                                                                                                                                                                        |
 | date_min               | string         | `"2016-09-01T00:00:00+0200"`       | formatted to ISO-8601 (see above)                                                                                                                                                      |
@@ -688,9 +688,11 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
             0 => "en_US"
           ]
           "category_tree" => "master"
-          "conversion_units" => array:2 [
+          "conversion_units" => array:3 [
             "a_metric" => "KILOWATT"
             "a_metric_negative" => "CELSIUS"
+            "a_metric_to_not_convert" => null
+          ]
         ]
 
 | type             | data structure | data example                                   | notes                                                                                                                                                                                                                                                  |
@@ -798,7 +800,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
         array:5 [
           "code" => "my_variant_group"
           "type" => "VARIANT"
-          "axis" => array:1 [
+          "axes" => array:1 [
             0 => "a_simple_select"
           ]
           "labels" => array:1 [
@@ -820,7 +822,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | ------ | -------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | code   | string         | `"my_variant_group"`                                                   | it's the identifier of the variant group                                                                |
 | type   | string         | `"VARIANT"`                                                            |                                                                                                         |
-| axis   | string[]       | `[0 => "a_simple_select", 1 => "a_multi_select"]`                      | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+| axes   | string[]       | `[0 => "a_simple_select", 1 => "a_multi_select"]`                      | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
 | labels | string[]       | `["en_US" => "My variant group", "fr_FR" => "Mon groupe de variante"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
 | values | array          |                                                                        | has the same structure as product values (see above)                                                    |
 
@@ -926,3 +928,17 @@ The standard format is used to:
 * define the data expected in the `Pim\Component\Catalog\Query\ProductQueryBuilderInterface` filters
 * store variant groups values
 * store draft changes (EE)
+
+
+## Next version ?
+
+### Add more information in product format
+
+Currently, we have no information about the product values (attribute_type, etc). 
+If we want information, we have to request the database which is quite consuming. 
+We could add them, but we have to be careful as these data have not to be updated during a POST for instance.
+
+### Attribute format
+
+Currently, all options for an attribute are returned in the standard format. For instance, keys `date_min` & `date_max` are returned for a number attribute which is not relevant.
+Specific options could be return in a key `parameters` for example.

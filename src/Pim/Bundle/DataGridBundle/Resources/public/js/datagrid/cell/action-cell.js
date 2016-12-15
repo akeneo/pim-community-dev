@@ -13,7 +13,7 @@ define(
         return Backgrid.Cell.extend({
 
             /** @property */
-            className: 'action-cell',
+            className: 'AknGrid-bodyCell AknGrid-bodyCell--actions action-cell',
 
             /** @property {Array} */
             actions: undefined,
@@ -75,7 +75,13 @@ define(
              */
             createLaunchers: function() {
                 return _.map(this.actions, function(action) {
-                    return action.createLauncher({});
+                    var launcherClass = action.launcherOptions.className;
+                    if (_.isUndefined(launcherClass) || ('' === launcherClass) || ('no-hash' === launcherClass)) {
+                        launcherClass = 'AknIconButton AknIconButton--small AknIconButton--grey';
+                    }
+                    return action.createLauncher({
+                        className: launcherClass + ' AknButtonList-item'
+                    });
                 });
             },
 
@@ -84,11 +90,13 @@ define(
              */
             render: function () {
                 this.$el.empty();
+                var iconsList = $('<div>').addClass('AknButtonList AknButtonList--right');
                 if (!_.isEmpty(this.launchers)) {
                     _.each(this.launchers, function(launcher) {
-                        this.$el.append(launcher.render().$el);
+                        iconsList.append(launcher.render().$el);
                     }, this);
                 }
+                this.$el.append(iconsList);
 
                 return this;
             }

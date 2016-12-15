@@ -1,8 +1,8 @@
 @javascript
-Feature: Export products according to multi select reference data values
+Feature: Export products according to simple select values
   In order to use the enriched product data
   As a product manager
-  I need to be able to export the products according to their reference data values
+  I need to be able to export the products according to their simple selected option
 
   Background:
     Given the "footwear" catalog configuration
@@ -14,7 +14,7 @@ Feature: Export products according to multi select reference data values
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/footwear_product_export.csv |
 
-  Scenario: Export only the product values with selected reference data value
+  Scenario: Export only the product values with selected option
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
@@ -31,7 +31,7 @@ Feature: Export products according to multi select reference data values
       BOOT-1;;;;1;boots;;;Nike;"The boot 1";;;;;;;
       """
 
-  Scenario: Export only the product values with selected reference data values
+  Scenario: Export only the product values with selected option
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
@@ -49,7 +49,7 @@ Feature: Export products according to multi select reference data values
       BOOT-2;;;;1;boots;;;Converse;"The boot 2";;;;;;;
       """
 
-  Scenario: Export only the product values without reference data values
+  Scenario: Export only the product values without options selected
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
@@ -66,7 +66,7 @@ Feature: Export products according to multi select reference data values
       BOOT-3;;;;1;boots;;;;"The boot 3";;;;;;;
       """
 
-  Scenario: Export all the product values when no reference data is provided with operator IN LIST
+  Scenario: Export all the product values when no option is provided with operator IN LIST
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab

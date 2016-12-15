@@ -1,0 +1,175 @@
+parameters:
+    pim_catalog.normalizer.standard.product.class: Pim\Component\Catalog\Normalizer\Standard\ProductNormalizer
+    pim_catalog.normalizer.standard.product.properties.class: Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer
+    pim_catalog.normalizer.standard.product.associations.class: Pim\Component\Catalog\Normalizer\Standard\Product\AssociationsNormalizer
+    pim_catalog.normalizer.standard.product.product_values.class: Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer
+    pim_catalog.normalizer.standard.product.product_value.class: Pim\Component\Catalog\Normalizer\Standard\Product\ProductValueNormalizer
+    pim_catalog.normalizer.standard.product.price.class: Pim\Component\Catalog\Normalizer\Standard\Product\PriceNormalizer
+    pim_catalog.normalizer.standard.product.metric.class: Pim\Component\Catalog\Normalizer\Standard\Product\MetricNormalizer
+    pim_catalog.normalizer.standard.datetime.class: Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer
+    pim_catalog.normalizer.standard.file.class: Pim\Component\Catalog\Normalizer\Standard\FileNormalizer
+    pim_catalog.normalizer.standard.association_type.class: Pim\Component\Catalog\Normalizer\Standard\AssociationTypeNormalizer
+    pim_catalog.normalizer.standard.attribute.class: Pim\Component\Catalog\Normalizer\Standard\AttributeNormalizer
+    pim_catalog.normalizer.standard.attribute_group.class: Pim\Component\Catalog\Normalizer\Standard\AttributeGroupNormalizer
+    pim_catalog.normalizer.standard.attribute_option.class: Pim\Component\Catalog\Normalizer\Standard\AttributeOptionNormalizer
+    pim_catalog.normalizer.standard.category.class: Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer
+    pim_catalog.normalizer.standard.channel.class: Pim\Component\Catalog\Normalizer\Standard\ChannelNormalizer
+    pim_catalog.normalizer.standard.currency.class: Pim\Component\Catalog\Normalizer\Standard\CurrencyNormalizer
+    pim_catalog.normalizer.standard.family.class: Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer
+    pim_catalog.normalizer.standard.proxy_group.class: Pim\Component\Catalog\Normalizer\Standard\ProxyGroupNormalizer
+    pim_catalog.normalizer.standard.group.class: Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer
+    pim_catalog.normalizer.standard.group_type.class: Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer
+    pim_catalog.normalizer.standard.locale.class: Pim\Component\Catalog\Normalizer\Standard\LocaleNormalizer
+    pim_catalog.normalizer.standard.translation.class: Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer
+    pim_catalog.normalizer.standard.variant_group.class: Pim\Component\Catalog\Normalizer\Standard\VariantGroupNormalizer
+    pim_catalog.normalizer.standard.job_instance.class: Akeneo\Component\Batch\Normalizer\Standard\JobInstanceNormalizer
+
+services:
+    pim_catalog.normalizer.standard.product:
+        class: '%pim_catalog.normalizer.standard.product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.properties'
+            - '@pim_catalog.normalizer.standard.product.associations'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.product.properties:
+        class: '%pim_catalog.normalizer.standard.product.properties.class%'
+        arguments:
+            - '@pim_catalog.filter.chained'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 40 }
+
+    pim_catalog.normalizer.standard.product.associations:
+        class: '%pim_catalog.normalizer.standard.product.associations.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 40 }
+
+    pim_catalog.normalizer.standard.product.product_values:
+        class: '%pim_catalog.normalizer.standard.product.product_values.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.product.product_value:
+        class: '%pim_catalog.normalizer.standard.product.product_value.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.product.price:
+        class: '%pim_catalog.normalizer.standard.product.price.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.product.metric:
+        class: '%pim_catalog.normalizer.standard.product.metric.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.datetime:
+        class: '%pim_catalog.normalizer.standard.datetime.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.file:
+        class: '%pim_catalog.normalizer.standard.file.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.association_type:
+        class: '%pim_catalog.normalizer.standard.association_type.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.attribute:
+        class: '%pim_catalog.normalizer.standard.attribute.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.normalizer.standard.datetime'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.attribute_group:
+        class: '%pim_catalog.normalizer.standard.attribute_group.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.attribute_option:
+        class: '%pim_catalog.normalizer.standard.attribute_option.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.category:
+        class: '%pim_catalog.normalizer.standard.category.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.channel:
+        class: '%pim_catalog.normalizer.standard.channel.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.currency:
+        class: '%pim_catalog.normalizer.standard.currency.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.family:
+        class: '%pim_catalog.normalizer.standard.family.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_requirement'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.proxy_group:
+        class: '%pim_catalog.normalizer.standard.proxy_group.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.group'
+            - '@pim_catalog.normalizer.standard.variant_group'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.group:
+        class: '%pim_catalog.normalizer.standard.group.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+
+    pim_catalog.normalizer.standard.group_type:
+        class: '%pim_catalog.normalizer.standard.group_type.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.locale:
+        class: '%pim_catalog.normalizer.standard.locale.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.translation:
+        class: '%pim_catalog.normalizer.standard.translation.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 80 }
+
+    pim_catalog.normalizer.standard.variant_group:
+        class: '%pim_catalog.normalizer.standard.variant_group.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.normalizer.standard.product.product_values'
+            - '@pim_catalog.denormalizer.standard.product_values'
+
+    pim_catalog.normalizer.standard.job_instance:
+        class: '%pim_catalog.normalizer.standard.job_instance.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

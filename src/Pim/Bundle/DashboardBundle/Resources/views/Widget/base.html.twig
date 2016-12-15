@@ -1,18 +1,17 @@
 {% block widget_outer %}
-    <div class="row unspaced buffer-bottom">
-         <div class="span12 quick-launchpad-widget">
-            {% block widget_inner %}
-                {% if widgetTitle is defined %}
-                    <div class="widget-header">
-                        {{ widgetTitle }}
-                    </div>
-                {% endif %}
-                {% if widgetContent is defined %}
-                    <div class="widget-content">
-                        {{ widgetContent }}
-                    </div>
-                {% endif %}
-            {% endblock %}
-        </div>
+    <div class="AknWidget">
+        {% block widget_inner %}
+            {% if widgetTitle is defined %}
+                <div class="AknWidget-header widget-header">
+                    {{ widgetTitle }}
+                    <div class="AknButtonList AknButtonList--right widget-actions"></div>
+                </div>
+            {% endif %}
+            {% if widgetContent is defined %}
+                <div class="AknWidget-content widget-content">
+                    {{ widgetContent }}
+                </div>
+            {% endif %}
+        {% endblock %}
     </div>
 {% endblock %}

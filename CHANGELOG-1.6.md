@@ -1,13 +1,46 @@
-# 1.6.x
+# 1.6.6 (2016-12-08)
 
 ## Bug fixes
 
+- PIM-6027: Fix export builder filter on category with code as integer
+- PIM-6018: Prevent the import of an attribute identifier if not usable as grid filter
+- PIM-6022: Fix shell command injection in mass-edit
+
+# 1.6.5 (2016-11-25)
+
+## Bug fixes
+
+- PIM-5994: fix duplication of attributes in the product export
+- PIM-6000: Fix migration from 1.5 on quick exports
+- #5198: Fix issue with the export builder time condition, cheers @Schwierig
+- #5192: Add upgrade script for missing export job, cheers @masmrlar!
+- PIM-6017: Fix attribute options on localizable and scopable attributes multi select
+
+# 1.6.4 (2016-10-20)
+
+## Bug fixes
+
+- #4987: Fix hardcoded image URLs in the dashboard, cheers @julienanquetil!
+- PIM-5982: Missing job instance parameters when using custom configuration in command line
+- PIM-5977: Fix missing products in the variant group edit form
+- PIM-5893: Fix products and assets category display issue on Firefox
+- PIM-5536: Fix search of an attribute by its code
+- #5129: Remove useless "league/flysystem-sftp" dependency, if you use "League\Flysystem\Sftp\SftpAdapter" in your own project code, please add this dependency in the composer.json of your project, cheers @mathewrapid!
+
+# 1.6.3 (2016-09-22)
+
+## Bug fixes
+
+- PIM-5947: Add default file path in new export jobs
 - PIM-5964: Index category labels by locale code in channel normalization
 - PIM-5968: Fix default translation for attribute options when value is null
 - PIM-5897: Fix the does not contain filter to filter on product without product values
 - PIM-5566: Fix version number displayed as decimals
 - PIM-5976: Fix adding products to a group (regression following variant group ajaxification)
 - PIM-5975 & #5016: Fix attribute groups order not kept in product edit form, cheers @julienanquetil!
+- #4994: Fix grid filter selection in the user profile, cheers @julienanquetil!
+- PIM-5978: Fix missing currencies
+- #4993: Fix XLSX product import with numeric value for simpleselect codes, cheers @julienanquetil!
 
 ## Functionnal improvements
 

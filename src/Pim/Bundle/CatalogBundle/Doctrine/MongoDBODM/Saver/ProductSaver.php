@@ -89,6 +89,8 @@ class ProductSaver extends BaseProductSaver
             return;
         }
 
+        $options['unitary'] = false;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
         $productsToInsert = [];

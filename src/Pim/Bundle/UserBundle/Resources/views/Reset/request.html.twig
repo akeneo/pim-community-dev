@@ -1,36 +1,35 @@
 {% extends 'PimUserBundle::layout.html.twig' %}
 
-{% block bodyClass %}login-page{% endblock %}
+{% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="title-box">
+<div class="AknLogin-mainContainer container">
+    <div class="AknLogin-title">
         {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
     </div>
 
     <form action="{{ path('oro_user_reset_send_email') }}" method="post" class="form-reset">
+        <h2 class="AknLogin-subTitle">{{ 'Forgot Password'|trans }}</h2>
+
         {% if invalid_username is defined %}
-        <div>
-            <div class="alert alert-error">
+            <div class="AknMessageBox AknMessageBox--error">
                 {{ 'The username or email address "%username%" does not exist.'|trans({ '%username%': invalid_username }) }}
             </div>
-        </div>
         {% endif %}
 
-        <h2 class="title">{{ 'Forgot Password'|trans }}</h2>
         <fieldset>
-            <div class="form-row">
-                <input type="text" name="username" required="required" placeholder="{{ 'Username or Email'|trans }}" autofocus="autofocus"/>
-                <button type="submit" class="btn btn-large pull-right btn-primary">{{ 'Request'|trans }}</button>
+            <div class="AknLogin-form">
+                <input class="AknLogin-formInput" type="text" name="username" required="required" placeholder="{{ 'Username or Email'|trans }}" autofocus="autofocus"/>
+                <button type="submit" class="AknButton AknButton--apply AknButton--big AknButton--uppercase">{{ 'Request'|trans }}</button>
             </div>
-            <div class="form-row">
-                <a href="{{ path('oro_user_security_login') }}" class="cancel">{{ 'Cancel'|trans }}</a>
+            <div class="AknLogin-form">
+                <a href="{{ path('oro_user_security_login') }}" class="AknLogin-link cancel">{{ 'Cancel'|trans }}</a>
             </div>
         </fieldset>
     </form>
 </div>
 
-<div class="version-container muted">
+<div class="AknLogin-footer AknFooter version-container muted">
     {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
 </div>
 {% endblock %}

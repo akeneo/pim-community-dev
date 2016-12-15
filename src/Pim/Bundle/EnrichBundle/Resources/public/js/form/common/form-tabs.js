@@ -18,7 +18,7 @@ define(
     function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'tabbable tabs-top',
+            className: 'AknTabContainer tabbable tabs-top',
             tabs: [],
             fullPanel: false,
             urlParsed: false,
@@ -122,20 +122,6 @@ define(
                 var currentTab = this.getExtension(this.getCurrentTab());
                 if (currentTab && _.isFunction(currentTab.resize)) {
                     currentTab.resize();
-                } else {
-                    this.resizeContainer();
-                }
-            },
-
-            /**
-             * Default resize method
-             */
-            resizeContainer: function () {
-                var container = this.$('> .form-container');
-                if (container.length && this.getRoot().$el.length && container.offset()) {
-                    container.css(
-                        {'height': ($(window).height() - container.offset().top - 4) + 'px'}
-                    );
                 }
             },
 

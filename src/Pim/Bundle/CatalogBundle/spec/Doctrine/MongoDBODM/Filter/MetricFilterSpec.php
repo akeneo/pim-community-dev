@@ -63,7 +63,7 @@ class MetricFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
 
-        $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
+        $value = ['amount' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
         $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
@@ -88,7 +88,7 @@ class MetricFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
 
-        $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
+        $value = ['amount' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
         $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
@@ -112,7 +112,7 @@ class MetricFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
 
-        $value = ['data' => null, 'unit' => 'CENTIMETER'];
+        $value = ['amount' => null, 'unit' => 'CENTIMETER'];
 
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
@@ -132,7 +132,7 @@ class MetricFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
 
-        $value = ['data' => null, 'unit' => 'CENTIMETER'];
+        $value = ['amount' => null, 'unit' => 'CENTIMETER'];
 
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
@@ -154,7 +154,7 @@ class MetricFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
 
-        $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
+        $value = ['amount' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
         $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
@@ -179,7 +179,7 @@ class MetricFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
 
-        $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
+        $value = ['amount' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
         $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
@@ -204,7 +204,7 @@ class MetricFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
 
-        $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
+        $value = ['amount' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
         $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
@@ -229,7 +229,7 @@ class MetricFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
 
-        $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
+        $value = ['amount' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
         $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
@@ -250,23 +250,23 @@ class MetricFilterSpec extends ObjectBehavior
 
         $value = ['unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('metric_code', 'data', 'filter', 'metric', print_r($value, true))
+            InvalidArgumentException::arrayKeyExpected('metric_code', 'amount', 'filter', 'metric', print_r($value, true))
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
-        $value = ['data' => 459];
+        $value = ['amount' => 459];
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected('metric_code', 'unit', 'filter', 'metric', print_r($value, true))
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
-        $value = ['data' => 'foo', 'unit' => 'foo'];
+        $value = ['amount' => 'foo', 'unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected('metric_code', 'data', 'filter', 'metric', 'string')
+            InvalidArgumentException::arrayNumericKeyExpected('metric_code', 'amount', 'filter', 'metric', 'string')
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
-        $value = ['data' => 132, 'unit' => 42];
+        $value = ['amount' => 132, 'unit' => 42];
         $this->shouldThrow(
             InvalidArgumentException::arrayStringKeyExpected('metric_code', 'unit', 'filter', 'metric', 'integer')
         )
@@ -281,7 +281,7 @@ class MetricFilterSpec extends ObjectBehavior
         );
 
         $attribute->getCode()->willReturn('metric_code');
-        $value = ['data' => 132, 'unit' => 'foo'];
+        $value = ['amount' => 132, 'unit' => 'foo'];
         $this->shouldThrow(
             InvalidArgumentException::arrayInvalidKey(
                 'metric_code',

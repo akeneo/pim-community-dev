@@ -1,24 +1,25 @@
 <div class="tabbable tabs-left">
     <div class="sidebar">
-        <ul class="nav nav-tabs" id="trees-list">
+        <ul class="AknVerticalNavtab nav nav-tabs" id="trees-list">
+            <li class="AknVerticalNavtab-item AknVerticalNavtab-header header"></li>
             <% _.each(trees, function (tree) { %>
-                <li data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>"<% if (tree.code === state.currentTree) { %> class="active"<% } %>>
-                    <a href="javascript:void(0);" id="<%- treeLinkSelector + tree.id %>">
+                <li class="AknVerticalNavtab-item <% if (tree.code === state.currentTree) { %> AknVerticalNavtab-item--active active<% } %>" data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
+                    <a class="AknVerticalNavtab-link" href="javascript:void(0);" id="<%- treeLinkSelector + tree.id %>">
                         <i class="icon-ok <%- tree.associated ? 'green' : 'gray' %>"></i>
                         <%- tree.label %>
-                        <span class="badge" data-tree-id="<%- tree.code %>"><%- categoriesCount[tree.id] %></span>
+                        <span class="AknBadge AknBadge--grey" data-tree-id="<%- tree.code %>"><%- categoriesCount[tree.id] %></span>
                     </a>
                 </li>
             <% }); %>
         </ul>
     </div>
-    <div class="tab-content">
+    <div class="AknTabContainer-content tab-content">
         <div class="tab-pane active" id="product-categories">
             <div id="trees" data-id="<%- product.meta.id %>" data-datalocale="<%- locale %>" data-selected-tree="<%- trees[0].id %>">
                 <% _.each(trees, function (tree) { %>
                     <div class="tree root-unselectable" data-tree-id="<%- tree.id %>">
-                        <header class="tab-header">
-                            <h3><%- tree.label %></h3>
+                        <header class="AknTabHeader tab-header">
+                            <div class="AknTabHeader-title"><%- tree.label %></div>
                         </header>
                         <div id="tree-<%- tree.id %>" class="buffer-small-left"></div>
                     </div>

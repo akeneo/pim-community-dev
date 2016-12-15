@@ -48,7 +48,7 @@ define(
             className: 'tab-pane active product-associations',
             events: {
                 'click .associations-list li': 'changeAssociationType',
-                'click .association-buttons .target-button': 'changeAssociationTargets'
+                'click .AknTabHeader .target-button': 'changeAssociationTargets'
             },
             initialize: function () {
                 state = {
@@ -105,10 +105,12 @@ define(
                 });
 
                 _.each(this.datagrids, function (datagrid) {
+                    mediator.clear('datagrid:selectModel:' + datagrid.name);
                     mediator.on('datagrid:selectModel:' + datagrid.name, function (model) {
                         this.selectModel(model, datagrid);
                     }.bind(this));
 
+                    mediator.clear('datagrid:unselectModel:' + datagrid.name);
                     mediator.on('datagrid:unselectModel:' + datagrid.name, function (model) {
                         this.unselectModel(model, datagrid);
                     }.bind(this));
@@ -165,12 +167,13 @@ define(
             renderPanes: function () {
                 this.loadAssociationTypes().then(function (associationTypes) {
                     this.setAssociationCount(associationTypes);
-                    this.$('tab-content > .tab-pane').remove();
-                    this.$('.association-buttons').after(
+                    this.$('.tab-content > .association-type').remove();
+                    this.$('.tab-content').prepend(
                         this.panesTemplate({
                             locale: UserContext.get('catalogLocale'),
                             associationTypes: associationTypes,
-                            currentAssociationType: this.getCurrentAssociationType()
+                            currentAssociationType: this.getCurrentAssociationType(),
+                            currentAssociationTarget: this.getCurrentAssociationTarget()
                         })
                     );
                 }.bind(this));
@@ -230,14 +233,14 @@ define(
                 this.setCurrentAssociationType(associationType);
 
                 $(event.currentTarget)
-                    .addClass('active')
-                    .siblings('.active')
-                    .removeClass('active');
+                    .addClass('active AknVerticalNavtab-item--active')
+                    .siblings('.active.AknVerticalNavtab-item--active')
+                    .removeClass('active AknVerticalNavtab-item--active');
 
-                this.$('.tab-pane[data-association-type="' + associationType + '"]')
-                    .addClass('active')
-                    .siblings('.active')
-                    .removeClass('active');
+                this.$('.AknTitleContainer.association-type[data-association-type="' + associationType + '"]')
+                    .removeClass('AknTitleContainer--hidden')
+                    .siblings('.AknTitleContainer.association-type:not(.AknTitleContainer--hidden)')
+                    .addClass('AknTitleContainer--hidden');
 
                 this.updateListenerSelectors();
 

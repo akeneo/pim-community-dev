@@ -247,11 +247,11 @@ class CompletenessGeneratorSpec extends ObjectBehavior
             'name' => 'My product',
             'price-fr_FR' => [
                 'EUR' => [
-                    'data' => 13.24,
+                    'amount' => 13.24,
                     'currency' => 'EUR'
                 ],
                 'USD' => [
-                    'data' => 15.67,
+                    'amount' => 15.67,
                     'currency' => 'USD'
                 ]
             ]
@@ -300,7 +300,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
             'name' => 'My product',
             'price-fr_FR' => [
                 'EUR' => [
-                    'data' => 13.24,
+                    'amount' => 13.24,
                     'currency' => 'EUR'
                 ]
             ]

@@ -56,7 +56,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('price');
         $product->getValue('price', 'fr_FR', 'mobile')->willReturn(null);
 
-        $data = [['data' => 123.2, 'currency' => 'EUR']];
+        $data = [['amount' => 123.2, 'currency' => 'EUR']];
         $this->removeAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
@@ -71,7 +71,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = [['data' => 123.2, 'currency' => 'EUR'], ['data' => null, 'currency' => 'USD']];
+        $data = [['amount' => 123.2, 'currency' => 'EUR'], ['amount' => null, 'currency' => 'USD']];
 
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
@@ -121,7 +121,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_throws_an_error_if_attribute_data_value_does_not_contain_data_key(
+    function it_throws_an_error_if_attribute_data_value_does_not_contain_amount_key(
         AttributeInterface $attribute,
         ProductInterface $product
     ) {
@@ -132,7 +132,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
-                'data',
+                'amount',
                 'remover',
                 'prices collection',
                 print_r($data, true)
@@ -146,7 +146,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = [['data' => 123, 'not the currency key' => 'euro']];
+        $data = [['amount' => 123, 'not the currency key' => 'euro']];
 
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected(
@@ -168,7 +168,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
-        $data = [['data' => 123, 'currency' => 'invalid currency']];
+        $data = [['amount' => 123, 'currency' => 'invalid currency']];
 
         $this->shouldThrow(
             InvalidArgumentException::arrayInvalidKey(

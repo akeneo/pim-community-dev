@@ -17,7 +17,7 @@ function(_, __, SelectFilter) {
          * @property
          */
         template: _.template(
-            '<div class="btn filter-select filter-criteria-selector">' +
+            '<div class="AknActionButton filter-select filter-criteria-selector">' +
                 '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<select multiple>' +
                     '<% _.each(options, function (option) { %>' +
@@ -33,7 +33,7 @@ function(_, __, SelectFilter) {
                     '<% }); %>' +
                 '</select>' +
             '</div>' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
         ),
 
         /**
@@ -43,7 +43,7 @@ function(_, __, SelectFilter) {
          */
         widgetOptions: {
             multiple: true,
-            classes: 'select-filter-widget multiselect-filter-widget'
+            classes: 'AknActionButton-selectButton select-filter-widget multiselect-filter-widget'
         },
 
         /**

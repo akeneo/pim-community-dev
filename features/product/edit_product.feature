@@ -90,11 +90,11 @@ Feature: Edit a product
     And I am logged in as "Peter"
     When I am on the channel creation page
     And I fill in the following information:
-      | Code          | channel_code      |
-      | Default label | The channel label |
-      | Category tree | Master catalog    |
-      | Currencies    | EUR               |
-      | Locales       | French            |
+      | Code                    | channel_code      |
+      | English (United States) | The channel label |
+      | Category tree           | Master catalog    |
+      | Currencies              | EUR               |
+      | Locales                 | French            |
     And I press the "Save" button
     And I am on the "sandal" product page
     Then I switch the scope to "channel_code"

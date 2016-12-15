@@ -9,7 +9,6 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -118,10 +117,8 @@ class IndexCreator
      * Indexes will be created on the normalizedData part for:
      * - completenesses
      * - localizable attributes
-     *
-     * @param LocaleInterface $locale
      */
-    public function ensureIndexesFromLocale(LocaleInterface $locale)
+    public function ensureIndexesFromLocale()
     {
         $completenessFields = $this->getCompletenessNormFields();
         $this->ensureIndexes($completenessFields);
@@ -141,7 +138,7 @@ class IndexCreator
      *
      * @param CurrencyInterface $currency
      */
-    public function ensureIndexesFromCurrency(CurrencyInterface $currency)
+    public function ensureIndexesFromCurrency()
     {
         $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {

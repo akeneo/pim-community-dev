@@ -31,12 +31,35 @@ class ImportExportContext extends PimContext
         $currentExpectedLines = current($expectedLines);
 
         $headerDiff = array_diff($currentActualLines, $currentExpectedLines);
-        if (0 !== count(array_diff($currentActualLines, $currentExpectedLines))) {
+        if (0 !== count($headerDiff)) {
             throw new \Exception(
                 sprintf(
-                    "Header in the file %s does not match \n expected one: %s \n missing headers : %s",
+                    "Header in the file %s does not match the expected one. Given:\n\t%s\nNon expected headers: %s",
                     $path,
-                    implode(' | ', current($actualLines)),
+                    implode(' | ', $currentActualLines),
+                    implode(' | ', $headerDiff)
+                )
+            );
+        }
+
+        $headerDiff = array_diff($currentExpectedLines, $currentActualLines);
+        if (0 !== count($headerDiff)) {
+            throw new \Exception(
+                sprintf(
+                    "Header in the file %s does not match the expected one. Given:\n\t%s\nMissing headers: %s",
+                    $path,
+                    implode(' | ', $currentActualLines),
+                    implode(' | ', $headerDiff)
+                )
+            );
+        }
+
+        if (count($currentExpectedLines) !== count($currentActualLines)) {
+            throw new \Exception(
+                sprintf(
+                    "Header in the file %s does not match the expected one. Given:\n\t%s\nDuplicated fields detected.",
+                    $path,
+                    implode(' | ', $currentActualLines),
                     implode(' | ', $headerDiff)
                 )
             );

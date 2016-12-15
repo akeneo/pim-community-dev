@@ -1,0 +1,112 @@
+@import '../base/variables';
+
+.AknTitleContainer {
+  @avatarSize: 58px;
+
+  // TODO Remove these "!important" when ".tab-content > .active, .pull-content > .active { display: block }" will be removed
+  background: lighten(@AknGrey, 30%);
+  padding: 15px 20px;
+  display: flex;
+
+  &--condensed {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  &-backContainer { }
+
+  &-contentContainer {
+    flex-grow: 1;
+  }
+
+  &-mainLine {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &-metaLine {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-titleContainer {
+    display: flex;
+    flex-grow: 1;
+  }
+
+  &-title {
+    color: @AknPurple;
+    font-size: @AknTitleFontSize;
+    height: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize;
+    margin: 0;
+    font-weight: normal;
+    white-space: nowrap;
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &-rightButtons {
+    order: 10;
+    display: flex;
+  }
+
+  &-rightButton {
+    margin-left: 10px;
+  }
+
+  &-titleButtons {
+    margin-left: 10px;
+    display: flex;
+    order: 10;
+  }
+
+  &-meta {
+    font-size: @AknFontSizeSmall;
+    color: lighten(@AknDefaultFontColor, 15%);
+    flex-wrap: wrap;
+    line-height: 23px;
+    flex-grow: 1;
+  }
+
+  &-metaItem:not(:first-child):before {
+    content: ' | ';
+  }
+
+  &-state {
+    order: 10;
+  }
+
+  &-backLink {
+    min-height: @AknDefaultButtonSize;
+    width: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize;
+    background: darken(@AknLightGray, 5%);
+    height: 100%;
+    text-align: center;
+    margin-right: 10px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background: darken(@AknLightGray, 15%);
+    }
+  }
+
+  &-avatar {
+    height: @avatarSize;
+    width: @avatarSize;
+    margin-right: 10px;
+  }
+
+  &--hidden {
+    display: none !important;
+  }
+}

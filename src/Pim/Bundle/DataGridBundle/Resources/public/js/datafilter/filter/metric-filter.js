@@ -1,6 +1,12 @@
 define(
-    ['jquery', 'underscore', 'oro/datafilter/number-filter', 'oro/app'],
-    function ($, _, NumberFilter, app) {
+    [
+        'jquery',
+        'underscore',
+        'oro/datafilter/number-filter',
+        'oro/app',
+        'text!pim/template/datagrid/filter/metric-filter'
+    ],
+    function ($, _, NumberFilter, app, template) {
         'use strict';
 
         /**
@@ -88,40 +94,7 @@ define(
             /**
              * @inheritDoc
              */
-            popupCriteriaTemplate: _.template(
-                '<div class="metricfilter choicefilter">' +
-                    '<div class="input-prepend input-append">' +
-                        '<div class="btn-group">' +
-                            '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                '<%= _.__("Action") %>' +
-                                '<span class="caret"></span>' +
-                            '</button>' +
-                            '<ul class="dropdown-menu">' +
-                                '<% _.each(choices, function (choice) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= choice.value %>"><%= choice.label %></a></li>' +
-                                '<% }); %>' +
-                            '</ul>' +
-                            '<input class="name_input" type="hidden" name="metric_type" value=""/>' +
-                        '</div>' +
-
-                        '<input type="text" name="value" value="">' +
-
-                        '<div class="btn-group">' +
-                            '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                '<%= _.__("Unit") %>' +
-                                '<span class="caret"></span>' +
-                            '</button>' +
-                            '<ul class="dropdown-menu">' +
-                                '<% _.each(units, function (symbol, code) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= code %>"><%= _.__(code) %></a></li>' +
-                                '<% }); %>' +
-                            '</ul>' +
-                            '<input class="name_input" type="hidden" name="metric_unit" value=""/>' +
-                        '</div>' +
-                    '</div>' +
-                    '<button class="btn btn-primary filter-update" type="button"><%= _.__("Update") %></button>' +
-                '</div>'
-            ),
+            popupCriteriaTemplate: _.template(template),
 
             /**
              * Selectors for filter criteria elements
@@ -204,7 +177,7 @@ define(
              */
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
-                var parentDiv = $(e.currentTarget).parent().parent().parent().parent();
+                var parentDiv = $(e.currentTarget).closest('.metricfilter');
                 if ($(e.currentTarget).attr('data-value') === 'empty') {
                     parentDiv.find('input[name="value"], .btn-group:eq(1)').hide();
                 } else {

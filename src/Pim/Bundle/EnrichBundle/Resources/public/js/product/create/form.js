@@ -14,6 +14,7 @@ define(
         'pim/fetcher-registry',
         'pim/initselect2',
         'text!pim/template/product-create-popin',
+        'text!pim/template/product-create-error',
         'jquery.select2'
     ],
     function (
@@ -28,10 +29,12 @@ define(
         LoadingMask,
         FetcherRegistry,
         initSelect2,
-        template
+        template,
+        errorTemplate
     ) {
         return BaseForm.extend({
             template: _.template(template),
+            errorTemplate: _.template(errorTemplate),
             events: {
                 'change input': 'updateModel'
             },
@@ -108,6 +111,12 @@ define(
                         this.initSelect2();
 
                         return this.renderExtensions();
+                    }.bind(this), function () {
+                        this.$el.html(
+                            this.errorTemplate({
+                                message: __('error.creating.product')
+                            })
+                        );
                     }.bind(this));
             },
 

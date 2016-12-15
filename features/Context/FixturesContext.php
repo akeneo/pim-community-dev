@@ -36,6 +36,7 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
@@ -123,6 +124,7 @@ class FixturesContext extends BaseFixturesContext
         $uniqueValueSet->reset();
 
         $this->refresh($product);
+        $this->buildProductHistory($product);
 
         return $product;
     }
@@ -182,13 +184,28 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * Generates a given number of families.
+     *
+     * @param int $familyNumber
+     *
+     * @Given /^([0-9]+) generated families$/
+     */
+    public function generatedFamilies($familyNumber)
+    {
+        for ($i = 1; $i <= $familyNumber; $i++) {
+            $familyCode = sprintf('family_%d', $i);
+            $this->createFamily($familyCode);
+        }
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following attribute groups?:$/
      */
     public function theFollowingAttributeGroups(TableNode $table)
     {
-        foreach ($table->getHash() as $index => $data) {
+        foreach ($table->getHash() as $data) {
             $this->createAttributeGroup($data);
         }
     }
@@ -452,7 +469,18 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $channel = $this->getChannel($data['code']);
 
-            assertEquals($data['label'], $channel->getLabel());
+            if (isset($data['label-en_US'])) {
+                assertEquals($data['label-en_US'], $channel->getTranslation('en_US')->getLabel());
+            }
+
+            if (isset($data['label-de_DE'])) {
+                assertEquals($data['label-de_DE'], $channel->getTranslation('de_DE')->getLabel());
+            }
+
+            if (isset($data['label-fr_FR'])) {
+                assertEquals($data['label-fr_FR'], $channel->getTranslation('fr_FR')->getLabel());
+            }
+
             assertEquals($data['tree'], $channel->getCategory()->getCode());
 
             $locales = $channel->getLocaleCodes();
@@ -799,7 +827,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^attribute (\w+) of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^attribute (\w+) of "([^"]*)" should be "(.*)"$/
      */
     public function theOfShouldBe($attribute, $identifier, $value)
     {
@@ -814,7 +842,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^the (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^the (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
      */
     public function theLocalizableOfShouldBe($lang, $attribute, $identifier, $value)
     {
@@ -833,7 +861,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
      */
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
@@ -1415,7 +1443,14 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theHistoryOfTheProductHasBeenBuilt($identifier)
     {
-        $product = $this->getProduct($identifier);
+        $this->buildProductHistory($this->getProduct($identifier));
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    protected function buildProductHistory(ProductInterface $product)
+    {
         $this->getVersionManager()->setRealTimeVersioning(true);
         $versions = $this->getVersionManager()->buildPendingVersions($product);
         foreach ($versions as $version) {
@@ -1525,7 +1560,7 @@ class FixturesContext extends BaseFixturesContext
                 $owner->addAssociation($association);
             }
 
-            $association->addProduct($this->getProduct($row['product']));
+            $association->addProduct($this->getProduct($row['products']));
         }
 
         $this->getProductSaver()->save($owner);
@@ -1745,7 +1780,6 @@ class FixturesContext extends BaseFixturesContext
 
         $data = array_merge(
             [
-                'label'      => null,
                 'currencies' => null,
                 'locales'    => null,
                 'tree'       => null,
@@ -1756,7 +1790,6 @@ class FixturesContext extends BaseFixturesContext
         $channel = new Channel();
 
         $channel->setCode($data['code']);
-        $channel->setLabel($data['label']);
 
         foreach ($this->listToArray($data['currencies']) as $currencyCode) {
             $channel->addCurrency($this->getCurrency(['code' => explode(',', $currencyCode)]));
@@ -1768,6 +1801,14 @@ class FixturesContext extends BaseFixturesContext
 
         if ($data['tree']) {
             $channel->setCategory($this->getCategory($data['tree']));
+        }
+
+        foreach ($data as $key => $value) {
+            $matches = null;
+            if (preg_match('/label-(<?locale>\d+)/', $key, $matches)) {
+                $channel->setLocale($matches['locale']);
+                $channel->setLabel($value);
+            }
         }
 
         $this->validate($channel);

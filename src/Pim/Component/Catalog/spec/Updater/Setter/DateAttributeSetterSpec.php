@@ -48,7 +48,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $product->getValue('release_date', 'fr_FR', 'mobile')->willReturn($dateValue);
         $dateValue->setData(Argument::any())->shouldBeCalled();
 
-        $this->setAttributeData($product, $attribute, '1970-01-01', ['locale' => 'fr_FR', 'scope' => 'mobile']);
+        $this->setAttributeData($product, $attribute, '1970-01-01T00:00:00+01:00', ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
     function it_checks_locale_and_scope_when_setting_an_attribute_data(
@@ -64,7 +64,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $product->getValue('release_date', 'fr_FR', 'mobile')->willReturn($dateValue);
         $dateValue->setData(Argument::any())->shouldBeCalled();
 
-        $this->setAttributeData($product, $attribute, '1970-01-01', ['locale' => 'fr_FR', 'scope' => 'mobile']);
+        $this->setAttributeData($product, $attribute, '1970-01-01T00:00:00+01:00', ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
     function it_throws_an_error_if_attribute_data_is_not_a_valid_date_format(
@@ -148,7 +148,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = '1970-01-01';
+        $data = '1970-01-01T00:00:00+01:00';
 
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();

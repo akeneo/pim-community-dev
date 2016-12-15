@@ -1,1 +1,1 @@
-akeneo_batch.job_instance.unknown_job_definition: 'Не удалось создать %job_type% с неизвестным определением задачи'
+akeneo_batch.job_instance.unknown_job_definition: Не удалось создать %job_type% с неизвестным определением задачи

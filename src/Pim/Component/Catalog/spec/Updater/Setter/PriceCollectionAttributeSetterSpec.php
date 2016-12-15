@@ -57,7 +57,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $priceValue->getPrices()->willReturn([$price]);
         $price->setData(null)->shouldBeCalled();
 
-        $data = [['data' => 123.2, 'currency' => 'EUR']];
+        $data = [['amount' => 123.2, 'currency' => 'EUR']];
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
@@ -92,7 +92,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_throws_an_error_if_attribute_data_value_does_not_contain_data_key(
+    function it_throws_an_error_if_attribute_data_value_does_not_contain_amount_key(
         AttributeInterface $attribute,
         ProductInterface $product
     ) {
@@ -103,7 +103,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
-                'data',
+                'amount',
                 'setter',
                 'prices collection',
                 print_r($data, true)
@@ -117,7 +117,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = [['data' => 123, 'not the currency key' => 'euro']];
+        $data = [['amount' => 123, 'not the currency key' => 'euro']];
 
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected(
@@ -142,7 +142,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = [['data' => 123.2, 'currency' => 'EUR']];
+        $data = [['amount' => 123.2, 'currency' => 'EUR']];
 
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -162,7 +162,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $this->setattributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setattributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
 
-        $data = [['data' => 'foo', 'currency' => 'EUR']];
+        $data = [['amount' => 'foo', 'currency' => 'EUR']];
         $builder->addPriceForCurrencyWithData($productValue, 'EUR', 'foo')->shouldBeCalled();
         $this->setattributeData($product4, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }

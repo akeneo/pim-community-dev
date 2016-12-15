@@ -51,7 +51,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getProductsCountPerChannels()
+    public function getProductsCountPerChannels($localeCode)
     {
         $channels = $this->channelRepository->findAll();
         $productRepo = $this->documentManager->getRepository($this->productClass);
@@ -82,7 +82,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getCompleteProductsCountPerChannels()
+    public function getCompleteProductsCountPerChannels($localeCode)
     {
         $channels = $this->channelRepository->findAll();
         $productRepo = $this->documentManager->getRepository($this->productClass);

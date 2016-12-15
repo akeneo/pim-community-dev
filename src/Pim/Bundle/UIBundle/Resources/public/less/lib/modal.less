@@ -1,0 +1,67 @@
+@import '../base/variables';
+
+/* Bootstrap modal */
+.modal {
+  border-radius: 0;
+  border: none;
+  top: 20%;
+  position: fixed;
+  left: 50%;
+  z-index: 1050;
+  width: 560px;
+  margin-left: -280px;
+  background-color: white;
+
+  .modal-header {
+    background: @AknPurple;
+    font-size: @AknTitleFontSize;
+    height: @AknMainMenuHeight;
+    line-height: @AknMainMenuHeight;
+    color: white;
+    padding: 0 16px;
+    border: none;
+
+    .close {
+      display: none;
+    }
+
+    h3 {
+      line-height: @AknMainMenuHeight;
+      font-weight: normal;
+      margin: 0;
+    }
+  }
+
+  .modal-body {
+    position: relative;
+    max-height: 600px;
+    padding: 15px;
+    overflow-y: auto;
+  }
+
+  .modal-footer {
+    border-top: 1px solid @AknBorderColor;
+    padding: 10px 20px;
+  }
+}
+
+.modal-large {
+  width: 90%;
+  left: 5%;
+  top: 5%;
+  margin-left: 0;
+  .modal-body {
+    max-height: inherit;
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: black ;
+  opacity: 0.8;
+}

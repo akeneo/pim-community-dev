@@ -2,7 +2,62 @@
 
 ## Bug fixes
 
+- PIM-6026: Fix an error on family mass edit that occurs when working on more families than the mass edit batch size
+
+# 1.5.14 (2016-12-01)
+
+## Bug fixes
+
+- PIM-5990: Fix persist order causing issue on variant group import with associated products
+- PIM-5989: Fix attribute options on localizable and scopable attributes simple select
+- PIM-6013: Fix attribute options on localizable and scopable attributes simple select and multi select
+- PIM-6002: Fix characters escapment with usage of quote in attribute option
+- PIM-5997: Restrict to 25 characters the role label
+- PIM-5862: Fix product grid display on a custom user view
+
+# 1.5.13 (2016-11-18)
+
+## Bug fixes
+
+- PIM-6005: Boost product export performances by loading less products at the same time
+- PIM-5995: Fix issue with product count on group save
+- PIM-6006: Fix small memory leak when iterating over products cursor
+
+# 1.5.12 (2016-11-04)
+
+## Bug fixes
+
+- PIM-5995: Fix issue with locale specific attributes added to variant groups
+
+# 1.5.11 (2016-10-31)
+
+## Bug fixes
+
+- PIM-5993: Fix value display issues with simple/multi select attributes
+- GITHUB-5119: Remove console.log from renderExtension method of `src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form.js` Cheers @a2xchip!
+- PIM-5995: Fix issue with localizable and scopable attributes added to variant groups
+
+# 1.5.10 (2016-10-14)
+
+## Bug fixes
+
+- PIM-5984: Optimization on product import when iterating on each existing attributes
+- PIM-5985: Fix the import of localizable and scopable variant group attributes (backport of PIM-5915)
+- PIM-5973: Fix association between products with new association types
+
+# 1.5.9 (2016-09-27)
+
+## Bug fixes
+
+- PIM-5777: Fix attribute refresh when locale change in Product Edit Form
+- TIP-307: Fix issues with Mongo 2.6
+
+# 1.5.8 (2016-08-25)
+
+## Bug fixes
+
 - PIM-5767: Issue with filter "in list" when SKU contains dashes (-)
+- PIM-5896: Fix reference data name validation when creating a reference data simple/multi-select attribute
 
 ## Technical improvements
 

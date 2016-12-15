@@ -3,6 +3,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttribute: ~
         - Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfigured: ~
+        - Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilter: ~
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
@@ -22,6 +23,9 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - pim_catalog_number
                 - pim_catalog_price_collection
                 - pim_catalog_metric
+        - Pim\Component\Catalog\Validator\Constraints\NotBlankProperties:
+            properties:
+                - reference_data_name
     properties:
         attributeType:
             - NotBlank: ~
@@ -84,7 +88,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_price_collection
                     - pim_catalog_multiselect
                     - pim_catalog_simpleselect
-
                     - pim_catalog_file
                     - pim_catalog_image
                     - pim_catalog_boolean
@@ -146,6 +149,14 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Valid: ~
         group:
             - NotBlank: ~
+        numberMin:
+            - Type:
+                type: numeric
+                groups: [pim_catalog_number]
+        numberMax:
+            - Type:
+                type: numeric
+                groups: [pim_catalog_number]
 
     getters:
         group:

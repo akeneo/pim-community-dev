@@ -54,22 +54,22 @@ Feature: Mass Edit Families
   Scenario: Successfully mass edit more than 10 families
     Given the "default" catalog configuration
     And the following families:
-    | code     |
-    | first    |
-    | second   |
-    | third    |
-    | fourth   |
-    | fifth    |
-    | sixth    |
-    | seventh  |
-    | eigth    |
-    | ninth    |
-    | tenth    |
-    | eleventh |
+      | code     |
+      | first    |
+      | second   |
+      | third    |
+      | fourth   |
+      | fifth    |
+      | sixth    |
+      | seventh  |
+      | eight    |
+      | ninth    |
+      | tenth    |
+      | eleventh |
     And I am logged in as "Julia"
     And I am on the families page
     When I change the page size to 25
-    And I select rows first, second, third, fourth, fifth, sixth, seventh, eigth, ninth, tenth and eleventh
+    And I select rows first, second, third, fourth, fifth, sixth, seventh, eight, ninth, tenth and eleventh
     And I press the "Change product information" button
     Then I should see "Mass Edit (11 families)"
 
@@ -82,3 +82,22 @@ Feature: Mass Edit Families
     And I select rows boots, sneakers and sandals
     And I press the "Change product information" button
     Then I should see "Mass Edit (3 families)"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6026
+  Scenario: Successfully mass edit more families than the batch size limit
+    Given the "default" catalog configuration
+    And 110 generated families
+    And the following attributes:
+      | code | label | type |
+      | name | Name  | text |
+    And I am logged in as "Julia"
+    And I am on the families page
+    When I select all entities
+    And I press mass-edit button
+    And I choose the "Set attribute requirements" operation
+    And I display the Name attribute
+    And I move on to the next step
+    And I wait for the "set-attribute-requirements" mass-edit job to finish
+    Then I should see notification:
+      | type    | message                                              |
+      | success | Mass edit Set family attribute requirements finished |

@@ -1,0 +1,35 @@
+@import '../base/variables';
+
+.AknTabContainer {
+  padding: 10px 20px;
+
+  &-content {
+    border-left: 1px solid @AknBorderColor;
+    border-right: 1px solid @AknBorderColor;
+    border-bottom: 1px solid @AknBorderColor;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+
+  &-contentThreeColumns {
+    display: flex;
+    align-items: stretch;
+  }
+
+  &-panels {
+    &--closed {
+      display: none;
+    }
+  }
+
+  &-notPanels { }
+
+  &-contentThreeColumns--fullPanel &-notPanels {
+    display: none;
+  }
+
+  &-contentThreeColumns--fullPanel &-panels {
+    border-left: 1px solid @AknBorderColor;
+    flex-basis: 100%;
+  }
+}

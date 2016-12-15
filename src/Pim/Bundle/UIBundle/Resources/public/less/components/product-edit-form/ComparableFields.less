@@ -1,0 +1,18 @@
+@import '../../base/variables';
+
+.AknComparableFields {
+  display: flex;
+
+  &-item:not(:empty) {
+    flex-basis: @AknMaxFormWidth;;
+
+    &--comparisonContainer {
+      margin-left: 20px;
+    }
+  }
+
+  &-copyContainer {
+    display: flex;
+    flex-grow: 1;
+  }
+}

@@ -27,9 +27,11 @@ interface CompletenessRepositoryInterface
      *        ),
      *    )
      *
+     * @param string $localeCode
+     *
      * @return array
      */
-    public function getProductsCountPerChannels();
+    public function getProductsCountPerChannels($localeCode);
 
     /**
      * Return complete products count per channel and locales
@@ -58,7 +60,9 @@ interface CompletenessRepositoryInterface
      *        ),
      *    )
      *
+     * @param string $localeCode
+     *
      * @return array
      */
-    public function getCompleteProductsCountPerChannels();
+    public function getCompleteProductsCountPerChannels($localeCode);
 }

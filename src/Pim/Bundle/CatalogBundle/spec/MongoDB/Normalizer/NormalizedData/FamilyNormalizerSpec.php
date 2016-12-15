@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
+use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
 
 class FamilyNormalizerSpec extends ObjectBehavior
 {
@@ -34,11 +34,11 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $sku->getCode()->willReturn('sku');
         $family->getCode()->willReturn('mongo');
         $family->getAttributeAsLabel()->willReturn($sku);
-        $normalizer->normalize($family, 'mongodb_json', [])->willReturn(['label' => 'translations']);
+        $normalizer->normalize($family, 'mongodb_json', [])->willReturn(['en_US' => 'Family label']);
 
         $this->normalize($family, 'mongodb_json', [])->shouldReturn([
             'code' => 'mongo',
-            'label' => 'translations',
+            'labels' => ['en_US' => 'Family label'],
             'attributeAsLabel' => 'sku'
         ]);
     }

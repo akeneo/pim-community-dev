@@ -17,6 +17,7 @@ Feature: Display the localized product history for complex prices
     And I fill in the following information in the popin:
       | SKU | sandal |
     And I press the "Save" button in the popin
+    And I should be on the product "sandal" edit page
     And I edit the "sandal" product
     And I add available attributes localized_price, scoped_price and complex_price
     And I change the "localized_price" to "0.12 EUR"

@@ -39,3 +39,8 @@ Feature: Create and delete a user role
       | Role |  |
     When I save the role
     Then I should see validation tooltip "This value should not be blank."
+    When I edit the "Administrator" role
+    And I fill in the following information:
+      | Role | ThisIsARoleLabelWith27Chars |
+    When I save the role
+    Then I should see validation tooltip "This value is too long. It should have 25 characters or less."

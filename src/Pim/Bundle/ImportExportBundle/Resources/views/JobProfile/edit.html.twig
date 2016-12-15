@@ -12,7 +12,12 @@
 
     {% include 'PimImportExportBundle:JobProfile:_edit_headers.html.twig' with {'form': form} %}
 
-    {% include 'PimImportExportBundle:JobProfile:_form.html.twig' %}
+    <div class="AknTabContainer">
+        {{ elements.form_navbar(view_element_aliases(viewElementsAliases)) }}
+        <div class="AknTabContainer-content">
+            {% include 'PimImportExportBundle:JobProfile:_form.html.twig' %}
+        </div>
+    </div>
 
     {{ form_end(form) }}
 {% endblock %}

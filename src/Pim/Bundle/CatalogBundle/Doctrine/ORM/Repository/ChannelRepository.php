@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Channel repository
- * Define a default sort order by label
+ * Define a default sort order by code
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -21,7 +21,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = ['label' => 'ASC'], $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = ['code' => 'ASC'], $limit = null, $offset = null)
     {
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -29,7 +29,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = ['label' => 'ASC'])
+    public function findOneBy(array $criteria, array $orderBy = ['code' => 'ASC'])
     {
         return parent::findOneBy($criteria, $orderBy);
     }
@@ -57,15 +57,22 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
 
         $treeExpr = '(CASE WHEN ct.label IS NULL THEN category.code ELSE ct.label END)';
 
+        $labelExpr = sprintf(
+            '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
+            $rootAlias
+        );
+
         $qb
             ->addSelect($rootAlias)
             ->addSelect('category')
             ->addSelect(sprintf('%s AS categoryLabel', $treeExpr))
-            ->addSelect('ct.label');
+            ->addSelect(sprintf('%s AS channelLabel', $labelExpr))
+            ->addSelect('translation.label');
 
         $qb
             ->innerJoin(sprintf('%s.category', $rootAlias), 'category')
-            ->leftJoin('category.translations', 'ct', 'WITH', 'ct.locale = :localeCode');
+            ->leftJoin('category.translations', 'ct', 'WITH', 'ct.locale = :localeCode')
+            ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
 
         $qb->groupBy($rootAlias);
 
@@ -139,9 +146,10 @@ SQL;
     {
         return $this
             ->createQueryBuilder('ch')
-            ->select('ch, lo, cu')
+            ->select('ch, lo, cu, tr')
             ->leftJoin('ch.locales', 'lo')
             ->leftJoin('ch.currencies', 'cu')
+            ->leftJoin('ch.translations', 'tr')
             ->getQuery()
             ->getResult();
     }
@@ -179,14 +187,19 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function getLabelsIndexedByCode()
+    public function getLabelsIndexedByCode($localeCode)
     {
         $qb = $this->createQueryBuilder('c');
-        $qb->select('c.code, c.label');
+        $qb->leftJoin('c.translations', 'tr');
+        $qb->select('c.code, tr.label');
+
+        $qb->where('tr.locale = :userLocaleCode');
+        $qb->setParameter('userLocaleCode', $localeCode);
+
         $channels = $qb->getQuery()->getArrayResult();
         $choices = [];
         foreach ($channels as $channel) {
-            $choices[$channel['code']] = $channel['label'];
+            $choices[$channel['code']] = null !== $channel['label'] ? $channel['label'] : '[' . $channel['code'] . ']';
         }
 
         return $choices;

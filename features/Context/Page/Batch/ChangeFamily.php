@@ -25,19 +25,10 @@ class ChangeFamily extends Wizard
             return;
         }
 
-        $select2Locator = sprintf(
-            'label:contains("%s") + .select2-container',
-            $locator
-        );
+        $labelNode = $this->spin(function () use ($locator) {
+            return $this->find('css', sprintf('label:contains("%s")', $locator));
+        }, sprintf('Cannot find label node of field "%s"', $locator));
 
-        $selectContainer = $this->spin(function () use ($select2Locator) {
-            return $this->find('css', $select2Locator);
-        }, sprintf('Cannot find "%s" element', $select2Locator));
-
-        if ($selectContainer) {
-            $this->fillSelect2Field($selectContainer, $value);
-        } else {
-            parent::fillField($locator, $value, $modal);
-        }
+        $this->fillSelect2Field($labelNode, $value);
     }
 }

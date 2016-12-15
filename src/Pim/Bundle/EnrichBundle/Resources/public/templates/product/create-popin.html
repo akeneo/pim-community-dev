@@ -1,11 +1,13 @@
-<div class="control-group" data-code="identifier">
-    <label title="<%- labels.identifier %>" class="control-label required truncate" for="new-product-identifier">
-        <%- labels.identifier %> <em><%- __('pim_enrich.form.required') %></em>
-    </label>
-    <div class="controls">
-        <input type="text" id="new-product-identifier" class="input-large" />
+<div class="AknFieldContainer" data-code="identifier">
+    <div class="AknFieldContainer-header">
+        <label title="<%- labels.identifier %>" class="control-label required truncate" for="new-product-identifier">
+            <%- labels.identifier %> <em><%- __('pim_enrich.form.required') %></em>
+        </label>
     </div>
-    <div class="validation-errors">
+    <div class="AknFieldContainer-inputContainer">
+        <input type="text" id="new-product-identifier" class="AknTextField"/>
+    </div>
+    <div class="AknFieldContainer-footer validation-errors">
         <% _.each(_.where(errors, { attribute: identifier.code }), function (error) { %>
             <span>
                 <i class="icon-warning-sign"></i>
@@ -14,6 +16,8 @@
         <% }) %>
     </div>
 </div>
-<div class="control-group" data-code="family">
-    <input type="hidden" class="input-large select-field" data-placeholder="<%- labels.family %>" />
+<div class="AknFieldContainer" data-code="family">
+    <div class="AknFieldContainer-inputContainer">
+        <input type="hidden" class="select-field" data-placeholder="<%- labels.family %>" />
+    </div>
 </div>

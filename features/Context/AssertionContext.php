@@ -3,12 +3,10 @@
 namespace Context;
 
 use Behat\Behat\Context\Step\Then;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\Mink\Exception\ResponseTextException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -405,7 +403,7 @@ class AssertionContext extends RawMinkContext
                 );
             }
             if (!$row->hasClass('expanded')) {
-                $row->click();
+                $row->find('css', '.version-expander')->click();
             }
             if (isset($data['author'])) {
                 $author = $row->find('css', 'td.author')->getText();
@@ -421,21 +419,11 @@ class AssertionContext extends RawMinkContext
                 );
             }
 
-            $changeset = $row->getParent()->find('css', 'tr.changeset:not(.hide) tbody');
-            if (!$changeset) {
-                throw $this->createExpectationException(
-                    sprintf('No changeset found for version %s', $data['version'])
-                );
-            }
-            $changesetRows = $changeset->findAll('css', 'tr');
-            if (!$changesetRows) {
-                throw $this->createExpectationException(
-                    sprintf('No changeset rows found for version %s', $data['version'])
-                );
-            }
+            $changesetRows = $this->spin(function () use ($row) {
+                return $row->getParent()->findAll('css', '.changeset:not(.hide) tbody tr');
+            }, sprintf('No changeset found for version %s', $data['version']));
 
             $matchingRow = null;
-            $parsedText = '';
             $parsedTexts = [];
             foreach ($changesetRows as $row) {
                 $innerHtml = $row->find('css', 'td:first-of-type')->getHtml();
@@ -493,6 +481,21 @@ class AssertionContext extends RawMinkContext
         $fileName = $this->replacePlaceholders($fileName);
         if (!file_exists($fileName)) {
             throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
+        }
+    }
+
+    /**
+     * @param string $fileName
+     *
+     * @Given /^file "([^"]*)" should not exist$/
+     *
+     * @throws ExpectationException
+     */
+    public function fileShouldNotExist($fileName)
+    {
+        $fileName = $this->replacePlaceholders($fileName);
+        if (file_exists($fileName)) {
+            throw $this->createExpectationException(sprintf('File %s exists.', $fileName));
         }
     }
 
@@ -568,7 +571,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $actualCount = (int) $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
+        $actualCount = (int) $this->getCurrentPage()->find('css', '.AknBell-countContainer')->getText();
 
         assertEquals(
             $actualCount,
@@ -594,7 +597,7 @@ class AssertionContext extends RawMinkContext
 
         // Wait for the footer of the notification panel dropdown to be loaded
         $this->spin(function () {
-            $footer  = $this->getCurrentPage()->find('css', '#header-notification-widget ul.dropdown-menu > p');
+            $footer  = $this->getCurrentPage()->find('css', '.AknNotificationList-footer');
             $content = trim($footer->getText());
 
             return !empty($content);
@@ -608,7 +611,7 @@ class AssertionContext extends RawMinkContext
     {
         $this->iOpenTheNotificationPanel();
         $page = $this->getCurrentPage();
-        $selector = sprintf('#header-notification-widget .dropdown-menu li>a:contains("%s")', $message);
+        $selector = sprintf('.AknNotification-link:contains("%s")', $message);
 
         $link = $this->spin(function () use ($page, $selector) {
             return $page->find('css', $selector);
@@ -640,7 +643,7 @@ class AssertionContext extends RawMinkContext
         ];
 
         foreach ($table->getHash() as $data) {
-            $notifications = $notificationWidget->findAll('css', '#header-notification-widget .dropdown-menu li>a');
+            $notifications = $notificationWidget->findAll('css', '.AknNotification-link');
 
             $matchingNotification = null;
 
@@ -685,7 +688,7 @@ class AssertionContext extends RawMinkContext
             }
 
             if (isset($data['comment']) && '' !== $data['comment']) {
-                $commentNode = $matchingNotification->find('css', 'div.comment');
+                $commentNode = $matchingNotification->find('css', '.AknNotification-comment');
 
                 if (!$commentNode) {
                     throw $this->createExpectationException(
@@ -717,7 +720,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldNotSeeDefaultAvatar()
     {
-        $this->assertSession()->elementAttributeNotContains('css', '.customer-info img', 'src', 'user-info.png');
+        $this->assertSession()->elementAttributeNotContains('css', '.AknTitleContainer-avatar', 'src', 'user-info.png');
     }
 
     /**

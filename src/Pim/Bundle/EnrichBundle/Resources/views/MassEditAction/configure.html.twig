@@ -1,49 +1,70 @@
 {% extends 'PimEnrichBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {{ elements.page_header(title|default('title')|trans, null, subtitle|default('subtitle')|transchoice(itemsCount)) }}
+    {% set title %}
+        {{ title|default('title')|trans }} /
+        {{ subtitle|default('subtitle')|transchoice(itemsCount) }}
+    {% endset %}
+
+    {{ elements.page_header(title) }}
 
     {{ parent() }}
 
     {{ JSFV(form) }}
     {{ form_start(form, {'attr': {'class': 'span12 '~operationAlias}, 'action': path(performRoute, queryParams|merge({ 'operationAlias': operationAlias })) }) }}
 
-        <div class="row">
-            <div class="offset1 span12">
-                <h3>{{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.label')|trans }}</h3>
-                {% block formDescription %}
-                    <h4>{{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.description')|trans }}</h4>
-                {% endblock %}
-                <div class="pull-right">
+        <div class="AknWidget">
+            <div class="AknWidget-header">
+                <div>
+                    {{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.label')|trans }}
+                </div>
+                <div>
                     {% block formTitle %}{% endblock %}
                 </div>
             </div>
-        </div>
-
-        <div class="row offset1 span12 buffer-top confirmation hide">
-            <div class="alert alert-info">
-                {{ confirmLabel|default('confirm')|transchoice(itemsCount) }}
+            <div class="AknWidget-subTitle">
+                {% block formDescription %}
+                    {{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.description')|trans }}
+                {% endblock %}
             </div>
-        </div>
+            <div class="AknWidget-content AknWidget-content--withPadding">
 
-        <div class="row buffer-top">
-            <div class="offset1 span12 mass-edit-form">
+                <div class="AknMessageBox AknMessageBox--hide confirmation">
+                    {{ confirmLabel|default('confirm')|transchoice(itemsCount) }}
+                </div>
                 <div class="errors">
                     {{ elements.form_errors(form) }}
                 </div>
                 {% block formContent %}
                 {% endblock %}
             </div>
-        </div>
+            <div class="AknWidget-footer">
+                <div class="AknButtonList AknButtonList--right configuration">
+                    {{ elements.link(
+                        'btn.back',
+                        path(backButtonRoute, queryParams),
+                        {'class': 'btn-cancel AknButtonList-item', 'icon': 'chevron-left'}
+                    ) }}
+                    {{ elements.link(
+                        'btn.next',
+                        null,
+                        {'class': ['next btn-next AknButton--apply AknButtonList-item'], 'icon': 'chevron-right'}
+                    ) }}
+                </div>
 
-        <div class="row span12 offset1 buffer-top configuration">
-            {{ elements.link('btn.back', path(backButtonRoute, queryParams), {'class': 'btn-cancel', 'icon': 'chevron-left'}) }}
-            {{ elements.link('btn.next', null, {'class': ['next btn-next', 'btn-primary'], 'icon': 'chevron-right'}) }}
-        </div>
-
-        <div class="row offset1 buffer-top confirmation hide">
-            {{ elements.link('btn.cancel', null, {'class': 'cancel btn-cancel', 'icon': 'chevron-left'}) }}
-            {{ elements.submitBtn('btn.confirm', 'ok') }}
+                <div class="AknButtonList AknButtonList--right confirmation AknButtonList--hide">
+                    {{ elements.link(
+                        'btn.cancel',
+                        null,
+                        {'class': 'cancel btn-cancel AknButtonList-item', 'icon': 'chevron-left'}
+                    ) }}
+                    {{ elements.submitBtn(
+                        'btn.confirm',
+                        'ok',
+                        'AknButtonList-item'
+                    ) }}
+                </div>
+            </div>
         </div>
 
     {{ form_end(form) }}
@@ -129,15 +150,17 @@
                     $('a.next').on('click', function() {
                         $('.wizard').wizard({ currentStep: {{ nextStepNumber|default(4) }} });
                         disableForm();
-                        $('.configuration').addClass('hide');
-                        $('.confirmation').removeClass('hide');
+                        $('.configuration').addClass('AknButtonList--hide');
+                        $('.AknButtonList.confirmation').removeClass('AknButtonList--hide');
+                        $('.AknMessageBox.confirmation').removeClass('AknMessageBox--hide');
                     });
 
                     $('a.cancel').on('click', function() {
                         $('.wizard').wizard({ currentStep: {{ previousStepNumber|default(3) }} });
                         enableForm();
-                        $('.configuration').removeClass('hide');
-                        $('.confirmation').addClass('hide');
+                        $('.configuration').removeClass('AknButtonList--hide');
+                        $('.AknButtonList.confirmation').addClass('AknButtonList--hide');
+                        $('.AknMessageBox.confirmation').addClass('AknMessageBox--hide');
                     });
                 });
             }

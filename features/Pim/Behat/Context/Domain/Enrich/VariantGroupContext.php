@@ -6,11 +6,14 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use Context\Traits\ClosestTrait;
 use Pim\Behat\Context\PimContext;
 use Pim\Component\Catalog\Model\GroupInterface;
 
 class VariantGroupContext extends PimContext
 {
+    use ClosestTrait;
+
     use SpinCapableTrait;
 
     /**
@@ -164,7 +167,7 @@ class VariantGroupContext extends PimContext
         }, 'Unable to find a label containing "Axis"');
 
         $field = $this->spin(function () use ($node) {
-            return $node->getParent()->find('css', 'input');
+            return $this->getClosest($node, 'AknFieldContainer')->find('css', 'input');
         }, 'Unable to find an input in the parent of the label "Axis"');
 
         assertTrue($field->hasAttribute('disabled'), 'Expecting field "Axis" to be disabled.');

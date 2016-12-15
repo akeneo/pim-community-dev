@@ -1,0 +1,58 @@
+@import '../../base/variables';
+
+.AknActionButton {
+  height: @AknLittleButtonSize;
+  min-width: @AknLittleButtonSize;
+  line-height: @AknLittleButtonSize;
+  font-size: @AknDefaultFontSize;
+  border: 1px solid @AknBorderColor;
+  color: @AknDefaultFontColor;
+  background-color: white;
+  border-radius: 2px;
+  font-weight: normal;
+  padding: 0 10px;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+  white-space: nowrap;
+  outline: none;
+
+  &-caret {
+    margin-left: 5px;
+  }
+
+  &:hover,
+  &:active,
+  &:focus {
+    background: @AknDefaultHoverBackground;
+  }
+
+  &--noRightBorder {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &--noLeftBorder {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &-selectButton {
+    background: none;
+    border: none;
+    color: @AknDefaultFontColor;
+    font-weight: bold;
+
+    &:hover, &:active, &:focus {
+      outline: none;
+    }
+  }
+
+  // jQuery select adds style for the button, we need to remove it for the filters.
+  .ui-multiselect {
+    width: auto !important;
+    padding: 0 !important;
+  }
+}

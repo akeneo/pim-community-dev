@@ -14,15 +14,12 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
     return Backbone.View.extend({
         /** @property */
         template:_.template(
-            '<div class="grid-toolbar">' +
-                '<div class="pull-left">' +
-                    '<div class="mass-actions-panel icons-holder"></div>' +
+            '<div class="AknGridToolbar">' +
+                '<div class="mass-actions-panel"></div>' +
+                '<div class="AknGridToolbar-center">' +
+                    '<div class="AknPagination"></div>' +
                 '</div>' +
-                '<div class="pull-right">' +
-                    '<div class="actions-panel pull-right form-horizontal"></div>' +
-                    '<div class="page-size pull-right form-horizontal"></div>' +
-                '</div>' +
-                '<div class="pagination pagination-centered"></div>' +
+                '<div class="AknGridToolbar-right"></div>' +
             '</div>'
         ),
 
@@ -60,7 +57,10 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             options.pageSize = options.pageSize || {};
             this.pageSize = new this.pageSize(_.extend({}, options.pageSize, { collection: this.collection }));
 
-            this.actionsPanel = new this.actionsPanel(_.extend({}, options.actionsPanel));
+            this.actionsPanel = new this.actionsPanel(_.extend({
+                className: 'AknGridToolbar-actionsPanel actions-panel'
+            }, options.actionsPanel));
+
             if (options.actions) {
                 this.actionsPanel.setActions(options.actions);
             }
@@ -74,7 +74,8 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
 
             this.massActionsPanel = new this.massActionsPanel({
                 actionsGroups: options.massActionsGroups,
-                actions:       options.massActions
+                actions:       options.massActions,
+                className:     'AknGridToolbar-left'
             });
 
             Backbone.View.prototype.initialize.call(this, options);
@@ -123,9 +124,9 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             this.$el.empty();
             this.$el.append(this.template());
 
-            this.$('.pagination').replaceWith(this.pagination.render().$el);
-            this.$('.page-size').append(this.pageSize.render().$el);
-            this.$('.actions-panel').append(this.actionsPanel.render().$el);
+            this.$('.AknPagination').replaceWith(this.pagination.render().$el);
+            this.$('.AknGridToolbar-right').append(this.pageSize.render().$el);
+            this.$('.AknGridToolbar-right').append(this.actionsPanel.render().$el);
             this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el);
 
             return this;

@@ -38,6 +38,9 @@ class ChannelType extends AbstractType
     /** @var string */
     protected $dataClass;
 
+    /** @var string Translation entity FQCN */
+    protected $translationDataClass;
+
     /**
      * Inject locale manager, locale helper and colors provider in the constructor
      *
@@ -46,19 +49,22 @@ class ChannelType extends AbstractType
      * @param TranslatedLabelsProviderInterface $categoryProvider
      * @param string                            $categoryClass
      * @param string                            $dataClass
+     * @param string                            $translationDataClass
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
         TranslatedLabelsProviderInterface $categoryProvider,
         $categoryClass,
-        $dataClass
+        $dataClass,
+        $translationDataClass
     ) {
         $this->localeRepository = $localeRepository;
         $this->localeHelper = $localeHelper;
         $this->categoryProvider = $categoryProvider;
         $this->categoryClass = $categoryClass;
         $this->dataClass = $dataClass;
+        $this->translationDataClass = $translationDataClass;
     }
 
     /**
@@ -99,7 +105,16 @@ class ChannelType extends AbstractType
      */
     protected function addLabelField(FormBuilderInterface $builder)
     {
-        $builder->add('label', 'text', ['label' => 'Default label']);
+        $builder->add(
+            'label',
+            'pim_translatable_field',
+            [
+                'field'             => 'label',
+                'translation_class' => $this->translationDataClass,
+                'entity_class'      => $this->dataClass,
+                'property_path'     => 'translations'
+            ]
+        );
 
         return $this;
     }

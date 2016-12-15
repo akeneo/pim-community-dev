@@ -35,10 +35,24 @@ class MetricProperty extends TwigProperty
 
     /**
      * {@inheritdoc}
+     *
+     * Presenter works with the standard format which is for a metric:
+     *   {
+     *     "amount": "",
+     *     "unit": ""
+     *   }
+     *
+     * Problem is, $value is built by a query (in ProductHydrator) and does not return the standard format.
+     * This is why we create a key "amount" to present correctly the data.
      */
     protected function convertValue($value)
     {
         $result = $this->getBackendData($value);
+
+        if (isset($result['data'])) {
+            $result['amount'] = $result['data'];
+            unset($result['data']);
+        }
 
         return $this->presenter->present($result, ['locale' => $this->translator->getLocale()]);
     }

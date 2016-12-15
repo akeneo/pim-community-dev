@@ -32,7 +32,9 @@ define(
             needsData: true,
 
             refreshBtnTemplate: _.template(
-                '<span class="btn-refresh pull-right"><i class="icon-refresh"></i></span>'
+                '<span class="AknButtonList-item AknIconButton AknIconButton--grey btn-refresh">' +
+                    '<i class="icon-refresh"></i>' +
+                '</span>'
             ),
 
             initialize: function (options) {
@@ -127,7 +129,7 @@ define(
                 this.$refreshBtn = $(this.refreshBtnTemplate());
                 this.$refreshBtn.on('click', _.bind(this.reload, this));
 
-                this.$el.parent().siblings('.widget-header').append(this.$refreshBtn);
+                this.$el.closest('.AknWidget').find('.widget-actions').append(this.$refreshBtn);
             },
 
             _processResponse: function (data) {

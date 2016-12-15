@@ -152,6 +152,18 @@ Feature: Edit common attributes of many products at once
     Then the metric "heel_height" of products highheels, blue_highheels should be "12"
     And the metric "heel_height" of products sandals should be "3"
 
+  @jira https://akeneo.atlassian.net/browse/PIM-6008
+  Scenario: Successfully mass edit scoped product values with special chars
+    Given I set product "pump" family to "boots"
+    When I mass-edit products boots and pump
+    And I choose the "Edit common attributes" operation
+    And I display the Description attribute
+    And I change the Description to "&$@(B°ar'<"
+    And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And the english tablet Description of "boots" should be "&$@(B°ar'<"
+    And the english tablet Description of "pump" should be "&$@(B°ar'<"
+
   Scenario: Successfully mass edit products and the completeness should be computed
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel
@@ -190,3 +202,36 @@ Feature: Edit common attributes of many products at once
       | channel | locale | state   | missing_values                        | ratio |
       | mobile  | en_US  | warning | Color                                 | 80%   |
       | tablet  | en_US  | warning | Description, Rating, Side view, Color | 50%   |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6022
+  Scenario: Successfully mass edit product values preventing Shell Command Injection
+    Given I am on the "boots" family page
+    And I visit the "Attributes" tab
+    And I add available attributes Comment
+    And I am on the "sneakers" family page
+    And I visit the "Attributes" tab
+    And I add available attributes Comment
+    And I am on the "sandals" family page
+    And I visit the "Attributes" tab
+    And I add available attributes Comment
+    And I am on the products page
+    When I select rows boots, sandals and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I choose the "Edit common attributes" operation
+    And I display the Description and Name and Comment attribute
+    And I change the "Name" to "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
+    And I change the "Description" to ";`echo \"SHELL_INJECTION\"`"
+    And I visit the "Other" group
+    And I change the "Comment" to "$(echo "shell_injection" > shell_injection.txt)"
+    And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
+    Then the english name of "boots" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
+    And the english name of "sandals" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
+    And the english name of "sneakers" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
+    And the english tablet description of "boots" should be ";`echo \"SHELL_INJECTION\"`"
+    And the english tablet description of "sandals" should be ";`echo \"SHELL_INJECTION\"`"
+    And the english tablet description of "sneakers" should be ";`echo \"SHELL_INJECTION\"`"
+    And attribute Comment of "boots" should be "$(echo "shell_injection" > shell_injection.txt)"
+    And attribute Comment of "sandals" should be "$(echo "shell_injection" > shell_injection.txt)"
+    And attribute Comment of "sneakers" should be "$(echo "shell_injection" > shell_injection.txt)"
+    And file "%web%shell_injection.txt" should not exist

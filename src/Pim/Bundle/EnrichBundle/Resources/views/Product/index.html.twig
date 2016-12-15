@@ -30,7 +30,8 @@
     {% endset %}
 
     {% set gridAlias = 'product-grid' %}
-    {% set subtitle %}
+
+    {% set titleButtons %}
         {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
             'locales':           locales,
             'currentLocaleCode': dataLocale.code,
@@ -39,7 +40,7 @@
         {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': gridAlias })) }}
     {% endset %}
 
-    {{ elements.page_header(title, buttons, subtitle) }}
+    {{ elements.page_header(title, buttons, titleButtons) }}
 
     {% if app.user.getDefaultGridView(gridAlias) is not null %}
         {% set defaultView = {

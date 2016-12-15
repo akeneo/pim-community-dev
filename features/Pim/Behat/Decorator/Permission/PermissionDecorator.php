@@ -18,7 +18,8 @@ class PermissionDecorator extends ElementDecorator
     use SpinCapableTrait;
 
     protected $selectors = [
-        'Group'           => '.tab-groups .tab:contains("%s") a',
+        'Group'           => '.tab-groups .tab:contains("%s") a span',
+        'Group toggle'    => '.tab-groups .tab:contains("%s") a .acl-group-permission-toggle',
         'Resource'        => '.acl-permission:contains("%s")',
         'Resource Toggle' => '.acl-permission-toggle.granted, .acl-permission-toggle.non-granted'
     ];
@@ -132,10 +133,8 @@ class PermissionDecorator extends ElementDecorator
      */
     protected function findGroupIcon($group)
     {
-        $groupElement = $this->findGroup($group);
-
-        return $this->spin(function () use ($groupElement) {
-            return $groupElement->find('css', '.acl-group-permission-toggle');
+        return $this->spin(function () use ($group) {
+            return $this->find('css', sprintf($this->selectors['Group toggle'], $group));
         }, sprintf('Group icon "%s" not found', $group));
     }
 }

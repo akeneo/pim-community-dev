@@ -47,11 +47,11 @@ define(
 
             icon: 'th',
 
-            target: 'div.grid-toolbar .actions-panel',
+            target: '.AknGridToolbar .actions-panel',
 
             template: _.template(
-                '<div class="btn-group">' +
-                    '<a href="javascript:void(0);" class="action btn" title="<%= label %>" id="configure-columns">' +
+                '<div class="AknGridToolbar-actionButton">' +
+                    '<a href="javascript:void(0);" class="AknActionButton" title="<%= label %>" id="configure-columns">' +
                         '<i class="icon-<%= icon %>"></i>' +
                         '<%= label %>' +
                     '</a>' +

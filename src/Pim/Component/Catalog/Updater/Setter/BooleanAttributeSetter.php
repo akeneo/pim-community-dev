@@ -59,46 +59,13 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
 
         if (null === $value) {
-            if (!$this->shouldBeSetInProduct($product, $attribute, $data)) {
-                return;
-            }
-
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
 
         if (1 === $data || '1' === $data || 0 === $data || '0' === $data) {
-            $data = (bool) $data;
+            $data = boolval($data);
         }
 
         $value->setData($data);
-    }
-
-    /**
-     * As boolean attribute does not support "null" value (only true/false),
-     * there are some problems to make out what should really be added to the product (specially with optional attributes)
-     * What we add in product:
-     * | old value | new value | attribute is in family | should be added in product |
-     * | null      | false     | yes                    | no                         |
-     * | null      | false     | no                     | yes                        |
-     *
-     * This method should be removed when boolean attribute will be rework to support 3 states: true/false/null
-     *
-     * @deprecated will be removed in 1.7
-     *
-     * @param ProductInterface   $product    product to update
-     * @param AttributeInterface $attribute  attribute
-     * @param mixed              $data       new value
-     *
-     * @return bool
-     */
-    private function shouldBeSetInProduct(ProductInterface $product, AttributeInterface $attribute, $data)
-    {
-        $family = $product->getFamily();
-        if (null !== $family && in_array($attribute->getCode(), $product->getFamily()->getAttributeCodes()) &&
-            false === $data) {
-            return false;
-        }
-
-        return true;
     }
 }

@@ -67,8 +67,8 @@ class MediaController
 
         try {
             $movedFile = $file->move(
-                $this->uploadDir . DIRECTORY_SEPARATOR . $pathData['path'],
-                $pathData['file_name']
+                $this->uploadDir . DIRECTORY_SEPARATOR . $pathData['path'] . DIRECTORY_SEPARATOR . $pathData['uuid'],
+                $file->getClientOriginalName()
             );
         } catch (FileException $e) {
             //TODO: more specific message if debug mode is on?

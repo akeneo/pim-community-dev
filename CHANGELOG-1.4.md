@@ -1,3 +1,11 @@
+# 1.4.x 
+
+## Bug fixes
+- PIM-6008: Fix mass edit execution when using specials chars in text field edition
+- PIM-6022: Fix shell injection in mass-edit form
+
+# 1.4.27 (2016-08-31)
+
 # 1.4.26 (2016-07-05)
 
 ## Bug fixes
@@ -43,7 +51,6 @@
 
 ## Improvements
 - Update akeneo/measure-bundle dependency to version 0.4.1.
-- Add doctrine migration to fix product and job instance history issues
 
 ## Bug fixes
 - PIM-5656: Category Tree does not load when 0 category selected

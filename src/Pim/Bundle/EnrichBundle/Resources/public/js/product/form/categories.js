@@ -107,6 +107,10 @@ define(
                 this.state.set('currentTree', event.currentTarget.dataset.tree);
                 this.state.set('currentTreeId', event.currentTarget.dataset.treeId);
                 this.treeAssociate.switchTree(event.currentTarget.dataset.treeId);
+                $(event.currentTarget)
+                    .addClass('AknVerticalNavtab-item--active')
+                    .siblings('.AknVerticalNavtab-item')
+                    .removeClass('AknVerticalNavtab-item--active');
             },
 
             updateModel: function (event) {
@@ -166,7 +170,7 @@ define(
              * @param {integer} categoryCount
              */
             updateCategoryBadge: function (rootTreeCode, categoryCount) {
-                this.$('li[data-tree=' + rootTreeCode +  ']').find('.badge').html(categoryCount);
+                this.$('li[data-tree=' + rootTreeCode +  ']').find('.AknBadge').html(categoryCount);
             },
 
             /**

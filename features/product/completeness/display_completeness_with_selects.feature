@@ -69,7 +69,7 @@ Feature: Display the completeness of a product with simple or multi selects
   Scenario: Successfully display the completeness of the products with reference data in the grid
     Given I am on the products page
     And I switch the locale to "en_US"
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    And I filter by "scope" with operator "equals" and value "Mobil"
     Then the row "red-heels" should contain:
       | column   | value |
       | complete | 50%   |
@@ -96,7 +96,7 @@ Feature: Display the completeness of a product with simple or multi selects
       | column   | value |
       | complete | 25%   |
     And I switch the locale to "fr_FR"
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    And I filter by "scope" with operator "equals" and value "Mobil"
     Then the row "red-heels" should contain:
       | column   | value |
       | complete | 100%  |

@@ -25,7 +25,7 @@ define(
         fetcherRegistry
     ) {
         return BaseForm.extend({
-            className: 'control-group',
+            className: 'AknFieldContainer',
             template: _.template(template),
 
             /**

@@ -7,18 +7,16 @@
     {{ parent() }}
     {% if resource_granted('pim_enrich_attribute_create') %}
         {% set modalContent %}
-            <div class="attribute-type-selector">
+            <div class="AknButtonList AknButtonList--twoColumns">
                 {% for code, label in attributeTypes %}
                     {% set attributeTypes = attributeTypes|merge({ (code): label|trans }) %}
                 {% endfor %}
 
                 {% for code, label in attributeTypes|sort %}
-                    <div class="pull-left">
-                        <a class="btn btn-large attribute-choice fullwidth" href="{{ path('pim_enrich_attribute_create', { attribute_type: code }) }}">
-                            <i class="icon-{{ attribute_icon(code) }} pull-left"></i>
-                            {{ label }}
-                        </a>
-                    </div>
+                    <a class="AknButtonList-item AknButton AknButton--withIcon attribute-choice" href="{{ path('pim_enrich_attribute_create', { attribute_type: code }) }}">
+                        <i class="AknButton-icon icon-{{ attribute_icon(code) }}"></i>
+                        {{ label }}
+                    </a>
                 {% endfor %}
             </div>
         {% endset %}
@@ -38,10 +36,7 @@
                                 });
 
                                 modal.open();
-                                modal.$el.css({
-                                    'width': '700px',
-                                    'margin-left': '-350px'
-                                }).find('.modal-footer').remove();
+                                modal.$el.find('.modal-footer').remove();
 
                                 modal.$el.on('click', 'a.attribute-choice', function(e) {
                                     e.preventDefault();

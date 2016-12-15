@@ -23,7 +23,7 @@ class VariantGroupCsvExport implements DefaultValuesProviderInterface
 
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
-     * @param array                      $supportedJobNames
+     * @param array                          $supportedJobNames
      */
     public function __construct(DefaultValuesProviderInterface $simpleProvider, array $supportedJobNames)
     {

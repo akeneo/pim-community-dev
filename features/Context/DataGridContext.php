@@ -5,6 +5,7 @@ namespace Context;
 use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Base\Grid;
@@ -143,6 +144,33 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $text
+     *
+     * @Then /^I type "([^"]*)" in the manage filter input$/
+     */
+    public function iTypeInTheManageFilterInput($text)
+    {
+        $this->datagrid->typeInManageFilterInput($text);
+    }
+
+
+    /**
+     * @param string $title
+     *
+     * @Then /^I could see "([^"]*)" in the manage filters list$/
+     */
+    public function iCouldSeeInTheManageFiltersList($title)
+    {
+        $filterElement = $this->datagrid->getElement('Manage filters')->find('css', sprintf('input[title="%s"]', $title));
+
+        if ($filterElement == null || !$filterElement->isVisible()) {
+            throw $this->createExpectationException(
+                sprintf('Expecting "%s" to be displayed in the filters list', $title)
+            );
+        }
+    }
+
+    /**
      * @param string    $code
      * @param TableNode $table
      *
@@ -151,7 +179,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function theRowShouldContain($code, TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->assertColumnContainsValue($code, $data['column'], $data['value']);
+            $this->spin(function () use ($code, $data) {
+                $this->assertColumnContainsValue($code, $data['column'], $data['value']);
+
+                return true;
+            }, sprintf('Expecting column "%" to contain "%s" on row %s', $data['column'], $data['value'], $code));
         }
     }
 
@@ -352,6 +384,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iShowTheFilter($filterName)
     {
         $this->datagrid->showFilter($filterName);
+        $this->wait();
     }
 
     /**
@@ -383,18 +416,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iDisplayTheColumns($gridLabel, $columns)
     {
-        $gridLabel = (null === $gridLabel || '' === $gridLabel) ? 'products' : $gridLabel;
-        $gridName = $this->getGridName($gridLabel);
+        $currentColumns = $this->datagrid->getCurrentColumnLabels();
+        $expectedColumns = $this->getMainContext()->listToArray($columns);
 
-        $columns = $this->getMainContext()->listToArray($columns);
+        $currentColumns = array_map('strtolower', $currentColumns);
+        $expectedColumns = array_map('strtolower', $expectedColumns);
 
-        $this->getMainContext()->executeScript(
-            sprintf('sessionStorage.setItem("%s.columns", "%s");', $gridName, implode(',', $columns))
-        );
+        $columnsToAdd = array_diff($expectedColumns, $currentColumns);
+        $columnsToRemove = array_diff($currentColumns, $expectedColumns);
 
-        $this->getMainContext()->reload();
-
-        $this->wait();
+        $this->datagrid->openColumnsPopin();
+        $this->datagrid->addColumns($columnsToAdd);
+        $this->datagrid->removeColumns($columnsToRemove);
+        $this->datagrid->validateColumnsPopin();
     }
 
     /**
@@ -409,8 +443,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $columns = $this->getMainContext()->listToArray($columns);
 
         $expectedColumns = count($columns);
-
-        $this->wait('$("table.grid").length > 0');
 
         $countColumns = $this->datagrid->countColumns();
         if ($expectedColumns !== $countColumns) {
@@ -438,6 +470,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $order
      * @param string $columnName
+     *
+     * @throws ExpectationException
      *
      * @Then /^the rows should be sorted (ascending|descending) by (.*)$/
      */
@@ -524,15 +558,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $steps = [];
 
         foreach ($table->getHash() as $item) {
-            if (isset($item['result'])) {
+            $count = null;
+            if (isset($item['result']) && '' !== $item['result']) {
                 $count = count($this->getMainContext()->listToArray($item['result']));
             }
             $filter = $item['filter'];
             $isCategoryFilter = false !== strpos(strtolower($filter), 'category');
-            $countBeforeFilter = null;
 
             if (!$isCategoryFilter) {
-                $countBeforeFilter = $this->datagrid->getToolbarCount();
                 $steps[] = new Step\Then(sprintf('I show the filter "%s"', $filter));
             }
             $steps[] = new Step\Then(sprintf(
@@ -542,29 +575,12 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 $item['value']
             ));
 
-            if (isset($item['result']) && '' !== $item['result']) {
+            if (null !== $count) {
                 $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $count));
                 $steps[] = new Step\Then(sprintf('I should see entities %s', $item['result']));
             }
             if (!$isCategoryFilter) {
                 $steps[] = new Step\Then(sprintf('I hide the filter "%s"', $filter));
-                if (null !== $countBeforeFilter) {
-                    /**
-                     * At the end of the loop, we ensure we get back to the initial state of the loop.
-                     * To do this, we add a validation step checking if the number of initial elements in the datagrid
-                     * is the same than the number of elements in the datagrid after removing the filter.
-                     *
-                     * This has a second effect: it ensure the fact that the datagrid is well loaded. It fixes some
-                     * random features, where Metric and Price filters were closed during behat execution, when the
-                     * datagrid finished to be load.
-                     *
-                     * // TODO Refactor this using a comparison with content of the datagrid.
-                     */
-                    $steps[] = new Step\Then(sprintf(
-                        'the grid toolbar count should be %s elements',
-                        $countBeforeFilter
-                    ));
-                }
             }
         }
 
@@ -581,12 +597,12 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->datagrid->sortBy($columnName, $order);
 
-        $loadlingMask = $this->datagrid
+        $loadingMask = $this->datagrid
             ->getElement('Grid container')
             ->find('css', '.loading-mask .loading-mask');
 
-        $this->spin(function () use ($loadlingMask) {
-            return !$loadlingMask->isVisible();
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
         }, '".loading-mask" is still visible');
     }
 
@@ -1018,10 +1034,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCreateTheView(TableNode $table)
     {
-        $this->getCurrentPage()->getViewSelector()->click();
+        $this->getCurrentPage()->openViewSelector();
+        $this->getCurrentPage()->clickCreateOnButton("Create view");
 
         return [
-            new Step\Then('I press the "Create view" button'),
             new Step\Then('I fill in the following information in the popin:', $table),
             new Step\Then('I press the "OK" button')
         ];

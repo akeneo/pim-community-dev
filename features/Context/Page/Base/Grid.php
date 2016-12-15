@@ -152,9 +152,9 @@ class Grid extends Index
                 'Grid'                  => ['css' => 'table.grid'],
                 'Grid content'          => ['css' => 'table.grid tbody'],
                 'Filters'               => ['css' => '.filter-box, .filter-wrapper'],
-                'Grid toolbar'          => ['css' => 'div.grid-toolbar'],
+                'Grid toolbar'          => ['css' => '.AknGridToolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
-                'Configure columns'     => ['css' => 'a:contains("Columns")'],
+                'Configure columns'     => ['css' => '#configure-columns'],
                 'View selector'         => ['css' => '.grid-view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],
@@ -262,7 +262,7 @@ class Grid extends Index
     public function findAction($element, $actionName)
     {
         $rowElement = $this->getRow($element);
-        $action     = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
+        $action     = $rowElement->find('css', sprintf('.AknButtonList-item[title="%s"]', $actionName));
 
         return $action;
     }
@@ -372,7 +372,7 @@ class Grid extends Index
     {
         $pagination = $this
             ->getElement('Grid toolbar')
-            ->find('css', 'div label.dib:contains("record")');
+            ->find('css', '.AknPagination *:contains("record")');
 
         /**
          * If pagination not found or is empty, it actually count rows
@@ -474,22 +474,21 @@ class Grid extends Index
      * @param bool   $withHidden
      * @param bool   $withActions
      *
-     * @throws \InvalidArgumentException
-     *
      * @return int
      */
     public function getColumnPosition($columnName, $withHidden, $withActions)
     {
-        $headers = $this->getColumnHeaders($withHidden, $withActions);
-        foreach ($headers as $position => $header) {
-            if (strtolower($columnName) === strtolower($header->getText())) {
-                return $position;
-            }
-        }
+        return $this->spin(function () use ($columnName, $withHidden, $withActions) {
+            $headers = $this->getColumnHeaders($withHidden, $withActions);
 
-        throw new \InvalidArgumentException(
-            sprintf('Could not find a column header "%s"', $columnName)
-        );
+            foreach ($headers as $position => $header) {
+                if (strtolower($columnName) === strtolower($header->getText())) {
+                    return $position;
+                }
+            }
+
+            return false;
+        }, sprintf('Could not find a column header "%s"', $columnName));
     }
 
     /**
@@ -497,11 +496,12 @@ class Grid extends Index
      *
      * @param string $columnName
      * @param string $order
+     * @param string $order
      */
     public function sortBy($columnName, $order = 'ascending')
     {
         $sorter = $this->getColumnSorter($columnName);
-        if ($sorter->getParent()->getAttribute('class') !== strtolower($order)) {
+        if (!$sorter->getParent()->hasClass(strtolower($order))) {
             $sorter->click();
         }
     }
@@ -517,7 +517,7 @@ class Grid extends Index
     public function isSortedAndOrdered($columnName, $order)
     {
         $order = strtolower($order);
-        if ($this->getColumnHeader($columnName)->getAttribute('class') !== $order) {
+        if (!$this->getColumnHeader($columnName)->hasClass($order)) {
             return false;
         }
 
@@ -585,7 +585,7 @@ class Grid extends Index
     public function showFilter($filterName)
     {
         $this->spin(function () {
-            return $this->getElement('Body')->find('css', '.filter-box, .filter-wrapper');
+            return $this->getElement('Body')->find('css', $this->elements['Filters']['css']);
         }, 'The filter box is not loaded');
 
         $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
@@ -679,6 +679,15 @@ class Grid extends Index
 
             return false;
         }, sprintf('Impossible to activate filter "%s"', $filterName));
+
+        $this->spin(function () use ($manageFilters) {
+            $manageClosed = !$manageFilters->isVisible();
+            if (!$manageClosed) {
+                $this->clickFiltersList();
+            }
+
+            return $manageClosed;
+        }, 'Could not close Manage filters');
     }
 
     /**
@@ -693,6 +702,23 @@ class Grid extends Index
         }, 'Impossible to find filter list');
 
         $filterList->click();
+    }
+
+    /**
+     * Set the content of filter search
+     *
+     * @param string $text
+     */
+    public function typeInManageFilterInput($text)
+    {
+        $manageFilters = $this->getElement('Manage filters');
+        if (!$manageFilters->isVisible()) {
+            $this->clickFiltersList();
+        }
+
+        $manageFilters
+            ->find('css', 'input')
+            ->setValue($text);
     }
 
     /**
@@ -755,20 +781,31 @@ class Grid extends Index
      * @param bool $withHidden
      * @param bool $withActions
      *
+     * @throws \InvalidArgumentException
+     *
      * @return NodeElement[]
      */
     protected function getColumnHeaders($withHidden = false, $withActions = true)
     {
-        $head    = $this->getGrid()->find('css', 'thead');
-        $headers = $head->findAll('css', 'th');
-
+        $head     = $this->getGrid()->find('css', 'thead');
+        $selector = '//th';
         if (!$withActions) {
-            $headers = array_filter($headers, function ($header) {
-                return false === strpos($header->getAttribute('class'), 'action-column') &&
-                    false === strpos($header->getAttribute('class'), 'select-all-header-cell') &&
-                    null === $header->find('css', 'input[type="checkbox"]');
-            });
+            // This selector is equivalent to css selector
+            // ':not(.action-column):not(.select-all-header-cell):not(:has(input))'
+            // but we have to do it in xpath because :has() is neither supported by current
+            // browsers nor emulated by Selenium.
+            $selector .= '['.
+                'not(contains(@class, \'action-column\')) '.
+                'and not(contains(@class, \'select-all-header-cell\')) '.
+                'and not(input)'.
+            ']';
         }
+
+        if (null === $head) {
+            throw new \InvalidArgumentException('Cannot find grid head.');
+        }
+
+        $headers = $head->findAll('xpath', $selector);
 
         if ($withHidden) {
             return $headers;
@@ -787,22 +824,35 @@ class Grid extends Index
      *
      * @param string $columnName
      *
-     * @throws \InvalidArgumentException
-     *
      * @return NodeElement
      */
     public function getColumnHeader($columnName)
     {
-        $headers = $this->getColumnHeaders(true);
-        foreach ($headers as $header) {
-            if (strtolower($columnName) === strtolower($header->getText())) {
-                return $header;
-            }
-        }
+        return $this->spin(function () use ($columnName) {
+            $headers = $this->getColumnHeaders(true);
 
-        throw new \InvalidArgumentException(
-            sprintf('Could not find column header "%s"', $columnName)
-        );
+            foreach ($headers as $header) {
+                if (strtolower($columnName) === strtolower($header->getText())) {
+                    return $header;
+                }
+            }
+
+            return false;
+        }, sprintf('Could not find column header "%s"', $columnName));
+    }
+
+    /**
+     * Return the labels of current columns
+     *
+     * @return string[]
+     */
+    public function getCurrentColumnLabels()
+    {
+        $headers = $this->getColumnHeaders(false, false);
+
+        return array_map(function (NodeElement $column) {
+            return $column->getText();
+        }, $headers);
     }
 
     /**
@@ -813,7 +863,12 @@ class Grid extends Index
     protected function getRows()
     {
         return $this->spin(function () {
-            return $this->getGridContent()->findAll('xpath', '/tr');
+            $content = $this->getGridContent();
+            if (null === $content) {
+                return null;
+            }
+
+            return $content->findAll('xpath', '/tr');
         }, 'Cannot get the grid rows.');
     }
 
@@ -826,13 +881,33 @@ class Grid extends Index
     }
 
     /**
-     * Hide a grid column
+     * Add grid columns
      *
-     * @param string $column
+     * @param string[] $columns
      */
-    public function hideColumn($column)
+    public function addColumns($columns)
     {
-        return $this->getElement('Configuration Popin')->hideColumn($column);
+        return $this->getElement('Configuration Popin')->addColumns($columns);
+    }
+
+    /**
+     * Remove grid columns
+     *
+     * @param string[] $columns
+     */
+    public function removeColumns($columns)
+    {
+        return $this->getElement('Configuration Popin')->removeColumns($columns);
+    }
+
+    /**
+     * Validate the columns selection
+     *
+     * @param string[] $columns
+     */
+    public function validateColumnsPopin()
+    {
+        $this->getElement('Configuration Popin')->apply();
     }
 
     /**
@@ -884,7 +959,7 @@ class Grid extends Index
     protected function getDropdownSelector()
     {
         return $this->spin(function () {
-            return $this->getElement('Grid')->find('css', 'th .btn-group');
+            return $this->getElement('Grid')->find('css', '.AknSeveralActionsButton');
         }, 'Grid dropdown row selector not found');
     }
 
@@ -897,17 +972,28 @@ class Grid extends Index
     {
         $selector = $this->getDropdownSelector();
 
-        $dropdown = $this->spin(function () use ($selector) {
-            return $selector->find('css', 'button.dropdown-toggle');
-        }, 'Dropdown row selector not found');
+        $this->spin(function () use ($selector, $item) {
+            $loadingWrapper = $this->find('css', '#loading-wrapper');
+            if ((null !== $loadingWrapper) && $loadingWrapper->isVisible()) {
+                return false;
+            }
 
-        $dropdown->click();
+            $dropdown = $selector->find('css', 'button.dropdown-toggle');
+            if (null === $dropdown) {
+                return false;
+            }
 
-        $listItem = $this->spin(function () use ($dropdown, $item) {
-            return $dropdown->getParent()->find('css', sprintf('li:contains("%s") a', $item));
-        }, sprintf('Item "%s" of dropdown row selector not found', $item));
+            $dropdown->click();
 
-        $listItem->click();
+            $listItem = $dropdown->getParent()->find('css', sprintf('li:contains("%s") a', $item));
+            if (null === $listItem) {
+                return false;
+            }
+
+            $listItem->click();
+
+            return true;
+        }, sprintf('Dropdown row selector or item "%s" not found', $item));
     }
 
     /**

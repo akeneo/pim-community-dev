@@ -1,0 +1,53 @@
+@import '../base/variables';
+
+.AknMessageBox {
+  border: 1px solid @AknBorderColor;
+  color: @AknDefaultFontColor;
+  background: @AknLightGray;
+  border-radius: 2px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+
+  &-title {
+    display: inline;
+    font-weight: bold;
+    margin-right: 10px;
+    text-transform: uppercase;
+  }
+
+  &--apply {
+    border: 1px solid darken(@AknGreen, 10%);
+    background: lighten(@AknGreen, 30%);
+    color: darken(@AknGreen, 20%);
+  }
+
+  &--warning {
+    border: 1px solid darken(@AknOrange, 10%);
+    background: lighten(@AknOrange, 30%);
+    color: @AknDefaultFontColor;
+  }
+
+  &--danger,
+  &--error {
+    border: 1px solid darken(@AknRed, 10%);
+    background: lighten(@AknRed, 30%);
+    color: darken(@AknRed, 20%);
+  }
+
+  &-list {
+    list-style: disc inside none;
+  }
+
+  &--centered {
+    text-align: center;
+  }
+
+  &--hide {
+    display: none;
+  }
+
+  & + & {
+    margin-top: 10px;
+  }
+}

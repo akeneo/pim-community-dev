@@ -9,8 +9,8 @@ define(
             id: 'completeness-widget',
 
             options: {
-                completeBar: 'bar-success',
-                inCompleteBar: 'bar-warning',
+                completeBar: 'AknProgress--apply',
+                inCompleteBar: 'AknProgress--warning',
                 channelsPerRow: 3
             },
 

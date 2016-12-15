@@ -31,13 +31,19 @@
       </div>\
     <% } %>\
     <div class="modal-body">{{content}}</div>\
-    <div class="modal-footer">\
+    <div class="AknButtonList AknButtonList--right modal-footer">\
       <% if (allowCancel) { %>\
         <% if (cancelText) { %>\
-          <a href="#" class="btn cancel icons-holder-text"><i class="icon-chevron-left"></i>{{cancelText}}</a>\
+          <a href="#" class="AknButtonList-item AknButton AknButton--withIcon AknButton--grey cancel icons-holder-text">\
+            <i class="AknButton-icon icon-chevron-left"></i>\
+            {{cancelText}}\
+          </a>\
         <% } %>\
       <% } %>\
-      <a href="#" class="btn btn-primary ok icons-holder-text"><i class="icon-ok"></i>{{okText}}</a>\
+      <a href="#" class="AknButtonList-item AknButton AknButton--withIcon AknButton--apply ok icons-holder-text">\
+        <i class="AknButton-icon icon-ok"></i>\
+        {{okText}}\
+      </a>\
     </div>\
   ');
 

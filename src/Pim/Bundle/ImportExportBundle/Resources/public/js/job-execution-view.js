@@ -54,7 +54,7 @@ define(
                 clearInterval(interval);
                 interval = null;
                 this.$el.html(
-                    '<tr><td colspan="5"><span class="label label-important">' +
+                    '<tr><td colspan="5"><span class="AknBadge AknBadge--important">' +
                         options.xhr.statusText +
                     '</span></td></tr>'
                 );
@@ -97,7 +97,7 @@ define(
         var JobExecutionStatusView = Backbone.View.extend({
             statusLabel: 'Status',
             initialize: function (params) {
-                this.statusLabel      = params.statusLabel || this.statusLabel;
+                this.statusLabel = params.statusLabel || this.statusLabel;
 
                 this.listenTo(this.model, 'change', this.render);
             },

@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
@@ -9,10 +11,12 @@ use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -25,7 +29,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider,
-        AttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $converter
     ) {
         $this->beConstructedWith(
             $productNormalizer,
@@ -34,7 +39,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $localeRepository,
             $structureVersionProvider,
             $formProvider,
-            $localizedConverter
+            $localizedConverter,
+            $converter
         );
     }
 
@@ -51,11 +57,13 @@ class ProductNormalizerSpec extends ObjectBehavior
         $structureVersionProvider,
         $formProvider,
         $localizedConverter,
+        $converter,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
         GroupInterface $group,
-        ArrayCollection $groups
+        ArrayCollection $groups,
+        FileInfoInterface $fileInfo
     ) {
         $options = [
             'decimal_separator' => ',',
@@ -67,24 +75,39 @@ class ProductNormalizerSpec extends ObjectBehavior
             'categories' => ['kitchen'],
             'family'     => '',
             'values' => [
-                'normalized_property' => ['data' => 'a nice normalized property', 'locale' => null, 'scope' => null],
-                'number' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
-                'metric' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
-                'prices' => ['data' => 12.5, 'locale' => null, 'scope' => null],
-                'date'   => ['data' => '2015-01-31', 'locale' => null, 'scope' => null],
+                'normalized_property' => [['data' => 'a nice normalized property', 'locale' => null, 'scope' => null]],
+                'number'              => [['data' => 12.5000, 'locale' => null, 'scope' => null]],
+                'metric'              => [['data' => 12.5000, 'locale' => null, 'scope' => null]],
+                'prices'              => [['data' => 12.5, 'locale' => null, 'scope' => null]],
+                'date'                => [['data' => '2015-01-31', 'locale' => null, 'scope' => null]],
+                'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
             ]
         ];
 
         $valuesLocalized = [
-            'normalized_property' => ['data' => 'a nice normalized property', 'locale' => null, 'scope' => null],
-            'number' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
-            'metric' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
-            'prices' => ['data' => '12,5', 'locale' => null, 'scope' => null],
-            'date'   => ['data' => '31/01/2015', 'locale' => null, 'scope' => null],
+            'normalized_property' => [['data' => 'a nice normalized property', 'locale' => null, 'scope' => null]],
+            'number'              => [['data' => '12,5000', 'locale' => null, 'scope' => null]],
+            'metric'              => [['data' => '12,5000', 'locale' => null, 'scope' => null]],
+            'prices'              => [['data' => '12,5', 'locale' => null, 'scope' => null]],
+            'date'                => [['data' => '31/01/2015', 'locale' => null, 'scope' => null]],
+            'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
         ];
 
-        $productNormalizer->normalize($mug, 'json', $options)->willReturn($productNormalized);
+        $productNormalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
+
+        $valuesConverted = $valuesLocalized;
+        $valuesConverted['picture'] = [
+            [
+                'data' => [
+                    'filePath' => 'a/b/c/my_picture.jpg', 'originalFilename' => 'my_picture.jpg'
+                ],
+                'locale' => null,
+                'scope' => null
+            ]
+        ];
+
+        $converter->convert($valuesLocalized)->willReturn($valuesConverted);
 
         $mug->getId()->willReturn(12);
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
@@ -111,7 +134,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'enabled'    => true,
                 'categories' => ['kitchen'],
                 'family'     => '',
-                'values'     => $valuesLocalized,
+                'values'     => $valuesConverted,
                 'meta'       => [
                     'form'              => 'product-edit-form',
                     'id'                => 12,

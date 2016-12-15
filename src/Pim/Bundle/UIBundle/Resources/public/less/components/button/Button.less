@@ -1,0 +1,182 @@
+@import '../../base/variables';
+
+.AknButton {
+  @darken: 10%;
+  @lighten: 20%;
+
+  // Default button color is light gray
+  background: @AknLightGray;
+  color: @AknDefaultFontColor;
+  height: @AknDefaultButtonSize;
+  line-height: @AknDefaultButtonSize - 2px;
+  font-size: @AknFontSizeBig;
+  min-width: @AknDefaultButtonSize;
+  display: inline-block;
+  padding: 0 @AknButtonsPadding;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  transition: background 0.1s ease;
+
+  &--withIcon {
+    padding-left: 0;
+  }
+
+  &:hover,
+  &--active {
+    background: darken(@AknLightGray, @darken);
+    color: darken(@AknDefaultFontColor, @darken);
+  }
+
+  &-icon {
+    height: @AknDefaultButtonSize;
+    width: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize;
+    background: darken(@AknLightGray, @darken);
+    text-align: center;
+    margin-left: 0;
+    margin-right: @AknButtonsPadding;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  &--disabled,
+  &--disabled &-icon {
+    background: lighten(@AknLightGray, @lighten);
+    cursor: not-allowed;
+  }
+
+  // Apply color
+  &--apply {
+    background-color: @AknGreen;
+    color: white;
+  }
+
+  &--apply:hover,
+  &--apply&--active,
+  &--apply &-icon {
+    background: darken(@AknGreen, @darken);
+    color: white;
+  }
+
+  &--apply&--disabled,
+  &--apply&--disabled &-icon {
+    background: lighten(@AknGreen, @lighten);
+    cursor: not-allowed;
+  }
+
+  // Grey color
+  &--grey {
+    background-color: @AknGrey;
+    color: white;
+  }
+
+  &--grey:hover,
+  &--grey&--active,
+  &--grey &-icon {
+    background: darken(@AknGrey, @darken);
+    color: white;
+  }
+
+  &--grey&--disabled,
+  &--grey&--disabled &-icon {
+    background: lighten(@AknGrey, @lighten);
+    cursor: not-allowed;
+  }
+
+  // Important color
+  &--important {
+    background-color: @AknRed;
+    color: white;
+  }
+
+  &--important:hover,
+  &--important&--active,
+  &--important &-icon {
+    background: darken(@AknRed, @darken);
+    color: white;
+  }
+
+  &--important&--disabled,
+  &--important&--disabled &-icon {
+    background: lighten(@AknRed, @lighten);
+    cursor: not-allowed;
+  }
+
+  // Action color
+  &--action {
+    background-color: @AknBlue;
+    color: white;
+  }
+
+  &--action:hover,
+  &--action&--active,
+  &--action &-icon {
+    background: darken(@AknBlue, @darken);
+    color: white;
+  }
+
+  &--action&--disabled,
+  &--action&--disabled &-icon {
+    background: lighten(@AknBlue, @lighten);
+    cursor: not-allowed;
+  }
+
+  // Sizes
+  &--big {
+    height: @AknBigButtonSize;
+    line-height: @AknBigButtonSize;
+    min-width: @AknBigButtonSize;
+    font-size: @AknFontSizeBig;
+  }
+
+  &--big &-icon {
+    height: @AknBigButtonSize;
+    width: @AknBigButtonSize;
+    line-height: @AknBigButtonSize;
+    font-size: @AknFontSizeBig;
+  }
+
+  &--small {
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    min-width: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--small &-icon {
+    height: @AknLittleButtonSize;
+    width: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--micro {
+    height: @AknMicroButtonSize;
+    line-height: @AknMicroButtonSize - 2px;
+    min-width: @AknMicroButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--micro &-icon {
+    height: @AknMicroButtonSize;
+    width: @AknMicroButtonSize;
+    line-height: @AknMicroButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--noLeftRadius {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &--hidden {
+    display: none;
+  }
+
+  &--uppercase {
+    text-transform: uppercase;
+  }
+}

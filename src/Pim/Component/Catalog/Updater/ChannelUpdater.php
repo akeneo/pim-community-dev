@@ -46,10 +46,13 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * Expected input format :
      * {
      *     'code': 'ecommerce',
-     *     'label': 'Ecommerce',
+     *     "labels": {
+     *         "en_US": "Tablet",
+     *         "fr_FR": "Tablette"
+     *     },
      *     'locales': ['en_US'],
      *     'currencies': ['EUR', 'USD'],
-     *     'tree': 'master'
+     *     'category_tree': 'master'
      * }
      */
     public function update($channel, array $data, array $options = [])
@@ -83,8 +86,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
             case 'code':
                 $channel->setCode($data);
                 break;
-            case 'tree':
-                $this->setTree($channel, $data);
+            case 'category_tree':
+                $this->setCategoryTree($channel, $data);
                 break;
             case 'locales':
                 $this->setLocales($channel, $data);
@@ -92,11 +95,11 @@ class ChannelUpdater implements ObjectUpdaterInterface
             case 'currencies':
                 $this->setCurrencies($channel, $data);
                 break;
-            case 'label':
-                $channel->setLabel($data);
-                break;
             case 'conversion_units':
                 $channel->setConversionUnits($data);
+                break;
+            case 'labels':
+                $this->setLabels($channel, $data);
                 break;
         }
     }
@@ -105,7 +108,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * @param ChannelInterface $channel
      * @param string           $treeCode
      */
-    protected function setTree(ChannelInterface $channel, $treeCode)
+    protected function setCategoryTree(ChannelInterface $channel, $treeCode)
     {
         $category = $this->categoryRepository->findOneByIdentifier($treeCode);
         if (null === $category) {
@@ -149,5 +152,18 @@ class ChannelUpdater implements ObjectUpdaterInterface
             $locales[] = $locale;
         }
         $channel->setLocales($locales);
+    }
+
+    /**
+     * @param ChannelInterface $channel
+     * @param array            $data
+     */
+    protected function setLabels(ChannelInterface $channel, array $data)
+    {
+        foreach ($data as $localeCode => $label) {
+            $channel->setLocale($localeCode);
+            $translation = $channel->getTranslation();
+            $translation->setLabel($label);
+        }
     }
 }

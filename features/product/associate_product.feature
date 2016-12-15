@@ -136,9 +136,9 @@ Feature: Associate a product
       | orange-boots |
       | white-boots  |
     And the following associations for the product "red-boots":
-      | type   | product     |
-      | X_SELL | black-boots |
-      | X_SELL | gray-boots  |
+      | type   | products     |
+      | X_SELL | black-boots  |
+      | X_SELL | gray-boots   |
     And I edit the "red-boots" product
     When I visit the "Associations" tab
     Then I should see the text "black-boots"
@@ -156,9 +156,9 @@ Feature: Associate a product
       | orange-boots |
       | white-boots  |
     And the following associations for the product "red-boots":
-      | type   | product     |
-      | X_SELL | black-boots |
-      | X_SELL | gray-boots  |
+      | type   | products     |
+      | X_SELL | black-boots  |
+      | X_SELL | gray-boots   |
     And I edit the "red-boots" product
     When I visit the "Associations" tab
     Then I should be able to sort the rows by Is associated
@@ -180,7 +180,8 @@ Feature: Associate a product
     Given I edit the "shoelaces" product
     And I visit the "Associations" tab
     And I select the "Substitution" association
-    And I filter by "sku" with operator "Contains" and value "gr"
+    Then the grid should contain 6 elements
+    When I filter by "sku" with operator "Contains" and value "gr"
     And I press the "Show groups" button
     And I filter by "type" with operator "equals" and value "[RELATED]"
     When I edit the "gray-boots" product

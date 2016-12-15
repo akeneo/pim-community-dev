@@ -46,7 +46,7 @@ Oro\Bundle\UserBundle\Entity\Role:
         label:
             - NotBlank:     ~
             - Length:
-                max:        30
+                max:        25
 
 Oro\Bundle\UserBundle\Entity\Group:
     constraints:

@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\Product;
 
@@ -333,7 +332,7 @@ class NavigationContext extends BaseNavigationContext
         }, sprintf('Cannot find product "%s"', $product->getId()));
 
         $this->getMainContext()->spin(function () {
-            return $this->getCurrentPage()->find('css', '.object-label');
+            return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
         }, 'Can not find any product label');
     }
 

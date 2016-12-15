@@ -154,7 +154,7 @@ class MediaFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_valid($image)
     {
         $image->getCode()->willReturn('media_code');
-        $value = ['data' => 132, 'unit' => 'foo'];
+        $value = ['amount' => 132, 'unit' => 'foo'];
         $this->shouldThrow(
             InvalidArgumentException::stringExpected('media_code', 'filter', 'media', gettype($value))
         )->during('addAttributeFilter', [$image, '=', $value]);

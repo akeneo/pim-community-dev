@@ -37,9 +37,14 @@ class ProductWriterSpec extends ObjectBehavior
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->directory);
 
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $attributeRepository, $fileExporterPath, [
-            'pim_catalog_file', 'pim_catalog_image'
-        ]);
+        $this->beConstructedWith(
+            $arrayConverter,
+            $bufferFactory,
+            $flusher,
+            $attributeRepository,
+            $fileExporterPath,
+            ['pim_catalog_file', 'pim_catalog_image']
+        );
     }
 
     function letGo()
@@ -68,7 +73,7 @@ class ProductWriterSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'product.xlsx');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
@@ -76,6 +81,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('with_media')->willReturn(true);
 
         $productStandard1 = [
+            'identifier' => 'jackets',
             'enabled'    => true,
             'categories' => ['2015_clothes', '2016_clothes'],
             'groups'     => [],
@@ -85,47 +91,37 @@ class ProductWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => 'jackets'
+                        'data'   => 'jackets',
                     ]
                 ],
                 'description' => [
                     [
                         'locale' => 'en_US',
                         'scope'  => 'ecommerce',
-                        'data'   => [
-                            'filePath' => 'A wonderful description...',
-                        ]
+                        'data'   => 'A wonderful description...',
                     ],
                     [
                         'locale' => 'en_US',
                         'scope'  => 'mobile',
-                        'data'   => [
-                            'filePath' => 'Simple description',
-                        ]
+                        'data'   => 'Simple description',
                     ],
                     [
                         'locale' => 'fr_FR',
                         'scope'  => 'ecommerce',
-                        'data'   => [
-                            'filePath' => 'Une description merveilleuse...',
-                        ]
+                        'data'   => 'Une description merveilleuse...',
                     ],
                     [
                         'locale' => 'fr_FR',
                         'scope'  => 'mobile',
-                        'data'   => [
-                            'filePath' => 'Une simple description',
-                        ]
+                        'data'   => 'Une simple description',
                     ],
                 ],
                 'media' => [
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => [
-                            // the file paths are resolved before the conversion to the standard format
-                            'filePath' => 'files/jackets/media/it\'s the filename.jpg',
-                        ]
+                        // the file paths are resolved before the conversion to the standard format
+                        'data'   => 'files/jackets/media/it\'s the filename.jpg',
                     ]
                 ]
             ]
@@ -145,6 +141,7 @@ class ProductWriterSpec extends ObjectBehavior
         ];
 
         $productStandard2 = [
+            'identifier' => 'sweaters',
             'type'   => 'product',
             'labels' => [
                 'en_US' => 'Sweaters',
@@ -162,9 +159,7 @@ class ProductWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => [
-                            'filePath' => 'wrong/path'
-                        ]
+                        'data'   => 'filePath'
                     ]
                 ]
             ]
@@ -184,6 +179,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('xlsx_product_export');
+        $jobInstance->getLabel()->willReturn('XLSX Product export');
 
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
@@ -196,7 +192,6 @@ class ProductWriterSpec extends ObjectBehavior
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 
-        $attributeRepository->getIdentifierCode()->willReturn('sku');
         $attributeRepository->getAttributeTypeByCodes(['sku', 'description', 'media'])
             ->willReturn(['media' => 'pim_catalog_image']);
         $attributeRepository->getAttributeTypeByCodes(['sku', 'media'])
@@ -210,7 +205,7 @@ class ProductWriterSpec extends ObjectBehavior
             'identifier' => 'sweaters', 'code' => 'media'
         ])->willReturn('files/sweaters/media/');
 
-        $productStandard1['values']['media'][0]['data']['filePath'] = 'files/jackets/media/' . $originalFilename;
+        $productStandard1['values']['media'][0]['data'] = 'files/jackets/media/' . $originalFilename;
         $arrayConverter->convert($productStandard1, [])->willReturn($productFlat1);
         $arrayConverter->convert($productStandard2, [])->willReturn($productFlat2);
 
@@ -235,13 +230,14 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
+        JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'product.xlsx');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
@@ -266,9 +262,7 @@ class ProductWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => [
-                            'filePath' => 'a/b/c/d/it_s_the_filename.jpg',
-                        ]
+                        'data'   => 'a/b/c/d/it_s_the_filename.jpg'
                     ]
                 ]
             ]
@@ -287,6 +281,8 @@ class ProductWriterSpec extends ObjectBehavior
         $items = [$productStandard];
 
         $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('XLSX Product export');
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
@@ -311,6 +307,7 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
+        JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
@@ -319,13 +316,15 @@ class ProductWriterSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('CSV Product export');
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
@@ -334,7 +333,10 @@ class ProductWriterSpec extends ObjectBehavior
             Argument::type('array'),
             Argument::type('string'),
             -1
-        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
+        )->willReturn([
+            $this->directory . 'XLSX_Product_export_product1.xlsx',
+            $this->directory . 'XLSX_Product_export_product2.xlsx'
+        ]);
 
         $this->initialize();
         $this->flush();

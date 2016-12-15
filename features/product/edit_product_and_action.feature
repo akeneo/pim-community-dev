@@ -11,7 +11,7 @@ Feature: Product edition clicking on another action
       | sandal | sandals |
     And I am logged in as "Mary"
     And I am on the products page
-    And I display the columns sku, name, image, description and family
+    And I display the columns SKU, Name, Description and Family
 
   Scenario: Successfully edit a product and back to the grid
     Given I am on the "sandal" product page

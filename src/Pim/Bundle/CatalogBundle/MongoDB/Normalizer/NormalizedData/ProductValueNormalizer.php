@@ -24,6 +24,8 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
 
     /**
      * {@inheritdoc}
+     *
+     * @param array $object
      */
     public function normalize($object, $format = null, array $context = [])
     {

@@ -12,12 +12,13 @@ define(
         'underscore',
         'pim/form',
         'text!pim/template/product/scope-switcher',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'pim/user-context'
     ],
-    function (_, BaseForm, template, FetcherRegistry) {
+    function (_, BaseForm, template, FetcherRegistry, UserContext) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'btn-group scope-switcher',
+            className: 'AknDropdown AknButtonList-item scope-switcher',
             events: {
                 'click li a': 'changeScope'
             },
@@ -37,7 +38,8 @@ define(
                         this.$el.html(
                             this.template({
                                 channels: channels,
-                                currentScope: scope.label
+                                currentScope: scope.labels[UserContext.get('catalogLocale')],
+                                catalogLocale: UserContext.get('catalogLocale')
                             })
                         );
                         this.delegateEvents();

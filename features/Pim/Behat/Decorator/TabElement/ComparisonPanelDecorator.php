@@ -13,7 +13,7 @@ class ComparisonPanelDecorator extends ElementDecorator
     use SpinCapableTrait;
 
     protected $selectors = [
-        'Change selection dropdown' => '.attribute-copy-actions .selection-dropdown .dropdown-toggle',
+        'Change selection dropdown' => '.attribute-copy-actions .selection-dropdown *[data-toggle="dropdown"]',
         'Copy selected button'      => '.attribute-copy-actions .copy',
         'Copy source dropdown'      => '.attribute-copy-actions .source-switcher',
     ];

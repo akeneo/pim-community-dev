@@ -6,7 +6,9 @@ parameters:
     pim_serializer.normalizer.flat.category.class:          Pim\Bundle\VersioningBundle\Normalizer\Flat\CategoryNormalizer
     pim_serializer.normalizer.flat.channel.class:           Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer
     pim_serializer.normalizer.flat.family.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer
+    pim_serializer.normalizer.flat.proxy_group.class:       Pim\Bundle\VersioningBundle\Normalizer\Flat\ProxyGroupNormalizer
     pim_serializer.normalizer.flat.group.class:             Pim\Bundle\VersioningBundle\Normalizer\Flat\GroupNormalizer
+    pim_serializer.normalizer.flat.variant_group.class:     Pim\Bundle\VersioningBundle\Normalizer\Flat\VariantGroupNormalizer
     pim_serializer.normalizer.flat.job_instance.class:      Pim\Bundle\VersioningBundle\Normalizer\Flat\JobInstanceNormalizer
     pim_serializer.normalizer.flat.label_translation.class: Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer
     pim_serializer.normalizer.flat.product.class:           Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductNormalizer
@@ -37,7 +39,6 @@ parameters:
 
 services:
     pim_versioning.serializer.normalizer.flat.product:
-        public: false
         class: '%pim_serializer.normalizer.flat.product.class%'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
@@ -45,14 +46,13 @@ services:
     pim_versioning.serializer.normalizer.flat.product_value:
         public: false
         class: '%pim_serializer.normalizer.flat.product_value.class%'
-        arguments:
-            - '@pim_catalog.localization.localizer.registry'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.category:
         class: '%pim_serializer.normalizer.flat.category.class%'
         arguments:
+            - '@pim_catalog.normalizer.standard.category'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
@@ -60,6 +60,7 @@ services:
     pim_versioning.serializer.normalizer.flat.attribute:
         class: '%pim_serializer.normalizer.flat.attribute.class%'
         arguments:
+            - '@pim_catalog.normalizer.standard.attribute'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
@@ -67,36 +68,47 @@ services:
     pim_versioning.serializer.normalizer.flat.family:
         class: '%pim_serializer.normalizer.flat.family.class%'
         arguments:
+            - '@pim_catalog.normalizer.standard.family'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
-            - '@pim_catalog.filter.chained'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_requirement'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.attribute_group:
         class: '%pim_serializer.normalizer.flat.attribute_group.class%'
         arguments:
+            - '@pim_catalog.normalizer.standard.attribute_group'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
-            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.association_type:
         class: '%pim_serializer.normalizer.flat.association_type.class%'
         arguments:
+            - '@pim_catalog.normalizer.standard.association_type'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.proxy_group:
+        class: '%pim_serializer.normalizer.flat.proxy_group.class%'
+        arguments:
+            - '@pim_versioning.serializer.normalizer.flat.group'
+            - '@pim_versioning.serializer.normalizer.flat.variant_group'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.group:
         class: '%pim_serializer.normalizer.flat.group.class%'
         arguments:
+            - '@pim_catalog.normalizer.standard.group'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
-            - '@pim_serializer.denormalizer.product_values'
-            - '@pim_serializer.normalizer.product_values'
-        tags:
-            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.variant_group:
+        class: '%pim_serializer.normalizer.flat.variant_group.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_versioning.serializer.normalizer.flat.product_value'
+            - '@pim_catalog.denormalizer.standard.product_values'
 
     pim_versioning.serializer.normalizer.flat.job_instance:
         class: '%pim_serializer.normalizer.flat.job_instance.class%'
@@ -105,12 +117,14 @@ services:
 
     pim_versioning.serializer.normalizer.flat.channel:
         class: '%pim_serializer.normalizer.flat.channel.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.channel'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.label_translation:
         class: '%pim_serializer.normalizer.flat.label_translation.class%'
-        parent: pim_serializer.normalizer.label_translation
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
@@ -119,13 +133,13 @@ services:
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
-    pim_versioning.serializer.normalizer.flat.datetime:
-        class: '%pim_serializer.normalizer.flat.datetime.class%'
+    pim_versioning.serializer.normalizer.flat.metric:
+        class: '%pim_serializer.normalizer.flat.metric.class%'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
-    pim_versioning.serializer.normalizer.flat.metric:
-        class: '%pim_serializer.normalizer.flat.metric.class%'
+    pim_versioning.serializer.normalizer.flat.datetime:
+        class: '%pim_serializer.normalizer.flat.datetime.class%'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
@@ -141,12 +155,12 @@ services:
 
     pim_versioning.serializer.normalizer.flat.file:
         class: '%pim_serializer.normalizer.flat.file.class%'
-        arguments:
-            - '@pim_connector.writer.file.media_exporter_path_generator'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.locale:
         class: '%pim_serializer.normalizer.flat.locale.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.locale'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }

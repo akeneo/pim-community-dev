@@ -1,32 +1,29 @@
 {% extends 'PimEnrichBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {{ elements.page_header(title|trans, null, subtitle|transchoice(itemsCount)) }}
+    {% set title %}
+        {{ title|default('title')|trans }} /
+        {{ subtitle|transchoice(itemsCount) }}
+    {% endset %}
+
+    {{ elements.page_header(title) }}
 
     {{ parent() }}
 
-    <div class="row">
-        <div class="offset1">
-            <h3>{{ title|default('title')|trans }}</h3>
-            <h4>{{ subtitle|default('subtitle')|transchoice(itemsCount) }}</h4>
-        </div>
-    </div>
-
     {{ form_start(form, { 'action': path(actionPath, queryParams) }) }}
 
-        <div class="row">
-            <div class="offset1">
+        <div class="AknWidget">
+            <div class="AknWidget-header">
+                {{ subtitle|transchoice(itemsCount) }}
+            </div>
+            <div class="AknWidget-content AknWidget-content--withPadding">
                 {{ form_widget(form.operationAlias) }}
+                <div class="AknButtonList AknButtonList--right configuration">
+                    {{ elements.link('btn.cancel', path(canceledPath), {icon: 'chevron-left', class: 'AknButtonList-item btn-cancel'}) }}
+                    {{ elements.submitBtn('btn.next', 'chevron-right', 'AknButtonList-item') }}
+                </div>
             </div>
         </div>
-
-        <div class="row buffer-top">
-            <div class="offset1 configuration">
-                {{ elements.link('btn.cancel', path(canceledPath), {icon: 'chevron-left', class: 'btn-cancel'}) }}
-                {{ elements.submitBtn('btn.next','chevron-right') }}
-            </div>
-        </div>
-
     {{ form_end(form) }}
 {% endblock %}
 

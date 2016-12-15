@@ -51,7 +51,7 @@ class ComparableTabDecorator extends ElementDecorator
     public function getComparisonFieldContainer($fieldLabel)
     {
         $label = $this->spin(function () use ($fieldLabel) {
-            return $this->find('css', sprintf('.copy-container header label:contains("%s")', $fieldLabel));
+            return $this->find('css', sprintf('.copy-container .AknFieldContainer-label:contains("%s")', $fieldLabel));
         }, sprintf('Cannot find the comparison field with the label "%s"', $fieldLabel));
 
         return $label->getParent()->getParent()->getParent();

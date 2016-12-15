@@ -72,10 +72,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
         $storer->store(Argument::cetera())->willReturn($fileInfo);
 
-        $data = [
-            'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__.'/../../../../../../../features/Context/fixtures/akeneo.jpg'),
-        ];
+        $data = realpath(__DIR__.'/../../../../../../../features/Context/fixtures/akeneo.jpg');
 
         $attribute->getCode()->willReturn('front_view');
         $product->getValue('front_view', 'fr_FR', 'mobile')->willReturn($mediaValue);
@@ -84,7 +81,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
-    function it_throws_an_error_if_attribute_data_is_not_an_array_or_null(
+    function it_throws_an_error_if_attribute_data_is_not_a_string(
         AttributeInterface $attribute,
         ProductInterface $product
     ) {
@@ -93,43 +90,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $data = new \stdClass();
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'media', gettype($data))
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
-    function it_throws_an_error_if_attribute_data_filepath_is_missing(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = [
-            'originalFilename' => 'image',
-        ];
-
-        $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'filePath', 'setter', 'media', print_r($data, true))
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
-    function it_throws_an_error_if_attribute_data_original_filename_is_missing(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = [
-            'filePath' => realpath(__DIR__.'/../../../../../../../features/Context/fixtures/akeneo.jpg'),
-        ];
-
-        $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
-                'attributeCode',
-                'originalFilename',
-                'setter',
-                'media',
-                print_r($data, true)
-            )
+            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'media', gettype($data))
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -139,10 +100,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = [
-            'filePath'         => 'path/to/unknown/file',
-            'originalFilename' => 'image',
-        ];
+        $data = 'path/to/unknown/file';
 
         $this->shouldThrow(
             InvalidArgumentException::expected(
@@ -172,10 +130,10 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $imageValue->setMedia(null)->shouldBeCalled();
 
         $this->setAttributeData($product, $file, null, ['locale' => null, 'scope' => null]);
-        $this->setAttributeData($product, $image, ['originalFilename' => null, 'filePath' => null], ['locale' => null, 'scope' => null]);
+        $this->setAttributeData($product, $image, null, ['locale' => null, 'scope' => null]);
     }
 
-    function it_sets_a_attribute_data_media_to_a_product(
+    function it_sets_an_attribute_data_media_to_a_product(
         $repository,
         $storer,
         AttributeInterface $attribute,
@@ -186,10 +144,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $product->getValue('attributeCode', Argument::cetera())->willReturn($value);
 
-        $data = [
-            'originalFilename' => 'akeneo',
-            'filePath'         => realpath(__DIR__ . '/../../../../../../../features/Context/fixtures/akeneo.jpg'),
-        ];
+        $data = realpath(__DIR__ . '/../../../../../../../features/Context/fixtures/akeneo.jpg');
 
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
         $storer->store(Argument::cetera())->willReturn($fileInfo);
@@ -210,10 +165,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $product->getValue('attributeCode', Argument::cetera())->willReturn(null);
 
-        $data = [
-            'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
-        ];
+        $data = realpath(__DIR__.'/../../../../../../../features/Context/fixtures/akeneo.jpg');
 
         $builder->addProductValue($product, $attribute, Argument::cetera())->shouldBeCalled()->willReturn($value);
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
@@ -233,10 +185,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $product->getValue('attributeCode', Argument::cetera())->willReturn($value);
 
-        $data = [
-            'originalFilename' => 'my file.jpg',
-            'filePath' => '4/e/6/c/4e6cb2788fa565037745ee01e48102780cc4d52b_my_file.jpg',
-        ];
+        $data = '4/e/6/c/4e6cb2788fa565037745ee01e48102780cc4d52b_my_file.jpg';
 
         $repository->findOneByIdentifier(Argument::any())->willReturn($fileInfo);
         $storer->store(Argument::cetera())->shouldNotBeCalled();
