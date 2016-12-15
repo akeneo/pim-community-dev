@@ -131,3 +131,27 @@ Feature: Execute a job
     And I visit the "Associations" tab
     And I visit the "Cross sell" group
     Then I should see "0 products and 0 groups"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6019
+  Scenario: Successfully import product without remove already existing associations when option "compare values" is set to false
+    Given the following product:
+      | sku     | name-en_US |
+      | SKU-001 | sku-001    |
+      | SKU-002 | sku-002    |
+    When I edit the "SKU-001" product
+    And I visit the "Associations" tab
+    And I visit the "Cross sell" group
+    And I check the rows "SKU-002"
+    And I save the product
+    And the following CSV file to import:
+      """
+      sku
+      SKU-001
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath          | %file to import% |
+      | enabledComparison | no               |
+    And I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see the text "skipped product (no associations detected)"

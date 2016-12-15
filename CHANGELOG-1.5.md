@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6019: Successfully import products without removing already existing associations when option "compare values" is disabled
+
 # 1.5.15 (2016-12-13)
 
 ## Bug fixes
