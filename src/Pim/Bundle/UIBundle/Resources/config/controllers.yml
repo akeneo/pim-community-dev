@@ -1,5 +1,6 @@
 parameters:
     pim_ui.controller.ajax_option.class: Pim\Bundle\UIBundle\Controller\AjaxOptionController
+    pim_enrich.controller.style.class:   Pim\Bundle\UIBundle\Controller\StyleController
 
 services:
     pim_ui.controller.ajax_option:
@@ -7,3 +8,6 @@ services:
         arguments:
             - '@doctrine'
             - '@pim_reference_data.registry'
+
+    pim_ui.controller.style:
+        class: '%pim_enrich.controller.style.class%'

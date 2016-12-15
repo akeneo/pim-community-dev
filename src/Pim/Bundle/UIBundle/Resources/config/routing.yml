@@ -1,3 +1,8 @@
 pim_ui_ajaxentity_list:
     path: /list.json
     defaults: { _controller: pim_ui.controller.ajax_option:listAction, _format: json }
+
+pim_ui_style_index:
+    path: /style
+    defaults: { _controller: pim_ui.controller.style:indexAction }
+    methods: [GET]
