@@ -2,7 +2,7 @@ Akeneo PIM Application
 ======================
 Welcome to Akeneo PIM Product.
 
-test
+test de la mort
 
 This repository is used to develop the Akeneo PIM product.
 Practically, it means the Akeneo PIM bundles are present in the src/ directory.
