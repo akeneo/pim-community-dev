@@ -2,7 +2,8 @@
 
 ## Bug Fixes
 
-- #5062 Fixed unit conversion for ElectricCharge cheers @gplanchat!
+- #5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
+- #5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
 
 ## Functional improvements
 
