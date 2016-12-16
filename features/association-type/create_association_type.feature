@@ -12,7 +12,7 @@ Feature: Association type creation
 
   @skip
   Scenario: Successfully create an association type
-    Then I should see the Code field
+    Given I should see the Code field
     When I fill in the following information in the popin:
       | Code | up_sell |
     And I press the "Save" button
@@ -25,7 +25,7 @@ Feature: Association type creation
     When I fill in the following information in the popin:
       | Code | =( |
     And I press the "Save" button
-    Then I should see validation error "Association type code may contain only letters, numbers and underscores"
+    Then I should see validation error "Association type code may contain only letters, numbers and underscores (numbers only are not allowed)"
 
   Scenario: Fail to create an association type with an already used code
     Given the following association type:
@@ -35,3 +35,10 @@ Feature: Association type creation
       | Code | cross_sell |
     And I press the "Save" button
     Then I should see validation error "This value is already used."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6037
+  Scenario: Fail to create an association type with a numeric code
+    Given I fill in the following information in the popin:
+      | Code | 1234 |
+    When I press the "Save" button
+    Then I should see validation error "Association type code may contain only letters, numbers and underscores (numbers only are not allowed)"
