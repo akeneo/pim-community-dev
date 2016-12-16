@@ -185,6 +185,7 @@ job_execution.summary:
         title: File encoding:
         skipped: skipped, extension in white list
     product_skipped_no_diff: skipped product (no differences)
+    product_skipped_no_associations: skipped product (no associations detected)
 
 # Job labels
 batch_jobs:

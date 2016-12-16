@@ -96,6 +96,11 @@ class ProductAssociationProcessor extends AbstractProcessor implements
 
                 return null;
             }
+        } elseif (!$this->hasImportedAssociations($item)) {
+            $this->detachProduct($product);
+            $this->stepExecution->incrementSummaryInfo('product_skipped_no_associations');
+
+            return null;
         }
 
         try {
@@ -188,5 +193,27 @@ class ProductAssociationProcessor extends AbstractProcessor implements
     protected function detachProduct(ProductInterface $product)
     {
         $this->detacher->detach($product);
+    }
+
+    /**
+     * It there association(s) in new values ?
+     *
+     * @param array $item
+     *
+     * @return bool
+     */
+    protected function hasImportedAssociations(array $item)
+    {
+        if (!isset($item['associations'])) {
+            return false;
+        }
+
+        foreach ($item['associations'] as $association) {
+            if (!empty($association['products']) || !empty($association['groups'])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
