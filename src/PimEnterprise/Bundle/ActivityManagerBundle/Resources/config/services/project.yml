@@ -3,7 +3,7 @@ parameters:
     akeneo_activity_manager.model.project.interface: 'Akeneo\ActivityManager\Component\Model\ProjectInterface'
 
     activity_manager.normalizer.project.class: 'Akeneo\ActivityManager\Component\Normalizer\ProjectNormalizer'
-    activity_manager.repository.project.class: 'Akeneo\ActivityManager\Bundle\Doctrine\Repository\ProjectRepository'
+    activity_manager.repository.project.class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository'
     activity_manager.updater.project.class: 'Akeneo\ActivityManager\Component\Updater\ProjectUpdater'
     activity_manager.event_listener.event_translation.class: 'Akeneo\ActivityManager\Bundle\EventListener\EventTranslationSubscriber'
 

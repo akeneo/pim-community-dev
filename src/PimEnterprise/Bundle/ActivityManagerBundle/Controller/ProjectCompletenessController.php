@@ -11,17 +11,41 @@
 
 namespace Akeneo\ActivityManager\Bundle\Controller;
 
-use Akeneo\ActivityManager\Component\Model\Project;
+use Akeneo\ActivityManager\Component\Repository\ProjectCompletenessRepositoryInterface;
 use Akeneo\ActivityManager\Component\Voter\ProjectVoter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ProjectCompletenessController extends Controller
+class ProjectCompletenessController
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $projectRepository;
+
+    /** @var ProjectCompletenessRepositoryInterface */
+    private $projectCompletenessRepository;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    /**
+     * ProjectCompletenessController constructor.
+     */
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $projectRepository,
+        ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->projectRepository = $projectRepository;
+        $this->projectCompletenessRepository = $projectCompletenessRepository;
+        $this->tokenStorage = $tokenStorage;
+    }
+
+
     /**
      * @param int     $projectCode
      * @param Request $request
@@ -30,8 +54,7 @@ class ProjectCompletenessController extends Controller
      */
     public function showAction($projectCode, Request $request)
     {
-        $project = $this->container->get('activity_manager.repository.project')
-            ->findOneByIdentifier($projectCode);
+        $project = $this->projectRepository->findOneByIdentifier($projectCode);
 
         if (null === $project) {
             return new JsonResponse(null, 404);
@@ -42,15 +65,14 @@ class ProjectCompletenessController extends Controller
         $contributor = null;
 
         if ($this->isGranted(ProjectVoter::CONTRIBUTE, $project)) {
-            $contributor = $this->getUser()->getUsername();
+            $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
         }
 
         if ($this->isGranted(ProjectVoter::OWN, $project)) {
             $contributor = $request->get('contributor');
         }
 
-        $projectCompleteness = $this->get('activity_manager.repository.project_completeness')
-            ->getProjectCompleteness($project, $contributor);
+        $projectCompleteness = $this->projectCompletenessRepository->getProjectCompleteness($project, $contributor);
 
         return new JsonResponse($projectCompleteness);
     }

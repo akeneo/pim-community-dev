@@ -11,19 +11,91 @@
 
 namespace Akeneo\ActivityManager\Bundle\Controller;
 
+use Akeneo\ActivityManager\Bundle\Datagrid\FilterConverter;
+use Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
 use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
-use Akeneo\ActivityManager\Component\Model\Project;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
+use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Project controller.
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class ProjectController extends Controller
+class ProjectController
 {
+    /** @var FilterConverter */
+    private $filterConverter;
+
+    /** @var SimpleFactoryInterface  */
+    private $datagridViewFactory;
+
+    /** @var SimpleFactoryInterface  */
+    private $projectFactory;
+
+    /** @var ObjectUpdaterInterface  */
+    private $datagridViewUpdater;
+
+     /** @var ObjectUpdaterInterface */
+    private $projectUpdater;
+
+     /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var SaverInterface */
+    private $projectSaver;
+
+    /** @var ProjectCalculationJobLauncherInterface */
+    private $projectCalculationJobLauncher;
+
+    /** @var NormalizerInterface */
+    private $projectNormalizer;
+
+    /** @var ProjectRepositoryInterface */
+    private $projectRepository;
+
+    /** @var UserRepositoryInterface */
+    private $userRepository;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    public function __construct(
+        FilterConverter $filterConverter,
+        SimpleFactoryInterface $datagridViewFactory,
+        SimpleFactoryInterface $projectFactory,
+        ObjectUpdaterInterface $datagridViewUpdater,
+        ObjectUpdaterInterface $projectUpdater,
+        SaverInterface $projectSaver,
+        ValidatorInterface $validator,
+        ProjectCalculationJobLauncherInterface $projectCalculationJobLauncher, // pas d'interface
+        NormalizerInterface $projectNormalizer,
+        ProjectRepositoryInterface $projectRepository,
+        UserRepositoryInterface $userRepository,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->filterConverter = $filterConverter;
+        $this->datagridViewFactory = $datagridViewFactory;
+        $this->projectFactory = $projectFactory;
+        $this->datagridViewUpdater = $datagridViewUpdater;
+        $this->projectUpdater = $projectUpdater;
+        $this->validator = $validator;
+        $this->projectSaver = $projectSaver;
+        $this->projectCalculationJobLauncher = $projectCalculationJobLauncher;
+        $this->projectNormalizer = $projectNormalizer;
+        $this->projectRepository = $projectRepository;
+        $this->userRepository = $userRepository;
+        $this->tokenStorage = $tokenStorage;
+    }
+
     /**
      * @param Request $request
      *
@@ -31,17 +103,18 @@ class ProjectController extends Controller
      */
     public function createAction(Request $request)
     {
+        $user = $this->tokenStorage->getToken()->getUser();
+
         $datagridViewFilters = [];
         $projectData = $request->request->get('project');
 
         parse_str($projectData['datagrid_view']['filters'], $datagridViewFilters);
 
         $filters = json_encode($datagridViewFilters['f']);
-        $filters = $this->container->get('activity_manager.converter.filter')
-            ->convert($request, $filters);
+        $filters = $this->filterConverter->convert($request, $filters);
 
         $projectData['product_filters'] = $filters;
-        $projectData['owner'] = $this->getUser();
+        $projectData['owner'] = $user;
         $projectData['channel'] = $datagridViewFilters['f']['scope']['value'];
 
         $datagridViewData = [];
@@ -53,32 +126,21 @@ class ProjectController extends Controller
             $datagridViewData['datagrid_alias'] = 'product-grid';
         }
 
-        $datagridView = $this->container->get('pim_datagrid.factory.datagrid_view')
-            ->create();
-
-        $this->container->get('pim_datagrid.updater.datagrid_view')
-            ->update($datagridView, $datagridViewData);
+        $datagridView = $this->datagridViewFactory->create();
+        $this->datagridViewUpdater->update($datagridView, $datagridViewData);
 
         $projectData['datagrid_view'] = $datagridView;
 
-        $project = $this->container->get('activity_manager.factory.project')
-            ->create();
+        $project = $this->projectFactory->create();
+        $this->projectUpdater->update($project, $projectData);
 
-        $this->container->get('activity_manager.updater.project')
-            ->update($project, $projectData);
-
-        $violations = $this->container->get('validator')
-            ->validate($project);
+        $violations = $this->validator->validate($project);
 
         if (0 === $violations->count()) {
-            $this->container->get('activity_manager.saver.project')
-                ->save($project);
+            $this->projectSaver->save($project);
+            $this->projectCalculationJobLauncher->launch($user, $project);
 
-            $this->container->get('activity_manager.launcher.job.project_calculation')
-                ->launch($this->getUser(), $project);
-
-            $normalizedProject = $this->container->get('pim_internal_api_serializer')
-                ->normalize($project, 'internal_api');
+            $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
 
             return new JsonResponse($normalizedProject, 201);
         }
@@ -104,20 +166,18 @@ class ProjectController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $projectRepository = $this->container->get('activity_manager.repository.project');
-        $serializer = $this->container->get('pim_internal_api_serializer');
         $options = $request->query->get('options', ['limit' => 20, 'page' => 1]);
 
-        $projects = $projectRepository->findBySearch(
+        $projects = $this->projectRepository->findBySearch(
             $request->query->get('search'),
             [
                 'limit' => $options['limit'],
                 'page' => $options['page'],
-                'user' => $this->getUser(),
+                'user' => $this->tokenStorage->getToken()->getUser(),
             ]
         );
 
-        $normalizedProjects = $serializer->normalize($projects, 'internal_api');
+        $normalizedProjects = $this->projectNormalizer->normalize($projects, 'internal_api');
 
         return new JsonResponse($normalizedProjects, 200);
     }
@@ -132,11 +192,7 @@ class ProjectController extends Controller
      */
     public function searchContributorsAction($projectCode, Request $request)
     {
-        $projectRepository = $this->container->get('activity_manager.repository.project');
-        $userRepository = $this->container->get('activity_manager.repository.user');
-        $serializer = $this->container->get('pim_internal_api_serializer');
-
-        $project = $projectRepository->findOneByIdentifier($projectCode);
+        $project = $this->projectRepository->findOneByIdentifier($projectCode);
 
         if (null === $project) {
             return new JsonResponse(null, 404);
@@ -144,7 +200,7 @@ class ProjectController extends Controller
 
         $options = $request->query->get('options', ['limit' => 20, 'page' => 1]);
 
-        $users = $userRepository->findBySearch(
+        $users = $this->userRepository->findBySearch(
             $request->query->get('search'),
             [
                 'limit' => $options['limit'],
@@ -153,7 +209,7 @@ class ProjectController extends Controller
             ]
         );
 
-        $normalizedProjects = $serializer->normalize($users, 'internal_api');
+        $normalizedProjects = $this->projectNormalizer->normalize($users, 'internal_api');
 
         return new JsonResponse($normalizedProjects, 200);
     }
