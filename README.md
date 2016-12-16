@@ -1,6 +1,9 @@
 TEST JENKINS CATCH
 ==================
 
+WORKS?
+======
+
 Akeneo PIM Application
 ======================
 Welcome to Akeneo PIM Product.
