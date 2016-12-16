@@ -6,6 +6,8 @@ parameters:
     activity_manager.repository.project.class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository'
     activity_manager.updater.project.class: 'Akeneo\ActivityManager\Component\Updater\ProjectUpdater'
     activity_manager.event_listener.event_translation.class: 'Akeneo\ActivityManager\Bundle\EventListener\EventTranslationSubscriber'
+    activity_manager.controller.project_controller.class: 'Akeneo\ActivityManager\Bundle\Controller\ProjectController'
+    activity_manager.controller.project_completeness_controller.class: 'Akeneo\ActivityManager\Bundle\Controller\ProjectCompletenessController'
 
 services:
     ### Factory
@@ -17,6 +19,7 @@ services:
     ### Normalizer
     activity_manager.normalizer.project:
         class: '%activity_manager.normalizer.project.class%'
+        public: false
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -71,3 +74,27 @@ services:
         public: false
         tags:
             - { name: security.voter }
+
+    ### Controllers
+    activity_manager.controller.project_controller:
+        class: '%activity_manager.controller.project_controller.class%'
+        arguments:
+            - '@activity_manager.converter.filter'
+            - '@pim_datagrid.factory.datagrid_view'
+            - '@activity_manager.factory.project'
+            - '@pim_datagrid.updater.datagrid_view'
+            - '@activity_manager.updater.project'
+            - '@activity_manager.saver.project'
+            - '@validator'
+            - '@activity_manager.launcher.job.project_calculation'
+            - '@pim_internal_api_serializer'
+            - '@activity_manager.repository.project'
+            - '@activity_manager.repository.user'
+            - '@security.token_storage'
+
+    activity_manager.controller.project_completeness_controller:
+        class: '%activity_manager.controller.project_completeness_controller.class%'
+        arguments:
+            - '@activity_manager.repository.project'
+            - '@activity_manager.repository.project_completeness'
+            - '@security.token_storage'

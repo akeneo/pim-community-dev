@@ -12,8 +12,6 @@ parameters:
     activity_manager.factory.project_created_notification.class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory'
     activity_manager.event_subscriber.project_creation_notifier.class: 'Akeneo\ActivityManager\Bundle\EventListener\ProjectCreationNotifierSubscriber'
     activity_manager.converter.filter.class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterConverter'
-    activity_manager.controller.project_controller.class: 'Akeneo\ActivityManager\Bundle\Controller\ProjectController'
-    activity_manager.controller.project_completeness_controller.class: 'Akeneo\ActivityManager\Bundle\Controller\ProjectCompletenessController'
 
 services:
     ### Repositories
@@ -60,6 +58,7 @@ services:
         arguments:
             - ['project_calculation']
             - '%pim_notification.entity.notification.class%'
+        public: false
         tags:
             - { name: pim_notification.factory.notification }
 
@@ -95,28 +94,6 @@ services:
             - '@pim_user.context.user'
             - '@pim_datagrid.repository.datagrid_view'
             - '@activity_manager.repository.project'
+        public: false
         tags:
              - { name: oro_datagrid.extension }
-
-    ### Controllers
-    activity_manager.controller.project_controller:
-        class: '%activity_manager.controller.project_controller.class%'
-        arguments:
-            - '@activity_manager.converter.filter'
-            - '@pim_datagrid.factory.datagrid_view'
-            - '@activity_manager.factory.project'
-            - '@pim_datagrid.updater.datagrid_view'
-            - '@activity_manager.updater.project'
-            - '@activity_manager.saver.project'
-            - '@validator'
-            - '@activity_manager.launcher.job.project_calculation'
-            - '@pim_internal_api_serializer'
-            - '@activity_manager.repository.project'
-            - '@activity_manager.repository.user'
-            - '@security.token_storage'
-
-    activity_manager.controller.project_completeness_controller:
-        class: '%activity_manager.controller.project_completeness_controller.class%'
-        arguments:
-            - '@activity_manager.repository.project'
-            - '@activity_manager.repository.project_completeness'
