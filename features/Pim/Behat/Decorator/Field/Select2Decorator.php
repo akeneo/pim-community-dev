@@ -89,7 +89,7 @@ class Select2Decorator extends ElementDecorator
             $openerElement = $this->find('css', '.select2-search-field');
         }
 
-        if (strpos($this->element->getAttribute('class'), 'select2-dropdown-open') === false) {
+        if (!$this->element->hasClass('select2-dropdown-open')) {
             $openerElement->click();
         }
     }

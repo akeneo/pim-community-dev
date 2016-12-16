@@ -9,10 +9,10 @@
     width: 400px !important; // The select2 lib sets the width with JS methods.
 
     .select2-search {
-      padding: 6px;
       background: @AknLightGray;
       border-top: 1px solid @AknBorderColor;
       border-bottom: 1px solid @AknBorderColor;
+      padding: 6px;
 
       .view-selector-type-dropdown {
         position: absolute;
@@ -21,27 +21,27 @@
       }
 
       .view-selector-type-switcher {
+        border: 1px solid @AknBorderColor;
         height: 38px;
         border-radius: 0;
-        border: 1px solid #aaa;
         width: 107px;
         font-weight: bold;
       }
 
       .icon-search {
+        font-size: @AknLittleIconFontSize;
+        color: @AknGrey;
         position: absolute;
         top: 16px;
         left: 12px;
-        font-size: 16px;
-        color: @AknGrey;
       }
 
       .select2-input {
-        background: #ffffff !important;
+        font-size: @AknFontSizeBig;
+        background: white !important;
         height: 38px;
         padding-left: 32px;
         line-height: 38px;
-        font-size: @AknFontSizeBig;
 
         &.with-dropdown {
           width: 280px;
@@ -63,9 +63,9 @@
         }
 
         .select2-result-label {
+          font-size: @AknFontSizeBig;
           position: relative;
           padding: 15px;
-          font-size: @AknFontSizeBig;
 
           .select2-result-label-view {
             .view-label.view-label-current {
@@ -75,8 +75,8 @@
             }
 
             .grid-view-selector-line-overlay {
+              background-color: fade(@AknDarkBlue, 85%);
               display: none;
-              background-color:rgba(17, 50, 77, 0.8);
               position: absolute;
               top: 0;
               left: 0;
@@ -107,15 +107,15 @@
       .select2-more-results,
       .select2-no-results,
       .select2-searching {
+        color: @AknGrey;
         text-align: center;
         padding: 15px;
-        color: @AknGrey;
       }
     }
 
     .ui-multiselect-footer {
-      padding: 3px;
       border-top: 1px solid @AknBorderColor;
+      padding: 3px;
       height: 50px;
 
       .buttons {
@@ -133,7 +133,7 @@
           border-bottom-left-radius: 2px;
         }
 
-        .create-carret {
+        .create-caret {
           border-top-right-radius: 2px;
           border-bottom-right-radius: 2px;
           border-top-left-radius: 0;
@@ -161,7 +161,7 @@
         }
       }
 
-      .create-carret {
+      .create-caret {
         background-color: @AknGreen;
         background-image: none;
 
