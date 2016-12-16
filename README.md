@@ -2,6 +2,8 @@
 
 # C'est que d'l'amour
 
+# API RATE LIMIT 
+
 Akeneo PIM Application
 ======================
 Welcome to Akeneo PIM Product.
