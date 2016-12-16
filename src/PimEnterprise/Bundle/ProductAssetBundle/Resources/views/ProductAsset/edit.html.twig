@@ -40,17 +40,12 @@
         {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_buttons.html.twig' %}
     {% endset %}
 
-    {% set titleButtons %}
-    {% endset %}
-
     {% set meta %}
-        <ul class="inline">
-            <li>{{ 'Created'|trans }}: {{ asset.createdAt ? asset.createdAt|datetime_presenter : 'N/A'|trans }}</li>
-            <li>{{ 'Last update'|trans }}: {{ asset.updatedAt ? asset.updatedAt|datetime_presenter : 'N/A'|trans }}</li>
-        </ul>
+        <span class="AknTitleContainer-metaItem">{{ 'Created'|trans }}: {{ asset.createdAt ? asset.createdAt|datetime_presenter : 'N/A'|trans }}</span>
+        <span class="AknTitleContainer-metaItem">{{ 'Last update'|trans }}: {{ asset.updatedAt ? asset.updatedAt|datetime_presenter : 'N/A'|trans }}</span>
     {% endset %}
 
-    {{ elements.page_header(title, buttons, null, meta, elements.updated(form.vars.id), backButton) }}
+    {{ elements.page_header(title, buttons, null, meta, null, backButton, elements.updated(form.vars.id)) }}
 
     <div class="AknTabContainer form-horizontal product-edit product-view asset">
         <div class="layout-content">

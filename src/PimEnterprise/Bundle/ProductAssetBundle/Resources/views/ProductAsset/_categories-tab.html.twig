@@ -17,27 +17,28 @@
     {{ form_widget(form.categories) }}
 
     <div class="tabbable tabs-left">
-        <div class="sidebar">
-            <ul class="nav nav-tabs" id="trees-list">
-                {% for tree in trees %}
-                    {% set aClass = "" %}
-                    {% set iClass = "gray" %}
-                    {% if (tree['itemCount'] > 0) %}
-                        {% set aClass = "tree-has-item" %}
-                        {% set iClass = "green" %}
-                    {% endif %}
-                    <li data-tree="{{ tree['tree'].code }}" data-tree-id="{{ tree['tree'].id }}" class="active">
-                        <a href="javascript:void(0);" id="tree-link-{{ tree['tree'].id }}" class="{{ aClass }}">
+        <ul class="AknVerticalNavtab AknVerticalNavtab--condensed nav nav-tabs" id="trees-list">
+            <li class="AknVerticalNavtab-item AknVerticalNavtab-header"></li>
+            {% for tree in trees %}
+                {% set aClass = "" %}
+                {% set iClass = "gray" %}
+                {% if (tree['itemCount'] > 0) %}
+                    {% set aClass = "tree-has-item" %}
+                    {% set iClass = "green" %}
+                {% endif %}
+                <li data-tree="{{ tree['tree'].code }}" data-tree-id="{{ tree['tree'].id }}" class="AknVerticalNavtab-item active">
+                    <a class="AknVerticalNavtab-link" href="javascript:void(0);" id="tree-link-{{ tree['tree'].id }}" class="{{ aClass }}">
+                        <div>
                             <i class="icon-ok {{ iClass }}"></i>
                             {{ tree['tree'].label }}
-                            <span class="badge" data-tree-id="{{ tree['tree'].code }}">{{ tree['itemCount'] }}</span>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+                        </div>
+                        <span class="badge" data-tree-id="{{ tree['tree'].code }}">{{ tree['itemCount'] }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
 
-        <div class="tab-content">
+        <div class="AknTabContainer-content tab-content">
             {% set selectedTree = 0 %}
             {% if trees %}
                 {% if app.user.assetDefaultTree is defined and app.user.assetDefaultTree.code is defined %}
@@ -54,9 +55,9 @@
             <div id="trees" data-id="{{ asset.id }}" data-datalocale="{{ currentLocale }}" data-selected-tree="{{ selectedTree }}">
                 {% for tree in trees %}
                     <div class="tree root-unselectable" data-tree-id="{{ tree['tree'].id }}">
-                        <header class="tab-header">
-                            <h3>{{ tree['tree'].label }}</h3>
-                        </header>
+                        <div class="AknTabHeader">
+                            <h3 class="AknTabHeader-title">{{ tree['tree'].label }}</h3>
+                        </div>
                         <div id="tree-{{ tree['tree'].id }}" class="buffer-small-left"></div>
                     </div>
                 {% endfor %}

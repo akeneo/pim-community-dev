@@ -1,4 +1,3 @@
-@import '../../pimui/css/less/mixins';
 @import '../../pimui/css/less/variables';
 
 .permission-changes {
@@ -55,8 +54,8 @@
   header {
     background-color: @whiteDarker;
     padding: 5px;
-    .display-flex();
-    .justify-content(flex-end);
+    display: flex;
+    justify-content: flex-end;
   }
 
   ul {
@@ -123,15 +122,15 @@
   .modal-body {
     height: 90%;
     max-height: none;
-    .display-flex();
-    .flex-direction(row);
+    display: flex;
+    flex-direction: row;
     padding-bottom: 0;
     overflow: hidden;
 
     .categories-container {
-      .flex(1);
-      .display-flex();
-      .flex-direction(column);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       position: relative;
       padding: 0 !important; // needed to override padding-bottom added by jquery.jstree.nested_switch.js
       border: solid 1px @color-ccc;
@@ -139,14 +138,14 @@
       border-bottom: none;
 
       #tree {
-        .flex(1);
+        flex: 1;
 
         #tree_toolbar {
           border-top: none;
         }
 
         #nested-switch {
-          .flex(0);
+          flex: 0;
           border-bottom: none;
         }
       }
@@ -158,26 +157,26 @@
     }
 
     .asset-grid {
-      .flex(3);
+      flex: 3;
       overflow-y: auto;
     }
 
     .basket {
-      .flex(1);
-      .display-flex();
+      flex: 1;
+      display: flex;
 
       .asset-basket {
-        .flex(1);
-        .display-flex();
-        .flex-direction(column);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
         width: auto;
 
         header {
-          .flex(0);
+          flex: 0;
         }
 
         .basket-inner {
-          .flex(1);
+          flex: 1;
           overflow-y: auto;
 
           ul {
@@ -186,8 +185,8 @@
 
             li {
               list-style: none;
-              .display-flex();
-              .flex-direction(row);
+              display: flex;
+              flex-direction: row;
               padding: 10px;
               border: 1px solid @color-ccc;
 
@@ -202,7 +201,7 @@
               }
 
               .asset-description {
-                .flex(1);
+                flex: 1;
                 font-size: 11px;
                 margin-left: 10px;
               }
