@@ -11,15 +11,14 @@
 
 namespace Akeneo\ActivityManager\Behat\Context;
 
-use Akeneo\ActivityManager\Behat\Context;
-use Akeneo\ActivityManager\Behat\ContextInterface;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Context\PimContext;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ViewSelectorContext extends Context implements ContextInterface
+class ViewSelectorContext extends PimContext
 {
     use SpinCapableTrait;
 

@@ -45,7 +45,6 @@ class ProjectCompletenessController
         $this->tokenStorage = $tokenStorage;
     }
 
-
     /**
      * @param int     $projectCode
      * @param Request $request

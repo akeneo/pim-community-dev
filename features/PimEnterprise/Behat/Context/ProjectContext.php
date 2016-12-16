@@ -11,18 +11,17 @@
 
 namespace Akeneo\ActivityManager\Behat\Context;
 
-use Akeneo\ActivityManager\Behat\Context;
-use Akeneo\ActivityManager\Behat\ContextInterface;
 use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
 use Akeneo\ActivityManager\Component\Model\ProjectInterface;
 use Behat\Gherkin\Node\TableNode;
+use Pim\Behat\Context\PimContext;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Webmozart\Assert\Assert;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ProjectContext extends Context implements ContextInterface
+class ProjectContext extends PimContext
 {
     /**
      * @Then /^the project "([^"]*)" for channel "([^"]*)" and locale "([^"]*)" has the following properties:$/
@@ -100,16 +99,13 @@ class ProjectContext extends Context implements ContextInterface
      */
     private function findProjectByLabelChannelLocale($label, $channelCode, $localeCode)
     {
-        $channel = $this->getContainer()
-            ->get('pim_catalog.repository.channel')
+        $channel = $this->getService('pim_catalog.repository.channel')
             ->findOneByIdentifier($channelCode);
 
-        $locale = $this->getContainer()
-            ->get('pim_catalog.repository.locale')
+        $locale = $this->getService('pim_catalog.repository.locale')
             ->findOneByIdentifier($localeCode);
 
-        $project = $this->getContainer()
-            ->get('activity_manager.repository.project')
+        $project = $this->getService('activity_manager.repository.project')
             ->findOneBy([
                 'label' => $label,
                 'channel' => $channel,

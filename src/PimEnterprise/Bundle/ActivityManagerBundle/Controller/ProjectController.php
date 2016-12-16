@@ -35,19 +35,19 @@ class ProjectController
     /** @var FilterConverter */
     private $filterConverter;
 
-    /** @var SimpleFactoryInterface  */
+    /** @var SimpleFactoryInterface */
     private $datagridViewFactory;
 
-    /** @var SimpleFactoryInterface  */
+    /** @var SimpleFactoryInterface */
     private $projectFactory;
 
-    /** @var ObjectUpdaterInterface  */
+    /** @var ObjectUpdaterInterface */
     private $datagridViewUpdater;
 
-     /** @var ObjectUpdaterInterface */
+    /** @var ObjectUpdaterInterface */
     private $projectUpdater;
 
-     /** @var ValidatorInterface */
+    /** @var ValidatorInterface */
     private $validator;
 
     /** @var SaverInterface */
