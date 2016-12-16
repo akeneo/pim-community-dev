@@ -51,6 +51,5 @@ Feature: Edit attribute options
       | blue  | blue  |
       | green | green |
     And I save the attribute
-    And I wait for options to load
     And I edit the code "red" to turn it to "red" and cancel
     Then I should see the text "r\"ed"
