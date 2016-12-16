@@ -148,10 +148,10 @@ Feature: Execute a job
       sku
       SKU-001
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath          | %file to import% |
       | enabledComparison | no               |
-    And I am on the "footwear_product_import" import job page
+    And I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "skipped product (no associations detected)"
