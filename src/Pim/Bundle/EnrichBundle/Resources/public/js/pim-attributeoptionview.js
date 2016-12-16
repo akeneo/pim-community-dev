@@ -250,7 +250,9 @@ define(
                 '<tfoot>' +
                     '<tr>' +
                         '<td class="AknGrid-bodyCell AknGrid-bodyCell--right" colspan="<%= 2 + locales.length %>">' +
-                            '<span class="AknButton AknButton--grey AknButton--small option-add"><%= add_option_label %></span>' +
+                            '<span class="AknButton AknButton--grey AknButton--small option-add">' +
+                                '<%= add_option_label %>' +
+                            '</span>' +
                         '</td>' +
                     '</tr>' +
                 '</tfoot>'
