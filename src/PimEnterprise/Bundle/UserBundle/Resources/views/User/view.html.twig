@@ -1,15 +1,15 @@
 {% extends '@PimUser/User/view.html.twig' %}
 
 {% macro api_data_block(user) %}
-<div class="horizontal">
-    <label>{{ user.api ? user.api.apiKey : 'N/A' }}</label>
+    <div class="AknTextField AknTextField--disabled">{{ user.api ? user.api.apiKey : 'N/A' }}</div>
     {% if resource_granted('pim_user_user_edit') %}
-        <a class="AknButton AknButton--grey AknButton--small no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
-           data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
-            {{ 'Generate key'|trans }}
-        </a>
+        <div class="AknFieldContainer-iconsContainer">
+            <a class="AknButton AknButton--grey AknButton no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
+               data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
+                {{ 'Generate key'|trans }}
+            </a>
+        </div>
     {% endif %}
-</div>
 {% endmacro %}
 
 {% block content_data %}
@@ -25,6 +25,7 @@
             'subblocks': [
                 {
                     'title': 'Basic Information'|trans,
+                    'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': [
                         UI.attibuteRow('User name'|trans, entity.username),
                         entity.namePrefix ? UI.attibuteRow('Name prefix'|trans, entity.namePrefix),
@@ -38,6 +39,7 @@
                 },
                 {
                     'title': 'Contact Information'|trans,
+                    'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': dataSubBlocks
                 }
             ]
@@ -70,6 +72,10 @@
         ]) %}
     {% endfor %}
 
+    {% set additionalData = additionalData|merge([
+        UI.attibuteRow('User salt'|trans, entity.salt)
+    ]) %}
+
     {% set additional = [
         {
             'title': 'Additional Information'|trans,
@@ -77,13 +83,8 @@
             'subblocks': [
                 {
                     'title': '',
+                    'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': additionalData
-                },
-                {
-                    'title': '',
-                    'data': [
-                        UI.attibuteRow('User salt'|trans, entity.salt)
-                    ]
                 }
             ]
         }
@@ -96,6 +97,7 @@
             'subblocks': [
                 {
                     'title': '',
+                    'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': [
                         UI.attibuteRow('UI locale'|trans, entity.uiLocale.getName),
                     ]
@@ -117,6 +119,7 @@
         {% set proposal_to_review = [
             {
                 'title': '',
+                'class': 'AknFormContainer AknFormContainer--withPadding',
                 'data': [
                     UI.attibuteRow(
                         'user.proposals.notifications.to_review'|trans,
@@ -133,6 +136,7 @@
         {% set proposal_state = [
             {
                 'title': '',
+                'class': 'AknFormContainer AknFormContainer--withPadding',
                 'data': [
                     UI.attibuteRow(
                         'user.proposals.notifications.state'|trans,
@@ -169,6 +173,7 @@
                 'subblocks': [
                     {
                         'title': '',
+                        'class': 'AknFormContainer AknFormContainer--withPadding',
                         'data': [additional_data]
                     }
                 ]
