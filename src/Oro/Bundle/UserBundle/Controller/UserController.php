@@ -2,11 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Controller;
 
-use Doctrine\Common\Inflector\Inflector;
-use Doctrine\ORM\PersistentCollection;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Event\UserEvent;
@@ -21,6 +17,7 @@ class UserController extends Controller
 {
     /**
      * @Template
+     *
      * @AclAncestor("pim_user_user_index")
      */
     public function viewAction($id)
@@ -75,7 +72,7 @@ class UserController extends Controller
 
         return $this->getRequest()->isXmlHttpRequest()
             ? new JsonResponse($api->getApiKey())
-            : $this->forward('OroUserBundle:User:view', ['user' => $user]);
+            : $this->forward('OroUserBundle:User:view', ['id' => $id]);
     }
 
     /**

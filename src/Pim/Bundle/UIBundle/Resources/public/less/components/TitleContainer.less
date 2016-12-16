@@ -30,6 +30,7 @@
     display: flex !important;
     justify-content: space-between;
     align-items: center;
+    margin-top: 5px;
   }
 
   &-titleContainer {
@@ -74,12 +75,15 @@
     flex-grow: 1;
   }
 
-  &-metaItem:not(:first-child):before {
+  &-metaItem:not(:first-child):not(:empty):before {
     content: ' | ';
   }
 
   &-state {
     order: 10;
+    align-self: flex-end;
+    flex-grow: 1;
+    text-align: right;
   }
 
   &-backLink {

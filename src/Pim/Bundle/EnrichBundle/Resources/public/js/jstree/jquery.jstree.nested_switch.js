@@ -62,7 +62,7 @@
                     nested_switch_bar.html(nested_switch_label);
                     nested_switch_bar.append(switch_wrapper.bootstrapSwitch());
                     container.append(nested_switch_bar);
-                    container.css('padding-bottom', '65px');
+                    container.closest('.sidebar-content').css('height', 'calc(100% - 60px)');
 
                 }, this));
         },

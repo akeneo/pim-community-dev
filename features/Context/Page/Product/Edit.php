@@ -630,7 +630,7 @@ class Edit extends ProductEditForm
      */
     public function getAttributeGroupTab($group)
     {
-        $groups = $this->getElement('Form Groups');
+        $groups = $this->getElement('Groups');
 
         $groupNode = $this->spin(function () use ($groups, $group) {
             return $groups->find('css', sprintf('.group-label:contains("%s")', $group));

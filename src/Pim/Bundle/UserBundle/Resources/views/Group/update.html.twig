@@ -49,9 +49,9 @@
 
     {% set dataBlocks = [{
             'title': 'General'|trans,
-            'class': 'active',
             'subblocks': [
                 {
+                    'class': 'AknFormContainer AknFormContainer--withPadding',
                     'title': '',
                     'data': [
                         form_widget(form.appendUsers, {'id': 'groupAppendUsers'}),

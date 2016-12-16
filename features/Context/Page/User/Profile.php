@@ -3,6 +3,7 @@
 namespace Context\Page\User;
 
 use Context\Page\Base\Base;
+use Context\Traits\ClosestTrait;
 
 /**
  * "My Account" page
@@ -13,6 +14,8 @@ use Context\Page\Base\Base;
  */
 class Profile extends Base
 {
+    use ClosestTrait;
+
     /** @var string */
     protected $path = '/user/profile/view';
 
@@ -28,7 +31,7 @@ class Profile extends Base
         }, 'Could not find Generate API Key button.');
 
         $generateElement = $this->spin(function () use ($generateButton) {
-            return $generateButton->getParent()->find('css', 'label');
+            return $this->getClosest($generateButton, 'AknFieldContainer')->find('css', '.AknTextField');
         }, 'Could not find API Key.');
 
         return $generateElement->getHtml();

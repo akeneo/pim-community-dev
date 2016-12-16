@@ -17,7 +17,7 @@ define(
     function (_, Backbone, template, i18n) {
         return Backbone.View.extend({
             template: _.template(template),
-            className: 'validation-errors',
+            className: 'AknFieldContainer-validationErrors validation-errors',
             events: {
                 'click .change-context': 'changeContext'
             },

@@ -11,38 +11,38 @@
         </div>
     </div>
     <div class="tabsection-content">
-        <table class="table groups">
+        <table class="AknGrid table groups">
             <thead>
                 {% if sortGranted %}
-                    <th>&nbsp;</th>
+                    <th class="AknGrid-headerCell">&nbsp;</th>
                 {% endif %}
-                <th>{{ 'Name'|trans }}</th>
-                <th>{{ 'Type'|trans }}</th>
-                <th>{{ 'Scope'|trans }}</th>
-                <th>{{ 'Localizable'|trans }}</th>
+                <th class="AknGrid-headerCell">{{ 'Name'|trans }}</th>
+                <th class="AknGrid-headerCell">{{ 'Type'|trans }}</th>
+                <th class="AknGrid-headerCell">{{ 'Scope'|trans }}</th>
+                <th class="AknGrid-headerCell">{{ 'Localizable'|trans }}</th>
                 {% if removalGranted %}
-                    <th>&nbsp;</th>
+                    <th class="AknGrid-headerCell">&nbsp;</th>
                 {% endif %}
             </thead>
                 <tbody id="attributes-sortable">
                     {% for attribute in group.attributes %}
-                        <tr>
+                        <tr class="AknGrid-bodyRow">
                             {% if sortGranted %}
-                                <td>
+                                <td class="AknGrid-bodyCell AknGrid-bodyCell--checkbox">
                                     <span class="handle">
                                         <i class="icon-reorder"></i>
                                         <input name="{{ attribute.id }}" type="hidden" value="{{ attribute.sortOrder }}">
                                     </span>
                                 </td>
                             {% endif %}
-                            <td>{{ attribute.label }}</td>
-                            <td>{{ attribute.attributeType|trans }}</td>
-                            <td>{{ attribute.scopable ? 'Channel'|trans : 'Global'|trans }}</td>
-                            <td>
+                            <td class="AknGrid-bodyCell">{{ attribute.label }}</td>
+                            <td class="AknGrid-bodyCell">{{ attribute.attributeType|trans }}</td>
+                            <td class="AknGrid-bodyCell">{{ attribute.scopable ? 'Channel'|trans : 'Global'|trans }}</td>
+                            <td class="AknGrid-bodyCell">
                                 <input type="checkbox" disabled="disabled"{% if attribute.localizable %} checked="checked"{% endif %}>
                             </td>
                             {% if removalGranted %}
-                                <td>
+                                <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
                                     <a {{ elements.deleteLinkAttributes(
                                         path('pim_enrich_attributegroup_removeattribute', {'groupId': group.id, 'attributeId': attribute.id}),
                                         path('pim_enrich_attributegroup_edit', {'id': group.id }),

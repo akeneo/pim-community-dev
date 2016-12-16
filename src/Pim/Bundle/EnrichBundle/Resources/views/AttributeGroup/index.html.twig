@@ -14,17 +14,17 @@
             {% set editGranted = resource_granted('pim_enrich_attributegroup_edit') %}
             {% if resource_granted('pim_enrich_attributegroup_sort') %}
                 <form id="pim_enrich_attributegroup_sort" action="{{ path('pim_enrich_attributegroup_sort') }}" method="POST">
-                    <ul id="entities-sortable">
+                    <ul id="entities-sortable" class="AknVerticalList AknVerticalList--withoutBorder">
                         {% for groupId, groupName in groups %}
-                            <li class="{{ groupId == currentGroup ? 'active' : '' }}" data-id="{{ groupId }}">
+                            <li class="AknVerticalList-item {{ groupId == currentGroup ? 'active' : '' }}" data-id="{{ groupId }}">
                                 <span class="handle">
                                     <i class="icon-reorder"></i>
                                     <input name="{{ groupId }}" type="hidden" value="{{ loop.index }}">
                                 </span>
                                 {% if editGranted %}
-                                    <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                                    <a class="AknVerticalList-itemLink" href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
                                 {% else %}
-                                    {{ groupName }}
+                                    <span class="AknVerticalList-itemLink">{{ groupName }}</span>
                                 {% endif %}
                             </li>
                         {% endfor %}
@@ -46,7 +46,7 @@
         </div>
         <div id="form-tab">
             {% block groupTab %}
-                <div class="buffer-extra-top buffer-left fullwidth text-center">
+                <div class="fullwidth text-center">
                     {{ 'attribute group.suggest creation'|trans }}
                     {% if resource_granted('pim_enrich_attributegroup_create') %}
                         <br/>

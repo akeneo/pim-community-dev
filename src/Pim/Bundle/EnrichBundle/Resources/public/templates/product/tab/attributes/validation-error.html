@@ -1,5 +1,5 @@
 <% _.each(errors, function(error) { %>
-    <span>
+    <span class="AknFieldContainer-validationError">
         <i class="icon-warning-sign"></i>
         <% if (error.locale || error.scope) { %>
             <span class="field-context change-context" data-locale="<%- error.locale %>" data-scope="<%- error.scope %>">

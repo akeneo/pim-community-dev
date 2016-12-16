@@ -343,12 +343,13 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function iShouldSeeANiceLoadingMessage()
     {
-        $message = $this->spin(function () {
-            return trim($this->getSession()
+        $messageNode = $this->spin(function () {
+            return $this->getSession()
                 ->getPage()
-                ->find('css', $this->elements['Loading message']['css'])
-                ->getHtml());
+                ->find('css', $this->elements['Loading message']['css']);
         }, 'Unable to find any loading message');
+
+        $message = trim($messageNode->getHtml());
 
         assertNotEquals('Loading ...', $message, 'The loading message should not equals the default value');
     }

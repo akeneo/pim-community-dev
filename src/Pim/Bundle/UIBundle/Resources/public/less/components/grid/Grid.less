@@ -14,14 +14,17 @@
     line-height: 16px;
     padding: 12px 10px;
     transition: background 0.1s ease;
+    background: white;
   }
 
-  &-bodyRow:hover &-bodyCell {
+  &-bodyRow:hover &-bodyCell,
+  &-bodyRow--highlight &-bodyCell {
     background: @AknDefaultHoverBackground;
-    cursor: pointer;
   }
 
   &-bodyCell {
+    cursor: pointer;
+
     &--full {
       padding: 10px 20px;
       background: white;
@@ -58,6 +61,10 @@
 
   &-bodyCell,
   &-headerCell {
+    &--center {
+      text-align: center;
+    }
+
     &--right {
       text-align: right;
     }
@@ -91,7 +98,7 @@
     background: white;
   }
 
-  &--unclickable &-bodyRow:hover &-bodyCell {
+  &--unclickable &-bodyRow &-bodyCell {
     cursor: default;
   }
 }

@@ -3,14 +3,22 @@
 namespace Pim\Behat\Decorator\Grid\Filter;
 
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
+use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
 class OperatorDecorator extends ElementDecorator
 {
+    use ClosestTrait;
+
     use SpinCapableTrait;
 
     /**
      * Set the decorator value
+     *
+     * @param $value
+     *
+     * @throws TimeoutException
      */
     public function setValue($value)
     {
@@ -18,16 +26,16 @@ class OperatorDecorator extends ElementDecorator
         // we need to do a perfect match on the label
         $this->spin(function () use ($value) {
             $this->click();
-            $operatorChoices = $this->getParent()->findAll(
+            $operatorChoices = $this->getClosest($this, 'AknDropdown')->findAll(
                 'css',
                 '.dropdown-menu .choice_value, .dropdown-menu .operator_choice'
             );
 
             foreach ($operatorChoices as $choice) {
-                if ($value === $choice->getText()) {
+                if (strtolower($value) === strtolower($choice->getText())) {
                     $choice->click();
 
-                    return $this->getText() === $value;
+                    return true;
                 }
             }
 

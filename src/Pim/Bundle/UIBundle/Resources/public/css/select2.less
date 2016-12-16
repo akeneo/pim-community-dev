@@ -1,5 +1,4 @@
 @import 'less/variables';
-@import 'less/mixins';
 
 /* Custom select2 styles */
 .select2-container {
@@ -113,7 +112,6 @@ body .select2-dropdown-open.select2-drop-above {
     outline: none;
     color: @color-444;
     background: transparent;
-    .box-shadow(0 1px 0 @white inset);
   }
 }
 
@@ -123,7 +121,7 @@ body .select2-dropdown-open.select2-drop-above {
   .select2-search-field input {
     padding: 3px 5px;
     font-family: @baseFontFamily;
-    .border-radius(4px);
+    border-radius: 4px;
     &.select2-active {
       background: transparent !important;
     }
@@ -238,7 +236,6 @@ a.select2-choice {
     padding: 4px;
     background: @whiteDarker;
     border-top: 1px solid @color-ccc;
-    .clearfix();
 
     .buttons {
       line-height: 30px;

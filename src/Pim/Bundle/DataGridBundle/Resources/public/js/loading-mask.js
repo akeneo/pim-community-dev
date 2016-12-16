@@ -26,10 +26,10 @@ function($, _, Backbone, __) {
 
         /** @property */
         template:_.template(
-            '<div id="loading-wrapper" class="loading-wrapper"></div>' +
-            '<div id="loading-frame" class="loading-frame">' +
-                '<div class="box well">' +
-                    '<div class="loading-content">' +
+            '<div id="loading-wrapper" class="AknLoadingMask-wrapper loading-wrapper"></div>' +
+            '<div id="loading-frame" class="AknLoadingMask-frame loading-frame">' +
+                '<div class="AknLoadingMask-box box well">' +
+                    '<div class="AknLoadingMask-content loading-content">' +
                         '<%= loadingHint %>' +
                     '</div>' +
                 '</div>' +

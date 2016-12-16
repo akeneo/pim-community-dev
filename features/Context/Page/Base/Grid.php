@@ -214,7 +214,12 @@ class Grid extends Index
         $value = str_replace('"', '', $value);
 
         $gridRow = $this->spin(function () use ($value) {
-            return $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
+            $content = $this->getGridContent();
+            if (null === $content) {
+                return null;
+            }
+
+            return $content->find('css', sprintf('tr td:contains("%s")', $value));
         }, sprintf('Couldn\'t find a row for value "%s"', $value));
 
         return $gridRow->getParent();

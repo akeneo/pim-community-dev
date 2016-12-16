@@ -9,15 +9,15 @@
             <option value="<%- channel.code %>" <%- channel.code === scope ? 'selected' : '' %>><%- channel.labels[locale] %></option>
         <% }); %>
     </select>
-    <div class="icons-container">
-        <i class="icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="<%- __('pim_enrich.export.product.filter.channel.help') %>"></i>
+    <div class="AknFieldContainer-iconsContainer icons-container">
+        <i class="AknIconButton icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="<%- __('pim_enrich.export.product.filter.channel.help') %>"></i>
     </div>
 </div>
 <div class="AknFieldContainer-footer">
     <span class="below-input">
-        <span class="validation-errors">
+        <span class="AknFieldContainer-validationErrors validation-errors">
             <% errors.forEach(function (error) { %>
-                <span>
+                <span class="AknFieldContainer-validationError">
                     <i class="icon-warning-sign"></i> <span class="error-message"><%- error %></span>
                 </span>
             <% }); %>

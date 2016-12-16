@@ -8,29 +8,27 @@
         </div>
     </div>
     <div class="tabsection-content tab-content">
-        {% set columnWidth = 85/(channels|length) %}
-
-        <table class="table groups">
+        <table class="AknGrid AknGrid--unclickable groups">
             <thead>
-                <th width="10%">{{ 'Label'|trans|upper }}</th>
+                <th class="AknGrid-headerCell">{{ 'Label'|trans|upper }}</th>
                 {% for channel in channels %}
-                    <th class="channel" width="{{ columnWidth }}%">{{ channel.label|upper }}</th>
+                    <th class="AknGrid-headerCell AknGrid-headerCell--center channel">{{ channel.label|upper }}</th>
                 {% endfor %}
-                <th width="5%">&nbsp;</th>
+                <th class="AknGrid-headerCell"></th>
             </thead>
 
             {% set colspan = channels|length + 2 %}
             {% set editGranted = resource_granted('pim_enrich_family_edit_attributes') %}
             {% for groupLabel, attributes in form.vars.value.groupedAttributes %}
             <tbody>
-                <tr class="group">
-                    <td colspan="{{ colspan }}"><i class="icon-collapse-alt"></i>{{ groupLabel }}</td>
+                <tr class="AknGrid-bodyRow AknGrid-bodyRow--highlight group">
+                    <td class="AknGrid-bodyCell" colspan="{{ colspan }}"><i class="icon-collapse-alt"></i>{{ groupLabel }}</td>
                 </tr>
                 {% for attribute in attributes %}
-                <tr>
-                    <td>{{ attribute.label }}</td>
+                <tr class="AknGrid-bodyRow">
+                    <td class="AknGrid-bodyCell">{{ attribute.label }}</td>
                     {% for channel in channels %}
-                        <td>
+                        <td class="AknGrid-bodyCell AknGrid-bodyCell--center">
                             {% if attribute.attributeType == 'pim_catalog_identifier' %}
                                 <div class="attribute-requirement identifier">
                                     <i class="icon-ok required" data-toggle="tooltip" data-original-title="{{ 'Required'|trans }}" data-placement="right"></i>
@@ -40,14 +38,14 @@
                             {% endif %}
                         </td>
                     {% endfor %}
-                    <td>
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
                         {% if attribute.attributeType != 'pim_catalog_identifier' and editGranted %}
                             <a {{ elements.deleteLinkAttributes(
                                     path('pim_enrich_family_removeattribute', {'familyId': form.vars.value.id, 'attributeId': attribute.id}),
                                     path('pim_enrich_family_edit', {'id': form.vars.value.id }),
                                     'confirmation.family.remove attribute'|trans({ '%name%': attribute.label }),
                                     'flash.family.attribute removed'|trans
-                                )}} class="remove-attribute">
+                                )}} class="AknIconButton AknIconButton--small AknIconButton--grey remove-attribute">
                                 <i class="icon-trash"></i>
                             </a>
                         {% endif %}

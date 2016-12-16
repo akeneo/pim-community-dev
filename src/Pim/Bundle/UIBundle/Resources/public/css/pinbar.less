@@ -1,5 +1,4 @@
 @import 'less/variables';
-@import 'less/mixins';
 
 /* Pin bar and menus **************************************************************************************************/
 
@@ -43,7 +42,6 @@
     display: table-row;
   }
   li {
-    .box-shadow(inset 0 -1px 2px 0 rgba(0,0,0,.1));
     display: table-cell;
     text-align: left;
     text-shadow: 0 -1px 2px @akeneoDarkBlue;
@@ -73,7 +71,8 @@
 .pin-frame {
   white-space: nowrap;
   width: 48px;
-  .text-overflow();
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pin-menus .extra-list {
@@ -104,15 +103,7 @@
   margin: 0 -29px 0 0;
   border-left: 1px solid @black;
   cursor: pointer;
-  &.open {
-    .icon-ellipsis-horizontal {
-      .box-shadow(inset 0 2px 4px 0 @akeneoDarkBlue);
-    }
-  }
   .oro-dropdown-toggle {
-    &:hover {
-      #gradient > .vertical(@akeneoPurpleDark, @akeneoPurpleDarker);
-    }
     &.icon-ellipsis-horizontal {
       width: 30px;
       height: 24px;
@@ -121,10 +112,6 @@
       font-size: @font-size-18;
       text-align: center;
       line-height: 26px;
-    }
-    &:active,
-    &:focus {
-      .box-shadow(inset 0 2px 4px 0 @akeneoDarkBlue);
     }
   }
   .dropdown-menu {

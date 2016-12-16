@@ -14,7 +14,7 @@ require(
             function initializeForm() {
                 var $switch = $(formName+'_autoOptionSorting')
                     .closest('.AknFieldContainer')
-                    .insertBefore('#attribute-option-grid')
+                    .appendTo('#attribute-option-switcher')
                     .removeClass('hide')
                     .find('.has-switch');
                 $switch.on('switch-change', function (e, data) {

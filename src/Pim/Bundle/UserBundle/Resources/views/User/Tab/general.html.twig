@@ -1,5 +1,5 @@
 <div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
-    <div class="AknFormContainer">
+    <div class="AknFormContainer AknFormContainer--withPadding">
         {{ form_row(form.enabled) }}
         {{ form_row(form.username) }}
         {{ form.plainPassword is defined ? form_row(form.plainPassword) : '' }}

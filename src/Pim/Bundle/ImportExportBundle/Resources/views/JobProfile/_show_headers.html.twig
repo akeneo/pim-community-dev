@@ -13,7 +13,7 @@
     {% include 'PimImportExportBundle:JobProfile:_buttons.html.twig' %}
 {% endset %}
 
-{{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id), titleButtons) }}
+{{ elements.page_header(title, buttons, null, left, null, titleButtons, elements.updated(form.vars.id)) }}
 
 {% if upload_is_allowed %}
     {{ form_start(uploadForm, {
@@ -26,7 +26,9 @@
         {{ elements.form_errors(uploadForm) }}
         <div class="row-fluid buffer-top">
             {{ form_row(uploadForm.file) }}
-            {{ elements.submitBtn('Upload and '~action~' now', 'upload-alt') }}
+            <div class="AknButtonList AknButtonList--centered">
+                {{ elements.submitBtn('Upload and '~action~' now', 'upload-alt') }}
+            </div>
         </div>
     {{ form_end(uploadForm) }}
 {% endif %}

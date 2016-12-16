@@ -35,7 +35,7 @@
     </head>
     <body class="{% block bodyClass %}{% endblock %}">
     {% placeholder after_body_start %}
-    <div id="progressbar">
+    <div id="progressbar" class="AknDefault-progressContainer">
         <h3>
             {% if oro_config_value('pim_ui.loading_message_enabled') %}
                 {{ loading_message() }}
@@ -47,8 +47,8 @@
             <div class="AknProgress-bar bar" style="width: 90%;"></div>
         </div>
     </div>
-    <div id="page" style="display:none;">
-        <div id="top-page">
+    <div id="page" style="display:none;" class="AknDefault-page">
+        <div id="top-page" class="AknDefault-topPage">
             {% block header %}
                 <header class="AknHeader">
                     {% placeholder before_navigation %}

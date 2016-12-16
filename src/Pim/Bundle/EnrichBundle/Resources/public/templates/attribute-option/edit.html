@@ -1,9 +1,9 @@
-<td class="field-cell">
+<td class="AknGrid-bodyCell field-cell">
     <input type="text" class="AknTextField attribute_option_code exclude" value="<%- item.code %>"/>
     <i class="validation-tooltip hidden" data-placement="top" data-toggle="tooltip"></i>
 </td>
 <% _.each(locales, function (locale) { %>
-    <td class="field-cell">
+    <td class="AknGrid-bodyCell field-cell">
         <% if (item.optionValues[locale]) { %>
             <input type="text" class="AknTextField attribute-option-value exclude" data-locale="<%- locale %>"
                 value="<%- item.optionValues[locale].value %>"/>
@@ -13,7 +13,7 @@
         <% } %>
     </td>
 <% }); %>
-<td>
+<td class="AknGrid-bodyCell AknGrid-bodyCell--right">
     <div class="AknButtonList">
         <span class="AknButtonList-item AknIconButton AknIconButton--apply update-row"><i class="icon-ok"></i></span>
         <span class="AknButtonList-item AknIconButton AknIconButton--important show-row"><i class="icon-remove"></i></span>
