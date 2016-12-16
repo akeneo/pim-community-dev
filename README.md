@@ -1,3 +1,5 @@
+# CI TESTING PULL REQUEST CATCH
+
 Akeneo PIM Application
 ======================
 Welcome to Akeneo PIM Product.
