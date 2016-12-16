@@ -1,5 +1,54 @@
 @import '../base/variables';
 
+.select2-drop-active {
+  border-color: @AknBorderColor;
+}
+
+.select2-drop {
+  border-radius: 0 0 2px 2px;
+  color: @AknDefaultFontColor;
+}
+
+.select2-results .select2-highlighted {
+  background: @AknDefaultHoverBackground;
+  color: @AknDefaultFontColor;
+}
+
+.select2-container-multi.select2-container-active .select2-choices {
+  border: 1px solid @AknBorderColor;
+  outline: none;
+  box-shadow: none;
+}
+
+.select2-search input.select2-active {
+  background: none;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input.select2-active {
+  background: none !important;
+}
+
+.select2-more-results.select2-active {
+  background: none;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice {
+  margin: 1px;
+  height: @AknFormHeight - 4px;
+  line-height: @AknFormHeight - 4px;
+  padding: 0 10px 0 20px;
+
+}
+
+.select2-container-multi .select2-search-choice-close {
+  top: 7px;
+}
+
+.select2-container-multi .select2-choices .select2-search-field {
+  height: @AknFormHeight - 2px;
+}
+
+/* Grid view selector custom */
 .grid-view-selector {
   .select2-container {
     width: 200px;

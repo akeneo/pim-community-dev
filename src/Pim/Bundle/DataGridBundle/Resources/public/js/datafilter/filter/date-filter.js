@@ -55,7 +55,7 @@ function(
          *
          * @property
          */
-        inputClass: 'AknFilterDate-dateInput',
+        inputClass: 'AknTextField',
 
         /**
          * Date widget options

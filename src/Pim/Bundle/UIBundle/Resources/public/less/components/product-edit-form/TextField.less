@@ -15,11 +15,27 @@
     border-right: none;
   }
 
+  &--noLeftRadius {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+  }
+
+  &--noRadius {
+    border-radius: 0;
+  }
+
   &--withRightButton {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-right: 1px;
+  }
+
+  &--select2 {
+    padding: 0;
+    border: none;
+    height: auto;
   }
 
   &--disabled,

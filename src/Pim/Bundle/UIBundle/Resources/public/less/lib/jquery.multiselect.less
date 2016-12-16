@@ -18,11 +18,25 @@
 }
 
 .ui-multiselect-menu {
+  @minWidth: 150px;
+
   padding: 0;
   max-width: 235px;
+  min-width: @minWidth !important;
+
+  input[type="search"] {
+    height: @AknFormHeight;
+    line-height: @AknFormHeight;
+    color: @AknDefaultFontColor;
+    border: 1px solid @AknBorderColor;
+    min-width: @minWidth - 4 * 2px;
+    width: 100%;
+    border-radius: 2px;
+    padding: 0 8px;
+  }
 
   .ui-multiselect-header {
-    padding: 2px;
+    padding: 0;
     margin-bottom: 0;
     border: none;
     background-color: @AknBorderColor;
@@ -40,10 +54,7 @@
   }
 
   .ui-multiselect-checkboxes {
-    border-left: 1px solid @AknBorderColor;
-    border-right: 1px solid @AknBorderColor;
-    border-bottom: 1px solid @AknBorderColor;
-    padding: 0 10px 10px 10px;
+    padding: @AknDropdownMenuVerticalPadding 0;
   }
 
   .ui-multiselect-checkboxes label {
@@ -64,6 +75,21 @@
   .ui-multiselect-checkboxes label input {
     top: 2px;
     margin-right: 5px;
+  }
+
+  .ui-multiselect-checkboxes label {
+    padding: 3px 20px;
+    cursor: pointer;
+    font-weight: normal;
+
+    &:hover {
+      background: @AknDefaultHoverBackground;
+    }
+
+    &.ui-state-active {
+      background: @AknPurple;
+      color: white;
+    }
   }
 
   .ui-multiselect-footer {

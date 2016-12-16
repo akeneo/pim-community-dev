@@ -9,10 +9,7 @@ css:
         - bundles/pimui/lib/summernote/summernote.css
 
     pim_ui:
-        - bundles/pimui/css/jquery-ui.grid.less
-        - bundles/pimui/css/header.less
         - bundles/pimui/css/pinbar.less
-        - bundles/pimui/css/select2.less
 
         - bundles/pimui/less/lib/bootstrap.switch.less
         - bundles/pimui/less/lib/dialog.less
@@ -24,6 +21,7 @@ css:
         - bundles/pimui/less/lib/jquery.sidebarize.less
         - bundles/pimui/less/lib/modal.less
         - bundles/pimui/less/lib/navs.less
+        - bundles/pimui/less/lib/select2.less
         - bundles/pimui/less/lib/slimbox2.less
         - bundles/pimui/less/lib/tabs.less
         - bundles/pimui/less/lib/wizard.less

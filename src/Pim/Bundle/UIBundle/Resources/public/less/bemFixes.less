@@ -10,42 +10,6 @@
 .AknTitleContainer.navigation.clearfix > .row {
   width: 100%;
 }
-.grid-view-selector {
-  .select2-container.select-field,
-  .buttons {
-    display: inline-block;
-  }
-}
-.select2-container-multi .select2-choices .select2-search-choice {
-  height: 30px;
-  line-height: 28px;
-  padding: 0 5px 0 20px;
-  margin: 1px;
-
-  .select2-search-choice-close {
-    line-height: 20px;
-  }
-}
-.grid-view-selector {
-  .select2-container {
-    border-color: #ccc;
-    border-radius: 2px;
-
-    .select2-choice {
-      height: 32px;
-      line-height: 32px;
-      background: #e9ebee !important;
-      font-size: 14px;
-
-      .select2-arrow {
-        height: 32px;
-        width: 32px;
-        line-height: 32px;
-        background: #ccd1d8;
-      }
-    }
-  }
-}
 
 #product-categories {
   height: 100%;
@@ -59,21 +23,10 @@
   display: inherit;
 }
 
-.AknFieldContainer-inputContainer .select2-container {
-  width: 100%;
-}
-.select2-container-multi.select2-container-disabled .select2-choices,
-.select2-container.select2-container-disabled .select2-choice {
-  background: @AknDisabledInputColor;
-  cursor: not-allowed;
-}
 .datetimepicker {
   width: 100%;
 }
-.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice {
-  padding: 0 6px;
-  cursor: not-allowed;
-}
+
 #category-form, #form-tab {
   .text-center {
     text-align: center;
@@ -149,19 +102,6 @@ i.remove-attribute {
   margin:-20px -20px 20px -20px;
 }
 
-// For the select2 items on PEF
-.akeneo-simple-select-field,
-.akeneo-multi-select-field {
-  .field-input {
-    display: flex;
-    align-items: center;
-
-    .select-field {
-      flex: 1;
-    }
-  }
-}
-
 // For the green ticks on PEF tabs
 .entity-edit-form {
   .tabs-left > .sidebar > .nav-tabs a {
@@ -174,24 +114,6 @@ i.remove-attribute {
 // Variant group show history (same in groups)
 .form-container .history > div {
   width: 100%;
-}
-
-// Filters boolean
-.ui-multiselect-menu.select-filter-widget {
-  margin-top: -3px;
-}
-.ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
-  color: @AknDefaultFontColor !important;
-  font-weight: normal;
-  cursor: pointer;
-}
-.ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label.ui-state-hover,
-.ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label.ui-state-active {
-  background: @AknPurple;
-  color: white !important;
-}
-.select2-results .select2-result-label {
-  min-height: 0;
 }
 
 .AknProjectWidget {
