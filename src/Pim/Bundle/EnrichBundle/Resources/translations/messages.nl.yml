@@ -1,7 +1,7 @@
 pim_enrich:
   product:
     tab:
-      attribute.title: Kenmerken
+      attribute.title: Attributen
       category.title: Categorieën
       association.title: Koppelingen
       completeness.title: Volledigheid
@@ -16,7 +16,7 @@ pim_enrich:
   attribute_group:
     tab:
       property.title: Eigenschappen
-      attribute.title: Kenmerken
+      attribute.title: Attributen
       history.title: Geschiedenis
   family:
     tab:
@@ -47,7 +47,7 @@ pim_enrich:
     type:
       VARIANT: Variant
       X_SELL: Cross-Sell
-      ADDITIONAL: Aanvullend
+      ADDITIONAL: Extra
       RELATED: Gerelateerde
     tab:
       product.title: Producten
@@ -57,13 +57,13 @@ pim_enrich:
     type:
       VARIANT: Variant
       X_SELL: Cross-Sell
-      ADDITIONAL: Aanvullend
-      RELATED: Gerelateerd
+      ADDITIONAL: Extra
+      RELATED: Gerelateerde
     tab:
       product.title: Producten
       property.title: Eigenschappen
       history.title: Geschiedenis
-      attribute.title: Kenmerken
+      attribute.title: Attributen
     info:
       no_attributes: Deze variant groep heeft nog geen kenmerken
       no_attributes_in_selected_locale: Deze variant groep heeft geen kenmerken in deze locale
@@ -77,25 +77,16 @@ pim_enrich:
     limit_exceeded: Kies minder dan %limit% items om te wijzigen
     product:
       page_title: Producten
-      page_subtitle: Massaal bewerken (1 product)|Massaal bewerken (%count% producten)
+      page_subtitle: Massa-wijzig (1 product)|Massa-wijzig (%count% producten)
       title: Kies bewerking
-      subtitle: Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de geselecteerde %count% producten
-      confirm: U staat op het punt een product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% producten bij te werken met de volgende informatie. Alstublieft bevestigen.
+      subtitle: Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de %count% geselecteerde producten
       steps:
-        first: Kies producten
         second: Kies bewerking
-        third: Configureer
-        fourth: Bevestigen
     family:
       page_title: Families
-      page_subtitle: Massa bewerken (1 familie) | Massa bewerken (%count% families)
       title: Kies bewerking
-      confirm: U staat op het punt een familie bij te werken met de volgende informatie. Gelieve dit te bevestigen. |U staat op het punt %count% families bij te werken met de volgende informatie. Gelieve dit te bevestigen.
       steps:
-        first: Kies families
         second: Kies bewerking
-        third: Configureer
-        fourth: Bevestig
     change-status:
       label: Status wijzigen (inschakelen / uitschakelen)
       description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
@@ -145,8 +136,7 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: De massa actie "voeg toe aan variant groep" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     set-attribute-requirements:
-      label: Stel attribuutvereisten in
-      description: De volgende attribuutvereisten zullen worden togepast op de geselecteerde families
+      description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
       success_flash: De attribuutvereisten zijn toegepast op de geselecteerde families
       launched_flash: De bulk actie "stel attribuutvereisten in" wordt gelanceerd. U wordt meegedeeld wanneer het zal worden gedaan.
     mass_action:
@@ -315,7 +305,7 @@ association type:
 products: producten
 btn:
   create:
-    attribute: attribuut aanmaken
+    attribute: Attribuut aanmaken
     attribute group: attribuutgroep aanmaken
     category: categorie aanmaken
     tree: structuur aanmaken
@@ -509,7 +499,7 @@ Label: Label
 Default label: Standaard label
 Default value: Standaardwaarde
 Attributetype: Attribuut type
-Attribute type: Attribuuttype
+Attribute type: Attribuut type
 Defaultvalue: Standaardwaarde
 Variant: Variant
 Smart: Slim
@@ -773,7 +763,6 @@ job_execution.summary:
   skip: Overgeslagen
   skipped_products: Overgeslagen producten
   skipped_attributes: Overgeslagen attributen
-edit_common_attributes.steps.edit_common_attributes_processor.title: Wijzig gemeenschappelijke attributen
 update_product_value.steps.update_product_value_processor.title: Update productwaarde
 remove_product_value.steps.update_product_value_processor.title: Verwijder productwaarde
 batch_jobs:
