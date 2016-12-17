@@ -84,6 +84,23 @@
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
     },
+    "replace": {
+        "oro/translation-bundle": "1.0-dev",
+        "oro/navigation-bundle": "1.0-dev",
+        "oro/requirejs-bundle": "1.0-dev",
+        "oro/security-bundle": "1.0-dev",
+        "oro/assetic-bundle": "1.0-dev",
+        "oro/filter-bundle": "1.0-dev",
+        "oro/config-bundle": "1.0-dev",
+        "oro/user-bundle": "1.0-dev",
+        "oro/form-bundle": "1.0-dev",
+        "oro/ui-bundle": "1.0.0-alpha",
+        "akeneo/storage-utils": "0.6.0-dev",
+        "akeneo/batch": "0.6.0-dev",
+        "akeneo/storage-utils-bundle": "0.6.0-dev",
+        "akeneo/measure-bundle": "0.6.0-dev",
+        "akeneo/batch-bundle": "0.6.0-dev"
+    },
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
