@@ -85,7 +85,6 @@ btn:
   create:
     export profile: crear perfil d'exportació
     import profile: crear perfil d'importació
-Upload and import now: Penjar i importar ara
 import now: Importar ara
 export now: Exportar ara
 confirmation:
@@ -118,7 +117,6 @@ popin.create:
 'Display item': Visualitzar element
 'Hide item': Amagar element
 'Collecting data about job execution...': Recollida de dades sobre l'execució del job...
-'You must select a file to upload': Heu de seleccionar un arxiu per penjar
 Download log: Descarregar registre
 Show profile: Mostrar perfil
 execution details: detalls d'execució
