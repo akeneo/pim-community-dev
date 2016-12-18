@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6031: Deleted families are still visible on the product grid
+
 # 1.6.6 (2016-12-08)
 
 ## Bug fixes
