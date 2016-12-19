@@ -155,7 +155,8 @@ Feature: Edit common attributes of many products at once
   @jira https://akeneo.atlassian.net/browse/PIM-6008
   Scenario: Successfully mass edit scoped product values with special chars
     Given I set product "pump" family to "boots"
-    When I mass-edit products boots and pump
+    When I select rows boots and pump
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Description attribute
     And I change the Description to "&$@(B°ar'<"

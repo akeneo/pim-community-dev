@@ -1302,8 +1302,11 @@ class WebUser extends RawMinkContext
      */
     public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
     {
-        $this->getCurrentPage()->editOptionAndCancel($oldOptionName, $newOptionName);
-        $this->wait();
+        $this->spin(function () use ($oldOptionName, $newOptionName) {
+            $this->getCurrentPage()->editOptionAndCancel($oldOptionName, $newOptionName);
+
+            return true;
+        }, 'Can not edit and cancel code');
     }
 
     /**
