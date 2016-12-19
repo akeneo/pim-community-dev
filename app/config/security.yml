@@ -30,14 +30,6 @@ security:
             pattern:                        ^/media
             security:                       false
 
-        wsse_secured:
-            pattern:                        ^/api/(rest|soap).*
-            wsse:
-                lifetime:                   3600
-                realm:                      "Secured API"
-                profile:                    "UsernameToken"
-            context:                        main
-
         login:
             pattern:                        ^/user/(login|reset-request|send-email|check-email)$
             provider:                       chain_provider
@@ -65,4 +57,3 @@ security:
 
     access_control:
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/api/rest/(latest|v1)/pinbars, role: ROLE_USER }
