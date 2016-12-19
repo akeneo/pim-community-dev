@@ -171,10 +171,15 @@
 .AknSelect2-gridViewSelector.select2-container {
   .select2-choice {
     background: lighten(@AknGrey, 25%);
+    font-size: @AknFontSizeBig;
 
     .select2-arrow {
       background: lighten(@AknGrey, 15%);
     }
+  }
+
+  &.select2-container-active .select2-choice {
+    background: lighten(@AknGrey, 15%);
   }
 }
 

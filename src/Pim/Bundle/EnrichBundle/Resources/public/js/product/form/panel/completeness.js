@@ -23,7 +23,7 @@ define(
             className: 'panel-pane completeness-panel',
             events: {
                 'click header': 'switchLocale',
-                'click .missing-attributes span': 'showAttribute'
+                'click .missing-attributes a': 'showAttribute'
             },
 
             /**
@@ -125,6 +125,8 @@ define(
                         scope: event.currentTarget.dataset.channel
                     }
                 );
+
+                return false;
             },
 
             /**

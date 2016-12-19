@@ -33,15 +33,16 @@
                             </div>
                             <div class="AknCompletenessBlock-missing missing">
                                 <% if (channelCompleteness.completeness.missing !== 0) { %>
-                                 <%- _.__('pim_enrich.form.product.panel.completeness.missing_values') %>:
-                                 <span class="missing-attributes">
-                                    <% _.each(channelCompleteness.missing, function(missing) { %>
-                                        <span data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- channelCompleteness.completeness['channel_code'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></span>
-                                    <% }) %>
-                                </span>
-                                <% } %>
+                                    <%- _.__('pim_enrich.form.product.panel.completeness.missing_values') %>:
+                                        <span class="missing-attributes">
+                                            <% _.each(channelCompleteness.missing, function(missing, i) { %>
+                                                <% if (0 !== i) { %> | <% } %>
+                                                <a href="#" data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- channelCompleteness.completeness['channel_code'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></a>
+                                            <% }) %>
+                                        </span>
+                                    <% } %>
                                 <% if (0 === channelCompleteness.completeness.missing && channelCompleteness.missing.length > 0) { %>
-                                <span class="AknBadge AknBadget--important">Completeness error</span>
+                                    <span class="AknBadge AknBadget--important">Completeness error</span>
                                 <% } %>
                             </div>
                         </div>
