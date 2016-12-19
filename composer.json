@@ -140,7 +140,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "ssh://git@distribution.akeneo.com:443/ElasticSearchBundle",
+            "url": "https://github.com/akeneo/ElasticSearchBundle.git",
             "branch": "master"
         }
     ]
