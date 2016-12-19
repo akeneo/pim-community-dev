@@ -33,40 +33,40 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ProjectController
 {
     /** @var FilterConverter */
-    private $filterConverter;
+    protected $filterConverter;
 
     /** @var SimpleFactoryInterface */
-    private $datagridViewFactory;
+    protected $datagridViewFactory;
 
     /** @var SimpleFactoryInterface */
-    private $projectFactory;
+    protected $projectFactory;
 
     /** @var ObjectUpdaterInterface */
-    private $datagridViewUpdater;
+    protected $datagridViewUpdater;
 
     /** @var ObjectUpdaterInterface */
-    private $projectUpdater;
+    protected $projectUpdater;
 
     /** @var ValidatorInterface */
-    private $validator;
+    protected $validator;
 
     /** @var SaverInterface */
-    private $projectSaver;
+    protected $projectSaver;
 
     /** @var ProjectCalculationJobLauncherInterface */
-    private $projectCalculationJobLauncher;
+    protected $projectCalculationJobLauncher;
 
     /** @var NormalizerInterface */
-    private $projectNormalizer;
+    protected $projectNormalizer;
 
     /** @var ProjectRepositoryInterface */
-    private $projectRepository;
+    protected $projectRepository;
 
     /** @var UserRepositoryInterface */
-    private $userRepository;
+    protected $userRepository;
 
     /** @var TokenStorageInterface */
-    private $tokenStorage;
+    protected $tokenStorage;
 
     public function __construct(
         FilterConverter $filterConverter,

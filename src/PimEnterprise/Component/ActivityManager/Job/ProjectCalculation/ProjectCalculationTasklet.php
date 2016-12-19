@@ -27,22 +27,22 @@ use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterfac
 class ProjectCalculationTasklet implements TaskletInterface
 {
     /** @var ProductRepositoryInterface */
-    private $productRepository;
+    protected $productRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
-    private $projectRepository;
+    protected $projectRepository;
 
     /** @var CalculationStepInterface */
-    private $calculationStep;
+    protected $calculationStep;
 
     /** @var SaverInterface */
-    private $projectSaver;
+    protected $projectSaver;
 
     /** @var ObjectDetacherInterface */
-    private $objectDetacher;
+    protected $objectDetacher;
 
     /** @var StepExecution */
-    private $stepExecution;
+    protected $stepExecution;
 
     /**
      * @param ProductRepositoryInterface            $productRepository

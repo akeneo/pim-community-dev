@@ -29,16 +29,16 @@ use PimEnterprise\Component\Security\Attributes;
 class UserGroupCalculationStep implements CalculationStepInterface
 {
     /** @var ObjectDetacherInterface */
-    private $objectDetacher;
+    protected $objectDetacher;
 
     /** @var CategoryAccessRepository */
-    private $categoryAccessRepository;
+    protected $categoryAccessRepository;
 
     /** @var FamilyRequirementRepositoryInterface */
-    private $familyRequirementRepository;
+    protected $familyRequirementRepository;
 
     /** @var AttributePermissionRepositoryInterface */
-    private $attributePermissionRepository;
+    protected $attributePermissionRepository;
 
     /**
      * @param ObjectDetacherInterface                $objectDetacher
@@ -80,7 +80,7 @@ class UserGroupCalculationStep implements CalculationStepInterface
      *
      * @return string[]
      */
-    private function findUserGroupNamesForProduct(ProductInterface $product)
+    protected function findUserGroupNamesForProduct(ProductInterface $product)
     {
         $contributors = $this->categoryAccessRepository->getGrantedUserGroupsForProduct(
             $product,
@@ -98,7 +98,7 @@ class UserGroupCalculationStep implements CalculationStepInterface
      *
      * @return Group[]
      */
-    private function findUserGroupForAttribute(ProductInterface $product, ProjectInterface $project)
+    protected function findUserGroupForAttribute(ProductInterface $product, ProjectInterface $project)
     {
         $attributeGroupIdentifiers = $this->familyRequirementRepository->findAttributeGroupIdentifiers(
             $product->getFamily(),

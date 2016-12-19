@@ -29,7 +29,7 @@ class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
     protected $supportedFormats = ['internal_api'];
 
     /** @var Serializer */
-    private $serializer;
+    protected $serializer;
 
     /**
      * {@inheritdoc}

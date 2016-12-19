@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints\Collection;
 class ProjectCalculationJobParameters implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
 {
     /** @var string */
-    private $projectCalculationJobName;
+    protected $projectCalculationJobName;
 
     /**
      * @param $projectCalculationJobName

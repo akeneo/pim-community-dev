@@ -23,10 +23,10 @@ use PimEnterprise\Component\Security\Attributes;
 class ProductRepository implements ProductRepositoryInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
+    protected $productQueryBuilderFactory;
 
     /** @var CategoryAccessRepository */
-    private $categoryAccessRepository;
+    protected $categoryAccessRepository;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory

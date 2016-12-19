@@ -21,7 +21,7 @@ use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessReposi
 class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInterface
 {
     /** @var EntityManager */
-    private $entityManger;
+    protected $entityManger;
 
     /**
      * @param EntityManager $entityManager
@@ -50,7 +50,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
      *
      * @return array
      */
-    private function buildQueryParameters(ProjectInterface $project, $username = null)
+    protected function buildQueryParameters(ProjectInterface $project, $username = null)
     {
         $parameters = [
             'project_id' => $project->getId(),
@@ -72,7 +72,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
      *
      * @return string
      */
-    private function buildSqlQuery($username = null)
+    protected function buildSqlQuery($username = null)
     {
         $extraTableJoins = $extraConditions = '';
 

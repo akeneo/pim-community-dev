@@ -30,13 +30,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class EventTranslationSubscriber implements EventSubscriberInterface
 {
     /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    protected $eventDispatcher;
 
     /** @var IdentifiableObjectRepositoryInterface */
-    private $projectRepository;
+    protected $projectRepository;
 
     /** @var string */
-    private $projectCalculationJobName;
+    protected $projectCalculationJobName;
 
     /**
      * @param EventDispatcherInterface              $eventDispatcher

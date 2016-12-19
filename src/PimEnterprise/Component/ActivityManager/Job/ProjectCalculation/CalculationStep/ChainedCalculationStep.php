@@ -20,7 +20,7 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 class ChainedCalculationStep implements CalculationStepInterface
 {
     /** @var CalculationStepInterface[] */
-    private $calculationSteps;
+    protected $calculationSteps;
 
     /**
      * @param array $calculationSteps

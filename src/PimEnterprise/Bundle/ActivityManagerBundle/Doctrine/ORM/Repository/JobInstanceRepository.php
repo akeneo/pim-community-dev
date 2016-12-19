@@ -21,7 +21,7 @@ use PimEnterprise\Component\ActivityManager\Repository\JobInstanceRepositoryInte
 class JobInstanceRepository extends EntityRepository implements JobInstanceRepositoryInterface
 {
     /** @var string */
-    private $projectCalculationJobName;
+    protected $projectCalculationJobName;
 
     /**
      * @param EntityManager $em

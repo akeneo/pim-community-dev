@@ -131,7 +131,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      *
      * @return array
      */
-    private function extractContributorGroupIdentifier(ProjectInterface $project)
+    protected function extractContributorGroupIdentifier(ProjectInterface $project)
     {
         $groupIdentifiers = array_map(function (Group $userGroup) {
             return $userGroup->getId();

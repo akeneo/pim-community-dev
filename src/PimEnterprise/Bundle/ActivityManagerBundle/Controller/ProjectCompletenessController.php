@@ -24,13 +24,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class ProjectCompletenessController
 {
     /** @var IdentifiableObjectRepositoryInterface */
-    private $projectRepository;
+    protected $projectRepository;
 
     /** @var ProjectCompletenessRepositoryInterface */
-    private $projectCompletenessRepository;
+    protected $projectCompletenessRepository;
 
     /** @var TokenStorageInterface */
-    private $tokenStorage;
+    protected $tokenStorage;
 
     /**
      * ProjectCompletenessController constructor.

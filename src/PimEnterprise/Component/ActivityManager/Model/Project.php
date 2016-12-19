@@ -24,37 +24,37 @@ use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 class Project implements ProjectInterface
 {
     /** @var int */
-    private $id;
+    protected $id;
 
     /** @var string */
-    private $code;
+    protected $code;
 
     /** @var string */
-    private $label;
+    protected $label;
 
     /** @var string */
-    private $description;
+    protected $description;
 
     /** @var \DateTime */
-    private $dueDate;
+    protected $dueDate;
 
     /** @var UserInterface */
-    private $owner;
+    protected $owner;
 
     /** @var DatagridView */
-    private $datagridView;
+    protected $datagridView;
 
     /** @var ChannelInterface */
-    private $channel;
+    protected $channel;
 
     /** @var LocaleInterface */
-    private $locale;
+    protected $locale;
 
     /** @var ArrayCollection */
-    private $userGroups;
+    protected $userGroups;
 
     /** @var string */
-    private $productFilters;
+    protected $productFilters;
 
     public function __construct()
     {

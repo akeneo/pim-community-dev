@@ -25,10 +25,10 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 class ProjectUpdater implements ObjectUpdaterInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
-    private $channelRepository;
+    protected $channelRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
-    private $localeRepository;
+    protected $localeRepository;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $channelRepository
@@ -71,7 +71,7 @@ class ProjectUpdater implements ObjectUpdaterInterface
      * @param string           $field
      * @param mixed            $value
      */
-    private function setData(ProjectInterface $project, $field, $value)
+    protected function setData(ProjectInterface $project, $field, $value)
     {
         switch ($field) {
             case 'label':
@@ -115,7 +115,7 @@ class ProjectUpdater implements ObjectUpdaterInterface
      *
      * @param ProjectInterface $project
      */
-    private function generateCode(ProjectInterface $project)
+    protected function generateCode(ProjectInterface $project)
     {
         $projectCode = Urlizer::transliterate(
             sprintf(

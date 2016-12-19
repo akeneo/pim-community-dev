@@ -27,7 +27,7 @@ class ProjectVoter extends AbstractVoter
     const CONTRIBUTE = 'CONTRIBUTE';
 
     /** @var UserRepositoryInterface */
-    private $userRepository;
+    protected $userRepository;
 
     /**
      * @param UserRepositoryInterface $userRepository

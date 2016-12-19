@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\Event;
 class ProjectEvent extends Event
 {
     /** @var ProjectInterface */
-    private $project;
+    protected $project;
 
     /**
      * @param ProjectInterface $project

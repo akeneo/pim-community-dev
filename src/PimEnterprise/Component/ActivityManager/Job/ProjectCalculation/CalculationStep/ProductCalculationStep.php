@@ -23,7 +23,7 @@ use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterfac
 class ProductCalculationStep implements CalculationStepInterface
 {
     /** @var ProjectRepositoryInterface */
-    private $projectRepository;
+    protected $projectRepository;
 
     /**
      * @param ProjectRepositoryInterface $projectRepository

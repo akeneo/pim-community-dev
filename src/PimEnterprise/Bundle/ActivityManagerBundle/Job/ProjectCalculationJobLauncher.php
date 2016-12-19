@@ -25,10 +25,10 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInterface
 {
     /** @var JobLauncherInterface */
-    private $simpleJobLauncher;
+    protected $simpleJobLauncher;
 
     /** @var JobInstanceRepository */
-    private $jobInstanceRepository;
+    protected $jobInstanceRepository;
 
     /**
      * @param JobLauncherInterface  $simpleJobLauncher

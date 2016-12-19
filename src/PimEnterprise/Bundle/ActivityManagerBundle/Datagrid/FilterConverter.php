@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 class FilterConverter
 {
     /** @var OroToPimGridFilterAdapter */
-    private $oroToPimGridFilterAdapter;
+    protected $oroToPimGridFilterAdapter;
 
     /**
      * @param OroToPimGridFilterAdapter $oroToPimGridFilterAdapter

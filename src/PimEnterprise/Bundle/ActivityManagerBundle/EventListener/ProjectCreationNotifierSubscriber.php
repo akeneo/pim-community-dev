@@ -27,16 +27,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
 {
     /** @var ProjectCreatedNotificationFactory */
-    private $factory;
+    protected $factory;
 
     /** @var NotifierInterface */
-    private $notifier;
+    protected $notifier;
 
     /** @var UserRepositoryInterface */
-    private $userRepository;
+    protected $userRepository;
 
     /** @var PresenterInterface */
-    private $datePresenter;
+    protected $datePresenter;
 
     /**
      * @param ProjectCreatedNotificationFactory $factory
