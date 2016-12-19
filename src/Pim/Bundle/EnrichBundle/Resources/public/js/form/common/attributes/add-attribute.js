@@ -40,7 +40,7 @@ define(
     ) {
         return BaseForm.extend({
             tagName: 'div',
-            className: 'add-attribute',
+            className: 'AknButtonList-item add-attribute',
             template: _.template(template),
             config: {},
             resultsPerPage: 20,
