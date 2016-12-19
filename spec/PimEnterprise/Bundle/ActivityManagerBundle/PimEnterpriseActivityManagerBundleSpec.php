@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ActivityManagerBundleSpec extends ObjectBehavior
+class PimEnterpriseActivityManagerBundleSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {

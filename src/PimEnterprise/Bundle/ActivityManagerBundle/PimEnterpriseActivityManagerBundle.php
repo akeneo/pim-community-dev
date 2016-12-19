@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ActivityManagerBundle extends Bundle
+class PimEnterpriseActivityManagerBundle extends Bundle
 {
     /**
      * {@inheritdoc}
