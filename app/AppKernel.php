@@ -98,6 +98,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
             new Pim\Bundle\LocalizationBundle\PimLocalizationBundle(),
             new Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
+            new Pim\Bundle\ApiBundle\PimApiBundle()
         ];
     }
 
