@@ -24,34 +24,34 @@ config:
 
     paths:
         # Forms
-        activity-manager/grid/view-selector/footer/create/project: activitymanager/js/grid/view-selector-footer-create-project
-        activity-manager/project/create-form: activitymanager/js/project/create-form
-        activity-manager/project/fetcher: activitymanager/js/fetcher/project-fetcher
-        activity-manager/widget/project-widget: activitymanager/js/widget/project-widget
-        activity-manager/widget/project-selector: activitymanager/js/widget/project-selector
-        activity-manager/widget/project-selector-line: activitymanager/js/widget/project-selector-line
-        activity-manager/widget/contributor-selector: activitymanager/js/widget/contributor-selector
-        activity-manager/widget/contributor-selector-line: activitymanager/js/widget/contributor-selector-line
-        activity-manager/widget/project-due-date: activitymanager/js/widget/project-due-date
-        activity-manager/widget/project-completeness-data: activitymanager/js/widget/project-completeness-data
-        activity-manager/widget/project-description: activitymanager/js/widget/project-description
-        activity-manager/grid/view-selector/selector: activitymanager/js/grid/view-selector
-        pim/grid/view-selector/line: activitymanager/js/grid/view-selector-line
+        activity-manager/grid/view-selector/footer/create/project: pimenterpriseactivitymanager/js/grid/view-selector-footer-create-project
+        activity-manager/project/create-form: pimenterpriseactivitymanager/js/project/create-form
+        activity-manager/project/fetcher: pimenterpriseactivitymanager/js/fetcher/project-fetcher
+        activity-manager/widget/project-widget: pimenterpriseactivitymanager/js/widget/project-widget
+        activity-manager/widget/project-selector: pimenterpriseactivitymanager/js/widget/project-selector
+        activity-manager/widget/project-selector-line: pimenterpriseactivitymanager/js/widget/project-selector-line
+        activity-manager/widget/contributor-selector: pimenterpriseactivitymanager/js/widget/contributor-selector
+        activity-manager/widget/contributor-selector-line: pimenterpriseactivitymanager/js/widget/contributor-selector-line
+        activity-manager/widget/project-due-date: pimenterpriseactivitymanager/js/widget/project-due-date
+        activity-manager/widget/project-completeness-data: pimenterpriseactivitymanager/js/widget/project-completeness-data
+        activity-manager/widget/project-description: pimenterpriseactivitymanager/js/widget/project-description
+        activity-manager/grid/view-selector/selector: pimenterpriseactivitymanager/js/grid/view-selector
+        pim/grid/view-selector/line: pimenterpriseactivitymanager/js/grid/view-selector-line
 
         # Savers
-        activity-manager/saver/project: activitymanager/js/saver/project-saver
+        activity-manager/saver/project: pimenterpriseactivitymanager/js/saver/project-saver
 
         # Templates
-        activity-manager/templates/grid/create-project-modal-content: activitymanager/templates/grid/create-project-modal-content.html
-        activity-manager/templates/grid/view-selector/footer/create/project: activitymanager/templates/grid/view-selector-footer-create-project.html
-        activity-manager/templates/field-error: activitymanager/templates/field-error.html
-        activity-manager/templates/grid/view-selector/line-project: activitymanager/templates/grid/view-selector-line-project.html
-        activity-manager/templates/widget/project-widget: activitymanager/templates/widget/project-widget.html
-        activity-manager/templates/widget/project-widget-empty: activitymanager/templates/widget/project-widget-empty.html
-        activity-manager/templates/widget/project-selector: activitymanager/templates/widget/project-selector.html
-        activity-manager/templates/widget/project-selector-line: activitymanager/templates/widget/project-selector-line.html
-        activity-manager/templates/widget/contributor-selector: activitymanager/templates/widget/contributor-selector.html
-        activity-manager/templates/widget/contributor-selector-line: activitymanager/templates/widget/contributor-selector-line.html
-        activity-manager/templates/widget/project-due-date: activitymanager/templates/widget/project-due-date.html
-        activity-manager/templates/widget/project-completeness-data: activitymanager/templates/widget/project-completeness-data.html
-        activity-manager/templates/widget/project-description: activitymanager/templates/widget/project-description.html
+        activity-manager/templates/grid/create-project-modal-content: pimenterpriseactivitymanager/templates/grid/create-project-modal-content.html
+        activity-manager/templates/grid/view-selector/footer/create/project: pimenterpriseactivitymanager/templates/grid/view-selector-footer-create-project.html
+        activity-manager/templates/field-error: pimenterpriseactivitymanager/templates/field-error.html
+        activity-manager/templates/grid/view-selector/line-project: pimenterpriseactivitymanager/templates/grid/view-selector-line-project.html
+        activity-manager/templates/widget/project-widget: pimenterpriseactivitymanager/templates/widget/project-widget.html
+        activity-manager/templates/widget/project-widget-empty: pimenterpriseactivitymanager/templates/widget/project-widget-empty.html
+        activity-manager/templates/widget/project-selector: pimenterpriseactivitymanager/templates/widget/project-selector.html
+        activity-manager/templates/widget/project-selector-line: pimenterpriseactivitymanager/templates/widget/project-selector-line.html
+        activity-manager/templates/widget/contributor-selector: pimenterpriseactivitymanager/templates/widget/contributor-selector.html
+        activity-manager/templates/widget/contributor-selector-line: pimenterpriseactivitymanager/templates/widget/contributor-selector-line.html
+        activity-manager/templates/widget/project-due-date: pimenterpriseactivitymanager/templates/widget/project-due-date.html
+        activity-manager/templates/widget/project-completeness-data: pimenterpriseactivitymanager/templates/widget/project-completeness-data.html
+        activity-manager/templates/widget/project-description: pimenterpriseactivitymanager/templates/widget/project-description.html

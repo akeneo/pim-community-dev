@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ActivityManagerExtension extends Extension
+class PimEnterpriseActivityManagerExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $containerBuilder)
     {
