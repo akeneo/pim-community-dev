@@ -1,150 +1,139 @@
+'use strict';
+
+/**
+ * Project widget.
+ *
+ * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ */
 define(
     [
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/dashboard/abstract-widget',
+        'pim/form',
         'text!activity-manager/templates/widget/project-widget',
         'text!activity-manager/templates/widget/project-widget-empty',
         'pim/user-context',
         'pim/fetcher-registry',
-        'activity-manager/widget/project-selector',
-        'activity-manager/widget/contributor-selector',
-        'activity-manager/widget/project-due-date',
-        'activity-manager/widget/project-completeness-data',
-        'activity-manager/widget/project-description'
+        'oro/loading-mask'
     ],
     function (
         $,
         _,
         __,
-        AbstractWidget,
+        BaseForm,
         template,
         templateEmpty,
         UserContext,
         FetcherRegistry,
-        ProjectSelector,
-        ContributorSelector,
-        ProjectDueDate,
-        ProjectCompletenessData,
-        ProjectDescription
+        LoadingMask
     ) {
-        'use strict';
-
-        return AbstractWidget.extend({
+        return BaseForm.extend({
             template: _.template(template),
             templateEmpty: _.template(templateEmpty),
 
-            render: function () {
-                FetcherRegistry.initialize().then(function () {
-                    FetcherRegistry.getFetcher('project').search({search: null, limit: 1, page: 1}).then(
-                        function (projects) {
-                            if (!_.isEmpty(projects)) {
-                                this.$el.html(this.template());
+            /**
+             * {@inheritDoc}
+             */
+            configure: function () {
+                this.onExtensions('activity-manager:widget:project-selected', this.updateCurrentProjectCode.bind(this));
+                this.onExtensions(
+                    'activity-manager:widget:contributor-selected',
+                    this.updateCurrentContributorUsername.bind(this)
+                );
 
-                                this.renderProjectSelector();
-                                this.renderProjectInformation(_.first(projects));
-                            } else {
-                                this.$el.html(this.templateEmpty({message: __('activity_manager.widget.no_project')}));
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritDoc}
+             */
+            render: function () {
+                var loadingMask = new LoadingMask();
+                loadingMask.render().$el.appendTo(this.$el);
+                loadingMask.show();
+
+                $.when(
+                    this.fetchProject(),
+                    this.fetchContributor()
+                ).then(function (project, contributor) {
+                        if (!_.isEmpty(project)) {
+                            this.$el.html(this.template());
+
+                            this.setData({currentProjectCode: project.code});
+                            this.setData({currentProject: project});
+
+                            if (!_.isEmpty(contributor)) {
+                                this.setData({currentContributorUsername: contributor.username});
+                                this.setData({currentContributor: contributor});
                             }
-                        }.bind(this)
-                    );
-                }.bind(this));
+
+                            this.renderExtensions();
+                        } else {
+                            this.$el.html(this.templateEmpty({message: __('activity_manager.widget.no_project')}));
+                        }
+
+                        loadingMask.hide();
+                    }.bind(this));
 
                 return this;
             },
 
             /**
-             * Render all data linked to the project
+             * Fetch project.
+             * If a project is set in the model, return the project.
+             * If not, return the project that as the nearest due date.
              *
-             * @param {Object} project
+             * @return {Promise}
              */
-            renderProjectInformation: function (project) {
-                if (UserContext.get('username') === project.owner.username) {
-                    this.renderContributorSelector(project.code);
-                    this.renderCompletenessData(project.code);
-                } else {
-                    this.renderCompletenessData(project.code, UserContext.get('username'));
+            fetchProject: function () {
+                if (this.getFormModel().has('currentProjectCode')) {
+                    return FetcherRegistry.getFetcher('project').fetch(this.getFormData().currentProjectCode);
                 }
-                this.renderDueDate(project.due_date);
-                this.renderDescription(project.description);
+
+                return FetcherRegistry.getFetcher('project')
+                    .search({search: null, options: {limit: 1, page: 1}})
+                    .then(function (projects) {
+                        return _.first(projects);
+                    });
             },
 
             /**
-             * Render the project selector populated with projects the current user is allowed to access
+             * Fetch the contributor from the model currentContributorUsername.
+             *
+             * @return {Promise}
              */
-            renderProjectSelector: function () {
-                var projectSelector = new ProjectSelector();
+            fetchContributor: function () {
+                if (!this.getFormModel().has('currentContributorUsername')) {
+                    return $.Deferred().resolve({}).promise();
+                }
 
-                projectSelector.render();
-                this.listenTo(projectSelector, 'activity-manager.widget.project-selected', function (event) {
-                    var project = {
-                        code: event.added.id,
-                        due_date: event.added.due_date,
-                        description: event.added.description,
-                        owner: event.added.owner
-                    };
-                    this.renderProjectInformation(project);
-                }.bind(this));
-                this.$('.activity-manager-widget-project-selector').html(projectSelector.$el);
+                return FetcherRegistry.getFetcher('user').fetch(this.getFormData().currentContributorUsername);
             },
 
             /**
-             * Render a select2 populated by the given project contributors
+             * Update the current project code in the model and render the widget.
              *
              * @param {String} projectCode
              */
-            renderContributorSelector: function (projectCode) {
-                var contributorSelector = new ContributorSelector(projectCode);
-
-                contributorSelector.render();
-                this.listenTo(contributorSelector, 'activity-manager.widget.contributor-selected', function (event) {
-                    var username = event.added.id;
-
-                    this.renderCompletenessData(contributorSelector.getProjectCode(), username);
-                }.bind(this));
-                this.$('.activity-manager-widget-contributor-selector').html(contributorSelector.$el);
+            updateCurrentProjectCode: function (projectCode) {
+                this.setData({currentProjectCode: projectCode});
+                this.render();
             },
 
             /**
-             * Render the localized due date
+             * Update the current contributor username in the model (if username is not null)
+             * and render the widget.
              *
-             * @param {String} dueDate To the model format yyyy-MM-dd
+             * @param {String|null} username
              */
-            renderDueDate: function (dueDate) {
-                var projectDueDate = new ProjectDueDate(dueDate);
-
-                projectDueDate.render();
-                this.$('.activity-manager-widget-due-date').html(projectDueDate.$el);
-            },
-
-            /**
-             * Render the description
-             *
-             * @param {String} description
-             */
-            renderDescription: function (description) {
-                var projectDescription = new ProjectDescription(description);
-
-                projectDescription.render();
-                this.$('.activity-manager-widget-description').html(projectDescription.$el);
-            },
-
-            /**
-             * Render completeness data of the contributor for the given project.
-             * If username is null, it renders global completeness of the project.
-             *
-             * @param {int}    projectCode
-             * @param {String} username
-             */
-            renderCompletenessData: function (projectCode, username) {
-                if (_.isUndefined(username) || 'string' !== typeof username) {
-                    username = null;
+            updateCurrentContributorUsername: function (username) {
+                this.getFormModel().unset('currentContributorUsername');
+                this.getFormModel().unset('currentContributor');
+                if (null !== username) {
+                    this.setData({currentContributorUsername: username});
                 }
-                var projectCompletenessData = new ProjectCompletenessData(projectCode, username);
-
-                projectCompletenessData.render();
-                this.$('.activity-manager-widget-completeness').html(projectCompletenessData.$el);
+                this.render();
             }
         });
     }

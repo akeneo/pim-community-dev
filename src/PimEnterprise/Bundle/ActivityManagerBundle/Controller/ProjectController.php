@@ -183,6 +183,20 @@ class ProjectController
     }
 
     /**
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     */
+    public function getAction($identifier)
+    {
+        $project = $this->projectRepository->findOneByIdentifier($identifier);
+
+        $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
+
+        return new JsonResponse($normalizedProject, 200);
+    }
+
+    /**
      * Returns users that belong to the project.
      *
      * @param Request $request

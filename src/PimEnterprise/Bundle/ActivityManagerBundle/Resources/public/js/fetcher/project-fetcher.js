@@ -1,32 +1,14 @@
 'use strict';
 
+/**
+ * Project fetcher.
+ *
+ * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ */
 define(
     ['jquery', 'underscore', 'routing', 'pim/base-fetcher'],
     function ($, _, Routing, BaseFetcher) {
         return BaseFetcher.extend({
-            /**
-             * Search contributors of a project. It searches in full name.
-             *
-             * @param {int}   projectCode
-             * @param {Array} searchOptions
-             *
-             * @returns {Promise}
-             */
-            searchContributors: function (projectCode, searchOptions) {
-                var deferred = $.Deferred();
-
-                $.getJSON(
-                    Routing.generate(
-                        'activity_manager_project_contributors_search',
-                        {projectCode: projectCode, search: searchOptions.search, options: searchOptions.options}
-                    )
-                ).then(function (contributors) {
-                    deferred.resolve(contributors);
-                });
-
-                return deferred;
-            },
-
             /**
              * Get completeness of a project in terms of a contributor or not.
              *

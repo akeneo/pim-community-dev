@@ -49,7 +49,7 @@ class IndexDecorator extends ElementDecorator
 
         return $this->decorate(
             $widget,
-            ['PimEnterprise\Behat\Widget\WidgetDecorator']
+            ['PimEnterprise\Behat\Decorator\Widget\ActivityManagerWidgetDecorator']
         );
     }
 }

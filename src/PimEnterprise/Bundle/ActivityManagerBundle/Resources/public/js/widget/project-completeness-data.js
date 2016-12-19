@@ -1,75 +1,85 @@
+'use strict';
+
+/**
+ * Project completeness.
+ *
+ * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ */
 define(
     [
         'jquery',
         'underscore',
         'oro/translator',
+        'pim/form',
         'backbone',
         'pim/fetcher-registry',
         'text!activity-manager/templates/widget/project-completeness-data'
     ],
-    function ($, _, __, Backbone, FetcherRegistry, template) {
-        'use strict';
-
-        return Backbone.View.extend({
+    function ($, _, __, BaseForm, Backbone, FetcherRegistry, template) {
+        return BaseForm.extend({
             template: _.template(template),
-            projectCode: null,
-            username: null,
             className: 'AknProjectWidget-boxes',
 
             /**
-             * @param {int}    projectCode
-             * @param {String} username
+             * {@inheritdoc}
              */
-            initialize: function (projectCode, username) {
-                if (_.isUndefined(username) || 'string' !== typeof username) {
-                    username = null;
-                }
+            initialize: function (meta) {
+                this.config = meta.config;
 
-                this.projectCode = projectCode;
-                this.username = username;
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**
+             * {@inheritdoc}
+             *
              * Render completeness data of the contributor for the given project.
              * If username is null, it renders global completeness of the project.
              */
             render: function () {
-                FetcherRegistry.getFetcher('project').getCompleteness(this.projectCode, this.username).then(
-                    function (completeness) {
-                        var todo = completeness.todo;
-                        var inProgress = completeness.in_progress;
-                        var done = completeness.done;
-                        var total = todo + inProgress + done;
+                var data = this.getFormData();
+                var contributorUsername = null;
 
+                if (this.getFormModel().has('currentContributorUsername')) {
+                    contributorUsername = data.currentContributorUsername;
+                }
+
+                FetcherRegistry.getFetcher('project').getCompleteness(data.currentProjectCode, contributorUsername)
+                    .then(function (completeness) {
                         this.$el.html(this.template({
-                            todo: todo,
-                            inProgress: inProgress,
-                            done: done,
-                            todoLabel: __('activity_manager.widget.todo'),
-                            inProgressLabel: __('activity_manager.widget.in_progress'),
-                            doneLabel: __('activity_manager.widget.done'),
-                            percentageToEnrich: this.formatToPercentage(todo, total, 'to_enrich'),
-                            percentageInProgress: this.formatToPercentage(inProgress, total, 'in_progress'),
-                            percentageDone: this.formatToPercentage(done, total, 'done')
+                            completeness: completeness,
+                            percentage: this.formatToPercentage(completeness),
+                            todoLabel: __(this.config.labels.todo),
+                            inProgressLabel: __(this.config.labels.inProgress),
+                            doneLabel: __(this.config.labels.done)
                         }));
-                    }.bind(this)
-                );
+                    }.bind(this));
             },
 
             /**
              * Format a number to a percentage with the linked sentence.
              *
-             * @param {int}    number
-             * @param {int}    total
-             * @param {String} translationKey
+             * @param {Collection} completeness
              *
-             * @returns {string}
+             * @returns {Collection}
              */
-            formatToPercentage: function (number, total, translationKey) {
-                var percentage = Math.round(number * 100 / total);
-                var translation = __('activity_manager.widget.progress.' + translationKey);
+            formatToPercentage: function (completeness) {
+                var rawTodo = parseInt(completeness.todo);
+                var rawInProgress = parseInt(completeness.in_progress);
+                var rawDone = parseInt(completeness.done);
+                var todo = 0, inProgress = 0, done = 0;
+                var total = rawTodo + rawInProgress + rawDone;
 
-                return percentage + '% ' + translation;
+                if (0 !== total) {
+                    todo = Math.round(rawTodo * 100 / total);
+                    inProgress = Math.round(rawInProgress * 100 / total);
+                    done = Math.round(rawDone * 100 / total);
+                }
+
+                return {
+                    todo: todo + '% ' + __(this.config.labels.percentageTodo),
+                    in_progress: inProgress + '% ' + __(this.config.labels.percentageInProgress),
+                    done: done + '% ' + __(this.config.labels.percentageDone)
+                };
             }
         });
     }

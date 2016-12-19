@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Behat\Widget;
+namespace PimEnterprise\Behat\Decorator\Widget;
 
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
@@ -11,7 +11,7 @@ use Pim\Behat\Decorator\Field\Select2Decorator;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class WidgetDecorator extends ElementDecorator
+class ActivityManagerWidgetDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 

@@ -90,7 +90,7 @@ Feature: Follow project completeness
     And I am on the dashboard page
     Then I should see the Activity Manager widget
     And I should see the text "Activity Manager"
-    And I should see the text "Collection Winter 2030 ecommerce | English (United States)"
+    And I should see the text "Collection Winter 2030 [ecommerce] | English (United States)"
     And I should not see the contributor selector
 #    And I should see the following activity manager completeness:
 #      | todo | in_progress | done |
@@ -101,7 +101,7 @@ Feature: Follow project completeness
     And I should see the text "Please do your best to finish before Winter."
     And I should see the text "Due date: 08/25/2030"
     When I select "Collection Summer 2030" project
-    Then I should see the text "Collection Summer 2030 ecommerce | English (United States)"
+    Then I should see the text "Collection Summer 2030 [ecommerce] | English (United States)"
     And I should not see the contributor selector
 #    And I should see the following activity manager completeness:
 #      | todo | in_progress | done |

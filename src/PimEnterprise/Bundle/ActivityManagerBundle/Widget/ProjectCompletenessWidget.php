@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class ProjectProgressWidget implements WidgetInterface
+class ProjectCompletenessWidget implements WidgetInterface
 {
     /**
      * {@inheritdoc}
@@ -36,7 +36,7 @@ class ProjectProgressWidget implements WidgetInterface
      */
     public function getTemplate()
     {
-        return 'PimEnterpriseActivityManagerBundle:Widget:progress.html.twig';
+        return 'PimEnterpriseActivityManagerBundle:Widget:completeness.html.twig';
     }
 
     /**

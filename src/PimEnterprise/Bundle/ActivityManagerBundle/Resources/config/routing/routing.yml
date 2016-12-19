@@ -9,11 +9,15 @@ activity_manager_project_search:
     defaults: { _controller: pimee_activity_manager.controller.project_controller:searchAction, _format: json }
     methods: [GET]
 
+activity_manager_project_get:
+    path: /projects/{identifier}
+    defaults: { _controller: activity_manager.controller.project_controller:getAction, _format: json }
+    methods: [GET]
+
 activity_manager_project_contributors_search:
     path: /project/{projectCode}/contributors
     defaults: { _controller: pimee_activity_manager.controller.project_controller:searchContributorsAction, _format: json }
     methods: [GET]
-
 
 ### Project Completeness
 activity_manager_project_completeness_show:

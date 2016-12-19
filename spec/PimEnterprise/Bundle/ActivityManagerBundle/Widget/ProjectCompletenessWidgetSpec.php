@@ -2,15 +2,15 @@
 
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Widget;
 
-use PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectProgressWidget;
+use PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectCompletenessWidget;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 
-class ProjectProgressWidgetSpec extends ObjectBehavior
+class ProjectCompletenessWidgetSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProjectProgressWidget::class);
+        $this->shouldHaveType(ProjectCompletenessWidget::class);
         $this->shouldImplement(WidgetInterface::class);
     }
 

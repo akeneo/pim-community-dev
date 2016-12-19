@@ -1,0 +1,26 @@
+{% extends 'PimDashboardBundle:Widget:base.html.twig' %}
+
+{% set widgetTitle = 'activity_manager.widget.title'|trans %}
+
+{% set widgetContent %}
+    <div id="activity-manager-widget" class="AknProjectWidget"></div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/form-builder', 'pim/fetcher-registry', 'oro/loading-mask'],
+            function ($, FormBuilder, FetcherRegistry, LoadingMask) {
+                $(function () {
+                    var loadingMask = new LoadingMask();
+                    loadingMask.render().$el.appendTo('#activity-manager-widget');
+                    loadingMask.show();
+
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.build('activity-manager-widget').then(function (form) {
+                            form.setElement('#activity-manager-widget').render();
+                        })
+                    });
+                });
+            }
+        );
+    </script>
+{% endset %}

@@ -89,13 +89,13 @@ Feature: Follow project completeness
   Scenario: Successfully see the project with the nearest due date first
     Given I am on the dashboard page
     Then I should see the text "Activity Manager"
-    And I should see the text "Collection Winter 2030 ecommerce | English (United States)"
+    And I should see the text "Collection Winter 2030 [ecommerce] | English (United States)"
     And I should see the text "Due date: 08/28/2030"
 
   Scenario: Successfully display completeness on widget
     Given I am on the dashboard page
     Then I should see the text "Activity Manager"
-    And I should see the text "Collection Winter 2030 ecommerce | English (United States)"
+    And I should see the text "Collection Winter 2030 [ecommerce] | English (United States)"
     And I should see the text "all contributors"
 #    And I should see the following activity manager completeness:
 #      | todo | in_progress | done |
@@ -106,7 +106,7 @@ Feature: Follow project completeness
     And I should see the text "Please do your best to finish before Winter."
     And I should see the text "Due date: 08/28/2030"
     When I select "Collection Summer 2030" project
-    Then I should see the text "Collection Summer 2030 ecommerce | English (United States)"
+    Then I should see the text "Collection Summer 2030 [ecommerce] | English (United States)"
     And I should see the text "all contributors"
 #    And I should see the following activity manager completeness:
 #      | todo | in_progress | done |
@@ -117,7 +117,7 @@ Feature: Follow project completeness
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/28/2030"
     When I select "Claude Yachifeur" contributor
-    Then I should see the text "Collection Summer 2030 ecommerce | English (United States)"
+    Then I should see the text "Collection Summer 2030 [ecommerce] | English (United States)"
     And I should see the text "Claude Yachifeur"
 #    And I should see the following activity manager completeness:
 #      | todo | in_progress | done |

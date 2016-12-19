@@ -1,34 +1,37 @@
+'use strict';
+
+/**
+ * Contributor selector for the activity manager widget.
+ *
+ * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ */
 define(
     [
         'jquery',
         'underscore',
         'oro/translator',
+        'pim/form',
         'backbone',
+        'pim/user-context',
         'pim/fetcher-registry',
-        'activity-manager/widget/contributor-selector-line',
-        'text!activity-manager/templates/widget/contributor-selector'
+        'text!activity-manager/templates/widget/contributor-selector',
+        'text!activity-manager/templates/widget/contributor-selector-line'
     ],
-    function ($, _, __, Backbone, FetcherRegistry, ContributorSelectorLine, template) {
-        'use strict';
-
-        return Backbone.View.extend({
+    function ($, _, __, BaseForm, Backbone, UserContext, FetcherRegistry, template, lineTemplate) {
+        return BaseForm.extend({
             template: _.template(template),
-            projectCode: null,
+            lineTemplate: _.template(lineTemplate),
             resultsPerPage: 2,
             queryTimer: null,
             searchParameters: {},
 
             /**
-             * @param {int} projectCode
-             */
-            initialize: function (projectCode) {
-                this.projectCode = projectCode;
-            },
-
-            /**
              * Render a select2 populated by contributors of the given project
              */
             render: function () {
+                if (UserContext.get('username') !== this.getFormData().currentProject.owner.username) {
+                    return;
+                }
                 this.$el.html(this.template());
 
                 this.initializeSelect();
@@ -51,12 +54,12 @@ define(
                             var searchParameters = this.getSelectSearchParameters(options.term, page);
 
                             FetcherRegistry
-                                .getFetcher('project')
-                                .searchContributors(this.projectCode, searchParameters).then(function (contributors) {
-                                    var choices = this.toSelect2Format(contributors);
+                                .getFetcher('contributor')
+                                .search(searchParameters).then(function (contributors) {
+                                    var choices = this.arrayToSelect2Format(contributors);
 
                                     if (1 === page && '' === searchParameters.search) {
-                                        choices.unshift({id:0, text:__('activity_manager.widget.all_contributors')});
+                                        choices.unshift({id: '_all_contributors', text: __('activity_manager.widget.all_contributors')});
                                     }
 
                                     options.callback({
@@ -72,22 +75,22 @@ define(
                     }.bind(this),
 
                     initSelection: function (element, callback) {
-                        callback({id:0, text:__('activity_manager.widget.all_contributors')});
+                        var choice = {id: '_all_contributors', text: __('activity_manager.widget.all_contributors')};
+
+                        if (this.getFormModel().has('currentContributor')) {
+                            choice = this.toSelect2Format(this.getFormData().currentContributor);
+                        }
+
+                        callback(choice);
                     }.bind(this),
 
                     formatResult: function (item, $container) {
-                        var contributorSelectorLine = new ContributorSelectorLine(item.text, 'Line');
-
-                        contributorSelectorLine.render();
-                        $container.append(contributorSelectorLine.$el);
-                    },
+                        $container.append(this.formatLine(item.text, 'Line'));
+                    }.bind(this),
 
                     formatSelection: function (item, $container) {
-                        var contributorSelectorLine = new ContributorSelectorLine(item.text.toLowerCase(), 'Current');
-
-                        contributorSelectorLine.render();
-                        $container.append(contributorSelectorLine.$el);
-                    },
+                        $container.append(this.formatLine(item.text.toLowerCase(), 'Current'));
+                    }.bind(this),
 
                     dropdownCssClass: 'AknProjectWidget-select2Dropdown' +
                     ' AknProjectWidget-select2Dropdown--arrowLeft' +
@@ -96,7 +99,11 @@ define(
 
                 $select.select2(options);
                 $select.on('change', function (event) {
-                    this.trigger('activity-manager.widget.contributor-selected', event);
+                    var code = event.added.id;
+                    if ('_all_contributors' === code) {
+                        code = null;
+                    }
+                    this.trigger('activity-manager:widget:contributor-selected', code);
                 }.bind(this));
                 $select.on('select2-open', function() {
                     $('.activity-manager-widget-contributor-dropdown .select2-search')
@@ -120,6 +127,7 @@ define(
              */
             getSelectSearchParameters: function (term, page) {
                 return $.extend(true, {}, this.searchParameters, {
+                    projectCode: this.getFormData().currentProjectCode,
                     search: term,
                     options: {
                         limit: this.resultsPerPage,
@@ -129,29 +137,43 @@ define(
             },
 
             /**
-             * Take incoming data and format them to have all required parameters
+             * Take incoming contributors as array and format them to have all required parameters
              * to be used by the select2 module.
              *
-             * @param {array} data
-             *
-             * @returns {array}
+             * @param {Array} contributors
              */
-            toSelect2Format: function (data) {
-                return _.map(data, function (contributor) {
-                    return {
-                        text: contributor.firstName + ' ' + contributor.lastName,
-                        id: contributor.username
-                    };
-                });
+            arrayToSelect2Format: function (contributors) {
+                return _.map(contributors, this.toSelect2Format);
             },
 
             /**
-             * Returns the project code
+             * Take incoming contributor and format it to have all required parameters
+             * to be used by the select2 module.
              *
-             * @returns {String}
+             * @param {Object} contributor
+             *
+             * @return {Object}
              */
-            getProjectCode: function () {
-                return this.projectCode;
+            toSelect2Format: function (contributor) {
+                return  {
+                    text: contributor.firstName + ' ' + contributor.lastName,
+                    id: contributor.username
+                };
+            },
+
+            /**
+             * Format selection or result line in select2.
+             *
+             * @param {String} username
+             * @param {String} type
+             *
+             * @return {String}
+             */
+            formatLine: function (username, type) {
+                return this.lineTemplate({
+                    username: username,
+                    type: type
+                });
             }
         });
     }
