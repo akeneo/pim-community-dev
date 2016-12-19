@@ -1,3 +1,6 @@
+HOOK TEST
+=========
+
 Akeneo PIM Application
 ======================
 Welcome to Akeneo PIM Product.
