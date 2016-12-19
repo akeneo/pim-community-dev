@@ -95,7 +95,7 @@ define(
                 var $select = this.$('input[type="hidden"]');
 
                 var opts = {
-                    dropdownCssClass: 'bigdrop add-attribute',
+                    dropdownCssClass: 'AknSelect2--bigDrop AknSelect2--withLabels add-attribute',
                     /**
                      * Format result (attribute list) method of select2.
                      * This way we can display attributes and their attribute group beside them.
