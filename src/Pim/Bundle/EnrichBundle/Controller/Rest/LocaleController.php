@@ -51,6 +51,6 @@ class LocaleController
         $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
         $normalizedLocales = $this->normalizer->normalize($filteredLocales, 'internal_api');
 
-        return new JsonResponse(array_values($normalizedLocales));
+        return new JsonResponse($normalizedLocales);
     }
 }

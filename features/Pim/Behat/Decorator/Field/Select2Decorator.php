@@ -193,12 +193,14 @@ class Select2Decorator extends ElementDecorator
 
         // Maybe a "No matches found"
         $firstResult = $resultElements[0];
-        $noMatchesFound = strpos($firstResult->getAttribute('class'), 'select2-no-results') !== false;
+        $noMatchesFound = $firstResult->hasClass('select2-no-results');
 
-        if (!$noMatchesFound) {
-            foreach ($resultElements as $element) {
-                $results[] = $element->getText();
-            }
+        if ($noMatchesFound) {
+            return $results;
+        }
+
+        foreach ($resultElements as $element) {
+            $results[] = $element->getText();
         }
 
         $this->spin(function () {
@@ -224,7 +226,9 @@ class Select2Decorator extends ElementDecorator
 
         $this->getSession()->executeScript(
             sprintf(
-                '$(\'%s .select2-search input[type="text"]\').val(\'%s\').trigger(\'input\');',
+                '$(\'%s .select2-search input[type="text"]\')' .
+                '.val(\'%s\')' .
+                '.trigger(\'input\');',
                 $widgetClasses,
                 $text
             )

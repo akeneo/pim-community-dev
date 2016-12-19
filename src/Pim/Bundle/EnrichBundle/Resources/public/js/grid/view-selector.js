@@ -55,7 +55,8 @@ define(
             defaultColumns: [],
             defaultUserView: null,
             gridAlias: null,
-            $select2Instance: null,
+            select2Instance: null,
+            viewTypeSwitcher: null,
 
             /**
              * {@inheritdoc}
@@ -163,9 +164,9 @@ define(
                             }
 
                             var searchParameters = this.getSelectSearchParameters(options.term, page);
-                            var viewFetcher = 'datagrid-' + this.currentViewType;
+                            var fetcher = 'datagrid-' + this.currentViewType;
 
-                            FetcherRegistry.getFetcher(viewFetcher).search(searchParameters).then(function (views) {
+                            FetcherRegistry.getFetcher(fetcher).search(searchParameters).then(function (views) {
                                 var choices = this.toSelect2Format(views);
 
                                 if (page === 1 && !options.term) {
@@ -227,13 +228,16 @@ define(
 
                 // If more than 1 view type, we display the view type switcher module
                 if (this.config.viewTypes.length > 1) {
-                    var typeSwitcher = new ViewSelectorTypeSwitcher(this.config.viewTypes);
-                    $search.append(typeSwitcher.render().$el);
+                    this.viewTypeSwitcher = new ViewSelectorTypeSwitcher(this.config.viewTypes);
+                    $search.append(this.viewTypeSwitcher.render().$el);
 
-                    typeSwitcher.listenTo(
-                        typeSwitcher, 'grid:view-selector:switch-type', this.switchViewType.bind(this)
+                    this.listenTo(
+                        this.viewTypeSwitcher,
+                        'grid:view-selector:view-type-switching',
+                        this.switchViewType.bind(this)
                     );
-                    typeSwitcher.setCurrentViewType(this.currentViewType);
+
+                    this.viewTypeSwitcher.trigger('grid:view-selector:view-type-switched', this.currentViewType);
 
                     $search.find('.select2-input').addClass('with-dropdown');
                 }
@@ -259,6 +263,8 @@ define(
                 var searchTerm = this.select2Instance.data('select2').search.val();
                 this.select2Instance.select2('search', '');
                 this.select2Instance.select2('search', searchTerm);
+
+                this.viewTypeSwitcher.trigger('grid:view-selector:view-type-switched', this.currentViewType);
             },
 
             /**
@@ -330,7 +336,7 @@ define(
              * @return {array}
              */
             ensureDefaultView: function (choices) {
-                if (null !== this.defaultUserView || this.currentViewType !== 'view') {
+                if (null !== this.defaultUserView || 'view' !== this.currentViewType) {
                     return choices;
                 }
 

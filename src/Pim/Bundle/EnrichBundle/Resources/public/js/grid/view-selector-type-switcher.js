@@ -25,12 +25,12 @@ define(
         BaseForm,
         template
     ) {
-        return BaseForm.extend({
+        return Backbone.View.extend({
             template: _.template(template),
             viewTypes: [],
             currentViewType: '',
             events: {
-                'click [data-action="switchViewType"]': 'switchViewType'
+                'click .view-type-item': 'switchViewType'
             },
 
             /**
@@ -38,22 +38,20 @@ define(
              */
             initialize: function (viewTypes) {
                 this.viewTypes = viewTypes;
+                this.listenTo(this, 'grid:view-selector:view-type-switched', this.onViewTypeSelected);
             },
 
             /**
              * {@inheritdoc}
              */
             render: function () {
-                if (this.viewTypes.length > 1) {
-                    this.$el.html(this.template({
-                        __: __,
-                        currentViewType: this.currentViewType,
-                        viewTypes: this.viewTypes
-                    }));
+                this.$el.html(this.template({
+                    __: __,
+                    currentViewType: this.currentViewType,
+                    viewTypes: this.viewTypes
+                }));
 
-                    this.$('.view-selector-type-switcher').dropdown();
-                    this.renderExtensions();
-                }
+                this.$('.view-selector-type-switcher').dropdown();
 
                 return this;
             },
@@ -67,17 +65,16 @@ define(
             switchViewType: function (event) {
                 var viewType = $(event.target).data('value');
                 this.$('.view-selector-type-switcher').dropdown('toggle');
-                this.setCurrentViewType(viewType);
 
-                this.trigger('grid:view-selector:switch-type', viewType);
+                this.trigger('grid:view-selector:view-type-switching', viewType);
             },
 
             /**
-             * Setter for the current view type of this module's dropdown.
+             * Method called when a new view type has been selected.
              *
              * @param {string} viewType
              */
-            setCurrentViewType: function (viewType) {
+            onViewTypeSelected: function (viewType) {
                 this.currentViewType = viewType;
                 this.render();
             }
