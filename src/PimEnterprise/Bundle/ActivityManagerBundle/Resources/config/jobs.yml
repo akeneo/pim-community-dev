@@ -52,7 +52,7 @@ services:
         arguments:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pimee_security.repository.category_access'
-            - '@pimee_activity_manager.repository.familly_requirement'
+            - '@pimee_activity_manager.repository.family_requirement'
             - '@pimee_activity_manager.repository.attribute_permission'
         public: false
         tags:

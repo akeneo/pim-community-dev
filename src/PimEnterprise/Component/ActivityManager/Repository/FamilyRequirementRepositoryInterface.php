@@ -29,4 +29,13 @@ interface FamilyRequirementRepositoryInterface
      * @return string[]
      */
     public function findAttributeGroupIdentifiers(FamilyInterface $family, ChannelInterface $channel);
+
+    /**
+     * Returns the family code from the product id.
+     *
+     * @param $productId
+     *
+     * @return array
+     */
+    public function getFamilyCode($productId);
 }

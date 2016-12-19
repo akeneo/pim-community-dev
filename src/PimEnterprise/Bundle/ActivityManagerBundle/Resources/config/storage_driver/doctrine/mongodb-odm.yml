@@ -1,0 +1,16 @@
+parameters:
+    pimee_activity_manager.repository.attribute.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\MongoDBODM\Repository\AttributeRepository'
+    pimee_activity_manager.presenter.attribute.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\MongoDBODM\Presenter\AttributePresenter'
+
+
+services:
+    pimee_activity_manager.repository.attribute:
+        class: '%pimee_activity_manager.repository.attribute.class%'
+        arguments:
+            - '@pimee_activity_manager.presenter.attribute'
+
+    pimee_activity_manager.presenter.attribute:
+        class: '%pimee_activity_manager.presenter.attribute.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+
