@@ -20,9 +20,6 @@ pim_user:
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
-pim_webservice:
-    resource: "@PimWebServiceBundle/Resources/config/routing.yml"
-
 pim_comment:
     resource: "@PimCommentBundle/Resources/config/routing.yml"
 
