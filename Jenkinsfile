@@ -48,23 +48,41 @@ stage('build') {
 
     node {
         deleteDir()
-        checkout scm
 
+        checkout scm
+        sh "composer update --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
         stash "pim_community_dev"
 
-        // Install needed dependencies
-        sh "composer update --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
+        if (editions.contains('ee')) {
+           checkout([$class: 'GitSCM',
+             branches: [[name: '1.4']],
+             userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+           ])
 
-        stash "project_files"
+           sh "composer update --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
+           stash "pim_enterprise_dev"
+        }
     }
 
     node('docker') {
         deleteDir()
-        docker.image('carcel/php:5.4').inside {
-            unstash "project_files"
+        docker.image('carcel/php:5.6').inside {
+            unstash "pim_community_dev"
             sh "composer run-script post-update-cmd"
             sh "app/console oro:requirejs:generate-config"
-            stash "project_files"
+            stash "pim_community_dev"
+        }
+    }
+
+    if (editions.contains('ee')) {
+        node('docker') {
+            deleteDir()
+            docker.image('carcel/php:5.6').inside {
+                unstash "pim_enterprise_dev"
+                sh "composer run-script post-update-cmd"
+                sh "app/console oro:requirejs:generate-config"
+                stash "pim_enterprise_dev"
+            }
         }
     }
 }
@@ -95,7 +113,7 @@ tasks['php-cs-fixer'] = {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:5.6').inside {
-                    unstash "project_files"
+                    unstash "pim_community_dev"
                     sh "composer global require friendsofphp/php-cs-fixer ^1.12"
                     sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
                     sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
@@ -106,7 +124,7 @@ tasks['php-cs-fixer'] = {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:7.0').inside {
-                    unstash "project_files"
+                    unstash "pim_community_dev"
                     sh "composer global require friendsofphp/php-cs-fixer ^1.12"
                     sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
                     sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
@@ -117,7 +135,7 @@ tasks['php-cs-fixer'] = {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:7.1').inside {
-                    unstash "project_files"
+                    unstash "pim_community_dev"
                     sh "composer global require friendsofphp/php-cs-fixer ^1.12"
                     sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix features --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
                     sh "/home/docker/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src --dry-run -v --diff --level=psr2 --fixers=" + fixers.join(',')
@@ -132,7 +150,7 @@ tasks['grunt-codestyle'] = {
         node('docker') {
             deleteDir()
             docker.image('akeneo_grunt').inside {
-                unstash "project_files"
+                unstash "pim_community_dev"
                 sh "npm install"
                 sh "grunt codestyle --force"
             }
@@ -146,7 +164,7 @@ tasks['phpunit'] = {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:5.6').inside {
-                    unstash "project_files"
+                    unstash "pim_community_dev"
                     sh "composer global require phpunit/phpunit 3.7.*"
                     sh "/home/docker/.composer/vendor/phpunit/phpunit/composer/bin/phpunit -c app/phpunit.jenkins.xml --testsuite PIM_Unit_Test"
                 }
@@ -156,7 +174,7 @@ tasks['phpunit'] = {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:7.0').inside {
-                    unstash "project_files"
+                    unstash "pim_community_dev"
                     sh "composer global require phpunit/phpunit 3.7.*"
                     sh "/home/docker/.composer/vendor/phpunit/phpunit/composer/bin/phpunit -c app/phpunit.jenkins.xml --testsuite PIM_Unit_Test"
                 }
@@ -166,13 +184,12 @@ tasks['phpunit'] = {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:7.1').inside {
-                    unstash "project_files"
+                    unstash "pim_community_dev"
                     sh "composer global require phpunit/phpunit 3.7.*"
                     sh "/home/docker/.composer/vendor/phpunit/phpunit/composer/bin/phpunit -c app/phpunit.jenkins.xml --testsuite PIM_Unit_Test"
                 }
             }
         }
-
     }
 }
 
@@ -182,7 +199,7 @@ tasks['phpspec'] = {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:5.6').inside {
-                    unstash "project_files"
+                    unstash "pim_community_dev"
                     sh "composer global require phpspec/phpspec 2.1.*"
                     sh "composer global require akeneo/phpspec-skip-example-extension 1.1.*"
                     sh "cp app/config/parameters.yml app/config/parameters_test.yml"
@@ -194,7 +211,7 @@ tasks['phpspec'] = {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:7.0').inside {
-                    unstash "project_files"
+                    unstash "pim_community_dev"
                     sh "composer global require phpspec/phpspec 2.1.*"
                     sh "composer global require akeneo/phpspec-skip-example-extension 1.1.*"
                     sh "cp app/config/parameters.yml app/config/parameters_test.yml"
@@ -206,7 +223,7 @@ tasks['phpspec'] = {
             node('docker') {
                 deleteDir()
                 docker.image('carcel/php:7.1').inside {
-                    unstash "project_files"
+                    unstash "pim_community_dev"
                     sh "composer global require phpspec/phpspec 2.1.*"
                     sh "composer global require akeneo/phpspec-skip-example-extension 1.1.*"
                     sh "cp app/config/parameters.yml app/config/parameters_test.yml"
@@ -222,7 +239,7 @@ tasks['jasmine'] = {
         node('docker') {
             deleteDir()
             docker.image('akeneo_grunt').inside {
-                unstash "project_files"
+                unstash "pim_community_dev"
                 sh "npm install"
                 sh "grunt test --force"
             }
@@ -238,24 +255,17 @@ tasks["behat"] = {
                     deleteDir()
 
                     if ('ce' == edition) {
-                       unstash "project_files"
+                       unstash "pim_community_dev"
 
                        tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
                     } else {
-                       // Checkout pim-enterprise-dev
-                       checkout([$class:            'GitSCM',
-                                 branches:          [[name: '1.4']],
-                                 userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
-                       ])
+                        unstash "pim_enterprise_dev"
+                        dir('vendor/akeneo/pim-community-dev') {
+                            deleteDir()
+                            unstash "pim_community_dev"
+                        }
 
-                       // Install dependencies then unstash the CE PR branch directly into the vendors
-                       sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                       dir('vendor/akeneo/pim-community-dev') {
-                           deleteDir()
-                           unstash "pim_community_dev"
-                       }
-
-                       tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
+                        tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
                     }
 
                     // Create mysql hostname (MySQL docker container name)
