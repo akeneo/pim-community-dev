@@ -337,6 +337,7 @@ config:
 
         # Formatters
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base
+        pim/formatter/date: pimenrich/js/formatter/date-formatter
 
         # Grid view selector
         pim/grid/view-selector/selector: pimenrich/js/grid/view-selector
