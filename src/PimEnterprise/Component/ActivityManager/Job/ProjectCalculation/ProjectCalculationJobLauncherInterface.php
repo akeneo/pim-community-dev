@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation;
+namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**

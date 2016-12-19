@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Voter;
+namespace spec\PimEnterprise\Component\ActivityManager\Voter;
 
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
-use Akeneo\ActivityManager\Component\Voter\ProjectVoter;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Voter\ProjectVoter;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

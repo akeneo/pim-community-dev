@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\FamilyRequirementRepository;
-use Akeneo\ActivityManager\Component\Repository\FamilyRequirementRepositoryInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\FamilyRequirementRepository;
+use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;

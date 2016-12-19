@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Updater;
+namespace PimEnterprise\Component\ActivityManager\Updater;
 
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;

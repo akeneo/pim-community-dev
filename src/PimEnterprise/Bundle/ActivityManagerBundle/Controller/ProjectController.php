@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Controller;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Controller;
 
-use Akeneo\ActivityManager\Bundle\Datagrid\FilterConverter;
-use Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
-use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
-use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
+use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;

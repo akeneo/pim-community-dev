@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProductRepository;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProductRepository;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;

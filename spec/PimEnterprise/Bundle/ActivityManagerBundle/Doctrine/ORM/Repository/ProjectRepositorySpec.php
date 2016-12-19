@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectRepository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManager;

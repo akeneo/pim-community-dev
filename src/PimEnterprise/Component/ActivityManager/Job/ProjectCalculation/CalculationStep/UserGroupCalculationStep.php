@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep;
+namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
-use Akeneo\ActivityManager\Component\Repository\AttributePermissionRepositoryInterface;
-use Akeneo\ActivityManager\Component\Repository\FamilyRequirementRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\AttributePermissionRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 

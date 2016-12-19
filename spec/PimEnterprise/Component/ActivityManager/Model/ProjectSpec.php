@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Model;
+namespace spec\PimEnterprise\Component\ActivityManager\Model;
 
-use Akeneo\ActivityManager\Component\Model\Project;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\Project;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;

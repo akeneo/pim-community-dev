@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Model;
+namespace PimEnterprise\Component\ActivityManager\Model;
 
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 

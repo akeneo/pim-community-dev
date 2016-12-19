@@ -1,13 +1,13 @@
 parameters:
-    akeneo_activity_manager.model.project.class: 'Akeneo\ActivityManager\Component\Model\Project'
-    akeneo_activity_manager.model.project.interface: 'Akeneo\ActivityManager\Component\Model\ProjectInterface'
+    akeneo_activity_manager.model.project.class: 'PimEnterprise\Component\ActivityManager\Model\Project'
+    akeneo_activity_manager.model.project.interface: 'PimEnterprise\Component\ActivityManager\Model\ProjectInterface'
 
-    activity_manager.normalizer.project.class: 'Akeneo\ActivityManager\Component\Normalizer\ProjectNormalizer'
-    activity_manager.repository.project.class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectRepository'
-    activity_manager.updater.project.class: 'Akeneo\ActivityManager\Component\Updater\ProjectUpdater'
-    activity_manager.event_listener.event_translation.class: 'Akeneo\ActivityManager\Bundle\EventListener\EventTranslationSubscriber'
-    activity_manager.controller.project_controller.class: 'Akeneo\ActivityManager\Bundle\Controller\ProjectController'
-    activity_manager.controller.project_completeness_controller.class: 'Akeneo\ActivityManager\Bundle\Controller\ProjectCompletenessController'
+    activity_manager.normalizer.project.class: 'PimEnterprise\Component\ActivityManager\Normalizer\ProjectNormalizer'
+    activity_manager.repository.project.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectRepository'
+    activity_manager.updater.project.class: 'PimEnterprise\Component\ActivityManager\Updater\ProjectUpdater'
+    activity_manager.event_listener.event_translation.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\EventTranslationSubscriber'
+    activity_manager.controller.project_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectController'
+    activity_manager.controller.project_completeness_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectCompletenessController'
 
 services:
     ### Factory
@@ -31,7 +31,7 @@ services:
             - '%akeneo_activity_manager.model.project.class%'
 
     activity_manager.repository.project_completeness:
-        class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectCompletenessRepository'
+        class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectCompletenessRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
 
@@ -62,13 +62,13 @@ services:
 
     ### Widget
     activity_manager.widget.progress:
-        class: Akeneo\ActivityManager\Bundle\Widget\ProjectProgressWidget
+        class: PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectProgressWidget
         tags:
             - { name: pim_dashboard.widget, position: 15 }
 
     ### Voter
     activity_manager.voter.project:
-        class: 'Akeneo\ActivityManager\Component\Voter\ProjectVoter'
+        class: 'PimEnterprise\Component\ActivityManager\Voter\ProjectVoter'
         arguments:
             - '@activity_manager.repository.user'
         public: false

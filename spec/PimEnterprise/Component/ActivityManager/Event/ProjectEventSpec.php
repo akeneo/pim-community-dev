@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Event;
+namespace spec\PimEnterprise\Component\ActivityManager\Event;
 
-use Akeneo\ActivityManager\Component\Event\ProjectEvent;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\Event;
 

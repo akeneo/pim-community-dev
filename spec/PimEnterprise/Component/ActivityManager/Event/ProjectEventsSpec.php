@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Event;
+namespace spec\PimEnterprise\Component\ActivityManager\Event;
 
-use Akeneo\ActivityManager\Component\Event\ProjectEvents;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
 use PhpSpec\ObjectBehavior;
 
 class ProjectEventsSpec extends ObjectBehavior

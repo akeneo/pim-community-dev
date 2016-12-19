@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\EventListener;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
-use Akeneo\ActivityManager\Component\Event\ProjectEvent;
-use Akeneo\ActivityManager\Component\Event\ProjectEvents;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;

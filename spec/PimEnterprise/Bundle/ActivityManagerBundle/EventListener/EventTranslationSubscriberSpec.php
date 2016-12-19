@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\EventListener;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
-use Akeneo\ActivityManager\Bundle\EventListener\EventTranslationSubscriber;
-use Akeneo\ActivityManager\Component\Event\ProjectEvent;
-use Akeneo\ActivityManager\Component\Event\ProjectEvents;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\EventListener\EventTranslationSubscriber;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\JobParameters;

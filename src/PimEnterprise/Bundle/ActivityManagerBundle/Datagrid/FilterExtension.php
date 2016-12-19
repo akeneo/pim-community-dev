@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Datagrid;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Datagrid;
 
-use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
-use Akeneo\ActivityManager\Component\Repository\AttributeRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
+use PimEnterprise\Component\ActivityManager\Repository\AttributeRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;

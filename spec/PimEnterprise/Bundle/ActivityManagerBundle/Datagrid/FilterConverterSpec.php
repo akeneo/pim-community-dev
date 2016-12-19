@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Datagrid;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Datagrid;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;

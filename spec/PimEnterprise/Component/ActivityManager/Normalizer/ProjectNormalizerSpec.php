@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Normalizer;
+namespace spec\PimEnterprise\Component\ActivityManager\Normalizer;
 
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Normalizer\ProjectNormalizer;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Normalizer\ProjectNormalizer;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;

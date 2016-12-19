@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\AttributePermissionRepository;
-use Akeneo\ActivityManager\Component\Repository\AttributePermissionRepositoryInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\AttributePermissionRepository;
+use PimEnterprise\Component\ActivityManager\Repository\AttributePermissionRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;

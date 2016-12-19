@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Notification;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
-use Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory;
 use PhpSpec\ObjectBehavior;
 
 class ProjectCreatedNotificationFactorySpec extends ObjectBehavior

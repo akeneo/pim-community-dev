@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Model;
+namespace PimEnterprise\Component\ActivityManager\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\Group;

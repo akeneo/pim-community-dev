@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use Akeneo\ActivityManager\Component\Repository\JobInstanceRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\JobInstanceRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
@@ -18,7 +18,7 @@ class JobInstanceRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\JobInstanceRepository::class);
+        $this->shouldHaveType(\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\JobInstanceRepository::class);
     }
 
     function it_is_job_instance_repository()

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\EventListener;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
-use Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory;
-use Akeneo\ActivityManager\Component\Event\ProjectEvent;
-use Akeneo\ActivityManager\Component\Event\ProjectEvents;
-use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
+use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

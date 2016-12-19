@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\DependencyInjection;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection;
 
-use Akeneo\ActivityManager\Bundle\DependencyInjection\ActivityManagerExtension;
+use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\ActivityManagerExtension;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

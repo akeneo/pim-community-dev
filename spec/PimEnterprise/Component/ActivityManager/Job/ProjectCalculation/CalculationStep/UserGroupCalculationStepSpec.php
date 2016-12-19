@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep;
+namespace spec\PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
-use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\UserGroupCalculationStep;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\AttributePermissionRepositoryInterface;
-use Akeneo\ActivityManager\Component\Repository\FamilyRequirementRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\UserGroupCalculationStep;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\AttributePermissionRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;

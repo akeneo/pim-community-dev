@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Job;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Job;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\JobInstanceRepository;
-use Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\JobInstanceRepository;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 

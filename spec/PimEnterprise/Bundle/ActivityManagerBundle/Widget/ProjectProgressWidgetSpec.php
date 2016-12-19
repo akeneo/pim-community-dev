@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Widget;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Widget;
 
-use Akeneo\ActivityManager\Bundle\Widget\ProjectProgressWidget;
+use PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectProgressWidget;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 

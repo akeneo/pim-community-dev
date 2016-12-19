@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Event;
+namespace PimEnterprise\Component\ActivityManager\Event;
 
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

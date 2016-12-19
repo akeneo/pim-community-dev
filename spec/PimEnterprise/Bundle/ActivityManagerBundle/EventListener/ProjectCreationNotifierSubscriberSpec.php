@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\EventListener;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
-use Akeneo\ActivityManager\Bundle\EventListener\ProjectCreationNotifierSubscriber;
-use Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory;
-use Akeneo\ActivityManager\Component\Event\ProjectEvent;
-use Akeneo\ActivityManager\Component\Event\ProjectEvents;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectCreationNotifierSubscriber;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;

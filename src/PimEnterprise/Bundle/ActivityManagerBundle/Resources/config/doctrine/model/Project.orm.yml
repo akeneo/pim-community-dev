@@ -1,4 +1,4 @@
-Akeneo\ActivityManager\Component\Model\Project:
+PimEnterprise\Component\ActivityManager\Model\Project:
     type: entity
     table: akeneo_activity_manager_project
     changeTrackingPolicy: DEFERRED_EXPLICIT

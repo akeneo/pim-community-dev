@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use Akeneo\ActivityManager\Component\Repository\FamilyRequirementRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;

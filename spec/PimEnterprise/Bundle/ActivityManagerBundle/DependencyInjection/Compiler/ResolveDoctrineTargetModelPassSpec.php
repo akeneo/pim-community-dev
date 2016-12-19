@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler;
 
-use Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 use PhpSpec\ObjectBehavior;
 

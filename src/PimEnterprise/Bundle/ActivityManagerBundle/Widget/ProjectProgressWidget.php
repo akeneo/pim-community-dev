@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Widget;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Widget;
 
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;

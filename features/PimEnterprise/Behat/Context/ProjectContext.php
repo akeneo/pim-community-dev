@@ -11,8 +11,8 @@
 
 namespace Akeneo\ActivityManager\Behat\Context;
 
-use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Behat\Gherkin\Node\TableNode;
 use Pim\Behat\Context\PimContext;
 use Symfony\Component\PropertyAccess\PropertyAccess;

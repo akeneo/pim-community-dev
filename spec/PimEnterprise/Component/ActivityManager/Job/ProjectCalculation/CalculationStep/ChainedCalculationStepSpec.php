@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep;
+namespace spec\PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
-use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\ChainedCalculationStep;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\ChainedCalculationStep;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 

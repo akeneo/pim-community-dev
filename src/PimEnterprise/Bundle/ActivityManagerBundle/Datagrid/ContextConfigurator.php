@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Datagrid;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Datagrid;
 
 use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator
     as EnterpriseContextConfigurator;

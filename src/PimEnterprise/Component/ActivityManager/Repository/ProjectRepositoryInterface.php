@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Repository;
+namespace PimEnterprise\Component\ActivityManager\Repository;
 
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

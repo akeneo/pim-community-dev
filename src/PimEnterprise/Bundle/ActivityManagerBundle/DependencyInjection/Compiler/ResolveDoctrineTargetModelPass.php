@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
@@ -24,7 +24,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'Akeneo\ActivityManager\Component\Model\ProjectInterface' => 'akeneo_activity_manager.model.project.class',
+            'PimEnterprise\Component\ActivityManager\Model\ProjectInterface' => 'akeneo_activity_manager.model.project.class',
         ];
     }
 }

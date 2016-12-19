@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Command;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Command;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Pim\Bundle\InstallerBundle\Command\DatabaseCommand as PimDatabaseCommand;

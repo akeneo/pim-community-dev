@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle;
+namespace PimEnterprise\Bundle\ActivityManagerBundle;
 
-use Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
-use Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
+use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -31,7 +31,7 @@ class ActivityManagerBundle extends Bundle
         $container->addCompilerPass(new RegisterCalculationStepPass());
 
         $mappingConfig = [
-            realpath(__DIR__.'/Resources/config/doctrine/model') => 'Akeneo\ActivityManager\Component\Model',
+            realpath(__DIR__.'/Resources/config/doctrine/model') => 'PimEnterprise\Component\ActivityManager\Model',
         ];
 
         $container->addCompilerPass(

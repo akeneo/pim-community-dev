@@ -1,17 +1,17 @@
 parameters:
-    pim_datagrid.datagrid.configuration.product.context_configurator.class: 'Akeneo\ActivityManager\Bundle\Datagrid\ContextConfigurator'
-    pim_datagrid.extension.filter.class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterExtension'
+    pim_datagrid.datagrid.configuration.product.context_configurator.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\ContextConfigurator'
+    pim_datagrid.extension.filter.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterExtension'
 
-    activity_manager.repository.user.class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\UserRepository'
-    activity_manager.repository.product.class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProductRepository'
-    activity_manager.repository.familly_requirement.class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\FamilyRequirementRepository'
-    activity_manager.repository.attribute_permission.class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\AttributePermissionRepository'
-    activity_manager.repository.job_instance.class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\JobInstanceRepository'
-    activity_manager.repository.attribute.class: 'Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\AttributeRepository'
-    activity_manager.factory.project_calculation_notification.class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCalculationNotificationFactory'
-    activity_manager.factory.project_created_notification.class: 'Akeneo\ActivityManager\Bundle\Notification\ProjectCreatedNotificationFactory'
-    activity_manager.event_subscriber.project_creation_notifier.class: 'Akeneo\ActivityManager\Bundle\EventListener\ProjectCreationNotifierSubscriber'
-    activity_manager.converter.filter.class: 'Akeneo\ActivityManager\Bundle\Datagrid\FilterConverter'
+    activity_manager.repository.user.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\UserRepository'
+    activity_manager.repository.product.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProductRepository'
+    activity_manager.repository.familly_requirement.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\FamilyRequirementRepository'
+    activity_manager.repository.attribute_permission.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\AttributePermissionRepository'
+    activity_manager.repository.job_instance.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\JobInstanceRepository'
+    activity_manager.repository.attribute.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\AttributeRepository'
+    activity_manager.factory.project_calculation_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCalculationNotificationFactory'
+    activity_manager.factory.project_created_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory'
+    activity_manager.event_subscriber.project_creation_notifier.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectCreationNotifierSubscriber'
+    activity_manager.converter.filter.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter'
 
 services:
     ### Repositories

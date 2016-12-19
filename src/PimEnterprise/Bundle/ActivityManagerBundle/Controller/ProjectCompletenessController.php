@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Controller;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Controller;
 
-use Akeneo\ActivityManager\Component\Repository\ProjectCompletenessRepositoryInterface;
-use Akeneo\ActivityManager\Component\Voter\ProjectVoter;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Voter\ProjectVoter;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

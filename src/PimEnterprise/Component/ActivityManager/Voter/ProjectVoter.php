@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Voter;
+namespace PimEnterprise\Component\ActivityManager\Voter;
 
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\UserRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 

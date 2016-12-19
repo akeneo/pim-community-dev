@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler;
 
-use Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
+use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

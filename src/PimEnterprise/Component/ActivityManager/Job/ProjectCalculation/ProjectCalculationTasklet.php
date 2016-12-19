@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation;
+namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 
-use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
-use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;

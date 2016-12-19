@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle;
 
-use Akeneo\ActivityManager\Bundle\ActivityManagerBundle;
-use Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
-use Akeneo\ActivityManager\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use PimEnterprise\Bundle\ActivityManagerBundle\ActivityManagerBundle;
+use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
+use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Datagrid;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Datagrid;
 
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Job\ProjectCalculation;
+namespace spec\PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 
-use Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationTasklet;
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProductRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationTasklet;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;

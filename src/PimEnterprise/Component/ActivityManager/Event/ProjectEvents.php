@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Event;
+namespace PimEnterprise\Component\ActivityManager\Event;
 
 /**
  * List of the project creation events.

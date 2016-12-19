@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Model;
+namespace spec\PimEnterprise\Component\ActivityManager\Model;
 
-use Akeneo\ActivityManager\Component\Model\DatagridViewTypes;
+use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
 use PhpSpec\ObjectBehavior;
 
 class DatagridViewTypesSpec extends ObjectBehavior

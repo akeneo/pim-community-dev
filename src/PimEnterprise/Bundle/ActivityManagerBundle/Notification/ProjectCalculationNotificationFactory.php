@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Bundle\Notification;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
 use Akeneo\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Util\ClassUtils;

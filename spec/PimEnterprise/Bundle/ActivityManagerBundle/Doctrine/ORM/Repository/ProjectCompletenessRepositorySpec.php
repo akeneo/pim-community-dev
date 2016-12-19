@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use Akeneo\ActivityManager\Bundle\Doctrine\ORM\Repository\ProjectCompletenessRepository;
-use Akeneo\ActivityManager\Component\Repository\ProjectCompletenessRepositoryInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectCompletenessRepository;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 

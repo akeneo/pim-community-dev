@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Component\Job\ProjectCalculation\CalculationStep;
+namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
-use Akeneo\ActivityManager\Component\Model\ProjectInterface;
-use Akeneo\ActivityManager\Component\Repository\ProjectRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Bundle\Notification;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
-use Akeneo\ActivityManager\Bundle\Notification\ProjectCalculationNotificationFactory;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCalculationNotificationFactory;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;

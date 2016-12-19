@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\ActivityManager\Component\Job\ProjectCalculation;
+namespace spec\PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 
-use Akeneo\ActivityManager\Component\Job\ProjectCalculation\ProjectCalculationJobParameters;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobParameters;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
