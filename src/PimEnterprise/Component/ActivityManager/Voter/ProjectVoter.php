@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Component\ActivityManager\Voter;
 
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 
 /**

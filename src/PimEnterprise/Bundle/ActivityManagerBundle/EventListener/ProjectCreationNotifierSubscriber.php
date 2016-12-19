@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

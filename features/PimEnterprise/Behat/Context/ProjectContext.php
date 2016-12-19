@@ -11,10 +11,10 @@
 
 namespace Akeneo\ActivityManager\Behat\Context;
 
-use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Behat\Gherkin\Node\TableNode;
 use Pim\Behat\Context\PimContext;
+use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Webmozart\Assert\Assert;
 
@@ -93,9 +93,9 @@ class ProjectContext extends PimContext
      * @param string $channelCode
      * @param string $localeCode
      *
+     * @throws \UnexpectedValueException
      * @return ProjectInterface
      *
-     * @throws \UnexpectedValueException
      */
     private function findProjectByLabelChannelLocale($label, $channelCode, $localeCode)
     {
@@ -107,9 +107,9 @@ class ProjectContext extends PimContext
 
         $project = $this->getService('activity_manager.repository.project')
             ->findOneBy([
-                'label' => $label,
+                'label'   => $label,
                 'channel' => $channel,
-                'locale' => $locale,
+                'locale'  => $locale,
             ]);
 
         if (null === $project) {

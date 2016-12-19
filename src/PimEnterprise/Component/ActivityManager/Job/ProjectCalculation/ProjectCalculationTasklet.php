@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 
-use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
-use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 
 /**
  * Compute all CalculationStep linked to the project to complete it and save it.

@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Job;
 
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * Launch the project calculation job for the a project and an user.

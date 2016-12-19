@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Widget;
 
-use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**

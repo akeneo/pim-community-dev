@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**
@@ -53,7 +53,7 @@ class ProductRepository implements ProductRepositoryInterface
 
         $productQueryBuilder = $this->productQueryBuilderFactory->create([
             'default_locale' => $project->getLocale()->getCode(),
-            'default_scope' => $project->getChannel()->getCode(),
+            'default_scope'  => $project->getChannel()->getCode(),
         ]);
 
         foreach ($productFilers as $productFiler) {

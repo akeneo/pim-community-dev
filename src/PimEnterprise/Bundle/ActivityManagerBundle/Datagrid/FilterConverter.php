@@ -44,10 +44,10 @@ class FilterConverter
     {
         $request->query->add(
             [
-                'gridName' => OroToPimGridFilterAdapter::PRODUCT_GRID_NAME,
+                'gridName'   => OroToPimGridFilterAdapter::PRODUCT_GRID_NAME,
                 'actionName' => 'mass_edit', //Fake mass action, needed for the grid filter adapter.
-                'inset' => false,
-                'filters' => $filters,
+                'inset'      => false,
+                'filters'    => $filters,
             ]
         );
 

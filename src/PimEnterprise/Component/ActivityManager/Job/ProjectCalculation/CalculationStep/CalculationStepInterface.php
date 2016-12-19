@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * Used to execute an action between Project and Products. For example, extract data from Products to add informations

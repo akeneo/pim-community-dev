@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
+use Doctrine\ORM\EntityManager;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
-use Doctrine\ORM\EntityManager;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -55,7 +55,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
         $parameters = [
             'project_id' => $project->getId(),
             'channel_id' => $project->getChannel()->getId(),
-            'locale_id' => $project->getLocale()->getId(),
+            'locale_id'  => $project->getLocale()->getId(),
         ];
 
         if (null !== $username) {

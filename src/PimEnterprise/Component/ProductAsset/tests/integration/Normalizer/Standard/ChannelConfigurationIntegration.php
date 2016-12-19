@@ -9,8 +9,8 @@ class ChannelConfigurationIntegration extends TestCase
     public function testChannelConfiguration()
     {
         $expected = [
-            'channel' => 'tablet',
-            'configuration' =>[
+            'channel'       => 'tablet',
+            'configuration' => [
                 'resize' => [
                     'width'  => 250,
                     'height' => 200

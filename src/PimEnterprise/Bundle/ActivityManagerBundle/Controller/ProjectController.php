@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
 use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -148,7 +148,7 @@ class ProjectController
         $errors = [];
         foreach ($violations as $violation) {
             $errors[] = [
-                'field' => $violation->getPropertyPath(),
+                'field'   => $violation->getPropertyPath(),
                 'message' => $violation->getMessage(),
             ];
         }
@@ -172,8 +172,8 @@ class ProjectController
             $request->query->get('search'),
             [
                 'limit' => $options['limit'],
-                'page' => $options['page'],
-                'user' => $this->tokenStorage->getToken()->getUser(),
+                'page'  => $options['page'],
+                'user'  => $this->tokenStorage->getToken()->getUser(),
             ]
         );
 
@@ -203,8 +203,8 @@ class ProjectController
         $users = $this->userRepository->findBySearch(
             $request->query->get('search'),
             [
-                'limit' => $options['limit'],
-                'page' => $options['page'],
+                'limit'   => $options['limit'],
+                'page'    => $options['page'],
                 'project' => $project,
             ]
         );

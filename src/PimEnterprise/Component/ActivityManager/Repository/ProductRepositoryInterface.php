@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
 
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

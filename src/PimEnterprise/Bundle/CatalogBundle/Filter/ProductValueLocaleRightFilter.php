@@ -25,8 +25,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter
-    implements CollectionFilterInterface, ObjectFilterInterface
+class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;

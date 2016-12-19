@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
 
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>

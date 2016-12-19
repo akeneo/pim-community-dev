@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Component\ActivityManager\Updater;
 
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Gedmo\Sluggable\Util\Urlizer;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * Project updater is able to hydrate a project with given parameters.

@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Datagrid;
 
-use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
-use PimEnterprise\Component\ActivityManager\Repository\AttributeRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
@@ -23,6 +21,8 @@ use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\Filter\FilterExtension as EnterpriseFilterExtension;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
+use PimEnterprise\Component\ActivityManager\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Translation\TranslatorInterface;
 

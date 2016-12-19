@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use PimEnterprise\Component\ActivityManager\Repository\JobInstanceRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Component\ActivityManager\Repository\JobInstanceRepositoryInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

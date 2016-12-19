@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ActivityManager\Normalizer;
 
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Doctrine\Common\Util\ClassUtils;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -59,14 +59,14 @@ class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
         }
 
         return [
-            'id' => $project->getId(),
-            'label' => $project->getLabel(),
-            'code' => $project->getCode(),
-            'description' => $project->getDescription(),
-            'due_date' => $project->getDueDate()->format('Y-m-d'),
-            'owner' => $this->serializer->normalize($project->getOwner(), $format, $context),
-            'channel' => $this->serializer->normalize($project->getChannel(), $format, $context),
-            'locale' => $this->serializer->normalize($project->getLocale(), $format, $context),
+            'id'           => $project->getId(),
+            'label'        => $project->getLabel(),
+            'code'         => $project->getCode(),
+            'description'  => $project->getDescription(),
+            'due_date'     => $project->getDueDate()->format('Y-m-d'),
+            'owner'        => $this->serializer->normalize($project->getOwner(), $format, $context),
+            'channel'      => $this->serializer->normalize($project->getChannel(), $format, $context),
+            'locale'       => $this->serializer->normalize($project->getLocale(), $format, $context),
             'datagridView' => $this->serializer->normalize(
                 $project->getDatagridView(),
                 $format,

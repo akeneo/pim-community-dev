@@ -66,7 +66,7 @@ class ViewSelectorContext extends PimContext
             throw new \UnexpectedValueException(
                 sprintf('Project "%s" should not be displayed.', $projectName)
             );
-        } else if (!$not && !$found) {
+        } elseif (!$not && !$found) {
             throw new \UnexpectedValueException(
                 sprintf('Project "%s" should be displayed.', $projectName)
             );

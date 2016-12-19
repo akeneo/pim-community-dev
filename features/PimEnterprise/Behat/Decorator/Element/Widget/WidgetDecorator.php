@@ -52,9 +52,9 @@ class WidgetDecorator extends ElementDecorator
     public function getCompleteness()
     {
         return [
-            'todo' => $this->getCompletenessNumber('todo'),
+            'todo'        => $this->getCompletenessNumber('todo'),
             'in_progress' => $this->getCompletenessNumber('in-progress'),
-            'done' => $this->getCompletenessNumber('done')
+            'done'        => $this->getCompletenessNumber('done')
         ];
     }
 

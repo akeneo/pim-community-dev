@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -47,9 +47,9 @@ class FamilyRequirementRepository extends EntityRepository implements FamilyRequ
             ->andWhere('c.code = :channel_code')
             ->andWhere('ar.required = :required')
             ->setParameters([
-                'family_code' => $family->getCode(),
+                'family_code'  => $family->getCode(),
                 'channel_code' => $channel->getCode(),
-                'required' => true,
+                'required'     => true,
             ]);
 
         return array_column($queryBuilder->getQuery()->getArrayResult(), 'code');

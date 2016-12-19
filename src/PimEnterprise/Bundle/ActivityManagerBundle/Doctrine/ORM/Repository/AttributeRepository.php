@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use PimEnterprise\Component\ActivityManager\Repository\AttributeRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Component\ActivityManager\Repository\AttributeRepositoryInterface;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>

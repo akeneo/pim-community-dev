@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
 
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

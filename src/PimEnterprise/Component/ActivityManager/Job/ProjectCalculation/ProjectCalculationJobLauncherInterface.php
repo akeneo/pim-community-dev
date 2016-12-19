@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * It launches the calculation of a project depending of the user.

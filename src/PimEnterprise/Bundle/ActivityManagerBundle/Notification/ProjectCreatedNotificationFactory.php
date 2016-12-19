@@ -49,8 +49,8 @@ class ProjectCreatedNotificationFactory
             )
             ->setRoute('pim_enrich_product_index')
             ->setContext([
-                'actionType' => 'project_calculation',
-                'buttonLabel' => sprintf('activity_manager.notification.%s.start', 'project_calculation'),
+                'actionType'     => 'project_calculation',
+                'buttonLabel'    => sprintf('activity_manager.notification.%s.start', 'project_calculation'),
                 'gridParameters' => $parameters['filters'],
             ]);
 

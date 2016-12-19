@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
-use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
-use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
+use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Akeneo\Component\Batch\Event\EventInterface;
 
 /**
  * Translate technical event in business event.
@@ -59,7 +59,7 @@ class EventTranslationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE => 'projectSaved',
+            StorageEvents::POST_SAVE            => 'projectSaved',
             EventInterface::AFTER_JOB_EXECUTION => 'projectCalculated',
         ];
     }

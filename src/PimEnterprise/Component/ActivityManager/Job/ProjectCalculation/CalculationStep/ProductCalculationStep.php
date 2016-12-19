@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Add the product to the current project.
