@@ -330,6 +330,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $convertedData = [
+            'identifier' => 'tshirt',
             'sku' => [
                 [
                     'locale' => null,
