@@ -24,6 +24,16 @@
   max-width: 235px;
   min-width: @minWidth !important;
 
+  &.select-filter-widget {
+    .ui-multiselect-header .ui-helper-reset {
+      display: none; // Removes the check all / uncheck all.
+    }
+
+    ul {
+      max-height: 200px;
+    }
+  }
+
   input[type="search"] {
     height: @AknFormHeight;
     line-height: @AknFormHeight;
@@ -36,10 +46,9 @@
   }
 
   .ui-multiselect-header {
-    padding: 0;
+    padding: 0 2px 2px 2px;
     margin-bottom: 0;
     border: none;
-    background-color: @AknBorderColor;
   }
 
   .ui-multiselect-filter input {
@@ -78,7 +87,7 @@
   }
 
   .ui-multiselect-checkboxes label {
-    padding: 3px 20px;
+    padding: 3px 10px;
     cursor: pointer;
     font-weight: normal;
 

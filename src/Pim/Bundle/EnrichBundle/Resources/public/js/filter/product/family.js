@@ -27,7 +27,6 @@ define([
 
             this.selectOptions = {
                 allowClear: true,
-                containerCss: {width: 500},
                 multiple: true,
                 ajax: {
                     url: Routing.generate(this.config.url),

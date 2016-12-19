@@ -22,7 +22,7 @@ define([
         Grid
     ) {
         return BaseForm.extend({
-            className: 'products',
+            className: 'AknTabContainer-content products',
 
             /**
              * {@inheritdoc}
