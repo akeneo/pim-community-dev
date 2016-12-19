@@ -1,7 +1,0 @@
-code;axis;label-de_DE;label-en_US;label-fr_FR;type
-akeneo_mug;main_color,secondary_color;"Akeneo Tassen";"Akeneo Mugs";"Mugs Akeneo";VARIANT
-oro_mug;container_material,main_color,secondary_color;"Oro Tassen";"Oro Mugs";"Mugs Oro";VARIANT
-akeneo_tshirt;clothing_size,main_color,secondary_color;"T-Shirts Akeneo";"Akeneo T-Shirts";"T-Shirts Akeneo";VARIANT
-akeneo_long_sleeve_tshirt;clothing_size,main_color,secondary_color;"T-Shirts Langarm Akeneo";"Akeneo long sleeve T-Shirts";"T-Shirts à manche longue Akeneo";VARIANT
-akeneo_vneck_tshirt;clothing_size,main_color,secondary_color,tshirt_materials;"T-Shirts mit V-Ausschnitt Akeneo";"Akeneo vneck T-Shirts";"T-Shirts col en V Akeneo";VARIANT
-oro_tshirt;clothing_size,main_color,secondary_color;"T-Shirts Oro";"Oro T-Shirts";"T-Shirts Oro";VARIANT
