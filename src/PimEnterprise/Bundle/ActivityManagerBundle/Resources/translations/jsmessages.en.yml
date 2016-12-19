@@ -16,3 +16,6 @@ activity_manager:
         confirm: Save
         cancel: Cancel
 
+pim_datagrid:
+    view_selector:
+        project: Projects

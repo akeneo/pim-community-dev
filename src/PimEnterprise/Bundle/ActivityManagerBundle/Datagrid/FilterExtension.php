@@ -101,7 +101,7 @@ class FilterExtension extends EnterpriseFilterExtension
             Attributes::VIEW_ATTRIBUTES
         );
 
-        $grantedAttributeCodes = $this->attributeRepository->findAttributeCodesUseableInGrid($grantedAttributeGroupIds);
+        $grantedAttributeCodes = $this->attributeRepository->findAttributeCodesUsableInGrid($grantedAttributeGroupIds);
         $attributeCodes = $this->attributeRepository->findAttributeCodes();
 
         foreach ($filtersState as $code => $filter) {

@@ -13,6 +13,7 @@ namespace Akeneo\ActivityManager\Behat\Context;
 
 use Akeneo\ActivityManager\Behat\Context;
 use Akeneo\ActivityManager\Behat\ContextInterface;
+use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 
 /**
@@ -41,5 +42,71 @@ class ViewSelectorContext extends Context implements ContextInterface
             ->getSelectViewActionDropdown()
             ->open()
             ->chooseAction($action);
+    }
+
+    /**
+     * @Then /^I should( not)? see the "([^"]*)" project$/
+     *
+     * @param string $not
+     * @param string $projectName
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeTheProject($not, $projectName)
+    {
+        $values = $this->getCurrentPage()->getViewSelector()->getAvailableValues();
+        $found = false;
+
+        foreach ($values as $value) {
+            if (strpos($value, $projectName) !== false) {
+                $found = true;
+            }
+        }
+
+        if ($not && $found) {
+            throw new \UnexpectedValueException(
+                sprintf('Project "%s" should not be displayed.', $projectName)
+            );
+        } else if (!$not && !$found) {
+            throw new \UnexpectedValueException(
+                sprintf('Project "%s" should be displayed.', $projectName)
+            );
+        }
+    }
+
+    /**
+     * @Given /^I filter view selector with name "([^"]*)"$/
+     *
+     * @param string $name
+     */
+    public function iFilterViewSelectorWithName($name)
+    {
+        $this->getCurrentPage()->getViewSelector()->search($name);
+    }
+
+    /**
+     * @Given /^I switch view selector type to "([^"]*)"$/
+     *
+     * @param string $viewType
+     */
+    public function iSwitchViewSelectorTypeTo($viewType)
+    {
+        $this->getCurrentPage()->switchViewType($viewType);
+    }
+
+    /**
+     * @Then /^view selector type switcher should be on "([^"]*)"$/
+     *
+     * @param string $expectedType
+     */
+    public function viewSelectorTypeSwitcherShouldBeOn($expectedType)
+    {
+        $currentType = $this->getCurrentPage()->getCurrentViewType();
+
+        if ($currentType !== $expectedType) {
+            throw new \UnexpectedValueException(
+                sprintf('View selector type switcher should be on "%s", but is on "%s".', $expectedType, $currentType)
+            );
+        }
     }
 }

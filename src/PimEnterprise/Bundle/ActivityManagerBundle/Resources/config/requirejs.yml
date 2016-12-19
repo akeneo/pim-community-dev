@@ -2,11 +2,27 @@ config:
     config:
         activity-manager/saver/project:
             url: activity_manager_project_create
+        pim/fetcher-registry:
+            fetchers:
+                datagrid-project:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: activity_manager_project_search
+                            get: activity_manager_project_search # TODO: CHANGE THIS IN AMS-22
+
+    map:
+        '*':
+            pim/grid/view-selector/selector: activity-manager/grid/view-selector/selector
+        activity-manager/grid/view-selector/selector:
+            pim/grid/view-selector/selector: pim/grid/view-selector/selector
 
     paths:
         # Forms
         activity-manager/grid/view-selector/footer/create/project: activitymanager/js/grid/view-selector-footer-create-project
         activity-manager/project/create-form: activitymanager/js/project/create-form
+        activity-manager/grid/view-selector/selector: activitymanager/js/grid/view-selector
+        pim/grid/view-selector/line: activitymanager/js/grid/view-selector-line
 
         # Savers
         activity-manager/saver/project: activitymanager/js/saver/project-saver
@@ -15,3 +31,4 @@ config:
         activity-manager/templates/grid/create-project-modal-content: activitymanager/templates/grid/create-project-modal-content.html
         activity-manager/templates/grid/view-selector/footer/create/project: activitymanager/templates/grid/view-selector-footer-create-project.html
         activity-manager/templates/field-error: activitymanager/templates/field-error.html
+        activity-manager/templates/grid/view-selector/line-project: activitymanager/templates/grid/view-selector-line-project.html

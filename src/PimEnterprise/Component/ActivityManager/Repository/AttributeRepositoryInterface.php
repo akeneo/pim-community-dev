@@ -23,7 +23,7 @@ interface AttributeRepositoryInterface
      *
      * @return array
      */
-    public function findAttributeCodesUseableInGrid($groupIds = null);
+    public function findAttributeCodesUsableInGrid($groupIds = null);
 
     /**
      * Find ALL attribute codes.

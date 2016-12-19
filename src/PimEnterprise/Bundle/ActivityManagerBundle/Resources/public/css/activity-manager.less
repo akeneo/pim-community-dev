@@ -1,3 +1,5 @@
+@import '../../pimui/less/base/variables';
+
 .modal-project-form {
     margin: 10px 20px 0 20px;
 
@@ -8,5 +10,60 @@
 
     .controls {
         margin-bottom: 10px;
+    }
+}
+
+.grid-view-selector {
+    .select2-results {
+        .select2-result {
+            .select2-result-label {
+                .select2-result-label-view {
+                    .project-line {
+                        .project-completeness {
+                            border: 1px solid @AknBorderColor;
+                            float: left;
+                            margin-right: 15px;
+                            height: 45px;
+                            padding: 11px 11px;
+                            width: 45px;
+                            font-size: @AknDefaultFontSize;
+                            color: @AknPurple;
+
+                            &--todo {
+                                border-bottom: 6px solid @AknRed;
+                            }
+
+                            &--wip {
+                                border-bottom: 6px solid @AknOrange;
+                            }
+
+                            &--done {
+                                border-bottom: 6px solid @AknGreen;
+                            }
+                        }
+
+                        .project-main-infos {
+                            .project-label {
+
+                            }
+
+                            .project-scope {
+                                font-size: @AknFontSizeSmall;
+                                color: darken(@AknGrey, 20%);
+                            }
+                        }
+
+                        .project-secondary-infos {
+                            font-size: @AknFontSizeSmall;
+                            color: darken(@AknGrey, 20%);
+
+                            .project-duedate {
+                                color: @AknPurple;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -32,7 +32,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     /**
      * {@inheritdoc}
      */
-    public function findAttributeCodesUseableInGrid($groupIds = null)
+    public function findAttributeCodesUsableInGrid($groupIds = null)
     {
         $qb = $this->createQueryBuilder('att')
             ->select('att.code');

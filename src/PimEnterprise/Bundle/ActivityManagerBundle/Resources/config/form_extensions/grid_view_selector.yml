@@ -1,0 +1,5 @@
+extensions:
+    pim-grid-view-selector:
+        module: pim/grid/view-selector/selector
+        config:
+            viewTypes: ['view', 'project']
