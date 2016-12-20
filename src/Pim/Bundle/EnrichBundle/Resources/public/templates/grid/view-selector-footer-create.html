@@ -3,14 +3,14 @@
         <i class="icon-plus"></i><span data-drop-zone="action-list"></span>
     </div>
 <% } else if (isMultiple) { %>
-    <div class="btn-group create-group">
-        <div class="btn-primary dropdown-toggle action btn create-button create-dropdown" data-toggle="dropdown">
+    <div class="AknSeveralActionsButton AknSeveralActionsButton--apply AknDropdown">
+        <div class="dropdown-toggle create-dropdown AknSeveralActionsButton-mainAction" data-toggle="dropdown">
             <%- createButtonTitle %>
         </div>
-        <div class="btn dropdown-toggle create-carret" data-toggle="dropdown">
-            <span class="caret"></span>
+        <div class="dropdown-toggle AknSeveralActionsButton-caretContainer" data-toggle="dropdown">
+            <span class="AknCaret AknCaret--inverse"></span>
         </div>
 
-        <ul class="dropdown-menu AknDropdown-menu--right" data-drop-zone="action-list"></ul>
+        <ul class="dropdown-menu AknSeveralActionsButton-menu AknDropdown-menu AknDropdown-menu--right" data-drop-zone="action-list"></ul>
     </div>
 <% } %>

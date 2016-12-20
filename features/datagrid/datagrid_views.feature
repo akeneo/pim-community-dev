@@ -144,6 +144,7 @@ Feature: Datagrid views
     And I should see the text "Default view"
     But I should not see the text "Sneakers only"
 
+  @skip-activity-manager
   Scenario: Successfully display values in grid when using a custom default view
     Given I am on the products page
     And I display the columns SKU, Name and Family
@@ -177,6 +178,7 @@ Feature: Datagrid views
       | Name   | Black boots |
       | Family | Boots       |
 
+  @skip-activity-manager
   Scenario: Successfully change grid channel
     Given I am on the products page
     Then I should see the text "Tablet"
