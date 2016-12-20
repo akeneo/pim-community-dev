@@ -16,11 +16,11 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\UserBundle\Entity\Group;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -133,7 +133,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      */
     protected function extractContributorGroupIdentifier(ProjectInterface $project)
     {
-        $groupIdentifiers = array_map(function (Group $userGroup) {
+        $groupIdentifiers = array_map(function (GroupInterface $userGroup) {
             return $userGroup->getId();
         }, $project->getUserGroups()->toArray());
 
