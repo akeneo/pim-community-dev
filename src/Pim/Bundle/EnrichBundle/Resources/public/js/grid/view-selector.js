@@ -130,6 +130,7 @@ define(
                      */
                     formatResult: function (item, $container) {
                         FormBuilder.build('pim-grid-view-selector-line').then(function (form) {
+                            form.setParent(this);
                             form.setView(item, this.currentViewType, this.currentView.id === item.id);
                             $container.append(form.render().$el);
                         }.bind(this));
