@@ -25,12 +25,12 @@ class RegisterCalculationStepPass implements CompilerPassInterface
     /**
      * Default calculation step key.
      */
-    const DEFAULT_CALCULATION_STEP = 'activity_manager.calculation_step.chained';
+    const DEFAULT_CALCULATION_STEP = 'pimee_activity_manager.calculation_step.chained';
 
     /**
-     * All calculation step must be tagged with "activity_manager.calculation_step".
+     * All calculation step must be tagged with "pimee_activity_manager.calculation_step".
      */
-    const CALCULATION_STEP_TAG = 'activity_manager.calculation_step';
+    const CALCULATION_STEP_TAG = 'pimee_activity_manager.calculation_step';
 
     /**
      * Default priority if tagged service does not have it.
@@ -42,7 +42,7 @@ class RegisterCalculationStepPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('activity_manager.calculation_step.chained')) {
+        if (!$container->hasDefinition(static::DEFAULT_CALCULATION_STEP)) {
             throw new \LogicException(sprintf(
                 'No chained calculation step registered, please add a calculation step with %s as key',
                 static::DEFAULT_CALCULATION_STEP

@@ -31,7 +31,7 @@ class PimEnterpriseActivityManagerBundle extends Bundle
         $container->addCompilerPass(new RegisterCalculationStepPass());
 
         $mappingConfig = [
-            realpath(__DIR__.'/Resources/config/doctrine/model') => 'PimEnterprise\Component\ActivityManager\Model',
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\ActivityManager\Model',
         ];
 
         $container->addCompilerPass(

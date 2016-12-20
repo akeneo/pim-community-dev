@@ -25,8 +25,8 @@ class PimEnterpriseActivityManagerExtension extends Extension
     {
         $loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $loader->load('services/services.yml');
-        $loader->load('services/project.yml');
-        $loader->load('services/jobs.yml');
+        $loader->load('services.yml');
+        $loader->load('project.yml');
+        $loader->load('jobs.yml');
     }
 }

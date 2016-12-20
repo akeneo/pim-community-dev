@@ -24,7 +24,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'PimEnterprise\Component\ActivityManager\Model\ProjectInterface' => 'akeneo_activity_manager.model.project.class',
+            'PimEnterprise\Component\ActivityManager\Model\ProjectInterface' => 'pimee_activity_manager.model.project.class',
         ];
     }
 }

@@ -26,10 +26,10 @@ class RegisterCalculationStepPassSpec extends ObjectBehavior
         ContainerBuilder $container,
         Definition $chainCalculationStep
     ) {
-        $container->hasDefinition('activity_manager.calculation_step.chained')->willReturn(true);
-        $container->getDefinition('activity_manager.calculation_step.chained')->willReturn($chainCalculationStep);
+        $container->hasDefinition(RegisterCalculationStepPass::DEFAULT_CALCULATION_STEP)->willReturn(true);
+        $container->getDefinition(RegisterCalculationStepPass::DEFAULT_CALCULATION_STEP)->willReturn($chainCalculationStep);
 
-        $container->findTaggedServiceIds('activity_manager.calculation_step')->willReturn([
+        $container->findTaggedServiceIds(RegisterCalculationStepPass::CALCULATION_STEP_TAG)->willReturn([
             'calculation_step.foo' => [['priority' => 10]],
             'calculation_step.bar' => [['priority' => 50]],
         ]);
@@ -51,7 +51,7 @@ class RegisterCalculationStepPassSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_there_is_not_registered_chained_calculation_step(ContainerBuilder $container)
     {
-        $container->hasDefinition('activity_manager.calculation_step.chained')->willReturn(false);
+        $container->hasDefinition(RegisterCalculationStepPass::DEFAULT_CALCULATION_STEP)->willReturn(false);
 
         $this->shouldThrow(\LogicException::class)->during('process', [$container]);
     }
