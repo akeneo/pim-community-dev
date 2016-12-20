@@ -1,3 +1,9 @@
+# 1.5.16
+
+## Bug fixes
+- Call validation on family mass edit
+
+
 # 1.5.15 (2016-12-13)
 
 ## Bug fixes
