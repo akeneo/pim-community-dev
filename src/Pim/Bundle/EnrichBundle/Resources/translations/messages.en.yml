@@ -967,6 +967,7 @@ job_execution.summary:
     skip:               Skipped
     skipped_products:   Skipped products
     skipped_attributes: Skipped attributes
+    skipped_families:   Skipped families
 
 pim_mass_edit_execution_show:  Mass edit executions | Details
 
