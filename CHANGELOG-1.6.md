@@ -79,6 +79,8 @@
 
 ## Bug fixes
 
+TIP-568: Fix memory leak with versioning
+
 # 1.6.0-RC1 (2016-08-29)
 
 ## Bug fixes
