@@ -85,7 +85,7 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
         $localeEn->removeChannel($channel)->shouldBeCalled();
         $localeEs->addChannel($channel)->shouldBeCalled();
 
-        $saver->saveAll([$localeEn, $localeEs])->shouldBeCalled();
+        $saver->saveAll([$localeEn, $localeFr, $localeEs])->shouldBeCalled();
 
         $this->updateChannel($event);
     }

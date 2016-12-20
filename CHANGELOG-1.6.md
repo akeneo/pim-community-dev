@@ -1,3 +1,10 @@
+# 1.6.7 (2016-12-20)
+
+## Bug fixes
+
+- PIM-6031: Deleted families are still visible on the product grid
+- PIM-6025: Fix a bug that prevents to completely change the channel's locales
+
 # 1.6.6 (2016-12-08)
 
 ## Bug fixes
