@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\ActivityManager\Behat\Decorator\Element\Widget;
+namespace PimEnterprise\Behat\Widget;
 
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;

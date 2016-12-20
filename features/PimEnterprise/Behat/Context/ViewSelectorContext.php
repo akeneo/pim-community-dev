@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Behat\Context;
+namespace PimEnterprise\Behat\Context;
 
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;

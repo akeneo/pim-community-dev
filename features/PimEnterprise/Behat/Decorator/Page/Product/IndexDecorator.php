@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Behat\Decorator\Page\Product;
+namespace PimEnterprise\Behat\Decorator\Page\Product;
 
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
@@ -32,7 +32,7 @@ class IndexDecorator extends ElementDecorator
 
         return $this->decorate(
             $dropdownToggle,
-            ['Akeneo\ActivityManager\Behat\Decorator\Element\Grid\ViewSelectorCreateButtonDecorator']
+            ['PimEnterprise\Behat\Decorator\Element\Grid\ViewSelectorCreateButtonDecorator']
         );
     }
 
@@ -49,7 +49,7 @@ class IndexDecorator extends ElementDecorator
 
         return $this->decorate(
             $widget,
-            ['Akeneo\ActivityManager\Behat\Decorator\Element\Widget\WidgetDecorator']
+            ['PimEnterprise\Behat\Widget\WidgetDecorator']
         );
     }
 }

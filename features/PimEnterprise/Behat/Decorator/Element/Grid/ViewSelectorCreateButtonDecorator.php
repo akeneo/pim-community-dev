@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ActivityManager\Behat\Decorator\Element\Grid;
+namespace PimEnterprise\Behat\Decorator\Element\Grid;
 
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
