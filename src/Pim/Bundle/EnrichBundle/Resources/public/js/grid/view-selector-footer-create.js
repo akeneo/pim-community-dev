@@ -45,7 +45,7 @@ define(
                 }));
 
                 if (1 < extensionsCount) {
-                    this.$('.dropdown-toggle').dropdown();
+                    this.$('[data-toggle="dropdown"]').dropdown();
                 }
 
                 this.renderExtensions(extensionsCount);
