@@ -14,7 +14,6 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Job;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\JobInstanceRepository;
-use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
@@ -22,7 +21,7 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectCalculationJobLauncher implements ProjectCalculationJobLauncherInterface
+class ProjectCalculationJobLauncher
 {
     /** @var JobLauncherInterface */
     protected $simpleJobLauncher;

@@ -15,7 +15,7 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter;
-use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher;
 use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
@@ -53,7 +53,7 @@ class ProjectController
     /** @var SaverInterface */
     protected $projectSaver;
 
-    /** @var ProjectCalculationJobLauncherInterface */
+    /** @var ProjectCalculationJobLauncher*/
     protected $projectCalculationJobLauncher;
 
     /** @var NormalizerInterface */
@@ -76,7 +76,7 @@ class ProjectController
         ObjectUpdaterInterface $projectUpdater,
         SaverInterface $projectSaver,
         ValidatorInterface $validator,
-        ProjectCalculationJobLauncherInterface $projectCalculationJobLauncher, // pas d'interface
+        ProjectCalculationJobLauncher $projectCalculationJobLauncher,
         NormalizerInterface $projectNormalizer,
         ProjectRepositoryInterface $projectRepository,
         UserRepositoryInterface $userRepository,

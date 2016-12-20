@@ -17,11 +17,6 @@ class ProjectCalculationJobLauncherSpec extends ObjectBehavior
         $this->beConstructedWith($simpleJobLauncher, $jobInstanceRepository);
     }
 
-    function it_is_a_project_job_launcher()
-    {
-        $this->shouldImplement(ProjectCalculationJobLauncherInterface::class);
-    }
-
     function it_launches_a_project_calculation_job(
         $simpleJobLauncher,
         $jobInstanceRepository,
