@@ -104,8 +104,8 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
         foreach ($newLocales as $locale) {
             if (!$locale->hasChannel($channel)) {
                 $locale->addChannel($channel);
-                $updatedLocales[] = $locale;
             }
+            $updatedLocales[] = $locale;
         }
 
         if (!empty($updatedLocales)) {

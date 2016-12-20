@@ -55,3 +55,18 @@ Feature: Edit a channel
     And  I am on the "tablet" channel page
     And I fill in the following information:
       | Longueur | Kilomètre |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6025
+  Scenario: Successfully replace a channel locale by another one when there is only one channel
+    Given I am logged in as "Peter"
+    And I am on the channels page
+    And I click on the "Delete" action of the row which contains "tablet"
+    And I confirm the deletion
+    And I am on the "mobile" channel page
+    When I change the "Locales" to "German (Germany)"
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
+    When I am on the locales page
+    And I filter by "activated" with operator "equals" and value "yes"
+    Then the grid should contain 1 elements
+    And I should see locales "de_DE"
