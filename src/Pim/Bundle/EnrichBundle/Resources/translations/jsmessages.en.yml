@@ -26,6 +26,8 @@ pim_datagrid:
             confirm_content: Are you sure you want to delete selected products?
             success:         Selected products successfully deleted.
             error:           Error ocurred when trying to delete selected products, please try again.
+    view_selector:
+        view: Views
 
 flash:
     item:

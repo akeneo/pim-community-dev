@@ -26,27 +26,34 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             datagridView: null,
-
-            /**
-             * {@inheritdoc}
-             */
-            configure: function (datagridView) {
-                this.datagridView = datagridView;
-
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+            datagridViewType: null,
+            isCurrentView: false,
 
             /**
              * {@inheritdoc}
              */
             render: function () {
                 this.$el.html(this.template({
-                    view: this.datagridView
+                    view: this.datagridView,
+                    isCurrent: this.isCurrentView
                 }));
 
                 this.renderExtensions();
 
                 return this;
+            },
+
+            /**
+             * Set the view of this module.
+             *
+             * @param {Object}  view
+             * @param {String}  viewType
+             * @param {boolean} isCurrent
+             */
+            setView: function (view, viewType, isCurrent) {
+                this.datagridView = view;
+                this.datagridViewType = viewType;
+                this.isCurrentView = isCurrent;
             }
         });
     }

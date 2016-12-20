@@ -134,6 +134,8 @@ class GridCapableDecorator extends ElementDecorator
             return $widget->find('css', sprintf('.select2-result-label:contains("%s")', $viewLabel));
         }, sprintf('Row "%s" in view selector not found.', $viewLabel));
 
+        $row->mouseOver();
+
         $deleteButton = $this->spin(function () use ($row) {
             return $this->find('css', '[data-action="prompt-deletion"]');
         }, sprintf('Delete button not found on row "%s"', $viewLabel));
@@ -161,5 +163,43 @@ class GridCapableDecorator extends ElementDecorator
         );
 
         return $this->decorate($grid->getParent()->getParent()->getParent(), $this->gridDecorators);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @throws TimeoutException
+     */
+    public function switchViewType($type)
+    {
+        $widget = $this->getViewSelector()->getWidget();
+
+        $viewTypeSwitcher = $this->spin(function () use ($widget) {
+            return $widget->find('css', '.view-selector-type-switcher');
+        }, 'Cannot find the View Type Switcher in the View Selector.');
+
+        $viewTypeSwitcher->click();
+
+        $viewType = $this->spin(function () use ($widget, $type) {
+            return $widget->find('css', sprintf('[data-action="switchViewType"][title="%s"]', $type));
+        }, sprintf('Cannot find element in the View Type Switcher dropdown with name "%s".', $type));
+
+        $viewType->click();
+    }
+
+    /**
+     * @throws TimeoutException
+     *
+     * @return string
+     */
+    public function getCurrentViewType()
+    {
+        $widget = $this->getViewSelector()->getWidget();
+
+        $viewTypeSwitcher = $this->spin(function () use ($widget) {
+            return $widget->find('css', '.view-selector-type-switcher');
+        }, 'Cannot find the View Type Switcher in the View Selector.');
+
+        return $viewTypeSwitcher->getText();
     }
 }
