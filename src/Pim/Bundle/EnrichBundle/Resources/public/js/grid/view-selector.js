@@ -17,8 +17,6 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'pim/grid/view-selector/line',
-        'pim/grid/view-selector/footer',
         'pim/grid/view-selector/type-switcher',
         'text!pim/template/grid/view-selector',
         'pim/initselect2',
@@ -33,8 +31,6 @@ define(
         __,
         Backbone,
         BaseForm,
-        ViewSelectorLine,
-        ViewSelectorFooter,
         ViewSelectorTypeSwitcher,
         template,
         initSelect2,
@@ -133,11 +129,9 @@ define(
                      * This way we can display views and their infos beside them.
                      */
                     formatResult: function (item, $container) {
-                        FormBuilder.buildForm('pim-grid-view-selector-line').then(function (form) {
-                            form.setParent(this);
-                            return form.configure(item).then(function () {
-                                $container.append(form.render().$el);
-                            });
+                        FormBuilder.build('pim-grid-view-selector-line').then(function (form) {
+                            form.setView(item, this.currentViewType, this.currentView.id === item.id);
+                            $container.append(form.render().$el);
                         }.bind(this));
                     }.bind(this),
 
