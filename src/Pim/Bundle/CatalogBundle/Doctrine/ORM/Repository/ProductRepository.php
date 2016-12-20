@@ -438,9 +438,11 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneById($id)
     {
-        $pqb = $this->queryBuilderFactory->create();
-        $pqb->addFilter('id', '=', $id);
-        $qb = $pqb->getQueryBuilder();
+        $qb = $this->createQueryBuilder('p');
+        $qb->andWhere(
+            $qb->expr()->eq('p.id', $id)
+        );
+
         $result = $qb->getQuery()->execute();
 
         if (empty($result)) {
