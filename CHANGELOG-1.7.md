@@ -14,6 +14,7 @@
 
 ## Technical improvements
 
+- #5380: Add `Pim\Component\User\Model\GroupInterface`
 - #4696: Ping the server before updating job and step execution data to prevent "MySQL Server has gone away" issue cheers @qrz-io!
 - TIP-575: Rename FileIterator classes to FlatFileIterator and changes the reader/processor behavior to iterate over the item's position in the file instead of the item's line number in the file.
 
