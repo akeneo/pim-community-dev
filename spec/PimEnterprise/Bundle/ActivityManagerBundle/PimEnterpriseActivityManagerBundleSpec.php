@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle;
 
-use PimEnterprise\Bundle\ActivityManagerBundle\ActivityManagerBundle;
+use PimEnterprise\Bundle\ActivityManagerBundle\PimEnterpriseActivityManagerBundle;
 use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
 use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
@@ -14,7 +14,7 @@ class PimEnterpriseActivityManagerBundleSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ActivityManagerBundle::class);
+        $this->shouldHaveType(PimEnterpriseActivityManagerBundle::class);
     }
 
     function it_is_bundle()
