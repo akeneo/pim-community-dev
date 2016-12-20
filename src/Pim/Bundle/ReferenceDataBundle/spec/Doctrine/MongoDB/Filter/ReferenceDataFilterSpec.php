@@ -39,7 +39,7 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_filter_to_the_query(
+    function it_adds_a_filter_with_ids_to_the_query(
         $attrValidatorHelper,
         Builder $qb,
         AttributeInterface $attribute,
@@ -59,7 +59,7 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $expr->in([118, 270])->shouldBeCalled()->willReturn($expr);
         $qb->addAnd($expr)->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'IN', [118, 270], null, null, ['field' => 'color']);
+        $this->addAttributeFilter($attribute, 'IN', [118, 270], null, null, ['field' => 'color.id']);
     }
 
     function it_adds_a_filter_with_codes_to_the_query(
@@ -119,9 +119,9 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         )
             ->during('addAttributeFilter', [$attribute, '=', $value, null, null, ['field' => 'color']]);
 
-        $value = ['foo'];
+        $value = [false];
         $this->shouldThrow(
-            InvalidArgumentException::numericExpected('color', 'filter', 'reference_data', 'string')
+            InvalidArgumentException::stringExpected('color', 'filter', 'reference_data', 'boolean')
         )
             ->during('addAttributeFilter', [$attribute, '=', $value, null, null, ['field' => 'color']]);
     }

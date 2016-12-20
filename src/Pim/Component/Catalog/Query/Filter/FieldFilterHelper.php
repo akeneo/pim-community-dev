@@ -41,7 +41,7 @@ class FieldFilterHelper
      *
      * @return string
      */
-    public static function getProperty($field, $default = 'id')
+    public static function getProperty($field, $default = 'code')
     {
         $fieldData = explode('.', $field);
 
@@ -84,9 +84,7 @@ class FieldFilterHelper
     public static function checkIdentifier($field, $value, $filter)
     {
         $invalidIdField = static::hasProperty($field) && static::getProperty($field) === 'id' && !is_numeric($value);
-        $invalidDefaultField = !static::hasProperty($field) && !is_numeric($value);
-
-        if ($invalidIdField || $invalidDefaultField) {
+        if ($invalidIdField) {
             throw InvalidArgumentException::numericExpected(
                 static::getCode($field),
                 'filter',
@@ -95,8 +93,9 @@ class FieldFilterHelper
             );
         }
 
+        $invalidDefaultField = !static::hasProperty($field) && !is_string($value);
         $invalidStringField = static::hasProperty($field) && static::getProperty($field) !== 'id' && !is_string($value);
-        if ($invalidStringField) {
+        if ($invalidDefaultField || $invalidStringField) {
             throw InvalidArgumentException::stringExpected(static::getCode($field), 'filter', $filter, gettype($value));
         }
     }
