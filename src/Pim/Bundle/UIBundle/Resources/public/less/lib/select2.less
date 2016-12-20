@@ -168,21 +168,6 @@
 }
 
 /* Custom styles */
-.AknSelect2-gridViewSelector.select2-container {
-  .select2-choice {
-    background: lighten(@AknGrey, 25%);
-    font-size: @AknFontSizeBig;
-
-    .select2-arrow {
-      background: lighten(@AknGrey, 15%);
-    }
-  }
-
-  &.select2-container-active .select2-choice {
-    background: lighten(@AknGrey, 15%);
-  }
-}
-
 .AknSelect2--bigDrop.select2-drop {
   min-width: 400px;
   border-top: 1px solid @AknBorderColor;
@@ -212,6 +197,15 @@
 .grid-view-selector {
   .select2-container {
     width: 200px;
+
+    .select2-choice {
+      background: lighten(@AknGrey, 25%);
+      font-style: @AknFontSizeBig;
+
+      .select2-arrow {
+        background: lighten(@AknGrey, 15%);
+      }
+    }
   }
 
   &.select2-drop {
