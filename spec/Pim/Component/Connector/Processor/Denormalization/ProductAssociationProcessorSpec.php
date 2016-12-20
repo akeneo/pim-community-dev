@@ -9,9 +9,9 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -318,5 +318,44 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
         $this->process($originalData)
             ->shouldReturn(null);
+    }
+
+    function it_skips_a_product_when_there_is_no_association_to_update(
+        $arrayConverter,
+        $productRepository,
+        $productUpdater,
+        $productAssocFilter,
+        $stepExecution,
+        $productDetacher,
+        ProductInterface $product
+    ) {
+        $this->setEnabledComparison(false);
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $originalData = ['sku' => 'tshirt'];
+        $convertedData =                 [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => 'tshirt'
+                ],
+            ]
+        ];
+        $arrayConverter
+            ->convert($originalData, ["with_associations" => true])
+            ->willReturn($convertedData);
+
+        $productAssocFilter->filter(Argument::any())->shouldNotBeCalled();
+        $productUpdater->update(Argument::any())->shouldNotBeCalled();
+
+        $stepExecution->incrementSummaryInfo('product_skipped_no_associations')->shouldBeCalled();
+        $this->setStepExecution($stepExecution);
+
+        $productDetacher->detach($product)->shouldBeCalled();
+
+        $this->process($originalData)->shouldReturn(null);
     }
 }
