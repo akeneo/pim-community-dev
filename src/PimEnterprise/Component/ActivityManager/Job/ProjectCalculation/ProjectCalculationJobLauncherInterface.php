@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * It launches the calculation of a project depending of the user.

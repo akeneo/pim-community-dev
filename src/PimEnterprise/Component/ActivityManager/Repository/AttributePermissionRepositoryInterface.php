@@ -10,8 +10,8 @@
  */
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
+use Pim\Component\User\Model\GroupInterface;
 
-use Oro\Bundle\UserBundle\Entity\Group;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -19,11 +19,11 @@ use Oro\Bundle\UserBundle\Entity\Group;
 interface AttributePermissionRepositoryInterface
 {
     /**
-     * Find user groups which have the edit right permission on the attribute group selection.
+     * Find user groups which have the edit right permission on the attribute GroupInterface selection.
      *
      * @param array $attributeGroupIdentifiers
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function findContributorsUserGroups(array $attributeGroupIdentifiers);
 }

@@ -12,11 +12,11 @@
 namespace PimEnterprise\Component\ActivityManager\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\GroupInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -111,18 +111,18 @@ interface ProjectInterface
     public function setDatagridView(DatagridView $datagridView);
 
     /**
-     * Add a new user group to the Project.
+     * Add a new user GroupInterface to the Project.
      *
-     * @param Group $group
+     * @param GroupInterface $group
      */
-    public function addUserGroup(Group $group);
+    public function addUserGroup(GroupInterface $group);
 
     /**
-     * Remove a user group to the Project.
+     * Remove a user GroupInterface to the Project.
      *
-     * @param Group $group
+     * @param GroupInterface $group
      */
-    public function removeUserGroup(Group $group);
+    public function removeUserGroup(GroupInterface $group);
 
     /**
      * Returns user groups.

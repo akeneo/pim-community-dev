@@ -12,11 +12,11 @@
 namespace PimEnterprise\Component\ActivityManager\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\GroupInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -200,7 +200,7 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function addUserGroup(Group $userGroup)
+    public function addUserGroup(GroupInterface $userGroup)
     {
         if (!$this->userGroups->contains($userGroup)) {
             $this->userGroups[] = $userGroup;
@@ -210,7 +210,7 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function removeUserGroup(Group $userGroup)
+    public function removeUserGroup(GroupInterface $userGroup)
     {
         $this->userGroups->removeElement($userGroup);
     }

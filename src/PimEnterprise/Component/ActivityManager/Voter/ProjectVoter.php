@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Component\ActivityManager\Voter;
 
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Project voter, allow to know if a user has own and/or contribute access to a project.

@@ -12,8 +12,8 @@
 namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\AttributePermissionRepositoryInterface;
@@ -91,12 +91,12 @@ class UserGroupCalculationStep implements CalculationStepInterface
     }
 
     /**
-     * Find contributor groups that can edit at least one product attribute (attribute group permission).
+     * Find contributor groups that can edit at least one product attribute (attribute GroupInterface permission).
      *
      * @param ProductInterface $product
      * @param ProjectInterface $project
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     protected function findUserGroupForAttribute(ProductInterface $product, ProjectInterface $project)
     {
