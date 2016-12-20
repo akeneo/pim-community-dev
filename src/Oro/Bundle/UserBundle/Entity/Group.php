@@ -7,12 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\Type;
+use Pim\Component\User\Model\GroupInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
  * @ORM\Table(name="oro_access_group")
  */
-class Group
+class Group implements GroupInterface
 {
     /**
      * @ORM\Id
