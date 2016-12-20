@@ -36,7 +36,7 @@ class ProjectProgressWidget implements WidgetInterface
      */
     public function getTemplate()
     {
-        return 'ActivityManagerBundle:Widget:progress.html.twig';
+        return 'PimEnterpriseActivityManagerBundle:Widget:progress.html.twig';
     }
 
     /**
