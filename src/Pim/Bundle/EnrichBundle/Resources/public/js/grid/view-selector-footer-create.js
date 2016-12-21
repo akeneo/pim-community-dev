@@ -16,17 +16,20 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/grid/view-selector/footer/create'
+        'text!pim/template/grid/view-selector/footer/create',
+        'text!pim/template/grid/view-selector/footer/create-dropdown-item'
     ],
     function (
         $,
         _,
         __,
         BaseForm,
-        template
+        template,
+        templateDropdownItem
     ) {
         return BaseForm.extend({
             template: _.template(template),
+            templateDropdownItem: _.template(templateDropdownItem),
             events: {
                 'click .create-button': 'triggerClick',
                 'click .create-action': 'triggerClick'
@@ -65,7 +68,9 @@ define(
                     extensionCode = _.findWhere(this.extensions, {targetZone: 'action-list'}).code;
                 }
 
-                this.triggerExtensions('grid:view-selector:trigger-create', {extensionCode: extensionCode});
+                // We now explicitly trigger an event to all our extensions with the code of the extension that should
+                // handle this event, since the action is NOT on DOM elements extensions are aware of.
+                this.triggerExtensions('grid:view-selector:create-new', {extensionCode: extensionCode});
             },
 
             /**
@@ -100,10 +105,10 @@ define(
              * @param {Object} extension
              */
             renderExtensionAsList: function (extension) {
-                this.getZone(extension.targetZone).appendChild(
-                    $('<li class="create-action AknDropdown-menuLink" data-extension-code="'+extension.code+'">')
-                        .append(extension.el)[0]
-                );
+                var dropdownItemHtml = this.templateDropdownItem({code: extension.code});
+                var dropdownItem = $(dropdownItemHtml).append(extension.el);
+
+                this.getZone(extension.targetZone).appendChild(dropdownItem[0]);
 
                 extension.render();
             }

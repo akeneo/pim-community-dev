@@ -455,7 +455,8 @@ config:
         pim/template/grid/view-selector/footer: pimenrich/templates/grid/view-selector-footer.html
         pim/template/grid/view-selector/footer/create: pimenrich/templates/grid/view-selector-footer-create.html
         pim/template/grid/view-selector/footer/create/view: pimenrich/templates/grid/view-selector-footer-create-view.html
-        pim/template/grid/view-selector/footer/create-option: pimenrich/templates/grid/view-selector-footer-create-option.html
+        pim/template/grid/view-selector/footer/create-dropdown-item: pimenrich/templates/grid/view-selector-footer-create-dropdown-item.html
+        pim/template/grid/view-selector/create-view-label-input: pimenrich/templates/grid/view-selector-create-view-label-input.html
         pim/template/grid/view-selector/line: pimenrich/templates/grid/view-selector-line.html
         pim/template/grid/view-selector/line/remove: pimenrich/templates/grid/view-selector-line-remove.html
         pim/template/grid/view-selector/save: pimenrich/templates/grid/view-selector-save.html

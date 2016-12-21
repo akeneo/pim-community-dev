@@ -18,6 +18,7 @@ define(
         'pim/form',
         'backbone',
         'text!pim/template/grid/view-selector/footer/create/view',
+        'text!pim/template/grid/view-selector/create-view-label-input',
         'pim/dialog',
         'routing',
         'pim/datagrid/state',
@@ -31,6 +32,7 @@ define(
         BaseForm,
         Backbone,
         template,
+        templateInput,
         Dialog,
         Routing,
         DatagridState,
@@ -39,6 +41,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
+            templateInput: _.template(templateInput),
             tagName: 'span',
             className: 'action',
 
@@ -46,18 +49,17 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this, 'grid:view-selector:trigger-create', this.onTriggerClick);
+                this.listenTo(this, 'grid:view-selector:create-new', this.handleViewCreation);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
-             * Method called when a click is triggered on an element of the footer create module.
              * We check if this extension can handle the action by checking the extension code.
              *
              * @param {Object} data '{extensionCode: "the_extension_code"}'
              */
-            onTriggerClick: function (data) {
+            handleViewCreation: function (data) {
                 if (data.extensionCode === this.code) {
                     this.promptCreateView();
                 }
@@ -80,15 +82,11 @@ define(
             promptCreateView: function () {
                 this.getRoot().trigger('grid:view-selector:close-selector');
 
-                var placeholder = __('grid.view_selector.placeholder');
                 var modal = new Backbone.BootstrapModal({
                     title: __('grid.view_selector.choose_label'),
-                    content: '<input name="new-view-label" ' +
-                        'type="text" ' +
-                        'class="AknTextField" ' +
-                        'placeholder="' + placeholder + '">',
-                    okText: __('OK'),
-                    cancelText: __('Cancel')
+                    content: this.templateInput({placeholder: __('grid.view_selector.placeholder')}),
+                    okText: __('pim_datagrid.view_selector.create_view_modal.confirm'),
+                    cancelText: __('pim_datagrid.view_selector.create_view_modal.cancel')
                 });
                 modal.open();
 

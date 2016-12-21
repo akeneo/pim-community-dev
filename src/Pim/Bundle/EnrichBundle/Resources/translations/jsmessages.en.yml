@@ -28,6 +28,9 @@ pim_datagrid:
             error:           Error ocurred when trying to delete selected products, please try again.
     view_selector:
         view: Views
+        create_view_modal:
+            confirm: OK
+            cancel: Cancel
 
 flash:
     item:
