@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6033: Fix validation issue when you add a blank attribute option line
+
 # 1.6.7 (2016-12-20)
 
 ## Bug fixes
