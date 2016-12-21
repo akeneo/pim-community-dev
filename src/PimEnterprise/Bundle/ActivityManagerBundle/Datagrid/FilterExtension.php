@@ -21,7 +21,7 @@ use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\Filter\FilterExtension as EnterpriseFilterExtension;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
+use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\ActivityManager\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Translation\TranslatorInterface;

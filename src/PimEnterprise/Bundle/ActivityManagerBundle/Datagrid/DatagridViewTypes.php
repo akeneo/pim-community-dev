@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Model;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Datagrid;
 
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 

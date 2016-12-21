@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ActivityManager\Model;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Datagrid;
 
-use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
+use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
 use PhpSpec\ObjectBehavior;
 
 class DatagridViewTypesSpec extends ObjectBehavior

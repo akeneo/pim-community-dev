@@ -15,7 +15,7 @@ use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Behat\Gherkin\Node\TableNode;
 use Pim\Behat\Context\PimContext;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
+use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Console\Application;

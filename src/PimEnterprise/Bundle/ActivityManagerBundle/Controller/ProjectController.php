@@ -16,7 +16,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher;
-use PimEnterprise\Component\ActivityManager\Model\DatagridViewTypes;
+use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
