@@ -499,3 +499,6 @@ services:
             - '@validator'
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@security.token_storage'
+            - '@router'

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
@@ -14,6 +15,8 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -56,6 +59,15 @@ class JobInstanceController
     /** @var JobParametersFactory */
     protected $jobParamsFactory;
 
+    /** @var JobLauncherInterface */
+    protected $simpleJobLauncher;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var RouterInterface */
+    protected $router;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
@@ -67,6 +79,9 @@ class JobInstanceController
      * @param ValidatorInterface                    $validator
      * @param JobParametersValidator                $jobParameterValidator
      * @param JobParametersFactory                  $jobParamsFactory
+     * @param JobLauncherInterface                  $simpleJobLauncher
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param RouterInterface                       $router
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -78,7 +93,10 @@ class JobInstanceController
         RemoverInterface $remover,
         ValidatorInterface $validator,
         JobParametersValidator $jobParameterValidator,
-        JobParametersFactory $jobParamsFactory
+        JobParametersFactory $jobParamsFactory,
+        JobLauncherInterface $simpleJobLauncher,
+        TokenStorageInterface $tokenStorage,
+        RouterInterface $router
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -90,6 +108,9 @@ class JobInstanceController
         $this->validator             = $validator;
         $this->jobParameterValidator = $jobParameterValidator;
         $this->jobParamsFactory      = $jobParamsFactory;
+        $this->simpleJobLauncher     = $simpleJobLauncher;
+        $this->tokenStorage          = $tokenStorage;
+        $this->router                = $router;
     }
 
     /**
@@ -153,18 +174,45 @@ class JobInstanceController
     }
 
     /**
+     * Launch a job
+     *
+     * @param string $code
+     *
+     * @return JsonResponse
+     */
+    public function launchAction($code)
+    {
+        $jobInstance = $this->getJobInstance($code);
+
+        $errors = $this->getValidationErrors($jobInstance);
+        if (count($errors) > 0) {
+            return new JsonResponse($errors, 400);
+        }
+
+        $jobExecution = $this->launchJob($jobInstance);
+
+        return new JsonResponse([
+            'redirectUrl' => $this->router->generate(
+                sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()),
+                ['id' => $jobExecution->getId()]
+            )
+        ], 200);
+
+    }
+
+    /**
      * Get a job instance
      *
-     * @param int  $id
-     * @param bool $checkStatus
+     * @param string $code
+     * @param bool   $checkStatus
      *
      * @throws NotFoundHttpException
      *
      * @return JobInstance|RedirectResponse
      */
-    protected function getJobInstance($id, $checkStatus = true)
+    protected function getJobInstance($code, $checkStatus = true)
     {
-        $jobInstance = $this->repository->findOneByIdentifier($id);
+        $jobInstance = $this->repository->findOneByIdentifier($code);
 
         if (null === $jobInstance) {
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobInstance entity not found');
@@ -197,6 +245,13 @@ class JobInstanceController
         return $jobInstance;
     }
 
+    /**
+     * Aggregate validation errors
+     *
+     * @param JobInstance $jobInstance
+     *
+     * @return array
+     */
     protected function getValidationErrors(JobInstance $jobInstance)
     {
         $rawParameters = $jobInstance->getRawParameters();
@@ -224,6 +279,13 @@ class JobInstanceController
         return $errors;
     }
 
+    /**
+     * Normalize the job errors
+     *
+     * @param JobInstance $jobInstance
+     *
+     * @return array
+     */
     protected function normalizeJobInstance(JobInstance $jobInstance)
     {
         $normalizedJobInstance = $this->jobInstanceNormalizer->normalize($jobInstance, 'standard');
@@ -234,5 +296,21 @@ class JobInstanceController
                 'id'   => $jobInstance->getId()
             ]
         ]);
+    }
+
+    /**
+     * Allow to validate and run the job
+     *
+     * @param JobInstance $jobInstance
+     *
+     * @return JobInstance
+     */
+    protected function launchJob(JobInstance $jobInstance)
+    {
+        $configuration = $jobInstance->getRawParameters();
+        $configuration['send_email'] = true;
+
+        return $this->simpleJobLauncher
+            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
     }
 }

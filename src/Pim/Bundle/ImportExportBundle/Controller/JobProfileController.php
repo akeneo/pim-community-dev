@@ -264,35 +264,6 @@ class JobProfileController
     }
 
     /**
-     * Launch a job
-     *
-     * @param string $code
-     *
-     * @return RedirectResponse
-     */
-    public function launchAction($code)
-    {
-        try {
-            $jobInstance = $this->getJobInstance($code);
-        } catch (NotFoundHttpException $e) {
-            $this->request->getSession()->getFlashBag()->add('error', new Message($e->getMessage()));
-
-            return $this->redirectToIndexView();
-        }
-
-        $violations = $this->validateJobInstance($jobInstance, ['Default', 'Execution']);
-        if ($violations->count() === 0) {
-            $jobExecution = $this->launchJob($jobInstance);
-
-            return $this->redirectToReportView($jobExecution->getId());
-        }
-
-        $this->addViolationFlashMessages($violations);
-
-        return $this->redirectToShowView($code);
-    }
-
-    /**
      * @param ConstraintViolationListInterface $violations
      */
     protected function addViolationFlashMessages(ConstraintViolationListInterface $violations)
@@ -328,30 +299,6 @@ class JobProfileController
         }
 
         return $jobParamsViolations;
-    }
-
-    /**
-     * Allow to validate and run the job
-     *
-     * @param JobInstance $jobInstance
-     *
-     * @return JobInstance
-     */
-    protected function launchJob(JobInstance $jobInstance)
-    {
-        $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
-
-        $configuration = $jobInstance->getRawParameters();
-        $configuration['send_email'] = true;
-        $jobExecution = $this->simpleJobLauncher
-            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
-
-        $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
-
-        $this->request->getSession()->getFlashBag()
-            ->add('success', new Message(sprintf('flash.%s.running', $this->getJobType())));
-
-        return $jobExecution;
     }
 
     /**

@@ -285,6 +285,7 @@ config:
         pim/export/common/edit/meta:                                    pimenrich/js/export/common/edit/meta
         pim/export/common/edit/delete:                                  pimenrich/js/export/common/edit/delete
         pim/export/common/edit/validation:                              pimenrich/js/export/common/edit/validation
+        pim/export/common/edit/launch:                                  pimenrich/js/export/common/edit/launch
 
         # Filters
         pim/filter/filter:                     pimenrich/js/filter/filter
@@ -342,6 +343,7 @@ config:
         pim/common/grid:                   pimenrich/js/form/common/grid
         pim/common/add-attribute:          pimenrich/js/form/common/attributes/add-attribute
         pim/common/properties/translation: pimenrich/js/form/common/properties/translation
+        pim/common/redirect:               pimenrich/js/form/common/redirect
 
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form
@@ -417,6 +419,7 @@ config:
         pim/template/form/tab/attribute/attribute-group-selector: pimenrich/templates/form/tab/attributes/attribute-group-selector.html
         pim/template/form/tab/attribute/copy:                     pimenrich/templates/form/tab/attributes/copy.html
         pim/template/form/tab/attribute/copy-field:               pimenrich/templates/form/tab/attributes/copy-field.html
+        pim/template/form/redirect:                               pimenrich/templates/form/redirect.html
 
         pim/template/association-type/tab/properties/general:     pimenrich/templates/association-type/tab/properties/general.html
 
@@ -483,6 +486,7 @@ config:
         pim/template/export/common/edit/field/switch:                           pimenrich/templates/export/common/edit/field/switch.html
         pim/template/export/common/edit/meta:                                   pimenrich/templates/export/common/edit/meta.html
         pim/template/export/common/edit/validation:                             pimenrich/templates/export/common/edit/validation.html
+        pim/template/export/common/edit/launch:                                 pimenrich/templates/export/common/edit/launch.html
 
         # Filters
         pim/template/filter/filter:                     pimenrich/templates/filter/filter.html

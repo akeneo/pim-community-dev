@@ -399,6 +399,9 @@ pim_enrich:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
         job_instance:
+            button:
+                edit.title: Edit
+                export.title: Export now
             meta:
                 job: Job
                 connector: Connector

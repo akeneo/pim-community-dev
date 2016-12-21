@@ -112,16 +112,26 @@ extensions:
         config:
             backUrl: pim_importexport_export_profile_index
 
-    pim-job-instance-csv-association-type-export-show-form-delete:
-        module: pim/export/common/edit/delete
+    pim-job-instance-csv-association-type-export-show-form-edit:
+        module: pim/common/redirect
         parent: pim-job-instance-csv-association-type-export-show-form
         targetZone: buttons
-        aclResourceId: pim_importexport_export_profile_remove
         position: 100
         config:
-            trans:
-                title: confirmation.remove.job_instance
-                content: pim_enrich.confirmation.delete_item
-                success: flash.job_instance.removed
-                failed: error.removing.job_instance
-            redirect: pim_importexport_export_profile_index
+            label: pim_enrich.form.job_instance.button.edit.title
+            route: pim_importexport_export_profile_edit
+            identifier:
+                path: code
+                name: code
+
+    pim-job-instance-csv-association-type-export-show-form-launch:
+        module: pim/export/common/edit/launch
+        parent: pim-job-instance-csv-association-type-export-show-form
+        targetZone: buttons
+        position: 110
+        config:
+            label: pim_enrich.form.job_instance.button.export.title
+            route: pim_enrich_job_instance_rest_launch
+            identifier:
+                path: code
+                name: code
