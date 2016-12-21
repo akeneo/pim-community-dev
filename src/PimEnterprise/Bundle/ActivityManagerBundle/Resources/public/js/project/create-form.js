@@ -20,6 +20,7 @@ define(
         'pim/date-context',
         'pim/datagrid/state',
         'pim/user-context',
+        'pim/formatter/date',
         'text!activity-manager/templates/grid/create-project-modal-content',
         'text!activity-manager/templates/field-error'
     ],
@@ -37,6 +38,7 @@ define(
         DateContext,
         DatagridState,
         UserContext,
+        DateFormatter,
         template,
         errorTemplate
     ) {
@@ -47,7 +49,6 @@ define(
                 'input .project-field': 'onInputField'
             },
             validationErrors: [],
-            modelDateFormat: 'yyyy-MM-dd',
             datetimepickerOptions: {
                 format: DateContext.get('date').format,
                 defaultFormat: DateContext.get('date').defaultFormat,
@@ -76,10 +77,10 @@ define(
                 var dueDate = this.$('[name="project-due-date"]').val();
 
                 if ('' !== dueDate) {
-                    dueDate = this.formatDate(
+                    dueDate = DateFormatter.format(
                         dueDate,
                         DateContext.get('date').format,
-                        this.modelDateFormat
+                        'yyyy-MM-dd'
                     );
                 }
 
@@ -244,33 +245,6 @@ define(
                         $('.bootstrap-datetimepicker-widget:visible').css('zIndex', 9999);
                     })
                     .on('changeDate', this.onInputField.bind(this));
-            },
-
-            /**
-             * Format a date according to specified format.
-             * It instantiates a datepicker on-the-fly to perform the conversion.
-             * Not possible to use the "real" ones since we need to format a date even when the UI
-             * is not initialized yet.
-             *
-             * @param {String} date
-             * @param {String} fromFormat
-             * @param {String} toFormat
-             *
-             * @return {String}
-             */
-            formatDate: function (date, fromFormat, toFormat) {
-                if (_.isArray(date) || _.isEmpty(date)) {
-                    return null;
-                }
-
-                var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
-                var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
-
-                fakeDatepicker.setValue(date);
-                fakeDatepicker.format = toFormat;
-                fakeDatepicker._compileFormat();
-
-                return fakeDatepicker.formatDate(fakeDatepicker.getDate());
             }
         });
     }

@@ -18,6 +18,7 @@ define(
         'pim/grid/view-selector/line',
         'pim/user-context',
         'pim/date-context',
+        'pim/formatter/date',
         'text!pim/template/grid/view-selector/line',
         'text!activity-manager/templates/grid/view-selector/line-project'
     ],
@@ -30,6 +31,7 @@ define(
         ViewSelectorLine,
         userContext,
         DateContext,
+        DateFormatter,
         templateView,
         templateProject
     ) {
@@ -38,20 +40,6 @@ define(
                 view: _.template(templateView),
                 project: _.template(templateProject)
             },
-
-            /**
-             * Date widget options
-             */
-            datetimepickerOptions: {
-                format: DateContext.get('date').format,
-                defaultFormat: DateContext.get('date').defaultFormat,
-                language: DateContext.get('language')
-            },
-
-            /**
-             * Model date format
-             */
-            modelDateFormat: 'yyyy-MM-dd',
 
             /**
              * {@inheritdoc}
