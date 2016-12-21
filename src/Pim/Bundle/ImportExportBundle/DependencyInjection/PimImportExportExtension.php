@@ -36,10 +36,6 @@ class PimImportExportExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
-        $loader->load('services.yml');
-        $loader->load('twig.yml');
         $loader->load('validators.yml');
-        $loader->load('view_elements.yml');
-        $loader->load('view_elements/job_profile.yml');
     }
 }

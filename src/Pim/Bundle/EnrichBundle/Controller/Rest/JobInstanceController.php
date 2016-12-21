@@ -230,7 +230,7 @@ class JobInstanceController
 
         return array_merge($normalizedJobInstance, [
             'meta' => [
-                'form' => sprintf('pim-job-instance-%s-edit-form', str_replace('_', '-', $jobInstance->getJobName())),
+                'form' => sprintf('pim-job-instance-%s', str_replace('_', '-', $jobInstance->getJobName())),
                 'id'   => $jobInstance->getId()
             ]
         ]);

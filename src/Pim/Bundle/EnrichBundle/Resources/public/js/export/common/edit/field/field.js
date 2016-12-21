@@ -4,11 +4,13 @@ define([
     'underscore',
     'oro/translator',
     'pim/form',
+    'pim/common/property',
     'text!pim/template/export/common/edit/field/field'
 ], function (
     _,
     __,
     BaseForm,
+    propertyAccessor,
     template
 ) {
     return BaseForm.extend({
@@ -50,7 +52,7 @@ define([
         },
 
         getValue: function () {
-            return this.accessProperty(this.getFormData(), this.getFieldCode());
+            return propertyAccessor.accessProperty(this.getFormData(), this.getFieldCode());
         },
 
         getFieldCode: function () {
@@ -58,27 +60,9 @@ define([
         },
 
         updateState: function () {
-            var data = this.updateProperty(this.getFormData(), this.getFieldCode(), this.getFieldValue())
+            var data = propertyAccessor.updateProperty(this.getFormData(), this.getFieldCode(), this.getFieldValue())
 
             this.setData(data);
-        },
-
-        accessProperty: function (data, path) {
-            var pathPart = path.split('.');
-
-            return 1 === pathPart.length ?
-                data[pathPart[0]] :
-                this.accessProperty(data[pathPart[0]], pathPart.slice(1).join('.'));
-        },
-
-        updateProperty: function (data, path, value) {
-            var pathPart = path.split('.');
-
-            data[pathPart[0]] = 1 === pathPart.length ?
-                value :
-                this.updateProperty(data[pathPart[0]], pathPart.slice(1).join('.'), value)
-
-            return data;
         }
     });
 });

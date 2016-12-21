@@ -75,8 +75,7 @@ class JobInstanceFormType extends AbstractType
             ->addCodeField($builder)
             ->addLabelField($builder)
             ->addConnectorField($builder)
-            ->addJobNameField($builder)
-            ->addJobConfigurationField($builder);
+            ->addJobNameField($builder);
 
         $builder->addEventSubscriber(new JobInstanceSubscriber());
 
@@ -220,39 +219,6 @@ class JobInstanceFormType extends AbstractType
                     'label'        => 'Job'
                 ]
             );
-
-        return $this;
-    }
-
-    /**
-     * Add job configuration form type
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return JobInstanceFormType
-     */
-    protected function addJobConfigurationField(FormBuilderInterface $builder)
-    {
-        $jobName = $builder->getData()->getJobName();
-
-        if (null !== $jobName) {
-            $job = $this->jobRegistry->get($jobName);
-            $builder
-                ->add(
-                    'parameters',
-                    'pim_import_export_job_parameters',
-                    [
-                        'required'      => true,
-                        'by_reference'  => false,
-                        'property_path' => 'rawParameters',
-                    ]
-                )
-                ->get('parameters')
-                ->addModelTransformer(new ConfigurationToJobParametersTransformer(
-                    $this->jobParametersFactory,
-                    $job
-                ));
-        }
 
         return $this;
     }

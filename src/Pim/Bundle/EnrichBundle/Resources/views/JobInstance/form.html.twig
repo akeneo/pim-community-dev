@@ -44,7 +44,7 @@
 
                                     fetcherRegistry.initialize().done(function () {
                                         fetcherRegistry.getFetcher('job_instance').fetch('{{ jobInstanceIdentifier }}').then(function (jobProfile) {
-                                            formBuilder.build(jobProfile.meta.form)
+                                            formBuilder.build(jobProfile.meta.form + '-{{ mode }}-form')
                                                 .then(function (form) {
                                                     form.setData(jobProfile);
 

@@ -5,7 +5,7 @@ define([
     'underscore',
     'oro/translator',
     'pim/form',
-    'text!pim/template/export/product/edit/content/data/validation',
+    'text!pim/template/export/common/edit/validation',
     'oro/messenger',
     'pim/common/property'
 

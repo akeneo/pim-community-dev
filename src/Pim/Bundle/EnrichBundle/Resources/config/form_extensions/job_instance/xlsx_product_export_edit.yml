@@ -250,5 +250,5 @@ extensions:
         targetZone: headings
 
     pim-job-instance-xlsx-product-export-edit-form-validation:
-        module: pim/export/product/edit/content/data/validation
+        module: pim/export/common/edit/validation
         parent: pim-job-instance-xlsx-product-export-edit-form

@@ -5,7 +5,6 @@ namespace Pim\Bundle\ImportExportBundle;
 use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobNameVisibilityCheckerPass;
 use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobParametersFormsOptionsPass;
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobTemplatePass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -24,10 +23,6 @@ class PimImportExportBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new RegisterJobTemplatePass())
-            ->addCompilerPass(new RegisterJobParametersFormsOptionsPass(new ReferenceFactory()))
-            ->addCompilerPass(new RegisterJobNameVisibilityCheckerPass(
-                ['pim_connector.job_name.csv_product_export', 'pim_connector.job_name.xlsx_product_export']
-            ));
+            ->addCompilerPass(new RegisterJobParametersFormsOptionsPass(new ReferenceFactory()));
     }
 }

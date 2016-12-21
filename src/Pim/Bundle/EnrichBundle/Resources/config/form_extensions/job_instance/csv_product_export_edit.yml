@@ -256,7 +256,7 @@ extensions:
         parent: pim-job-instance-csv-product-export-edit-form-content-data
 
     pim-job-instance-csv-product-export-edit-form-validation:
-        module: pim/export/product/edit/content/data/validation
+        module: pim/export/common/edit/validation
         parent: pim-job-instance-csv-product-export-edit-form
 
     pim-job-instance-csv-product-export-edit-form-content-data-add-filter:

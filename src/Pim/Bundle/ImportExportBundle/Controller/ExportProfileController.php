@@ -57,9 +57,9 @@ class ExportProfileController extends JobProfileController
      *
      * @AclAncestor("pim_importexport_export_profile_edit")
      */
-    public function editAction(Request $request, $code)
+    public function editAction($code)
     {
-        return parent::editAction($request, $code);
+        return parent::editAction($code);
     }
 
     /**

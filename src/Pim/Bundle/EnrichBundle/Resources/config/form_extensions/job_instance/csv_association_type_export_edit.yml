@@ -157,5 +157,5 @@ extensions:
             entity: pim_enrich.entity.variant_group.title
 
     pim-job-instance-csv-association-type-export-edit-form-validation:
-        module: pim/export/product/edit/content/data/validation
+        module: pim/export/common/edit/validation
         parent: pim-job-instance-csv-association-type-export-edit-form

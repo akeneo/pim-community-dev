@@ -15,7 +15,6 @@ use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType;
-use Pim\Bundle\ImportExportBundle\JobTemplate\JobTemplateProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -41,6 +40,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class JobProfileController
 {
+    /** @staticvar string */
+    const DEFAULT_CREATE_TEMPLATE = 'PimImportExportBundle:%sProfile:create.html.twig';
+
     /** @var JobRegistry */
     protected $jobRegistry;
 
@@ -80,9 +82,6 @@ class JobProfileController
     /** @var EntityManagerInterface */
     protected $entityManager;
 
-    /** @var JobTemplateProviderInterface */
-    protected $jobTemplateProvider;
-
     /** @var JobInstanceRepository */
     protected $jobInstanceRepository;
 
@@ -109,7 +108,6 @@ class JobProfileController
      * @param EntityManagerInterface       $entityManager
      * @param JobInstanceRepository        $jobInstanceRepository
      * @param TokenStorageInterface        $tokenStorage
-     * @param JobTemplateProviderInterface $jobTemplateProvider
      * @param JobParametersFactory         $jobParametersFactory
      * @param JobParametersValidator       $jobParametersValidator
      * @param string                       $jobType
@@ -128,7 +126,6 @@ class JobProfileController
         EntityManagerInterface $entityManager,
         JobInstanceRepository $jobInstanceRepository,
         TokenStorageInterface $tokenStorage,
-        JobTemplateProviderInterface $jobTemplateProvider,
         JobParametersFactory $jobParametersFactory,
         JobParametersValidator $jobParametersValidator,
         $jobType
@@ -149,7 +146,6 @@ class JobProfileController
         $this->validator = $validator;
         $this->entityManager = $entityManager;
         $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->jobTemplateProvider = $jobTemplateProvider;
         $this->jobParametersFactory = $jobParametersFactory;
         $this->jobParametersValidator = $jobParametersValidator;
         $this->tokenStorage = $tokenStorage;
@@ -192,7 +188,7 @@ class JobProfileController
         }
 
         return $this->templating->renderResponse(
-            $this->jobTemplateProvider->getCreateTemplate($jobInstance),
+            sprintf(self::DEFAULT_CREATE_TEMPLATE, ucfirst($jobInstance->getType())),
             [
                 'form' => $form->createView()
             ]
@@ -202,43 +198,18 @@ class JobProfileController
     /**
      * Show a job instance
      *
-     * @param string $code
+     * @param Request $request
+     * @param string  $code
      *
      * @return Response
      */
     public function showAction($code)
     {
-        try {
-            $jobInstance = $this->getJobInstance($code);
-        } catch (NotFoundHttpException $e) {
-            $this->request->getSession()->getFlashBag()->add('error', new Message($e->getMessage()));
-
-            return $this->redirectToIndexView();
-        }
-
-        $this->eventDispatcher->dispatch(JobProfileEvents::PRE_SHOW, new GenericEvent($jobInstance));
-
-        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance, ['disabled' => true]);
-        $uploadAllowed = false;
-        $uploadForm = null;
-
-        $rawParameters = $jobInstance->getRawParameters();
-        if (isset($rawParameters['uploadAllowed']) && true === $rawParameters['uploadAllowed']) {
-            $uploadAllowed = true;
-            $uploadForm = $this->createUploadForm()->createView();
-        }
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
-
         return $this->templating->renderResponse(
-            $this->jobTemplateProvider->getShowTemplate($jobInstance),
+            'PimEnrichBundle:JobInstance:form.html.twig',
             [
-                'form'             => $form->createView(),
-                'jobInstance'      => $jobInstance,
-                'job'              => $job,
-                'violations'       => $this->validateJobInstance($jobInstance, ['Default', 'Execution']),
-                'uploadViolations' => $this->validateJobInstance($jobInstance, ['Default', 'UploadExecution']),
-                'uploadAllowed'    => $uploadAllowed,
-                'uploadForm'       => $uploadForm,
+                'jobInstanceIdentifier' => $code,
+                'mode'                  => 'show'
             ]
         );
     }
@@ -246,17 +217,17 @@ class JobProfileController
     /**
      * Edit a job instance
      *
-     * @param Request $request
-     * @param string  $code
+     * @param string $code
      *
      * @return Response
      */
-    public function editAction(Request $request, $code)
+    public function editAction($code)
     {
         return $this->templating->renderResponse(
-            'PimEnrichBundle:JobProfile:edit.html.twig',
+            'PimEnrichBundle:JobInstance:form.html.twig',
             [
-                'jobInstanceIdentifier' => $code
+                'jobInstanceIdentifier' => $code,
+                'mode'                  => 'edit'
             ]
         );
     }

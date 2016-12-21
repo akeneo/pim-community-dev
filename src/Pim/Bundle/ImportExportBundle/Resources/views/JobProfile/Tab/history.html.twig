@@ -1,3 +1,0 @@
-<div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane  {{ viewElement.loop.first ? 'active' : '' }}">
-    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-</div>

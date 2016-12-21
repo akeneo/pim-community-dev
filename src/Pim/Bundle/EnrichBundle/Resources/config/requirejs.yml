@@ -273,8 +273,7 @@ config:
         pim/export/product/edit/content/data:                           pimenrich/js/export/product/edit/content/data
         pim/export/product/edit/content/data/add-filter:                pimenrich/js/export/product/edit/content/data/add-filter
         pim/export/product/edit/content/data/default-attribute-filters: pimenrich/js/export/product/edit/content/data/default-attribute-filters
-        pim/export/product/edit/content/data/help:                      pimenrich/js/export/product/edit/content/data/help
-        pim/export/product/edit/content/data/validation:                pimenrich/js/export/product/edit/content/data/validation
+        pim/export/common/edit/content/data/help:                       pimenrich/js/export/common/edit/content/data/help
         pim/export/product/edit/field/date-format:                      pimenrich/js/export/product/edit/field/date-format
         pim/export/product/edit/field/decimal-separator:                pimenrich/js/export/product/edit/field/decimal-separator
         pim/export/common/edit/properties:                              pimenrich/js/export/common/edit/properties
@@ -285,6 +284,7 @@ config:
         pim/export/common/edit/label:                                   pimenrich/js/export/common/edit/label
         pim/export/common/edit/meta:                                    pimenrich/js/export/common/edit/meta
         pim/export/common/edit/delete:                                  pimenrich/js/export/common/edit/delete
+        pim/export/common/edit/validation:                              pimenrich/js/export/common/edit/validation
 
         # Filters
         pim/filter/filter:                     pimenrich/js/filter/filter
@@ -470,7 +470,6 @@ config:
         pim/template/export/product/edit/content:                               pimenrich/templates/export/product/edit/content.html
         pim/template/export/product/edit/content/data:                          pimenrich/templates/export/product/edit/content/data.html
         pim/template/export/product/edit/content/data/help:                     pimenrich/templates/export/product/edit/content/data/help.html
-        pim/template/export/product/edit/content/data/validation:               pimenrich/templates/export/product/edit/content/data/validation.html
         pim/template/export/product/edit/content/structure:                     pimenrich/templates/export/product/edit/content/structure.html
         pim/template/export/product/edit/content/structure/scope:               pimenrich/templates/export/product/edit/content/structure/scope.html
         pim/template/export/product/edit/content/structure/locales:             pimenrich/templates/export/product/edit/content/structure/locales.html
@@ -483,6 +482,7 @@ config:
         pim/template/export/common/edit/field/select:                           pimenrich/templates/export/common/edit/field/select.html
         pim/template/export/common/edit/field/switch:                           pimenrich/templates/export/common/edit/field/switch.html
         pim/template/export/common/edit/meta:                                   pimenrich/templates/export/common/edit/meta.html
+        pim/template/export/common/edit/validation:                             pimenrich/templates/export/common/edit/validation.html
 
         # Filters
         pim/template/filter/filter:                     pimenrich/templates/filter/filter.html
