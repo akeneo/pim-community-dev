@@ -127,11 +127,6 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.with_media.title
             tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media.help
 
-    pim-product-export-edit-cache-invalidator:
-        module: pim/cache-invalidator
-        parent: pim-job-instance-xlsx-product-export-edit-form-content
-        position: 1000
-
     pim-job-instance-xlsx-product-export-edit-form-content-structure:
         module: pim/export/product/edit/content/structure
         parent: pim-job-instance-xlsx-product-export-edit-form-content
@@ -192,7 +187,6 @@ extensions:
         position: 900
         config:
             entity: pim_enrich.entity.variant_group.title
-
 
     pim-job-instance-xlsx-product-export-edit-form-content-structure-scope:
         module: pim/export/product/edit/content/structure/scope
