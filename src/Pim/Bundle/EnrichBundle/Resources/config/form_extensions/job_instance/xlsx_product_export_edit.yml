@@ -186,7 +186,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.variant_group.title
+            entity: pim_enrich.entity.job_instance.title
 
     pim-job-instance-xlsx-product-export-edit-form-content-structure-scope:
         module: pim/export/product/edit/content/structure/scope

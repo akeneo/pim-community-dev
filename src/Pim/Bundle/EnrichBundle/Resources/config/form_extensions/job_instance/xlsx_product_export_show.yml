@@ -154,18 +154,24 @@ extensions:
         parent: pim-job-instance-xlsx-product-export-show-form-content-structure
         targetZone: filters
         position: 90
+        config:
+            readOnly: true
 
     pim-job-instance-xlsx-product-export-show-form-content-structure-locales:
         module: pim/export/product/edit/content/structure/locales
         parent: pim-job-instance-xlsx-product-export-show-form-content-structure
         targetZone: filters
         position: 100
+        config:
+            readOnly: true
 
     pim-job-instance-xlsx-product-export-show-form-content-structure-attributes:
         module: pim/export/product/edit/content/structure/attributes
         parent: pim-job-instance-xlsx-product-export-show-form-content-structure
         targetZone: filters
         position: 110
+        config:
+            readOnly: true
 
     pim-job-instance-xlsx-product-export-show-form-content-data:
         module: pim/export/product/edit/content/data
@@ -188,6 +194,10 @@ extensions:
                 -
                     field: categories
                     view: akeneo-product-category-filter
+
+    pim-job-instance-xlsx-product-export-show-content-readonly:
+        module: pim/export/product/edit/content/readonly
+        parent: pim-job-instance-xlsx-product-export-show-content
 
     pim-job-instance-xlsx-product-export-show-form-content-default-attribute-filters:
         module: pim/export/product/edit/content/data/default-attribute-filters

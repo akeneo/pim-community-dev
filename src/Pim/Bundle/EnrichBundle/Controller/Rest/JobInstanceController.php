@@ -12,6 +12,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -68,6 +69,9 @@ class JobInstanceController
     /** @var RouterInterface */
     protected $router;
 
+    /** @var FormProviderInterface */
+    protected $formProvider;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
@@ -82,6 +86,7 @@ class JobInstanceController
      * @param JobLauncherInterface                  $simpleJobLauncher
      * @param TokenStorageInterface                 $tokenStorage
      * @param RouterInterface                       $router
+     * @param FormProviderInterface                 $formProvider
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -96,7 +101,8 @@ class JobInstanceController
         JobParametersFactory $jobParamsFactory,
         JobLauncherInterface $simpleJobLauncher,
         TokenStorageInterface $tokenStorage,
-        RouterInterface $router
+        RouterInterface $router,
+        FormProviderInterface $formProvider
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -111,6 +117,7 @@ class JobInstanceController
         $this->simpleJobLauncher     = $simpleJobLauncher;
         $this->tokenStorage          = $tokenStorage;
         $this->router                = $router;
+        $this->formProvider          = $formProvider;
     }
 
     /**
@@ -292,7 +299,7 @@ class JobInstanceController
 
         return array_merge($normalizedJobInstance, [
             'meta' => [
-                'form' => sprintf('pim-job-instance-%s', str_replace('_', '-', $jobInstance->getJobName())),
+                'form' => $this->formProvider->getForm($jobInstance),
                 'id'   => $jobInstance->getId()
             ]
         ]);

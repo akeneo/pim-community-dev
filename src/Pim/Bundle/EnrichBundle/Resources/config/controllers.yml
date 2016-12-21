@@ -502,3 +502,4 @@ services:
             - '@akeneo_batch.launcher.simple_job_launcher'
             - '@security.token_storage'
             - '@router'
+            - '@pim_enrich.provider.form.chained'

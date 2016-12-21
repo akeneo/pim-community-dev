@@ -88,8 +88,8 @@ define(
              * @returns {boolean}
              */
             isEditable: function () {
-                return undefined !== this.config.isEditable ?
-                    this.config.isEditable :
+                return undefined !== this.config.readOnly ?
+                    !this.config.readOnly :
                     true;
             },
 

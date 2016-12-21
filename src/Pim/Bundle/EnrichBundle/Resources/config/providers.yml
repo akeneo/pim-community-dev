@@ -9,6 +9,7 @@ parameters:
     pim_enrich.provider.empty_value.base.class:    Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider
     pim_enrich.provider.form.chained.class:        Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider
     pim_enrich.provider.form.product.class:        Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
+    pim_enrich.provider.form.job_instance.class:        Pim\Bundle\EnrichBundle\Provider\Form\JobInstanceFormProvider
     pim_enrich.provider.structure_version.class:   Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProvider
 
 services:
@@ -54,6 +55,39 @@ services:
 
     pim_enrich.provider.form.product:
         class: '%pim_enrich.provider.form.product.class%'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrich.provider.form.job_instance:
+        class: '%pim_enrich.provider.form.job_instance.class%'
+        arguments:
+            -
+                csv_association_type_export: pim-job-instance-csv-base-export
+                csv_attribute_export: pim-job-instance-csv-base-export
+                csv_attribute_group_export: pim-job-instance-csv-base-export
+                csv_attribute_option_export: pim-job-instance-csv-base-export
+                csv_category_export: pim-job-instance-csv-base-export
+                csv_channel_export: pim-job-instance-csv-base-export
+                csv_currency_export: pim-job-instance-csv-base-export
+                csv_family_export: pim-job-instance-csv-base-export
+                csv_group_export: pim-job-instance-csv-base-export
+                csv_group_type_export: pim-job-instance-csv-base-export
+                csv_locale_export: pim-job-instance-csv-base-export
+                csv_product_export: pim-job-instance-csv-product-export
+                csv_variant_group_export: pim-job-instance-csv-base-export
+                xlsx_association_type_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_group_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_option_export: pim-job-instance-xlsx-base-export
+                xlsx_category_export: pim-job-instance-xlsx-base-export
+                xlsx_channel_export: pim-job-instance-xlsx-base-export
+                xlsx_currency_export: pim-job-instance-xlsx-base-export
+                xlsx_family_export: pim-job-instance-xlsx-base-export
+                xlsx_group_export: pim-job-instance-xlsx-base-export
+                xlsx_group_type_export: pim-job-instance-xlsx-base-export
+                xlsx_locale_export: pim-job-instance-xlsx-base-export
+                xlsx_product_export: pim-job-instance-xlsx-product-export
+                xlsx_variant_group_export: pim-job-instance-xlsx-base-export
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 
