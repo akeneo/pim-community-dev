@@ -1,3 +1,12 @@
 config:
+    config:
+        pim/fetcher-registry:
+            fetchers:
+                user:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_user_user_rest_get
+
     paths:
         oro/init-user: pimuser/js/init-user

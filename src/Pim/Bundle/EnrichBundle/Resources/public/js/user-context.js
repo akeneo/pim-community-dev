@@ -4,7 +4,7 @@ define(
     ['backbone', 'routing'],
     function (Backbone, Routing) {
         var UserContext = Backbone.Model.extend({
-            url: Routing.generate('pim_user_user_rest_get')
+            url: Routing.generate('pim_user_user_rest_get_current')
         });
 
         var instance = new UserContext();
