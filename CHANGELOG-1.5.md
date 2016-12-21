@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6023: Fix asset creation impossible when assets with "similar" codes already exist
+
 # 1.5.15 (2016-12-13)
 
 ## Bug fixes
