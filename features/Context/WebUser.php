@@ -1283,6 +1283,33 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @When /^I add an empty attribute option$/
+     * @When /^I add the following attribute option:$/
+     */
+    public function iAddAnOptionRow(TableNode $table = null)
+    {
+        $this->getCurrentPage()->createOption();
+
+        if (null !== $table) {
+            $values = $table->getRowsHash();
+            $code = $values['Code'];
+            unset($values['Code']);
+
+            $this->getCurrentPage()->fillLastOption($code, $values);
+        }
+    }
+
+    /**
+     * @When /^I update the last attribute option$/
+     */
+    public function iUpdateTheLastAttributeOption()
+    {
+        $this->getCurrentPage()->saveLastOption();
+    }
+
+    /**
      * @param string $oldOptionName
      * @param string $newOptionName
      *
