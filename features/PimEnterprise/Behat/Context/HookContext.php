@@ -21,8 +21,6 @@ class HookContext extends BaseHookContext
      */
     public function purgeDatabase()
     {
-        parent::purgeDatabase();
-
         $purger = new DBALPurger(
             $this->getService('database_connection'),
             [
@@ -32,5 +30,7 @@ class HookContext extends BaseHookContext
         );
 
         $purger->purge();
+
+        parent::purgeDatabase();
     }
 }
