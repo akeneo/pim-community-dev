@@ -35,6 +35,33 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
+    function it_adds_a_filter_on_codes_by_default($qb, $objectIdResolver)
+    {
+        $qb->field('family')->shouldBeCalled()->willReturn($qb);
+        $qb->in([12, 56])->shouldBeCalled();
+        $objectIdResolver->getIdsFromCodes('family', ['foo', 'bar'])->willReturn([12, 56]);
+
+        $this->addFieldFilter('family', 'IN', ['foo', 'bar']);
+    }
+
+    function it_adds_a_filter_on_codes($qb, $objectIdResolver)
+    {
+        $qb->field('family')->shouldBeCalled()->willReturn($qb);
+        $qb->in([12, 56])->shouldBeCalled();
+        $objectIdResolver->getIdsFromCodes('family', ['foo', 'bar'])->willReturn([12, 56]);
+
+        $this->addFieldFilter('family.code', 'IN', ['foo', 'bar']);
+    }
+
+    function it_adds_a_filter_on_ids($qb, $objectIdResolver)
+    {
+        $qb->field('family')->shouldBeCalled()->willReturn($qb);
+        $qb->in([12, 56])->shouldBeCalled();
+        $objectIdResolver->getIdsFromCodes(Argument::cetera())->shouldNotBeCalled();
+
+        $this->addFieldFilter('family.id', 'IN', [12, 56]);
+    }
+
     function it_adds_an_in_filter_on_an_id_field_in_the_query($qb)
     {
         $qb->field('family')
@@ -129,10 +156,10 @@ class FamilyFilterSpec extends ObjectBehavior
             ->during('addFieldFilter', ['family', 'IN', 'not an array']);
     }
 
-    function it_throws_an_exception_if_content_of_array_is_not_integer_or_empty()
+    function it_throws_an_exception_if_content_of_array_is_not_string_or_empty()
     {
-        $this->shouldThrow(InvalidArgumentException::numericExpected('family', 'filter', 'family', gettype('WRONG')))
-            ->during('addFieldFilter', ['family', 'IN', [1, 2, 'WRONG']]);
+        $this->shouldThrow(InvalidArgumentException::stringExpected('family', 'filter', 'family', gettype(1)))
+            ->during('addFieldFilter', ['family', 'IN', ['a_code', 1]]);
     }
 
     function it_returns_supported_fields()
