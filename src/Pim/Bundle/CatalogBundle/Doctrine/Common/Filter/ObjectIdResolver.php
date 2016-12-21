@@ -12,6 +12,9 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.8. The filters will only handle identifiers. No more IDs.
+ * @deprecated Which means we won't have to convert IDs <=> codes.
  */
 class ObjectIdResolver implements ObjectIdResolverInterface
 {
