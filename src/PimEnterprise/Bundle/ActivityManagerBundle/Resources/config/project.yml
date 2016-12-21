@@ -101,3 +101,4 @@ services:
             - '@pimee_activity_manager.repository.project'
             - '@pimee_activity_manager.repository.project_completeness'
             - '@security.token_storage'
+            - '@security.authorization_checker'

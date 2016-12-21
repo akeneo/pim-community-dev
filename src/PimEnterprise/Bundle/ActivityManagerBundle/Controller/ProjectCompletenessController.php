@@ -17,6 +17,8 @@ use PimEnterprise\Component\ActivityManager\Voter\ProjectVoter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -32,17 +34,22 @@ class ProjectCompletenessController
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
     /**
      * ProjectCompletenessController constructor.
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $projectRepository,
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->projectRepository = $projectRepository;
         $this->projectCompletenessRepository = $projectCompletenessRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -59,15 +66,16 @@ class ProjectCompletenessController
             return new JsonResponse(null, 404);
         }
 
-        $this->denyAccessUnlessGranted([ProjectVoter::OWN, ProjectVoter::CONTRIBUTE], $project);
+        if (!$this->authorizationChecker->isGranted([ProjectVoter::OWN, ProjectVoter::CONTRIBUTE], $project)) {
+            throw new AccessDeniedException();
+        }
 
         $contributor = null;
-
-        if ($this->isGranted(ProjectVoter::CONTRIBUTE, $project)) {
+        if ($this->authorizationChecker->isGranted(ProjectVoter::CONTRIBUTE, $project)) {
             $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
         }
 
-        if ($this->isGranted(ProjectVoter::OWN, $project)) {
+        if ($this->authorizationChecker->isGranted(ProjectVoter::OWN, $project)) {
             $contributor = $request->get('contributor');
         }
 
