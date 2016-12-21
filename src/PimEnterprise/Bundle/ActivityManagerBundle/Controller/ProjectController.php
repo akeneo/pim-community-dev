@@ -12,13 +12,13 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
-use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -62,7 +62,7 @@ class ProjectController
     /** @var ProjectRepositoryInterface */
     protected $projectRepository;
 
-    /** @var UserRepositoryInterface */
+    /** @var SearchableRepositoryInterface */
     protected $userRepository;
 
     /** @var TokenStorageInterface */
@@ -79,7 +79,7 @@ class ProjectController
         ProjectCalculationJobLauncher $projectCalculationJobLauncher,
         NormalizerInterface $projectNormalizer,
         ProjectRepositoryInterface $projectRepository,
-        UserRepositoryInterface $userRepository,
+        SearchableRepositoryInterface $userRepository,
         TokenStorageInterface $tokenStorage
     ) {
         $this->filterConverter = $filterConverter;

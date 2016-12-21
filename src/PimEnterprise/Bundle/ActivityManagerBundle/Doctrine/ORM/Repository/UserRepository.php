@@ -16,6 +16,7 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;

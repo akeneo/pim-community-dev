@@ -11,7 +11,7 @@ activity_manager_project_search:
 
 activity_manager_project_get:
     path: /projects/{identifier}
-    defaults: { _controller: activity_manager.controller.project_controller:getAction, _format: json }
+    defaults: { _controller: pimee_activity_manager.controller.project_controller:getAction, _format: json }
     methods: [GET]
 
 activity_manager_project_contributors_search:

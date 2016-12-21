@@ -13,22 +13,22 @@ define(
              * Get completeness of a project in terms of a contributor or not.
              *
              * @param {String} projectCode
-             * @param {String} username
+             * @param {String} contributor
              *
              * @returns {Promise}
              */
-            getCompleteness: function (projectCode, username) {
-                if (_.isUndefined(username) || 'string' !== typeof username) {
-                    username = null;
+            getCompleteness: function (projectCode, contributor) {
+                if (_.isUndefined(contributor)) {
+                    contributor = null;
                 }
-                var deferred = $.Deferred();
-                var todo = Math.floor((Math.random() * 100) + 1);
-                var inProgress = Math.floor((Math.random() * 100) + 1);
-                var done = Math.floor((Math.random() * 100) + 1);
 
-                deferred.resolve({todo: todo, in_progress: inProgress, done: done});
-
-                return deferred;
+                return this.getJSON(
+                    this.options.urls.completeness,
+                    {
+                        projectCode: projectCode,
+                        contributor: contributor
+                    }
+                );
             }
         });
     }

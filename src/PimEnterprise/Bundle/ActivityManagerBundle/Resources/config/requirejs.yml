@@ -16,6 +16,7 @@ config:
                         urls:
                             list: activity_manager_project_search
                             get: activity_manager_project_get
+                            completeness: activity_manager_project_completeness_show
                 contributor:
                     module: pim/base-fetcher
                     options:
