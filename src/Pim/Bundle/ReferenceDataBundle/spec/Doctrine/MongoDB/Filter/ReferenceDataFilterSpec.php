@@ -39,8 +39,9 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_filter_with_ids_to_the_query(
+    function it_adds_a_filter_by_default_with_codes_to_the_query(
         $attrValidatorHelper,
+        $idResolver,
         Builder $qb,
         AttributeInterface $attribute,
         Expr $expr
@@ -53,6 +54,35 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->getCode()->willReturn('color');
+        $attribute->getReferenceDataName()->willReturn('ref_data_color');
+
+        $idResolver->resolve('ref_data_color', ['red', 'blue'])->willReturn([118, 270]);
+
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.color.id')->shouldBeCalled()->willReturn($expr);
+        $expr->in([118, 270])->shouldBeCalled()->willReturn($expr);
+        $qb->addAnd($expr)->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'IN', ['red', 'blue'], null, null, ['field' => 'color']);
+    }
+
+    function it_adds_a_filter_with_ids_to_the_query(
+        $attrValidatorHelper,
+        $idResolver,
+        Builder $qb,
+        AttributeInterface $attribute,
+        Expr $expr
+    ) {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->getId()->willReturn(42);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('reference_data_option');
+        $attribute->getCode()->willReturn('color');
+
+        $idResolver->resolve(Argument::cetera())->shouldNotBeCalled();
 
         $qb->expr()->willReturn($expr);
         $expr->field('normalizedData.color.id')->shouldBeCalled()->willReturn($expr);
