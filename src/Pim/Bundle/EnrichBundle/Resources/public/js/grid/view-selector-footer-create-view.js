@@ -41,8 +41,26 @@ define(
             template: _.template(template),
             tagName: 'span',
             className: 'action',
-            events: {
-                'click [data-action="prompt-create-view"]': 'promptCreateView'
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(this, 'grid:view-selector:trigger-create', this.onTriggerClick);
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * Method called when a click is triggered on an element of the footer create module.
+             * We check if this extension can handle the action by checking the extension code.
+             *
+             * @param {Object} data '{extensionCode: "the_extension_code"}'
+             */
+            onTriggerClick: function (data) {
+                if (data.extensionCode === this.code) {
+                    this.promptCreateView();
+                }
             },
 
             /**
@@ -65,7 +83,10 @@ define(
                 var placeholder = __('grid.view_selector.placeholder');
                 var modal = new Backbone.BootstrapModal({
                     title: __('grid.view_selector.choose_label'),
-                    content: '<input name="new-view-label" type="text" class="AknTextField" placeholder="' + placeholder + '">',
+                    content: '<input name="new-view-label" ' +
+                        'type="text" ' +
+                        'class="AknTextField" ' +
+                        'placeholder="' + placeholder + '">',
                     okText: __('OK'),
                     cancelText: __('Cancel')
                 });

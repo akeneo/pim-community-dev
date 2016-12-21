@@ -27,40 +27,64 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                var extensionsCount = 0;
-
-                _.each(this.extensions, function (extension) {
-                    if ('action-list' === extension.targetZone) {
-                        extensionsCount++;
-                    }
-                });
-                this.$el.html(this.template({
-                    isMultiple: 1 < extensionsCount,
-                    createButtonTitle: __('grid.view_selector.create')
-                }));
-
-                if (1 < extensionsCount) {
-                    this.$('[data-toggle="dropdown"]').dropdown();
-                }
-
-                this.renderExtensions(extensionsCount);
-
-                return this;
+            events: {
+                'click .create-button': 'triggerClick',
+                'click .create-action': 'triggerClick'
             },
 
             /**
              * {@inheritdoc}
              */
-            renderExtensions: function (extensionsCount) {
+            render: function () {
+                var hasMultipleExtensions = this.hasMultipleExtensions();
+
+                this.$el.html(this.template({
+                    isMultiple: hasMultipleExtensions,
+                    createButtonTitle: __('grid.view_selector.create')
+                }));
+
+                if (hasMultipleExtensions) {
+                    this.$('[data-toggle="dropdown"]').dropdown();
+                }
+
+                this.renderExtensions(hasMultipleExtensions);
+
+                return this;
+            },
+
+            /**
+             * Method called on a click on a create action in this footer create module.
+             * This method triggers an event to extensions with the extension code who should handle it.
+             *
+             * @param {Event} event
+             */
+            triggerClick: function (event) {
+                var extensionCode = event.currentTarget.getAttribute('data-extension-code');
+
+                if (null === extensionCode) {
+                    extensionCode = _.findWhere(this.extensions, {targetZone: 'action-list'}).code;
+                }
+
+                this.triggerExtensions('grid:view-selector:trigger-create', {extensionCode: extensionCode});
+            },
+
+            /**
+             * Return whether this module has several extensions in its 'action-list' dropzone.
+             *
+             * @returns {boolean}
+             */
+            hasMultipleExtensions: function () {
+                return _.where(this.extensions, {targetZone: 'action-list'}).length > 1;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            renderExtensions: function (hasMultipleExtensions) {
                 this.initializeDropZones();
 
                 _.each(this.extensions, function (extension) {
-                    if ('action-list' === extension.targetZone && 1 < extensionsCount) {
+                    if ('action-list' === extension.targetZone && hasMultipleExtensions) {
                         this.renderExtensionAsList(extension);
                     } else {
                         this.renderExtension(extension);
@@ -76,7 +100,10 @@ define(
              * @param {Object} extension
              */
             renderExtensionAsList: function (extension) {
-                this.getZone(extension.targetZone).appendChild($('<li class="create-action">').append(extension.el)[0]);
+                this.getZone(extension.targetZone).appendChild(
+                    $('<li class="create-action AknDropdown-menuLink" data-extension-code="'+extension.code+'">')
+                        .append(extension.el)[0]
+                );
 
                 extension.render();
             }
