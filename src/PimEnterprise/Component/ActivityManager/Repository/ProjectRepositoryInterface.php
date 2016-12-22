@@ -11,13 +11,19 @@
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-interface ProjectRepositoryInterface
+interface ProjectRepositoryInterface extends
+    ObjectRepository ,
+    IdentifiableObjectRepositoryInterface,
+    SearchableRepositoryInterface
 {
     /**
      * Add a product to a project.
