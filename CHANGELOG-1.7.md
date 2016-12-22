@@ -23,6 +23,7 @@
 
 ## BC breaks
 
+- Change the constructor of `Pim\Bundle\FilterBundle\Filter\Product\InGroupFilter` to add `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver`
 - Remove WebServiceBundle
 - Remove `wsse_secured` firewall in security.yml
 - Change the constructor of `Pim\Component\Connector\Writer\File\Yaml\Writer` to add `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`
