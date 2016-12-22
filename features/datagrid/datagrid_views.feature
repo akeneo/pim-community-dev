@@ -17,7 +17,7 @@ Feature: Datagrid views
     Given I am on the products page
     Then I should see the text "Default view"
 
-  @skip-activity-manager
+  @ce
   Scenario: Successfully create a new view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Sneakers"
@@ -38,7 +38,7 @@ Feature: Datagrid views
     Then I should be on the products page
     And I should see products black-boots, purple-sneakers and black-sneakers
 
-  @skip-activity-manager
+  @ce
   Scenario: Successfully update a view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Boots"
@@ -59,7 +59,7 @@ Feature: Datagrid views
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
-  @skip-activity-manager
+  @ce
   Scenario: Successfully delete a view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Boots"
@@ -88,7 +88,7 @@ Feature: Datagrid views
     When I am on the attributes page
     Then the page size should be 50
 
-  @skip-activity-manager
+  @ce
   Scenario: Successfully choose my default view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Sneakers"
@@ -118,7 +118,7 @@ Feature: Datagrid views
     When I press the "Reset" button
     Then I should see products black-boots, purple-sneakers and black-sneakers
 
-  @skip-activity-manager
+  @ce
   Scenario: Successfully remove my default view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Sneakers"
