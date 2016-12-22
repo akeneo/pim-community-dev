@@ -65,7 +65,7 @@ define(
                 var placeholder = __('grid.view_selector.placeholder');
                 var modal = new Backbone.BootstrapModal({
                     title: __('grid.view_selector.choose_label'),
-                    content: '<input name="new-view-label" type="text" placeholder="' + placeholder + '">',
+                    content: '<input name="new-view-label" type="text" class="AknTextField" placeholder="' + placeholder + '">',
                     okText: __('OK'),
                     cancelText: __('Cancel')
                 });

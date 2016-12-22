@@ -26,7 +26,7 @@ extensions:
         module: pim/grid/view-selector/current
 
     pim-grid-view-selector-line-remove:
-        module: pim/grid/view-selector/line/remove
+        module: pim/grid/view-selector/line-remove
         parent: pim-grid-view-selector-line
         targetZone: overlay
         position: 100
