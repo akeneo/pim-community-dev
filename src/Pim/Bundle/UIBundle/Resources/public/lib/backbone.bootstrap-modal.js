@@ -34,16 +34,16 @@
     <div class="AknButtonList AknButtonList--right modal-footer">\
       <% if (allowCancel) { %>\
         <% if (cancelText) { %>\
-          <a href="#" class="AknButtonList-item AknButton AknButton--withIcon AknButton--grey cancel icons-holder-text">\
+          <button class="AknButtonList-item AknButton AknButton--withIcon AknButton--grey cancel icons-holder-text">\
             <i class="AknButton-icon icon-chevron-left"></i>\
             {{cancelText}}\
-          </a>\
+          </button>\
         <% } %>\
       <% } %>\
-      <a href="#" class="AknButtonList-item AknButton AknButton--withIcon AknButton--apply ok icons-holder-text">\
+      <button class="AknButtonList-item AknButton AknButton--withIcon AknButton--apply ok icons-holder-text">\
         <i class="AknButton-icon icon-ok"></i>\
         {{okText}}\
-      </a>\
+      </button>\
     </div>\
   ');
 
