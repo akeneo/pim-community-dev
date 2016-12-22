@@ -172,7 +172,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         if (null !== $group->getId()) {
             $pqb = $this->productQueryBuilderFactory->create();
-            $pqb->addFilter('groups.code', Operators::IN_LIST, [$group->getCode()]);
+            $pqb->addFilter('groups', Operators::IN_LIST, [$group->getCode()]);
             $oldProducts = $pqb->execute();
             foreach ($oldProducts as $oldProduct) {
                 if (!in_array($oldProduct->getId(), $productToUpdateIds)) {

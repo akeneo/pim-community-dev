@@ -24,7 +24,7 @@ class GroupsFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilter($datasource, 'groups.code', 'IN', ['foo', 'bar'])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'groups', 'IN', ['foo', 'bar'])->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => ['foo', 'bar']]);
     }

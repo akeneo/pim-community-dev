@@ -62,7 +62,7 @@ class InGroupFilter extends BooleanFilter
         $groupCodes = $this->codeResolver->getCodesFromIds('group', [$groupId]);
 
         $operator = ($data['value'] === BooleanFilterType::TYPE_YES) ? 'IN' : 'NOT IN';
-        $this->util->applyFilter($ds, 'groups.code', $operator, $groupCodes);
+        $this->util->applyFilter($ds, 'groups', $operator, $groupCodes);
 
         return true;
     }

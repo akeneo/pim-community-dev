@@ -131,7 +131,7 @@ class GroupSaverSpec extends ObjectBehavior
         );
 
         $pqbFactory->create()->willReturn($pqb);
-        $pqb->addFilter('groups.code', 'IN', ['foo'])->shouldBeCalled();
+        $pqb->addFilter('groups', 'IN', ['foo'])->shouldBeCalled();
         $pqb->execute()->willReturn([$removedProduct]);
 
         $group->getProducts()->willReturn(new ArrayCollection([]));

@@ -60,7 +60,7 @@ class GroupsFilterSpec extends ObjectBehavior
 
         $objectIdResolver->getIdsFromCodes('group', ['foo', 'bar'])->willReturn([1, 2]);
 
-        $this->addFieldFilter('groups.code', 'IN', ['foo', 'bar']);
+        $this->addFieldFilter('groups', 'IN', ['foo', 'bar']);
     }
 
     function it_adds_a_filter_on_ids($qb, $objectIdResolver, Expr $expr)

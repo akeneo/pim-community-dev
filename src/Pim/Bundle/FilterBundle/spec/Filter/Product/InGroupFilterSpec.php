@@ -34,7 +34,7 @@ class InGroupFilterSpec extends ObjectBehavior
         $extractor->getDatagridParameter('currentGroup')->willReturn(12);
         $codeResolver->getCodesFromIds('group', [12])->willReturn(['foo']);
 
-        $utility->applyFilter($datasource, 'groups.code', 'IN', ['foo'])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'groups', 'IN', ['foo'])->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 1]);
     }
