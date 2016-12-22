@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Job;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\JobInstanceRepository;
+use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
@@ -29,14 +29,22 @@ class ProjectCalculationJobLauncher
     /** @var JobInstanceRepository */
     protected $jobInstanceRepository;
 
+    /** @var string */
+    protected $projectCalculationJobName;
+
     /**
      * @param JobLauncherInterface  $simpleJobLauncher
      * @param JobInstanceRepository $jobInstanceRepository
+     * @param string        $projectCalculationJobName
      */
-    public function __construct(JobLauncherInterface $simpleJobLauncher, JobInstanceRepository $jobInstanceRepository)
-    {
+    public function __construct(
+        JobLauncherInterface $simpleJobLauncher,
+        JobInstanceRepository $jobInstanceRepository,
+        $projectCalculationJobName
+    ) {
         $this->simpleJobLauncher = $simpleJobLauncher;
         $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->projectCalculationJobName = $projectCalculationJobName;
     }
 
     /**
@@ -44,7 +52,7 @@ class ProjectCalculationJobLauncher
      */
     public function launch(UserInterface $user, ProjectInterface $project)
     {
-        $jobInstance = $this->jobInstanceRepository->getProjectCalculation();
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->projectCalculationJobName);
 
         $this->simpleJobLauncher->launch($jobInstance, $user, ['project_code' => $project->getCode()]);
     }

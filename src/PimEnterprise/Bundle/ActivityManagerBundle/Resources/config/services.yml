@@ -39,13 +39,6 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '%pimee_security.entity.attribute_group_access.class%'
 
-    pimee_activity_manager.repository.job_instance:
-        class: '%pimee_activity_manager.repository.job_instance.class%'
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '%akeneo_batch.entity.job_instance.class%'
-            - '%pimee_activity_manager.project_calculation.job_name%'
-
     pimee_activity_manager.repository.attribute:
         class: '%pimee_activity_manager.repository.attribute.class%'
         arguments:

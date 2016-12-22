@@ -2,8 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Job;
 
-use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\JobInstanceRepository;
-use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobLauncherInterface;
+use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -14,7 +13,7 @@ class ProjectCalculationJobLauncherSpec extends ObjectBehavior
 {
     function let(JobLauncherInterface $simpleJobLauncher, JobInstanceRepository $jobInstanceRepository)
     {
-        $this->beConstructedWith($simpleJobLauncher, $jobInstanceRepository);
+        $this->beConstructedWith($simpleJobLauncher, $jobInstanceRepository, 'job_name');
     }
 
     function it_launches_a_project_calculation_job(
@@ -24,7 +23,7 @@ class ProjectCalculationJobLauncherSpec extends ObjectBehavior
         ProjectInterface $project,
         JobInstance $jobInstance
     ) {
-        $jobInstanceRepository->getProjectCalculation()->willReturn($jobInstance);
+        $jobInstanceRepository->findOneByIdentifier('job_name')->willReturn($jobInstance);
 
         $project->getCode()->willReturn('project_code');
 
