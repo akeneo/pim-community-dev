@@ -9,7 +9,7 @@
   background-color: white;
   border-radius: 2px;
   font-weight: normal;
-  padding: 0 10px !important;
+  padding: 0 10px !important; // To override another !important in the multiselect lib
   vertical-align: middle;
   display: inline-block;
   cursor: pointer;
@@ -22,7 +22,7 @@
 
   padding: 0;
   max-width: 235px;
-  min-width: @minWidth !important;
+  min-width: @minWidth !important; // Ui multiselect has a min-width: auto !important
   border: 1px solid @AknBorderColor;
   background: white;
 

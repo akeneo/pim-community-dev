@@ -125,8 +125,6 @@ define(
                         scope: event.currentTarget.dataset.channel
                     }
                 );
-
-                return false;
             },
 
             /**
