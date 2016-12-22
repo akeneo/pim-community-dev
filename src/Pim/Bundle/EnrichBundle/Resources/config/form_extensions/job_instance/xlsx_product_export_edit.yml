@@ -14,7 +14,7 @@ extensions:
         position: 100
 
     pim-job-instance-xlsx-product-export-edit-form-properties:
-        module: pim/export/common/edit/properties
+        module: pim/job/common/edit/properties
         parent: pim-job-instance-xlsx-product-export-edit-form-form-tabs
         aclResourceId: pim_importexport_export_profile_property_edit
         targetZone: container
@@ -23,7 +23,7 @@ extensions:
             tabTitle: pim_enrich.form.job_instance.tab.properties.title
 
     pim-job-instance-xlsx-product-export-edit-form-content:
-        module: pim/export/product/edit/content
+        module: pim/job/product/edit/content
         parent: pim-job-instance-xlsx-product-export-edit-form-form-tabs
         aclResourceId: pim_importexport_export_profile_content_edit
         targetZone: container
@@ -42,7 +42,7 @@ extensions:
             title: pim_enrich.form.job_instance.tab.history.title
 
     pim-job-instance-xlsx-product-export-edit-form-properties-code:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-export-edit-form-properties
         position: 100
         targetZone: properties
@@ -52,7 +52,7 @@ extensions:
             readOnly: true
 
     pim-job-instance-xlsx-product-export-edit-form-properties-label:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-export-edit-form-properties
         position: 110
         targetZone: properties
@@ -62,7 +62,7 @@ extensions:
             readOnly: false
 
     pim-job-instance-csv-product-export-edit-form-properties-decimal-separator:
-        module: pim/export/product/edit/field/decimal-separator
+        module: pim/job/product/edit/field/decimal-separator
         parent: pim-job-instance-csv-product-export-edit-form-properties
         position: 100
         targetZone: global-settings
@@ -73,7 +73,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.decimal_separator.help
 
     pim-job-instance-xlsx-product-export-edit-form-properties-date-format:
-        module: pim/export/product/edit/field/date-format
+        module: pim/job/product/edit/field/date-format
         parent: pim-job-instance-xlsx-product-export-edit-form-properties
         position: 110
         targetZone: global-settings
@@ -84,7 +84,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.date_format.help
 
     pim-job-instance-xlsx-product-export-edit-form-properties-file-path:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-export-edit-form-properties
         position: 120
         targetZone: global-settings
@@ -95,7 +95,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.file_path.help
 
     pim-job-instance-xlsx-product-export-edit-form-properties-lines-per-file:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-export-edit-form-properties
         position: 130
         targetZone: global-settings
@@ -106,7 +106,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.lines_per_file.help
 
     pim-job-instance-xlsx-product-export-edit-form-properties-with-header:
-        module: pim/export/common/edit/field/switch
+        module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-product-export-edit-form-properties
         position: 140
         targetZone: global-settings
@@ -117,7 +117,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.with_header.help
 
     pim-job-instance-xlsx-product-export-edit-form-properties-with-media:
-        module: pim/export/common/edit/field/switch
+        module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-product-export-edit-form-properties
         position: 150
         targetZone: global-settings
@@ -128,19 +128,19 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media.help
 
     pim-job-instance-xlsx-product-export-edit-form-content-structure:
-        module: pim/export/product/edit/content/structure
+        module: pim/job/product/edit/content/structure
         parent: pim-job-instance-xlsx-product-export-edit-form-content
         targetZone: structure-filters
         position: 100
 
     pim-job-instance-xlsx-product-export-edit-form-label:
-        module: pim/export/common/edit/label
+        module: pim/job/common/edit/label
         parent: pim-job-instance-xlsx-product-export-edit-form
         targetZone: title
         position: 100
 
     pim-job-instance-xlsx-product-export-edit-form-meta:
-        module: pim/export/common/edit/meta
+        module: pim/job/common/edit/meta
         parent: pim-job-instance-xlsx-product-export-edit-form
         targetZone: meta
         position: 100
@@ -155,7 +155,7 @@ extensions:
             backUrl: pim_importexport_export_profile_index
 
     pim-job-instance-xlsx-product-export-edit-form-delete:
-        module: pim/export/common/edit/delete
+        module: pim/job/common/edit/delete
         parent: pim-job-instance-xlsx-product-export-edit-form
         targetZone: buttons
         aclResourceId: pim_importexport_export_profile_remove
@@ -189,25 +189,25 @@ extensions:
             entity: pim_enrich.entity.job_instance.title
 
     pim-job-instance-xlsx-product-export-edit-form-content-structure-scope:
-        module: pim/export/product/edit/content/structure/scope
+        module: pim/job/product/edit/content/structure/scope
         parent: pim-job-instance-xlsx-product-export-edit-form-content-structure
         targetZone: filters
         position: 90
 
     pim-job-instance-xlsx-product-export-edit-form-content-structure-locales:
-        module: pim/export/product/edit/content/structure/locales
+        module: pim/job/product/edit/content/structure/locales
         parent: pim-job-instance-xlsx-product-export-edit-form-content-structure
         targetZone: filters
         position: 100
 
     pim-job-instance-xlsx-product-export-edit-form-content-structure-attributes:
-        module: pim/export/product/edit/content/structure/attributes
+        module: pim/job/product/edit/content/structure/attributes
         parent: pim-job-instance-xlsx-product-export-edit-form-content-structure
         targetZone: filters
         position: 110
 
     pim-job-instance-xlsx-product-export-edit-form-content-data:
-        module: pim/export/product/edit/content/data
+        module: pim/job/product/edit/content/data
         parent: pim-job-instance-xlsx-product-export-edit-form-content
         targetZone: data-filters
         config:
@@ -229,20 +229,20 @@ extensions:
                     view: akeneo-product-category-filter
 
     pim-job-instance-xlsx-product-export-edit-form-content-default-attribute-filters:
-        module: pim/export/product/edit/content/data/default-attribute-filters
+        module: pim/job/product/edit/content/data/default-attribute-filters
         parent: pim-job-instance-xlsx-product-export-edit-form-content-data
         config:
             types: [pim_catalog_identifier]
 
     pim-job-instance-xlsx-product-export-edit-form-content-data-help:
-        module: pim/export/product/edit/content/data/help
+        module: pim/job/product/edit/content/data/help
         parent: pim-job-instance-xlsx-product-export-edit-form-content-data
 
     pim-job-instance-xlsx-product-export-edit-form-content-data-add-filter:
-        module: pim/export/product/edit/content/data/add-filter
+        module: pim/job/product/edit/content/data/add-filter
         parent: pim-job-instance-xlsx-product-export-edit-form-content-data
         targetZone: headings
 
     pim-job-instance-xlsx-product-export-edit-form-validation:
-        module: pim/export/common/edit/validation
+        module: pim/job/common/edit/validation
         parent: pim-job-instance-xlsx-product-export-edit-form

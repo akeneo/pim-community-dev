@@ -17,7 +17,7 @@ define(
         'oro/loading-mask',
         'pim/fetcher-registry',
         'pim/user-context',
-        'pim/export/product/edit/content/structure/attributes-selector'
+        'pim/job/product/edit/content/structure/attributes-selector'
     ],
     function (
         $,

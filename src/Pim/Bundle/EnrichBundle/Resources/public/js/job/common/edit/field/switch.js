@@ -2,9 +2,9 @@
 
 define([
     'underscore',
-    'pim/export/common/edit/field/field',
-    'text!pim/template/export/common/edit/field/select',
-    'jquery.select2'
+    'pim/job/common/edit/field/field',
+    'text!pim/template/export/common/edit/field/switch',
+    'bootstrap.bootstrapswitch'
 ], function (
     _,
     BaseField,
@@ -13,17 +13,17 @@ define([
     return BaseField.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {
-            'change select': 'updateState'
+            'change input': 'updateState'
         },
 
         render: function () {
             BaseField.prototype.render.apply(this, arguments);
 
-            this.$('.select2').select2({});
+            this.$('.switch').bootstrapSwitch();
         },
 
         getFieldValue: function () {
-            return this.$('select').val();
+            return this.$('input[type="checkbox"]').prop('checked');
         }
     });
 });

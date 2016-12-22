@@ -14,7 +14,7 @@ extensions:
         position: 100
 
     pim-job-instance-xlsx-base-export-edit-properties:
-        module: pim/export/common/edit/properties
+        module: pim/job/common/edit/properties
         parent: pim-job-instance-xlsx-base-export-edit-tabs
         aclResourceId: pim_importexport_export_profile_property_edit
         targetZone: container
@@ -33,7 +33,7 @@ extensions:
             title: pim_enrich.form.job_instance.tab.history.title
 
     pim-job-instance-xlsx-base-export-edit-properties-code:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-edit-properties
         position: 100
         targetZone: properties
@@ -43,7 +43,7 @@ extensions:
             readOnly: true
 
     pim-job-instance-xlsx-base-export-edit-properties-label:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-edit-properties
         position: 110
         targetZone: properties
@@ -53,7 +53,7 @@ extensions:
             readOnly: false
 
     pim-job-instance-xlsx-base-export-edit-properties-file-path:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-edit-properties
         position: 120
         targetZone: global-settings
@@ -64,7 +64,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.filePath.help
 
     pim-job-instance-xlsx-base-export-edit-properties-delimiter:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-edit-properties
         position: 130
         targetZone: global-settings
@@ -75,7 +75,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.delimiter.help
 
     pim-job-instance-xlsx-base-export-edit-properties-lines-per-file:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-edit-properties
         position: 140
         targetZone: global-settings
@@ -87,7 +87,7 @@ extensions:
 
 
     pim-job-instance-xlsx-base-export-edit-properties-enclosure:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-edit-properties
         position: 150
         targetZone: global-settings
@@ -98,7 +98,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.enclosure.help
 
     pim-job-instance-xlsx-base-export-edit-properties-with-header:
-        module: pim/export/common/edit/field/switch
+        module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-base-export-edit-properties
         position: 160
         targetZone: global-settings
@@ -114,13 +114,13 @@ extensions:
         position: 1000
 
     pim-job-instance-xlsx-base-export-edit-label:
-        module: pim/export/common/edit/label
+        module: pim/job/common/edit/label
         parent: pim-job-instance-xlsx-base-export-edit
         targetZone: title
         position: 100
 
     pim-job-instance-xlsx-base-export-edit-meta:
-        module: pim/export/common/edit/meta
+        module: pim/job/common/edit/meta
         parent: pim-job-instance-xlsx-base-export-edit
         targetZone: meta
         position: 100
@@ -135,7 +135,7 @@ extensions:
             backUrl: pim_importexport_export_profile_index
 
     pim-job-instance-xlsx-base-export-edit-delete:
-        module: pim/export/common/edit/delete
+        module: pim/job/common/edit/delete
         parent: pim-job-instance-xlsx-base-export-edit
         targetZone: buttons
         aclResourceId: pim_importexport_export_profile_remove
@@ -169,5 +169,5 @@ extensions:
             entity: pim_enrich.entity.job_instance.title
 
     pim-job-instance-xlsx-base-export-edit-validation:
-        module: pim/export/common/edit/validation
+        module: pim/job/common/edit/validation
         parent: pim-job-instance-xlsx-base-export-edit

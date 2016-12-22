@@ -4,7 +4,7 @@ define([
     'underscore',
     'oro/translator',
     'pim/fetcher-registry',
-    'pim/export/common/edit/field/select'
+    'pim/job/common/edit/field/select'
 ], function (
     _,
     __,
@@ -20,7 +20,7 @@ define([
                 FetcherRegistry.getFetcher('formats').fetchAll(),
                 SelectField.prototype.configure.apply(this, arguments)
             ).then(function (formats) {
-                this.config.options = formats.date_formats;
+                this.config.options = formats.decimal_separators;
             }.bind(this));
         }
     });

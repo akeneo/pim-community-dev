@@ -9,7 +9,7 @@ extensions:
         position: 100
 
     pim-job-instance-xlsx-base-export-show-properties:
-        module: pim/export/common/edit/properties
+        module: pim/job/common/edit/properties
         parent: pim-job-instance-xlsx-base-export-show-tabs
         aclResourceId: pim_importexport_export_profile_property_edit
         targetZone: container
@@ -28,7 +28,7 @@ extensions:
             title: pim_enrich.form.job_instance.tab.history.title
 
     pim-job-instance-xlsx-base-export-show-properties-code:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-show-properties
         position: 100
         targetZone: properties
@@ -38,7 +38,7 @@ extensions:
             readOnly: true
 
     pim-job-instance-xlsx-base-export-show-properties-label:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-show-properties
         position: 110
         targetZone: properties
@@ -48,7 +48,7 @@ extensions:
             readOnly: true
 
     pim-job-instance-xlsx-base-export-show-properties-file-path:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-show-properties
         position: 120
         targetZone: global-settings
@@ -59,7 +59,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.filePath.help
 
     pim-job-instance-xlsx-base-export-show-properties-delimiter:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-show-properties
         position: 130
         targetZone: global-settings
@@ -70,7 +70,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.delimiter.help
 
     pim-job-instance-xlsx-base-export-show-properties-lines-per-file:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-export-show-form-properties
         position: 140
         targetZone: global-settings
@@ -81,7 +81,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.lines_per_file.help
 
     pim-job-instance-xlsx-base-export-show-properties-enclosure:
-        module: pim/export/common/edit/field/text
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-show-properties
         position: 150
         targetZone: global-settings
@@ -92,7 +92,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.enclosure.help
 
     pim-job-instance-xlsx-base-export-show-properties-with-header:
-        module: pim/export/common/edit/field/switch
+        module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-base-export-show-properties
         position: 160
         targetZone: global-settings
@@ -103,13 +103,13 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.withHeader.help
 
     pim-job-instance-xlsx-base-export-show-label:
-        module: pim/export/common/edit/label
+        module: pim/job/common/edit/label
         parent: pim-job-instance-xlsx-base-export-show
         targetZone: title
         position: 100
 
     pim-job-instance-xlsx-base-export-show-meta:
-        module: pim/export/common/edit/meta
+        module: pim/job/common/edit/meta
         parent: pim-job-instance-xlsx-base-export-show
         targetZone: meta
         position: 100
@@ -136,7 +136,7 @@ extensions:
                 name: code
 
     pim-job-instance-xlsx-base-export-show-launch:
-        module: pim/export/common/edit/launch
+        module: pim/job/common/edit/launch
         parent: pim-job-instance-xlsx-base-export-show
         targetZone: buttons
         position: 110

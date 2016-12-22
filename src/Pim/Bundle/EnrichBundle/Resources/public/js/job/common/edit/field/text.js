@@ -2,7 +2,7 @@
 
 define([
     'underscore',
-    'pim/export/common/edit/field/field',
+    'pim/job/common/edit/field/field',
     'text!pim/template/export/common/edit/field/text'
 ], function (
     _,
