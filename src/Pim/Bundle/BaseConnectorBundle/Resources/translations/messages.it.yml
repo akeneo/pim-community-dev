@@ -18,6 +18,9 @@ pim_base_connector:
     csv_group_export:
       title: Esportazione gruppi in CSV
       export.title: Esportazione gruppi
+    csv_variant_group_export:
+      title: Esportazione in CSV dei gruppi di varianti
+      export.title: Esportazione gruppo varianti
     csv_product_import:
       title: Importazione prodotti in CSV
       import.title: Importazione prodotti
@@ -50,6 +53,7 @@ pim_base_connector:
     product_processor.title: Creazione prodotti
     category_processor.title: Creazione categorie
     association_processor.title: Creazione associazioni
+    product_association_processor.title: Creazione associazioni
     group_processor.title: Creazione gruppi
     attribute_processor.title: Creazione attributi
     attribute_option_processor.title: Creazione opzioni attributi
@@ -71,7 +75,7 @@ pim_base_connector:
       help: Un carattere utilizzato per impostare il contenitore del campo
     withHeader:
       label: Con intestazione
-      help: "Stampare o no la l'intestazione della colonna"
+      help: Stampare o no la l'intestazione della colonna
     filePath:
       label: Percorso del file
       help: Dove scrivere il file generato nel file System
@@ -93,6 +97,8 @@ pim_base_connector:
       help: Nome della colonna gruppi
     filePath:
       label: File
+    yamlFilePath:
+      label: File
     uploadAllowed:
       label: Consentire il caricamento di file
       help: Consentire o no il caricamento diretto di file
@@ -101,7 +107,7 @@ pim_base_connector:
       help: Un carattere utilizzato per impostare il delimitatore di campo
     enclosure:
       label: Contenitore
-      help: Un carattere utilizzato per impostare il delimitatore del campo
+      help: Un carattere utilizzato per impostare il contenitore del campo
     escape:
       label: Escape
       help: Un carattere di escape utilizzato
