@@ -6,6 +6,7 @@
 - #5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
 - #5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
 - #5337: Fixed Widget Registry. Priority is now taken in account.
+- TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from the flatToStandard product converter.
 
 ## Functional improvements
 
