@@ -60,7 +60,7 @@ class FamilyFilterSpec extends ObjectBehavior
 
         $objectIdResolver->getIdsFromCodes('family', ['foo', 'bar'])->willReturn([1, 2]);
 
-        $this->addFieldFilter('family.code', 'IN', ['foo', 'bar']);
+        $this->addFieldFilter('family', 'IN', ['foo', 'bar']);
     }
 
     function it_adds_a_filter_on_ids($qb, $objectIdResolver, Expr $expr)

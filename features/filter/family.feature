@@ -14,7 +14,7 @@ Feature: Filter on family
       | BOOTRXS |          |
     Then I should get the following results for the given filters:
       | filter                                                                            | result                            |
-      | [{"field":"family.code", "operator":"IN",        "value": ["boots", "heels"]}]    | ["BOOTBXS", "HEELXXL"]            |
-      | [{"field":"family.code", "operator":"NOT IN",    "value": ["heels", "sneakers"]}] | ["BOOTBXS", "BOOTBL", "BOOTRXS"]  |
-      | [{"field":"family.code", "operator":"EMPTY",     "value": null}]                  | ["BOOTBL", "BOOTRXS"]             |
-      | [{"field":"family.code", "operator":"NOT EMPTY", "value": null}]                  | ["BOOTBXS", "HEELXXL", "SNEAKXS"] |
+      | [{"field":"family", "operator":"IN",        "value": ["boots", "heels"]}]    | ["BOOTBXS", "HEELXXL"]            |
+      | [{"field":"family", "operator":"NOT IN",    "value": ["heels", "sneakers"]}] | ["BOOTBXS", "BOOTBL", "BOOTRXS"]  |
+      | [{"field":"family", "operator":"EMPTY",     "value": null}]                  | ["BOOTBL", "BOOTRXS"]             |
+      | [{"field":"family", "operator":"NOT EMPTY", "value": null}]                  | ["BOOTBXS", "HEELXXL", "SNEAKXS"] |

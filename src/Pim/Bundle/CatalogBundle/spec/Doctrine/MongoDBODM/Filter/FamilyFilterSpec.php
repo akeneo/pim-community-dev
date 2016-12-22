@@ -17,7 +17,7 @@ class FamilyFilterSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             $objectIdResolver,
-            ['family.id', 'family.code'],
+            ['family.id', 'family'],
             ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         );
         $this->setQueryBuilder($qb);
@@ -83,7 +83,7 @@ class FamilyFilterSpec extends ObjectBehavior
             ->willReturn($qb);
         $qb->in([12, 13])->shouldBeCalled();
 
-        $this->addFieldFilter('family.code', 'IN', ['shoes', 'ties']);
+        $this->addFieldFilter('family', 'IN', ['shoes', 'ties']);
     }
 
     function it_adds_a_not_in_filter_on_an_id_field_in_the_query($qb)
@@ -107,7 +107,7 @@ class FamilyFilterSpec extends ObjectBehavior
             ->willReturn($qb);
         $qb->notIn([12, 13])->shouldBeCalled();
 
-        $this->addFieldFilter('family.code', 'NOT IN', ['shoes', 'ties']);
+        $this->addFieldFilter('family', 'NOT IN', ['shoes', 'ties']);
     }
 
     function it_adds_an_empty_filter_on_an_id_field_in_the_query($qb)
@@ -127,7 +127,7 @@ class FamilyFilterSpec extends ObjectBehavior
             ->willReturn($qb);
         $qb->exists(false)->shouldBeCalled();
 
-        $this->addFieldFilter('family.code', 'EMPTY', null);
+        $this->addFieldFilter('family', 'EMPTY', null);
     }
 
     function it_adds_a_not_empty_filter_on_an_id_field_in_the_query($qb)
@@ -147,7 +147,7 @@ class FamilyFilterSpec extends ObjectBehavior
             ->willReturn($qb);
         $qb->exists(true)->shouldBeCalled();
 
-        $this->addFieldFilter('family.code', 'NOT EMPTY', null);
+        $this->addFieldFilter('family', 'NOT EMPTY', null);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array()
@@ -164,6 +164,6 @@ class FamilyFilterSpec extends ObjectBehavior
 
     function it_returns_supported_fields()
     {
-        $this->getFields()->shouldReturn(['family.id', 'family.code']);
+        $this->getFields()->shouldReturn(['family.id', 'family']);
     }
 }
