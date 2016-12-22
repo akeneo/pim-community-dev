@@ -10,9 +10,13 @@
   }
 
   &-boxContainer {
-    flex-basis: 32.5%;
+    flex-basis: 33%;
     text-align: center;
     font-size: @AknFontSizeBig;
+  }
+
+  &-boxContainer + &-boxContainer {
+    margin-left: 10px;
   }
 
   &-boxLabel {
