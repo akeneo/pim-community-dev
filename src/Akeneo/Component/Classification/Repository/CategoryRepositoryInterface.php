@@ -69,6 +69,16 @@ interface CategoryRepositoryInterface extends
     public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false);
 
     /**
+     * Shortcut to get all children codes
+     *
+     * @param CategoryInterface $parent      the parent
+     * @param bool              $includeNode true to include actual node in query result
+     *
+     * @return string[]
+     */
+    public function getAllChildrenCodes(CategoryInterface $parent, $includeNode = false);
+
+    /**
      * Get children from a parent id
      *
      * @param int $parentId

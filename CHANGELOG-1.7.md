@@ -23,6 +23,7 @@
 
 ## BC breaks
 
+- Add `getAllChildrenCodes` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface` 
 - Change the constructor of `Pim\Bundle\FilterBundle\Filter\Product\InGroupFilter` to add `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver`
 - Remove WebServiceBundle
 - Remove `wsse_secured` firewall in security.yml
