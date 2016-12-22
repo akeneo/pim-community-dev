@@ -17,10 +17,16 @@
                         $('.AknVerticalNavtab').find('.AknVerticalNavtab-link').each(function() {
                             var $target = $($(this).attr('href'));
                             var hasGranted = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.granted').length;
-                            var hasMissing = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.non-granted').length;
-                            var iconClass = hasMissing ? (hasGranted ? 'circle' : 'remove') : 'ok';
+                            var hasNonGranted = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.non-granted').length;
+                            var iconClass = 'icon-circle';
+                            if (hasGranted && !hasNonGranted) {
+                                iconClass = 'AknAcl-icon--granted icon-ok';
+                            }
+                            if (hasNonGranted && !hasGranted) {
+                                iconClass = 'AknAcl-icon--nonGranted icon-remove';
+                            }
                             var $icon = $(this).find('i').first();
-                            $icon.removeClass('icon-ok icon-remove icon-circle').addClass('icon-' + iconClass);
+                            $icon.removeClass('icon-ok icon-remove icon-circle AknAcl-icon--granted AknAcl-icon--nonGranted').addClass(iconClass);
                         });
                     };
 
@@ -32,7 +38,11 @@
                             var $defaultInput = $defaultIcon.siblings('input[type="checkbox"]').eq(0);
                             $defaultInput.prop('checked', !$defaultInput.is(':checked'));
                         }
-                        $icon.toggleClass('icon-ok granted').toggleClass('icon-remove non-granted');
+                        var iconClass = 'AknAcl-icon--granted icon-ok granted';
+                        if ($icon.hasClass('granted')) {
+                            iconClass = 'AknAcl-icon--nonGranted icon-remove non-granted';
+                        }
+                        $icon.removeClass('icon-ok icon-remove icon-circle AknAcl-icon--granted AknAcl-icon--nonGranted granted non-granted').addClass(iconClass);
                         var $input = $icon.siblings('input[type="checkbox"]').eq(0);
                         $input.prop('checked', !$input.is(':checked')).trigger('change');
                         (callback || $.noop)();
@@ -132,8 +142,8 @@
                                     {% for group in groups %}
                                         <li class="AknVerticalNavtab-item tab{{ loop.index == 1 ? ' active' : '' }}">
                                             <a class="AknVerticalNavtab-link" href="#tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">
-                                                <span>
-                                                    <i class="acl-group-permission-toggle"></i>
+                                                <span class="AknAcl">
+                                                    <i class="AknAcl-icon acl-group-permission-toggle"></i>
                                                     <span>{{ group|trans }}</span>
                                                 </span>
                                             </a>
@@ -143,8 +153,8 @@
                                         {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
                                         <li class="AknVerticalNavtab-item tab">
                                             <a class="AknVerticalNavtab-link" href="#tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" data-toggle="tab">
-                                                <span>
-                                                    <i class="acl-group-permission-toggle"></i>
+                                                <span class="AknAcl">
+                                                    <i class="AknAcl-icon acl-group-permission-toggle"></i>
                                                     <span>{{ groupName|trans }}</span>
                                                 </span>
                                             </a>
@@ -152,8 +162,8 @@
                                     {% endfor %}
                                     <li class="AknVerticalNavtab-item tab">
                                         <a class="AknVerticalNavtab-link" href="#tabs-group-system" data-toggle="tab">
-                                            <span>
-                                                <i class="acl-group-permission-toggle"></i>
+                                            <span class="AknAcl">
+                                                <i class="AknAcl-icon acl-group-permission-toggle"></i>
                                                 <span>{{ 'System'|trans }}</span>
                                             </span>
                                         </a>
@@ -165,7 +175,7 @@
                                             <div class="AknTabHeader">
                                                 <h3 class="AknTabHeader-title">{{ group|trans }}</h3>
                                             </div>
-                                            <div class="acl-group">
+                                            <div class="AknFormContainer AknFormContainer--withPadding acl-group">
                                                 {% for child in form[privilegeBlock].children if child.vars.value.group == group %}
                                                     {{ form_widget(child) }}
                                                 {% endfor %}
@@ -178,7 +188,7 @@
                                             <div class="AknTabHeader">
                                                 <h3 class="AknTabHeader-title">{{ groupName|trans }}</h3>
                                             </div>
-                                            <div class="acl-group">
+                                            <div class="AknFormContainer AknFormContainer--withPadding acl-group">
                                                 {{ form_widget(child) }}
                                             </div>
                                         </div>
@@ -187,7 +197,7 @@
                                         <div class="AknTabHeader">
                                             <h3 class="AknTabHeader-title">{{ 'System'|trans }}</h3>
                                         </div>
-                                        <div class="acl-group">
+                                        <div class="AknFormContainer AknFormContainer--withPadding acl-group">
                                             {% for child in form[privilegeBlock].children if child.vars.value.group not in groups and (child.vars.value.extensionKey != 'entity' or child.vars.value.identity.name == '(default)') %}
                                                 {{ form_widget(child) }}
                                             {% endfor %}

@@ -71,7 +71,9 @@
 
                     {% if resource_granted('pim_enrich_family_edit_attributes') %}
                     $('.attribute-requirement:not(.identifier) i').on('click', function() {
-                        $(this).toggleClass('icon-ok required').toggleClass('icon-circle non-required');
+                        $(this).toggleClass('icon-ok required')
+                                .toggleClass('icon-circle non-required')
+                                .toggleClass('AknAcl-icon--granted');
 
                         var $input = $(this).siblings('input[type="checkbox"]').eq(0);
                         var checked = $input.is(':checked');

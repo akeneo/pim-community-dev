@@ -144,7 +144,7 @@ define(
                             $(hiddenCategoryId).val(selected).trigger('change');
                             var treeId = e.target.id;
                             var treeLinkId = treeId.replace('-', '-link-');
-                            $('#' + treeLinkId + ' i').removeClass('gray').addClass('green');
+                            $('#' + treeLinkId + ' i').addClass('AknAcl-icon--granted');
                         }
                     }
                 }.bind(this));
@@ -159,7 +159,7 @@ define(
                         var treeId = e.target.id;
                         if ($('#' + treeId).jstree('get_checked').length === 0) {
                             var treeLinkId = treeId.replace('-', '-link-');
-                            $('#' + treeLinkId + ' i').removeClass('green').addClass('gray');
+                            $('#' + treeLinkId + ' i').removeClass('AknAcl-icon--granted');
                         }
                     }
                 }.bind(this));
