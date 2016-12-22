@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Voter;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Security;
 
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;

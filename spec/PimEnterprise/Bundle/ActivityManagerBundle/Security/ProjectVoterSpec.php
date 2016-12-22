@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ActivityManager\Voter;
+namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Security;
 
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
-use PimEnterprise\Component\ActivityManager\Voter\ProjectVoter;
+use PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

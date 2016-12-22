@@ -10,7 +10,7 @@ parameters:
     pimee_activity_manager.controller.project_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectController'
     pimee_activity_manager.controller.project_completeness_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectCompletenessController'
     pimee_activity_manager.widget.progress.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectProgressWidget'
-    pimee_activity_manager.voter.project.class: 'PimEnterprise\Component\ActivityManager\Voter\ProjectVoter'
+    pimee_activity_manager.voter.project.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter'
 
 services:
     ### Factory

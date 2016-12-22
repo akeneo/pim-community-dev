@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
-use PimEnterprise\Component\ActivityManager\Voter\ProjectVoter;
+use PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
