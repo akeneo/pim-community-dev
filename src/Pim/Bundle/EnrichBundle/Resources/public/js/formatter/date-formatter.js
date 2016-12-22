@@ -1,5 +1,13 @@
 'use strict';
 
+/**
+ * Format a date according to specified format.
+ * It instantiates a datepicker on-the-fly to perform the conversion.
+ *
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 define([
         'jquery',
         'underscore',
