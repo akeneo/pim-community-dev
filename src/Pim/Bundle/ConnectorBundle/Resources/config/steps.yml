@@ -22,6 +22,7 @@ services:
             - '@pim_connector.reader.file.csv_attribute'
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
+            - 1
 
     pim_connector.step.csv_attribute_option.import:
         class: '%pim_connector.step.item_step.class%'
@@ -32,6 +33,7 @@ services:
             - '@pim_connector.reader.file.csv_attribute_option'
             - '@pim_connector.processor.denormalization.attribute_option'
             - '@pim_connector.writer.database.attribute_option'
+            - 1
 
     pim_connector.step.csv_association_type.import:
         class: '%pim_connector.step.item_step.class%'
@@ -42,6 +44,7 @@ services:
             - '@pim_connector.reader.file.csv_association_type'
             - '@pim_connector.processor.denormalization.association_type'
             - '@pim_connector.writer.database.association_type'
+            - 1
 
     pim_connector.step.csv_family.import:
         class: '%pim_connector.step.item_step.class%'
@@ -52,6 +55,7 @@ services:
             - '@pim_connector.reader.file.csv_family'
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
+            - 1
 
     pim_connector.step.csv_group.import:
         class: '%pim_connector.step.item_step.class%'
@@ -62,6 +66,7 @@ services:
             - '@pim_connector.reader.file.csv_group'
             - '@pim_connector.processor.denormalization.group'
             - '@pim_connector.writer.database.group'
+            - 1
 
     pim_connector.step.csv_product.import:
         class: '%pim_connector.step.item_step.class%'
@@ -115,6 +120,7 @@ services:
             - '@pim_connector.reader.file.csv_channel'
             - '@pim_connector.processor.denormalization.channel'
             - '@pim_connector.writer.database.channel'
+            - 1
 
     pim_connector.step.csv_locale_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -125,6 +131,7 @@ services:
             - '@pim_connector.reader.file.csv_locale'
             - '@pim_connector.processor.denormalization.locale'
             - '@pim_connector.writer.database.locale'
+            - 1
 
     pim_connector.step.csv_attribute_group_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -135,6 +142,7 @@ services:
             - '@pim_connector.reader.file.csv_attribute_group'
             - '@pim_connector.processor.denormalization.attribute_group'
             - '@pim_connector.writer.database.attribute_group'
+            - 1
 
     pim_connector.step.csv_currency_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -145,6 +153,7 @@ services:
             - '@pim_connector.reader.file.csv_currency'
             - '@pim_connector.processor.denormalization.currency'
             - '@pim_connector.writer.database.currency'
+            - 1
 
     pim_connector.step.csv_group_type_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -155,6 +164,7 @@ services:
             - '@pim_connector.reader.file.csv_group_type'
             - '@pim_connector.processor.denormalization.group_type'
             - '@pim_connector.writer.database.group_type'
+            - 1
 
     # CSV Export steps ------------------------------------------------------------------------------------------------
     pim_connector.step.csv_attribute.export:
