@@ -188,6 +188,8 @@ class ProductRepository extends EntityRepository implements
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.8
      */
     public function findAllWithAttribute(AttributeInterface $attribute)
     {
@@ -203,6 +205,8 @@ class ProductRepository extends EntityRepository implements
 
     /**
      * {@inheritdoc}
+     *
+     *  @deprecated will be removed in 1.8
      */
     public function findAllWithAttributeOption(AttributeOptionInterface $option)
     {
