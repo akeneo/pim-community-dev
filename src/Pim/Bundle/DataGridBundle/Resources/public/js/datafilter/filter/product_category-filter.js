@@ -16,13 +16,6 @@ define(
          */
         return NumberFilter.extend({
             /**
-             * Filter container selector
-             *
-             * @property {String}
-             */
-            container: '#tree',
-
-            /**
              * @inheritDoc
              */
             emptyValue: {
@@ -41,9 +34,9 @@ define(
             /**
              * @inheritDoc
              */
-            initialize: function(urlParams, gridName, categoryBaseRoute) {
+            initialize: function(urlParams, gridName, categoryBaseRoute, container) {
                 this.$el.remove();
-                this.$el = $(this.container);
+                this.$el = $(container);
 
                 this.value = $.extend(true, {}, this.emptyValue);
 
