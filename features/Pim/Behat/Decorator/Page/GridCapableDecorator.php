@@ -181,7 +181,7 @@ class GridCapableDecorator extends ElementDecorator
         $viewTypeSwitcher->click();
 
         $viewType = $this->spin(function () use ($widget, $type) {
-            return $widget->find('css', sprintf('[data-action="switchViewType"][title="%s"]', $type));
+            return $widget->find('css', sprintf('.view-type-item[title="%s"]', $type));
         }, sprintf('Cannot find element in the View Type Switcher dropdown with name "%s".', $type));
 
         $viewType->click();
