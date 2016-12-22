@@ -78,7 +78,7 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
                     'value'    => 100,
                 ],
                 [
-                    'field'    => 'categories.code',
+                    'field'    => 'categories',
                     'operator' => Operators::IN_CHILDREN_LIST,
                     'value'    => []
                 ]

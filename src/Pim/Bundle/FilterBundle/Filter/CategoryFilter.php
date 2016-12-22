@@ -114,7 +114,7 @@ class CategoryFilter extends NumberFilter
         $tree = $this->categoryRepo->find($data['treeId']);
         if ($tree) {
             $categoryCodes = $this->getAllChildrenCodes($tree);
-            $this->util->applyFilter($ds, 'categories.code', 'NOT IN', $categoryCodes);
+            $this->util->applyFilter($ds, 'categories', 'NOT IN', $categoryCodes);
 
             return true;
         }
@@ -145,7 +145,7 @@ class CategoryFilter extends NumberFilter
                 $categoryCodes = [];
             }
             $categoryCodes[] = $category->getCode();
-            $this->util->applyFilter($ds, 'categories.code', 'IN', $categoryCodes);
+            $this->util->applyFilter($ds, 'categories', 'IN', $categoryCodes);
 
             return true;
         }

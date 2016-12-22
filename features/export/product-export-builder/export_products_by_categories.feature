@@ -47,7 +47,7 @@ Feature: Export products from any given categories
   @skip
   Scenario: Export the products from a tree
     Given the following job "csv_product_export" configuration:
-      | filters | {"structure": {"locales": ["en_US"], "scope": "ecommerce"}, "data": [{"field": "categories.code", "operator": "IN", "value": ["toys_games", "dolls", "women"]}, {"field": "completeness", "operator": ">=", "value": 100,"context":{"locales":["en_US"]}}]} |
+      | filters | {"structure": {"locales": ["en_US"], "scope": "ecommerce"}, "data": [{"field": "categories", "operator": "IN", "value": ["toys_games", "dolls", "women"]}, {"field": "completeness", "operator": ">=", "value": 100,"context":{"locales":["en_US"]}}]} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish

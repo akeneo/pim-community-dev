@@ -30,7 +30,7 @@ define([
         configure: function () {
             this.listenTo(this, 'channel:update:after', this.channelUpdated.bind(this));
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-                _.defaults(data, {field: this.getCode() + '.code', operator: 'IN CHILDREN', value: []});
+                _.defaults(data, {field: this.getCode(), operator: 'IN CHILDREN', value: []});
             }.bind(this));
 
             return BaseFilter.prototype.configure.apply(this, arguments);
