@@ -1,0 +1,6 @@
+entity.user.name: 用户
+entity.user.description: 用户信息
+entity.role.name: 角色
+entity.role.description: 用户角色
+entity.group.name: 分组
+entity.group.description: 角色分组

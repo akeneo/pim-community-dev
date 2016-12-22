@@ -27,11 +27,13 @@ oro.form.choose_value: 値を選択してください...
 Read more: 続きを読む
 oro.form.click_here_to_select: ここをクリックして選択してください...
 Add: 追加
-Learn how to use this space: このスペースを使用する方法を知る
-How To Use Pinbar: ピンバーの使い方
+"Learn how to use this space": "このスペースを使用する方法を知る"
+"How To Use Pinbar": "ピンバーの使い方"
 Pinbar: ピンバー
 Favorites: お気に入り
 Most Viewed: よく見られているもの
-Add this page to favorites: このページをお気に入りに追加
-Minimize the window to the pinbar: ピンバーにこのウィンドウを最小化して格納する
-Loading ...: 読み込み中...
+"Add this page to favorites": "このページをお気に入りに追加"
+"Minimize the window to the pinbar": "ピンバーにこのウィンドウを最小化して格納する"
+"Loading ...": "読み込み中..."
+"Yes": "はい"
+"No": "いいえ"
