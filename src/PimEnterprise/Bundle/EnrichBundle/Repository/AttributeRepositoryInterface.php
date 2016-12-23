@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Repository;
+namespace PimEnterprise\Bundle\EnrichBundle\Repository;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>

@@ -20,7 +20,7 @@ services:
             - '@oro_datagrid.datagrid.request_params'
             - '@translator'
             - '@pim_datagrid.datasource.adapter_resolver'
-            - '@pimee_activity_manager.repository.attribute'
+            - '@pimee_enrich.repository.attribute'
             - '@pimee_security.repository.attribute_group_access'
             - '@pim_user.context.user'
             - '@pim_datagrid.repository.datagrid_view'
