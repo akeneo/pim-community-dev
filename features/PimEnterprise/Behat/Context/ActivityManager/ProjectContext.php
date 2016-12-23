@@ -128,7 +128,8 @@ class ProjectContext extends PimContext
         $batchJobCommand->setContainer($this->getMainContext()->getContainer());
         $command = new CommandTester($batchJobCommand);
 
-        $jobInstance = $this->getService('pimee_activity_manager.repository.job_instance')->getProjectCalculation();
+        $jobInstance = $this->getService('pim_import_export.repository.job_instance')
+            ->findOneByIdentifier('project_calculation');
         $exitCode = $command->execute(
             [
                 'command'    => $batchJobCommand->getName(),

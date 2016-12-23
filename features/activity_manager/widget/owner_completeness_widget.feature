@@ -97,33 +97,33 @@ Feature: Follow project completeness
     Then I should see the text "Activity Manager"
     And I should see the text "Collection Winter 2030 [ecommerce] | English (United States)"
     And I should see the text "all contributors"
-#    And I should see the following activity manager completeness:
-#      | todo | in_progress | done |
-#      |    1 |           2 |    3 |
-#    And I should see the text "x% PRODUCTS TO ENRICH"
-#    And I should see the text "x% PRODUCTS IN PROGRESS"
-#    And I should see the text "x% PRODUCTS DONE"
+    And I should see the following activity manager completeness:
+      | todo | in_progress | done |
+      |    0 |           0 |    0 |
+    And I should see the text "0% PRODUCTS TO ENRICH"
+    And I should see the text "0% PRODUCTS IN PROGRESS"
+    And I should see the text "0% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Winter."
     And I should see the text "Due date: 08/28/2030"
     When I select "Collection Summer 2030" project
     Then I should see the text "Collection Summer 2030 [ecommerce] | English (United States)"
     And I should see the text "all contributors"
-#    And I should see the following activity manager completeness:
-#      | todo | in_progress | done |
-#      |    1 |           2 |    3 |
-#    And I should see the text "x% PRODUCTS TO ENRICH"
-#    And I should see the text "x% PRODUCTS IN PROGRESS"
-#    And I should see the text "x% PRODUCTS DONE"
+    And I should see the following activity manager completeness:
+      | todo | in_progress | done |
+      |    0 |           0 |    0 |
+    And I should see the text "0% PRODUCTS TO ENRICH"
+    And I should see the text "0% PRODUCTS IN PROGRESS"
+    And I should see the text "0% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/28/2030"
     When I select "Claude Yachifeur" contributor
     Then I should see the text "Collection Summer 2030 [ecommerce] | English (United States)"
     And I should see the text "Claude Yachifeur"
-#    And I should see the following activity manager completeness:
-#      | todo | in_progress | done |
-#      |    1 |           2 |    3 |
-#    And I should see the text "x% PRODUCTS TO ENRICH"
-#    And I should see the text "x% PRODUCTS IN PROGRESS"
-#    And I should see the text "x% PRODUCTS DONE"
+    And I should see the following activity manager completeness:
+      | todo | in_progress | done |
+      |    0 |           0 |    0 |
+    And I should see the text "0% PRODUCTS TO ENRICH"
+    And I should see the text "0% PRODUCTS IN PROGRESS"
+    And I should see the text "0% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/28/2030"
