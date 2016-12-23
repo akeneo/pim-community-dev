@@ -14,7 +14,7 @@ Feature: Delete a rule
       set_tees_description:
         priority: 10
         conditions:
-          - field:    categories.code
+          - field:    categories
             operator: IN
             value:
               - tees

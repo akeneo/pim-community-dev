@@ -66,7 +66,7 @@ jobs:
                         operator: '='
                         value: true
                     -
-                        field: categories.code
+                        field: categories
                         operator: 'IN CHILDREN'
                         value: ['master']
                     -
@@ -95,7 +95,7 @@ jobs:
                         operator: '='
                         value: true
                     -
-                        field: categories.code
+                        field: categories
                         operator: 'IN CHILDREN'
                         value: ['master']
                     -
@@ -508,7 +508,7 @@ jobs:
                         operator: '='
                         value: true
                     -
-                        field: categories.code
+                        field: categories
                         operator: 'IN CHILDREN'
                         value: ['master']
                     -
@@ -536,7 +536,7 @@ jobs:
                         operator: '='
                         value: true
                     -
-                        field: categories.code
+                        field: categories
                         operator: 'IN CHILDREN'
                         value: ['master']
                     -
