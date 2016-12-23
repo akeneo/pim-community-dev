@@ -2,7 +2,7 @@
     <button class="AknActionButton view-selector-type-switcher" title="" data-toggle="dropdown">
         <%- __('pim_datagrid.view_selector.' + currentViewType) %> <i class="AknActionButton-caret AknCaret"></i>
     </button>
-    <ul class="AknDropdown-menu">
+    <ul class="AknDropdown-menu view-selector-type-dropdown-menu">
         <% viewTypes.forEach(function (type) { %>
         <li>
             <span data-value="<%- type %>" class="AknDropdown-menuLink view-type-item" title="<%- __('pim_datagrid.view_selector.' + type) %>">
