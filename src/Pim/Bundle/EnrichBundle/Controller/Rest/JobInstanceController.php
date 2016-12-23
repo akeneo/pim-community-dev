@@ -183,13 +183,37 @@ class JobInstanceController
     /**
      * Launch a job
      *
-     * @param string $code
+     * @param Request $request
+     * @param string  $code
      *
      * @return JsonResponse
      */
-    public function launchAction($code)
+    public function launchAction(Request $request, $code)
     {
         $jobInstance = $this->getJobInstance($code);
+
+        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+        $file = $request->files->get('file');
+        if ($file) {
+            $violations = $this->validator->validate($file);
+
+            if (count($violations) > 0) {
+                $errors = [];
+                foreach ($violations as $violation) {
+                    $errors[$violation->getPropertyPath()] = [
+                        'message'       => $violation->getMessage(),
+                        'invalid_value' => $violation->getInvalidValue()
+                    ];
+                }
+
+                return new JsonResponse($errors, 400);
+            }
+
+            $file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
+            $rawParameters = $jobInstance->getRawParameters();
+            $rawParameters['filePath'] = $file->getRealPath();
+            $jobInstance->setRawParameters($rawParameters);
+        }
 
         $errors = $this->getValidationErrors($jobInstance);
         if (count($errors) > 0) {
@@ -204,7 +228,6 @@ class JobInstanceController
                 ['id' => $jobExecution->getId()]
             )
         ], 200);
-
     }
 
     /**
@@ -215,12 +238,11 @@ class JobInstanceController
      *
      * @throws NotFoundHttpException
      *
-     * @return JobInstance|RedirectResponse
+     * @return JobInstance
      */
     protected function getJobInstance($code, $checkStatus = true)
     {
         $jobInstance = $this->repository->findOneByIdentifier($code);
-
         if (null === $jobInstance) {
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobInstance entity not found');
         }

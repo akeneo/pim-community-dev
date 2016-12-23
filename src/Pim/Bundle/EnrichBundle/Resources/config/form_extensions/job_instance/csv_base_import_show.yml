@@ -8,10 +8,16 @@ extensions:
         targetZone: content
         position: 100
 
+    pim-job-instance-csv-base-import-show-upload:
+        module: pim/job/common/edit/upload
+        parent: pim-job-instance-csv-base-import-show
+        aclResourceId: pim_importexport_import_profile_launch
+        targetZone: content
+        position: 90
+
     pim-job-instance-csv-base-import-show-properties:
         module: pim/job/common/edit/properties
         parent: pim-job-instance-csv-base-import-show-tabs
-        aclResourceId: pim_importexport_import_profile_property_edit
         targetZone: container
         position: 100
         config:
@@ -125,12 +131,14 @@ extensions:
                 name: code
 
     pim-job-instance-csv-base-import-show-launch:
-        module: pim/job/common/edit/launch
+        module: pim/job/common/edit/upload-launch
         parent: pim-job-instance-csv-base-import-show
+        aclResourceId: pim_importexport_import_profile_launch
         targetZone: buttons
         position: 110
         config:
-            label: pim_enrich.form.job_instance.button.import.title
+            launch: pim_enrich.form.job_instance.button.import.launch
+            upload: pim_enrich.form.job_instance.button.import.upload
             route: pim_enrich_job_instance_rest_launch
             identifier:
                 path: code

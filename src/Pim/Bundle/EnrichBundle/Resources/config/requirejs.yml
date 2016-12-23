@@ -286,6 +286,8 @@ config:
         pim/job/common/edit/delete:                                  pimenrich/js/job/common/edit/delete
         pim/job/common/edit/validation:                              pimenrich/js/job/common/edit/validation
         pim/job/common/edit/launch:                                  pimenrich/js/job/common/edit/launch
+        pim/job/common/edit/upload:                                  pimenrich/js/job/common/edit/upload
+        pim/job/common/edit/upload-launch:                           pimenrich/js/job/common/edit/upload-launch
 
         # Filters
         pim/filter/filter:                     pimenrich/js/filter/filter
@@ -487,6 +489,8 @@ config:
         pim/template/export/common/edit/meta:                                   pimenrich/templates/export/common/edit/meta.html
         pim/template/export/common/edit/validation:                             pimenrich/templates/export/common/edit/validation.html
         pim/template/export/common/edit/launch:                                 pimenrich/templates/export/common/edit/launch.html
+        pim/template/export/common/edit/upload:                                 pimenrich/templates/export/common/edit/upload.html
+        pim/template/export/common/edit/upload-launch:                          pimenrich/templates/export/common/edit/upload-launch.html
 
         # Filters
         pim/template/filter/filter:                     pimenrich/templates/filter/filter.html

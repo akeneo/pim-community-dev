@@ -63,21 +63,10 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
             tooltip: pim_enrich.form.job_instance.tab.properties.help.filePath.help
 
-    pim-job-instance-xlsx-base-export-edit-properties-delimiter:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-base-export-edit-properties
-        position: 130
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.delimiter
-            readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.delimiter.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.delimiter.help
-
     pim-job-instance-xlsx-base-export-edit-properties-lines-per-file:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-base-export-edit-properties
-        position: 140
+        position: 130
         targetZone: global-settings
         config:
             fieldCode: configuration.linesPerFile
@@ -85,22 +74,10 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.lines_per_file.title
             tooltip: pim_enrich.form.job_instance.tab.properties.help.lines_per_file.help
 
-
-    pim-job-instance-xlsx-base-export-edit-properties-enclosure:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-base-export-edit-properties
-        position: 150
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.enclosure
-            readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.enclosure.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.enclosure.help
-
     pim-job-instance-xlsx-base-export-edit-properties-with-header:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-base-export-edit-properties
-        position: 160
+        position: 140
         targetZone: global-settings
         config:
             fieldCode: configuration.withHeader

@@ -18,7 +18,7 @@ define([], function () {
 
             data[pathPart[0]] = 1 === pathPart.length ?
                 value :
-                this.updateProperty(data[pathPart[0]], pathPart.slice(1).join('.'), value, defaultValue)
+                this.updateProperty(data[pathPart[0]], pathPart.slice(1).join('.'), value)
 
             return data;
         }

@@ -58,38 +58,16 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
             tooltip: pim_enrich.form.job_instance.tab.properties.help.filePath.help
 
-    pim-job-instance-xlsx-base-export-show-properties-delimiter:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-base-export-show-properties
-        position: 130
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.delimiter
-            readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.delimiter.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.delimiter.help
-
     pim-job-instance-xlsx-base-export-show-properties-lines-per-file:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-export-show-form-properties
-        position: 140
+        position: 130
         targetZone: global-settings
         config:
             fieldCode: configuration.linesPerFile
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.lines_per_file.title
             tooltip: pim_enrich.form.job_instance.tab.properties.help.lines_per_file.help
-
-    pim-job-instance-xlsx-base-export-show-properties-enclosure:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-base-export-show-properties
-        position: 150
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.enclosure
-            readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.enclosure.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.enclosure.help
 
     pim-job-instance-xlsx-base-export-show-properties-with-header:
         module: pim/job/common/edit/field/switch
