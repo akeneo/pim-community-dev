@@ -14,7 +14,6 @@ define(
         'underscore',
         'oro/translator',
         'pim/i18n',
-        'datepicker',
         'pim/grid/view-selector/line',
         'pim/user-context',
         'pim/date-context',
@@ -27,7 +26,6 @@ define(
         _,
         __,
         i18n,
-        Datepicker,
         ViewSelectorLine,
         userContext,
         DateContext,
@@ -95,7 +93,7 @@ define(
                 return {
                     project: project,
                     dueDateLabel: __('activity_manager.project.due_date'),
-                    dueDate: this.formatDate(project.due_date, this.modelDateFormat, dateFormat),
+                    dueDate: DateFormatter.format(project.due_date, 'yyyy-MM-dd', dateFormat),
                     channelLabel: i18n.getLabel(
                         project.channel.labels,
                         userContext.get('uiLocale'),
@@ -106,33 +104,6 @@ define(
                     completionPercentage: completionPercentage,
                     completionStatus: completionStatus
                 };
-            },
-
-            /**
-             * Format a date according to specified format.
-             * It instantiates a datepicker on-the-fly to perform the conversion.
-             * Not possible to use the "real" ones since we need to format a date even when the UI
-             * is not initialized yet.
-             *
-             * @param {String} date
-             * @param {String} fromFormat
-             * @param {String} toFormat
-             *
-             * @return {String}
-             */
-            formatDate: function (date, fromFormat, toFormat) {
-                if (_.isArray(date) || _.isEmpty(date)) {
-                    return null;
-                }
-
-                var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
-                var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
-
-                fakeDatepicker.setValue(date);
-                fakeDatepicker.format = toFormat;
-                fakeDatepicker._compileFormat();
-
-                return fakeDatepicker.formatDate(fakeDatepicker.getDate());
             }
         });
     }
