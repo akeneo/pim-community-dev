@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6038: Fix product imports that do not change the product update date correctly (mongodb)
+- PIM-6042: Successfully import product associations without removing already existing associations when option "compare values" is set to true
 
 # 1.5.17 (2017-01-18)
 
