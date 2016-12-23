@@ -15,6 +15,13 @@ config:
                     options:
                         urls:
                             list: activity_manager_project_search
+                            get: activity_manager_project_get
+                            completeness: activity_manager_project_completeness_show
+                contributor:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: activity_manager_project_contributors_search
 
     map:
         '*':
@@ -32,9 +39,7 @@ config:
         activity-manager/project/fetcher: pimenterpriseactivitymanager/js/fetcher/project-fetcher
         activity-manager/widget/project-widget: pimenterpriseactivitymanager/js/widget/project-widget
         activity-manager/widget/project-selector: pimenterpriseactivitymanager/js/widget/project-selector
-        activity-manager/widget/project-selector-line: pimenterpriseactivitymanager/js/widget/project-selector-line
         activity-manager/widget/contributor-selector: pimenterpriseactivitymanager/js/widget/contributor-selector
-        activity-manager/widget/contributor-selector-line: pimenterpriseactivitymanager/js/widget/contributor-selector-line
         activity-manager/widget/project-due-date: pimenterpriseactivitymanager/js/widget/project-due-date
         activity-manager/widget/project-completeness-data: pimenterpriseactivitymanager/js/widget/project-completeness-data
         activity-manager/widget/project-description: pimenterpriseactivitymanager/js/widget/project-description

@@ -2,12 +2,12 @@
 
 namespace PimEnterprise\Behat\Context\ActivityManager;
 
-use PimEnterprise\Behat\Widget\WidgetDecorator;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Pim\Behat\Context\PimContext;
+use PimEnterprise\Behat\Decorator\Widget\ActivityManagerWidgetDecorator;
 
 class WidgetContext extends PimContext
 {
@@ -87,7 +87,7 @@ class WidgetContext extends PimContext
     /**
      * Get the decorated Activity Manager widget
      *
-     * @return WidgetDecorator
+     * @return ActivityManagerWidgetDecorator
      */
     protected function getActivityManagerWidget()
     {

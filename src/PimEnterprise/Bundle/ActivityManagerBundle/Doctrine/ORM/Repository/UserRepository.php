@@ -16,6 +16,7 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
@@ -61,7 +62,8 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
         $groupIdentifiers = $this->extractContributorGroupIdentifier($project);
 
-        $qb->leftJoin('u.groups', 'g')
+        $qb->distinct(true)
+            ->leftJoin('u.groups', 'g')
             ->where($qb->expr()->eq('u.id', $user->getId()))
             ->andWhere($qb->expr()->in('g.id', $groupIdentifiers));
 

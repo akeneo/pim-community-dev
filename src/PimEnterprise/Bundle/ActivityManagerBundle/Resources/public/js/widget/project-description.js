@@ -1,33 +1,31 @@
+'use strict';
+
+/**
+ * Project description.
+ *
+ * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ */
 define(
     [
         'jquery',
         'underscore',
         'oro/translator',
+        'pim/form',
         'backbone',
         'text!activity-manager/templates/widget/project-description'
     ],
-    function ($, _, __, Backbone, template) {
-        'use strict';
-
-        return Backbone.View.extend({
+    function ($, _, __, BaseForm, Backbone, template) {
+        return BaseForm.extend({
             template: _.template(template),
-            description: null,
             className: 'AknProjectWidget-resume',
 
             /**
-             * @param {String} description
-             */
-            initialize: function (description) {
-                this.description = description;
-            },
-
-            /**
-             * Render the project description
+             * Render the project description from the model
              */
             render: function () {
                 this.$el.html(this.template({
                     title: __('activity_manager.widget.description'),
-                    description: this.description
+                    description: this.getFormData().currentProject.description
                 }));
             }
         });

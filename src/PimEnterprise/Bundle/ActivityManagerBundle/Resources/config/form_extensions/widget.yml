@@ -1,0 +1,41 @@
+extensions:
+    activity-manager-widget:
+        module: activity-manager/widget/project-widget
+
+    activity-manager-widget-project-selector:
+        module: activity-manager/widget/project-selector
+        parent: activity-manager-widget
+        targetZone: top-bar-left
+        position: 100
+
+    activity-manager-widget-contributor-selector:
+        module: activity-manager/widget/contributor-selector
+        parent: activity-manager-widget
+        targetZone: top-bar-left
+        position: 200
+
+    activity-manager-widget-project-due-date:
+        module: activity-manager/widget/project-due-date
+        parent: activity-manager-widget
+        targetZone: top-bar-right
+        position: 100
+
+    activity-manager-widget-project-completeness-data:
+        module: activity-manager/widget/project-completeness-data
+        parent: activity-manager-widget
+        targetZone: content
+        position: 100
+        config:
+            labels:
+                percentageTodo: activity_manager.widget.completeness.to_enrich
+                percentageInProgress: activity_manager.widget.completeness.in_progress
+                percentageDone: activity_manager.widget.completeness.done
+                todo: activity_manager.widget.todo
+                inProgress: activity_manager.widget.in_progress
+                done: activity_manager.widget.done
+
+    activity-manager-widget-project-description:
+        module: activity-manager/widget/project-description
+        parent: activity-manager-widget
+        targetZone: content
+        position: 200

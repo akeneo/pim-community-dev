@@ -96,8 +96,8 @@ class ProjectContext extends PimContext
      */
     public function theFollowingProjects(TableNode $table)
     {
-        $factory = $this->getService('activity_manager.factory.project');
-        $updater = $this->getService('pim_catalog.repository.locale');
+        $factory = $this->getService('pimee_activity_manager.factory.project');
+        $updater = $this->getService('pimee_activity_manager.updater.project');
 
         $projects = [];
         foreach ($table->getHash() as $field => $data) {
@@ -106,7 +106,7 @@ class ProjectContext extends PimContext
             $updater->update($project, $data);
             $projects[] = $project;
         }
-        $this->getService('activity_manager.saver.project')->saveAll($projects);
+        $this->getService('pimee_activity_manager.saver.project')->saveAll($projects);
 
         foreach ($projects as $project) {
             $this->generateProject($project->getCode());
@@ -125,10 +125,11 @@ class ProjectContext extends PimContext
         $application = new Application();
         $application->add(new BatchCommand());
         $batchJobCommand = $application->find('akeneo:batch:job');
-        $batchJobCommand->setContainer($this->getContainer());
+        $batchJobCommand->setContainer($this->getMainContext()->getContainer());
         $command = new CommandTester($batchJobCommand);
 
-        $jobInstance = $this->getService('activity_manager.repository.job_instance');
+        $jobInstance = $this->getService('pim_import_export.repository.job_instance')
+            ->findOneByIdentifier('project_calculation');
         $exitCode = $command->execute(
             [
                 'command'    => $batchJobCommand->getName(),
@@ -168,7 +169,6 @@ class ProjectContext extends PimContext
             }
         });
 
-        /** @var DatagridView $datagridView */
         $datagridView = $this->getService('pim_datagrid.factory.datagrid_view')->create();
         $datagridView
             ->setLabel(uniqid('Behat testing'))

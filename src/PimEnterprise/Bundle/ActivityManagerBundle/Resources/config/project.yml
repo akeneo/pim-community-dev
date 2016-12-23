@@ -9,7 +9,7 @@ parameters:
     pimee_activity_manager.event_listener.event_translation.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\EventTranslationSubscriber'
     pimee_activity_manager.controller.project_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectController'
     pimee_activity_manager.controller.project_completeness_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectCompletenessController'
-    pimee_activity_manager.widget.progress.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectProgressWidget'
+    pimee_activity_manager.widget.completeness.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectCompletenessWidget'
     pimee_activity_manager.voter.project.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter'
 
 services:
@@ -64,8 +64,8 @@ services:
             - { name: kernel.event_subscriber }
 
     ### Widget
-    pimee_activity_manager.widget.progress:
-        class: '%pimee_activity_manager.widget.progress.class%'
+    pimee_activity_manager.widget.completeness:
+        class: '%pimee_activity_manager.widget.completeness.class%'
         tags:
             - { name: pim_dashboard.widget, position: 15 }
 

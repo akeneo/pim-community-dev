@@ -26,7 +26,7 @@ activity_manager:
         placeholder:
             contributor_selector: Search contributor
             project_selector: Search project
-        progress:
+        completeness:
             to_enrich: PRODUCTS TO ENRICH
             in_progress: PRODUCTS IN PROGRESS
             done: PRODUCTS DONE

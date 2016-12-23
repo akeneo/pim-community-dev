@@ -1,28 +1,43 @@
+'use strict';
+
+/**
+ * Project selector.
+ *
+ * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ */
 define(
     [
         'jquery',
         'underscore',
         'oro/translator',
+        'pim/form',
         'backbone',
+        'pim/i18n',
         'pim/fetcher-registry',
-        'activity-manager/widget/project-selector-line',
-        'text!activity-manager/templates/widget/project-selector'
+        'pim/user-context',
+        'text!activity-manager/templates/widget/project-selector',
+        'text!activity-manager/templates/widget/project-selector-line'
     ],
-    function ($, _, __, Backbone, FetcherRegistry, ProjectSelectorLine, template) {
-        'use strict';
-
-        return Backbone.View.extend({
+    function ($, _, __, BaseForm, Backbone, i18n, FetcherRegistry, UserContext, template, lineTemplate) {
+        return BaseForm.extend({
             template: _.template(template),
+            lineTemplate: _.template(lineTemplate),
             resultsPerPage: 2,
             queryTimer: null,
             searchParameters: {},
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.$el.html(this.template());
 
                 this.initializeSelect();
             },
 
+            /**
+             * Initialize the select2
+             */
             initializeSelect: function () {
                 var $select = this.$('.project-selector-select2');
 
@@ -38,7 +53,7 @@ define(
                             var searchParameters = this.getSelectSearchParameters(options.term, page);
 
                             FetcherRegistry.getFetcher('project').search(searchParameters).then(function (projects) {
-                                var choices = this.toSelect2Format(projects);
+                                var choices = this.arrayToSelect2Format(projects);
 
                                 options.callback({
                                     results: choices,
@@ -52,28 +67,16 @@ define(
                     }.bind(this),
 
                     initSelection: function (element, callback) {
-                        var searchOptions = {search: null, limit: 1, page: 1};
-
-                        FetcherRegistry.getFetcher('project').search(searchOptions).then(function (projects) {
-                            var project = this.toSelect2Format(projects);
-
-                            callback(project[0]);
-                        }.bind(this));
+                        callback(this.toSelect2Format(this.getFormData().currentProject));
                     }.bind(this),
 
                     formatResult: function (item, $container) {
-                        var projectSelectorLine = new ProjectSelectorLine(item, 'Line');
-
-                        projectSelectorLine.render();
-                        $container.append(projectSelectorLine.$el);
-                    },
+                        $container.append(this.formatLine(item, 'Line'));
+                    }.bind(this),
 
                     formatSelection: function (item, $container) {
-                        var projectSelectorLine = new ProjectSelectorLine(item, 'Current');
-
-                        projectSelectorLine.render();
-                        $container.append(projectSelectorLine.$el);
-                    },
+                        $container.append(this.formatLine(item, 'Current'));
+                    }.bind(this),
 
                     dropdownCssClass: 'AknProjectWidget-select2Dropdown' +
                         ' AknProjectWidget-select2Dropdown--arrowRight' +
@@ -82,7 +85,7 @@ define(
 
                 $select.select2(options);
                 $select.on('change', function (event) {
-                    this.trigger('activity-manager.widget.project-selected', event);
+                    this.trigger('activity-manager:widget:project-selected', event.added.id);
                 }.bind(this));
                 $select.on('select2-open', function() {
                     $('.activity-manager-widget-project-dropdown .select2-search')
@@ -115,26 +118,50 @@ define(
             },
 
             /**
-             * Take incoming data and format them to have all required parameters
+             * Take incoming data as array and format them to have all required parameters
              * to be used by the select2 module.
              *
-             * @param {array} data
+             * @param {Array} data
              *
-             * @returns {array}
+             * @return {Array}
              */
-            toSelect2Format: function (data) {
-                return _.map(data, function (project) {
-                    return {
-                        id: project.code,
-                        text: project.label,
-                        label: project.label,
-                        due_date: project.due_date,
-                        description: project.description,
-                        owner: project.owner,
-                        channel: project.channel,
-                        locale: project.locale
-                    };
-                });
+            arrayToSelect2Format: function (data) {
+                return _.map(data, this.toSelect2Format);
+            },
+
+            /**
+             * Take incoming project and format it to have all required parameters
+             * to be used by the select2 module.
+             *
+             * @param {Object} project
+             *
+             * @return {Object}
+             */
+            toSelect2Format: function (project) {
+                project.id = project.code;
+                project.text = project.label;
+
+                return project;
+            },
+
+            /**
+             * Return the select2 line template
+             *
+             * @param {Object} project
+             * @param {String} type
+             *
+             * @return {String}
+             */
+            formatLine: function (project, type) {
+                var uiLocale = UserContext.get('uiLocale');
+                var channelLabel = i18n.getLabel(project.channel.labels, uiLocale, project.channel.code);
+
+                return this.lineTemplate({
+                    type: type,
+                    projectLabel: project.label,
+                    projectChannel: channelLabel,
+                    projectLocale: project.locale.label
+                })
             }
         });
     }
