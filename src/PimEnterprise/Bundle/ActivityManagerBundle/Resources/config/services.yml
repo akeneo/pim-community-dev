@@ -1,7 +1,4 @@
 parameters:
-    pim_datagrid.datagrid.configuration.product.context_configurator.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\ContextConfigurator'
-    pim_datagrid.extension.filter.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterExtension'
-
     pimee_activity_manager.repository.user.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\UserRepository'
     pimee_activity_manager.repository.product.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProductRepository'
     pimee_activity_manager.repository.familly_requirement.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\FamilyRequirementRepository'
@@ -75,18 +72,3 @@ services:
         class: '%pimee_activity_manager.converter.filter.class%'
         arguments:
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
-
-    pim_datagrid.extension.filter:
-        class: '%pim_datagrid.extension.filter.class%'
-        arguments:
-            - '@oro_datagrid.datagrid.request_params'
-            - '@translator'
-            - '@pim_datagrid.datasource.adapter_resolver'
-            - '@pimee_activity_manager.repository.attribute'
-            - '@pimee_security.repository.attribute_group_access'
-            - '@pim_user.context.user'
-            - '@pim_datagrid.repository.datagrid_view'
-            - '@pimee_activity_manager.repository.project'
-        public: false
-        tags:
-             - { name: oro_datagrid.extension }

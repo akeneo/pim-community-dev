@@ -13,3 +13,18 @@ services:
             - [addEligibleDatasource, ['pimee_datasource_published_product']]
         tags:
              - { name: oro_datagrid.extension }
+
+    pim_datagrid.extension.filter:
+        class: '%pim_datagrid.extension.filter.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+            - '@translator'
+            - '@pim_datagrid.datasource.adapter_resolver'
+            - '@pimee_activity_manager.repository.attribute'
+            - '@pimee_security.repository.attribute_group_access'
+            - '@pim_user.context.user'
+            - '@pim_datagrid.repository.datagrid_view'
+            - '@pimee_activity_manager.repository.project'
+        public: false
+        tags:
+             - { name: oro_datagrid.extension }
