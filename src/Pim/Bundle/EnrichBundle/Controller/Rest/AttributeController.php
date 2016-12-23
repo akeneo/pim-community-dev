@@ -70,9 +70,15 @@ class AttributeController
     {
         $options = [];
         $context = ['include_group' => true];
+        $search = null;
 
-        if ($request->request->has('identifiers')) {
-            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
+        if ('' !== $request->getContent()) {
+            $options = json_decode($request->getContent(), true)['options'];
+            $search = json_decode($request->getContent(), true)['search'];
+        }
+
+        if ($request->query->has('identifiers')) {
+            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
             $context['include_group'] = false;
         }
 
@@ -91,11 +97,12 @@ class AttributeController
             );
         }
 
+
         $token = $this->tokenStorage->getToken();
         $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
 
         $attributes = $this->attributeSearchRepository->findBySearch(
-            $request->request->get('search'),
+            null !== $search ? $search : $request->request->get('search'),
             $options
         );
 

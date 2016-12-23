@@ -138,6 +138,11 @@ function($, _, Backbone, __) {
             if (this.hidden) {
                 this.$el.hide();
             }
+            setTimeout(function () {
+                if (100 !== this.collection.state.pageSize) {
+                    this.changePageSize(100);
+                }
+            }.bind(this), 500);
 
             return this;
         }
