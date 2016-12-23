@@ -5,6 +5,7 @@
 - #5038: Fixed job name visibility checker to also check additional config
 - #5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
 - #5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
+- #5337: Fixed Widget Registry. Priority is now taken in account.
 
 ## Functional improvements
 
@@ -100,3 +101,4 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to remove the tenth argument `tmpStorageDir` and add `Pim\Component\Enrich\Converter\ConverterInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer` to add `Pim\Component\Enrich\Converter\ConverterInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Component\Enrich\Converter\ConverterInterface`
+- Change route from `pim_user_user_rest_get` to `pim_user_user_rest_get_current`. Route `pim_user_user_rest_get` now fetch a user the given username.

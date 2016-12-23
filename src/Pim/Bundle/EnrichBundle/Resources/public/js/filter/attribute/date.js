@@ -10,6 +10,7 @@ define([
     'pim/user-context',
     'pim/i18n',
     'datepicker',
+    'pim/formatter/date',
     'pim/date-context',
     'jquery.select2'
 ], function (
@@ -22,6 +23,7 @@ define([
     UserContext,
     i18n,
     Datepicker,
+    DateFormatter,
     DateContext
 ) {
     return BaseFilter.extend({
@@ -104,12 +106,12 @@ define([
         renderInput: function () {
             var dateFormat = DateContext.get('date').format;
             var value = this.getValue();
-            var startValue = this.formatDate(value, this.modelDateFormat, dateFormat);
+            var startValue = DateFormatter.format(value, this.modelDateFormat, dateFormat);
             var endValue = null;
 
             if (_.isArray(value)) {
-                startValue = this.formatDate(value[0], this.modelDateFormat, dateFormat);
-                endValue = this.formatDate(value[1], this.modelDateFormat, dateFormat);
+                startValue = DateFormatter.format(value[0], this.modelDateFormat, dateFormat);
+                endValue = DateFormatter.format(value[1], this.modelDateFormat, dateFormat);
             }
 
             return this.template({
@@ -137,14 +139,14 @@ define([
             if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) {
                 var dateFormat = DateContext.get('date').format;
                 var startValue = this.$('[name="filter-value-start"]').val();
-                var formattedStartVal = this.formatDate(startValue, dateFormat, this.modelDateFormat);
+                var formattedStartVal = DateFormatter.format(startValue, dateFormat, this.modelDateFormat);
                 var valueEndField = this.$('[name="filter-value-end"]');
 
                 value = formattedStartVal;
 
                 if (0 !== valueEndField.length) {
                     var endValue = valueEndField.val();
-                    var formattedEndVal = this.formatDate(endValue, dateFormat, this.modelDateFormat);
+                    var formattedEndVal = DateFormatter.format(endValue, dateFormat, this.modelDateFormat);
 
                     value = [formattedStartVal, formattedEndVal];
                 }
@@ -157,32 +159,6 @@ define([
             });
 
             this.render();
-        },
-
-        /**
-         * Format a date according to specified format.
-         * It instantiates a datepicker on-the-fly to perform the conversion. Not possible to use the "real" ones since
-         * we need to format a date even when the UI is not initialized yet.
-         *
-         * @param {String} date
-         * @param {String} fromFormat
-         * @param {String} toFormat
-         *
-         * @return {String}
-         */
-        formatDate: function (date, fromFormat, toFormat) {
-            if (_.isArray(date) || _.isEmpty(date)) {
-                return null;
-            }
-
-            var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
-            var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
-
-            fakeDatepicker.setValue(date);
-            fakeDatepicker.format = toFormat;
-            fakeDatepicker._compileFormat();
-
-            return fakeDatepicker.formatDate(fakeDatepicker.getDate());
         }
     });
 });

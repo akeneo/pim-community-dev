@@ -9,39 +9,44 @@ class RegistrySpec extends ObjectBehavior
 {
     function it_registers_and_exposes_widgets(WidgetInterface $widget)
     {
-        $widget->getAlias()->willReturn('foo');
+        $widget->getAlias()->willReturn('completeness');
         $this->add($widget, 1);
-        $this->get('foo')->shouldReturn($widget);
+        $this->get('completeness')->shouldReturn($widget);
         $this->getAll()->shouldReturn([1 => $widget]);
     }
 
     function it_does_not_expose_unknown_widgets()
     {
-        $this->get('bar')->shouldReturn(null);
+        $this->get('completeness')->shouldReturn(null);
     }
 
-    function it_registers_widgets_in_the_given_order(WidgetInterface $foo, WidgetInterface $bar)
-    {
-        $this->add($foo, 1);
-        $this->add($bar, 3);
+    function it_registers_widgets_in_the_given_order(
+        WidgetInterface $completeness,
+        WidgetInterface $shortcut,
+        WidgetInterface $manager
+    ) {
+        $this->add($completeness, 10);
+        $this->add($shortcut, 30);
+        $this->add($manager, 20);
 
         $this->getAll()->shouldReturn(
             [
-                1 => $foo,
-                3 => $bar
+                10 => $completeness,
+                20 => $manager,
+                30 => $shortcut
             ]
         );
     }
 
-    function it_can_handle_duplicate_priority(WidgetInterface $foo, WidgetInterface $bar)
+    function it_can_handle_duplicate_priority(WidgetInterface $completeness, WidgetInterface $shortcut)
     {
-        $this->add($foo, 2);
-        $this->add($bar, 2);
+        $this->add($completeness, 2);
+        $this->add($shortcut, 2);
 
         $this->getAll()->shouldReturn(
             [
-                2 => $foo,
-                3 => $bar
+                2 => $completeness,
+                3 => $shortcut
             ]
         );
     }

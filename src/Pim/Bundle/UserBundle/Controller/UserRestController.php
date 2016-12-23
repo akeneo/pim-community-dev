@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -22,20 +23,28 @@ class UserRestController
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $userRepository;
+
     /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param NormalizerInterface   $normalizer
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param NormalizerInterface                   $normalizer
+     * @param IdentifiableObjectRepositoryInterface $userRepository
      */
-    public function __construct(TokenStorageInterface $tokenStorage, NormalizerInterface $normalizer)
-    {
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        NormalizerInterface $normalizer,
+        IdentifiableObjectRepositoryInterface $userRepository
+    ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
+        $this->userRepository = $userRepository;
     }
 
     /**
      * @return JsonResponse
      */
-    public function getAction()
+    public function getCurrentAction()
     {
         $token = $this->tokenStorage->getToken();
         $user = null !== $token ? $token->getUser() : null;
@@ -43,6 +52,18 @@ class UserRestController
         if (null === $user) {
             throw new NotFoundHttpException('No logged in user found');
         }
+
+        return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
+    }
+
+    /**
+     * @param $identifier
+     *
+     * @return JsonResponse
+     */
+    public function getAction($identifier)
+    {
+        $user = $this->userRepository->findOneByIdentifier($identifier);
 
         return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
     }

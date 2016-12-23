@@ -12,7 +12,8 @@ define([
     'pim/i18n',
     'jquery.select2',
     'datepicker',
-    'pim/date-context'
+    'pim/date-context',
+    'pim/formatter/date'
 ], function (
     $,
     _,
@@ -25,7 +26,8 @@ define([
     i18n,
     initSelect2,
     Datepicker,
-    DateContext
+    DateContext,
+    DateFormatter
 ) {
     return BaseFilter.extend({
         shortname: 'updated',
@@ -76,7 +78,7 @@ define([
             var operator = this.getOperator();
 
             if ('SINCE LAST JOB' !== operator && 'SINCE LAST N DAYS' !== operator) {
-                value = this.formatDate(value, this.modelDateFormat, DateContext.get('date').format);
+                value = DateFormatter.format(value, this.modelDateFormat, DateContext.get('date').format);
             }
 
             return this.template({
@@ -125,7 +127,7 @@ define([
             }
 
             if ('>' === operator) {
-                value = this.formatDate(value, DateContext.get('date').format, this.modelDateFormat);
+                value = DateFormatter.format(value, DateContext.get('date').format, this.modelDateFormat);
             } else if ('SINCE LAST JOB' === operator) {
                 value = this.getParentForm().getFormData().jobCode;
             }
@@ -137,32 +139,6 @@ define([
             });
 
             this.render();
-        },
-
-        /**
-         * Format a date according to specified format.
-         * It instantiates a datepicker on-the-fly to perform the conversion. Not possible to use the "real" ones since
-         * we need to format a date even when the UI is not initialized yet.
-         *
-         * @param {String} date
-         * @param {String} fromFormat
-         * @param {String} toFormat
-         *
-         * @return {String}
-         */
-        formatDate: function (date, fromFormat, toFormat) {
-            if (_.isArray(date) || _.isEmpty(date)) {
-                return null;
-            }
-
-            var options        = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
-            var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
-
-            fakeDatepicker.setValue(date);
-            fakeDatepicker.format = toFormat;
-            fakeDatepicker._compileFormat();
-
-            return fakeDatepicker.formatDate(fakeDatepicker.getDate());
         }
     });
 });
