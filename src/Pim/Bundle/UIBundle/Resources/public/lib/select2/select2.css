@@ -528,7 +528,7 @@ disabled look for disabled choices in the results dropdown
     color: #999 !important;
 }
 
-  .select2-container-multi .select2-choices .select2-search-choice {
+.select2-container-multi .select2-choices .select2-search-choice {
     padding: 3px 5px 3px 20px;
     margin: 3px 0 3px 5px;
     position: relative;

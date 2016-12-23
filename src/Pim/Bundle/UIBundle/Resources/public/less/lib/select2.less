@@ -1,8 +1,211 @@
 @import '../base/variables';
 
+/**
+ * This file contains all the overrides for the select2 lib.
+ * It is split into 2 parts:
+ * - The default override (for all the default select2 display)
+ * - The override for specific content
+ *
+ * You can use a modifier on the select2 container to apply the custom style:
+ *
+ * $('select.select2--bigDrop').select2();
+ */
+
+.select2-default {
+  color: @AknDefaultFontColor !important; // To override the other !important of the original select2
+}
+
+.select2-container {
+  width: 100%;
+
+  .select2-choice {
+    color: @AknDefaultFontColor;
+  }
+
+  &.select2-container-disabled .select2-choice {
+    background: @AknDisabledInputColor;
+  }
+}
+
+.select2-drop-active {
+  border-color: @AknBorderColor;
+}
+
+.select2-drop {
+  border-radius: 0 0 2px 2px;
+  color: @AknDefaultFontColor;
+
+  &.select2-drop-above.select2-drop-active {
+    border-color: @AknBorderColor;
+  }
+}
+
+.select2-results {
+  .select2-highlighted {
+    background: @AknDefaultHoverBackground;
+    color: @AknDefaultFontColor;
+  }
+
+  .select2-result-label {
+    line-height: 24px;
+    padding: 0 4px;
+    min-height: 0;
+  }
+}
+
+.select2-more-results.select2-active {
+  background: none;
+}
+
+.select2-search {
+  padding-top: 4px;
+
+  input {
+    line-height: @AknFormHeight;
+    color: @AknDefaultFontColor;
+    border: 1px solid @AknBorderColor;
+    border-radius: 2px;
+    padding: 0 8px;
+    background: none;
+
+    &.select2-active {
+      background: none;
+    }
+  }
+}
+
+.select2-container .select2-choice {
+  height: @AknFormHeight;
+  line-height: @AknFormHeight;
+  border: 1px solid @AknBorderColor;
+  color: @AknDarkFontColor;
+  border-radius: 2px;
+  background: white;
+
+  .select2-arrow {
+    width: @AknFormHeight;
+    border-left-color: @AknBorderColor;
+    border-radius: 0 2px 2px 0;
+    background: white;
+
+    b {
+      background-size: 96px 48px;
+      background-image: url('../../css/images/select2x2.png');
+      background-position: 3px 2px;
+    }
+  }
+
+  & > .select2-chosen {
+    margin-right: @AknFormHeight + 10px;
+  }
+}
+
+.select2-dropdown-open .select2-choice {
+  background: lighten(@AknGrey, 30%);
+  box-shadow: none;
+
+  .select2-arrow b {
+    background-position-x: -26px;
+  }
+}
+
+.select2-dropdown-open.select2-drop-above {
+  .select2-choice,
+  .select2-choices {
+    border-color: @AknBorderColor;
+    background: lighten(@AknGrey, 30%);
+  }
+}
+
+.select2-container-multi {
+  .select2-choices {
+    border-radius: 2px;
+    border-color: @AknBorderColor;
+
+    .select2-search-choice {
+      margin: 1px;
+      height: @AknFormHeight - 4px;
+      line-height: @AknFormHeight - 4px;
+      padding: 0 10px 0 20px;
+    }
+
+    .select2-search-field {
+      height: @AknFormHeight - 2px;
+
+      input {
+        height: @AknFormHeight - 4px;
+
+        &.select2-active {
+          background: none !important;
+        }
+      }
+    }
+  }
+
+  .select2-search-choice-close {
+    top: 7px;
+  }
+
+  &.select2-container-active .select2-choices {
+    border: 1px solid @AknBorderColor;
+    outline: none;
+    box-shadow: none;
+  }
+
+  &.select2-container-disabled .select2-choices {
+    background: @AknDisabledInputColor;
+
+    .select2-search-choice {
+      padding: 0 8px;
+      background: @AknDisabledInputColor;
+    }
+
+    .select2-search-field input.select2-default {
+      width: 100% !important; // To display placeholder
+      margin-left: 4px;
+    }
+  }
+}
+
+/* Custom styles */
+.select2--bigDrop.select2-drop {
+  min-width: 400px;
+  border-top: 1px solid @AknBorderColor;
+}
+
+.select2--annotedLabels.select2-drop {
+  .select2-result-label-attribute {
+    display: flex;
+    justify-content: space-between;;
+
+    input[type="checkbox"] {
+      flex-basis: 14px;
+    }
+
+    .attribute-label {
+      flex-grow: 1;
+      padding-left: 4px;
+    }
+
+    .group-label {
+      font-style: italic;
+    }
+  }
+}
+
+/* Grid view selector custom */
 .grid-view-selector {
   .select2-container {
     width: 200px;
+
+    .select2-choice {
+      background: lighten(@AknGrey, 25%);
+      font-style: @AknFontSizeBig;
+
+      .select2-arrow {
+        background: lighten(@AknGrey, 15%);
+      }
+    }
   }
 
   &.select2-drop {

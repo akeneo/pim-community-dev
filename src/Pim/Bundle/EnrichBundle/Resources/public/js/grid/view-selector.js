@@ -121,7 +121,7 @@ define(
                 var $select = this.$('input[type="hidden"]');
 
                 var options = {
-                    dropdownCssClass: 'bigdrop grid-view-selector',
+                    dropdownCssClass: 'select2--bigDrop grid-view-selector',
                     closeOnSelect: false,
 
                     /**

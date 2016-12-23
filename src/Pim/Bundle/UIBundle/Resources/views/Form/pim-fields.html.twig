@@ -311,13 +311,21 @@
 {% block pim_enrich_attribute_requirement_widget %}
     {% set requiredTitle = 'Required'|trans %}
     {% set nonRequiredTitle = 'Not required'|trans %}
-    <div class="attribute-requirement" data-required-title="{{ requiredTitle }}" data-not-required-title="{{ nonRequiredTitle }}">
+    <div class="AknAcl AknAcl--centered attribute-requirement" data-required-title="{{ requiredTitle }}" data-not-required-title="{{ nonRequiredTitle }}">
         {% if form.required.vars.keep_non_required %}
             <input type="hidden" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" value="{{ form.required.vars.value ? '1': '0' }}" />
-            <i class="icon-{{ form.required.vars.value ? 'ok ' : 'circle non-' }}required" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.required.vars.value ? requiredTitle : nonRequiredTitle }}"></i>
+            {% set iconClass = 'AknAcl-icon AknAcl-icon--granted icon-ok required' %}
+            {% if not form.required.vars.value %}
+                {% set iconClass = 'AknAcl-icon icon-circle non-required' %}
+            {% endif %}
+            <i class="{{ iconClass }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.required.vars.value ? requiredTitle : nonRequiredTitle }}"></i>
         {% else %}
             <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
-            <i class="icon-{{ form.required.vars.checked ? 'ok ' : 'circle non-' }}required" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.required.vars.checked ? requiredTitle : nonRequiredTitle }}"></i>
+            {% set iconClass = 'AknAcl-icon AknAcl-icon--granted icon-ok required' %}
+            {% if not form.required.vars.checked %}
+                {% set iconClass = 'AknAcl-icon icon-circle non-required' %}
+            {% endif %}
+            <i class="{{ iconClass }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.required.vars.checked ? requiredTitle : nonRequiredTitle }}"></i>
         {% endif %}
     </div>
 {% endblock pim_enrich_attribute_requirement_widget %}
@@ -350,9 +358,9 @@
                 {{ form_widget(form.identity.id) }}
                 {{ form_widget(form.permissions) }}
             {% else %}
-                <div class="acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field hide' : '' }}">
-                    {{ form_widget(form.identity) }}
+                <div class="AknAcl acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field AknAcl--hide hide' : '' }}">
                     {{ form_widget(form.permissions) }}
+                    {{ form_widget(form.identity) }}
                 </div>
             {% endif %}
         {% else %}
@@ -380,7 +388,7 @@
                     {% set additionalClass = additionalClass ~ ' default-field-toggle' %}
                 {% endif %}
                 <div class="acl-permission{{ additionalClass }}" data-permission="{{ field }}">
-                    <strong>{{ ('oro_security.acl.' ~ form.parent.vars.value.identity.name ~ '.' ~ field)|lower|trans }}</strong>
+                    <span>{{ ('oro_security.acl.' ~ form.parent.vars.value.identity.name ~ '.' ~ field)|lower|trans }}</span>
                     {{ form_widget(permission) }}
                 </div>
             {% endfor %}
@@ -395,13 +403,17 @@
 {% endblock %}
 
 {% block pim_acl_access_level_selector_widget %}
-    <a class="icon-{{ form.vars.checked ? 'ok ' : 'remove non-' }}granted acl-permission-toggle"></a>
+    {% set iconClass = 'icon-ok AknAcl-icon--granted granted' %}
+    {% if not form.vars.checked %}
+        {% set iconClass = 'icon-remove AknAcl-icon--nonGranted non-granted' %}
+    {% endif %}
+    <a class="AknAcl-icon {{ iconClass }} acl-permission-toggle"></a>
     {% set attr = attr|merge({ class: 'hide' }) %}
     {{ block('checkbox_widget') }}
 {% endblock %}
 
 {% block oro_acl_label_widget %}
-    <strong>{{ value|trans }}</strong>
+    <span>{{ value|trans }}</span>
 {% endblock %}
 
 {% block pim_async_select_widget %}

@@ -35,6 +35,7 @@ define(
     ) {
         return BaseForm.extend({
             id: 'sequentialEdit',
+            className: 'AknSequentialEdit',
             template: _.template(template),
             events: {
                 'click .next, .previous': 'followLink'

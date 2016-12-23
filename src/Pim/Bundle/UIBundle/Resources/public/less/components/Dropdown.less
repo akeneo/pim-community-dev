@@ -6,7 +6,7 @@
 
   &-menu {
     border: 1px solid @AknBorderColor;
-    padding: 5px 0;
+    padding: @AknDropdownMenuVerticalPadding 0;
     position: absolute;
     left: 0;
     display: none;
@@ -20,14 +20,6 @@
     &--right {
       right: 0;
       left: auto;
-    }
-
-    // TODO Remove this input too when dropdown classes will be dropped
-    input[type='search'] {
-      padding: 4px;
-      border: 1px solid @AknBorderColor;
-      height: 22px;
-      line-height: 22px;
     }
   }
 
@@ -44,6 +36,7 @@
     background: white;
     cursor: pointer;
     text-align: left;
+    min-width: 80px;
 
     &:hover {
       background: @AknDefaultHoverBackground;

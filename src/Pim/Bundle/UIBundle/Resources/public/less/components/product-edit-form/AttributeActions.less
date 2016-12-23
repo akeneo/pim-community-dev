@@ -10,17 +10,20 @@
     justify-content: space-between;
     flex-grow: 1;
     align-items: center;
+    height: 100%;
+    margin-right: 10px;
+    padding-right: 10px;
   }
 
   &-copyActions {
     order: 10;
     display: flex;
-    padding-left: 10px;
     justify-content: space-between;
   }
 
   &-otherActions {
     display: flex;
+    align-items: center;
   }
 
   &-contextSelectors {
@@ -29,7 +32,8 @@
 
   &--comparisonMode &-editActions {
     border-right: 1px solid @AknBorderColor;
-    max-width: @AknMaxFormWidth + 30px;
+    flex-basis: @AknMaxFormWidth + 20px;
+    flex-grow: 0;
   }
 
   &--comparisonMode &-copyActions {
