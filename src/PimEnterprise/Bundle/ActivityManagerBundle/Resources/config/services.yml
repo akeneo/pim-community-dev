@@ -8,9 +8,6 @@ parameters:
     pimee_activity_manager.factory.project_created_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory'
     pimee_activity_manager.event_subscriber.project_creation_notifier.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectCreationNotifierSubscriber'
     pimee_activity_manager.converter.filter.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter'
-    pimee_activity_manager.completeness.generator.class: 'PimEnterprise\Component\ActivityManager\Completeness\PreProcessingGenerator'
-    pimee_activity_manager.presenter.family_requirement.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Presenter\FamilyRequirementPresenter'
-
 
 services:
     ### Repositories
@@ -30,7 +27,6 @@ services:
         class: '%pimee_activity_manager.repository.family_requirement.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@pimee_activity_manager.presenter.family_requirement'
             - '%pim_catalog.entity.attribute_requirement.class%'
 
     pimee_activity_manager.repository.attribute_permission:

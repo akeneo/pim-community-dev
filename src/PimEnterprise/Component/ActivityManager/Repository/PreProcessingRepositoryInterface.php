@@ -17,14 +17,18 @@ namespace PimEnterprise\Component\ActivityManager\Repository;
 interface PreProcessingRepositoryInterface
 {
     /**
+     * TODO: merge projectCompletenessRepository ?
+     *
      * Inserts data into the pre processing table.
      *
      * @param string $productId
-     * @param string $attributeGroupId
-     * @param bool   $atLeast
-     * @param bool   $complete
      * @param string $channelId
      * @param string $localeId
+     * @param array $attributeGroupCompleteness
+     * @return
+     * @internal param string $attributeGroupId
+     * @internal param bool $atLeast
+     * @internal param bool $complete
      */
-    public function addPreProcessingData($productId, $attributeGroupId, $atLeast, $complete, $channelId, $localeId);
+    public function save($productId, $channelId, $localeId, array $attributeGroupCompleteness);
 }

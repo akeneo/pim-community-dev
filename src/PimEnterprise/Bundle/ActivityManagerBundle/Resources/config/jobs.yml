@@ -8,6 +8,7 @@ parameters:
     pimee_activity_manager.calculation_step.user_group.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\UserGroupCalculationStep'
     pimee_activity_manager.calculation_step.chained.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\ChainedCalculationStep'
     pimee_activity_manager.calculation_step.product.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\ProductCalculationStep'
+    pimee_activity_manager.calculation_step.pre_process_completeness.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\PreProcessCompletenessStep'
     pimee_activity_manager.launcher.job.project_calculation.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher'
     pimee_activity_manager.job.project_calculation_parameter.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobParameters'
 
@@ -56,7 +57,7 @@ services:
             - '@pimee_activity_manager.repository.attribute_permission'
         public: false
         tags:
-            - { name: pimee_activity_manager.calculation_step, priority: 250 }
+            - { name: pimee_activity_manager.calculation_step, priority: 100 }
 
     pimee_activity_manager.calculation_step.product:
         class: '%pimee_activity_manager.calculation_step.product.class%'
@@ -64,7 +65,17 @@ services:
             - '@pimee_activity_manager.repository.project'
         public: false
         tags:
-            - { name: pimee_activity_manager.calculation_step, priority: 500  }
+            - { name: pimee_activity_manager.calculation_step, priority: 200  }
+
+    pimee_activity_manager.calculation_step.pre_process_completeness:
+        class: '%pimee_activity_manager.calculation_step.pre_process_completeness.class%'
+        arguments:
+            - '@pimee_activity_manager.repository.pre_processing'
+            - '@pimee_activity_manager.repository.family_requirement'
+            - '@pim_catalog.completeness.checker.chained'
+        public: false
+        tags:
+            - { name: pimee_activity_manager.calculation_step, priority: 300  }
 
     pimee_activity_manager.calculation_step.chained:
         class: '%pimee_activity_manager.calculation_step.chained.class%'

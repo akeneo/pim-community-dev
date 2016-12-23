@@ -12,38 +12,29 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Driver\Connection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Presenter\PresenterInterface;
 use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
-use PimEnterprise\Component\ActivityManager\Repository\StructuredAttributeRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\PreProcessingCompletenessProviderInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class FamilyRequirementRepository extends EntityRepository implements
-    FamilyRequirementRepositoryInterface,
-    StructuredAttributeRepositoryInterface
+class FamilyRequirementRepository extends EntityRepository implements FamilyRequirementRepositoryInterface
 {
-    /** @var Connection */
-    protected $connection;
-
-    /** @var PresenterInterface */
-    protected $familyRequirementPresenter;
-
     /**
-     * @param EntityManagerInterface $em
-     * @param PresenterInterface     $familyRequirementPresenter
-     * @param string                 $class
+     * @param EntityManager $em
+     * @param string $class
      */
-    public function __construct(EntityManagerInterface $em, PresenterInterface $familyRequirementPresenter, $class)
+    public function __construct(EntityManager $em, $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));
-
-        $this->connection = $em->getConnection();
-        $this->familyRequirementPresenter = $familyRequirementPresenter;
     }
 
     /**
@@ -62,58 +53,42 @@ class FamilyRequirementRepository extends EntityRepository implements
             ->andWhere('c.code = :channel_code')
             ->andWhere('ar.required = :required')
             ->setParameters([
-                'family_code'  => $family->getCode(),
+                'family_code' => $family->getCode(),
                 'channel_code' => $channel->getCode(),
-                'required'     => true,
+                'required' => true,
             ]);
 
         return array_column($queryBuilder->getQuery()->getArrayResult(), 'code');
     }
 
     /**
-     * TODO: use the ORM instead of SQL
      * {@inheritdoc}
      */
-    public function getStructuredAttributes($familyCode, $channelId, $localeId)
+    public function getRequiredAttributes(ProductInterface $product, ProjectInterface $project)
     {
-        $sql = <<<SQL
-            SELECT a.code as attribute_code, ag.code as attribute_group_code
-            FROM pim_catalog_family family
-            JOIN pim_catalog_attribute_requirement ar
-                ON ar.family_id = family.id AND ar.required = 1 AND ar.channel_id = 3
-            LEFT JOIN pim_catalog_attribute a ON a.id = ar.attribute_id
-            LEFT JOIN pim_catalog_attribute_group ag ON a.group_id = ag.id
-            WHERE family.code = :familyCode
-SQL;
+        $queryBuilder = $this->createQueryBuilder('ar');
 
-        $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('familyCode', $familyCode);
-        $stmt->execute();
+        $queryBuilder->select('a.code as attribute_code, g.id as attribute_group_id')
+            ->leftJoin('ar.family', 'f')
+            ->leftJoin('ar.channel', 'c')
+            ->leftJoin('ar.attribute', 'a')
+            ->leftJoin('a.group', 'g')
+            ->where('f.code = :family_code')
+            ->andWhere('c.code = :channel_code')
+            ->andWhere('ar.required = :required')
+            ->setParameters([
+                'family_code' => $product->getFamily()->getCode(),
+                'channel_code' => $project->getChannel()->getCode(),
+                'required' => true,
+            ]);
 
-        return $this->familyRequirementPresenter->present($stmt->fetchAll());
-    }
+        $familyRequirements = $queryBuilder->getQuery()->getArrayResult();
 
-    /**
-     * TODO: use the ORM instead of SQL
-     *
-     * TODO: maybe move into family repo
-     *
-     * {@inheritdoc}
-     */
-    public function getFamilyCode($productId)
-    {
-        $sql = <<<SQL
-            SELECT family.code
-            FROM pim_catalog_family family
-            JOIN pim_catalog_product product
-                ON product.family_id = family.id
-            WHERE product.id = :productId
-SQL;
+        $formattedRequirements = [];
+        foreach ($familyRequirements as $attribute) {
+            $formattedRequirements[$attribute['attribute_group_id']][] = $attribute['attribute_code'];
+        }
 
-        $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('productId', $productId);
-        $stmt->execute();
-
-        return $stmt->fetch();
+        return $formattedRequirements;
     }
 }

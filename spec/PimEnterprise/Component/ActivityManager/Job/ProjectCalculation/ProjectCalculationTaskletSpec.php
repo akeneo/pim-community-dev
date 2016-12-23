@@ -79,4 +79,19 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
 
         $this->execute()->shouldReturn(null);
     }
+
+    function it_throw_a_logic_exception_if_we_run_a_calculation_on_non_existing_project(
+        $projectRepository,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $stepExecution->getJobParameters()->willreturn($jobParameters);
+        $jobParameters->get('project_code')->willReturn('project_code');
+
+        $projectRepository->findOneByIdentifier('project_code')->willReturn(null);
+
+        $this->shouldThrow(\RuntimeException::class)->during('execute');
+    }
 }

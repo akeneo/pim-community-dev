@@ -79,14 +79,27 @@ class ProjectCalculationTasklet implements TaskletInterface
     public function execute()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
+        $projectCode = $jobParameters->get('project_code');
+        $project = $this->projectRepository->findOneByIdentifier($projectCode);
 
-        $project = $this->projectRepository->findOneByIdentifier($jobParameters->get('project_code'));
+        if (null === $project) {
+            throw new \RuntimeException(
+                sprintf('Try to run a project calculation but the project %s does not exist.', $projectCode)
+            );
+        }
+
         $products = $this->productRepository->findByProject($project);
 
+        $i = 1;
         foreach ($products as $product) {
             $this->calculationStep->execute($product, $project);
             $this->objectDetacher->detach($product);
+
+            echo $i." - ".(memory_get_usage()/1024/1024)." Mb\n";
+            $i++;
         }
+
+        echo (memory_get_peak_usage()/1024/1024)." Mb\n";
 
         $this->projectSaver->save($project);
     }
