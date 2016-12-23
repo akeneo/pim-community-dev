@@ -67,8 +67,7 @@ Feature: Create product assets
     And I press the "Save" button
     Then I should see a dialog with the following content:
       | content | random_asset_1 |
-    When I press the "Save" button
-    Then I should be on the "random_asset_1" asset edit page
+    And I should not see a validation tooltip "Code must be unique. We generated a new one for you."
 
   @jira https://akeneo.atlassian.net/browse/PIM-6023
   Scenario: Successfully create an asset with a non existent similar code
