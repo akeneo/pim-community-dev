@@ -33,11 +33,17 @@ define(
             template: _.template(template),
             tagName: 'span',
             className: 'action',
-            events: {
-                'click [data-action="prompt-create-project"]': 'promptCreateProject'
-            },
             fieldsStatuses: {},
             form: null,
+
+            /**
+             * {@inheritDoc}
+             */
+            configure: function () {
+                this.listenTo(this, 'grid:view-selector:create-new', this.handleProjectCreation);
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
 
             /**
              * {@inheritDoc}
@@ -48,6 +54,17 @@ define(
                 }));
 
                 return this;
+            },
+
+            /**
+             * We check if this extension can handle the action by checking the extension code.
+             *
+             * @param {Object} data '{extensionCode: "the_extension_code"}'
+             */
+            handleProjectCreation: function (data) {
+                if (data.extensionCode === this.code) {
+                    this.promptCreateProject();
+                }
             },
 
             /**
@@ -83,7 +100,7 @@ define(
                 }.bind(this));
 
                 modal.on('ok', function () {
-                    if ($('.modal .ok').hasClass('disabled')) {
+                    if ($('.modal .ok').hasClass('AknButton--disabled')) {
                         return;
                     }
 
@@ -103,9 +120,9 @@ define(
                 this.fieldsStatuses[field] = isValid;
 
                 if (_.every(_.values(this.fieldsStatuses))) {
-                    $('.modal .ok').removeClass('disabled');
+                    $('.modal .ok').removeClass('AknButton--disabled');
                 } else {
-                    $('.modal .ok').addClass('disabled');
+                    $('.modal .ok').addClass('AknButton--disabled');
                 }
             }
         });

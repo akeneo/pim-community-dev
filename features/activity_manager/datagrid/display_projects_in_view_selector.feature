@@ -101,14 +101,14 @@ Feature: Display activity manager projects in the datagrid view selector
     Given I am logged in as "Mary"
     When I am on the products page
     And I open the view selector
-    Then view selector type switcher should be on "PROJECTS"
+    Then view selector type switcher should be on "Projects"
     And I should see the "2016 summer collection" project
 
   Scenario: A contributor won't see a project he can't work on
     Given I am logged in as "Teddy"
     And I am on the products page
     And I open the view selector
-    Then view selector type switcher should be on "VIEWS"
+    Then view selector type switcher should be on "Views"
     Then I should not see the "2016 summer collection" project
     But I should see the "Default view" view
 
@@ -116,7 +116,7 @@ Feature: Display activity manager projects in the datagrid view selector
     Given I am logged in as "Mary"
     And I am on the products page
     When I open the view selector
-    Then view selector type switcher should be on "PROJECTS"
+    Then view selector type switcher should be on "Projects"
     When I filter view selector with name "2016"
     Then I should see the "2016 summer collection" project
     When I filter view selector with name "bar"
@@ -126,7 +126,7 @@ Feature: Display activity manager projects in the datagrid view selector
     Given I am logged in as "Mary"
     And I am on the products page
     When I open the view selector
-    And I switch view selector type to "VIEWS"
+    And I switch view selector type to "Views"
     And I filter view selector with name "2016"
-    And I switch view selector type to "PROJECTS"
+    And I switch view selector type to "Projects"
     Then I should see the "2016 summer collection" project

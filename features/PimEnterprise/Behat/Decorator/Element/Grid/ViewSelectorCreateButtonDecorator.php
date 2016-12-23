@@ -33,13 +33,12 @@ class ViewSelectorCreateButtonDecorator extends ElementDecorator
         $parent = $this->getParent();
 
         $dropDownMenu = $this->spin(function () use ($parent) {
-            return $parent->find('css', '.dropdown-menu');
+            return $parent->find('css', '.create-view-dropdown-menu');
         }, sprintf('Impossible to find the drop down', $action));
 
         $createBtn = $this->spin(function () use ($dropDownMenu, $action) {
             return $dropDownMenu->find('css', sprintf(
-                '.action:contains("Create %s") .select-view-action-list',
-                $action,
+                '.action:contains("Create %s")',
                 $action
             ));
         }, sprintf('Item "Create %s" of dropdown button not found', $action));

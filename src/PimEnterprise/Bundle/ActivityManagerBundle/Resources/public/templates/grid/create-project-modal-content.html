@@ -9,7 +9,7 @@
     <div class="controls">
         <label class="control-label required">
             <%- labelLabel %> (<%- requiredLabel %>)
-            <input type="text" value="<%- labelValue %>" name="project-label" class="project-field" placeholder="<%- labelPlaceholder %>" required />
+            <input type="text" value="<%- labelValue %>" name="project-label" class="project-field AknTextField" placeholder="<%- labelPlaceholder %>" required />
         </label>
 
         <div class="validation-errors">
@@ -28,7 +28,7 @@
         <label class="control-label">
             <%- dueDateLabel %>
             <span class="date-wrapper">
-                <input name="project-due-date" value="<%- dueDateValue %>" class="add-on project-field" type="text">
+                <input name="project-due-date" value="<%- dueDateValue %>" class="add-on project-field AknTextField" type="text">
             </span>
         </label>
 
@@ -47,7 +47,7 @@
     <div class="controls">
         <label class="control-label">
             <%- descriptionLabel %>
-            <textarea name="project-description" class="project-field" placeholder="<%- descriptionPlaceholder %>"><%- descriptionValue %></textarea>
+            <textarea name="project-description" class="project-field AknTextareaField" placeholder="<%- descriptionPlaceholder %>"><%- descriptionValue %></textarea>
         </label>
     </div>
 </div>

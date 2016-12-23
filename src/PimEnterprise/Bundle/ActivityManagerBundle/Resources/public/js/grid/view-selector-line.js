@@ -14,9 +14,8 @@ define(
         'underscore',
         'oro/translator',
         'pim/i18n',
-        'backbone',
         'datepicker',
-        'pim/form',
+        'pim/grid/view-selector/line',
         'pim/user-context',
         'pim/date-context',
         'text!pim/template/grid/view-selector/line',
@@ -27,18 +26,18 @@ define(
         _,
         __,
         i18n,
-        Backbone,
         Datepicker,
-        BaseForm,
+        ViewSelectorLine,
         userContext,
         DateContext,
         templateView,
         templateProject
     ) {
-        return BaseForm.extend({
-            templateView: _.template(templateView),
-            templateProject: _.template(templateProject),
-            datagridView: null,
+        return ViewSelectorLine.extend({
+            templates: {
+                view: _.template(templateView),
+                project: _.template(templateProject)
+            },
 
             /**
              * Date widget options
@@ -56,60 +55,76 @@ define(
 
             /**
              * {@inheritdoc}
-             */
-            configure: function (datagridView) {
-                this.datagridView = datagridView;
-
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
+             *
+             * Render a different template with different values depending on the view type of this line.
              */
             render: function () {
-                if (_.has(this.datagridView, 'due_date')) {
-                    var project = this.datagridView;
-                    var completionPercentage = 47; // TODO: CHANGE WITH REAL VALUE
-                    var completionStatus = 'wip';
+                var template = this.templates[this.datagridViewType];
+                var data = {};
 
-                    if (completionPercentage === 0) {
-                        completionStatus = 'todo';
-                    } else if (completionPercentage === 100) {
-                        completionStatus = 'done';
-                    }
-
-                    var dateFormat = DateContext.get('date').format;
-
-                    this.$el.html(this.templateProject({
-                        project: project,
-                        dueDateLabel: __('activity_manager.project.due_date'),
-                        dueDate: this.formatDate(project.due_date, this.modelDateFormat, dateFormat),
-                        channelLabel: i18n.getLabel(
-                            project.channel.labels,
-                            userContext.get('uiLocale'),
-                            project.channel.code
-                        ),
-                        localeLabel: project.locale.label,
-                        isCurrent: this.getRoot().currentView.id == project.id,
-                        completionPercentage: completionPercentage,
-                        completionStatus: completionStatus
-                    }));
-                } else {
-                    this.$el.html(this.templateView({
-                        view: this.datagridView,
-                        isCurrent: this.getRoot().currentView.id == this.datagridView.id
-                    }));
+                if ('view' === this.datagridViewType) {
+                    data = this.prepareViewData();
+                } else if ('project' === this.datagridViewType) {
+                    data = this.prepareProjectData();
                 }
 
+                this.$el.html(template(data));
                 this.renderExtensions();
 
                 return this;
             },
 
             /**
+             * Prepare the view data for the template.
+             *
+             * @returns {Object}
+             */
+            prepareViewData: function () {
+                return {
+                    view: this.datagridView,
+                    isCurrent: this.isCurrentView
+                };
+            },
+
+            /**
+             * Prepare the project data for the template.
+             *
+             * @returns {Object}
+             */
+            prepareProjectData: function () {
+                var project = this.datagridView;
+                var completionPercentage = 47; // TODO: CHANGE WITH REAL VALUE
+                var completionStatus = 'wip';
+
+                if (completionPercentage === 0) {
+                    completionStatus = 'todo';
+                } else if (completionPercentage === 100) {
+                    completionStatus = 'done';
+                }
+
+                var dateFormat = DateContext.get('date').format;
+
+                return {
+                    project: project,
+                    dueDateLabel: __('activity_manager.project.due_date'),
+                    dueDate: this.formatDate(project.due_date, this.modelDateFormat, dateFormat),
+                    channelLabel: i18n.getLabel(
+                        project.channel.labels,
+                        userContext.get('uiLocale'),
+                        project.channel.code
+                    ),
+                    localeLabel: project.locale.label,
+                    isCurrent: this.isCurrentView,
+                    completionPercentage: completionPercentage,
+                    completionStatus: completionStatus
+                };
+            },
+
+            /**
              * Format a date according to specified format.
-             * It instantiates a datepicker on-the-fly to perform the conversion. Not possible to use the "real" ones since
-             * we need to format a date even when the UI is not initialized yet.
+             * It instantiates a datepicker on-the-fly to perform the conversion.
+             * Not possible to use the "real" ones since we need to format a date even when the UI
+             * is not initialized yet.
              *
              * @param {String} date
              * @param {String} fromFormat

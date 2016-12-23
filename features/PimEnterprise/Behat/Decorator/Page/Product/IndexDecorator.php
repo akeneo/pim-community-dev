@@ -27,7 +27,7 @@ class IndexDecorator extends ElementDecorator
     public function getSelectViewActionDropdown()
     {
         $dropdownToggle = $this->spin(function () {
-            return $this->find('css', '.create-dropdown.dropdown-toggle');
+            return $this->find('css', '.create-view-dropdown');
         }, 'Dropdown toggle button not found');
 
         return $this->decorate(

@@ -101,6 +101,7 @@ class ViewSelectorContext extends PimContext
     public function viewSelectorTypeSwitcherShouldBeOn($expectedType)
     {
         $currentType = $this->getCurrentPage()->getCurrentViewType();
+        $currentType = ucfirst(strtolower($currentType));
 
         if ($currentType !== $expectedType) {
             throw new \UnexpectedValueException(

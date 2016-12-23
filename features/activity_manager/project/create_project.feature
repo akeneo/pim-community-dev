@@ -11,6 +11,7 @@ Feature: Create enrichment project
     And I filter by "family" with operator "in list" and value "Sneakers"
     And I filter by "category" with operator "" and value "summer_collection"
     And I display in the products grid the columns sku, name, description
+    And I should be on the products page
     And I open the view selector
     And I click on "Create project" action in the dropdown
     Then I should see the text "Label"

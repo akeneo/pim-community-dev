@@ -41,13 +41,9 @@ define(
                         }
 
                         deferred.resolve();
-                    }.bind(this))
-                    .fail(function () {
-                        this.currentViewType = 'view';
-                        deferred.resolve();
-                    });
+                    }.bind(this));
 
-                return deferred;
+                return deferred.promise();
             }
         });
     }

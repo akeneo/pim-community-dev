@@ -199,7 +199,7 @@ class ProjectContext extends PimContext
         $locale = $this->getService('pim_catalog.repository.locale')
             ->findOneByIdentifier($localeCode);
 
-        $project = $this->getService('activity_manager.repository.project')
+        $project = $this->getService('pimee_activity_manager.repository.project')
             ->findOneBy([
                 'label'   => $label,
                 'channel' => $channel,
