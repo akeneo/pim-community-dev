@@ -22,7 +22,5 @@ class PimImportExportBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container
-            ->addCompilerPass(new RegisterJobParametersFormsOptionsPass(new ReferenceFactory()));
     }
 }

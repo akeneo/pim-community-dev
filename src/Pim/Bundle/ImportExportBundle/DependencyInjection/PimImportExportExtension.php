@@ -32,7 +32,6 @@ class PimImportExportExtension extends Extension
         $loader->load('forms.yml');
         $loader->load('grid.yml');
         $loader->load('job_labels.yml');
-        $loader->load('job_parameters.yml');
         $loader->load('managers.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');

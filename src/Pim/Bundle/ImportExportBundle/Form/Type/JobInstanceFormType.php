@@ -6,7 +6,6 @@ use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Pim\Bundle\ImportExportBundle\Form\DataTransformer\ConfigurationToJobParametersTransformer;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber;
 use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
