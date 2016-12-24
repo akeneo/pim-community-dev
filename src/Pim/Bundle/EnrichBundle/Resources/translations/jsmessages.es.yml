@@ -133,7 +133,7 @@ pim_enrich:
         from: De
         modified: Modificado
         property: Propiedad
-        old_values: Viejos valores
+        old_values: Valores anteriores
         new_values: Nuevos valores
         actions: Acciones
       info:

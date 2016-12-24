@@ -117,6 +117,7 @@ pim_enrich:
       label: Classificar els productes en categories
       description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
       success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
+      launched_flash: L'acció massiva "classificar" s'ha engegat. Se'l notificarà quan hagi finalitzat.
     change-family:
       label: Canviar la família de productes
       description: La família dels productes seleccionats es canviarà per la família escollida
@@ -347,6 +348,7 @@ btn:
     variant group: crear grup de variants
     association type: crear tipus d'associació
     group type: crear tipus de grup
+    drag_or_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
   edit: editar
   save: guardar
   save and back: guardar i tornar a la quadrícula
@@ -499,6 +501,16 @@ info:
     auto option sorting: Si s'activa, les opcions s'ordenaran automàticament per les seves etiquetes configurades regionalment
   completeness:
     not calculated: No s'ha calculat encara
+color:
+  title: Color
+  gray: Gris
+  white: Blanc
+  yellow: Groc
+  orange: Taronja
+  magenta: Magenta
+  violet: Violeta
+  blue: Blau
+  cyan: Cian
 Options: Opcions
 Created at: Creat el
 Updated at: Actualitzat el
@@ -551,9 +563,11 @@ Translate from: Traduir de
 switch_on: "Sí"
 switch_off: "No"
 Close: Tancar
+Choose a color: Trieu un color
 Search: Cercar
 Choose the attribute type: Trieu el tipus d'atribut
 Choose the attribute group: Trieu el grup de l'atribut
+Drop a file or click here: Porteu un arxiu o feu clic aquí
 Drop an image or click here: Arrossegui aquí una imatge o feu-hi clic
 Automatic option sorting: Ordenació automàtica de les opcions
 save_attribute_before_manage_option: Per administrar opcions, guardeu primer l'atribut si us plau
@@ -640,6 +654,9 @@ pim_title.association_type:
 pim_title.group_type:
   index: Tipus de grup
   edit: Tipus de grup %group type.label% | Editar
+pim_title.mass_edit_action:
+  choose: Editar en massa | Triar
+  configure: Editar en massa | Configurar
 pim_title.job_tracker:
   index: Seguiment del procés
   show: Seguiment del procés | Mostrar tasca
@@ -656,6 +673,8 @@ pim_catalog_image: Imatge
 pim_catalog_boolean: "Sí/No"
 pim_catalog_date: Data
 pim_catalog_metric: Mètrica
+pim_reference_data_simpleselect: Selecció simple de dades de referència
+pim_reference_data_multiselect: Selecció múltiple de dades de referència
 Activated: Activat
 Disable: Deshabilitar
 pim_enrich.sequential_edit_action:
