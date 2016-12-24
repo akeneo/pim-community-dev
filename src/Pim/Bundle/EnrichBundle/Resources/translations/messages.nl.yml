@@ -140,6 +140,7 @@ pim_enrich:
       add_to_groups: Product toevoegen aan groepen
       add_to_variant_group: Voeg product toe aan een variant groep
       mass_edit: Product massabewerken acties
+      comment: Geef commentaar op producten
       download: Download het product als PDF
       history: Bekijk productgeschiedenis
     category:
@@ -172,17 +173,20 @@ pim_enrich:
       sort: Attribuutgroepen sorteren
       add_attribute: Attribuut toevoegen aan een groep
       remove_attribute: Attribuut verwijderen van een groep
+      history: Bekijk geschiedenis attribuutgroep
     attribute:
       index: Attributen weergeven
       create: Attribuut aanmaken
       edit: Attribuut bewerken
       remove: Attribuut verwijderen
       sort: Sorteer attributen binnen attribuutgroepen
+      history: Bekijk attribuutgeschiedenis
     group:
       index: Groepen weergeven
       create: Groep aanmaken
       edit: Groep wijzigen
       remove: Groep verwijderen
+      history: Bekijk groep geschiedenis
     group_type:
       index: Groepstypes weergeven
       create: Groepstype aanmaken
@@ -437,6 +441,7 @@ info:
   completeness:
     not calculated: Nog niet berekend
 color:
+  title: Kleur
   gray: Grijs
   white: Wit
   yellow: Geel
@@ -500,6 +505,7 @@ Choose a color: Kies een kleur
 Search: Zoeken
 Choose the attribute type: Kies het attribuuttype
 Choose the attribute group: Kies een attribuutgroep
+Drop a file or click here: Plaats een bestand of klik hier
 Drop an image or click here: Plaats een bestand of klik hier
 Automatic option sorting: Automatische optie-sortering
 save_attribute_before_manage_option: Om opties te beheren sla het attribuut eerst op
@@ -582,6 +588,9 @@ pim_title.association_type:
 pim_title.group_type:
   index: Groepstypen
   edit: Groupstypen %group type.label% | Bewerken
+pim_title.mass_edit_action:
+  choose: Massa bewerken | Kies
+  configure: Massa bewerken | Configureren
 pim_title.dashboard: "Dashboard"
 pim_catalog_identifier: Id
 pim_catalog_text: Tekst
