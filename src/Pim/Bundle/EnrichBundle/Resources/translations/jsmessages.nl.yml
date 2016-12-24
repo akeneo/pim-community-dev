@@ -95,6 +95,7 @@ pim:
   grid:
     mass_action:
       quick_export:
+        csv_all: CSV (alle kenmerken)
         csv_grid_context: CSV (rastercontext)
         xlsx_all: Excel (alle attributen)
         xlsx_grid_context: Excel (rastercontext)
@@ -363,6 +364,7 @@ pim_enrich:
           title: Familie
           help: Selecteer de producten om te importeren volgens hun familie. Bv. exporteer enkel schoenen en jurken.
           operators:
+            IN: In lijst
             NOT IN: Niet in de lijst
             EMPTY: Producten die geen familie hebben
             NOT EMPTY: Producten die een familie hebben
@@ -402,6 +404,7 @@ pim_enrich:
             >: Groter dan
             <=: Kleiner dan of gelijk aan
             <: Kleiner dan
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         string:
           operators:
@@ -411,6 +414,7 @@ pim_enrich:
             =: Is gelijk aan
             STARTS WITH: Begint met
             ENDS WITH: Eindigt met
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         price-collection:
           operators:
@@ -420,9 +424,12 @@ pim_enrich:
             >: Groter dan
             <=: Kleiner dan of gelijk aan
             <: Kleiner dan
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         multi_select:
           operators:
+            IN: In lijst
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         media:
           operators:
@@ -431,6 +438,7 @@ pim_enrich:
             =: Is gelijk aan
             STARTS WITH: Begint met
             ENDS WITH: Eindigt met
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         date:
           operators:
@@ -440,6 +448,7 @@ pim_enrich:
             !=: Is niet gelijk aan
             BETWEEN: Tussen
             NOT BETWEEN: Niet tussen
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         number:
           operators:
@@ -449,6 +458,7 @@ pim_enrich:
             >: Groter dan
             <=: Kleiner dan of gelijk aan
             <: Kleiner dan
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
   mass_edit_action:
     edit_common_attributes:
