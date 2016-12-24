@@ -390,7 +390,7 @@ flash:
   entity:
     removed: Element wurde gelöscht
   attribute:
-    created: Attribut erfolgreich angelegt
+    created: Attribut erfolgreich erstellt
     updated: Attribut erfolgreich aktualisiert
     removed: Attribut erfolgreich entfernt
     identifier not removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
@@ -405,11 +405,11 @@ flash:
     not removed default: Die Standard Attributgruppe kann nicht gelöscht werden
     not removed default attributes: Die Attribute können nicht aus der Standard Attributgruppe entfernt werden
   category:
-    created: Kategorie erfolgreich angelegt
+    created: Kategorie erfolgreich erstellt
     updated: Kategorie erfolgreich aktualisiert
     removed: Kategorie erfolgreich entfernt
   tree:
-    created: Strukturbaum erfolgreich angelegt
+    created: Strukturbaum erfolgreich erstellt
     updated: Strukturbaum erfolgreich aktualisiert
     removed: Strukturbaum erfolgreich entfernt
     not removable: Strukturbäume, die mit Ausgabekanälen verbunden sind, können nicht entfernt werden.
@@ -430,7 +430,7 @@ flash:
     attributes added: Attribute erfolgreich zur Produktfamilie hinzugefügt
     attribute removed: Attribute erfolgreich aus der Produktfamilie entfernt
   product:
-    created: Produkt erfolgreich angelegt
+    created: Produkt erfolgreich erstellt
     updated: Produkt erfolgreich aktualisiert
     removed: Produkt erfolgreich entfernt
     invalid: Bitte überprüfen Sie Ihre Eingabe und versuchen es erneut
@@ -440,23 +440,23 @@ flash:
     enabled: Produkt wurde aktiviert
     disabled: Produkt wurde deaktiviert
   group:
-    created: Gruppe erfolgreich angelegt
+    created: Gruppe erfolgreich erstellt
     updated: Gruppe erfolgreich aktualisiert
     removed: Gruppe erfolgreich entfernt
   variant group:
-    created: Variantengruppe erfolgreich angelegt
+    created: Variantengruppe erfolgreich erstellt
     updated: Variantengruppe erfolgreich aktualisiert
     removed: Variantengruppe erfolgreich entfernt
     attributes_added: Attribute erfolgreich zur Variantengruppe hinzugefügt
     attribute_removed: Attribute erfolgreich aus der Variantengruppe entfernt
   group type:
-    created: Gruppentyp erfolgreich angelegt
+    created: Gruppentyp erfolgreich erstellt
     updated: Gruppentyp erfolgreich aktualisiert
     removed: Gruppentyp erfolgreich gelöscht
     cant remove variant: Gruppentyp Variante kann nicht gelöscht werden
     cant remove used: Der Gruppentyp wird von anderen Gruppen verwendet und kann nicht gelöscht werden
   association type:
-    created: Verbindungstyp erfolgreich angelegt
+    created: Verbindungstyp erfolgreich erstellt
     updated: Verbindungstyp erfolgreich aktualisiert
     removed: Verbindungstyp erfolgreich gelöscht
   user:
@@ -507,9 +507,9 @@ color:
   blue: Blau
   cyan: Cyan
 Options: Optionen
-Created at: Angelegt am
+Created at: Erstellt am
 Updated at: Aktualisiert am
-Created: Angelegt
+Created: Erstellt
 Updated: Aktualisiert
 Last update: Letzte Aktualisierung
 by: durch
@@ -725,7 +725,6 @@ pim_enrich.mass_edit_action:
     label: Benötigte Attribute auswählen
     description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
     success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
-To enable: Um zu aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
 Remove this attribute: Dieses Attribut löschen
@@ -777,7 +776,7 @@ In group: In Gruppe
 Attribute as label: Attribut als Label
 Is associated: Ist verbunden
 Complete: Vollständig
-Created At: Angelegt am
+Created At: Erstellt am
 Updated At: Aktualisiert am
 Enabled: Aktiviert
 Disabled: Deaktiviert

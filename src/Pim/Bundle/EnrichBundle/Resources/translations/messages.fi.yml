@@ -101,6 +101,7 @@ pim_enrich:
       launched_flash: Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     edit-common-attributes:
       label: Muokkaa attribuutteja
+      description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
       launched_flash: Massatoiminto "Muokkaa yleisiä attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
@@ -523,6 +524,7 @@ Required: Vaadittu
 Unique: Ainutlaatuinen
 Not required: Ei vaadittu
 Translatable: Käännettävissä
+Scopable: Lokalisoitavissa kanavoittain
 Localizable: Lokalisoitavissa
 Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
@@ -550,6 +552,7 @@ Family: Perhe
 Available locales: Saatavilla olevat alueet
 Locale specific: Aluespesifi
 default: Oletusarvo
+Axis: Keskiviiva
 Add attributes: Lisää attribuutteja
 Translate from: Käännä kielestä
 switch_on: "Kyllä"
@@ -570,6 +573,7 @@ Choose a unit: Valitse yksikkö
 No matches found: Vastaavuuksia ei löydy
 Category tree: Kategoriahierarkia
 Completeness: Valmistumisaste
+Attribute used as label: Otsikkona käytettävä attribuutti
 Global: Globaali
 Channel: Kanava
 Expand all channels: Laajenna kaikki kanavat
@@ -599,6 +603,7 @@ None: Ei yhtään
 E-mail: Sähköposti
 URL: URL-osoite
 Regular expression: Tavallinen virke
+Minimum input length: Syötteen vähimmäispituus
 Default: Oletusarvo
 Attributes: Attribuutit
 Title: Nimike
@@ -697,6 +702,7 @@ pim_enrich.mass_edit_action:
     success_flash: Tuotteiden tila on muutettu
   edit-common-attributes:
     label: Muokkaa yleisiä attribuutteja
+    description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
     empty: Ole hyvä ja valitse attribuutit joita haluat muokata
     success_flash: Tuotteen attribuutit on päivitetty
     message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.

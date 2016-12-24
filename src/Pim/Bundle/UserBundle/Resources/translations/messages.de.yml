@@ -18,7 +18,7 @@ oro.user.grid.users:
     email: E-Mail
     firstName: Vorname
     lastName: Nachname
-    createdAt: Angelegt am
+    createdAt: Erstellt am
     updatedAt: Aktualisiert am
     enabled: Status
 oro.user.grid.roles:

@@ -18,7 +18,7 @@ Channel list: Elenco canali
 Select file: Seleziona il file
 Change file: Modifica file
 Remove file: Rimuovi file
-Delete: Elimina
+Delete: Eliminare
 Save: Salva
 Cancel: Cancella
 Get help: Chiedi aiuto
@@ -27,11 +27,13 @@ oro.form.choose_value: Scegliere un valore...
 Read more: Maggiori informazioni
 oro.form.click_here_to_select: Clicca qui per selezionare...
 Add: Aggiungi
-Learn how to use this space: Imparare come utilizzare questo spazio
-How To Use Pinbar: Come utilizzare la Pinbar
+"Learn how to use this space": "Imparare come utilizzare questo spazio"
+"How To Use Pinbar": "Come utilizzare la Pinbar"
 Pinbar: Pinbar
 Favorites: Preferiti
 Most Viewed: Più visualizzati
-Add this page to favorites: Aggiungi questa pagina ai preferiti
-Minimize the window to the pinbar: Minimizzare la finestra per la pinbar
-Loading ...: Caricamento in corso ...
+"Add this page to favorites": "Aggiungi questa pagina ai preferiti"
+"Minimize the window to the pinbar": "Minimizzare la finestra per la pinbar"
+"Loading ...": "Caricamento in corso ..."
+"Yes": "Sì"
+"No": "No"
