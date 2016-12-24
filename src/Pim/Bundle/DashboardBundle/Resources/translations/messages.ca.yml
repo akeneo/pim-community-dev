@@ -1,4 +1,6 @@
 pim_dashboard:
+  title: Panell de contol
+  version: Versió
   link.label:
     product: Gestionar de productes
     category: Gestionar categories
@@ -14,6 +16,8 @@ pim_dashboard:
       title: Últimes operacions
       empty: No s'han trobat operacions
       status: Estat
+      date: Data
+      type: Tipus
       profile name: Nom del perfil
       details: Detalls
       job_type:
