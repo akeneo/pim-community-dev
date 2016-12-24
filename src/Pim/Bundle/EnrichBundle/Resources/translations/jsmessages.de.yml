@@ -140,7 +140,7 @@ pim_enrich:
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
       meta:
-        created: Angelegt
+        created: Erstellt
         created_by: durch
         updated_by: durch
         updated: Letzte Aktualisierung

@@ -551,7 +551,7 @@ Useable as grid column: Se puede usar como columna de grilla
 Useable as grid filter: Se puede usar en la grilla
 Family: Familia
 Available locales: Locales disponibles
-Locale specific: Locale específico
+Locale specific: Local específico
 default: Predefinido
 Axis: Eje
 Add attributes: Agregar atributos
@@ -659,7 +659,7 @@ pim_catalog_textarea: Área de Texto
 pim_catalog_number: Número
 pim_catalog_price_collection: Precio
 pim_catalog_multiselect: Selección multiple
-pim_catalog_simpleselect: Seleccione simple
+pim_catalog_simpleselect: Selección simple
 pim_catalog_file: Archivo
 pim_catalog_image: Imagen
 pim_catalog_boolean: "Si/No"
@@ -795,7 +795,7 @@ Data: DATOS
 Author: Autor
 Logged at: Sesión iniciada el
 Deleted: Eliminados
-Old values: Viejos valores
+Old values: Valores anteriores
 New values: Nuevos valores
 System configuration: Configuración del sistema
 General setup: Configuración general

@@ -88,6 +88,7 @@ Toggle status: Tancar estat
 pim.grid.mass_action.quick_export.csv_all: CSV (tots els atributs)
 pim.grid.mass_action.delete: Suprimir
 pim.grid.mass_action.mass_edit: Edició massiva
+pim.grid.mass_action.sequential_edit: Editar seqüencialment
 jstree.create: Crear
 switch_on: "Sí"
 switch_off: "No"
@@ -126,6 +127,7 @@ pim_enrich:
         property: Propietat
         old_values: Valors antics
         new_values: Valors nous
+        actions: Accions
       info:
         deletion_successful: Producte suprimit correctament.
         deletion_failed: No s'ha pogut suprimir el producte.
@@ -136,7 +138,7 @@ pim_enrich:
             - camps
         already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
       error:
-        upload: S'ha produït un error durant la carrega
+        upload: S'ha produït un error durant la càrrega
       meta:
         created: Creat
         created_by: Per
@@ -170,7 +172,7 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Aquest camp regionalitzable no està disponible per la configuració regional '{{ locale }}' i el canal '{{ channel }}'
       media:
-        upload: Arrossegueu-lo aquí per penjar o feu-hi clic
+        upload: Arrossegueu-lo aquí per carregar o feu-hi clic
     attribute_option:
       code: Codi
       label: Etiqueta
@@ -178,12 +180,14 @@ pim_enrich:
     leave: Esteu segur que voleu sortir d'aquesta pàgina?
     discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
     delete_item: Confirmar l'eliminació
+    delete:
+      product_attribute: Esteu segur que voleu suprimir aquest atribut del producte?
   info:
     not_applicable: N/D
     entity:
       updated: Hi ha canvis sense guardar.
   error:
-    upload: S'ha produït un error penjant el fitxer
+    upload: S'ha produït un error carregant el fitxer
   alert:
     not_allowed: No té permís per accedir a aquesta pàgina
     error_occured: S'ha produït un error durant la càrrega de la pàgina
