@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Tem a certeza que pretende eliminar este item?
+    item: Tem a certeza que pretende remover este item?
     association type: Tem certeza que deseja eliminar este tipo de associação?
     attribute: Tem certeza que deseja eliminar este atributo?
     family: Tem certeza que deseja eliminar esta família?
@@ -22,6 +22,8 @@ pim_datagrid:
       confirm_content: Tem certeza que deseja eliminar os produtos selecionados?
       success: Produtos selecionados eliminados com sucesso.
       error: Ocorreu um erro ao tentar eliminar os produtos seleccionados, por favor tente novamente.
+  view_selector:
+    view: Visualizações
 flash:
   item:
     removed: Item removido com sucesso
@@ -132,7 +134,6 @@ pim_enrich:
         from: De
         modified: Modificado
         property: Propriedade
-        actions: Ações
       info:
         deletion_successful: Produto eliminado com sucesso.
         deletion_failed: Não foi possível eliminar o produto.
@@ -195,6 +196,18 @@ pim_enrich:
             - campos
         already_in_upload: Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"
         no_attributes: Este grupo variante ainda não tem atributos
+      btn:
+        save: Guardar
+      meta:
+        product_count: Produtos
+        created: Criado
+        updated: Atualizado
+    group:
+      title: Grupo
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - campos
       btn:
         save: Guardar
       meta:
@@ -296,6 +309,18 @@ pim_enrich:
           title: Produtos
         attributes:
           title: Atributos
+    group:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          type: Tipo
+          label_translations: Traduções de rótulo
+        history:
+          title: Histórico
+        products:
+          title: Produtos
     common:
       tab:
         attributes:

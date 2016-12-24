@@ -154,12 +154,11 @@ pim_connector:
         help: Czy zezwolić na wgrywanie plików bezpośrednio, czy nie
 job_execution.summary:
   read: odczytano
-  read_lines: odczytane wiersze
   write: zapisano
-  skip: pominięte
+  skip: pominięto
   create: utworzono
   process: przetworzono
-  update_products: zaktualizowane produkty
+  update_products: zaktualizowano produktów
   process_products: produkty przetworzone
   skip_products: pominięte produkty
   displayed: pierwsze ostrzeżenie wyświetlone
@@ -167,6 +166,7 @@ job_execution.summary:
     title: 'Strona kodowa pliku:'
     skipped: pominięte, rozszerzenie na białej liście
   product_skipped_no_diff: produkt pominięty (brak różnic)
+  item_position: odczytane wiersze
 batch_jobs:
   csv_product_export:
     label: Eksport produktów do CSV

@@ -59,7 +59,7 @@ pim_enrich:
       VARIANT: Variante
       X_SELL: Cross-Sell
       ADDITIONAL: Ergänzend
-      RELATED: Zugehörig
+      RELATED: Verknüpft
     tab:
       product.title: Produkte
       property.title: Eigenschaften
@@ -81,7 +81,7 @@ pim_enrich:
       page_subtitle: Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)
       title: Aktion auswählen
       subtitle: Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen
-      confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.
+      confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.
       steps:
         first: Produkte auswählen
         second: Aktion auswählen
@@ -92,7 +92,7 @@ pim_enrich:
       page_subtitle: Massenbearbeitung (1 Produktfamilie)|Massenbearbeitung (%count% Produktfamilien)
       title: Aktion auswählen
       subtitle: Wählen Sie die Aktion aus, die Sie auf die ausgewählte Produktfamilie anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produktfamilien anwenden wollen
-      confirm: Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.
+      confirm: Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.
       steps:
         first: Produktfamilien auswählen
         second: Aktion auswählen
@@ -117,6 +117,17 @@ pim_enrich:
       label: Zuordnung von Produkten in Kategorien
       description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
+      launched_flash: Die Massenbearbeitung "zu Kategorien hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    classify-move:
+      label: Produkte in Kategorien verschieben
+      description: Die Produkte werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen.
+      success_flash: Produkt(e) wurden in die ausgewählten Kategorien verschoben
+      launched_flash: Die Massenbearbeitung "in Kategorien verschieben" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    classify-remove:
+      label: Produkte aus Kategorien entfernen
+      description: Die Produkte werden aus den folgenden Kategorien entfernt.
+      success_flash: Produkt(e) wurden aus den ausgewählten Kategorien entfernt
+      launched_flash: Die Massenbearbeitung "aus Kategorien entfernen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     change-family:
       label: Produktfamilie der Produkte ändern
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
@@ -139,9 +150,9 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Die Massenbearbeitung "zu Variantengruppe hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     set-attribute-requirements:
-      label: Attribut-Anforderungen festlegen
-      description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
-      success_flash: Die Attribut-Anforderungen wurden den ausgewählten Produktfamilien zugeordnet
+      label: Benötigte Attribute auswählen
+      description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
+      success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
       launched_flash: Die Massenbearbeitung "setzen von Attributanforderungen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     mass_action:
       quick_export:
@@ -394,7 +405,7 @@ flash:
   entity:
     removed: Element wurde gelöscht
   attribute:
-    created: Attribut erfolgreich angelegt
+    created: Attribut erfolgreich erstellt
     updated: Attribut erfolgreich aktualisiert
     removed: Attribut erfolgreich entfernt
     identifier not removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
@@ -409,11 +420,11 @@ flash:
     not removed default: Die Standard Attributgruppe kann nicht gelöscht werden
     not removed default attributes: Die Attribute können nicht aus der Standard Attributgruppe entfernt werden
   category:
-    created: Kategorie erfolgreich angelegt
+    created: Kategorie erfolgreich erstellt
     updated: Kategorie erfolgreich aktualisiert
     removed: Kategorie erfolgreich entfernt
   tree:
-    created: Strukturbaum erfolgreich angelegt
+    created: Strukturbaum erfolgreich erstellt
     updated: Strukturbaum erfolgreich aktualisiert
     removed: Strukturbaum erfolgreich entfernt
     not removable: Strukturbäume, die mit Ausgabekanälen verbunden sind, können nicht entfernt werden.
@@ -434,7 +445,7 @@ flash:
     attributes added: Attribute erfolgreich zur Produktfamilie hinzugefügt
     attribute removed: Attribute erfolgreich aus der Produktfamilie entfernt
   product:
-    created: Produkt erfolgreich angelegt
+    created: Produkt erfolgreich erstellt
     updated: Produkt erfolgreich aktualisiert
     removed: Produkt erfolgreich entfernt
     invalid: Bitte überprüfen Sie Ihre Eingabe und versuchen es erneut
@@ -444,23 +455,23 @@ flash:
     enabled: Produkt wurde aktiviert
     disabled: Produkt wurde deaktiviert
   group:
-    created: Gruppe erfolgreich angelegt
+    created: Gruppe erfolgreich erstellt
     updated: Gruppe erfolgreich aktualisiert
     removed: Gruppe erfolgreich entfernt
   variant group:
-    created: Variantengruppe erfolgreich angelegt
+    created: Variantengruppe erfolgreich erstellt
     updated: Variantengruppe erfolgreich aktualisiert
     removed: Variantengruppe erfolgreich entfernt
     attributes_added: Attribute erfolgreich zur Variantengruppe hinzugefügt
     attribute_removed: Attribute erfolgreich aus der Variantengruppe entfernt
   group type:
-    created: Gruppentyp erfolgreich angelegt
+    created: Gruppentyp erfolgreich erstellt
     updated: Gruppentyp erfolgreich aktualisiert
     removed: Gruppentyp erfolgreich gelöscht
     cant remove variant: Gruppentyp Variante kann nicht gelöscht werden
     cant remove used: Der Gruppentyp wird von anderen Gruppen verwendet und kann nicht gelöscht werden
   association type:
-    created: Verbindungstyp erfolgreich angelegt
+    created: Verbindungstyp erfolgreich erstellt
     updated: Verbindungstyp erfolgreich aktualisiert
     removed: Verbindungstyp erfolgreich gelöscht
   user:
@@ -501,9 +512,9 @@ info:
   completeness:
     not calculated: Noch nicht berechnet
 Options: Optionen
-Created at: Angelegt am
+Created at: Erstellt am
 Updated at: Aktualisiert am
-Created: Angelegt
+Created: Erstellt
 Updated: Aktualisiert
 Last update: Letzte Aktualisierung
 by: durch
@@ -725,7 +736,7 @@ pim_enrich.mass_edit_action:
     label: Benötigte Attribute auswählen
     description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
     success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
-To enable: Aktivieren
+To enable: Zu aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
 Remove this attribute: Dieses Attribut löschen
@@ -777,7 +788,7 @@ In group: In Gruppe
 Attribute as label: Attribut als Label
 Is associated: Ist verbunden
 Complete: Vollständig
-Created At: Angelegt am
+Created At: Erstellt am
 Updated At: Aktualisiert am
 Enabled: Aktiviert
 Disabled: Deaktiviert
@@ -845,6 +856,7 @@ job_execution.summary:
 pim_mass_edit_execution_show: Ausgeführte Massenbearbeitung | Details
 edit_common_attributes.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
+remove_product_value.steps.update_product_value_processor.title: Produktwert entfernen
 add_to_variant_group_clean.steps.excluded.title: Ausgeschlossene Produkte
 add_to_variant_group_clean.steps.duplicated.title: Doppelte Achse
 add_to_variant_group.steps.excluded.title: Ausgeschlossene Produkte
@@ -855,6 +867,10 @@ edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
 perform.steps.duplicated.title: Doppelte Achse
 perform.steps.excluded.title: Ausgeschlossene Produkte
 batch_jobs:
+  add_product_value:
+    label: Produktwert hinzufügen
+    perform:
+      label: Produktwert hinzufügen
   update_product_value:
     label: Wert des Produkts aktualisieren
     perform:
@@ -869,6 +885,26 @@ batch_jobs:
     label: Benötigte Attribute auswählen
     perform:
       label: Benötigte Attribute auswählen
+  csv_product_quick_export:
+    quick_export.label: CSV Produkt-Schnellexport
+    perform:
+      label: CSV Produkt-Schnellexport
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV Produkt-Schnellexport kontextabhängig
+    perform:
+      label: CSV Produkt-Schnellexport kontextabhängig
+  xlsx_product_quick_export:
+    quick_export.label: Xlsx Produkt-Schnellexport
+    perform:
+      label: Xlsx Produkt-Schnellexport
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Xlsx Produkt-Schnellexport kontextabhängig
+    perform:
+      label: Xlsx Produkt-Schnellexport kontextabhängig
+  add_to_variant_group:
+    label: Zu einer Variantengruppe hinzufügen
+    perform:
+      label: Zu einer Variantengruppe hinzufügen
 mass_edit report:
   overview: Massenbearbeitung Reports
 job_tracker:
@@ -878,6 +914,8 @@ job_tracker:
     started_at: Gestartet am
 pim_enrich_attribute_form:
   code: Code
+  attributeType: Attributtyp
+  reference_data_name: Referenzdaten Name
   scopable: Gültigkeitsbereich
   localizable: Lokalisierbar
   unique: Eindeutiger Wert
