@@ -1,0 +1,9 @@
+parameters:
+    pim_api.controller.rest.category.class: Pim\Bundle\ApiBundle\Controller\Rest\CategoryController
+
+services:
+    pim_api.controller.rest.category:
+        class: '%pim_api.controller.rest.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_serializer'

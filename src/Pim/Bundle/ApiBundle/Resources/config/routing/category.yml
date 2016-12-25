@@ -1,0 +1,4 @@
+pim_api_rest_category_get:
+    path: /{code}
+    defaults: { _controller: pim_api.controller.rest.category:getAction, _format: json }
+    methods: [GET]

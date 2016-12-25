@@ -1,0 +1,3 @@
+category:
+    resource: '@PimApiBundle/Resources/config/routing/category.yml'
+    prefix: /rest/v1/categories
