@@ -30,6 +30,11 @@ security:
             pattern:                        ^/media
             security:                       false
 
+        # TODO: enabled oAuth autorization with API-47
+        rest:
+            pattern:                        ^/api
+            anonymous:                      true
+
         login:
             pattern:                        ^/user/(login|reset-request|send-email|check-email)$
             provider:                       chain_provider
