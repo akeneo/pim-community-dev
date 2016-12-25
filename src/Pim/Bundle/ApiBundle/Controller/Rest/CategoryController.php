@@ -119,6 +119,40 @@ class CategoryController
     }
 
     /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws BadRequestHttpException
+     *
+     * @return JsonResponse
+     */
+    public function partialUpdateAction(Request $request, $code)
+    {
+        $category = $this->repository->findOneByIdentifier($code);
+        if (null === $category) {
+            throw new NotFoundHttpException(sprintf('Category "%s" does not exist.', $code));
+        }
+
+        $content = $request->getContent();
+        if (null === $content || '' === $content) {
+            throw new BadRequestHttpException('JSON is not valid.');
+        }
+
+        $data = json_decode($content, true);
+        if (empty($data)) {
+            throw new BadRequestHttpException('Nothing to update.');
+        }
+
+        try {
+            $this->updater->update($category, $data);
+        } catch (NoSuchPropertyException $e) {
+            throw new BadPropertyException($e->getMessage(), $e);
+        }
+
+        return $this->validateCategory($category, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
      * @param CategoryInterface $category
      * @param int               $httpCode
      *
@@ -140,7 +174,7 @@ class CategoryController
         // tmp, to change
         $errors = [
             'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
-            'message' => 'Validation failed',
+            'message' => 'Validation failed.',
             'errors'  => $this->normalizer->normalize($violations, 'external_api')
         ];
 
