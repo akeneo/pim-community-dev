@@ -7,3 +7,8 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_serializer'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+            - '@router'
