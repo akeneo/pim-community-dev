@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class TestCase extends KernelTestCase
+class TestCase extends KernelTestCase
 {
     /** @var int Count of test inside the same test class */
     protected static $count = 0;
