@@ -11,11 +11,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -23,6 +21,7 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -118,12 +117,10 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function countPublishedProductsForFamily(FamilyInterface $family)
     {
-        $qb = $this->createQueryBuilder('pp');
-        $qb
-            ->andWhere('pp.family = :family')
-            ->setParameter('family', $family);
+        $productQb = $this->queryBuilderFactory->create();
+        $productQb->addFilter('family.code', Operators::IN_LIST, [$family->getCode()]);
 
-        return $this->getCountFromQB($qb);
+        return $productQb->execute()->count();
     }
 
     /**
@@ -131,16 +128,10 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function countPublishedProductsForCategory(CategoryInterface $category)
     {
-        $categoryIds = $this->getObjectManager()
-            ->getRepository(ClassUtils::getClass($category))->getAllChildrenIds($category);
-        $categoryIds[] = $category->getId();
+        $productQb = $this->queryBuilderFactory->create();
+        $productQb->addFilter('categories.code', Operators::IN_CHILDREN_LIST, [$category->getCode()]);
 
-        $qb = $this->createQueryBuilder('pp');
-        $qb
-            ->innerJoin('pp.categories', 'c')
-            ->andWhere($qb->expr()->in('c.id', $categoryIds));
-
-        return $this->getCountFromQB($qb);
+        return $productQb->execute()->count();
     }
 
     /**
@@ -159,12 +150,10 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function countPublishedProductsForGroup(GroupInterface $group)
     {
-        $qb = $this->createQueryBuilder('pp');
-        $qb
-            ->andWhere(':group MEMBER OF pp.groups')
-            ->setParameter('group', $group);
+        $productQb = $this->queryBuilderFactory->create();
+        $productQb->addFilter('groups.code', Operators::IN_LIST, [$group->getCode()]);
 
-        return $this->getCountFromQB($qb);
+        return $productQb->execute()->count();
     }
 
     /**
@@ -186,18 +175,10 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function countPublishedProductsForAttributeOption(AttributeOptionInterface $option)
     {
-        $qb = $this->createQueryBuilder('pp');
+        $productQb = $this->queryBuilderFactory->create();
+        $productQb->addFilter($option->getAttribute()->getCode(), Operators::IN_LIST, [$option->getId()]);
 
-        if ($option->getAttribute()->getAttributeType() === AttributeTypes::OPTION_SIMPLE_SELECT) {
-            $qb
-                ->innerJoin('pp.values', 'ppv', 'WITH', $qb->expr()->eq('ppv.option', $option->getId()));
-        } else {
-            $qb
-                ->innerJoin('pp.values', 'ppv')
-                ->innerJoin('ppv.options', 'ppo', 'WITH', $qb->expr()->eq('ppo.id', $option->getId()));
-        }
-
-        return $this->getCountFromQB($qb);
+        return $productQb->execute()->count();
     }
 
     /**
