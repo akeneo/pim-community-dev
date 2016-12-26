@@ -26,7 +26,7 @@ class ProjectCompletenessWidgetSpec extends ObjectBehavior
 
     function it_has_a_template()
     {
-        $this->getTemplate()->shouldReturn('PimEnterpriseActivityManagerBundle:Widget:progress.html.twig');
+        $this->getTemplate()->shouldReturn('PimEnterpriseActivityManagerBundle:Widget:completeness.html.twig');
     }
 
     function it_has_parameters()
