@@ -1,0 +1,26 @@
+### Project
+activity_manager_project_create:
+    path: /projects
+    defaults: { _controller: pimee_activity_manager.controller.project_controller:createAction}
+    methods: [POST]
+
+activity_manager_project_search:
+    path: /projects/search
+    defaults: { _controller: pimee_activity_manager.controller.project_controller:searchAction, _format: json }
+    methods: [GET]
+
+activity_manager_project_get:
+    path: /projects/{identifier}
+    defaults: { _controller: pimee_activity_manager.controller.project_controller:getAction, _format: json }
+    methods: [GET]
+
+activity_manager_project_contributors_search:
+    path: /project/{projectCode}/contributors
+    defaults: { _controller: pimee_activity_manager.controller.project_controller:searchContributorsAction, _format: json }
+    methods: [GET]
+
+### Project Completeness
+activity_manager_project_completeness_show:
+    path: /projects/{projectCode}/completeness
+    defaults: { _controller: pimee_activity_manager.controller.project_completeness_controller:showAction, _format: json }
+    methods: [GET]

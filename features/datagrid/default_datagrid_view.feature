@@ -1,8 +1,10 @@
 @javascript
-Feature: Datagrid views
-  In order to easily manage different views in the datagrid
-  As a regular user
-  I need to be able to create, update, apply and remove datagrid views
+Feature: Published products datagrid views
+  In order to easily manage the published products datagrid
+  As a contributor
+  I need to be able to select my default datagrid view
+
+  # Override: EE default_datagrid_view.feature
 
   Background:
     Given a "footwear" catalog configuration
@@ -12,13 +14,15 @@ Feature: Datagrid views
       | black-sneakers  | sneakers |
       | black-boots     | boots    |
     And I am logged in as "Mary"
-    And I am on the published products page
 
-  @skip-activity-manager
-  Scenario: Successfully choose my default published view
-    Given I filter by "family" with operator "in list" and value "Sneakers"
-    And I create the view:
+  Scenario: A contributor can choose his default published products datagrid view from his profile
+    Given I am on the published products page
+    And I filter by "family" with operator "in list" and value "Sneakers"
+    And I open the view selector
+    And I click on "Create view" action in the dropdown
+    And I fill in the following information in the popin:
       | new-view-label | Sneakers only |
+    And I press the "OK" button
     Then I should be on the published index page
     And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page

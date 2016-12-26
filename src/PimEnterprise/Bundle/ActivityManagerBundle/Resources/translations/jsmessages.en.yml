@@ -1,0 +1,36 @@
+activity_manager:
+    common:
+        required: Required
+    grid.view_selector.create: Create project
+    project:
+        label: Label
+        label_maxlength: This value is too long. It should have {{ max }} characters or less.
+        description: Description
+        due_date: Due Date
+        due_date_past: You can't select a date in the past.
+    create_project_modal:
+        label_placeholder: Name of the new project
+        description_placeholder: Description of the new project
+        saved: The project has been saved, you will be notified when the calculation is done.
+        title: Create project
+        confirm: Save
+        cancel: Cancel
+    widget:
+        no_project: You have no current project.
+        description: Description
+        due_date: Due date
+        todo: TODO
+        in_progress: IN PROGRESS
+        done: DONE
+        all_contributors: All contributors
+        placeholder:
+            contributor_selector: Search contributor
+            project_selector: Search project
+        completeness:
+            to_enrich: PRODUCTS TO ENRICH
+            in_progress: PRODUCTS IN PROGRESS
+            done: PRODUCTS DONE
+
+pim_datagrid:
+    view_selector:
+        project: Projects

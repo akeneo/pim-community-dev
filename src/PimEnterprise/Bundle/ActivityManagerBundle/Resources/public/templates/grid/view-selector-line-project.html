@@ -1,0 +1,17 @@
+<div class="select2-result-label-view">
+    <div class="project-line <%- isCurrent ? 'project-line-current' : '' %>">
+        <div class="project-completeness project-completeness--<%- completionStatus %>">
+            <%- completionPercentage %>%
+        </div>
+        <div class="project-main-infos">
+            <span class="project-label"><%- project.label %></span>
+            <span class="project-scope">- <%- channelLabel %> | <%- localeLabel %></span>
+        </div>
+        <div class="project-secondary-infos">
+            <%- dueDateLabel %> <span class="project-duedate"><%- dueDate %></span>
+        </div>
+    </div>
+
+    <div class="grid-view-selector-line-overlay" data-drop-zone="overlay">
+    </div>
+</div>

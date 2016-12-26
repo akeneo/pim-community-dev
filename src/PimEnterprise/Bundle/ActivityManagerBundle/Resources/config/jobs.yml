@@ -1,0 +1,90 @@
+parameters:
+    pimee_activity_manager.project_calculation.connector_name: 'activity manager'
+    pimee_activity_manager.project_calculation.tasklet_name: 'project_calculation'
+    pimee_activity_manager.project_calculation.job_name: 'project_calculation'
+    pimee_activity_manager.project_calculation.job_type: 'project_calculation'
+
+    pimee_activity_manager.tasklet.project_calculation.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationTasklet'
+    pimee_activity_manager.calculation_step.user_group.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\UserGroupCalculationStep'
+    pimee_activity_manager.calculation_step.chained.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\ChainedCalculationStep'
+    pimee_activity_manager.calculation_step.product.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\ProductCalculationStep'
+    pimee_activity_manager.launcher.job.project_calculation.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher'
+    pimee_activity_manager.job.project_calculation_parameter.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobParameters'
+
+services:
+    ### Tasklet
+    pimee_activity_manager.tasklet.project_calculation:
+        class: '%pimee_activity_manager.tasklet.project_calculation.class%'
+        arguments:
+            - '@pimee_activity_manager.repository.product'
+            - '@pimee_activity_manager.repository.project'
+            - '@pimee_activity_manager.calculation_step.chained'
+            - '@pimee_activity_manager.saver.project'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+        public: false
+
+    ### Steps
+    pimee_activity_manager.step.project_calculation:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pimee_activity_manager.project_calculation.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_activity_manager.tasklet.project_calculation'
+        public: false
+
+    ### Job
+    pimee_activity_manager.job.project_calculation:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_activity_manager.project_calculation.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_activity_manager.step.project_calculation'
+        public: false
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_activity_manager.project_calculation.connector_name%', type: '%pimee_activity_manager.project_calculation.job_type%' }
+
+    ### Calculation step
+    pimee_activity_manager.calculation_step.user_group:
+        class: '%pimee_activity_manager.calculation_step.user_group.class%'
+        arguments:
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pimee_security.repository.category_access'
+            - '@pimee_activity_manager.repository.familly_requirement'
+            - '@pimee_activity_manager.repository.attribute_permission'
+        public: false
+        tags:
+            - { name: pimee_activity_manager.calculation_step, priority: 250 }
+
+    pimee_activity_manager.calculation_step.product:
+        class: '%pimee_activity_manager.calculation_step.product.class%'
+        arguments:
+            - '@pimee_activity_manager.repository.project'
+        public: false
+        tags:
+            - { name: pimee_activity_manager.calculation_step, priority: 500  }
+
+    pimee_activity_manager.calculation_step.chained:
+        class: '%pimee_activity_manager.calculation_step.chained.class%'
+        arguments:
+            - []
+
+    ### Job launcher
+    pimee_activity_manager.launcher.job.project_calculation:
+        class: '%pimee_activity_manager.launcher.job.project_calculation.class%'
+        arguments:
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@pim_import_export.repository.job_instance'
+            - '%pimee_activity_manager.project_calculation.job_name%'
+
+    ### Job Parameters
+    pimee_activity_manager.job.project_calculation_parameter:
+        class: '%pimee_activity_manager.job.project_calculation_parameter.class%'
+        arguments:
+            - '%pimee_activity_manager.project_calculation.job_name%'
+        public: false
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

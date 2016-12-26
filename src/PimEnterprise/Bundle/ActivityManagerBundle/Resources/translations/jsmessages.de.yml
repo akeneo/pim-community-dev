@@ -1,0 +1,9 @@
+activity_manager:
+  common:
+    required: Erforderlich
+  project:
+    label: Bezeichnung
+    description: Beschreibung
+  create_project_modal:
+    confirm: Speichern
+    cancel: Abbrechen

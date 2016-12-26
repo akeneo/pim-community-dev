@@ -1,0 +1,53 @@
+<div class="control-group modal-project-form">
+    <% _.each(_.where(errors, {status_code: 500}), function (error) { %>
+        <div class="alert alert-danger" >
+            <i class="icon-warning-sign"></i>
+            <span class="error-message"><%- error.status_text %></span>
+        </div>
+    <% }); %>
+
+    <div class="controls">
+        <label class="control-label required">
+            <%- labelLabel %> (<%- requiredLabel %>)
+            <input type="text" value="<%- labelValue %>" name="project-label" class="project-field AknTextField" placeholder="<%- labelPlaceholder %>" required />
+        </label>
+
+        <div class="validation-errors">
+            <span class="validation-errors label-errors">
+                <% _.each(_.where(errors, {field: 'label'}), function (error) { %>
+                    <span>
+                        <i class="icon-warning-sign"></i>
+                        <span class="error-message"><%- error.message %></span>
+                    </span>
+                <% }); %>
+            </span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <label class="control-label">
+            <%- dueDateLabel %>
+            <span class="date-wrapper">
+                <input name="project-due-date" value="<%- dueDateValue %>" class="add-on project-field AknTextField" type="text">
+            </span>
+        </label>
+
+        <div class="validation-errors">
+            <span class="validation-errors dueDate-errors">
+                <% _.each(_.where(errors, {field: 'dueDate'}), function (error) { %>
+                    <span>
+                        <i class="icon-warning-sign"></i>
+                        <span class="error-message"><%- error.message %></span>
+                    </span>
+                <% }); %>
+            </span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <label class="control-label">
+            <%- descriptionLabel %>
+            <textarea name="project-description" class="project-field AknTextareaField" placeholder="<%- descriptionPlaceholder %>"><%- descriptionValue %></textarea>
+        </label>
+    </div>
+</div>

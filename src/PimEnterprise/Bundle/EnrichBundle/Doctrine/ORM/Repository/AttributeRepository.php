@@ -16,13 +16,16 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter;
+use PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface;
 
 /**
  * Attribute repository
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class AttributeRepository extends EntityRepository implements TranslatedLabelsProviderInterface
+class AttributeRepository extends EntityRepository implements
+    TranslatedLabelsProviderInterface,
+    AttributeRepositoryInterface
 {
     /** @var AttributeViewRightFilter */
     protected $attributeFilter;
@@ -60,5 +63,43 @@ class AttributeRepository extends EntityRepository implements TranslatedLabelsPr
         }
 
         return $formattedAttributes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAttributeCodesUsableInGrid($groupIds = null)
+    {
+        $qb = $this->createQueryBuilder('att')
+            ->select('att.code');
+
+        if (is_array($groupIds)) {
+            if (empty($groupIds)) {
+                return [];
+            }
+
+            $qb->andWhere('att.group IN (:groupIds)');
+            $qb->setParameter('groupIds', $groupIds);
+        }
+
+        $qb->andWhere('att.useableAsGridFilter = :useableInGrid');
+        $qb->setParameter('useableInGrid', 1);
+
+        $result = $qb->getQuery()->getArrayResult();
+
+        return array_column($result, 'code');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAttributeCodes()
+    {
+        $qb = $this->createQueryBuilder('att')
+            ->select('att.code');
+
+        $result = $qb->getQuery()->getArrayResult();
+
+        return array_column($result, 'code');
     }
 }

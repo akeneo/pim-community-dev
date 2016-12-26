@@ -1,0 +1,9 @@
+activity_manager:
+  common:
+    required: Обязательно
+  project:
+    label: Метка
+    description: Описание
+  create_project_modal:
+    confirm: Сохранить
+    cancel: Отмена

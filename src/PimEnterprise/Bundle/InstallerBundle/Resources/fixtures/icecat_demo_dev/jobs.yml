@@ -969,3 +969,8 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
+    project_calculation:
+        connector: activity manager
+        alias:     project_calculation
+        label:     Project calculation
+        type: project_calculation

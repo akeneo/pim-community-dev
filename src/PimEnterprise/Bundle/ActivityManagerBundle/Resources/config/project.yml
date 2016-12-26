@@ -1,0 +1,104 @@
+parameters:
+    pimee_activity_manager.model.project.class: 'PimEnterprise\Component\ActivityManager\Model\Project'
+    pimee_activity_manager.model.project.interface: 'PimEnterprise\Component\ActivityManager\Model\ProjectInterface'
+
+    pimee_activity_manager.normalizer.project.class: 'PimEnterprise\Component\ActivityManager\Normalizer\ProjectNormalizer'
+    pimee_activity_manager.repository.project.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectRepository'
+    pimee_activity_manager.repository.project_completeness.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectCompletenessRepository'
+    pimee_activity_manager.updater.project.class: 'PimEnterprise\Component\ActivityManager\Updater\ProjectUpdater'
+    pimee_activity_manager.event_listener.event_translation.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\EventTranslationSubscriber'
+    pimee_activity_manager.controller.project_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectController'
+    pimee_activity_manager.controller.project_completeness_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectCompletenessController'
+    pimee_activity_manager.widget.completeness.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectCompletenessWidget'
+    pimee_activity_manager.voter.project.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter'
+
+services:
+    ### Factory
+    pimee_activity_manager.factory.project:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pimee_activity_manager.model.project.class%'
+
+    ### Normalizer
+    pimee_activity_manager.normalizer.project:
+        class: '%pimee_activity_manager.normalizer.project.class%'
+        public: false
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    ### Repository
+    pimee_activity_manager.repository.project:
+        class: '%pimee_activity_manager.repository.project.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pimee_activity_manager.model.project.class%'
+
+    pimee_activity_manager.repository.project_completeness:
+        class: '%pimee_activity_manager.repository.project_completeness.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    ### Updater
+    pimee_activity_manager.updater.project:
+        class: '%pimee_activity_manager.updater.project.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+
+    ### Saver
+    pimee_activity_manager.saver.project:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_activity_manager.model.project.interface%'
+
+    ### Subscribers
+    pimee_activity_manager.event_listener.event_translation:
+        class: '%pimee_activity_manager.event_listener.event_translation.class%'
+        arguments:
+            - '@event_dispatcher'
+            - '@pimee_activity_manager.repository.project'
+            - '%pimee_activity_manager.project_calculation.job_name%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ### Widget
+    pimee_activity_manager.widget.completeness:
+        class: '%pimee_activity_manager.widget.completeness.class%'
+        tags:
+            - { name: pim_dashboard.widget, position: 15 }
+
+    ### Voter
+    pimee_activity_manager.voter.project:
+        class: '%pimee_activity_manager.voter.project.class%'
+        arguments:
+            - '@pimee_activity_manager.repository.user'
+        public: false
+        tags:
+            - { name: security.voter }
+
+    ### Controllers
+    pimee_activity_manager.controller.project_controller:
+        class: '%pimee_activity_manager.controller.project_controller.class%'
+        arguments:
+            - '@pimee_activity_manager.converter.filter'
+            - '@pim_datagrid.factory.datagrid_view'
+            - '@pimee_activity_manager.factory.project'
+            - '@pim_datagrid.updater.datagrid_view'
+            - '@pimee_activity_manager.updater.project'
+            - '@pimee_activity_manager.saver.project'
+            - '@validator'
+            - '@pimee_activity_manager.launcher.job.project_calculation'
+            - '@pim_internal_api_serializer'
+            - '@pimee_activity_manager.repository.project'
+            - '@pimee_activity_manager.repository.user'
+            - '@security.token_storage'
+
+    pimee_activity_manager.controller.project_completeness_controller:
+        class: '%pimee_activity_manager.controller.project_completeness_controller.class%'
+        arguments:
+            - '@pimee_activity_manager.repository.project'
+            - '@pimee_activity_manager.repository.project_completeness'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
