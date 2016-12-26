@@ -108,10 +108,12 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
         $qb = $this->findBySearchQb($search, $options);
 
         $selectDql = sprintf(
-            '%s.id as id, CONCAT(\'[\', %s.code, \']\') as text',
+            '%s.%s as id, CONCAT(\'[\', %s.code, \']\') as text',
             $this->getAlias(),
+            isset($options['type']) && 'code' === $options['type'] ? 'code' : 'id',
             $this->getAlias()
         );
+
         $qb->select($selectDql);
 
         return $qb->getQuery()->getArrayResult();
