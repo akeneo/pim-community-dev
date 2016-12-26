@@ -62,6 +62,10 @@ class CategoryUpdater implements ObjectUpdaterInterface
     protected function setData(CategoryInterface $category, $field, $data)
     {
         if ('labels' === $field) {
+            if (null === $data) {
+                throw new \InvalidArgumentException(sprintf('Labels of category cannot be null.'));
+            }
+
             foreach ($data as $localeCode => $label) {
                 $category->setLocale($localeCode);
             }

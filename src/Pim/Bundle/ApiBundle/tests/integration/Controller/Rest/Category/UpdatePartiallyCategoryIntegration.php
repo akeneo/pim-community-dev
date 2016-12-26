@@ -161,4 +161,26 @@ JSON;
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode(), 'Category has not been created');
         $this->assertSame('Property "extra" does not exist. Check the standard format documentation.', $content['message']);
     }
+
+    /**
+     * @group test
+     */
+    public function testResponseWhenLabelsIsNull()
+    {
+        $client = static::createClient();
+
+        $data =
+<<<JSON
+    {
+        "labels": null
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/categories/', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $content = json_decode($response->getContent(), true);
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode(), 'Category has not been created');
+        $this->assertSame('Labels of category cannot be null.', $content['message']);
+    }
 }

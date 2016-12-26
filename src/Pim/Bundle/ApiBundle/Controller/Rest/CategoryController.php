@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -96,24 +97,12 @@ class CategoryController
     /**
      * @param Request $request
      *
-     * @throws BadRequestHttpException
-     *
      * @return JsonResponse
      */
     public function createAction(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
-        if (null === $data) {
-            throw new BadRequestHttpException('JSON is not valid.');
-        }
-
         $category = $this->factory->create();
-
-        try {
-            $this->updater->update($category, $data);
-        } catch (NoSuchPropertyException $e) {
-            throw new BadPropertyException($e->getMessage(), $e);
-        }
+        $this->updateCategory($category, $request->getContent());
 
         return $this->validateCategory($category, Response::HTTP_CREATED);
     }
@@ -123,6 +112,7 @@ class CategoryController
      * @param string  $code
      *
      * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
      *
      * @return JsonResponse
      */
@@ -133,23 +123,38 @@ class CategoryController
             throw new NotFoundHttpException(sprintf('Category "%s" does not exist.', $code));
         }
 
-        $content = $request->getContent();
-        if (null === $content || '' === $content) {
-            throw new BadRequestHttpException('JSON is not valid.');
-        }
-
-        $data = json_decode($content, true);
+        $data = json_decode($request->getContent(), true);
         if (empty($data)) {
             throw new BadRequestHttpException('Nothing to update.');
+        }
+
+        $this->updateCategory($category, $request->getContent());
+
+        return $this->validateCategory($category, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @param CategoryInterface $category
+     * @param string            $content
+     *
+     * @throws BadPropertyException
+     * @throws UnprocessableEntityHttpException
+     * @throws BadRequestHttpException
+     */
+    protected function updateCategory(CategoryInterface $category, $content)
+    {
+        $data = json_decode($content, true);
+        if (null === $data) {
+            throw new BadRequestHttpException('JSON is not valid.');
         }
 
         try {
             $this->updater->update($category, $data);
         } catch (NoSuchPropertyException $e) {
             throw new BadPropertyException($e->getMessage(), $e);
+        } catch (\InvalidArgumentException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
-
-        return $this->validateCategory($category, Response::HTTP_NO_CONTENT);
     }
 
     /**
