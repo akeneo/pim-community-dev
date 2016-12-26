@@ -446,6 +446,10 @@ define(
                 return _.map(data, function (view) {
                     view.text = view.label;
 
+                    if (!_.has(view, 'id') && _.has(view, 'code')) {
+                        view.id = view.code;
+                    }
+
                     return view;
                 });
             },
