@@ -816,7 +816,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 }
 
                 return false;
-
             }, sprintf('Unable to uncheck the row "%s"', $row));
         }
     }
