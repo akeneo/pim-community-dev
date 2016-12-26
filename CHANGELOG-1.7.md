@@ -22,6 +22,8 @@
 
 ## BC breaks
 
+- Remove WebServiceBundle
+- Remove `wsse_secured` firewall in security.yml
 - Change the constructor of `Pim\Component\Connector\Writer\File\Yaml\Writer` to add `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`
 - Remove useless class `Pim\Component\ReferenceData\Normalizer\Structured\ReferenceDataNormalizer`
 - Move all classes in `Pim\Component\Catalog\Denormalizer\Structured\` to `Pim\Component\Catalog\Denormalizer\Standard\`
