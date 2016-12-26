@@ -175,6 +175,34 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
+    public function getCategoryIdsByCodes(array $categoriesCodes)
+    {
+        if (empty($categoriesCodes)) {
+            return [];
+        }
+
+        $meta = $this->getClassMetadata();
+        $config = $this->listener->getConfiguration($this->_em, $meta->name);
+
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('node.id')
+            ->from($config['useObjectClass'], 'node')
+            ->where('node.code IN (:categoriesCodes)');
+
+        $qb->setParameter('categoriesCodes', $categoriesCodes);
+
+        $categories = $qb->getQuery()->execute(null, AbstractQuery::HYDRATE_SCALAR);
+        $ids = [];
+        foreach ($categories as $category) {
+            $ids[] = (int) $category['id'];
+        }
+
+        return $ids;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByIdentifier($code)
     {
         return $this->findOneBy(['code' => $code]);

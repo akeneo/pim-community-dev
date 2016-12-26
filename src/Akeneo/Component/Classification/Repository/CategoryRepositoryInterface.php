@@ -79,6 +79,15 @@ interface CategoryRepositoryInterface extends
     public function getAllChildrenCodes(CategoryInterface $parent, $includeNode = false);
 
     /**
+     * Return the categories IDs from their codes. The categories are not hydrated.
+     *
+     * @param array $codes
+     *
+     * @return array
+     */
+    public function getCategoryIdsByCodes(array $codes);
+
+    /**
      * Get children from a parent id
      *
      * @param int $parentId
