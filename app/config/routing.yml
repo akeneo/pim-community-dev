@@ -29,9 +29,6 @@ pim_user:
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
-pim_webservice:
-    resource: "@PimWebServiceBundle/Resources/config/routing.yml"
-
 pimee_datagrid:
     resource: "@PimEnterpriseDataGridBundle/Resources/config/routing.yml"
 
@@ -61,6 +58,9 @@ pimee_product_asset:
 
 pim_security:
     resource: "@PimEnterpriseSecurityBundle/Resources/config/routing.yml"
+
+pim_api:
+    resource: "@PimApiBundle/Resources/config/routing.yml"
 
 # Oro platform
 

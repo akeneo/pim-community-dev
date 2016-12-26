@@ -96,7 +96,6 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\ImportExportBundle\PimEnterpriseImportExportBundle(),
             new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
-            new PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle(),
             new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle(),
             new PimEnterprise\Bundle\ActivityManagerBundle\PimEnterpriseActivityManagerBundle(),
 
@@ -131,7 +130,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
-            new Pim\Bundle\WebServiceBundle\PimWebServiceBundle(),
             new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
             new Pim\Bundle\CommentBundle\PimCommentBundle(),
             new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
@@ -142,6 +140,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
             new Pim\Bundle\LocalizationBundle\PimLocalizationBundle(),
             new Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
+            new Pim\Bundle\ApiBundle\PimApiBundle()
         ];
     }
 

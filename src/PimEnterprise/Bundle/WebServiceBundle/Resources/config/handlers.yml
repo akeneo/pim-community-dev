@@ -1,9 +1,0 @@
-parameters:
-    pimee_webservice.handler.rest.product.class: PimEnterprise\Bundle\WebServiceBundle\Handler\Rest\ProductHandler
-
-services:
-    pim_webservice.handler.rest.product:
-        class: '%pimee_webservice.handler.rest.product.class%'
-        arguments:
-            - '@pim_serializer'
-            - '@security.authorization_checker'
