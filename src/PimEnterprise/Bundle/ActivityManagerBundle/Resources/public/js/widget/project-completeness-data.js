@@ -13,9 +13,10 @@ define(
         'pim/form',
         'backbone',
         'pim/fetcher-registry',
-        'text!activity-manager/templates/widget/project-completeness-data'
+        'text!activity-manager/templates/widget/project-completeness-data',
+        'activity-manager/project/completeness-data-formatter'
     ],
-    function ($, _, __, BaseForm, Backbone, FetcherRegistry, template) {
+    function ($, _, __, BaseForm, Backbone, FetcherRegistry, template, completenessFormatter) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'AknProjectWidget-boxes',
@@ -45,41 +46,19 @@ define(
 
                 FetcherRegistry.getFetcher('project').getCompleteness(data.currentProjectCode, contributorUsername)
                     .then(function (completeness) {
+                        var completenessPercentage = completenessFormatter.formatToPercentage(completeness);
+                        completenessPercentage.todo += '% ' + __(this.config.labels.percentageTodo);
+                        completenessPercentage.in_progress += '% ' + __(this.config.labels.percentageInProgress);
+                        completenessPercentage.done += '% ' + __(this.config.labels.percentageDone);
+
                         this.$el.html(this.template({
                             completeness: completeness,
-                            percentage: this.formatToPercentage(completeness),
+                            percentage: completenessPercentage,
                             todoLabel: __(this.config.labels.todo),
                             inProgressLabel: __(this.config.labels.inProgress),
                             doneLabel: __(this.config.labels.done)
                         }));
                     }.bind(this));
-            },
-
-            /**
-             * Format a number to a percentage with the linked sentence.
-             *
-             * @param {Collection} completeness
-             *
-             * @returns {Collection}
-             */
-            formatToPercentage: function (completeness) {
-                var rawTodo = parseInt(completeness.todo);
-                var rawInProgress = parseInt(completeness.in_progress);
-                var rawDone = parseInt(completeness.done);
-                var todo = 0, inProgress = 0, done = 0;
-                var total = rawTodo + rawInProgress + rawDone;
-
-                if (0 !== total) {
-                    todo = Math.round(rawTodo * 100 / total);
-                    inProgress = Math.round(rawInProgress * 100 / total);
-                    done = Math.round(rawDone * 100 / total);
-                }
-
-                return {
-                    todo: todo + '% ' + __(this.config.labels.percentageTodo),
-                    in_progress: inProgress + '% ' + __(this.config.labels.percentageInProgress),
-                    done: done + '% ' + __(this.config.labels.percentageDone)
-                };
             }
         });
     }

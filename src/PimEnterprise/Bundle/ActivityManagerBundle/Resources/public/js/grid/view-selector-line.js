@@ -18,6 +18,7 @@ define(
         'pim/user-context',
         'pim/date-context',
         'pim/formatter/date',
+        'activity-manager/project/completeness-data-formatter',
         'text!pim/template/grid/view-selector/line',
         'text!activity-manager/templates/grid/view-selector/line-project'
     ],
@@ -30,6 +31,7 @@ define(
         userContext,
         DateContext,
         DateFormatter,
+        completenessFormatter,
         templateView,
         templateProject
     ) {
@@ -79,12 +81,12 @@ define(
              */
             prepareProjectData: function () {
                 var project = this.datagridView;
-                var completionPercentage = 47; // TODO: CHANGE WITH REAL VALUE
+                var completeness = completenessFormatter.formatToPercentage(project.completeness);
                 var completionStatus = 'wip';
 
-                if (completionPercentage === 0) {
+                if (completeness.done === 0) {
                     completionStatus = 'todo';
-                } else if (completionPercentage === 100) {
+                } else if (completeness.done === 100) {
                     completionStatus = 'done';
                 }
 
@@ -101,7 +103,7 @@ define(
                     ),
                     localeLabel: project.locale.label,
                     isCurrent: this.isCurrentView,
-                    completionPercentage: completionPercentage,
+                    completionPercentage: completeness.done,
                     completionStatus: completionStatus
                 };
             }
