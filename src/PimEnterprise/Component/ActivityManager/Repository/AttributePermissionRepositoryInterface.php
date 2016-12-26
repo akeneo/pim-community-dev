@@ -10,8 +10,8 @@
  */
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
-use Pim\Component\User\Model\GroupInterface;
 
+use Pim\Component\User\Model\GroupInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

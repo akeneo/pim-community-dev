@@ -17,9 +17,9 @@ use Pim\Behat\Context\PimContext;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

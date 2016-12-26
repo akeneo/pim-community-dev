@@ -5,12 +5,12 @@ namespace Context;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use PimEnterprise\Behat\Context\ActivityManager\ProjectContext;
-use PimEnterprise\Behat\Context\NavigationContext;
-use PimEnterprise\Behat\Context\ViewSelectorContext;
+use PimEnterprise\Behat\Context\ActivityManager\WidgetContext;
 use PimEnterprise\Behat\Context\DashboardContext;
 use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;
-use PimEnterprise\Behat\Context\ActivityManager\WidgetContext;
+use PimEnterprise\Behat\Context\NavigationContext;
+use PimEnterprise\Behat\Context\ViewSelectorContext;
 
 /**
  * A context for creating entities
