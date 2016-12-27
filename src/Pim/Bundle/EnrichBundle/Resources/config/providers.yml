@@ -3,13 +3,13 @@ parameters:
     pim_enrich.provider.field.chained.class:       Pim\Bundle\EnrichBundle\Provider\Field\FieldChainedProvider
     pim_enrich.provider.field.base.class:          Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
     pim_enrich.provider.field.wysiwyg.class:       Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider
-    pim_enrich.provider.filter.chained.class:       Pim\Bundle\EnrichBundle\Provider\Filter\FilterChainedProvider
-    pim_enrich.provider.filter.base.class:          Pim\Bundle\EnrichBundle\Provider\Filter\BaseFilterProvider
+    pim_enrich.provider.filter.chained.class:      Pim\Bundle\EnrichBundle\Provider\Filter\FilterChainedProvider
+    pim_enrich.provider.filter.base.class:         Pim\Bundle\EnrichBundle\Provider\Filter\BaseFilterProvider
     pim_enrich.provider.empty_value.chained.class: Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueChainedProvider
     pim_enrich.provider.empty_value.base.class:    Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider
     pim_enrich.provider.form.chained.class:        Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider
     pim_enrich.provider.form.product.class:        Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
-    pim_enrich.provider.form.job_instance.class:        Pim\Bundle\EnrichBundle\Provider\Form\JobInstanceFormProvider
+    pim_enrich.provider.form.job_instance.class:   Pim\Bundle\EnrichBundle\Provider\Form\JobInstanceFormProvider
     pim_enrich.provider.structure_version.class:   Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProvider
 
 services:

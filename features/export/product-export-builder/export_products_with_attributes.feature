@@ -114,8 +114,7 @@ Feature: Export products with only selected attributes
     BOOT-2;;;;1;boots;;;;"The boot 2";;;;;;;dry
     """
 
-  # TODO TIP-652
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-5941
+  @jira https://akeneo.atlassian.net/browse/PIM-5941
   Scenario: Navigate between export profile tabs
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |

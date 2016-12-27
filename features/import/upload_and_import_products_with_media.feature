@@ -33,7 +33,7 @@ Feature: Upload and import products with media
     And the product "CAT-003" should have the following values:
       | side_view | cat_003.png |
 
-  @deprecated @info https://akeneo.atlassian.net/browse/PIM-2090
+  @info https://akeneo.atlassian.net/browse/PIM-2090
   Scenario: Fail to launch an import through file upload when no file was selected
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"

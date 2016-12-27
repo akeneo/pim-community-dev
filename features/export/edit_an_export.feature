@@ -70,8 +70,7 @@ Feature: Edit an export
       | Label | My export |
     Then I should see "There are unsaved changes."
 
-  # TODO TIP-652
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-5965
+  @jira https://akeneo.atlassian.net/browse/PIM-5965
   Scenario: Successfully display export filter in expected order
     Given I am on the "csv_footwear_product_export" export job page
     When I visit the "Content" tab

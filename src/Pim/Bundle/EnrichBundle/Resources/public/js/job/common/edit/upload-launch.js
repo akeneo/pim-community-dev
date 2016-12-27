@@ -58,11 +58,7 @@ define(
                         Navigation.getInstance().setLocation(response.redirectUrl);
                     }.bind(this))
                     .fail(function (xhr) {
-                        // var message = xhr.responseJSON && xhr.responseJSON.message ?
-                        //     xhr.responseJSON.message :
-                        //     _.__('pim_enrich.entity.product.error.upload');
-                        // navigation.addFlashMessage('error', message);
-                        // navigation.afterRequest();
+                        // TODO TIP-652
                     });
                 } else {
                     $.ajax(this.getUrl(), {method: 'POST'}).
@@ -70,7 +66,7 @@ define(
                             Navigation.getInstance().setLocation(response.redirectUrl);
                         })
                         .fail(function () {
-
+                            // TODO TIP-652
                         });
                 }
 

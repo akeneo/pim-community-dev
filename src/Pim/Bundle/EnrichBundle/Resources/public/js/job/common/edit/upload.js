@@ -28,6 +28,9 @@ define([
             return this;
         },
 
+        /**
+         * When a file is added to the dom input
+         */
         addFile: function () {
             var input = this.$('input[type="file"]').get(0);
             if (!input || 0 === input.files.length) {
@@ -41,6 +44,9 @@ define([
             this.render();
         },
 
+        /**
+         * When the user remove the file from the input
+         */
         removeFile: function () {
             this.setData({file: null});
 

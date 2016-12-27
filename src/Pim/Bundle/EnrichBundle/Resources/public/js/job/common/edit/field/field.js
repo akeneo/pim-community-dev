@@ -1,5 +1,13 @@
 'use strict';
 
+/**
+ * Base field form extension
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
 define([
     'underscore',
     'oro/translator',
@@ -25,6 +33,9 @@ define([
             BaseForm.prototype.initialize.apply(this, arguments);
         },
 
+        /**
+         * {@inheritdoc}
+         */
         render: function () {
             this.$el.html(
                 this.template(this.getTemplateContext())
@@ -38,10 +49,22 @@ define([
             return this;
         },
 
+        /**
+         * Render the input itself
+         *
+         * @param {object} templateContext
+         *
+         * @return {string}
+         */
         renderInput: function (templateContext) {
             return this.fieldTemplate(templateContext);
         },
 
+        /**
+         * Get the template object for the field
+         *
+         * @return {object}
+         */
         getTemplateContext: function () {
             return {
                 __: __,
@@ -51,14 +74,27 @@ define([
             }
         },
 
+        /**
+         * Get the current value of the field
+         *
+         * @return {mixed}
+         */
         getValue: function () {
             return propertyAccessor.accessProperty(this.getFormData(), this.getFieldCode());
         },
 
+        /**
+         * Get the field code of the property
+         *
+         * @return {strign}
+         */
         getFieldCode: function () {
             return this.config.fieldCode;
         },
 
+        /**
+         * Update the model after dom update
+         */
         updateState: function () {
             var data = propertyAccessor.updateProperty(this.getFormData(), this.getFieldCode(), this.getFieldValue())
 

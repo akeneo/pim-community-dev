@@ -52,10 +52,18 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
+            /**
+             * Set validation errors after save request failure
+             *
+             * @param {event} event
+             */
             setValidationErrors: function (event) {
                 this.errors = event.response;
             },
 
+            /**
+             * Remove validation error
+             */
             removeValidationErrors: function () {
                 this.errors = {};
             },

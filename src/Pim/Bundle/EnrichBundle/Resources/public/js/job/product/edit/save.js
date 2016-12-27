@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Save extension for Group
+ * Save extension for job instance
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

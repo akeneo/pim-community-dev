@@ -36,6 +36,6 @@ class JobInstanceFormProvider implements FormProviderInterface
      */
     public function supports($element)
     {
-        return $element instanceof JobInstance;
+        return $element instanceof JobInstance && isset($this->formConfig[$element->getJobName()]);
     }
 }

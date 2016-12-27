@@ -39,9 +39,6 @@ class JobInstanceController
     /** @var NormalizerInterface */
     protected $jobInstanceNormalizer;
 
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
     /** @var ObjectUpdaterInterface */
     protected $updater;
 
@@ -76,7 +73,6 @@ class JobInstanceController
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
      * @param NormalizerInterface                   $jobInstanceNormalizer
-     * @param NormalizerInterface                   $normalizer
      * @param ObjectUpdaterInterface                $updater
      * @param SaverInterface                        $saver
      * @param RemoverInterface                      $remover
@@ -92,7 +88,6 @@ class JobInstanceController
         IdentifiableObjectRepositoryInterface $repository,
         JobRegistry $jobRegistry,
         NormalizerInterface $jobInstanceNormalizer,
-        NormalizerInterface $normalizer,
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         RemoverInterface $remover,
@@ -107,7 +102,6 @@ class JobInstanceController
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
         $this->jobInstanceNormalizer = $jobInstanceNormalizer;
-        $this->normalizer            = $normalizer;
         $this->updater               = $updater;
         $this->saver                 = $saver;
         $this->remover               = $remover;
