@@ -149,13 +149,13 @@ class GroupsFilterSpec extends ObjectBehavior
             ->during('addFieldFilter', ['groups.id', 'IN', 'not an array']);
     }
 
-    function it_throws_an_exception_if_content_of_array_is_not_integer_or_empty()
+    function it_throws_an_exception_if_content_of_array_is_not_string_or_numeric_or_empty()
     {
         $this->shouldThrow(InvalidArgumentException::numericExpected('groups', 'filter', 'groups', gettype('WRONG')))
             ->during('addFieldFilter', ['groups.id', 'IN', [1, 2, 'WRONG']]);
 
-        $this->shouldThrow(InvalidArgumentException::stringExpected('groups', 'filter', 'groups', gettype(1)))
-            ->during('addFieldFilter', ['groups', 'IN', ['a_code', 1]]);
+        $this->shouldThrow(InvalidArgumentException::stringExpected('groups', 'filter', 'groups', gettype(false)))
+            ->during('addFieldFilter', ['groups', 'IN', ['a_code', false]]);
     }
 
     function it_returns_supported_fields()

@@ -152,8 +152,8 @@ class GroupsFilterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'filter', 'groups', gettype('WRONG')))->during('addFieldFilter', ['groups', 'IN', 'WRONG']);
     }
 
-    function it_throws_an_exception_if_values_in_array_are_not_strings()
+    function it_throws_an_exception_if_values_in_array_are_not_strings_or_numerics()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected('groups', 'filter', 'groups', gettype(1)))->during('addFieldFilter', ['groups', 'IN', [1]]);
+        $this->shouldThrow(InvalidArgumentException::stringExpected('groups', 'filter', 'groups', gettype(false)))->during('addFieldFilter', ['groups', 'IN', [false]]);
     }
 }

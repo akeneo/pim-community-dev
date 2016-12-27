@@ -156,10 +156,10 @@ class FamilyFilterSpec extends ObjectBehavior
             ->during('addFieldFilter', ['family', 'IN', 'not an array']);
     }
 
-    function it_throws_an_exception_if_content_of_array_is_not_string_or_empty()
+    function it_throws_an_exception_if_content_of_array_is_not_string_or_numeric_or_empty()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected('family', 'filter', 'family', gettype(1)))
-            ->during('addFieldFilter', ['family', 'IN', ['a_code', 1]]);
+        $this->shouldThrow(InvalidArgumentException::stringExpected('family', 'filter', 'family', gettype(false)))
+            ->during('addFieldFilter', ['family', 'IN', ['a_code', false]]);
     }
 
     function it_returns_supported_fields()

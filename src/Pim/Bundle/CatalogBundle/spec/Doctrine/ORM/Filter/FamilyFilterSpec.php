@@ -145,8 +145,8 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'family', gettype('WRONG')))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
     }
 
-    function it_throws_an_exception_if_values_in_array_are_not_strings()
+    function it_throws_an_exception_if_values_in_array_are_not_strings_or_numerics()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected('family', 'filter', 'family', gettype(1)))->during('addFieldFilter', ['family', 'IN', [1]]);
+        $this->shouldThrow(InvalidArgumentException::stringExpected('family', 'filter', 'family', gettype(false)))->during('addFieldFilter', ['family', 'IN', [false]]);
     }
 }
