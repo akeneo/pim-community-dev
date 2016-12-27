@@ -13,6 +13,7 @@
     display: flex;
     flex-direction: column;
     opacity: 0.4;
+    transition: background 0.2s ease;
 
     &:hover {
       background: @AknDefaultHoverBackground;
@@ -48,6 +49,24 @@
     &--massEdit {
       background-image: url("/bundles/pimui/images/icon-edit.svg");
     }
+
+    &--pimeeWorkflowProductDraftNotificationNewProposal,
+    &--pimeeWorkflowProductDraftNotificationPartialApprove,
+    &--pimeeWorkflowProductDraftNotificationPartialReject,
+    &--pimeeWorkflowProductDraftNotificationPartialRemove,
+    &--pimeeWorkflowProductDraftNotificationApprove,
+    &--pimeeWorkflowProductDraftNotificationRefuse,
+    &--pimeeWorkflowProductDraftNotificationRemove {
+      background-image: url("/bundles/pimui/images/icon-proposal.svg");
+    }
+
+    &--pimeeWorkflowImportNotificationNoewProposals {
+      background-image: url("/bundles/pimui/images/icon-import-proposals.svg");
+    }
+
+    &--rule {
+      background-image: url("/bundles/pimui/images/icon-rules.svg");
+    }
   }
 
   &-status {
@@ -61,7 +80,9 @@
     color: white;
     text-align: center;
 
-    &--apply, &--add {
+    &--apply,
+    &--add,
+    &--success {
       background: @AknGreen;
     }
 
@@ -105,6 +126,11 @@
     padding: 16px;
     margin-bottom: 16px;
     width: 100%;
+    transition: background 0.2s ease;
+  }
+
+  &:hover &-comment {
+    background: darken(@AknLightGray, 10%);
   }
 
   &-button {
