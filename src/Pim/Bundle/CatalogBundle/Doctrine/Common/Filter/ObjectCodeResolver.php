@@ -36,8 +36,8 @@ class ObjectCodeResolver
      * @param array              $ids
      * @param AttributeInterface $attribute
      *
-     * @return array
      * @throws ObjectNotFoundException
+     * @return array
      */
     public function getCodesFromIds($entityName, array $ids, AttributeInterface $attribute = null)
     {

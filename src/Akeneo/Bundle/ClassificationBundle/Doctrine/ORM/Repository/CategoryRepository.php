@@ -169,7 +169,7 @@ class CategoryRepository extends NestedTreeRepository implements
             $codes[] = $category['code'];
         }
 
-       return $codes;
+        return $codes;
     }
 
     /**
