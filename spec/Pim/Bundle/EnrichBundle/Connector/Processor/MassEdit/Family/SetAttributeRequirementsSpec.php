@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -23,13 +24,17 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
-        AttributeRequirementFactory $factory
+        AttributeRequirementFactory $factory,
+        ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher
     ) {
         $this->beConstructedWith(
             $jobConfigurationRepo,
             $attributeRepository,
             $channelRepository,
-            $factory
+            $factory,
+            $validator,
+            $detacher
         );
     }
 

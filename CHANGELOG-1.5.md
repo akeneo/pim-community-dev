@@ -4,6 +4,7 @@
 
 - PIM-6019: Successfully import products without removing already existing associations when option "compare values" is disabled
 - PIM-6034: Fix date format on fixtures
+- PIM-6039: Call validation on family mass edit
 
 # 1.5.15 (2016-12-13)
 

@@ -2,12 +2,16 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Applies modifications on families to add attribute requirements.
@@ -28,23 +32,35 @@ class SetAttributeRequirements extends AbstractProcessor
     /** @var AttributeRequirementFactory */
     protected $factory;
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /**
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param ChannelRepositoryInterface          $channelRepository
      * @param AttributeRequirementFactory         $factory
+     * @param ValidatorInterface                  $validator
+     * @param ObjectDetacherInterface             $detacher
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
-        AttributeRequirementFactory $factory
+        AttributeRequirementFactory $factory,
+        ValidatorInterface $validator = null,
+        ObjectDetacherInterface $detacher = null
     ) {
         parent::__construct($jobConfigurationRepo);
 
         $this->attributeRepository = $attributeRepository;
         $this->channelRepository   = $channelRepository;
         $this->factory             = $factory;
+        $this->validator           = $validator;
+        $this->detacher            = $detacher;
     }
 
     /**
@@ -75,6 +91,44 @@ class SetAttributeRequirements extends AbstractProcessor
             );
         }
 
+        if (!$this->isFamilyValid($family)) {
+            $this->stepExecution->incrementSummaryInfo('skipped_families');
+            $this->detacher->detach($family);
+
+            return null;
+        }
+
         return $family;
+    }
+
+    /**
+     * Validates the family
+     *
+     * @param FamilyInterface $family
+     *
+     * @return bool
+     */
+    protected function isFamilyValid(FamilyInterface $family)
+    {
+        if (null !== $this->validator) {
+            $violations = $this->validator->validate($family);
+            $this->addWarningMessage($violations, $family);
+
+            return 0 === $violations->count();
+        }
+
+        return true;
+    }
+
+    /**
+     * @param ConstraintViolationListInterface $violations
+     * @param FamilyInterface                  $family
+     */
+    protected function addWarningMessage(ConstraintViolationListInterface $violations, FamilyInterface $family)
+    {
+        foreach ($violations as $violation) {
+            $errors = sprintf("Family %s: %s\n", (string) $family, $violation->getMessage());
+            $this->stepExecution->addWarning($this->getName(), $errors, [], $family);
+        }
     }
 }
