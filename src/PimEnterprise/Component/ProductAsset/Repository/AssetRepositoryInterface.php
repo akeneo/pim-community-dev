@@ -50,6 +50,15 @@ interface AssetRepositoryInterface extends
     public function applyTagFilter(QueryBuilder $qb, $field, $operator, $value);
 
     /**
+     * Apply categories filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $operator
+     * @param array        $categoryCodes
+     */
+    public function applyCategoriesFilter(QueryBuilder $qb, $operator, array $categoryCodes);
+
+    /**
      * Find assets by identifiers
      *
      * @param array $identifiers

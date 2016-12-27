@@ -13,9 +13,9 @@ namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -33,22 +33,22 @@ class AssetCategoryAccessSubscriber implements EventSubscriberInterface
     /** @var CategoryAccessRepository */
     protected $accessRepository;
 
-    /** @var FieldFilterInterface */
-    protected $fieldFilter;
+    /** @var AssetRepositoryInterface */
+    protected $assetRepository;
 
     /**
      * @param TokenStorageInterface    $tokenStorage
      * @param CategoryAccessRepository $accessRepository
-     * @param FieldFilterInterface     $fieldFilter
+     * @param AssetRepositoryInterface $assetRepository
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         CategoryAccessRepository $accessRepository,
-        FieldFilterInterface $fieldFilter
+        AssetRepositoryInterface $assetRepository
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->accessRepository = $accessRepository;
-        $this->fieldFilter = $fieldFilter;
+        $this->assetRepository = $assetRepository;
     }
 
     /**
@@ -78,14 +78,13 @@ class AssetCategoryAccessSubscriber implements EventSubscriberInterface
             ));
         }
 
-        $grantedCategories = $this->accessRepository->getGrantedCategoryIds(
+        $grantedCategories = $this->accessRepository->getGrantedCategoryCodes(
             $this->tokenStorage->getToken()->getUser(),
             Attributes::VIEW_ITEMS
         );
 
-        $this->fieldFilter->setQueryBuilder($dataSource->getQueryBuilder());
-        $this->fieldFilter->addFieldFilter(
-            'categories.id',
+        $this->assetRepository->applyCategoriesFilter(
+            $dataSource->getQueryBuilder(),
             Operators::IN_LIST_OR_UNCLASSIFIED,
             $grantedCategories
         );

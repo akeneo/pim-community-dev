@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -29,6 +32,12 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     /** @var string */
     protected $productClass;
 
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
+    /** @var CategoryFilterableRepositoryInterface */
+    protected $categoryFilterableRepository;
+
     /**
      * @return string
      */
@@ -43,6 +52,24 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     public function setProductClass($productClass)
     {
         $this->productClass = $productClass;
+    }
+
+    /**
+     * @param CategoryRepositoryInterface $categoryRepository
+     *
+     */
+    public function setCategoryRepository(CategoryRepositoryInterface $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * @param CategoryFilterableRepositoryInterface $categoryFilterableRepository
+     *
+     */
+    public function setAssetCategoryRepository(CategoryFilterableRepositoryInterface $categoryFilterableRepository)
+    {
+        $this->categoryFilterableRepository = $categoryFilterableRepository;
     }
 
     /**
@@ -309,6 +336,37 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function applyCategoriesFilter(QueryBuilder $qb, $operator, array $categoryCodes)
+    {
+        $categoryIds = $this->categoryRepository->getCategoryIdsByCodes($categoryCodes);
+
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->categoryFilterableRepository->applyFilterByCategoryIds($qb, $categoryIds, true);
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->categoryFilterableRepository->applyFilterByCategoryIds($qb, $categoryIds, false);
+                break;
+            case Operators::IN_CHILDREN_LIST:
+                $categoryIds = $this->getAllChildrenIds($categoryIds);
+                $this->categoryFilterableRepository->applyFilterByCategoryIds($qb, $categoryIds, true);
+                break;
+            case Operators::NOT_IN_CHILDREN_LIST:
+                $categoryIds = $this->getAllChildrenIds($categoryIds);
+                $this->categoryFilterableRepository->applyFilterByCategoryIds($qb, $categoryIds, false);
+                break;
+            case Operators::UNCLASSIFIED:
+                $this->categoryFilterableRepository->applyFilterByUnclassified($qb);
+                break;
+            case Operators::IN_LIST_OR_UNCLASSIFIED:
+                $this->categoryFilterableRepository->applyFilterByCategoryIdsOrUnclassified($qb, $categoryIds);
+                break;
+        }
+    }
+
+    /**
      * Apply an in list filter
      *
      * @param QueryBuilder $qb
@@ -341,5 +399,25 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     protected function getAlias()
     {
         return 'asset';
+    }
+
+    /**
+     * Get children category ids
+     *
+     * @param integer[] $categoryIds
+     *
+     * @return integer[]
+     */
+    protected function getAllChildrenIds(array $categoryIds)
+    {
+        $allChildrenIds = [];
+        foreach ($categoryIds as $categoryId) {
+            $category = $this->categoryRepository->find($categoryId);
+            $childrenIds = $this->categoryRepository->getAllChildrenIds($category);
+            $childrenIds[] = $category->getId();
+            $allChildrenIds = array_merge($allChildrenIds, $childrenIds);
+        }
+
+        return $allChildrenIds;
     }
 }
