@@ -79,6 +79,8 @@ class ProductAssociationProcessor extends AbstractProcessor implements
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
 
+        $this->checkIdentifierDuplication($item, $item['identifier']);
+
         $product = $this->findProduct($item['identifier']);
 
         if (!$product) {
