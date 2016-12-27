@@ -14,7 +14,7 @@ define(
         'backbone',
         'pim/fetcher-registry',
         'text!activity-manager/templates/widget/project-completeness-data',
-        'activity-manager/project/completeness-data-formatter'
+        'activity-manager/project/completeness-formatter'
     ],
     function ($, _, __, BaseForm, Backbone, FetcherRegistry, template, completenessFormatter) {
         return BaseForm.extend({
@@ -46,14 +46,14 @@ define(
 
                 FetcherRegistry.getFetcher('project').getCompleteness(data.currentProjectCode, contributorUsername)
                     .then(function (completeness) {
-                        var completenessPercentage = completenessFormatter.formatToPercentage(completeness);
-                        completenessPercentage.todo += '% ' + __(this.config.labels.percentageTodo);
-                        completenessPercentage.in_progress += '% ' + __(this.config.labels.percentageInProgress);
-                        completenessPercentage.done += '% ' + __(this.config.labels.percentageDone);
+                        var completenessProgress = completenessFormatter.getCompletenessProgress(completeness);
+                        completenessProgress.todo += '% ' + __(this.config.labels.percentageTodo);
+                        completenessProgress.in_progress += '% ' + __(this.config.labels.percentageInProgress);
+                        completenessProgress.done += '% ' + __(this.config.labels.percentageDone);
 
                         this.$el.html(this.template({
                             completeness: completeness,
-                            percentage: completenessPercentage,
+                            percentage: completenessProgress,
                             todoLabel: __(this.config.labels.todo),
                             inProgressLabel: __(this.config.labels.inProgress),
                             doneLabel: __(this.config.labels.done)

@@ -1,20 +1,33 @@
 'use strict';
 
 /**
- * Project completeness data formatter.
+ * Project completeness formatter from number of products to percentage.
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 define([], function () {
         return {
             /**
-             * Format a number to a percentage.
+             * Get a "KPI object" representing the given project completeness progression in product percentage.
+             * Receives:
+             * {
+             *      todo: 20,
+             *      in_progress: 10,
+             *      done: 0
+             * }
              *
-             * @param {Collection} completeness
+             * Returns given completeness in percentage:
+             * {
+             *      todo: 67,
+             *      in_progress: 33,
+             *      done: 0
+             * }
              *
-             * @returns {Collection}
+             * @param {Object} completeness
+             *
+             * @returns {Object}
              */
-            formatToPercentage: function (completeness) {
+            getCompletenessProgress: function (completeness) {
                 var rawTodo = parseInt(completeness.todo);
                 var rawInProgress = parseInt(completeness.in_progress);
                 var rawDone = parseInt(completeness.done);
