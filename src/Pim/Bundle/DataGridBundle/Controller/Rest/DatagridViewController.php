@@ -136,13 +136,10 @@ class DatagridViewController
      */
     public function getAction($identifier)
     {
-        $user = $this->tokenStorage->getToken()->getUser();
         $view = $this->datagridViewRepo->find($identifier);
+        $view = current($this->datagridViewFilter->filterCollection([$view], 'pim.internal_api.datagrid_view.view'));
 
-        $isOwner = $view->getOwner()->getId() === $user->getId();
-        $isPublic = $view->getType() === DatagridView::TYPE_PUBLIC;
-
-        if (null === $view || (!$isOwner && !$isPublic)) {
+        if (null === $view) {
             return new NotFoundHttpException();
         }
 

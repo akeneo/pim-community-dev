@@ -26,15 +26,18 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             datagridView: null,
+            datagridViewType: null,
             dirty: false,
 
             /**
              * {@inheritdoc}
              */
-            configure: function (datagridView) {
-                this.datagridView = datagridView;
-
-                this.listenTo(this.getRoot(), 'grid:view-selector:state-changed', this.onDatagridStateChange);
+            configure: function () {
+                this.listenTo(
+                    this.getRoot(),
+                    'grid:view-selector:state-changed',
+                    this.onDatagridStateChange.bind(this)
+                );
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -75,6 +78,17 @@ define(
                 }
 
                 this.render();
+            },
+
+            /**
+             * Set the view of this module.
+             *
+             * @param {Object} view
+             * @param {String} viewType
+             */
+            setView: function (view, viewType) {
+                this.datagridView = view;
+                this.datagridViewType = viewType;
             }
         });
     }

@@ -109,7 +109,6 @@ define(
              */
             initializeViewTypes: function () {
                 this.currentViewType = 'view';
-                // TODO: IF PROJECT/VIEW ALREADY SELECTED, PICK THE RIGHT VIEW TYPE
 
                 return $.Deferred().resolve();
             },
@@ -140,12 +139,12 @@ define(
                      * Format current selection method of select2.
                      */
                     formatSelection: function (item, $container) {
-                        FormBuilder.buildForm('pim-grid-view-selector-current').then(function (form) {
+                        FormBuilder.build('pim-grid-view-selector-current').then(function (form) {
                             form.setParent(this);
-                            return form.configure(item).then(function () {
-                                $container.append(form.render().$el);
-                                this.onGridStateChange();
-                            }.bind(this));
+                            form.setView(item, this.currentViewType);
+                            $container.append(form.render().$el);
+
+                            this.onGridStateChange();
                         }.bind(this));
                     }.bind(this),
 
@@ -277,11 +276,12 @@ define(
                     if ('0' === activeViewId) {
                         deferred.resolve(this.getDefaultView());
                     } else {
-                        FetcherRegistry.getFetcher('datagrid-view').fetch(activeViewId, {alias: this.gridAlias})
-                            .then(function (view) {
-                                view.text = view.label;
+                        FetcherRegistry.getFetcher('datagrid-view')
+                            .fetch(activeViewId, {alias: this.gridAlias})
+                            .then(this.postFetchDatagridView.bind(this))
+                            .done(function (view) {
                                 deferred.resolve(view);
-                            }.bind(this));
+                            });
                     }
                 } else if (userDefaultView) {
                     userDefaultView.text = userDefaultView.label;
@@ -307,6 +307,12 @@ define(
                 }.bind(this));
 
                 return deferred;
+            },
+
+            postFetchDatagridView: function (view) {
+                view.text = view.label;
+
+                return $.Deferred().resolve(view).promise();
             },
 
             /**
