@@ -9,8 +9,6 @@ css:
         - bundles/pimui/lib/summernote/summernote.css
 
     pim_ui:
-        - bundles/pimui/css/pinbar.less
-
         - bundles/pimui/less/lib/bootstrap.switch.less
         - bundles/pimui/less/lib/dialog.less
         - bundles/pimui/less/lib/dropdown.less
@@ -76,6 +74,7 @@ css:
         - bundles/pimui/less/components/Flash.less
         - bundles/pimui/less/components/Footer.less
         - bundles/pimui/less/components/Header.less
+        - bundles/pimui/less/components/List.less
         - bundles/pimui/less/components/LoadingMask.less
         - bundles/pimui/less/components/MessageBox.less
         - bundles/pimui/less/components/MainMenu.less
