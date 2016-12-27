@@ -13,6 +13,7 @@ services:
             - '@pim_catalog.repository.association_type'
             - '@event_dispatcher'
             - '@pim_catalog.resolver.attribute_values'
+            - '@pim_catalog.factory.product_value'
             - {'product': '%pim_catalog.entity.product.class%', 'product_value': '%pim_catalog.entity.product_value.class%', 'product_price': '%pim_catalog.entity.product_price.class%', 'association': '%pim_catalog.entity.association.class%'}
 
     pim_catalog.builder.product_template:

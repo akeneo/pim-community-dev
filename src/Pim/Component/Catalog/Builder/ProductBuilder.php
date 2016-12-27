@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -55,6 +56,9 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var string */
     protected $associationClass;
 
+    /** @var ProductValueFactory */
+    protected $productValueFactory;
+
     /**
      * Constructor
      *
@@ -64,6 +68,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param AssociationTypeRepositoryInterface $assocTypeRepository Association type repository
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
      * @param AttributeValuesResolver            $valuesResolver      Attributes values resolver
+     * @param ProductValueFactory                $productValueFactory Product value factory
      * @param array                              $classes             Model classes
      */
     public function __construct(
@@ -73,6 +78,7 @@ class ProductBuilder implements ProductBuilderInterface
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
+        ProductValueFactory $productValueFactory,
         array $classes
     ) {
         $this->attributeRepository = $attributeRepository;
@@ -81,6 +87,7 @@ class ProductBuilder implements ProductBuilderInterface
         $this->assocTypeRepository = $assocTypeRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->valuesResolver = $valuesResolver;
+        $this->productValueFactory = $productValueFactory;
         $this->productClass = $classes['product'];
         $this->productValueClass = $classes['product_value'];
         $this->productPriceClass = $classes['product_price'];
@@ -95,8 +102,8 @@ class ProductBuilder implements ProductBuilderInterface
         $product = new $this->productClass();
 
         $identifierAttribute = $this->attributeRepository->getIdentifier();
-        $productValue = $this->createProductValue($identifierAttribute);
-        $product->addValue($productValue);
+        $productValue = $this->addProductValue($product, $identifierAttribute, null, null);
+
         if (null !== $identifier) {
             $productValue->setData($identifier);
         }
@@ -181,24 +188,12 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addPriceForCurrency(ProductValueInterface $value, $currency)
-    {
-        if (!$this->hasPriceForCurrency($value, $currency)) {
-            $value->addPrice(new $this->productPriceClass(null, $currency));
-        }
-
-        return $this->getPriceForCurrency($value, $currency);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $data)
     {
-        $price = $this->addPriceForCurrency($value, $currency);
-        $price->setData($data);
+        $value->setData($data);
+        $value->setCurrency($currency);
 
-        return $price;
+        return $value;
     }
 
     /**
@@ -222,49 +217,10 @@ class ProductBuilder implements ProductBuilderInterface
         $locale = null,
         $scope = null
     ) {
-        $value = $this->createProductValue($attribute, $locale, $scope);
+        $productValue = $this->productValueFactory->createEmpty($attribute, $locale, $scope);
+        $product->addValue($productValue);
 
-        $product->addValue($value);
-
-        return $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null)
-    {
-        $class = $this->getProductValueClass();
-
-        $value = new $class();
-        $value->setAttribute($attribute);
-        if ($attribute->isLocalizable()) {
-            if ($locale !== null) {
-                $value->setLocale($locale);
-            } else {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'A locale must be provided to create a value for the localizable attribute %s',
-                        $attribute->getCode()
-                    )
-                );
-            }
-        }
-
-        if ($attribute->isScopable()) {
-            if ($scope !== null) {
-                $value->setScope($scope);
-            } else {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'A scope must be provided to create a value for the scopable attribute %s',
-                        $attribute->getCode()
-                    )
-                );
-            }
-        }
-
-        return $value;
+        return $productValue;
     }
 
     /**
@@ -278,7 +234,7 @@ class ProductBuilder implements ProductBuilderInterface
 
             foreach ($activeCurrencyCodes as $currencyCode) {
                 if (null === $value->getPrice($currencyCode)) {
-                    $this->addPriceForCurrency($value, $currencyCode);
+                    $this->addPriceForCurrencyWithData($value, $currencyCode, null);
                 }
             }
 

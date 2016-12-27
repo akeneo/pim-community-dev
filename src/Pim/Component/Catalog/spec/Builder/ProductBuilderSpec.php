@@ -3,13 +3,14 @@
 namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\ProductEvents;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
@@ -30,7 +31,8 @@ class ProductBuilderSpec extends ObjectBehavior
         CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
-        AttributeValuesResolver $valuesResolver
+        AttributeValuesResolver $valuesResolver,
+        ProductValueFactory $productValueFactory
     ) {
         $entityConfig = [
             'product' => self::PRODUCT_CLASS,
@@ -46,21 +48,43 @@ class ProductBuilderSpec extends ObjectBehavior
             $assocTypeRepository,
             $eventDispatcher,
             $valuesResolver,
+            $productValueFactory,
             $entityConfig
         );
     }
 
-    function it_creates_product_without_family($attributeRepository, $eventDispatcher, AttributeInterface $skuAttribute)
-    {
+    function it_creates_product_without_family(
+        ProductValueFactory $productValueFactory,
+        $attributeRepository,
+        $eventDispatcher,
+        AttributeInterface $skuAttribute,
+        ProductValueInterface $productValue
+
+    ) {
         $attributeRepository->getIdentifier()->willReturn($skuAttribute);
+        $skuAttribute->getCode()->willReturn('sku');
+
+        $productValue->getAttribute()->willReturn($skuAttribute);
+        $productValue->setEntity(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
+        $productValueFactory->createEmpty($skuAttribute, null, null)
+            ->willReturn($productValue);
+
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any());
 
         $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
 
-    function it_creates_product_with_a_family($attributeRepository, $familyRepository, $eventDispatcher, AttributeInterface $skuAttribute, FamilyInterface $tshirtFamily)
-    {
+    function it_creates_product_with_a_family(
+        $attributeRepository,
+        $familyRepository,
+        $eventDispatcher,
+        AttributeInterface $skuAttribute,
+        FamilyInterface $tshirtFamily,
+        ProductValueFactory $productValueFactory,
+        ProductValueInterface $productValue
+    ) {
         $attributeRepository->getIdentifier()->willReturn($skuAttribute);
+
         $skuAttribute->getCode()->willReturn('sku');
         $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
         $skuAttribute->getBackendType()->willReturn('varchar');
@@ -73,6 +97,12 @@ class ProductBuilderSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier("tshirt")->willReturn($tshirtFamily);
         $tshirtFamily->getId()->shouldBeCalled();
         $tshirtFamily->getAttributes()->willReturn([]);
+
+        $productValue->setData('mysku');
+        $productValue->setEntity(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
+        $productValue->getAttribute()->willReturn($skuAttribute);
+        $productValueFactory->createEmpty($skuAttribute, null, null)
+            ->willReturn($productValue);
 
         $this->createProduct("mysku", "tshirt")->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }

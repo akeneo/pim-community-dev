@@ -74,16 +74,6 @@ interface ProductBuilderInterface
     public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute);
 
     /**
-     * Add a product price with currency to the value. If the price already exists, it is returned.
-     *
-     * @param ProductValueInterface $value
-     * @param string                $currency
-     *
-     * @return null|ProductPriceInterface
-     */
-    public function addPriceForCurrency(ProductValueInterface $value, $currency);
-
-    /**
      * Add a product price with currency and data to the value. If the price already exists, its data is
      * updated and it is returned.
      *
@@ -128,15 +118,4 @@ interface ProductBuilderInterface
         $locale = null,
         $scope = null
     );
-
-    /**
-     * Create a productValue
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     *
-     * @return ProductValueInterface
-     */
-    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null);
 }
