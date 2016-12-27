@@ -24,6 +24,8 @@ services:
         factory_method: getRepository
         arguments: ['%pimee_product_asset.model.asset.class%']
         calls:
+            - [setCategoryRepository, ['@pimee_product_asset.repository.category']]
+            - [setAssetCategoryRepository, ['@pimee_product_asset.repository.asset_category']]
             - [setProductClass, ['%pim_catalog.entity.product.class%']]
         tags:
             - { name: 'pim_repository' }

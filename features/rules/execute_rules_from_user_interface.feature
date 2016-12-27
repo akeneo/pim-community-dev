@@ -24,7 +24,7 @@ Feature: Execute rules from the user interface
             to_scope:    tablet
       update_tees_collection:
         conditions:
-          - field:    categories.code
+          - field:    categories
             operator: IN
             value:
               - tees

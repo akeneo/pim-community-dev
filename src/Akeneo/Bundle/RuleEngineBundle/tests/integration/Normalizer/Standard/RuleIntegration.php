@@ -14,7 +14,7 @@ class RuleIntegration extends TestCase
             'priority'   => 10,
             'conditions' => [
                 [
-                    'field'    => 'categories.code',
+                    'field'    => 'categories',
                     'operator' => 'IN',
                     'value'    => 'master'
                 ]

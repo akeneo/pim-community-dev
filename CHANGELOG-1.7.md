@@ -8,6 +8,9 @@
 
 ## BC breaks
 
+- Add `applyCategoriesFilter` to `PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface` 
+- Replace `Pim\Component\Catalog\Query\Filter\FieldFilterInterface` in `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\AssetCategoryAccessSubscriber` by `PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface`
+- Remove `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter` of `PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\ProductAssetFilterUtility`
 - Remove WebServiceBundle
 - Remove `wsse_secured` firewall in security.yml
 - Move `Akeneo\Bundle\RuleEngineBundle\Normalizer\RuleNormalizer` to `Akeneo\Bundle\RuleEngineBundle\Normalizer\Standard\RuleNormalizer`

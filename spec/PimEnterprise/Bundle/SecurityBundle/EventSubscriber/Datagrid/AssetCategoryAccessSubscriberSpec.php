@@ -9,8 +9,9 @@ use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface as PimDatasource;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -20,9 +21,9 @@ class AssetCategoryAccessSubscriberSpec extends ObjectBehavior
     public function let(
         TokenStorageInterface $tokenStorage,
         CategoryAccessRepository $accessRepository,
-        FieldFilterInterface $fieldFilter
+        AssetRepositoryInterface $assetRepository
     ) {
-        $this->beConstructedWith($tokenStorage, $accessRepository, $fieldFilter);
+        $this->beConstructedWith($tokenStorage, $accessRepository, $assetRepository);
     }
 
     public function it_is_an_event_subscriber()
@@ -54,7 +55,7 @@ class AssetCategoryAccessSubscriberSpec extends ObjectBehavior
     public function it_filters_datasource(
         $tokenStorage,
         $accessRepository,
-        $fieldFilter,
+        $assetRepository,
         BuildAfter $event,
         DatagridInterface $datagrid,
         PimDatasource $datasource,
@@ -66,11 +67,10 @@ class AssetCategoryAccessSubscriberSpec extends ObjectBehavior
         $event->getDatagrid()->willReturn($datagrid);
         $tokenStorage->getToken()->willreturn($token);
         $token->getUser()->willReturn($user);
-        $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([2, 3]);
+        $accessRepository->getGrantedCategoryCodes($user, Attributes::VIEW_ITEMS)->willReturn(['foo', 'bar']);
         $datasource->getQueryBuilder()->willReturn($qb);
 
-        $fieldFilter->setQueryBuilder($qb)->shouldBeCalled();
-        $fieldFilter->addFieldFilter('categories.id', 'IN OR UNCLASSIFIED', [2, 3])->shouldBeCalled();
+        $assetRepository->applyCategoriesFilter($qb, Operators::IN_LIST_OR_UNCLASSIFIED, ['foo', 'bar'])->shouldBeCalled();
 
         $this->filter($event);
     }

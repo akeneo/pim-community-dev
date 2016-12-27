@@ -11,8 +11,8 @@ Feature: Show all rules related to an attribute
       | sku     |
       | BOOTBXS |
     And the following product values:
-      | product | attribute | value                     |
-      | BOOTBXS | side_view | %fixtures%/akeneo.jpg     |
+      | product | attribute | value                 |
+      | BOOTBXS | side_view | %fixtures%/akeneo.jpg |
     Given the following product rule definitions:
       """
       copy_description:
@@ -58,7 +58,7 @@ Feature: Show all rules related to an attribute
       update_tees_collection:
         priority: 20
         conditions:
-          - field:    categories.code
+          - field:    categories
             operator: IN
             value:
               - tees
@@ -117,12 +117,12 @@ Feature: Show all rules related to an attribute
 
     And the row "update_tees_collection" should contain the texts:
       | column    | value                                                               |
-      | Condition | If categories.code in tees                                          |
+      | Condition | If categories in tees                                               |
       | Action    | Then une belle description is set into description [ fr \| mobile ] |
       | Action    | Then 800 is set into number_in_stock [ tablet ]                     |
       | Action    | Then 05/26/2015 is set into release_date [ mobile ]                 |
       | Action    | Then €12.00 is set into price                                       |
-      | Action    | Then akeneo.jpg is set into side_view                                |
+      | Action    | Then akeneo.jpg is set into side_view                               |
       | Action    | Then 10 Centimeter is set into length                               |
       | Action    | Then name [ en ] is copied into name [ fr ]                         |
       | Action    | Then name [ en ] is copied into name [ de ]                         |

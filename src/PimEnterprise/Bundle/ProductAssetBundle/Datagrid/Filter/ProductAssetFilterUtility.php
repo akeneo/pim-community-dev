@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PimEnterprise\Bundle\FilterBundle\Filter\Tag\TagFilterAwareInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
@@ -27,16 +26,12 @@ class ProductAssetFilterUtility extends BaseFilterUtility implements TagFilterAw
     /** @var AssetRepositoryInterface */
     protected $repository;
 
-    /** @var CategoryFilter */
-    protected $categoryFilter;
-
     /**
      * @param AssetRepositoryInterface $repository
      */
-    public function __construct(AssetRepositoryInterface $repository, CategoryFilter $categoryFilter)
+    public function __construct(AssetRepositoryInterface $repository)
     {
         $this->repository = $repository;
-        $this->categoryFilter = $categoryFilter;
     }
 
     /**
@@ -57,11 +52,12 @@ class ProductAssetFilterUtility extends BaseFilterUtility implements TagFilterAw
      */
     public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $qb = $ds->getQueryBuilder();
-
-        if ('categories.id' === $field) {
-            $this->categoryFilter->setQueryBuilder($qb);
-            $this->categoryFilter->addFieldFilter($field, $operator, $value);
+        if ('categories' === $field) {
+            $this->repository->applyCategoriesFilter(
+                $ds->getQueryBuilder(),
+                $operator,
+                $value
+            );
         }
     }
 }
