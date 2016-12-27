@@ -180,7 +180,7 @@ class Product implements ArrayConverterInterface
 
         $mappedItem = $this->mapFields($item, $options);
         $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
-        $this->validateItem($filteredItem, $options['with_required_identifier']);
+        $this->validateItem($filteredItem);
 
         $mergedItem = $this->columnsMerger->merge($filteredItem);
         $convertedItem = $this->convertItem($mergedItem, $options);
@@ -195,9 +195,6 @@ class Product implements ArrayConverterInterface
      */
     protected function prepareOptions(array $options)
     {
-        $options['with_required_identifier'] = isset($options['with_required_identifier']) ?
-            $options['with_required_identifier'] :
-            true;
         $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
 
@@ -308,10 +305,10 @@ class Product implements ArrayConverterInterface
      * @param array $item
      * @param bool  $withRequiredSku
      */
-    protected function validateItem(array $item, $withRequiredSku)
+    protected function validateItem(array $item)
     {
-        $requiredFields = $withRequiredSku ? [$this->attrColumnsResolver->resolveIdentifierField()] : [];
-        $this->fieldChecker->checkFieldsPresence($item, $requiredFields);
+        $requiredField = $this->attrColumnsResolver->resolveIdentifierField();
+        $this->fieldChecker->checkFieldsPresence($item, [$requiredField]);
         $this->validateOptionalFields($item);
         $this->validateFieldValueTypes($item);
     }
