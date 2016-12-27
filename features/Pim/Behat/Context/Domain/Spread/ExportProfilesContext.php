@@ -107,7 +107,7 @@ class ExportProfilesContext extends ImportExportContext
     public function iLaunchTheExportJob(JobInstance $job)
     {
         $jobType = ucfirst($job->getType());
-        $this->getNavigationContext()->openPage(sprintf('%s launch', $jobType), ['code' => $job->getCode()]);
+        $this->getNavigationContext()->openPage(sprintf('%s launch', $jobType), ['code' => $job->getCode()], false);
     }
 
     /**

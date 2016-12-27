@@ -402,6 +402,8 @@ pim_enrich:
             button:
                 edit.title: Edit
                 export.title: Export now
+                import.launch: Import now
+                import.upload: Upload and import now
             meta:
                 job: Job
                 connector: Connector
@@ -440,7 +442,8 @@ pim_enrich:
                         help: Define the limit number of lines per file
                 history:
                     title: History
-
+    job:
+        upload: Drag and drop file or click here
     export:
         product:
             data:

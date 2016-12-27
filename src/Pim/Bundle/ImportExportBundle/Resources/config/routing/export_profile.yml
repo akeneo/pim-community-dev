@@ -25,9 +25,3 @@ pim_importexport_export_profile_report:
     defaults: { _controller: pim_import_export.controller.export_profile:reportAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
-
-pim_importexport_export_profile_launch:
-    path: /{code}/launch
-    defaults: { _controller: pim_import_export.controller.export_profile:launchAction }
-    requirements:
-        code: '[a-zA-Z0-9_]+'

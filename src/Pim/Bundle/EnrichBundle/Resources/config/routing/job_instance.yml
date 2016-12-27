@@ -16,4 +16,4 @@ pim_enrich_job_instance_rest_delete:
 pim_enrich_job_instance_rest_launch:
     path: /rest/{code}/launch
     defaults: { _controller: pim_enrich.controller.rest.job_instance:launchAction, _format: json }
-    methods: [POST]
+    methods: [POST, GET]
