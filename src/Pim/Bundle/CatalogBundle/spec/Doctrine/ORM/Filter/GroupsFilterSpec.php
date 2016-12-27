@@ -35,6 +35,48 @@ class GroupsFilterSpec extends ObjectBehavior
         $this->getFields()->shouldReturn(['groups']);
     }
 
+    function it_adds_a_filter_on_codes_by_default($qb, $objectIdResolver, Expr $expr)
+    {
+        $qb->getRootAlias()->willReturn('f');
+        $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
+        $qb->andWhere('filtergroups.id IN (1, 2)')->willReturn($qb);
+
+        $expr->in(Argument::any(), [1, 2])->willReturn('filtergroups.id IN (1, 2)');
+        $qb->expr()->willReturn($expr);
+
+        $objectIdResolver->getIdsFromCodes('group', ['foo', 'bar'])->willReturn([1, 2]);
+
+        $this->addFieldFilter('groups', 'IN', ['foo', 'bar']);
+    }
+
+    function it_adds_a_filter_on_codes($qb, $objectIdResolver, Expr $expr)
+    {
+        $qb->getRootAlias()->willReturn('f');
+        $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
+        $qb->andWhere('filtergroups.id IN (1, 2)')->willReturn($qb);
+
+        $expr->in(Argument::any(), [1, 2])->willReturn('filtergroups.id IN (1, 2)');
+        $qb->expr()->willReturn($expr);
+
+        $objectIdResolver->getIdsFromCodes('group', ['foo', 'bar'])->willReturn([1, 2]);
+
+        $this->addFieldFilter('groups', 'IN', ['foo', 'bar']);
+    }
+
+    function it_adds_a_filter_on_ids($qb, $objectIdResolver, Expr $expr)
+    {
+        $qb->getRootAlias()->willReturn('f');
+        $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
+        $qb->andWhere('filtergroups.id IN (1, 2)')->willReturn($qb);
+
+        $expr->in(Argument::any(), [1, 2])->willReturn('filtergroups.id IN (1, 2)');
+        $qb->expr()->willReturn($expr);
+
+        $objectIdResolver->getIdsFromCodes(Argument::cetera())->shouldNotBeCalled();
+
+        $this->addFieldFilter('groups.id', 'IN', [1, 2]);
+    }
+
     function it_adds_a_in_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');
@@ -110,8 +152,8 @@ class GroupsFilterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'filter', 'groups', gettype('WRONG')))->during('addFieldFilter', ['groups', 'IN', 'WRONG']);
     }
 
-    function it_throws_an_exception_if_values_in_array_are_not_integers()
+    function it_throws_an_exception_if_values_in_array_are_not_strings_or_numerics()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'filter', 'groups', gettype('WRONG')))->during('addFieldFilter', ['groups', 'IN', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::stringExpected('groups', 'filter', 'groups', gettype(false)))->during('addFieldFilter', ['groups', 'IN', [false]]);
     }
 }

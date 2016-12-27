@@ -32,7 +32,7 @@ class FieldFilterDumperSpec extends ObjectBehavior
         $output->writeln(Argument::any())->shouldBeCalled();
 
         $operators = ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY'];
-        $fields = ['groups.id', 'groups.code'];
+        $fields = ['groups.id', 'groups'];
         $registry->getFieldFilters()->willReturn([$groupFilter]);
         $groupFilter->getOperators()->willReturn($operators);
         $groupFilter->getFields()->willReturn($fields);
@@ -44,7 +44,7 @@ class FieldFilterDumperSpec extends ObjectBehavior
             return 'groups.id' === $param[0][0] &&
                 'IN, NOT IN, EMPTY, NOT EMPTY' === $param[0][1] &&
                 false !== strpos($param[0][2], 'FieldFilterInterface') &&
-                'groups.code' === $param[1][0] &&
+                'groups' === $param[1][0] &&
                 'IN, NOT IN, EMPTY, NOT EMPTY' === $param[1][1] &&
                 false !== strpos($param[1][2], 'FieldFilterInterface');
         }))->shouldBeCalled();

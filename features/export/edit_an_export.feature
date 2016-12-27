@@ -29,11 +29,11 @@ Feature: Edit an export
     And I uncheck the "With header" switch
     When I visit the "Content" tab
     Then I should see the Channel, Locales fields
-    Then I should see the filters enabled, completeness, updated, sku and family.code
+    Then I should see the filters enabled, completeness, updated, sku and family
     And I fill in the following information:
       | Channel | Tablet |
     Then I filter by "enabled" with operator "" and value "Disabled"
-    And I filter by "family.code" with operator "" and value "Boots"
+    And I filter by "family" with operator "" and value "Boots"
     And I filter by "completeness" with operator "Not complete on all selected locales" and value ""
     And I filter by "sku" with operator "" and value "identifier1 identifier2,identifier3 ,identifier4"
     Then I press the "Save" button
@@ -72,10 +72,10 @@ Feature: Edit an export
   Scenario: Successfully display export filter in expected order
     Given I am on the "csv_footwear_product_export" export job page
     When I visit the "Content" tab
-    Then I should see the ordered filters family.code, enabled, completeness, updated, categories.code and sku
+    Then I should see the ordered filters family, enabled, completeness, updated, categories and sku
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
-    Then I should see the ordered filters family.code, enabled, completeness, updated, categories.code and sku
+    Then I should see the ordered filters family, enabled, completeness, updated, categories and sku
     When I add available attributes Name
     And I add available attributes Weight
-    Then I should see the ordered filters family.code, enabled, completeness, updated, categories.code, name, weight and sku
+    Then I should see the ordered filters family, enabled, completeness, updated, categories, name, weight and sku

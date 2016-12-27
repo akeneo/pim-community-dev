@@ -41,6 +41,7 @@ Feature: Export options
     size;44;10;44
     size;45;11;45
     size;46;12;46
+    size;60;13;60
     color;white;1;White
     color;black;2;Black
     color;blue;3;Blue

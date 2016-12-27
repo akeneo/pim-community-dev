@@ -118,7 +118,10 @@ class ChoiceFilterSpec extends ObjectBehavior
             'choice_url_params' => [
                 'class'        => 'attributeOptionClass',
                 'dataLocale'   => null,
-                'collectionId' => null
+                'collectionId' => null,
+                'options'      => [
+                    'type' => 'code',
+                ],
             ]
         ])->willReturn($form);
 

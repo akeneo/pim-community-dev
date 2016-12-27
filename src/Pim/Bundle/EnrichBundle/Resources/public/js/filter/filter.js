@@ -49,7 +49,7 @@ define([
         },
 
         /**
-         * Sets the filter code  (code: 'categories', field: 'categories.code')
+         * Sets the filter code  (code: 'categories', field: 'categories')
          *
          * @param {string} code
          */
@@ -58,7 +58,7 @@ define([
         },
 
         /**
-         * Gets the filter code (code: 'categories', field: 'categories.code')
+         * Gets the filter code (code: 'categories', field: 'categories')
          *
          * @return {string}
          */
@@ -67,7 +67,7 @@ define([
         },
 
         /**
-         * Sets the field code on which this filter operates. (code: 'categories', field: 'categories.code')
+         * Sets the field code on which this filter operates. (code: 'categories', field: 'categories')
          *
          * @param {string} field
          */
@@ -79,7 +79,7 @@ define([
         },
 
         /**
-         * Gets the field code on which this filter operates.  (code: 'categories', field: 'categories.code')
+         * Gets the field code on which this filter operates.  (code: 'categories', field: 'categories')
          *
          * @return {string}
          */

@@ -6,6 +6,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -16,7 +17,7 @@ class GroupsFilterSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             $objectIdResolver,
-            ['groups.id', 'groups.code'],
+            ['groups.id', 'groups'],
             ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         );
         $this->setQueryBuilder($qb);
@@ -25,6 +26,39 @@ class GroupsFilterSpec extends ObjectBehavior
     function it_is_a_field_filter()
     {
         $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
+    }
+
+    function it_adds_a_filter_on_codes_by_default($qb, $objectIdResolver)
+    {
+        $qb->field('groupIds')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->in([12, 13])->shouldBeCalled();
+        $objectIdResolver->getIdsFromCodes('group', ['foo', 'bar'])->willReturn([12, 13]);
+
+        $this->addFieldFilter('groups', 'IN', ['foo', 'bar']);
+    }
+
+    function it_adds_a_filter_on_codes($qb, $objectIdResolver)
+    {
+        $qb->field('groupIds')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->in([12, 13])->shouldBeCalled();
+        $objectIdResolver->getIdsFromCodes('group', ['foo', 'bar'])->willReturn([12, 13]);
+
+        $this->addFieldFilter('groups', 'IN', ['foo', 'bar']);
+    }
+
+    function it_adds_a_filter_on_ids($qb, $objectIdResolver)
+    {
+        $qb->field('groupIds')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->in([12, 13])->shouldBeCalled();
+        $objectIdResolver->getIdsFromCodes(Argument::cetera())->shouldNotBeCalled();
+
+        $this->addFieldFilter('groups.id', 'IN', [12, 13]);
     }
 
     function it_adds_an_in_filter_on_an_id_field_in_the_query($qb)
@@ -48,7 +82,7 @@ class GroupsFilterSpec extends ObjectBehavior
             ->willReturn($qb);
         $qb->in([12, 13])->shouldBeCalled();
 
-        $this->addFieldFilter('groups.code', 'IN', ['upsell', 'related']);
+        $this->addFieldFilter('groups', 'IN', ['upsell', 'related']);
     }
 
     function it_adds_a_not_in_filter_on_an_id_field_in_the_query($qb)
@@ -72,7 +106,7 @@ class GroupsFilterSpec extends ObjectBehavior
             ->willReturn($qb);
         $qb->notIn([12, 13])->shouldBeCalled();
 
-        $this->addFieldFilter('groups.code', 'NOT IN', ['upsell', 'related']);
+        $this->addFieldFilter('groups', 'NOT IN', ['upsell', 'related']);
     }
 
     function it_adds_an_empty_filter_on_an_id_field_in_the_query($qb)
@@ -92,7 +126,7 @@ class GroupsFilterSpec extends ObjectBehavior
             ->willReturn($qb);
         $qb->size(0)->shouldBeCalled();
 
-        $this->addFieldFilter('groups.code', 'EMPTY', null);
+        $this->addFieldFilter('groups', 'EMPTY', null);
     }
 
     function it_adds_a_not_empty_filter_on_an_id_field_in_the_query($qb)
@@ -106,7 +140,7 @@ class GroupsFilterSpec extends ObjectBehavior
     {
         $qb->where('this.groupIds.length > 0')->shouldBeCalled();
 
-        $this->addFieldFilter('groups.code', 'NOT EMPTY', null);
+        $this->addFieldFilter('groups', 'NOT EMPTY', null);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array()
@@ -115,14 +149,17 @@ class GroupsFilterSpec extends ObjectBehavior
             ->during('addFieldFilter', ['groups.id', 'IN', 'not an array']);
     }
 
-    function it_throws_an_exception_if_content_of_array_is_not_integer_or_empty()
+    function it_throws_an_exception_if_content_of_array_is_not_string_or_numeric_or_empty()
     {
         $this->shouldThrow(InvalidArgumentException::numericExpected('groups', 'filter', 'groups', gettype('WRONG')))
             ->during('addFieldFilter', ['groups.id', 'IN', [1, 2, 'WRONG']]);
+
+        $this->shouldThrow(InvalidArgumentException::stringExpected('groups', 'filter', 'groups', gettype(false)))
+            ->during('addFieldFilter', ['groups', 'IN', ['a_code', false]]);
     }
 
     function it_returns_supported_fields()
     {
-        $this->getFields()->shouldReturn(['groups.id', 'groups.code']);
+        $this->getFields()->shouldReturn(['groups.id', 'groups']);
     }
 }

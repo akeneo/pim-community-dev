@@ -53,8 +53,8 @@ class GroupsFilter extends AjaxChoiceFilter
             return false;
         }
 
-        $ids = $data['value'];
-        $this->util->applyFilter($ds, 'groups.id', 'IN', $ids);
+        $codes = $data['value'];
+        $this->util->applyFilter($ds, 'groups', 'IN', $codes);
 
         return true;
     }
@@ -71,7 +71,10 @@ class GroupsFilter extends AjaxChoiceFilter
                 'choice_url_params' => [
                     'class'        => $this->groupClass,
                     'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
-                    'collectionId' => null
+                    'collectionId' => null,
+                    'options'      => [
+                        'type' => 'code',
+                    ],
                 ]
             ]
         );

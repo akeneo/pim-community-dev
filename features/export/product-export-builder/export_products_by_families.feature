@@ -24,7 +24,7 @@ Feature: Export products according to their families
   Scenario: Export only products in boots family
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv                                                                                            |
-      | filters  | {"structure": {"locales": ["en_US"], "scope": "mobile"}, "data": [{"field": "family.code", "operator": "IN", "value": ["boots"]}]} |
+      | filters  | {"structure": {"locales": ["en_US"], "scope": "mobile"}, "data": [{"field": "family", "operator": "IN", "value": ["boots"]}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
@@ -38,7 +38,7 @@ Feature: Export products according to their families
   Scenario: Export only products in boots and high heels family
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
-      | filters  | {"structure": {"locales": ["en_US"], "scope": "mobile"}, "data": [{"field": "family.code", "operator": "IN", "value": ["boots", "heels"]}]} |
+      | filters  | {"structure": {"locales": ["en_US"], "scope": "mobile"}, "data": [{"field": "family", "operator": "IN", "value": ["boots", "heels"]}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
@@ -74,7 +74,7 @@ Feature: Export products according to their families
       | filePath | %tmp%/product_export/product_export.csv |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
-    Then the export content field "family.code" should contain "No condition on families"
+    Then the export content field "family" should contain "No condition on families"
     When I am on the "csv_footwear_product_export" export job page
     And I visit the "Content" tab
-    Then the export content field "family.code" should contain "No condition on families"
+    Then the export content field "family" should contain "No condition on families"

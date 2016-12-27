@@ -2,11 +2,19 @@
 
 ## Bug Fixes
 
-- #5038: Fixed job name visibility checker to also check additional config
-- #5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
-- #5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
-- #5337: Fixed Widget Registry. Priority is now taken in account.
+- GITHUB-5038: Fixed job name visibility checker to also check additional config
+- GITHUB-5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
+- GITHUB-5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
+- GITHUB-5337: Fixed Widget Registry. Priority is now taken in account.
 - TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from the flatToStandard product converter.
+
+
+## Deprecations
+
+- In the _Product Query Builder_, aka _PQB_, (`Pim\Component\Catalog\Query\ProductQueryBuilderInterface`), filtering products by the following filters is now deprecated: `categories.id`, `family.id`, `groups.id`. 
+  Filters `categories`, `family` and `groups` have been introduced and the _PQB_ now uses them by default. The filters `categories.code`, `family.code` and `groups.code` are deprecated. 
+  In the next version, the deprecated filters will be removed.
+- As it's not needed anymore to convert `codes` to `ids` in order to filter products, `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` and `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface` are now deprecated. 
 
 ## Functional improvements
 
@@ -17,12 +25,14 @@
 
 ## Technical improvements
 
-- #5380: Add `Pim\Component\User\Model\GroupInterface`
-- #4696: Ping the server before updating job and step execution data to prevent "MySQL Server has gone away" issue cheers @qrz-io!
+- GITHUB-5380: Add `Pim\Component\User\Model\GroupInterface`
+- GITHUB-4696: Ping the server before updating job and step execution data to prevent "MySQL Server has gone away" issue cheers @qrz-io!
 - TIP-575: Rename FileIterator classes to FlatFileIterator and changes the reader/processor behavior to iterate over the item's position in the file instead of the item's line number in the file.
 
 ## BC breaks
 
+- Add `getAllChildrenCodes` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface` 
+- Change the constructor of `Pim\Bundle\FilterBundle\Filter\Product\InGroupFilter` to add `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver`
 - Remove WebServiceBundle
 - Remove `wsse_secured` firewall in security.yml
 - Change the constructor of `Pim\Component\Connector\Writer\File\Yaml\Writer` to add `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`

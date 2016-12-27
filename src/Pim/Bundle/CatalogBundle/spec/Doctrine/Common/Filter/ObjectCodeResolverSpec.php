@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
-class ObjectIdResolverSpec extends ObjectBehavior
+class ObjectCodeResolverSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $managerRegistry)
     {
@@ -19,7 +19,7 @@ class ObjectIdResolverSpec extends ObjectBehavior
         $this->addFieldMapping('option', 'optionClass');
     }
 
-    function it_gets_ids_from_codes(
+    function it_gets_codes_from_ids(
         $managerRegistry,
         ObjectManager $manager,
         ObjectRepository $repository,
@@ -30,18 +30,18 @@ class ObjectIdResolverSpec extends ObjectBehavior
         $managerRegistry->getManagerForClass('familyClass')->willReturn($manager);
         $manager->getRepository('familyClass')->willReturn($repository);
 
-        $repository->findOneBy(['code' => 'camcorders'])->willReturn($camcorders);
-        $repository->findOneBy(['code' => 'shirt'])->willReturn($shirt);
-        $repository->findOneBy(['code' => 'men'])->willReturn($men);
+        $repository->findOneBy(['id' => 12])->willReturn($camcorders);
+        $repository->findOneBy(['id' => 56])->willReturn($shirt);
+        $repository->findOneBy(['id' => 123])->willReturn($men);
 
-        $camcorders->getId()->willReturn(2);
-        $shirt->getId()->willReturn(12);
-        $men->getId()->willReturn(32);
+        $camcorders->getCode()->willReturn('camcorders');
+        $shirt->getCode()->willReturn('shirt');
+        $men->getCode()->willReturn('men');
 
-        $this->getIdsFromCodes('family', ['camcorders', 'shirt', 'men'])->shouldReturn([2, 12, 32]);
+        $this->getCodesFromIds('family', [12, 56, 123])->shouldReturn(['camcorders', 'shirt', 'men']);
     }
 
-    function it_gets_ids_from_codes_with_attribute(
+    function it_gets_codes_from_ids_with_attribute(
         $managerRegistry,
         ObjectManager $manager,
         ObjectRepository $repository,
@@ -50,17 +50,17 @@ class ObjectIdResolverSpec extends ObjectBehavior
     ) {
         $managerRegistry->getManagerForClass('optionClass')->willReturn($manager);
         $manager->getRepository('optionClass')->willReturn($repository);
-        $attribute->getId()->willReturn(12);
+        $attribute->getCode()->willReturn('an_option');
 
-        $repository->findOneBy(['code' => 'purple', 'attribute' => 12])->willReturn($purple);
-        $purple->getId()->willReturn(2);
+        $repository->findOneBy(['id' => 12])->willReturn($purple);
+        $purple->getCode()->willReturn('purple');
 
-        $this->getIdsFromCodes('option', ['purple'], $attribute)->shouldReturn([2]);
+        $this->getCodesFromIds('option', [12], $attribute)->shouldReturn(['an_option.purple']);
     }
 
     function it_throws_an_exception_if_the_call_mapping_is_not_well_set()
     {
-        $this->shouldThrow('\InvalidArgumentException')->during('getIdsFromCodes', ['group', ['mug']]);
+        $this->shouldThrow('\InvalidArgumentException')->during('getCodesFromIds', ['group', ['mug']]);
     }
 
     function it_throws_an_exception_if_one_of_the_elements_is_not_found(
@@ -72,14 +72,14 @@ class ObjectIdResolverSpec extends ObjectBehavior
         $managerRegistry->getManagerForClass('familyClass')->willReturn($manager);
         $manager->getRepository('familyClass')->willReturn($repository);
 
-        $repository->findOneBy(['code' => 'camcorders'])->willReturn($camcorders);
-        $repository->findOneBy(['code' => 'shirt'])->willReturn(null);
+        $repository->findOneBy(['id' => 23])->willReturn($camcorders);
+        $repository->findOneBy(['id' => 56])->willReturn(null);
 
-        $camcorders->getId()->willReturn(2);
+        $camcorders->getCode()->willReturn('camcorders');
 
         $this->shouldThrow('\Pim\Component\Catalog\Exception\ObjectNotFoundException')->during(
-            'getIdsFromCodes',
-            ['family', ['camcorders', 'shirt', 'men']]
+            'getCodesFromIds',
+            ['family', [23, 56, 123]]
         );
     }
 }
