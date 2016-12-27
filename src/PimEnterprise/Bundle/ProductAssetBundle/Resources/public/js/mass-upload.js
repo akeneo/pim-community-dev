@@ -119,7 +119,7 @@ define(
                         if (response.responseJSON) {
                             message = response.responseJSON.error;
                         }
-                        file.previewElement.querySelector('.filename .error.text-danger')
+                        file.previewElement.querySelector('.AknFieldContainer-validationError')
                             .textContent = _.__(message);
                     }).complete(function () {
                         this.setStatus(file);
@@ -264,7 +264,11 @@ define(
              */
             setStatus: function (file) {
                 var statusElement = file.previewElement.querySelector('.dz-status');
-                statusElement.classList.add(file.status.toLowerCase());
+                var statusClasses = {
+                    'error': 'AknBadge--invalid',
+                    'added': 'AknBadge--success'
+                };
+                statusElement.classList.add(statusClasses[file.status]);
                 var statusKey = 'pimee_product_asset.mass_upload.status.' + file.status;
                 statusElement.textContent = _.__(statusKey);
             },

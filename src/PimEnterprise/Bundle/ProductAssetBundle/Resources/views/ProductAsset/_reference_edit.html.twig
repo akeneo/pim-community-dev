@@ -15,10 +15,10 @@
 <div class="tabsection-content row-fluid variations">
     <ul>
         <li>
-            <div class="row-fluid reference">
-                <h4>{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</h4>
+            <div class="AknWidget row-fluid reference">
+                <div class="AknWidget-header">{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</div>
 
-                <div class="row-fluid">
+                <div class="AknWidget-content row-fluid">
                     {% if referenceModel.fileInfo %}
                         {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
                             {% block reference_buttons %}

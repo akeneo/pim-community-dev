@@ -3,7 +3,7 @@
         <div class="AknFormContainer AknFormContainer--withPadding">
             {{ form_row(form.code) }}
             {{ form_row(form.description) }}
-            {{ form_row(form.tags) }}
+            {{ form_row(form.tags, { attr: { class: 'pim-ajax-entity AknTextField--select2' } }) }}
             {{ form_row(form.endOfUseAt) }}
         </div>
     </div>

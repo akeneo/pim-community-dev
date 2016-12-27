@@ -1,6 +1,6 @@
 {% set status = get_draft_status_grid(record.rootEntity) %}
 {% set message = get_draft_status_tooltip_grid(record.rootEntity) %}
 
-<span class="badge-info-large"{% if '' != message %} title="{{ message|trans }}"{% endif %}>
+<span class="AknBadge AknBadge--grey badge-info-large"{% if '' != message %} title="{{ message|trans }}"{% endif %}>
     {{ status|trans }}
 </span>

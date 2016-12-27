@@ -1,9 +1,9 @@
 <li>
-    <div class="row-fluid variation">
+    <div class="AknWidget row-fluid variation">
 
-        <h4>{{ variationModel.channel.label }}</h4>
+        <div class="AknWidget-header">{{ variationModel.channel.label }}</div>
 
-        <div class="row-fluid">
+        <div class="AknWidget-content row-fluid">
             {% if variationModel.fileInfo %}
                 {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_core.html.twig' %}
                     {% block variation_buttons %}

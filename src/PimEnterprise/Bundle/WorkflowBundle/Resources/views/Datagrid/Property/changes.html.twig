@@ -72,17 +72,17 @@
                 <tbody>
                     {% if product_draft_change.before != product_draft_change.after %}
                         <tr class="AknGrid-bodyRow">
-                            <td class="AknGrid-bodyCell">{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
+                            <td class="AknGrid-bodyCell AknGrid-bodyCell--checkbox">{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
                             <td class="AknGrid-bodyCell original-value" colspan="2">
-                                <span class="alert-error">
+                                <span class="AknInline AknInline--important">
                                     {{ product_draft_change.before|raw }}
                                 </span>
                             </td>
                         </tr>
                         <tr class="AknGrid-bodyRow">
-                            <td class="AknGrid-bodyCell">{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
+                            <td class="AknGrid-bodyCell AknGrid-bodyCell--checkbox">{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
                             <td class="AknGrid-bodyCell new-value" colspan="2">
-                                <span class="alert-success">
+                                <span class="AknInline AknInline--success">
                                     {{ product_draft_change.after|raw }}
                                 </span>
                             </td>
