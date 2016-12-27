@@ -94,6 +94,7 @@ services:
             - '@pimee_activity_manager.repository.project'
             - '@pimee_activity_manager.repository.user'
             - '@security.token_storage'
+            - '@pimee_activity_manager.repository.project_completeness'
 
     pimee_activity_manager.controller.project_completeness_controller:
         class: '%pimee_activity_manager.controller.project_completeness_controller.class%'

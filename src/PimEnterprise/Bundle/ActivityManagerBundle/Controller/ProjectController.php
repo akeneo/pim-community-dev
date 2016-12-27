@@ -18,6 +18,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,6 +69,24 @@ class ProjectController
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /** @var ProjectCompletenessRepositoryInterface */
+    protected $projectCompletenessRepository;
+
+    /**
+     * @param FilterConverter                        $filterConverter
+     * @param SimpleFactoryInterface                 $datagridViewFactory
+     * @param SimpleFactoryInterface                 $projectFactory
+     * @param ObjectUpdaterInterface                 $datagridViewUpdater
+     * @param ObjectUpdaterInterface                 $projectUpdater
+     * @param SaverInterface                         $projectSaver
+     * @param ValidatorInterface                     $validator
+     * @param ProjectCalculationJobLauncher          $projectCalculationJobLauncher
+     * @param NormalizerInterface                    $projectNormalizer
+     * @param ProjectRepositoryInterface             $projectRepository
+     * @param SearchableRepositoryInterface          $userRepository
+     * @param TokenStorageInterface                  $tokenStorage
+     * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
+     */
     public function __construct(
         FilterConverter $filterConverter,
         SimpleFactoryInterface $datagridViewFactory,
@@ -80,7 +99,8 @@ class ProjectController
         NormalizerInterface $projectNormalizer,
         ProjectRepositoryInterface $projectRepository,
         SearchableRepositoryInterface $userRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        ProjectCompletenessRepositoryInterface $projectCompletenessRepository
     ) {
         $this->filterConverter = $filterConverter;
         $this->datagridViewFactory = $datagridViewFactory;
@@ -94,6 +114,7 @@ class ProjectController
         $this->projectRepository = $projectRepository;
         $this->userRepository = $userRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->projectCompletenessRepository = $projectCompletenessRepository;
     }
 
     /**
@@ -167,6 +188,7 @@ class ProjectController
     public function searchAction(Request $request)
     {
         $options = $request->query->get('options', ['limit' => 20, 'page' => 1]);
+        $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
 
         $projects = $this->projectRepository->findBySearch(
             $request->query->get('search'),
@@ -177,7 +199,17 @@ class ProjectController
             ]
         );
 
-        $normalizedProjects = $this->projectNormalizer->normalize($projects, 'internal_api');
+        $normalizedProjects = [];
+
+        foreach ($projects as $project) {
+            $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
+            $normalizedProject['completeness'] = $this->projectCompletenessRepository->getProjectCompleteness(
+                $project,
+                $contributor
+            );
+
+            $normalizedProjects[] = $normalizedProject;
+        }
 
         return new JsonResponse($normalizedProjects, 200);
     }

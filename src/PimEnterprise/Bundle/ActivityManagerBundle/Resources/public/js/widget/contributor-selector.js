@@ -59,7 +59,10 @@ define(
                                     var choices = this.arrayToSelect2Format(contributors);
 
                                     if (1 === page && '' === searchParameters.search) {
-                                        choices.unshift({id: '_all_contributors', text: __('activity_manager.widget.all_contributors')});
+                                        choices.unshift({
+                                            id: '_all_contributors',
+                                            text: __('activity_manager.widget.all_contributors')
+                                        });
                                     }
 
                                     options.callback({
@@ -105,13 +108,13 @@ define(
                     }
                     this.trigger('activity-manager:widget:contributor-selected', code);
                 }.bind(this));
-                $select.on('select2-open', function() {
+                $select.on('select2-open', function () {
                     $('.activity-manager-widget-contributor-dropdown .select2-search')
                         .prepend('<i class="icon-search AknProjectWidget-select2SearchIcon"></i>');
                     $('.activity-manager-widget-contributor-dropdown .select2-input')
                         .attr('placeholder', __('activity_manager.widget.placeholder.contributor_selector'));
                 });
-                $select.on('select2-close', function() {
+                $select.on('select2-close', function () {
                     $('.activity-manager-widget-contributor-dropdown .select2-search .icon-search').remove();
                     $('.activity-manager-widget-contributor-dropdown .select2-input').attr('placeholder', null);
                 });
@@ -155,7 +158,7 @@ define(
              * @return {Object}
              */
             toSelect2Format: function (contributor) {
-                return  {
+                return {
                     text: contributor.firstName + ' ' + contributor.lastName,
                     id: contributor.username
                 };

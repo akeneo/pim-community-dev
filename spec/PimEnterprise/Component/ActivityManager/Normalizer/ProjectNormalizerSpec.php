@@ -34,7 +34,6 @@ class ProjectNormalizerSpec extends ObjectBehavior
         $datetime->format('Y-m-d')->willReturn('2069-02-15');
         $user->getId()->willReturn(42);
 
-        $project->getId()->willReturn(1337);
         $project->getLabel()->willReturn('Summer collection');
         $project->getCode()->willReturn('summer-collection-ecommerce-fr-fr');
         $project->getDescription()->willReturn('The sun is here, such is the collection!');
@@ -50,7 +49,6 @@ class ProjectNormalizerSpec extends ObjectBehavior
         $serializer->normalize($datagridView, 'internal_api', [])->willReturn(['label' => 'The OMG view']);
 
         $this->normalize($project, 'internal_api')->shouldReturn([
-            'id' => 1337,
             'label' => 'Summer collection',
             'code' => 'summer-collection-ecommerce-fr-fr',
             'description' => 'The sun is here, such is the collection!',

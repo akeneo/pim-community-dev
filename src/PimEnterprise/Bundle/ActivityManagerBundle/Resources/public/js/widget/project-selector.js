@@ -87,13 +87,13 @@ define(
                 $select.on('change', function (event) {
                     this.trigger('activity-manager:widget:project-selected', event.added.id);
                 }.bind(this));
-                $select.on('select2-open', function() {
+                $select.on('select2-open', function () {
                     $('.activity-manager-widget-project-dropdown .select2-search')
                         .prepend('<i class="icon-search AknProjectWidget-select2SearchIcon"></i>');
                     $('.activity-manager-widget-project-dropdown .select2-input')
                         .attr('placeholder', __('activity_manager.widget.placeholder.project_selector'));
                 });
-                $select.on('select2-close', function() {
+                $select.on('select2-close', function () {
                     $('.activity-manager-widget-project-dropdown .select2-search .icon-search').remove();
                     $('.activity-manager-widget-project-dropdown .select2-input').attr('placeholder', null);
                 });
@@ -161,7 +161,7 @@ define(
                     projectLabel: project.label,
                     projectChannel: channelLabel,
                     projectLocale: project.locale.label
-                })
+                });
             }
         });
     }
