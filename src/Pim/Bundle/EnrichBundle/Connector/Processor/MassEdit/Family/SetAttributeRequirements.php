@@ -91,44 +91,22 @@ class SetAttributeRequirements extends AbstractProcessor
             );
         }
 
-        if (!$this->isFamilyValid($family)) {
-            $this->stepExecution->incrementSummaryInfo('skipped_families');
-            $this->detacher->detach($family);
+        if (null !== $this->validator) {
+            $violations = $this->validator->validate($family);
 
-            return null;
+            if (0 !== $violations->count()) {
+                foreach ($violations as $violation) {
+                    $errors = sprintf("Family %s: %s\n", (string) $family, $violation->getMessage());
+                    $this->stepExecution->addWarning($this->getName(), $errors, [], $family);
+                }
+
+                $this->stepExecution->incrementSummaryInfo('skipped_families');
+                $this->detacher->detach($family);
+
+                return null;
+            }
         }
 
         return $family;
-    }
-
-    /**
-     * Validates the family
-     *
-     * @param FamilyInterface $family
-     *
-     * @return bool
-     */
-    protected function isFamilyValid(FamilyInterface $family)
-    {
-        if (null !== $this->validator) {
-            $violations = $this->validator->validate($family);
-            $this->addWarningMessage($violations, $family);
-
-            return 0 === $violations->count();
-        }
-
-        return true;
-    }
-
-    /**
-     * @param ConstraintViolationListInterface $violations
-     * @param FamilyInterface                  $family
-     */
-    protected function addWarningMessage(ConstraintViolationListInterface $violations, FamilyInterface $family)
-    {
-        foreach ($violations as $violation) {
-            $errors = sprintf("Family %s: %s\n", (string) $family, $violation->getMessage());
-            $this->stepExecution->addWarning($this->getName(), $errors, [], $family);
-        }
     }
 }
