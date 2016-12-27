@@ -1443,6 +1443,23 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string locator
+     *
+     * @When /^I hover over the element "([^"]*)"$/
+     */
+    public function iHoverOverTheElement($locator)
+    {
+        $session = $this->getSession();
+        $element = $session->getPage()->find('css', $locator);
+
+        if (null === $element) {
+            throw new \InvalidArgumentException(sprintf('Could not evaluate CSS selector: "%s"', $locator));
+        }
+
+        $element->mouseOver();
+    }
+
+    /**
      * @param string $button
      *
      * @Given /^I should see the "([^"]*)" button$/
