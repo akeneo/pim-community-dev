@@ -1449,12 +1449,10 @@ class WebUser extends RawMinkContext
      */
     public function iHoverOverTheElement($locator)
     {
-        $session = $this->getSession();
-        $element = $session->getPage()->find('css', $locator);
-
-        if (null === $element) {
-            throw new \InvalidArgumentException(sprintf('Could not evaluate CSS selector: "%s"', $locator));
-        }
+        $page = $this->getCurrentPage();
+        $element = $this->spin(function () use ($page, $locator) {
+            return $page->find('css', $locator);
+        }, sprintf("Can not find any '%s' element", $locator));
 
         $element->mouseOver();
     }
