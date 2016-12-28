@@ -180,7 +180,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             // Uncomment the following line to use MongoDB implementation
-            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            // new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
         ];
     }
 
