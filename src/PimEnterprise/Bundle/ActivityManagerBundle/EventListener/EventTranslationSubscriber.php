@@ -95,9 +95,11 @@ class EventTranslationSubscriber implements EventSubscriberInterface
         }
 
         $jobParameters = $jobExecution->getJobParameters();
-        $projectId = $jobParameters->get('project_code');
-        $project = $this->projectRepository->findOneByIdentifier($projectId);
+        $projectCode = $jobParameters->get('project_code');
+        $project = $this->projectRepository->findOneByIdentifier($projectCode);
 
-        $this->eventDispatcher->dispatch(ProjectEvents::PROJECT_CALCULATED, new ProjectEvent($project));
+        if (null !== $project) {
+            $this->eventDispatcher->dispatch(ProjectEvents::PROJECT_CALCULATED, new ProjectEvent($project));
+        }
     }
 }

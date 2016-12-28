@@ -97,18 +97,40 @@ class EventTranslationSubscriberSpec extends ObjectBehavior
 
     function it_only_dispatches_events_if_a_project_calculation_job_is_done(
         $eventDispatcher,
+        $projectRepository,
         JobExecutionEvent $jobExecutionEvent,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        ProjectInterface $project
     ) {
         $jobExecutionEvent->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getCode()->willReturn('another_job');
 
-        $eventDispatcher->dispatch(
-            ProjectEvents::PROJECT_CALCULATED,
-            Argument::type(ProjectEvent::class)
-        )->shouldNotBeCalled();
+        $projectRepository->findOneByIdentifier('another_job')->willReturn($project);
+
+        $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
+
+        $this->projectCalculated($jobExecutionEvent)->shouldReturn(null);
+    }
+
+    function it_does_not_dispatch_event_when_a_calculation_is_done_if_the_project_does_not_exists(
+        $eventDispatcher,
+        $projectRepository,
+        JobExecutionEvent $jobExecutionEvent,
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
+    ) {
+        $jobExecutionEvent->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('project_code')->willReturn('code');
+        $jobInstance->getCode()->willReturn('project_calculation');
+
+        $projectRepository->findOneByIdentifier('code')->willReturn(null);
+
+        $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
 
         $this->projectCalculated($jobExecutionEvent)->shouldReturn(null);
     }
