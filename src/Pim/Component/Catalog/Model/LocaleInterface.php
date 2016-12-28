@@ -84,13 +84,4 @@ interface LocaleInterface extends ReferableInterface
      * @return LocaleInterface
      */
     public function removeChannel(ChannelInterface $channel);
-
-    /**
-     * Set the status of the locale
-     *
-     * @param bool $activated
-     *
-     * @return LocaleInterface
-     */
-    public function setActivated(bool $activated);
 }

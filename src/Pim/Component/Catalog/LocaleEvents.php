@@ -15,19 +15,19 @@ final class LocaleEvents
      * This event is dispatched each time a locale is deactivated.
      *
      * The event listener receives an
-     * Pim\Bundle\EnrichBundle\Event\BuildProductValueFormEvent instance.
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const LOCALE_DEACTIVATED = 'pim_enrich.locale_deactivated';
+    const LOCALE_DEACTIVATED = 'pim_catalog.locale_deactivated';
 
     /**
      * This event is dispatched each time a locale is activated.
      *
      * The event listener receives an
-     * Pim\Bundle\EnrichBundle\Event\BuildProductValueFormEvent instance.
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const LOCALE_ACTIVATED = 'pim_enrich.locale_activated';
+    const LOCALE_ACTIVATED = 'pim_catalog.locale_activated';
 }
