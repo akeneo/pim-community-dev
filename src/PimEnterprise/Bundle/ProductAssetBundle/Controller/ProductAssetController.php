@@ -309,6 +309,10 @@ class ProductAssetController extends Controller
      */
     public function getNextAvailableCodeAction(Request $request, $code)
     {
+        if (null === $this->assetRepository->findOneByCode($code)) {
+            return new JsonResponse();
+        }
+
         $codes = $this->assetRepository->findSimilarCodes($code);
 
         if (!empty($codes)) {
