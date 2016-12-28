@@ -8,14 +8,14 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/job/common/edit/launch',
-        'routing',
         'oro/navigation',
-        'pim/common/property'
+        'oro/messenger'
     ],
-    function (_, __, BaseLaunch, Routing, Navigation, propertyAccessor, template) {
+    function ($, _, __, BaseLaunch, Navigation, messenger) {
         return BaseLaunch.extend({
             /**
              * {@inherit}
@@ -31,8 +31,7 @@ define(
              */
             render: function () {
                 this.$el.html(this.template({
-                    __: __,
-                    label: !this.getFormData().file ? this.config.launch : this.config.upload
+                    label: __(this.getFormData().file ? this.config.upload : this.config.launch)
                 }));
 
                 return this;
@@ -48,25 +47,25 @@ define(
 
                     $.ajax({
                         url: this.getUrl(),
-                        type: 'POST',
+                        method: 'POST',
                         data: formData,
                         contentType: false,
                         cache: false,
                         processData: false
                     })
-                    .done(function (response) {
+                    .then(function (response) {
                         Navigation.getInstance().setLocation(response.redirectUrl);
                     }.bind(this))
-                    .fail(function (xhr) {
-                        // TODO TIP-652
+                    .fail(function () {
+                        messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
                     });
                 } else {
-                    $.ajax(this.getUrl(), {method: 'POST'}).
+                    $.post(this.getUrl(), {method: 'POST'}).
                         then(function (response) {
                             Navigation.getInstance().setLocation(response.redirectUrl);
                         })
                         .fail(function () {
-                            // TODO TIP-652
+                            messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
                         });
                 }
 

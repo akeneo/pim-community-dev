@@ -30,18 +30,34 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.setValidationErrors.bind(this));
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.removeValidationErrors.bind(this));
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:entity:bad_request',
+                    this.setValidationErrors.bind(this)
+                );
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:entity:post_fetch',
+                    this.resetValidationErrors.bind(this)
+                );
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
+            /**
+             * Set the validation errors after validation fail
+             *
+             * @param {event} event
+             */
             setValidationErrors: function (event) {
                 this.errors = event.response;
             },
 
-            removeValidationErrors: function () {
+            /**
+             * Rest validation error after fetch
+             */
+            resetValidationErrors: function () {
                 this.errors = {};
             },
 

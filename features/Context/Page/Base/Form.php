@@ -377,7 +377,6 @@ class Form extends Base
     {
         $label     = $this->extractLabelElement($field, $element);
         $fieldType = $this->getFieldType($label);
-
         switch ($fieldType) {
             case 'multiSelect2':
                 $this->fillMultiSelect2Field($label, $value);
@@ -795,6 +794,10 @@ class Form extends Base
         }, sprintf('Cannot find element field with id %s', $for));
 
         $field->setValue($value);
+
+        $this->getSession()->executeScript(
+            sprintf("$('#%s').trigger('change');", $for)
+        );
     }
 
     /**

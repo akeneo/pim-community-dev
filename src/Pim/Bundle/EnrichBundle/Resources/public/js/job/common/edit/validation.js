@@ -42,7 +42,12 @@ define([
             if (null !== propertyAccessor
                 .accessProperty(this.errors, 'configuration.filters.data' + filter.getField())
             ) {
-                var content = $(this.template({errors: propertyAccessor.accessProperty(this.errors, 'configuration.filters.data' + filter.getField())}));
+                var content = $(this.template({
+                    errors: propertyAccessor.accessProperty(
+                        this.errors,
+                        'configuration.filters.data' + filter.getField()
+                    )
+                }));
 
                 event.filter.addElement(
                     'below-input',

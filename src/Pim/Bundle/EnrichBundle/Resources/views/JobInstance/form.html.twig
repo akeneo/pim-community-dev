@@ -15,7 +15,7 @@
         </div>
         {% endblock before_content %}
         <div class="hash-loading-mask"></div>
-        <div id="container">
+        <div id="container" class="scrollable-container">
             {% block page_container %}
                 {% block content %}
                     {% placeholder content_before %}
@@ -25,17 +25,23 @@
                     <script>
                         require(
                             [
+                                'underscore',
                                 'jquery',
                                 'pim/fetcher-registry',
                                 'pim/form-builder',
                                 'oro/loading-mask',
+                                'pim/history-item-manager',
+                                'oro/navigation',
                                 'oro/mediator'
                             ],
                             function(
+                                _,
                                 $,
                                 fetcherRegistry,
                                 formBuilder,
                                 LoadingMask,
+                                HistoryItemManager,
+                                Navigation,
                                 mediator
                             ) {
                                 $(function () {
@@ -43,9 +49,20 @@
                                     loadingMask.render().$el.appendTo($('#container')).show();
 
                                     fetcherRegistry.initialize().done(function () {
-                                        fetcherRegistry.getFetcher('job_instance').fetch('{{ jobInstanceIdentifier }}').then(function (jobProfile) {
+                                        fetcherRegistry.getFetcher('job-instance-{{ type }}').fetch('{{ jobInstanceIdentifier }}').then(function (jobProfile) {
                                             formBuilder.build(jobProfile.meta.form + '-{{ mode }}')
                                                 .then(function (form) {
+                                                    var label      = _.escape(jobProfile.label);
+                                                    var newTitle = document.title.replace('%job.label%', label);
+
+                                                    document.title  = newTitle;
+                                                    var navigation  = Navigation.getInstance();
+                                                    var navTitle    = navigation.getPinButtonsData('title');
+                                                    navTitle.params = {'%job.label%': label};
+                                                    navigation.setPinButtonsData('title', navTitle);
+                                                    navigation.setPinButtonsData('title-rendered-short', newTitle);
+                                                    HistoryItemManager.save(navigation.url, navTitle);
+
                                                     form.setData(jobProfile);
 
                                                     mediator.trigger('pim_enrich:form:entity:post_fetch', jobProfile);

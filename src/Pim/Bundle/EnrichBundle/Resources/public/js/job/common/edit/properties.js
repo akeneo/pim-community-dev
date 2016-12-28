@@ -41,12 +41,20 @@ define(
              */
             configure: function () {
                 this.trigger('tab:register', {
-                    code: this.code,
+                    code: this.config.tabCode ? this.config.tabCode : this.code,
                     label: __(this.config.tabTitle)
                 });
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.removeValidationErrors.bind(this));
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:entity:post_fetch',
+                    this.resetValidationErrors.bind(this)
+                );
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.setValidationErrors.bind(this));
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:entity:validation_error',
+                    this.setValidationErrors.bind(this)
+                );
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -64,7 +72,7 @@ define(
             /**
              * Remove validation error
              */
-            removeValidationErrors: function () {
+            resetValidationErrors: function () {
                 this.errors = {};
             },
 

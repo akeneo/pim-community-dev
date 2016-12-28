@@ -89,30 +89,16 @@ class ImportProfilesContext extends ImportExportContext
     /**
      * @param string $file
      *
-     * @Given /^I upload and import the file "([^"]*)"$/
+     * @Given /^I upload and import (an invalid|the) file "([^"]*)"$/
      */
-    public function iUploadAndImportTheFile($file)
+    public function iUploadAndImportTheFile($operator, $file)
     {
         $this->getMainContext()->getSubcontext('job')
             ->attachFileToField($this->replacePlaceholders($file), 'Drag and drop a file or click here');
+        $this->getCurrentPage()
+            ->getSession()
+            ->executeScript('$(\'.AknMediaField-fileUploaderInput\').trigger(\'change\');');
         $this->getCurrentPage()->pressButton('Upload and import now');
-
-        sleep(10);
-        $this->getMainContext()->reload();
-        $this->getMainContext()->wait();
-    }
-
-    /**
-     * @param string $file
-     *
-     * @Given /^I upload and import an invalid file "([^"]*)"$/
-     */
-    public function iUploadAndImportAnInvalidFile($file)
-    {
-        $this->getMainContext()->getSubcontext('job')
-            ->attachFileToField($this->replacePlaceholders($file), 'Drag and drop a file or click here');
-        $this->getCurrentPage()->pressButton('Upload and import now');
-
         $this->getMainContext()->wait();
     }
 

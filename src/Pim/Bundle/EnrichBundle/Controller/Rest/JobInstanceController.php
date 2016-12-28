@@ -12,9 +12,11 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -69,6 +71,9 @@ class JobInstanceController
     /** @var FormProviderInterface */
     protected $formProvider;
 
+    /** @var ObjectFilterInterface */
+    protected $objectFilter;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
@@ -83,6 +88,7 @@ class JobInstanceController
      * @param TokenStorageInterface                 $tokenStorage
      * @param RouterInterface                       $router
      * @param FormProviderInterface                 $formProvider
+     * @param ObjectFilterInterface                 $objectFilter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -97,7 +103,8 @@ class JobInstanceController
         JobLauncherInterface $simpleJobLauncher,
         TokenStorageInterface $tokenStorage,
         RouterInterface $router,
-        FormProviderInterface $formProvider
+        FormProviderInterface $formProvider,
+        ObjectFilterInterface $objectFilter
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -112,10 +119,25 @@ class JobInstanceController
         $this->tokenStorage          = $tokenStorage;
         $this->router                = $router;
         $this->formProvider          = $formProvider;
+        $this->objectFilter          = $objectFilter;
     }
 
     /**
-     * Get a job profile
+     * Get an import job profile
+     *
+     * @param string $identifier
+     *
+     * @AclAncestor("pim_importexport_import_profile_show")
+     *
+     * @return JsonResponse
+     */
+    public function getImportAction($identifier)
+    {
+        return $this->getAction($identifier);
+    }
+
+    /**
+     * Get an export job profile
      *
      * @param string $identifier
      *
@@ -123,9 +145,112 @@ class JobInstanceController
      *
      * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getExportAction($identifier)
+    {
+        return $this->getAction($identifier);
+    }
+
+    /**
+     * Edit an import job profile
+     *
+     * @param Request $request
+     * @param string  $identifier
+     *
+     * @AclAncestor("pim_importexport_import_profile_edit")
+     *
+     * @return JsonResponse
+     */
+    public function putImportAction(Request $request, $identifier)
+    {
+        return $this->putAction($request, $identifier);
+    }
+
+    /**
+     * Edit an export job profile
+     *
+     * @param Request $request
+     * @param string  $identifier
+     *
+     * @AclAncestor("pim_importexport_export_profile_edit")
+     *
+     * @return JsonResponse
+     */
+    public function putExportAction(Request $request, $identifier)
+    {
+        return $this->putAction($request, $identifier);
+    }
+
+    /**
+     * Delete an export job profile
+     *
+     * @param string $code
+     *
+     * @AclAncestor("pim_importexport_import_profile_remove")
+     *
+     * @return JsonResponse
+     */
+    public function deleteImportAction($code)
+    {
+        return $this->deleteAction($code);
+    }
+
+    /**
+     * Delete an export job profile
+     *
+     * @param string $code
+     *
+     * @AclAncestor("pim_importexport_export_profile_remove")
+     *
+     * @return JsonResponse
+     */
+    public function deleteExportAction($code)
+    {
+        return $this->deleteAction($code);
+    }
+
+    /**
+     * Launch an import job
+     *
+     * @param Request $request
+     * @param string  $code
+     *
+     * @AclAncestor("pim_importexport_import_profile_launch")
+     *
+     * @return JsonResponse
+     */
+    public function launchImportAction(Request $request, $code)
+    {
+        return $this->launchAction($request, $code);
+    }
+
+    /**
+     * Launch an export job
+     *
+     * @param Request $request
+     * @param string  $code
+     *
+     * @AclAncestor("pim_importexport_export_profile_launch")
+     *
+     * @return JsonResponse
+     */
+    public function launchExportAction(Request $request, $code)
+    {
+        return $this->launchAction($request, $code);
+    }
+
+    /**
+     * Get a job profile
+     *
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     */
+    protected function getAction($identifier)
     {
         $jobInstance = $this->getJobInstance($identifier);
+        if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.show')) {
+            throw new AccessDeniedHttpException();
+        }
 
         return new JsonResponse($this->normalizeJobInstance($jobInstance));
     }
@@ -136,13 +261,15 @@ class JobInstanceController
      * @param Request $request
      * @param string  $identifier
      *
-     * @AclAncestor("pim_importexport_export_profile_edit")
-     *
      * @return JsonResponse
      */
-    public function putAction(Request $request, $identifier)
+    protected function putAction(Request $request, $identifier)
     {
         $jobInstance = $this->getJobInstance($identifier);
+        if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.edit')) {
+            throw new AccessDeniedHttpException();
+        }
+
         $data = json_decode($request->getContent(), true);
         $this->updater->update($jobInstance, $data);
 
@@ -161,17 +288,18 @@ class JobInstanceController
      *
      * @param string $code
      *
-     * @AclAncestor("pim_importexport_export_profile_remove")
-     *
      * @return JsonResponse
      */
-    public function deleteAction($code)
+    protected function deleteAction($code)
     {
         $jobInstance = $this->getJobInstance($code);
+        if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.delete')) {
+            throw new AccessDeniedHttpException();
+        }
 
         $this->remover->remove($jobInstance);
 
-        return new JsonResponse();
+        return new JsonResponse(null, 204);
     }
 
     /**
@@ -182,11 +310,13 @@ class JobInstanceController
      *
      * @return JsonResponse
      */
-    public function launchAction(Request $request, $code)
+    protected function launchAction(Request $request, $code)
     {
         $jobInstance = $this->getJobInstance($code);
+        if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.execute')) {
+            throw new AccessDeniedHttpException();
+        }
 
-        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
         $file = $request->files->get('file');
         if ($file) {
             $violations = $this->validator->validate($file);
@@ -238,19 +368,12 @@ class JobInstanceController
     {
         $jobInstance = $this->repository->findOneByIdentifier($code);
         if (null === $jobInstance) {
-            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobInstance entity not found');
-        }
-
-        // Fixme: should look at the job execution to see the status of a job instance execution
-        if ($checkStatus && $jobInstance->getStatus() === JobInstance::STATUS_IN_PROGRESS) {
-            throw new NotFoundHttpException(
-                sprintf('The %s "%s" is currently in progress', $jobInstance->getType(), $jobInstance->getLabel())
-            );
+            throw new NotFoundHttpException(sprintf('%s entity not found', 'Akeneo\Component\Batch\Model\JobInstance'));
         }
 
         $job = $this->jobRegistry->get($jobInstance->getJobName());
 
-        if (!$job) {
+        if (null === $job) {
             throw new NotFoundHttpException(
                 sprintf(
                     'The following %s does not exist anymore. Please check configuration:<br />' .
@@ -292,7 +415,7 @@ class JobInstanceController
             }
         }
 
-        $globalViolations = $this->validator->validate($jobInstance);
+        $globalViolations = $this->validator->validate($jobInstance, ['Default']);
         if ($globalViolations->count() > 0) {
             foreach ($globalViolations as $error) {
                 $errors[$error->getPropertyPath()] = $error->getMessage();

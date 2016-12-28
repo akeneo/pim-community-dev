@@ -16,6 +16,7 @@ extensions:
         position: 100
         config:
             tabTitle: pim_enrich.form.job_instance.tab.properties.title
+            tabCode: pim-job-instance-properties
 
     pim-job-instance-csv-base-export-show-history:
         module: pim/common/tab/history
@@ -26,6 +27,7 @@ extensions:
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
             title: pim_enrich.form.job_instance.tab.history.title
+            tabCode: pim-job-instance-history
 
     pim-job-instance-csv-base-export-show-properties-code:
         module: pim/job/common/edit/field/text
@@ -131,7 +133,7 @@ extensions:
         position: 110
         config:
             label: pim_enrich.form.job_instance.button.export.title
-            route: pim_enrich_job_instance_rest_launch
+            route: pim_enrich_job_instance_rest_export_launch
             identifier:
                 path: code
                 name: code

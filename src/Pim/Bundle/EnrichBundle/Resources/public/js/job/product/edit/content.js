@@ -13,10 +13,7 @@ define(
         'oro/translator',
         'backbone',
         'text!pim/template/export/product/edit/content',
-        'pim/form',
-        'oro/mediator',
-        'pim/fetcher-registry',
-        'pim/field-manager'
+        'pim/form'
     ],
     function (
         module,
@@ -24,9 +21,7 @@ define(
         __,
         Backbone,
         template,
-        BaseForm,
-        mediator,
-        FetcherRegistry
+        BaseForm
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -41,11 +36,11 @@ define(
             },
 
             /**
-             * {@inherit}
+             * {@inheritdoc}
              */
             configure: function () {
                 this.trigger('tab:register', {
-                    code: this.code,
+                    code: this.config.tabCode ? this.config.tabCode : this.code,
                     label: __(this.config.tabTitle)
                 });
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
@@ -54,7 +49,7 @@ define(
             },
 
             /**
-             * {@inherit}
+             * {@inheritdoc}
              */
             render: function () {
                 if (!this.configured) {
@@ -66,28 +61,6 @@ define(
                 );
 
                 this.renderExtensions();
-            },
-
-            setJobCode: function (jobCode) {
-                this.setData(
-                    {jobCode: jobCode},
-                    {silent: true}
-                );
-            },
-
-            /**
-             * Remove all events binded to this form.
-             */
-            unbindEvents: function () {
-                mediator.clear('pim_enrich:form');
-            },
-
-            /**
-             * Clear the fetcher registry
-             */
-            clearCache: function () {
-                FetcherRegistry.clearAll();
-                this.render();
             }
         });
     }

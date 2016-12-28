@@ -3,33 +3,16 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
-use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
-use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
-use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Job Profile controller
@@ -40,7 +23,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class JobProfileController
 {
-    /** @staticvar string */
     const DEFAULT_CREATE_TEMPLATE = 'PimImportExportBundle:%sProfile:create.html.twig';
 
     /** @var JobRegistry */
@@ -164,7 +146,8 @@ class JobProfileController
             'PimEnrichBundle:JobInstance:form.html.twig',
             [
                 'jobInstanceIdentifier' => $code,
-                'mode'                  => 'show'
+                'mode'                  => 'show',
+                'type'                  => $this->getJobType()
             ]
         );
     }
@@ -182,7 +165,8 @@ class JobProfileController
             'PimEnrichBundle:JobInstance:form.html.twig',
             [
                 'jobInstanceIdentifier' => $code,
-                'mode'                  => 'edit'
+                'mode'                  => 'edit',
+                'type'                  => $this->getJobType()
             ]
         );
     }

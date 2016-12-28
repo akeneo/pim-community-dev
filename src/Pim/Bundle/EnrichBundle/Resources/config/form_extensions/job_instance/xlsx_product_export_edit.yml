@@ -7,7 +7,7 @@ extensions:
         parent: pim-job-instance-xlsx-product-export-edit
         position: 1000
 
-    pim-job-instance-xlsx-product-export-edit-form-tabs:
+    pim-job-instance-xlsx-product-export-edit-tabs:
         module: pim/form/common/form-tabs
         parent: pim-job-instance-xlsx-product-export-edit
         targetZone: content
@@ -15,31 +15,34 @@ extensions:
 
     pim-job-instance-xlsx-product-export-edit-properties:
         module: pim/job/common/edit/properties
-        parent: pim-job-instance-xlsx-product-export-edit-form-tabs
+        parent: pim-job-instance-xlsx-product-export-edit-tabs
         aclResourceId: pim_importexport_export_profile_property_edit
         targetZone: container
         position: 100
         config:
             tabTitle: pim_enrich.form.job_instance.tab.properties.title
+            tabCode: pim-job-instance-properties
 
     pim-job-instance-xlsx-product-export-edit-content:
         module: pim/job/product/edit/content
-        parent: pim-job-instance-xlsx-product-export-edit-form-tabs
+        parent: pim-job-instance-xlsx-product-export-edit-tabs
         aclResourceId: pim_importexport_export_profile_content_edit
         targetZone: container
         position: 110
         config:
             tabTitle: pim_enrich.form.job_instance.tab.content.title
+            tabCode: pim-job-instance-content
 
     pim-job-instance-xlsx-product-export-edit-history:
         module: pim/common/tab/history
-        parent: pim-job-instance-xlsx-product-export-edit-form-tabs
+        parent: pim-job-instance-xlsx-product-export-edit-tabs
         targetZone: container
         aclResourceId: pim_importexport_export_profile_history
         position: 120
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
             title: pim_enrich.form.job_instance.tab.history.title
+            tabCode: pim-job-instance-history
 
     pim-job-instance-xlsx-product-export-edit-properties-code:
         module: pim/job/common/edit/field/text
@@ -62,7 +65,7 @@ extensions:
             readOnly: false
 
     pim-job-instance-csv-product-export-edit-properties-decimal-separator:
-        module: pim/job/product/edit/field/decimal-separator
+        module: pim/job/common/edit/field/decimal-separator
         parent: pim-job-instance-csv-product-export-edit-properties
         position: 100
         targetZone: global-settings
@@ -155,7 +158,7 @@ extensions:
             backUrl: pim_importexport_export_profile_index
 
     pim-job-instance-xlsx-product-export-edit-delete:
-        module: pim/job/common/edit/delete
+        module: pim/job/export/edit/delete
         parent: pim-job-instance-xlsx-product-export-edit
         targetZone: buttons
         aclResourceId: pim_importexport_export_profile_remove
@@ -175,10 +178,12 @@ extensions:
         position: 120
 
     pim-job-instance-xlsx-product-export-edit-save:
-        module: pim/job-instance-edit-form/save
+        module: pim/job-instance-export-edit-form/save
         parent: pim-job-instance-xlsx-product-export-edit
         targetZone: buttons
         position: 0
+        config:
+            redirectPath: pim_importexport_export_profile_show
 
     pim-job-instance-xlsx-product-export-edit-state:
         module: pim/form/common/state

@@ -2,7 +2,7 @@ extensions:
     pim-job-instance-xlsx-product-export-show:
         module: pim/form/common/edit-form
 
-    pim-job-instance-xlsx-product-export-show-form-tabs:
+    pim-job-instance-xlsx-product-export-show-tabs:
         module: pim/form/common/form-tabs
         parent: pim-job-instance-xlsx-product-export-show
         targetZone: content
@@ -10,31 +10,34 @@ extensions:
 
     pim-job-instance-xlsx-product-export-show-properties:
         module: pim/job/common/edit/properties
-        parent: pim-job-instance-xlsx-product-export-show-form-tabs
+        parent: pim-job-instance-xlsx-product-export-show-tabs
         aclResourceId: pim_importexport_export_profile_property_edit
         targetZone: container
         position: 100
         config:
             tabTitle: pim_enrich.form.job_instance.tab.properties.title
+            tabCode: pim-job-instance-properties
 
     pim-job-instance-xlsx-product-export-show-content:
         module: pim/job/product/edit/content
-        parent: pim-job-instance-xlsx-product-export-show-form-tabs
+        parent: pim-job-instance-xlsx-product-export-show-tabs
         aclResourceId: pim_importexport_export_profile_content_edit
         targetZone: container
         position: 110
         config:
             tabTitle: pim_enrich.form.job_instance.tab.content.title
+            tabCode: pim-job-instance-content
 
     pim-job-instance-xlsx-product-export-show-history:
         module: pim/common/tab/history
-        parent: pim-job-instance-xlsx-product-export-show-form-tabs
+        parent: pim-job-instance-xlsx-product-export-show-tabs
         targetZone: container
         aclResourceId: pim_importexport_export_profile_history
         position: 120
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
             title: pim_enrich.form.job_instance.tab.history.title
+            tabCode: pim-job-instance-history
 
     pim-job-instance-xlsx-product-export-show-properties-code:
         module: pim/job/common/edit/field/text
@@ -57,7 +60,7 @@ extensions:
             readOnly: true
 
     pim-job-instance-csv-product-export-show-properties-decimal-separator:
-        module: pim/job/product/edit/field/decimal-separator
+        module: pim/job/common/edit/field/decimal-separator
         parent: pim-job-instance-csv-product-export-show-properties
         position: 100
         targetZone: global-settings
@@ -228,7 +231,7 @@ extensions:
         position: 110
         config:
             label: pim_enrich.form.job_instance.button.export.title
-            route: pim_enrich_job_instance_rest_launch
+            route: pim_enrich_job_instance_rest_export_launch
             identifier:
                 path: code
                 name: code

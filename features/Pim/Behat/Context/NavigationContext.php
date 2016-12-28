@@ -355,8 +355,9 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $pageName
-     * @param array  $options
+     * @param string  $pageName
+     * @param array   $options
+     * @param boolean $wait     should the script wait for the page to load
      *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */

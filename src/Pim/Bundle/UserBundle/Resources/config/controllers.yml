@@ -1,6 +1,7 @@
 parameters:
     pim_user.controller.user_rest.class: Pim\Bundle\UserBundle\Controller\UserRestController
     pim_user.controller.security_rest.class: Pim\Bundle\UserBundle\Controller\SecurityRestController
+    pim_user.controller.user_group_rest.class: Pim\Bundle\UserBundle\Controller\UserGroupRestController
 
 services:
     pim_user.controller.user_rest:
@@ -15,3 +16,8 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@oro_security.acl.annotation_provider'
+
+    pim_user.controller.user_group_rest:
+        class: '%pim_user.controller.user_group_rest.class%'
+        arguments:
+            - '@pim_user.repository.group'

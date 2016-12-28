@@ -7,8 +7,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['pim/form', 'oro/translator', 'text!pim/template/export/common/edit/meta'],
-    function (BaseForm, __, template) {
+    ['pim/form', 'underscore', 'oro/translator', 'text!pim/template/export/common/edit/meta'],
+    function (BaseForm, _, __, template) {
         return BaseForm.extend({
             template: _.template(template),
 
@@ -16,10 +16,13 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.template({ jobInstance: this.getFormData(), __: __}));
+                this.$el.html(this.template({
+                    jobInstance: this.getFormData(),
+                    __: __
+                }));
 
                 return this;
             }
         });
     }
-)
+);

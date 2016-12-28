@@ -14,7 +14,6 @@ define(
         'oro/translator',
         'pim/form/common/save',
         'oro/messenger',
-        'pim/saver/job-instance',
         'pim/field-manager',
         'pim/i18n',
         'pim/user-context',
@@ -27,7 +26,6 @@ define(
         __,
         BaseSave,
         messenger,
-        JobInstanceSaver,
         FieldManager,
         i18n,
         UserContext,
@@ -50,12 +48,12 @@ define(
                 this.showLoadingMask();
                 this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
-                return JobInstanceSaver
+                return this.getJobInstanceSaver()
                     .save(jobInstance.code, jobInstance)
                     .then(function (data) {
                         Navigation.getInstance().setLocation(
                             Routing.generate(
-                                'pim_importexport_import_profile_show',
+                                this.config.redirectPath,
                                 {code: jobInstance.code}
                             )
                         );

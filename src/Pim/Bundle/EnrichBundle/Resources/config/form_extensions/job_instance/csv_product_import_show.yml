@@ -18,10 +18,12 @@ extensions:
     pim-job-instance-csv-product-import-show-properties:
         module: pim/job/common/edit/properties
         parent: pim-job-instance-csv-product-import-show-tabs
+        aclResourceId: pim_importexport_export_profile_property_show
         targetZone: container
         position: 100
         config:
             tabTitle: pim_enrich.form.job_instance.tab.properties.title
+            tabCode: pim-job-instance-properties
 
     pim-job-instance-csv-product-import-show-history:
         module: pim/common/tab/history
@@ -32,6 +34,7 @@ extensions:
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
             title: pim_enrich.form.job_instance.tab.history.title
+            tabCode: pim-job-instance-history
 
     pim-job-instance-csv-product-import-show-properties-code:
         module: pim/job/common/edit/field/text
@@ -86,27 +89,38 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.enclosure.title
             tooltip: pim_enrich.form.job_instance.tab.properties.help.enclosure.help
 
-    pim-job-instance-csv-product-import-show-properties-file-upload:
-        module: pim/job/common/edit/field/switch
+    pim-job-instance-csv-product-import-show-properties-decimal-separator:
+        module: pim/job/common/edit/field/decimal-separator
         parent: pim-job-instance-csv-product-import-show-properties
         position: 150
         targetZone: global-settings
         config:
-            fieldCode: configuration.uploadAllowed
+            fieldCode: configuration.decimalSeparator
             readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.uploadAllowed.help
+            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.help.decimal_separator.help
 
-    pim-job-instance-csv-product-import-show-properties-file-upload:
+    pim-job-instance-csv-product-import-show-properties-with-header:
         module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-csv-product-import-show-properties
+        position: 160
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.withHeader
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.with_header.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_header.help
+
+    pim-job-instance-csv-product-import-show-properties-escape:
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-csv-product-import-show-properties
         position: 170
         targetZone: global-settings
         config:
-            fieldCode: configuration.uploadAllowed
+            fieldCode: configuration.escape
             readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.uploadAllowed.help
+            label: pim_enrich.form.job_instance.tab.properties.escape.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.help.escape.help
 
     pim-job-instance-csv-product-import-show-properties-categories-column:
         module: pim/job/common/edit/field/text
@@ -142,9 +156,9 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.groupsColumn.help
 
     pim-job-instance-csv-product-import-show-properties-enabled:
-        module: pim/job/common/edit/field/text
+        module: pim/job/common/edit/field/switch
         parent: pim-job-instance-csv-product-import-show-properties
-        position: 200
+        position: 210
         targetZone: global-settings
         config:
             fieldCode: configuration.enabled
@@ -152,8 +166,19 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.enabled.title
             tooltip: pim_enrich.form.job_instance.tab.properties.help.enabled.help
 
+    pim-job-instance-csv-product-import-show-properties-date-format:
+        module: pim/job/product/edit/field/date-format
+        parent: pim-job-instance-csv-product-import-show-properties
+        position: 230
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.dateFormat
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.date_format.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.help.date_format.help
+
     pim-job-instance-csv-product-import-show-properties-enabled-comparison:
-        module: pim/job/common/edit/field/text
+        module: pim/job/common/edit/field/switch
         parent: pim-job-instance-csv-product-import-show-properties
         position: 210
         targetZone: global-settings
@@ -164,7 +189,7 @@ extensions:
             tooltip: pim_enrich.form.job_instance.tab.properties.help.enabledComparison.help
 
     pim-job-instance-csv-product-import-show-properties-real-time-versioning:
-        module: pim/job/common/edit/field/text
+        module: pim/job/common/edit/field/switch
         parent: pim-job-instance-csv-product-import-show-properties
         position: 220
         targetZone: global-settings
@@ -173,6 +198,17 @@ extensions:
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.real_time_versioning.title
             tooltip: pim_enrich.form.job_instance.tab.properties.help.realTimeVersioning.help
+
+    pim-job-instance-csv-product-import-show-properties-file-upload:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-csv-product-import-show-properties
+        position: 230
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.uploadAllowed
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.help.uploadAllowed.help
 
     pim-job-instance-csv-product-import-show-label:
         module: pim/job/common/edit/label
@@ -216,7 +252,7 @@ extensions:
         config:
             launch: pim_enrich.form.job_instance.button.import.launch
             upload: pim_enrich.form.job_instance.button.import.upload
-            route: pim_enrich_job_instance_rest_launch
+            route: pim_enrich_job_instance_rest_import_launch
             identifier:
                 path: code
                 name: code

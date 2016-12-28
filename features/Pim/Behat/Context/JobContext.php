@@ -116,7 +116,11 @@ class JobContext extends PimContext
         $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
         $this->getCurrentPage()->open(['code' => $job->getCode()]);
 
-        return new Step\Then('I should see "403 Forbidden"');
+        $message = 'launch' === $action ?
+             'Failed to launch the job profile. Make sure it is valid and that you have right to launch it.' :
+             'Failed to save the job profile. Make sure that you have right to edit it.';
+
+        return new Step\Then(sprintf('I should see the text "%s"', $message));
     }
 
     /**

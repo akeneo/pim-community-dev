@@ -270,6 +270,9 @@ pim_enrich:
                 created_by: Created by
                 updated: Updated
                 updated_by: Updated by
+        job_instance:
+            info:
+                update_failed: The job profile could not be updated.
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
@@ -399,6 +402,12 @@ pim_enrich:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
         job_instance:
+            fail:
+                launch: Failed to launch the job profile. Make sure it is valid and that you have right to launch it.
+                save: Failed to save the job profile. Make sure that you have right to edit it.
+            title:
+                import: Import profile
+                export: Export profile
             button:
                 edit.title: Edit
                 export.title: Export now
@@ -440,6 +449,30 @@ pim_enrich:
                     lines_per_file:
                         title: Number of lines per file
                         help: Define the limit number of lines per file
+                    upload_allowed:
+                        title: Allow file upload
+                        help: Whether or not to allow uploading the file directly
+                    categories_column:
+                        title: Categories column
+                        help: Name of the categories column
+                    escape:
+                        title: Escape
+                        help: One character used to set the field escape
+                    family_column:
+                        title: Family column
+                        help: Name of the family column
+                    groups_column:
+                        title: Groups column
+                        help: Name of the groups column
+                    enabled:
+                        title: Enable the product
+                        help: Whether or not imported product should be enabled
+                    enabled_comparison:
+                        title: Compare values
+                        help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
+                    real_time_versioning:
+                        title: Real time history update
+                        help: Means that the product history is automatically updated, can be switched off to improve performances
                 history:
                     title: History
     job:

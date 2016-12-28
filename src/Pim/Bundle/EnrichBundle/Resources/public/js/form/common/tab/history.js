@@ -28,7 +28,7 @@ define([
              */
             configure: function () {
                 this.trigger('tab:register', {
-                    code: this.code,
+                    code: this.config.tabCode ? this.config.tabCode : this.code,
                     label: __(this.config.title)
                 });
 

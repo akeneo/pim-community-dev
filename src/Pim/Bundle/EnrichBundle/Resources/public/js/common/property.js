@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * Property accessor extension
@@ -45,9 +45,9 @@ define([], function () {
 
             data[pathPart[0]] = 1 === pathPart.length ?
                 value :
-                this.updateProperty(data[pathPart[0]], pathPart.slice(1).join('.'), value)
+                this.updateProperty(data[pathPart[0]], pathPart.slice(1).join('.'), value);
 
             return data;
         }
-    }
-})
+    };
+});

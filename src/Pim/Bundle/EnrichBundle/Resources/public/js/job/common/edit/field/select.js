@@ -29,7 +29,7 @@ define([
         render: function () {
             BaseField.prototype.render.apply(this, arguments);
 
-            this.$('.select2').select2({});
+            this.$('.select2').select2();
         },
 
         /**

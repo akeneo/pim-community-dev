@@ -8,15 +8,17 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
         'routing',
         'oro/navigation',
         'pim/common/property',
+        'oro/messenger',
         'text!pim/template/export/common/edit/launch'
     ],
-    function (_, __, BaseForm, Routing, Navigation, propertyAccessor, template) {
+    function ($, _, __, BaseForm, Routing, Navigation, propertyAccessor, messenger, template) {
         return BaseForm.extend({
             template: _.template(template),
             events: {
@@ -36,10 +38,15 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.template({
-                    __: __,
-                    label: this.config.label
-                }));
+                this.isVisible().then(function (isVisible) {
+                    if (!isVisible) {
+                        return this;
+                    }
+
+                    this.$el.html(this.template({
+                        label: __(this.config.label)
+                    }));
+                }.bind(this));
 
                 return this;
             },
@@ -48,12 +55,12 @@ define(
              * Launch the job
              */
             launch: function () {
-                $.ajax(this.getUrl(), {method: 'POST'}).
-                    then(function (response) {
+                $.post(this.getUrl())
+                    .then(function (response) {
                         Navigation.getInstance().setLocation(response.redirectUrl);
                     })
                     .fail(function () {
-
+                        messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
                     });
             },
 
@@ -70,6 +77,15 @@ define(
                 );
 
                 return Routing.generate(this.config.route, params);
+            },
+
+            /**
+             * Should this extension render
+             *
+             * @return {Promise}
+             */
+            isVisible: function () {
+                return $.Deferred().resolve(true).promise();
             }
         });
     }

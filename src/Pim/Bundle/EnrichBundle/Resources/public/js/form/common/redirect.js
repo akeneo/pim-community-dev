@@ -8,6 +8,7 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
@@ -16,7 +17,7 @@ define(
         'pim/common/property',
         'text!pim/template/form/redirect'
     ],
-    function (_, __, BaseForm, Routing, Navigation, propertyAccessor, template) {
+    function ($, _, __, BaseForm, Routing, Navigation, propertyAccessor, template) {
         return BaseForm.extend({
             template: _.template(template),
             events: {
@@ -36,10 +37,15 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.template({
-                    __: __,
-                    label: this.config.label
-                }));
+                this.isVisible().then(function (isVisible) {
+                    if (!isVisible) {
+                        return this;
+                    }
+
+                    this.$el.html(this.template({
+                        label: __(this.config.label)
+                    }));
+                }.bind(this));
 
                 return this;
             },
@@ -48,7 +54,7 @@ define(
              * Redirect to the route given in the config
              */
             redirect: function () {
-                 Navigation.getInstance().setLocation(this.getUrl());
+                Navigation.getInstance().setLocation(this.getUrl());
             },
 
             /**
@@ -64,6 +70,15 @@ define(
                 );
 
                 return Routing.generate(this.config.route, params);
+            },
+
+            /**
+             * Should this extension render
+             *
+             * @return {Promise}
+             */
+            isVisible: function () {
+                return $.Deferred().resolve(true).promise();
             }
         });
     }

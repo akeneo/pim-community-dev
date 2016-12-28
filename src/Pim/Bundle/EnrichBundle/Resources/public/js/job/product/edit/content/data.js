@@ -15,7 +15,8 @@ define(
         'text!pim/template/export/product/edit/content/data',
         'pim/form',
         'pim/fetcher-registry',
-        'pim/form-builder'
+        'pim/form-builder',
+        'pim/common/property'
     ],
     function (
         $,
@@ -24,7 +25,8 @@ define(
         template,
         BaseForm,
         fetcherRegistry,
-        formBuilder
+        formBuilder,
+        PropertyAccessor
     ) {
         return BaseForm.extend({
             filterViews: [],
@@ -71,7 +73,7 @@ define(
                     }.bind(this))
                     .then(function () {
                         if (!_.isEmpty(this.getFormData())) {
-                            this.updateFiltersData(_.extend({}, this.getFormData().configuration.filters.data));
+                            this.updateFiltersData(_.extend({}, this.getFilters().data));
                         }
                     }.bind(this));
             },
@@ -233,7 +235,7 @@ define(
              * Add filter stored in the backend (filters added by the user and saved)
              */
             addExistingFilters: function () {
-                var filterCodes = _.map(_.pluck(this.getFormData().configuration.filters.data, 'field'), function (field) {
+                var filterCodes = _.map(_.pluck(this.getFilters().data, 'field'), function (field) {
                     return field.replace(/\.code$/, '');
                 });
 
@@ -295,7 +297,7 @@ define(
                         dataFilterCollection.push(filterView.getFormData());
                     }
                 });
-                data.configuration.filters.data = dataFilterCollection;
+                data = PropertyAccessor.updateProperty(data, 'configuration.filters.data', dataFilterCollection);
 
                 this.setData(data);
             },

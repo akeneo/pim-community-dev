@@ -19,6 +19,7 @@ Feature: Handle import of invalid XLSX data
     And the following job "xlsx_footwear_association_type_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "xlsx_footwear_association_type_import" export job page
     And I launch the "xlsx_footwear_association_type_import" import job
     And I wait for the "xlsx_footwear_association_type_import" job to finish
     Then I should see the text "Download invalid data"
@@ -43,6 +44,7 @@ Feature: Handle import of invalid XLSX data
     And the following job "xlsx_footwear_attribute_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "xlsx_footwear_attribute_import" export job page
     And I launch the "xlsx_footwear_attribute_import" import job
     And I wait for the "xlsx_footwear_attribute_import" job to finish
     Then I should see the text "Download invalid data"
@@ -66,6 +68,7 @@ Feature: Handle import of invalid XLSX data
     And the following job "xlsx_footwear_option_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "xlsx_footwear_option_import" export job page
     And I launch the "xlsx_footwear_option_import" import job
     And I wait for the "xlsx_footwear_option_import" job to finish
     Then I should see the text "Download invalid data"
@@ -88,6 +91,7 @@ Feature: Handle import of invalid XLSX data
     And the following job "xlsx_footwear_category_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "xlsx_footwear_category_import" export job page
     And I launch the "xlsx_footwear_category_import" import job
     And I wait for the "xlsx_footwear_category_import" job to finish
     Then I should see the text "Download invalid data"
@@ -115,6 +119,7 @@ Feature: Handle import of invalid XLSX data
     And the following job "xlsx_footwear_family_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "xlsx_footwear_family_import" export job page
     And I launch the "xlsx_footwear_family_import" import job
     And I wait for the "xlsx_footwear_family_import" job to finish
     Then I should see the text "Download invalid data"
@@ -135,6 +140,7 @@ Feature: Handle import of invalid XLSX data
     And the following job "xlsx_footwear_group_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "xlsx_footwear_group_import" export job page
     And I launch the "xlsx_footwear_group_import" import job
     And I wait for the "xlsx_footwear_group_import" job to finish
     Then I should see the text "Download invalid data"
@@ -162,6 +168,7 @@ Feature: Handle import of invalid XLSX data
     And the following job "xlsx_footwear_product_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "xlsx_footwear_product_import" export job page
     And I launch the "xlsx_footwear_product_import" import job
     And I wait for the "xlsx_footwear_product_import" job to finish
     Then I should see the text "Download invalid data"
@@ -182,6 +189,7 @@ Feature: Handle import of invalid XLSX data
     And the following job "xlsx_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "xlsx_footwear_variant_group_import" export job page
     And I launch the "xlsx_footwear_variant_group_import" import job
     And I wait for the "xlsx_footwear_variant_group_import" job to finish
     Then I should see the text "Download invalid data"

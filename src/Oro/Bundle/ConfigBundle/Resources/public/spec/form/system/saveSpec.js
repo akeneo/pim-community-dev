@@ -5,7 +5,7 @@ define(
     ['pim/form/common/save', 'oro/form/system/config/save', 'routing', 'module'],
     function (CommonSave, SaveForm, Routing, module) {
         describe('Save form', function () {
-            var saveForm = new SaveForm();
+            var saveForm = new SaveForm({config: {config: {}}});
             it('extends save form', function () {
                 expect(saveForm instanceof CommonSave).toBeTruthy()
             });

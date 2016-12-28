@@ -84,7 +84,7 @@ define(
                 this.delegateEvents();
                 this.initializeDropZones();
 
-                var currentTab = this.getExtension(this.getCurrentTab());
+                var currentTab = this.getTabExtension(this.getCurrentTab());
                 if (currentTab) {
                     var zone = this.getZone('container');
                     zone.appendChild(currentTab.el);
@@ -119,7 +119,7 @@ define(
              * Resize the container to avoid multiple scrollbar
              */
             resize: function () {
-                var currentTab = this.getExtension(this.getCurrentTab());
+                var currentTab = this.getTabExtension(this.getCurrentTab());
                 if (currentTab && _.isFunction(currentTab.resize)) {
                     currentTab.resize();
                 }
@@ -208,6 +208,24 @@ define(
                 if ((currentTabIsNotDefined || currentTabDoesNotExist) && _.first(tabs)) {
                     this.setCurrentTab(_.first(tabs).code);
                 }
+            },
+
+            /**
+             * Get a child tab extension
+             *
+             * @param {string} code
+             *
+             * @return {Object}
+             */
+            getTabExtension: function (code) {
+                return this.extensions[_.find(this.extensions, function (extension) {
+                    var extensionCode = extension.config && extension.config.tabCode ?
+                        extension.config.tabCode :
+                        extension.code;
+                    var expectedPosition = extensionCode.length - code.length;
+
+                    return expectedPosition >= 0 && expectedPosition === extensionCode.indexOf(code, expectedPosition);
+                }).code];
             }
         });
     }

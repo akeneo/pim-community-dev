@@ -71,7 +71,7 @@ define([
                 value: this.getValue(),
                 config: this.config,
                 error: this.getParent().getValidationErrorsForField(this.getFieldCode())
-            }
+            };
         },
 
         /**
@@ -96,7 +96,7 @@ define([
          * Update the model after dom update
          */
         updateState: function () {
-            var data = propertyAccessor.updateProperty(this.getFormData(), this.getFieldCode(), this.getFieldValue())
+            var data = propertyAccessor.updateProperty(this.getFormData(), this.getFieldCode(), this.getFieldValue());
 
             this.setData(data);
         }
