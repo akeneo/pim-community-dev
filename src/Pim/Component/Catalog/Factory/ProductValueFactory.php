@@ -60,22 +60,45 @@ class ProductValueFactory
      */
     public function createEmpty(AttributeInterface $attribute, $channelCode, $localeCode)
     {
-        if ($attribute->isScopable() && null === $this->channelRepository->findOneByIdentifier($channelCode)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'A scope must be provided to create a value for the scopable attribute %s',
-                    $attribute->getCode()
-                )
-            );
+        if ($attribute->isScopable()) {
+            if (null === $channelCode) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'A channel code must be provided to create a value for the scopable attribute "%s"',
+                        $attribute->getCode()
+                    )
+                );
+            }
+            if (!in_array($channelCode, $this->channelRepository->getChannelCodes())) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'A valid channel code must be provided to create a value for the scopable attribute "%s", "%s" given',
+                        $attribute->getCode(),
+                        $channelCode
+                    )
+                );
+            }
         }
 
-        if ($attribute->isLocalizable() && null === $this->localeRepository->findOneByIdentifier($localeCode)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'A locale must be provided to create a value for the localizable attribute %s',
-                    $attribute->getCode()
-                )
-            );
+        if ($attribute->isLocalizable()) {
+            if (null === $localeCode) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'A locale code must be provided to create a value for the localizable attribute "%s"',
+                        $attribute->getCode()
+                    )
+                );
+
+            }
+            if (!in_array($localeCode, $this->localeRepository->getActivatedLocaleCodes())) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'An activated locale code must be provided to create a value for the localizable attribute "%s", "%s" given',
+                        $attribute->getCode(),
+                        $localeCode
+                    )
+                );
+            }
         }
 
         /** @var ProductValueInterface $value */

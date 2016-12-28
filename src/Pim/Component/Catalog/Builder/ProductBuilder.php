@@ -48,9 +48,6 @@ class ProductBuilder implements ProductBuilderInterface
     protected $productClass;
 
     /** @var string */
-    protected $productValueClass;
-
-    /** @var string */
     protected $productPriceClass;
 
     /** @var string */
@@ -89,7 +86,6 @@ class ProductBuilder implements ProductBuilderInterface
         $this->valuesResolver = $valuesResolver;
         $this->productValueFactory = $productValueFactory;
         $this->productClass = $classes['product'];
-        $this->productValueClass = $classes['product_value'];
         $this->productPriceClass = $classes['product_price'];
         $this->associationClass = $classes['association'];
     }
@@ -188,12 +184,24 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $data)
+    public function addPriceForCurrency(ProductValueInterface $value, $currency)
     {
-        $value->setData($data);
-        $value->setCurrency($currency);
+        if (!$this->hasPriceForCurrency($value, $currency)) {
+            $value->addPrice(new $this->productPriceClass(null, $currency));
+        }
 
-        return $value;
+        return $this->getPriceForCurrency($value, $currency);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $amount)
+    {
+        $price = $this->addPriceForCurrency($value, $currency);
+        $price->setData($amount);
+
+        return $price;
     }
 
     /**
@@ -222,6 +230,15 @@ class ProductBuilder implements ProductBuilderInterface
 
         return $productValue;
     }
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.8. Please use ProductValueFactory::createEmpty instead.
+     */
+    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null)
+    {
+        return $this->productValueFactory->createEmpty($attribute, $locale, $scope);
+    }
 
     /**
      * {@inheritdoc}
@@ -234,7 +251,7 @@ class ProductBuilder implements ProductBuilderInterface
 
             foreach ($activeCurrencyCodes as $currencyCode) {
                 if (null === $value->getPrice($currencyCode)) {
-                    $this->addPriceForCurrencyWithData($value, $currencyCode, null);
+                    $this->addPriceForCurrency($value, $currencyCode);
                 }
             }
 

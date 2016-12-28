@@ -29,10 +29,12 @@ class ProductValueDenormalizer implements SerializerAwareInterface, Denormalizer
 
     /**
      * @param ProductValueFactory $productValueFactory
+     * @param string              $entityClass
      */
-    public function __construct(ProductValueFactory $productValueFactory)
+    public function __construct(ProductValueFactory $productValueFactory, $entityClass)
     {
         $this->productValueFactory = $productValueFactory;
+        $this->entityClass = $entityClass;
     }
 
     /**
