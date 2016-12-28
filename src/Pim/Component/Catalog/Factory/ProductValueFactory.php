@@ -4,8 +4,7 @@ namespace Pim\Component\Catalog\Factory;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Factory that creates empty product values
@@ -16,27 +15,20 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
  */
 class ProductValueFactory
 {
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
+    /** @var AttributeValidatorHelper */
+    protected $attributeValidatorHelper;
 
     /** @var string */
-    private $productValueClass;
+    protected $productValueClass;
 
     /**
-     * @param ChannelRepositoryInterface $channelRepository
-     * @param LocaleRepositoryInterface  $localeRepository
-     * @param string                     $productValueClass
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param string                   $productValueClass
      */
     public function __construct(
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
+        AttributeValidatorHelper $attributeValidatorHelper,
         $productValueClass
     ) {
-        $this->channelRepository = $channelRepository;
-        $this->localeRepository = $localeRepository;
         if (!class_exists($productValueClass)) {
             throw new \InvalidArgumentException(
                 sprintf('The product value class "%s" does not exist.', $productValueClass)
@@ -44,6 +36,7 @@ class ProductValueFactory
         }
 
         $this->productValueClass = $productValueClass;
+        $this->attributeValidatorHelper = $attributeValidatorHelper;
     }
 
     /**
@@ -60,46 +53,8 @@ class ProductValueFactory
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode)
     {
-        if ($attribute->isScopable()) {
-            if (null === $channelCode) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'A channel code must be provided to create a value for the scopable attribute "%s"',
-                        $attribute->getCode()
-                    )
-                );
-            }
-            if (!in_array($channelCode, $this->channelRepository->getChannelCodes())) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'A valid channel code must be provided to create a value for the scopable attribute "%s", "%s" given',
-                        $attribute->getCode(),
-                        $channelCode
-                    )
-                );
-            }
-        }
-
-        if ($attribute->isLocalizable()) {
-            if (null === $localeCode) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'A locale code must be provided to create a value for the localizable attribute "%s"',
-                        $attribute->getCode()
-                    )
-                );
-
-            }
-            if (!in_array($localeCode, $this->localeRepository->getActivatedLocaleCodes())) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'An activated locale code must be provided to create a value for the localizable attribute "%s", "%s" given',
-                        $attribute->getCode(),
-                        $localeCode
-                    )
-                );
-            }
-        }
+        $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
+        $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
 
         /** @var ProductValueInterface $value */
         $value = new $this->productValueClass();

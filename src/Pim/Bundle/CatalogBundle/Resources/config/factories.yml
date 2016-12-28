@@ -95,6 +95,5 @@ services:
     pim_catalog.factory.product_value:
         class: '%pim_catalog.factory.product_value.class%'
         arguments:
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.validator.helper.attribute'
             - '%pim_catalog.entity.product_value.class%'

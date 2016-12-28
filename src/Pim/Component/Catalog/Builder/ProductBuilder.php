@@ -225,7 +225,7 @@ class ProductBuilder implements ProductBuilderInterface
         $locale = null,
         $scope = null
     ) {
-        $productValue = $this->productValueFactory->create($attribute, $locale, $scope);
+        $productValue = $this->productValueFactory->create($attribute, $scope, $locale);
         $product->addValue($productValue);
 
         return $productValue;

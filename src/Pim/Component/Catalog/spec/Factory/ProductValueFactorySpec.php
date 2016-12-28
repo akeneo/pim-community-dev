@@ -6,14 +6,13 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 class ProductValueFactorySpec extends ObjectBehavior
 {
-    function let(ChannelRepositoryInterface $channelRepository, LocaleRepositoryInterface $localeRepository)
+    function let(AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($channelRepository, $localeRepository, ProductValue::class);
+        $this->beConstructedWith($attributeValidatorHelper, ProductValue::class);
     }
 
     function it_is_initializable()
@@ -22,6 +21,7 @@ class ProductValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_simple_empty_product_value(
+        $attributeValidatorHelper,
         AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(false);
@@ -29,6 +29,9 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attribute->getCode()->willReturn('simple_attribute');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $attributeValidatorHelper->validateLocale($attribute, null)->willReturn(true);
+        $attributeValidatorHelper->validateScope($attribute, null)->willReturn(true);
 
         $productValue = $this->create(
             $attribute,
@@ -44,8 +47,7 @@ class ProductValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_simple_localizable_and_scopable_empty_product_value(
-        $channelRepository,
-        $localeRepository,
+        $attributeValidatorHelper,
         AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(true);
@@ -56,8 +58,8 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $channelRepository->getChannelCodes()->willReturn(['ecommerce']);
-        $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US']);
+        $attributeValidatorHelper->validateScope($attribute, 'ecommerce')->willReturn(true);
+        $attributeValidatorHelper->validateLocale($attribute, 'en_US')->willReturn(true);
 
         $productValue = $this->create(
             $attribute,
@@ -72,68 +74,6 @@ class ProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
         $productValue->shouldBeEmpty();
-    }
-
-    function it_does_not_create_a_simple_scopable_empty_product_value_with_invalid_scope_code(
-        $channelRepository,
-        AttributeInterface $attribute
-    ) {
-        $attribute->getCode()->willReturn('simple_attribute');
-        $attribute->isScopable()->willReturn(true);
-        $channelRepository->getChannelCodes()->willReturn(['ecommerce', 'mobile']);
-
-        $this->shouldThrow('\InvalidArgumentException')->duringCreate(
-            $attribute,
-            'mail',
-            'en_US'
-        );
-    }
-
-    function it_does_not_create_a_simple_scopable_empty_product_value_with_no_scope_code(
-        $channelRepository,
-        AttributeInterface $attribute
-    ) {
-        $attribute->getCode()->willReturn('simple_attribute');
-        $attribute->isScopable()->willReturn(true);
-        $channelRepository->getChannelCodes()->willReturn(['ecommerce', 'mobile']);
-
-        $this->shouldThrow('\InvalidArgumentException')->duringCreate(
-            $attribute,
-            null,
-            'en_US'
-        );
-    }
-
-    function it_does_not_create_a_simple_scopable_empty_product_value_with_invalid_locale_code(
-        $localeRepository,
-        AttributeInterface $attribute
-    ) {
-        $attribute->getCode()->willReturn('simple_attribute');
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(true);
-        $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR']);
-
-        $this->shouldThrow('\InvalidArgumentException')->duringCreate(
-            $attribute,
-            'mail',
-            'en_US'
-        );
-    }
-
-    function it_does_not_create_a_simple_scopable_empty_product_value_with_no_locale_code(
-        $localeRepository,
-        AttributeInterface $attribute
-    ) {
-        $attribute->getCode()->willReturn('simple_attribute');
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(true);
-        $localeRepository->getActivatedLocaleCodes()->shouldNotBeCalled();
-
-        $this->shouldThrow('\InvalidArgumentException')->duringCreate(
-            $attribute,
-            'mail',
-            null
-        );
     }
 
     public function getMatchers()
