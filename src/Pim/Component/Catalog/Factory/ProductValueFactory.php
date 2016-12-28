@@ -48,8 +48,9 @@ class ProductValueFactory
      * @param string             $channelCode
      * @param string             $localeCode
      *
-     * @return ProductValueInterface
+     * @throws \LogicException
      *
+     * @return ProductValueInterface
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode)
     {
