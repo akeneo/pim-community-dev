@@ -7,6 +7,7 @@ parameters:
     pim_catalog.factory.group_type.class:            Pim\Component\Catalog\Factory\GroupTypeFactory
     pim_catalog.factory.currency.class:              Pim\Component\Catalog\Factory\CurrencyFactory
     pim_catalog.factory.product_template.class:      Pim\Component\Catalog\Factory\ProductTemplateFactory
+    pim_catalog.factory.product_value.class:         Pim\Component\Catalog\Factory\ProductValueFactory
 
 services:
     pim_catalog.factory.family:
@@ -90,3 +91,9 @@ services:
         class: '%pim_catalog.factory.product_template.class%'
         arguments:
             - '%pim_catalog.entity.product_template.class%'
+
+    pim_catalog.factory.product_value:
+        class: '%pim_catalog.factory.product_value.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '%pim_catalog.entity.product_value.class%'

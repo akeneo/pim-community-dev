@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Denormalizer\Standard;
 
+use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -23,11 +24,16 @@ class ProductValueDenormalizer implements SerializerAwareInterface, Denormalizer
     /** @var SerializerInterface */
     protected $serializer;
 
+    /** @var ProductValueFactory */
+    protected $productValueFactory;
+
     /**
-     * @param string $entityClass
+     * @param ProductValueFactory $productValueFactory
+     * @param string              $entityClass
      */
-    public function __construct($entityClass)
+    public function __construct(ProductValueFactory $productValueFactory, $entityClass)
     {
+        $this->productValueFactory = $productValueFactory;
         $this->entityClass = $entityClass;
     }
 
@@ -54,18 +60,15 @@ class ProductValueDenormalizer implements SerializerAwareInterface, Denormalizer
 
         $data = $data + ['locale' => null, 'scope' => null, 'data' => null];
 
-        $value = new $this->entityClass();
-        $value->setAttribute($attribute);
-        $value->setLocale($data['locale']);
-        $value->setScope($data['scope']);
+        $productValue = $this->productValueFactory->create($attribute, $data['scope'], $data['locale']);
 
         $valueData = $this->serializer->denormalize($data['data'], $attribute->getAttributeType(), $format, $context);
 
         if (null !== $valueData) {
-            $value->setData($valueData);
+            $productValue->setData($valueData);
         }
 
-        return $value;
+        return $productValue;
     }
 
     /**
