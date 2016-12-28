@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\UserGroupCalculationStep;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\AddUserGroupStep;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\AttributePermissionRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 
-class UserGroupCalculationStepSpec extends ObjectBehavior
+class AddUserGroupStepSpec extends ObjectBehavior
 {
     function let(
         ObjectDetacherInterface $objectDetacher,
@@ -34,7 +34,7 @@ class UserGroupCalculationStepSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(UserGroupCalculationStep::class);
+        $this->shouldHaveType(AddUserGroupStep::class);
     }
 
     function it_is_a_calculation_step()

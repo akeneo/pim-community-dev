@@ -20,7 +20,7 @@ use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterfac
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ProductCalculationStep implements CalculationStepInterface
+class AddProductStep implements CalculationStepInterface
 {
     /** @var ProjectRepositoryInterface */
     protected $projectRepository;

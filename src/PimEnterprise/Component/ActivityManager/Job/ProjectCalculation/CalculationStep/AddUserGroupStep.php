@@ -26,7 +26,7 @@ use PimEnterprise\Component\Security\Attributes;
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class UserGroupCalculationStep implements CalculationStepInterface
+class AddUserGroupStep implements CalculationStepInterface
 {
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
