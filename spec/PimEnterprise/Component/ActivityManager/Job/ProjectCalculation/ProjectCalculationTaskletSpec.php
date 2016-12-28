@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationTasklet;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -20,6 +21,7 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
     function let(
         ProductRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $projectRepository,
+        PreProcessingRepositoryInterface $preProcessingRepository,
         CalculationStepInterface $chainCalculationStep,
         SaverInterface $projectSaver,
         ObjectDetacherInterface $objectDetacher
@@ -28,6 +30,7 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
             $productRepository,
             $projectRepository,
             $chainCalculationStep,
+            $preProcessingRepository,
             $projectSaver,
             $objectDetacher
         );
@@ -54,6 +57,7 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $chainCalculationStep,
         $projectSaver,
         $objectDetacher,
+        $preProcessingRepository,
         StepExecution $stepExecution,
         ProjectInterface $project,
         ProductInterface $product,
@@ -68,6 +72,9 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $projectRepository->findOneByIdentifier('project_code')->willReturn($project);
 
         $productRepository->findByProject($project)->willReturn([$product, $otherProduct]);
+
+        $preProcessingRepository->reset($project)->shouldBeCalled();
+        $project->resetUserGroups()->shouldBeCalled();
 
         $chainCalculationStep->execute($product, $project);
         $chainCalculationStep->execute($otherProduct, $project);

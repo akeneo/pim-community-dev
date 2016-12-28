@@ -10,6 +10,8 @@
  */
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
+use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -17,18 +19,26 @@ namespace PimEnterprise\Component\ActivityManager\Repository;
 interface PreProcessingRepositoryInterface
 {
     /**
-     * TODO: merge projectCompletenessRepository ?
-     *
      * Inserts data into the pre processing table.
      *
-     * @param string $productId
-     * @param string $channelId
-     * @param string $localeId
-     * @param array $attributeGroupCompleteness
-     * @return
-     * @internal param string $attributeGroupId
-     * @internal param bool $atLeast
-     * @internal param bool $complete
+     * @param ProductInterface $product
+     * @param ProjectInterface $project
+     * @param array            $attributeGroupCompleteness
      */
-    public function save($productId, $channelId, $localeId, array $attributeGroupCompleteness);
+    public function addAttributeGroup(ProductInterface $product, ProjectInterface $project, array $attributeGroupCompleteness);
+
+    /**
+     * Link a product to a project
+     *
+     * @param ProjectInterface $project
+     * @param ProductInterface $product
+     */
+    public function addProduct(ProjectInterface $project, ProductInterface $product);
+
+    /**
+     * Reset all pre processed completeness data
+     *
+     * @param ProjectInterface $project
+     */
+    public function reset(ProjectInterface $project);
 }

@@ -218,6 +218,14 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
+    public function resetUserGroups()
+    {
+        $this->userGroups = new ArrayCollection();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getUserGroups()
     {
         return $this->userGroups;

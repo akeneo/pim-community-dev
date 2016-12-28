@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\Calcula
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 
 /**
  * Add the product to the current project.
@@ -22,15 +22,15 @@ use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterfac
  */
 class AddProductStep implements CalculationStepInterface
 {
-    /** @var ProjectRepositoryInterface */
-    protected $projectRepository;
+    /** @var PreProcessingRepositoryInterface */
+    protected $preProcessingRepository;
 
     /**
-     * @param ProjectRepositoryInterface $projectRepository
+     * @param PreProcessingRepositoryInterface $preProcessingRepository
      */
-    public function __construct(ProjectRepositoryInterface $projectRepository)
+    public function __construct(PreProcessingRepositoryInterface $preProcessingRepository)
     {
-        $this->projectRepository = $projectRepository;
+        $this->preProcessingRepository = $preProcessingRepository;
     }
 
     /**
@@ -38,6 +38,6 @@ class AddProductStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
-        $this->projectRepository->addProduct($project, $product);
+        $this->preProcessingRepository->addProduct($project, $product);
     }
 }

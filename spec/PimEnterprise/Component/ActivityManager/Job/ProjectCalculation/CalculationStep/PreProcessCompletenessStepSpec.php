@@ -48,15 +48,12 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
             $productValueChecker
         );
 
-        $projectChannel->getId()->willReturn(13);
         $projectChannel->getCode()->willReturn('ecommerce');
         $project->getChannel()->willReturn($projectChannel);
 
-        $projectLocale->getId()->willReturn(37);
         $projectLocale->getCode()->willReturn('en_US');
         $project->getLocale()->willReturn($projectLocale);
 
-        $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn('camcorder');
 
@@ -133,7 +130,7 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
                 ],
             ]);
 
-        $preProcessingRepository->save(42, 13, 37, [
+        $preProcessingRepository->addAttributeGroup($product, $project, [
             [40, 0, 1],
             [33, 0, 1],
         ])->shouldBeCalled();
@@ -168,7 +165,7 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
                 ],
             ]);
 
-        $preProcessingRepository->save(42, 13, 37, [
+        $preProcessingRepository->addAttributeGroup($product, $project, [
             [40, 1, 0],
         ])->shouldBeCalled();
 
@@ -203,7 +200,7 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
                 ],
             ]);
 
-        $preProcessingRepository->save(42, 13, 37, [
+        $preProcessingRepository->addAttributeGroup($product, $project, [
             [40, 0, 0],
             [33, 0, 0],
         ])->shouldBeCalled();

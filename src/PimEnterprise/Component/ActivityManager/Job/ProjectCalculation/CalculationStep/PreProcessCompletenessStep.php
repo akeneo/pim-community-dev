@@ -21,8 +21,6 @@ use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryIn
  * Fill the sql table used to return the project completeness.
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class PreProcessCompletenessStep implements CalculationStepInterface
 {
@@ -52,13 +50,11 @@ class PreProcessCompletenessStep implements CalculationStepInterface
     {
         $requiredAttributes = $this->familyRequirementRepository->getRequiredAttributes($product, $project);
         $filledAttributes = $this->normalizeProduct($product, $project);
-
         $attributeGroupCompleteness = $this->getAttributeGroupCompleteness($filledAttributes, $requiredAttributes);
 
-        $this->preProcessingRepository->save(
-            $product->getId(),
-            $project->getChannel()->getId(),
-            $project->getLocale()->getId(),
+        $this->preProcessingRepository->addAttributeGroup(
+            $product,
+            $project,
             $attributeGroupCompleteness
         );
     }

@@ -3,6 +3,8 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 
 /**
@@ -13,41 +15,67 @@ use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryIn
 class PreProcessingRepository implements PreProcessingRepositoryInterface
 {
     /** @var EntityManagerInterface */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * @param EntityManagerInterface $objectManager
      */
     public function __construct(EntityManagerInterface $objectManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $objectManager;
     }
 
     /**
-     * TODO: manage transaction/error during the project calculation
-     *
      * {@inheritdoc}
      */
-    public function save($productId, $channelId, $localeId, array $attributeGroupCompleteness)
+    public function addAttributeGroup(ProductInterface $product, ProjectInterface $project, array $attributeGroupCompleteness)
     {
-        $connection = $this->objectManager->getConnection();
-
-        $connection->delete(
-            'akeneo_activity_manager_completeness_per_attribute_group',
-            [
-                'product_id' => $productId,
-            ]
-        );
+        $connection = $this->entityManager->getConnection();
 
         foreach ($attributeGroupCompleteness as $attributeGroup) {
             $connection->insert('akeneo_activity_manager_completeness_per_attribute_group', [
-                'product_id' => $productId,
-                'channel_id' => $channelId,
-                'locale_id' => $localeId,
+                'product_id' => $product->getId(),
+                'channel_id' => $project->getChannel()->getId(),
+                'locale_id' => $project->getLocale()->getId(),
                 'attribute_group_id' => $attributeGroup[0],
                 'has_at_least_one_required_attribute_filled' => $attributeGroup[1],
                 'is_complete' => $attributeGroup[2],
             ]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addProduct(ProjectInterface $project, ProductInterface $product)
+    {
+        $connection = $this->entityManager->getConnection();
+
+        $connection->insert('akeneo_activity_manager_project_product', [
+            'project_id' => $project->getId(),
+            'product_id' => $product->getId(),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset(ProjectInterface $project)
+    {
+        $connection = $this->entityManager->getConnection();
+        $projectId = $project->getId();
+
+        $sql = <<<SQL
+DELETE `cag`
+FROM `akeneo_activity_manager_completeness_per_attribute_group` AS `cag`
+LEFT JOIN `akeneo_activity_manager_project_product` AS `pp` 
+	ON `pp`.`product_id` = `cag`.`product_id`
+WHERE `pp`.`project_id` = :project_id
+SQL;
+
+        $connection->executeUpdate($sql, ['project_id' => $projectId]);
+        $connection->delete('akeneo_activity_manager_project_product', [
+            'project_id' => $projectId,
+        ]);
     }
 }

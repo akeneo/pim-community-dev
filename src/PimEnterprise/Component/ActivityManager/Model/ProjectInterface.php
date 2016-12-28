@@ -131,6 +131,12 @@ interface ProjectInterface
      */
     public function getUserGroups();
 
+
+    /**
+     * Reset the user groups
+     */
+    public function resetUserGroups();
+
     /**
      * Returns PQB filters in php array format.
      *

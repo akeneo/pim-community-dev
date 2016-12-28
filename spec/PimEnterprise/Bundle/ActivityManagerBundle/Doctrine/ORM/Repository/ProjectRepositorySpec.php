@@ -40,27 +40,4 @@ class ProjectRepositorySpec extends ObjectBehavior
     {
         $this->getIdentifierProperties()->shouldReturn(['code']);
     }
-
-    function it_adds_products_to_a_project(
-        $entityManager,
-        Connection $connection,
-        ProjectInterface $project,
-        ProductInterface $product
-    ) {
-        $project->getId()->willReturn(13);
-        $product->getId()->willReturn(37);
-
-        $entityManager->getConnection()->willReturn($connection);
-
-        $connection->delete('akeneo_activity_manager_project_product', [
-            'product_id' => 37,
-        ])->shouldBeCalled();
-
-        $connection->insert('akeneo_activity_manager_project_product', [
-            'project_id' => 13,
-            'product_id' => 37,
-        ])->shouldBeCalled();
-
-        $this->addProduct($project, $product);
-    }
 }
