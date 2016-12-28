@@ -6,8 +6,6 @@
 - GITHUB-5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
 - GITHUB-5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
 - GITHUB-5337: Fixed Widget Registry. Priority is now taken in account.
-- TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from the flatToStandard product converter.
-
 
 ## Deprecations
 
@@ -28,9 +26,12 @@
 - GITHUB-5380: Add `Pim\Component\User\Model\GroupInterface`
 - GITHUB-4696: Ping the server before updating job and step execution data to prevent "MySQL Server has gone away" issue cheers @qrz-io!
 - TIP-575: Rename FileIterator classes to FlatFileIterator and changes the reader/processor behavior to iterate over the item's position in the file instead of the item's line number in the file.
+- TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from the flatToStandard product converter.
+- TIP-667: Introduce a product value factory service to instanciate product values.
 
 ## BC breaks
-
+- Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
 - Add `getAllChildrenCodes` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface` 
 - Change the constructor of `Pim\Bundle\FilterBundle\Filter\Product\InGroupFilter` to add `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver`
 - Remove WebServiceBundle

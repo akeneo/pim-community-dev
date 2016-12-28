@@ -137,6 +137,8 @@ interface ProductBuilderInterface
      * @param string             $scope
      *
      * @return ProductValueInterface
+     *
+     * @deprecated will be removed in 1.8. Please use ProductValueFactory::create instead.
      */
     public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null);
 }

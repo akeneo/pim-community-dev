@@ -225,19 +225,17 @@ class ProductBuilder implements ProductBuilderInterface
         $locale = null,
         $scope = null
     ) {
-        $productValue = $this->productValueFactory->createEmpty($attribute, $locale, $scope);
+        $productValue = $this->productValueFactory->create($attribute, $locale, $scope);
         $product->addValue($productValue);
 
         return $productValue;
     }
     /**
      * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.8. Please use ProductValueFactory::createEmpty instead.
      */
     public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null)
     {
-        return $this->productValueFactory->createEmpty($attribute, $locale, $scope);
+        return $this->productValueFactory->create($attribute, $locale, $scope);
     }
 
     /**

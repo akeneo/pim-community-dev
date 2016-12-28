@@ -30,7 +30,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->createEmpty(
+        $productValue = $this->create(
             $attribute,
             null,
             null
@@ -59,7 +59,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         $channelRepository->getChannelCodes()->willReturn(['ecommerce']);
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US']);
 
-        $productValue = $this->createEmpty(
+        $productValue = $this->create(
             $attribute,
             'ecommerce',
             'en_US'
@@ -82,7 +82,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $channelRepository->getChannelCodes()->willReturn(['ecommerce', 'mobile']);
 
-        $this->shouldThrow('\InvalidArgumentException')->duringCreateEmpty(
+        $this->shouldThrow('\InvalidArgumentException')->duringCreate(
             $attribute,
             'mail',
             'en_US'
@@ -97,7 +97,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $channelRepository->getChannelCodes()->willReturn(['ecommerce', 'mobile']);
 
-        $this->shouldThrow('\InvalidArgumentException')->duringCreateEmpty(
+        $this->shouldThrow('\InvalidArgumentException')->duringCreate(
             $attribute,
             null,
             'en_US'
@@ -113,7 +113,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR']);
 
-        $this->shouldThrow('\InvalidArgumentException')->duringCreateEmpty(
+        $this->shouldThrow('\InvalidArgumentException')->duringCreate(
             $attribute,
             'mail',
             'en_US'
@@ -129,7 +129,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $localeRepository->getActivatedLocaleCodes()->shouldNotBeCalled();
 
-        $this->shouldThrow('\InvalidArgumentException')->duringCreateEmpty(
+        $this->shouldThrow('\InvalidArgumentException')->duringCreate(
             $attribute,
             'mail',
             null

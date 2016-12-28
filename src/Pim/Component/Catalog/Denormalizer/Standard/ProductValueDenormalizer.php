@@ -60,7 +60,7 @@ class ProductValueDenormalizer implements SerializerAwareInterface, Denormalizer
 
         $data = $data + ['locale' => null, 'scope' => null, 'data' => null];
 
-        $productValue = $this->productValueFactory->createEmpty($attribute, $data['scope'], $data['locale']);
+        $productValue = $this->productValueFactory->create($attribute, $data['scope'], $data['locale']);
 
         $valueData = $this->serializer->denormalize($data['data'], $attribute->getAttributeType(), $format, $context);
 

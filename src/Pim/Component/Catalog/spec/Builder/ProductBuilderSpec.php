@@ -64,7 +64,7 @@ class ProductBuilderSpec extends ObjectBehavior
 
         $productValue->getAttribute()->willReturn($skuAttribute);
         $productValue->setEntity(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
-        $productValueFactory->createEmpty($skuAttribute, null, null)
+        $productValueFactory->create($skuAttribute, null, null)
             ->willReturn($productValue);
 
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any());
@@ -99,7 +99,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $productValue->setData('mysku')->shouldBeCalled();
         $productValue->setEntity(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
         $productValue->getAttribute()->willReturn($skuAttribute);
-        $productValueFactory->createEmpty($skuAttribute, null, null)
+        $productValueFactory->create($skuAttribute, null, null)
             ->willReturn($productValue);
 
         $this->createProduct('mysku', 'tshirt')->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
@@ -194,7 +194,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->addValue(Argument::any())->shouldBeCalledTimes(6);
 
         // Create 6 empty product values and add them to the product
-        $productValueFactory->createEmpty(Argument::cetera())
+        $productValueFactory->create(Argument::cetera())
             ->shouldBeCalledTimes(6)
             ->willReturn(new $valueClass());
         $product->addValue(Argument::any())->shouldBeCalledTimes(6);
@@ -223,7 +223,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $size->isLocalizable()->willReturn(false);
         $size->isScopable()->willReturn(false);
 
-        $productValueFactory->createEmpty($size, null, null)->willReturn(new $valueClass());
+        $productValueFactory->create($size, null, null)->willReturn(new $valueClass());
 
         $product->addValue(Argument::any())->shouldBeCalled();
 

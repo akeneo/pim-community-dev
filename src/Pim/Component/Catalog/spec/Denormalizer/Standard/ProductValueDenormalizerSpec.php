@@ -71,7 +71,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
             ->willReturn('foo');
 
         $productValue->setData('foo')->shouldBeCalled();
-        $productValueFactory->createEmpty($attribute, null, null)->willReturn($productValue);
+        $productValueFactory->create($attribute, null, null)->willReturn($productValue);
 
         $this->denormalize(
             [],
@@ -99,7 +99,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
             ->willReturn(1);
 
         $productValue->setData(1)->shouldBeCalled();
-        $productValueFactory->createEmpty($attribute, 'ecommerce', 'en_US')->willReturn($productValue);
+        $productValueFactory->create($attribute, 'ecommerce', 'en_US')->willReturn($productValue);
 
         $this->denormalize(
             ['data' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'],

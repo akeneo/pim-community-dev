@@ -58,7 +58,7 @@ class ProductValueFactory
      * @return ProductValueInterface
      *
      */
-    public function createEmpty(AttributeInterface $attribute, $channelCode, $localeCode)
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode)
     {
         if ($attribute->isScopable()) {
             if (null === $channelCode) {
