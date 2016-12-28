@@ -1,5 +1,8 @@
 @import '../base/variables';
 
+// This file override jquery.multiselect. It contains several !important annotation because the CSS file is loaded
+// on the fly (after pim.css).
+
 .ui-multiselect {
   height: @AknLittleButtonSize;
   line-height: @AknLittleButtonSize;
@@ -9,7 +12,7 @@
   background-color: white;
   border-radius: 2px;
   font-weight: normal;
-  padding: 0 10px !important; // To override another !important in the multiselect lib
+  padding: 0 10px !important;
   vertical-align: middle;
   display: inline-block;
   cursor: pointer;
@@ -22,7 +25,7 @@
 
   padding: 0;
   max-width: 235px;
-  min-width: @minWidth !important; // Ui multiselect has a min-width: auto !important
+  min-width: @minWidth !important;
   border: 1px solid @AknBorderColor;
   background: white;
 
@@ -68,6 +71,16 @@
     padding: @AknDropdownMenuVerticalPadding 0;
     clear: both;
     background: white;
+
+    label {
+      height: 25px;
+      line-height: 25px;
+      padding: 0 10px !important;
+    }
+
+    &.ui-helper-reset li {
+      font-size: @AknDefaultFontSize;
+    }
   }
 
   .ui-multiselect-checkboxes label {
@@ -78,6 +91,7 @@
     text-align: left;
     text-transform: uppercase;
     padding: 0;
+    margin: -12px 0 -4px 0;
   }
 
   .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label {
