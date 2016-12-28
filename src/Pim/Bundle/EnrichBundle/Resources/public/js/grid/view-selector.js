@@ -141,7 +141,7 @@ define(
                     formatSelection: function (item, $container) {
                         FormBuilder.build('pim-grid-view-selector-current').then(function (form) {
                             form.setParent(this);
-                            form.setView(item, this.currentViewType);
+                            form.setView(item);
                             $container.append(form.render().$el);
 
                             this.onGridStateChange();

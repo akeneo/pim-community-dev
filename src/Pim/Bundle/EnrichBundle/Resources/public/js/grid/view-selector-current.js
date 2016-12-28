@@ -26,7 +26,6 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             datagridView: null,
-            datagridViewType: null,
             dirty: false,
 
             /**
@@ -84,11 +83,9 @@ define(
              * Set the view of this module.
              *
              * @param {Object} view
-             * @param {String} viewType
              */
-            setView: function (view, viewType) {
+            setView: function (view) {
                 this.datagridView = view;
-                this.datagridViewType = viewType;
             }
         });
     }
