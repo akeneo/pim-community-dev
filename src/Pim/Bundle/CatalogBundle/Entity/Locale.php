@@ -147,9 +147,6 @@ class Locale implements LocaleInterface, VersionableInterface
     public function addChannel(ChannelInterface $channel)
     {
         $this->channels[] = $channel;
-        if ($this->channels->count() > 0) {
-            $this->activated = true;
-        }
 
         return $this;
     }
@@ -160,9 +157,6 @@ class Locale implements LocaleInterface, VersionableInterface
     public function removeChannel(ChannelInterface $channel)
     {
         $this->channels->removeElement($channel);
-        if ($this->channels->count() === 0) {
-            $this->activated = false;
-        }
 
         return $this;
     }
@@ -183,5 +177,13 @@ class Locale implements LocaleInterface, VersionableInterface
         $localeNames = Intl::getLocaleBundle()->getLocaleNames();
 
         return array_key_exists($this->code, $localeNames) ? $localeNames[$this->code] : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActivated(bool $activated)
+    {
+        $this->activated = $activated;
     }
 }

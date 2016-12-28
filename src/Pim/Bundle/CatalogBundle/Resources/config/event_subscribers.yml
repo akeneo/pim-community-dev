@@ -9,6 +9,7 @@ parameters:
     pim_catalog.event_subscriber.category.check_channels.class:      Pim\Bundle\CatalogBundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
     pim_catalog.event_subscriber.currency_disabling.class:           Pim\Bundle\CatalogBundle\EventSubscriber\CurrencyDisablingSubscriber
     pim_catalog.event_subscriber.reset_unique_validation.class:      Pim\Bundle\CatalogBundle\EventSubscriber\ResetUniqueValidationSubscriber
+    pim_catalog.event_subscriber.locale.class: Pim\Bundle\CatalogBundle\EventSubscriber\LocaleSubscriber
 
 services:
     # Subscribers
@@ -35,6 +36,13 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
             - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.event_subscriber.locale:
+        class: '%pim_catalog.event_subscriber.locale.class%'
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.scopable:
         class: '%pim_catalog.event_subscriber.scopable.class%'
