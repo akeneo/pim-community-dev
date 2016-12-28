@@ -27,6 +27,7 @@
 - GITHUB-5380: Add `Pim\Component\User\Model\GroupInterface`
 - GITHUB-4696: Ping the server before updating job and step execution data to prevent "MySQL Server has gone away" issue cheers @qrz-io!
 - TIP-575: Rename FileIterator classes to FlatFileIterator and changes the reader/processor behavior to iterate over the item's position in the file instead of the item's line number in the file.
+- Add `Pim\Bundle\CatalogBundle\EventSubscriber\LocaleSubscriber` to activate or not the locale.
 - TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product` as it was not used anymore.
 - TIP-667: Introduce a product value factory service to instanciate product values.
 
@@ -117,3 +118,4 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer` to add `Pim\Component\Enrich\Converter\ConverterInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Component\Enrich\Converter\ConverterInterface`
 - Change route from `pim_user_user_rest_get` to `pim_user_user_rest_get_current`. Route `pim_user_user_rest_get` now fetch a user the given username.
+- Add `setActivated` to `Pim\Bundle\CatalogBundle\Entity\Locale` 
