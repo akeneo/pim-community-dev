@@ -90,16 +90,10 @@ class ProjectCalculationTasklet implements TaskletInterface
 
         $products = $this->productRepository->findByProject($project);
 
-        $i = 1;
         foreach ($products as $product) {
             $this->calculationStep->execute($product, $project);
             $this->objectDetacher->detach($product);
-
-            echo $i." - ".(memory_get_usage()/1024/1024)." Mb\n";
-            $i++;
         }
-
-        echo (memory_get_peak_usage()/1024/1024)." Mb\n";
 
         $this->projectSaver->save($project);
     }
