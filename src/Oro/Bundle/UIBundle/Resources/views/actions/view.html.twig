@@ -45,7 +45,12 @@
             {% endif %}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, [], meta, '', back) }}
+        {% set titleButtons %}
+            {% block titleButtons %}
+            {% endblock titleButtons %}
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, titleButtons, meta, '', back) }}
 
     {% endblock pageHeader %}
 

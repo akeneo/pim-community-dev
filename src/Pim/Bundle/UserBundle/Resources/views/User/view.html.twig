@@ -63,16 +63,14 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
-{% block breadcrumbs %}
+{% block titleButtons %}
     {{ parent() }}
-    <div class="status-enabled pull-left">
-        {% if entity.enabled %}
-            <div class="AknBadge AknBadge AknBadge--enabled status-enabled"><i class="AknBadge-icon icon-status-enabled icon-circle"></i>{{ 'Active'|trans }}</div>
-        {% else %}
-            <div class="AknBadge AknBadge AknBadge--disabled status-disabled"><i class="AknBadge-icon icon-status-disabled icon-circle"></i>{{ 'Inactive'|trans }}</div>
-        {% endif %}
-    </div>
-{% endblock breadcrumbs %}
+    {% if entity.enabled %}
+        <div class="AknBadge AknBadge AknBadge--enabled status-enabled"><i class="AknBadge-icon icon-status-enabled icon-circle"></i>{{ 'Active'|trans }}</div>
+    {% else %}
+        <div class="AknBadge AknBadge AknBadge--disabled status-disabled"><i class="AknBadge-icon icon-status-disabled icon-circle"></i>{{ 'Inactive'|trans }}</div>
+    {% endif %}
+{% endblock titleButtons %}
 
 {% block stats %}
     {{ parent() }}
