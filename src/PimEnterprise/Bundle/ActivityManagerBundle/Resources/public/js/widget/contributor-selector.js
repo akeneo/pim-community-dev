@@ -95,8 +95,8 @@ define(
                         $container.append(this.formatLine(item.text.toLowerCase(), 'Current'));
                     }.bind(this),
 
-                    dropdownCssClass: 'AknProjectWidget-select2Dropdown' +
-                    ' AknProjectWidget-select2Dropdown--arrowLeft' +
+                    dropdownCssClass: 'select2-drop--forProjectWidget' +
+                    ' select2--withArrowLeft' +
                     ' activity-manager-widget-contributor-dropdown'
                 };
 
@@ -110,7 +110,7 @@ define(
                 }.bind(this));
                 $select.on('select2-open', function () {
                     $('.activity-manager-widget-contributor-dropdown .select2-search')
-                        .prepend('<i class="icon-search AknProjectWidget-select2SearchIcon"></i>');
+                        .prepend('<i class="icon-search select2-searchIcon"></i>');
                     $('.activity-manager-widget-contributor-dropdown .select2-input')
                         .attr('placeholder', __('activity_manager.widget.placeholder.contributor_selector'));
                 });

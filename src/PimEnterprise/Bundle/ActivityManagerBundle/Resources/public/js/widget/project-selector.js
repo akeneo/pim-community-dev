@@ -25,6 +25,7 @@ define(
             resultsPerPage: 2,
             queryTimer: null,
             searchParameters: {},
+            className: 'AknButtonList-item',
 
             /**
              * {@inheritdoc}
@@ -78,8 +79,8 @@ define(
                         $container.append(this.formatLine(item, 'Current'));
                     }.bind(this),
 
-                    dropdownCssClass: 'AknProjectWidget-select2Dropdown' +
-                        ' AknProjectWidget-select2Dropdown--arrowRight' +
+                    dropdownCssClass: 'select2-drop--forProjectWidget' +
+                        ' select2--withArrowRight' +
                         ' activity-manager-widget-project-dropdown'
                 };
 
@@ -89,7 +90,7 @@ define(
                 }.bind(this));
                 $select.on('select2-open', function () {
                     $('.activity-manager-widget-project-dropdown .select2-search')
-                        .prepend('<i class="icon-search AknProjectWidget-select2SearchIcon"></i>');
+                        .prepend('<i class="icon-search select2-searchIcon"></i>');
                     $('.activity-manager-widget-project-dropdown .select2-input')
                         .attr('placeholder', __('activity_manager.widget.placeholder.project_selector'));
                 });
