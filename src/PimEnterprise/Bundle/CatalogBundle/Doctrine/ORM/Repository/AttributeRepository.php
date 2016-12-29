@@ -38,42 +38,4 @@ class AttributeRepository extends BaseAttributeRepository
 
         return $qb;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAttributeCodesUsableInGrid($groupIds = null)
-    {
-        $qb = $this->createQueryBuilder('att')
-            ->select('att.code');
-
-        if (is_array($groupIds)) {
-            if (empty($groupIds)) {
-                return [];
-            }
-
-            $qb->andWhere('att.group IN (:groupIds)');
-            $qb->setParameter('groupIds', $groupIds);
-        }
-
-        $qb->andWhere('att.useableAsGridFilter = :useableInGrid');
-        $qb->setParameter('useableInGrid', 1);
-
-        $result = $qb->getQuery()->getArrayResult();
-
-        return array_column($result, 'code');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAttributeCodes()
-    {
-        $qb = $this->createQueryBuilder('att')
-            ->select('att.code');
-
-        $result = $qb->getQuery()->getArrayResult();
-
-        return array_column($result, 'code');
-    }
 }
