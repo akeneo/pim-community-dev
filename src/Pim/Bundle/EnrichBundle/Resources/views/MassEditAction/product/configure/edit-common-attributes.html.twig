@@ -44,6 +44,8 @@
                                 form.setData(product);
                                 mediator.trigger('pim_enrich:form:entity:post_fetch', product);
                                 form.setElement('#product-edit-form').render();
+                                $('#product-edit-form').find('.AknTitleContainer')
+                                        .addClass('AknTitleContainer--hidden');
 
                                 var event = {
                                     sentData: product,
