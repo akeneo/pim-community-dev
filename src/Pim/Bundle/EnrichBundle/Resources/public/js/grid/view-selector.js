@@ -105,7 +105,7 @@ define(
             /**
              * Initialize the view type to display at initialization.
              *
-             * @returns {Promise}
+             * @return {Promise}
              */
             initializeViewTypes: function () {
                 this.currentViewType = 'view';
@@ -265,7 +265,7 @@ define(
              * Initialize the Select2 selection based on the DatagridState.
              * Could be the User default one, or an existing view edited or whatever.
              *
-             * @returns {Promise}
+             * @return {Promise}
              */
             initializeSelection: function () {
                 var activeViewId = DatagridState.get(this.gridAlias, 'view');
@@ -309,6 +309,14 @@ define(
                 return deferred;
             },
 
+            /**
+             * Method called right after fetching the view from the backend.
+             * This is where we can handle the view before it goes to select2.
+             *
+             * @param {Object} view
+             *
+             * @return {Promise}
+             */
             postFetchDatagridView: function (view) {
                 view.text = view.label;
 
@@ -318,7 +326,7 @@ define(
             /**
              * Return the default view object which contains default columns & no filter.
              *
-             * @returns {Object}
+             * @return {Object}
              */
             getDefaultView: function () {
                 return {
@@ -446,7 +454,7 @@ define(
              *
              * @param {array} data
              *
-             * @returns {array}
+             * @return {array}
              */
             toSelect2Format: function (data) {
                 return _.map(data, function (view) {
