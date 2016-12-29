@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
-use InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Applies modifications on families to add attribute requirements.
@@ -27,19 +28,31 @@ class SetAttributeRequirements extends AbstractProcessor
     /** @var AttributeRequirementFactory */
     protected $factory;
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /**
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param ChannelRepositoryInterface          $channelRepository
      * @param AttributeRequirementFactory         $factory
+     * @param ValidatorInterface                  $validator
+     * @param ObjectDetacherInterface             $detacher
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
-        AttributeRequirementFactory $factory
+        AttributeRequirementFactory $factory,
+        ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->channelRepository = $channelRepository;
         $this->factory = $factory;
+        $this->validator = $validator;
+        $this->detacher = $detacher;
     }
 
     /**
@@ -62,6 +75,20 @@ class SetAttributeRequirements extends AbstractProcessor
                     $isRequired
                 )
             );
+        }
+
+        $violations = $this->validator->validate($family);
+
+        if (0 !== $violations->count()) {
+            foreach ($violations as $violation) {
+                $errors = sprintf("Family %s: %s\n", (string) $family, $violation->getMessage());
+                $this->stepExecution->addWarning($this->getName(), $errors, [], $family);
+            }
+
+            $this->stepExecution->incrementSummaryInfo('skipped_families');
+            $this->detacher->detach($family);
+
+            return null;
         }
 
         return $family;

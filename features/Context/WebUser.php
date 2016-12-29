@@ -1351,6 +1351,21 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string locator
+     *
+     * @When /^I hover over the element "([^"]*)"$/
+     */
+    public function iHoverOverTheElement($locator)
+    {
+        $page = $this->getCurrentPage();
+        $element = $this->spin(function () use ($page, $locator) {
+            return $page->find('css', $locator);
+        }, sprintf("Can not find any '%s' element", $locator));
+
+        $element->mouseOver();
+    }
+
+    /**
      * @param string $button
      *
      * @Given /^I should see the "([^"]*)" button$/
