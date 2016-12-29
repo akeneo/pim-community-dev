@@ -8,7 +8,7 @@
   background: @AknLightGray;
   color: @AknDefaultFontColor;
   height: @AknDefaultButtonSize;
-  line-height: @AknDefaultButtonSize - 2px;
+  line-height: @AknDefaultButtonSize;
   font-size: @AknFontSizeBig;
   min-width: @AknDefaultButtonSize;
   display: inline-block;
@@ -19,9 +19,10 @@
   text-align: left;
   white-space: nowrap;
   transition: background 0.1s ease;
+  position: relative;
 
   &--withIcon {
-    padding-left: 0;
+    padding-left: @AknButtonsPadding + @AknDefaultButtonSize;
   }
 
   &:hover,
@@ -33,13 +34,17 @@
   &-icon {
     height: @AknDefaultButtonSize;
     width: @AknDefaultButtonSize;
-    line-height: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize - 2px;
     background: darken(@AknLightGray, @darken);
+    margin-right: @AknButtonsPadding;
+    position: absolute;
+    top: 0;
+    left: 0;
     text-align: center;
     margin-left: 0;
-    margin-right: @AknButtonsPadding;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
+    display: inline-block !important; // Used for preemption of .icon class
   }
 
   &--disabled,
