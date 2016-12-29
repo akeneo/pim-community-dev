@@ -45,8 +45,8 @@ class SetAttributeRequirements extends AbstractProcessor
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $factory,
-        ValidatorInterface $validator = null,
-        ObjectDetacherInterface $detacher = null
+        ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->channelRepository = $channelRepository;
@@ -77,20 +77,18 @@ class SetAttributeRequirements extends AbstractProcessor
             );
         }
 
-        if (null !== $this->validator) {
-            $violations = $this->validator->validate($family);
+        $violations = $this->validator->validate($family);
 
-            if (0 !== $violations->count()) {
-                foreach ($violations as $violation) {
-                    $errors = sprintf("Family %s: %s\n", (string) $family, $violation->getMessage());
-                    $this->stepExecution->addWarning($this->getName(), $errors, [], $family);
-                }
-
-                $this->stepExecution->incrementSummaryInfo('skipped_families');
-                $this->detacher->detach($family);
-
-                return null;
+        if (0 !== $violations->count()) {
+            foreach ($violations as $violation) {
+                $errors = sprintf("Family %s: %s\n", (string) $family, $violation->getMessage());
+                $this->stepExecution->addWarning($this->getName(), $errors, [], $family);
             }
+
+            $this->stepExecution->incrementSummaryInfo('skipped_families');
+            $this->detacher->detach($family);
+
+            return null;
         }
 
         return $family;
