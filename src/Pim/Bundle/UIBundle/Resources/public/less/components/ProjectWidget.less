@@ -71,11 +71,6 @@
     padding-bottom: 10px;
   }
 
-  &-toolContainer {
-    display: flex;
-    justify-content: space-between;
-  }
-
   &-tool {
     margin-right: 15px;
   }
@@ -87,15 +82,15 @@
 
   &-mainSelectorCurrentTitle {
     color: @AknPurple;
-    font-size: @AknTitleFontSize;
+    font-size: @AknFontSizeBig;
     font-weight: bold;
-    font-variant: small-caps;
+    text-transform: uppercase;
   }
 
   &-secondarySelectorCurrentTitle {
-    font-size: @AknTitleFontSize;
+    font-size: @AknFontSizeBig;
     font-weight: bold;
-    font-variant: small-caps;
+    text-transform: uppercase;
   }
 
   &-mainSelectorLine,
@@ -113,10 +108,6 @@
   }
 
   &-info {}
-
-  &-infoLabel {
-    padding-right: 5px;
-  }
 
   &-emptyWidget {
     width: 225px;
