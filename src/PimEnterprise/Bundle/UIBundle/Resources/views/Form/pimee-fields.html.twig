@@ -1,9 +1,9 @@
 {% block form_info %}
     {% spaceless %}
         {% if type is not defined or type != 'hidden' %}
-            <div class="icons-container">
+            <div class="AknFieldContainer-iconsContainer icons-container">
                 {% if help is defined %}
-                    <i class="icon-info-sign"
+                    <i class="AknIconButton icon-info-sign"
                        data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
                 {% endif %}
                 {% if modified is defined %}
