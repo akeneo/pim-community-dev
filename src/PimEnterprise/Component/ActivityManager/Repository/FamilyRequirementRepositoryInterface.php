@@ -51,5 +51,5 @@ interface FamilyRequirementRepositoryInterface
      *
      * @return array
      */
-    public function getRequiredAttributes(ProductInterface $product, ProjectInterface $project);
+    public function findRequiredAttributes(ProductInterface $product, ProjectInterface $project);
 }

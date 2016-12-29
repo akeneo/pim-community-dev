@@ -114,7 +114,7 @@ class EventTranslationSubscriberSpec extends ObjectBehavior
         $this->projectCalculated($jobExecutionEvent)->shouldReturn(null);
     }
 
-    function it_does_not_dispatch_event_when_a_calculation_is_done_if_the_project_does_not_exists(
+    function it_does_not_dispatch_event_when_a_calculation_is_done_if_the_project_does_not_exist(
         $eventDispatcher,
         $projectRepository,
         JobExecutionEvent $jobExecutionEvent,

@@ -119,7 +119,7 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
         $productValueChecker->isComplete($documentationValue, $projectChannel, $projectLocale)->willReturn(true);
 
 
-        $familyRequirementRepository->getRequiredAttributes($product, $project)->willReturn([
+        $familyRequirementRepository->findRequiredAttributes($product, $project)->willReturn([
                 40 => [
                     'sku',
                     'name',
@@ -157,7 +157,7 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
         $productValueChecker->isComplete($skuValue, $projectChannel, $projectLocale)->willReturn(true);
         $productValueChecker->isComplete($documentationValue, $projectChannel, $projectLocale)->willReturn(true);
 
-        $familyRequirementRepository->getRequiredAttributes($product, $project)
+        $familyRequirementRepository->findRequiredAttributes($product, $project)
             ->willReturn([
                 40 => [
                     'sku',
@@ -188,7 +188,7 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
 
         $productValueChecker->isComplete($documentationValue, $projectChannel, $projectLocale)->willReturn(true);
 
-        $familyRequirementRepository->getRequiredAttributes($product, $project)
+        $familyRequirementRepository->findRequiredAttributes($product, $project)
             ->willReturn([
                 40 => [
                     'name',

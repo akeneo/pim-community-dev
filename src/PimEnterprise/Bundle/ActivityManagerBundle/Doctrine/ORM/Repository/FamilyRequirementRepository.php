@@ -53,9 +53,9 @@ class FamilyRequirementRepository extends EntityRepository implements FamilyRequ
             ->andWhere('c.code = :channel_code')
             ->andWhere('ar.required = :required')
             ->setParameters([
-                'family_code' => $family->getCode(),
+                'family_code'  => $family->getCode(),
                 'channel_code' => $channel->getCode(),
-                'required' => true,
+                'required'     => true,
             ]);
 
         return array_column($queryBuilder->getQuery()->getArrayResult(), 'code');
@@ -64,7 +64,7 @@ class FamilyRequirementRepository extends EntityRepository implements FamilyRequ
     /**
      * {@inheritdoc}
      */
-    public function getRequiredAttributes(ProductInterface $product, ProjectInterface $project)
+    public function findRequiredAttributes(ProductInterface $product, ProjectInterface $project)
     {
         $queryBuilder = $this->createQueryBuilder('ar');
 
@@ -77,9 +77,9 @@ class FamilyRequirementRepository extends EntityRepository implements FamilyRequ
             ->andWhere('c.code = :channel_code')
             ->andWhere('ar.required = :required')
             ->setParameters([
-                'family_code' => $product->getFamily()->getCode(),
+                'family_code'  => $product->getFamily()->getCode(),
                 'channel_code' => $project->getChannel()->getCode(),
-                'required' => true,
+                'required'     => true,
             ]);
 
         $familyRequirements = $queryBuilder->getQuery()->getArrayResult();

@@ -26,7 +26,7 @@ class LoggableStepSpec extends ObjectBehavior
         $this->shouldImplement(CalculationStepInterface::class);
     }
 
-    function it_log_the_memory_usage(
+    function it_logs_the_memory_usage(
         ProductInterface $product,
         ProjectInterface $project
     ) {

@@ -34,12 +34,12 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
 
         foreach ($attributeGroupCompleteness as $attributeGroup) {
             $connection->insert('akeneo_activity_manager_completeness_per_attribute_group', [
-                'product_id' => $product->getId(),
-                'channel_id' => $project->getChannel()->getId(),
-                'locale_id' => $project->getLocale()->getId(),
-                'attribute_group_id' => $attributeGroup[0],
+                'product_id'                                 => $product->getId(),
+                'channel_id'                                 => $project->getChannel()->getId(),
+                'locale_id'                                  => $project->getLocale()->getId(),
+                'attribute_group_id'                         => $attributeGroup[0],
                 'has_at_least_one_required_attribute_filled' => $attributeGroup[1],
-                'is_complete' => $attributeGroup[2],
+                'is_complete'                                => $attributeGroup[2],
             ]);
         }
     }

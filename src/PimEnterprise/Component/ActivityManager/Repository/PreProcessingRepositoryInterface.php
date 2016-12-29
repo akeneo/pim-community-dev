@@ -10,6 +10,7 @@
  */
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
+
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 

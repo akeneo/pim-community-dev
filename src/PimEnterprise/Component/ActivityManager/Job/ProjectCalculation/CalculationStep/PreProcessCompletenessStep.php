@@ -48,7 +48,7 @@ class PreProcessCompletenessStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
-        $requiredAttributes = $this->familyRequirementRepository->getRequiredAttributes($product, $project);
+        $requiredAttributes = $this->familyRequirementRepository->findRequiredAttributes($product, $project);
         $filledAttributes = $this->normalizeProduct($product, $project);
         $attributeGroupCompleteness = $this->getAttributeGroupCompleteness($filledAttributes, $requiredAttributes);
 

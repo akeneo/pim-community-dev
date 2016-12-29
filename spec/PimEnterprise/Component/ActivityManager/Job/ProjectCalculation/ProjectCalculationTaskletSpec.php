@@ -87,7 +87,7 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $this->execute()->shouldReturn(null);
     }
 
-    function it_throw_a_logic_exception_if_we_run_a_calculation_on_non_existing_project(
+    function it_throws_a_logic_exception_if_we_run_a_calculation_on_non_existing_project(
         $projectRepository,
         StepExecution $stepExecution,
         JobParameters $jobParameters
