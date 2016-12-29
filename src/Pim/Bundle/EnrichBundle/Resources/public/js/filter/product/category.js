@@ -99,7 +99,7 @@ define([
             var tree = new CategoryTree({
                 el: modal.$el.find('.modal-body'),
                 attributes: {
-                    channel: this.getParentForm().getFormData().structure.scope,
+                    channel: this.getParentForm().getFilters().structure.scope,
                     categories: 'IN CHILDREN' === this.getOperator() ? [] : this.getValue()
                 }
             });
@@ -146,7 +146,7 @@ define([
          */
         getCurrentChannel: function () {
             return fetcherRegistry.getFetcher('channel')
-                .fetch(this.getParentForm().getFormData().structure.scope);
+                .fetch(this.getParentForm().getFilters().structure.scope);
         },
 
         /**

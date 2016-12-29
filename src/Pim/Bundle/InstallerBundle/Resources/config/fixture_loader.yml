@@ -50,7 +50,7 @@ services:
     # we don't use the batch updater to avoid circular reference detected during the installation for the service
     # "akeneo_batch.updater.job_instance"
     pim_installer.updater.job_instance:
-        class: '%akeneo_storage_utils.updater.base.class%'
+        class: '%akeneo_batch.updater.job_instance.class%'
         arguments:
             - '@akeneo_batch.job_parameters_factory'
             - '@akeneo_batch.job.job_registry'

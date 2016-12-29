@@ -70,7 +70,9 @@ define(
                         return $.when.apply($, _.map(fieldCodes, this.addFilter.bind(this)));
                     }.bind(this))
                     .then(function () {
-                        this.updateFiltersData(_.extend({}, this.getFormData().data));
+                        if (!_.isEmpty(this.getFormData())) {
+                            this.updateFiltersData(_.extend({}, this.getFormData().configuration.filters.data));
+                        }
                     }.bind(this));
             },
 
@@ -158,7 +160,7 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (!this.configured) {
+                if (!this.configured || _.isEmpty(this.getFormData())) {
                     return this;
                 }
 
@@ -231,7 +233,7 @@ define(
              * Add filter stored in the backend (filters added by the user and saved)
              */
             addExistingFilters: function () {
-                var filterCodes = _.map(_.pluck(this.getFormData().data, 'field'), function (field) {
+                var filterCodes = _.map(_.pluck(this.getFormData().configuration.filters.data, 'field'), function (field) {
                     return field.replace(/\.code$/, '');
                 });
 
@@ -281,6 +283,11 @@ define(
              * Updates the form model by iterating over filter views
              */
             updateModel: function () {
+                var data = this.getFormData();
+                if (_.isEmpty(data)) {
+                    return;
+                }
+
                 var dataFilterCollection = [];
 
                 _.each(this.filterViews, function (filterView) {
@@ -288,8 +295,9 @@ define(
                         dataFilterCollection.push(filterView.getFormData());
                     }
                 });
+                data.configuration.filters.data = dataFilterCollection;
 
-                this.setData({data: dataFilterCollection});
+                this.setData(data);
             },
 
             /**
@@ -304,6 +312,15 @@ define(
 
                 this.updateModel();
                 this.render();
+            },
+
+            /**
+             * Get filters
+             *
+             * @return {object}
+             */
+            getFilters: function () {
+                return this.getFormData().configuration.filters;
             }
         });
     }

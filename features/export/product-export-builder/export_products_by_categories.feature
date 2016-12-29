@@ -72,6 +72,7 @@ Feature: Export products from any given categories
     And I press the "Confirm" button
     Then I should see the text "2 categories selected"
     When I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
     And I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
@@ -105,6 +106,7 @@ Feature: Export products from any given categories
     And I press the "Confirm" button
     Then I should see the text "one category selected"
     When I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
     And I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish

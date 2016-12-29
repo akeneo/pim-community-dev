@@ -1,8 +1,8 @@
 {% oro_title_set({ params: {"%job.label%": form.vars.value.label } }) %}
 
-{% set actionRoute = path('pim_importexport_import_profile_edit', { 'id': form.vars.value.id }) %}
+{% set actionRoute = path('pim_importexport_import_profile_edit', { 'code': form.vars.value.code }) %}
 
-{% set showRoute = path('pim_importexport_import_profile_show', { 'id': form.vars.value.id }) %}
+{% set showRoute = path('pim_importexport_import_profile_show', { 'code': form.vars.value.code }) %}
 
 {% set entityName = 'import profile' %}
 {% set title = (entityName ~ '.edit')|trans ~ ' - ' ~ form.vars.value.label %}
@@ -11,7 +11,7 @@
 {% set indexRoute = path('pim_importexport_import_profile_index') %}
 {% if form.vars.value.id %}
     {% set removeAcl = 'pim_importexport_import_profile_remove' %}
-    {% set removeRoute = path('pim_importexport_import_profile_remove', { 'id': form.vars.value.id }) %}
+    {% set removeRoute = path('pim_importexport_import_profile_remove', { 'code': form.vars.value.code }) %}
     {% set importRoute = path('pim_importexport_import_profile_index') %}
     {% set removeMessage = 'confirmation.remove.import profile'|trans({ '%name%': form.vars.value.label }) %}
     {% set removeSuccessMessage = 'flash.import.removed'|trans %}

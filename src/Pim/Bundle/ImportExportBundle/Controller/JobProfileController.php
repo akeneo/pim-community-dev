@@ -183,7 +183,7 @@ class JobProfileController
 
                 $url = $this->router->generate(
                     sprintf('pim_importexport_%s_profile_edit', $this->getJobType()),
-                    ['id' => $jobInstance->getId()]
+                    ['code' => $jobInstance->getCode()]
                 );
                 $response = ['status' => 1, 'url' => $url];
 
@@ -202,14 +202,14 @@ class JobProfileController
     /**
      * Show a job instance
      *
-     * @param int $id
+     * @param string $code
      *
      * @return Response
      */
-    public function showAction($id)
+    public function showAction($code)
     {
         try {
-            $jobInstance = $this->getJobInstance($id);
+            $jobInstance = $this->getJobInstance($code);
         } catch (NotFoundHttpException $e) {
             $this->request->getSession()->getFlashBag()->add('error', new Message($e->getMessage()));
 
@@ -247,107 +247,31 @@ class JobProfileController
      * Edit a job instance
      *
      * @param Request $request
-     * @param int     $id
+     * @param string  $code
      *
      * @return Response
      */
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, $code)
     {
-        try {
-            $jobInstance = $this->getJobInstance($id);
-        } catch (NotFoundHttpException $e) {
-            $this->request->getSession()->getFlashBag()->add('error', new Message($e->getMessage()));
-
-            return $this->redirectToIndexView();
-        }
-
-        $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EDIT, new GenericEvent($jobInstance));
-
-        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance, ['method' => 'PATCH']);
-
-        if ($request->isMethod('PATCH')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $this->entityManager->persist($jobInstance);
-                $this->entityManager->flush();
-
-                $this->request->getSession()->getFlashBag()
-                    ->add('success', new Message(sprintf('flash.%s.updated', $this->getJobType())));
-
-                return $this->redirectToShowView($jobInstance->getId());
-            }
-        }
-
-        $this->eventDispatcher->dispatch(JobProfileEvents::POST_EDIT, new GenericEvent($jobInstance));
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
-
-        $errors = [];
-        $accessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
-        foreach ($form->getErrors() as $error) {
-            if (0 === strpos($error->getCause()->getPropertyPath(), 'children[parameters].children[filters].data')) {
-                $propertyPath = substr(
-                    $error->getCause()->getPropertyPath(),
-                    strlen('children[parameters].children[filters].data')
-                );
-
-                $accessor->setValue($errors, $propertyPath, $error->getMessage());
-            }
-        }
-
         return $this->templating->renderResponse(
-            $this->jobTemplateProvider->getEditTemplate($jobInstance),
+            'PimEnrichBundle:JobProfile:edit.html.twig',
             [
-                'jobInstance' => $jobInstance,
-                'job'         => $job,
-                'form'        => $form->createView(),
-                'errors'      => $errors,
+                'jobInstanceIdentifier' => $code
             ]
         );
     }
 
     /**
-     * Remove a job
-     *
-     * @param Request $request
-     * @param int     $id
-     *
-     * @return Response
-     */
-    public function removeAction(Request $request, $id)
-    {
-        try {
-            $jobInstance = $this->getJobInstance($id);
-        } catch (NotFoundHttpException $e) {
-            if ($request->isXmlHttpRequest()) {
-                return new Response('', 404);
-            }
-
-            return $this->redirectToIndexView();
-        }
-
-        $this->eventDispatcher->dispatch(JobProfileEvents::PRE_REMOVE, new GenericEvent($jobInstance));
-
-        $this->entityManager->remove($jobInstance);
-        $this->entityManager->flush();
-
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        }
-
-        return $this->redirectToIndexView();
-    }
-
-    /**
      * Launch a job with an uploaded file
      *
-     * @param int $id
+     * @param string $code
      *
      * @return RedirectResponse
      */
-    public function launchUploadedAction($id)
+    public function launchUploadedAction($code)
     {
         try {
-            $jobInstance = $this->getJobInstance($id);
+            $jobInstance = $this->getJobInstance($code);
         } catch (NotFoundHttpException $e) {
             $this->request->getSession()->getFlashBag()->add('error', new Message($e->getMessage()));
 
@@ -365,20 +289,20 @@ class JobProfileController
 
         $this->addViolationFlashMessages($violations);
 
-        return $this->redirectToShowView($id);
+        return $this->redirectToShowView($code);
     }
 
     /**
      * Launch a job
      *
-     * @param int $id
+     * @param string $code
      *
      * @return RedirectResponse
      */
-    public function launchAction($id)
+    public function launchAction($code)
     {
         try {
-            $jobInstance = $this->getJobInstance($id);
+            $jobInstance = $this->getJobInstance($code);
         } catch (NotFoundHttpException $e) {
             $this->request->getSession()->getFlashBag()->add('error', new Message($e->getMessage()));
 
@@ -394,7 +318,7 @@ class JobProfileController
 
         $this->addViolationFlashMessages($violations);
 
-        return $this->redirectToShowView($id);
+        return $this->redirectToShowView($code);
     }
 
     /**
@@ -509,16 +433,16 @@ class JobProfileController
     /**
      * Get a job instance
      *
-     * @param int  $id
-     * @param bool $checkStatus
+     * @param string $code
+     * @param bool   $checkStatus
      *
      * @throws NotFoundHttpException
      *
      * @return JobInstance|RedirectResponse
      */
-    protected function getJobInstance($id, $checkStatus = true)
+    protected function getJobInstance($code, $checkStatus = true)
     {
-        $jobInstance = $this->jobInstanceRepository->find($id);
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($code);
 
         if (null === $jobInstance) {
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobInstance entity not found');
@@ -576,30 +500,30 @@ class JobProfileController
     /**
      * Redirect to the show view
      *
-     * @param int $jobId
+     * @param string $code
      *
      * @return RedirectResponse
      */
-    protected function redirectToShowView($jobId)
+    protected function redirectToShowView($code)
     {
         return new RedirectResponse($this->router->generate(
             sprintf('pim_importexport_%s_profile_show', $this->getJobType()),
-            ['id' => $jobId]
+            ['code' => $code]
         ));
     }
 
     /**
      * Redirect to the report view
      *
-     * @param int $jobId
+     * @param int $jobExecutionId
      *
      * @return RedirectResponse
      */
-    protected function redirectToReportView($jobId)
+    protected function redirectToReportView($jobExecutionId)
     {
         return new RedirectResponse($this->router->generate(
             sprintf('pim_importexport_%s_execution_show', $this->getJobType()),
-            ['id' => $jobId]
+            ['id' => $jobExecutionId]
         ));
     }
 

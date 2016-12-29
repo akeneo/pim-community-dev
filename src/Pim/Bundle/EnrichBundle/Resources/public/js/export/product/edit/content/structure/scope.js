@@ -106,7 +106,7 @@ define(
              * @param {String} code
              */
             setScope: function (code) {
-                var data = this.getFormData();
+                var data = this.getFilters();
                 var before = data.structure.scope;
 
                 data.structure.scope = code;
@@ -123,13 +123,22 @@ define(
              * @returns {String}
              */
             getScope: function () {
-                var structure = this.getFormData().structure;
+                var structure = this.getFilters().structure;
 
                 if (_.isUndefined(structure)) {
                     return null;
                 }
 
                 return _.isUndefined(structure.scope) ? null : structure.scope;
+            },
+
+            /**
+             * Get filters
+             *
+             * @return {object}
+             */
+            getFilters: function () {
+                return this.getFormData().configuration.filters;
             }
         });
     }

@@ -398,6 +398,45 @@ pim_enrich:
                     info:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
+        job_instance:
+            meta:
+                job: Job
+                connector: Connector
+            tab:
+                content:
+                    title: Content
+                properties:
+                    title: General properties
+                    code:
+                        title: Code
+                    label:
+                        title: Label
+                    decimal_separator:
+                        title: Decimal separator
+                        help: Determine the decimal separator
+                    date_format:
+                        title: Date format
+                        help: Determine the format of date fields
+                    file_path:
+                        title: File path
+                        help: Where to write the generated file on the file system
+                    delimiter:
+                        title: Delimiter
+                        help: One character used to set the field delimiter
+                    enclosure:
+                        title: Enclosure
+                        help: One character used to set the field enclosure
+                    with_header:
+                        title: With header
+                        help: Whether or not to print the column name
+                    with_media:
+                        title: Export files and images
+                        help: Whether or not to export product files and images
+                    lines_per_file:
+                        title: Number of lines per file
+                        help: Define the limit number of lines per file
+                history:
+                    title: History
 
     export:
         product:
@@ -533,6 +572,10 @@ pim_enrich:
                         "<": Lower than
                         EMPTY: Is empty
                         NOT EMPTY: Is not empty
+            properties:
+                title: Properties
+            global_settings:
+                title: Global settings
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.

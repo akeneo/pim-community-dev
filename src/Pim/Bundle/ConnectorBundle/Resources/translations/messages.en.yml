@@ -32,6 +32,7 @@ pim_connector:
         csv_writer.title:                    Csv Writer
 
     ## Import/export configuration fields (for readers, processors, writers)
+    # TODO TIP-652: remove
     export:
         csv:
             delimiter:

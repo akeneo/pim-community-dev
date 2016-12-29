@@ -153,6 +153,7 @@ Feature: Export products according to text attribute filter
     Then I filter by "name" with operator "Contains" and value "Ranger"
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
+    Then I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish

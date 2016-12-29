@@ -114,7 +114,7 @@ class JobContext extends PimContext
     public function iShouldNotBeAbleToAccessTheJob($action, JobInstance $job)
     {
         $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
-        $this->getCurrentPage()->open(['id' => $job->getId()]);
+        $this->getCurrentPage()->open(['code' => $job->getCode()]);
 
         return new Step\Then('I should see "403 Forbidden"');
     }

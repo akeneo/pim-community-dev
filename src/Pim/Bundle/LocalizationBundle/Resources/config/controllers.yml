@@ -15,3 +15,6 @@ services:
             - '@pim_catalog.localization.factory.date'
             - '@pim_catalog.localization.factory.datetime'
             - '@pim_enrich.resolver.locale'
+            -
+                decimal_separators: '%pim_catalog.localization.decimal_separators%'
+                date_formats: '%pim_catalog.localization.date_formats%'

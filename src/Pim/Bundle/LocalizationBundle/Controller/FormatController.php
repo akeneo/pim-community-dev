@@ -25,16 +25,35 @@ class FormatController
     /** @var LocaleResolver */
     protected $localeResolver;
 
+    /** @var array */
+    protected $formats;
+
     /**
      * @param DateFactory    $dateFactory
      * @param DateFactory    $datetimeFactory
      * @param LocaleResolver $localeResolver
+     * @param array          $formats
      */
-    public function __construct(DateFactory $dateFactory, DateFactory $datetimeFactory, LocaleResolver $localeResolver)
-    {
-        $this->dateFactory = $dateFactory;
+    public function __construct(
+        DateFactory $dateFactory,
+        DateFactory $datetimeFactory,
+        LocaleResolver $localeResolver,
+        array $formats
+    ) {
+        $this->dateFactory     = $dateFactory;
         $this->datetimeFactory = $datetimeFactory;
-        $this->localeResolver = $localeResolver;
+        $this->localeResolver  = $localeResolver;
+        $this->formats         = $formats;
+    }
+
+    /**
+     * Get all format informations (decimal separator and date format for now)
+     *
+     * @return JsonResponse
+     */
+    public function indexAction()
+    {
+        return new JsonResponse($this->formats);
     }
 
     /**

@@ -11,34 +11,38 @@ define(
         'underscore',
         'oro/translator',
         'text!pim/template/export/product/edit/content/structure',
-        'pim/form'
+        'pim/form',
+        'pim/common/property'
     ],
     function (
         _,
         __,
         template,
-        BaseForm
+        BaseForm,
+        propertyAccessor
     ) {
         return BaseForm.extend({
             className: 'structure-filters',
-            errors: [],
+            errors: {},
             template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(
-                    this.getRoot(),
-                    'pim_enrich:form:export:validation_error',
-                    this.setValidationErrors.bind(this)
-                );
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.setValidationErrors.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.removeValidationErrors.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
-            setValidationErrors: function (errors) {
-                this.errors = errors;
+            setValidationErrors: function (event) {
+                this.errors = event.response;
+            },
+
+            removeValidationErrors: function () {
+                this.errors = {};
             },
 
             /**
@@ -49,12 +53,7 @@ define(
              * @return {mixed}
              */
             getValidationErrorsForField: function (field) {
-                return (
-                    _.has(this.errors, 'structure') &&
-                    _.has(this.errors.structure, field)
-                ) ?
-                    this.errors.structure[field] :
-                    [];
+                return propertyAccessor.accessProperty(this.errors, 'configuration.filters.structure.' + field, []);
             },
 
             /**

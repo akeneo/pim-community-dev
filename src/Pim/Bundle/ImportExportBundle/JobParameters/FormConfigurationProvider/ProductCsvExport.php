@@ -60,7 +60,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     public function getFormConfiguration()
     {
         $csvFormOptions = array_merge($this->simpleCsvExport->getFormConfiguration(), [
-            'with_media' => [
+            'with_media'  => [
                 'type'    => 'switch',
                 'options' => [
                     'label' => 'pim_connector.export.csv.with_media.label',

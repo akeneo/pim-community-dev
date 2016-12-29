@@ -5,6 +5,6 @@
 {% set entityName          = 'export profile' %}
 {% set action              = 'export' %}
 {% set indexRoute          = path('pim_importexport_export_profile_index') %}
-{% set editRoute           = path('pim_importexport_export_profile_edit', {'id': jobInstance.id}) %}
-{% set launchRoute         = path('pim_importexport_export_profile_launch', {'id': jobInstance.id}) %}
+{% set editRoute           = path('pim_importexport_export_profile_edit', {'code': jobInstance.code}) %}
+{% set launchRoute         = path('pim_importexport_export_profile_launch', {'code': jobInstance.code}) %}
 {% set viewElementsAliases = form.vars.id ~ '.export' %}

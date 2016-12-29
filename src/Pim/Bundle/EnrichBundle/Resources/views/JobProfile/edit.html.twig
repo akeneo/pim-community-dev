@@ -1,0 +1,67 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
+{% block main %}
+    <div id="main">
+        {% block before_content %}
+        <div class="AknBreadcrumbContainer">
+            <div id="breadcrumb">
+                {% block breadcrumb %}
+                    {% placeholder breadcrumb %}
+                {% endblock breadcrumb %}
+            </div>
+            {{ elements.flashMessagesContainer() }}
+            {% placeholder pin_button %}
+        </div>
+        {% endblock before_content %}
+        <div class="hash-loading-mask"></div>
+        <div id="container">
+            {% block page_container %}
+                {% block content %}
+                    {% placeholder content_before %}
+                    <div id="job-instance-edit-form">
+
+                    </div>
+                    <script>
+                        require(
+                            [
+                                'jquery',
+                                'pim/fetcher-registry',
+                                'pim/form-builder',
+                                'oro/loading-mask',
+                                'oro/mediator'
+                            ],
+                            function(
+                                $,
+                                fetcherRegistry,
+                                formBuilder,
+                                LoadingMask,
+                                mediator
+                            ) {
+                                $(function () {
+                                    var loadingMask = new LoadingMask();
+                                    loadingMask.render().$el.appendTo($('#container')).show();
+
+                                    fetcherRegistry.initialize().done(function () {
+                                        fetcherRegistry.getFetcher('job_instance').fetch('{{ jobInstanceIdentifier }}').then(function (jobProfile) {
+                                            formBuilder.build(jobProfile.meta.form)
+                                                .then(function (form) {
+                                                    form.setData(jobProfile);
+
+                                                    mediator.trigger('pim_enrich:form:entity:post_fetch', jobProfile);
+
+                                                    form.setElement('#job-instance-edit-form').render();
+                                                    loadingMask.remove();
+                                                });
+                                        });
+
+                                    });
+                                });
+                            });
+                    </script>
+                    {% placeholder content_after %}
+                {% endblock content %}
+            {% endblock page_container %}
+        </div>
+    </div>
+{% endblock main %}

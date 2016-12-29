@@ -60,30 +60,24 @@ define(
                     return this;
                 }
 
-                var defaultLocalesPromise = $.Deferred().resolve().promise();
-                if (_.isEmpty(this.getLocales())) {
-                    defaultLocalesPromise = this.initializeDefaultLocales();
-                }
+                fetcherRegistry.getFetcher('channel')
+                    .fetch(this.getFilters().structure.scope)
+                    .always(function (scope) {
+                        this.$el.html(
+                            this.template({
+                                isEditable: this.isEditable(),
+                                __: __,
+                                locales: this.getLocales(),
+                                availableLocales: !scope ? [] : scope.locales,
+                                errors: this.getParent().getValidationErrorsForField('locales')
+                            })
+                        );
 
-                $.when(
-                    fetcherRegistry.getFetcher('channel').fetch(this.getFormData().structure.scope),
-                    defaultLocalesPromise
-                ).always(function (scope) {
-                    this.$el.html(
-                        this.template({
-                            isEditable: this.isEditable(),
-                            __: __,
-                            locales: this.getLocales(),
-                            availableLocales: !scope ? [] : scope.locales,
-                            errors: this.getParent().getValidationErrorsForField('locales')
-                        })
-                    );
+                        this.$('.select2').select2().on('change', this.updateState.bind(this));
+                        this.$('[data-toggle="tooltip"]').tooltip();
 
-                    this.$('.select2').select2().on('change', this.updateState.bind(this));
-                    this.$('[data-toggle="tooltip"]').tooltip();
-
-                    this.renderExtensions();
-                }.bind(this));
+                        this.renderExtensions();
+                    }.bind(this));
 
                 return this;
             },
@@ -114,7 +108,7 @@ define(
              * @param {Array} codes
              */
             setLocales: function (codes) {
-                var data = this.getFormData();
+                var data = this.getFilters();
                 var before = data.structure.locales;
 
                 data.structure.locales = codes;
@@ -131,7 +125,7 @@ define(
              * @returns {Array}
              */
             getLocales: function () {
-                var structure = this.getFormData().structure;
+                var structure = this.getFilters().structure;
 
                 if (_.isUndefined(structure)) {
                     return [];
@@ -169,7 +163,16 @@ define(
              * @return {String}
              */
             getCurrentScope: function () {
-                return this.getFormData().structure.scope;
+                return this.getFilters().structure.scope;
+            },
+
+            /**
+             * Get filters
+             *
+             * @return {object}
+             */
+            getFilters: function () {
+                return this.getFormData().configuration.filters;
             }
         });
     }

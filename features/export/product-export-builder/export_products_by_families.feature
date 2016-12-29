@@ -68,7 +68,8 @@ Feature: Export products according to their families
     SNKRS-6;summer_collection;;;1;boots;;;;;"Black boots";;;;;;;;;
     """
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5952
+  # Todo TIP-652
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-5952
   Scenario: Display default messages when no family are selected
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |

@@ -1,0 +1,14 @@
+pim_enrich_job_instance_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:getAction, _format: json }
+    methods: [GET]
+
+pim_enrich_job_instance_rest_put:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:putAction, _format: json }
+    methods: [PUT, POST]
+
+pim_enrich_job_instance_rest_delete:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:deleteAction, _format: json }
+    methods: [DELETE]

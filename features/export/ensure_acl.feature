@@ -25,6 +25,8 @@ Feature: Ensures acl are respected on the export profile tabs
     Then I should not see the text "General properties"
     And I should not see the text "Content"
 
+  # TODO TIP-652
+  @skip
   Scenario: Disable edit general property right and update Content tab
     Given I revoke rights to resources Edit an export profile general properties
     And I grant rights to resources Edit an export profile content
@@ -33,6 +35,7 @@ Feature: Ensures acl are respected on the export profile tabs
     Then I should not see the text "General properties"
     When I filter by "family" with operator "" and value "Boots"
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     Then I should see the text "Boots"
 
   Scenario: Disable edit general property and show content tab read rights

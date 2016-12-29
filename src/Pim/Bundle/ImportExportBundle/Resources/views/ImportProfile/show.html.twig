@@ -5,7 +5,7 @@
 {% set entityName          = 'import profile' %}
 {% set action              = 'import' %}
 {% set indexRoute          = path('pim_importexport_import_profile_index') %}
-{% set editRoute           = path('pim_importexport_import_profile_edit', {'id': jobInstance.id}) %}
-{% set launchRoute         = path('pim_importexport_import_profile_launch', {'id': jobInstance.id}) %}
-{% set launchUploadRoute   = path('pim_importexport_import_profile_launch_upload', {'id': jobInstance.id}) %}
+{% set editRoute           = path('pim_importexport_import_profile_edit', {'code': jobInstance.code}) %}
+{% set launchRoute         = path('pim_importexport_import_profile_launch', {'code': jobInstance.code}) %}
+{% set launchUploadRoute   = path('pim_importexport_import_profile_launch_upload', {'code': jobInstance.code}) %}
 {% set viewElementsAliases = form.vars.id ~ '.import' %}

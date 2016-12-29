@@ -123,7 +123,7 @@ class ImportProfilesContext extends ImportExportContext
      */
     public function iAmOnTheImportJobPage(JobInstance $job)
     {
-        $this->getNavigationContext()->openPage('Import show', ['id' => $job->getId()]);
+        $this->getNavigationContext()->openPage('Import show', ['code' => $job->getCode()]);
     }
 
     /**
@@ -133,7 +133,7 @@ class ImportProfilesContext extends ImportExportContext
      */
     public function iAmOnTheImportJobEditPage(JobInstance $job)
     {
-        $this->getNavigationContext()->openPage('Import edit', ['id' => $job->getId()]);
+        $this->getNavigationContext()->openPage('Import edit', ['code' => $job->getCode()]);
     }
 
     /**

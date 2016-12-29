@@ -7,9 +7,7 @@ define([
     'pim/filter/filter',
     'pim/fetcher-registry',
     'pim/user-context',
-    'pim/i18n',
-    'text!pim/template/filter/product/identifier',
-    'jquery.select2'
+    'text!pim/template/filter/product/identifier'
 ], function (
     $,
     _,
@@ -17,7 +15,6 @@ define([
     BaseFilter,
     FetcherRegistry,
     UserContext,
-    i18n,
     template
 ) {
     return BaseFilter.extend({

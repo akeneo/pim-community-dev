@@ -1,9 +1,9 @@
 parameters:
-    akeneo_storage_utils.updater.base.class: Akeneo\Component\Batch\Updater\JobInstanceUpdater
+    akeneo_batch.updater.job_instance.class: Akeneo\Component\Batch\Updater\JobInstanceUpdater
 
 services:
     akeneo_batch.updater.job_instance:
-        class: '%akeneo_storage_utils.updater.base.class%'
+        class: '%akeneo_batch.updater.job_instance.class%'
         arguments:
             - '@akeneo_batch.job_parameters_factory'
             - '@akeneo_batch.job.job_registry'

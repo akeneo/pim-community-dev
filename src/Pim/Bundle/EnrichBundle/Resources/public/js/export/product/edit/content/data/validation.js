@@ -6,9 +6,10 @@ define([
     'oro/translator',
     'pim/form',
     'text!pim/template/export/product/edit/content/data/validation',
-    'oro/messenger'
+    'oro/messenger',
+    'pim/common/property'
 
-], function ($, _, __, BaseForm, template, messenger) {
+], function ($, _, __, BaseForm, template, messenger, propertyAccessor) {
     return BaseForm.extend({
         template: _.template(template),
         errors: [],
@@ -18,24 +19,15 @@ define([
          */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this));
-            this.listenTo(
-                this.getRoot(),
-                'pim_enrich:form:export:validation_error',
-                this.setValidationErrors.bind(this)
-            );
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.setValidationErrors.bind(this));
 
             return BaseForm.prototype.configure.apply(this, arguments);
         },
 
-        setValidationErrors: function (errors) {
-            this.errors = errors;
+        setValidationErrors: function (event) {
+            this.errors = event.response;
 
-            if (!_.isEmpty(errors)) {
-                messenger.notificationFlashMessage(
-                    'error',
-                    __('error.saving.export_profile')
-                );
-            }
+            this.getRoot().trigger('pim_enrich:form:entity:validation_error', event);
         },
 
         /**
@@ -47,10 +39,10 @@ define([
         addFilterExtension: function (event) {
             var filter = event.filter;
 
-            if (_.has(this.errors, 'data') &&
-                _.has(this.errors.data, filter.getField())
+            if (null !== propertyAccessor
+                .accessProperty(this.errors, 'configuration.filters.data' + filter.getField())
             ) {
-                var content = $(this.template({errors: this.errors.data[filter.getField()]}));
+                var content = $(this.template({errors: propertyAccessor.accessProperty(this.errors, 'configuration.filters.data' + filter.getField())}));
 
                 event.filter.addElement(
                     'below-input',

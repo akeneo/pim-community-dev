@@ -788,7 +788,9 @@ class Form extends Base
         }
 
         $for   = $label->getAttribute('for');
-        $field = $this->find('css', sprintf('#%s', $for));
+        $field = $this->spin(function () use ($for) {
+            return $this->find('css', sprintf('#%s', $for));
+        }, sprintf('Cannot find element field with id %s', $for));
 
         $field->setValue($value);
     }

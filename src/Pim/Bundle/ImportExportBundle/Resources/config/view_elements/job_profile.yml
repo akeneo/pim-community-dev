@@ -53,16 +53,16 @@ services:
        tags:
            - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.export, position: 90 }
 
-   pim_import_export.view_element.job_profile.export.tab.job_content_show:
-       parent: pim_enrich.view_element.base
-       arguments:
-           - 'pim_import_export.job_profile.tab.job_content'
-           - '%pim_import_export.view_element.job_profile.tab.job_content.template%'
-       calls:
-           - [ addVisibilityChecker, ['@pim_import_export.view_element.visibility_checker.job_name'] ]
-           - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_importexport_export_profile_content_show'}] ]
-       tags:
-           - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.export, position: 100 }
+   # pim_import_export.view_element.job_profile.export.tab.job_content_show:
+   #     parent: pim_enrich.view_element.base
+   #     arguments:
+   #         - 'pim_import_export.job_profile.tab.job_content'
+   #         - '%pim_import_export.view_element.job_profile.tab.job_content.template%'
+   #     calls:
+   #         - [ addVisibilityChecker, ['@pim_import_export.view_element.visibility_checker.job_name'] ]
+   #         - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_importexport_export_profile_content_show'}] ]
+   #     tags:
+   #         - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.export, position: 100 }
 
    pim_import_export.view_element.job_profile.export.tab.history_show:
        parent: pim_enrich.view_element.base
@@ -85,16 +85,16 @@ services:
            - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.export.form_tab, position: 90 }
 
 
-   pim_import_export.view_element.job_profile.export.tab.job_content_edit:
-       parent: pim_enrich.view_element.base
-       arguments:
-           - 'pim_import_export.job_profile.tab.job_content'
-           - '%pim_import_export.view_element.job_profile.tab.job_content.template%'
-       calls:
-           - [ addVisibilityChecker, ['@pim_import_export.view_element.visibility_checker.job_name'] ]
-           - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_importexport_export_profile_content_edit'}] ]
-       tags:
-           - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.export.form_tab, position: 100 }
+   # pim_import_export.view_element.job_profile.export.tab.job_content_edit:
+   #     parent: pim_enrich.view_element.base
+   #     arguments:
+   #         - 'pim_import_export.job_profile.tab.job_content'
+   #         - '%pim_import_export.view_element.job_profile.tab.job_content.template%'
+   #     calls:
+   #         - [ addVisibilityChecker, ['@pim_import_export.view_element.visibility_checker.job_name'] ]
+   #         - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_importexport_export_profile_content_edit'}] ]
+   #     tags:
+   #         - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.export.form_tab, position: 100 }
 
    pim_import_export.view_element.job_profile.export.tab.history_edit:
        parent: pim_enrich.view_element.base

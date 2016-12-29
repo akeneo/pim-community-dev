@@ -15,6 +15,7 @@ Feature: Edit an export
     When I fill in the following information:
       | Label | My export |
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     Then I should see "My export"
 
   Scenario: Successfully update export job configuration
@@ -37,6 +38,7 @@ Feature: Edit an export
     And I filter by "completeness" with operator "Not complete on all selected locales" and value ""
     And I filter by "sku" with operator "" and value "identifier1 identifier2,identifier3 ,identifier4"
     Then I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I visit the "General" tab
     Then I should see the text "File path /tmp/file.csv"
     And I should see the text "Delimiter |"
@@ -68,7 +70,8 @@ Feature: Edit an export
       | Label | My export |
     Then I should see "There are unsaved changes."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5965
+  # TODO TIP-652
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-5965
   Scenario: Successfully display export filter in expected order
     Given I am on the "csv_footwear_product_export" export job page
     When I visit the "Content" tab

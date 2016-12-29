@@ -71,8 +71,17 @@ define([
                 field: this.getField(),
                 operator: this.$('[name="filter-operator"]').val(),
                 value: 100,
-                context: {'locales': this.getParentForm().getFormData().structure.locales}
+                context: {'locales': this.getFilters().structure.locales}
             });
+        },
+
+        /**
+         * Get filters
+         *
+         * @return {object}
+         */
+        getFilters: function () {
+            return this.getParentForm().getFormData().configuration.filters;
         }
     });
 });

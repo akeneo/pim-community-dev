@@ -57,7 +57,7 @@ define(
                     return this;
                 }
 
-                var attributes = this.getFormData().structure.attributes || [];
+                var attributes = this.getFilters().structure.attributes || [];
 
                 this.$el.html(
                     this.template({
@@ -96,7 +96,7 @@ define(
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo($('#container'));
                 loadingMask.show();
-                var selectedAttributes = this.getFormData().structure.attributes || [];
+                var selectedAttributes = this.getFilters().structure.attributes || [];
                 var attributeSelector = new AttributeSelector();
                 attributeSelector.setSelected(selectedAttributes);
 
@@ -122,7 +122,7 @@ define(
 
                 modal.on('ok', function () {
                     var values = attributeSelector.getSelected();
-                    var data = this.getFormData();
+                    var data = this.getFilters();
 
                     data.structure.attributes = values;
 
@@ -130,6 +130,15 @@ define(
                     modal.close();
                     this.render();
                 }.bind(this));
+            },
+
+            /**
+             * Get filters
+             *
+             * @return {object}
+             */
+            getFilters: function () {
+                return this.getFormData().configuration.filters;
             }
         });
     }

@@ -14,7 +14,7 @@
         <span id="log"></span>
         {{ elements.link(
             'Show profile',
-            path(show_profile_route, { 'id': execution.jobInstance.id }),
+            path(show_profile_route, { 'code': execution.jobInstance.code }),
             { icon: 'eye-open', class: 'AknButton AknButton--action AknButtonList-item' })
         }}
     {% endset %}

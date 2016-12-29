@@ -10,6 +10,7 @@ define(
     [
         'module',
         'underscore',
+        'oro/translator',
         'backbone',
         'text!pim/template/export/product/edit/content',
         'pim/form',
@@ -20,6 +21,7 @@ define(
     function (
         module,
         _,
+        __,
         Backbone,
         template,
         BaseForm,
@@ -30,18 +32,23 @@ define(
             template: _.template(template),
 
             /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                this.config = config.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
              * {@inherit}
              */
             configure: function () {
-                this.unbindEvents();
-                Backbone.Router.prototype.once('route', this.unbindEvents);
-                FetcherRegistry.clearAll();
-
-                if (_.has(module.config(), 'forwarded-events')) {
-                    this.forwardMediatorEvents(module.config()['forwarded-events']);
-                }
-
-                this.listenTo(this.getRoot(), 'pim_enrich:form:export:set_code', this.setJobCode.bind(this));
+                this.trigger('tab:register', {
+                    code: this.code,
+                    label: __(this.config.tabTitle)
+                });
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -53,7 +60,6 @@ define(
                 if (!this.configured) {
                     return this;
                 }
-                this.getRoot().trigger('pim_enrich:form:render:before');
 
                 this.$el.html(
                     this.template({})
