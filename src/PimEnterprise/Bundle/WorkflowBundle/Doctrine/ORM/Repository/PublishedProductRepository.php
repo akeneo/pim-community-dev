@@ -176,7 +176,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function countPublishedProductsForAttributeOption(AttributeOptionInterface $option)
     {
         $productQb = $this->queryBuilderFactory->create();
-        $productQb->addFilter($option->getAttribute()->getCode(), Operators::IN_LIST, [$option->getId()]);
+        $productQb->addFilter($option->getAttribute()->getCode(), Operators::IN_LIST, [$option->getCode()]);
 
         return $productQb->execute()->count();
     }
