@@ -59,3 +59,30 @@ Feature: Create product assets
     Then I should be on the "akeneo" asset edit page
     And I should not be able to generate Mobile from reference
     And I should not be able to generate Tablet from reference
+
+  Scenario: Successfully increment an existing asset code
+    Given I am logged in as "Pamela"
+    And I am on the assets page
+    When I press the "Create an asset" button
+    And I fill the code with random_asset
+    And I press the "Save" button
+    Then I should be on the "random_asset" asset edit page
+    When I am on the assets page
+    And I press the "Create an asset" button
+    And I fill the code with random_asset and wait for validation
+    And I hover over the element ".validation-tooltip"
+    Then I should see the text "Code must be unique. We generated a new one for you."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6023
+  Scenario: Successfully create an asset with a non existent similar code
+    Given I am logged in as "Pamela"
+    And I am on the assets page
+    When I press the "Create an asset" button
+    And I fill the code with random_asset_1
+    And I press the "Save" button
+    Then I should be on the "random_asset_1" asset edit page
+    When I am on the assets page
+    And I press the "Create an asset" button
+    And I fill the code with random_asset
+    And I press the "Save" button
+    Then I should be on the "random_asset" asset edit page
