@@ -12,10 +12,12 @@
   &-closeButton {
     font-size: @AknFontSizeBig;
     flex-basis: @AknFontSizeBig;
-    margin-left: 10px;
+    color: darken(@AknOrange, 20%);
+    margin: 0 -16px 0 10px;
     background: none;
     border: none;
     order: 10;
+    cursor: pointer;
   }
 
   &--success {
@@ -24,10 +26,19 @@
     color: darken(@AknGreen, 20%);
   }
 
+  &--success &-closeButton {
+    color: darken(@AknGreen, 20%);
+  }
+
   &--danger,
   &--error {
     border: 1px solid darken(@AknRed, 10%);
     background: lighten(@AknRed, 30%);
+    color: darken(@AknRed, 20%);
+  }
+
+  &--danger &-closeButton,
+  &--error &-closeButton {
     color: darken(@AknRed, 20%);
   }
 
