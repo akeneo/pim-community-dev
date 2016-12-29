@@ -125,7 +125,6 @@ define(
                 };
 
                 initSelect2.init(familyModal.$('.family-select2'), options).select2('val', []);
-                familyModal.$('.modal-body').css({'line-height': '25px', 'height': 130});
             }
         });
     }
