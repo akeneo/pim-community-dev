@@ -10,7 +10,6 @@ define([
         template
     ) {
         return BaseForm.extend({
-            className: 'tab-pane',
             events: {
                 'change input[type="checkbox"]': 'updateModel'
             },
