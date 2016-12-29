@@ -18,6 +18,8 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
+ * Log the memory usage. It is enabled by default, use it to debug.
+ *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class LoggableStep implements CalculationStepInterface

@@ -28,21 +28,5 @@ class PimEnterpriseActivityManagerExtension extends Extension
         $loader->load('jobs.yml');
         $loader->load('project.yml');
         $loader->load('services.yml');
-        $this->loadStorageDriver($containerBuilder);
-    }
-
-    /**
-     * Load the mapping for product and product storage
-     *
-     * @param ContainerBuilder $containerBuilder
-     */
-    protected function loadStorageDriver(ContainerBuilder $containerBuilder)
-    {
-        $loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__.'/../Resources/config'));
-        $storageDriver = $containerBuilder->getParameter('pim_catalog_product_storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
-            $loader->load($storageConfig);
-        }
     }
 }

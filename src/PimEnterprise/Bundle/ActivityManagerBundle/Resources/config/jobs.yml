@@ -66,7 +66,7 @@ services:
             - '@pimee_activity_manager.repository.pre_processing'
         public: false
         tags:
-            - { name: pimee_activity_manager.calculation_step, priority: 200  }
+            - { name: pimee_activity_manager.calculation_step, priority: 200 }
 
     pimee_activity_manager.calculation_step.pre_process_completeness:
         class: '%pimee_activity_manager.calculation_step.pre_process_completeness.class%'
@@ -76,7 +76,7 @@ services:
             - '@pim_catalog.completeness.checker.chained'
         public: false
         tags:
-            - { name: pimee_activity_manager.calculation_step, priority: 300  }
+            - { name: pimee_activity_manager.calculation_step, priority: 300 }
 
     pimee_activity_manager.calculation_step.chained:
         class: '%pimee_activity_manager.calculation_step.chained.class%'
