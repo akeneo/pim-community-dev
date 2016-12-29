@@ -14,27 +14,17 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValuesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class ProductValuesNormalizer extends SerializerAwareNormalizer  implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function normalize($data, $format = null, array $context = [])
+    public function normalize($values, $format = null, array $context = [])
     {
         $result = [];
-
-        foreach ($data as $value) {
-            if (!$value instanceof ProductValueInterface) {
-                throw new \InvalidArgumentException('This normalizer only handles "Pim\Component\Catalog\Model\ProductValueInterface".');
-            }
-
-            $stdValue = $this->serializer->normalize($value, 'standard', $context);
-
-            $attribute = $value->getAttribute()->getCode();
-            $channel = null !== $stdValue['scope'] ? $stdValue['scope'] : '<all_channels>';
-            $locale = null !== $stdValue['locale'] ? $stdValue['locale'] : '<all_locales>';
-
-            $result[$attribute][$channel][$locale] = $stdValue['data'];
+        foreach ($values as $value) {
+            $normalizedValue = $this->serializer->normalize($value, $format, $context);
+            $result = array_merge_recursive($result, $normalizedValue);
         }
 
         return $result;
@@ -45,6 +35,20 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Collection && 'storage' === $format;
+        $isCollection = $data instanceof Collection || is_array($data);
+        $isStandardFormat = 'storage' === $format;
+
+        if (!$isCollection || !$isStandardFormat) {
+            return false;
+        }
+
+        $firstElementIsValue =
+            (is_array($data) && empty($data)) ||
+            ($data instanceof Collection && $data->isEmpty()) ||
+            (is_array($data) && !empty($data) && $data[0] instanceof ProductValueInterface) ||
+            ($data instanceof Collection && !$data->isEmpty() && $data->first() instanceof ProductValueInterface)
+        ;
+
+        return $firstElementIsValue;
     }
 }
