@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
@@ -51,7 +51,7 @@ class LocaleAccessManager
      *
      * @param LocaleInterface $locale
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function getViewUserGroups(LocaleInterface $locale)
     {
@@ -63,7 +63,7 @@ class LocaleAccessManager
      *
      * @param LocaleInterface $locale
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function getEditUserGroups(LocaleInterface $locale)
     {
@@ -73,9 +73,9 @@ class LocaleAccessManager
     /**
      * Grant access on an attribute locale to specified user groups
      *
-     * @param LocaleInterface $locale
-     * @param Group[]         $viewUserGroups
-     * @param Group[]         $editUserGroups
+     * @param LocaleInterface  $locale
+     * @param GroupInterface[] $viewUserGroups
+     * @param GroupInterface[] $editUserGroups
      */
     public function setAccess(LocaleInterface $locale, $viewUserGroups, $editUserGroups)
     {
@@ -101,10 +101,10 @@ class LocaleAccessManager
      * Grant specified access on an attribute locale for the provided user group
      *
      * @param LocaleInterface $locale
-     * @param Group           $group
+     * @param GroupInterface  $group
      * @param string          $accessLevel
      */
-    public function grantAccess(LocaleInterface $locale, Group $group, $accessLevel)
+    public function grantAccess(LocaleInterface $locale, GroupInterface $group, $accessLevel)
     {
         $access = $this->builGrantAccess($locale, $group, $accessLevel);
         $this->saver->saveAll([$access]);
@@ -114,8 +114,8 @@ class LocaleAccessManager
      * Revoke access to an attribute locale
      * If $excludedUserGroups are provided, access will not be revoked for user groups with them
      *
-     * @param LocaleInterface $locale
-     * @param Group[]         $excludedUserGroups
+     * @param LocaleInterface  $locale
+     * @param GroupInterface[] $excludedUserGroups
      *
      * @return int
      */
@@ -128,11 +128,11 @@ class LocaleAccessManager
      * Get LocaleAccess entity for a locale and user group
      *
      * @param LocaleInterface $locale
-     * @param Group           $group
+     * @param GroupInterface  $group
      *
      * @return \PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess
      */
-    protected function getLocaleAccess(LocaleInterface $locale, Group $group)
+    protected function getLocaleAccess(LocaleInterface $locale, GroupInterface $group)
     {
         $access = $this->repository
             ->findOneBy(
@@ -156,12 +156,12 @@ class LocaleAccessManager
      * Build specified access on an attribute locale for the provided user group
      *
      * @param LocaleInterface $locale
-     * @param Group           $group
+     * @param GroupInterface  $group
      * @param string          $accessLevel
      *
      * @return LocaleAccess
      */
-    protected function builGrantAccess(LocaleInterface $locale, Group $group, $accessLevel)
+    protected function builGrantAccess(LocaleInterface $locale, GroupInterface $group, $accessLevel)
     {
         $access = $this->getLocaleAccess($locale, $group);
         $access

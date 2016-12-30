@@ -3,9 +3,9 @@
 namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 
 class AttributeGroupAccessUpdaterSpec extends ObjectBehavior
@@ -40,7 +40,7 @@ class AttributeGroupAccessUpdaterSpec extends ObjectBehavior
         $userGroupRepo,
         $attributeGroupRepo,
         AttributeGroupAccessInterface $groupAccess,
-        Group $userGroup,
+        GroupInterface $userGroup,
         AttributeGroupInterface $attributeGroup
     ) {
         $values = [

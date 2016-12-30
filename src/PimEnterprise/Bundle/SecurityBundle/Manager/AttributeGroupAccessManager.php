@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Oro\Bundle\UserBundle\Entity\Group as UserGroup;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
@@ -136,10 +136,10 @@ class AttributeGroupAccessManager
      * Grant specified access on an attribute group for the provided user group
      *
      * @param AttributeGroupInterface $attributeGroup
-     * @param UserGroup               $userGroup
+     * @param GroupInterface          $userGroup
      * @param string                  $accessLevel
      */
-    public function grantAccess(AttributeGroupInterface $attributeGroup, UserGroup $userGroup, $accessLevel)
+    public function grantAccess(AttributeGroupInterface $attributeGroup, GroupInterface $userGroup, $accessLevel)
     {
         $access = $this->buildGrantAccess($attributeGroup, $userGroup, $accessLevel);
         $this->saver->saveAll([$access]);
@@ -163,11 +163,11 @@ class AttributeGroupAccessManager
      * Get AttributeGroupAccess entity for an attribute group and user group
      *
      * @param AttributeGroupInterface $attributeGroup
-     * @param UserGroup               $userGroup
+     * @param GroupInterface          $userGroup
      *
      * @return AttributeGroupAccess
      */
-    protected function getAttributeGroupAccess(AttributeGroupInterface $attributeGroup, UserGroup $userGroup)
+    protected function getAttributeGroupAccess(AttributeGroupInterface $attributeGroup, GroupInterface $userGroup)
     {
         $access = $this->repository
             ->findOneBy(
@@ -192,13 +192,16 @@ class AttributeGroupAccessManager
      * Build specified access on an attribute group for the provided user group
      *
      * @param AttributeGroupInterface $attributeGroup
-     * @param UserGroup               $userGroup
+     * @param GroupInterface          $userGroup
      * @param string                  $accessLevel
      *
      * @return AttributeGroupAccess
      */
-    protected function buildGrantAccess(AttributeGroupInterface $attributeGroup, UserGroup $userGroup, $accessLevel)
-    {
+    protected function buildGrantAccess(
+        AttributeGroupInterface $attributeGroup,
+        GroupInterface $userGroup,
+        $accessLevel
+    ) {
         $access = $this->getAttributeGroupAccess($attributeGroup, $userGroup);
         $access
             ->setViewAttributes(true)

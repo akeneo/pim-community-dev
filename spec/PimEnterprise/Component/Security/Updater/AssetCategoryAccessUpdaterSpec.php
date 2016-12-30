@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess;
 
 class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
@@ -40,7 +40,7 @@ class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
         $groupRepository,
         $categoryRepository,
         AssetCategoryAccess $categoryAccess,
-        Group $userGroup,
+        GroupInterface $userGroup,
         CategoryInterface $category
     ) {
         $values = [

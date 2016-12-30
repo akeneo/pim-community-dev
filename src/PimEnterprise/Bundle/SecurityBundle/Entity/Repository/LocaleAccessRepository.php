@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**
@@ -30,7 +30,7 @@ class LocaleAccessRepository extends EntityRepository implements IdentifiableObj
      * @param LocaleInterface $locale
      * @param string          $accessLevel
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function getGrantedUserGroups(LocaleInterface $locale, $accessLevel)
     {

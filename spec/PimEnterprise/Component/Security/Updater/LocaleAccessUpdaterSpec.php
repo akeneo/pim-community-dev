@@ -3,9 +3,9 @@
 namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
 
 class LocaleAccessUpdaterSpec extends ObjectBehavior
@@ -40,7 +40,7 @@ class LocaleAccessUpdaterSpec extends ObjectBehavior
         $groupRepository,
         $localeRepository,
         LocaleAccessInterface $localeAccess,
-        Group $userGroup,
+        GroupInterface $userGroup,
         LocaleInterface $locale
     ) {
         $values = [

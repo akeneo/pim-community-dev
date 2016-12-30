@@ -15,8 +15,8 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Repository\AccessRepositoryInterface;
 
@@ -40,7 +40,7 @@ class JobProfileAccessRepository extends EntityRepository implements
      * @param JobInstance $jobProfile
      * @param string      $accessLevel
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function getGrantedUserGroups(JobInstance $jobProfile, $accessLevel)
     {

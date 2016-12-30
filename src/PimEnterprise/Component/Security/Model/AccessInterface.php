@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security\Model;
 
-use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Component\User\Model\GroupInterface;
 
 /**
  * Base interface for all access entities
@@ -30,16 +30,16 @@ interface AccessInterface
     /**
      * Get user group
      *
-     * @return Group
+     * @return GroupInterface
      */
     public function getUserGroup();
 
     /**
      * Set user group
      *
-     * @param Group $group
+     * @param GroupInterface $group
      *
      * @return AccessInterface
      */
-    public function setUserGroup(Group $group);
+    public function setUserGroup(GroupInterface $group);
 }

@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 
 /**
@@ -28,7 +28,7 @@ class AttributeGroupAccess implements AttributeGroupAccessInterface
     /** @var AttributeGroupInterface */
     protected $attributeGroup;
 
-    /** @var Group */
+    /** @var GroupInterface */
     protected $userGroup;
 
     /** @var bool */
@@ -74,7 +74,7 @@ class AttributeGroupAccess implements AttributeGroupAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function setUserGroup(Group $group)
+    public function setUserGroup(GroupInterface $group)
     {
         $this->userGroup = $group;
 

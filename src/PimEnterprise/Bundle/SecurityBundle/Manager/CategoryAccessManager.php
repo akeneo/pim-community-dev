@@ -15,8 +15,8 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Model\CategoryAccessInterface;
@@ -77,7 +77,7 @@ class CategoryAccessManager
      *
      * @param CategoryInterface $category
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function getViewUserGroups(CategoryInterface $category)
     {
@@ -89,7 +89,7 @@ class CategoryAccessManager
      *
      * @param CategoryInterface $category
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function getEditUserGroups(CategoryInterface $category)
     {
@@ -101,7 +101,7 @@ class CategoryAccessManager
      *
      * @param CategoryInterface $category
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function getOwnUserGroups(CategoryInterface $category)
     {
@@ -142,9 +142,9 @@ class CategoryAccessManager
      * Grant access on a category to specified user groups, own implies edit which implies read
      *
      * @param CategoryInterface $category   the category
-     * @param Group[]           $viewGroups the view user groups
-     * @param Group[]           $editGroups the edit user groups
-     * @param Group[]           $ownGroups  the own user groups
+     * @param GroupInterface[]  $viewGroups the view user groups
+     * @param GroupInterface[]  $editGroups the edit user groups
+     * @param GroupInterface[]  $ownGroups  the own user groups
      */
     public function setAccess(CategoryInterface $category, $viewGroups, $editGroups, $ownGroups)
     {
@@ -220,12 +220,12 @@ class CategoryAccessManager
      * Update accesses to all category children to specified user groups
      *
      * @param CategoryInterface $parent
-     * @param Group[]           $addViewGroups
-     * @param Group[]           $addEditGroups
-     * @param Group[]           $addOwnGroups
-     * @param Group[]           $removeViewGroups
-     * @param Group[]           $removeEditGroups
-     * @param Group[]           $removeOwnGroups
+     * @param GroupInterface[]  $addViewGroups
+     * @param GroupInterface[]  $addEditGroups
+     * @param GroupInterface[]  $addOwnGroups
+     * @param GroupInterface[]  $removeViewGroups
+     * @param GroupInterface[]  $removeEditGroups
+     * @param GroupInterface[]  $removeOwnGroups
      */
     public function updateChildrenAccesses(
         CategoryInterface $parent,
@@ -245,10 +245,10 @@ class CategoryAccessManager
             $removeOwnGroups
         );
 
-        /** @var Group[] $codeToGroups */
+        /** @var GroupInterface[] $codeToGroups */
         $codeToGroups = [];
 
-        /** @var Group[] $allGroups */
+        /** @var GroupInterface[] $allGroups */
         $allGroups = array_merge(
             $addViewGroups,
             $addEditGroups,
@@ -290,12 +290,12 @@ class CategoryAccessManager
     /**
      * Get merged permissions
      *
-     * @param Group[] $addViewGroups
-     * @param Group[] $addEditGroups
-     * @param Group[] $addOwnGroups
-     * @param Group[] $removeViewGroups
-     * @param Group[] $removeEditGroups
-     * @param Group[] $removeOwnGroups
+     * @param GroupInterface[] $addViewGroups
+     * @param GroupInterface[] $addEditGroups
+     * @param GroupInterface[] $addOwnGroups
+     * @param GroupInterface[] $removeViewGroups
+     * @param GroupInterface[] $removeEditGroups
+     * @param GroupInterface[] $removeOwnGroups
      *
      * @return array
      */
@@ -309,7 +309,7 @@ class CategoryAccessManager
     ) {
         $mergedPermissions = [];
 
-        /** @var Group[] $allGroups */
+        /** @var GroupInterface[] $allGroups */
         $allGroups = array_merge(
             $addViewGroups,
             $addEditGroups,
@@ -350,10 +350,10 @@ class CategoryAccessManager
     /**
      * Delete accesses on categories
      *
-     * @param int[] $categoryIds
-     * @param Group $group
+     * @param int[]          $categoryIds
+     * @param GroupInterface $group
      */
-    protected function removeAccesses($categoryIds, Group $group)
+    protected function removeAccesses($categoryIds, GroupInterface $group)
     {
         $accesses = $this->accessRepository->findBy(['category' => $categoryIds, 'userGroup' => $group]);
         $this->accessRemover->removeAll($accesses);
@@ -362,13 +362,13 @@ class CategoryAccessManager
     /**
      * Add accesses on categories, a null permission will be resolved as false
      *
-     * @param int[]     $categoryIds
-     * @param Group     $group
-     * @param bool|null $view
-     * @param bool|null $edit
-     * @param bool|null $own
+     * @param int[]          $categoryIds
+     * @param GroupInterface $group
+     * @param bool|null      $view
+     * @param bool|null      $edit
+     * @param bool|null      $own
      */
-    protected function addAccesses($categoryIds, Group $group, $view = false, $edit = false, $own = false)
+    protected function addAccesses($categoryIds, GroupInterface $group, $view = false, $edit = false, $own = false)
     {
         $view = ($view === null) ? false : $view;
         $edit = ($edit === null) ? false : $edit;
@@ -393,13 +393,13 @@ class CategoryAccessManager
     /**
      * Update accesses on categories, if a permission is null we don't update
      *
-     * @param int[]     $categoryIds
-     * @param Group     $group
-     * @param bool|null $view
-     * @param bool|null $edit
-     * @param bool|null $own
+     * @param int[]          $categoryIds
+     * @param GroupInterface $group
+     * @param bool|null      $view
+     * @param bool|null      $edit
+     * @param bool|null      $own
      */
-    protected function updateAccesses($categoryIds, Group $group, $view = false, $edit = false, $own = false)
+    protected function updateAccesses($categoryIds, GroupInterface $group, $view = false, $edit = false, $own = false)
     {
         /** @var CategoryAccessInterface[] $accesses */
         $accesses = $this->accessRepository->findBy(['category' => $categoryIds, 'userGroup' => $group]);
@@ -421,10 +421,10 @@ class CategoryAccessManager
      * Grant specified access on a category for the provided user group
      *
      * @param CategoryInterface $category
-     * @param Group             $group
+     * @param GroupInterface    $group
      * @param string            $accessLevel
      */
-    public function grantAccess(CategoryInterface $category, Group $group, $accessLevel)
+    public function grantAccess(CategoryInterface $category, GroupInterface $group, $accessLevel)
     {
         $access = $this->buildGrantAccess($category, $group, $accessLevel);
         $this->accessSaver->saveAll([$access]);
@@ -434,12 +434,12 @@ class CategoryAccessManager
      * Build specified access on a category for the provided user group
      *
      * @param CategoryInterface $category
-     * @param Group             $group
+     * @param GroupInterface    $group
      * @param string            $accessLevel
      *
      * @return CategoryAccessInterface
      */
-    protected function buildGrantAccess(CategoryInterface $category, Group $group, $accessLevel)
+    protected function buildGrantAccess(CategoryInterface $category, GroupInterface $group, $accessLevel)
     {
         $access = $this->getCategoryAccess($category, $group);
         $access
@@ -455,7 +455,7 @@ class CategoryAccessManager
      * If $excludedGroups are provided, access will not be revoked for user groups with them
      *
      * @param CategoryInterface $category
-     * @param Group[]           $excludedGroups
+     * @param GroupInterface[]  $excludedGroups
      *
      * @return int
      */
@@ -468,11 +468,11 @@ class CategoryAccessManager
      * Get ProductCategoryAccess entity for a category and user group
      *
      * @param CategoryInterface $category
-     * @param Group             $group
+     * @param GroupInterface    $group
      *
      * @return CategoryAccessInterface
      */
-    protected function getCategoryAccess(CategoryInterface $category, Group $group)
+    protected function getCategoryAccess(CategoryInterface $category, GroupInterface $group)
     {
         $access = $this->accessRepository
             ->findOneBy(
