@@ -74,7 +74,7 @@
                         <tr class="AknGrid-bodyRow">
                             <td class="AknGrid-bodyCell AknGrid-bodyCell--checkbox">{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
                             <td class="AknGrid-bodyCell original-value" colspan="2">
-                                <span class="AknInline AknInline--important">
+                                <span class="AknDiff AknDiff--remove">
                                     {{ product_draft_change.before|raw }}
                                 </span>
                             </td>
@@ -82,7 +82,7 @@
                         <tr class="AknGrid-bodyRow">
                             <td class="AknGrid-bodyCell AknGrid-bodyCell--checkbox">{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
                             <td class="AknGrid-bodyCell new-value" colspan="2">
-                                <span class="AknInline AknInline--success">
+                                <span class="AknDiff AknDiff--add">
                                     {{ product_draft_change.after|raw }}
                                 </span>
                             </td>
