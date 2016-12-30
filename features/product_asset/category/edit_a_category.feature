@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit an asset category
   In order to be able to modify the asset category tree
   As an asset manager
@@ -7,7 +8,6 @@ Feature: Edit an asset category
     Given a "clothing" catalog configuration
     And I am logged in as "Pamela"
 
-  @javascript
   Scenario: Successfully edit an asset category
     Given I edit the "images" asset category
     Then I should see the Code field
@@ -19,7 +19,6 @@ Feature: Edit an asset category
     Then I should be on the asset category "images" edit page
     And I should see "My images"
 
-  @javascript
   Scenario: Go to category edit page from the asset category tree
     Given I am on the assets categories page
     And I select the "Asset main catalog" tree
@@ -42,7 +41,6 @@ Feature: Edit an asset category
       | English (United States) | My images |
     Then I should see "There are unsaved changes."
 
-  @javascript
   Scenario: Stay on the asset category when I save it and keep category tree open (without oro nav)
     Given I edit the "situ" asset category
     When I fill in the following information:
@@ -53,7 +51,6 @@ Feature: Edit an asset category
     And I should see the text "Situ"
     And I should see the text "Prioritised images"
 
-  @javascript
   Scenario: Stay on the asset category when I save it and keep category tree open (with oro nav)
     Given I am on the assets categories page
     And I expand the "images" category

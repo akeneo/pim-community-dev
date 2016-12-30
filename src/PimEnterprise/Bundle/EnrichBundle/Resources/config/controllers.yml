@@ -118,3 +118,21 @@ services:
             - '@security.token_storage'
             - '@pim_catalog.filter.chained'
             - '@pimee_enrich.repository.attribute.search'
+
+    pim_enrich.controller.rest.job_instance:
+        class: '%pim_enrich.controller.rest.job_instance.class%'
+        arguments:
+            - '@pim_import_export.repository.job_instance'
+            - '@akeneo_batch.job.job_registry'
+            - '@pim_serializer'
+            - '@pimee_security.updater.job_instance'
+            - '@akeneo_batch.saver.job_instance'
+            - '@akeneo_batch.remover.job_instance'
+            - '@validator'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@security.token_storage'
+            - '@router'
+            - '@pim_enrich.provider.form.chained'
+            - '@pim_catalog.filter.chained'
