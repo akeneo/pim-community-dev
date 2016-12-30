@@ -73,6 +73,7 @@ $cPimRules = [
             'Akeneo\Component\Batch',        // used as base import/export system
             'Akeneo\Component\Buffer',       // to handle large files
             'Akeneo\Component\FileStorage',  // to import/export product's media
+            'Akeneo\Component\Localization', // to use date and number formats in configuration
             'Pim\Component\Catalog',         // because ;)
             'Pim\Component\Localization',    // to check the localized data during an import
         ]),
