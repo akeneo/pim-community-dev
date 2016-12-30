@@ -24,8 +24,8 @@ class HookContext extends BaseHookContext
         $purger = new DBALPurger(
             $this->getService('database_connection'),
             [
-                'akeneo_activity_manager_completeness_per_attribute_group',
-                'akeneo_activity_manager_project_product',
+                'pimee_activity_manager_completeness_per_attribute_group',
+                'pimee_activity_manager_project_product',
             ]
         );
 

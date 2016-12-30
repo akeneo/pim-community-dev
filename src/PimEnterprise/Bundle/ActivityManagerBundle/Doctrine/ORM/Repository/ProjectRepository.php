@@ -96,7 +96,7 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
      */
     public function addProduct(ProjectInterface $project, ProductInterface $product)
     {
-        $this->_em->getConnection()->insert('akeneo_activity_manager_project_product', [
+        $this->_em->getConnection()->insert('pimee_activity_manager_project_product', [
             'project_id' => $project->getId(),
             'product_id' => $product->getId(),
         ]);

@@ -1,6 +1,6 @@
 PimEnterprise\Component\ActivityManager\Model\Project:
     type: entity
-    table: akeneo_activity_manager_project
+    table: pimee_activity_manager_project
     changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
@@ -59,7 +59,7 @@ PimEnterprise\Component\ActivityManager\Model\Project:
         userGroups:
             targetEntity: Oro\Bundle\UserBundle\Entity\Group
             joinTable:
-                name: akeneo_activity_manager_project_user_group
+                name: pimee_activity_manager_project_user_group
                 joinColumns:
                     project_id:
                         referencedColumnName: id
