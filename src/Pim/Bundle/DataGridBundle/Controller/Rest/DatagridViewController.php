@@ -174,7 +174,7 @@ class DatagridViewController
             $creation = true;
             $datagridView = $this->factory->create();
 
-            $view['owner'] = $this->tokenStorage->getToken()->getUser();
+            $view['owner'] = $this->tokenStorage->getToken()->getUser()->getUsername();
             $view['datagrid_alias'] = $alias;
         }
 

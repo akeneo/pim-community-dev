@@ -4,3 +4,5 @@ parameters:
 services:
     pim_datagrid.updater.datagrid_view:
         class: '%pim_datagrid.updater.datagrid_view.class%'
+        arguments:
+            - '@pim_user.repository.user'
