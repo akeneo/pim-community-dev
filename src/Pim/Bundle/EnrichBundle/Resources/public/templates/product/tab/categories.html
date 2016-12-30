@@ -5,8 +5,10 @@
             <% _.each(trees, function (tree) { %>
                 <li class="AknVerticalNavtab-item <% if (tree.code === state.currentTree) { %> AknVerticalNavtab-item--active active<% } %>" data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
                     <a class="AknVerticalNavtab-link" href="javascript:void(0);" id="<%- treeLinkSelector + tree.id %>">
-                        <i class="icon-ok <%- tree.associated ? 'green AknAcl-icon--granted' : 'gray' %>"></i>
-                        <%- tree.label %>
+                        <div class="AknAcl">
+                            <i class="icon-ok <%- tree.associated ? 'green AknAcl-icon--granted' : 'gray' %>"></i>
+                            <%- tree.label %>
+                        </div>
                         <span class="AknBadge AknBadge--grey" data-tree-id="<%- tree.code %>"><%- categoriesCount[tree.id] %></span>
                     </a>
                 </li>
