@@ -175,7 +175,7 @@ define(
                     info = key.join(' ') + info;
                 }
                 if (info) {
-                    info = '<span class="attribute-info">' + info + '</span>';
+                    info = ' <span class="attribute-info">' + info + '</span>';
                 }
 
                 return label + info;
