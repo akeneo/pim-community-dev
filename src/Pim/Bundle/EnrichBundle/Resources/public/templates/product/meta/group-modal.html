@@ -2,33 +2,33 @@
     <div class="container-fluid">
         <div class="grid-container">
             <% if (products.length) { %>
-                <table class="grid table table-hover table-bordered table-condensed groups">
+                <table class="AknGrid AknGrid--condensed AknGrid--unclickable groups">
                     <thead>
                         <tr>
-                            <th>
+                            <th class="AknGrid-headerCell">
                                 <%- identifier.labels[locale] || identifier.code %>
                             </th>
-                            <th>
+                            <th class="AknGrid-headerCell">
                                 <%- _.__('pim_enrich.entity.product.meta.groups.modal.group_label') %>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <% _.each(products, function (product) {  %>
-                            <tr>
-                                <td>
+                            <tr class="AknGrid-bodyRow">
+                                <td class="AknGrid-bodyCell">
                                     <a href="javascript:void(0);" data-product-id="<%- product.meta.id %>">
                                         <%- product.values[identifier.code][0].data %>
                                     </a>
                                 </td>
-                                <td>
+                                <td class="AknGrid-bodyCell">
                                     <%- product.meta.label[locale] %>
                                 </td>
                             </tr>
                         <% }); %>
                         <% if (products.length < productCount) { %>
-                            <tr>
-                                <td colspan="2">
+                            <tr class="AknGrid-bodyRow">
+                                <td colspan="2" class="AknGrid-bodyCell">
                                     <%- _.__('pim_enrich.entity.product.meta.groups.modal.more_products', { 'count': productCount - products.length }) %>
                                 </td>
                             </tr>

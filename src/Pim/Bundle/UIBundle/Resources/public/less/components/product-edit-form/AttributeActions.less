@@ -12,13 +12,14 @@
     align-items: center;
     height: 100%;
     margin-right: 10px;
-    padding-right: 10px;
+    padding: 5px 10px 5px 0;
   }
 
   &-copyActions {
     order: 10;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   &-otherActions {
@@ -38,5 +39,11 @@
 
   &--comparisonMode &-copyActions {
     flex-grow: 1;
+  }
+
+  &-help {
+    color: @AknLightFontColor;
+    padding: 0 10px;
+    text-align: right;
   }
 }

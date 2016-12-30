@@ -10,7 +10,7 @@
         <div id="tree" {% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
 
         <div id="category-form">
-            <div class="fullwidth text-center">
+            <div class="AknInfoBlock">
                 {% if resource_granted(acl ~ '_category_edit') %}
                     {{ 'category.suggest selection'|trans }}
                 {% endif %}

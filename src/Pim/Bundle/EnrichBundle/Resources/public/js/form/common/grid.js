@@ -20,6 +20,7 @@ define([
     ) {
         return Backbone.View.extend({
             template: _.template(template),
+            className: 'AknTabContainer-content--fullWidth',
 
             /**
              * {@inheritdoc}

@@ -28,7 +28,7 @@ var jsfv = new function () {
             return;
         }
 
-        var $error = $('<i class="validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ 'There are errors in this tab!'|trans }}"></i>');
+        var $error = $('<i class="AknIconButton AknIconButton--important icon-warning-sign validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ 'There are errors in this tab!'|trans }}"></i>');
 
         $groups.find('a').each(
             function() {
@@ -194,7 +194,7 @@ var jsfv = new function () {
                 $iconContainer = $field.closest('.controls').find('.icons-container').first();
             }
             if ($iconContainer.find('.validation-tooltip').length === 0)  {
-                $('<i class="validation-tooltip" data-placement="right" data-toggle="tooltip"></i>').appendTo($iconContainer);
+                $('<i class="AknIconButton AknIconButton--important icon-warning-sign validation-tooltip" data-placement="right" data-toggle="tooltip"></i>').appendTo($iconContainer);
             }
             $iconContainer.find('.validation-tooltip').attr('data-original-title', errorMessage).tooltip();
             $field.addClass('error').closest('.controls').addClass('validation-error');

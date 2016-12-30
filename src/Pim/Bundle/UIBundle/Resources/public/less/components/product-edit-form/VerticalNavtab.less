@@ -24,11 +24,13 @@
     line-height: @AknTabHeight;
     color: @AknDefaultFontColor;
     background: lighten(@AknGrey, 30%);
+    font-size: @AknDefaultFontSize;
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
     cursor: pointer;
     align-items: center;
+    white-space: nowrap;
 
     &:hover:not(&--active) {
       background: @AknDefaultHoverBackground;

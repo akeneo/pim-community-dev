@@ -8,15 +8,14 @@ css:
         - bundles/pimui/lib/slimbox2/slimbox2.css
         - bundles/pimui/lib/summernote/summernote.css
 
-    pim_ui:
-        - bundles/pimui/css/pinbar.less
-
+    lib_customization:
         - bundles/pimui/less/lib/bootstrap.switch.less
         - bundles/pimui/less/lib/dialog.less
         - bundles/pimui/less/lib/dropdown.less
         - bundles/pimui/less/lib/flags.less
         - bundles/pimui/less/lib/font-awesome.less
         - bundles/pimui/less/lib/jquery.jstree.less
+        - bundles/pimui/less/lib/jquery-ui.less
         - bundles/pimui/less/lib/jquery.multiselect.less
         - bundles/pimui/less/lib/jquery.sidebarize.less
         - bundles/pimui/less/lib/modal.less
@@ -72,10 +71,13 @@ css:
         - bundles/pimui/less/components/Caret.less
         - bundles/pimui/less/components/ColumnConfigurator.less
         - bundles/pimui/less/components/DashboardButtons.less
+        - bundles/pimui/less/components/Diff.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/Flash.less
         - bundles/pimui/less/components/Footer.less
         - bundles/pimui/less/components/Header.less
+        - bundles/pimui/less/components/InfoBlock.less
+        - bundles/pimui/less/components/List.less
         - bundles/pimui/less/components/LoadingMask.less
         - bundles/pimui/less/components/MessageBox.less
         - bundles/pimui/less/components/MainMenu.less
@@ -92,5 +94,3 @@ css:
 
         - bundles/pimui/less/pages/Default.less
         - bundles/pimui/less/pages/Login.less
-
-        - bundles/pimui/less/bemFixes.less

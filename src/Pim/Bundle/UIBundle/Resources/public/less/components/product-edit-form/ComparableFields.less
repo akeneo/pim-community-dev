@@ -4,7 +4,8 @@
   display: flex;
 
   &-item:not(:empty) {
-    flex-basis: @AknMaxFormWidth;;
+    flex-basis: @AknMaxFormWidth;
+    flex-shrink: 0;
 
     &--comparisonContainer {
       margin-left: 20px;

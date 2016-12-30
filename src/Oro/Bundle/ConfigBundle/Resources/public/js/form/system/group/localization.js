@@ -15,7 +15,6 @@ define([
         initSelect2
     ) {
         return BaseForm.extend({
-            className: 'tab-pane',
             events: {
                 'change select': 'updateModel'
             },

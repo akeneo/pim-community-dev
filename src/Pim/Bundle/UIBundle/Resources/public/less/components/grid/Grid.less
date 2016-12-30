@@ -4,8 +4,8 @@
   width: 100%;
   border-collapse: collapse;
 
-  &-bodyRow {
-    border-bottom: 1px solid @AknBorderColor;
+  &-bodyRow + &-bodyRow {
+    border-top: 1px solid @AknBorderColor;
   }
 
   &-bodyCell,
@@ -87,7 +87,6 @@
 
   &--condensed {
     border: 1px solid @AknBorderColor;
-    width: auto;
   }
 
   &--condensed &-bodyCell,

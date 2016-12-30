@@ -61,6 +61,7 @@ define(
                 if (this.model.get('url')) {
                     Navigation.getInstance().setLocation(this.model.get('url'));
                 }
+                this.$el.closest('.dropdown').removeClass('open');
             },
 
             preventOpen: function (e) {

@@ -22,7 +22,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'no-attribute',
+            className: 'AknAttributeActions-help no-attribute',
 
             /**
              * {@inheritdoc}
