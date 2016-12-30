@@ -119,7 +119,7 @@ define(
                         if (response.responseJSON) {
                             message = response.responseJSON.error;
                         }
-                        file.previewElement.querySelector('.filename .error.text-danger')
+                        file.previewElement.querySelector('.AknFieldContainer-validationError')
                             .textContent = _.__(message);
                     }).complete(function () {
                         this.setStatus(file);
@@ -138,8 +138,10 @@ define(
 
                 myDropzone.on('success', function (file) {
                     this.setStatus(file);
-                    file.previewElement.querySelector('div.progress').className = 'progress success';
-                    file.previewElement.querySelector('div.progress .bar').style.width = '100%';
+                    file.previewElement.querySelector('.AknProgress').className = 'AknProgress AknProgress--apply';
+                    file.previewElement.querySelector('.AknProgress .AknProgress-bar').style.width = '100%';
+                    $(file.previewElement.querySelector('.AknButton.cancel')).addClass('AknButton--hidden');
+                    $(file.previewElement.querySelector('.AknButton.delete')).removeClass('AknButton--hidden');
                 }.bind(this));
 
                 myDropzone.on('error', function (file, error) {
@@ -264,7 +266,12 @@ define(
              */
             setStatus: function (file) {
                 var statusElement = file.previewElement.querySelector('.dz-status');
-                statusElement.classList.add(file.status.toLowerCase());
+                var statusClasses = {
+                    'error': 'AknBadge--invalid',
+                    'added': 'AknBadge--success',
+                    'success': 'AknBadge--success'
+                };
+                statusElement.classList.add(statusClasses[file.status]);
                 var statusKey = 'pimee_product_asset.mass_upload.status.' + file.status;
                 statusElement.textContent = _.__(statusKey);
             },

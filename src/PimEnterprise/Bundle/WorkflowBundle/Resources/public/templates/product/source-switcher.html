@@ -1,11 +1,11 @@
-<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+<a class="AknActionButton" data-toggle="dropdown" href="#">
     <%- currentSource.label %>
-    <span class="caret"></span>
+    <span class="AknActionButton-caret AknCaret"></span>
 </a>
-<ul class="dropdown-menu">
+<ul class="AknDropdown-menu">
     <% _.each(sources, function (source) { %>
     <li>
-        <a data-source="<%- source.code %>"><%- source.label %></a>
+        <a class="AknDropdown-menuLink" data-source="<%- source.code %>"><%- source.label %></a>
     </li>
     <% }); %>
 </ul>

@@ -19,7 +19,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'btn-group source-switcher',
+            className: 'AknDropdown AknButtonList-item source-switcher',
             events: {
                 'click li a': 'changeSource'
             },

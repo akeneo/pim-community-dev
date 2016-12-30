@@ -1,26 +1,28 @@
-<table class="grid table-hover table table-bordered table-condensed grid-asset-transformations">
-    <thead>
-        <tr>
-            <th>{{ 'pimee_enrich.asset_transformation.title.transformation'|trans }}</th>
-            <th>{{ 'pimee_enrich.asset_transformation.title.options'|trans }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if channelTransformations %}
-            {% for transformation, options in channelTransformations.configuration %}
-                <tr>
-                    {% set transformationType = 'pimee_enrich.asset_transformation.' ~ transformation ~ '.title' %}
-                    <td>{{ transformationType|trans }}</td>
-                    <td>
-                        {% for optionKey, optionValue in options %}
-                            <span class="badge-info-large">
-                                {% set optionType = 'pimee_enrich.asset_transformation.' ~ transformation ~ '.options.' ~ optionKey %}
-                                {{ optionType|trans({'%value%': optionValue}) }}
-                            </span>
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endfor %}
-        {% endif %}
-    </tbody>
-</table>
+<div class="AknFormContainer AknFormContainer--withPadding">
+    <table class="AknGrid AknGrid--unclickable AknGrid--condensed grid-asset-transformations">
+        <thead>
+            <tr>
+                <th class="AknGrid-headerCell">{{ 'pimee_enrich.asset_transformation.title.transformation'|trans }}</th>
+                <th class="AknGrid-headerCell">{{ 'pimee_enrich.asset_transformation.title.options'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if channelTransformations %}
+                {% for transformation, options in channelTransformations.configuration %}
+                    <tr class="AknGrid-bodyRow">
+                        {% set transformationType = 'pimee_enrich.asset_transformation.' ~ transformation ~ '.title' %}
+                        <td class="AknGrid-bodyCell">{{ transformationType|trans }}</td>
+                        <td class="AknGrid-bodyCell">
+                            {% for optionKey, optionValue in options %}
+                                <span class="AknBadge AknBadge--grey badge-info-large">
+                                    {% set optionType = 'pimee_enrich.asset_transformation.' ~ transformation ~ '.options.' ~ optionKey %}
+                                    {{ optionType|trans({'%value%': optionValue}) }}
+                                </span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>

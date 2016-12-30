@@ -1,9 +1,11 @@
 <div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
-    {% if form.proposalsToReviewNotification is defined %}
-        {{ form_row(form.proposalsToReviewNotification) }}
-    {% endif %}
+    <div class="AknFormContainer AknFormContainer--withPadding">
+        {% if form.proposalsToReviewNotification is defined %}
+            {{ form_row(form.proposalsToReviewNotification) }}
+        {% endif %}
 
-    {% if form.proposalsStateNotification is defined %}
-        {{ form_row(form.proposalsStateNotification) }}
-    {% endif %}
+        {% if form.proposalsStateNotification is defined %}
+            {{ form_row(form.proposalsStateNotification) }}
+        {% endif %}
+    </div>
 </div>

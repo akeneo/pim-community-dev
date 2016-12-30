@@ -1,21 +1,24 @@
-<figure class="thumbnail">
-    {% include '@PimEnterpriseProductAsset/Property/thumbnail.html.twig' with {
-        'path': referenceModel.fileInfo.key,
-        'filter': 'thumbnail'
-    } only %}
-</figure>
-<table class="table">
+<table class="AknGrid AknGrid--unclickable table">
     <thead>
         <tr>
-            <th>{{ 'pimee_product_asset.enrich_asset.view.filename'|trans }}</th>
-            <th>{{ 'pimee_product_asset.enrich_asset.view.actions'|trans }}</th>
+            <th class="AknGrid-headerCell"></th>
+            <th class="AknGrid-headerCell">{{ 'pimee_product_asset.enrich_asset.view.filename'|trans }}</th>
+            <th class="AknGrid-headerCell">{{ 'pimee_product_asset.enrich_asset.view.actions'|trans }}</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>{{ referenceModel.fileInfo.originalFilename }}</td>
-            <td>
-                <div class="AknButtonList">
+        <tr class="AknGrid-bodyRow">
+            <td class="AknGrid-bodyCell">
+                <figure class="thumbnail">
+                    {% include '@PimEnterpriseProductAsset/Property/thumbnail.html.twig' with {
+                    'path': referenceModel.fileInfo.key,
+                    'filter': 'thumbnail'
+                    } only %}
+                </figure>
+            </td>
+            <td class="AknGrid-bodyCell">{{ referenceModel.fileInfo.originalFilename }}</td>
+            <td class="AknGrid-bodyCell">
+                <div class="AknButtonList AknButtonList--right">
                     {% block reference_buttons %}{% endblock %}
                     {% if referenceModel.fileInfo %}
                         <a class="AknButtonList-item AknButton AknButton--grey AknButton--withIcon AknButton--small "

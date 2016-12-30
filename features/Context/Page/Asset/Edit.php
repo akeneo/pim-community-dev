@@ -2,8 +2,10 @@
 
 namespace Context\Page\Asset;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form;
+use Context\Traits\ClosestTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 /**
@@ -15,6 +17,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
  */
 class Edit extends Form
 {
+    use ClosestTrait;
+
     /** @var string */
     protected $path = '/enrich/asset/{id}/edit';
 
@@ -184,20 +188,15 @@ class Edit extends Form
      *
      * @throws ElementNotFoundException
      *
-     * @return Element
+     * @return NodeElement
      */
     public function findVariationContainer($channel)
     {
         return $this->spin(function () use ($channel) {
-            $title = $this->find('css', sprintf('.variation h4:contains("%s")', $channel));
+            $title = $this->find('css', sprintf('.AknWidget-header:contains("%s")', $channel));
 
             if ($title !== null) {
-                $result = $title;
-                while (!$result->hasClass('variation')) {
-                    $result = $result->getParent();
-                }
-
-                return $result;
+                return $this->getClosest($title, 'variation');
             }
 
             return null;
