@@ -7,8 +7,6 @@ parameters:
     oro_user.security.login.class:    Oro\Bundle\UserBundle\EventListener\LoginSubscriber
     oro_user.user_menu.builder.class: Oro\Bundle\UserBundle\Menu\UserMenuBuilder
     oro_user.role.listener.class:     Oro\Bundle\UserBundle\EventListener\RoleListener
-    oro_user.role.manager.class:      Oro\Bundle\UserBundle\Entity\Manager\RoleManager
-    oro_user.group.manager.class:     Oro\Bundle\UserBundle\Entity\Manager\GroupManager
     oro_user.entity_with_image.subscriber.class: Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
     oro_user.change_password.subscriber.class:   Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
 
@@ -38,14 +36,6 @@ services:
         arguments:                    ["@oro_security.link.sid_manager"]
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
-
-    oro_user.role_manager:
-        class:                        '%oro_user.role.manager.class%'
-        arguments:                    ["@doctrine.orm.entity_manager"]
-
-    oro_user.group_manager:
-        class:                        '%oro_user.group.manager.class%'
-        arguments:                    ["@doctrine.orm.entity_manager"]
 
     oro_user.entity_with_image.subscriber:
         class: '%oro_user.entity_with_image.subscriber.class%'
