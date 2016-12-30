@@ -50,10 +50,10 @@ class ProjectCalculationJobLauncher
     /**
      * {@inheritdoc}
      */
-    public function launch(UserInterface $user, ProjectInterface $project)
+    public function launch(ProjectInterface $project)
     {
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->projectCalculationJobName);
 
-        $this->simpleJobLauncher->launch($jobInstance, $user, ['project_code' => $project->getCode()]);
+        $this->simpleJobLauncher->launch($jobInstance, $project->getOwner(), ['project_code' => $project->getCode()]);
     }
 }

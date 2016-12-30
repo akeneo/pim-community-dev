@@ -13,6 +13,7 @@ services:
                 - 'fixtures_job_profile_access_csv'
                 - 'fixtures_locale_access_csv'
                 - 'fixtures_asset_csv'
+                - 'fixtures_project_csv'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 

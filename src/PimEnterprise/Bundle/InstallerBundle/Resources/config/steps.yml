@@ -59,3 +59,13 @@ services:
             - '@pim_connector.reader.file.csv_asset_category_access'
             - '@pimee_security.processor.denormalization.asset_category_access'
             - '@pimee_security.writer.database.asset_category_access'
+
+    pimee_installer.step.fixtures_project_csv.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_activity_manager.reader.file.csv_project'
+            - '@pimee_activity_manager.processor.denormalization.project'
+            - '@pimee_activity_manager.writer.database.project'

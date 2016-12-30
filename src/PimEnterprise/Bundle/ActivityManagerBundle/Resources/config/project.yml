@@ -7,10 +7,12 @@ parameters:
     pimee_activity_manager.repository.project_completeness.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectCompletenessRepository'
     pimee_activity_manager.updater.project.class: 'PimEnterprise\Component\ActivityManager\Updater\ProjectUpdater'
     pimee_activity_manager.event_listener.event_translation.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\EventTranslationSubscriber'
+    pimee_activity_manager.event_listener.project.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectSubscriber'
     pimee_activity_manager.controller.project_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectController'
     pimee_activity_manager.controller.project_completeness_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectCompletenessController'
     pimee_activity_manager.widget.completeness.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectCompletenessWidget'
     pimee_activity_manager.voter.project.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter'
+    pimee_activity_manager.builder.project.class: 'PimEnterprise\Component\ActivityManager\Builder\ProjectBuilder'
 
 services:
     ### Factory
@@ -44,6 +46,16 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
+            - '@pim_user.repository.user'
+
+    ### Builder
+    pimee_activity_manager.builder.project:
+        class: '%pimee_activity_manager.builder.project.class%'
+        arguments:
+            - '@pimee_activity_manager.factory.project'
+            - '@pimee_activity_manager.updater.project'
+            - '@pim_datagrid.factory.datagrid_view'
+            - '@pim_datagrid.updater.datagrid_view'
 
     ### Saver
     pimee_activity_manager.saver.project:
@@ -60,6 +72,11 @@ services:
             - '@event_dispatcher'
             - '@pimee_activity_manager.repository.project'
             - '%pimee_activity_manager.project_calculation.job_name%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_activity_manager.event_listener.project:
+        class: '%pimee_activity_manager.event_listener.project.class%'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -83,10 +100,7 @@ services:
         class: '%pimee_activity_manager.controller.project_controller.class%'
         arguments:
             - '@pimee_activity_manager.converter.filter'
-            - '@pim_datagrid.factory.datagrid_view'
-            - '@pimee_activity_manager.factory.project'
-            - '@pim_datagrid.updater.datagrid_view'
-            - '@pimee_activity_manager.updater.project'
+            - '@pimee_activity_manager.builder.project'
             - '@pimee_activity_manager.saver.project'
             - '@validator'
             - '@pimee_activity_manager.launcher.job.project_calculation'
