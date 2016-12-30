@@ -3,7 +3,6 @@
 .AknTitleContainer {
   @avatarSize: 58px;
 
-  // TODO Remove these "!important" when ".tab-content > .active, .pull-content > .active { display: block }" will be removed
   background: lighten(@AknGrey, 30%);
   padding: 15px 20px 10px;
   display: flex;
@@ -20,14 +19,14 @@
   }
 
   &-mainLine {
-    display: flex !important;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
   }
 
   &-metaLine {
-    display: flex !important;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 5px;
@@ -112,6 +111,6 @@
   }
 
   &--hidden {
-    display: none !important;
+    display: none;
   }
 }
