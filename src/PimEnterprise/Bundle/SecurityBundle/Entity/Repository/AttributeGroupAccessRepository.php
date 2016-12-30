@@ -15,9 +15,9 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**
@@ -38,7 +38,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
      * @param AttributeGroupInterface $group
      * @param string                  $accessLevel
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Group[]
+     * @return GroupInterface[]
      */
     public function getGrantedUserGroups(AttributeGroupInterface $group, $accessLevel)
     {
@@ -59,8 +59,8 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
      * Revoke access to an attribute group
      * If excluded user groups are provided, access will not be revoked for these groups
      *
-     * @param AttributeGroupInterface               $group
-     * @param \Oro\Bundle\UserBundle\Entity\Group[] $excludedUserGroups
+     * @param AttributeGroupInterface $group
+     * @param GroupInterface[]        $excludedUserGroups
      *
      * @return int
      */
@@ -120,7 +120,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
 
         // get group ids
         $groupIds = array_map(
-            function (Group $group) {
+            function (GroupInterface $group) {
                 return $group->getId();
             },
             $user->getGroups()->toArray()

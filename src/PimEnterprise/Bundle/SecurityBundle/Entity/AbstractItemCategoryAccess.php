@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Model\CategoryAccessInterface;
 
 /**
@@ -28,7 +28,7 @@ class AbstractItemCategoryAccess implements CategoryAccessInterface
     /** @var CategoryInterface */
     protected $category;
 
-    /** @var Group */
+    /** @var GroupInterface */
     protected $userGroup;
 
     /** @var bool */
@@ -59,7 +59,7 @@ class AbstractItemCategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function setUserGroup(Group $group)
+    public function setUserGroup(GroupInterface $group)
     {
         $this->userGroup = $group;
 

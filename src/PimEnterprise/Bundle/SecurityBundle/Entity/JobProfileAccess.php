@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
 
 /**
@@ -28,7 +28,7 @@ class JobProfileAccess implements JobProfileAccessInterface
     /** @var JobInstance */
     protected $jobProfile;
 
-    /** @var Group */
+    /** @var GroupInterface */
     protected $userGroup;
 
     /** @var bool */
@@ -56,7 +56,7 @@ class JobProfileAccess implements JobProfileAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function setUserGroup(Group $group)
+    public function setUserGroup(GroupInterface $group)
     {
         $this->userGroup = $group;
 

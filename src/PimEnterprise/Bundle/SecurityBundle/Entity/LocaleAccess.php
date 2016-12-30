@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
 
 /**
@@ -32,7 +32,7 @@ class LocaleAccess implements LocaleAccessInterface
      */
     protected $locale;
 
-    /** @var Group */
+    /** @var GroupInterface */
     protected $userGroup;
 
     /**
@@ -82,7 +82,7 @@ class LocaleAccess implements LocaleAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function setUserGroup(Group $group)
+    public function setUserGroup(GroupInterface $group)
     {
         $this->userGroup = $group;
 

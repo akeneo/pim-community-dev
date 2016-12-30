@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
@@ -51,7 +51,7 @@ class JobProfileAccessManager
      *
      * @param JobInstance $jobProfile
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function getExecuteUserGroups(JobInstance $jobProfile)
     {
@@ -63,7 +63,7 @@ class JobProfileAccessManager
      *
      * @param JobInstance $jobProfile
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function getEditUserGroups(JobInstance $jobProfile)
     {
@@ -73,9 +73,9 @@ class JobProfileAccessManager
     /**
      * Grant access on a job profile to specified user groups
      *
-     * @param JobInstance $jobProfile
-     * @param Group[]     $executeGroups
-     * @param Group[]     $editGroups
+     * @param JobInstance      $jobProfile
+     * @param GroupInterface[] $executeGroups
+     * @param GroupInterface[] $editGroups
      */
     public function setAccess(JobInstance $jobProfile, $executeGroups, $editGroups)
     {
@@ -102,11 +102,11 @@ class JobProfileAccessManager
     /**
      * Grant specified access on a job profile for the provided user group
      *
-     * @param JobInstance $jobProfile
-     * @param Group       $group
-     * @param string      $accessLevel
+     * @param JobInstance    $jobProfile
+     * @param GroupInterface $group
+     * @param string         $accessLevel
      */
-    public function grantAccess(JobInstance $jobProfile, Group $group, $accessLevel)
+    public function grantAccess(JobInstance $jobProfile, GroupInterface $group, $accessLevel)
     {
         $access = $this->buildGrantAccess($jobProfile, $group, $accessLevel);
         $this->saver->saveAll([$access]);
@@ -116,8 +116,8 @@ class JobProfileAccessManager
      * Revoke access to a job profile
      * If $excludedGroups are provided, access will not be revoked for user groups with them
      *
-     * @param JobInstance $jobProfile
-     * @param Group[]     $excludedGroups
+     * @param JobInstance      $jobProfile
+     * @param GroupInterface[] $excludedGroups
      *
      * @return int
      */
@@ -129,12 +129,12 @@ class JobProfileAccessManager
     /**
      * Get JobProfileAccess entity for a job profile and user group
      *
-     * @param JobInstance $jobProfile
-     * @param Group       $group
+     * @param JobInstance    $jobProfile
+     * @param GroupInterface $group
      *
      * @return JobProfileAccessInterface
      */
-    protected function getJobProfileAccess(JobInstance $jobProfile, Group $group)
+    protected function getJobProfileAccess(JobInstance $jobProfile, GroupInterface $group)
     {
         $access = $this->repository
             ->findOneBy(
@@ -158,13 +158,13 @@ class JobProfileAccessManager
     /**
      * Build specified access on a job profile for the provided user group
      *
-     * @param JobInstance $jobProfile
-     * @param Group       $group
-     * @param string      $accessLevel
+     * @param JobInstance    $jobProfile
+     * @param GroupInterface $group
+     * @param string         $accessLevel
      *
      * @return JobProfileAccessInterface
      */
-    protected function buildGrantAccess(JobInstance $jobProfile, Group $group, $accessLevel)
+    protected function buildGrantAccess(JobInstance $jobProfile, GroupInterface $group, $accessLevel)
     {
         $access = $this->getJobProfileAccess($jobProfile, $group);
         $access
