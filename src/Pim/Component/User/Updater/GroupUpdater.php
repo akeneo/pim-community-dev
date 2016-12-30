@@ -4,7 +4,7 @@ namespace Pim\Component\User\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Component\User\Model\GroupInterface;
 
 /**
  * Updates a group
@@ -25,10 +25,10 @@ class GroupUpdater implements ObjectUpdaterInterface
      */
     public function update($group, array $data, array $options = [])
     {
-        if (!$group instanceof Group) {
+        if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Oro\Bundle\UserBundle\Entity\Group", "%s" provided.',
+                    'Expects a "Pim\Component\User\Model\GroupInterface", "%s" provided.',
                     ClassUtils::getClass($group)
                 )
             );
@@ -42,13 +42,13 @@ class GroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param Group $group
-     * @param string        $field
-     * @param mixed         $data
+     * @param GroupInterface $group
+     * @param string         $field
+     * @param mixed          $data
      *
      * @throws \InvalidArgumentException
      */
-    protected function setData(Group $group, $field, $data)
+    protected function setData(GroupInterface $group, $field, $data)
     {
         switch ($field) {
             case 'name':

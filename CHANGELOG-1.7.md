@@ -119,3 +119,4 @@
 - Change route from `pim_user_user_rest_get` to `pim_user_user_rest_get_current`. Route `pim_user_user_rest_get` now fetch a user the given username.
 - Remove classes `Oro\Bundle\UserBundle\Entity\Manager\GroupManager` and `Oro\Bundle\UserBundle\Entity\Manager\RoleManager`
 - Remove services `oro_user.role_manager` and `oro_user.group_manager`
+- Update classes and services to use the interface `Pim\Component\User\Model\GroupInterface`in place of `Oro\Bundle\UserBundle\Entity\Group`
