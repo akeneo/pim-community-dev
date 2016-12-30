@@ -1,0 +1,5 @@
+category;view_items;edit_items;own_items
+default;Marketing,Technical Clothing,Technical High-Tech,Read Only,Media manager;Marketing,Technical Clothing,Technical High-Tech,Read Only,Media manager;Marketing
+clothing;Read Only;Marketing,Technical Clothing,Media manager
+high_tech;Technical Clothing,Read Only;Marketing,Technical High-Tech,Media manager
+decoration;Read Only;Marketing,Media manager

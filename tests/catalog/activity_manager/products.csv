@@ -1,0 +1,7 @@
+sku;capacity;capacity-unit;categories;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;material-en_US;material-fr_FR;name-en_US;name-fr_FR;picture-ecommerce;release_date-en_US;release_date-fr_FR;size-en_US;size-fr_FR;weight-en_US;weight-en_US-unit;weight-fr_FR;weight-fr_FR-unit
+tshirt-the-witcher-3;;;clothing;;;1;tshirt;;cotton;;"T-Shirt ""The Witcher III""";;;2015-06-20;2015-06-20;M;;5;OUNCE;;
+tshirt-skyrim;;;clothing;;;1;tshirt;;;;"T-Shirt ""Skyrim""";;;;;M;;5;OUNCE;;
+tshirt-lcd;;;clothing,high_tech;;;1;tshirt;;;;T-shirt LCD screen;;;2016-08-13;;M;;6;OUNCE;;
+usb-key-big;16;GIGABYTE;high_tech;;;1;usb_keys;;;;USB Key Big 64Go;;;2016-08-13;2016-10-13;;;1;OUNCE;;
+usb-key-small;8;GIGABYTE;high_tech;;;1;usb_keys;;;;;;;;;;;1;OUNCE;;
+poster-movie-contact;;;decoration;;;1;posters;;;;"Movie poster ""Contact""";;;;;A1;;;;;
