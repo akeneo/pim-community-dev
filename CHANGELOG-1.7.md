@@ -117,3 +117,5 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer` to add `Pim\Component\Enrich\Converter\ConverterInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Component\Enrich\Converter\ConverterInterface`
 - Change route from `pim_user_user_rest_get` to `pim_user_user_rest_get_current`. Route `pim_user_user_rest_get` now fetch a user the given username.
+- Remove classes `Oro\Bundle\UserBundle\Entity\Manager\GroupManager` and `Oro\Bundle\UserBundle\Entity\Manager\RoleManager`
+- Remove services `oro_user.role_manager` and `oro_user.group_manager`
