@@ -6,13 +6,13 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\User\Model\GroupInterface;
 
 /**
  * Updates an user
@@ -243,7 +243,7 @@ class UserUpdater implements ObjectUpdaterInterface
     /**
      * @param string $code
      *
-     * @return Group|null
+     * @return GroupInterface|null
      */
     protected function findGroup($code)
     {

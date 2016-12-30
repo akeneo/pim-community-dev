@@ -6,13 +6,13 @@ use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\User\Model\GroupInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
@@ -388,18 +388,18 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function hasGroup($name);
 
     /**
-     * @param  Group $group
+     * @param  GroupInterface $group
      *
      * @return UserInterface
      */
-    public function addGroup(Group $group);
+    public function addGroup(GroupInterface $group);
 
     /**
-     * @param  Group $group
+     * @param  GroupInterface $group
      *
      * @return UserInterface
      */
-    public function removeGroup(Group $group);
+    public function removeGroup(GroupInterface $group);
 
     /**
      * Get groups ids
