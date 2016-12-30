@@ -215,7 +215,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $button = $this->spin(function () use ($version) {
             return $this->getSession()->getPage()
                 ->find('css', sprintf('tr[data-version="%s"]', $version))
-                ->find('css', 'td.actions .btn.restore');
+                ->find('css', 'td.actions .restore');
         }, sprintf('Cannot find product version "%s"', $version));
 
         $button->click();

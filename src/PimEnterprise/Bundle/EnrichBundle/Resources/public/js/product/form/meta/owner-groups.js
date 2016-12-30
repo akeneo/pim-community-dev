@@ -10,7 +10,7 @@ define(
     function (_, BaseForm, mediator, formTemplate) {
         var FormView = BaseForm.extend({
             tagName: 'span',
-            className: 'product-owner-groups',
+            className: 'AknTitleContainer-metaItem product-owner-groups',
             template: _.template(formTemplate),
             render: function () {
                 this.$el.html(
