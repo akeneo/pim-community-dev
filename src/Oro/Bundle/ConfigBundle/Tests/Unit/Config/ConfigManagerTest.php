@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
-use Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Yaml\Yaml;
@@ -278,9 +277,6 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 
         $factory = Forms::createFormFactoryBuilder()
             ->addExtensions($extensions)
-            ->addTypeExtension(
-                new DataBlockExtension()
-            )
             ->getFormFactory();
 
         $securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
