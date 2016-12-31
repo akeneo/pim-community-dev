@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Form\Exception;
+namespace Pim\Bundle\EnrichBundle\Form\Exception;
 
 use Symfony\Component\Form\Exception\ExceptionInterface;
 

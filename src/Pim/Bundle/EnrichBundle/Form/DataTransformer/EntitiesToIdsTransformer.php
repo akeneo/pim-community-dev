@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Form\DataTransformer;
+namespace Pim\Bundle\EnrichBundle\Form\DataTransformer;
 
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\QueryBuilder;

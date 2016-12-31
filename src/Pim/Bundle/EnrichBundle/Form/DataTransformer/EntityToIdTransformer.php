@@ -1,11 +1,11 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Form\DataTransformer;
+namespace Pim\Bundle\EnrichBundle\Form\DataTransformer;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\FormBundle\Form\Exception\FormException;
+use Pim\Bundle\EnrichBundle\Form\Exception\FormException;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
