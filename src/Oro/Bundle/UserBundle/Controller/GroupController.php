@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class GroupController extends Controller
@@ -79,14 +80,8 @@ class GroupController extends Controller
                 $this->get('translator')->trans('oro.user.controller.group.message.saved')
             );
 
-            return $this->get('oro_ui.router')->actionRedirect(
-                [
-                    'route'      => 'oro_user_group_update',
-                    'parameters' => ['id' => $entity->getId()],
-                ],
-                [
-                    'route' => 'oro_user_group_index',
-                ]
+            return new RedirectResponse(
+                $this->get('router')->generate('oro_user_group_update', ['id' => $entity->getId()])
             );
         }
 
