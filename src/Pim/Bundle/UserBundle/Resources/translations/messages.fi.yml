@@ -9,25 +9,25 @@ pim_user:
       email_synchronization.title: Sähköpostin synkronoinnin asetukset
       interfaces.title: Rajapinnat
 oro.user.controller:
-  group.message.saved: Ryhmä tallennettu
-  role.message.saved: Rooli tallennettu
-  user.message.saved: Käyttäjän tallennettu
-  status.message.saved: Tila tallennettu
+  group.message.saved: "Ryhmä tallennettu"
+  role.message.saved: "Rooli tallennettu"
+  user.message.saved: "Käyttäjän tallennettu"
+  status.message.saved: "Tila tallennettu"
 oro.user.grid.users:
   columns:
-    username: Käyttäjänimi
-    email: Sähköpostiosoite
-    firstName: Etunimi
-    lastName: Sukunimi
-    createdAt: Luotu
-    updatedAt: Päivitetty
-    enabled: Status
+    username: "Käyttäjänimi"
+    email: "Sähköpostiosoite"
+    firstName: "Etunimi"
+    lastName: "Sukunimi"
+    createdAt: "Luotu"
+    updatedAt: "Päivitetty"
+    enabled: "Status"
 oro.user.grid.roles:
   columns:
-    label: Nimike
+    label: "Nimike"
 oro.user.grid.groups:
   columns:
-    name: Nimi
+    name: "Nimi"
 pim_title:
   user.index: Käyttäjät
   user_role.index: Roolit
