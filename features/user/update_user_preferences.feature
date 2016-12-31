@@ -43,7 +43,7 @@ Feature: Update user preferences
     And I save the user
     Then I should see the flash message "User saved"
     And I should not see the text "There are unsaved changes."
-    When I visit the "Additional Information" tab
+    When I visit the "Additional" tab
     Then I should see the text "Catalog locale"
     And I should see the text "fr_FR"
     When I edit the "ecommerce" channel
