@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Form\Type;
+namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EntityIdentifierType extends AbstractType
 {
-    const NAME = 'oro_entity_identifier';
+    const NAME = 'pim_enrich_entity_identifier';
 
     /**
      * @var ManagerRegistry

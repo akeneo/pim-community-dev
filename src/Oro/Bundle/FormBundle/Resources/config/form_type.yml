@@ -1,6 +1,5 @@
 parameters:
     oro_form.type.date.class:                                    Oro\Bundle\FormBundle\Form\Type\OroDateType
-    oro_form.type.entity_identifier.class:                       Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
 
     oro_form.extension.data_block.class:                         Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
     oro_form.extension.client_validation.class:                  Oro\Bundle\FormBundle\Form\Extension\ClientValidationExtension
@@ -11,12 +10,6 @@ parameters:
     oro_form.extension.js_validation.repeated.class:             Oro\Bundle\FormBundle\Form\Extension\JsValidation\RepeatedTypeExtension
 
 services:
-    oro_form.type.entity_identifier:
-        class: '%oro_form.type.entity_identifier.class%'
-        arguments: ["@doctrine"]
-        tags:
-            - { name: form.type, alias: oro_entity_identifier }
-
     # Form extensions
     oro_form.extension.data_block:
         class: '%oro_form.extension.data_block.class%'
