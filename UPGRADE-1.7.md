@@ -21,6 +21,10 @@
 
 ### Global updates for any project
 
+#### Remove deprecated bundles from your AppKernel
+
+Remove "new Oro\Bundle\UIBundle\OroUIBundle()" from your app/AppKernel.php
+
 #### Update references to moved `Pim\Bundle\ConnectorBundle\Reader` business classes
 
 In order to be more precise about the roles our existing file iterators have we renamed some existing classed as existing file iterators would only supports only tabular file format like CSV and XLSX.
