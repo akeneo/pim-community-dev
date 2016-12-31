@@ -124,6 +124,7 @@ pim_connector:
       label: Liite
       help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
     escape:
+      label: Koodinvaihto
       help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
     circularRefsChecked:
       label: Tarkista kehäviittaukset

@@ -40,7 +40,7 @@ pim_enrich:
       property.title: Eigenschaften
       history.title: Historie
   group:
-    axis.help: Achsen sind Attribute, die Varianten der Variantengruppe definieren. Achsen sind Attribute mit Optionen, welche nicht sprachabhängig sind und keinen Gültigkeitsbereich haben. Eine Achse kann nach der Erstellung der Variantengruppe nicht geändert werden.
+    axis.help: 'Achsen sind Attribute, die Varianten der Variantengruppe definieren. Achsen sind Attribute mit Optionen, welche nicht sprachabhängig sind und keinen Gültigkeitsbereich haben. Eine Achse kann nach der Erstellung der Variantengruppe nicht geändert werden.'
     type:
       VARIANT: Variante
       X_SELL: Cross-Sell
@@ -390,7 +390,7 @@ flash:
   entity:
     removed: Element wurde gelöscht
   attribute:
-    created: Attribut erfolgreich angelegt
+    created: Attribut erfolgreich erstellt
     updated: Attribut erfolgreich aktualisiert
     removed: Attribut erfolgreich entfernt
     identifier not removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
@@ -405,11 +405,11 @@ flash:
     not removed default: Die Standard Attributgruppe kann nicht gelöscht werden
     not removed default attributes: Die Attribute können nicht aus der Standard Attributgruppe entfernt werden
   category:
-    created: Kategorie erfolgreich angelegt
+    created: Kategorie erfolgreich erstellt
     updated: Kategorie erfolgreich aktualisiert
     removed: Kategorie erfolgreich entfernt
   tree:
-    created: Strukturbaum erfolgreich angelegt
+    created: Strukturbaum erfolgreich erstellt
     updated: Strukturbaum erfolgreich aktualisiert
     removed: Strukturbaum erfolgreich entfernt
     not removable: Strukturbäume, die mit Ausgabekanälen verbunden sind, können nicht entfernt werden.
@@ -430,7 +430,7 @@ flash:
     attributes added: Attribute erfolgreich zur Produktfamilie hinzugefügt
     attribute removed: Attribute erfolgreich aus der Produktfamilie entfernt
   product:
-    created: Produkt erfolgreich angelegt
+    created: Produkt erfolgreich erstellt
     updated: Produkt erfolgreich aktualisiert
     removed: Produkt erfolgreich entfernt
     invalid: Bitte überprüfen Sie Ihre Eingabe und versuchen es erneut
@@ -440,23 +440,23 @@ flash:
     enabled: Produkt wurde aktiviert
     disabled: Produkt wurde deaktiviert
   group:
-    created: Gruppe erfolgreich angelegt
+    created: Gruppe erfolgreich erstellt
     updated: Gruppe erfolgreich aktualisiert
     removed: Gruppe erfolgreich entfernt
   variant group:
-    created: Variantengruppe erfolgreich angelegt
+    created: Variantengruppe erfolgreich erstellt
     updated: Variantengruppe erfolgreich aktualisiert
     removed: Variantengruppe erfolgreich entfernt
     attributes_added: Attribute erfolgreich zur Variantengruppe hinzugefügt
     attribute_removed: Attribute erfolgreich aus der Variantengruppe entfernt
   group type:
-    created: Gruppentyp erfolgreich angelegt
+    created: Gruppentyp erfolgreich erstellt
     updated: Gruppentyp erfolgreich aktualisiert
     removed: Gruppentyp erfolgreich gelöscht
     cant remove variant: Gruppentyp Variante kann nicht gelöscht werden
     cant remove used: Der Gruppentyp wird von anderen Gruppen verwendet und kann nicht gelöscht werden
   association type:
-    created: Verbindungstyp erfolgreich angelegt
+    created: Verbindungstyp erfolgreich erstellt
     updated: Verbindungstyp erfolgreich aktualisiert
     removed: Verbindungstyp erfolgreich gelöscht
   user:
@@ -507,9 +507,9 @@ color:
   blue: Blau
   cyan: Cyan
 Options: Optionen
-Created at: Angelegt am
+Created at: Erstellt am
 Updated at: Aktualisiert am
-Created: Angelegt
+Created: Erstellt
 Updated: Aktualisiert
 Last update: Letzte Aktualisierung
 by: durch
@@ -608,49 +608,49 @@ Default: Standard
 Attributes: Attribute
 Title: Titel
 pim_title.attribute_group:
-  index: Attributgruppen
-  create: Attributgruppen | Anlegen
-  edit: Attributgruppen %group.label% | Bearbeiten
+  index: "Attributgruppen"
+  create: "Attributgruppen | Anlegen"
+  edit: "Attributgruppen %group.label% | Bearbeiten"
 pim_title.category:
-  index: Kategorie-Strukturbäume
-  create: Kategorie-Strukturbäume | Anlegen
-  edit: Kategorie-Strukturbäume %category.label% | Bearbeiten
+  index: "Kategorie-Strukturbäume"
+  create: "Kategorie-Strukturbäume | Anlegen"
+  edit: "Kategorie-Strukturbäume %category.label% | Bearbeiten"
 pim_title.attribute:
-  index: Attribute
-  create: Attribute | Anlegen
-  edit: Attributee %attribute.label% | Bearbeiten
+  index: "Attribute"
+  create: "Attribute | Anlegen"
+  edit: "Attributee %attribute.label% | Bearbeiten"
 pim_title.product:
-  index: Produkte
-  edit: Produkte %product.sku% | Bearbeiten
+  index: "Produkte"
+  edit: "Produkte %product.sku% | Bearbeiten"
 pim_title.family:
-  index: Produktfamilien
-  edit: Produktfamilien %family.label% | Bearbeiten
+  index: "Produktfamilien"
+  edit: "Produktfamilien %family.label% | Bearbeiten"
 pim_title.channel:
-  index: Ausgabekanäle
-  create: Ausgabekanäle | Anlegen
-  edit: Ausgabekanäle %channel.label% | Bearbeiten
+  index: "Ausgabekanäle"
+  create: "Ausgabekanäle | Anlegen"
+  edit: "Ausgabekanäle %channel.label% | Bearbeiten"
 pim_title.currency:
-  index: Währungen
+  index: "Währungen"
 pim_title.locale:
-  index: Gebietsschemata
+  index: "Gebietsschemata"
 pim_title.group:
-  index: Gruppen
-  edit: Gruppen %group.label% | Bearbeiten
+  index: "Gruppen"
+  edit: "Gruppen %group.label% | Bearbeiten"
 pim_title.variant_group:
-  index: Variantengruppen
-  edit: Variantengruppen %group.label% | Bearbeiten
+  index: "Variantengruppen"
+  edit: "Variantengruppen %group.label% | Bearbeiten"
 pim_title.association_type:
-  index: Verbindungstypen
-  edit: Verbindungstypen %association type.label% | Bearbeiten
+  index: "Verbindungstypen"
+  edit: "Verbindungstypen %association type.label% | Bearbeiten"
 pim_title.group_type:
-  index: Gruppentypen
-  edit: Gruppentypen %group type.label% | Bearbeiten
+  index: "Gruppentypen"
+  edit: "Gruppentypen %group type.label% | Bearbeiten"
 pim_title.mass_edit_action:
-  choose: Massenbearbeitung | Auswählen
-  configure: Massenbearbeitung | Konfigurieren
+  choose: "Massenbearbeitung | Auswählen"
+  configure: "Massenbearbeitung | Konfigurieren"
 pim_title.job_tracker:
   index: Prozess-Tracker
-  show: Prozess-Tracker | Job anzeigen
+  show: "Prozess-Tracker | Job anzeigen"
 pim_title.dashboard: "Dashboard"
 pim_catalog_identifier: Kennung
 pim_catalog_text: Text
@@ -725,7 +725,6 @@ pim_enrich.mass_edit_action:
     label: Benötigte Attribute auswählen
     description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
     success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
-To enable: Um zu aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
 Remove this attribute: Dieses Attribut löschen
@@ -777,7 +776,7 @@ In group: In Gruppe
 Attribute as label: Attribut als Label
 Is associated: Ist verbunden
 Complete: Vollständig
-Created At: Angelegt am
+Created At: Erstellt am
 Updated At: Aktualisiert am
 Enabled: Aktiviert
 Disabled: Deaktiviert
@@ -809,23 +808,23 @@ Currency: Währung
 oro.locale:
   address_format:
     region_name_type:
-      parish: Gemeinde
-      state: Staat
-      island: Insel
-      county: Landkreis
-      area: Gebiet
-      prefecture: Präfektur
-      department: Abteilung
-      district: Bezirk
-      province: Provinz
+      parish: "Gemeinde"
+      state: "Staat"
+      island: "Insel"
+      county: "Landkreis"
+      area: "Gebiet"
+      prefecture: "Präfektur"
+      department: "Abteilung"
+      district: "Bezirk"
+      province: "Provinz"
   form:
     tooltip:
-      locale: Wählen Sie die Gebietsschema-Option mit der Nummern, Adressen, Namen und Daten formatieren werden
-      location: Der Standort wird verwendet um Adressen zu formatieren, wenn die Optione "Formatiere Adresse nach Land der Adresse" deaktiviert ist
-      format_address_by_address_country: Mit dieser Optionen werden Adressen nach dem Land formatiert, in dem sie sich befinden. Ist diese Option deaktiviert, werden Adressen nach der Adresse Ihres Standortes formatiert
-      language: Wählen Sie die Systemsprache die Sie verwenden möchten
-      timezone: Wählen Sie die Zeitzone für die Anzeige von Datum und Uhrzeit
-      currency: Wählen Sie die Standardwährung
+      locale: "Wählen Sie die Gebietsschema-Option mit der Nummern, Adressen, Namen und Daten formatieren werden"
+      location: "Der Standort wird verwendet um Adressen zu formatieren, wenn die Optione \"Formatiere Adresse nach Land der Adresse\" deaktiviert ist"
+      format_address_by_address_country: "Mit dieser Optionen werden Adressen nach dem Land formatiert, in dem sie sich befinden. Ist diese Option deaktiviert, werden Adressen nach der Adresse Ihres Standortes formatiert"
+      language: "Wählen Sie die Systemsprache die Sie verwenden möchten"
+      timezone: "Wählen Sie die Zeitzone für die Anzeige von Datum und Uhrzeit"
+      currency: "Wählen Sie die Standardwährung"
 Selected products successfully deleted: Ausgewählte Produkte erfolgreich gelöscht
 pim_mass_edit:
   notification:
