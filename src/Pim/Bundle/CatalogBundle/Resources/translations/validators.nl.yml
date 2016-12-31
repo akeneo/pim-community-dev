@@ -9,4 +9,7 @@ No default value may be specified for this attribute type: Er kan geen standaard
 This value should be Yes or No: Deze waarde moet ja of nee zijn
 This value should not be blank: Deze waarde mag niet leeg zijn
 Option code may contain only letters, numbers and underscores: Optiecode kan alleen letters, cijfers en onderstrepingstekens bevatten
+This color is already used by another channel: Deze kleur wordt al gebruikt door een ander kanaal
 This value should not be a decimal.: Deze waarde kan geen decimaal zijn.
+file.extensions.message: 'De bestandsextensie is niet toegestaan (toegestane extensies: %extensions%).'
+regex.comma_or_semicolon.message: Dit veld mag geen komma of puntkomma bevatten.

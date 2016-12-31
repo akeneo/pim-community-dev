@@ -9,6 +9,7 @@ No default value may be specified for this attribute type: No es pot especificar
 This value should be Yes or No: Aquest valor ha de ser Sí o No
 This value should not be blank: Aquest valor no es pot deixar en blanc
 Option code may contain only letters, numbers and underscores: El codi d'opció només pot contenir lletres, nombres i guions baixos
+This color is already used by another channel: Aquest color ja és utilitzat per un altre canal
 This value should not be a decimal.: Aquest valor no ha de ser un decimal.
 file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
 regex.comma_or_semicolon.message: Aquest camp no hauria de contenir cap coma ni punt i coma.

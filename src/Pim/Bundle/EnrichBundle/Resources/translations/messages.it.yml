@@ -40,7 +40,7 @@ pim_enrich:
       property.title: Proprietà
       history.title: Cronologia
   group:
-    axis.help: Gli assi definiscono gli attributi sui quali i prodotti di un gruppo dovrebbero variare. Gli assi sono attributi con opzioni, non localizzabili e senza ambito. Non possono essere modificati dopo la creazione del gruppo di varianti.
+    axis.help: 'Gli assi definiscono gli attributi sui quali i prodotti di un gruppo dovrebbero variare. Gli assi sono attributi con opzioni, non localizzabili e senza ambito. Non possono essere modificati dopo la creazione del gruppo di varianti.'
     type:
       VARIANT: Variante
       X_SELL: Vendita incrociata
@@ -65,7 +65,7 @@ pim_enrich:
       no_attributes: Questo gruppo di varianti non ha ancora attributi
       no_attributes_in_selected_locale: Questo gruppo di varianti non ha attributi per queste impostazioni locali
   completeness:
-    progress_bar.title: completo al %ratio%% (1 valore richiesto)|completo al %ratio%% (%count% valori richiesti)
+    progress_bar.title: 'completo al %ratio%% (1 valore richiesto)|completo al %ratio%% (%count% valori richiesti)'
     subtitle: '{0} Completo|{1} 1 valore mancante|]1,Inf] %count% valori mancanti'
     missing_attributes: Valore mancante|Valori mancanti
     legend:
@@ -532,45 +532,45 @@ Default: Predefinito
 Attributes: Attributi
 Title: Titolo
 pim_title.attribute_group:
-  index: Gruppi di attributi
-  create: Gruppi di attributo | Crea
-  edit: Gruppi di attributi %group.label% | Modifica
+  index: "Gruppi di attributi"
+  create: "Gruppi di attributo | Crea"
+  edit: "Gruppi di attributi %group.label% | Modifica"
 pim_title.category:
-  create: Strutture di categoria | Crea
-  edit: Strutturi di categoria  %category.label% | Modifica
+  create: "Strutture di categoria | Crea"
+  edit: "Strutturi di categoria  %category.label% | Modifica"
 pim_title.attribute:
-  index: Attributi
-  create: Attributi | Crea
-  edit: Attributi %attribute.label% | Modifica
+  index: "Attributi"
+  create: "Attributi | Crea"
+  edit: "Attributi %attribute.label% | Modifica"
 pim_title.product:
-  index: Articoli
-  edit: Articoli %product.sku% | Modifica
+  index: "Articoli"
+  edit: "Articoli %product.sku% | Modifica"
 pim_title.family:
-  index: Famiglie
-  edit: Famiglie %family.label% | Modifica
+  index: "Famiglie"
+  edit: "Famiglie %family.label% | Modifica"
 pim_title.channel:
-  index: Canali
-  create: Canali | Crea
-  edit: Canali %channel.label% | Modifica
+  index: "Canali"
+  create: "Canali | Crea"
+  edit: "Canali %channel.label% | Modifica"
 pim_title.currency:
-  index: Valute
+  index: "Valute"
 pim_title.locale:
-  index: Impostazioni locali
+  index: "Impostazioni locali"
 pim_title.group:
-  index: Gruppi
-  edit: Gruppi %group.label% | Modifica
+  index: "Gruppi"
+  edit: "Gruppi %group.label% | Modifica"
 pim_title.variant_group:
-  index: Gruppi varianti
-  edit: Variante gruppi %group.label% | Modifica
+  index: "Gruppi varianti"
+  edit: "Variante gruppi %group.label% | Modifica"
 pim_title.association_type:
-  index: Tipi di associazione
-  edit: Tipi di associazione %associazione type.label% | Modifica
+  index: "Tipi di associazione"
+  edit: "Tipi di associazione %associazione type.label% | Modifica"
 pim_title.group_type:
-  index: Tipi di gruppo
-  edit: Tipi di gruppo %gruppo type.label% | Modifica
+  index: "Tipi di gruppo"
+  edit: "Tipi di gruppo %gruppo type.label% | Modifica"
 pim_title.mass_edit_action:
-  choose: Modifica di massa| Scegli
-  configure: Modifica di massa| Configura
+  choose: "Modifica di massa| Scegli"
+  configure: "Modifica di massa| Configura"
 pim_title.dashboard: "Dashboard"
 pim_catalog_identifier: Identificatore
 pim_catalog_text: Testo
@@ -716,21 +716,21 @@ Currency: Valuta
 oro.locale:
   address_format:
     region_name_type:
-      parish: Località
-      state: Stato
-      island: Isola
-      county: Comune
-      area: zona
-      prefecture: Prefettura
-      department: Dipartimento
-      district: distretto
-      province: provincia
+      parish: "Località"
+      state: "Stato"
+      island: "Isola"
+      county: "Comune"
+      area: "zona"
+      prefecture: "Prefettura"
+      department: "Dipartimento"
+      district: "distretto"
+      province: "provincia"
   form:
     tooltip:
-      locale: Selezionare le impostazioni locali utilizzato per formattare numeri, indirizzi, nomi e date
-      location: ' Verrà utilizzato per formattare gli indirizzi quando l''opzione ''Formato indirizzo in base alle impostazioni locali'' è disabilitata'
-      format_address_by_address_country: Selezionando questa opzione gli indirizzi verranno formattati in base alle impostazioni locali. Disabilitando questa opzione gli indirizzi saranno formattati in base al Paese
-      language: Selezionare la lingua di sistema che si desidera utilizzare
-      timezone: Selezionare il fuso orario per la visualizzazione di data e ora
-      currency: Selezionare la valuta predefinita
+      locale: "Selezionare le impostazioni locali utilizzato per formattare numeri, indirizzi, nomi e date"
+      location: " Verrà utilizzato per formattare gli indirizzi quando l'opzione 'Formato indirizzo in base alle impostazioni locali' è disabilitata"
+      format_address_by_address_country: "Selezionando questa opzione gli indirizzi verranno formattati in base alle impostazioni locali. Disabilitando questa opzione gli indirizzi saranno formattati in base al Paese"
+      language: "Selezionare la lingua di sistema che si desidera utilizzare"
+      timezone: "Selezionare il fuso orario per la visualizzazione di data e ora"
+      currency: "Selezionare la valuta predefinita"
 Selected products successfully deleted: Gli articoli selezionati sono stati eliminati con successo
