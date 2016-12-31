@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Form\EventListener;
+namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

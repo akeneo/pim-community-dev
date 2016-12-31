@@ -28,7 +28,7 @@ class RoleApiType extends AclRoleType
 
         $builder->add(
             'appendUsers',
-            'oro_entity_identifier',
+            'pim_enrich_entity_identifier',
             [
                 'class'    => 'PimUserBundle:User',
                 'required' => false,
@@ -39,7 +39,7 @@ class RoleApiType extends AclRoleType
 
         $builder->add(
             'removeUsers',
-            'oro_entity_identifier',
+            'pim_enrich_entity_identifier',
             [
                 'class'    => 'PimUserBundle:User',
                 'required' => false,

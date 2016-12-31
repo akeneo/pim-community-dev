@@ -39,6 +39,8 @@ parameters:
     pim_enrich.form.type.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\SetAttributeRequirementsType
     pim_enrich.form.type.translatable_field.class:         Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType
 
+    pim_enrich.type.entity_identifier.class: Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType
+
 services:
     pim_enrich.form.type.attribute:
         class: '%pim_enrich.form.type.attribute.class%'
@@ -306,3 +308,9 @@ services:
             - '@pim_catalog.helper.locale'
         tags:
             - { name: form.type, alias: pim_translatable_field }
+
+    pim_enrich.type.entity_identifier:
+        class: '%pim_enrich.type.entity_identifier.class%'
+        arguments: ["@doctrine"]
+        tags:
+            - { name: form.type, alias: pim_enrich_entity_identifier }

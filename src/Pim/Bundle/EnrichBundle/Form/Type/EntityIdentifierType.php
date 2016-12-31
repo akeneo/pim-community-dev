@@ -1,14 +1,14 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Form\Type;
+namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\FormBundle\Form\DataTransformer\ArrayToStringTransformer;
-use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
-use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
-use Oro\Bundle\FormBundle\Form\EventListener\FixArrayToStringListener;
-use Oro\Bundle\FormBundle\Form\Exception\FormException;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\ArrayToStringTransformer;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntitiesToIdsTransformer;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdTransformer;
+use Pim\Bundle\EnrichBundle\Form\Exception\FormException;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\FixArrayToStringListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EntityIdentifierType extends AbstractType
 {
-    const NAME = 'oro_entity_identifier';
+    const NAME = 'pim_enrich_entity_identifier';
 
     /**
      * @var ManagerRegistry

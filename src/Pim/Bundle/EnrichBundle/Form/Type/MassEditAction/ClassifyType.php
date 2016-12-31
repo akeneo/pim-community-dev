@@ -48,7 +48,7 @@ class ClassifyType extends AbstractType
 
         $builder->add(
             'trees',
-            'oro_entity_identifier',
+            'pim_enrich_entity_identifier',
             [
                 'class'    => $categoryClassName,
                 'required' => false,
@@ -59,7 +59,7 @@ class ClassifyType extends AbstractType
 
         $builder->add(
             'categories',
-            'oro_entity_identifier',
+            'pim_enrich_entity_identifier',
             [
                 'class'    => $categoryClassName,
                 'required' => true,
