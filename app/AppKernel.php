@@ -210,7 +210,6 @@ class AppKernel extends Kernel
     protected function getOroBundles()
     {
         return [
-            new Oro\Bundle\UIBundle\OroUIBundle(),
             new Oro\Bundle\AsseticBundle\OroAsseticBundle(),
             new Oro\Bundle\ConfigBundle\OroConfigBundle(),
             new Oro\Bundle\DataGridBundle\OroDataGridBundle(),
