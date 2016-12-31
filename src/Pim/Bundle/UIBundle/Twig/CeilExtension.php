@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Twig;
+namespace Pim\Bundle\UIBundle\Twig;
 
 class CeilExtension extends \Twig_Extension
 {

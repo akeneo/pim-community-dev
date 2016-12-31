@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\UIBundle\Twig\Node;
+namespace Pim\Bundle\UIBundle\Twig\Node;
 
 use \Twig_Compiler;
 use \Twig_Node_Expression_Constant;

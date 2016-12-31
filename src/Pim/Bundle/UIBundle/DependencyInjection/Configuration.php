@@ -23,11 +23,11 @@ class Configuration implements ConfigurationInterface
 
         $rootNode = $treeBuilder
             ->root('pim_ui')
-            ->children()
-                ->booleanNode('loading_message_enabled')
-                    ->defaultTrue()
-                ->end()
-            ->end();
+                ->children()
+                    ->booleanNode('loading_message_enabled')
+                        ->defaultTrue()
+                    ->end()
+                ->end();
 
         SettingsBuilder::append($rootNode, ['loading_message_enabled' => ['value' => true]]);
 

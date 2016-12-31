@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Twig;
+namespace Pim\Bundle\UIBundle\Twig;
 
-use Oro\Bundle\UIBundle\Twig\Parser\PlaceholderTokenParser;
+use Pim\Bundle\UIBundle\Twig\Parser\PlaceholderTokenParser;
 
 class UiExtension extends \Twig_Extension
 {
@@ -31,6 +31,6 @@ class UiExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'oro_ui';
+        return 'pim_ui';
     }
 }

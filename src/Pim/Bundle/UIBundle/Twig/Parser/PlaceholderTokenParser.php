@@ -1,7 +1,7 @@
 <?php
-namespace Oro\Bundle\UIBundle\Twig\Parser;
+namespace Pim\Bundle\UIBundle\Twig\Parser;
 
-use Oro\Bundle\UIBundle\Twig\Node\PlaceholderNode;
+use Pim\Bundle\UIBundle\Twig\Node\PlaceholderNode;
 
 class PlaceholderTokenParser extends \Twig_TokenParser
 {

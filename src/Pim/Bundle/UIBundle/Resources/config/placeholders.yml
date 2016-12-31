@@ -20,8 +20,8 @@ placeholders:
 
 items:
     logo:
-        template: OroUIBundle:Default:logo.html.twig
+        template: PimUIBundle:Default:logo.html.twig
     help:
-        template: OroUIBundle:Default:help.html.twig
+        template: PimUIBundle:Default:help.html.twig
     ui_requirejs_config:
-        template: OroUIBundle::requirejs.config.js.twig
+        template: PimUIBundle::requirejs.config.js.twig

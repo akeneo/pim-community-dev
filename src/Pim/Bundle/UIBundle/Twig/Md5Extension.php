@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Twig;
+namespace Pim\Bundle\UIBundle\Twig;
 
 use JMS\Serializer\Exception\RuntimeException;
 use JMS\Serializer\Serializer;
