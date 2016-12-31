@@ -1,5 +1,5 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% extends 'PimUIBundle:actions:view.html.twig' %}
+{% import 'PimUIBundle::macros.html.twig' as UI %}
 
 {% set fullname = entity.fullName|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
