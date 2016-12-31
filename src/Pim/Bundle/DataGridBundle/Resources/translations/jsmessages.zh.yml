@@ -1,5 +1,5 @@
 Item deleted: 条目已删除
-Are you sure you want to delete this item?: 确实要删除这个条目吗?
+Are you sure you want to delete this item?: 确实要删除这个项目吗?
 Delete Error: 删除错误
 Are you sure you want to do remove selected items?: 你确定你想要做移除选定的条目吗?
 Selected items were removed.: 选定的条目被移除。
@@ -13,11 +13,11 @@ Your local changes will be lost. Are you sure you want to reset grid?: 你本地
 Confirmation: 确认
 edit: 编辑
 copy: 复制
-remove: 移除
+remove: 删除
 Status: 状态
 All: 所有
 Per page: 每页
-Mass Action Confirmation: 批量动作确认
+Mass Action Confirmation: 批处理确认
 Mass action performed.: 批量动作已完成。
 Mass action is not performed.: 批量动作未完成。
 Please, select items to perform mass action.: 请选择条目，以进行批处理。
@@ -71,3 +71,17 @@ Loading...: 正在加载...
 View: 视图
 from: 从
 to: 到
+grid.view_selector:
+  default_view: 默认视图
+  save_changes: 保存此视图
+  remove: 删除此视图
+  create_view: 创建视图
+  create: 创建
+  search: 搜索
+  views: 视图
+  placeholder: 新视图的名称
+  choose_label: 选择视图的标签
+  confirmation:
+    remove: 您是否确定要删除此数据视图?
+    delete: 删除确认
+grid.view_selector.flash.updated: 数据视图已更新

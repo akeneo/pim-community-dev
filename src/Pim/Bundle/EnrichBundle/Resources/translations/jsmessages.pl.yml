@@ -22,31 +22,36 @@ pim_datagrid:
       confirm_content: Czy na pewno chcesz usunąć wybrane produkty?
       success: Wybrane produkty zostały pomyślnie usunięte.
       error: Wystąpił błąd podczas próby usunięcia wybranych produktów, proszę spróbować ponownie.
+  view_selector:
+    view: Widoki
+    create_view_modal:
+      confirm: OK
+      cancel: Anuluj
 flash:
   item:
     removed: Element usunięty pomyślnie
   association type:
-    removed: Typ powiązania usunięty pomyślnie
+    removed: Typ powiązania został pomyślnie usunięty
   attribute:
-    removed: Pomyślnie usunięto atrybut
+    removed: Atrybut został pomyślnie usunięty
   family:
-    removed: Rodzina została usunięta pomyślnie
+    removed: Rodzina produktów została usunięta pomyślnie
   product:
     removed: Produkt pomyślnie usunięty
   channel:
-    removed: Kanał pomyślnie usunięty
+    removed: Kanał został pomyślnie usunięty
   group:
     removed: Grupa została pomyślnie usunięta
   variant group:
-    removed: Grupa wariantów usunięta pomyślnie
+    removed: Grupa wariantów została pomyślnie usunięta
   group type:
-    removed: Typ grupy usunięty pomyślnie
+    removed: Typ grupy został pomyślnie usunięty
   import profile:
     removed: Profil importu usunięty pomyślnie
   export profile:
     removed: Profil eksportu usunięty pomyślnie
   user:
-    removed: Użytkownik usunięty pomyślnie
+    removed: Użytkownik został pomyślnie usunięty
   role:
     removed: Rola usunięta pomyślnie
 error:
@@ -151,10 +156,10 @@ pim_enrich:
         created: Utworzono
         created_by: Przez
         updated_by: Przez
-        updated: Modyfikowany
+        updated: Ostatnia aktualizacja
         family:
           title: Rodzina
-          none: Żaden
+          none: Brak
         groups:
           title: Grupy
           modal:
@@ -172,8 +177,8 @@ pim_enrich:
       variant_group:
         updated_by: Zaktualizowany przez grupę wariantów
         switch:
-          "yes": Tak
-          "no": Nie
+          "yes": "Tak"
+          "no": "Nie"
       optional_attribute:
         remove: Usuń ten atrybut
       media:
@@ -187,12 +192,25 @@ pim_enrich:
     attribute_option:
       code: Kod
       label: Etykieta
+      actions: Działania
     variant_group:
       info:
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - pola
         no_attributes: Ta grupa wariantów nie posiada jeszcze żadnych atrybutów
+      btn:
+        save: Zapisz
+      meta:
+        product_count: Produkty
+        created: Utworzono
+        updated: Zaktualizowano
+    group:
+      title: Grupa
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - pola
       btn:
         save: Zapisz
       meta:
@@ -223,7 +241,7 @@ pim_enrich:
             none_exist: Brak typów powiązań.
             show_products: Pokaż produkty
             show_groups: Pokaż grupy
-            number_of_associations: '{{ productCount }} produktów i {{ groupCount }} grup'
+            number_of_associations: "{{ productCount }} produktów i {{ groupCount }} grup"
         attributes:
           title: Atrybuty
           btn:
@@ -232,7 +250,7 @@ pim_enrich:
           info:
             search_attributes: Szukaj...
             no_available_attributes: Nie ma więcej atrybutów do dodania
-            attributes_selected: '{{ attributeCount }} atrybut(ów) wybrany(ch)'
+            attributes_selected: "{{ attributeCount }} atrybut(ów) wybrany(ch)"
             no_match: Nie znaleziono dopasowań
             load_more: Ładowanie więcej wyników...
         categories:
@@ -247,8 +265,8 @@ pim_enrich:
         history:
           title: Historia
       switch:
-        "no": Nie
-        "yes": Tak
+        "no": "Nie"
+        "yes": "Tak"
       sequential_edit:
         info:
           products: produkty
@@ -279,8 +297,8 @@ pim_enrich:
         cancel: Anuluj
     entity:
       switch:
-        "no": Nie
-        "yes": Tak
+        "no": "Nie"
+        "yes": "Tak"
     variant_group:
       tab:
         properties:
@@ -296,6 +314,18 @@ pim_enrich:
           title: Produkty
         attributes:
           title: Atrybuty
+    group:
+      tab:
+        properties:
+          title: Właściwości
+          general: Ustawienia ogólne
+          code: Kod
+          type: Typ
+          label_translations: Tłumaczenia etykiety
+        history:
+          title: Historia
+        products:
+          title: Produkty
     common:
       tab:
         attributes:

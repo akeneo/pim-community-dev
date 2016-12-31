@@ -11,9 +11,9 @@ Your local changes will be lost. Are you sure you want to refresh grid?: Vos mod
 Reset Confirmation: Confirmation de remise à zéro
 Your local changes will be lost. Are you sure you want to reset grid?: Vos modifications locales seront perdues. Êtes-vous certain(e) de vouloir actualiser la grille ?
 Confirmation: Confirmation
-edit: modifier
+edit: Modifier
 copy: copier
-remove: supprimer
+remove: Retirer
 Status: État
 All: Tous
 Per page: Par page
@@ -51,7 +51,7 @@ pim_datagrid:
     label: Colonnes
     title: Sélection de colonnes
     all_groups: Tous les groupes
-    search: Rechercher
+    search: Recherche
     clear: Réinitialiser
     displayed_columns: Colonnes sélectionnées
     apply: Appliquer
@@ -68,6 +68,20 @@ pim.grid.action.launch.title: Démarrer
 pim.grid.action.show.title: Afficher
 Please select view: Veuillez sélectionner une vue
 Loading...: Chargement en cours...
-View: Afficher
-from: à partir du
-to: jusqu'au
+View: Voir
+from: De
+to: À
+grid.view_selector:
+  default_view: Vue par défaut
+  save_changes: Enregistrer cette vue
+  remove: Supprimer cette vue
+  create_view: Créer une vue
+  create: Créer
+  search: Recherche
+  views: Vues
+  placeholder: Nom de la nouvelle vue
+  choose_label: Choisissez un titre pour la vue
+  confirmation:
+    remove: Êtes-vous sûr(e) de que vouloir supprimer cette vue ?
+    delete: Confirmation de la suppression
+grid.view_selector.flash.updated: Vue de grille mise à jour avec succès

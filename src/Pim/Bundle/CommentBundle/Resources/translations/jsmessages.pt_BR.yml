@@ -4,23 +4,23 @@ btn:
   cancel: Cancelar
 confirmation:
   remove:
-    comment: Tem certeza que deseja deletar este comentário?
+    comment: Tem certeza que deseja remover esse comentário?
 flash:
   comment:
     create:
       success: Seu comentário foi criado com sucesso.
-      error: Ocorreu um erro na criação do seu comentário.
+      error: Ocorreu um erro ao criar seu comentário.
     delete:
       success: Seu comentário foi deletado com sucesso.
-      error: Ocorreu um erro durante a supressão do seu comentário.
+      error: Ocorreu um erro ao deletar seu comentário.
     reply:
       success: Sua resposta foi criada com sucesso.
-      error: Ocorreu um erro ao criar sua resposta.
+      error: Ocorreu um erro ao tentar criar sua resposta.
 comment:
   index:
     empty: Sem comentários
   placeholder:
-    new: Escreva um novo comentário...
+    new: Escrever novo comentário...
     reply: Responder esse comentário...
 pim_comment:
   product.panel.comment.title: Comentários

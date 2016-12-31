@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: Dashboard
+  title: Ohjauspaneeli
   version: Versio
   link.label:
     product: Tuotteiden hallinta
@@ -18,7 +18,7 @@ pim_dashboard:
       status: Status
       date: Päivämäärä
       type: Tyyppi
-      profile name: Profiilinimi
+      "profile name": Profiilinimi
       details: Lisätiedot
       job_type:
         import: Tuonti
