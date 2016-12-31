@@ -24,6 +24,7 @@
 #### Remove deprecated bundles from your AppKernel
 
 Remove "new Oro\Bundle\UIBundle\OroUIBundle()" from your app/AppKernel.php
+Remove "new Oro\Bundle\FormBundle\OroFormBundle()" from your app/AppKernel.php
 
 #### Update references to moved `Pim\Bundle\ConnectorBundle\Reader` business classes
 
