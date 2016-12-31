@@ -31,13 +31,13 @@ class GroupType extends AbstractType
     {
         $builder
             ->add('name', 'text')
-            ->add('appendUsers', 'oro_entity_identifier', [
+            ->add('appendUsers', 'pim_enrich_entity_identifier', [
                 'class'    => 'PimEnterpriseUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,
             ])
-            ->add('removeUsers', 'oro_entity_identifier', [
+            ->add('removeUsers', 'pim_enrich_entity_identifier', [
                 'class'    => 'PimEnterpriseUserBundle:User',
                 'required' => false,
                 'mapped'   => false,

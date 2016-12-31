@@ -89,7 +89,7 @@ class AssetType extends AbstractType
         );
         $builder->add(
             'categories',
-            'oro_entity_identifier',
+            'pim_enrich_entity_identifier',
             [
                 'class'    => $this->categoryClass,
                 'required' => true,
