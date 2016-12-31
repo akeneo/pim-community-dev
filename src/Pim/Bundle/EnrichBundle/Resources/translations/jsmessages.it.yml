@@ -117,8 +117,8 @@ pim_enrich:
         copy: Copia
       variant_group:
         switch:
-          "yes": Sì
-          "no": No
+          "yes": "Sì"
+          "no": "No"
       optional_attribute:
         remove: Rimuovere l'attributo
     attribute_option:
@@ -155,8 +155,8 @@ pim_enrich:
         history:
           title: Cronologia
       switch:
-        "no": No
-        "yes": Sì
+        "no": "No"
+        "yes": "Sì"
       sequential_edit:
         info:
           products: Articoli
@@ -176,5 +176,5 @@ pim_enrich:
         cancel: Cancella
     entity:
       switch:
-        "no": No
-        "yes": Sì
+        "no": "No"
+        "yes": "Sì"

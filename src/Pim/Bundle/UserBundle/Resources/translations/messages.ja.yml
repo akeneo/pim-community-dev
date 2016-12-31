@@ -8,25 +8,25 @@ pim_user:
       business_unit.title: 部署
       email_synchronization.title: メール同期設定
 oro.user.controller:
-  group.message.saved: グループが保存されました
-  role.message.saved: ロールを保存しました
-  user.message.saved: ユーザーを保存しました
-  status.message.saved: ステータスを保存しました
+  group.message.saved: "グループが保存されました"
+  role.message.saved: "ロールを保存しました"
+  user.message.saved: "ユーザーを保存しました"
+  status.message.saved: "ステータスを保存しました"
 oro.user.grid.users:
   columns:
-    username: ユーザー名
-    email: 電子メール
-    firstName: 名
-    lastName: 姓
-    createdAt: 作成日
-    updatedAt: 更新日
-    enabled: ステータス
+    username: "ユーザー名"
+    email: "電子メール"
+    firstName: "名"
+    lastName: "姓"
+    createdAt: "作成日"
+    updatedAt: "更新日"
+    enabled: "ステータス"
 oro.user.grid.roles:
   columns:
-    label: ラベル
+    label: "ラベル"
 oro.user.grid.groups:
   columns:
-    name: 名前
+    name: "名前"
 pim_title:
   user.index: ユーザー
   user_role.index: 権限

@@ -133,7 +133,7 @@ pim_enrich:
         from: De
         modified: Modificado
         property: Propiedad
-        old_values: Viejos valores
+        old_values: Valores anteriores
         new_values: Nuevos valores
         actions: Acciones
       info:
@@ -172,8 +172,8 @@ pim_enrich:
       variant_group:
         updated_by: Actualizado por grupo de variantes
         switch:
-          "yes": SÍ
-          "no": No
+          "yes": "SÍ"
+          "no": "No"
       optional_attribute:
         remove: Quitar este atributo
       locale_specific_attribute:
@@ -209,7 +209,7 @@ pim_enrich:
             none_exist: No existe ningún tipo de asociación.
             show_products: Mostrar Productos
             show_groups: Mostrar grupos
-            number_of_associations: '{{ productCount }} productos y {{ groupCount }} grupos'
+            number_of_associations: "{{ productCount }} productos y {{ groupCount }} grupos"
         attributes:
           title: Atributos
           btn:
@@ -218,7 +218,7 @@ pim_enrich:
           info:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
-            attributes_selected: '{{ attributeCount }} atributo(s) seleccionado(s)'
+            attributes_selected: "{{ attributeCount }} atributo(s) seleccionado(s)"
             no_match: No se encuentran coincidencias
             load_more: Cargando más resultados...
         categories:
@@ -233,8 +233,8 @@ pim_enrich:
         history:
           title: Histórico
       switch:
-        "no": No
-        "yes": SÍ
+        "no": "No"
+        "yes": "SÍ"
       sequential_edit:
         info:
           products: productos
@@ -265,8 +265,8 @@ pim_enrich:
         cancel: Cancelar
     entity:
       switch:
-        "no": No
-        "yes": SÍ
+        "no": "No"
+        "yes": "SÍ"
   mass_edit_action:
     edit_common_attributes:
       description: Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.

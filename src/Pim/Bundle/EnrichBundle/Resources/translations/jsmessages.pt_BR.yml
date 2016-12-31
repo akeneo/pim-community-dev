@@ -172,8 +172,8 @@ pim_enrich:
       variant_group:
         updated_by: Atualizado por grupo variante
         switch:
-          "yes": Sim
-          "no": Não
+          "yes": "Sim"
+          "no": "Não"
       optional_attribute:
         remove: Remover esse atributo
       locale_specific_attribute:
@@ -207,7 +207,7 @@ pim_enrich:
             none_exist: Não existe nenhum tipo de associação.
             show_products: Mostrar produtos
             show_groups: Mostrar grupos
-            number_of_associations: '{{ productCount }} produtos e {{ groupCount }} grupos'
+            number_of_associations: "{{ productCount }} produtos e {{ groupCount }} grupos"
         attributes:
           title: Atributos
           btn:
@@ -216,7 +216,7 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para serem adicionados
-            attributes_selected: '{{ attributeCount }} atributo(s) selecionado(s)'
+            attributes_selected: "{{ attributeCount }} atributo(s) selecionado(s)"
             no_match: Nenhum resultado encontrado
             load_more: A carregar mais resultados...
         categories:
@@ -231,8 +231,8 @@ pim_enrich:
         history:
           title: Histórico
       switch:
-        "no": Não
-        "yes": Sim
+        "no": "Não"
+        "yes": "Sim"
       sequential_edit:
         info:
           products: produtos
@@ -263,8 +263,8 @@ pim_enrich:
         cancel: Cancelar
     entity:
       switch:
-        "no": Não
-        "yes": Sim
+        "no": "Não"
+        "yes": "Sim"
   mass_edit_action:
     edit_common_attributes:
       description: Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.

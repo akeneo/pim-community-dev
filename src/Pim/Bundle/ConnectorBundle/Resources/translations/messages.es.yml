@@ -165,3 +165,4 @@ job_execution.summary:
     title: 'Codificación de Archivo:'
     skipped: omitido, extensión en lista blanca
   product_skipped_no_diff: producto omitido (ninguna diferencia)
+  product_skipped_no_associations: Productos omitidos (asociaciones no detectadas)

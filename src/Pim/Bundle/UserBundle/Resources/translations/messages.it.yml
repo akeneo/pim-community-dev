@@ -8,25 +8,25 @@ pim_user:
       business_unit.title: Business Unit
       email_synchronization.title: Impostazioni per la sincronizzazione email
 oro.user.controller:
-  group.message.saved: Gruppo salvato
-  role.message.saved: Ruolo salvato
-  user.message.saved: Utente salvato
-  status.message.saved: Stato salvato
+  group.message.saved: "Gruppo salvato"
+  role.message.saved: "Ruolo salvato"
+  user.message.saved: "Utente salvato"
+  status.message.saved: "Stato salvato"
 oro.user.grid.users:
   columns:
-    username: Nome utente
-    email: Email
-    firstName: Nome
-    lastName: Cognome
-    createdAt: Creato il
-    updatedAt: Caricato il
-    enabled: Stato
+    username: "Nome utente"
+    email: "Email"
+    firstName: "Nome"
+    lastName: "Cognome"
+    createdAt: "Creato il"
+    updatedAt: "Caricato il"
+    enabled: "Stato"
 oro.user.grid.roles:
   columns:
-    label: Etichetta
+    label: "Etichetta"
 oro.user.grid.groups:
   columns:
-    name: Nome
+    name: "Nome"
 pim_title:
   user.index: Utenti
   user_role.index: Ruoli

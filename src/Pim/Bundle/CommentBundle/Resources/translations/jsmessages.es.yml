@@ -1,5 +1,5 @@
 btn:
-  post: Añadir un nuevo comentario
+  post: Añadir comentario
   reply: Responder
   cancel: Cancelar
 confirmation:
@@ -14,7 +14,7 @@ flash:
       success: Su comentario ha sido eliminado con éxito.
       error: Se ha producido un error durante la eliminación de su comentario.
     reply:
-      success: Su respuesta ha sido creada exitosamente.
+      success: Su respuesta ha sido creada con éxito.
       error: Ocurrió un error durante la creación de su respuesta.
 comment:
   index:

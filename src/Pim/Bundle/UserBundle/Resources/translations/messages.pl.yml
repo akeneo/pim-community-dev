@@ -8,25 +8,25 @@ pim_user:
       business_unit.title: Jednostki biznesowe
       interfaces.title: Interfejsy
 oro.user.controller:
-  group.message.saved: Grupa zapisana
-  role.message.saved: Rola zapisana
-  user.message.saved: Użytkownik zapisany
-  status.message.saved: Status zapisany
+  group.message.saved: "Grupa zapisana"
+  role.message.saved: "Rola zapisana"
+  user.message.saved: "Użytkownik zapisany"
+  status.message.saved: "Status zapisany"
 oro.user.grid.users:
   columns:
-    username: Nazwa użytkownika
-    email: Adres e-mail
-    firstName: Imię
-    lastName: Nazwisko
-    createdAt: Data utworzenia
-    updatedAt: Data aktualizacji
-    enabled: Status
+    username: "Nazwa użytkownika"
+    email: "Adres e-mail"
+    firstName: "Imię"
+    lastName: "Nazwisko"
+    createdAt: "Data utworzenia"
+    updatedAt: "Data aktualizacji"
+    enabled: "Status"
 oro.user.grid.roles:
   columns:
-    label: Etykieta
+    label: "Etykieta"
 oro.user.grid.groups:
   columns:
-    name: Nazwa
+    name: "Nazwa"
 pim_title:
   user.index: Użytkownicy
   user_role.index: Role
