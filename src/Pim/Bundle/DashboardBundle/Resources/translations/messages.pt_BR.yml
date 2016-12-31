@@ -1,0 +1,27 @@
+pim_dashboard:
+  title: Painel de controle
+  version: Versão
+  link.label:
+    product: Gerenciar Produtos
+    category: Gerenciar Categorias
+    attribute: Gerenciar Atributos
+    family: Gerenciar Familias
+  widget:
+    error:
+      title: Erro ao carregar widget
+      message: O widget '%alias%' não existe
+    completeness:
+      title: Plenitude Sobre Canais e Locais
+    last_operations:
+      title: Últimas Operações
+      empty: Nenhuma Operação Encontrada
+      status: Status
+      date: Data
+      type: Tipo
+      "profile name": Nome do Profile
+      details: Detalhes
+      job_type:
+        import: Importar
+        export: Exportar
+        mass_edit: Edição em Massa
+        quick_export: Exportação Rápida
