@@ -35,11 +35,13 @@
                 <td class="AknGrid-bodyCell">{{ attribute.label }}</td>
                 {% for channel in form.operation.vars.value.channels %}
                     <td class="AknGrid-bodyCell AknGrid-bodyCell--center">
-                        {{ form_widget(form.operation.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}
+                        <div class="AknAcl AknAcl--centered">
+                            {{ form_widget(form.operation.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}
+                        </div>
                     </td>
                 {% endfor %}
                 <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
-                    <i class="icon-trash remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
+                    <i class="AknIconButton AknIconButton--grey AknIconButton--small icon-trash remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
                 </td>
             </tr>
             {% endfor %}
@@ -75,7 +77,9 @@
 
                     // Requirement tick
                     $('table.attributes').on('click', '.attribute-requirement:not(.read-only) i', function() {
-                        $(this).toggleClass('icon-ok required').toggleClass('icon-circle non-required');
+                        $(this).toggleClass('icon-ok required')
+                                .toggleClass('icon-circle non-required')
+                                .toggleClass('AknAcl-icon--granted');
 
                         var $input = $(this).siblings('input[type="hidden"]').eq(0);
                         var checked = ($input.val() == 1);
