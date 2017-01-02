@@ -1622,7 +1622,7 @@
 
         $(this.selector)
           .parent('.active')
-          .removeClass('active AknHorizontalTabnav-item--active')
+          .removeClass('active AknHorizontalTabnav-item--active AknVerticalNavtab-item--active');
 
         selector = this.selector
           + '[data-target="' + target + '"],'
@@ -1630,7 +1630,7 @@
 
         active = $(selector)
           .parent('li')
-          .addClass('active AknHorizontalTabnav-item--active')
+          .addClass('active AknHorizontalTabnav-item--active AknVerticalNavtab-item--active');
 
         if (active.parent('.dropdown-menu').length)  {
           active = active.closest('li.dropdown').addClass('active')
@@ -1763,11 +1763,11 @@
 
       function next() {
         $active
-          .removeClass('active AknHorizontalTabnav-item--active')
+          .removeClass('active AknHorizontalTabnav-item--active AknVerticalNavtab-item--active')
           .find('> .dropdown-menu > .active')
           .removeClass('active')
 
-        element.addClass('active AknHorizontalTabnav-item--active')
+        element.addClass('active AknHorizontalTabnav-item--active AknVerticalNavtab-item--active');
 
         if (transition) {
           element[0].offsetWidth // reflow for transition
