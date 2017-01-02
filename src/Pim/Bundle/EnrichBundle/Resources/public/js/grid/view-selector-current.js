@@ -26,7 +26,8 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             datagridView: null,
-            dirty: false,
+            dirtyColumns: false,
+            dirtyFilters: false,
 
             /**
              * {@inheritdoc}
@@ -47,7 +48,8 @@ define(
             render: function () {
                 this.$el.html(this.template({
                     view: this.datagridView,
-                    dirty: this.dirty
+                    dirtyFilters: this.dirtyFilters,
+                    dirtyColumns: this.dirtyColumns
                 }));
 
                 this.renderExtensions();
@@ -69,11 +71,14 @@ define(
                 var columnsModified = !_.isEqual(initialView.columns, datagridState.columns.split(','));
 
                 if (initialViewExists) {
-                    this.dirty = filtersModified || columnsModified;
+                    this.dirtyFilters = filtersModified;
+                    this.dirtyColumns = columnsModified;
                 } else {
                     var isDefaultFilters = ('' === datagridState.filters);
                     var isDefaultColumns = _.isEqual(this.getRoot().defaultColumns, datagridState.columns.split(','));
-                    this.dirty = !isDefaultColumns || !isDefaultFilters;
+
+                    this.dirtyFilters = !isDefaultFilters;
+                    this.dirtyColumns = !isDefaultColumns;
                 }
 
                 this.render();
