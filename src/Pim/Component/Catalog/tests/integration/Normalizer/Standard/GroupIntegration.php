@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Component\Catalog\Standard;
+namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
 use Test\Integration\TestCase;
 
