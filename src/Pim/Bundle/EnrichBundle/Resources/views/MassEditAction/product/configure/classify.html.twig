@@ -40,7 +40,10 @@
                         {% set iClass = "gray" %}
                         <li class="AknVerticalNavtab-item">
                             <a class="AknVerticalNavtab-link {{ aClass }}" href="javascript:void(0);" id="tree-link-{{ tree.id }}">
-                                <i class="icon-ok {{ iClass }}"></i>{{ tree.label }}
+                                <div class="AknAcl">
+                                    <i class="icon-ok AknAcl-icon {{ iClass }}"></i>
+                                    {{ tree.label }}
+                                </div>
                             </a>
                         </li>
                     {% endfor %}

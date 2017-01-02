@@ -15,7 +15,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
         /** @property */
         template:_.template(
             '<div class="AknGridToolbar">' +
-                '<div class="mass-actions-panel"></div>' +
+                '<div class="AknGridToolbar-left mass-actions-panel"></div>' +
                 '<div class="AknGridToolbar-center">' +
                     '<div class="AknPagination"></div>' +
                 '</div>' +
