@@ -9,7 +9,7 @@ define(
     function (_, BaseForm, formTemplate) {
         var FormView = BaseForm.extend({
             tagName: 'span',
-            className: 'published-version',
+            className: 'AknTitleContainer-metaItem published-version',
             template: _.template(formTemplate),
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
