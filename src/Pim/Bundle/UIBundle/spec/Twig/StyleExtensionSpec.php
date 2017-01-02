@@ -28,6 +28,6 @@ class StyleExtensionSpec extends ObjectBehavior
 
     function it_highlights()
     {
-        $this->highlight('toto')->shouldReturn('<span class="highlight">toto</span>');
+        $this->highlight('toto')->shouldReturn('<span class="AknRule-attribute">toto</span>');
     }
 }

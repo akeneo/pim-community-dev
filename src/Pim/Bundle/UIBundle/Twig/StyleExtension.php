@@ -30,7 +30,7 @@ class StyleExtension extends \Twig_Extension
      */
     public function highlight($content)
     {
-        return sprintf('<span class="highlight">%s</span>', $content);
+        return sprintf('<span class="AknRule-attribute">%s</span>', $content);
     }
 
     /**
