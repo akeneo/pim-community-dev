@@ -428,6 +428,7 @@
 {% endblock %}
 
 {%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
     {% if attr.class is defined %}
         {% if 'input-' not in attr.class %}
             {% set class = attr.class ~ ' AknTextField' %}
@@ -437,8 +438,10 @@
     {% else %}
         {% set class = ' AknTextField' %}
     {% endif %}
+    {% if 'file' == type %}
+        {% set class = class ~ ' AknTextField--file' %}
+    {% endif %}
     {% set attr = attr|merge({'class': class }) %}
-    {%- set type = type|default('text') -%}
     <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
 {%- endblock form_widget_simple -%}
 
