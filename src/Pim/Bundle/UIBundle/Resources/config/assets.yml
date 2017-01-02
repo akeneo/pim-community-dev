@@ -53,7 +53,7 @@ css:
         - bundles/pimui/less/components/product-edit-form/ComparableFields.less
         - bundles/pimui/less/components/product-edit-form/FieldContainer.less
         - bundles/pimui/less/components/product-edit-form/FormContainer.less
-        - bundles/pimui/less/components/product-edit-form/HorizontalTabnav.less
+        - bundles/pimui/less/components/product-edit-form/HorizontalNavtab.less
         - bundles/pimui/less/components/product-edit-form/MediaField.less
         - bundles/pimui/less/components/product-edit-form/MetricField.less
         - bundles/pimui/less/components/product-edit-form/PanelContainer.less

@@ -214,13 +214,13 @@
     {% set dataBlocks = data.dataBlocks %}
 
     <div class="AknTabContainer">
-        <div id="{{ dataTarget }}" class="AknHorizontalTabnav scrollspy-nav">
+        <div id="{{ dataTarget }}" class="AknHorizontalNavtab scrollspy-nav">
             <div class="navbar-inner">
                 <div class="row-fluid">
-                    <ul class="AknHorizontalTabnav-list nav nav-tabs">
+                    <ul class="AknHorizontalNavtab-list nav nav-tabs">
                         {% for navElement in dataBlocks %}
-                            <li class="AknHorizontalTabnav-item {% if loop.first %} AknHorizontalTabnav-item--active active {% endif %}">
-                                <a class="AknHorizontalTabnav-link" href="#scroll-{{ loop.index }}" data-toggle="tab">{{ navElement.title|trans }}</a>
+                            <li class="AknHorizontalNavtab-item {% if loop.first %} AknHorizontalNavtab-item--active active {% endif %}">
+                                <a class="AknHorizontalNavtab-link" href="#scroll-{{ loop.index }}" data-toggle="tab">{{ navElement.title|trans }}</a>
                             </li>
                         {% endfor %}
                     </ul>
