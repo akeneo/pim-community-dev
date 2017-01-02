@@ -135,7 +135,7 @@ interface ProductInterface extends
     /**
      * Get types of associations
      *
-     * @return AssociationInterface[]
+     * @return AssociationInterface[]|ArrayCollection
      */
     public function getAssociations();
 

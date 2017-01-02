@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -160,26 +161,9 @@ class UserController extends Controller
                 $this->get('translator')->trans('oro.user.controller.user.message.saved')
             );
 
-            if (count($viewRoute)) {
-                $closeButtonRoute = $viewRoute;
-            } else {
-                $closeButtonRoute = [
-                    'route'      => 'oro_user_view',
-                    'parameters' => ['id' => $user->getId()]
-                ];
-            }
-
-            $response = $this->get('oro_ui.router')->actionRedirect(
-                [
-                    'route'      => 'oro_user_update',
-                    'parameters' => ['id' => $user->getId()],
-                ],
-                $closeButtonRoute
+            return new RedirectResponse(
+                $this->get('router')->generate('oro_user_update', ['id' => $user->getId()])
             );
-
-            $response->headers->set('oroFullRedirect', true);
-
-            return $response;
         }
 
         return [

@@ -37,7 +37,7 @@
                                         <span class="missing-attributes">
                                             <% _.each(channelCompleteness.missing, function(missing, i) { %>
                                                 <% if (0 !== i) { %> | <% } %>
-                                                <a href="#" data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- channelCompleteness.completeness['channel_code'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></a>
+                                                <a href="javascript:void(0);" data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- channelCompleteness.completeness['channel_code'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></a>
                                             <% }) %>
                                         </span>
                                     <% } %>

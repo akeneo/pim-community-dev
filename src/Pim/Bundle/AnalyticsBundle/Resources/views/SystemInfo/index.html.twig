@@ -10,12 +10,12 @@
 
     {{ elements.page_header('pim_analytics.system_info.title'|trans, buttons) }}
 
-    <div class="row-fluid tab-content">
-        <table class="table">
+    <div class="AknGridContainer row-fluid tab-content">
+        <table class="AknGrid AknGrid--unclickable AknGrid--condensed table">
             {% for infoType,info in data %}
-                <tr>
-                    <th>{{ ('pim_analytics.info_type.' ~ infoType)|trans }}</th>
-                    <td>
+                <tr class="AknGrid-bodyRow">
+                    <th class="AknGrid-bodyCell">{{ ('pim_analytics.info_type.' ~ infoType)|trans }}</th>
+                    <td class="AknGrid-bodyCell">
                         {% if info is iterable %}
                             {{ info|join('<br>')|raw }}
                         {% else %}

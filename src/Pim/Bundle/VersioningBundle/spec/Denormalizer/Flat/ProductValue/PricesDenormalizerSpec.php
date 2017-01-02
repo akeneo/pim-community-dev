@@ -30,22 +30,14 @@ class PricesDenormalizerSpec extends ObjectBehavior
         ProductPriceInterface $productPriceEur,
         ProductPriceInterface $productPriceUsd
     ) {
-        $productBuilder->addPriceForCurrency($priceValue, 'EUR')
+        $productBuilder->addPriceForCurrencyWithData($priceValue, 'EUR', '100')
             ->willReturn($productPriceEur)
-            ->shouldBeCalled();
-        $productPriceEur->setCurrency('EUR')
-            ->shouldBeCalled();
-        $productPriceEur->setData('100')
             ->shouldBeCalled();
         $priceValue->addPrice($productPriceEur)
             ->shouldBeCalled();
 
-        $productBuilder->addPriceForCurrency($priceValue, 'USD')
+        $productBuilder->addPriceForCurrencyWithData($priceValue, 'USD', '25')
             ->willReturn($productPriceUsd)
-            ->shouldBeCalled();
-        $productPriceUsd->setCurrency('USD')
-            ->shouldBeCalled();
-        $productPriceUsd->setData('25')
             ->shouldBeCalled();
         $priceValue->addPrice($productPriceUsd)
             ->shouldBeCalled();
@@ -65,32 +57,20 @@ class PricesDenormalizerSpec extends ObjectBehavior
         ProductPriceInterface $productPriceEur,
         ProductPriceInterface $productPriceUsd
     ) {
-        $productBuilder->addPriceForCurrency($priceValue, 'EUR')
+        $productBuilder->addPriceForCurrencyWithData($priceValue, 'EUR', '120.00')
             ->willReturn($productPriceEur)
-            ->shouldBeCalled();
-        $productPriceEur->setCurrency('EUR')
-            ->shouldBeCalled();
-        $productPriceEur->setData('120.00')
             ->shouldBeCalled();
         $priceValue->addPrice($productPriceEur)
             ->shouldBeCalled();
 
-        $productBuilder->addPriceForCurrency($priceValue, 'USD')
+        $productBuilder->addPriceForCurrencyWithData($priceValue, 'USD', '145.40')
             ->willReturn($productPriceUsd)
-            ->shouldBeCalled();
-        $productPriceUsd->setCurrency('USD')
-            ->shouldBeCalled();
-        $productPriceUsd->setData('145.40')
             ->shouldBeCalled();
         $priceValue->addPrice($productPriceUsd)
             ->shouldBeCalled();
 
-        $productBuilder->addPriceForCurrency($priceValue, 'CHF')
+        $productBuilder->addPriceForCurrencyWithData($priceValue, 'CHF', '100')
             ->willReturn($productPriceUsd)
-            ->shouldBeCalled();
-        $productPriceUsd->setCurrency('CHF')
-            ->shouldBeCalled();
-        $productPriceUsd->setData('100')
             ->shouldBeCalled();
         $priceValue->addPrice($productPriceUsd)
             ->shouldBeCalled();
@@ -107,7 +87,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
         ProductPriceInterface $price,
         ArrayCollection $priceCollection
     ) {
-        $productBuilder->addPriceForCurrency(Argument::cetera())->willReturn($price);
+        $productBuilder->addPriceForCurrencyWithData(Argument::cetera())->willReturn($price);
         $priceValue->addPrice($price)->shouldBeCalled();
         $priceValue->getPrices()->willReturn($priceCollection);
 

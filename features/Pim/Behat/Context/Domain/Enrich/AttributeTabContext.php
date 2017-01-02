@@ -52,7 +52,8 @@ class AttributeTabContext extends PimContext
     }
 
     /**
-     * @param string $locale
+     * @param string $type
+     * @param string $selection
      *
      * @When /^I switch the comparison (locale|scope|source) to "([^"]*)"$/
      */

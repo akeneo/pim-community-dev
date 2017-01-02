@@ -20,10 +20,10 @@ oro_menu_config:
             template: 'OroNavigationBundle:Menu:favorites.html.twig'
         mostviewed:
             template: 'OroNavigationBundle:Menu:mostviewed.html.twig'
-            rootClass: 'extra-list'
+            rootClass: 'extra-list AknList'
         history:
             template: 'OroNavigationBundle:Menu:history.html.twig'
-            rootClass: 'extra-list'
+            rootClass: 'extra-list AknList'
             currentAsLink: false
 
     items:

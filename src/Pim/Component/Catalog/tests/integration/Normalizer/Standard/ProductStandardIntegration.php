@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Component\Catalog\Standard;
+namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Pim\Component\Catalog\Model\ProductInterface;

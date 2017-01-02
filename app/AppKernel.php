@@ -168,12 +168,10 @@ class AppKernel extends Kernel
     protected function getOroBundles()
     {
         return [
-            new Oro\Bundle\UIBundle\OroUIBundle(),
             new Oro\Bundle\AsseticBundle\OroAsseticBundle(),
             new Oro\Bundle\ConfigBundle\OroConfigBundle(),
             new Oro\Bundle\DataGridBundle\OroDataGridBundle(),
             new Oro\Bundle\FilterBundle\OroFilterBundle(),
-            new Oro\Bundle\FormBundle\OroFormBundle(),
             new Oro\Bundle\NavigationBundle\OroNavigationBundle(),
             new Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
             new Oro\Bundle\SecurityBundle\OroSecurityBundle(),

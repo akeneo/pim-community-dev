@@ -50,6 +50,7 @@ services:
     pim_catalog.denormalizer.standard.product_value:
         class: '%pim_catalog.denormalizer.standard.product_value.class%'
         arguments:
+            - '@pim_catalog.factory.product_value'
             - '%pim_catalog.entity.product_value.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

@@ -41,7 +41,7 @@ body {
   }
 }
 
-ul, ol, menu {
+ul, ol, li, menu {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -91,4 +91,15 @@ select {
   option {
     color: @AknDefaultFontColor;
   }
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Notes
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0
 }

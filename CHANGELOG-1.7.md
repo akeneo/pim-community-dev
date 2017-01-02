@@ -6,15 +6,14 @@
 - GITHUB-5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
 - GITHUB-5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
 - GITHUB-5337: Fixed Widget Registry. Priority is now taken in account.
-- TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from the flatToStandard product converter.
-
 
 ## Deprecations
 
 - In the _Product Query Builder_, aka _PQB_, (`Pim\Component\Catalog\Query\ProductQueryBuilderInterface`), filtering products by the following filters is now deprecated: `categories.id`, `family.id`, `groups.id`. 
   Filters `categories`, `family` and `groups` have been introduced and the _PQB_ now uses them by default. The filters `categories.code`, `family.code` and `groups.code` are deprecated. 
   In the next version, the deprecated filters will be removed.
-- As it's not needed anymore to convert `codes` to `ids` in order to filter products, `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` and `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface` are now deprecated. 
+- As it's not needed anymore to convert `codes` to `ids` in order to filter products, `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` and `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface` are now deprecated.
+- Creating a product value with the ProductBuilder (`Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer`) using the `createProductValue` function is now deprecated. It is advised to use the ProductValueFactory (`Pim\Component\Catalog\Factory\ProductValueFactory`) instead.
 
 ## Functional improvements
 
@@ -28,9 +27,12 @@
 - GITHUB-5380: Add `Pim\Component\User\Model\GroupInterface`
 - GITHUB-4696: Ping the server before updating job and step execution data to prevent "MySQL Server has gone away" issue cheers @qrz-io!
 - TIP-575: Rename FileIterator classes to FlatFileIterator and changes the reader/processor behavior to iterate over the item's position in the file instead of the item's line number in the file.
+- TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product` as it was not used anymore.
+- TIP-667: Introduce a product value factory service to instanciate product values.
 
 ## BC breaks
-
+- Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
 - Add `getAllChildrenCodes` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface` 
 - Change the constructor of `Pim\Bundle\FilterBundle\Filter\Product\InGroupFilter` to add `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver`
 - Remove WebServiceBundle
@@ -115,3 +117,8 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer` to add `Pim\Component\Enrich\Converter\ConverterInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Component\Enrich\Converter\ConverterInterface`
 - Change route from `pim_user_user_rest_get` to `pim_user_user_rest_get_current`. Route `pim_user_user_rest_get` now fetch a user the given username.
+- Remove classes `Oro\Bundle\UserBundle\Entity\Manager\GroupManager` and `Oro\Bundle\UserBundle\Entity\Manager\RoleManager`
+- Remove services `oro_user.role_manager` and `oro_user.group_manager`
+- Update classes and services to use the interface `Pim\Component\User\Model\GroupInterface`in place of `Oro\Bundle\UserBundle\Entity\Group`
+- Remove deprecated bundle "Oro\Bundle\UIBundle\OroUIBundle"
+- Remove deprecated bundle "Oro\Bundle\FormBundle\OroFormBundle"

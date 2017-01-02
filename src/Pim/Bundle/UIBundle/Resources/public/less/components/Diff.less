@@ -1,0 +1,15 @@
+@import '../base/variables';
+
+.AknDiff {
+  display: inline;
+
+  &--remove {
+    background: lighten(@AknRed, 30%);
+    color: darken(@AknRed, 20%);
+  }
+
+  &--add {
+    background: lighten(@AknGreen, 30%);
+    color: darken(@AknGreen, 20%);
+  }
+}

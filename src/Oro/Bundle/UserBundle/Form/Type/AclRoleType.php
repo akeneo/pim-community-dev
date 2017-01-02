@@ -56,7 +56,7 @@ class AclRoleType extends AbstractType
 
         $builder->add(
             'appendUsers',
-            'oro_entity_identifier',
+            'pim_enrich_entity_identifier',
             [
                 'class'    => 'PimUserBundle:User',
                 'required' => false,
@@ -67,7 +67,7 @@ class AclRoleType extends AbstractType
 
         $builder->add(
             'removeUsers',
-            'oro_entity_identifier',
+            'pim_enrich_entity_identifier',
             [
                 'class'    => 'PimUserBundle:User',
                 'required' => false,

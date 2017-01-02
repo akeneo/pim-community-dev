@@ -3,8 +3,8 @@
 namespace Oro\Bundle\UserBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\GroupInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -40,10 +40,10 @@ class GroupHandler
     /**
      * Process form
      *
-     * @param  Group $entity
-     * @return bool  True on successfull processing, false otherwise
+     * @param  GroupInterface $entity
+     * @return bool           True on successfull processing, false otherwise
      */
-    public function process(Group $entity)
+    public function process(GroupInterface $entity)
     {
         $this->form->setData($entity);
 
@@ -65,11 +65,11 @@ class GroupHandler
     /**
      * "Success" form handler
      *
-     * @param Group           $entity
+     * @param GroupInterface  $entity
      * @param UserInterface[] $appendUsers
      * @param UserInterface[] $removeUsers
      */
-    protected function onSuccess(Group $entity, array $appendUsers, array $removeUsers)
+    protected function onSuccess(GroupInterface $entity, array $appendUsers, array $removeUsers)
     {
         $this->appendUsers($entity, $appendUsers);
         $this->removeUsers($entity, $removeUsers);
@@ -80,10 +80,10 @@ class GroupHandler
     /**
      * Append users to group
      *
-     * @param Group           $group
+     * @param GroupInterface  $group
      * @param UserInterface[] $users
      */
-    protected function appendUsers(Group $group, array $users)
+    protected function appendUsers(GroupInterface $group, array $users)
     {
         /** @var $user UserInterface */
         foreach ($users as $user) {
@@ -95,10 +95,10 @@ class GroupHandler
     /**
      * Remove users from group
      *
-     * @param Group          $group
+     * @param GroupInterface  $group
      * @param UserInterface[] $users
      */
-    protected function removeUsers(Group $group, array $users)
+    protected function removeUsers(GroupInterface $group, array $users)
     {
         /** @var $user UserInterface */
         foreach ($users as $user) {

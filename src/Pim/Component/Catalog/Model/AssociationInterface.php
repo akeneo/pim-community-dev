@@ -100,7 +100,7 @@ interface AssociationInterface extends ReferableInterface
     /**
      * Get groups
      *
-     * @return GroupInterface[]
+     * @return GroupInterface[]|ArrayCollection
      */
     public function getGroups();
 

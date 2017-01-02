@@ -1,4 +1,4 @@
-{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% extends 'PimUIBundle:actions:update.html.twig' %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% set entityId = form.vars.value.id %}
@@ -41,7 +41,6 @@
         }) }}
     {% endif %}
     {{ UI.saveAndStayButton('pim_user_group_edit') }}
-    {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
 
 {% block content_data %}

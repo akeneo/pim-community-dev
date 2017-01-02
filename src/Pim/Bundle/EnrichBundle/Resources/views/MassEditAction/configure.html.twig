@@ -27,8 +27,7 @@
                     {{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.description')|trans }}
                 {% endblock %}
             </div>
-            <div class="AknWidget-content AknWidget-content--withPadding">
-
+            <div class="AknWidget-content">
                 <div class="AknMessageBox AknMessageBox--hide confirmation">
                     {{ confirmLabel|default('confirm')|transchoice(itemsCount) }}
                 </div>

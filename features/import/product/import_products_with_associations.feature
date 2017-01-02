@@ -155,3 +155,30 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "skipped product (no associations detected)"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6042
+  Scenario: Successfully import product associations without removing already existing associations when option "compare values" is set to true
+    Given the following product:
+      | sku     | name-en_US |
+      | SKU-001 | sku-001    |
+      | SKU-002 | sku-002    |
+      | SKU-003 | sku-003    |
+    And the following associations for the product "SKU-001":
+      | type   | product     |
+      | X_SELL | SKU-002     |
+      | UPSELL | SKU-002     |
+    And the following CSV file to import:
+      """
+      sku;UPSELL-products
+      SKU-001;SKU-003
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath          | %file to import% |
+      | enabledComparison | yes              |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then the product "SKU-001" should have the following associations:
+      | type   | products |
+      | X_SELL | SKU-002  |
+      | UPSELL | SKU-003  |
