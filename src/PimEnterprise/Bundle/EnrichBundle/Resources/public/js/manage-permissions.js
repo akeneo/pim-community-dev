@@ -19,7 +19,10 @@ define(
             if (!opts.elementId) {
                 return;
             }
-            var $changeList = $('<ul>', {id: 'permission-changes', 'class': 'permission-changes'});
+            var $changeList = $('<ul>', {
+                id: 'permission-changes',
+                class: 'permission-changes AknList AknList--withDisc'
+            });
             var $changeBlock = $('<div>', {'class': 'control-group hide'}).append(
                 $('<label>', {'class': 'control-label', 'text': opts.changeBlockLabel})
             ).append(
@@ -35,7 +38,7 @@ define(
                     if ($('#' + permissionId).length) {
                         $('#' + permissionId).remove();
                     } else {
-                        $changeList.append($('<li>', {id: permissionId}).html(
+                        $changeList.append($('<li>', {id: permissionId, 'class': 'AknList-item'}).html(
                             _.__(opts.grantMessage, {'permission': permissionLabel, 'group': e.added.text})
                         ));
                     }
@@ -58,7 +61,7 @@ define(
                     if ($('#' + permissionId).length) {
                         $('#' + permissionId).remove();
                     } else {
-                        $changeList.append($('<li>', {id: permissionId}).html(
+                        $changeList.append($('<li>', {id: permissionId, 'class': 'AknList-item'}).html(
                             _.__(opts.revokeMessage, {'permission': permissionLabel, 'group': e.removed.text})
                         ));
                     }
