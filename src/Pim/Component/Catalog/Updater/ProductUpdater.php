@@ -113,14 +113,21 @@ class ProductUpdater implements ObjectUpdaterInterface
             );
         }
 
+        $isProductUpdated = false;
+
         foreach ($data as $field => $values) {
             if (in_array($field, ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'])) {
-                $this->updateProductFields($product, $field, $values);
+                $isProductUpdated |= $this->updateProductFields($product, $field, $values);
             } else {
-                $this->updateProductValues($product, $field, $values);
+                $isProductUpdated |= $this->updateProductValues($product, $field, $values);
             }
         }
-        $this->updateProductVariantValues($product, $data);
+
+        $isProductUpdated |= $this->updateProductVariantValues($product, $data);
+
+        if ($isProductUpdated) {
+            $product->setUpdated(new \Datetime('now', new \DateTimeZone('UTC')));
+        }
 
         return $this;
     }
@@ -131,10 +138,14 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param ProductInterface $product
      * @param string           $field
      * @param mixed            $value
+     *
+     * @return boolean whether the product has been updated
      */
     protected function updateProductFields(ProductInterface $product, $field, $value)
     {
         $this->propertySetter->setData($product, $field, $value);
+
+        return true;
     }
 
     /**
@@ -146,9 +157,12 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param ProductInterface $product
      * @param string           $attributeCode
      * @param array            $values
+     *
+     * @return boolean whether the product has been updated
      */
     protected function updateProductValues(ProductInterface $product, $attributeCode, array $values)
     {
+        $isValuesUpdated = false;
         $family = $product->getFamily();
         $authorizedCodes = (null !== $family) ? $family->getAttributeCodes() : [];
         $isFamilyAttribute = in_array($attributeCode, $authorizedCodes);
@@ -160,8 +174,11 @@ class ProductUpdater implements ObjectUpdaterInterface
             if ($isFamilyAttribute || $providedData || $hasValue) {
                 $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
                 $this->propertySetter->setData($product, $attributeCode, $value['data'], $options);
+                $isValuesUpdated = true;
             }
         }
+
+        return $isValuesUpdated;
     }
 
     /**
@@ -170,6 +187,8 @@ class ProductUpdater implements ObjectUpdaterInterface
      *
      * @param ProductInterface $product
      * @param array            $data
+     *
+     * @return boolean whether the product has been updated.
      */
     protected function updateProductVariantValues(ProductInterface $product, array $data)
     {
@@ -186,5 +205,7 @@ class ProductUpdater implements ObjectUpdaterInterface
                 $this->templateUpdater->update($template, [$product]);
             }
         }
+
+        return $shouldEraseData;
     }
 }
