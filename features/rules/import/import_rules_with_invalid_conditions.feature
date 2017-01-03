@@ -127,7 +127,7 @@ Feature: Import rules
       sony_beautiful_description:
         priority: 10
         conditions:
-          - field:    sku
+          - field:    SKU
             operator: CONTAINS
             value:    "42"
         actions:
