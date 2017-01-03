@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -92,6 +101,29 @@ WHERE `pp`.`project_id` = :project_id
 SQL;
 
         $connection->executeUpdate($sql, ['project_id' => $projectId]);
+        $connection->delete('pimee_activity_manager_project_product', [
+            'project_id' => $projectId,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove(ProjectInterface $project)
+    {
+        $connection = $this->entityManager->getConnection();
+        $projectId = $project->getId();
+        $query = <<<SQL
+DELETE completeness
+FROM pimee_activity_manager_completeness_per_attribute_group AS completeness
+INNER JOIN pimee_activity_manager_project_product AS project_product1
+    ON project_product1.product_id = completeness.product_id
+LEFT OUTER JOIN pimee_activity_manager_project_product AS project_product2
+    ON project_product2.product_id = completeness.product_id AND project_product2.project_id <> :project_id
+WHERE project_product1.project_id = :project_id AND project_product2.product_id IS NULL
+SQL;
+
+        $connection->executeUpdate($query, ['project_id' => $projectId]);
         $connection->delete('pimee_activity_manager_project_product', [
             'project_id' => $projectId,
         ]);

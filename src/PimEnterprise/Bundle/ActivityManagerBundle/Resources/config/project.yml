@@ -83,6 +83,13 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pimee_activity_manager.event_listener.project:
+        class: '%pimee_activity_manager.event_listener.project.class%'
+        arguments:
+            - '@pimee_activity_manager.repository.pre_processing'
+        tags:
+            - { name: kernel.event_subscriber }
+
     ### Widget
     pimee_activity_manager.widget.completeness:
         class: '%pimee_activity_manager.widget.completeness.class%'

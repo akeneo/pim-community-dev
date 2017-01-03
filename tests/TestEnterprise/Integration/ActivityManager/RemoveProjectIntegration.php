@@ -1,0 +1,144 @@
+<?php
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace TestEnterprise\Integration\ActivityManager;
+
+class RemoveProjectIntegration extends ActivityManagerTestCase
+{
+    /**
+     * Tests if pre processing entries are well removed after a project removal and if products associated
+     * to the project are well removed from the mapping table.
+     * Pre-processing entries that have to be removed are rows containing products associated to the removed project
+     * AND not associated to another project.
+     */
+    public function testThatProjectRemovalRemovesPreProcessingEntriesAndMappedProducts()
+    {
+        $highTechProject = $this->createProject([
+            'label' => 'High-Tech project',
+            'locale' => 'en_US',
+            'owner'=> 'admin',
+            'channel' => 'ecommerce',
+            'product_filters' =>[
+                [
+                    'field' => 'categories',
+                    'operator' => 'IN',
+                    'value' => ['high_tech'],
+                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                ],
+            ],
+        ]);
+        $this->calculateProject($highTechProject);
+
+        $clothingProject = $this->createProject([
+            'label' => 'Clothing project',
+            'locale' => 'en_US',
+            'owner'=> 'admin',
+            'channel' => 'ecommerce',
+            'product_filters' =>[
+                [
+                    'field' => 'categories',
+                    'operator' => 'IN',
+                    'value' => ['clothing'],
+                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                ],
+            ],
+        ]);
+        $this->calculateProject($clothingProject);
+
+        $projectId = $highTechProject->getId();
+        $this->removeProject($highTechProject);
+
+        $this->assertPreProcessingEntriesAreRemoved();
+        $this->assertAssociatedProductsAreRemoved($projectId);
+    }
+
+    /**
+     * Checks if pre processing entries are well removed after a project removal.
+     * Entries that have to be removed are rows containing products associated to the removed project
+     * AND not associated to another project.
+     */
+    private function assertPreProcessingEntriesAreRemoved()
+    {
+        $selectPreProcessing = <<<SQL
+SELECT count(`completeness`.`product_id`)
+FROM `pimee_activity_manager_completeness_per_attribute_group` AS `completeness`;
+SQL;
+
+        $preProcessingEntries = (int) $this->getConnection()->fetchColumn($selectPreProcessing);
+        $this->assertSame(
+            $preProcessingEntries,
+            9,
+            sprintf(
+                'Must have 9 rows in pre processing table after project removal, found "%s".',
+                $preProcessingEntries
+            )
+        );
+
+        $selectProductsPreProcessing = <<<SQL
+SELECT DISTINCT(`completeness`.`product_id`)
+FROM `pimee_activity_manager_completeness_per_attribute_group` AS `completeness`;
+SQL;
+        $productsIdPreProcessing = $this->getConnection()->fetchAll($selectProductsPreProcessing);
+        $clothingProductsId = $this->getFormattedClothingProductsId();
+
+        $this->assertEquals($productsIdPreProcessing, $clothingProductsId);
+    }
+
+    /**
+     * Checks if products associated to the given project are well removed from the mapping table.
+     *
+     * @param int $projectId
+     */
+    private function assertAssociatedProductsAreRemoved($projectId)
+    {
+        $selectProducts = <<<SQL
+SELECT count(`project_product`.`product_id`) AS `count`
+FROM `pimee_activity_manager_project_product` AS `project_product`
+WHERE `project_product`.`project_id` = :project_id;
+SQL;
+
+        $projectProductsResult = (int) $this->getConnection()
+            ->fetchColumn($selectProducts, ['project_id' => $projectId]);
+
+        $this->assertSame(
+            $projectProductsResult,
+            0,
+            sprintf(
+                'Project product table should be empty. "%s" products associated to the removed project found.',
+                $projectProductsResult
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    private function getFormattedClothingProductsId()
+    {
+        $pqbFactory = $this->get('pim_catalog.query.product_query_builder_factory');
+        $pqb = $pqbFactory->create([
+            'filters' => [
+                [
+                    'field' => 'categories',
+                    'operator' => 'IN',
+                    'value' => ['clothing'],
+                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce']
+                ]
+            ]
+        ]);
+        $productsId = [];
+        foreach ($pqb->execute() as $product) {
+            $productsId[] = ['product_id' => $product->getId()];
+        }
+
+        return $productsId;
+    }
+}

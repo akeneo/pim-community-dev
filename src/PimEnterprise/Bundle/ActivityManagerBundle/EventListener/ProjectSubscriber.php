@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PimEnterprise\Component\ActivityManager\Model\ProjectIdentifier;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -24,6 +25,17 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProjectSubscriber implements EventSubscriberInterface
 {
+    /** @var PreProcessingRepositoryInterface */
+    protected $preProcessingRepository;
+
+    /**
+     * @param PreProcessingRepositoryInterface $preProcessingRepository
+     */
+    public function __construct(PreProcessingRepositoryInterface $preProcessingRepository)
+    {
+        $this->preProcessingRepository = $preProcessingRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,6 +43,7 @@ class ProjectSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::PRE_SAVE => 'generateCode',
+            StorageEvents::PRE_REMOVE => 'removePreProcessedEntries',
         ];
     }
 
@@ -56,5 +69,18 @@ class ProjectSubscriber implements EventSubscriberInterface
 
         $project->setCode($projectCode);
         $datagridView->setLabel($projectCode);
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function removePreProcessedEntries(GenericEvent $event)
+    {
+        $project = $event->getSubject();
+        if (!$project instanceof ProjectInterface) {
+            return;
+        }
+
+        $this->preProcessingRepository->remove($project);
     }
 }
