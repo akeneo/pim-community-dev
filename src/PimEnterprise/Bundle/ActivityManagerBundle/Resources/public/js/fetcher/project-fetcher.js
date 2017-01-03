@@ -12,12 +12,12 @@ define(
             /**
              * Get completeness of a project in terms of a contributor or not.
              *
-             * @param {String} projectCode
+             * @param {String} identifier
              * @param {String} contributor
              *
-             * @returns {Promise}
+             * @return {Promise}
              */
-            getCompleteness: function (projectCode, contributor) {
+            getCompleteness: function (identifier, contributor) {
                 if (_.isUndefined(contributor)) {
                     contributor = null;
                 }
@@ -25,7 +25,7 @@ define(
                 return this.getJSON(
                     this.options.urls.completeness,
                     {
-                        projectCode: projectCode,
+                        identifier: identifier,
                         contributor: contributor
                     }
                 );

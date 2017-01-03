@@ -12,11 +12,12 @@ define(
         'oro/translator',
         'pim/form',
         'backbone',
+        'routing',
         'pim/fetcher-registry',
         'text!activity-manager/templates/widget/project-completeness-data',
         'activity-manager/project/completeness-formatter'
     ],
-    function ($, _, __, BaseForm, Backbone, FetcherRegistry, template, completenessFormatter) {
+    function ($, _, __, BaseForm, Backbone, Routing, FetcherRegistry, template, completenessFormatter) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'AknProjectWidget-boxes',
@@ -56,7 +57,12 @@ define(
                             percentage: completenessProgress,
                             todoLabel: __(this.config.labels.todo),
                             inProgressLabel: __(this.config.labels.inProgress),
-                            doneLabel: __(this.config.labels.done)
+                            displayProductsLabel: __(this.config.labels.displayProducts),
+                            doneLabel: __(this.config.labels.done),
+                            url: Routing.generate(
+                                'activity_manager_project_show',
+                                {identifier: data.currentProjectCode}
+                            )
                         }));
                     }.bind(this));
             }

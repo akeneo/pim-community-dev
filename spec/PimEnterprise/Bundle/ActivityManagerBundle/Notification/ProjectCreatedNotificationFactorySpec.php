@@ -21,7 +21,7 @@ class ProjectCreatedNotificationFactorySpec extends ObjectBehavior
     {
         $parameters['due_date'] = '2019-12-23';
         $parameters['project_label'] = 'The project label';
-        $parameters['filters'] = 'filters';
+        $parameters['project_code'] = 'the-project-label-en-US-mobile';
 
         $this->create($parameters)->shouldReturnAnInstanceOf('Pim\Bundle\NotificationBundle\Entity\Notification');
     }

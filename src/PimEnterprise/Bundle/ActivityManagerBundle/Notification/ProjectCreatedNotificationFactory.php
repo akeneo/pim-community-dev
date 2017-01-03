@@ -47,11 +47,11 @@ class ProjectCreatedNotificationFactory
             ->setMessageParams(
                 ['%project_label%' => $parameters['project_label'], '%due_date%' => $parameters['due_date']]
             )
-            ->setRoute('pim_enrich_product_index')
+            ->setRoute('activity_manager_project_show')
+            ->setRouteParams(['identifier' => $parameters['project_code']])
             ->setContext([
                 'actionType'     => 'project_calculation',
-                'buttonLabel'    => sprintf('activity_manager.notification.%s.start', 'project_calculation'),
-                'gridParameters' => $parameters['filters'],
+                'buttonLabel'    => sprintf('activity_manager.notification.%s.start', 'project_calculation')
             ]);
 
         return $notification;

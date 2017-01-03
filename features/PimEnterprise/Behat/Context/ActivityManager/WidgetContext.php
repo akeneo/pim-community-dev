@@ -85,6 +85,16 @@ class WidgetContext extends PimContext
     }
 
     /**
+     * @When /^I click on the "([^"]*)" section of the activity manager widget$/
+     *
+     * @param string $sectionName
+     */
+    public function iClickOnTheSectionOfTheActivityManagerWidget($sectionName)
+    {
+        $this->getActivityManagerWidget()->clickOnSection($sectionName);
+    }
+
+    /**
      * Get the decorated Activity Manager widget
      *
      * @return ActivityManagerWidgetDecorator

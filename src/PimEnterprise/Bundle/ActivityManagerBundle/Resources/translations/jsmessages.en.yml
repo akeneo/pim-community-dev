@@ -8,6 +8,7 @@ activity_manager:
         description: Description
         due_date: Due Date
         due_date_past: You can't select a date in the past.
+        leaving_scope: You're leaving project scope.
     create_project_modal:
         label_placeholder: Name of the new project
         description_placeholder: Description of the new project
@@ -23,6 +24,7 @@ activity_manager:
         in_progress: IN PROGRESS
         done: DONE
         all_contributors: All contributors
+        display_products: Display products
         placeholder:
             contributor_selector: Search contributor
             project_selector: Search project

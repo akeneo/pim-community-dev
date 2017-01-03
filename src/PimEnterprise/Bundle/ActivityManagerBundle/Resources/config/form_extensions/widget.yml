@@ -33,6 +33,7 @@ extensions:
                 todo: activity_manager.widget.todo
                 inProgress: activity_manager.widget.in_progress
                 done: activity_manager.widget.done
+                displayProducts: activity_manager.widget.display_products
 
     activity-manager-widget-project-description:
         module: activity-manager/widget/project-description

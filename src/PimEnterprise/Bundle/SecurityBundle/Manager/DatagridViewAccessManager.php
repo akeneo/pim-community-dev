@@ -72,6 +72,14 @@ class DatagridViewAccessManager
             throw new \LogicException(sprintf('Attribute "%" is not supported.', $attribute));
         }
 
+        if (null !== $categoryId = $this->getCategoryIdFromViewFilters($view)) {
+            return $this->isCategoryGranted($user, $categoryId);
+        }
+
+        if ('project' === $view->getType()) {
+            return true;
+        }
+
         foreach ($view->getColumns() as $column) {
             if (false === $this->isAttributeGranted($user, $column)) {
                 return false;
@@ -82,10 +90,6 @@ class DatagridViewAccessManager
             if (false === $this->isAttributeGranted($user, $filter)) {
                 return false;
             }
-        }
-
-        if (null !== $categoryId = $this->getCategoryIdFromViewFilters($view)) {
-            return $this->isCategoryGranted($user, $categoryId);
         }
 
         return true;

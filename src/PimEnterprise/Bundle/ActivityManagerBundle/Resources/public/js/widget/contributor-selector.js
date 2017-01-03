@@ -130,7 +130,7 @@ define(
              */
             getSelectSearchParameters: function (term, page) {
                 return $.extend(true, {}, this.searchParameters, {
-                    projectCode: this.getFormData().currentProjectCode,
+                    identifier: this.getFormData().currentProjectCode,
                     search: term,
                     options: {
                         limit: this.resultsPerPage,

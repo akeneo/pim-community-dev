@@ -52,17 +52,15 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         $datePresenter,
         ProjectEvent $event,
         ProjectInterface $project,
-        DatagridView $view,
         UserInterface $user,
         NotificationInterface $notification,
         LocaleInterface $locale
     ) {
         $datetime = new \DateTime('2019-12-23');
         $event->getProject()->willReturn($project);
-        $project->getDatagridView()->willReturn($view);
-        $view->getFilters()->willReturn('filters');
         $project->getDueDate()->willReturn($datetime);
         $project->getLabel()->willReturn('project label');
+        $project->getCode()->willReturn('project-label-en_US-mobile');
 
         $datePresenter->present($datetime, ['locale' => 'en_US'])->willReturn('2019-12-23');
 
@@ -71,7 +69,11 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         $locale->getCode()->willReturn('en_US');
 
         $factory->create(
-            ['due_date' => '2019-12-23', 'project_label' => 'project label', 'filters' => 'filters']
+            [
+                'due_date' => '2019-12-23',
+                'project_label' => 'project label',
+                'project_code' => 'project-label-en_US-mobile'
+            ]
         )->willReturn($notification);
 
         $userRepository->findContributorsToNotify($project)->willReturn([$user]);

@@ -18,11 +18,17 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher;
+use PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -72,6 +78,12 @@ class ProjectController
     /** @var ProjectCompletenessRepositoryInterface */
     protected $projectCompletenessRepository;
 
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
+    /** @var RouterInterface */
+    protected $router;
+
     /**
      * @param FilterConverter                        $filterConverter
      * @param SimpleFactoryInterface                 $datagridViewFactory
@@ -86,6 +98,8 @@ class ProjectController
      * @param SearchableRepositoryInterface          $userRepository
      * @param TokenStorageInterface                  $tokenStorage
      * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
+     * @param AuthorizationCheckerInterface          $authorizationChecker
+     * @param RouterInterface                        $router
      */
     public function __construct(
         FilterConverter $filterConverter,
@@ -100,7 +114,9 @@ class ProjectController
         ProjectRepositoryInterface $projectRepository,
         SearchableRepositoryInterface $userRepository,
         TokenStorageInterface $tokenStorage,
-        ProjectCompletenessRepositoryInterface $projectCompletenessRepository
+        ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
+        AuthorizationCheckerInterface $authorizationChecker,
+        RouterInterface $router
     ) {
         $this->filterConverter = $filterConverter;
         $this->datagridViewFactory = $datagridViewFactory;
@@ -115,6 +131,8 @@ class ProjectController
         $this->userRepository = $userRepository;
         $this->tokenStorage = $tokenStorage;
         $this->projectCompletenessRepository = $projectCompletenessRepository;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->router = $router;
     }
 
     /**
@@ -138,12 +156,18 @@ class ProjectController
         $projectData['owner'] = $user;
         $projectData['channel'] = $datagridViewFilters['f']['scope']['value'];
 
+        $projectDatagridView = isset($projectData['datagrid_view']) ? $projectData['datagrid_view'] : null;
+        unset($projectData['datagrid_view']);
+
+        $project = $this->projectFactory->create();
+        $this->projectUpdater->update($project, $projectData);
+
         $datagridViewData = [];
-        if (isset($projectData['datagrid_view'])) {
-            $datagridViewData = $projectData['datagrid_view'];
+        if (null !== $projectDatagridView) {
+            $datagridViewData = $projectDatagridView;
             $datagridViewData['type'] = DatagridViewTypes::PROJECT_VIEW;
             $datagridViewData['owner'] = $projectData['owner'];
-            $datagridViewData['label'] = sprintf('Project %s', time());
+            $datagridViewData['label'] = $project->getCode();
             $datagridViewData['datagrid_alias'] = 'product-grid';
         }
 
@@ -151,8 +175,6 @@ class ProjectController
         $this->datagridViewUpdater->update($datagridView, $datagridViewData);
 
         $projectData['datagrid_view'] = $datagridView;
-
-        $project = $this->projectFactory->create();
         $this->projectUpdater->update($project, $projectData);
 
         $violations = $this->validator->validate($project);
@@ -232,13 +254,13 @@ class ProjectController
      * Returns users that belong to the project.
      *
      * @param Request $request
-     * @param string  $projectCode
+     * @param string  $identifier
      *
      * @return JsonResponse
      */
-    public function searchContributorsAction($projectCode, Request $request)
+    public function searchContributorsAction($identifier, Request $request)
     {
-        $project = $this->projectRepository->findOneByIdentifier($projectCode);
+        $project = $this->projectRepository->findOneByIdentifier($identifier);
 
         if (null === $project) {
             return new JsonResponse(null, 404);
@@ -258,5 +280,29 @@ class ProjectController
         $normalizedProjects = $this->projectNormalizer->normalize($users, 'internal_api');
 
         return new JsonResponse($normalizedProjects, 200);
+    }
+
+    /**
+     * The "show" action of a project means redirecting the user on the datagrid filtered with the Project's view.
+     *
+     * @param string $identifier
+     *
+     * @Template("PimEnterpriseActivityManagerBundle:Project:filter-grid.html.twig")
+     *
+     * @return array|RedirectResponse
+     */
+    public function showAction($identifier)
+    {
+        $project = $this->projectRepository->findOneByIdentifier($identifier);
+
+        if (null === $project ||
+            !$this->authorizationChecker->isGranted([ProjectVoter::OWN, ProjectVoter::CONTRIBUTE], $project)
+        ) {
+            return new RedirectResponse($this->router->generate('pim_enrich_product_index'));
+        }
+
+        return [
+            'view' => $project->getDatagridView()
+        ];
     }
 }

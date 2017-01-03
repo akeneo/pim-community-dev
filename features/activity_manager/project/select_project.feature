@@ -1,8 +1,8 @@
 @javascript
-Feature: Display activity manager projects in the datagrid view selector
-  In order to display and select the projects I can work on
+Feature: Select a project to display products to enrich
+  In order to easily display products I have to enrich in a project
   As a contributor
-  I need to be able to display the projects in the view selector
+  I need to be able to select a project from many locations
 
   Background:
     Given the "activity_manager" catalog configuration
@@ -68,10 +68,10 @@ Feature: Display activity manager projects in the datagrid view selector
       | media           | Read Only           | view   |
       | media           | Media manager       | edit   |
     And the following families:
-      | code     | label-en_US | attributes                                                      | requirements-ecommerce                          | requirements-mobile                    |
-      | tshirt   | TShirts     | sku, name, description, size, weight, release_date, material    | sku, name, size, description, material          | sku, name, size, description, material |
-      | usb_keys | USB Keys    | sku, name, description, weight, release_date, capacity, picture | sku, name, size, description, capacity, picture | sku, name, size, description, capacity |
-      | posters  | Posters     | sku, name, description, size, release_date, picture             | sku, name, size, description, picture           | sku, name, size, description, picture  |
+      | code     | label-en_US | attributes                                                   | requirements-ecommerce                 | requirements-mobile                    |
+      | tshirt   | TShirts     | sku, name, description, size, weight, release_date, material | sku, name, size, description, material | sku, name, size, description, material |
+      | usb_keys | USB Keys    | sku, name, description, weight, release_date, capacity       | sku, name, size, description, capacity | sku, name, size, description, capacity |
+      | posters  | Posters     | sku, name, description, size, release_date, picture          | sku, name, size, description, picture  | sku, name, size, description, picture  |
     And the following products:
       | sku                  | family   | categories         | name-en_US                | size-en_US | weight-en_US | weight-en_US-unit | release_date-en_US | release_date-fr_FR | material-en_US | capacity | capacity-unit |
       | tshirt-the-witcher-3 | tshirt   | clothing           | T-Shirt "The Witcher III" | M          | 5            | OUNCE             | 2015-06-20         | 2015-06-20         | cotton         |          |               |
@@ -95,59 +95,47 @@ Feature: Display activity manager projects in the datagrid view selector
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    When I am on the products page
-    And I filter by "category" with operator "" and value "default"
-    And I show the filter "capacity"
-    And I filter by "capacity" with operator "=" and value "8 Gigabyte"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
-    When I fill in the following information in the popin:
-      | project-label       | Tech project       |
-      | project-description | Technical project. |
-      | project-due-date    | 12/13/2039         |
-    And I press the "Save" button
-    Then I should be on the products page
-    And I go on the last executed job resume of "project_calculation"
-    And I wait for the "project_calculation" job to finish
     And I logout
 
-  Scenario: A contributor can display projects he can work on
-    Given I am logged in as "Mary"
-    When I am on the products page
-    And I open the view selector
-    Then view selector type switcher should be on "Projects"
-    And I should see the "2016 summer collection" project
-
-  Scenario: A contributor can display projects based on filter he doesn't have access to
-    Given I am logged in as "Kathy"
-    When I am on the products page
-    And I open the view selector
-    Then view selector type switcher should be on "Projects"
-    And I should see the "Tech project" project
-
-  Scenario: A contributor won't see a project he can't work on
-    Given I am logged in as "Teddy"
-    And I am on the products page
-    And I open the view selector
-    Then view selector type switcher should be on "Projects"
-    Then I should not see the "2016 summer collection" project
-    But I should see the "Tech project" project
-
-  Scenario: A contributor can search for a project name
+  Scenario: A contributor can select a project by selecting it in the datagrid view selector
     Given I am logged in as "Mary"
     And I am on the products page
-    When I open the view selector
-    Then view selector type switcher should be on "Projects"
-    When I filter view selector with name "2016"
-    Then I should see the "2016 summer collection" project
-    When I filter view selector with name "bar"
-    Then I should not see the "2016 summer collection" project
-
-  Scenario: A contributor can search for a view name, then switch to projects and keeps his search
-    Given I am logged in as "Mary"
-    And I am on the products page
-    When I open the view selector
-    And I switch view selector type to "Views"
-    And I filter view selector with name "2016"
+    And I open the view selector
     And I switch view selector type to "Projects"
-    Then I should see the "2016 summer collection" project
+    When I apply the "2016 summer collection" project
+    Then I should see products tshirt-skyrim and tshirt-the-witcher-3
+    And I should see the text "2016 summer collection"
+
+  Scenario: A contributor can select a project by clicking on the TODO section of the widget
+    Given I am logged in as "Mary"
+    And I am on the dashboard page
+    When I click on the "todo" section of the activity manager widget
+    Then I should be on the products page
+    And I should see products tshirt-skyrim and tshirt-the-witcher-3
+    And I should see the text "2016 summer collection"
+
+  Scenario: A contributor can select a project by clicking on the IN PROGRESS section of the widget
+    Given I am logged in as "Mary"
+    And I am on the dashboard page
+    When I click on the "in-progress" section of the activity manager widget
+    Then I should be on the products page
+    And I should see products tshirt-skyrim and tshirt-the-witcher-3
+    And I should see the text "2016 summer collection"
+
+  Scenario: A contributor can select a project from the project creation notification
+    Given I am logged in as "Mary"
+    And I am on the dashboard page
+    When I click on the notification "project_calculation"
+    Then I should be on the products page
+    And I should see products tshirt-skyrim and tshirt-the-witcher-3
+    And I should see the text "2016 summer collection"
+
+  Scenario: A contributor must be alerted if he's leaving project scope by changing grid filters
+    Given I am logged in as "Mary"
+    And I am on the products page
+    And I open the view selector
+    And I switch view selector type to "Projects"
+    When I apply the "2016 summer collection" project
+    Then I should see products tshirt-skyrim and tshirt-the-witcher-3
+    When I filter by "category" with operator "" and value "high_tech"
+    Then I should see the text "You're leaving project scope."

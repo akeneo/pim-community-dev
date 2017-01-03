@@ -44,6 +44,36 @@ define(
                     }.bind(this));
 
                 return deferred.promise();
+            },
+
+            /**
+             * {@inheritdoc}
+             *
+             * Override to handle activity manager projects view.
+             */
+            selectView: function (view) {
+                if ('project' === this.currentViewType) {
+                    view = view.datagridView;
+                }
+
+                ViewSelector.prototype.selectView.apply(this, [view]);
+            },
+
+            /**
+             * {@inheritdoc}
+             *
+             * Override to fetch the project label of a view
+             */
+            postFetchDatagridView: function (view) {
+                if ('project' === view.type) {
+                    return FetcherRegistry.getFetcher('project').fetch(view.label).then(function (project) {
+                        view.text = project.label;
+
+                        return view;
+                    });
+                }
+
+                return ViewSelector.prototype.postFetchDatagridView.apply(this, arguments);
             }
         });
     }

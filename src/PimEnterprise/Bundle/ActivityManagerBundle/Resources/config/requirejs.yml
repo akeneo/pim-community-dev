@@ -27,10 +27,13 @@ config:
         '*':
             pim/grid/view-selector/selector: activity-manager/grid/view-selector/selector
             pim/grid/view-selector/line: activity-manager/grid/view-selector/line
+            pim/grid/view-selector/current: activity-manager/grid/view-selector/current
         activity-manager/grid/view-selector/selector:
             pim/grid/view-selector/selector: pim/grid/view-selector/selector
         activity-manager/grid/view-selector/line:
             pim/grid/view-selector/line: pim/grid/view-selector/line
+        activity-manager/grid/view-selector/current:
+            pim/grid/view-selector/current: pim/grid/view-selector/current
 
     paths:
         # Forms
@@ -46,6 +49,7 @@ config:
         activity-manager/widget/project-description: pimenterpriseactivitymanager/js/widget/project-description
         activity-manager/grid/view-selector/selector: pimenterpriseactivitymanager/js/grid/view-selector
         activity-manager/grid/view-selector/line: pimenterpriseactivitymanager/js/grid/view-selector-line
+        activity-manager/grid/view-selector/current: pimenterpriseactivitymanager/js/grid/view-selector-current
 
         # Savers
         activity-manager/saver/project: pimenterpriseactivitymanager/js/saver/project-saver

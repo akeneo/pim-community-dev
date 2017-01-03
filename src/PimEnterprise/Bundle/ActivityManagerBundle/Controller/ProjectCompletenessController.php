@@ -38,7 +38,10 @@ class ProjectCompletenessController
     protected $authorizationChecker;
 
     /**
-     * ProjectCompletenessController constructor.
+     * @param IdentifiableObjectRepositoryInterface  $projectRepository
+     * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
+     * @param TokenStorageInterface                  $tokenStorage
+     * @param AuthorizationCheckerInterface          $authorizationChecker
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $projectRepository,
@@ -53,14 +56,14 @@ class ProjectCompletenessController
     }
 
     /**
-     * @param int     $projectCode
+     * @param int     $identifier
      * @param Request $request
      *
      * @return JsonResponse
      */
-    public function showAction($projectCode, Request $request)
+    public function showAction($identifier, Request $request)
     {
-        $project = $this->projectRepository->findOneByIdentifier($projectCode);
+        $project = $this->projectRepository->findOneByIdentifier($identifier);
 
         if (null === $project) {
             return new JsonResponse(null, 404);

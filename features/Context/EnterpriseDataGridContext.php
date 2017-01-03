@@ -166,6 +166,16 @@ class EnterpriseDataGridContext extends BaseDataGridContext
     }
 
     /**
+     * @param string $projectLabel
+     *
+     * @When /^I apply the "([^"]*)" project$/
+     */
+    public function iApplyTheProject($projectLabel)
+    {
+        $this->iApplyTheView($projectLabel);
+    }
+
+    /**
      * Return the image title if an image is found in the cell, the text content otherwise
      *
      * @param NodeElement $cell

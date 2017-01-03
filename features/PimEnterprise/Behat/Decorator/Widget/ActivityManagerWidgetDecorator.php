@@ -3,6 +3,7 @@
 namespace PimEnterprise\Behat\Decorator\Widget;
 
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Pim\Behat\Decorator\ElementDecorator;
 use Pim\Behat\Decorator\Field\Select2Decorator;
 
@@ -58,7 +59,6 @@ class ActivityManagerWidgetDecorator extends ElementDecorator
         ];
     }
 
-
     /**
      * @param string $needle
      *
@@ -68,8 +68,28 @@ class ActivityManagerWidgetDecorator extends ElementDecorator
     {
         $box = $this->spin(function () use ($needle) {
             return $this->find('css', sprintf('.activity-manager-completeness-%s', $needle));
-        }, sprintf('""%s" box not found in completeness.', $needle));
+        }, sprintf('"%s" box not found in completeness.', $needle));
 
         return $box->getText();
+    }
+
+    /**
+     * Click on the section with the given $sectionName on this widget.
+     *
+     * @param string $sectionName
+     */
+    public function clickOnSection($sectionName)
+    {
+        $box = $this->spin(function () use ($sectionName) {
+            return $this->find('css', sprintf('.activity-manager-completeness-%s', $sectionName));
+        }, sprintf('"%s" box not found in completeness.', $sectionName));
+
+        $box->getParent()->mouseOver();
+
+        $link = $this->spin(function () use ($box) {
+            return $box->getParent()->find('css', 'a');
+        }, sprintf('Link not found in box "%s" of the activity manager widget.', $sectionName));
+
+        $link->click();
     }
 }

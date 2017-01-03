@@ -1,6 +1,10 @@
 <div class="AknProjectWidget-boxContainer">
     <span class="AknProjectWidget-boxLabel"><%- todoLabel %></span>
     <div class="AknProjectWidget-box AknProjectWidget-box--important">
+        <a class="AknProjectWidget-boxHover" href="<%- url %>">
+            <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
+        </a>
+
         <div class="AknProjectWidget-boxData activity-manager-completeness-todo"><%- completeness.todo %></div>
         <%- percentage.todo %>
     </div>
@@ -9,6 +13,10 @@
 <div class="AknProjectWidget-boxContainer">
     <span class="AknProjectWidget-boxLabel"><%- inProgressLabel %></span>
     <div class="AknProjectWidget-box AknProjectWidget-box--warning">
+        <a class="AknProjectWidget-boxHover" href="<%- url %>">
+            <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
+        </a>
+
         <div class="AknProjectWidget-boxData activity-manager-completeness-in-progress"><%- completeness.in_progress %></div>
         <%- percentage.in_progress %>
     </div>

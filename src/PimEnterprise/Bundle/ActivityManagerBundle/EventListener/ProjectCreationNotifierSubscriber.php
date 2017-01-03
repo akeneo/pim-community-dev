@@ -74,10 +74,6 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
     public function projectCreated(ProjectEvent $event)
     {
         $project = $event->getProject();
-
-        $view = $project->getDatagridView();
-        $filters = $view->getFilters();
-
         $users = $this->userRepository->findContributorsToNotify($project);
 
         foreach ($users as $user) {
@@ -89,7 +85,7 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
 
             $parameters['due_date'] = $formattedDate;
             $parameters['project_label'] = $project->getLabel();
-            $parameters['filters'] = $filters;
+            $parameters['project_code'] = $project->getCode();
 
             $notification = $this->factory->create($parameters);
             $this->notifier->notify($notification, [$user]);
