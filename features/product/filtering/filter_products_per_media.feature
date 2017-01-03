@@ -30,11 +30,10 @@ Feature: Filter products per media
     Then the grid should contain 3 elements
     And I should see products shirt-one, shirt-two and shirt-three
     And I should be able to use the following filters:
-      | filter     | value                | result                    |
-      | Image      | starts with a        | shirt-one                 |
-      | Attachment | ends with txt        | shirt-one and shirt-two   |
-      | Image      | contains ic          | shirt-two and shirt-three |
-      | Attachment | does not contain neo | shirt-two                 |
-      # todo: uncomment the following line when https://akeneo.atlassian.net/browse/PIM-3407 is fixed
-      # | Image      | is equal to akeneo.jpg | shirt-one                 |
-      | Attachment | empty | shirt-three |
+      | filter     | operator         | value      | result                    |
+      | image      | starts with      | a          | shirt-one                 |
+      | attachment | ends with        | txt        | shirt-one and shirt-two   |
+      | image      | contains         | ic         | shirt-two and shirt-three |
+      | attachment | does not contain | neo        | shirt-two                 |
+      | image      | is equal to      | akeneo.jpg | shirt-one                 |
+      | attachment | is empty         |            | shirt-three               |

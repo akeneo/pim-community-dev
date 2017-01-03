@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_user.normalizer.user:
-        class: %pim_user.normalizer.user.class%
+        class: '%pim_user.normalizer.user.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

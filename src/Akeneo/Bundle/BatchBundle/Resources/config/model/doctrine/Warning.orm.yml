@@ -9,11 +9,6 @@ Akeneo\Component\Batch\Model\Warning:
             id: true
             generator:
                 strategy: AUTO
-        name:
-            type: string
-            length: 100
-            nullable: true
-            column: name
         reason:
             type: text
             nullable: true

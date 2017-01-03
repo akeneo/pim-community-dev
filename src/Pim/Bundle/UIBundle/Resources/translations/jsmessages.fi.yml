@@ -44,7 +44,7 @@ jstree:
     unclassified: Luokittelemattomat tuotteet
   no_tree: Ei puuta käytettävissä
   include_sub: Sisällytä alakategoriat
-  loading: Ladataan ...
+  loading: Lataa ...
 datetimepicker:
   days:
     Sunday: Sunnuntai
@@ -88,7 +88,7 @@ datetimepicker:
     Feb: Helmi
     Mar: Maalis
     Apr: Huhti
-    May: Toukokuu
+    May: Touko
     Jun: Kesä
     Jul: Heinä
     Aug: Elo
@@ -99,7 +99,7 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Järjestelmän asetukset
+      title: Järjestelmäasetukset
       tab:
         system:
           title: Järjestelmä
@@ -109,4 +109,4 @@ oro_config:
           system_locale: Kieli
         notification:
           title: Ilmoitukset
-          system_notification: Uuden version päivitykset
+          system_notification: Versiopäivitysilmoitukset

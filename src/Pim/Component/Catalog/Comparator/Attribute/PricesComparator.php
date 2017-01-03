@@ -37,20 +37,26 @@ class PricesComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        $default   = ['locale' => null, 'scope' => null, 'data' => []];
+        $default = ['locale' => null, 'scope' => null, 'data' => []];
         $originals = array_merge($default, $originals);
 
         $originalPrices = [];
         foreach ($originals['data'] as $price) {
             if (null !== $price['data']) {
-                $originalPrices[$price['currency']] = number_format($price['data'], 4);
+                $originalPrices[$price['currency']] = $price['data'];
+                if (is_numeric($price['data'])) {
+                    $originalPrices[$price['currency']] = number_format($price['data'], 4);
+                }
             }
         }
 
         $dataPrices = [];
         foreach ($data['data'] as $price) {
             if (null !== $price['data']) {
-                $dataPrices[$price['currency']] = number_format($price['data'], 4);
+                $dataPrices[$price['currency']] = $price['data'];
+                if (is_numeric($price['data'])) {
+                    $dataPrices[$price['currency']] = number_format($price['data'], 4);
+                }
             }
         }
 

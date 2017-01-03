@@ -15,11 +15,11 @@ Feature: Execute a job
       sku;comment-fr_FR-mobile
       SKU-001;"my comment"
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "Status: FAILED"
     And I should see " The field \"comment-fr_FR-mobile\" does not exist"
 
@@ -30,11 +30,11 @@ Feature: Execute a job
       sku;comment-mobile
       SKU-001;"my comment"
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "Status: FAILED"
     And I should see " The field \"comment-mobile\" does not exist"
 
@@ -45,11 +45,11 @@ Feature: Execute a job
       sku;comment-fr_FR
       SKU-001;"my comment"
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "Status: FAILED"
     And I should see " The field \"comment-fr_FR\" does not exist"
 
@@ -60,11 +60,11 @@ Feature: Execute a job
       sku;name-fr_CA
       SKU-001;"my name"
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "Status: FAILED"
     And I should see " The field \"name-fr_CA\" does not exist"
 
@@ -75,11 +75,11 @@ Feature: Execute a job
       sku;description-en_US-noexistingchannel
       SKU-001;"my description"
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "Status: FAILED"
     And I should see " The field \"description-en_US-noexistingchannel\" does not exist"
 
@@ -92,11 +92,11 @@ Feature: Execute a job
       SKU-001;high heels;red high heels
       SKU-002;rangers;black rangers
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see " The field \"description-en_US-wrongchannel\" does not exist"
     And I should see "FAILED"
     And there should be 0 product
@@ -109,11 +109,11 @@ Feature: Execute a job
       SKU-001;100
       SKU-002;50
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see " The field \"price-FCFA\" does not exist"
     And I should see "FAILED"
     And there should be 0 product
@@ -126,11 +126,11 @@ Feature: Execute a job
       SKU-001;high heels;red high heels
       SKU-002;rangers;black rangers
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "The field \"description-wronglocale-ecommerce\" does not exist"
     And I should see "FAILED"
     And there should be 0 product
@@ -147,11 +147,11 @@ Feature: Execute a job
       sku;locale_specific_attribute-fr_FR
       SKU-001;test value
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "The field \"locale_specific_attribute-fr_FR\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3369
@@ -161,11 +161,11 @@ Feature: Execute a job
       sku;description-fr_FR-print
       SKU-001;"my name"
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "Status: FAILED"
     And I should see " The field \"description-fr_FR-print\" does not exist"
 
@@ -175,10 +175,10 @@ Feature: Execute a job
       sku;unknownfield1;unknownfield2
       SKU-001;"data 1";"data 2"
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "Status: FAILED"
     And I should see " The fields \"unknownfield1, unknownfield2\" do not exist"

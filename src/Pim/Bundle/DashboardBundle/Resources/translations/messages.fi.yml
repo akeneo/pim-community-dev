@@ -1,10 +1,11 @@
 pim_dashboard:
-  title: Ohjauspaneeli
+  title: Dashboard
   version: Versio
   link.label:
     product: Tuotteiden hallinta
     category: Kategorioiden hallinta
     attribute: Attribuuttien hallinta
+    family: Tuoteryhmien hallinta
   widget:
     error:
       title: Virhe ladatessa widgettiä

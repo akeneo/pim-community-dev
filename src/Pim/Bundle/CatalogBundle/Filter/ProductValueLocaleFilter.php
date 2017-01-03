@@ -23,7 +23,7 @@ class ProductValueLocaleFilter extends AbstractFilter implements CollectionFilte
         }
 
         $localeCodes = isset($options['locales']) ? $options['locales'] : [];
-        $attribute   = $productValue->getAttribute();
+        $attribute = $productValue->getAttribute();
 
         return !empty($localeCodes) &&
             $attribute->isLocalizable() &&

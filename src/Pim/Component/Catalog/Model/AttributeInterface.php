@@ -114,7 +114,7 @@ interface AttributeInterface extends
     /**
      * Get available locales
      *
-     * @deprecated will be removed in 1.6, use getLocaleSpecificCodes
+     * @deprecated will be removed in 1.7, use getLocaleSpecificCodes
      *
      * @return ArrayCollection|null
      */
@@ -362,7 +362,11 @@ interface AttributeInterface extends
     public function setDateMin($dateMin);
 
     /**
-     * {@inheritdoc}
+     * Set attribute type
+     *
+     * @param string $type
+     *
+     * @return AttributeInterface
      */
     public function setAttributeType($type);
 
@@ -595,15 +599,6 @@ interface AttributeInterface extends
      * @return string $validationRegexp
      */
     public function getValidationRegexp();
-
-    /**
-     * Set available locales
-     *
-     * @param ArrayCollection $availableLocales
-     *
-     * @return AttributeInterface
-     */
-    public function setAvailableLocales(ArrayCollection $availableLocales);
 
     /**
      * Set decimalsAllowed

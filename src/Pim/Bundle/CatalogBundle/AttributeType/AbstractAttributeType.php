@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -17,40 +16,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 abstract class AbstractAttributeType implements AttributeTypeInterface
 {
     /**
-     * Available backend storage, the product doctrine mapped field
-     *
-     * @staticvar string
-     */
-    const BACKEND_STORAGE_ATTRIBUTE_VALUE = 'values';
-
-    /**
-     * Available backend types, the doctrine mapped field in value class
-     *
-     * @staticvar string
-     */
-    const BACKEND_TYPE_DATE             = 'date';
-    const BACKEND_TYPE_DATETIME         = 'datetime';
-    const BACKEND_TYPE_DECIMAL          = 'decimal';
-    const BACKEND_TYPE_BOOLEAN          = 'boolean';
-    const BACKEND_TYPE_INTEGER          = 'integer';
-    const BACKEND_TYPE_OPTIONS          = 'options';
-    const BACKEND_TYPE_OPTION           = 'option';
-    const BACKEND_TYPE_TEXT             = 'text';
-    const BACKEND_TYPE_VARCHAR          = 'varchar';
-    const BACKEND_TYPE_MEDIA            = 'media';
-    const BACKEND_TYPE_METRIC           = 'metric';
-    const BACKEND_TYPE_PRICE            = 'prices';
-    const BACKEND_TYPE_COLLECTION       = 'collections';
-    const BACKEND_TYPE_ENTITY           = 'entity';
-    const BACKEND_TYPE_REF_DATA_OPTION  = 'reference_data_option';
-    const BACKEND_TYPE_REF_DATA_OPTIONS = 'reference_data_options';
-
-    /**
      * Field backend type, "varchar" by default, the doctrine mapping field, getter / setter to use for binding
      *
      * @var string
      */
-    protected $backendType = self::BACKEND_TYPE_VARCHAR;
+    protected $backendType = AttributeTypes::BACKEND_TYPE_VARCHAR;
 
     /**
      * Form type alias, "text" by default
@@ -62,25 +32,29 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Constructor
      *
-     * @param string                     $backendType       the backend type
-     * @param string                     $formType          the form type
-     * @param ConstraintGuesserInterface $constraintGuesser the form type
+     * @param string $backendType the backend type
+     * @param string $formType    the form type
      */
-    public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser)
+    public function __construct($backendType, $formType)
     {
-        $this->backendType       = $backendType;
-        $this->formType          = $formType;
-        $this->constraintGuesser = $constraintGuesser;
+        $this->backendType = $backendType;
+        $this->formType = $formType;
     }
 
     /**
-     * Get backend type
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getBackendType()
     {
         return $this->backendType;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isUnique()
+    {
+        return false;
     }
 
     /**
@@ -131,77 +105,6 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
         }
 
         return $types;
-    }
-
-    /**
-     * Get the value form type name to use to ensure binding
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return string
-     */
-    public function prepareValueFormName(ProductValueInterface $value)
-    {
-        return $value->getAttribute()->getBackendType();
-    }
-
-    /**
-     * Get value form type alias to use to render value
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return string
-     */
-    public function prepareValueFormAlias(ProductValueInterface $value)
-    {
-        return $this->getFormType();
-    }
-
-    /**
-     * Get value form type options to configure the form
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return array
-     */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        return [
-            'label'           => $value->getAttribute()->getLabel(),
-            'required'        => $value->getAttribute()->isRequired(),
-            'auto_initialize' => false,
-            'label_attr'      => ['truncate' => true]
-        ];
-    }
-
-    /**
-     * Guess the constraints to apply on the form
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return array
-     */
-    public function prepareValueFormConstraints(ProductValueInterface $value)
-    {
-        if ($this->constraintGuesser->supportAttribute($attribute = $value->getAttribute())) {
-            return [
-                'constraints' => $this->constraintGuesser->guessConstraints($attribute),
-            ];
-        }
-
-        return [];
-    }
-
-    /**
-     * Get value form type data
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return mixed
-     */
-    public function prepareValueFormData(ProductValueInterface $value)
-    {
-        return $value->getData();
     }
 
     /**

@@ -97,11 +97,11 @@ Feature: Edit a product with attribute options
       35;FR35;DE35;US35;simple;35
       hammer;MARTEAU;WURST;HAMMER;simple;36
       """
-    And the following job "footwear_option_import" configuration:
+    And the following job "csv_footwear_option_import" configuration:
       | filePath      | %file to import% |
-    And I am on the "footwear_option_import" import job page
+    And I am on the "csv_footwear_option_import" import job page
     And I launch the import job
-    And I wait for the "footwear_option_import" job to finish
+    And I wait for the "csv_footwear_option_import" job to finish
     And I logout
 
   @jira https://akeneo.atlassian.net/browse/PIM-5993
@@ -117,14 +117,14 @@ Feature: Edit a product with attribute options
     Then I should see the text "DE2 DE3 WURST"
     When I switch the locale to "fr_FR"
     Then I should see the text "FR2 FR3 MARTEAU"
-    When I click on the field Multi
-    Then I should see the text "FR8"
-    And I should see the text "FR14"
-    And I should see the text "FR19"
-    But I should not see the text "FR30"
     When I change the "Multi" to "FR1, FR8"
     And I switch the locale to "de_DE"
     Then I should see the text "DE1 DE8"
+    When I click on the field Multi
+    Then I should see the text "DE8"
+    And I should see the text "DE14"
+    And I should see the text "DE19"
+    But I should not see the text "DE30"
 
   @jira https://akeneo.atlassian.net/browse/PIM-5993
   Scenario: I edit a simpleselect attribute with localized options

@@ -46,7 +46,8 @@ class ObjectIdentifierType extends AbstractType
                 $options['repository'],
                 $options['multiple'],
                 null,
-                $options['delimiter']
+                $options['delimiter'],
+                $options['identifier']
             ),
             true
         );
@@ -58,18 +59,23 @@ class ObjectIdentifierType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(['repository_options' => [], 'multiple' => true, 'delimiter' => ','])
+            ->setDefined([
+                'repository_options',
+                'identifier',
+                'multiple'
+            ])
             ->setRequired(['repository'])
+            ->setDefaults([
+                'repository_options' => [],
+                'multiple'           => true,
+                'delimiter'          => ',',
+                'identifier'         => 'id',
+            ])
             ->setAllowedValues('multiple', [true, false])
-            ->setNormalizer('repository', function (Options $options, $value) {
-                if (!$value instanceof ObjectRepository) {
-                    throw new UnexpectedTypeException(
-                        '\Doctrine\Common\Persistence\ObjectRepository',
-                        $value
-                    );
+            ->setAllowedValues([
+                'repository' => function ($repository) {
+                    return $repository instanceof ObjectRepository;
                 }
-
-                return $value;
-            });
+            ]);
     }
 }

@@ -31,7 +31,8 @@ Feature: Edit common attributes of many products at once
     And I am on the products page
 
   Scenario: Allow editing all attributes on configuration screen
-    Given I mass-edit products boots, sandals and sneakers
+    Given I select rows boots, sandals and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I should see available attributes Price and Rating in group "Marketing"
@@ -41,7 +42,8 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Weight in group "Other"
 
   Scenario: Successfully update many text values at once
-    Given I mass-edit products boots, sandals and sneakers
+    Given I select rows boots, sandals and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
@@ -52,7 +54,8 @@ Feature: Edit common attributes of many products at once
     And the english name of "sneakers" should be "boots"
 
   Scenario: Successfully update many multi-valued values at once
-    Given I mass-edit products boots and sneakers
+    Given I select rows boots and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
@@ -66,7 +69,8 @@ Feature: Edit common attributes of many products at once
   @info https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Successfully mass edit product values that does not belong yet to the product
     Given I set product "pump" family to "sneakers"
-    When I mass-edit products pump and sneakers
+    When I select rows pump and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
@@ -84,7 +88,8 @@ Feature: Edit common attributes of many products at once
     And I press the "Save" button in the popin
     Then I should be on the product "Shoes" edit page
     And I am on the products page
-    When I mass-edit products Shoes
+    When I select row Shoes
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
     And I change the "Price" to "100 USD"
@@ -101,7 +106,8 @@ Feature: Edit common attributes of many products at once
     Given the following product values:
       | product | attribute          | value   |
       | boots   | weather_conditions | dry,hot |
-    Given I mass-edit products boots and sneakers
+    Given I select rows boots and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
@@ -114,7 +120,8 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-4528
   Scenario: See previously selected fields on mass edit error
-    Given I mass-edit products boots and sandals
+    Given I select rows boots and sandals
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weight and Name attribute
     Then I visit the "Other" group
@@ -126,7 +133,8 @@ Feature: Edit common attributes of many products at once
     And I should see the text "Name"
     When I am on the attributes page
     And I am on the products page
-    And I mass-edit products boots and sandals
+    And I select rows boots and sandals
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should not see the text "Product information"
     And I should not see the text "Weight"
@@ -134,7 +142,8 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-4777
   Scenario: Doing a mass edit of an attribute from a variant group does not override group value
-    Given I mass-edit products highheels, blue_highheels and sandals
+    Given I select rows highheels, blue_highheels and sandals
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Heel Height attribute
     And I change the "Heel Height" to "3"
@@ -146,7 +155,8 @@ Feature: Edit common attributes of many products at once
   @jira https://akeneo.atlassian.net/browse/PIM-6008
   Scenario: Successfully mass edit scoped product values with special chars
     Given I set product "pump" family to "boots"
-    When I mass-edit products boots and pump
+    When I select rows boots and pump
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Description attribute
     And I change the Description to "&$@(B°ar'<"
@@ -154,6 +164,45 @@ Feature: Edit common attributes of many products at once
     And I wait for the "edit-common-attributes" mass-edit job to finish
     And the english tablet Description of "boots" should be "&$@(B°ar'<"
     And the english tablet Description of "pump" should be "&$@(B°ar'<"
+
+  Scenario: Successfully mass edit products and the completeness should be computed
+    Given I am on the "sneakers" product page
+    When I open the "Completeness" panel
+    Then I should see the completeness:
+      | channel | locale | state   | missing_values                                                               | ratio |
+      | mobile  | en_US  | warning | Name, Price, Size, Color                                                     | 20%   |
+      | tablet  | en_US  | warning | Name, Description, Weather conditions, Price, Rating, Side view, Size, Color | 11%   |
+    And I am on the "sandals" product page
+    When I open the "Completeness" panel
+    Then I should see the completeness:
+      | channel | locale | state   | missing_values                                           | ratio |
+      | mobile  | en_US  | warning | Name, Price, Size, Color                                 | 20%   |
+      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size, Color | 13%   |
+    Then I am on the products page
+    And I select rows sandals, sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I choose the "Edit common attributes" operation
+    And I display the Name, Price and Size attribute
+    And I change the "Name" to "boots"
+    Then I visit the "Marketing" group
+    And I change the "Price" to "100 USD"
+    And I change the "Price" to "150 EUR"
+    Then I visit the "Sizes" group
+    And I change the "Size" to "37"
+    And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
+    Then I am on the "sneakers" product page
+    When I open the "Completeness" panel
+    And I should see the completeness:
+      | channel | locale | state   | missing_values                                            | ratio |
+      | mobile  | en_US  | warning | Color                                                     | 80%   |
+      | tablet  | en_US  | warning | Description, Weather conditions, Rating, Side view, Color | 44%   |
+    And I am on the "sandals" product page
+    When I open the "Completeness" panel
+    And I should see the completeness:
+      | channel | locale | state   | missing_values                        | ratio |
+      | mobile  | en_US  | warning | Color                                 | 80%   |
+      | tablet  | en_US  | warning | Description, Rating, Side view, Color | 50%   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6022
   Scenario: Successfully mass edit product values preventing Shell Command Injection
@@ -167,7 +216,8 @@ Feature: Edit common attributes of many products at once
     And I visit the "Attributes" tab
     And I add available attributes Comment
     And I am on the products page
-    When I mass-edit products boots, sandals and sneakers
+    When I select rows boots, sandals and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Description and Name and Comment attribute
     And I change the "Name" to "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
@@ -186,4 +236,3 @@ Feature: Edit common attributes of many products at once
     And attribute Comment of "sandals" should be "$(echo "shell_injection" > shell_injection.txt)"
     And attribute Comment of "sneakers" should be "$(echo "shell_injection" > shell_injection.txt)"
     And file "%web%shell_injection.txt" should not exist
-

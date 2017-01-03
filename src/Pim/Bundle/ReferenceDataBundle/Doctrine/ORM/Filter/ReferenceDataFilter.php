@@ -3,13 +3,13 @@
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\AbstractAttributeFilter;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,9 +28,6 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /** @var ConfigurationRegistryInterface */
     protected $registry;
 
-    /** @var array */
-    protected $supportedAttributes;
-
     /** @var ReferenceDataIdResolver */
     protected $idsResolver;
 
@@ -38,8 +35,6 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     protected $optionsResolver;
 
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper       $attrValidatorHelper
      * @param ConfigurationRegistryInterface $registry
      * @param ReferenceDataIdResolver        $idsResolver
@@ -113,7 +108,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $locale = null,
         $scope = null
     ) {
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -128,7 +123,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $referenceDataName = $attribute->getReferenceDataName();
         $joinAliasOpt = $this->getUniqueAlias('reference_data' . $referenceDataName);
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
-        $condition    = $this->prepareCriteriaCondition($backendField, Operators::IS_EMPTY, null);
+        $condition = $this->prepareCriteriaCondition($backendField, Operators::IS_EMPTY, null);
         $this->qb->leftJoin($joinAlias . '.' . $referenceDataName, $joinAliasOpt);
         $this->qb->andWhere($condition);
     }
@@ -149,7 +144,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $locale = null,
         $scope = null
     ) {
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -164,7 +159,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $referenceDataName = $attribute->getReferenceDataName();
         $joinAliasOpt = $this->getUniqueAlias('reference_data' . $referenceDataName);
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
-        $condition    = $this->prepareCriteriaCondition($backendField, $operator, $value);
+        $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
         $this->qb->innerJoin($joinAlias . '.' . $referenceDataName, $joinAliasOpt, 'WITH', $condition);
     }
 

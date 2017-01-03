@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\VersioningBundle\Command;
 
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\Versioning\Model\Version;
+use Doctrine\Common\Persistence\ObjectManager;
 use Monolog\Handler\StreamHandler;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -66,7 +69,7 @@ class RefreshCommand extends ContainerAwareCommand
 
         $batchSize = $input->getOption('batch-size');
 
-        $cacheClearer = $this->getCacheClearer();
+        $objectDetacher = $this->getObjectDetacher();
         $om = $this->getObjectManager();
 
         $pendingVersions = $this->getVersionManager()
@@ -90,7 +93,7 @@ class RefreshCommand extends ContainerAwareCommand
                 $progress->advance();
             }
             $om->flush();
-            $cacheClearer->clear();
+            $objectDetacher->detachAll($pendingVersions);
 
             $pendingVersions = $this->getVersionManager()
                 ->getVersionRepository()
@@ -135,16 +138,16 @@ class RefreshCommand extends ContainerAwareCommand
     {
         return $this
             ->getContainer()
-            ->get('pim_catalog.doctrine.smart_manager_registry')
+            ->get('akeneo_storage_utils.doctrine.smart_manager_registry')
             ->getManagerForClass($this->getVersionClass());
     }
 
     /**
-     * @return CacheClearer
+     * @return ObjectDetacherInterface
      */
-    protected function getCacheClearer()
+    protected function getObjectDetacher()
     {
-        return $this->getContainer()->get('pim_transform.cache.product_cache_clearer');
+        return $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher');
     }
 
     /**

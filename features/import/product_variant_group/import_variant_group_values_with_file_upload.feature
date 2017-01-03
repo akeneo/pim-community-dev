@@ -26,11 +26,11 @@ Feature: Execute an import with file upload
       SANDAL;VARIANT;My sandal;My sandal description for locale en_US and channel tablet
       """
 
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | uploadAllowed | yes |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I upload and import the file "%file to import%"
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And the product "sandal-white-37" should have the following value:
       | name-en_US               | My sandal                                                 |

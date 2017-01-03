@@ -2,11 +2,17 @@
 
 namespace Context;
 
-use Behat\Mink\Exception\ExpectationException;
+use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A context for initializing catalog configuration
@@ -17,40 +23,14 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 class CatalogConfigurationContext extends RawMinkContext
 {
-    /**
-     * @var string Catalog configuration path
-     */
+    /** @var string Catalog configuration path */
     protected $catalogPath = 'catalog';
 
-    /**
-     * @var array Additional catalog configuration directories
-     */
+    /** @var array Additional catalog configuration directories */
     protected $extraDirectories = [];
 
-    /**
-     * @var ReferenceRepository Fixture reference repository
-     */
+    /** @var ReferenceRepository Fixture reference repository */
     protected $referenceRepository;
-
-    /**
-     * @var string Path of the entity loaders
-     */
-    protected $entityLoaderPath = 'Context\Loader';
-
-    /**
-     * @var array Entity loaders and corresponding files
-     */
-    protected $preEntityLoaders = array(
-        'CurrencyLoader' => 'currencies',
-        'LocaleLoader'   => null,
-    );
-
-    /**
-     * @var array Entity loaders and corresponding files
-     */
-    protected $postEntityLoaders = array(
-        'UserLoader' => 'users',
-    );
 
     /**
      * Add an additional directory for catalog configuration files
@@ -80,44 +60,79 @@ class CatalogConfigurationContext extends RawMinkContext
 
     /**
      * @param string[] $files Catalog configuration files to load
+     *
+     * @throws \Exception
      */
     protected function loadCatalog($files)
     {
-        $treatedFiles = [];
-        foreach ($this->preEntityLoaders as $loaderName => $fileName) {
-            $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file   = $this->getLoaderFile($files, $fileName);
-            if ($file) {
-                $treatedFiles[] = $file;
+        // prepare replace paths to use Behat catalog paths and not the minimal fixtures path, please note that we can
+        // have several files per job in case of Enterprise Catalog, for instance,
+        // [
+        //     'jobs' => [
+        //         "/project/features/Context/catalog/footwear/jobs.yml"
+        //         "/project/features/PimEnterprise/Behat/Context/../../../Context/catalog/footwear/jobs.yml"
+        // ]
+        $replacePaths = [];
+        foreach ($files as $file) {
+            $tokens = explode(DIRECTORY_SEPARATOR, $file);
+            $fileName = array_pop($tokens);
+            if (!isset($replacePaths[$fileName])) {
+                $replacePaths[$fileName] = [];
             }
-            $this->runLoader($loader, $file);
+            $replacePaths[$fileName][] = $file;
         }
 
-        $files = array_diff($files, $treatedFiles);
-        if (count($files)) {
-            $this->getContainer()
-                ->get('pim_installer.fixture_loader.multiple_loader')
-                ->load(
-                    $this->getEntityManager(),
-                    $this->referenceRepository,
-                    $files
-                );
-        }
+        // configure and load job instances in database
+        $this->getFixtureJobLoader()->loadJobInstances($replacePaths);
 
-        foreach ($this->postEntityLoaders as $loaderName => $fileName) {
-            $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file   = $this->getLoaderFile($files, $fileName);
-            if ($file) {
-                $treatedFiles[] = $file;
+        // setup application to be able to run akeneo:batch:job command
+        $application = new Application();
+        $application->add(new BatchCommand());
+        $batchJobCommand = $application->find('akeneo:batch:job');
+        $batchJobCommand->setContainer($this->getContainer());
+        $command = new CommandTester($batchJobCommand);
+
+        // install the catalog via the job instances
+        $jobInstances = $this->getFixtureJobLoader()->getLoadedJobInstances();
+        foreach ($jobInstances as $jobInstance) {
+            $exitCode = $command->execute(
+                [
+                    'command'    => $batchJobCommand->getName(),
+                    'code'       => $jobInstance->getCode(),
+                    '--no-log'   => true,
+                    '-v'         => true
+                ]
+            );
+            if (0 !== $exitCode) {
+                throw new \Exception(sprintf('Catalog not installable! "%s"', $command->getDisplay()));
             }
-            $this->runLoader($loader, $file);
         }
 
+        // delete the job instances
+        $this->getFixtureJobLoader()->deleteJobInstances();
+
+        // install reference data
         $bundles = $this->getContainer()->getParameter('kernel.bundles');
         if (isset($bundles['AcmeAppBundle'])) {
             $referenceDataLoader = new ReferenceDataLoader();
             $referenceDataLoader->load($this->getEntityManager());
         }
+
+        // clear product manager UOW after the install to start the scenario execution with a clean state
+        $productObjectManager = $this->getContainer()->get('pim_catalog.object_manager.product');
+        $productObjectManager->clear();
+
+        // clear the standard entity manager UOW after the install to start the scenario execution with a clean state
+        $standardObjectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $standardObjectManager->clear();
+    }
+
+    /**
+     * @return FixtureJobLoader
+     */
+    protected function getFixtureJobLoader()
+    {
+        return $this->getContainer()->get('pim_installer.fixture_loader.job_loader');
     }
 
     /**
@@ -125,7 +140,7 @@ class CatalogConfigurationContext extends RawMinkContext
      *
      * @param string $catalog
      *
-     * @throws ExpectationException If configuration is not found
+     * @throws \InvalidArgumentException If configuration is not found
      *
      * @return string[]
      */
@@ -140,7 +155,7 @@ class CatalogConfigurationContext extends RawMinkContext
         }
 
         if (empty($files)) {
-            throw $this->getMainContext()->createExpectationException(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'No configuration found for catalog "%s", looked in "%s"',
                     $catalog,
@@ -150,36 +165,6 @@ class CatalogConfigurationContext extends RawMinkContext
         }
 
         return $files;
-    }
-
-    /**
-     * Find the appropriate file for the loader in the catalog configuration files
-     *
-     * @param string[]    $files
-     * @param string|null $fileName
-     *
-     * @throws ExpectationException If the requested file is not found
-     *
-     * @return string|null
-     */
-    protected function getLoaderFile($files, $fileName)
-    {
-        if ($fileName !== null) {
-            $matchingFiles = array_filter(
-                $files,
-                function ($file) use ($fileName) {
-                    return $fileName === pathinfo($file, PATHINFO_FILENAME);
-                }
-            );
-
-            if (empty($matchingFiles)) {
-                throw $this->getMainContext()->createExpectationException(
-                    sprintf('Catalog configuration file "%s" not found', $fileName)
-                );
-            }
-
-            return end($matchingFiles);
-        }
     }
 
     /**
@@ -193,24 +178,7 @@ class CatalogConfigurationContext extends RawMinkContext
     }
 
     /**
-     * Run an entity loader
-     *
-     * @param string $loaderClass
-     * @param string $filePath
-     */
-    protected function runLoader($loaderClass, $filePath)
-    {
-        $loader = new $loaderClass();
-        $loader->setContainer($this->getContainer());
-        $loader->setReferenceRepository($this->referenceRepository);
-        if ($filePath !== null) {
-            $loader->setFilePath($filePath);
-        }
-        $loader->load($this->getEntityManager());
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     protected function getEntityManager()
     {
@@ -218,7 +186,7 @@ class CatalogConfigurationContext extends RawMinkContext
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     * @return ContainerInterface
      */
     protected function getContainer()
     {

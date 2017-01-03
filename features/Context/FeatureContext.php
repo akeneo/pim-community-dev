@@ -13,11 +13,18 @@ use Pim\Behat\Context\AttributeValidationContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
+use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
+use Pim\Behat\Context\Domain\Enrich\PanelContext;
+use Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
+use Pim\Behat\Context\Domain\Spread\ExportBuilderContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
+use Pim\Behat\Context\Domain\Spread\XlsxFileContext;
+use Pim\Behat\Context\Domain\System\PermissionsContext;
 use Pim\Behat\Context\Domain\TreeContext;
 use Pim\Behat\Context\HookContext;
 use Pim\Behat\Context\JobContext;
+use Pim\Behat\Context\Storage\FileInfoStorage;
 use Pim\Behat\Context\Storage\ProductStorage;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -59,16 +66,23 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
 
-        $this->useContext('domain-variant-group', new VariantGroupContext());
-        $this->useContext('domain-tree', new TreeContext());
-        $this->useContext('job', new JobContext());
-        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
-        $this->useContext('domain-import-profiles', new ImportProfilesContext());
-        $this->useContext('domain-export-profiles', new ExportProfilesContext());
         $this->useContext('domain-attribute-tab', new AttributeTabContext());
         $this->useContext('domain-completeness', new CompletenessContext());
+        $this->useContext('domain-export-profiles', new ExportProfilesContext());
+        $this->useContext('domain-xlsx-files', new XlsxFileContext());
+        $this->useContext('domain-import-profiles', new ImportProfilesContext());
+        $this->useContext('domain-pagination-grid', new GridPaginationContext());
+        $this->useContext('domain-panel', new PanelContext());
+        $this->useContext('domain-product-association-tab', new AssociationTabContext());
+        $this->useContext('domain-tree', new TreeContext());
+        $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
+        $this->useContext('job', new JobContext());
         $this->useContext('storage-product', new ProductStorage());
+        $this->useContext('storage-file-info', new FileInfoStorage());
         $this->useContext('attribute-validation', new AttributeValidationContext());
+        $this->useContext('role', new PermissionsContext());
+        $this->useContext('export-builder', new ExportBuilderContext());
 
         $this->setTimeout($parameters);
     }
@@ -125,7 +139,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function getSmartRegistry()
     {
-        return $this->getContainer()->get('pim_catalog.doctrine.smart_manager_registry');
+        return $this->getContainer()->get('akeneo_storage_utils.doctrine.smart_manager_registry');
     }
 
     /**
@@ -269,6 +283,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Fills in form field with specified id|name|label|value.
      *
+     * @param string $field
+     * @param string $value
+     *
      * @When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)" on the current page$/
      * @When /^(?:|I )fill in "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)" on the current page$/
      */
@@ -316,7 +333,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             parent::clickLink($link);
 
             return true;
-        });
+        }, sprintf('Cannot click on the link "%s"', $link));
     }
 
     /**
@@ -328,7 +345,19 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             parent::assertNumElements($num, $element);
 
             return true;
-        });
+        }, sprintf('Spining for asserting "%d" num elements', $num));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function assertPageContainsText($text)
+    {
+        $this->spin(function () use ($text) {
+            parent::assertPageContainsText($text);
+
+            return true;
+        }, "Spining for asserting page contains text $text");
     }
 
     /**

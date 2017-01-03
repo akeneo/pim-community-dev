@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Number filter
@@ -18,32 +18,19 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
-     * Instanciate the filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -59,13 +46,13 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
 
-        if (!is_numeric($value) && null !== $value) {
+        if (null !== $value && !is_numeric($value)) {
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number', gettype($value));
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $value = floatval($value);
 
         $this->applyFilter($operator, $value, $field);
 
@@ -85,11 +72,15 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
             case Operators::IS_EMPTY:
                 $this->qb->field($field)->exists(false);
                 break;
-            case Operators::NOT_IN_LIST:
-                $this->qb->field($field)->in($value);
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($field)->exists(true);
                 break;
             case Operators::EQUALS:
                 $this->qb->field($field)->equals($value);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notEqual($value);
                 break;
             case Operators::LOWER_THAN:
                 $this->qb->field($field)->lt($value);

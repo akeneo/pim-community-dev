@@ -20,14 +20,14 @@ Feature: Add products with reference data to a variant group
 
   Scenario: Successfully add products in variant groups, products are updated with variant group values
     Given I am on the "SANDAL" variant group page
-    Then the grid should contain 3 elements
+    And the grid should contain 3 elements
     And I should see products sandal-red-37, sandal-red-38, sandal-red-39
     And I check the row "sandal-red-37"
     And I check the row "sandal-red-38"
-    And I press the "Save" button
-    Then the rows "sandal-red-37 and sandal-red-38" should be checked
+    When I press the "Save" button
+    Then the row "sandal-red-37 and sandal-red-38" should be checked
 
-  Scenario: Do not see a product already in a variant group
+  Scenario: Do not see a product already present in another variant group
     Given the following family:
       | code       | attributes                  |
       | high_heels | sku, sole_color, heel_color |
@@ -39,16 +39,17 @@ Feature: Add products with reference data to a variant group
       | heel-yellow-37 | high_heels | winter_collection | 37   | Yellow     | Black      |
       | heel-yellow-38 | high_heels | winter_collection | 38   | Yellow     | Black      |
       | heel-yellow-39 | high_heels | winter_collection | 39   | Yellow     | Black      |
-    And I am on the "SANDAL" variant group page
-    Then the grid should contain 6 elements
     And I am on the "HIGH_HEELS" variant group page
     Then the grid should contain 3 elements
     And I should see products heel-yellow-37, heel-yellow-38, heel-yellow-39
     And I am on the "SANDAL" variant group page
+    Then the grid should contain 6 elements
     And I check the row "heel-yellow-37"
     And I press the "Save" button
+    And I should not see the text "There are unsaved changes"
     # TODO: see with @nidup => temporary fix (broken since the deferred explicit persist of Doctrine)
     And I press the "Save" button
+    And I should not see the text "There are unsaved changes"
     And I am on the "HIGH_HEELS" variant group page
     Then the grid should contain 2 elements
     And I should see products heel-yellow-38, heel-yellow-39

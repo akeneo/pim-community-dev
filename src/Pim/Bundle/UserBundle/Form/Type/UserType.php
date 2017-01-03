@@ -59,12 +59,12 @@ class UserType extends AbstractType
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->tokenStorage     = $tokenStorage;
-        $this->isMyProfilePage  = $request->attributes->get('_route') === 'oro_user_profile_update';
-        $this->subscriber       = $subscriber;
-        $this->roleRepository   = $roleRepository;
-        $this->groupRepository  = $groupRepository;
-        $this->eventDispatcher  = $eventDispatcher;
+        $this->tokenStorage = $tokenStorage;
+        $this->isMyProfilePage = $request->attributes->get('_route') === 'oro_user_profile_update';
+        $this->subscriber = $subscriber;
+        $this->roleRepository = $roleRepository;
+        $this->groupRepository = $groupRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -131,7 +131,7 @@ class UserType extends AbstractType
                 'change_password',
                 'oro_change_password'
             )
-            ->add('productGridFilters', 'pim_datagrid_product_filter_choice', [
+            ->add('productGridFilters', 'pim_enrich_product_grid_filter_choice', [
                 'label'    => 'user.product_grid_filters',
                 'multiple' => true,
             ]);

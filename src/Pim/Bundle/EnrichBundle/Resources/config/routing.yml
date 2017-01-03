@@ -26,6 +26,10 @@ attribute_option:
     resource: '@PimEnrichBundle/Resources/config/routing/attributeoption.yml'
     prefix: /configuration/attribute_option
 
+category:
+    resource: '@PimEnrichBundle/Resources/config/routing/category.yml'
+    prefix: /enrich/category
+
 categorytree:
     resource: '@PimEnrichBundle/Resources/config/routing/categorytree.yml'
     prefix: /enrich/product-category-tree

@@ -4,9 +4,8 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Exception\MissingIdentifierException;
-use Pim\Component\Catalog\Model\ProductValueKeyGenerator;
 
 /**
  * Abstract product
@@ -85,10 +84,10 @@ abstract class AbstractProduct implements ProductInterface
     public function __construct()
     {
         $this->values = new ArrayCollection();
-        $this->categories     = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
-        $this->groups         = new ArrayCollection();
-        $this->associations   = new ArrayCollection();
+        $this->groups = new ArrayCollection();
+        $this->associations = new ArrayCollection();
     }
 
     /**

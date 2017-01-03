@@ -3,12 +3,12 @@
 namespace Pim\Component\Catalog\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Sets a simple select value in many products
@@ -36,7 +36,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
         $this->attrOptionRepository = $attrOptionRepository;
-        $this->supportedTypes       = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**
@@ -85,7 +85,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
             return;
         }
 
-        if (!is_string($data)) {
+        if (!is_string($data) && !is_numeric($data)) {
             throw InvalidArgumentException::stringExpected(
                 $attribute->getCode(),
                 'setter',

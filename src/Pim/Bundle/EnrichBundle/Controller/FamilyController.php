@@ -7,14 +7,14 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Factory\FamilyFactory;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Enrich\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Family controller
@@ -54,8 +55,8 @@ class FamilyController
     /** @var ManagerRegistry */
     protected $doctrine;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
     /** @var FamilyFactory */
     protected $familyFactory;
@@ -84,6 +85,9 @@ class FamilyController
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /**
      * @param Request                      $request
      * @param EngineInterface              $templating
@@ -91,7 +95,7 @@ class FamilyController
      * @param FormFactoryInterface         $formFactory
      * @param TranslatorInterface          $translator
      * @param ManagerRegistry              $doctrine
-     * @param ChannelManager               $channelManager
+     * @param ChannelRepositoryInterface   $channelRepository
      * @param FamilyFactory                $familyFactory
      * @param HandlerInterface             $familyHandler
      * @param Form                         $familyForm
@@ -99,6 +103,7 @@ class FamilyController
      * @param RemoverInterface             $familyRemover
      * @param AttributeRepositoryInterface $attributeRepo
      * @param FamilyRepositoryInterface    $familyRepository
+     * @param ValidatorInterface           $validator
      * @param string                       $attributeClass
      * @param string                       $familyClass
      */
@@ -109,7 +114,7 @@ class FamilyController
         FormFactoryInterface $formFactory,
         TranslatorInterface $translator,
         ManagerRegistry $doctrine,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         FamilyFactory $familyFactory,
         HandlerInterface $familyHandler,
         Form $familyForm,
@@ -117,25 +122,27 @@ class FamilyController
         RemoverInterface $familyRemover,
         AttributeRepositoryInterface $attributeRepo,
         FamilyRepositoryInterface $familyRepository,
+        ValidatorInterface $validator,
         $attributeClass,
         $familyClass
     ) {
-        $this->request          = $request;
-        $this->templating       = $templating;
-        $this->router           = $router;
-        $this->formFactory      = $formFactory;
-        $this->translator       = $translator;
-        $this->doctrine         = $doctrine;
-        $this->channelManager   = $channelManager;
-        $this->familyFactory    = $familyFactory;
-        $this->familyHandler    = $familyHandler;
-        $this->familyForm       = $familyForm;
-        $this->attributeClass   = $attributeClass;
-        $this->familySaver      = $familySaver;
-        $this->familyRemover    = $familyRemover;
-        $this->familyClass      = $familyClass;
-        $this->attributeRepo    = $attributeRepo;
+        $this->request = $request;
+        $this->templating = $templating;
+        $this->router = $router;
+        $this->formFactory = $formFactory;
+        $this->translator = $translator;
+        $this->doctrine = $doctrine;
+        $this->channelRepository = $channelRepository;
+        $this->familyFactory = $familyFactory;
+        $this->familyHandler = $familyHandler;
+        $this->familyForm = $familyForm;
+        $this->attributeClass = $attributeClass;
+        $this->familySaver = $familySaver;
+        $this->familyRemover = $familyRemover;
+        $this->familyClass = $familyClass;
+        $this->attributeRepo = $attributeRepo;
         $this->familyRepository = $familyRepository;
+        $this->validator = $validator;
     }
 
     /**
@@ -165,7 +172,7 @@ class FamilyController
             return new RedirectResponse($this->router->generate('pim_enrich_family_index'));
         }
 
-        $family = $this->familyFactory->createFamily();
+        $family = $this->familyFactory->create();
 
         if ($this->familyHandler->process($family)) {
             $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.created'));
@@ -210,7 +217,7 @@ class FamilyController
             'attributesForm'  => $this->getAvailableAttributesForm(
                 $family->getAttributes()->toArray()
             )->createView(),
-            'channels' => $this->channelManager->getChannels()
+            'channels' => $this->channelRepository->findAll()
         ];
     }
 
@@ -283,7 +290,7 @@ class FamilyController
         }
 
         $availableAttributes = new AvailableAttributes();
-        $attributesForm      = $this->getAvailableAttributesForm(
+        $attributesForm = $this->getAvailableAttributesForm(
             $family->getAttributes()->toArray(),
             $availableAttributes
         );
@@ -293,9 +300,15 @@ class FamilyController
             $family->addAttribute($attribute);
         }
 
-        $this->familySaver->save($family);
-
-        $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.attributes added'));
+        $errors = $this->validator->validate($family);
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $this->request->getSession()->getFlashBag()->add('error', new Message($error->getMessage()));
+            }
+        } else {
+            $this->familySaver->save($family);
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.attributes added'));
+        }
 
         return new RedirectResponse($this->router->generate('pim_enrich_family_edit', ['id' => $family->getId()]));
     }
@@ -334,11 +347,17 @@ class FamilyController
             throw new DeleteException($this->translator->trans('flash.family.label attribute not removable'));
         } else {
             $family->removeAttribute($attribute);
+
             foreach ($family->getAttributeRequirements() as $requirement) {
                 if ($requirement->getAttribute() === $attribute) {
                     $family->removeAttributeRequirement($requirement);
                     $this->doctrine->getManagerForClass(ClassUtils::getClass($requirement))->remove($requirement);
                 }
+            }
+
+            $errors = $this->validator->validate($family);
+            if (count($errors) > 0) {
+                throw new DeleteException($errors[0]->getMessage());
             }
 
             $this->familySaver->save($family);

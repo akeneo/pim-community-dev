@@ -28,7 +28,7 @@ class FormatterExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $columns    = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
+        $columns = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
         $properties = $config->offsetGetOr(Configuration::PROPERTIES_KEY, []);
         $applicable = $columns || $properties;
         $this->processConfigs($config);
@@ -43,11 +43,11 @@ class FormatterExtension extends AbstractExtension
      */
     public function processConfigs(DatagridConfiguration $config)
     {
-        $columns    = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
+        $columns = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
         $properties = $config->offsetGetOr(Configuration::PROPERTIES_KEY, []);
 
         // validate extension configuration and normalize by setting default values
-        $columnsNormalized    = $this->validateConfigurationByType($columns, Configuration::COLUMNS_KEY);
+        $columnsNormalized = $this->validateConfigurationByType($columns, Configuration::COLUMNS_KEY);
         $propertiesNormalized = $this->validateConfigurationByType($properties, Configuration::PROPERTIES_KEY);
 
         // replace config values by normalized, extra keys passed directly
@@ -60,17 +60,17 @@ class FormatterExtension extends AbstractExtension
      */
     public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
-        $rows       = (array)$result->offsetGetOr('data', []);
-        $columns    = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
+        $rows = (array)$result->offsetGetOr('data', []);
+        $columns = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
         $properties = $config->offsetGetOr(Configuration::PROPERTIES_KEY, []);
-        $toProcess  = array_merge($columns, $properties);
+        $toProcess = array_merge($columns, $properties);
 
         foreach ($rows as $key => $row) {
             $currentRow = [];
 
             foreach ($toProcess as $name => $config) {
-                $config            = PropertyConfiguration::createNamed($name, $config);
-                $property          = $this->getPropertyObject($config);
+                $config = PropertyConfiguration::createNamed($name, $config);
+                $property = $this->getPropertyObject($config);
                 $currentRow[$name] = $property->getValue($row);
             }
             $rows[$key] = $currentRow;
@@ -90,10 +90,10 @@ class FormatterExtension extends AbstractExtension
         $propertiesMetadata = [];
         foreach ($columns as $name => $fieldConfig) {
             $fieldConfig = PropertyConfiguration::createNamed($name, $fieldConfig);
-            $metadata    = $this->getPropertyObject($fieldConfig)->getMetadata();
+            $metadata = $this->getPropertyObject($fieldConfig)->getMetadata();
 
             // translate label on backend
-            $metadata['label']    = $this->translator->trans($metadata['label']);
+            $metadata['label'] = $this->translator->trans($metadata['label']);
             $propertiesMetadata[] = $metadata;
         }
 
@@ -136,7 +136,7 @@ class FormatterExtension extends AbstractExtension
     protected function validateConfigurationByType($config, $type)
     {
         $registeredTypes = array_keys($this->properties);
-        $configuration   = new Configuration($registeredTypes, $type);
+        $configuration = new Configuration($registeredTypes, $type);
 
         return parent::validateConfiguration($configuration, [$type => $config]);
     }

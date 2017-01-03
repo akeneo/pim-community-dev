@@ -24,6 +24,10 @@ class FormTypeHelpExtension extends AbstractTypeExtension
         if (array_key_exists('help', $options)) {
             $view->vars['help'] = $options['help'];
         }
+
+        if (array_key_exists('info', $options)) {
+            $view->vars['info'] = $options['info'];
+        }
     }
 
     /**
@@ -31,7 +35,7 @@ class FormTypeHelpExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefined(['help']);
+        $resolver->setDefined(['help', 'info']);
     }
 
     /**

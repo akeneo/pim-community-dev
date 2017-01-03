@@ -2,3 +2,17 @@ job_execution:
   summary:
     display_item: 显示条目
     hide_item: 隐藏条目
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: 类别选择
+          cancel: 取消
+          confirm: 确认
+        label: '{0} 所有产品 |{1} 一类别选择 |]1，Inf [{{ count }} 类别选择'
+        edit: 编辑
+        title: 选择类别
+    locales:
+      validation:
+        not_blank: 必须选择一个本地化语言，请选择要导出的本地化语言。

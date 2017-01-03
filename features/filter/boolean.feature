@@ -13,9 +13,12 @@ Feature: Filter on boolean
       | BOOTBL  | 1       | 1        |
       | BOOTRXS | 0       | 0        |
     Then I should get the following results for the given filters:
-      | filter                                                 | result                          |
-      | [{"field":"enabled", "operator":"=", "value": true}]   | ["BOOTBXS", "BOOTBL", "BOOTBS"] |
-      | [{"field":"enabled", "operator":"=", "value": false}]  | ["BOOTWXS", "BOOTRXS"]          |
-      | [{"field":"handmade", "operator":"=", "value": true}]  | ["BOOTBXS", "BOOTBL"]           |
-      | [{"field":"handmade", "operator":"=", "value": false}] | ["BOOTWXS", "BOOTRXS"]          |
-      | [{"field":"enabled", "operator":"=", "value": true}, {"field":"handmade", "operator":"=", "value": true}] | ["BOOTBXS", "BOOTBL"]  |
+      | filter                                                                                                    | result                          |
+      | [{"field":"enabled", "operator":"=", "value": true}]                                                      | ["BOOTBXS", "BOOTBL", "BOOTBS"] |
+      | [{"field":"enabled", "operator":"=", "value": false}]                                                     | ["BOOTWXS", "BOOTRXS"]          |
+      | [{"field":"enabled", "operator":"!=", "value": true}]                                                     | ["BOOTWXS", "BOOTRXS"]          |
+      | [{"field":"enabled", "operator":"!=", "value": false}]                                                    | ["BOOTBXS", "BOOTBL", "BOOTBS"] |
+      | [{"field":"handmade", "operator":"=", "value": true}]                                                     | ["BOOTBXS", "BOOTBL"]           |
+      | [{"field":"handmade", "operator":"=", "value": false}]                                                    | ["BOOTWXS", "BOOTRXS"]          |
+      | [{"field":"handmade", "operator":"!=", "value": false}]                                                   | ["BOOTBXS", "BOOTBL"]           |
+      | [{"field":"enabled", "operator":"=", "value": true}, {"field":"handmade", "operator":"=", "value": true}] | ["BOOTBXS", "BOOTBL"]           |

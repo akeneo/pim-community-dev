@@ -5,11 +5,13 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
@@ -84,63 +86,6 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getChoices(array $options)
-    {
-        $qb = $this->getChoicesQB($options);
-        $result = $qb->getQuery()->getArrayResult();
-
-        // Build choices list
-        $attributes = [];
-        foreach ($result as $key => $attribute) {
-            $attributes[$attribute['group_label']][$attribute['id']] = $attribute['attribute_label'];
-            unset($result[$key]);
-        }
-
-        return $attributes;
-    }
-
-    /**
-     * Create query builder for choices
-     *
-     * @param array $options
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getChoicesQB(array $options)
-    {
-        if (!isset($options['excluded_attribute_ids'])) {
-            throw new \InvalidArgumentException('Option "excluded_attribute_ids" is required');
-        }
-
-        if (!isset($options['locale_code'])) {
-            throw new \InvalidArgumentException('Option "locale_code" is required');
-        }
-
-        $qb = $this->createQueryBuilder('a');
-        $qb
-            ->select('a.id')
-            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
-            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\')) as group_label')
-            ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
-            ->leftJoin('a.group', 'g')
-            ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
-            ->orderBy('g.sortOrder, a.sortOrder')
-            ->setParameter('localeCode', $options['locale_code']);
-
-        if (!empty($options['excluded_attribute_ids'])) {
-            $qb->andWhere(
-                $qb->expr()->notIn('a.id', $options['excluded_attribute_ids'])
-            );
-        }
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findUniqueAttributeCodes()
     {
         $codes = $this
@@ -188,7 +133,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllAxisQB()
+    public function findAllAxesQB()
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -207,11 +152,23 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllAxis()
+    public function findAvailableAxes($locale)
     {
-        $qb = $this->findAllAxisQB();
+        $query = $this->findAllAxesQB()
+            ->select('a.id')
+            ->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', a.code, \']\')) as label')
+            ->leftJoin('a.translations', 't')
+            ->andWhere('t.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->orderBy('t.label')
+            ->getQuery();
 
-        return $qb->getQuery()->getResult();
+        $axis = [];
+        foreach ($query->getArrayResult() as $code) {
+            $axis[$code['id']] = $code['label'];
+        }
+
+        return $axis;
     }
 
     /**
@@ -228,21 +185,6 @@ class AttributeRepository extends EntityRepository implements
             );
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAvailableAttributesAsLabelChoice()
-    {
-        $attributes = $this->getAvailableAttributesAsLabel();
-
-        $choices = [];
-        foreach ($attributes as $attribute) {
-            $choices[$attribute->getId()] = $attribute->getLabel();
-        }
-
-        return $choices;
     }
 
     /**
@@ -275,8 +217,8 @@ class AttributeRepository extends EntityRepository implements
         $results = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         if ($withLabel) {
-            $labelExpr = 'COALESCE(trans.label, CONCAT(CONCAT(\'[\', att.code), \']\'))';
-            $groupLabelExpr = 'COALESCE(gtrans.label, CONCAT(CONCAT(\'[\', g.code), \']\'))';
+            $labelExpr = 'COALESCE(NULLIF(trans.label, \'\'), CONCAT(CONCAT(\'[\', att.code), \']\'))';
+            $groupLabelExpr = 'COALESCE(NULLIF(gtrans.label, \'\'), CONCAT(CONCAT(\'[\', g.code), \']\'))';
 
             $qb = $this->_em->createQueryBuilder()
                 ->select('att.code', sprintf('%s as label', $labelExpr))
@@ -292,8 +234,8 @@ class AttributeRepository extends EntityRepository implements
             }
             $attributes = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
             foreach ($attributes as $data) {
-                $results[$data['code']]['label']      = $data['label'];
-                $results[$data['code']]['group']      = $data['groupLabel'];
+                $results[$data['code']]['label'] = $data['label'];
+                $results[$data['code']]['group'] = $data['groupLabel'];
                 $results[$data['code']]['groupOrder'] = $data['sortOrder'];
             }
         }
@@ -373,7 +315,14 @@ class AttributeRepository extends EntityRepository implements
     public function getIdentifierCode()
     {
         if (null === $this->identifierCode) {
-            $this->identifierCode = $this->getIdentifier()->getCode();
+            $code = $this->createQueryBuilder('a')
+                ->select('a.code')
+                ->andWhere('a.attributeType = :attributeType')
+                ->setParameter('attributeType', AttributeTypes::IDENTIFIER)
+                ->setMaxResults(1)
+                ->getQuery()->getSingleResult(Query::HYDRATE_SINGLE_SCALAR);
+
+            $this->identifierCode = $code;
         }
 
         return $this->identifierCode;
@@ -453,6 +402,21 @@ class AttributeRepository extends EntityRepository implements
         }
 
         return array_map('current', $qb->getQuery()->getScalarResult());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAttributesByFamily(FamilyInterface $family)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->select('a, g')
+            ->join('a.group', 'g')
+            ->innerJoin('a.families', 'f', 'WITH', 'f.id = :family')
+            ->setParameter(':family', $family->getId());
+
+        return $qb->getQuery()->getResult();
     }
 
     /**

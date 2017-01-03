@@ -7,33 +7,31 @@
 <% } else { %>
     <div class="tabbable tabs-left">
         <div class="sidebar">
-            <ul class="nav nav-tabs tab-groups" id="associations-list">
+            <ul class="associations-list nav nav-tabs tab-groups">
                 <% _.each(associationTypes, function (associationType) { %>
-                    <li data-association-type="<%- associationType.code %>"<% if (associationType.code === state.currentAssociationType) { %> class="active"<% } %>>
-                        <a href="javascript:void(0);">
-                            <%- associationType.label[locale] || '[' + associationType.code + ']'  %>
-                        </a>
+                    <li data-association-type="<%- associationType.code %>"<% if (associationType.code === currentAssociationType) { %> class="active"<% } %>>
+                        <a href="#"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></a>
                     </li>
                 <% }); %>
             </ul>
         </div>
         <div class="tab-content">
-            <div id="association-buttons" class="navbar-extra pull-right">
-                <button type="button" class="btn pull-right hide" data-association-target="products">
+            <div class="association-buttons navbar-extra pull-right">
+                <button type="button" class="target-button btn pull-right<% if ('products' === currentAssociationTarget) { %> hide<% } %>" data-association-target="products">
                     <i class="icon-random"></i>
                     <%- _.__('pim_enrich.form.product.tab.associations.info.show_products') %>
                 </button>
-                <button type="button" class="btn pull-right" data-association-target="groups">
+                <button type="button" class="target-button btn pull-right<% if ('groups' === currentAssociationTarget) { %> hide<% } %>" data-association-target="groups">
                     <i class="icon-random"></i>
                     <%- _.__('pim_enrich.form.product.tab.associations.info.show_groups') %>
                 </button>
             </div>
 
-            <div id="association-product-grid">
+            <div class="association-product-grid<% if ('products' !== currentAssociationTarget) { %> hide<% } %>">
                 <div id="grid-association-product-grid" data-type="datagrid"></div>
             </div>
 
-            <div id="association-group-grid" class="hide">
+            <div class="association-group-grid<% if ('groups' !== currentAssociationTarget) { %> hide<% } %>">
                 <div id="grid-association-group-grid" data-type="datagrid"></div>
             </div>
 

@@ -1,59 +1,4 @@
 pim_connector:
-  jobs:
-    csv_product_export:
-      title: Tuotteiden vienti CSV-muodossa
-      export.title: Tuotteiden vienti
-    csv_category_export:
-      title: Kategorian vienti CSV-muodossa
-      export.title: Kategorian vienti
-    csv_attribute_export:
-      title: Attribuuttien vienti CSV-muodossa
-      export.title: Attribuuttien vienti
-    csv_attribute_option_export:
-      title: Attribuuttien määritteiden vienti CSV-muodossa
-      export.title: Attribuuttien määritteiden vienti
-    csv_association_type_export:
-      title: Liitännäistyyppien vienti CSV-muodossa
-      export.title: Liitännäistyyppien vienti
-    csv_group_export:
-      title: Ryhmän vienti CSV-muodossa
-      export.title: Ryhmän vienti
-    csv_variant_group_export:
-      title: Muuttujaryhmien vienti CSV-muodossa
-      export.title: Muutujaryhmien vienti
-    csv_product_import:
-      title: Tuotteiden tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Tuotteiden tuonti
-      import_associations.title: Liitännäisten tuonti
-    csv_category_import:
-      title: Kategorioiden tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Kategorioiden tuonti
-    csv_attribute_import:
-      title: Attribuuttien tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Attribuuttien tuonti
-    csv_attribute_option_import:
-      title: Attribuuttien määritteiden tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Attribuuttien määritteiden tuonti
-    csv_association_type_import:
-      title: Liitännäistyyppien tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Liitännäistyyppien tuonti
-    csv_family_import:
-      title: Ryhmän tuonti CSV-tiedostona
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Ryhmätuonti
-    csv_group_import:
-      title: Ryhmien tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Ryhmien tuonti
-    csv_variant_group_import:
-      title: Muuttujaryhmien tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Muutujaryhmien tuonti
   steps:
     dummy_reader.title: Mallilukija
     product_reader.title: Tuotteen poisto
@@ -84,70 +29,142 @@ pim_connector:
     writer.title: Yksikön varastointi
     csv_writer.title: CSV-kirjoittaja
   export:
-    delimiter:
-      label: Erotin
-      help: Yhtä merkkiä käytetään kentän erottajan määrittämiseen
-    enclosure:
-      label: Liite
-      help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
-    withHeader:
-      label: Otsikon kanssa
-      help: Tulostaako sarakkeen nimen vai ei
-    filePath:
-      label: Tiedostopolku
-      help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa
-    channel:
-      label: Kanava
-      help: Kanava, jonka haluat viedä
+    csv:
+      delimiter:
+        label: Erotin
+        help: Yhtä merkkiä käytetään kentän erottajan määrittämiseen
+      enclosure:
+        label: Liite
+        help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
+      withHeader:
+        label: Otsikon kanssa
+        help: Tulostaako sarakkeen nimen vai ei
+      with_media:
+        label: Vie tiedostot ja kuvat
+        help: Viedäänkö tiedostot ja kuvat vai ei
+      filePath:
+        label: Tiedostopolku
+        help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa
+      decimalSeparator:
+        label: Desimaalierotin
+        help: Määritä desimaalierotin
+      dateFormat:
+        label: Päivämäärän muoto
+        help: Määritä päivämääräkenttien formaatti
+    xlsx:
+      lines_per_files:
+        label: Riviä per tiedosto
+        help: Määritä rivimäärä per tiedosto
+      withHeader:
+        label: Otsikon kanssa
+        help: Tulostaako sarakkeen nimen vai ei
+      with_media:
+        label: Vie tiedostot ja kuvat
+        help: Viedäänkö tiedostot ja kuvat vai ei
+      filePath:
+        label: Tiedostopolku
+        help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa
+      decimalSeparator:
+        label: Desimaalierotin
+        help: Määritä desimaalierotin
+      dateFormat:
+        label: Päivämäärän muoto
+        help: Määritä päivämääräkenttien formaatti
+    yml:
+      filePath:
+        label: Tiedostopolku
+        help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa
   import:
-    enabled:
-      label: Enabloi tuote
-      help: Pitääkö tuodun tuotteen olla enabloitu
-    categoriesColumn:
-      label: Kategoriasarake
-      help: Kategoriasarakkeen nimi
-    familyColumn:
-      label: Perhesarake
-      help: Perhesarakkeen nimi
-    groupsColumn:
-      label: Ryhmäsarake
-      help: Ryhmäsarakkeen nimi
-    filePath:
-      label: Tiedosto
-      help: Tuotava CSV-tiedosto
-    yamlFilePath:
-      label: Tiedosto
-      help: YAML tiedosto joka tuodaan
-    uploadAllowed:
-      label: Salli tiedoston tuonti
-      help: Sallitaanko tiedoston suora lataus järjestelmään
-    delimiter:
-      label: Erotin
-      help: Yhtä merkkiä käytetään CSV-tiedoston kenttäerottimena
-    enclosure:
-      label: Liite
-      help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
-    escape:
-      label: Poistu
-      help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
-    circularRefsChecked:
-      label: Tarkista kehäviittaukset
-      help: Jos kyllä, data prosessoidaan siten että kategorioiden välillä ei ole kehäviittauksia
-    realTimeVersioning:
-      label: Reaaliaikainen historiapäivitys
-      help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
-    copyValuesToProducts:
-      label: Kopioi variant-ryhmien arvot tuotteisiin
-      help: Tarkoittaa että tuotteet päivitetään automaattisesti variant-ryhmien arvojen mukaan, voidaan ottaa poistaa päältä vain variant-ryhmän päivittämiseksi
-    enabledComparison:
-      label: Vertaa arvoja
-      help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
-    decimalSeparator:
-      label: Desimaalierotin
-      help: Yksi merkki asettaa kenttäerottimen desimaaleja varten
-    dateFormat:
-      label: Päivämäärän muoto
-      help: Määritä minkä tahansa päivämäärä-sarakkeen muoto tiedostossa, esim, tässä DD/MM/YYYY 31/04/2014 formaattia varten.
+    csv:
+      enabled:
+        label: Enabloi tuote
+        help: Pitääkö tuodun tuotteen olla enabloitu
+      categoriesColumn:
+        label: Kategoriasarake
+        help: Kategoriasarakkeen nimi
+      familyColumn:
+        label: Perhesarake
+        help: Perhesarakkeen nimi
+      groupsColumn:
+        label: Ryhmäsarake
+        help: Ryhmäsarakkeen nimi
+      filePath:
+        label: Tiedosto
+        help: Tuotava CSV-tiedosto
+      uploadAllowed:
+        label: Salli tiedoston tuonti
+        help: Sallitaanko tiedoston suora lataus järjestelmään
+      delimiter:
+        label: Erotin
+        help: Yhtä merkkiä käytetään CSV-tiedoston kenttäerottimena
+      enclosure:
+        label: Liite
+        help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
+      escape:
+        label: Poistu
+        help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
+      circularRefsChecked:
+        label: Tarkista kehäviittaukset
+        help: Jos kyllä, data prosessoidaan siten että kategorioiden välillä ei ole kehäviittauksia
+      realTimeVersioning:
+        label: Reaaliaikainen historiapäivitys
+        help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
+      copyValuesToProducts:
+        label: Kopioi variant-ryhmien arvot tuotteisiin
+        help: Tarkoittaa että tuotteet päivitetään automaattisesti variant-ryhmien arvojen mukaan, voidaan ottaa poistaa päältä vain variant-ryhmän päivittämiseksi
+      enabledComparison:
+        label: Vertaa arvoja
+        help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
+      decimalSeparator:
+        label: Desimaalierotin
+        help: Yksi merkki asettaa kenttäerottimen desimaaleja varten
+      dateFormat:
+        label: Päivämäärän muoto
+        help: Määritä minkä tahansa päivämääräsarakkeen muoto tiedostossa, esim. YYYY-MM-DD vastaa muotoa 2014-04-30.
+    xlsx:
+      enabled:
+        label: Enabloi tuote
+        help: Pitääkö tuodun tuotteen olla enabloitu
+      categoriesColumn:
+        label: Kategoriasarake
+        help: Kategoriasarakkeen nimi
+      familyColumn:
+        label: Perhesarake
+        help: Perhesarakkeen nimi
+      groupsColumn:
+        label: Ryhmäsarake
+        help: Ryhmäsarakkeen nimi
+      filePath:
+        label: Tiedosto
+        help: Tuotava XLSX-tiedosto
+      uploadAllowed:
+        label: Salli tiedoston tuonti
+        help: Sallitaanko tiedoston suora lataus järjestelmään
+      circularRefsChecked:
+        label: Tarkista kehäviittaukset
+        help: Jos kyllä, data prosessoidaan siten että kategorioiden välillä ei ole kehäviittauksia
+      realTimeVersioning:
+        label: Reaaliaikainen historiapäivitys
+        help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
+      copyValuesToProducts:
+        label: Kopioi variant-ryhmien arvot tuotteisiin
+        help: Tarkoittaa että tuotteet päivitetään automaattisesti variant-ryhmien arvojen mukaan, voidaan ottaa poistaa päältä vain variant-ryhmän päivittämiseksi
+      enabledComparison:
+        label: Vertaa arvoja
+        help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
+      decimalSeparator:
+        label: Desimaalierotin
+        help: Yksi merkki asettaa kenttäerottimen desimaaleja varten
+      dateFormat:
+        label: Päivämäärän muoto
+        help: Määritä minkä tahansa päivämääräsarakkeen muoto tiedostossa, esim. YYYY-MM-DD vastaa muotoa 2014-04-30.
+    yml:
+      filePath:
+        label: Tiedosto
+        help: Tuotava YML-tiedosto
+      uploadAllowed:
+        label: Salli tiedoston tuonti
+        help: Sallitaanko tiedoston suora lataus järjestelmään
 job_execution.summary:
   read: lue
   read_lines: lue rivit
@@ -163,3 +180,188 @@ job_execution.summary:
     title: 'Tiedoston koodaus:'
     skipped: ohitetaan, laajennus valkolistattu
   product_skipped_no_diff: ohitettu tuote (ei eroavaisuuksia)
+batch_jobs:
+  csv_product_export:
+    label: Tuotteiden vienti CSV-muodossa
+    export.label: Tuotteiden vienti
+  csv_category_export:
+    label: Kategorian vienti CSV-muodossa
+    export.label: Kategorian vienti
+  csv_attribute_export:
+    label: Attribuuttien vienti CSV-muodossa
+    export.label: Attribuuttien vienti
+  csv_attribute_option_export:
+    label: Attribuuttien määritteiden vienti CSV-muodossa
+    export.label: Attribuuttien määritteiden vienti
+  csv_association_type_export:
+    label: Liitännäistyyppien vienti CSV-muodossa
+    export.label: Liitännäistyyppien vienti
+  csv_group_export:
+    label: Ryhmän vienti CSV-muodossa
+    export.label: Ryhmän vienti
+  csv_variant_group_export:
+    label: Muuttujaryhmien vienti CSV-muodossa
+    export.label: Muutujaryhmien vienti
+  csv_family_export:
+    label: Ryhmän tuonti CSV-tiedostona
+    export.label: Ryhmän vienti
+  csv_product_import:
+    label: Tuotteiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  csv_category_import:
+    label: Kategorioiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Kategorioiden tuonti
+  csv_attribute_import:
+    label: Attribuuttien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien tuonti
+  csv_attribute_option_import:
+    label: Attribuuttien määritteiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien määritteiden tuonti
+  csv_association_type_import:
+    label: Liitännäistyyppien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Liitännäistyyppien tuonti
+  csv_family_import:
+    label: Ryhmän tuonti CSV-tiedostona
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätuonti
+  csv_group_import:
+    label: Ryhmien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmien tuonti
+  csv_variant_group_import:
+    label: Muuttujaryhmien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Muutujaryhmien tuonti
+  csv_channel_export:
+    label: Kanavavienti CSV-muodossa
+    export.label: Kanavavienti
+  csv_locale_export:
+    label: Lokaatiovienti CSV-muodossa
+    export.label: Lokaatiovienti
+  csv_attribute_group_export:
+    label: Attribuuttiryhmävienti CSV-muodossa
+    export.label: Attribuuttiryhmävienti
+  csv_currency_export:
+    label: Valuuttavienti CSV-muodossa
+    export.label: Valuuttavienti
+  csv_group_type_export:
+    label: Ryhmätyyppivienti CSV-muodossa
+    export.label: Ryhmätyyppivienti
+  csv_channel_import:
+    label: Kanavatuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Kanavatuonti
+  csv_locale_import:
+    label: Lokaatiotuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Lokaatiotuonti
+  csv_attribute_group_import:
+    label: Attribuuttiryhmätuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttiryhmäntuonti
+  csv_currency_import:
+    label: Valuuttatuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Valuuttatuonti
+  csv_group_type_import:
+    label: Ryhmätyyppituonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätyyppituonti
+  xlsx_category_import:
+    label: Kategorioiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Kategorioiden tuonti
+  xlsx_association_type_import:
+    label: Liitännäistyyppien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Liitännäistyyppien tuonti
+  xlsx_attribute_import:
+    label: Attribuuttien tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien tuonti
+  xlsx_attribute_option_import:
+    label: Attribuuttien määritteiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien määritteiden tuonti
+  xlsx_family_import:
+    label: Perheiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätuonti
+  xlsx_product_export:
+    label: Tuotteiden vienti XLSX-muodossa
+    export.label: Tuotteiden vienti
+  xlsx_product_import:
+    label: Tuotteiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  xlsx_group_export:
+    label: Ryhmävienti XLSX-muodossa
+    export.label: Ryhmän vienti
+  xlsx_variant_group_export:
+    label: Muuttujaryhmien vienti XLSX-muodossa
+    export.label: Muutujaryhmien vienti
+  xlsx_group_import:
+    label: Ryhmätuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmien tuonti
+  xlsx_variant_group_import:
+    label: Muuttujaryhmien tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Muuttujaryhmien tuonti
+  xlsx_family_export:
+    label: Perhevienti XLSX-muodossa
+    export.label: Ryhmän vienti
+  xlsx_category_export:
+    label: Kategoriavienti XLSX-muodossa
+    export.label: Kategorian vienti
+  xlsx_attribute_export:
+    label: Attribuuttivienti XLSX-muodossa
+    export.label: Attribuuttivienti XLSX-muodossa
+  xlsx_attribute_option_export:
+    label: Attribuuttien määritteiden vienti XLSX-muodossa
+    export.label: Attribuuttien määritteiden vienti XLSX-muodossa
+  xlsx_association_type_export:
+    label: Liitännäistyyppien vienti XLSX-muodossa
+    export.label: Liitännäistyyppien vienti XLSX-muodossa
+  xlsx_channel_export:
+    label: Kanavavienti XLSX-muodossa
+    export.label: Kanavavienti
+  xlsx_locale_export:
+    label: Lokaatiovienti XLSX-muodossa
+    export.label: Lokaatiovienti
+  xlsx_attribute_group_export:
+    label: Attribuuttiryhmävienti XLSX-muodossa
+    export.label: Attribuuttiryhmävienti
+  xlsx_currency_export:
+    label: Valuuttavienti XLSX-muodossa
+    export.label: Valuuttavienti
+  xlsx_group_type_export:
+    label: Ryhmätyyppivienti XLSX-muodossa
+    export.label: Ryhmätyyppivienti
+  xlsx_channel_import:
+    label: Kanavatuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Kanavatuonti
+  xlsx_locale_import:
+    label: Lokaatiotuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Lokaatiotuonti
+  xlsx_attribute_group_import:
+    label: Attribuuttiryhmätuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttiryhmätuonti
+  xlsx_currency_import:
+    label: Valuuttatuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Valuuttatuonti
+  xlsx_group_type_import:
+    label: Ryhmätyyppituonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätyyppituonti

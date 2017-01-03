@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdentifierTransformer;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -43,7 +43,13 @@ class LightEntityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addViewTransformer(
-            new EntityToIdentifierTransformer($options['repository'], $options['multiple'], null, null),
+            new EntityToIdentifierTransformer(
+                $options['repository'],
+                $options['multiple'],
+                null,
+                null,
+                $options['identifier']
+            ),
             true
         );
     }
@@ -54,26 +60,22 @@ class LightEntityType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(['repository_options' => []])
+            ->setDefined([
+                'repository_options',
+                'identifier',
+            ])
             ->setRequired(['repository'])
+            ->setDefaults([
+                'repository_options' => [],
+                'identifier'         => 'code',
+            ])
             ->setNormalizer('choices', function (Options $options, $value) {
-                return $options['repository']->getChoices($options['repository_options']);
+                return $options['repository']->findTranslatedLabels($options['repository_options']);
             })
-            ->setNormalizer('repository', function (Options $options, $value) {
-                if (!$value instanceof ObjectRepository) {
-                    throw new UnexpectedTypeException(
-                        '\Doctrine\Common\Persistence\ObjectRepository',
-                        $value
-                    );
+            ->setAllowedValues([
+                'repository' => function ($repository) {
+                    return $repository instanceof TranslatedLabelsProviderInterface;
                 }
-                if (!$value instanceof ChoicesProviderInterface) {
-                    throw new UnexpectedTypeException(
-                        '\Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface',
-                        $value
-                    );
-                }
-
-                return $value;
-            });
+            ]);
     }
 }

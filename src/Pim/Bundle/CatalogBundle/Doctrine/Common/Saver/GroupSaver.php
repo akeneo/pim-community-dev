@@ -2,17 +2,19 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
+use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -46,18 +48,26 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $productQueryBuilderFactory;
+
+    /** @var BulkObjectDetacherInterface */
+    protected $detacher;
+
     /** @var string */
     protected $productClassName;
 
     /**
-     * @param ObjectManager                   $objectManager
-     * @param BulkSaverInterface              $productSaver
-     * @param ProductTemplateMediaManager     $templateMediaManager
-     * @param ProductTemplateApplierInterface $productTplApplier
-     * @param VersionContext                  $versionContext
-     * @param SavingOptionsResolverInterface  $optionsResolver
-     * @param EventDispatcherInterface        $eventDispatcher
-     * @param string                          $productClassName
+     * @param ObjectManager                       $objectManager
+     * @param BulkSaverInterface                  $productSaver
+     * @param ProductTemplateMediaManager         $templateMediaManager
+     * @param ProductTemplateApplierInterface     $productTplApplier
+     * @param VersionContext                      $versionContext
+     * @param SavingOptionsResolverInterface      $optionsResolver
+     * @param EventDispatcherInterface            $eventDispatcher
+     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+     * @param BulkObjectDetacherInterface         $detacher
+     * @param string                              $productClassName
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -67,16 +77,20 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         VersionContext $versionContext,
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        BulkObjectDetacherInterface $detacher,
         $productClassName
     ) {
-        $this->objectManager          = $objectManager;
-        $this->productSaver           = $productSaver;
-        $this->templateMediaManager   = $templateMediaManager;
-        $this->productTplApplier      = $productTplApplier;
-        $this->versionContext         = $versionContext;
-        $this->optionsResolver        = $optionsResolver;
-        $this->eventDispatcher        = $eventDispatcher;
-        $this->productClassName       = $productClassName;
+        $this->objectManager = $objectManager;
+        $this->productSaver = $productSaver;
+        $this->templateMediaManager = $templateMediaManager;
+        $this->productTplApplier = $productTplApplier;
+        $this->versionContext = $versionContext;
+        $this->optionsResolver = $optionsResolver;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        $this->detacher = $detacher;
+        $this->productClassName = $productClassName;
     }
 
     /**
@@ -84,46 +98,18 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($group, array $options = [])
     {
-        if (!$group instanceof GroupInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
-                    ClassUtils::getClass($group)
-                )
-            );
-        }
-
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group));
+        $this->validateGroup($group);
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
-        $this->versionContext->addContextInfo(
-            sprintf('Comes from variant group %s', $group->getCode()),
-            $this->productClassName
-        );
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
 
-        if ($group->getType()->isVariant()) {
-            $template = $group->getProductTemplate();
-            if (null !== $template) {
-                $this->templateMediaManager->handleProductTemplateMedia($template);
-            }
-        }
+        $this->persistGroup($group, $options);
 
-        $this->objectManager->persist($group);
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
+        $this->objectManager->flush();
 
         if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
             $this->copyVariantGroupValues($group);
-        }
-
-        if (0 < count($options['add_products'])) {
-            $this->addProducts($options['add_products']);
-        }
-
-        if (0 < count($options['remove_products'])) {
-            $this->removeProducts($options['remove_products']);
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
@@ -138,37 +124,25 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups));
+        $options = $this->optionsResolver->resolveSaveAllOptions($options);
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups, $options));
 
         foreach ($groups as $group) {
-            $this->save($group, $itemOptions);
+            $this->validateGroup($group);
+
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
+
+            $this->persistGroup($group, $options);
         }
 
-        if (true === $allOptions['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
+
+        foreach ($groups as $group) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups));
-    }
-
-    /**
-     * @param ProductInterface[] $products
-     */
-    protected function addProducts(array $products)
-    {
-        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
-    }
-
-    /**
-     * @param ProductInterface[] $products
-     */
-    protected function removeProducts(array $products)
-    {
-        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups, $options));
     }
 
     /**
@@ -181,5 +155,82 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $template = $group->getProductTemplate();
         $products = $group->getProducts()->toArray();
         $this->productTplApplier->apply($template, $products);
+    }
+
+    /**
+     * Save associated products updated by the variant group update
+     *
+     * @param  GroupInterface $group
+     */
+    protected function saveAssociatedProducts(GroupInterface $group)
+    {
+        $productInGroup = $group->getProducts();
+        $productsToUpdate = $productInGroup->toArray();
+        $productToUpdateIds = array_map(function ($product) {
+            return $product->getId();
+        }, $productsToUpdate);
+
+        if (null !== $group->getId()) {
+            $pqb = $this->productQueryBuilderFactory->create();
+            $pqb->addFilter('groups.id', Operators::IN_LIST, [$group->getId()]);
+            $oldProducts = $pqb->execute();
+            foreach ($oldProducts as $oldProduct) {
+                if (!in_array($oldProduct->getId(), $productToUpdateIds)) {
+                    $oldProduct->removeGroup($group);
+                    $productsToUpdate[] = $oldProduct;
+                    $productToUpdateIds[] = $oldProduct->getId();
+                }
+            }
+        }
+
+        if (!empty($productsToUpdate)) {
+            $this->productSaver->saveAll($productsToUpdate);
+        }
+    }
+
+    /**
+     * @param $group
+     */
+    protected function validateGroup($group)
+    {
+        if (!$group instanceof GroupInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
+                    ClassUtils::getClass($group)
+                )
+            );
+        }
+    }
+
+    /**
+     * @param       $group
+     * @param array $options
+     */
+    protected function persistGroup($group, array $options)
+    {
+        $context = $this->productClassName;
+        $this->versionContext->addContextInfo(
+            sprintf('Comes from variant group %s', $group->getCode()),
+            $context
+        );
+
+        if ($group->getType()->isVariant()) {
+            $template = $group->getProductTemplate();
+            if (null !== $template) {
+                $this->templateMediaManager->handleProductTemplateMedia($template);
+            }
+        }
+
+        $this->objectManager->persist($group);
+
+        $this->saveAssociatedProducts($group);
+
+        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
+            $this->copyVariantGroupValues($group);
+            $this->detacher->detachAll($group->getProducts()->toArray());
+        }
+
+        $this->versionContext->unsetContextInfo($context);
     }
 }

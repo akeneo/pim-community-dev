@@ -4,17 +4,24 @@
 
 {% block content %}
 <div class="container">
-    <form action="" class="form-signin form-reset">
-        <div class="title-box">
-            <h1>
-                <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="Akeneo">
-            </h1>
-            <h2 class="title">{{ 'Check Email'|trans }}</h2>
+    <div class="title-box">
+        {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
+    </div>
+
+    <form action="" class="form-reset">
+        <h2 class="title">{{ 'Check Email'|trans }}</h2>
+
+        <div>
+            <div class="alert alert-success">
+                {{ 'password_reset_email_sent'|trans({ '%email%': email }) }}
+            </div>
         </div>
-        <fieldset>
-            <h3 class="oro-justify">{{ 'password_reset_email_sent'|trans({ '%email%': email }) }}</h3>
-            <a href="{{ path('oro_default') }}">{{ 'Go to homepage'|trans }}</a>
-        </fieldset>
+
+        <a href="{{ path('oro_default') }}" class="cancel">{{ 'Go to homepage'|trans }}</a>
     </form>
+</div>
+
+<div class="version-container muted">
+    {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
 </div>
 {% endblock %}

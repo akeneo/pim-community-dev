@@ -59,9 +59,9 @@ function(_, messenger, __, Modal, AbstractAction) {
             };
 
             if (selectionState.inset) {
-                params.objectsCount = idValues.length;
+                params.itemsCount = idValues.length;
             } else {
-                params.objectsCount = collection.state.totalRecords - idValues.length;
+                params.itemsCount = collection.state.totalRecords - idValues.length;
             }
 
             params = this.getExtraParameters(params, collection.state);

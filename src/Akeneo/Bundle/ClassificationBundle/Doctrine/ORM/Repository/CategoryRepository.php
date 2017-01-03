@@ -6,6 +6,7 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
@@ -21,14 +22,6 @@ class CategoryRepository extends NestedTreeRepository implements
     IdentifiableObjectRepositoryInterface,
     CategoryRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getTreesQB()
-    {
-        return $this->getChildrenQueryBuilder(null, true, null, 'ASC', null);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -80,7 +73,7 @@ class CategoryRepository extends NestedTreeRepository implements
             return new ArrayCollection();
         }
 
-        $meta   = $this->getClassMetadata();
+        $meta = $this->getClassMetadata();
         $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
         $qb = $this->_em->createQueryBuilder();
@@ -124,18 +117,32 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false)
+    public function getFilledTree(CategoryInterface $root, Collection $categories)
     {
-        return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
+        $parentsIds = [];
+        foreach ($categories as $category) {
+            $categoryParentsIds = [];
+            $path = $this->getPath($category);
+
+            if ($path[0]->getId() === $root->getId()) {
+                foreach ($path as $pathItem) {
+                    $categoryParentsIds[] = $pathItem->getId();
+                }
+            }
+            $parentsIds = array_merge($parentsIds, $categoryParentsIds);
+        }
+        $parentsIds = array_unique($parentsIds);
+
+        return $this->getTreeFromParents($parentsIds);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllChildrenIds(CategoryInterface $parent)
+    public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false)
     {
-        $categoryQb = $this->getAllChildrenQueryBuilder($parent);
-        $rootAlias  = current($categoryQb->getRootAliases());
+        $categoryQb = $this->getAllChildrenQueryBuilder($parent, $includeNode);
+        $rootAlias = current($categoryQb->getRootAliases());
         $rootEntity = current($categoryQb->getRootEntities());
         $categoryQb->select($rootAlias.'.id');
         $categoryQb->resetDQLPart('from');
@@ -158,27 +165,6 @@ class CategoryRepository extends NestedTreeRepository implements
     public function getIdentifierProperties()
     {
         return ['code'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCategoryIds(CategoryInterface $category, QueryBuilder $categoryQb = null)
-    {
-        $categoryIds = [];
-
-        if (null !== $categoryQb) {
-            $categoryAlias = $categoryQb->getRootAlias();
-            $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
-        } else {
-            $categories = [['id' => $category->getId()]];
-        }
-
-        foreach ($categories as $category) {
-            $categoryIds[] = $category['id'];
-        }
-
-        return $categoryIds;
     }
 
     /**
@@ -359,6 +345,30 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    {
+        $sameRoot = $parentNode->getRoot() === $childNode->getRoot();
+
+        $isAncestor = $childNode->getLeft() > $parentNode->getLeft()
+                      && $childNode->getRight() < $parentNode->getRight();
+
+        return $sameRoot && $isAncestor;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrderedAndSortedByTreeCategories()
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder = $queryBuilder->orderBy('c.root')->addOrderBy('c.left');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * Create a query builder with just a link to the category passed in parameter
      *
      * @param CategoryInterface $category
@@ -375,26 +385,15 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * Shortcut to get all children query builder
+     *
+     * @param CategoryInterface $category    the requested node
+     * @param bool              $includeNode true to include actual node in query result
+     *
+     * @return QueryBuilder
      */
-    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    protected function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false)
     {
-        $sameRoot = $parentNode->getRoot() === $childNode->getRoot();
-
-        $isAncestor = $childNode->getLeft() > $parentNode->getLeft()
-            && $childNode->getRight() < $parentNode->getRight();
-
-        return $sameRoot && $isAncestor;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrderedAndSortedByTreeCategories()
-    {
-        $queryBuilder = $this->createQueryBuilder('c');
-        $queryBuilder = $queryBuilder->orderBy('c.root')->addOrderBy('c.left');
-
-        return $queryBuilder->getQuery()->getResult();
+        return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
     }
 }

@@ -2,7 +2,7 @@ datagrid:
     job-tracker-grid:
         source:
             type: pim_datasource_default
-            entity: %akeneo_batch.entity.job_execution.class%
+            entity: '%akeneo_batch.entity.job_execution.class%'
             repository_method: createJobTrackerDatagridQueryBuilder
         columns:
             type:
@@ -41,7 +41,7 @@ datagrid:
                 started_at:
                     data_name: startTime
             default:
-                started_at: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                started_at: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 type:
@@ -63,7 +63,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices: %akeneo_batch.job.batch_status.class%::getAllLabels()
+                            choices: '%akeneo_batch.job.batch_status.class%::getAllLabels()'
                 started_at:
                     type:             datetime
                     data_name:        startTime

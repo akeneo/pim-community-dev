@@ -3,10 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use Pim\Component\Catalog\Model\CategoryInterface as CatalogCategoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 
 /**
  * Product category repository
@@ -17,20 +16,19 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class ProductCategoryRepository extends AbstractItemCategoryRepository implements ProductCategoryRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductCountByTree(ProductInterface $product)
-    {
-        return $this->getItemCountByTree($product);
-    }
+    /** @var string */
+    protected $categoryClass;
 
     /**
-     * {@inheritdoc}
+     * @param EntityManager $em
+     * @param string        $entityName
+     * @param string        $categoryClass
      */
-    public function getProductsCountInCategory(CatalogCategoryInterface $category, QueryBuilder $categoryQb = null)
+    public function __construct(EntityManager $em, $entityName, $categoryClass)
     {
-        return $this->getItemsCountInCategory($category, $categoryQb);
+        parent::__construct($em, $entityName);
+
+        $this->categoryClass = $categoryClass;
     }
 
     /**
@@ -38,7 +36,7 @@ class ProductCategoryRepository extends AbstractItemCategoryRepository implement
      */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
-        $rootAlias  = $qb->getRootAlias();
+        $rootAlias = $qb->getRootAlias();
         if ($include) {
             $expression = $qb->expr()->in($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
@@ -46,5 +44,27 @@ class ProductCategoryRepository extends AbstractItemCategoryRepository implement
             $expression = $qb->expr()->notIn($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->select('c')
+            ->from($this->categoryClass, 'c', 'c.id')
+            ->where('c.code = :code')
+            ->setParameter('code', $identifier);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

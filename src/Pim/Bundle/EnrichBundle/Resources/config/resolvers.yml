@@ -4,15 +4,15 @@ parameters:
 
 services:
     pim_enrich.imagine.loader.flysystem:
-        class: %pim_enrich.imagine.loader.flysystem.class%
+        class: '%pim_enrich.imagine.loader.flysystem.class%'
         arguments:
-            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['catalogStorage']
         tags:
             - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
 
     pim_enrich.resolver.locale:
-        class: %pim_enrich.resolver.locale.class%
+        class: '%pim_enrich.resolver.locale.class%'
         arguments:
             - '@request_stack'
-            - %locale%
+            - '%locale%'

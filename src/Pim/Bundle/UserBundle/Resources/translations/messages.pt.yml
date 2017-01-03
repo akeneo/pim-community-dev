@@ -14,7 +14,7 @@ oro.user.controller:
   status.message.saved: Estado gravado
 oro.user.grid.users:
   columns:
-    username: Nome do Utilizador
+    username: Nome de utilizador
     email: Email
     firstName: Primeiro nome
     lastName: Último nome

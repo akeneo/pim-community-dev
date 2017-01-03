@@ -1,0 +1,23 @@
+parameters:
+    pim_user.updater.user.class:  Pim\Component\User\Updater\UserUpdater
+    pim_user.updater.group.class: Pim\Component\User\Updater\GroupUpdater
+    pim_user.updater.role.class:  Pim\Component\User\Updater\RoleUpdater
+
+services:
+    pim_user.updater.user:
+        class: '%pim_user.updater.user.class%'
+        arguments:
+            - '@oro_user.manager'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
+            - '@pim_user.repository.role'
+            - '@pim_user.repository.group'
+
+    pim_user.updater.group:
+        class: '%pim_user.updater.group.class%'
+
+    pim_user.updater.role:
+        class: '%pim_user.updater.role.class%'
+        arguments:
+            - '@oro_security.acl.manager'

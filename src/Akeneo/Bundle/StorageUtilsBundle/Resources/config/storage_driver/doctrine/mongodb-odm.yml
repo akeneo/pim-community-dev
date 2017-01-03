@@ -9,46 +9,46 @@ parameters:
 
 services:
     akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repository:
-        class: %akeneo_storage_utils.event_subscriber.resolve_target_repository.class%
+        class: '%akeneo_storage_utils.event_subscriber.resolve_target_repository.class%'
         public: false
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
     akeneo_storage_utils.event_subscriber.mongodb.entities_type:
-        class: %akeneo_storage_utils.event_subscriber.mongodb.entities_type.class%
+        class: '%akeneo_storage_utils.event_subscriber.mongodb.entities_type.class%'
         arguments:
             - '@akeneo_storage_utils.factory.referenced_collection'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
     akeneo_storage_utils.event_subscriber.mongodb.entity_type:
-        class: %akeneo_storage_utils.event_subscriber.mongodb.entity_type.class%
+        class: '%akeneo_storage_utils.event_subscriber.mongodb.entity_type.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
     akeneo_storage_utils.event_listeners.mongodb.resolve_target_entity:
-        class: %akeneo_storage_utils.event_listeners.mongodb.resolve_target_entity.class%
+        class: '%akeneo_storage_utils.event_listeners.mongodb.resolve_target_entity.class%'
         tags:
             - { name: doctrine_mongodb.odm.event_listener, event: loadClassMetadata }
 
     akeneo_storage_utils.mongodb.mongo_objects_factory:
-        class: %akeneo_storage_utils.mongodb.mongo_objects_factory.class%
+        class: '%akeneo_storage_utils.mongodb.mongo_objects_factory.class%'
 
     akeneo_storage_utils.doctrine.smart_manager_registry:
-        class: %akeneo_storage_utils.doctrine.smart_manager_registry.class%
+        class: '%akeneo_storage_utils.doctrine.smart_manager_registry.class%'
         calls:
             - [addRegistry, ['@doctrine']]
             - [addRegistry, ['@doctrine_mongodb']]
 
     akeneo_storage_utils.doctrine.mongo_mappings_override_configurator:
-        class: %akeneo_storage_utils.doctrine.mongo_mappings_override_configurator.class%
+        class: '%akeneo_storage_utils.doctrine.mongo_mappings_override_configurator.class%'
 
     akeneo_storage_utils.event_subscriber.configure_mongo_mappings:
-        class: %akeneo_storage_utils.event_subscriber.configure_mongo_mappings.class%
+        class: '%akeneo_storage_utils.event_subscriber.configure_mongo_mappings.class%'
         arguments:
             - '@akeneo_storage_utils.doctrine.mongo_mappings_override_configurator'
-            - %akeneo_storage_utils.mapping_overrides%
+            - '%akeneo_storage_utils.mapping_overrides%'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }

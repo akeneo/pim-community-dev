@@ -38,16 +38,13 @@ class Channel implements ChannelInterface
     /** @var array $conversionUnits */
     protected $conversionUnits = [];
 
-    /** @var string $color */
-    protected $color;
-
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->currencies = new ArrayCollection();
-        $this->locales    = new ArrayCollection();
+        $this->locales = new ArrayCollection();
     }
 
     /**
@@ -137,9 +134,27 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
+    public function setCurrencies(array $currencies)
+    {
+        foreach ($this->currencies as $currency) {
+            if (!in_array($currency, $currencies)) {
+                $this->removeCurrency($currency);
+            }
+        }
+
+        foreach ($currencies as $currency) {
+            $this->addCurrency($currency);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addCurrency(CurrencyInterface $currency)
     {
-        $this->currencies[] = $currency;
+        if (!$this->hasCurrency($currency)) {
+            $this->currencies[] = $currency;
+        }
 
         return $this;
     }
@@ -177,6 +192,22 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
+    public function setLocales(array $locales)
+    {
+        foreach ($this->locales as $locale) {
+            if (!in_array($locale, $locales)) {
+                $this->removeLocale($locale);
+            }
+        }
+
+        foreach ($locales as $locale) {
+            $this->addLocale($locale);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addLocale(LocaleInterface $locale)
     {
         if (!$this->hasLocale($locale)) {
@@ -209,6 +240,14 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
+    public function hasCurrency(CurrencyInterface $currency)
+    {
+        return $this->currencies->contains($currency);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setConversionUnits(array $conversionUnits)
     {
         $this->conversionUnits = $conversionUnits;
@@ -222,24 +261,6 @@ class Channel implements ChannelInterface
     public function getConversionUnits()
     {
         return $this->conversionUnits;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getColor()
-    {
-        return $this->color;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
-
-        return $this;
     }
 
     /**

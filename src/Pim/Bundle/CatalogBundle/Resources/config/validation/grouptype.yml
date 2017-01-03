@@ -1,9 +1,10 @@
 Pim\Bundle\CatalogBundle\Entity\GroupType:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+        - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
+        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupType: ~
     properties:
         code:
             - NotBlank: ~

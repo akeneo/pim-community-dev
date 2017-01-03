@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,7 +28,7 @@ class ChangeFamilyType extends AbstractType
      */
     public function __construct($dataClass, FamilyRepositoryInterface $familyRepository)
     {
-        $this->dataClass        = $dataClass;
+        $this->dataClass = $dataClass;
         $this->familyRepository = $familyRepository;
     }
 

@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * Groups filter
@@ -14,17 +14,12 @@ use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupsFilter extends AbstractFilter implements FieldFilterInterface
+class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    /** @var array */
-    protected $supportedFields;
-
     /** @var ObjectIdResolverInterface */
     protected $objectIdResolver;
 
     /**
-     * Instanciate the filter
-     *
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedFields
      * @param array                     $supportedOperators
@@ -34,17 +29,9 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->objectIdResolver   = $objectIdResolver;
-        $this->supportedFields    = $supportedFields;
+        $this->objectIdResolver = $objectIdResolver;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        return in_array($field, $this->supportedFields);
     }
 
     /**
@@ -52,7 +39,7 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
 
             if (FieldFilterHelper::CODE_PROPERTY === FieldFilterHelper::getProperty($field)) {
@@ -100,6 +87,9 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
                 break;
             case Operators::IS_EMPTY:
                 $this->qb->field($field)->size(0);
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->where(sprintf('this.%s.length > 0', $field));
                 break;
         }
     }

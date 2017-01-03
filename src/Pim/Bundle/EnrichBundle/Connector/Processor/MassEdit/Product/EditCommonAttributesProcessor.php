@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -39,23 +38,19 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /**
      * @param ValidatorInterface                  $validator
      * @param ProductRepositoryInterface          $productRepository
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param ObjectUpdaterInterface              $productUpdater
      * @param ObjectDetacherInterface             $productDetacher
      */
     public function __construct(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater,
         ObjectDetacherInterface $productDetacher
     ) {
-        parent::__construct($jobConfigurationRepo);
-
-        $this->validator         = $validator;
+        $this->validator = $validator;
         $this->productRepository = $productRepository;
-        $this->productUpdater    = $productUpdater;
-        $this->productDetacher   = $productDetacher;
+        $this->productUpdater = $productUpdater;
+        $this->productDetacher = $productDetacher;
     }
 
     /**
@@ -63,11 +58,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      */
     public function process($product)
     {
-        $configuration = $this->getJobConfiguration();
-
-        if (!array_key_exists('actions', $configuration)) {
-            throw new InvalidArgumentException('Missing configuration for \'actions\'.');
-        }
+        $actions = $this->getConfiguredActions();
 
         if (!$this->isProductEditable($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
@@ -76,14 +67,12 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             return null;
         }
 
-        $product = $this->updateProduct($product, $configuration['actions']);
-        if (null !== $product) {
-            if (!$this->isProductValid($product)) {
-                $this->stepExecution->incrementSummaryInfo('skipped_products');
-                $this->productDetacher->detach($product);
+        $product = $this->updateProduct($product, $actions);
+        if (null !== $product && !$this->isProductValid($product)) {
+            $this->stepExecution->incrementSummaryInfo('skipped_products');
+            $this->productDetacher->detach($product);
 
-                return null;
-            }
+            return null;
         }
 
         return $product;
@@ -203,14 +192,15 @@ class EditCommonAttributesProcessor extends AbstractProcessor
          * calls the toString method which hydrate lot of model
          */
         $this->stepExecution->addWarning(
-            $this->getName(),
             'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
             [],
-            [
-                'class'  => ClassUtils::getClass($product),
-                'id'     => $product->getId(),
-                'string' => $product->getIdentifier()->getData(),
-            ]
+            new DataInvalidItem(
+                [
+                    'class'  => ClassUtils::getClass($product),
+                    'id'     => $product->getId(),
+                    'string' => $product->getIdentifier()->getData(),
+                ]
+            )
         );
     }
 }

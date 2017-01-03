@@ -33,7 +33,7 @@ class ReferenceDataInterfaceChecker implements CheckerInterface
     public function check(ConfigurationInterface $configuration)
     {
         $this->model = $configuration->getClass();
-        $reflection  = new \ReflectionClass($this->model);
+        $reflection = new \ReflectionClass($this->model);
 
         if (!$reflection->implementsInterface($this->interface)) {
             $this->failure = sprintf(

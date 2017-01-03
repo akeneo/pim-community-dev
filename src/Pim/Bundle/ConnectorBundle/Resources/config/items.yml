@@ -3,4 +3,4 @@ parameters:
 
 services:
     pim_connector.validator.item.charset_validator:
-        class: %pim_connector.validator.item.charset_validator.class%
+        class: '%pim_connector.validator.item.charset_validator.class%'

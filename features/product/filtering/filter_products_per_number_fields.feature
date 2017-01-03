@@ -24,19 +24,19 @@ Feature: Filter products by number field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | value   | result         |
-      | count  | empty   | book and mug   |
-      | count  | > 200   |                |
-      | count  | < 200   |                |
-      | count  | > 199   | postit         |
-      | count  | < 201   | postit         |
-      | count  | >= 200  | postit         |
-      | count  | <= 200  | postit         |
-      | count  | = 200   | postit         |
-      | count  | = 0     |                |
-      | count  | > 0     | postit         |
-      | rate   | empty   | mug and postit |
-      | rate   | > 9.5   |                |
-      | rate   | <= 9.5  | book           |
-      | rate   | = 0     |                |
-      | rate   | > 0     | book           |
+      | filter | operator | value | result         |
+      | count  | is empty |       | book and mug   |
+      | count  | >        | 200   |                |
+      | count  | <        | 200   |                |
+      | count  | >        | 199   | postit         |
+      | count  | <        | 201   | postit         |
+      | count  | >=       | 200   | postit         |
+      | count  | <=       | 200   | postit         |
+      | count  | =        | 200   | postit         |
+      | count  | =        | 0     |                |
+      | count  | >        | 0     | postit         |
+      | rate   | is empty |       | mug and postit |
+      | rate   | >        | 9.5   |                |
+      | rate   | <=       | 9.5   | book           |
+      | rate   | =        | 0     |                |
+      | rate   | >        | 0     | book           |

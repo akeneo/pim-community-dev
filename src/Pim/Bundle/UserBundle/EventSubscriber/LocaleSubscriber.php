@@ -27,19 +27,19 @@ class LocaleSubscriber implements EventSubscriberInterface
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var EntityManager|null */
+    /** @var EntityManager */
     protected $em;
 
     /**
      * @param RequestStack        $requestStack
      * @param TranslatorInterface $translator
-     * @param EntityManager|null  $em
+     * @param EntityManager       $em
      */
-    public function __construct(RequestStack $requestStack, TranslatorInterface $translator, EntityManager $em = null)
+    public function __construct(RequestStack $requestStack, TranslatorInterface $translator, EntityManager $em)
     {
         $this->requestStack = $requestStack;
-        $this->translator   = $translator;
-        $this->em           = $em;
+        $this->translator = $translator;
+        $this->em = $em;
     }
 
     /**
@@ -62,7 +62,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-        $locale  = $this->getLocale($request);
+        $locale = $this->getLocale($request);
 
         if (null !== $locale) {
             $request->setLocale($locale);
@@ -87,7 +87,7 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocale(Request $request)
     {
-        return null !== $request->getSession()->get('_locale') ?
+        return null !== $request->getSession() && null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
     }
 
@@ -96,12 +96,9 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocaleFromOroConfigValue()
     {
-        $locale = null;
-        if (null !== $this->em) {
-            $locale = $this->em
-                ->getRepository('OroConfigBundle:ConfigValue')
-                ->getSectionForEntityAndScope('pim_localization', 'app', 0);
-        }
+        $locale = $this->em
+            ->getRepository('OroConfigBundle:ConfigValue')
+            ->getSectionForEntityAndScope('pim_localization', 'app', 0);
 
         return null === $locale ? null : $locale->getValue();
     }

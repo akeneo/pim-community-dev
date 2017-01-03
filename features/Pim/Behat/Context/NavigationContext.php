@@ -4,6 +4,7 @@ namespace Pim\Behat\Context;
 
 use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
+use Behat\Mink\Exception\DriverException;
 use Context\Page\Base\Base;
 use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -60,11 +61,15 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         'my account'               => 'User profile',
     ];
 
-    protected $elements = [
-        'Dot menu'    => ['css' => '.pin-bar .pin-menus i.icon-ellipsis-horizontal'],
-        'Pinned item' => ['css' => '.pin-bar a[title="%s"]'],
+    /** @var array */
+    protected $pageDecorators = [
+        'Pim\Behat\Decorator\Page\GridCapableDecorator',
     ];
 
+    protected $elements = [
+        'Dot menu' => ['css' => '.pin-bar .pin-menus i.icon-ellipsis-horizontal'],
+    ];
+    
     /**
      * @param string $baseUrl
      */
@@ -96,10 +101,22 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function iAmLoggedInAs($username)
     {
-        $this->username = $username;
-        $this->password = $username;
-
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
+
+        $this->getSession()->visit($this->locatePath('/user/logout'));
+
+        $this->spin(function () {
+            return $this->getSession()->getPage()->find('css', '.title-box');
+        }, 'Cannot find ".title-box" element in login page');
+
+        $this->getSession()->getPage()->fillField('_username', $username);
+        $this->getSession()->getPage()->fillField('_password', $username);
+
+        $this->getSession()->getPage()->find('css', '.form-signin button')->press();
+
+        $this->spin(function () {
+            return $this->getSession()->getPage()->find('css', '.version-container');
+        }, sprintf('Spining for login with %s', $username));
     }
 
     /**
@@ -211,6 +228,21 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I wait to be on the "([^"]*)" (\w+) page$/
+     */
+    public function iWaitForTheEntityEditPage($identifier, $page)
+    {
+        $page   = ucfirst($page);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->setCurrentPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+
         $this->wait();
     }
 
@@ -218,16 +250,17 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I show the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" (\w+) show page$/
+     * @Given /^I show the "([^"]*)" ([\w ]+)$/
+     * @Given /^I am on the "([^"]*)" ([\w ]+) show page$/
      */
     public function iAmOnTheEntityShowPage($identifier, $page)
     {
-        $page   = ucfirst($page);
+        $page = join('', array_map(function ($pageWord) {
+            return ucfirst($pageWord);
+        }, explode(' ', $page)));
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s show', $page), ['id' => $entity->getId()]);
-        $this->wait();
     }
 
     /**
@@ -273,7 +306,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     {
         $pinButton = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.minimize-button');
-        });
+        }, 'Cannot find ".minimize-button" to pin current page');
 
         $pinButton->click();
     }
@@ -286,8 +319,8 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     public function iClickOnThePinnedItem($label)
     {
         $pinnedItem = $this->spin(function () use ($label) {
-            return $this->getCurrentPage()->find('css', sprintf($this->elements['Pinned item']['css'], $label));
-        }, sprintf('Unable to click on the pinned element "%s"', $label));
+            return $this->getCurrentPage()->find('css', sprintf('.pin-bar a[title="%s"]', $label));
+        }, sprintf('Cannot find "%s" pin item', $label));
 
         $pinnedItem->click();
     }
@@ -305,30 +338,33 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $page
+     * @param string $pageName
      * @param array  $options
      *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    public function openPage($page, array $options = [])
+    public function openPage($pageName, array $options = [])
     {
-        $this->currentPage = $page;
+        $this->currentPage = $pageName;
 
-        /** @var Base $page */
         $page = $this->getCurrentPage()->open($options);
 
-        // spin function to deal with invalid CSRF problems
-        $this->getMainContext()->spin(function () use ($page, $options) {
-            if ($this->loginIfRequired()) {
-                $page = $this->getCurrentPage()->open($options);
-                $this->wait();
-            }
-
-            return $page->verifyAfterLogin();
-        }, 'Trying to open page ' . $this->currentPage);
         $this->wait();
 
         return $page;
+    }
+
+    /**
+     * @param string $pageName
+     * @param array  $options
+     *
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     */
+    public function setCurrentPage($pageName, array $options = [])
+    {
+        $this->currentPage = $pageName;
+
+        return $this->getCurrentPage();
     }
 
     /**
@@ -336,7 +372,13 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function getCurrentPage()
     {
-        return $this->getPage($this->currentPage);
+        $page = $this->getPage($this->currentPage);
+
+        foreach ($this->pageDecorators as $decorator) {
+            $page = new $decorator($page);
+        }
+
+        return $page;
     }
 
     /**
@@ -351,7 +393,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
             assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
 
             return true;
-        });
+        }, 'Spining to assert address');
     }
 
     /**
@@ -388,25 +430,6 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         }
 
         return $filteredUrl;
-    }
-
-    /**
-     * A method that logs the user in with the previously provided credentials if required by the page
-     *
-     * @return bool true if login was required, false if not
-     */
-    protected function loginIfRequired()
-    {
-        $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
-        if ($loginForm) {
-            $loginForm->fillField('_username', $this->username);
-            $loginForm->fillField('_password', $this->password);
-            $loginForm->pressButton('_submit');
-
-            return true;
-        }
-
-        return false;
     }
 
     /**

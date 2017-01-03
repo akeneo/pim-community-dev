@@ -24,11 +24,11 @@ Feature: Import variant group involving reference data
       sku;sole_color;groups
       my-jacket;red;jacket
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
     And I should see the text "skipped product (no differences) 1"
 
@@ -38,11 +38,11 @@ Feature: Import variant group involving reference data
       sku;sole_color;groups
       another-jacket;blue;jacket
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 2 product
 
   Scenario: Import a product in a variant group with a reference data as variation axis which already exists
@@ -51,10 +51,10 @@ Feature: Import variant group involving reference data
       sku;sole_color;groups
       another-jacket;red;jacket
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
     And I should see the text "Group \"[jacket]\" already contains another product with values \"sole_color: Red\": another-jacket"

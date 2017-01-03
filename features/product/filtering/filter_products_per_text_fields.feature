@@ -24,19 +24,19 @@ Feature: Filter products by text field
     Then the grid should contain 5 elements
     And I should see products "HP LA2206xc + WF722A", "Canon 5D + EF 24-105 F4L IS", "Canon 5D + EF 24-105mm f/4L IS" and "Canon 5D + EF 24-105 F5L IS"
     And I should be able to use the following filters:
-      | filter | value                            | result                                                                                      |
-      | name   | HP LA2206xc + WF                 | HP LA2206xc + WF722A                                                                        |
-      | name   | Canon 5D + EF 24-105             | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
-      | name   | starts with 5D + EF 24-105 F     |                                                                                             |
-      | name   | starts with HP                   | HP LA2206xc + WF722A                                                                        |
-      | name   | ends with Canon                  |                                                                                             |
-      | name   | ends with IS                     | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
-      | name   | ends with is                     | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
-      | name   | does not contain Canon           | HP LA2206xc + WF722A                                                                        |
-      | name   | is equal to Canon 5D + EF 24-105 |                                                                                             |
-      | name   | f/4L                             | Canon 5D + EF 24-105mm f/4L IS                                                              |
-      | SKU    | is equal to 135-2541             | 135-2541                                                                                    |
-      | SKU    | in list 135-2541, 13572541       | 135-2541, 13572541                                                                          |
+      | filter | operator         | value                | result                                                                                      |
+      | name   | contains         | HP LA2206xc + WF     | HP LA2206xc + WF722A                                                                        |
+      | name   | contains         | Canon 5D + EF 24-105 | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
+      | name   | starts with      | 5D + EF 24-105 F     |                                                                                             |
+      | name   | starts with      | HP                   | HP LA2206xc + WF722A                                                                        |
+      | name   | ends with        | Canon                |                                                                                             |
+      | name   | ends with        | IS                   | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
+      | name   | ends with        | is                   | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
+      | name   | does not contain | Canon                | HP LA2206xc + WF722A                                                                        |
+      | name   | is equal to      | Canon 5D + EF 24-105 |                                                                                             |
+      | name   | contains         | f/4L                 | Canon 5D + EF 24-105mm f/4L IS                                                              |
+      | sku    | is equal to      | 135-2541             | 135-2541                                                                                    |
+      | sku    | in list          | 135-2541, 13572541   | 135-2541, 13572541                                                                          |
 
   Scenario: Successfully filter products by empty value for text and textarea attributes
     Given the following attributes:
@@ -54,9 +54,9 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter      | value | result          |
-      | name        | empty | book and mug    |
-      | description | empty | postit and book |
+      | filter      | operator | value | result          |
+      | name        | is empty |       | book and mug    |
+      | description | is empty |       | postit and book |
 
   Scenario: Successfully filter products by empty value for localizable text attribute
     Given the following attributes:
@@ -71,8 +71,8 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | value | result       |
-      | name   | empty | book and mug |
+      | filter | operator | value | result       |
+      | name   | is empty |       | book and mug |
 
   Scenario: Successfully filter products by empty value for scopable text attribute
     Given the following attributes:
@@ -87,8 +87,8 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | value | result       |
-      | name   | empty | book and mug |
+      | filter | operator | value | result       |
+      | name   | is empty |       | book and mug |
 
   Scenario: Successfully filter products by empty value for scopable and localizable text attribute
     Given I add the "english" locale to the "mobile" channel
@@ -104,5 +104,5 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | value | result       |
-      | name   | empty | book and mug |
+      | filter | operator | value | result       |
+      | name   | is empty |       | book and mug |

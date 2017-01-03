@@ -1,6 +1,6 @@
 services:
     pim_import_export.event_listener.inject_job_type:
-        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
+        class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'
         arguments:
             - [jobType]
             - '@oro_datagrid.datagrid.request_params'

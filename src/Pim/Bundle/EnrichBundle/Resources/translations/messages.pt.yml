@@ -79,9 +79,9 @@ pim_enrich:
       page_subtitle: Editar em Massa (1 produto) | Editar em Massa (%count% produtos)
       title: Escolher operação
       subtitle: Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados
-      confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
+      confirm: Está prestes a atualizar um produto com as seguintes informações, por favor confirme. | Está prestes a atualizar %count% produtos com as seguintes informações, por favor confirme.
       steps:
-        first: Escolher produtos
+        first: Escolha produtos
         second: Escolher operação
         third: Configurar
         fourth: Confirmar
@@ -90,9 +90,9 @@ pim_enrich:
       page_subtitle: Editar em Massa (1 família) | Editar em Massa (%count% famílias)
       title: Escolher operação
       subtitle: Escolha a operação que deseja executar na familia selecionada| Escolha a operação que deseja executar nas %count% famílias selecionadas
-      confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
+      confirm: Está prestes a atualizar um produto com as seguintes informações, por favor confirme. | Está prestes a atualizar %count% produtos com as seguintes informações, por favor confirme.
       steps:
-        first: Escolher famílias
+        first: Escolha as famílias
         second: Escolher operação
         third: Configurar
         fourth: Confirmar
@@ -104,21 +104,32 @@ pim_enrich:
     edit-common-attributes:
       label: Editar atributos
       description: Os atributos do produto selecionado serão editados com os seguintes dados para a linguagem escolhida.
-      empty: Por favor, selecione o(s) atributo(s) que deseja editar
+      empty: Por favor, selecione o atributo(s) que deseja editar
       success_flash: A tarefa de atualização de estado de produto(s) está em execução
       launched_flash: A ação em massa "editar atributos comuns" foi despoletada. Irá receber notificação quando estiver concluída.
       message:
         warning: Não há nenhum atributo em comum nos produtos selecionados. Por favor, altere a sua seleção.
         invalid_attribute: O atributo com código "attribute_code" não é comum para os produtos que foram selecionados, atributo ignorado.
         no_valid_attribute: Nenhum dos atributos selecionados pode ser aplicado a este produto.
-    classify:
+    classify-add:
       label: Classificar produtos em categorias
       description: Os produtos serão posicionados nas categorias seguintes, o posicionamento existente será mantido também.
       success_flash: Os produto(s) foram classificados nas categorias selecionadas
+      launched_flash: A ação em massa "adicionar a categorias" foi despoletada. Irá receber notificação quando estiver concluída.
+    classify-move:
+      label: Mover produtos para categorias
+      description: Os produtos serão colocados nas categorias seguintes, a sua localização atual será perdida.
+      success_flash: O(s) produto(s) foram movidos para as categorias selecionadas
+      launched_flash: A ação em massa "mover para categorias" foi despoletada. Irá receber notificação quando estiver concluída.
+    classify-remove:
+      label: Retirar produtos de categorias
+      description: Os produtos serão retirados das seguintes categorias.
+      success_flash: O(s) produto(s) foram retirados das categorias selecionadas
+      launched_flash: A ação em massa "retirar das categorias" foi despoletada. Irá receber notificação quando estiver concluída.
     change-family:
-      label: Mudar a família de produtos
-      description: A família dos produtos seleccionados será alterada para a família escolhida
-      success_flash: A família do produtos selecionados foi alterada com êxito
+      label: Alterar a família de produtos
+      description: A família de produtos seleccionados será alterada para a família escolhida
+      success_flash: A família do produto(s) selecionado(s) foi alterada com êxito
       launched_flash: A ação em massa "alterar família" foi despoletada. Irá receber notificação quando estiver concluída.
     add-to-groups:
       label: Adicionar a grupos
@@ -137,9 +148,9 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: A ação em massa "adicionar a grupo variante" foi despoletada. Irá receber notificação quando estiver concluída.
     set-attribute-requirements:
-      label: Estabelecer requisitos do atributo
+      label: Definir requisitos do atributo
       description: Os seguintes requisitos de atributo serão aplicados às famílias selecionadas
-      success_flash: Os requisitos dos atributos foram aplicados às famílias selecionadas
+      success_flash: Os requisitos de atributos foram aplicados às famílias selecionadas
       launched_flash: A ação em massa "definir requisitos de atributo" foi despoletada. Irá receber notificação quando estiver concluída.
     mass_action:
       quick_export:
@@ -343,8 +354,8 @@ btn:
     product: criar produto
     group: criar grupo
     variant group: criar grupo variante
-    association type: criar o tipo de associação
-    group type: criar o tipo de grupo
+    association type: criar tipo de associação
+    group type: criar tipo de grupo
     drag_or_upload: Arraste e solte para fazer o envio ou clique aqui
   edit: editar
   save: gravar
@@ -552,7 +563,6 @@ Close: Fechar
 Search: Pesquisar
 Choose the attribute type: Escolha o tipo de atributo
 Choose the attribute group: Escolha o grupo de atributos
-Drop a file or click here: Solte um ficheiro ou clique aqui
 Drop an image or click here: Solte uma imagem ou clique aqui
 Automatic option sorting: Opção de ordenação automática
 save_attribute_before_manage_option: Para gerir as opções, por favor, guarde o atributo primeiro
@@ -637,7 +647,10 @@ pim_title.association_type:
 pim_title.group_type:
   index: Tipos de grupo
   edit: Tipos de grupo %group type.label% | Editar
-pim_title.mass_edit_action:
+pim_title.mass_edit_product_action:
+  choose: Editar em massa | Escolher
+  configure: Editar em massa | Configurar
+pim_title.mass_edit_family_action:
   choose: Editar em massa | Escolher
   configure: Editar em massa | Configurar
 pim_title.job_tracker:
@@ -773,8 +786,6 @@ Updated At: Atualizado em
 Enabled: Ativo
 Disabled: Inativo
 Status: Estado
-Action: Ação
-Currency: Moeda
 oro.locale:
   form:
     tooltip:
@@ -800,9 +811,44 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atri
 update_product_value.steps.update_product_value_processor.title: Atualizar o valor do produto
 add_to_variant_group_clean.steps.excluded.title: Produto excluído
 add_to_variant_group_clean.steps.duplicated.title: Eixo duplicado
+add_to_variant_group.steps.excluded.title: Produto excluído
+add_to_variant_group.steps.duplicated.title: Eixo duplicado
 add_to_variant_group.steps.cleaner.warning.description: 'O produto não pode ser definido no grupo variante selecionado: duplicação dos valores do eixo variavel com outro produto na seleção'
 edit_common_attributes: Editar atributos comuns
 edit_common_attributes_clean: Limpar ficheiros de atributos comuns
+perform.steps.duplicated.title: Eixo duplicado
+perform.steps.excluded.title: Produto excluído
+batch_jobs:
+  add_product_value:
+    label: Adicionar valor do produto
+    perform:
+      label: Adicionar valor do produto
+  update_product_value:
+    label: Atualizar o valor do produto
+    perform:
+      label: Atualizar o valor do produto
+  edit_common_attributes:
+    label: Editar atributos comuns
+    perform:
+      label: Editar atributos comuns
+    clean:
+      label: Limpar ficheiros de atributos comuns
+  set_attribute_requirements:
+    label: Estabelecer requisitos do atributo
+    perform:
+      label: Estabelecer requisitos do atributo
+  csv_product_quick_export:
+    quick_export.label: Csv exportação rápida de produtos
+    perform:
+      label: Csv exportação rápida de produtos
+  xlsx_product_quick_export:
+    quick_export.label: Xlsx exportação rápida de produtos
+    perform:
+      label: Xlsx exportação rápida de produtos
+  add_to_variant_group:
+    label: Adicionar a grupo variante
+    perform:
+      label: Adicionar a grupo variante
 mass_edit report:
   overview: Relatórios de edição em massa
 job_tracker:
@@ -810,3 +856,14 @@ job_tracker:
     title: Visualizador de processos
   filter:
     started_at: Iniciado em
+pim_enrich_attribute_form:
+  code: Código
+  attributeType: Tipo de atributo
+  reference_data_name: Nome de referência de dados
+  scopable: Âmbito
+  localizable: Multilingue
+  unique: Valor único
+  availableLocales: Linguagens disponíveis
+  locale_specific: Específicas de uma linguagem
+  group: Grupo de atributos
+  useableAsGridFilter: Utilizável em grelha

@@ -2,7 +2,7 @@ jobs:
     csv_product_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_import
-        label:     Demo product import
+        label:     Demo CSV product import
         type:      import
         configuration:
             filePath:           /tmp/product.csv
@@ -20,19 +20,37 @@ jobs:
     csv_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
-        label:     Demo product export
+        label:     Demo CSV product export
         type:      export
         configuration:
-            channel:    mobile
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/product.csv
             decimalSeparator: .
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['master']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
+                structure:
+                    scope: mobile
+                    locales:
+                        - fr_FR
+                        - en_US
+                        - de_DE
     csv_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
-        label:     Demo category import
+        label:     Demo CSV category import
         type:      import
         configuration:
             filePath:            /tmp/category.csv
@@ -40,11 +58,10 @@ jobs:
             delimiter:           ;
             enclosure:           '"'
             escape:              '\'
-            circularRefsChecked: true
     csv_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
-        label:     Demo category export
+        label:     Demo CSV category export
         type:      export
         configuration:
             delimiter:  ;
@@ -54,7 +71,7 @@ jobs:
     csv_association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
-        label:     Demo association type import
+        label:     Demo CSV association type import
         type:      import
         configuration:
             filePath:      /tmp/association_type.csv
@@ -65,7 +82,7 @@ jobs:
     csv_association_type_export:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_export
-        label:     Demo association type export
+        label:     Demo CSV association type export
         type:      export
         configuration:
             delimiter:  ;
@@ -75,7 +92,7 @@ jobs:
     csv_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
-        label:     Demo group import
+        label:     Demo CSV group import
         type:      import
         configuration:
             filePath:      /tmp/group.csv
@@ -86,7 +103,7 @@ jobs:
     csv_variant_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_variant_group_import
-        label:     Demo variant group import
+        label:     Demo CSV variant group import
         type:      import
         configuration:
             filePath:      /tmp/variant_group.csv
@@ -97,7 +114,7 @@ jobs:
     csv_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_export
-        label:     Demo group export
+        label:     Demo CSV group export
         type:      export
         configuration:
             delimiter:  ;
@@ -107,7 +124,7 @@ jobs:
     csv_variant_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_variant_group_export
-        label:     Demo variant group export
+        label:     Demo CSV variant group export
         type:      export
         configuration:
             delimiter:  ;
@@ -118,7 +135,7 @@ jobs:
     csv_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
-        label:     Demo attribute import
+        label:     Demo CSV attribute import
         type:      import
         configuration:
             filePath:      /tmp/attribute.csv
@@ -129,17 +146,17 @@ jobs:
     csv_attribute_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_export
-        label:     Demo attribute export
+        label:     Demo CSV attribute export
         type:      export
         configuration:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/attribute.csv
-    csv_option_import:
+    csv_attribute_option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
-        label:     Demo option import
+        label:     Demo CSV option import
         type:      import
         configuration:
             filePath:      /tmp/option.csv
@@ -150,7 +167,7 @@ jobs:
     csv_family_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_import
-        label:     Demo family import
+        label:     Demo CSV family import
         type:      import
         configuration:
             filePath:      /tmp/family.csv
@@ -158,10 +175,10 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-    csv_option_export:
+    csv_attribute_option_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_export
-        label:     Demo option export
+        label:     Demo CSV option export
         type:      export
         configuration:
             delimiter:  ;
@@ -177,6 +194,11 @@ jobs:
         connector: Akeneo Mass Edit Connector
         alias:     add_product_value
         label:     Mass add products values
+        type:      mass_edit
+    remove_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_product_value
+        label:     Mass remove products values
         type:      mass_edit
     edit_common_attributes:
         connector: Akeneo Mass Edit Connector
@@ -194,7 +216,7 @@ jobs:
         label:     Mass add products to variant group
         type:      mass_edit
     csv_product_quick_export:
-        connector: Akeneo Mass Edit Connector
+        connector: Akeneo CSV Connector
         alias: csv_product_quick_export
         label: CSV product quick export
         type: quick_export
@@ -203,13 +225,377 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv
+            with_media: true
+    csv_product_grid_context_quick_export:
+        connector: Akeneo CSV Connector
+        alias: csv_product_grid_context_quick_export
+        label: CSV product quick export grid context
+        type: quick_export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.csv
+            with_media: true
     csv_family_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_export
-        label:     Demo family export
+        label:     Demo CSV family export
         type:      export
         configuration:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/family.csv
+    xlsx_product_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_export
+        label:     Demo XLSX product export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories.code
+                        operator: 'IN CHILDREN'
+                        value: ['master']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
+                structure:
+                    scope: mobile
+                    locales:
+                        - fr_FR
+                        - en_US
+                        - de_DE
+    xlsx_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_export
+        label:     Demo XLSX group export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/group.xlsx
+    xlsx_variant_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_variant_group_export
+        label:     Demo XLSX variant group export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/variant_group.xlsx
+    xlsx_product_quick_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_product_quick_export
+        label: XLSX product quick export
+        type: quick_export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
+            with_media: true
+    xlsx_product_grid_context_quick_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_product_grid_context_quick_export
+        label: XLSX product quick export grid context
+        type: quick_export
+        configuration:
+            withHeader:   true
+            filePath:     /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
+            linesPerFile: 10000
+            with_media:   true
+    xlsx_product_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_import
+        label:     Demo XLSX product import
+        type:      import
+        configuration:
+            filePath:           /tmp/product.xlsx
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+    xlsx_category_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_category_import
+        label:     Demo XLSX category import
+        type:      import
+        configuration:
+            filePath:            /tmp/category.xlsx
+            uploadAllowed:       true
+    xlsx_association_type_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_association_type_import
+        label:     Demo XLSX association type import
+        type:      import
+        configuration:
+            filePath:      /tmp/association_type.xlsx
+            uploadAllowed: true
+    xlsx_attribute_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_import
+        label:     Demo XLSX attribute import
+        type:      import
+        configuration:
+            filePath:      /tmp/attribute.xlsx
+            uploadAllowed: true
+    xlsx_attribute_option_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_option_import
+        label:     Demo XLSX option import
+        type:      import
+        configuration:
+            filePath:      /tmp/option.xlsx
+            uploadAllowed: true
+    xlsx_family_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_import
+        label:     Demo XLSX family import
+        type:      import
+        configuration:
+            filePath:      /tmp/family.xlsx
+            uploadAllowed: true
+    xlsx_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_import
+        label:     Demo XLSX group import
+        type:      import
+        configuration:
+            filePath:      /tmp/group.xlsx
+            uploadAllowed: true
+    xlsx_variant_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_variant_group_import
+        label:     Demo XLSX variant group import
+        type:      import
+        configuration:
+            filePath:      /tmp/variant_group.xlsx
+            uploadAllowed: true
+    xlsx_family_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_export
+        label:     Demo XLSX family export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath: /tmp/family.xlsx
+    xlsx_category_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_category_export
+        label:     Demo XLSX category export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/category.xlsx
+    xlsx_attribute_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_export
+        label:     Demo XLSX attribute export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/attribute.xlsx
+    xlsx_attribute_option_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_option_export
+        label:     Demo XLSX attribute option export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/option.xlsx
+    xlsx_association_type_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_association_type_export
+        label:     Demo XLSX association type export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/association_type.xlsx
+    csv_channel_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_channel_export
+        label:     Demo CSV channel export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+    csv_currency_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_currency_export
+        label:     Demo CSV currency export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+    csv_locale_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_locale_export
+        label:     Demo CSV locale export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+    csv_group_type_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_type_export
+        label:     Demo CSV group type export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+    csv_attribute_group_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_group_export
+        label:     Demo CSV attribute group export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+    csv_currency_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_currency_import
+        label:     Demo CSV currency import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_channel_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_channel_import
+        label:     Demo CSV channel import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_locale_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_locale_import
+        label:     Demo CSV locale import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_group_type_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_type_import
+        label:     Demo CSV group_type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_attribute_group_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_group_import
+        label:     Demo CSV attribute_group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    xlsx_currency_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_currency_import
+        label:     Demo XLSX currency import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_channel_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_channel_import
+        label:     Demo XLSX channel import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_locale_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_locale_import
+        label:     Demo XLSX locale import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_group_type_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_type_import
+        label:     Demo XLSX group_type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_attribute_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_group_import
+        label:     Demo XLSX attribute_group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_channel_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_channel_export
+        label:     Demo XLSX channel export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+    xlsx_currency_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_currency_export
+        label:     Demo XLSX currency export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+    xlsx_locale_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_locale_export
+        label:     Demo XLSX locale export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+    xlsx_group_type_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_type_export
+        label:     Demo XLSX group type export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+    xlsx_attribute_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_group_export
+        label:     Demo XLSX attribute group export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000

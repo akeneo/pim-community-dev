@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Media filter
@@ -17,24 +17,19 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -50,39 +45,54 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
 
-        if ($operator !== Operators::IS_EMPTY) {
-            $this->checkValue($attribute, $value);
-            $this->addLikeFilter($attribute, $operator, $value, $locale, $scope);
+        if ($operator === Operators::IS_EMPTY || $operator === Operators::IS_NOT_EMPTY) {
+            $this->addEmptyTypeFilter($attribute, $operator, $locale, $scope);
         } else {
-            $this->addIsEmptyFilter($attribute, $locale, $scope);
+            $this->checkValue($attribute, $value);
+            $this->addFilter($attribute, $operator, $value, $locale, $scope);
         }
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @param AttributeInterface $attribute the attribute
+     * @param string             $operator  the used operator
+     * @param string|array       $value     the value(s) to filter
+     * @param string             $locale    the locale
+     * @param string             $scope     the scope
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    protected function addFilter(AttributeInterface $attribute, $operator, $value, $locale, $scope)
     {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAliasMedia = $this->getUniqueAlias('filterMedia' . $attribute->getCode());
+        $backendField = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
+        $backendType = $attribute->getBackendType();
+
+        $this->addValuesInnerJoin($attribute, $locale, $scope, $joinAlias);
+        $this->qb->innerJoin(
+            $joinAlias . '.' . $backendType,
+            $joinAliasMedia,
+            'WITH',
+            $this->prepareCondition($backendField, $operator, $value)
+        );
     }
 
     /**
      * @param AttributeInterface $attribute the attribute
+     * @param string             $operator  the operator
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      */
-    protected function addIsEmptyFilter(AttributeInterface $attribute, $locale, $scope)
+    protected function addEmptyTypeFilter(AttributeInterface $attribute, $operator, $locale, $scope)
     {
         $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
-        $this->addValuesLeftJoin($attribute, $locale, $scope, $joinAlias);
-
         $joinAliasMedia = $this->getUniqueAlias('filterMedia' . $attribute->getCode());
+        $backendField = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
+
+        $this->addValuesLeftJoin($attribute, $locale, $scope, $joinAlias);
         $this->addMediaLeftJoin($attribute, $joinAlias, $joinAliasMedia);
-        $backendField   = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
-        $mediaCondition = $this->prepareCondition($backendField, Operators::IS_EMPTY, null);
-        $this->qb->andWhere($mediaCondition);
+        $this->qb->andWhere($this->prepareCondition($backendField, $operator, null));
     }
 
     /**
@@ -115,25 +125,6 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
     /**
      * @param AttributeInterface $attribute the attribute
-     * @param string             $operator  the used operator
-     * @param string|array       $value     the value(s) to filter
-     * @param string             $locale    the locale
-     * @param string             $scope     the scope
-     */
-    protected function addLikeFilter(AttributeInterface $attribute, $operator, $value, $locale, $scope)
-    {
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
-        $this->addValuesInnerJoin($attribute, $locale, $scope, $joinAlias);
-
-        $joinAliasMedia = $this->getUniqueAlias('filterMedia' . $attribute->getCode());
-        $backendType    = $attribute->getBackendType();
-        $backendField   = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
-        $mediaCondition = $this->prepareCondition($backendField, $operator, $value);
-        $this->qb->innerJoin($joinAlias . '.' . $backendType, $joinAliasMedia, 'WITH', $mediaCondition);
-    }
-
-    /**
-     * @param AttributeInterface $attribute the attribute
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      * @param string             $joinAlias the join alias
@@ -162,24 +153,26 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     {
         switch ($operator) {
             case Operators::STARTS_WITH:
-                $operator = 'LIKE';
-                $value    = $value . '%';
+                $operator = Operators::IS_LIKE;
+                $value = $value . '%';
                 break;
             case Operators::ENDS_WITH:
-                $operator = 'LIKE';
-                $value    = '%' . $value;
+                $operator = Operators::IS_LIKE;
+                $value = '%' . $value;
                 break;
             case Operators::CONTAINS:
-                $operator = 'LIKE';
-                $value    = '%' . $value . '%';
+                $operator = Operators::IS_LIKE;
+                $value = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
-                $operator = 'NOT LIKE';
-                $value    = '%' . $value . '%';
+                $operator = Operators::NOT_LIKE;
+                $value = '%' . $value . '%';
                 break;
             case Operators::EQUALS:
-                $operator = 'LIKE';
-                $value    = $value;
+                $operator = Operators::IS_LIKE;
+                break;
+            case Operators::NOT_EQUAL:
+                $operator = Operators::NOT_LIKE;
                 break;
             default:
                 break;

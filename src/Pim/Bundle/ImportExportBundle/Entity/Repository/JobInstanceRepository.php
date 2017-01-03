@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated will be removed in 1.6. Class will move to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository.
+ * @deprecated will be removed in 1.7. Class will move to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository.
  */
 class JobInstanceRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
@@ -26,7 +26,7 @@ class JobInstanceRepository extends EntityRepository implements IdentifiableObje
     {
         $qb = $this->createQueryBuilder('j');
         $qb
-            ->addSelect("j.alias as jobAlias")
+            ->addSelect("j.jobName as jobName")
             ->addSelect(
                 "CONCAT('pim_import_export.status.', j.status) as statusLabel"
             )

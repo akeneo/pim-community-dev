@@ -1,6 +1,14 @@
 /* global define */
-define(['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmation', 'oro/modal', 'oro/datagrid/model-action'],
-    function(_, messenger, __, DeleteConfirmation, Modal, ModelAction) {
+define([
+        'underscore',
+        'oro/messenger',
+        'oro/translator',
+        'oro/delete-confirmation',
+        'oro/modal',
+        'oro/datagrid/model-action',
+        'oro/mediator'
+    ],
+    function(_, messenger, __, DeleteConfirmation, Modal, ModelAction, mediator) {
         'use strict';
 
         /**
@@ -19,6 +27,21 @@ define(['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmatio
             confirmModal: undefined,
 
             /**
+             * Initialize view
+             *
+             * @param {Object} options
+             * @param {Backbone.Model} options.model Optional parameter
+             * @throws {TypeError} If model is undefined
+             */
+            initialize: function(options) {
+                options = options || {};
+
+                this.gridName = options.datagrid.name;
+
+                ModelAction.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
              * Execute delete model
              */
             execute: function() {
@@ -29,17 +52,19 @@ define(['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmatio
              * Confirm delete item
              */
             doDelete: function() {
-                var self = this;
+                this.model.id = true;
                 this.model.destroy({
                     url: this.getLink(),
                     wait: true,
                     error: function() {
-                        self.getErrorDialog().open();
-                    },
+                        this.getErrorDialog().open();
+                    }.bind(this),
                     success: function() {
-                        var messageText = __('flash.' + self.getEntityHint() + '.removed');
+                        var messageText = __('flash.' + this.getEntityHint() + '.removed');
                         messenger.notificationFlashMessage('success', messageText);
-                    }
+
+                        mediator.trigger('datagrid:doRefresh:' + this.gridName);
+                    }.bind(this)
                 });
             },
 

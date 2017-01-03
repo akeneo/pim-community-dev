@@ -8,7 +8,7 @@ oro.grid.mass_action.confirm_content: Esteu segur que voleu fer-ho?
 oro.grid.mass_action.confirm_ok: Sí, fes-ho
 oro.grid.mass_action.error_title: Error d'acció de massiva
 oro.grid.mass_action.error_content: No es pot realitzar l'acció de massiva
-oro.grid.mass_action.delete.label: Suprimir
+oro.grid.mass_action.delete.label: Eliminar
 oro.grid.mass_action.delete.confirm_title: Confirmació d'eliminació massiva
 oro.grid.mass_action.delete.confirm_content: Esteu segur que voleu suprimir els elements seleccionats?
 oro.grid.datagrid.page_size.all: Tots
@@ -33,6 +33,6 @@ flash.datagrid view:
   removed: Vista de Graella de dades eliminada correctament
   not removable: No teniu els drets necesssaris per eliminar aquesta vista
 quick_export: Exportació ràpida
-import: Importar
-export: Exportar
+import: Importació
+export: Exportació
 mass_edit: Edició massiva

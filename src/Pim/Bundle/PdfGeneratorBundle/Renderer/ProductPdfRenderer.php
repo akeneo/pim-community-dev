@@ -5,9 +5,9 @@ namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -63,14 +63,14 @@ class ProductPdfRenderer implements RendererInterface
         $uploadDirectory,
         $customFont = null
     ) {
-        $this->templating      = $templating;
-        $this->template        = $template;
-        $this->pdfBuilder      = $pdfBuilder;
+        $this->templating = $templating;
+        $this->template = $template;
+        $this->pdfBuilder = $pdfBuilder;
         $this->uploadDirectory = $uploadDirectory;
-        $this->customFont      = $customFont;
-        $this->dataManager     = $dataManager;
-        $this->cacheManager    = $cacheManager;
-        $this->filterManager   = $filterManager;
+        $this->customFont = $customFont;
+        $this->dataManager = $dataManager;
+        $this->cacheManager = $cacheManager;
+        $this->filterManager = $filterManager;
     }
 
     /**
@@ -182,7 +182,7 @@ class ProductPdfRenderer implements RendererInterface
         foreach ($imageAttributes as $attribute) {
             $media = $product->getValue($attribute->getCode(), $locale, $scope)->getMedia();
             if (null !== $media && null !== $media->getKey()) {
-                $path   = $media->getKey();
+                $path = $media->getKey();
                 $filter = 'thumbnail';
                 if (!$this->cacheManager->isStored($path, $filter)) {
                     $binary = $this->dataManager->find($filter, $path);

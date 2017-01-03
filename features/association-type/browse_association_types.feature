@@ -14,6 +14,6 @@ Feature: Browse association types
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code and Label
     And I should be able to use the following filters:
-      | filter | value | result            |
-      | Code   | UP    | UPSELL            |
-      | Label  | sell  | X_SELL and UPSELL |
+      | filter | operator | value | result            |
+      | code   | contains | UP    | UPSELL            |
+      | label  | contains | sell  | X_SELL and UPSELL |

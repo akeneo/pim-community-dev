@@ -16,4 +16,4 @@ Feature: Create a channel
       | Currencies    | EUR             |
       | Locales       | French          |
     And I press the "Save" button
-    Then I should see flash message "Channel successfully saved"
+    Then I should see the flash message "Channel successfully saved"

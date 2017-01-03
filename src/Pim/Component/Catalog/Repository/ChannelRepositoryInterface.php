@@ -35,6 +35,8 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
      *
      * @param ChannelInterface $channel
      *
+     * @deprecated will be removed in 1.7, has been used by the removed method CompletenessManager::scheduleForChannel
+     *
      * @return array the list of deleted locales
      */
     public function getDeletedLocaleIdsForChannel(ChannelInterface $channel);
@@ -61,4 +63,12 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
      * @return int
      */
     public function getChannelCountUsingCurrency(CurrencyInterface $currency);
+
+    /**
+     * Get channel choices
+     * Allow to list channels in an array like array[<code>] = <label>
+     *
+     * @return string[]
+     */
+    public function getLabelsIndexedByCode();
 }

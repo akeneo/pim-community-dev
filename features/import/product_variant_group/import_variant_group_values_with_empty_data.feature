@@ -27,11 +27,11 @@ Feature: Execute an import with empty data
       SANDAL;VARIANT;My new name
       SANDAL2;VARIANT;
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 2"
     And I should see "Processed 2"

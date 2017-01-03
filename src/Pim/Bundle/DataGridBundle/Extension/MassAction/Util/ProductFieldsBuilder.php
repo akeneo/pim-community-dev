@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
+use Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductNormalizer;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 /**
  * Fields builder, allows to prepare the field list for a flat file export, should be part of normalizer at some point
@@ -29,8 +29,8 @@ class ProductFieldsBuilder
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var CurrencyManager */
-    protected $currencyManager;
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
 
     /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepo;
@@ -47,7 +47,7 @@ class ProductFieldsBuilder
      * @param ProductRepositoryInterface         $productRepository
      * @param AttributeRepositoryInterface       $attributeRepository
      * @param LocaleRepositoryInterface          $localeRepository
-     * @param CurrencyManager                    $currencyManager
+     * @param CurrencyRepositoryInterface        $currencyRepository
      * @param AssociationTypeRepositoryInterface $assocTypeRepo
      * @param CatalogContext                     $catalogContext
      */
@@ -55,16 +55,16 @@ class ProductFieldsBuilder
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext
     ) {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
         $this->localeRepository = $localeRepository;
-        $this->currencyManager  = $currencyManager;
-        $this->assocTypeRepo    = $assocTypeRepo;
-        $this->catalogContext   = $catalogContext;
+        $this->currencyRepository = $currencyRepository;
+        $this->assocTypeRepo = $assocTypeRepo;
+        $this->catalogContext = $catalogContext;
     }
 
     /**
@@ -119,7 +119,7 @@ class ProductFieldsBuilder
      */
     protected function prepareFieldsList(array $attributesList = [])
     {
-        $fieldsList   = $this->prepareAttributesList($attributesList);
+        $fieldsList = $this->prepareAttributesList($attributesList);
         $fieldsList[] = ProductNormalizer::FIELD_FAMILY;
         $fieldsList[] = ProductNormalizer::FIELD_CATEGORY;
         $fieldsList[] = ProductNormalizer::FIELD_GROUPS;
@@ -142,9 +142,9 @@ class ProductFieldsBuilder
      */
     protected function prepareAttributesList(array $attributesList)
     {
-        $scopeCode   = $this->catalogContext->getScopeCode();
+        $scopeCode = $this->catalogContext->getScopeCode();
         $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
-        $fieldsList  = [];
+        $fieldsList = [];
 
         foreach ($attributesList as $attribute) {
             $attCode = $attribute->getCode();
@@ -161,7 +161,7 @@ class ProductFieldsBuilder
             } elseif (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
                 array_unshift($fieldsList, $attCode);
             } elseif (AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType()) {
-                foreach ($this->currencyManager->getActiveCodes() as $currencyCode) {
+                foreach ($this->currencyRepository->getActivatedCurrencyCodes() as $currencyCode) {
                     $fieldsList[] = sprintf('%s-%s', $attCode, $currencyCode);
                 }
             } else {

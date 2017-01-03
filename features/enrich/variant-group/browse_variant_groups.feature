@@ -33,7 +33,7 @@ Feature: Browse variant groups
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code and Label
     And I should be able to use the following filters:
-      | filter | value  | result                                                                                                                            |
-      | Code   | mug    | mug, mug_akeneo                                                                                                                   |
-      | Label  | Akeneo | bike_akeneo, boat_akeneo, car_akeneo, helicopter_akeneo, mug_akeneo, plane_akeneo, tshirt_akeneo, sticker_akeneo and watch_akeneo |
-      | Axis   | Color  | tshirt_akeneo and mug                                                                                                             |
+      | filter     | operator | value  | result                                                                                                                            |
+      | code       | contains | mug    | mug, mug_akeneo                                                                                                                   |
+      | label      | contains | Akeneo | bike_akeneo, boat_akeneo, car_akeneo, helicopter_akeneo, mug_akeneo, plane_akeneo, tshirt_akeneo, sticker_akeneo and watch_akeneo |
+      | attributes |          | Color  | tshirt_akeneo and mug                                                                                                             |

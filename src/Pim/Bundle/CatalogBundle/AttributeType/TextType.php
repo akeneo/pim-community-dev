@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -41,7 +42,7 @@ class TextType extends AbstractAttributeType
             ]
         ];
 
-        $properties['unique']['options']['disabled']  = (bool) $attribute->getId();
+        $properties['unique']['options']['disabled'] = (bool) $attribute->getId();
         $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
 
         return $properties;

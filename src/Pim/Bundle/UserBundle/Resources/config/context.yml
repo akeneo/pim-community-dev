@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_user.context.user:
-        class: %pim_user.context.user.class%
+        class: '%pim_user.context.user.class%'
         arguments:
             - '@security.token_storage'
             - '@pim_catalog.repository.locale'
@@ -11,4 +11,4 @@ services:
             - '@pim_catalog.repository.category'
             - '@request_stack'
             - '@pim_catalog.builder.choices'
-            - %locale%
+            - '%locale%'

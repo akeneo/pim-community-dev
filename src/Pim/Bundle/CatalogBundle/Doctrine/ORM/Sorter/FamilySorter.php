@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
+use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
 
 /**
  * Family sorter
@@ -40,16 +40,16 @@ class FamilySorter implements FieldSorterInterface
     {
         $rootAlias = $this->qb->getRootAlias();
 
-        $prefix    = 'sorter';
-        $field     = $prefix.'familyLabel';
-        $family    = $prefix.'family';
-        $trans     = $prefix.'familyTranslations';
+        $prefix = 'sorter';
+        $field = $prefix.'familyLabel';
+        $family = $prefix.'family';
+        $trans = $prefix.'familyTranslations';
 
         $this->qb
             ->leftJoin($rootAlias.'.family', $family)
             ->leftJoin($family.'.translations', $trans, 'WITH', $trans.'.locale = :dataLocale');
         $this->qb
-            ->addSelect('COALESCE('.$trans.'.label, CONCAT(\'[\', '.$family.'.code, \']\')) as '.$field);
+            ->addSelect('COALESCE(NULLIF('.$trans.'.label, \'\'), CONCAT(\'[\', '.$family.'.code, \']\')) as '.$field);
 
         $this->qb->addOrderBy($field, $direction);
 

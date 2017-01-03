@@ -1,6 +1,8 @@
 Job: Zadanie
 Connector: Wtyczka
 pim_import_export:
+  job: Zadanie
+  connector: Wtyczka
   status:
     - Gotowe
   batch_status:
@@ -13,9 +15,11 @@ pim_import_export:
     7: PORZUCONE
     8: NIEZNANY
   download_archive:
+    archive: pobierz utworzone archiwum|pobierz utworzone archiwa
     output: pobierz utworzony plik|pobierz utworzone pliki
     input: pobierz wczytany plik|pobierz wczytane pliki
-    invalid: pobierz nieprawidłowe dane
+    invalid_xlsx: pobierz nieprawidłowe dane
+    invalid_csv: pobierz nieprawidłowe dane
   notification:
     export:
       error: Eksport <strong>%label%</strong> nie powiódł się
@@ -26,6 +30,10 @@ pim_import_export:
       warning: Import <strong>%label%</strong> zakończony z ostrzeżeniami
       success: Import <strong>%label%</strong> zakończony
   list: Wybierz zadanie
+  job_profile:
+    tab:
+      property.title: Ustawienia ogólne
+      history.title: Historia
 pim_title.export_profile.index: Zarządzanie profilami eksportu
 pim_title.export_profile.edit: Profile eksportu %job.label% | Edytuj
 pim_title.export_profile.show: Profile eksportu %job.label% | Pokaż
@@ -85,7 +93,6 @@ btn:
   create:
     export profile: utwórz profil eksportu
     import profile: utwórz profil importu
-Upload and import: Załaduj i importuj
 Upload and import now: Załaduj pliki i importuj teraz
 import now: Importuj teraz
 export now: Eksportuj teraz
@@ -103,6 +110,7 @@ flash:
     created: Import został pomyślnie utworzony
     removed: Import został usunięty
     updated: Import został pomyślnie zaktualizowany
+    running: Import jest uruchomiony
 pim_menu:
   item:
     export_history: Historia eksportów
@@ -141,7 +149,7 @@ Status: Status
 Summary: Podsumowanie
 Start: Start
 End: Koniec
-set_attribute_requirements: Określ wymagania atrybutów
+set_attribute_requirements: Określone wymagania atrybutów
 COMPLETED: WYKONANO
 STARTING: ROZPOCZYNANIE
 STARTED: ROZPOCZĘTE

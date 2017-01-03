@@ -29,7 +29,7 @@ class FileFetcher implements FileFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch(FilesystemInterface $filesystem, $fileKey)
+    public function fetch(FilesystemInterface $filesystem, $fileKey, array $options = [])
     {
         if (!$filesystem->has($fileKey)) {
             throw new \LogicException(sprintf('The file "%s" is not present on the filesystem.', $fileKey));
@@ -45,6 +45,8 @@ class FileFetcher implements FileFetcherInterface
             $this->tmpFilesystem->createDir(dirname($fileKey));
         }
 
+        // TODO: we should not get the path prefix like that
+        // TODO: it should be injected in the constructor
         $localPathname = $this->tmpFilesystem->getAdapter()->getPathPrefix() . $fileKey;
 
         if (false === file_put_contents($localPathname, $stream)) {

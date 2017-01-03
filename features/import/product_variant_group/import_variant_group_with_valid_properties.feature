@@ -19,11 +19,11 @@ Feature: Execute an import with valid properties
       NEW_ONE;VARIANT;size,color;"My new VG 1"
       NEW_TWO;VARIANT;color;"My new VG 2"
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see "read lines 2"
     And I should see "Created 2"
     And there should be the following groups:
@@ -39,11 +39,11 @@ Feature: Execute an import with valid properties
       code;type;axis;label-en_US
       SANDAL;VARIANT;color,size;"My new label"
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see "read lines 1"
     And I should see "Processed 1"
     And there should be the following groups:

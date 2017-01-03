@@ -3,15 +3,21 @@
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 /**
- * Class DBDataCollector
+ * Collects the structure of the PIM catalog:
+ * - number of channels
+ * - number of products
+ * - number of attributes
+ * - number of locales
+ * - number of families
+ * - number of users
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -53,12 +59,12 @@ class DBDataCollector implements DataCollectorInterface
         FamilyRepositoryInterface $familyRepository,
         UserRepositoryInterface $userRepository
     ) {
-        $this->channelRepository   = $channelRepository;
-        $this->productRepository   = $productRepository;
+        $this->channelRepository = $channelRepository;
+        $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->localeRepository    = $localeRepository;
-        $this->familyRepository    = $familyRepository;
-        $this->userRepository      = $userRepository;
+        $this->localeRepository = $localeRepository;
+        $this->familyRepository = $familyRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -68,9 +74,9 @@ class DBDataCollector implements DataCollectorInterface
     {
         return [
             'nb_channels'   => $this->channelRepository->countAll(),
+            'nb_locales'    => $this->localeRepository->countAllActivated(),
             'nb_products'   => $this->productRepository->countAll(),
             'nb_attributes' => $this->attributeRepository->countAll(),
-            'nb_locales'    => $this->localeRepository->countAllActivated(),
             'nb_families'   => $this->familyRepository->countAll(),
             'nb_users'      => $this->userRepository->countAll(),
         ];

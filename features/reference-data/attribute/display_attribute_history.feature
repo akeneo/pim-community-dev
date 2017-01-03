@@ -19,10 +19,12 @@ Feature: Display the attribute history
       | Reference data name | color   |
       | Attribute group     | Other   |
     And I save the attribute
-    And I should see the flash message "Attribute successfully created"
-    And I change the "Attribute group" to "Technical"
+    Then I should see the flash message "Attribute successfully created"
+    And I should not see the text "There are unsaved changes."
+    When I change the "Attribute group" to "Technical"
     And I save the attribute
-    And I should see the flash message "Attribute successfully updated"
+    Then I should see the flash message "Attribute successfully updated"
+    And I should not see the text "There are unsaved changes."
     When I visit the "History" tab
     Then there should be 2 update
     And I should see history:

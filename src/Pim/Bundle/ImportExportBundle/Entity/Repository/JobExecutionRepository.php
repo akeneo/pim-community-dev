@@ -69,7 +69,7 @@ class JobExecutionRepository extends EntityRepository
             ->addSelect('e.startTime as date')
             ->addSelect('j.code AS jobCode')
             ->addSelect('j.label AS jobLabel')
-            ->addSelect('j.alias as jobAlias')
+            ->addSelect('j.jobName as jobName')
         ;
 
         $qb->innerJoin('e.jobInstance', 'j');

@@ -25,11 +25,11 @@ Feature: Execute an import with axis as data
       code;type;name-en_US;description-en_US-tablet;color
       SANDAL;VARIANT;My sandal;My sandal description for locale en_US and channel tablet;white
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see:
     """
     Variant group "SANDAL" cannot contain values for axis or unique attributes: "color": [SANDAL]
@@ -42,11 +42,11 @@ Feature: Execute an import with axis as data
       code;type;name-en_US;description-en_US-tablet;color;size
       SANDAL;VARIANT;My sandal;My sandal description for locale en_US and channel tablet;white;37
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see:
     """
     Variant group "SANDAL" cannot contain values for axis or unique attributes: "size", "color": [SANDAL]
@@ -59,11 +59,11 @@ Feature: Execute an import with axis as data
       code;type;name-en_US;description-en_US-tablet;sku
       SANDAL;VARIANT;My sandal;My sandal description for locale en_US and channel tablet;my-common-sku
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see:
     """
     Variant group "SANDAL" cannot contain values for axis or unique attributes: "sku": [SANDAL]

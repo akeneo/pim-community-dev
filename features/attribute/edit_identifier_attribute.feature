@@ -22,7 +22,7 @@ Feature: Edit an identifier attribute
       | Attribute group | Other      |
     And I press the "Save" button
     And I visit the "Parameters" tab
-    Then I should see validation error "An identifier attribute already exists."
+    Then I should see the text "An identifier attribute already exists."
 
   @javascript
   Scenario: Successfully edit an identifier attribute
@@ -41,7 +41,7 @@ Feature: Edit an identifier attribute
     And I fill in the following information:
       | Attribute group |  |
     And I save the attribute
-    Then I should see validation error "This value should not be blank."
+    Then I should see the text "This value should not be blank."
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "SKU" attribute page
@@ -55,4 +55,4 @@ Feature: Edit an identifier attribute
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "SKU" attribute page
     And I change the "Validation rule" to "Regular expression"
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

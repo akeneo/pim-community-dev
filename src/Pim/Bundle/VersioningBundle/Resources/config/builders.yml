@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_versioning.builder.version:
-        class: %pim_versioning.builder.version.class%
+        class: '%pim_versioning.builder.version.class%'
         arguments:
             - '@pim_versioning.serializer'
             - '@pim_versioning.factory.version'

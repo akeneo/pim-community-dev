@@ -4,29 +4,29 @@ pim_enrich:
       attribute.title: Atributos
       category.title: Categorias
       association.title: Associações
-      completeness.title: Completude
-      history.title: Histórico
+      completeness.title: Plenitude
+      history.title: História
     no_comparison_locale_available: Não há outra localidade disponível para comparação
     no_compared_media: Não há mídia disponível para comparação
   attribute:
     tab:
-      parameter.title: Parâmetros
+      parameter.title: Parametros
       value.title: Valores
-      history.title: Histórico
+      history.title: História
   attribute_group:
     tab:
       property.title: Propriedades
       attribute.title: Atributos
-      history.title: Histórico
+      history.title: História
   family:
     tab:
       property.title: Propriedades
       attribute.title: Atributos
-      history.title: Histórico
+      history.title: História
   association_type:
     tab:
       property.title: Propriedades
-      history.title: Histórico
+      history.title: História
   group_type:
     tab:
       property.title: Propriedades
@@ -34,11 +34,11 @@ pim_enrich:
     pick_conversion_unit: Escolha uma unidade de conversão para cada atributo métrico que será usado durante a exportação de produto
     tab:
       property.title: Propriedades
-      history.title: Histórico
+      history.title: História
   category:
     tab:
       property.title: Propriedades
-      history.title: Histórico
+      history.title: História
   locale:
     tab:
       property.title: Propriedades
@@ -52,8 +52,8 @@ pim_enrich:
       RELATED: Relacionado
     tab:
       product.title: Produtos
-      property.title: Propriedades
-      history.title: Histórico
+      property.title: Propriedade
+      history.title: História
   variant_group:
     type:
       VARIANT: Variante
@@ -62,8 +62,8 @@ pim_enrich:
       RELATED: Relacionado
     tab:
       product.title: Produtos
-      property.title: Propriedades
-      history.title: Histórico
+      property.title: Propriedade
+      history.title: História
       attribute.title: Atributos
     info:
       no_attributes: Este grupo variante ainda não tem atributos
@@ -79,23 +79,23 @@ pim_enrich:
     product:
       page_title: Produtos
       page_subtitle: Editar em Massa (1 produto) | Editar em Massa (%count% produtos)
-      title: Escolher operação
+      title: Escolha uma Operação
       subtitle: Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados
       confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
       steps:
-        first: Escolher produtos
-        second: Escolher operação
+        first: Escolha os produtos
+        second: Escolher Operação
         third: Configurar
         fourth: Confirmar
     family:
       page_title: Famílias
       page_subtitle: Editar em Massa (1 família) | Editar em Massa (%count% famílias)
-      title: Escolher operação
+      title: Escolher Operação
       subtitle: Escolha a operação que deseja executar na familia selecionada| Escolha a operação que deseja executar nas %count% famílias selecionadas
       confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
       steps:
         first: Escolher famílias
-        second: Escolher operação
+        second: Escolher Operação
         third: Configurar
         fourth: Confirmar
     change-status:
@@ -113,10 +113,21 @@ pim_enrich:
         warning: Não há nenhum atributo em comum nos produtos selecionados. Por favor, altere a sua seleção.
         invalid_attribute: O atributo com código "attribute_code" não é comum para os produtos que foram selecionados, atributo ignorado.
         no_valid_attribute: Nenhum dos atributos selecionados pode ser aplicado a este produto.
-    classify:
+    classify-add:
       label: Classificar os produtos em categorias
       description: Os produtos serão posicionados nas categorias, o posicionamento existente será mantido.
       success_flash: O(s) produto(s) foi(ram) classificado(s) nas categorias selecionadas
+      launched_flash: A ação em massa "adicionar a categorias" foi despoletada. Irá receber notificação quando estiver concluída.
+    classify-move:
+      label: Mover produtos para categorias
+      description: Os produtos serão colocados nas categorias seguintes, a sua localização atual será perdida.
+      success_flash: O(s) produto(s) foram movidos para as categorias selecionadas
+      launched_flash: A ação em massa "mover para categorias" foi despoletada. Irá receber notificação quando estiver concluída.
+    classify-remove:
+      label: Retirar produtos de categorias
+      description: Os produtos serão retirados das seguintes categorias.
+      success_flash: O(s) produto(s) foram retirados das categorias selecionadas
+      launched_flash: A ação em massa "retirar das categorias" foi despoletada. Irá receber notificação quando estiver concluída.
     change-family:
       label: Mudar a família dos produtos
       description: A família dos produtos selecionados será alterada para a família escolhida
@@ -240,9 +251,9 @@ pim_enrich:
     job_tracker:
       index: Ver processos executados
   acl_group:
-    association_type: Tipos de associação
+    association_type: Tipos de Associação
     attribute: Atributos
-    attribute_group: Grupo de atributos
+    attribute_group: Grupos de Atributos
     category: Categorias
     channel: Canais
     currency: Moedas
@@ -250,7 +261,7 @@ pim_enrich:
     group: Grupos
     variant_group: Grupos de variantes
     group_type: Tipos de grupos
-    locale: Localidades
+    locale: Locais
     product: Produtos
   product_value:
     tooltip:
@@ -500,15 +511,6 @@ info:
     auto option sorting: Se ativado, as opções serão automaticamente ordenadas pelos seus rótulos
   completeness:
     not calculated: Ainda não calculado
-color:
-  gray: Cinza
-  white: Branco
-  yellow: Amarelo
-  orange: Laranja
-  magenta: Magenta
-  violet: Violeta
-  blue: Azul
-  cyan: Ciano
 Options: Opções
 Created at: Criado em
 Updated at: Atualizado em
@@ -561,11 +563,9 @@ Translate from: Traduzir do
 switch_on: "Sim"
 switch_off: "Não"
 Close: Fechar
-Choose a color: Escolha uma cor
 Search: Pesquisar
 Choose the attribute type: Escolher tipo de atributo
 Choose the attribute group: Escolha o grupo de atributos
-Drop a file or click here: Solte um ficheiro ou clique aqui
 Drop an image or click here: Solte uma imagem ou clique aqui
 Automatic option sorting: Opção de ordenação automática
 save_attribute_before_manage_option: Para gerir as opções, por favor, guarde o atributo primeiro
@@ -652,7 +652,10 @@ pim_title.association_type:
 pim_title.group_type:
   index: Tipos de grupos
   edit: Tipos de grupos %group type.label% | Editar
-pim_title.mass_edit_action:
+pim_title.mass_edit_product_action:
+  choose: Edição em massa | Escolher
+  configure: Edição em massa | Configurar
+pim_title.mass_edit_family_action:
   choose: Edição em massa | Escolher
   configure: Edição em massa | Configurar
 pim_title.job_tracker:
@@ -700,7 +703,7 @@ pim_enrich.mass_edit_action:
     confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
     steps:
       first: Escolher famílias
-      second: Escolher operação
+      second: Escolher Operação
       third: Configurar
       fourth: Confirmar
   change-status:
@@ -852,11 +855,43 @@ job_execution.summary:
 pim_mass_edit_execution_show: Processos de edição em massa | Detalhes
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos comuns
 update_product_value.steps.update_product_value_processor.title: Atualizar o valor do produto
+remove_product_value.steps.update_product_value_processor.title: Remover valor do produto
 add_to_variant_group_clean.steps.excluded.title: Produto excluído
 add_to_variant_group_clean.steps.duplicated.title: Eixo duplicado
+add_to_variant_group.steps.excluded.title: Produto excluído
+add_to_variant_group.steps.duplicated.title: Eixo duplicado
 add_to_variant_group.steps.cleaner.warning.description: 'O produto não pode ser definido no grupo variante selecionado: duplicação dos valores do eixo variavel com outro produto na seleção'
 edit_common_attributes: Editar atributos comuns
 edit_common_attributes_clean: Limpar ficheiros de atributos comuns
+perform.steps.duplicated.title: Eixo duplicado
+perform.steps.excluded.title: Produto excluído
+batch_jobs:
+  update_product_value:
+    label: Atualizar o valor do produto
+    perform:
+      label: Atualizar o valor do produto
+  edit_common_attributes:
+    label: Editar atributos comuns
+    perform:
+      label: Editar atributos comuns
+    clean:
+      label: Limpar ficheiros de atributos comuns
+  set_attribute_requirements:
+    label: Estabelecer requisitos do atributo
+    perform:
+      label: Estabelecer requisitos do atributo
+  csv_product_quick_export:
+    quick_export.label: Csv exportação rápida de produtos
+    perform:
+      label: Csv exportação rápida de produtos
+  xlsx_product_quick_export:
+    quick_export.label: Xlsx exportação rápida de produtos
+    perform:
+      label: Xlsx exportação rápida de produtos
+  add_to_variant_group:
+    label: Adicionar a grupo variante
+    perform:
+      label: Adicionar a grupo variante
 mass_edit report:
   overview: Relatórios de edição em massa
 job_tracker:
@@ -864,3 +899,14 @@ job_tracker:
     title: Visualizador de processos
   filter:
     started_at: Iniciado em
+pim_enrich_attribute_form:
+  code: Código
+  attributeType: Tipo de atributo
+  reference_data_name: Nome de referência de dados
+  scopable: Escopo
+  localizable: Localizável
+  unique: Valor exclusivo
+  availableLocales: Localidades disponíveis
+  locale_specific: Localidade específica
+  group: Grupo de atributos
+  useableAsGridFilter: Utilizável em grelha

@@ -35,17 +35,19 @@ Feature: When I mass edit I should be able to see how many items will be edited
     And I am on the products page
 
   Scenario: Successfully count the number of mass-edited items when click on all products
-    Given I select all products
-    When I press mass-edit button
+    Given I select all entities
+    When I press "Change product information" on the "Bulk Actions" dropdown button
     Then I should see "Mass Edit (19 products)"
 
   Scenario: Successfully count the number of mass-edited items when click on all visible products
-    Given I select all visible products
-    When I press mass-edit button
+    Given I select all visible entities
+    When I press "Change product information" on the "Bulk Actions" dropdown button
     Then I should see "Mass Edit (10 products)"
 
   Scenario: Successfully count the number of mass-edited items by select them one by one
-    Given I mass-edit products boot, shoe_1, shoe_14
+    Given I change the page size to 50
+    When I select rows boots, shoe_1, shoe_14
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     Then I should see "Mass Edit (3 products)"
 
   Scenario: Successfully count the number of mass-edited items when using filters and select all action
@@ -58,9 +60,9 @@ Feature: When I mass edit I should be able to see how many items will be edited
       | sandals   | weight                   | 500 GRAM                |
       | pump      | weight                   | 500 GRAM                |
       | highheels | weight                   | 500 GRAM                |
-    When I show the filter "Description"
-    And I filter by "Channel" with value "Tablet"
-    And I filter by "Description" with value "A beautiful description"
-    And I select all products
-    When I press mass-edit button
+    And I show the filter "description"
+    And I filter by "scope" with operator "" and value "Tablet"
+    And I filter by "description" with operator "contains" and value "A beautiful description"
+    And I select all entities
+    When I press "Change product information" on the "Bulk Actions" dropdown button
     Then I should see "Mass Edit (2 products)"

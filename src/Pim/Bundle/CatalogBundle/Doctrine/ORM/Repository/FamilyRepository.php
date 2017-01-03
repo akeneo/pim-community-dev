@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**
  * Repository
@@ -51,34 +51,6 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
 
         // remove limit of the query
         $qb->setMaxResults(null);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChoices(array $options)
-    {
-        if (!isset($options['localeCode'])) {
-            throw new \InvalidArgumentException('Option "localeCode" is required');
-        }
-
-        $qb = $this->_em->createQueryBuilder()
-            ->select('f.id')
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', f.code, \']\')) as label')
-            ->from('Pim\Bundle\CatalogBundle\Entity\Family', 'f')
-            ->leftJoin('f.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
-            ->orderBy('label')
-            ->setParameter('localeCode', $options['localeCode']);
-
-        $result  = $qb->getQuery()->getArrayResult();
-        $choices = [];
-
-        foreach ($result as $key => $family) {
-            $choices[$family['id']] = $family['label'];
-            unset($result[$key]);
-        }
-
-        return $choices;
     }
 
     /**
@@ -204,7 +176,8 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
         }
 
         $qb = $this->createQueryBuilder('f');
-        $qb->where($qb->expr()->in('f.id', $familyIds));
+        $qb->where($qb->expr()->in('f.id', ':family_ids'));
+        $qb->setParameter(':family_ids', $familyIds);
 
         return $qb->getQuery()->getResult();
     }

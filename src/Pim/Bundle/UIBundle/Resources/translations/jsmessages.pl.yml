@@ -13,7 +13,7 @@ Selected Rows: Wybrane Wiersze
 "Unexpected error occured. Please contact system administrator.": "Wystąpił nieoczekiwany błąd. Prosimy skontaktować się z administratorem systemu."
 Now: Teraz
 Prev: Poprzednia
-Next: Następny
+Next: Następna
 Today: Dzisiaj
 Wk: Tydz.
 Done: Gotowe
@@ -44,7 +44,7 @@ jstree:
     unclassified: Niesklasyfikowane produkty
   no_tree: Brak dostępnego drzewa
   include_sub: Wraz z pod-kategoriami
-  loading: Wczytywanie ...
+  loading: Ładuję ...
 datetimepicker:
   days:
     Sunday: Niedziela
@@ -59,6 +59,9 @@ datetimepicker:
     Mon: Pon
     Tue: Wt
     Wed: Śr
+    Thu: Czw
+    Fri: Pt
+    Sat: Sob
   daysMin:
     Su: Nd
     Mo: Pn
@@ -76,7 +79,15 @@ datetimepicker:
     June: Czerwiec
     July: Lipiec
     August: Sierpień
+    September: Wrzesień
+    October: Październik
+    November: Listopad
+    December: Grudzień
   monthsShort:
+    Jan: Sty
+    Feb: Lut
+    Mar: Mar
+    Apr: Kwi
     May: Maj
     Jun: Czerwiec
     Jul: Lipiec

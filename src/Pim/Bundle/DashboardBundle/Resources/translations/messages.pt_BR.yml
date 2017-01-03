@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: Painel de controle
+  title: Dashboard
   version: Versão
   link.label:
     product: Gerenciar Produtos

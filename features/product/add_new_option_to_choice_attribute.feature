@@ -14,7 +14,7 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     And I am on the "boots" product page
 
   @unstable
-  Scenario: Sucessfully add a new option to a simple select attribute
+  Scenario: Successfully add a new option to a simple select attribute
     Given I visit the "Sizes" group
     And I add a new option to the "Size" attribute:
       | Code | 47xxl    |
@@ -22,12 +22,12 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     And I save the product
     Then the product Size should be "47xxl"
 
-  Scenario: Sucessfully add a new option to a multi select attribute
+  Scenario: Successfully add a new option to a multi select attribute
     Given I add a new option to the "Weather conditions" attribute:
       | Code | very_wet      |
       | en   | Extremely wet |
     And I save the product
-    Then the product Weather conditions should be "wet, very_wet"
+    Then the product Weather conditions should be "very_wet, wet"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4737
   Scenario: Successfully find a created option in a multiselect attribute through several products
@@ -35,6 +35,6 @@ Feature: Add a new option to a choice attribute directly from the product edit f
       | Code | very_wet      |
       | en   | Extremely wet |
     And I save and back to the grid
-    And I click on the "shoes" row
-    When I fill in the following information:
-      | Weather conditions | Extremely wet |
+    And I am on the "shoes" product page
+    And I should be on the product "shoes" edit page
+    And I change the "Weather conditions" to "Extremely wet"

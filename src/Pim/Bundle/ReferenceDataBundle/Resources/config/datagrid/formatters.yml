@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_reference_data.extension.formatter.property.product_value.reference_data_property:
-        class: %pim_reference_data.extension.formatter.property.reference_data_property.class%
+        class: '%pim_reference_data.extension.formatter.property.reference_data_property.class%'
         arguments:
             - '@translator'
             - '@pim_reference_data.registry'

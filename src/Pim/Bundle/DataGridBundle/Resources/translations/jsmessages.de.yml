@@ -41,8 +41,8 @@ oro_datagrid.select.visible: "Alle sichtbaren"
 oro_datagrid.select.none: "Keine"
 pim.grid.ajax_choice_filter.label_empty: ist leer
 pim.grid.choice_filter:
-  label_empty: Ist leer
-  label_in_list: In Liste
+  label_empty: ist leer
+  label_in_list: in Liste
 Available Columns: Verfügbare Spalten
 datagrid_view.columns.min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
 pim_datagrid:
@@ -57,9 +57,8 @@ pim_datagrid:
     remove_column: Entfernen
   mass_action:
     delete:
-      confirm_title: Löschbestätigung.
+      confirm_title: Löschbestätigung
       confirm_ok: OK
-      empty_selection: Kein Produkt ausgewählt.
 pim.grid.mass_action.quick_export.title: Schnell-Export
 pim.grid.mass_action.quick_export.launched: Der Schnellexport wurde gestartet
 pim.grid.action.launch.title: Starten
@@ -67,5 +66,5 @@ pim.grid.action.show.title: Anzeigen
 Please select view: Bitte Ansicht auswählen
 Loading...: Lädt...
 View: Ansehen
-from: von
-to: bis
+from: Von
+to: An

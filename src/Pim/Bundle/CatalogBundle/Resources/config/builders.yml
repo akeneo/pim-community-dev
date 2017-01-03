@@ -1,12 +1,11 @@
 parameters:
-    pim_catalog.builder.product.class:          Pim\Bundle\CatalogBundle\Builder\ProductBuilder
-    pim_catalog.builder.product_template.class: Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder
+    pim_catalog.builder.product.class:          Pim\Component\Catalog\Builder\ProductBuilder
+    pim_catalog.builder.product_template.class: Pim\Component\Catalog\Builder\ProductTemplateBuilder
     pim_catalog.builder.choices.class:          Pim\Bundle\CatalogBundle\Builder\ChoicesBuilder
-    pim_catalog.builder.localizable_and_scopable_raw_values.class: Pim\Component\Catalog\Builder\LocalizableAndScopableRawValuesBuilder
 
 services:
     pim_catalog.builder.product:
-        class: %pim_catalog.builder.product.class%
+        class: '%pim_catalog.builder.product.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.family'
@@ -14,24 +13,16 @@ services:
             - '@pim_catalog.repository.association_type'
             - '@event_dispatcher'
             - '@pim_catalog.resolver.attribute_values'
-            - {'product': %pim_catalog.entity.product.class%, 'product_value': %pim_catalog.entity.product_value.class%, 'product_price': %pim_catalog.entity.product_price.class%, 'association': %pim_catalog.entity.association.class%}
+            - {'product': '%pim_catalog.entity.product.class%', 'product_value': '%pim_catalog.entity.product_value.class%', 'product_price': '%pim_catalog.entity.product_price.class%', 'association': '%pim_catalog.entity.association.class%'}
 
     pim_catalog.builder.product_template:
-        class: %pim_catalog.builder.product_template.class%
+        class: '%pim_catalog.builder.product_template.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
             - '@pim_catalog.builder.product'
-            - '@pim_enrich.resolver.locale'
-            - %pim_catalog.entity.product_template.class%
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product_template.class%'
+            - '%pim_catalog.entity.product.class%'
 
     pim_catalog.builder.choices:
-        class: %pim_catalog.builder.choices.class%
-
-    pim_catalog.builder.localizable_and_scopable_raw_values:
-        class: %pim_catalog.builder.localizable_and_scopable_raw_values.class%
-        arguments:
-            - "@pim_catalog.repository.cached_attribute"
-            - "@pim_catalog.repository.channel"
-            - "@pim_catalog.repository.locale"
+        class: '%pim_catalog.builder.choices.class%'

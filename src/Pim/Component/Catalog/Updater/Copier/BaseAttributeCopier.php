@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Copy a simple select value attribute in other simple select value attribute
@@ -70,7 +70,7 @@ class BaseAttributeCopier extends AbstractAttributeCopier
     public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
         $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+        $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
 
         $sameType = $fromAttribute->getAttributeType() === $toAttribute->getAttributeType();
 

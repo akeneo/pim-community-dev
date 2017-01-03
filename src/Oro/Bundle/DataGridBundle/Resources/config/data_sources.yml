@@ -3,8 +3,8 @@ parameters:
 
 services:
     oro_datagrid.datasource.orm:
-        class: %oro_datagrid.datasource.orm.class%
+        class: '%oro_datagrid.datasource.orm.class%'
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_datagrid.datasource, type: orm }

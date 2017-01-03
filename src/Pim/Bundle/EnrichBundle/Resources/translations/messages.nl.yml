@@ -1,7 +1,7 @@
 pim_enrich:
   product:
     tab:
-      attribute.title: Attributen
+      attribute.title: Kenmerken
       category.title: Categorieën
       association.title: Koppelingen
       completeness.title: Volledigheid
@@ -16,7 +16,7 @@ pim_enrich:
   attribute_group:
     tab:
       property.title: Eigenschappen
-      attribute.title: Attributen
+      attribute.title: Kenmerken
       history.title: Geschiedenis
   family:
     tab:
@@ -47,7 +47,7 @@ pim_enrich:
     type:
       VARIANT: Variant
       X_SELL: Cross-Sell
-      ADDITIONAL: Extra
+      ADDITIONAL: Aanvullend
       RELATED: Gerelateerde
     tab:
       product.title: Producten
@@ -57,13 +57,13 @@ pim_enrich:
     type:
       VARIANT: Variant
       X_SELL: Cross-Sell
-      ADDITIONAL: Extra
-      RELATED: Gerelateerde
+      ADDITIONAL: Aanvullend
+      RELATED: Gerelateerd
     tab:
       product.title: Producten
       property.title: Eigenschappen
       history.title: Geschiedenis
-      attribute.title: Attributen
+      attribute.title: Kenmerken
     info:
       no_attributes: Deze variant groep heeft nog geen kenmerken
       no_attributes_in_selected_locale: Deze variant groep heeft geen kenmerken in deze locale
@@ -77,16 +77,25 @@ pim_enrich:
     limit_exceeded: Kies minder dan %limit% items om te wijzigen
     product:
       page_title: Producten
-      page_subtitle: Massa-wijzig (1 product)|Massa-wijzig (%count% producten)
+      page_subtitle: Massaal bewerken (1 product)|Massaal bewerken (%count% producten)
       title: Kies bewerking
-      subtitle: Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de %count% geselecteerde producten
+      subtitle: Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de geselecteerde %count% producten
+      confirm: U staat op het punt een product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% producten bij te werken met de volgende informatie. Alstublieft bevestigen.
       steps:
+        first: Kies producten
         second: Kies bewerking
+        third: Configureer
+        fourth: Bevestigen
     family:
       page_title: Families
+      page_subtitle: Massa bewerken (1 familie) | Massa bewerken (%count% families)
       title: Kies bewerking
+      confirm: U staat op het punt een familie bij te werken met de volgende informatie. Gelieve dit te bevestigen. |U staat op het punt %count% families bij te werken met de volgende informatie. Gelieve dit te bevestigen.
       steps:
+        first: Kies families
         second: Kies bewerking
+        third: Configureer
+        fourth: Bevestig
     change-status:
       label: Status wijzigen (inschakelen / uitschakelen)
       description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
@@ -101,10 +110,21 @@ pim_enrich:
       message:
         warning: Er is geen gemeenschappelijke attribuut voor de geselecteerde producten. Gelieve uw selectie te wijzigen.
         no_valid_attribute: Geen van de geselecteerde attributen kan worden toegepast op dit product.
-    classify:
+    classify-add:
       label: Producten in categorieën indelen
       description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
       success_flash: Producten zijn in geselecteerde categorieën ingedeeld
+      launched_flash: De massa actie "voeg toe aan categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+    classify-move:
+      label: Verplaats producten naar categorieën
+      description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing gaat verloren.
+      success_flash: Producten zijn verplaatst naar de geselecteerde categorieën
+      launched_flash: De massa actie "verplaats naar categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+    classify-remove:
+      label: Verwijder producten van categorieën
+      description: De producten zullen worden verwijderd uit de volgende categorieën.
+      success_flash: Product(en) zijn verwijderd van de geselecteerde categorieën
+      launched_flash: De massa actie "verwijder van categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     change-family:
       label: Wijzigen van de productfamilie
       description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
@@ -125,7 +145,8 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: De massa actie "voeg toe aan variant groep" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     set-attribute-requirements:
-      description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
+      label: Stel attribuutvereisten in
+      description: De volgende attribuutvereisten zullen worden togepast op de geselecteerde families
       success_flash: De attribuutvereisten zijn toegepast op de geselecteerde families
       launched_flash: De bulk actie "stel attribuutvereisten in" wordt gelanceerd. U wordt meegedeeld wanneer het zal worden gedaan.
     mass_action:
@@ -294,7 +315,7 @@ association type:
 products: producten
 btn:
   create:
-    attribute: Attribuut aanmaken
+    attribute: attribuut aanmaken
     attribute group: attribuutgroep aanmaken
     category: categorie aanmaken
     tree: structuur aanmaken
@@ -452,15 +473,6 @@ info:
     auto option sorting: Als dit is ingeschakeld worden de opties automatisch gesorteerd a.h.v de gelokaliseerde labels
   completeness:
     not calculated: Nog niet berekend
-color:
-  gray: Grijs
-  white: Wit
-  yellow: Geel
-  orange: Oranje
-  magenta: Magenta
-  violet: Violet
-  blue: Blauw
-  cyan: Cyaan
 Options: Opties
 Created at: Aangemaakt op
 Updated at: Bijgewerkt op
@@ -497,7 +509,7 @@ Label: Label
 Default label: Standaard label
 Default value: Standaardwaarde
 Attributetype: Attribuut type
-Attribute type: Attribuut type
+Attribute type: Attribuuttype
 Defaultvalue: Standaardwaarde
 Variant: Variant
 Smart: Slim
@@ -512,7 +524,6 @@ Translate from: Vertaal van
 switch_on: "Ja"
 switch_off: "Nee"
 Close: Sluiten
-Choose a color: Kies een kleur
 Search: Zoeken
 Choose the attribute type: Kies het attribuuttype
 Choose the attribute group: Kies een attribuutgroep
@@ -762,4 +773,19 @@ job_execution.summary:
   skip: Overgeslagen
   skipped_products: Overgeslagen producten
   skipped_attributes: Overgeslagen attributen
+edit_common_attributes.steps.edit_common_attributes_processor.title: Wijzig gemeenschappelijke attributen
 update_product_value.steps.update_product_value_processor.title: Update productwaarde
+remove_product_value.steps.update_product_value_processor.title: Verwijder productwaarde
+batch_jobs:
+  update_product_value:
+    label: Update productwaarde
+    perform:
+      label: Update productwaarde
+pim_enrich_attribute_form:
+  code: Code
+  scopable: Bereik
+  localizable: Lokaliseerbaar
+  unique: Unieke waarde
+  availableLocales: Beschikbare lokalisaties
+  locale_specific: Lokalisatiespecifiek
+  group: Attribuutgroep

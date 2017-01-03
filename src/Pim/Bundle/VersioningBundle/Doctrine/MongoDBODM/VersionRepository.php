@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM;
 
+use Akeneo\Component\Versioning\Model\VersionInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
@@ -21,7 +22,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
     {
         return $this->findBy(
             ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
-            ['loggedAt'   => 'desc']
+            ['loggedAt' => 'desc']
         );
     }
 
@@ -60,9 +61,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
     }
 
     /**
-     * Get total pending versions count
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getPendingVersionsCount()
     {
@@ -90,6 +89,43 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function findPotentiallyPurgeableBy(array $options = [])
+    {
+        $qb = $this->createQueryBuilder();
+
+        if (isset($options['resource_name'])) {
+            $qb->field('resourceName')->equals($options['resource_name']);
+        }
+
+        if (isset($options['date_operator']) && isset($options['limit_date'])) {
+            if ('<' === $options['date_operator']) {
+                $qb->field('loggedAt')->lt($options['limit_date']);
+            } else {
+                $qb->field('loggedAt')->gt($options['limit_date']);
+            }
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNewestVersionIdForResource($resourceName, $resourceId)
+    {
+        $qb = $this->createQueryBuilder();
+        $qb->field('resourceName')->equals($resourceName)
+            ->field('resourceId')->equals($resourceId)
+            ->sort('version', 'desc');
+
+        $lastVersion = $qb->getQuery()->getSingleResult();
+
+        return null !== $lastVersion ? $lastVersion->getId() : null;
+    }
+
+    /**
      * Get one log entry
      *
      * @param string    $resourceName
@@ -97,7 +133,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
      * @param bool|null $pending
      * @param string    $sort
      *
-     * @return Version|null
+     * @return VersionInterface|null
      */
     protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
     {

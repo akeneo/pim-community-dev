@@ -1,6 +1,8 @@
 Job: Job
 Connector: Connector
 pim_import_export:
+  job: Job
+  connector: Connector
   status:
     - A punt
   batch_status:
@@ -13,9 +15,11 @@ pim_import_export:
     7: ABANDONAT
     8: DESCONEGUT
   download_archive:
+    archive: descarregar l' arxiu generat | descarregar arxius generats
     output: descarregar fitxer generat|descarregar fitxers generats
     input: descarregar fitxer llegit|descarregar fitxers llegits
-    invalid: descarregar dades no vàlides
+    invalid_xlsx: descarregar dades no vàlides
+    invalid_csv: descarregar dades no vàlides
   notification:
     export:
       error: La exportació <strong>%label%</strong> ha fallat
@@ -26,6 +30,11 @@ pim_import_export:
       warning: La importació <strong>%label%</strong> acabat amb alguns avisos
       success: La importació <strong>%label%</strong> ha acabat
   list: Seleccioneu un job
+  job_profile:
+    tab:
+      property.title: Propietats generals
+      history.title: Històric
+      job_content.title: Contingut
 pim_title.export_profile.index: Gestió de perfils d'exportació
 pim_title.export_profile.edit: Exportar perfils de %job.label% | Editar
 pim_title.export_profile.show: Exportar perfils de %job.label% | Mostrar
@@ -59,7 +68,11 @@ pim_importexport:
       edit: Editar un perfil d'exportació
       remove: Eliminar un perfil d'exportació
       launch: Engegar un perfil d'exportació
+      property_edit: Editar una exportació de propietats generals de perfil
+      property_show: Mostrar una exportació de propietats generals de perfil
       history: Veure exportació de l'històric del perfil
+      content_edit: Editar un contingut de perfil d'exportació
+      content_show: Mostrar un contingut de perfil d'exportació
     import_profile:
       index: Veure llista de perfils d'importació
       create: Crear un perfil d'importació
@@ -79,13 +92,13 @@ pim_importexport:
       dl_log: Descarregar informe de registres d'importació
       dl_files: Descarregar arxius importats
   acl_group:
-    export: Perfils d'exportació
+    export: Exportar perfils
     import: Perfils d'importació
 btn:
   create:
     export profile: crear perfil d'exportació
     import profile: crear perfil d'importació
-Upload and import: Carregar i importar
+Upload and import now: Carregar i importar ara
 import now: Importar ara
 export now: Exportar ara
 confirmation:
@@ -114,12 +127,14 @@ History: Històric
 pane.accordion:
   properties: Propietats
   global_settings: Configuració global
+  filters: Filtres
 popin.create:
   export_profile.title: Crear un nou perfil d'exportació
   import_profile.title: Crear un nou perfil d'importació
 'Display item': Visualitzar element
 'Hide item': Amagar element
 'Collecting data about job execution...': Recollida de dades sobre l'execució del job...
+'You must select a file to upload': Heu de seleccionar un arxiu per carregar
 Download log: Descarregar registre
 Show profile: Mostrar perfil
 execution details: detalls d'execució
@@ -149,3 +164,4 @@ STOPPED: ATURAT
 FAILED: HA FALLAT
 ABANDONED: ABANDONAT
 UNKNOWN: DESCONEGUT
+warning.label: Avís

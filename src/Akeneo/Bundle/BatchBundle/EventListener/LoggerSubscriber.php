@@ -37,7 +37,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      */
     public function __construct(LoggerInterface $logger, TranslatorInterface $translator)
     {
-        $this->logger     = $logger;
+        $this->logger = $logger;
         $this->translator = $translator;
     }
 
@@ -115,7 +115,7 @@ class LoggerSubscriber implements EventSubscriberInterface
         $jobExecution = $event->getJobExecution();
 
         $this->logger->info(sprintf('Encountered interruption executing job: %s', $jobExecution));
-        $this->logger->debug('Full exception', array('exception', $jobExecution->getFailureExceptions()));
+        $this->logger->debug('Full exception', ['exception', $jobExecution->getFailureExceptions()]);
     }
 
     /**
@@ -129,7 +129,7 @@ class LoggerSubscriber implements EventSubscriberInterface
 
         $this->logger->error(
             'Encountered fatal error executing job',
-            array('exception', $jobExecution->getFailureExceptions())
+            ['exception', $jobExecution->getFailureExceptions()]
         );
     }
 
@@ -181,7 +181,7 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->info(
             sprintf('Encountered interruption executing step: %s', $stepExecution->getFailureExceptionMessages())
         );
-        $this->logger->debug('Full exception', array('exception', $stepExecution->getFailureExceptions()));
+        $this->logger->debug('Full exception', ['exception', $stepExecution->getFailureExceptions()]);
     }
 
     /**
@@ -239,7 +239,7 @@ class LoggerSubscriber implements EventSubscriberInterface
             sprintf(
                 'The %s was unable to handle the following item: %s (REASON: %s)',
                 $event->getClass(),
-                $this->formatAsString($event->getItem()),
+                $this->formatAsString($event->getItem()->getInvalidData()),
                 $this->translator->trans(
                     $event->getReason(),
                     $event->getReasonParameters(),
@@ -260,7 +260,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     private function formatAsString($data)
     {
         if (is_array($data)) {
-            $result = array();
+            $result = [];
             foreach ($data as $key => $value) {
                 $result[] = sprintf(
                     '%s => %s',

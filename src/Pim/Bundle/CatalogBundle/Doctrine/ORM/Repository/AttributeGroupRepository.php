@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 
 /**
  * Repository
@@ -40,21 +40,6 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
         }
 
         return $orderedGroups;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttributeGroupChoices()
-    {
-        $groups = $this->findAllWithTranslations();
-        $choices = [];
-        foreach ($groups as $group) {
-            $choices[$group->getCode()] = $group->getLabel();
-        }
-        asort($choices);
-
-        return $choices;
     }
 
     /**

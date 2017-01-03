@@ -3,7 +3,7 @@
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -71,9 +71,9 @@ class AjaxChoiceFilterType extends ChoiceFilterType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['choices']           = $view->children['valueChoices']->vars['choices'];
-        $view->vars['preload_choices']   = $options['preload_choices'];
-        $view->vars['choice_url']        = $options['choice_url'];
+        $view->vars['choices'] = $view->children['valueChoices']->vars['choices'];
+        $view->vars['preload_choices'] = $options['preload_choices'];
+        $view->vars['choice_url'] = $options['choice_url'];
         $view->vars['choice_url_params'] = $options['choice_url_params'];
         $view->vars['empty_choice'] = isset($options['field_options']['attr']['empty_choice']) ?
             $options['field_options']['attr']['empty_choice'] :

@@ -4,8 +4,8 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Columns configurator for product grid, first column is identifier, then properties then ordered attributes
@@ -74,7 +74,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
         $this->editableColumns = [];
-        $this->primaryColumns  = [];
+        $this->primaryColumns = [];
 
         foreach ($this->propertiesColumns as $columnCode => $columnData) {
             if (isset($columnData['editable'])) {
@@ -95,11 +95,11 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $attributes = ($attributes === null) ? [] : $attributes;
-        $this->identifierColumn  = [];
+        $this->identifierColumn = [];
         $this->attributesColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
-            $attributeType     = $attribute['attributeType'];
+            $attributeType = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if (!$attributeTypeConf || !isset($attributeTypeConf['column'])) {

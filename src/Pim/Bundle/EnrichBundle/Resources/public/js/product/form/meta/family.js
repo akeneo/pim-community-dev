@@ -45,7 +45,7 @@ define(
                     this.$el.html(
                         this.template({
                             familyLabel: family ?
-                                i18n.getLabel(family.label, UserContext.get('catalogLocale'), product.family) :
+                                i18n.getLabel(family.labels, UserContext.get('catalogLocale'), product.family) :
                                 _.__('pim_enrich.entity.product.meta.family.none')
                         })
                     );

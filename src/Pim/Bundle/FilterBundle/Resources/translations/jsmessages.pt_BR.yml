@@ -10,5 +10,5 @@ from: de
 to: para
 and: e
 system_filter_group: Sistema
-oro_filter.filters.manage: Gerenciar filtros
+oro_filter.filters.manage: Gerenciar Filtros
 oro_filter.placeholder.all: Todos

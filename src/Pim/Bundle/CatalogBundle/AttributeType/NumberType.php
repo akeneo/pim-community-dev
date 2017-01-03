@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
@@ -44,21 +45,10 @@ class NumberType extends AbstractAttributeType
             ]
         ];
 
-        $properties['unique']['options']['disabled']  = (bool) $attribute->getId();
+        $properties['unique']['options']['disabled'] = (bool) $attribute->getId();
         $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
 
         return $properties;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        $options = parent::prepareValueFormOptions($value);
-        $options['decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
-
-        return $options;
     }
 
     /**

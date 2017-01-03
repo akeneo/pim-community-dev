@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Boolean filter
@@ -20,29 +20,24 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterface, AttributeFilterInterface
 {
     /** @var array */
-    protected $supportedAttributes;
-
-    /** @var array */
     protected $supportedFields;
 
     /**
-     * Instanciate the filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedFields
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedFields     = $supportedFields;
-        $this->supportedOperators  = $supportedOperators;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -56,9 +51,9 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    public function getFields()
     {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+        return $this->supportedFields;
     }
 
     /**
@@ -84,7 +79,8 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $this->addFieldFilter($field, $operator, $value, $locale, $scope, $options);
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $this->applyFilter($field, $operator, $value);
 
         return $this;
     }
@@ -98,10 +94,27 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
             throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean', gettype($value));
         }
 
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, FieldFilterHelper::getCode($field));
-
-        $this->qb->field($field)->equals($value);
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $this->applyFilter($field, $operator, $value);
 
         return $this;
+    }
+
+    /**
+     * @param string $field
+     * @param string $operator
+     * @param bool   $value
+     */
+    protected function applyFilter($field, $operator, $value)
+    {
+        switch ($operator) {
+            case Operators::EQUALS:
+                $this->qb->field($field)->equals($value);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notEqual($value);
+                break;
+        }
     }
 }

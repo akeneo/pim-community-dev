@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Command;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -43,6 +44,9 @@ class MongoDBIndexCreatorCommand extends ContainerAwareCommand
             return -1;
         }
 
+        $indexPurger = $this->getIndexPurger();
+        $indexPurger->purgeIndexes();
+
         $command = $this->getApplication()->find('doctrine:mongodb:schema:update');
         $command->run($input, $output);
 
@@ -60,5 +64,13 @@ class MongoDBIndexCreatorCommand extends ContainerAwareCommand
     protected function getIndexCreator()
     {
         return $this->getContainer()->get('pim_catalog.doctrine.index_creator');
+    }
+
+    /**
+     * @return IndexPurger
+     */
+    protected function getIndexPurger()
+    {
+        return $this->getContainer()->get('pim_catalog.doctrine.index_purger');
     }
 }

@@ -3,9 +3,9 @@ parameters:
 
 services:
     akeneo_file_storage.repository.file_info:
-        class: %akeneo_file_storage.repository.file_info.class%
+        class: '%akeneo_file_storage.repository.file_info.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%akeneo_file_storage.model.file_info.class%]
+        arguments: ['%akeneo_file_storage.model.file_info.class%']
         tags:
             - { name: 'akeneo_repository' }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -15,16 +15,16 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class NameProperty extends FieldProperty
 {
-    /** @var ConnectorRegistry */
-    protected $connectorRegistry;
+    /** @var JobRegistry */
+    protected $jobRegistry;
 
     /**
-     * @param ConnectorRegistry   $connectorRegistry
+     * @param JobRegistry         $jobRegistry
      * @param TranslatorInterface $translator
      */
-    public function __construct(ConnectorRegistry $connectorRegistry, TranslatorInterface $translator)
+    public function __construct(JobRegistry $jobRegistry, TranslatorInterface $translator)
     {
-        $this->connectorRegistry = $connectorRegistry;
+        $this->jobRegistry = $jobRegistry;
         parent::__construct($translator);
     }
 
@@ -49,15 +49,7 @@ class NameProperty extends FieldProperty
      */
     protected function getAllJobs()
     {
-        $jobs = [];
-        $jobTypes = $this->connectorRegistry->getConnectors();
-
-        foreach ($jobTypes as $jobType) {
-            $connectorTypes = $this->connectorRegistry->getJobs($jobType);
-            foreach ($connectorTypes as $jobsConnectorType) {
-                $jobs = array_merge($jobs, $jobsConnectorType);
-            }
-        }
+        $jobs = $this->jobRegistry->all();
 
         return $jobs;
     }

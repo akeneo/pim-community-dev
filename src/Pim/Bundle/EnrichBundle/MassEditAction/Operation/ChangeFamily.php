@@ -55,14 +55,6 @@ class ChangeFamily extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      */
-    public function getItemsName()
-    {
-        return 'product';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getOperationAlias()
     {
         return 'change-family';
@@ -81,13 +73,5 @@ class ChangeFamily extends AbstractMassEditOperation
                 'value' => null !== $family ? $family->getCode() : null,
             ]
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return 'update_product_value';
     }
 }

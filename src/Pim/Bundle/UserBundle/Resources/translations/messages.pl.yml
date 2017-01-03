@@ -3,9 +3,10 @@ pim_user:
     tab:
       general.title: Ogólne
       additional.title: Dodatkowe
-      group_and_role.title: Grupy i role
+      group_and_role.title: Grupy i Role
       password.title: Hasło
       business_unit.title: Jednostki biznesowe
+      email_synchronization.title: Ustawienia synchronizacji poczty e-mail
       interfaces.title: Interfejsy
 oro.user.controller:
   group.message.saved: Grupa zapisana
@@ -19,7 +20,7 @@ oro.user.grid.users:
     firstName: Imię
     lastName: Nazwisko
     createdAt: Data utworzenia
-    updatedAt: Data aktualizacji
+    updatedAt: Aktualizowano
     enabled: Status
 oro.user.grid.roles:
   columns:
@@ -70,6 +71,7 @@ Birthday: Data urodzenia
 API key: Klucz API
 Ui locale: Język Interfejsu
 UI locale: Język Interfejsu
+User salt: Sól użytkownika
 Current password: Aktualne hasło
 New password: Nowe Hasło
 Repeat new password: Nowe hasło (powtórz)
@@ -86,9 +88,12 @@ Role: Rola
 Owner: Właściciel
 General: Ogólne
 Entity: Encja
+Capabilities: Możliwości
 Save and close: Zapisz i zamknij
 Has role: Ma rolę
 role:
+  title: rola
+  overview: rola
   edit: Edytowanie roli
   create: Utwórz rolę
 btn.create.role: Utwórz rolę
@@ -113,6 +118,8 @@ oro_security:
     group:
       view: Przeglądanie grup użytkowników
       create: Tworzenie grup użytkowników
+      edit: Edycja grup użytkowników
+      delete: Usuwanie grup użytkowników
 (default): Domyślne uprawnienia encji
 VIEW: Zobacz
 CREATE: Utwórz

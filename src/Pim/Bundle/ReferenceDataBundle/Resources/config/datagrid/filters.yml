@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_reference_data.filter.reference_data:
-        class: %pim_reference_data.filter.reference_data.class%
+        class: '%pim_reference_data.filter.reference_data.class%'
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'

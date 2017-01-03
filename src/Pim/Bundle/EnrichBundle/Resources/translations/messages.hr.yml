@@ -75,11 +75,11 @@ pim_enrich:
     legend:
       locale_not_associated: Lokalizacija nije pridružena ovom kanalu
   mass_edit_action:
-    limit_exceeded: Odaberi manje od %limit% stvari za uređivanje
+    limit_exceeded: Odaberite manje od %limit% stvari za uređivanje
     product:
       page_title: Proizvodi
       page_subtitle: Masovno uređivanje (1 proizvod) | Masovno uređivanje (%count% proizvoda)
-      title: Odabiri operaciju
+      title: Odabir operacija
       subtitle: Odaberi operaciju koju želiš obaviti na odabranom proizvodu| Odaberi operaciju koju želiš izvesti na %count% odabranih proizvoda
       confirm: Spremate se ažurirati proizvod sa sljedećim podacima, molimo vas da potvrdite. | Spremate se ažurirati %count% proizvoda sa sljedećim podacima, molimo vas da potvrdite.
       steps:
@@ -106,18 +106,28 @@ pim_enrich:
     edit-common-attributes:
       label: Uredi atribute
       description: Atributi odabranih proizvoda će se uređivati s podacima za odabrane postavke lokalizacije.
-      empty: Odaberi atribut(e) koje želiš urediti
+      empty: Odaberite atribute koje želite urediti
       success_flash: Proces ažuriranja statusa proizvoda se izvodi
       launched_flash: Pokrenuta je masovna radnja "uređivanje zajedničkih atributa". Biti ćete obaviješteni kad bude gotovo.
       message:
         warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
         invalid_attribute: Atribut sa kodom "attribute_code" nije zajednički za odabrane proizvode, atribut je preskočen.
         no_valid_attribute: Niti jedan od odabranih atributa se ne može primijeniti na ovaj proizvod.
-    classify:
+    classify-add:
       label: Klasificiraj proizvode u kategorije
       description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
       success_flash: Proizvodi su klasificirani u odabrane kategorije
-      launched_flash: Masovna radnja "klasificiranja" je pokrenuta. Biti ćete obaviješteni kad bude gotovo.
+      launched_flash: Pokrenuta je masovna radnja "dodati u grupe". Biti ćete obaviješteni kad bude gotovo.
+    classify-move:
+      label: Premjestiti proizvode u kategorije
+      description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
+      success_flash: Proizvodi su premješteni u odabrane kategorije
+      launched_flash: Pokrenuta je masovna radnja "premjesti u kategorije". Biti ćete obaviješteni kad bude gotovo.
+    classify-remove:
+      label: Uklanjanje proizvoda iz kategorija
+      description: Proizvodi će biti uklonjeni iz sljedećih kategorija.
+      success_flash: Proizvodi su uklonjeni iz odabranih kategorija
+      launched_flash: Masovna radnja "ukloni iz kategorija" je pokrenuta. Biti ćete obaviješteni kad bude gotovo.
     change-family:
       label: Promjeni obitelj proizvoda
       description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
@@ -142,7 +152,7 @@ pim_enrich:
     set-attribute-requirements:
       label: Postavi zahtjeve za atribute
       description: Sljedeći zahtjevi atributa će se primijeniti na odabrane obitelji
-      success_flash: Zahtjevi atributa su primjenjeni na odabrane obitelji
+      success_flash: Zahtjevi atributa su primjenjeni za odabrane obitelji
       launched_flash: Masovna akcija "postavi zahtjeve za atribute" je pokrenuta. Biti ćete obaviješteni kada bude gotovo.
     mass_action:
       quick_export:
@@ -249,9 +259,9 @@ pim_enrich:
     currency: Valute
     family: Obitelji
     group: Grupe
-    variant_group: Varijante grupa
+    variant_group: Varijante grupe
     group_type: Tipovi grupa
-    locale: Lokalizacija
+    locale: Postavke jezika i regije
     product: Proizvodi
   product_value:
     tooltip:
@@ -501,16 +511,6 @@ info:
     auto option sorting: Ako je omogućeno, opcije će se automatski razvrstavati prema njihovim lokaliziranim labelama
   completeness:
     not calculated: Nije još izračunato
-color:
-  title: Boja
-  gray: Siva
-  white: Bijela
-  yellow: Žuta
-  orange: Narančasta
-  magenta: Ružičasta
-  violet: Ljubičasta
-  blue: Plava
-  cyan: Svijetlo Plava
 Options: Opcije
 Created at: Kreirano u
 Updated at: Ažurirano u
@@ -563,11 +563,10 @@ Translate from: Prevesti sa
 switch_on: "Da"
 switch_off: "Ne"
 Close: Zatvori
-Choose a color: Izaberi boju
 Search: Pretraživanje
 Choose the attribute type: Odaberi tip atributa
 Choose the attribute group: Odaberi grupu atributa
-Drop a file or click here: Spusti datoteku ili klikni ovdje
+Drag and drop a file or click here: Povucite i ispustite datoteku ili kliknite ovdje
 Drop an image or click here: Spusti sliku ili klikni ovdje
 Automatic option sorting: Mogućnost automatskog sortiranja
 save_attribute_before_manage_option: Za upravljanje opcijama, prvo spremi atribut
@@ -654,7 +653,10 @@ pim_title.association_type:
 pim_title.group_type:
   index: Tipovi grupa
   edit: Tipovi grupa %group type.label% | Uredi
-pim_title.mass_edit_action:
+pim_title.mass_edit_product_action:
+  choose: Masovno uredi | Odaberi
+  configure: Masovno uredi | Konfiguriraj
+pim_title.mass_edit_family_action:
   choose: Masovno uredi | Odaberi
   configure: Masovno uredi | Konfiguriraj
 pim_title.job_tracker:
@@ -854,11 +856,55 @@ job_execution.summary:
 pim_mass_edit_execution_show: Izvođenje masovnog uređivanja | Detalji
 edit_common_attributes.steps.edit_common_attributes_processor.title: Uredi uobičajene atribute
 update_product_value.steps.update_product_value_processor.title: Ažuriraj vrijednosti proizvoda
+remove_product_value.steps.update_product_value_processor.title: Uklanjanje vrijednosti proizvoda
 add_to_variant_group_clean.steps.excluded.title: Isključeni proizvod
 add_to_variant_group_clean.steps.duplicated.title: Dvostruke osi
+add_to_variant_group.steps.excluded.title: Isključeni proizvod
+add_to_variant_group.steps.duplicated.title: Dvostruke osi
 add_to_variant_group.steps.cleaner.warning.description: 'Proizvod se ne može postaviti u odabranu varijantu grupe: dvostruke vrijednosti osi varijacije s drugim proizvodom u odabiru'
 edit_common_attributes: Uredi uobičajene atribute
 edit_common_attributes_clean: Obriši datoteke za uobičajene atribute
+perform.steps.duplicated.title: Dvostruke osi
+perform.steps.excluded.title: Isključeni proizvod
+batch_jobs:
+  add_product_value:
+    label: Dodavanje vrijednosti proizvoda
+    perform:
+      label: Dodavanje vrijednosti proizvoda
+  update_product_value:
+    label: Ažuriraj vrijednosti proizvoda
+    perform:
+      label: Ažuriraj vrijednosti proizvoda
+  edit_common_attributes:
+    label: Uredi uobičajene atribute
+    perform:
+      label: Uredi uobičajene atribute
+    clean:
+      label: Obriši datoteke za uobičajene atribute
+  set_attribute_requirements:
+    label: Postavi zahtjeve za atribute
+    perform:
+      label: Postavi zahtjeve za atribute
+  csv_product_quick_export:
+    quick_export.label: Brzi izvoz proizvoda u Csv
+    perform:
+      label: Brzi izvoz proizvoda u Csv
+  csv_product_grid_context_quick_export:
+    quick_export.label: Brzi izvoz pregleda proizvoda u Csv
+    perform:
+      label: Brzi izvoz pregleda proizvoda u Csv
+  xlsx_product_quick_export:
+    quick_export.label: Brzi izvoz proizvoda u Xlsx
+    perform:
+      label: Brzi izvoz proizvoda u Xlsx
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Brzi izvoz pregleda proizvoda u Xlsx
+    perform:
+      label: Brzi izvoz pregleda proizvoda u Xlsx
+  add_to_variant_group:
+    label: Dodaj u varijantu grupe
+    perform:
+      label: Dodaj u varijantu grupe
 mass_edit report:
   overview: Izvješća masovnog uređivanja
 job_tracker:
@@ -866,3 +912,14 @@ job_tracker:
     title: Proces praćenja
   filter:
     started_at: Počeo u
+pim_enrich_attribute_form:
+  code: Kod
+  attributeType: Tip atributa
+  reference_data_name: Naziv refernce podataka
+  scopable: Djelokrug
+  localizable: Moguće je lokalizirati
+  unique: Jedinstvena vrijednost
+  availableLocales: Dostupni lokalni parametri
+  locale_specific: Specifične regionalne postavke
+  group: Grupa atributa
+  useableAsGridFilter: Može se koristiti u prikazu

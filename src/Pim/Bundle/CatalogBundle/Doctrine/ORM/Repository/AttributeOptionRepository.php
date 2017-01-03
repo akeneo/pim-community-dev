@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * Repository for AttributeOption entity
@@ -75,9 +75,10 @@ class AttributeOptionRepository extends EntityRepository implements
                 $autoSorting = $row['properties']['autoOptionSorting'];
             }
 
+            $isLabelBlank = (null === $row['label']) || ('' === $row['label']);
             $results[] = [
                 'id'   => (isset($options['type']) && 'code' === $options['type']) ? $row['code'] : $row['id'],
-                'text' => null !== $row['label'] ? $row['label'] : sprintf('[%s]', $row['code'])
+                'text' => $isLabelBlank ? sprintf('[%s]', $row['code']) : $row['label'],
             ];
         }
 
@@ -101,7 +102,7 @@ class AttributeOptionRepository extends EntityRepository implements
     public function getOptionLabel($object, $dataLocale)
     {
         foreach ($object->getOptionValues() as $value) {
-            if ($dataLocale === $value->getLocale() && null !== $value->getValue()) {
+            if ($dataLocale === $value->getLocale() && null !== $value->getValue() && '' !== $value->getValue()) {
                 return $value->getValue();
             }
         }

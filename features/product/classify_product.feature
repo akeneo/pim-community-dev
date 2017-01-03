@@ -16,26 +16,28 @@ Feature: Classify a product
     Given I edit the "tea" product
     When I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I click on the "Summer collection" category
-    And I click on the "Winter collection" category
+    And I expand the "2014_collection" category
+    And I click on the "summer_collection" category
+    And I click on the "winter_collection" category
     And I press the "Save" button
-    Then the categories of "tea" should be "summer_collection and winter_collection"
+    Then I should not see the text "There are unsaved changes."
+    And the categories of "tea" should be "summer_collection and winter_collection"
 
   Scenario: Count product categories
     Given I edit the "tea" product
     When I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I click on the "Summer collection" category
+    And I expand the "2014_collection" category
+    And I click on the "summer_collection" category
     Then I should see 1 category count
-    And I click on the "Winter collection" category
+    And I click on the "winter_collection" category
     Then I should see 2 category count
     When I visit the "Associations" tab
     And I visit the "Categories" tab
     Then I should see 2 category count
     And I press the "Save" button
-    And I visit the "Categories" tab
+    Then I should not see the text "There are unsaved changes."
+    When I visit the "Categories" tab
     Then I should see 2 category count
 
   Scenario: Successfully save product when category code is integer
@@ -45,7 +47,7 @@ Feature: Classify a product
     And I save the category
     And I edit the "tea" product
     And I visit the "Categories" tab
-    And I expand the "2014 collection" category
+    And I expand the "2014_collection" category
     And I click on the "123" category
     When I save the product
     Then I should see "Product successfully updated"
@@ -55,9 +57,9 @@ Feature: Classify a product
     Given I edit the "tea" product
     When I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I click on the "Summer collection" category
-    And I click on the "Winter collection" category
+    And I expand the "2014_collection" category
+    And I click on the "summer_collection" category
+    And I click on the "winter_collection" category
     When I visit the "Attributes" tab
     Then I visit the "Categories" tab
     Then I should see 2 category count
@@ -67,8 +69,8 @@ Feature: Classify a product
     Given I edit the "tea" product
     When I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I click on the "Summer collection" category
+    And I expand the "2014_collection" category
+    And I click on the "summer_collection" category
     Then I should see "There are unsaved changes."
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."

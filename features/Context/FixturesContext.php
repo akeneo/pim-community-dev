@@ -4,7 +4,11 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
@@ -12,9 +16,9 @@ use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -24,11 +28,17 @@ use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
+use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -90,13 +100,30 @@ class FixturesContext extends BaseFixturesContext
             $data[$key] = $this->replacePlaceholders($value);
         }
 
-        // use the processor part of the import system
-        $product = $this->loadFixture('products', $data);
-        $this->getProductSaver()->save($product, ['recalculate' => false]);
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product');
+
+        $jobExecution = new JobExecution();
+        $provider = new ProductCsvImport(new SimpleCsvExport([]), []);
+        $params = $provider->getDefaultValues();
+        $params['enabledComparison'] = false;
+        $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+        $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+        $jobParameters = new JobParameters($params);
+        $jobExecution->setJobParameters($jobParameters);
+        $stepExecution = new StepExecution('processor', $jobExecution);
+        $processor->setStepExecution($stepExecution);
+
+        $convertedData = $converter->convert($data);
+        $product = $processor->process($convertedData);
+        $this->getProductSaver()->save($product);
 
         // reset the unique value set to allow to update product values
         $uniqueValueSet = $this->getContainer()->get('pim_catalog.validator.unique_value_set');
         $uniqueValueSet->reset();
+
+        $this->refresh($product);
+        $this->buildProductHistory($product);
 
         return $product;
     }
@@ -192,8 +219,6 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $this->createAttribute($data);
         }
-        // TODO use a Saver
-        $this->flush();
     }
 
     /**
@@ -205,12 +230,16 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['attribute']);
-            $attribute->setLocale($this->getLocaleCode($data['locale']))->setLabel($data['label']);
+            $standardData = [
+                'labels' => [
+                    $this->getLocaleCode($data['locale']) => $data['label']
+                ]
+            ];
+            $updater = $this->getContainer()->get('pim_catalog.updater.attribute');
+            $updater->update($attribute, $standardData);
             $this->validate($attribute);
-            $this->persist($attribute);
+            $this->getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
         }
-        // TODO use a Saver
-        $this->flush();
     }
 
     /**
@@ -254,8 +283,6 @@ class FixturesContext extends BaseFixturesContext
             $row['resource']     = $product;
             $comments[$row['#']] = $this->createComment($row, $comments);
         }
-        // TODO use a Saver
-        $this->flush();
     }
 
     /**
@@ -357,21 +384,31 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
+        $attributeBulks = [];
+        $attributeConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
+        $attributeProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute');
         foreach ($attributeData as $index => $data) {
-            $attribute = $this->loadFixture('attributes', $data);
+            $convertedData = $attributeConverter->convert($data);
+            $attribute = $attributeProcessor->process($convertedData);
             $this->validate($attribute);
-            $this->persist($attribute, $index % 200 === 0);
+            $attributeBulks[$index % 200][]= $attribute;
         }
-        // TODO use a Saver
-        $this->flush();
+        foreach ($attributeBulks as $attributes) {
+            $this->getContainer()->get('pim_catalog.saver.attribute')->saveAll($attributes);
+        }
 
+        $optionsBulks = [];
+        $optionConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_option');
+        $optionProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_option');
         foreach ($optionData as $index => $data) {
-            $option = $this->loadFixture('attribute_options', $data);
+            $convertedData = $optionConverter->convert($data);
+            $option = $optionProcessor->process($convertedData);
             $this->validate($option);
-            $this->persist($option, $index % 200 === 0);
+            $optionsBulks[$index % 200][]= $option;
         }
-        // TODO use a Saver
-        $this->flush();
+        foreach ($optionsBulks as $options) {
+            $this->getContainer()->get('pim_catalog.saver.attribute_option')->saveAll($options);
+        }
     }
 
     /**
@@ -383,8 +420,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $family = $this->getFamily($data['code']);
-            $this->refresh($family);
-
             $requirement = $this->normalizeRequirements($family);
 
             assertEquals($data['attributes'], implode(',', $family->getAttributeCodes()));
@@ -392,6 +427,111 @@ class FixturesContext extends BaseFixturesContext
             assertEquals($data['requirements-mobile'], $requirement['requirements-mobile']);
             assertEquals($data['requirements-tablet'], $requirement['requirements-tablet']);
             assertEquals($data['label-en_US'], $family->getTranslation('en_US')->getLabel());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following currencies:$/
+     */
+    public function thereShouldBeTheFollowingCurrencies(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $currency = $this->getCurrency($data['code']);
+
+            assertEquals($data['activated'], (int)$currency->isActivated());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following locales:$/
+     */
+    public function thereShouldBeTheFollowingLocales(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $locale = $this->getLocale($data['code']);
+
+            assertNotNull($locale);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following channels:$/
+     */
+    public function thereShouldBeTheFollowingChannels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $channel = $this->getChannel($data['code']);
+
+            assertEquals($data['label'], $channel->getLabel());
+            assertEquals($data['tree'], $channel->getCategory()->getCode());
+
+            $locales = $channel->getLocaleCodes();
+            asort($locales);
+            assertEquals($data['locales'], implode(',', $locales));
+
+            $currencies = $channel->getCurrencies();
+            $currencyCodes = [];
+            foreach ($currencies as $currency) {
+                $currencyCodes[] = $currency->getCode();
+            }
+            asort($currencyCodes);
+            assertEquals($data['currencies'], implode(',', $currencyCodes));
+
+            if ('' !== $data['conversion_units']) {
+                $units = explode(',', $data['conversion_units']);
+                $formattedUnits = [];
+                foreach ($units as $unit) {
+                    list($key, $value) = explode(':', trim($unit));
+                    $formattedUnits[trim($key)] = trim($value);
+                }
+
+                assertEquals($formattedUnits, $channel->getConversionUnits());
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following group types:$/
+     */
+    public function thereShouldBeTheFollowingGroupTypes(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $groupType = $this->getGroupType($data['code']);
+
+            assertEquals($data['label-en_US'], $groupType->getTranslation('en_US')->getLabel());
+            assertEquals($data['is_variant'], (int)$groupType->isVariant());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following attribute groups:$/
+     */
+    public function thereShouldBeTheFollowingAttributeGroups(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            /** @var AttributeGroup $group */
+            $group = $this->getAttributeGroup($data['code']);
+
+            assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
+            assertEquals($data['sort_order'], $group->getSortOrder());
+
+            $attributes = $group->getAttributes();
+            $codes = [];
+            foreach ($attributes as $attribute) {
+                $codes[] = $attribute->getCode();
+            }
+            asort($codes);
+            assertEquals($data['attributes'], implode(',', $codes));
         }
     }
 
@@ -436,10 +576,12 @@ class FixturesContext extends BaseFixturesContext
                 'AttributeOption',
                 ['code' => $data['code'], 'attribute' => $attribute]
             );
-            $this->refresh($option);
-
             $option->setLocale('en_US');
             assertEquals($data['label-en_US'], (string) $option);
+
+            if (isset($data['sort_order'])) {
+                assertEquals($data['sort_order'], (string) $option->getSortOrder());
+            }
         }
     }
 
@@ -452,8 +594,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $category = $this->getCategory($data['code']);
-            $this->refresh($category);
-
             assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
             if (empty($data['parent'])) {
                 assertNull($category->getParent());
@@ -472,8 +612,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $associationType = $this->getAssociationType($data['code']);
-            $this->refresh($associationType);
-
             assertEquals($data['label-en_US'], $associationType->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $associationType->getTranslation('fr_FR')->getLabel());
         }
@@ -533,13 +671,15 @@ class FixturesContext extends BaseFixturesContext
         $locale     = $this->getLocale($localeCode);
         $channel->addLocale($locale);
         $this->validate($channel);
-        $this->persist($channel);
-        $this->persist($locale);
+        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
+        $this->getContainer()->get('pim_catalog.saver.locale')->save($locale);
     }
 
     /**
      * @param string $locale
      * @param string $channel
+     *
+     * @return Step[]
      *
      * @Given /^I set the "([^"]*)" locales? to the "([^"]*)" channel$/
      */
@@ -559,18 +699,11 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingJobs(TableNode $table)
     {
-        $registry = $this->getContainer()->get('akeneo_batch.connectors');
-
         foreach ($table->getHash() as $data) {
             $jobInstance = new JobInstance($data['connector'], $data['type'], $data['alias']);
             $jobInstance->setCode($data['code']);
             $jobInstance->setLabel($data['label']);
-
-            $job = $registry->getJob($jobInstance);
-            $jobInstance->setJob($job);
-
-            $this->validate($jobInstance);
-            $this->persist($jobInstance);
+            $this->getContainer()->get('akeneo_batch.saver.job_instance')->save($jobInstance);
         }
     }
 
@@ -659,8 +792,6 @@ class FixturesContext extends BaseFixturesContext
         foreach ($this->listToArray($referenceData) as $code) {
             $this->createReferenceData($referenceDataType, $code, $code);
         }
-        // TODO use a Saver
-        $this->getEntityManager()->flush();
     }
 
     /**
@@ -677,8 +808,6 @@ class FixturesContext extends BaseFixturesContext
 
             $this->createReferenceData(trim($row['type']), trim($row['code']), trim($row['label']));
         }
-        // TODO use a Saver
-        $this->getEntityManager()->flush();
     }
 
     /**
@@ -881,7 +1010,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $configuration = $this
             ->getJobInstance($code)
-            ->getRawConfiguration();
+            ->getRawParameters();
 
         $path = dirname($configuration['filePath']);
 
@@ -936,42 +1065,72 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->getMainContext()->getSubcontext('hook')->clearUOW();
-        $product = $this->getProduct($identifier);
+        $this->spin(function () use ($identifier, $table) {
+            $this->getMainContext()->getSubcontext('hook')->clearUOW();
 
-        foreach ($table->getRowsHash() as $rawCode => $value) {
-            $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
+            $product = $this->getProduct($identifier);
 
-            $attribute     = $infos['attribute'];
-            $attributeCode = $attribute->getCode();
-            $localeCode    = $infos['locale_code'];
-            $scopeCode     = $infos['scope_code'];
-            $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
-            $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
+            foreach ($table->getRowsHash() as $rawCode => $value) {
+                $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
 
-            if ('' === $value) {
-                assertEmpty((string) $productValue);
-            } elseif ('media' === $attribute->getBackendType()) {
-                // media filename is auto generated during media handling and cannot be guessed
-                // (it contains a timestamp)
-                if ('**empty**' === $value) {
+                $attribute     = $infos['attribute'];
+                $attributeCode = $attribute->getCode();
+                $localeCode    = $infos['locale_code'];
+                $scopeCode     = $infos['scope_code'];
+                $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
+                $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
+
+                if ('' === $value) {
                     assertEmpty((string) $productValue);
-                } else {
-                    assertTrue(false !== strpos((string) $productValue, $value));
-                }
-            } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
-                // $priceCurrency can be null if we want to test all the currencies at the same time
-                // in this case, it's a simple string comparison
-                // example: 180.00 EUR, 220.00 USD
+                } elseif ('media' === $attribute->getBackendType()) {
+                    // media filename is auto generated during media handling and cannot be guessed
+                    // (it contains a timestamp)
+                    if ('**empty**' === $value) {
+                        assertEmpty((string) $productValue);
+                    } else {
+                        assertTrue(false !== strpos((string) $productValue, $value));
+                    }
+                } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
+                    // $priceCurrency can be null if we want to test all the currencies at the same time
+                    // in this case, it's a simple string comparison
+                    // example: 180.00 EUR, 220.00 USD
 
-                $price = $productValue->getPrice($priceCurrency);
-                assertEquals($value, $price->getData());
-            } elseif ('date' === $attribute->getBackendType()) {
-                assertEquals($value, $productValue->getDate()->format('Y-m-d'));
-            } else {
-                assertEquals($value, (string) $productValue);
+                    $price = $productValue->getPrice($priceCurrency);
+                    assertEquals($value, $price->getData());
+                } elseif ('date' === $attribute->getBackendType()) {
+                    assertEquals($value, $productValue->getDate()->format('Y-m-d'));
+                } else {
+                    assertEquals($value, (string) $productValue);
+                }
+            }
+
+            return true;
+        }, sprintf('Cannot get the product %s', $identifier));
+    }
+
+    /**
+     * @param string    $identifier
+     * @param TableNode $table
+     *
+     * @Then /^the product "([^"]*)" should have the following associations?:$/
+     */
+    public function theProductShouldHaveTheFollowingAssociations($identifier, TableNode $table)
+    {
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
+        $filter = $this->getContainer()->get('pim_catalog.comparator.filter.product_association');
+
+        $values['associations'] = [];
+        foreach ($table->getHash() as $row) {
+            if (isset($row['products'])) {
+                $values['associations'][$row['type']]['products'] = explode(',', $row['products']);
+            }
+
+            if (isset($row['groups'])) {
+                $values['associations'][$row['type']]['groups'] = explode(',', $row['groups']);
             }
         }
+
+        assertEquals([], $filter->filter($this->getProduct($identifier), $values));
     }
 
     /**
@@ -1000,13 +1159,17 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
-        $product    = $this->getProduct($productCode);
-        $categories = $product->getCategories()->map(
-            function ($category) {
-                return $category->getCode();
-            }
-        )->toArray();
-        assertEquals($this->listToArray($categoryCodes), $categories);
+        $this->spin(function () use ($productCode, $categoryCodes) {
+            $product    = $this->getProduct($productCode);
+            $categories = $product->getCategories()->map(
+                function ($category) {
+                    return $category->getCode();
+                }
+            )->toArray();
+            assertEquals($this->listToArray($categoryCodes), $categories);
+
+            return true;
+        }, sprintf('Cannot assert that %s categories are %s', $productCode, $categoryCodes));
     }
 
     /**
@@ -1018,9 +1181,7 @@ class FixturesContext extends BaseFixturesContext
     public function theFollowingChannelConversionOptions(Channel $channel, TableNode $conversionUnits)
     {
         $channel->setConversionUnits($conversionUnits->getRowsHash());
-
-        // TODO replace by call to a saver
-        $this->flush();
+        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
     }
 
     /**
@@ -1089,11 +1250,9 @@ class FixturesContext extends BaseFixturesContext
      */
     public function getProduct($sku)
     {
-        $product = $this->getProductRepository()->findOneByIdentifier($sku);
-
-        if (!$product) {
-            throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
-        }
+        $product = $this->spin(function () use ($sku) {
+            return $this->getProductRepository()->findOneByIdentifier($sku);
+        }, sprintf('Could not find a product with sku "%s"', $sku));
 
         $this->refresh($product);
 
@@ -1216,10 +1375,10 @@ class FixturesContext extends BaseFixturesContext
      *
      * @Given /^I\'ve removed the "([^"]*)" attribute$/
      */
-    public function iVeRemovedTheAttribute($attribute)
+    public function iHaveRemovedTheAttribute($attribute)
     {
-        // TODO use a Remover
-        $this->remove($this->getAttribute($attribute));
+        $remover = $this->getContainer()->get('pim_catalog.remover.attribute');
+        $remover->remove($this->getAttribute($attribute));
     }
 
     /**
@@ -1297,14 +1456,19 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theHistoryOfTheProductHasBeenBuilt($identifier)
     {
-        $product = $this->getProduct($identifier);
+        $this->buildProductHistory($this->getProduct($identifier));
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    protected function buildProductHistory(ProductInterface $product)
+    {
         $this->getVersionManager()->setRealTimeVersioning(true);
         $versions = $this->getVersionManager()->buildPendingVersions($product);
         foreach ($versions as $version) {
-            // TODO replace by call to a saver
             $this->validate($version);
-            $this->persist($version);
-            $this->flush($version);
+            $this->getContainer()->get('pim_versioning.saver.version')->save($version);
         }
     }
 
@@ -1366,7 +1530,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $product->setUpdated(new \DateTime($expected));
 
-        $this->getProductSaver()->save($product, ['recalculate' => false]);
+        $this->getProductSaver()->save($product);
     }
 
     /**
@@ -1412,7 +1576,7 @@ class FixturesContext extends BaseFixturesContext
             $association->addProduct($this->getProduct($row['product']));
         }
 
-        $this->getProductSaver()->save($owner, ['recalculate' => false]);
+        $this->getProductSaver()->save($owner);
     }
 
     /**
@@ -1460,7 +1624,7 @@ class FixturesContext extends BaseFixturesContext
         $type->setLocale('en_US')->setLabel($label);
 
         $this->validate($type);
-        $this->persist($type);
+        $this->getContainer()->get('pim_catalog.saver.group_type')->save($type);
 
         return $type;
     }
@@ -1472,6 +1636,7 @@ class FixturesContext extends BaseFixturesContext
      */
     protected function createAttribute($data)
     {
+        // TODO We should use the attribute reader service to avoid all these lines
         if (is_string($data)) {
             $data = [
                 'code'  => $data,
@@ -1520,7 +1685,11 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        $attribute = $this->loadFixture('attributes', $data);
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
+        $convertedData = $converter->convert($data);
+
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute');
+        $attribute = $processor->process($convertedData);
 
         $familiesToPersist = [];
         if ($families) {
@@ -1539,10 +1708,11 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        $this->persist($attribute);
+        $this->getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
+
         foreach ($familiesToPersist as $family) {
             $this->validate($family);
-            $this->persist($family);
+            $this->getFamilySaver()->save($family);
         }
 
         return $attribute;
@@ -1589,7 +1759,10 @@ class FixturesContext extends BaseFixturesContext
             $data = [['code' => $data]];
         }
 
-        $category = $this->loadFixture('categories', $data);
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.category');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.category');
+        $convertedData = $converter->convert($data);
+        $category = $processor->process($convertedData);
 
         /*
          * When using ODM, one must persist and flush category without product
@@ -1597,7 +1770,8 @@ class FixturesContext extends BaseFixturesContext
          */
         $products = $category->getProducts();
         $this->validate($category);
-        $this->persist($category, true);
+        $this->getContainer()->get('pim_catalog.saver.category')->save($category);
+
         foreach ($products as $product) {
             $product->addCategory($category);
             $this->getProductSaver()->save($product);
@@ -1620,7 +1794,6 @@ class FixturesContext extends BaseFixturesContext
         $data = array_merge(
             [
                 'label'      => null,
-                'color'      => null,
                 'currencies' => null,
                 'locales'    => null,
                 'tree'       => null,
@@ -1633,16 +1806,12 @@ class FixturesContext extends BaseFixturesContext
         $channel->setCode($data['code']);
         $channel->setLabel($data['label']);
 
-        if ($data['color']) {
-            $channel->setColor($data['color']);
-        }
-
         foreach ($this->listToArray($data['currencies']) as $currencyCode) {
-            $channel->addCurrency($this->getCurrency($currencyCode));
+            $channel->addCurrency($this->getCurrency(['code' => explode(',', $currencyCode)]));
         }
 
         foreach ($this->listToArray($data['locales']) as $localeCode) {
-            $channel->addLocale($this->getLocale($localeCode));
+            $channel->addLocale($this->getLocale(['code' => explode(',', $localeCode)]));
         }
 
         if ($data['tree']) {
@@ -1650,7 +1819,7 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $this->validate($channel);
-        $this->persist($channel);
+        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
     }
 
     /**
@@ -1670,10 +1839,8 @@ class FixturesContext extends BaseFixturesContext
             $attribute = $this->getAttribute($attributeCode);
             $group->addAttribute($attribute);
         }
-        // TODO replace by call to a saver
         $this->validate($group);
-        $this->persist($group);
-        $this->flush($group);
+        $this->getContainer()->get('pim_catalog.saver.group')->save($group);
 
         foreach ($products as $sku) {
             if (!empty($sku)) {
@@ -1686,7 +1853,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Factory\GroupFactory
+     * @return GroupFactory
      */
     protected function getGroupFactory()
     {
@@ -1704,7 +1871,7 @@ class FixturesContext extends BaseFixturesContext
         $associationType->setLocale('en_US')->setLabel($label);
 
         $this->validate($associationType);
-        $this->persist($associationType);
+        $this->getContainer()->get('pim_catalog.saver.association_type')->save($associationType);
     }
 
     /**
@@ -1716,7 +1883,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $role = new Role($data['role']);
         $this->validate($role);
-        $this->persist($role);
+        $this->getContainer()->get('pim_user.saver.role')->save($role);
 
         return $role;
     }
@@ -1726,7 +1893,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @param string $code
      *
-     * @return \Pim\Component\Catalog\Model\AttributeOptionInterface
+     * @return AttributeOptionInterface
      */
     protected function createOption($code)
     {
@@ -1749,17 +1916,17 @@ class FixturesContext extends BaseFixturesContext
             case 'color':
             case 'colors':
                 $referenceData = $this->createColorReferenceData($code, $label);
+                $this->validate($referenceData);
+                $this->getContainer()->get('acme_app.saver.color')->save($referenceData);
                 break;
             case 'fabric':
             case 'fabrics':
                 $referenceData = $this->createFabricReferenceData($code, $label);
+                $this->getContainer()->get('acme_app.saver.fabric')->save($referenceData);
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Unknown reference data type "%s".', $type));
         }
-
-        $this->validate($referenceData);
-        $this->getEntityManager()->persist($referenceData);
 
         return $referenceData;
     }
@@ -1832,7 +1999,11 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        $family = $this->loadFixture('families', $data);
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family');
+
+        $convertedData = $converter->convert($data);
+        $family = $processor->process($convertedData);
         $this->getFamilySaver()->save($family);
 
         return $family;
@@ -1851,9 +2022,11 @@ class FixturesContext extends BaseFixturesContext
             $data = ['code' => $data];
         }
 
-        $attributeGroup = $this->loadFixture('attribute_groups', $data);
-
-        $this->persist($attributeGroup);
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_group');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group');
+        $convertedData = $converter->convert($data);
+        $attributeGroup = $processor->process($convertedData);
+        $this->getContainer()->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         return $attributeGroup;
     }
@@ -1882,10 +2055,10 @@ class FixturesContext extends BaseFixturesContext
             $parent->setRepliedAt($createdAt);
             $comment->setParent($parent);
             $this->validate($comment);
-            $this->persist($parent);
+            $this->getContainer()->get('pim_comment.saver.comment')->save($parent);
         }
 
-        $this->persist($comment);
+        $this->getContainer()->get('pim_comment.saver.comment')->save($comment);
 
         return $comment;
     }
@@ -1914,21 +2087,13 @@ class FixturesContext extends BaseFixturesContext
         $view->setOwner($this->getUser('Peter'));
 
         $this->validate($view);
-        $this->persist($view);
+        $this->getContainer()->get('pim_datagrid.saver.datagrid_view')->save($view);
 
         return $view;
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
-     */
-    protected function getProductManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.product');
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface
+     * @return \Pim\Component\Catalog\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
     {
@@ -1984,14 +2149,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\AttributeManager
-     */
-    protected function getAttributeManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.attribute');
-    }
-
-    /**
      * @return \Pim\Bundle\VersioningBundle\Manager\VersionManager
      */
     protected function getVersionManager()
@@ -2000,11 +2157,11 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
+     * @return \Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor
      */
     protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_connector.array_converter.flat.product.attribute_column_info_extractor');
+        return $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
     }
 
     /**

@@ -50,8 +50,8 @@ datagrid:
                 has_group:
                     data_name: has_group
             default:
-                has_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
-                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                has_group: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                lastName: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
 
         options:
             requireJSModules:

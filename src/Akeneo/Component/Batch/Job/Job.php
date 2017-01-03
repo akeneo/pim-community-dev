@@ -4,11 +4,14 @@ namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Implementation of the {@link Job} interface.
@@ -18,9 +21,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
- * TODO: templates should be extracted, we mix concerns here
- * TODO: JobRepository and EventDispatcher should be injected in the constructor
  */
 class Job implements JobInterface
 {
@@ -36,21 +36,26 @@ class Job implements JobInterface
     /** @var array */
     protected $steps;
 
-    /** @var string */
-    protected $showTemplate;
-
-    /** @var string */
-    protected $editTemplate;
+    /** @var Filesystem */
+    protected $filesystem;
 
     /**
-     * Convenience constructor to immediately add name (which is mandatory)
-     *
-     * @param string $name
+     * @param string                   $name
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param JobRepositoryInterface   $jobRepository
+     * @param StepInterface[]          $steps
      */
-    public function __construct($name)
-    {
-        $this->name   = $name;
-        $this->steps  = array();
+    public function __construct(
+        $name,
+        EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository,
+        array $steps = []
+    ) {
+        $this->name = $name;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->jobRepository = $jobRepository;
+        $this->steps = $steps;
+        $this->filesystem = new Filesystem();
     }
 
     /**
@@ -64,36 +69,6 @@ class Job implements JobInterface
     }
 
     /**
-     * Set the name property
-     *
-     * @deprecated will be removed in 1.6
-     *
-     * @param string $name
-     *
-     * @return Job
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Set the event dispatcher
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return Job
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
-    }
-
-    /**
      * Return all the steps
      *
      * @return array steps
@@ -101,21 +76,6 @@ class Job implements JobInterface
     public function getSteps()
     {
         return $this->steps;
-    }
-
-    /**
-     * Public setter for the steps in this job. Overrides any calls to
-     * addStep(Step).
-     *
-     * @param array $steps the steps to execute
-     *
-     * @return Job
-     */
-    public function setSteps(array $steps)
-    {
-        $this->steps = $steps;
-
-        return $this;
     }
 
     /**
@@ -144,35 +104,12 @@ class Job implements JobInterface
      */
     public function getStepNames()
     {
-        $names = array();
+        $names = [];
         foreach ($this->steps as $step) {
             $names[] = $step->getName();
         }
 
         return $names;
-    }
-
-    /**
-     * Convenience method for adding a single step to the job.
-     *
-     * @param string        $stepName the name of the step
-     * @param StepInterface $step     a {@link Step} to add
-     */
-    public function addStep($stepName, StepInterface $step)
-    {
-        $this->steps[] = $step;
-    }
-
-    /**
-     * Public setter for the {@link JobRepositoryInterface} that is needed to manage the
-     * state of the batch meta domain (jobs, steps, executions) during the life
-     * of a job.
-     *
-     * @param JobRepositoryInterface $jobRepository
-     */
-    public function setJobRepository(JobRepositoryInterface $jobRepository)
-    {
-        $this->jobRepository = $jobRepository;
     }
 
     /**
@@ -185,85 +122,6 @@ class Job implements JobInterface
     public function getJobRepository()
     {
         return $this->jobRepository;
-    }
-
-    /**
-     * Get the steps configuration
-     *
-     * @return array
-     */
-    public function getConfiguration()
-    {
-        $result = array();
-        foreach ($this->steps as $step) {
-            foreach ($step->getConfiguration() as $key => $value) {
-                if (!isset($result[$key]) || $value) {
-                    $result[$key] = $value;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Set the steps configuration
-     *
-     * @param array $config
-     */
-    public function setConfiguration(array $config)
-    {
-        foreach ($this->steps as $step) {
-            $step->setConfiguration($config);
-        }
-    }
-
-    /**
-     * Set the show template
-     *
-     * @param string $showTemplate
-     *
-     * @return Job
-     */
-    public function setShowTemplate($showTemplate)
-    {
-        $this->showTemplate = $showTemplate;
-
-        return $this;
-    }
-
-    /**
-     * Return the show template
-     *
-     * @return string
-     */
-    public function getShowTemplate()
-    {
-        return $this->showTemplate;
-    }
-
-    /**
-     * Set the edit template
-     *
-     * @param string $editTemplate
-     *
-     * @return Job
-     */
-    public function setEditTemplate($editTemplate)
-    {
-        $this->editTemplate = $editTemplate;
-
-        return $this;
-    }
-
-    /**
-     * Return the edit template
-     *
-     * @return string
-     */
-    public function getEditTemplate()
-    {
-        return $this->editTemplate;
     }
 
     /**
@@ -282,12 +140,19 @@ class Job implements JobInterface
      * @param JobExecution $jobExecution
      *
      * @see Job#execute(JobExecution)
+     *
+     * A unique working directory is created before the execution of the job. It is deleted when the job is terminated.
+     * The working directory is created in the temporary filesystem. Its pathname is placed in the JobExecutionContext
+     * via the key {@link \Akeneo\Component\Batch\Job\JobInterface::WORKING_DIRECTORY_PARAMETER}
      */
     final public function execute(JobExecution $jobExecution)
     {
-        $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION, $jobExecution);
-
         try {
+            $workingDirectory = $this->createWorkingDirectory();
+            $jobExecution->getExecutionContext()->put(JobInterface::WORKING_DIRECTORY_PARAMETER, $workingDirectory);
+
+            $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION, $jobExecution);
+
             if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
                 $jobExecution->setStartTime(new \DateTime());
                 $this->updateStatus($jobExecution, BatchStatus::STARTED);
@@ -303,6 +168,21 @@ class Job implements JobInterface
 
                 $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_STOPPED, $jobExecution);
             }
+
+            if (($jobExecution->getStatus()->getValue() <= BatchStatus::STOPPED)
+                && (count($jobExecution->getStepExecutions()) === 0)
+            ) {
+                $exitStatus = $jobExecution->getExitStatus();
+                $noopExitStatus = new ExitStatus(ExitStatus::NOOP);
+                $noopExitStatus->addExitDescription("All steps already completed or no steps configured for this job.");
+                $jobExecution->setExitStatus($exitStatus->logicalAnd($noopExitStatus));
+                $this->jobRepository->updateJobExecution($jobExecution);
+            }
+
+            $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
+
+            $jobExecution->setEndTime(new \DateTime());
+            $this->jobRepository->updateJobExecution($jobExecution);
         } catch (JobInterruptedException $e) {
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $jobExecution->setStatus(
@@ -321,23 +201,12 @@ class Job implements JobInterface
             $this->jobRepository->updateJobExecution($jobExecution);
 
             $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_FATAL_ERROR, $jobExecution);
+        } finally {
+            $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+            if (null !== $workingDirectory) {
+                $this->deleteWorkingDirectory($workingDirectory);
+            }
         }
-
-        if (($jobExecution->getStatus()->getValue() <= BatchStatus::STOPPED)
-            && (count($jobExecution->getStepExecutions()) === 0)
-        ) {
-            /* @var ExitStatus */
-            $exitStatus = $jobExecution->getExitStatus();
-            $noopExitStatus = new ExitStatus(ExitStatus::NOOP);
-            $noopExitStatus->addExitDescription("All steps already completed or no steps configured for this job.");
-            $jobExecution->setExitStatus($exitStatus->logicalAnd($noopExitStatus));
-            $this->jobRepository->updateJobExecution($jobExecution);
-        }
-
-        $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
-
-        $jobExecution->setEndTime(new \DateTime());
-        $this->jobRepository->updateJobExecution($jobExecution);
     }
 
     /**
@@ -392,7 +261,6 @@ class Job implements JobInterface
         $stepExecution = $jobExecution->createStepExecution($step->getName());
 
         try {
-            $step->setJobRepository($this->jobRepository);
             $step->execute($stepExecution);
         } catch (JobInterruptedException $e) {
             $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
@@ -443,8 +311,6 @@ class Job implements JobInterface
      */
     private function getDefaultExitStatusForFailure(\Exception $e)
     {
-        $exitStatus = new ExitStatus();
-
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
@@ -468,5 +334,39 @@ class Job implements JobInterface
     private function updateStatus(JobExecution $jobExecution, $status)
     {
         $jobExecution->setStatus(new BatchStatus($status));
+    }
+
+    /**
+     * Create a unique working directory
+     *
+     * @return string the working directory path
+     */
+    private function createWorkingDirectory()
+    {
+        $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('akeneo_batch_') . DIRECTORY_SEPARATOR;
+        try {
+            $this->filesystem->mkdir($path);
+        } catch (IOException $e) {
+            // this exception will be catched by {Job->execute()} and will set the batch as failed
+            throw new RuntimeErrorException(
+                sprintf('Unable to create the working directory "%s".', $path),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        return $path;
+    }
+
+    /**
+     * Delete the working directory
+     *
+     * @param string $directory
+     */
+    private function deleteWorkingDirectory($directory)
+    {
+        if ($this->filesystem->exists($directory)) {
+            $this->filesystem->remove($directory);
+        }
     }
 }

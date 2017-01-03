@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_catalog.resolver.fqcn:
-        class: %pim_catalog.resolver.fqcn.class%
+        class: '%pim_catalog.resolver.fqcn.class%'
         arguments:
             - '@service_container'

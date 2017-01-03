@@ -18,7 +18,7 @@ oro.user.grid.users:
     username: Nom d’usuari
     email: Adreça electrònica
     firstName: Nom
-    lastName: Segon cognom
+    lastName: Cognoms
     createdAt: Creat el
     updatedAt: Actualitzat el
     enabled: Estat
@@ -60,6 +60,7 @@ Business Units: Unitats de negoci
 Email synchronization settings: Configuració de sincronització de correu electrònic
 Host: Host
 Port: Port
+Ssl: SSL
 Last logged in: Darrer inici de sessió
 Login count: Recompte d'inicis de sessió
 Additional Information: Informació addicional

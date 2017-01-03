@@ -11,11 +11,11 @@ Feature: Drag and drop a category
   Scenario: Move category to a different parent in the tree
     Given I am on the categories page
     And I select the "2014 collection" tree
-    And I expand the "Summer collection" category
-    And I expand the "Winter collection" category
-    And I drag the "Summer collection" category to the "Winter boots" category
-    Then I should see the "Summer collection" category under the "Winter collection" category
+    And I expand the "summer_collection" category
+    And I expand the "winter_collection" category
+    And I drag the "summer_collection" category to the "winter_boots" category
+    Then I should see the "summer_collection" category under the "winter_collection" category
     When I refresh current page
     Then I select the "2014 collection" tree
-    And I expand the "Winter collection" category
-    Then I should see the "Summer collection" category under the "Winter collection" category
+    And I expand the "winter_collection" category
+    Then I should see the "summer_collection" category under the "winter_collection" category

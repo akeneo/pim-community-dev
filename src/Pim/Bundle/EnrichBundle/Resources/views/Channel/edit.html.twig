@@ -15,8 +15,11 @@
 
         {% set title = form.vars.value.id ? 'channel.edit'|trans ~ ' - ' ~ form.vars.value.label : 'channel.create'|trans %}
 
-        {% set buttons %}
+        {% set titleButtons %}
             {{ elements.backLink(path('pim_enrich_channel_index')) }}
+        {% endset %}
+
+        {% set buttons %}
             {% if form.vars.value.id %}
                 {{ elements.deleteLink(
                     path('pim_enrich_channel_remove', { id: form.vars.value.id }),
@@ -29,7 +32,7 @@
             {{ elements.submitBtn('', 'ok') }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id), titleButtons) }}
 
         {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 

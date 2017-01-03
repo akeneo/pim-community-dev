@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product;
 
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 
 /**
  * Transform sub-part or product
@@ -25,8 +25,8 @@ class FamilyTransformer
 
         if (isset($normalizedData['family'])) {
             $family = $normalizedData['family'];
-            $result['familyLabel'] = isset($family['label'][$locale]) ?
-                $family['label'][$locale] : '['.$family['code'].']';
+            $result['familyLabel'] = isset($family['labels'][$locale]) ?
+                $family['labels'][$locale] : '['.$family['code'].']';
             if (isset($family['attributeAsLabel']) && $family['attributeAsLabel'] !== null) {
                 $attributeCode = $family['attributeAsLabel'];
                 if (isset($result[$attributeCode])) {

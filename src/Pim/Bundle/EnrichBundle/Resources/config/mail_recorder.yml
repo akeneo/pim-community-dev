@@ -3,8 +3,8 @@ parameters:
 
 services:
     pim_enrich.mailer.mail_recorder:
-        class: %pim_enrich.mailer.mail_recorder.class%
+        class: '%pim_enrich.mailer.mail_recorder.class%'
         arguments:
-            - %kernel.cache_dir%/mailer_mail_store.meta
+            - '%kernel.cache_dir%/mailer_mail_store.meta'
         tags:
             - { name: swiftmailer.default.plugin }

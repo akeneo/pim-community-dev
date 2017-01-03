@@ -107,7 +107,11 @@
                                     {% set manualHeight = false %}
                                 {% else %}
                                     {% set content = product.getValue(attribute.code, locale, scope) %}
-                                    {% set manualHeight = attribute.label|length > (content.__toString()|length / 3) %}
+                                    {% if content != null %}
+                                        {% set manualHeight = attribute.label|length >(content.__toString()|length / 3) %}
+                                    {% else %}
+                                        {% set manualHeight = true %}
+                                    {% endif %}
                                 {% endif %}
 
                                 <div class="attributes"{% if manualHeight %} style="height: {{ (attribute.label|length / 30)|round(0, 'ceil') * 18 + 10 }}px"{% endif %}>

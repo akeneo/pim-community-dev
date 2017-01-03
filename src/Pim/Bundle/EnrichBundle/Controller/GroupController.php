@@ -5,10 +5,10 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
-use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Component\Catalog\Factory\GroupFactory;
+use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,8 +37,8 @@ class GroupController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var GroupManager */
-    protected $groupManager;
+    /** @var GroupTypeRepositoryInterface */
+    protected $groupTypeRepository;
 
     /** @var HandlerInterface */
     protected $groupHandler;
@@ -53,31 +53,31 @@ class GroupController
     protected $groupRemover;
 
     /**
-     * @param Request              $request
-     * @param EngineInterface      $templating
-     * @param RouterInterface      $router
-     * @param GroupManager         $groupManager
-     * @param HandlerInterface     $groupHandler
-     * @param FormInterface        $groupForm
-     * @param GroupFactory         $groupFactory
-     * @param RemoverInterface     $groupRemover
+     * @param Request                      $request
+     * @param EngineInterface              $templating
+     * @param RouterInterface              $router
+     * @param GroupTypeRepositoryInterface $groupTypeRepository
+     * @param HandlerInterface             $groupHandler
+     * @param FormInterface                $groupForm
+     * @param GroupFactory                 $groupFactory
+     * @param RemoverInterface             $groupRemover
      */
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        GroupManager $groupManager,
+        GroupTypeRepositoryInterface $groupTypeRepository,
         HandlerInterface $groupHandler,
         FormInterface $groupForm,
         GroupFactory $groupFactory,
         RemoverInterface $groupRemover
     ) {
-        $this->request      = $request;
-        $this->templating   = $templating;
-        $this->router       = $router;
-        $this->groupManager = $groupManager;
+        $this->request = $request;
+        $this->templating = $templating;
+        $this->router = $router;
+        $this->groupTypeRepository = $groupTypeRepository;
         $this->groupHandler = $groupHandler;
-        $this->groupForm    = $groupForm;
+        $this->groupForm = $groupForm;
         $this->groupFactory = $groupFactory;
         $this->groupRemover = $groupRemover;
     }
@@ -92,8 +92,10 @@ class GroupController
      */
     public function indexAction()
     {
+        $groupTypes = $this->groupTypeRepository->findTypeIds(false);
+
         return [
-            'groupTypes' => array_keys($this->groupManager->getTypeChoices(false))
+            'groupTypes' => $groupTypes
         ];
     }
 
@@ -192,7 +194,7 @@ class GroupController
     public function historyAction(Group $group)
     {
         return $this->templating->renderResponse(
-            'PimEnrichBundle:Group:_history.html.twig',
+            'PimEnrichBundle:Group:Tab/_history.html.twig',
             [
                 'group' => $group
             ]

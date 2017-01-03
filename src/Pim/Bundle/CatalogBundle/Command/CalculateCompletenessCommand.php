@@ -38,7 +38,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
     /**
      * Get the completeness repository
      *
-     * @return \Pim\Bundle\CatalogBundle\Manager\CompletenessManager
+     * @return \Pim\Component\Catalog\Manager\CompletenessManager
      */
     protected function getCompletenessManager()
     {

@@ -78,24 +78,24 @@ pim_enrich:
     limit_exceeded: Trieu menys de %limit% elements per editar
     product:
       page_title: Productes
-      page_subtitle: Edició en massa (1 producte) | Edició en massa (%count% productes)
-      title: Trieu l'operació
+      page_subtitle: Editar en massa (1 producte) | Editar en massa (%count% productes)
+      title: Trieu operació
       subtitle: Trieu la operació que voleu realitzar al producte seleccionat| Trieu la operació que voleu realitzar als %count% productes seleccionats
       confirm: Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu-ho si us plau.
       steps:
         first: Triar productes
-        second: Trieu l'operació
+        second: Triar operació
         third: Configurar
         fourth: Confirmar
     family:
       page_title: Famílies
       page_subtitle: Editar en massa (1 família) | Editar en massa (%count% famílies)
-      title: Trieu l'operació
+      title: Triar operació
       subtitle: Trieu la operació que voleu realitzar a la familília seleccionada | Trieu la operació que desitja realitzar a les %count% famílies seleccionades
-      confirm: Esteu a punt d'actualitzar una família amb la següent informació, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% famílies amb la següent informació, confirmeu-ho si us plau.
+      confirm: Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu-ho si us plau.
       steps:
         first: Triar famílies
-        second: Trieu l'operació
+        second: Triar operació
         third: Configurar
         fourth: Confirmar
     change-status:
@@ -113,13 +113,24 @@ pim_enrich:
         warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
         invalid_attribute: L'atribut amb codi "attribute_code" no és comú per als productes seleccionats, atribut omès.
         no_valid_attribute: No es pot aplicar cap dels atributs seleccions a aquest producte.
-    classify:
+    classify-add:
       label: Classificar els productes en categories
       description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
       success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
+      launched_flash: L'acció en massa "afegir categories" ja s'ha engegat. Se li notificarà una cop acabi.
+    classify-move:
+      label: Moure els productes a les categories
+      description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
+      success_flash: El(s) producte(s) ha(n) estat mogut(s) a les categories seleccionades
+      launched_flash: L'acció en massa "moure a categories" ja s'ha engegat. Se li notificarà una cop acabi.
+    classify-remove:
+      label: Eliminar productes de les categories
+      description: Els productes s'eliminaran de les següents categories.
+      success_flash: El(s) producte(s) ha(n) estat eliminat(s) de les categories seleccionades
+      launched_flash: L'acció en massa "eliminar de categories" ja s'ha engegat. Se li notificarà una cop acabi.
     change-family:
       label: Canviar la família de productes
-      description: La família dels productes seleccionats es canviarà per la família escollida
+      description: La família dels productes seleccionats es canviarà a la família escollida
       success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
       launched_flash: L'acció en massa "canviar família" ja s'ha engegat. Se li notificarà una cop acabi.
     add-to-groups:
@@ -139,7 +150,7 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: L'acció en massa "afegir a grup de variants" ja s'ha engegat. Se li notificarà una cop acabi.
     set-attribute-requirements:
-      label: Establir els requeriments d'atribut
+      label: Establecer requeriments d'atribut
       description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
       success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
       launched_flash: L'acció en massa "definiu els requeriments d'atribut" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -149,7 +160,7 @@ pim_enrich:
   sequential_edit_action:
     product:
       previous: Tornar a "%product%" sense guardar.
-      next: Vés a "%product%" sense guardar.
+      next: Anar a "%product%" sense guardar.
   acl:
     locale:
       index: Llistar configuracions regionals
@@ -242,13 +253,13 @@ pim_enrich:
   acl_group:
     association_type: Tipus d'associació
     attribute: Atributs
-    attribute_group: Grups d'atribut
+    attribute_group: Grups d'atributs
     category: Categories
     channel: Canals
     currency: Monedes
     family: Famílies
     group: Grups
-    variant_group: Grups de variants
+    variant_group: Grup de variants
     group_type: Tipus de grup
     locale: Configuracions regionals
     product: Productes
@@ -347,6 +358,7 @@ btn:
     variant group: crear grup de variants
     association type: crear tipus d'associació
     group type: crear tipus de grup
+    drag_or_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
   edit: editar
   save: guardar
   save and back: guardar i tornar a la quadrícula
@@ -554,6 +566,7 @@ Close: Tancar
 Search: Cercar
 Choose the attribute type: Trieu el tipus d'atribut
 Choose the attribute group: Trieu el grup de l'atribut
+Drag and drop a file or click here: Arrossegui aquí un arxiu o feu-hi clic
 Drop an image or click here: Arrossegui aquí una imatge o feu-hi clic
 Automatic option sorting: Ordenació automàtica de les opcions
 save_attribute_before_manage_option: Per administrar opcions, guardeu primer l'atribut si us plau
@@ -603,7 +616,7 @@ Default: Per defecte
 Attributes: Atributs
 Title: Títol
 pim_title.attribute_group:
-  index: Grups d'atribut
+  index: Grups d'atributs
   create: Grups d'atributs | Crear
   edit: Grups d'atributs %group.label% | Editar
 pim_title.category:
@@ -632,7 +645,7 @@ pim_title.group:
   index: Grups
   edit: Grups %group.label% | Editar
 pim_title.variant_group:
-  index: Grups de variants
+  index: Grup de variants
   edit: Grups de variants %group.label% | Editar
 pim_title.association_type:
   index: Tipus d'associació
@@ -835,11 +848,55 @@ job_execution.summary:
 pim_mass_edit_execution_show: Execucions edicions en massa | Detalls
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributs comuns
 update_product_value.steps.update_product_value_processor.title: Actualitzar el valor del producte
+remove_product_value.steps.update_product_value_processor.title: Treure el valor del producte
 add_to_variant_group_clean.steps.excluded.title: Producte exclòs
 add_to_variant_group_clean.steps.duplicated.title: Eix duplicat
+add_to_variant_group.steps.excluded.title: Producte exclòs
+add_to_variant_group.steps.duplicated.title: Eix duplicat
 add_to_variant_group.steps.cleaner.warning.description: 'Aquest producte no es pot definir pel grup de variants seleccionat: dupliqueu els valors de l''eix de variació amb un altre producte en selecció'
 edit_common_attributes: Editar atributs comuns
 edit_common_attributes_clean: Netejar arxius per atributs comuns
+perform.steps.duplicated.title: Eix duplicat
+perform.steps.excluded.title: Producte exclòs
+batch_jobs:
+  add_product_value:
+    label: Afegir valor de producte
+    perform:
+      label: Afegir valor de producte
+  update_product_value:
+    label: Actualitzar el valor del producte
+    perform:
+      label: Actualitzar el valor del producte
+  edit_common_attributes:
+    label: Editar atributs comuns
+    perform:
+      label: Editar atributs comuns
+    clean:
+      label: Netejar arxius per atributs comuns
+  set_attribute_requirements:
+    label: Conjunt de requeriments d'atribut
+    perform:
+      label: Conjunt de requeriments d'atribut
+  csv_product_quick_export:
+    quick_export.label: Exportació ràpida de producte en CSV
+    perform:
+      label: Exportació ràpida de producte en CSV
+  csv_product_grid_context_quick_export:
+    quick_export.label: Exportació ràpida de marc de quadrícula de producte en CSV
+    perform:
+      label: Exportació ràpida de marc de quadrícula de producte en CSV
+  xlsx_product_quick_export:
+    quick_export.label: Exportació ràpida de producte en XLSX
+    perform:
+      label: Exportació ràpida de producte en XLSX
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Exportació ràpida de marc de quadrícula de producte en XLSX
+    perform:
+      label: Exportació ràpida de marc de quadrícula de producte en XLSX
+  add_to_variant_group:
+    label: Afegir a un grup de variants
+    perform:
+      label: Afegir a un grup de variants
 mass_edit report:
   overview: Edició en massa d'informes
 job_tracker:
@@ -847,3 +904,14 @@ job_tracker:
     title: Seguiment del procés
   filter:
     started_at: Va començar a
+pim_enrich_attribute_form:
+  code: Codi
+  attributeType: Tipus d'atribut
+  reference_data_name: Nom de dades de referència
+  scopable: Abast
+  localizable: Configurable regionalment
+  unique: Valor únic
+  availableLocales: Configuracions regionals disponibles
+  locale_specific: Configuració regional específica
+  group: Grup d'atributs
+  useableAsGridFilter: Utilitzable en quadrícula

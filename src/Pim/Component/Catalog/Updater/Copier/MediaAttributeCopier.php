@@ -4,12 +4,12 @@ namespace Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
-use League\Flysystem\MountManager;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Akeneo\Component\FileStorage\FilesystemProvider;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Copy a media value attribute in other media value attribute
@@ -26,15 +26,15 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     /** @var FileStorerInterface */
     protected $fileStorer;
 
-    /** @var MountManager */
-    protected $mountManager;
+    /** @var FilesystemProvider */
+    protected $filesystemProvider;
 
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param FileFetcherInterface     $fileFetcher
      * @param FileStorerInterface      $fileStorer
-     * @param MountManager             $mountManager
+     * @param FilesystemProvider       $filesystemProvider
      * @param array                    $supportedFromTypes
      * @param array                    $supportedToTypes
      */
@@ -43,17 +43,17 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         AttributeValidatorHelper $attrValidatorHelper,
         FileFetcherInterface $fileFetcher,
         FileStorerInterface $fileStorer,
-        MountManager $mountManager,
+        FilesystemProvider $filesystemProvider,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
 
-        $this->fileFetcher        = $fileFetcher;
-        $this->fileStorer         = $fileStorer;
-        $this->mountManager       = $mountManager;
+        $this->fileFetcher = $fileFetcher;
+        $this->fileStorer = $fileStorer;
+        $this->filesystemProvider = $filesystemProvider;
         $this->supportedFromTypes = $supportedFromTypes;
-        $this->supportedToTypes   = $supportedToTypes;
+        $this->supportedToTypes = $supportedToTypes;
     }
 
     /**
@@ -116,9 +116,9 @@ class MediaAttributeCopier extends AbstractAttributeCopier
 
             $file = null;
             if (null !== $fromValue->getMedia()) {
-                $filesystem = $this->mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
-                $rawFile    = $this->fileFetcher->fetch($filesystem, $fromValue->getMedia()->getKey());
-                $file       = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
+                $filesystem = $this->filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+                $rawFile = $this->fileFetcher->fetch($filesystem, $fromValue->getMedia()->getKey());
+                $file = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
 
                 $file->setOriginalFilename($fromValue->getMedia()->getOriginalFilename());
             }

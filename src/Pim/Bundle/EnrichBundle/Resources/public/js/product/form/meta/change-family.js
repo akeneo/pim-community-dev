@@ -97,7 +97,7 @@ define(
                             _.each(families, function (value, key) {
                                 data.results.push({
                                     id: key,
-                                    text: i18n.getLabel(value.label, UserContext.get('catalogLocale'), value.code)
+                                    text: i18n.getLabel(value.labels, UserContext.get('catalogLocale'), value.code)
                                 });
                             });
 
@@ -112,7 +112,11 @@ define(
                                 .then(function (family) {
                                     callback({
                                         id: family.code,
-                                        text: i18n.getLabel(family.label, UserContext.get('catalogLocale'), family.code)
+                                        text: i18n.getLabel(
+                                            family.labels,
+                                            UserContext.get('catalogLocale'),
+                                            family.code
+                                        )
                                     });
                                 });
                         }

@@ -37,7 +37,7 @@ datagrid:
                 label:
                     data_name: label
             default:
-                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
                 code:

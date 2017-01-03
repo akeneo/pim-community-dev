@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionNormalizer as BaseAttributeOptionNormalizer;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
@@ -26,10 +26,10 @@ class StructuredAttributeOptionNormalizer extends BaseAttributeOptionNormalizer
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
-        AttributeOptionManager $optionManager,
+        SimpleFactoryInterface $attributeOptionValueFactory,
         ObjectFilterInterface $objectFilter
     ) {
-        parent::__construct($localeRepository, $optionManager);
+        parent::__construct($localeRepository, $attributeOptionValueFactory);
 
         $this->objectFilter = $objectFilter;
     }

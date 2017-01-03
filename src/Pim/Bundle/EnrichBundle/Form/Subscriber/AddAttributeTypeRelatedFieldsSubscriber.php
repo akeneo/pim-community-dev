@@ -3,9 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
-use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypeRegistry;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
@@ -35,20 +35,23 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /** @var AttributeGroupRepositoryInterface */
     protected $groupRepository;
 
+    /** @var AttributeTypeRegistry */
+    protected $attributeTypeRegistry;
+
     /**
      * Constructor
      *
-     * @param AttributeTypeRegistry             $attTypeRegistry Registry
+     * @param AttributeTypeRegistry             $attributeTypeRegistry Registry
      * @param SecurityFacade                    $securityFacade
      * @param AttributeGroupRepositoryInterface $groupRepository
      */
     public function __construct(
-        AttributeTypeRegistry $attTypeRegistry,
+        AttributeTypeRegistry $attributeTypeRegistry,
         SecurityFacade $securityFacade,
         AttributeGroupRepositoryInterface $groupRepository
     ) {
-        $this->attTypeRegistry = $attTypeRegistry;
-        $this->securityFacade  = $securityFacade;
+        $this->attributeTypeRegistry = $attributeTypeRegistry;
+        $this->securityFacade = $securityFacade;
         $this->groupRepository = $groupRepository;
     }
 
@@ -100,13 +103,13 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /**
      * Customize the attribute form
      *
-     * @param Form               $form
+     * @param FormInterface      $form
      * @param AttributeInterface $attribute
      */
-    protected function customizeForm(Form $form, AttributeInterface $attribute)
+    protected function customizeForm(FormInterface $form, AttributeInterface $attribute)
     {
-        $attTypeClass = $this->attTypeRegistry->get($attribute->getAttributeType());
-        $fields       = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
+        $attributeTypeClass = $this->attributeTypeRegistry->get($attribute->getAttributeType());
+        $fields = $attributeTypeClass->buildAttributeFormTypes($this->factory, $attribute);
 
         foreach ($fields as $field) {
             $form->add($field);
@@ -123,12 +126,12 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     {
         // get form field and properties
         $formField = $form->get($name);
-        $type      = $formField->getConfig()->getType();
-        $options   = $formField->getConfig()->getOptions();
+        $type = $formField->getConfig()->getType();
+        $options = $formField->getConfig()->getOptions();
 
         // replace by disabled and read-only
-        $options['disabled']        = true;
-        $options['read_only']       = true;
+        $options['disabled'] = true;
+        $options['read_only'] = true;
         $options['auto_initialize'] = false;
         $formField = $this->factory->createNamed($name, $type, null, $options);
         $form->add($formField);
@@ -151,7 +154,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
         $formField = $form->get('group');
         $options = $formField->getConfig()->getOptions();
 
-        $newOptions =            [
+        $newOptions = [
             'data'      => $group,
             'class'     => $options['class'],
             'choices'   => [$group],

@@ -3,6 +3,9 @@ Job: Job
 Connector: Connector
 
 pim_import_export:
+    job: Job
+    connector: Connector
+
     ## Job status
     status:
         0: Ready
@@ -21,7 +24,8 @@ pim_import_export:
         archive: download generated archive|download generated archives
         output:  download generated file|download generated files
         input:   download read file|download read files
-        invalid: download invalid data
+        invalid_xlsx: download invalid data
+        invalid_csv: download invalid data
 
     notification:
         export:
@@ -33,6 +37,12 @@ pim_import_export:
             warning: Import <strong>%label%</strong> finished with some warnings
             success: Import <strong>%label%</strong> finished
     list: Select a job
+
+    job_profile:
+        tab:
+            property.title:    General properties
+            history.title:     History
+            job_content.title: Content
 
 # Page titles:
 pim_title.export_profile.index:   Export profiles management
@@ -73,7 +83,11 @@ pim_importexport:
             edit: Edit an export profile
             remove: Remove an export profile
             launch: Launch an export profile
+            property_edit: Edit an export profile general properties
+            property_show: Show an export profile general properties
             history: View export profile history
+            content_edit: Edit an export profile content
+            content_show: Show an export profile content
         import_profile:
             index: View import profiles list
             create: Create an import profile
@@ -102,7 +116,6 @@ btn:
         export profile: create export profile
         import profile: create import profile
 
-Upload and import: Upload and import
 Upload and import now: Upload and import now
 import now: Import now
 export now: Export now
@@ -140,6 +153,7 @@ History: History
 pane.accordion:
     properties: Properties
     global_settings: Global settings
+    filters: Filters
 
 # Popin titles
 popin.create:
@@ -184,3 +198,5 @@ STOPPED: STOPPED
 FAILED:  FAILED
 ABANDONED: ABANDONED
 UNKNOWN: UNKNOWN
+
+warning.label: Warning

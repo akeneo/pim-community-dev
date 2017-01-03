@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\ConnectorBundle;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterConverterPass;
-use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass;
+use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterFlatToStandardConverterPass;
+use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -23,17 +23,9 @@ class PimConnectorBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
-            ->addCompilerPass(new RegisterConverterPass());
-
-        $mappings = [realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\Connector\Model'];
-
-        $container->addCompilerPass(
-            DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $mappings,
-                ['doctrine.orm.entity_manager'],
-                false
-            )
-        );
+            ->addCompilerPass(new RegisterArchiversPass())
+            ->addCompilerPass(new RegisterFlatToStandardConverterPass())
+            ->addCompilerPass(new RegisterStandardToFlatConverterPass())
+        ;
     }
 }

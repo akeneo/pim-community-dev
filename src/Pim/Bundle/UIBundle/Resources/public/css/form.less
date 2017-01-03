@@ -17,8 +17,21 @@
   &.active a {
     border-bottom: 3px solid @textColor + #111;
   }
-  &:not(.active) a.error {
-    border-bottom: 3px solid #da0000;
+  a.error {
+    border-bottom: none;
+    color: @redDark;
+    font-weight: bold;
+    &:before {
+      display: inline-block;
+      margin-right: 5px;
+      font-family: 'FontAwesome';
+      font-style: normal;
+      text-decoration: inherit;
+      -webkit-font-smoothing: antialiased;
+      content: "\f06a";
+      text-indent: 0;
+      speak: none;
+    }
   }
 }
 
@@ -58,16 +71,16 @@
   border-color: darken(@btnPrimaryBackgroundLight, 7%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%);
   .box-shadow(inset 0 1px 0 0 lighten(@btnPrimaryBackgroundLight, 7%));
   .border-radius(4px);
-  color: #fff;
+  color: @white;
   font-weight: bold;
   &:hover {
-    color: #fff;
+    color: @white;
     #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 4%));
     .box-shadow(inset 0 1px 0 0 @btnPrimaryBackgroundLight);
   }
   &:active,
   &:focus {
-    color: #fff;
+    color: @white;
     #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 10%));
     .box-shadow(inset 0 1px 4px 0 darken(@btnPrimaryBackgroundLight, 10%));
   }
@@ -82,13 +95,13 @@
   &:hover {
     #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 4%));
     .box-shadow(inset 0 1px 0 0 @btnInfoBackgroundLight);
-    color: #fff;
+    color: @white;
   }
   &:active,
   &:focus {
     #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 10%));
     .box-shadow(inset 0 1px 4px 0 darken(@btnInfoBackgroundLight, 10%));
-    color: #fff;
+    color: @white;
   }
   &.disabled {
     background-color: lighten(@btnInfoBackgroundLight, 10%);
@@ -103,11 +116,68 @@
 }
 
 .btn-group.open .btn-primary.dropdown-toggle {
-  background-color: darken(@color-new-green, 10%)
+  background-color: @greenDark
 }
 
-.scrollspy-title {
-  background-color: @color-grey_tab;
+.tabsections {
+  .tabsection {
+    border: 1px solid @akeneoGreyLighter;
+
+    .tabsection-title {
+      &:not(:empty) {
+        height: 44px;
+        padding: 0 20px;
+        background-color: @akeneoGreyLighter;
+        line-height: 44px;
+      }
+
+
+      .add-attribute .select2-container {
+        margin: 0 5px 5px;
+      }
+
+      #locale-switcher .btn.dropdown-toggle,
+      #attribute-buttons button {
+        background: white;
+        height: 30px;
+        line-height: 30px;
+        margin-top: -4px;
+
+        & > i {
+          background: @akeneoGreySuperLight;
+          height: 30px;
+          width: 30px;
+          line-height: 30px;
+        }
+      }
+    }
+
+    .tabsection-content {
+      padding: 20px 20px 10px;
+    }
+  }
+}
+
+.oro-tab-form {
+  & > .tab-pane {
+    border: 1px solid @akeneoGreyLighter;
+    padding-bottom: 10px;
+
+    .control-group {
+      margin-left: 20px;
+      margin-top: 15px;
+    }
+  }
+}
+
+.tabsections.scrollspy {
+  .control-group {
+    margin-bottom: 0;
+
+    label {
+      width: 200px;
+    }
+  }
 }
 
 a.accordion-toggle {
@@ -125,7 +195,7 @@ a.accordion-toggle {
   }
 }
 
-.form-horizontal .control-group {
+.form-horizontal .control-group:not(:empty) {
   margin-bottom: 15px;
   label.control-label {
     &:not(.add-on) {
@@ -137,10 +207,8 @@ a.accordion-toggle {
   }
 }
 
-#pim_importexport_import_upload .control-group {
-  max-width: 50%;
-  margin-right: 25%;
-  margin-left: 25%;
+.scrollspy .form-horizontal .control-group:not(:empty) {
+  margin-bottom: 0;
 }
 
 .handle {
@@ -151,9 +219,9 @@ a.accordion-toggle {
   margin: 10px 0;
   thead {
     tr {
-      background-color: #f3f3f3;
-      border-top: 1px solid #dfdfdf;
-      border-bottom: 1px solid #dfdfdf;
+      background-color: @whiteDarker;
+      border-top: 1px solid @color-ddd;
+      border-bottom: 1px solid @color-ddd;
       th {
         font-size: @font-size-12;
         line-height: 20px;
@@ -169,11 +237,11 @@ a.accordion-toggle {
       font-weight: bold;
       cursor: pointer;
       background-color: @backgroundColor-white;
-      border-bottom: 1px solid #d8d8d8;
+      border-bottom: 1px solid @color-ddd;
     }
     tr {
-      background-color: #f8f8f8;
-      border-bottom: 1px solid #ebebeb;
+      background-color: @whiteDark;
+      border-bottom: 1px solid @grayLighter;
     }
   }
 }
@@ -190,6 +258,10 @@ th label {
   td, th.center {
     text-align: center;
   }
+}
+
+.table-vertically-condensed > tbody > tr > td {
+  padding: 5px 10px;
 }
 
 .table-striped tbody>tr:nth-child(even)>td,
@@ -226,7 +298,7 @@ a.add-attribute-option {
     font-size: @font-size-12;
     font-weight: bold;
     &.switch-primary, &.switch-left {
-      background-color: @color-new-green;
+      background-color: @green;
       background-image: none;
       border-radius: 0;
       text-shadow: none;
@@ -241,13 +313,6 @@ div.btn-group > .has-switch {
   display: block;
 }
 
-#attribute-buttons {
-  float: right;
-  margin: 10px;
-  position: relative;
-  top: 4px;
-  margin-top: 0;
-}
 #channel-switcher {
   .dropdown-toggle {
     border-right: 0;
@@ -266,12 +331,14 @@ div.btn-group > .has-switch {
   text-align: right;
   &.compare{
     width: 50%;
-    border-left: 1px solid #ddd;
+    border-left: 1px solid @color-ddd;
   }
 }
 
-#association-buttons {
-  padding-top: 7px;
+.tab-pane.product-associations {
+  .association-buttons {
+    padding-top: 7px;
+  }
 }
 
 .comparison {
@@ -305,74 +372,67 @@ div.btn-group > .has-switch {
   z-index: 900;
 }
 
+.control-group.upload-zone-container {
+  width: 900px;
+  max-width: 900px;
+  margin: auto auto 5px auto;
+}
+
 .upload-zone {
-  float: left;
   height: @uploadZoneHeight;
-  margin: 1px;
-  color: @textColor + #333;
   cursor: pointer;
-  border: 1px solid @textColor + #888;
-  border-radius: 10px;
+  background: @grayLighter;
+
   &.empty {
     margin: 0;
-    border-style: dashed;
-    border-width: 2px;
-    &:not(.disabled):hover {
-      border-color: @textColor + #555;
-    }
+
     div.upload-info {
       min-width: 278px;
     }
   }
+
   &.disabled {
     background-color: @color-light_grey;
+    color: @akeneoGrey;
   }
-  &:not(.disabled):hover {
-    background-color: @color-purple_hover;
-  }
+
   div.upload-info {
-    display: inline-block;
-    height: @uploadZoneHeight - 20;
     min-width: 229px;
-    margin: 10px;
-    font-size: @font-size-22;
-    line-height: @uploadZoneHeight - 20;
+    padding: 10px;
     text-align: center;
+
     .upload-preview, img {
       display: inline-block;
       max-width: (@uploadZoneHeight - 20) * 1.5;
-      max-height: @uploadZoneHeight - 20;
       min-width: (@uploadZoneHeight - 20) / 2;
       font-size: @font-size-40;
-      line-height: @uploadZoneHeight - 20;
-      color: @textColor + #333;
-      text-decoration: none;
-      vertical-align: middle;
+      line-height: @font-size-40;
+      color: @grayLight;
       cursor: pointer;
-      &.empty {
-        display: none;
-      }
+      padding: 20px 0 5px 0;
     }
+
     img {
       display: block;
     }
+
     span.upload-filename {
-      padding: 0 5px;
-      line-height: @uploadZoneHeight - 20;
+      line-height: @baseFontSize;
+      font-weight: normal;
+      display: block;
+      color: @gray;
     }
   }
+
   .remove-upload {
     float: right;
     width: 45px;
     height: @uploadZoneHeight;
     padding: 0 9px;
-    margin-top: -1px;
-    margin-right: -1px;
     font-size: @font-size-26;
     line-height: @uploadZoneHeight;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
   }
+
   input[type="file"] {
     position: relative;
     top: -@uploadZoneHeight;
@@ -381,8 +441,8 @@ div.btn-group > .has-switch {
     width: 100%!important;
     height: 100%;
     cursor: pointer;
-    border-radius: 20px;
     opacity: 0;
+
     &.hide {
       display: none;
     }
@@ -395,7 +455,7 @@ div.btn-group > .has-switch {
 }
 .accordion-inner-unbuffered {
   padding: 0;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid @grayLighter;
 }
 
 .form-inline {
@@ -417,7 +477,7 @@ div.btn-group > .has-switch {
   padding-left: 10px;
   &:hover {
     background-image: none;
-    background-color: @color-purple_hover;
+    background-color: @akeneoPurpleLighter;
     -webkit-transition: background-color 0.5s;
     -moz-transition: background-color 0.5s;
     -o-transition: background-color 0.5s;
@@ -463,29 +523,28 @@ table i {
     padding-left: 0;
     > .active > a {
       font-weight: bold;
-      color: #000000;
+      color: @black;
       text-shadow: none;
-      background-color: @color-purple_hover;
+      background-color: @akeneoPurpleSuperLight;
     }
     > li {
       padding-right: 15px;
       padding-left: 15px;
       line-height: 25px;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid @grayLighter;
       > a {
-        color: #000000;
+        color: @black;
         background-color: @color-grey_tab;
       }
     }
   }
   .tab-content {
-    border-left: 1px solid #BBBBBB;
+    border-left: 1px solid @color-bbb;
   }
   .tab-pane h3 {
     padding-left: 20px;
     margin-top: 0;
-    background-color: @color-grey_tab;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid @grayLighter;
   }
 }
 
@@ -622,7 +681,7 @@ table.comparison .no-label .attribute-field.scopable {
     margin-bottom: 0;
     font-weight: bold;
     text-align: center;
-    background-color: #fbfbfb;
+    background-color: @whiteDark;
     border-right-width: 0;
     border-radius: 0;
     .user-select(none);
@@ -691,11 +750,14 @@ h1 {
   font-size: @font-size-18;
   font-weight: normal;
   line-height: 33px;
-  color: @textColor + #555;
+  color: @akeneoPurple;
 }
 
 .navbar-extra {
   padding: 10px 7px 10px 12px;
+}
+.navbar-content ul.inline {
+  margin-top: 10px;
 }
 .navbar-content, .content {
   line-height: 18px;
@@ -708,20 +770,21 @@ h1 {
     float: left;
     padding: 0 3px;
     font-size: @font-size-18;
-    color: #999;
+    color: @grayLight;
   }
   ul.inline {
     color: @textColor + #333;
-      li {
-        padding: 0 10px;
-        font-size: @font-size-11;
-        line-height: 14px;
-        border-left: 1px solid #e6e6e6;
-      }
-      li:first-of-type {
-        padding-left:0;
-        border-left: none;
-      }
+    margin-bottom: 0;
+    li {
+      padding: 0 10px;
+      font-size: @font-size-11;
+      line-height: 14px;
+      border-left: 1px solid @grayLighter;
+    }
+    li:first-of-type {
+      padding-left:0;
+      border-left: none;
+    }
   }
   .product-name {
     float: left;
@@ -730,7 +793,9 @@ h1 {
     line-height: 20px;
   }
 }
-.navbar-title { line-height: 33px; }
+.navbar-title {
+  line-height: 35px;
+}
 .tab-groups {
   float:left;
   min-width: 120px;
@@ -804,8 +869,12 @@ div.dropdown-menu.channel {
     border-radius: 2px;
     box-shadow: none;
     position: relative;
-    background-color: @color-new-grey;
+    background-color: @akeneoGreyLighter;
     overflow: hidden;
+
+    &:hover {
+      background-color: @akeneoGreyLight;
+    }
 
     & > i {
       position: absolute;
@@ -815,10 +884,8 @@ div.dropdown-menu.channel {
       height: 34px;
       line-height: 34px;
       margin: 0;
-      background-color: #CCC;
       text-align: center;
-      line-height: 34px;
-      background-color: darken(@color-new-grey, 10%);
+      background-color: @akeneoGreyLight;
     }
 
     .flag-language .language {
@@ -832,7 +899,7 @@ div.dropdown-menu.channel {
       padding: 5px;
       color: @textColor;
       &:hover, &:active, &:focus {
-        background: #f1f1f1;
+        background: @grayLighter;
       }
       span.indicator {
         display: inline-block;
@@ -849,6 +916,13 @@ div.dropdown-menu.channel {
       }
     }
   }
+}
+
+.no-attribute {
+  color: @akeneoSlateGrey;
+  font-size: 13px;
+  padding-top: 13px;
+  margin-right: 10px;
 }
 
 .flag-language {
@@ -886,16 +960,18 @@ div.dropdown-menu.channel {
   clear: right;
   cursor: default;
   opacity: 0;
+  display: none;
+
   .label-warning {
     color: @color-form-info;
     text-shadow: none;
-    background-color: #fdd9b6;
+    background-color: @yellowLighter;
     border-radius: 10px;
     font-weight: 400;
     padding: 2px 10px 2px 2px;
 
     .icon {
-      color: #fa9f47;
+      color: @yellow;
     }
   }
 }
@@ -908,10 +984,20 @@ div.dropdown-menu.channel {
   padding-right: 5px;
   font-size: @font-size-16;
   &.gray {
-    color: #ddd;
+    color: @color-ddd;
   }
   &.green {
-    color: #58BB00;
+    color: @green;
+  }
+}
+.mass-edit-form {
+  .classify.classify-remove {
+    .jstree-default .jstree-checked > a > .jstree-checkbox {
+      background-position: -20px -73px;
+      &:hover {
+        background-position: -38px -73px;
+      }
+    }
   }
 }
 
@@ -947,16 +1033,16 @@ button.pimmultiselect {
   color: @textColor + #222;
   font-size: @font-size-13;
   &:hover {
-    color: @textColor + #222;
+    color: @bodyColor;
   }
 }
 .pimmultiselect.ui-multiselect-menu {
   padding: 0;
-  border: 1px solid #ccc;
+  border: 1px solid @color-ccc;
   .ui-multiselect-hasfilter {
-    background-color: #f6f6f6;
+    background-color: @whiteDarker;
     border: none;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid @color-ccc;
     .ui-multiselect-filter {
       width: auto;
       input {
@@ -964,7 +1050,7 @@ button.pimmultiselect {
         margin: 3px;
         font-size: @font-size-12;
         color: @textColor + #555;
-        border-color: #d6d6d6;
+        border-color: @color-ddd;
       }
     }
   }
@@ -989,7 +1075,7 @@ button.pimmultiselect {
     }
   }
   .ui-multiselect-footer {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid @color-ccc;
     a {
       float: right;
       margin: 5px;
@@ -1011,12 +1097,12 @@ button.pimmultiselect {
     padding: 3px;
     margin: 0;
     font-size: @font-size-15em;
-    color: #33be00;
+    color: @green;
   }
   .non-required {
     padding: 7px;
     margin: 0;
-    color: #b9b9b9;
+    color: @color-bbb;
   }
 }
 
@@ -1102,7 +1188,7 @@ table#progress-table {
   .progress {
     height: 10px;
     margin-bottom: 5px;
-    background-image: linear-gradient(to bottom,#e4e4e4,#eee);
+    background-image: linear-gradient(to bottom,@color-ddd,@grayLighter);
     border-radius: 6px;
   }
   .progress-cell {
@@ -1113,14 +1199,14 @@ table#progress-table {
     }
     span.progress-info {
       padding: 5px;
-      color: #5e8dcb;
+      color: @blue;
       cursor: default;
     }
   }
 }
 
 .table-bordered.groups {
-  border-left: 1px solid #ddd;
+  border-left: 1px solid @color-ddd;
   td, th {
     border-left: 0;
   }
@@ -1130,10 +1216,10 @@ table#progress-table {
 .mass-edit-form {
   padding: 25px;
   background-color: lighten(@color-light_grey, 4%);
-  .product-edit-form {
+  .entity-edit-form {
     min-height: 300px;
   }
-  .product-edit-form .tabs-left > .sidebar > .nav-tabs li.header {
+  .entity-edit-form .tabs-left > .sidebar > .nav-tabs li.header {
     border-left: 0;
   }
   hr {
@@ -1144,7 +1230,7 @@ table#progress-table {
   }
   .tab-content {
     padding: 0;
-    border-left: solid 1px #ccc;
+    border-left: solid 1px @color-ccc;
   }
   header {
     display: none;
@@ -1154,7 +1240,7 @@ table#progress-table {
 /** datagrid columns configuration ***********************************************************************************/
 .column-configurator-modal .modal-body {
   padding: 0;
-  background-color: #edf1f2;
+  background-color: @akeneoLight;
 }
 #column-configurator {
   h4 {
@@ -1162,9 +1248,9 @@ table#progress-table {
     line-height: 30px;
     margin: 0;
     padding: 10px;
-    color: #999;
-    border-left: 1px solid #e0e7e9;
-    border-bottom: 1px solid #e0e7e9;
+    color: @grayLight;
+    border-left: 1px solid @grayLighter;
+    border-bottom: 1px solid @grayLighter;
   }
   i.icon-search {
     font-size: @font-size-18;
@@ -1187,7 +1273,7 @@ table#progress-table {
     margin-left: 0;
     width: 100% / 3;
     &:not(:first-of-type) {
-      background-color: #f6f8f8;
+      background-color: @whiteDark;
     }
     &:last-of-type {
       background-color: @backgroundColor-white;
@@ -1199,11 +1285,11 @@ table#progress-table {
     overflow-y: auto;
     list-style-type: none;
     font-size: @font-size-13;
-    border-left: 1px solid #e0e7e9;
+    border-left: 1px solid @grayLighter;
     li {
       cursor: pointer;
       padding: 15px 10px;
-      border: 1px solid #e3eaeb;
+      border: 1px solid @grayLighter;
       &:not(:first-of-type) {
         border-top: none;
       }
@@ -1216,17 +1302,17 @@ table#progress-table {
       }
       i {
         font-size: @font-size-15;
-        color: #ccc;
+        color: @color-ccc;
         padding-right: 8px;
       }
     }
     &.connected-sortable li {
-      background-color: #f6f8f8;
+      background-color: @whiteDark;
       .action i {
         margin: 0 2px;
         padding: 3px 8px;
-        color: #666;
-        border: 1px solid #ccc;
+        color: @gray;
+        border: 1px solid @color-ccc;
         .border-radius(3px);
       }
       &:hover .action i {
@@ -1243,15 +1329,15 @@ table#progress-table {
   .nav-list {
     .badge-transparent {
       border-radius: 5px;
-      border: 1px solid #ddd;
+      border: 1px solid @color-ddd;
       background: transparent;
-      color: #999;
+      color: @grayLight;
       font-size: @font-size-14;
       text-shadow: initial;
     }
     li {
       &.active {
-        background-color: #e4eaec;
+        background-color: @grayLighter;
       }
     }
   }
@@ -1260,7 +1346,7 @@ table#progress-table {
 /** datagrid views ***************************************************************************************************/
 .highlight-hover li {
   &:hover {
-    background-color: @color-purple_light;
+    background-color: @akeneoPurpleLight;
     color: @backgroundColor-white;
   }
   label {
@@ -1295,5 +1381,21 @@ button.view-button {
   table {
     text-align: center;
     width: 100%;
+  }
+}
+
+.tabbable.properties .accordion, .tabbable.history .grid-drop {
+  width: 100%;
+}
+
+.job-profile-content-tab {
+  .control-group {
+    max-width: 100%;
+    .control-label.required {
+      font-weight: bold;
+    }
+    .filter-input {
+      display: inline-block;
+    }
   }
 }

@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -18,23 +16,10 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractProcessor extends AbstractConfigurableStepElement implements
-    StepExecutionAwareInterface,
-    ItemProcessorInterface
+abstract class AbstractProcessor implements StepExecutionAwareInterface, ItemProcessorInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
-
-    /** @var JobConfigurationRepositoryInterface */
-    protected $jobConfigurationRepo;
-
-    /**
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     */
-    public function __construct(JobConfigurationRepositoryInterface $jobConfigurationRepo)
-    {
-        $this->jobConfigurationRepo = $jobConfigurationRepo;
-    }
 
     /**
      * {@inheritdoc}
@@ -49,21 +34,13 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /**
      * {@inheritdoc}
      */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     abstract public function process($item);
 
     /**
      * @param ConstraintViolationListInterface $violations
-     * @param ProductInterface                 $product
+     * @param mixed                            $item
      */
-    protected function addWarningMessage(ConstraintViolationListInterface $violations, ProductInterface $product)
+    protected function addWarningMessage(ConstraintViolationListInterface $violations, $item)
     {
         foreach ($violations as $violation) {
             // TODO re-format the message, property path doesn't exist for class constraint
@@ -80,20 +57,17 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
                 $violation->getMessage(),
                 $invalidValue
             );
-            $this->stepExecution->addWarning($this->getName(), $errors, [], $product);
+            $this->stepExecution->addWarning($errors, [], new DataInvalidItem($item));
         }
     }
 
     /**
-     * Return the job configuration
-     *
-     * @return array
+     * @return array|null
      */
-    protected function getJobConfiguration()
+    protected function getConfiguredActions()
     {
-        $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
+        $jobParameters = $this->stepExecution->getJobParameters();
 
-        return json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
+        return $jobParameters->get('actions');
     }
 }

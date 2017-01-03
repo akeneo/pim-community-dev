@@ -113,10 +113,21 @@ pim_enrich:
         warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
         invalid_attribute: 具有代码"attribute_code"属性在选定的产品中并不共用，该属性略过。
         no_valid_attribute: 没有选定的属性可以应用于这种产品。
-    classify:
+    classify-add:
       label: 在目录中为产品分类
       description: 产品将被放入以下目录，现存的位置也会保留。
       success_flash: 产品已经被分类到所选的目录中了。
+      launched_flash: 批量操作"加入到目录"已经启动。完成后会通知您。
+    classify-move:
+      label: 在目录中移动产品
+      description: 产品将被放入以下目录，现存的位置不会保留。
+      success_flash: 产品已经被移动到所选的目录中了。
+      launched_flash: 批量操作"移动到目录"已经启动。完成后会通知您。
+    classify-remove:
+      label: 在目录中移除产品
+      description: 产品将从以下目录中删除。
+      success_flash: 产品已经从所选的目录中移除了。
+      launched_flash: 批量操作"从目录中移除"已经启动。完成后会通知您。
     change-family:
       label: 更改产品品类
       description: 选定产品的品类将更改为被选定的品类
@@ -336,15 +347,15 @@ btn:
   create:
     attribute: 创建属性
     attribute group: 创建属性组
-    category: 创建类别
+    category: 创建分类
     tree: 创建目录
-    channel: 创建频道
+    channel: 创建通道
     currency: 创建货币
-    family: 创建分类
+    family: 创建产品族
     locale: 创建区域
     product: 创建产品
     group: 创建分组
-    variant group: 创建款式组
+    variant group: 创建属性组
     association type: 创建关联类型
     group type: 创建分组类型
     drag_or_upload: 拖放式操作可上传或点击这里
@@ -549,12 +560,13 @@ default: 默认
 Axis: 轴
 Add attributes: 添加属性
 Translate from: 翻译自
-switch_on: "是"
-switch_off: "否　"
+switch_on: "确定"
+switch_off: "取消"
 Close: 关闭
 Search: 搜索
 Choose the attribute type: 选择属性类型
 Choose the attribute group: 选择属性组
+Drag and drop a file or click here: 拖放式操作可上传或点击这里
 Drop an image or click here: 拖入一幅图片或点击这里
 Automatic option sorting: 自动对选项排序
 save_attribute_before_manage_option: 若要管理选项，请先保存属性
@@ -616,24 +628,24 @@ pim_title.attribute:
   create: 属性|创建
   edit: 属性%attribute.label%|编辑
 pim_title.product:
-  index: 商品
+  index: 产品
   edit: 产品%product.sku%|编辑
 pim_title.family:
-  index: 品类
+  index: 产品族
   edit: 产品族%family.label%|编辑
 pim_title.channel:
-  index: 渠道
+  index: 通道
   create: 通道|创建
   edit: 通道%channel.label%|编辑
 pim_title.currency:
   index: 货币
 pim_title.locale:
-  index: 本地化语言
+  index: 区域
 pim_title.group:
   index: 分组
   edit: 分组%group.label%|编辑
 pim_title.variant_group:
-  index: 款式组
+  index: 属性组
   edit: 属性组%group.label%|编辑
 pim_title.association_type:
   index: 关联类型
@@ -641,7 +653,10 @@ pim_title.association_type:
 pim_title.group_type:
   index: 分组类型
   edit: 分组类型%group type.label%|编辑
-pim_title.mass_edit_action:
+pim_title.mass_edit_product_action:
+  choose: 批量编辑|选择
+  configure: 批量编辑|配置
+pim_title.mass_edit_family_action:
   choose: 批量编辑|选择
   configure: 批量编辑|配置
 pim_title.job_tracker:
@@ -671,7 +686,7 @@ pim_enrich.sequential_edit_action:
 pim_enrich.mass_edit_action:
   limit_exceeded: 请选择少于%limit%的项目编辑
   product:
-    page_title: 商品
+    page_title: 产品
     page_subtitle: 批量编辑 （1 产品） |成批编辑 （%count% 产品）
     title: 选择操作
     subtitle: 请选择您希望在所选的产品上执行的操作 |请选择您希望在所选的 %count% 产品上执行的操作
@@ -841,11 +856,55 @@ job_execution.summary:
 pim_mass_edit_execution_show: 批量编辑执行 |详细信息
 edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑共同属性
 update_product_value.steps.update_product_value_processor.title: 更新商品值
+remove_product_value.steps.update_product_value_processor.title: 移除商品值
 add_to_variant_group_clean.steps.excluded.title: 被排除在外的产品
 add_to_variant_group_clean.steps.duplicated.title: 重复的轴
+add_to_variant_group.steps.excluded.title: 被排除在外的产品
+add_to_variant_group.steps.duplicated.title: 重复的轴
 add_to_variant_group.steps.cleaner.warning.description: 产品不能进入所选的款式组︰ 与其它产品有重复的差异轴值。
 edit_common_attributes: 编辑共同属性
 edit_common_attributes_clean: 为共同的属性清理文件
+perform.steps.duplicated.title: 重复的轴
+perform.steps.excluded.title: 被排除在外的产品
+batch_jobs:
+  add_product_value:
+    label: 添加商品值
+    perform:
+      label: 添加商品值
+  update_product_value:
+    label: 更新商品值
+    perform:
+      label: 更新商品值
+  edit_common_attributes:
+    label: 编辑共同属性
+    perform:
+      label: 编辑共同属性
+    clean:
+      label: 为共同的属性清理文件
+  set_attribute_requirements:
+    label: 设置属性要求
+    perform:
+      label: 设置属性要求
+  csv_product_quick_export:
+    quick_export.label: Csv 产品快速导出
+    perform:
+      label: Csv 产品快速导出
+  csv_product_grid_context_quick_export:
+    quick_export.label: Csv 产品网格背景下快速导出
+    perform:
+      label: CSV产品网格背景下快速导出
+  xlsx_product_quick_export:
+    quick_export.label: XLSX产品快速导出
+    perform:
+      label: XLSX产品快速导出
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XLSX产品网格背景下快速导出
+    perform:
+      label: XLSX产品网格背景下快速导出
+  add_to_variant_group:
+    label: 添加到款式组
+    perform:
+      label: 添加到款式组
 mass_edit report:
   overview: 批量编辑报告
 job_tracker:
@@ -853,3 +912,14 @@ job_tracker:
     title: 过程跟踪器
   filter:
     started_at: 开始于
+pim_enrich_attribute_form:
+  code: 代码
+  attributeType: 属性类型
+  reference_data_name: 引用数据名称
+  scopable: 范围
+  localizable: 可本地化
+  unique: 唯一性值
+  availableLocales: 可用区域
+  locale_specific: 特定的区域
+  group: 属性组
+  useableAsGridFilter: 在表格中可用

@@ -5,9 +5,11 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
+use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * Product category filter
@@ -37,8 +39,6 @@ class CategoryFilter implements FieldFilterInterface
     protected $supportedOperators;
 
     /**
-     * Instanciate the base filter
-     *
      * @param CategoryRepositoryInterface           $categoryRepository
      * @param CategoryFilterableRepositoryInterface $itemCategoryRepo
      * @param ObjectIdResolverInterface             $objectIdResolver
@@ -53,9 +53,9 @@ class CategoryFilter implements FieldFilterInterface
         array $supportedOperators = []
     ) {
         $this->categoryRepository = $categoryRepository;
-        $this->itemCategoryRepo   = $itemCategoryRepo;
-        $this->objectIdResolver   = $objectIdResolver;
-        $this->supportedFields    = $supportedFields;
+        $this->itemCategoryRepo = $itemCategoryRepo;
+        $this->objectIdResolver = $objectIdResolver;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -113,6 +113,14 @@ class CategoryFilter implements FieldFilterInterface
     public function supportsField($field)
     {
         return in_array($field, $this->supportedFields);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFields()
+    {
+        return $this->supportedFields;
     }
 
     /**

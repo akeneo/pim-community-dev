@@ -1,0 +1,10 @@
+parameters:
+    pim_connector.validator.constraints.channel_validator.class: Pim\Component\Connector\Validator\Constraints\ChannelValidator
+
+services:
+    pim_connector.validator.constraints.channel_validator:
+        class: '%pim_connector.validator.constraints.channel_validator.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: validator.constraint_validator, alias: channel_validator }

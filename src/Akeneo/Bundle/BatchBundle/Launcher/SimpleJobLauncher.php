@@ -2,9 +2,13 @@
 
 namespace Akeneo\Bundle\BatchBundle\Launcher;
 
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -18,44 +22,57 @@ class SimpleJobLauncher implements JobLauncherInterface
     /** @var JobRepositoryInterface */
     protected $jobRepository;
 
+    /** @var JobParametersFactory */
+    protected $jobParametersFactory;
+
+    /** @var JobRegistry */
+    protected $jobRegistry;
+
     /** @var string */
     protected $rootDir;
 
     /** @var string */
     protected $environment;
 
-    /** @var array */
-    protected $config = [];
-
     /**
      * Constructor
      *
-     * @param JobRepositoryInterface   $jobRepository
-     * @param string                   $rootDir
-     * @param string                   $environment
+     * @param JobRepositoryInterface $jobRepository
+     * @param JobParametersFactory   $jobParametersFactory
+     * @param JobRegistry            $jobRegistry
+     * @param string                 $rootDir
+     * @param string                 $environment
      */
-    public function __construct(JobRepositoryInterface $jobRepository, $rootDir, $environment)
-    {
+    public function __construct(
+        JobRepositoryInterface $jobRepository,
+        JobParametersFactory $jobParametersFactory,
+        JobRegistry $jobRegistry,
+        $rootDir,
+        $environment
+    ) {
         $this->jobRepository = $jobRepository;
-        $this->rootDir       = $rootDir;
-        $this->environment   = $environment;
+        $this->jobParametersFactory = $jobParametersFactory;
+        $this->jobRegistry = $jobRegistry;
+        $this->rootDir = $rootDir;
+        $this->environment = $environment;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, $rawConfiguration = null)
+    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = [])
     {
         $jobExecution = $this->createJobExecution($jobInstance, $user);
-        $executionId  = $jobExecution->getId();
-        $pathFinder   = new PhpExecutableFinder();
+        $executionId = $jobExecution->getId();
+        $pathFinder = new PhpExecutableFinder();
 
-        //TODO we should not rely on such test
         $emailParameter = '';
-        if ($this->isConfigTrue('email') && method_exists($user, 'getEmail')) {
+        if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {
             $emailParameter = sprintf('--email=%s', escapeshellarg($user->getEmail()));
+            unset($configuration['send_email']);
         }
 
+        $encodedConfiguration = json_encode($configuration, JSON_HEX_APOS);
         $cmd = sprintf(
             '%s %s/console akeneo:batch:job --env=%s %s %s %s %s >> %s/logs/batch_execute.log 2>&1',
             $pathFinder->find(),
@@ -64,43 +81,13 @@ class SimpleJobLauncher implements JobLauncherInterface
             $emailParameter,
             escapeshellarg($jobInstance->getCode()),
             $executionId,
-            !empty($rawConfiguration) ? sprintf('--config=%s', escapeshellarg($rawConfiguration)) : '',
+            !empty($configuration) ? sprintf('--config=%s', escapeshellarg($encodedConfiguration)) : '',
             $this->rootDir
         );
 
         $this->launchInBackground($cmd);
 
         return $jobExecution;
-    }
-
-    /**
-     * {@inheridoc}
-     */
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
-
-        return $this;
-    }
-
-    /**
-     * {@inheridoc}
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
-     * Is key true in configuration
-     *
-     * @param string $key
-     *
-     * @return bool
-     */
-    protected function isConfigTrue($key)
-    {
-        return isset($this->config[$key]) && true === $this->config[$key];
     }
 
     /**
@@ -128,7 +115,9 @@ class SimpleJobLauncher implements JobLauncherInterface
      */
     protected function createJobExecution(JobInstance $jobInstance, UserInterface $user)
     {
-        $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
+        $jobParameters = $this->jobParametersFactory->create($job, $jobInstance->getRawParameters());
+        $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
         $jobExecution->setUser($user->getUsername());
         $this->jobRepository->updateJobExecution($jobExecution);
 

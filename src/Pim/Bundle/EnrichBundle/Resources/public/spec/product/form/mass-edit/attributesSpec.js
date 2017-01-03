@@ -49,7 +49,12 @@ define(
                     }
                 };
 
-                attributes = new Attributes();
+                attributes = new Attributes({
+                    removeAttributeRoute: 'pim_enrich_product_remove_attribute_rest',
+                    removeAttributeACL: 'pim_enrich_product_remove_attribute',
+                    tabTitle: 'pim_enrich.form.product.tab.attributes.title',
+                    deletionFailed: 'pim_enrich.form.product.flash.attribute_deletion_error'
+                });
 
                 spyOn(SecurityContext, 'isGranted').and.returnValue(true);
                 spyOn(attributes, 'getFormData').and.returnValue(product);

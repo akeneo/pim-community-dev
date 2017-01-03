@@ -25,7 +25,7 @@ class CategoryExtension extends \Twig_Extension
     public function __construct(CategoryItemsCounterRegistryInterface $categoryItemsCounter, $itemsLimitRemoval = null)
     {
         $this->categoryItemsCounter = $categoryItemsCounter;
-        $this->itemsLimitRemoval    = $itemsLimitRemoval;
+        $this->itemsLimitRemoval = $itemsLimitRemoval;
     }
 
     /**
@@ -352,6 +352,7 @@ class CategoryExtension extends \Twig_Extension
 
         return [
             'id'       => $tree->getId(),
+            'code'     => $tree->getCode(),
             'label'    => $label,
             'selected' => ($tree->getId() === $selectedTreeId) ? 'true' : 'false'
         ];
@@ -486,11 +487,8 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return string
      */
-    protected function defineCategoryState(
-        CategoryInterface $category,
-        $hasChild = false,
-        array $selectedIds = []
-    ) {
+    protected function defineCategoryState(CategoryInterface $category, $hasChild = false, array $selectedIds = [])
+    {
         $state = $category->hasChildren() ? 'closed' : 'leaf';
 
         if ($hasChild === true) {

@@ -26,7 +26,7 @@ class RegisterNotifiersPass implements CompilerPassInterface
 
         $def = $container->getDefinition('akeneo_batch.notification_subscriber');
         foreach (array_keys($container->findTaggedServiceIds('akeneo_batch.notifier')) as $id) {
-            $def->addMethodCall('registerNotifier', array(new Reference($id)));
+            $def->addMethodCall('registerNotifier', [new Reference($id)]);
         }
     }
 }

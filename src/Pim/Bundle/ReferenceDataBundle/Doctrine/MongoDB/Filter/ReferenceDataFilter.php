@@ -3,14 +3,14 @@
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\AbstractAttributeFilter;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
@@ -31,12 +31,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /** @var ReferenceDataIdResolver */
     protected $idsResolver;
 
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper       $attrValidatorHelper
      * @param ConfigurationRegistryInterface $registry
      * @param ReferenceDataIdResolver        $idsResolver
@@ -51,7 +46,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->registry = $registry;
         $this->idsResolver = $idsResolver;
-        $this->supportedOperators  = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

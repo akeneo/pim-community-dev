@@ -1,6 +1,0 @@
-attribute_groups:
-    other:
-        sort_order: 100
-        labels:
-            en_US: Other
-            fr_FR: Autre

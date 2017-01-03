@@ -39,7 +39,7 @@ Feature: Export products with localized numbers
       | sandal-blue   | description | Ein elegantes blau Sandal      | de_DE  | ecommerce |
     And I am logged in as "Julia"
 
-  Scenario: Export metric attributes with the correct decimals formatting
+  Scenario: Export number attributes with the correct decimals formatting
     Given the following job "ecommerce_product_export" configuration:
       | filePath         | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
       | decimalSeparator | ,                                                           |
@@ -62,7 +62,7 @@ Feature: Export products with localized numbers
       sandal-blue;men_2013,men_2014,men_2015;75,0000;"Ein elegantes blau Sandal";;;"Un Sandale bleue élégante";1;sandals;;"Blau Sandal";;;"Sandale bleue";10,90;9,00;15,00
       """
 
-  Scenario: Export number attributes with the correct decimals formatting
+  Scenario: Export metric attributes with the correct decimals formatting
     Given the following job "ecommerce_product_export" configuration:
       | filePath         | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
       | decimalSeparator | ,                                                           |

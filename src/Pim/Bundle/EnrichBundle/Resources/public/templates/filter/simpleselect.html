@@ -1,0 +1,11 @@
+<label class="control-label required"><%- field %></label>
+<div class="controls">
+    <input type="text" name="filter-operator" value="<%- operator %>"/>
+    <input
+        class="select2"
+        name="filter-value"
+        type="hidden"
+        value="<%- value ? value : '' %>"
+    />
+    <% if (removable) { %><i class="remove icon-trash"></i><% } %>
+</div>

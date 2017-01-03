@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Model;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Abstract product value
@@ -137,7 +136,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function __construct()
     {
         $this->options = new ArrayCollection();
-        $this->prices  = new ArrayCollection();
+        $this->prices = new ArrayCollection();
     }
 
     /**

@@ -13,7 +13,8 @@ Feature: Filter on groups
       | PANT   | related            |
       | BOOT   |                    |
     Then I should get the following results for the given filters:
-      | filter                                                                            | result                        |
-      | [{"field":"groups.code", "operator":"IN",     "value": ["substitute", "upsell"]}] | ["TSHIRT", "JACKET", "SWEAT"] |
-      | [{"field":"groups.code", "operator":"NOT IN", "value": ["substitute", "upsell"]}] | ["PANT", "BOOT"]              |
-      | [{"field":"groups.code", "operator":"EMPTY",  "value": null}]                     | ["BOOT"]                      |
+      | filter                                                                               | result                                |
+      | [{"field":"groups.code", "operator":"IN",        "value": ["substitute", "upsell"]}] | ["TSHIRT", "JACKET", "SWEAT"]         |
+      | [{"field":"groups.code", "operator":"NOT IN",    "value": ["substitute", "upsell"]}] | ["PANT", "BOOT"]                      |
+      | [{"field":"groups.code", "operator":"EMPTY",     "value": null}]                     | ["BOOT"]                              |
+      | [{"field":"groups.code", "operator":"NOT EMPTY", "value": null}]                     | ["TSHIRT", "JACKET", "SWEAT", "PANT"] |

@@ -6,17 +6,17 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -104,19 +104,19 @@ class ProductController
         AttributeConverterInterface $localizedConverter,
         ProductFilterInterface $emptyValuesFilter
     ) {
-        $this->productRepository     = $productRepository;
-        $this->attributeRepository   = $attributeRepository;
-        $this->productUpdater        = $productUpdater;
-        $this->productSaver          = $productSaver;
-        $this->normalizer            = $normalizer;
-        $this->validator             = $validator;
-        $this->userContext           = $userContext;
-        $this->objectFilter          = $objectFilter;
+        $this->productRepository = $productRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->productUpdater = $productUpdater;
+        $this->productSaver = $productSaver;
+        $this->normalizer = $normalizer;
+        $this->validator = $validator;
+        $this->userContext = $userContext;
+        $this->objectFilter = $objectFilter;
         $this->productEditDataFilter = $productEditDataFilter;
-        $this->productRemover        = $productRemover;
-        $this->productBuilder        = $productBuilder;
-        $this->localizedConverter    = $localizedConverter;
-        $this->emptyValuesFilter     = $emptyValuesFilter;
+        $this->productRemover = $productRemover;
+        $this->productBuilder = $productBuilder;
+        $this->localizedConverter = $localizedConverter;
+        $this->emptyValuesFilter = $emptyValuesFilter;
     }
 
     /**
@@ -145,11 +145,11 @@ class ProductController
      */
     public function getAction($id)
     {
-        $product  = $this->findProductOr404($id);
+        $product = $this->findProductOr404($id);
         $this->productBuilder->addMissingAssociations($product);
 
         $normalizationContext = $this->userContext->toArray() + [
-            'filter_type'                => 'pim.internal_api.product_value.view',
+            'filter_types'               => ['pim.internal_api.product_value.view'],
             'disable_grouping_separator' => true
         ];
 
@@ -158,6 +158,41 @@ class ProductController
             'internal_api',
             $normalizationContext
         ));
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $product = $this->productBuilder->createProduct(
+            $request->request->get('identifier'),
+            $request->request->get('family', null)
+        );
+
+        $violations = $this->validator->validate($product);
+        if (0 === $violations->count()) {
+            $this->productSaver->save($product);
+
+            $normalizationContext = $this->userContext->toArray() + [
+                'filter_types'               => ['pim.internal_api.product_value.view'],
+                'disable_grouping_separator' => true
+            ];
+
+            return new JsonResponse($this->normalizer->normalize(
+                $product,
+                'internal_api',
+                $normalizationContext
+            ));
+        }
+
+        $errors = [
+            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
+        ];
+
+        return new JsonResponse($errors, 400);
     }
 
     /**
@@ -183,11 +218,6 @@ class ProductController
             throw new BadRequestHttpException();
         }
 
-        // TODO: PEF should never update groups, no way to do so from the screen, if a product is added to
-        // another group during the save, this relation will be removed, other issue is that variant groups are never
-        // passed here, so a product is always removed from it's variant group when saved
-        unset($data['groups']);
-
         $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);
@@ -197,7 +227,7 @@ class ProductController
             $this->productSaver->save($product);
 
             $normalizationContext = $this->userContext->toArray() + [
-                'filter_type'                => 'pim.internal_api.product_value.view',
+                'filter_types'               => ['pim.internal_api.product_value.view'],
                 'disable_grouping_separator' => true
             ];
 
@@ -206,13 +236,13 @@ class ProductController
                 'internal_api',
                 $normalizationContext
             ));
-        } else {
-            $errors = [
-                'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
-            ];
-
-            return new JsonResponse($errors, 400);
         }
+
+        $errors = [
+            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
+        ];
+
+        return new JsonResponse($errors, 400);
     }
 
     /**
@@ -235,7 +265,7 @@ class ProductController
     /**
      * Remove an optional attribute from a product
      *
-     * @param int $productId   The product id
+     * @param int $id          The product id
      * @param int $attributeId The attribute id
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
@@ -246,9 +276,9 @@ class ProductController
      *
      * @return JsonResponse
      */
-    public function removeAttributeAction($productId, $attributeId)
+    public function removeAttributeAction($id, $attributeId)
     {
-        $product = $this->findProductOr404($productId);
+        $product = $this->findProductOr404($id);
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
         }
@@ -260,7 +290,7 @@ class ProductController
         }
 
         $this->productBuilder->removeAttributeFromProduct($product, $attribute);
-        $this->productSaver->save($product, ['recalculate' => false, 'schedule' => false]);
+        $this->productSaver->save($product);
 
         return new JsonResponse();
     }

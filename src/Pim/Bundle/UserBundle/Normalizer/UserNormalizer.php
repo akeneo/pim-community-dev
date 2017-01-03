@@ -35,6 +35,7 @@ class UserNormalizer implements NormalizerInterface
             'lastLogin'     => $user->getLastLogin() ? $user->getLastLogin()->getTimestamp() : null,
             'loginCount'    => $user->getLoginCount(),
             'catalogLocale' => $user->getCatalogLocale()->getCode(),
+            'uiLocale'      => $user->getUiLocale()->getCode(),
             'catalogScope'  => $user->getCatalogScope()->getCode(),
             'defaultTree'   => $user->getDefaultTree()->getCode(),
             'meta'          => [

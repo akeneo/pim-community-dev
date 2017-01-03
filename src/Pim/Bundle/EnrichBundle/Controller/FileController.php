@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\FileStorage\FilesystemProvider;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
-use League\Flysystem\MountManager;
 use Liip\ImagineBundle\Controller\ImagineController;
 use Pim\Bundle\EnrichBundle\File\DefaultImageProviderInterface;
 use Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface;
@@ -26,8 +26,8 @@ class FileController
     /** @var ImagineController */
     protected $imagineController;
 
-    /** @var MountManager */
-    protected $mountManager;
+    /** @var FilesystemProvider */
+    protected $filesystemProvider;
 
     /** @var FileInfoRepositoryInterface */
     protected $fileInfoRepository;
@@ -43,7 +43,7 @@ class FileController
 
     /**
      * @param ImagineController             $imagineController
-     * @param MountManager                  $mountManager
+     * @param FilesystemProvider            $filesystemProvider
      * @param FileInfoRepositoryInterface   $fileInfoRepository
      * @param FileTypeGuesserInterface      $fileTypeGuesser
      * @param DefaultImageProviderInterface $defaultImageProvider
@@ -51,18 +51,18 @@ class FileController
      */
     public function __construct(
         ImagineController $imagineController,
-        MountManager $mountManager,
+        FilesystemProvider $filesystemProvider,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileTypeGuesserInterface $fileTypeGuesser,
         DefaultImageProviderInterface $defaultImageProvider,
         array $filesystemAliases
     ) {
-        $this->imagineController    = $imagineController;
-        $this->mountManager         = $mountManager;
-        $this->fileInfoRepository   = $fileInfoRepository;
-        $this->fileTypeGuesser      = $fileTypeGuesser;
+        $this->imagineController = $imagineController;
+        $this->filesystemProvider = $filesystemProvider;
+        $this->fileInfoRepository = $fileInfoRepository;
+        $this->fileTypeGuesser = $fileTypeGuesser;
         $this->defaultImageProvider = $defaultImageProvider;
-        $this->filesystemAliases    = $filesystemAliases;
+        $this->filesystemAliases = $filesystemAliases;
     }
 
     /**
@@ -106,7 +106,7 @@ class FileController
         $filename = urldecode($filename);
 
         foreach ($this->filesystemAliases as $alias) {
-            $fs = $this->mountManager->getFilesystem($alias);
+            $fs = $this->filesystemProvider->getFilesystem($alias);
             if ($fs->has($filename)) {
                 $stream = $fs->readStream($filename);
                 $headers = [];

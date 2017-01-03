@@ -94,7 +94,7 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro page_header(title, buttons, subtitle, left, right) %}
+{% macro page_header(title, buttons, subtitle, left, right, titleButtons) %}
     <div class="navigation clearfix navbar-extra">
         <div class="row-fluid">
             {% if buttons is not empty %}
@@ -104,6 +104,11 @@
             {% endif %}
             <div class="navbar-content pull-left">
                 <div class="navbar-title clearfix-oro">
+                    {% if titleButtons is not empty %}
+                        <div class="navbar-buttons">
+                            {{ titleButtons }}
+                        </div>
+                    {% endif %}
                     <div class="sub-title">{{ title|first|capitalize ~ title[1:] }}</div>
                     {% if subtitle is not empty %}
                         <span class="separator">/</span>
@@ -151,22 +156,41 @@
     {% endif %}
 {% endmacro %}
 
-{% macro accordion(items = {}, counter = 1, no_buffer = false) %}
+{% macro tabSections(items = {}, counter = 1, no_buffer = false, name = null) %}
+    {% set name = name ? name ~ '-' : '' %}
+    <div class="tabsections">
+        {% for title, content in items %}
+            {% if content|trim is not empty %}
+                <div class="tabsection">
+                    <div class="tabsection-title">{{ title|trans }}</div>
+                    <div class="tabsection-content {{ no_buffer ? 'unbuffered' : '' }}">
+                        {{ content|raw }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro accordion(items = {}, counter = 1, no_buffer = false, name = null) %}
+    {% set name = name ? name ~ '-' : '' %}
     <div class="accordion">
         {% for title, content in items %}
+            {% if content|trim is not empty %}
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" href="#collapse-{{ counter }}-{{ loop.index }}">
+                    <a class="accordion-toggle" data-toggle="collapse" href="#{{ name }}collapse-{{ counter }}-{{ loop.index }}">
                         <i class="icon-chevron-down"></i>
                         {{ title|trans }}
                     </a>
                 </div>
-                <div id="collapse-{{ counter }}-{{ loop.index }}" class="accordion-body in">
+                <div id="{{ name }}collapse-{{ counter }}-{{ loop.index }}" class="accordion-body in">
                     <div class="accordion-inner{{ no_buffer ? '-unbuffered' : '' }}">
                         {{ content|raw }}
                     </div>
                 </div>
             </div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endmacro %}

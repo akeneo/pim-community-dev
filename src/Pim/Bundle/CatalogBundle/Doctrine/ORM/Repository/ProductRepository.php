@@ -6,18 +6,18 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositor
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 
@@ -137,10 +137,10 @@ class ProductRepository extends EntityRepository implements
             $qb->expr()->eq('pCompleteness.ratio', '100').' AND '.
             $qb->expr()->eq('pCompleteness.channel', $channel->getId());
 
-        $rootEntity          = current($qb->getRootEntities());
+        $rootEntity = current($qb->getRootEntities());
         $completenessMapping = $this->_em->getClassMetadata($rootEntity)
             ->getAssociationMapping('completenesses');
-        $completenessClass   = $completenessMapping['targetEntity'];
+        $completenessClass = $completenessMapping['targetEntity'];
         $qb->innerJoin(
             $completenessClass,
             'pCompleteness',
@@ -163,7 +163,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByIds(array $ids)
+    public function findByIds(array $productIds)
     {
         $qb = $this->createQueryBuilder('Product');
         $this->addJoinToValueTables($qb);
@@ -171,7 +171,7 @@ class ProductRepository extends EntityRepository implements
         $qb->andWhere(
             $qb->expr()->in($rootAlias.'.id', ':product_ids')
         );
-        $qb->setParameter('product_ids', $ids);
+        $qb->setParameter(':product_ids', $productIds);
 
         return $qb->getQuery()->execute();
     }
@@ -232,22 +232,6 @@ class ProductRepository extends EntityRepository implements
      */
     public function getFullProduct($id)
     {
-        $qb = $this->getFullProductQB();
-
-        return $qb
-            ->where('p.id=:id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    /**
-     * Get full product query builder
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getFullProductQB()
-    {
         return $this
             ->createQueryBuilder('p')
             ->select('p, f, v, pr, m, o, os')
@@ -256,7 +240,11 @@ class ProductRepository extends EntityRepository implements
             ->leftJoin('v.prices', 'pr')
             ->leftJoin('v.media', 'm')
             ->leftJoin('v.option', 'o')
-            ->leftJoin('v.options', 'os');
+            ->leftJoin('v.options', 'os')
+            ->where('p.id=:id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
@@ -387,14 +375,18 @@ class ProductRepository extends EntityRepository implements
      */
     public function getEligibleProductIdsForVariantGroup($variantGroupId)
     {
-        $sql = 'SELECT v.entity_id AS product_id, gp.group_id, ga.group_id ' .
-            'FROM pim_catalog_group g ' .
-            'INNER JOIN pim_catalog_group_attribute ga ON ga.group_id = g.id ' .
-            'INNER JOIN %product_value_table% v ON v.attribute_id = ga.attribute_id ' .
-            'LEFT JOIN pim_catalog_group_product gp ON (v.entity_id = gp.product_id) ' .
-            'INNER JOIN pim_catalog_group_type gt on gt.id = g.type_id ' .
-            'WHERE ga.group_id = :groupId AND gt.code = "VARIANT" ' .
-            'AND (v.option_id IS NOT NULL';
+        $sql = 'SELECT v.entity_id as product_id ' .
+            'FROM %product_table% p ' .
+            'INNER JOIN %product_value_table% v ON v.entity_id = p.id ' .
+            'INNER JOIN pim_catalog_group_attribute ga ON ga.attribute_id = v.attribute_id AND ga.group_id = :groupId ' .
+            'LEFT JOIN  pim_catalog_group_product gp ON gp.product_id = p.id ' .
+            'AND gp.group_id IN ( ' .
+            '    SELECT gr.id FROM pim_catalog_group gr ' .
+            '    JOIN pim_catalog_group_type gr_type ON gr_type.id = gr.type_id AND gr_type.code = "VARIANT") ' .
+            'WHERE gp.group_id = :groupId OR gp.group_id IS NULL ' .
+            'AND ( ' .
+            '    v.option_id IS NOT NULL ';
+
 
         if (null !== $this->referenceDataRegistry) {
             $references = $this->referenceDataRegistry->all();
@@ -416,8 +408,7 @@ class ProductRepository extends EntityRepository implements
 
         $sql .= ') ' .
             'GROUP BY v.entity_id ' .
-            'HAVING (gp.group_id IS NULL OR gp.group_id = ga.group_id) ' .
-            'AND COUNT(ga.attribute_id) = (SELECT COUNT(*) FROM pim_catalog_group_attribute WHERE group_id = :groupId)';
+            'HAVING COUNT(ga.attribute_id) = ( SELECT COUNT(*) FROM pim_catalog_group_attribute WHERE group_id = :groupId) ';
 
         $sql = QueryBuilderUtility::prepareDBALQuery($this->_em, $this->_entityName, $sql);
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);

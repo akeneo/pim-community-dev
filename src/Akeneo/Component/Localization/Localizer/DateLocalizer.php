@@ -34,8 +34,8 @@ class DateLocalizer implements LocalizerInterface
         DateFactory $factory,
         array $attributeTypes
     ) {
-        $this->validator      = $validator;
-        $this->factory        = $factory;
+        $this->validator = $validator;
+        $this->factory = $factory;
         $this->attributeTypes = $attributeTypes;
     }
 
@@ -44,7 +44,7 @@ class DateLocalizer implements LocalizerInterface
      */
     public function validate($date, $attributeCode, array $options = [])
     {
-        if (null === $date || '' === $date) {
+        if (null === $date || '' === $date || $date instanceof \DateTime) {
             return null;
         }
 
@@ -70,13 +70,17 @@ class DateLocalizer implements LocalizerInterface
             return $date;
         }
 
-        $options   = $this->getOptions($options);
+        $options = $this->getOptions($options);
         $formatter = $this->factory->create($options);
         $formatter->setLenient(false);
 
-        $timestamp = $formatter->parse($date);
-        if (false === $timestamp) {
-            return $date;
+        if ($date instanceof \DateTime) {
+            $timestamp = $date->getTimestamp();
+        } else {
+            $timestamp = $formatter->parse($date);
+            if (false === $timestamp) {
+                return $date;
+            }
         }
 
         $formatter->setPattern(static::DEFAULT_DATE_FORMAT);
@@ -93,7 +97,7 @@ class DateLocalizer implements LocalizerInterface
             return $date;
         }
 
-        $options   = $this->getOptions($options);
+        $options = $this->getOptions($options);
         $formatter = $this->factory->create($options);
 
         $datetime = new \DateTime($date);

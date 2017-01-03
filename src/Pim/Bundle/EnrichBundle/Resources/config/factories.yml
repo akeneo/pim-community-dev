@@ -1,15 +1,24 @@
 parameters:
     pim_enrich.factory.sequential_edit.class:        Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory
+    pim_enrich.factory.mass_edit_notification.class: Pim\Bundle\EnrichBundle\Factory\MassEditNotificationFactory
     pim_enrich.transformer.identifiable_model.class: Pim\Bundle\EnrichBundle\Form\DataTransformer\IdentifiableModelTransformer
 
 services:
     pim_enrich.factory.sequential_edit:
-        class: %pim_enrich.factory.sequential_edit.class%
+        class: '%pim_enrich.factory.sequential_edit.class%'
         arguments:
-            - %pim_enrich.entity.sequential_edit.class%
+            - '%pim_enrich.entity.sequential_edit.class%'
 
     pim_enrich.factory.transformer.identifiable_model:
         class: Pim\Bundle\EnrichBundle\Form\Factory\IdentifiableModelTransformerFactory
         private: true
         arguments:
             - '%pim_enrich.transformer.identifiable_model.class%'
+
+    pim_enrich.factory.mass_edit_notification:
+        class: '%pim_enrich.factory.mass_edit_notification.class%'
+        arguments:
+            - ['quick_export', 'mass_edit']
+            - '%pim_notification.entity.notification.class%'
+        tags:
+            - { name: pim_notification.factory.notification }

@@ -4,14 +4,11 @@
 
 {% block content %}
 <div class="container">
-    <form action="{{ path('oro_user_reset_send_email') }}" method="post" class="form-signin form-reset">
-        <div class="title-box">
-            <h1>
-                <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="Akeneo">
-            </h1>
-            <h2 class="title">{{ 'Forgot Password'|trans }}</h2>
-        </div>
+    <div class="title-box">
+        {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
+    </div>
 
+    <form action="{{ path('oro_user_reset_send_email') }}" method="post" class="form-reset">
         {% if invalid_username is defined %}
         <div>
             <div class="alert alert-error">
@@ -20,15 +17,20 @@
         </div>
         {% endif %}
 
+        <h2 class="title">{{ 'Forgot Password'|trans }}</h2>
         <fieldset>
             <div class="form-row">
                 <input type="text" name="username" required="required" placeholder="{{ 'Username or Email'|trans }}" autofocus="autofocus"/>
+                <button type="submit" class="btn btn-large pull-right btn-primary">{{ 'Request'|trans }}</button>
             </div>
             <div class="form-row">
-                <a href="{{ path('oro_user_security_login') }}" class="btn extra-btn-large btn-large">{{ 'Cancel'|trans }}</a>
-                <button type="submit" class="btn pull-right btn-large btn-primary">{{ 'Request'|trans }}</button>
+                <a href="{{ path('oro_user_security_login') }}" class="cancel">{{ 'Cancel'|trans }}</a>
             </div>
         </fieldset>
     </form>
+</div>
+
+<div class="version-container muted">
+    {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
 </div>
 {% endblock %}

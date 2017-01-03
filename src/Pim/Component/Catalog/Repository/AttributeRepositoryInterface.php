@@ -4,9 +4,10 @@ namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * Repository interface for attribute
@@ -16,7 +17,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface AttributeRepositoryInterface extends
-    ChoicesProviderInterface,
     IdentifiableObjectRepositoryInterface,
     ObjectRepository
 {
@@ -33,7 +33,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Find all attributes that belongs to the default group
      *
-     * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.6
+     * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.7
      *
      * @return AttributeInterface[]
      */
@@ -58,29 +58,9 @@ interface AttributeRepositoryInterface extends
      * An axis define a variation of a variant group
      * Axes are attributes with simple select option, not localizable and not scopable
      *
-     * @return mixed a query builder
+     * @return QueryBuilder
      */
-    public function findAllAxisQB();
-
-    /**
-     * Find all axis
-     *
-     * @see findAllAxisQB
-     *
-     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.6
-     *
-     * @return array
-     */
-    public function findAllAxis();
-
-    /**
-     * Get available attributes as label as a choice
-     *
-     * @deprecated only used in grid, will be removed in 1.6
-     *
-     * @return array
-     */
-    public function getAvailableAttributesAsLabelChoice();
+    public function findAllAxesQB();
 
     /**
      * Get attribute as array indexed by code
@@ -162,9 +142,27 @@ interface AttributeRepositoryInterface extends
     public function getAttributeCodesByGroup(AttributeGroupInterface $group);
 
     /**
+     * Get attributes by family
+     *
+     * @param FamilyInterface $family
+     *
+     * @return AttributeInterface[]
+     */
+    public function findAttributesByFamily(FamilyInterface $family);
+
+    /**
      * Return the number of existing attributes
      *
      * @return int
      */
     public function countAll();
+
+    /**
+     * Find axis label for a locale
+     *
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function findAvailableAxes($locale);
 }

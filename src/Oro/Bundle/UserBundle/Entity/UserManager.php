@@ -39,21 +39,9 @@ class UserManager implements UserProviderInterface
      */
     public function __construct($class, ObjectManager $om, EncoderFactoryInterface $encoderFactory)
     {
-        $this->class          = $class;
-        $this->om             = $om;
+        $this->class = $class;
+        $this->om = $om;
         $this->encoderFactory = $encoderFactory;
-    }
-
-    /**
-     * Returns an empty user instance
-     *
-     * @return SecurityUserInterface
-     */
-    public function createUser()
-    {
-        $class = $this->getClass();
-
-        return new $class;
     }
 
     /**

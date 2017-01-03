@@ -176,7 +176,7 @@ define([
             setValues: function (values) {
                 if (_.isUndefined(values) || values.length === 0) {
                     /*global console: true */
-                    console.log('value array is empty');
+                    console.error('Value array is empty');
                 }
 
                 this.model.set('values', values);
@@ -333,8 +333,8 @@ define([
              * @returns {string}
              */
             getLabel: function () {
-                return this.attribute.label[this.context.uiLocale] ?
-                    this.attribute.label[this.context.uiLocale] :
+                return this.attribute.labels[this.context.uiLocale] ?
+                    this.attribute.labels[this.context.uiLocale] :
                     '[' + this.attribute.code + ']';
             }
         });

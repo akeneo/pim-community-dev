@@ -4,8 +4,8 @@ namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface as OroDatasourceInterface;
-use Pim\Bundle\CatalogBundle\Repository\MassActionRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Component\Catalog\Repository\MassActionRepositoryInterface;
 
 /**
  * Override of Oro datasource implementation

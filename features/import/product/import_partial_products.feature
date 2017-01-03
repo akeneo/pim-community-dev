@@ -14,12 +14,12 @@ Feature: Import partial product information
       sku;name-en_US
       caterpillar-boots;"Caterpillar boots"
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
     And the english name of "caterpillar-boots" should be "Caterpillar boots"
     And family of "caterpillar-boots" should be "boots"

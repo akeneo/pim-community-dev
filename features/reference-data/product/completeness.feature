@@ -1,6 +1,6 @@
 @javascript
-Feature: Display the completeness of a product
-  In order to see the completeness of a product in the catalog
+Feature: Display the completeness of a product with reference data
+  In order to see the completeness of a product with reference data in the catalog
   As a product manager
   I need to be able to display the completeness of a product
 
@@ -30,45 +30,41 @@ Feature: Display the completeness of a product
   Scenario: Successfully display the completeness of the products with reference data
     Given I am on the "red-heels" product page
     When I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the completeness:
-      | channel | locale | state   | message          | ratio |
-      | mobile  | en_US  | warning | 2 missing values | 50%   |
-      | mobile  | fr_FR  | success | Complete         | 100%  |
-      | tablet  | en_US  | warning | 2 missing values | 50%   |
-      | tablet  | fr_FR  | warning | 1 missing value  | 75%   |
+    Then I should see the completeness:
+      | channel | locale | state   | ratio |
+      | mobile  | en_US  | warning | 50%   |
+      | tablet  | en_US  | warning | 50%   |
+      | mobile  | fr_FR  | success | 100%  |
+      | tablet  | fr_FR  | warning | 75%   |
     When I am on the "black-heels" product page
     And I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the completeness:
-      | channel | locale | state   | message          | ratio |
-      | mobile  | en_US  | warning | 2 missing values | 50%   |
-      | mobile  | fr_FR  | warning | 3 missing values | 25%   |
-      | tablet  | en_US  | success | Complete         | 100%  |
-      | tablet  | fr_FR  | warning | 1 missing value  | 75%   |
+    Then I should see the completeness:
+      | channel | locale | state   | ratio |
+      | mobile  | en_US  | warning | 50%   |
+      | tablet  | en_US  | success | 100%  |
+      | mobile  | fr_FR  | warning | 25%   |
+      | tablet  | fr_FR  | warning | 75%   |
     When I am on the "green-heels" product page
     And I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the completeness:
-      | channel | locale | state   | message          | ratio |
-      | mobile  | en_US  | warning | 2 missing values | 50%   |
-      | mobile  | fr_FR  | warning | 2 missing values | 50%   |
-      | tablet  | en_US  | success | Complete         | 100%  |
-      | tablet  | fr_FR  | success | Complete         | 100%  |
+    Then I should see the completeness:
+      | channel | locale | state   | ratio |
+      | mobile  | en_US  | warning | 50%   |
+      | tablet  | en_US  | success | 100%  |
+      | mobile  | fr_FR  | warning | 50%   |
+      | tablet  | fr_FR  | success | 100%  |
     When I am on the "high-heels" product page
     And I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the completeness:
-      | channel | locale | state   | message          | ratio |
-      | mobile  | en_US  | warning | 3 missing values | 25%   |
-      | mobile  | fr_FR  | warning | 3 missing values | 25%   |
-      | tablet  | en_US  | warning | 3 missing values | 25%   |
-      | tablet  | fr_FR  | warning | 3 missing values | 25%   |
+    Then I should see the completeness:
+      | channel | locale | state   | ratio |
+      | mobile  | en_US  | warning | 25%   |
+      | tablet  | en_US  | warning | 25%   |
+      | mobile  | fr_FR  | warning | 25%   |
+      | tablet  | fr_FR  | warning | 25%   |
 
   Scenario: Successfully display the completeness of the products with reference data in the grid
     Given I am on the products page
     And I switch the locale to "en_US"
-    And I filter by "Channel" with value "Mobile"
+    And I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "red-heels" should contain:
       | column   | value |
       | complete | 50%   |
@@ -81,7 +77,7 @@ Feature: Display the completeness of a product
     Then the row "high-heels" should contain:
       | column   | value |
       | complete | 25%   |
-    And I filter by "Channel" with value "Tablet"
+    And I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "red-heels" should contain:
       | column   | value |
       | complete | 50%   |
@@ -95,7 +91,7 @@ Feature: Display the completeness of a product
       | column   | value |
       | complete | 25%   |
     And I switch the locale to "fr_FR"
-    And I filter by "Channel" with value "Mobile"
+    And I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "red-heels" should contain:
       | column   | value |
       | complete | 100%  |
@@ -108,7 +104,7 @@ Feature: Display the completeness of a product
     Then the row "high-heels" should contain:
       | column   | value |
       | complete | 25%   |
-    And I filter by "Channel" with value "Tablet"
+    And I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "red-heels" should contain:
       | column   | value |
       | complete | 75%   |

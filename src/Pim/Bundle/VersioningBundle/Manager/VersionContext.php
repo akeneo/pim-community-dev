@@ -52,4 +52,16 @@ class VersionContext
 
         return $this->mapping['default'];
     }
+
+    /**
+     * Get context
+     *
+     * @param string $context
+     */
+    public function unsetContextInfo($context)
+    {
+        if (isset($this->mapping[$context])) {
+            unset($this->mapping[$context]);
+        }
+    }
 }

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DashboardBundle\DependencyInjection\Compiler;
 
-use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Register widget into registry compiler pass
@@ -15,17 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class RegisterWidgetsPass implements CompilerPassInterface
 {
-    /** @var ReferenceFactory */
-    protected $factory;
-
-    /**
-     * @param ReferenceFactory $factory
-     */
-    public function __construct(ReferenceFactory $factory = null)
-    {
-        $this->factory = $factory ?: new ReferenceFactory();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -34,11 +23,11 @@ class RegisterWidgetsPass implements CompilerPassInterface
         if (!$container->hasDefinition('pim_dashboard.widget.registry')) {
             return;
         }
-        $definition = $container->getDefinition('pim_dashboard.widget.registry');
 
+        $definition = $container->getDefinition('pim_dashboard.widget.registry');
         foreach ($container->findTaggedServiceIds('pim_dashboard.widget') as $serviceId => $tag) {
             $position = isset($tag[0]['position']) ? $tag[0]['position'] : 0;
-            $definition->addMethodCall('add', [$this->factory->createReference($serviceId), $position]);
+            $definition->addMethodCall('add', [new Reference($serviceId), $position]);
         }
     }
 }

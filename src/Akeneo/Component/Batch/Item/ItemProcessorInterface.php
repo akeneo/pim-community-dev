@@ -2,8 +2,6 @@
 
 namespace Akeneo\Component\Batch\Item;
 
-use Akeneo\Component\Batch\Item\InvalidItemException;
-
 /**
  * Interface for item transformation.  Given an item as input, this interface provides
  * an extension point which allows for the application of business logic in an item

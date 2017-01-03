@@ -7,7 +7,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Entity job
+ * Batch domain object representing a uniquely identifiable configured job.
+ *
+ * Cf https://docs.spring.io/spring-batch/apidocs/org/springframework/batch/core/JobInstance.html
+ *
+ * Please note the following difference between Spring Batch and Akeneo Batch,
+ *
+ * In Spring Batch: a JobInstance can be restarted multiple times in case of execution failure and it's lifecycle ends
+ * with first successful execution. Trying to execute an existing JobInstance that has already completed successfully
+ * will result in error. Error will be raised also for an attempt to restart a failed JobInstance if the Job is not restartable.
+ *
+ * In Akeneo Batch: the behavior is not the same, we store a JobInstance, we can run the Job then run it again with the
+ * same config, change the config, then run it again.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,8 +26,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class JobInstance
 {
-    const STATUS_READY       = 0;
-    const STATUS_DRAFT       = 1;
+    const STATUS_READY = 0;
+    const STATUS_DRAFT = 1;
     const STATUS_IN_PROGRESS = 2;
 
     const TYPE_IMPORT = 'import';
@@ -32,7 +43,7 @@ class JobInstance
     protected $label;
 
     /** @var string */
-    protected $alias;
+    protected $jobName;
 
     /** @var integer */
     protected $status = self::STATUS_READY;
@@ -48,10 +59,7 @@ class JobInstance
     protected $type;
 
     /** @var array */
-    protected $rawConfiguration = array();
-
-    /** @var Job */
-    protected $job;
+    protected $rawParameters = [];
 
     /** @var Collection|JobExecution[] */
     protected $jobExecutions;
@@ -61,13 +69,13 @@ class JobInstance
      *
      * @param string $connector
      * @param string $type
-     * @param string $alias
+     * @param string $jobName
      */
-    public function __construct($connector = null, $type = null, $alias = null)
+    public function __construct($connector = null, $type = null, $jobName = null)
     {
-        $this->connector     = $connector;
-        $this->type          = $type;
-        $this->alias         = $alias;
+        $this->connector = $connector;
+        $this->type = $type;
+        $this->jobName = $jobName;
         $this->jobExecutions = new ArrayCollection();
     }
 
@@ -152,13 +160,13 @@ class JobInstance
     }
 
     /**
-     * Get alias
+     * Get job name
      *
      * @return string
      */
-    public function getAlias()
+    public function getJobName()
     {
-        return $this->alias;
+        return $this->jobName;
     }
 
     /**
@@ -210,66 +218,27 @@ class JobInstance
     }
 
     /**
-     * Set job configuration
+     * This parameters can be used to create a JobParameters, stored like this in a legacy way
      *
-     * @param array $configuration
+     * @param array $rawParameters
      *
      * @return JobInstance
      */
-    public function setRawConfiguration($configuration)
+    public function setRawParameters($rawParameters)
     {
-        $this->rawConfiguration = $configuration;
+        $this->rawParameters = $rawParameters;
 
         return $this;
     }
 
     /**
-     * Get raw configuration
+     * This parameters can be used to create a JobParameters, stored like this in a legacy way
      *
      * @return array
      */
-    public function getRawConfiguration()
+    public function getRawParameters()
     {
-        return $this->rawConfiguration;
-    }
-
-    /**
-     * Set job
-     *
-     * @param Job $job
-     *
-     * @return JobInstance
-     */
-    public function setJob($job)
-    {
-        $this->job = $job;
-
-        if ($job) {
-            //TODO: FIXME to get only the jobConfiguration instead of merging it
-            //with the jobConfiguration:
-            //$this->rawConfiguration = $job->getConfiguration();
-            // Waiting for the ImportExport fixes on the right uses of the configuration
-            // See https://magecore.atlassian.net/browse/BAP-2601
-            $jobConfiguration = $job->getConfiguration();
-
-            if (is_array($this->rawConfiguration) && count($this->rawConfiguration) > 0) {
-                $this->rawConfiguration = array_merge($this->rawConfiguration, $jobConfiguration);
-            } else {
-                $this->rawConfiguration = $jobConfiguration;
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get job
-     *
-     * @return Job
-     */
-    public function getJob()
-    {
-        return $this->job;
+        return $this->rawParameters;
     }
 
     /**
@@ -305,22 +274,23 @@ class JobInstance
     }
 
     /**
-     * Set alias
-     * Throws logic exception if alias property is already set.
+     * Set job name
      *
-     * @param string $alias
+     * Throws logic exception if job name property is already set.
+     *
+     * @param string $jobName
      *
      * @throws \LogicException
      *
      * @return JobInstance
      */
-    public function setAlias($alias)
+    public function setJobName($jobName)
     {
-        if ($this->alias !== null) {
-            throw new \LogicException('Alias already set in JobInstance');
+        if ($this->jobName !== null) {
+            throw new \LogicException('Job name already set in JobInstance');
         }
 
-        $this->alias = $alias;
+        $this->jobName = $jobName;
 
         return $this;
     }

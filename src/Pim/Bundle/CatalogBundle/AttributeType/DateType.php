@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
@@ -14,18 +15,6 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  */
 class DateType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        $options = parent::prepareValueFormOptions($value);
-        $options['widget'] = 'single_text';
-        $options['input'] = 'datetime';
-
-        return $options;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -48,7 +37,7 @@ class DateType extends AbstractAttributeType
             ]
         ];
 
-        $properties['unique']['options']['disabled']  = (bool) $attribute->getId();
+        $properties['unique']['options']['disabled'] = (bool) $attribute->getId();
         $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
 
         return $properties;

@@ -77,6 +77,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param LocalizerRegistryInterface   $localizerRegistry
      * @param CollectionFilterInterface    $productValuesFilter
      * @param string                       $tmpStorageDir
+     * @param string                       $jobInstanceCode
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
@@ -88,17 +89,20 @@ class EditCommonAttributes extends AbstractMassEditOperation
         AttributeConverterInterface $localizedConverter,
         LocalizerRegistryInterface $localizerRegistry,
         CollectionFilterInterface $productValuesFilter,
-        $tmpStorageDir
+        $tmpStorageDir,
+        $jobInstanceCode
     ) {
-        $this->productBuilder      = $productBuilder;
-        $this->userContext         = $userContext;
+        parent::__construct($jobInstanceCode);
+
+        $this->productBuilder = $productBuilder;
+        $this->userContext = $userContext;
         $this->attributeRepository = $attributeRepository;
-        $this->productUpdater      = $productUpdater;
-        $this->productValidator    = $productValidator;
-        $this->tmpStorageDir       = $tmpStorageDir;
-        $this->internalNormalizer  = $internalNormalizer;
-        $this->localizedConverter  = $localizedConverter;
-        $this->localizerRegistry   = $localizerRegistry;
+        $this->productUpdater = $productUpdater;
+        $this->productValidator = $productValidator;
+        $this->tmpStorageDir = $tmpStorageDir;
+        $this->internalNormalizer = $internalNormalizer;
+        $this->localizedConverter = $localizedConverter;
+        $this->localizerRegistry = $localizerRegistry;
         $this->productValuesFilter = $productValuesFilter;
 
         $this->values = '';
@@ -164,7 +168,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $data = $this->delocalizeData($data, $this->userContext->getUiLocale()->getCode());
         $data = $this->storeUploadedFile($data);
 
-        $this->values = json_encode($data);
+        $this->values = json_encode($data, JSON_HEX_APOS);
     }
 
     /**
@@ -188,26 +192,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
         ];
 
         return $actions;
-    }
-
-    /**
-     * Get the code of the JobInstance
-     *
-     * @return string
-     */
-    public function getBatchJobCode()
-    {
-        return 'edit_common_attributes';
-    }
-
-    /**
-     * Get the name of items this operation applies to
-     *
-     * @return string
-     */
-    public function getItemsName()
-    {
-        return 'product';
     }
 
     /**

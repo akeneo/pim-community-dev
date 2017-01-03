@@ -7,11 +7,11 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -65,8 +65,8 @@ class IsAssociatedFilter extends BooleanFilter
         }
 
         $associationType = $this->getAssociationType();
-        $product         = $this->getCurrentProduct();
-        $productIds      = $this->getAssociatedProductIds($product, $associationType);
+        $product = $this->getCurrentProduct();
+        $productIds = $this->getAssociatedProductIds($product, $associationType);
         $operator = ($data['value'] === BooleanFilterType::TYPE_YES) ? 'IN' : 'NOT IN';
 
         $this->util->applyFilter($ds, 'id', $operator, $productIds);
@@ -117,7 +117,7 @@ class IsAssociatedFilter extends BooleanFilter
      */
     protected function getAssociatedProductIds(ProductInterface $product, AssociationTypeInterface $type)
     {
-        $productIds  = [];
+        $productIds = [];
         $association = $product->getAssociationForType($type);
 
         if ($association) {

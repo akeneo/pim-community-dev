@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
+use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -41,16 +41,20 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      * @param ChannelRepositoryInterface   $channelRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param AttributeRequirementFactory  $factory
+     * @param string                       $jobInstanceCode
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        AttributeRequirementFactory $factory
+        AttributeRequirementFactory $factory,
+        $jobInstanceCode
     ) {
-        $this->channelRepository   = $channelRepository;
+        parent::__construct($jobInstanceCode);
+
+        $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->factory             = $factory;
-        $this->attRequirements     = new ArrayCollection();
+        $this->factory = $factory;
+        $this->attRequirements = new ArrayCollection();
     }
 
     /**
@@ -168,21 +172,5 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     public function getOperationAlias()
     {
         return 'set-attribute-requirements';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemsName()
-    {
-        return 'family';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return 'set_attribute_requirements';
     }
 }

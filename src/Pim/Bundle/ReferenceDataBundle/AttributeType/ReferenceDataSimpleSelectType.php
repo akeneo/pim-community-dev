@@ -3,9 +3,9 @@
 namespace Pim\Bundle\ReferenceDataBundle\AttributeType;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 
@@ -38,28 +38,6 @@ class ReferenceDataSimpleSelectType extends AbstractAttributeType
         parent::__construct($backendType, $formType, $constraintGuesser);
 
         $this->referenceDataRegistry = $registry;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValueFormName(ProductValueInterface $value)
-    {
-        $referenceDataConf = $this->referenceDataRegistry->get($value->getAttribute()->getReferenceDataName());
-
-        return $referenceDataConf->getName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        $referenceDataConf = $this->referenceDataRegistry->get($value->getAttribute()->getReferenceDataName());
-        $options           = parent::prepareValueFormOptions($value);
-        $options['class']  = $referenceDataConf->getClass();
-
-        return $options;
     }
 
     /**

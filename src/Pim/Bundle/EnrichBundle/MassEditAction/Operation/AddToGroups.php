@@ -18,10 +18,12 @@ class AddToGroups extends AbstractMassEditOperation
     protected $groups;
 
     /**
-     * Constructor
+     * @param string $jobInstanceCode
      */
-    public function __construct()
+    public function __construct($jobInstanceCode)
     {
+        parent::__construct($jobInstanceCode);
+
         $this->groups = new ArrayCollection();
     }
 
@@ -82,22 +84,6 @@ class AddToGroups extends AbstractMassEditOperation
                 'value' => $this->getGroupsCode($groups),
             ]
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return 'add_product_value';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemsName()
-    {
-        return 'product';
     }
 
     /**

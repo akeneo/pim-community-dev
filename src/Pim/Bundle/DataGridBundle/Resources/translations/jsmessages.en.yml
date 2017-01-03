@@ -41,12 +41,12 @@ oro_datagrid.select.visible: "All visible"
 oro_datagrid.select.none: "None"
 pim.grid.ajax_choice_filter.label_empty: is empty
 pim.grid.choice_filter:
-    label_empty:   Is empty
-    label_in_list: In list
+    label_empty:   is empty
+    label_in_list: in list
 
 # Column configuration
 Available Columns:                 Available Columns
-Displayed Columns:                 Displayed Columns
+Displayed Columns:                 Selected Columns
 datagrid_view.columns.min_message: You must select at least one datagrid column to display
 pim_datagrid:
     column_configurator:
@@ -55,15 +55,15 @@ pim_datagrid:
         all_groups:        All groups
         search:            Search
         clear:             Clear
-        displayed_columns: Displayed Columns
+        displayed_columns: Selected Columns
         apply:             Apply
         cancel:            Cancel
         remove_column:     Remove
     mass_action:
         delete:
-            confirm_title:   Delete confirmation.
+            confirm_title:   Delete confirmation
             confirm_ok:      OK
-            empty_selection: No product selected.
+            empty_selection: No product selected
 
 # Quick export
 pim.grid.mass_action.quick_export.title: Quick Export

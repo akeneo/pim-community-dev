@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
 
 /**
  * Mass action repository for product entities
@@ -28,7 +28,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
      */
     public function __construct(EntityManager $em, $entityName)
     {
-        $this->em         = $em;
+        $this->em = $em;
         $this->entityName = $entityName;
     }
 

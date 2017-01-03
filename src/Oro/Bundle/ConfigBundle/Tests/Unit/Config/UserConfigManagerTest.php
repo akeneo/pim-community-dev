@@ -42,11 +42,11 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
         $this->object = new UserConfigManager($this->om, $this->settings);
 
         $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
-        $this->group1       = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
-        $this->group2       = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
+        $this->group1 = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
+        $this->group2 = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
 
         $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
-        $user  = new User();
+        $user = new User();
 
         $this->tokenStorage
             ->expects($this->any())
@@ -82,7 +82,7 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testSecurity()
     {
-        $object      = $this->object;
+        $object = $this->object;
         $object->expects($this->exactly(3))
             ->method('loadStoredSettings');
 

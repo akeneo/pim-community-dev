@@ -5,11 +5,10 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -69,14 +68,14 @@ class AssociationTypeController
         RemoverInterface $assocTypeRemover,
         AssociationTypeRepositoryInterface $assocTypeRepo
     ) {
-        $this->request          = $request;
-        $this->router           = $router;
-        $this->translator       = $translator;
-        $this->assocRepository  = $assocRepository;
+        $this->request = $request;
+        $this->router = $router;
+        $this->translator = $translator;
+        $this->assocRepository = $assocRepository;
         $this->assocTypeHandler = $assocTypeHandler;
-        $this->assocTypeForm    = $assocTypeForm;
+        $this->assocTypeForm = $assocTypeForm;
         $this->assocTypeRemover = $assocTypeRemover;
-        $this->assocTypeRepo    = $assocTypeRepo;
+        $this->assocTypeRepo = $assocTypeRepo;
     }
 
     /**

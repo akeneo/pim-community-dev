@@ -34,9 +34,9 @@ class SetJobExecutionLogFileSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             EventInterface::BEFORE_JOB_EXECUTION => 'setJobExecutionLogFile',
-        );
+        ];
     }
 
     /**

@@ -16,18 +16,18 @@ Feature: Variant group creation
     And I fill in the following information in the popin:
       | Code | MUG   |
       | Axis | Color |
-    And I press the "Save" button
+    And I press the "Save" button in the popin
     Then I am on the variant groups page
     And I should see group MUG
 
   Scenario: Fail to create a variant group with an empty or invalid code
     Given I fill in the following information in the popin:
       | Axis | Size |
-    And I press the "Save" button
+    And I press the "Save" button in the popin
     Then I should see validation error "This value should not be blank."
     When I fill in the following information in the popin:
       | Code | =( |
-    And I press the "Save" button
+    And I press the "Save" button in the popin
     Then I should see validation error "Group code may contain only letters, numbers and underscores."
 
   Scenario: Fail to create a variant group with an already used code

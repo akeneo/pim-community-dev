@@ -5,6 +5,6 @@ doctrine:
             placeholder: placeholder
 
 doctrine_migrations:
-    dir_name: %doctrine_migrations_dir%
+    dir_name: '%doctrine_migrations_dir%'
     namespace: Pim\Upgrade\Schema
     name: PIM Migrations

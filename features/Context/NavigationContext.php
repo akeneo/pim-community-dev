@@ -40,30 +40,6 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
-     * @Given /^I edit my profile$/
-     */
-    public function iAmOnMyProfileEditPage()
-    {
-        $this->openPage('User profile edit');
-    }
-
-    /**
-     * @Given /^I am on my profile page$/
-     */
-    public function iAmOnMyProfilePage()
-    {
-        $this->openPage('User profile show');
-    }
-
-    /**
-     * @Given /^I edit the system configuration$/
-     */
-    public function iAmOnTheSystemEditPage()
-    {
-        $this->openPage('System index');
-    }
-
-    /**
      * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" user group$/
@@ -224,6 +200,18 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
+     * @param JobInstance $job
+     *
+     * @Given /^I should be on the ("([^"]*)" (import|export) job) edit page$/
+     */
+    public function iShouldBeOnTheJobEditPage(JobInstance $job)
+    {
+        $jobPage         = sprintf('%s edit', ucfirst($job->getType()));
+        $expectedAddress = $this->getPage($jobPage)->getUrl(['id' => $job->getId()]);
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
      * @param GroupTypeInterface $groupType
      *
      * @Given /^I should be on the ("([^"]*)" group type) page$/
@@ -367,11 +355,11 @@ class NavigationContext extends BaseNavigationContext
             $this->assertAddress($expectedAddress);
 
             return true;
-        });
+        }, sprintf('Cannot find product "%s"', $product->getId()));
 
         $this->getMainContext()->spin(function () {
-            return $this->getCurrentPage()->find('css', '.product-label');
-        });
+            return $this->getCurrentPage()->find('css', '.object-label');
+        }, 'Can not find any product label');
     }
 
     /**

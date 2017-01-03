@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\VersioningBundle\Repository;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\Versioning\Model\Version;
+
 /**
  * Version repository interface
  *
@@ -79,4 +82,23 @@ interface VersionRepositoryInterface
      * @return array
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
+
+    /**
+     * Find all versions potentially purgeable for given options
+     *
+     * @param array $options
+     *
+     * @return CursorInterface
+     */
+    public function findPotentiallyPurgeableBy(array $options = []);
+
+    /**
+     * Get the id of the most recent version for the resource name and resource ID
+     *
+     * @param string $resourceName
+     * @param int    $resourceId
+     *
+     * @return int|null
+     */
+    public function getNewestVersionIdForResource($resourceName, $resourceId);
 }

@@ -1,9 +1,0 @@
-user_groups:
-    it_support:
-        name: IT support
-    manager:
-        name: Manager
-    redactor:
-        name: Redactor
-    all:
-        name: All

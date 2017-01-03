@@ -4,8 +4,8 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -46,7 +46,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         GroupRepositoryInterface $groupRepository
     ) {
         parent::__construct($registry);
-        $this->requestParams   = $requestParams;
+        $this->requestParams = $requestParams;
         $this->groupRepository = $groupRepository;
     }
 
@@ -102,7 +102,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         $this->axisColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
-            $attributeType     = $attribute['attributeType'];
+            $attributeType = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if ($attributeTypeConf && $attributeTypeConf['column']) {

@@ -23,7 +23,7 @@ services:
     oro.cache.abstract:
         abstract:  true
         class:     Doctrine\Common\Cache\PhpFileCache
-        arguments: [%kernel.cache_dir%]
+        arguments: ['%kernel.cache_dir%']
     twig.extension.intl:
          class: Twig_Extensions_Extension_Intl
          tags:
@@ -40,4 +40,17 @@ services:
                 db_table: pim_session
 
 pim_enrich:
-    max_products_category_removal: %max_products_category_removal%
+    max_products_category_removal: '%max_products_category_removal%'
+
+pim_catalog:
+    localization:
+        decimal_separators:
+            - { value: '.', label: 'dot (.)' }
+            - { value: ',', label: 'comma (,)' }
+            - { value: '٫', label: 'arabic decimal separator (٫)' }
+        date_formats:
+            - { value: 'yyyy-MM-dd', label: 'yyyy-mm-dd' }
+            - { value: 'yyyy/MM/dd', label: 'yyyy/mm/dd' }
+            - { value: 'MM/dd/yyyy', label: 'mm/dd/yyyy' }
+            - { value: 'dd/MM/yyyy', label: 'dd/mm/yyyy' }
+            - { value: 'dd.MM.yyyy', label: 'dd.mm.yyyy' }

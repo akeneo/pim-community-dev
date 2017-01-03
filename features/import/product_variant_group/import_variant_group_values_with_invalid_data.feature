@@ -53,11 +53,11 @@ Feature: Execute an import with invalid data
       code;type;custom_desc
       SANDAL;VARIANT;"My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see "This value is too long. It should have 255 characters or less.: My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
     And I should see "Skipped 1"
 
@@ -67,11 +67,11 @@ Feature: Execute an import with invalid data
       code;type;title
       SANDAL;VARIANT;"My title is soooo long, soooo long, soooo long."
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see "This value is too long. It should have 22 characters or less.: My title is soooo long, soooo long, soooo long."
     And I should see "Skipped 1"
 
@@ -81,11 +81,11 @@ Feature: Execute an import with invalid data
       code;type;barcode
       SANDAL;VARIANT;"ThisIsNotABarcode"
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see "This value is not valid.: ThisIsNotABarcode"
     And I should see "Skipped 1"
 
@@ -95,11 +95,11 @@ Feature: Execute an import with invalid data
       code;type;link
       SANDAL;VARIANT;"ThisIsNotAnUrl"
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see "This value is not a valid URL.: ThisIsNotAnUrl"
     And I should see "Skipped 1"
 
@@ -113,11 +113,11 @@ Feature: Execute an import with invalid data
       code;type;unique_description;unique_label
       caterpillar_boots;VARIANT;foo;bar
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see:
     """
     Variant group "caterpillar_boots" cannot contain values for axis or unique attributes: "unique_description", "unique_label"

@@ -1,6 +1,8 @@
 Job: Taak
 Connector: Connector
 pim_import_export:
+  job: Taak
+  connector: Connector
   status:
     - Gereed
   batch_status:
@@ -13,9 +15,11 @@ pim_import_export:
     7: AFGEBROKEN
     8: ONBEKEND
   download_archive:
+    archive: download gegenereerd archief | download gegenereerde archieven
     output: download gegenereerd bestand | download gegenereerde bestanden
     input: download ingelezen bestand | download ingelezen bestanden
-    invalid: download ongeldige data
+    invalid_xlsx: download ongeldige data
+    invalid_csv: download ongeldige data
   notification:
     export:
       error: Export <strong>%label%</strong> mislukt
@@ -26,6 +30,11 @@ pim_import_export:
       warning: Import <strong>%label%</strong> met enkele waarschuwingen beëindigd
       success: Import <strong>%label%</strong> beëindigd
   list: Selecteer een taak
+  job_profile:
+    tab:
+      property.title: Algemene eigenschappen
+      history.title: Geschiedenis
+      job_content.title: Inhoud
 pim_title.export_profile.index: Beheer van exportprofielen
 pim_title.export_profile.edit: Exportprofielen %job.label% | Bewerken
 pim_title.export_profile.show: Exportprofielen %job.label% | Tonen
@@ -59,7 +68,11 @@ pim_importexport:
       edit: Een exportprofiel bewerken
       remove: Een exportprofiel verwijderen
       launch: Start een exportprofiel
+      property_edit: Wijzig de algemene eigenschappen van een exportprofiel
+      property_show: Toon de algemene eigenschappen van een exportprofiel
       history: Bekijk geschiedenis van exportprofiel
+      content_edit: Wijzig de inhoud van een exportprofiel
+      content_show: Toon inhoud van exportprofiel
     import_profile:
       index: Bekijk importprofielen lijst
       create: Importprofiel aanmaken
@@ -83,9 +96,8 @@ pim_importexport:
     import: Importprofielen
 btn:
   create:
-    export profile: exportprofiel toevoegen
-    import profile: importprofiel toevoegen
-Upload and import: Uploaden en importeren
+    export profile: Exportprofiel aanmaken
+    import profile: Importprofiel aanmaken
 Upload and import now: Uploaden en nu importeren
 import now: Nu importeren
 export now: Nu exporteren
@@ -115,6 +127,7 @@ History: Geschiedenis
 pane.accordion:
   properties: Eigenschappen
   global_settings: Algemene instellingen
+  filters: Filters
 popin.create:
   export_profile.title: Een nieuw exportprofiel aanmaken
   import_profile.title: Een nieuw importprofiel aanmaken
@@ -142,6 +155,7 @@ Status: Status
 Summary: Samenvatting
 Start: Start
 End: Einde
+set_attribute_requirements: Stel attribuutvereisten in
 COMPLETED: VOLTOOID
 STARTING: BEZIG MET STARTEN
 STARTED: GESTART
@@ -150,3 +164,4 @@ STOPPED: GESTOPT
 FAILED: MISLUKT
 ABANDONED: AFGEBROKEN
 UNKNOWN: ONBEKEND
+warning.label: Waarschuwing

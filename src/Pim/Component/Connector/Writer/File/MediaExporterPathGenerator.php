@@ -2,9 +2,6 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-
 /**
  * Generate the path of medias to export.
  *
@@ -19,33 +16,16 @@ class MediaExporterPathGenerator implements FileExporterPathGeneratorInterface
      */
     public function generate($value, array $options = [])
     {
-        if (!$value instanceof ProductValueInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects an "%s", "%s" provided.',
-                    'Pim\Component\Catalog\Model\ProductValueInterface',
-                    ClassUtils::getClass($value)
-                )
-            );
+        $identifier = str_replace(DIRECTORY_SEPARATOR, '_', $options['identifier']);
+        $target = sprintf('files/%s/%s', $identifier, $options['code']);
+
+        if (null !== $value['locale']) {
+            $target .= DIRECTORY_SEPARATOR . $value['locale'];
+        }
+        if (null !== $value['scope']) {
+            $target .= DIRECTORY_SEPARATOR . $value['scope'];
         }
 
-        if (null === $file = $value->getMedia()) {
-            return '';
-        }
-
-        $attribute = $value->getAttribute();
-
-        $identifier = $options['identifier'];
-        $identifier = null !== $identifier ? $identifier : $value->getEntity()->getIdentifier();
-        $target = sprintf('files/%s/%s', str_replace(DIRECTORY_SEPARATOR, '_', $identifier), $attribute->getCode());
-
-        if ($attribute->isLocalizable()) {
-            $target .= DIRECTORY_SEPARATOR . $value->getLocale();
-        }
-        if ($attribute->isScopable()) {
-            $target .= DIRECTORY_SEPARATOR . $value->getScope();
-        }
-
-        return $target . DIRECTORY_SEPARATOR . $file->getOriginalFilename();
+        return $target . DIRECTORY_SEPARATOR;
     }
 }

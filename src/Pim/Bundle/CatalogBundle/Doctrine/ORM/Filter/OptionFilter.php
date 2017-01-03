@@ -3,12 +3,12 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -20,9 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var array */
-    protected $supportedAttributes;
-
     /** @var ObjectIdResolverInterface */
     protected $objectIdResolver;
 
@@ -30,23 +27,21 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $resolver;
 
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array                     $supportedAttributes
+     * @param array                     $supportedAttributeTypes
      * @param array                     $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         ObjectIdResolverInterface $objectIdResolver,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->objectIdResolver    = $objectIdResolver;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->objectIdResolver = $objectIdResolver;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -77,16 +72,16 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'option');
         $field = $options['field'];
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
         }
 
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // prepare join value condition
         $optionAlias = $joinAlias . '.option';
 
-        if (Operators::IS_EMPTY === $operator) {
+        if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,
@@ -94,7 +89,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
 
-            $this->qb->andWhere($this->qb->expr()->isNull($optionAlias));
+            $this->qb->andWhere($this->prepareCriteriaCondition($optionAlias, $operator, null));
         } else {
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -103,7 +98,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
             }
 
-            $condition .= ' AND ( ' . $this->qb->expr()->in($optionAlias, $value) . ' ) ';
+            $condition .= ' AND ' . $this->prepareCriteriaCondition($optionAlias, $operator, $value);
 
             $this->qb->innerJoin(
                 $this->qb->getRootAlias().'.values',
@@ -114,14 +109,6 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**

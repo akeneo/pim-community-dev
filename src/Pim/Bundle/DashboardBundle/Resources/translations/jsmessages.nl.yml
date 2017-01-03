@@ -8,7 +8,9 @@ pim_dashboard:
       profile name: Profielnaam
       details: Details
       job_type:
-        import: Import
-        export: Export
+        import: Importeren
+        export: Exporteren
         mass_edit: Massa bewerken
         quick_export: Snelle export
+    completeness:
+      load_more: Laad meer...

@@ -3,7 +3,7 @@
 namespace Pim\Behat\Decorator;
 
 use Context\Spin\SpinCapableTrait;
-use Pim\Behat\Decorator\ElementDecorator;
+use Context\Spin\TimeoutException;
 
 /**
  * Decorator to add switch context feature to an element
@@ -22,23 +22,31 @@ class ContextSwitcherDecorator extends ElementDecorator
      */
     public function switchLocale($localeCode)
     {
-        $dropdown = $this->spin(function () {
-            return $this->find('css', $this->selectors['Locales dropdown']);
+        $this->spin(function () use ($localeCode) {
+            $dropdown = $this->find('css', $this->selectors['Locales dropdown']);
+            if (null === $dropdown) {
+                return false;
+            }
+
+            $toggle = $dropdown->find('css', '.dropdown-toggle');
+
+            if (null === $toggle) {
+                return false;
+            }
+            $toggle->click();
+
+            $option = $dropdown->find('css', sprintf('a[data-locale="%s"], a[href*="%s"]', $localeCode, $localeCode));
+            if (null === $option) {
+                return false;
+            }
+            $option->click();
+
+            return true;
         }, 'Could not find locale switcher');
-
-        $toggle = $this->spin(function () use ($dropdown) {
-            return $dropdown->find('css', '.dropdown-toggle');
-        });
-        $toggle->click();
-
-        $option = $this->spin(function () use ($dropdown, $localeCode) {
-            return $dropdown->find('css', sprintf('a[data-locale="%s"], a[href*="%s"]', $localeCode, $localeCode));
-        }, sprintf('Could not find locale "%s" in switcher', $localeCode));
-        $option->click();
     }
 
     /**
-     * @param string $locale
+     * @param string $localeCode
      *
      * @return bool
      */
@@ -62,22 +70,30 @@ class ContextSwitcherDecorator extends ElementDecorator
     /**
      * @param string $scopeCode
      *
-     * @throws \Exception
+     * @throws TimeoutException
      */
     public function switchScope($scopeCode)
     {
-        $dropdown = $this->spin(function () {
-            return $this->find('css', $this->selectors['Channel dropdown']);
+        $this->spin(function () use ($scopeCode) {
+            $dropdown = $this->find('css', $this->selectors['Channel dropdown']);
+            if (null === $dropdown) {
+                return false;
+            }
+
+            $toggle = $dropdown->find('css', '.dropdown-toggle');
+
+            if (null === $toggle) {
+                return false;
+            }
+            $toggle->click();
+
+            $option = $dropdown->find('css', sprintf('a[data-scope="%s"], a[href*="%s"]', $scopeCode, $scopeCode));
+            if (null === $option) {
+                return false;
+            }
+            $option->click();
+
+            return true;
         }, 'Could not find scope switcher');
-
-        $toggle = $this->spin(function () use ($dropdown) {
-            return $dropdown->find('css', '.dropdown-toggle');
-        });
-        $toggle->click();
-
-        $option = $this->spin(function () use ($dropdown, $scopeCode) {
-            return $dropdown->find('css', sprintf('a[data-scope="%s"]', $scopeCode));
-        }, sprintf('Could not find scope "%s" in switcher', $scopeCode));
-        $option->click();
     }
 }

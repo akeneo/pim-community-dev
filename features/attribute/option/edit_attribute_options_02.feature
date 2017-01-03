@@ -16,8 +16,7 @@ Feature: Edit attribute options
     Then I should see the "Options" section
     Then I should see "To manage options, please save the attribute first"
     And I save the attribute
-    Then I should see flash message "Attribute successfully created"
-    And I wait for options to load
+    Then I should see the flash message "Attribute successfully created"
     And I check the "Automatic option sorting" switch
 
   Scenario: Successfully cancel while editing some attribute options
@@ -26,13 +25,11 @@ Feature: Edit attribute options
       | red   |
       | blue  |
       | green |
-    And I wait for options to load
     And I edit the code "green" to turn it to "yellow" and cancel
     Then I should see a confirm dialog with the following content:
       | title   | Cancel modification                                                                                    |
       | content | Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ? |
     And I confirm the cancellation
-    And I wait for options to load
     Then I should see "green"
     But I should not see "yellow"
 
@@ -42,7 +39,6 @@ Feature: Edit attribute options
       | red   |
       | blue  |
       | green |
-    And I wait for options to load
     And I edit the "green" option and turn it to "yellow"
     Then I should see "yellow"
     Then I should not see "green"
@@ -55,6 +51,5 @@ Feature: Edit attribute options
       | blue  | blue  |
       | green | green |
     And I save the attribute
-    And I wait for options to load
     And I edit the code "red" to turn it to "red" and cancel
     Then I should see the text "r\"ed"

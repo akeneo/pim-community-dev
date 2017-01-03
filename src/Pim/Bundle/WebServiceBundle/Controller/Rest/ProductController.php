@@ -5,7 +5,6 @@ namespace Pim\Bundle\WebServiceBundle\Controller\Rest;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\FOSRestController;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,18 +28,13 @@ class ProductController extends FOSRestController
      * @param Request $request
      * @param string  $identifier
      *
-     * @ApiDoc(
-     *      description="Get a single product",
-     *      resource=true
-     * )
-     *
      * @return Response
      */
     public function getAction(Request $request, $identifier)
     {
-        $userContext       = $this->get('pim_user.context.user');
+        $userContext = $this->get('pim_user.context.user');
         $availableChannels = array_keys($userContext->getChannelChoicesWithUserChannel());
-        $availableLocales  = $userContext->getUserLocaleCodes();
+        $availableLocales = $userContext->getUserLocaleCodes();
 
         $channels = $request->get('channels', $request->get('channel', null));
         if ($channels !== null) {

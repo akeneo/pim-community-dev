@@ -1,4 +1,22 @@
 jobs:
+    fixtures_currency_csv:
+        order: 10
+        connector: Data fixtures
+        alias:     fixtures_currency_csv
+        label:     Currencies data fixtures
+        type:      fixtures
+        configuration:
+            filePath: currencies.csv
+
+    fixtures_locale_csv:
+        order: 10
+        connector: Data fixtures
+        alias:     fixtures_locale_csv
+        label:     Locales data fixtures
+        type:      fixtures
+        configuration:
+            filePath: locales.csv
+
     fixtures_category_csv:
         order: 30
         connector: Data fixtures
@@ -7,42 +25,33 @@ jobs:
         type:      fixtures
         configuration:
             filePath: categories.csv
-            uploadAllowed: true
-            delimiter: ;
-            enclosure: '"'
-            escape: '\'
-            circularRefsChecked: true
-            uploadAllowed: true
 
-    fixtures_attribute_group_yml:
+    fixtures_attribute_group_csv:
         order: 30
         connector: Data fixtures
-        alias:     fixtures_attribute_group_yml
+        alias:     fixtures_attribute_group_csv
         label:     Attribute groups data fixtures
         type:      fixtures
         configuration:
-            filePath: attribute_groups.yml
-            multiple: false
+            filePath: attribute_groups.csv
 
-    fixtures_group_type_yml:
+    fixtures_group_type_csv:
         order: 30
         connector: Data fixtures
-        alias:     fixtures_group_type_yml
+        alias:     fixtures_group_type_csv
         label:     Group types data fixtures
         type:      fixtures
         configuration:
-            filePath: group_types.yml
-            multiple: false
+            filePath: group_types.csv
 
-    fixtures_channel_yml:
+    fixtures_channel_csv:
         order: 40
         connector: Data fixtures
-        alias:     fixtures_channel_yml
+        alias:     fixtures_channel_csv
         label:     Channels data fixtures
         type:      fixtures
         configuration:
-            filePath: channels.yml
-            multiple: false
+            filePath: channels.csv
 
     fixtures_association_type_csv:
         order: 40
@@ -52,7 +61,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: association_types.csv
-            multiple: false
 
     fixtures_attribute_csv:
         order: 40
@@ -62,7 +70,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: attributes.csv
-            multiple: false
 
     fixtures_attribute_options_csv:
         order: 50
@@ -72,7 +79,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: attribute_options.csv
-            multiple: false
 
     fixtures_family_csv:
         order: 60
@@ -82,7 +88,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: families.csv
-            multiple: false
 
     fixtures_variant_group_csv:
         order: 70
@@ -92,8 +97,13 @@ jobs:
         type:      fixtures
         configuration:
             filePath: variant_groups.csv
-            multiple: false
+            delimiter: ;
+            enclosure: '"'
+            escape: '\'
             decimalSeparator: .
+            dateFormat: Y-m-d
+            withHeader: true
+            copyValues: true
 
     fixtures_group_csv:
         order: 70
@@ -103,7 +113,33 @@ jobs:
         type:      fixtures
         configuration:
             filePath: groups.csv
-            multiple: false
+
+    fixtures_user_group_csv:
+        order: 25
+        connector: Data fixtures
+        alias:     fixtures_user_group_csv
+        label:     User groups data fixtures
+        type:      fixtures
+        configuration:
+            filePath: user_groups.csv
+
+    fixtures_user_role_csv:
+        order: 75
+        connector: Data fixtures
+        alias:     fixtures_user_role_csv
+        label:     User roles data fixtures
+        type:      fixtures
+        configuration:
+            filePath: user_roles.csv
+
+    fixtures_user_csv:
+        order: 79
+        connector: Data fixtures
+        alias:     fixtures_user_csv
+        label:     Users data fixtures
+        type:      fixtures
+        configuration:
+            filePath: users.csv
 
     fixtures_product_csv:
         order: 80
@@ -113,6 +149,7 @@ jobs:
         type:      fixtures
         configuration:
             filePath: products.csv
+            withHeader: true
             delimiter: ;
             enclosure: '"'
             escape: '\'
@@ -121,9 +158,6 @@ jobs:
             familyColumn: family
             groupsColumn: groups
             realTimeVersioning: true
-            mediaAttributes:
-                - 'pdf_description'
-                - 'picture'
             enabledComparison: true
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
@@ -136,4 +170,3 @@ jobs:
         type:      fixtures
         configuration:
             filePath: jobs.yml
-            multiple: false

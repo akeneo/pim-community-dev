@@ -37,7 +37,7 @@ Action: Ação
 Unit: Unidade
 Currency: Moeda
 jstree:
-  all: Todos os produtos
+  all: Todos os Produtos
   unclassified: Produtos não classificados
   product:
     all: Todos os produtos

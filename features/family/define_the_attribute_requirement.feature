@@ -8,6 +8,7 @@ Feature: Define the attribute requirement
     And I am logged in as "Peter"
     And I am on the "Boots" family page
 
+  @javascript
   Scenario: Successfully display the attribute requirements
     Given I visit the "Attributes" tab
     Then attribute "name" should be required in channels mobile and tablet
@@ -21,6 +22,7 @@ Feature: Define the attribute requirement
     And I switch the attribute "Rating" requirement in channel "Mobile"
     And I save the family
     And I should see the flash message "Family successfully updated"
+    And I should not see the text "There are unsaved changes."
     And I visit the "Attributes" tab
     Then attribute "rating" should be required in channels mobile and tablet
 
@@ -30,6 +32,7 @@ Feature: Define the attribute requirement
     And I switch the attribute "Description" requirement in channel "Tablet"
     And I save the family
     And I should see the flash message "Family successfully updated"
+    And I should not see the text "There are unsaved changes."
     And I visit the "Attributes" tab
     Then attribute "description" should not be required in channels mobile and tablet
 
@@ -41,24 +44,23 @@ Feature: Define the attribute requirement
     And I launched the completeness calculator
     When I am on the "BIGBOOTS" product page
     And I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the completeness:
-      | channel | locale | state   | missing_values                                  | ratio |
-      | mobile  | en_US  | success |                                                 | 100%  |
-      | tablet  | en_US  | warning | description weather_conditions rating side_view | 56%   |
+    Then I should see the completeness:
+      | channel | locale | state   | missing_values                                     | ratio |
+      | mobile  | en_US  | success |                                                    | 100%  |
+      | tablet  | en_US  | warning | Description, Weather conditions, Rating, Side view | 56%   |
     And I am on the "Boots" family page
     And I visit the "Attributes" tab
     And I switch the attribute "Rating" requirement in channel "Mobile"
     And I save the family
     And I should see the flash message "Family successfully updated"
+    And I should not see the text "There are unsaved changes."
     When I remove the "Rating" attribute
     And I confirm the deletion
     Then I should not see the "Rating" attribute
     When I launched the completeness calculator
     When I am on the "BIGBOOTS" product page
     And I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the completeness:
-      | channel | locale | state   | missing_values                           | ratio |
-      | mobile  | en_US  | success |                                          | 100%  |
-      | tablet  | en_US  | warning | description weather_conditions side_view | 63%   |
+    Then I should see the completeness:
+      | channel | locale | state   | missing_values                             | ratio |
+      | mobile  | en_US  | success |                                            | 100%  |
+      | tablet  | en_US  | warning | Description, Weather conditions, Side view | 63%   |

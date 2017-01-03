@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
+use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -28,19 +29,25 @@ class AttributeNormalizer implements NormalizerInterface
     /** @var EmptyValueProviderInterface */
     protected $emptyValueProvider;
 
+    /** @var FilterProviderInterface */
+    protected $filterProvider;
+
     /**
      * @param NormalizerInterface         $normalizer
      * @param FieldProviderInterface      $fieldProvider
      * @param EmptyValueProviderInterface $emptyValueProvider
+     * @param FilterProviderInterface     $filterProvider
      */
     public function __construct(
         NormalizerInterface $normalizer,
         FieldProviderInterface $fieldProvider,
-        EmptyValueProviderInterface $emptyValueProvider
+        EmptyValueProviderInterface $emptyValueProvider,
+        FilterProviderInterface $filterProvider
     ) {
-        $this->normalizer         = $normalizer;
-        $this->fieldProvider      = $fieldProvider;
+        $this->normalizer = $normalizer;
+        $this->fieldProvider = $fieldProvider;
         $this->emptyValueProvider = $emptyValueProvider;
+        $this->filterProvider = $filterProvider;
     }
 
     /**
@@ -57,6 +64,7 @@ class AttributeNormalizer implements NormalizerInterface
             'wysiwyg_enabled'       => $attribute->isWysiwygEnabled(),
             'empty_value'           => $this->emptyValueProvider->getEmptyValue($attribute),
             'field_type'            => $this->fieldProvider->getField($attribute),
+            'filter_types'          => $this->filterProvider->getFilters($attribute),
             'is_locale_specific'    => (int) $attribute->isLocaleSpecific(),
             'locale_specific_codes' => $attribute->getLocaleSpecificCodes(),
             'max_characters'        => $attribute->getMaxCharacters(),
@@ -77,10 +85,10 @@ class AttributeNormalizer implements NormalizerInterface
 
         // This normalizer is used in the PEF attributes loading and in the add_attributes widget. The attributes
         // loading does not need complete group normalization. This has to be cleaned.
+        $normalizedAttribute['group'] = null;
+
         if (isset($context['include_group']) && $context['include_group'] && null !== $attribute->getGroup()) {
             $normalizedAttribute['group'] = $this->normalizer->normalize($attribute->getGroup(), 'json', $context);
-        } else {
-            $normalizedAttribute['group'] = null;
         }
 
         return $normalizedAttribute;

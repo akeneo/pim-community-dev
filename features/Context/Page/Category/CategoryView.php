@@ -29,7 +29,7 @@ abstract class CategoryView extends Form
                 'Category tree'    => [
                     'css'        => '#tree',
                     'decorators' => [
-                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                        'Pim\Behat\Decorator\Tree\JsTreeDecorator'
                     ]
                 ],
                 'Tree select'      => ['css' => '#tree_select'],
@@ -59,10 +59,12 @@ abstract class CategoryView extends Form
      */
     public function rightClickAction($action)
     {
-        $elt = $this->getElement('Right click menu')->find('css', sprintf('li a:contains("%s")', $action));
-        if (!$elt) {
-            throw new \InvalidArgumentException(sprintf('Unable to find action "%s" in the menu', $action));
-        }
+        $elt = $this->getElement('Right click menu');
+
+        $this->spin(function () use ($elt, $action) {
+            $elt->find('css', sprintf('li a:contains("%s")', $action));
+        }, sprintf('Unable to find action "%s" in the menu', $action));
+
         $elt->click();
 
         return $this;

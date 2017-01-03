@@ -59,7 +59,7 @@ pim_enrich:
       VARIANT: Variante
       X_SELL: Cross-Sell
       ADDITIONAL: Ergänzend
-      RELATED: Verknüpft
+      RELATED: Zugehörig
     tab:
       product.title: Produkte
       property.title: Eigenschaften
@@ -81,7 +81,7 @@ pim_enrich:
       page_subtitle: Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)
       title: Aktion auswählen
       subtitle: Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen
-      confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.
+      confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.
       steps:
         first: Produkte auswählen
         second: Aktion auswählen
@@ -92,7 +92,7 @@ pim_enrich:
       page_subtitle: Massenbearbeitung (1 Produktfamilie)|Massenbearbeitung (%count% Produktfamilien)
       title: Aktion auswählen
       subtitle: Wählen Sie die Aktion aus, die Sie auf die ausgewählte Produktfamilie anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produktfamilien anwenden wollen
-      confirm: Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.
+      confirm: Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.
       steps:
         first: Produktfamilien auswählen
         second: Aktion auswählen
@@ -113,7 +113,7 @@ pim_enrich:
         warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
         invalid_attribute: Das Attribut mit dem Code "attribute_code" ist kein gemeinsames Attribut der ausgewählten Produkte. Attribut übersprungen.
         no_valid_attribute: Keines der ausgewählten Attribute kann auf dieses Produkt angewendet werden.
-    classify:
+    classify-add:
       label: Zuordnung von Produkten in Kategorien
       description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
@@ -139,9 +139,9 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Die Massenbearbeitung "zu Variantengruppe hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     set-attribute-requirements:
-      label: Benötigte Attribute auswählen
-      description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
-      success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
+      label: Attribut-Anforderungen festlegen
+      description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
+      success_flash: Die Attribut-Anforderungen wurden den ausgewählten Produktfamilien zugeordnet
       launched_flash: Die Massenbearbeitung "setzen von Attributanforderungen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     mass_action:
       quick_export:
@@ -500,16 +500,6 @@ info:
     auto option sorting: Wenn aktiviert, werden Optionen automatisch nach ihren lokalisierten Bezeichnungen sortiert
   completeness:
     not calculated: Noch nicht berechnet
-color:
-  title: Farbe
-  gray: Grau
-  white: Weiß
-  yellow: Gelb
-  orange: Orange
-  magenta: Magenta
-  violet: Violett
-  blue: Blau
-  cyan: Cyan
 Options: Optionen
 Created at: Angelegt am
 Updated at: Aktualisiert am
@@ -562,11 +552,10 @@ Translate from: Übersetzen von
 switch_on: "Ja"
 switch_off: "Nein"
 Close: Schließen
-Choose a color: Wählen Sie eine Farbe
 Search: Suche
 Choose the attribute type: Wählen Sie den Attributtyp aus
 Choose the attribute group: Wählen Sie die Attributgruppe
-Drop a file or click here: Datei hierhin ziehen oder klicken
+Drag and drop a file or click here: Drag & Drop einer Datei oder hier klicken
 Drop an image or click here: Bild hierhin ziehen oder klicken
 Automatic option sorting: Option automatisch sortieren
 save_attribute_before_manage_option: Um Auswahlmöglichkeiten zu verwalten, speichern Sie bitte zunächst das Attribut
@@ -653,7 +642,10 @@ pim_title.association_type:
 pim_title.group_type:
   index: Gruppentypen
   edit: Gruppentypen %group type.label% | Bearbeiten
-pim_title.mass_edit_action:
+pim_title.mass_edit_product_action:
+  choose: Massenbearbeitung | Auswählen
+  configure: Massenbearbeitung | Konfigurieren
+pim_title.mass_edit_family_action:
   choose: Massenbearbeitung | Auswählen
   configure: Massenbearbeitung | Konfigurieren
 pim_title.job_tracker:
@@ -733,6 +725,7 @@ pim_enrich.mass_edit_action:
     label: Benötigte Attribute auswählen
     description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
     success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
+To enable: Aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
 Remove this attribute: Dieses Attribut löschen
@@ -854,9 +847,28 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Gemeinsame 
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
 add_to_variant_group_clean.steps.excluded.title: Ausgeschlossene Produkte
 add_to_variant_group_clean.steps.duplicated.title: Doppelte Achse
+add_to_variant_group.steps.excluded.title: Ausgeschlossene Produkte
+add_to_variant_group.steps.duplicated.title: Doppelte Achse
 add_to_variant_group.steps.cleaner.warning.description: 'Das Produkt kann der gewählten Variantengruppe nicht zugeordnet werden: gleiche Variantenachsenwerte mit einem anderen Produkt in der Auswahl'
 edit_common_attributes: Gemeinsame Attribute bearbeiten
 edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
+perform.steps.duplicated.title: Doppelte Achse
+perform.steps.excluded.title: Ausgeschlossene Produkte
+batch_jobs:
+  update_product_value:
+    label: Wert des Produkts aktualisieren
+    perform:
+      label: Wert des Produkts aktualisieren
+  edit_common_attributes:
+    label: Gemeinsame Attribute bearbeiten
+    perform:
+      label: Gemeinsame Attribute bearbeiten
+    clean:
+      label: Bereinige Dateien für gemeinsame Attribute
+  set_attribute_requirements:
+    label: Benötigte Attribute auswählen
+    perform:
+      label: Benötigte Attribute auswählen
 mass_edit report:
   overview: Massenbearbeitung Reports
 job_tracker:
@@ -864,3 +876,12 @@ job_tracker:
     title: Prozess-Tracker
   filter:
     started_at: Gestartet am
+pim_enrich_attribute_form:
+  code: Code
+  scopable: Gültigkeitsbereich
+  localizable: Lokalisierbar
+  unique: Eindeutiger Wert
+  availableLocales: Verfügbare Gebietsschemata
+  locale_specific: Gebietsschema-spezifisch
+  group: Attributgruppe
+  useableAsGridFilter: Verwendbar im Raster

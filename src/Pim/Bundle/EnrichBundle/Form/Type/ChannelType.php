@@ -2,14 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\EnrichBundle\Helper\SortHelper;
-use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -31,8 +29,8 @@ class ChannelType extends AbstractType
     /** @var LocaleHelper */
     protected $localeHelper;
 
-    /** @var ColorsProvider */
-    protected $colorsProvider;
+    /** @var TranslatedLabelsProviderInterface */
+    protected $categoryProvider;
 
     /** @var string */
     protected $categoryClass;
@@ -43,24 +41,24 @@ class ChannelType extends AbstractType
     /**
      * Inject locale manager, locale helper and colors provider in the constructor
      *
-     * @param LocaleRepositoryInterface  $localeRepository
-     * @param LocaleHelper   $localeHelper
-     * @param ColorsProvider $provider
-     * @param string         $categoryClass
-     * @param string         $dataClass
+     * @param LocaleRepositoryInterface         $localeRepository
+     * @param LocaleHelper                      $localeHelper
+     * @param TranslatedLabelsProviderInterface $categoryProvider
+     * @param string                            $categoryClass
+     * @param string                            $dataClass
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
-        ColorsProvider $provider,
+        TranslatedLabelsProviderInterface $categoryProvider,
         $categoryClass,
         $dataClass
     ) {
         $this->localeRepository = $localeRepository;
-        $this->localeHelper     = $localeHelper;
-        $this->provider         = $provider;
-        $this->categoryClass    = $categoryClass;
-        $this->dataClass        = $dataClass;
+        $this->localeHelper = $localeHelper;
+        $this->categoryProvider = $categoryProvider;
+        $this->categoryClass = $categoryClass;
+        $this->dataClass = $dataClass;
     }
 
     /**
@@ -71,7 +69,6 @@ class ChannelType extends AbstractType
         $this
             ->addCodeField($builder)
             ->addLabelField($builder)
-            ->addColorField($builder)
             ->addCurrenciesField($builder)
             ->addLocalesField($builder)
             ->addCategoryField($builder)
@@ -103,30 +100,6 @@ class ChannelType extends AbstractType
     protected function addLabelField(FormBuilderInterface $builder)
     {
         $builder->add('label', 'text', ['label' => 'Default label']);
-
-        return $this;
-    }
-
-    /**
-     * Create color field
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return ChannelType
-     */
-    protected function addColorField(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'color',
-            'choice',
-            [
-                'choices'     => $this->provider->getColorChoices(),
-                'select2'     => true,
-                'required'    => false,
-                'label'       => 'color.title',
-                'empty_value' => 'Choose a color'
-            ]
-        );
 
         return $this;
     }
@@ -210,15 +183,13 @@ class ChannelType extends AbstractType
     {
         $builder->add(
             'category',
-            'entity',
+            'light_entity',
             [
-                'label'         => 'Category tree',
-                'required'      => true,
-                'select2'       => true,
-                'class'         => $this->categoryClass,
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->getTreesQB();
-                }
+                'label'      => 'Category tree',
+                'required'   => true,
+                'select2'    => true,
+                'multiple'   => false,
+                'repository' => $this->categoryProvider
             ]
         );
 

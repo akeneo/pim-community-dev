@@ -1,0 +1,164 @@
+Area:              Area
+ACRE:              Acre
+ARE:               Are
+ARPENT:            Arpent
+CENTIARE:          Centiare
+HECTARE:           Hectare
+SQUARE_CENTIMETER: Square centimeter
+SQUARE_DECIMETER:  Square decimeter
+SQUARE_DEKAMETER:  Square dekameter
+SQUARE_FOOT:       Square foot
+SQUARE_FURLONG:    Square furlong
+SQUARE_HECTOMETER: Square hectometer
+SQUARE_INCH:       Square inch
+SQUARE_KILOMETER:  Square kilometer
+SQUARE_METER:      Square meter
+SQUARE_MIL:        Square mil
+SQUARE_MILE:       Square mile
+SQUARE_MILLIMETER: Square millimeter
+SQUARE_YARD:       Square yard
+
+Binary:   Binary
+BIT:      Bit
+BYTE:     Byte
+KILOBYTE: Kilobyte
+MEGABYTE: Megabyte
+GIGABYTE: Gigabyte
+TERABYTE: Terabyte
+
+Decibel: Decibel
+DECIBEL: Decibel
+
+Frequency: Frequency
+GIGAHERTZ: Gigahertz
+KILOHERTZ: Kilohertz
+MEGAHERTZ: Megahertz
+TERAHERTZ: Terahertz
+HERTZ:     Hertz
+
+Length:     Length
+CENTIMETER: Centimeter
+CHAIN:      Chain
+DECIMETER:  Decimeter
+DEKAMETER:  Dekameter
+FEET:       Feet
+FURLONG:    Furlong
+INCH:       Inch
+HECTOMETER: Hectometer
+KILOMETER:  Kilometer
+METER:      Meter
+MIL:        Mil
+MILE:       Mile
+MILLIMETER: Millimeter
+YARD:       Yard
+
+Power:    Power
+GIGAWATT: Gigawatt
+KILOWATT: Kilowatt
+MEGAWATT: Megawatt
+TERAWATT: Terawatt
+WATT:     Watt
+
+Resistance: Resistence
+MILLIOHM:   Milliohm
+CENTIOHM:   Centiohm
+DECIOHM:    Deciohm
+OHM:        Ohm
+DEKAOHM:    Dekaohm
+HECTOHM:    Hectohm
+KILOHM:     Kilohm
+MEGOHM:     Megohm
+
+Voltage:   Voltage
+MILLIVOLT: Millivolt
+CENTIVOLT: Centivolt
+DECIVOLT:  Decivolt
+VOLT:      Volt
+DEKAVOLT:  Dekavolt
+HECTOVOLT: Hectovolt
+KILOVOLT:  Kilovolt
+
+Intensity:   Intensity
+MILLIAMPERE: Milliampere
+CENTIAMPERE: Centiampere
+DECIAMPERE:  Deciampere
+AMPERE:      Ampere
+DEKAAMPERE:  Dekaampere
+HECTOAMPERE: Hectoampere
+KILOAMPERE:  Kiloampere
+MEGAAMPERE:  Megaampere
+
+ElectricCharge:  Electric charge
+MILLIAMPEREHOUR: Milliampere hour
+AMPEREHOUR:      Ampere hour
+MILLICOULOMB:    Millicoulomb
+CENTICOULOMB:    Centicoulomb
+DECICOULOMB:     Decicoulomb
+COULOMB:         Coulomb
+DEKACOULOMB:     Dekacoulomb
+HECTOCOULOMB:    Hectocoulomb
+KILOCOULOMB:     Kilocoulomb
+
+Duration:    Duration
+MILLISECOND: Millisecond
+SECOND:      Second
+MINUTE:      Minute
+HOUR:        Hour
+DAY:         Day
+
+Speed:              Speed
+FOOT_PER_SECOND:    Foot per second
+FOOT_PER_HOUR:      Foot per hour
+KILOMETER_PER_HOUR: Kilometer per hour
+METER_PER_HOUR:     Meter per hour
+METER_PER_MINUTE:   Meter per minute
+METER_PER_SECOND:   Meter per second
+MILE_PER_HOUR:      Mile per hour
+YARD_PER_HOUR:      Yard per hour
+
+Temperature: Temperature
+CELSIUS:     Celsius
+FAHRENHEIT:  Fahrenheit
+KELVIN:      Kelvin
+RANKINE:     Rankine
+REAUMUR:     Reaumur
+
+Volume:           Volume
+BARREL:           Barrel
+CENTILITER:       Centiliter
+CUBIC_CENTIMETER: Cubic centimeter
+CUBIC_DECIMETER:  Cubic decimeter
+CUBIC_FOOT:       Cubic foot
+CUBIC_INCH:       Cubic inch
+CUBIC_METER:      Cubic meter
+CUBIC_MILLIMETER: Cubic millimeter
+CUBIC_YARD:       Cubic yard
+DECILITER:        Deciliter
+GALLON:           Gallon
+LITER:            Liter
+MILLILITER:       Milliliter
+OUNCE:            Ounce
+PINT:             Pint
+
+Weight:    Weight
+DENIER:    Denier
+GRAIN:     Grain
+GRAM:      Gram
+KILOGRAM:  Kilogram
+LIVRE:     Livre
+MARC:      Marc
+MILLIGRAM: Milligram
+ONCE:      Once
+OUNCE:     Ounce
+POUND:     Pound
+TON:       Ton
+
+Pressure: Pressure
+BAR: Bar
+PASCAL: Pascal
+HECTOPASCAL: hecto Pascal
+MILLIBAR: milli Bar
+ATM: Atmosphere
+PSI: Pound per square inch
+TORR: Torr
+MMHG: millimeter of Mercury

@@ -6,9 +6,10 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
-use Pim\Behat\Context\PimContext;
+use Pim\Behat\Context\Domain\ImportExportContext;
+use Symfony\Component\Yaml\Yaml;
 
-class ExportProfilesContext extends PimContext
+class ExportProfilesContext extends ImportExportContext
 {
     /**
      * @param string       $code
@@ -21,101 +22,81 @@ class ExportProfilesContext extends PimContext
      */
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
     {
-        $config = $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
+        $path = $this->getExportedFile($code);
+        $config =  $this->getCsvJobConfiguration($code);
 
-        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $expectedLines = $this->getExpectedLines($csv, $config);
+        $actualLines = $this->getActualLines($path, 'csv', $config);
 
-        if (!is_file($path)) {
-            throw $this->getMainContext()->createExpectationException(
-                sprintf('File "%s" doesn\'t exist', $path)
-            );
-        }
+        $this->compareFile($expectedLines, $actualLines, $path);
+    }
 
-        $delimiter = isset($config['delimiter']) ? $config['delimiter'] : ';';
-        $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '"';
-        $escape    = isset($config['escape'])    ? $config['escape']    : '\\';
+    /**
+     * @param string $code
+     *
+     * @Then /^exported file of "([^"]*)" should be empty$/
+     *
+     * @throws \PHPUnit_Framework_AssertionFailedError
+     */
+    public function exportedFileOfShouldBeEmpty($code)
+    {
+        $path = $this->getExportedFile($code);
+        $content = trim(file_get_contents($path));
 
-        $csvFile = new \SplFileObject($path);
-        $csvFile->setFlags(
-            \SplFileObject::READ_CSV   |
-            \SplFileObject::READ_AHEAD |
-            \SplFileObject::SKIP_EMPTY |
-            \SplFileObject::DROP_NEW_LINE
-        );
-        $csvFile->setCsvControl($delimiter, $enclosure, $escape);
+        assertEmpty($content);
+    }
 
-        $expectedLines = [];
-        foreach ($csv->getLines() as $line) {
-            if (!empty($line)) {
-                $expectedLines[] = explode($delimiter, str_replace($enclosure, '', $line));
-            }
-        }
+    /**
+     * @param string       $code
+     * @param PyStringNode $csv
+     *
+     * @Then /^exported file of "([^"]*)" should contains the following headers:$/
+     *
+     * @throws ExpectationException
+     * @throws \Exception
+     */
+    public function exportedFileOfShouldContainsTheFollowingHeaders($code, PyStringNode $csv)
+    {
+        $path = $this->getExportedFile($code);
+        $config = $this->getCsvJobConfiguration($code);
 
-        $actualLines = [];
-        while ($data = $csvFile->fgetcsv()) {
-            if (!empty($data)) {
-                $actualLines[] = array_map(
-                    function ($item) use ($enclosure) {
-                        return str_replace($enclosure, '', $item);
-                    },
-                    $data
-                );
-            }
-        }
+        $expectedLines = $this->getExpectedLines($csv, $config);
+        $actualLines = $this->getActualLines($path, 'csv', $config);
 
-        $expectedCount = count($expectedLines);
-        $actualCount   = count($actualLines);
-        assertSame(
-            $expectedCount,
-            $actualCount,
-            sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
-        );
+        $this->compareFileHeadersOrder(current($expectedLines), current($actualLines));
+    }
 
-        if (md5(json_encode($actualLines[0])) !== md5(json_encode($expectedLines[0]))) {
-            throw new \Exception(
-                sprintf(
-                    'Header in the file %s does not match expected one: %s',
-                    $path,
-                    implode(' | ', $actualLines[0])
-                )
-            );
-        }
-        unset($actualLines[0]);
-        unset($expectedLines[0]);
+    /**
+     * @param string       $code
+     * @param PyStringNode $yaml
+     *
+     * @Then /^exported yaml file of "([^"]*)" should contain:$/
+     *
+     * @throws \Exception
+     */
+    public function exportedYamlFileOfShouldContain($code, PyStringNode $yaml)
+    {
+        $path = $this->getExportedFile($code);
 
-        foreach ($expectedLines as $expectedLine) {
-            $originalExpectedLine = $expectedLine;
-            $found = false;
-            foreach ($actualLines as $index => $actualLine) {
-                // Order of columns is not ensured
-                // Sorting the line values allows to have two identical lines
-                // with values in different orders
-                sort($expectedLine);
-                sort($actualLine);
+        $actualLines = Yaml::parse(file_get_contents($path));
+        $expectedLines = Yaml::parse($yaml->getRaw());
 
-                // Same thing for the rows
-                // Order of the rows is not reliable
-                // So we generate a hash for the current line and ensured that
-                // the generated file contains a line with the same hash
-                if (md5(json_encode($actualLine)) === md5(json_encode($expectedLine))) {
-                    $found = true;
+        $isValidYamlFile = function ($expectedLines, $actualLines) use (&$isValidYamlFile) {
+            foreach ($expectedLines as $key => $line) {
+                $actualLine = $actualLines[$key];
+                if (is_array($line)) {
+                    $isValidYamlFile($line, $actualLine);
+                }
 
-                    // Unset line to prevent comparing it twice
-                    unset($actualLines[$index]);
-
-                    break;
+                if ($line !== $actualLine) {
+                    throw new \Exception(
+                        sprintf('The exported file is not well formatted, expected %s, given %s', $line, $actualLine)
+                    );
                 }
             }
-            if (!$found) {
-                throw new \Exception(
-                    sprintf(
-                        'Could not find a line containing "%s" in %s',
-                        implode(' | ', $originalExpectedLine),
-                        $path
-                    )
-                );
-            }
-        }
+        };
+
+        $isValidYamlFile($expectedLines, $actualLines);
     }
 
     /**
@@ -130,11 +111,14 @@ class ExportProfilesContext extends PimContext
     }
 
     /**
-     * @Then /^the path of the exported file of "([^"]+)" should be "([^"]+)"$/
+     * @param string $code
+     * @param string $path
+     *
+     * @Then /^the name of the exported file of "([^"]+)" should be "([^"]+)"$/
      */
-    public function thePathOfTheExportedFileOfShouldBe($code, $path)
+    public function theNameOfTheExportedFileOfShouldBe($code, $path)
     {
-        $executionPath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $executionPath = $this->getMainContext()->getSubcontext('job')->getJobInstanceFilename($code);
 
         if ($path !== $executionPath) {
             throw $this->getMainContext()->createExpectationException(
@@ -147,17 +131,60 @@ class ExportProfilesContext extends PimContext
      * @param string    $code
      * @param TableNode $table
      *
+     * @Then /^export directory of "([^"]*)" should contain the following file:$/
+     *
+     * @throws ExpectationException
+     */
+    public function exportDirectoryOfShouldContainTheFollowingFile($code, TableNode $table)
+    {
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        $path = dirname($jobInstance->getRawParameters()['filePath']);
+
+        $this->checkExportDirectoryFiles(true, $table, $path);
+    }
+
+    /**
+     * @param string    $code
+     * @param TableNode $table
+     *
      * @Then /^export directory of "([^"]*)" should contain the following media:$/
      *
      * @throws ExpectationException
      */
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
     {
-        $config = $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        $path = dirname($jobInstance->getRawParameters()['filePath']);
 
-        $path = dirname($config['filePath']);
+        $this->checkExportDirectoryFiles(true, $table, $path);
+    }
 
-        if (!is_dir($path)) {
+    /**
+     * @param string    $code
+     * @param TableNode $table
+     *
+     * @Then /^export directory of "([^"]*)" should not contain the following media:$/
+     *
+     * @throws ExpectationException
+     */
+    public function exportDirectoryOfShouldNotContainTheFollowingMedia($code, TableNode $table)
+    {
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        $path = dirname($jobInstance->getRawParameters()['filePath']);
+
+        $this->checkExportDirectoryFiles(false, $table, $path);
+    }
+
+    /**
+     * Check if files should be in the export directory of the job with the given $code
+     *
+     * @param bool      $shouldBeInDirectory true if the files should be in the directory, false otherwise
+     * @param TableNode $table               Files to check
+     * @param string    $path                Path of item on filesystem
+     */
+    protected function checkExportDirectoryFiles($shouldBeInDirectory, TableNode $table, $path)
+    {
+        if ($shouldBeInDirectory && !is_dir($path)) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('Directory "%s" doesn\'t exist', $path)
             );
@@ -166,11 +193,36 @@ class ExportProfilesContext extends PimContext
         foreach ($table->getRows() as $data) {
             $file = rtrim($path, '/') . '/' .$data[0];
 
-            if (!is_file($file)) {
+            if (!is_file($file) && $shouldBeInDirectory) {
                 throw $this->getMainContext()->createExpectationException(
                     sprintf('File \"%s\" doesn\'t exist', $file)
                 );
             }
+
+            if (is_file($file) && !$shouldBeInDirectory) {
+                throw $this->getMainContext()->createExpectationException(
+                    sprintf('File \"%s\" exists, but it should not', $file)
+                );
+            }
         }
+    }
+
+    /**
+     * @param string $code
+     *
+     * @throws ExpectationException
+     * @return string
+     *
+     */
+    protected function getExportedFile($code)
+    {
+        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        if (!is_file($filePath)) {
+            throw $this->getMainContext()->createExpectationException(
+                sprintf('File "%s" doesn\'t exist', $filePath)
+            );
+        }
+
+        return $filePath;
     }
 }

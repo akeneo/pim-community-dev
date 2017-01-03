@@ -12,14 +12,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserNotificationRepository extends EntityRepository
+class UserNotificationRepository extends EntityRepository implements UserNotificationRepositoryInterface
 {
     /**
-     * Returns the number of user notifications the user hasn't viewed
-     *
-     * @param UserInterface $user
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function countUnreadForUser(UserInterface $user)
     {
@@ -37,10 +33,7 @@ class UserNotificationRepository extends EntityRepository
     }
 
     /**
-     * Marks user notifications as viewed
-     *
-     * @param UserInterface $user The user
-     * @param int|null      $id   If null all notifications will be marked as viewed
+     * {@inheritdoc}
      */
     public function markAsViewed(UserInterface $user, $id)
     {

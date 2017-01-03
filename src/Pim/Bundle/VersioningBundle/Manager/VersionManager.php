@@ -4,10 +4,13 @@ namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Akeneo\Component\Versioning\Model\Version;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -26,14 +29,10 @@ class VersionManager
      */
     const DEFAULT_SYSTEM_USER = 'admin';
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $realTimeVersioning = true;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $username = self::DEFAULT_SYSTEM_USER;
 
     /**
@@ -43,14 +42,10 @@ class VersionManager
      */
     protected $context;
 
-    /**
-     * @var SmartManagerRegistry
-     */
+    /** @var SmartManagerRegistry */
     protected $registry;
 
-    /**
-     * @var VersionBuilder
-     */
+    /** @var VersionBuilder */
     protected $versionBuilder;
 
     /** @var VersionContext */
@@ -67,7 +62,7 @@ class VersionManager
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->registry       = $registry;
+        $this->registry = $registry;
         $this->versionBuilder = $versionBuilder;
         $this->versionContext = $versionContext;
         $this->eventDispatcher = $eventDispatcher;
@@ -123,7 +118,8 @@ class VersionManager
         }
 
         if ($this->realTimeVersioning) {
-            $this->registry->getManagerForClass(ClassUtils::getClass($versionable))->refresh($versionable);
+            $manager = $this->registry->getManagerForClass(ClassUtils::getClass($versionable));
+            $manager->refresh($versionable);
 
             $createdVersions = $this->buildPendingVersions($versionable);
 
@@ -147,6 +143,10 @@ class VersionManager
                     $previousVersion,
                     $this->versionContext->getContextInfo(ClassUtils::getClass($versionable))
                 );
+
+            if (null !== $previousVersion) {
+                $manager->detach($previousVersion);
+            }
         } else {
             $createdVersions[] = $this->versionBuilder
                 ->createPendingVersion(
@@ -163,7 +163,7 @@ class VersionManager
     /**
      * Get object manager for Version
      *
-     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @return ObjectManager
      */
     public function getObjectManager()
     {
@@ -171,7 +171,7 @@ class VersionManager
     }
 
     /**
-     * @return \Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface
+     * @return VersionRepositoryInterface
      */
     public function getVersionRepository()
     {
@@ -183,7 +183,7 @@ class VersionManager
      *
      * @param object $versionable
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getLogEntries($versionable)
     {

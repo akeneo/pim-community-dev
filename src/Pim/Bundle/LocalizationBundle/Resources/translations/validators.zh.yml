@@ -1,0 +1,5 @@
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 这种类型的值可以使用 {{ decimal_separator }} 来分隔十进制数字。
+"This type of value expects the use of dot (.) to separate decimals.": 这种类型的值可以使用点（.）来分隔十进制数字。
+"This type of value expects the use of comma (,) to separate decimals.": 这种类型的值可以使用逗号（，）来分隔十进制数字。
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 这种类型的值可以使用阿拉伯语十进制分隔符（,）来分隔十进制数字。
+"This type of value expects the use of the format {{ date_format }} for dates.": 这种类型的值可以使用这种格式 {{ date_format }} 来分隔十进制数字。

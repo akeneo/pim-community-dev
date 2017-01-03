@@ -1,6 +1,0 @@
-parameters:
-    pim_webservice.serializer.class: Symfony\Component\Serializer\Serializer
-
-services:
-    pim_webservice.serializer:
-        class: %pim_webservice.serializer.class%

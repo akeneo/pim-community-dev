@@ -18,7 +18,7 @@ define(function (require) {
         cellModuleName = 'oro/datagrid/{{type}}-cell',
         actionModuleName = 'oro/datagrid/{{type}}-action',
         cellTypes = {
-            integer:   'number',
+            integer:   'integer',
             decimal:   'number',
             percent:   'number'
         },

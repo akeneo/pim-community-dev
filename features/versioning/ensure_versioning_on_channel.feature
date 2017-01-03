@@ -26,7 +26,7 @@ Feature: Ensure versioning on channel
     And I visit the "History" tab
     Then there should be 1 update
     Then I am on the currencies page
-    Given I filter by "Activated" with value "yes"
+    Given I filter by "activated" with operator "equals" and value "yes"
     When I deactivate the USD currency
     Given I am on the "tablet" channel page
     Then I visit the "History" tab

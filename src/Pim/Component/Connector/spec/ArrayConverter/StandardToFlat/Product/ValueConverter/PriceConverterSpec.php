@@ -1,0 +1,63 @@
+<?php
+
+namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
+
+use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
+
+class PriceConverterSpec extends ObjectBehavior
+{
+    function let(AttributeColumnsResolver $columnsResolver)
+    {
+        $this->beConstructedWith($columnsResolver, []);
+    }
+
+    function it_converts_price_product_value_from_standard_to_flat_format($columnsResolver)
+    {
+        $columnsResolver->resolveFlatAttributeName('super_price', 'fr_FR', 'ecommerce')
+            ->willReturn('super_price-fr_FR-ecommerce');
+
+        $columnsResolver->resolveFlatAttributeName('super_price', 'de_DE', 'ecommerce')
+            ->willReturn('super_price-de_DE-ecommerce');
+
+        $expected = [
+            'super_price-de_DE-ecommerce-EUR' => '10',
+            'super_price-de_DE-ecommerce-USD' => '9',
+            'super_price-fr_FR-ecommerce-EUR' => '30',
+            'super_price-fr_FR-ecommerce-USD' => '29',
+        ];
+
+        $data = [
+            [
+                'locale' => 'de_DE',
+                'scope'  => 'ecommerce',
+                'data'   => [
+                    [
+                        'data'     => '10',
+                        'currency' => 'EUR'
+                    ],
+                    [
+                        'data'     => '9',
+                        'currency' => 'USD'
+                    ],
+                ]
+            ],
+            [
+                'locale' => 'fr_FR',
+                'scope'  => 'ecommerce',
+                'data'   => [
+                    [
+                        'data'     => '30',
+                        'currency' => 'EUR'
+                    ],
+                    [
+                        'data'     => '29',
+                        'currency' => 'USD'
+                    ],
+                ]
+            ]
+        ];
+
+        $this->convert('super_price', $data)->shouldReturn($expected);
+    }
+}

@@ -1,48 +1,52 @@
 parameters:
-    pim_enrich.controller.attribute_group.class:         Pim\Bundle\EnrichBundle\Controller\AttributeGroupController
-    pim_enrich.controller.category_tree.class:           Pim\Bundle\EnrichBundle\Controller\CategoryTreeController
-    pim_enrich.controller.channel.class:                 Pim\Bundle\EnrichBundle\Controller\ChannelController
-    pim_enrich.controller.currency.class:                Pim\Bundle\EnrichBundle\Controller\CurrencyController
-    pim_enrich.controller.family.class:                  Pim\Bundle\EnrichBundle\Controller\FamilyController
-    pim_enrich.controller.locale.class:                  Pim\Bundle\EnrichBundle\Controller\LocaleController
-    pim_enrich.controller.mass_edit_action.class:        Pim\Bundle\EnrichBundle\Controller\MassEditActionController
-    pim_enrich.controller.attribute.class:               Pim\Bundle\EnrichBundle\Controller\AttributeController
-    pim_enrich.controller.attribute_option.class:        Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
-    pim_enrich.controller.product.class:                 Pim\Bundle\EnrichBundle\Controller\ProductController
-    pim_enrich.controller.association.class:             Pim\Bundle\EnrichBundle\Controller\AssociationController
-    pim_enrich.controller.group.class:                   Pim\Bundle\EnrichBundle\Controller\GroupController
-    pim_enrich.controller.association_type.class:        Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
-    pim_enrich.controller.file.class:                    Pim\Bundle\EnrichBundle\Controller\FileController
-    pim_enrich.controller.variant_group.class:           Pim\Bundle\EnrichBundle\Controller\VariantGroupController
-    pim_enrich.controller.group_type.class:              Pim\Bundle\EnrichBundle\Controller\GroupTypeController
-    pim_enrich.controller.completeness.class:            Pim\Bundle\EnrichBundle\Controller\CompletenessController
-    pim_enrich.controller.sequential_edit.class:         Pim\Bundle\EnrichBundle\Controller\SequentialEditController
-    pim_enrich.controller.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController
-    pim_enrich.controller.job_tracker.class:             Pim\Bundle\EnrichBundle\Controller\JobTrackerController
-    pim_enrich.controller.rest.association_type.class:   Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController
-    pim_enrich.controller.rest.attribute.class:          Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController
-    pim_enrich.controller.rest.attribute_group.class:    Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController
-    pim_enrich.controller.rest.channel.class:            Pim\Bundle\EnrichBundle\Controller\Rest\ChannelController
-    pim_enrich.controller.rest.completeness.class:       Pim\Bundle\EnrichBundle\Controller\Rest\CompletenessController
-    pim_enrich.controller.rest.currency.class:           Pim\Bundle\EnrichBundle\Controller\Rest\CurrencyController
-    pim_enrich.controller.rest.family.class:             Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController
-    pim_enrich.controller.rest.form_extension.class:     Pim\Bundle\EnrichBundle\Controller\Rest\FormExtensionController
-    pim_enrich.controller.rest.group.class:              Pim\Bundle\EnrichBundle\Controller\Rest\GroupController
-    pim_enrich.controller.rest.navigation_history.class: Pim\Bundle\EnrichBundle\Controller\Rest\NavigationHistoryController
-    pim_enrich.controller.rest.locale.class:             Pim\Bundle\EnrichBundle\Controller\Rest\LocaleController
-    pim_enrich.controller.rest.measures.class:           Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
-    pim_enrich.controller.rest.media.class:              Pim\Bundle\EnrichBundle\Controller\Rest\MediaController
-    pim_enrich.controller.rest.product.class:            Pim\Bundle\EnrichBundle\Controller\Rest\ProductController
-    pim_enrich.controller.rest.product_category.class:   Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController
-    pim_enrich.controller.rest.product_comment.class:    Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController
-    pim_enrich.controller.rest.variant_group.class:      Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupController
-    pim_enrich.controller.rest.versioning.class:         Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController
-    pim_enrich.controller.rest.attribute_option.class:   Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController
+    pim_enrich.controller.attribute_group.class:              Pim\Bundle\EnrichBundle\Controller\AttributeGroupController
+    pim_enrich.controller.category_tree.class:                Pim\Bundle\EnrichBundle\Controller\CategoryTreeController
+    pim_enrich.controller.channel.class:                      Pim\Bundle\EnrichBundle\Controller\ChannelController
+    pim_enrich.controller.currency.class:                     Pim\Bundle\EnrichBundle\Controller\CurrencyController
+    pim_enrich.controller.family.class:                       Pim\Bundle\EnrichBundle\Controller\FamilyController
+    pim_enrich.controller.locale.class:                       Pim\Bundle\EnrichBundle\Controller\LocaleController
+    pim_enrich.controller.attribute.class:                    Pim\Bundle\EnrichBundle\Controller\AttributeController
+    pim_enrich.controller.attribute_option.class:             Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
+    pim_enrich.controller.product.class:                      Pim\Bundle\EnrichBundle\Controller\ProductController
+    pim_enrich.controller.product.mass_edit_action.class:     Pim\Bundle\EnrichBundle\Controller\MassEdit\ProductController
+    pim_enrich.controller.family.mass_edit_action.class:      Pim\Bundle\EnrichBundle\Controller\MassEdit\FamilyController
+    pim_enrich.controller.association.class:                  Pim\Bundle\EnrichBundle\Controller\AssociationController
+    pim_enrich.controller.group.class:                        Pim\Bundle\EnrichBundle\Controller\GroupController
+    pim_enrich.controller.association_type.class:             Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
+    pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
+    pim_enrich.controller.variant_group.class:                Pim\Bundle\EnrichBundle\Controller\VariantGroupController
+    pim_enrich.controller.group_type.class:                   Pim\Bundle\EnrichBundle\Controller\GroupTypeController
+    pim_enrich.controller.completeness.class:                 Pim\Bundle\EnrichBundle\Controller\CompletenessController
+    pim_enrich.controller.sequential_edit.class:              Pim\Bundle\EnrichBundle\Controller\SequentialEditController
+    pim_enrich.controller.job_tracker.class:                  Pim\Bundle\EnrichBundle\Controller\JobTrackerController
+    pim_enrich.controller.rest.association_type.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController
+    pim_enrich.controller.rest.attribute.class:               Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController
+    pim_enrich.controller.rest.attribute_group.class:         Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController
+    pim_enrich.controller.rest.category.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CategoryController
+    pim_enrich.controller.rest.channel.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ChannelController
+    pim_enrich.controller.rest.completeness.class:            Pim\Bundle\EnrichBundle\Controller\Rest\CompletenessController
+    pim_enrich.controller.rest.currency.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CurrencyController
+    pim_enrich.controller.rest.family.class:                  Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController
+    pim_enrich.controller.rest.form_extension.class:          Pim\Bundle\EnrichBundle\Controller\Rest\FormExtensionController
+    pim_enrich.controller.rest.group.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\GroupController
+    pim_enrich.controller.rest.locale.class:                  Pim\Bundle\EnrichBundle\Controller\Rest\LocaleController
+    pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
+    pim_enrich.controller.rest.media.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\MediaController
+    pim_enrich.controller.rest.navigation_history.class:      Pim\Bundle\EnrichBundle\Controller\Rest\NavigationHistoryController
+    pim_enrich.controller.rest.product.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ProductController
+    pim_enrich.controller.rest.product_category.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController
+    pim_enrich.controller.rest.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController
+    pim_enrich.controller.rest.variant_group.class:           Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupController
+    pim_enrich.controller.rest.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupAttributeController
+    pim_enrich.controller.rest.versioning.class:              Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController
+    pim_enrich.controller.mass_edit.abstract:                 Pim\Bundle\EnrichBundle\Controller\MassEdit\AbstractMassEditController
+    pim_enrich.controller.rest.attribute_option.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController
+
 
 services:
     pim_enrich.controller.attribute_group:
         scope: request
-        class: %pim_enrich.controller.attribute_group.class%
+        class: '%pim_enrich.controller.attribute_group.class%'
         arguments:
             - '@request'
             - '@router'
@@ -60,7 +64,7 @@ services:
 
     pim_enrich.controller.category_tree.product:
         scope: request
-        class: %pim_enrich.controller.category_tree.class%
+        class: '%pim_enrich.controller.category_tree.class%'
         arguments:
             - '@event_dispatcher'
             - '@pim_user.context.user'
@@ -71,11 +75,11 @@ services:
             - '@oro_security.security_facade'
             - { related_entity: product, form_type: pim_category, acl: pim_enrich_product, route: pim_enrich }
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.channel:
         scope: request
-        class: %pim_enrich.controller.channel.class%
+        class: '%pim_enrich.controller.channel.class%'
         arguments:
             - '@request'
             - '@router'
@@ -88,7 +92,7 @@ services:
 
     pim_enrich.controller.currency:
         scope: request
-        class: %pim_enrich.controller.currency.class%
+        class: '%pim_enrich.controller.currency.class%'
         arguments:
             - '@request'
             - '@router'
@@ -96,15 +100,15 @@ services:
 
     pim_enrich.controller.family:
         scope: request
-        class: %pim_enrich.controller.family.class%
+        class: '%pim_enrich.controller.family.class%'
         arguments:
             - '@request'
             - '@templating'
             - '@router'
             - '@form.factory'
             - '@translator'
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.manager.channel'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.family'
             - '@pim_enrich.form.handler.family'
             - '@pim_enrich.form.family'
@@ -112,12 +116,13 @@ services:
             - '@pim_catalog.remover.family'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.family'
-            - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.family.class%
+            - '@validator'
+            - '%pim_catalog.entity.attribute.class%'
+            - '%pim_catalog.entity.family.class%'
 
     pim_enrich.controller.locale:
         scope: request
-        class: %pim_enrich.controller.locale.class%
+        class: '%pim_enrich.controller.locale.class%'
         arguments:
             - '@request'
             - '@router'
@@ -125,7 +130,7 @@ services:
 
     pim_enrich.controller.attribute:
         scope: request
-        class: %pim_enrich.controller.attribute.class%
+        class: '%pim_enrich.controller.attribute.class%'
         arguments:
             - '@request'
             - '@router'
@@ -133,9 +138,6 @@ services:
             - '@translator'
             - '@pim_enrich.form.handler.attribute'
             - '@pim_enrich.form.attribute'
-            - '@pim_catalog.manager.attribute'
-            - '@pim_catalog.factory.attribute'
-            - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.repository.locale'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.attribute'
@@ -143,80 +145,80 @@ services:
             - '@pim_catalog.saver.attribute_option'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.group'
-            - %akeneo_measure.measures_config%
+            - '@pim_catalog.registry.attribute_type'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.factory.attribute_option_value'
+            - '%akeneo_measure.measures_config%'
 
     pim_enrich.controller.attribute_option:
         scope: request
-        class: %pim_enrich.controller.attribute_option.class%
+        class: '%pim_enrich.controller.attribute_option.class%'
         arguments:
             - '@pim_internal_api_serializer'
             - '@doctrine.orm.entity_manager'
             - '@form.factory'
             - '@fos_rest.view_handler'
-            - '@pim_catalog.manager.attribute'
-            - '@pim_catalog.manager.attribute_option'
+            - '@pim_catalog.manager.attribute_options_sorter'
+            - '@pim_catalog.factory.attribute_option'
             - '@pim_catalog.saver.attribute_option'
             - '@pim_catalog.remover.attribute_option'
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
 
     pim_enrich.controller.product:
         scope: request
-        class: %pim_enrich.controller.product.class%
+        class: '%pim_enrich.controller.product.class%'
         arguments:
-            - '@request'
-            - '@templating'
             - '@router'
             - '@security.token_storage'
             - '@form.factory'
-            - '@validator'
             - '@translator'
-            - '@event_dispatcher'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.manager.category'
             - '@pim_catalog.repository.category'
             - '@pim_user.context.user'
-            - '@pim_versioning.manager.version'
             - '@oro_security.security_facade'
-            - '@pim_catalog.manager.product_category'
             - '@pim_catalog.saver.product'
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.builder.product'
-            - '@pim_catalog.factory.category'
+            - '%pim_catalog.entity.category.class%'
 
     pim_enrich.controller.association:
-        class: %pim_enrich.controller.association.class%
+        class: '%pim_enrich.controller.association.class%'
         arguments:
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.builder.product'
             - '@templating'
 
-    pim_enrich.controller.mass_edit_action:
-        scope: request
-        class: %pim_enrich.controller.mass_edit_action.class%
+    pim_enrich.controller.product.mass_edit_action:
+        class: '%pim_enrich.controller.product.mass_edit_action.class%'
+        parent: pim_enrich.controller.mass_edit.abtsract
+
+    pim_enrich.controller.family.mass_edit_action:
+        class: '%pim_enrich.controller.family.mass_edit_action.class%'
+        parent: pim_enrich.controller.mass_edit.abtsract
+
+    pim_enrich.controller.mass_edit.abtsract:
+        class: '%pim_enrich.controller.mass_edit.abstract%'
+        abstract: true
         arguments:
-            - '@request'
-            - '@templating'
             - '@router'
-            - '@security.token_storage'
-            - '@doctrine'
+            - '@templating'
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
-            - '@pim_connector.launcher.simple_job_launcher'
-            - '@akeneo_batch.job_repository'
-            - '@akeneo_batch.connectors'
-            - '@pim_enrich.mass_edit_action.operation.registry'
             - '@pim_enrich.mass_edit_action.form_resolver'
-            - { family-grid: 'pim_enrich_family_index', default: 'pim_enrich_product_index' }
+            - '@pim_enrich.mass_edit_action.operation.registry'
+            - '@pim_enrich.mass_edit_action.operation_job_launcher'
 
     pim_enrich.controller.group:
         scope: request
-        class: %pim_enrich.controller.group.class%
+        class: '%pim_enrich.controller.group.class%'
         arguments:
             - '@request'
             - '@templating'
             - '@router'
-            - '@pim_catalog.manager.group'
+            - '@pim_catalog.repository.group_type'
             - '@pim_enrich.form.handler.group'
             - '@pim_enrich.form.group'
             - '@pim_catalog.factory.group'
@@ -224,7 +226,7 @@ services:
 
     pim_enrich.controller.association_type:
         scope: request
-        class: %pim_enrich.controller.association_type.class%
+        class: '%pim_enrich.controller.association_type.class%'
         arguments:
             - '@request'
             - '@router'
@@ -236,10 +238,10 @@ services:
             - '@pim_catalog.repository.association_type'
 
     pim_enrich.controller.file:
-        class: %pim_enrich.controller.file.class%
+        class: '%pim_enrich.controller.file.class%'
         arguments:
             - '@liip_imagine.controller'
-            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
@@ -247,23 +249,18 @@ services:
 
     pim_enrich.controller.variant_group:
         scope: request
-        class: %pim_enrich.controller.variant_group.class%
+        class: '%pim_enrich.controller.variant_group.class%'
         arguments:
-            - '@request'
-            - '@templating'
             - '@router'
-            - '@pim_catalog.manager.group'
+            - '@pim_catalog.repository.group_type'
             - '@pim_enrich.form.handler.variant_group'
             - '@pim_enrich.form.variant_group'
             - '@pim_catalog.factory.group'
-            - '@form.factory'
-            - '@pim_catalog.remover.group'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.resolver.variant_group_attributes'
+            - '@pim_catalog.builder.product_template'
 
     pim_enrich.controller.group_type:
         scope: request
-        class: %pim_enrich.controller.group_type.class%
+        class: '%pim_enrich.controller.group_type.class%'
         arguments:
             - '@request'
             - '@router'
@@ -273,17 +270,17 @@ services:
             - '@pim_catalog.remover.group_type'
 
     pim_enrich.controller.completeness:
-        class: %pim_enrich.controller.completeness.class%
+        class: '%pim_enrich.controller.completeness.class%'
         arguments:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_user.context.user'
             - '@templating'
 
     pim_enrich.controller.sequential_edit:
         scope: request
-        class: %pim_enrich.controller.sequential_edit.class%
+        class: '%pim_enrich.controller.sequential_edit.class%'
         arguments:
             - '@router'
             - '@pim_datagrid.extension.mass_action.dispatcher'
@@ -291,39 +288,27 @@ services:
             - '@pim_user.context.user'
             - '@pim_internal_api_serializer'
 
-    pim_enrich.controller.variant_group_attribute:
-        scope: request
-        class: %pim_enrich.controller.variant_group_attribute.class%
-        arguments:
-            - '@router'
-            - '@form.factory'
-            - '@pim_catalog.repository.group'
-            - '@pim_catalog.saver.group'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.builder.product_template'
-            - '@pim_catalog.resolver.variant_group_attributes'
-
     pim_enrich.controller.job_tracker:
         scope: request
-        class: %pim_enrich.controller.job_tracker.class%
+        class: '%pim_enrich.controller.job_tracker.class%'
         arguments:
             - '@templating'
             - '@translator'
             - '@event_dispatcher'
             - '@pim_import_export.repository.job_execution'
-            - '@pim_base_connector.event_listener.archivist'
+            - '@pim_connector.event_listener.archivist'
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'
 
     pim_enrich.controller.rest.association_type:
         scope: request
-        class: %pim_enrich.controller.rest.association_type.class%
+        class: '%pim_enrich.controller.rest.association_type.class%'
         arguments:
             - '@pim_catalog.repository.association_type'
             - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.attribute:
-        class: %pim_enrich.controller.rest.attribute.class%
+        class: '%pim_enrich.controller.rest.attribute.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_internal_api_serializer'
@@ -332,25 +317,31 @@ services:
             - '@pim_enrich.repository.attribute.search'
 
     pim_enrich.controller.rest.attribute_group:
-        class: %pim_enrich.controller.rest.attribute_group.class%
+        class: '%pim_enrich.controller.rest.attribute_group.class%'
         arguments:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_serializer'
             - '@pim_catalog.filter.chained'
 
+    pim_enrich.controller.rest.category:
+        class: '%pim_enrich.controller.rest.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_enrich.twig.category_extension'
+
     pim_enrich.controller.rest.currency:
-        class: %pim_enrich.controller.rest.currency.class%
+        class: '%pim_enrich.controller.rest.currency.class%'
         arguments:
             - '@pim_catalog.repository.currency'
 
     pim_enrich.controller.rest.channel:
-        class: %pim_enrich.controller.rest.channel.class%
+        class: '%pim_enrich.controller.rest.channel.class%'
         arguments:
             - '@pim_catalog.repository.channel'
-            - '@pim_serializer'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.completeness:
-        class: %pim_enrich.controller.rest.completeness.class%
+        class: '%pim_enrich.controller.rest.completeness.class%'
         arguments:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.product'
@@ -358,9 +349,11 @@ services:
             - '@pim_user.context.user'
             - '@pim_enrich.normalizer.completeness_collection'
             - '@pim_catalog.filter.chained'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog_product_storage_driver%'
 
     pim_enrich.controller.rest.family:
-        class: %pim_enrich.controller.rest.family.class%
+        class: '%pim_enrich.controller.rest.family.class%'
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_internal_api_serializer'
@@ -368,12 +361,12 @@ services:
 
     pim_enrich.controller.rest.form_extension:
         scope: request
-        class: %pim_enrich.controller.rest.form_extension.class%
+        class: '%pim_enrich.controller.rest.form_extension.class%'
         arguments:
             - '@pim_enrich.provider.form_extension'
 
     pim_enrich.controller.rest.group:
-        class: %pim_enrich.controller.rest.group.class%
+        class: '%pim_enrich.controller.rest.group.class%'
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.repository.product'
@@ -388,33 +381,33 @@ services:
             - '@pim_navigation.saver.navigation_history_item'
 
     pim_enrich.controller.rest.locale:
-        class: %pim_enrich.controller.rest.locale.class%
+        class: '%pim_enrich.controller.rest.locale.class%'
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.measures:
-        class: %pim_enrich.controller.rest.measures.class%
+        class: '%pim_enrich.controller.rest.measures.class%'
         arguments:
-            - %akeneo_measure.measures_config%
+            - '%akeneo_measure.measures_config%'
 
     pim_enrich.controller.rest.media:
-        class: %pim_enrich.controller.rest.media.class%
+        class: '%pim_enrich.controller.rest.media.class%'
         arguments:
             - '@validator'
             - '@akeneo_file_storage.file_storage.path_generator'
-            - %tmp_storage_dir%
+            - '%tmp_storage_dir%'
 
     pim_enrich.controller.rest.product:
-        class: %pim_enrich.controller.rest.product.class%
+        class: '%pim_enrich.controller.rest.product.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.saver.product'
             - '@pim_internal_api_serializer'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.filter.product_edit_data'
@@ -424,14 +417,14 @@ services:
             - '@pim_catalog.comparator.filter.product'
 
     pim_enrich.controller.rest.product_category:
-        class: %pim_enrich.controller.rest.product_category.class%
+        class: '%pim_enrich.controller.rest.product_category.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_category'
 
     pim_enrich.controller.rest.product_comment:
         scope: request
-        class: %pim_enrich.controller.rest.product_comment.class%
+        class: '%pim_enrich.controller.rest.product_comment.class%'
         arguments:
             - '@security.token_storage'
             - '@form.factory'
@@ -443,20 +436,37 @@ services:
             - '@validator'
 
     pim_enrich.controller.rest.variant_group:
-        class: %pim_enrich.controller.rest.variant_group.class%
+        class: '%pim_enrich.controller.rest.variant_group.class%'
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_internal_api_serializer'
+            - '@pim_catalog.updater.variant_group'
+            - '@pim_catalog.saver.group'
+            - '@pim_catalog.remover.group'
+            - '@pim_user.context.user'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.validator.product'
+            - '@pim_enrich.normalizer.variant_group_violation'
+            - '@pim_enrich.filter.variant_group_edit_data'
+
+    pim_enrich.controller.rest.variant_group_attribute:
+        scope: request
+        class: '%pim_enrich.controller.rest.variant_group_attribute.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.saver.group'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.builder.product_template'
 
     pim_enrich.controller.rest.versioning:
-        class: %pim_enrich.controller.rest.versioning.class%
+        class: '%pim_enrich.controller.rest.versioning.class%'
         arguments:
             - '@pim_versioning.repository.version'
             - '@pim_catalog.resolver.fqcn'
             - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.attribute_option:
-        class: %pim_enrich.controller.rest.attribute_option.class%
+        class: '%pim_enrich.controller.rest.attribute_option.class%'
         arguments:
             - '@pim_enrich.repository.attribute_option.search'
             - '@pim_enrich.normalizer.structured.attribute_option'

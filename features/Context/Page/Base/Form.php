@@ -2,8 +2,8 @@
 
 namespace Context\Page\Base;
 
-use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\Element;
+use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
@@ -26,14 +26,8 @@ class Form extends Base
 
         $this->elements = array_merge(
             [
-                'Tabs'                            => ['css' => '#form-navbar'],
-                'Oro tabs'                        => ['css' => '.navbar.scrollspy-nav'],
                 'Dialog'                          => ['css' => 'div.modal'],
-                'Form tabs'                       => ['css' => '.nav-tabs.form-tabs'],
-                'Associations list'               => ['css' => '#associations-list'],
-                'Active tab'                      => ['css' => '.form-horizontal .tab-pane.active'],
-                'Panel selector'                  => ['css' => '.panel-selector'],
-                'Panel container'                 => ['css' => '.panel-container'],
+                'Associations list'               => ['css' => '.associations-list'],
                 'Groups'                          => ['css' => '.tab-groups'],
                 'Form Groups'                     => ['css' => '.group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
@@ -42,8 +36,12 @@ class Form extends Base
                 'Available attributes list'       => ['css' => '.pimmultiselect .ui-multiselect-checkboxes'],
                 'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
                 'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
-                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid'],
-                'Save'                            => ['css' => 'button.btn-submit']
+                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid, .tab-container .history'],
+                'Save'                            => ['css' => 'button.btn-submit'],
+                'Panel sidebar'                   => [
+                    'css'        => '.edit-form > .content',
+                    'decorators' => ['Pim\Behat\Decorator\Page\PanelableDecorator']
+                ]
             ],
             $this->elements
         );
@@ -63,38 +61,6 @@ class Form extends Base
     public function saveAndClose()
     {
         $this->pressButton('Save and close');
-    }
-
-    /**
-     * Visit the specified tab
-     *
-     * @param string $tab
-     */
-    public function visitTab($tab)
-    {
-        $tabs = $this->spin(function () {
-            $tabs = $this->find('css', $this->elements['Tabs']['css']);
-            if (!$tabs) {
-                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
-            }
-            if (!$tabs) {
-                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
-            }
-
-            return $tabs;
-        }, 'Could not find any tabs container element');
-
-        $tabDom = $this->spin(function () use ($tabs, $tab) {
-            return $tabs->findLink($tab);
-        }, sprintf('Could not find a tab named "%s"', $tab));
-
-        $this->spin(function () {
-            $loading = $this->find('css', '#loading-wrapper');
-
-            return null === $loading || !$loading->isVisible();
-        }, sprintf('Could not visit tab %s because of loading wrapper', $tab));
-
-        $tabDom->click();
     }
 
     /**
@@ -171,11 +137,15 @@ class Form extends Base
     /**
      * Get the specified tab
      *
+     * @param string $tab
+     *
      * @return NodeElement
      */
     public function getTab($tab)
     {
-        return $this->find('css', sprintf('a:contains("%s")', $tab));
+        return $this->spin(function () use ($tab) {
+            return $this->find('css', sprintf('a:contains("%s")', $tab));
+        }, sprintf('Cannot find the tab named "%s"', $tab));
     }
 
     /**
@@ -190,44 +160,49 @@ class Form extends Base
      */
     public function visitGroup($group)
     {
-        $groups = $this->find('css', $this->elements['Groups']['css']);
-        if (!$groups) {
-            $groups = $this->getElement('Form Groups');
+        $this->spin(function () use ($group) {
+            $groups = $this->find('css', $this->elements['Groups']['css']);
 
-            $groupsContainer = $this->spin(function () use ($groups, $group) {
-                return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
-            });
+            if (null === $groups) {
+                $groups = $this->getElement('Form Groups');
 
-            $button = null;
+                $groupsContainer = $groups->find('css', sprintf('.group-label:contains("%s")', $group));
+                $button = null;
 
-            if ($groupsContainer) {
-                $button = $groupsContainer->getParent();
+                if (null !== $groupsContainer) {
+                    $button = $groupsContainer->getParent();
+                }
+
+                if (null === $button) {
+                    $labels = array_map(function ($element) {
+                        return $element->getText();
+                    }, $groups->findAll('css', '.group-label'));
+
+                    throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
+                        $group,
+                        implode(', ', $labels)
+                    ));
+                }
+
+                $button->click();
+            } else {
+                $groups->clickLink($group);
             }
 
-            if (!$button) {
-                $labels = array_map(function ($element) {
-                    return $element->getText();
-                }, $groups->findAll('css', '.group-label'));
-                throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
-                    $group,
-                    implode(', ', $labels)
-                ));
-            }
-            $button->click();
-        } else {
-            $groups->clickLink($group);
-        }
+            return true;
+        }, 'Cannot find the group selector.');
 
         return true;
     }
 
-    public function selectAssociation($assocation)
+    /**
+     * @return NodeElement
+     */
+    public function getAssociationsList()
     {
-        $associations = $this->spin(function () {
+        return $this->spin(function () {
             return $this->find('css', $this->elements['Associations list']['css']);
-        });
-
-        $associations->clickLink($assocation);
+        }, sprintf('Cannot find association list "%s"', $this->elements['Associations list']['css']));
     }
 
     /**
@@ -239,25 +214,28 @@ class Form extends Base
      */
     public function getSection($title)
     {
-        return $this->find('css', sprintf('div.accordion-heading:contains("%s")', $title));
+        return $this->find('css', sprintf('div.tabsection-title:contains("%s")', $title));
     }
 
     /**
+     * @param string $name
      * {@inheritdoc}
      */
     public function findField($name)
     {
-        if ($tab = $this->find('css', $this->elements['Active tab']['css'])) {
-            return $tab->findField($name);
-        }
+        return $this->spin(function () use ($name) {
+            if ($tab = $this->find('css', $this->elements['Active tab']['css'])) {
+                return $tab->findField($name);
+            }
 
-        return parent::findField($name);
+            return parent::findField($name);
+        }, sprintf('Could not find field "%s"', $name));
     }
 
     /**
      * Find field container
      *
-     * @param string $label
+     * @param string $name
      *
      * @throws ElementNotFoundException
      *
@@ -265,15 +243,13 @@ class Form extends Base
      */
     public function findFieldContainer($name)
     {
-        $label = $this->find('css', sprintf('label:contains("%s")', $name));
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
+        $label = $this->spin(function () use ($name) {
+            return $this->find('css', sprintf('label:contains("%s")', $name));
+        }, sprintf('Label containing text "%s" not found'), $name);
 
-        $field = $label->getParent()->find('css', 'input,textarea');
-        if (!$field) {
-            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
-        }
+        $field = $this->spin(function () use ($label) {
+            return $label->getParent()->find('css', 'input,textarea');
+        }, sprintf('Can not find any input or textearea sibling of "%s" label', $name));
 
         return $field->getParent();
     }
@@ -375,7 +351,7 @@ class Form extends Base
                 return $field;
             }
             echo "retry find file input" . PHP_EOL;
-        });
+        }, sprintf('Cannot find "%s" element', $locator));
 
         $field->attachFile($path);
         $this->getSession()->executeScript('$(\'.edit .field-input input[type="file"]\').trigger(\'change\');');
@@ -460,7 +436,9 @@ class Form extends Base
      */
     public function getHistoryRows()
     {
-        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+        return $this->spin(function () {
+            return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+        }, 'Cannot find the history rows.');
     }
 
     /**
@@ -468,9 +446,9 @@ class Form extends Base
      */
     public function expandAttribute($attribute)
     {
-        if (null === $label = $this->find('css', sprintf('label:contains("%s")', $attribute))) {
-            throw new \InvalidArgumentException(sprintf('Cannot find attribute "%s" field', $attribute));
-        }
+        $label = $this->spin(function () use ($attribute) {
+            return $this->find('css', sprintf('label:contains("%s")', $attribute));
+        }, sprintf('Cannot find attribute "%s" field', $attribute));
 
         $this->expand($label);
     }
@@ -491,20 +469,20 @@ class Form extends Base
      *
      * @throws \InvalidArgumentException
      */
-    public function findFieldInAccordion($groupField, $field)
+    public function findFieldInTabSection($groupField, $field)
     {
-        $accordion = $this->find(
+        $tabSection = $this->find(
             'css',
-            sprintf('.accordion-heading a:contains("%s")', $groupField)
+            sprintf('.tabsection-title:contains("%s")', $groupField)
         );
 
-        if (!$accordion) {
+        if (!$tabSection) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find accordion %s', $groupField)
+                sprintf('Could not find tab section "%s"', $groupField)
             );
         }
 
-        $accordionContent = $this->find('css', $accordion->getAttribute('href'));
+        $accordionContent = $tabSection->getParent()->find('css', '.tabsection-content');
 
         if (!$accordionContent->findField($field)) {
             throw new \InvalidArgumentException(
@@ -523,7 +501,7 @@ class Form extends Base
         foreach ($fields as $field => $value) {
             $field = $this->spin(function () use ($field) {
                 return $this->find('css', sprintf('.modal-body .control-label:contains("%s") input', $field));
-            });
+            }, sprintf('Cannot find "%s" in popin field', $field));
 
             $field->setValue($value);
             $this->getSession()
@@ -544,7 +522,7 @@ class Form extends Base
     {
         $field = $this->spin(function () use ($label) {
             return $this->findField($label);
-        });
+        }, sprintf('Cannot find "%s" field', $label));
 
         // TODO: Improve this part to make it work with regular selects if necessary
         $field->find('css', 'input[type="text"]')->click();
@@ -559,7 +537,7 @@ class Form extends Base
 
                 return $choices;
             }
-        });
+        }, 'Cannot find "select2-drop" element');
 
         if ($isExpected) {
             foreach ($choices as $choice) {
@@ -628,12 +606,12 @@ class Form extends Base
     /**
      * Extracts and return the label NodeElement, identified by $field content and $element
      *
-     * @param string  $field
-     * @param Element $element
+     * @param string           $field
+     * @param ElementInterface $element
      *
      * @return \Behat\Mink\Element\NodeElement
      */
-    protected function extractLabelElement($field, $element)
+    protected function extractLabelElement($field, ElementInterface $element = null)
     {
         $subLabelContent = null;
         $channel         = null;
@@ -648,7 +626,7 @@ class Form extends Base
         if ($element) {
             $label = $this->spin(function () use ($element, $labelContent) {
                 return $element->find('css', sprintf('label:contains("%s")', $labelContent));
-            });
+            }, sprintf('Cannot find "%s" label', $labelContent));
         } else {
             $labeParts = explode(' ', $labelContent);
             $channel   = in_array(reset($labeParts), ['mobile', 'ecommerce', 'print', 'tablet']) ?
@@ -661,7 +639,7 @@ class Form extends Base
 
             $label = $this->spin(function () use ($labelContent) {
                 return $this->find('css', sprintf('label:contains("%s")', $labelContent));
-            });
+            }, sprintf('Cannot find "%s" label', $labelContent));
         }
 
         if (!$label) {
@@ -714,11 +692,11 @@ class Form extends Base
 
             $field = $this->find('css', sprintf('#%s', $for));
 
-            if ($field->getTagName() === 'select') {
+            if (null !== $field && $field->getTagName() === 'select') {
                 return 'select';
             }
 
-            if (false !== strpos($field->getAttribute('class'), 'wysiwyg')) {
+            if (null !== $field && false !== strpos($field->getAttribute('class'), 'wysiwyg')) {
                 return 'wysiwyg';
             }
         }
@@ -740,58 +718,12 @@ class Form extends Base
      */
     protected function fillMultiSelect2Field(NodeElement $label, $value)
     {
-        $allValues          = explode(',', $value);
-        $selectedValues     = $label->getParent()->findAll('css', '.select2-search-choice');
-        $selectedTextValues = array_map(function ($selectedValue) {
-            return $selectedValue->getText();
-        }, $selectedValues);
+        $field = $this->decorate(
+            $label->getParent()->find('css', '.select2-container'),
+            ['Pim\Behat\Decorator\Field\Select2Decorator']
+        );
 
-        // Delete tag from right to left to prevent select2 DOM change
-        $selectedValues = array_reverse($selectedValues);
-
-        foreach ($selectedValues as $selectedValue) {
-            if (false === in_array($selectedValue->getText(), $allValues)) {
-                $closeButton = $selectedValue->find('css', 'a');
-
-                if (!$closeButton) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'Could not find "%s" close button for "%s"',
-                            trim($selectedValue->getText()),
-                            $label->getText()
-                        )
-                    );
-                }
-
-                $closeButton->click();
-            }
-        }
-
-        $allValues = array_filter($allValues);
-
-        if (1 === count($allValues) && null !== $label->getParent()->find('css', 'select')) {
-            $value = array_shift($allValues);
-            $this->fillSelectField($label, $value);
-        }
-
-        // Fill in remaining values
-        $remainingValues = array_diff($allValues, $selectedTextValues);
-        foreach ($remainingValues as $value) {
-            if (trim($value)) {
-                $label->click();
-                $this->getDriver()->executeScript("jQuery('.select2-drop-mask').click();");
-                $label->click();
-
-                $option = $this->spin(function () use ($value) {
-                    return $this->find(
-                        'css',
-                        sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', trim($value))
-                    );
-                }, sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText()));
-
-                $option->click();
-            }
-        }
+        $field->setValue($value);
     }
 
     /**
@@ -811,7 +743,7 @@ class Form extends Base
 
                 $field = $this->spin(function () use ($value) {
                     return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
-                });
+                }, sprintf('Cannot find "%s" select2 element', $value));
 
                 $field->click();
 
@@ -830,7 +762,7 @@ class Form extends Base
      * @param NodeElement $label
      * @param string      $value
      */
-    protected function fillSelectField(NodeElement$label, $value)
+    protected function fillSelectField(NodeElement $label, $value)
     {
         $field = $label->getParent()->find('css', 'select');
 
@@ -900,7 +832,7 @@ class Form extends Base
      */
     protected function fillCompoundField(NodeElement $label, $value)
     {
-        if (! $label->subLabelContent) {
+        if (!$label->subLabelContent) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The "%s" field is compound but the sub label was not provided',

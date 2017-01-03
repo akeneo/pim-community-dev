@@ -2,12 +2,12 @@
 
 namespace Pim\Component\ReferenceData\Updater\Setter;
 
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\MethodNameGuesser;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -37,7 +37,7 @@ class ReferenceDataSetter extends AbstractAttributeSetter
         parent::__construct($productBuilder, $attrValidatorHelper);
 
         $this->repositoryResolver = $repositoryResolver;
-        $this->supportedTypes     = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**

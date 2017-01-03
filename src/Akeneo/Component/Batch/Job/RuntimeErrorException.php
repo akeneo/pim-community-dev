@@ -2,8 +2,6 @@
 
 namespace Akeneo\Component\Batch\Job;
 
-use RuntimeException;
-
 /**
  * Exception that stops the job execution
  * Its message will be translated
@@ -21,7 +19,7 @@ class RuntimeErrorException extends \RuntimeException
      * @param string $message
      * @param array  $messageParameters
      */
-    public function __construct($message, array $messageParameters = array())
+    public function __construct($message, array $messageParameters = [])
     {
         parent::__construct($message);
 

@@ -2,6 +2,7 @@
 
 namespace Context\Page\Attribute;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Form;
 
 /**
@@ -53,23 +54,59 @@ class Creation extends Form
      * Add an attribute option
      *
      * @param string $name
+     * @param array  $labels
      */
     public function addOption($name, array $labels = [])
     {
-        if (!$this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
-            $this->getElement('add_option_button')->click();
-            $this->getSession()->wait($this->getTimeout());
+        if (null === $this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
+            $this->createOption();
         }
 
-        $rows = $this->getOptionsElement();
-        $row  = end($rows);
+        $this->fillLastOption($name, $labels);
+        $this->saveLastOption();
+    }
+
+    public function createOption()
+    {
+        $this->spin(function () {
+            $this->getElement('add_option_button')->click();
+
+            return true;
+        }, 'Cannot add a new attribute option');
+
+        $this->spin(function () {
+            return $this->getElement('attribute_option_table')->find('css', '.attribute_option_code');
+        }, 'The click on new option has not added a new line.');
+    }
+
+    /**
+     * @param string $name
+     * @param array  $labels
+     */
+    public function fillLastOption($name, $labels = [])
+    {
+        $row = $this->getLastOption();
 
         $row->find('css', '.attribute_option_code')->setValue($name);
 
         foreach ($labels as $locale => $label) {
             $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale))->setValue($label);
         }
-        $row->find('css', '.btn.update-row')->click();
+    }
+
+    public function saveLastOption()
+    {
+        $this->getLastOption()->find('css', '.btn.update-row')->click();
+    }
+
+    /**
+     * @return NodeElement
+     */
+    protected function getLastOption()
+    {
+        $rows = $this->getOptionsElement();
+
+        return end($rows);
     }
 
     /**
@@ -117,7 +154,7 @@ class Creation extends Form
                     $row = $this->find('css', $this->elements['new_option']['css']);
 
                     return null === $row;
-                });
+                }, 'Cannot find new option button in attribute option table');
             }
 
             return true;

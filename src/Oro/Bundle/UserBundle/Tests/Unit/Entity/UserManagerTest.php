@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Entity;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactory;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -11,7 +12,7 @@ use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
     const USER_CLASS = 'Pim\Bundle\UserBundle\Entity\UserInterface';
-    const TEST_NAME  = 'Jack';
+    const TEST_NAME = 'Jack';
     const TEST_EMAIL = 'jack@jackmail.net';
 
     /**
@@ -24,6 +25,11 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected $userManager;
 
+    /**
+     * @var SimpleFactory
+     */
+    protected $userFactory;
+
     protected $om;
     protected $repository;
 
@@ -33,10 +39,10 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');
         }
 
-        $ef    = new EncoderFactory([static::USER_CLASS => new MessageDigestPasswordEncoder('sha512')]);
+        $ef = new EncoderFactory([static::USER_CLASS => new MessageDigestPasswordEncoder('sha512')]);
         $class = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
 
-        $this->om         = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
 
         $this->om
@@ -56,6 +62,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(static::USER_CLASS));
 
         $this->userManager = new UserManager(static::USER_CLASS, $this->om, $ef);
+        $this->userFactory = new SimpleFactory(static::USER_CLASS);
     }
 
     public function testGetClass()
@@ -205,6 +212,6 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function getUser()
     {
-        return $this->userManager->createUser();
+        return $this->userFactory->create();
     }
 }

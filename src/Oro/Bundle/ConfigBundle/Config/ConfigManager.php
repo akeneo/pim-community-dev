@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormInterface;
 
 class ConfigManager
 {
-    const SECTION_VIEW_SEPARATOR  = '___';
+    const SECTION_VIEW_SEPARATOR = '___';
     const SECTION_MODEL_SEPARATOR = '.';
 
     /**
@@ -36,7 +36,7 @@ class ConfigManager
      */
     public function __construct(ObjectManager $om, $settings = [])
     {
-        $this->om       = $om;
+        $this->om = $om;
         $this->settings = $settings;
     }
 

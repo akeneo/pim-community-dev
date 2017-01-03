@@ -3,9 +3,9 @@
 namespace Pim\Bundle\PdfGeneratorBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -33,7 +33,7 @@ class ProductController
     public function __construct(ProductRepositoryInterface $productRepository, RendererRegistry $rendererRegistry)
     {
         $this->productRepository = $productRepository;
-        $this->rendererRegistry  = $rendererRegistry;
+        $this->rendererRegistry = $rendererRegistry;
     }
 
     /**
@@ -50,7 +50,7 @@ class ProductController
      */
     public function downloadPdfAction(Request $request, $id)
     {
-        $product       = $this->findProductOr404($id);
+        $product = $this->findProductOr404($id);
         $renderingDate = new \DateTime('now');
 
         try {

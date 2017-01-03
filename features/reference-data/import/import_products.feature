@@ -20,11 +20,11 @@ Feature: Execute a job
     SKU-003;heels;Magenta;Neoprene;Wool;Jute
     SKU-004;heels;Black;Neoprene;Spandex;Spandex
     """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 4 products
     And the family of the product "SKU-001" should be "heels"
     And product "SKU-002" should be enabled
@@ -58,11 +58,11 @@ Feature: Execute a job
     sku;family;heel_color;sole_fabric;lace_fabric-en_US-tablet;lace_fabric-en_US-mobile
     SKU-001;heels;Magenta;;Kevlar,Jute;Kevlar,Jute
     """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
     And the product "SKU-001" should have the following values:
       | heel_color               | Magenta      |

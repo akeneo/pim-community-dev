@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\AttributeTypes;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -35,7 +35,7 @@ class ConversionUnitsType extends AbstractType
     public function __construct(MeasureManager $measureManager, EntityManager $entityManager, $attributeClass)
     {
         $this->measureManager = $measureManager;
-        $this->entityManager  = $entityManager;
+        $this->entityManager = $entityManager;
         $this->attributeClass = $attributeClass;
     }
 

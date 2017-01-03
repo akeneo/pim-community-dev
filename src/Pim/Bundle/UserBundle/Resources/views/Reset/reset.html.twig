@@ -4,13 +4,12 @@
 
 {% block content %}
 <div class="container">
+    <div class="title-box">
+        {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
+    </div>
+
     <form action="{{ path('oro_user_reset_reset', { token: token }) }}" {{ form_enctype(form) }} method="post" class="form-signin">
-        <div class="title-box">
-            <h1>
-                <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="Akeneo">
-            </h1>
-            <h2 class="title">{{ 'Password Reset'|trans }}</h2>
-        </div>
+        <h2 class="title">{{ 'Password Reset'|trans }}</h2>
         <fieldset>
             {{ form_errors(form) }}
             {{ form_widget(form.plainPassword) }}

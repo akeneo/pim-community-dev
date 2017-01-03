@@ -23,6 +23,8 @@ define(
         return Backbone.View.extend({
             code: 'form',
             parent: null,
+            preUpdateEventName: 'pim_enrich:form:entity:pre_update',
+            postUpdateEventName: 'pim_enrich:form:entity:post_update',
 
             /**
              * {@inheritdoc}
@@ -64,9 +66,9 @@ define(
             addExtension: function (code, extension, zone, position) {
                 extension.setParent(this);
 
-                extension.code         = code;
-                extension.targetZone   = zone;
-                extension.position     = position;
+                extension.code       = code;
+                extension.targetZone = zone;
+                extension.position   = position;
 
                 this.extensions[code] = extension;
             },
@@ -113,15 +115,15 @@ define(
              */
             getRoot: function () {
                 /* jscs:disable safeContextKeyword */
-                var root = this;
+                var rootView = this;
                 /* jscs:enable safeContextKeyword */
                 var parent = this.getParent();
                 while (parent) {
-                    root = parent;
+                    rootView = parent;
                     parent = parent.getParent();
                 }
 
-                return root;
+                return rootView;
             },
 
             /**
@@ -135,13 +137,13 @@ define(
                 options = options || {};
 
                 if (!options.silent) {
-                    this.getRoot().trigger('pim_enrich:form:entity:pre_update', data);
+                    this.getRoot().trigger(this.preUpdateEventName, data);
                 }
 
                 this.getRoot().model.set(data, options);
 
                 if (!options.silent) {
-                    this.getRoot().trigger('pim_enrich:form:entity:post_update', data);
+                    this.getRoot().trigger(this.postUpdateEventName, data);
                 }
 
                 return this;
@@ -195,12 +197,11 @@ define(
              * Render a single extension
              *
              * @param {Object} extension
-             *
-             * @return {Object}
              */
             renderExtension: function (extension) {
                 this.getZone(extension.targetZone).appendChild(extension.el);
-                return extension.render();
+
+                extension.render();
             },
 
             /**

@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\EventListener\Storage;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -40,8 +40,8 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
         BulkSaverInterface $saver,
         CompletenessGeneratorInterface $completeness
     ) {
-        $this->repository   = $repository;
-        $this->saver        = $saver;
+        $this->repository = $repository;
+        $this->saver = $saver;
         $this->completeness = $completeness;
     }
 
@@ -67,7 +67,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $locales        = $channel->getLocales();
+        $locales = $channel->getLocales();
         $updatedLocales = [];
 
         foreach ($locales as $locale) {
@@ -91,8 +91,8 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $oldLocales     = $this->repository->getDeletedLocalesForChannel($channel);
-        $newLocales     = $channel->getLocales();
+        $oldLocales = $this->repository->getDeletedLocalesForChannel($channel);
+        $newLocales = $channel->getLocales();
         $updatedLocales = [];
 
         foreach ($oldLocales as $locale) {
@@ -104,8 +104,8 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
         foreach ($newLocales as $locale) {
             if (!$locale->hasChannel($channel)) {
                 $locale->addChannel($channel);
-                $updatedLocales[] = $locale;
             }
+            $updatedLocales[] = $locale;
         }
 
         if (!empty($updatedLocales)) {

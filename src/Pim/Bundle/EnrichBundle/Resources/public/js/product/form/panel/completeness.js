@@ -20,7 +20,7 @@ define(
     function ($, _, BaseForm, template, FetcherRegistry, i18n, UserContext) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'panel-pane',
+            className: 'panel-pane completeness-panel',
             events: {
                 'click header': 'switchLocale',
                 'click .missing-attributes span': 'showAttribute'
@@ -46,7 +46,7 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (this.code !== this.getParent().state.get('currentPanel')) {
+                if (!this.configured || this.code !== this.getParent().getCurrentPanelCode()) {
                     return this;
                 }
 

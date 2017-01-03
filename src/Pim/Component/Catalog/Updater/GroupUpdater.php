@@ -4,8 +4,9 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Updates and validates a group
@@ -19,25 +20,33 @@ class GroupUpdater implements ObjectUpdaterInterface
     /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+    
     /**
      * @param GroupTypeRepositoryInterface $groupTypeRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(GroupTypeRepositoryInterface $groupTypeRepository)
-    {
+    public function __construct(
+        GroupTypeRepositoryInterface $groupTypeRepository,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
         $this->groupTypeRepository = $groupTypeRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
      * {@inheritdoc}
      *
      * Expected input format :
-     * {
-     *     "code": "mycode",
-     *     "labels": {
-     *         "en_US": "T-shirt very beautiful",
-     *         "fr_FR": "T-shirt super beau"
-     *     }
-     * }
+     * [
+     *     'code'   => 'mycode',
+     *     'labels' => [
+     *         'en_US' => 'T-shirt very beautiful',
+     *         'fr_FR' => 'T-shirt super beau'
+     *     ],
+     *     'axis'   => ['size', 'color']
+     * ]
      */
     public function update($group, array $data, array $options = [])
     {
@@ -61,8 +70,6 @@ class GroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $group
      * @param string         $field
      * @param mixed          $data
-     *
-     * @throws \InvalidArgumentException
      */
     protected function setData(GroupInterface $group, $field, $data)
     {
@@ -75,6 +82,9 @@ class GroupUpdater implements ObjectUpdaterInterface
                 break;
             case 'labels':
                 $this->setLabels($group, $data);
+                break;
+            case 'axis':
+                $this->setAxis($group, $data);
                 break;
         }
     }
@@ -97,18 +107,24 @@ class GroupUpdater implements ObjectUpdaterInterface
     protected function setType(GroupInterface $group, $type)
     {
         $groupType = $this->groupTypeRepository->findOneByIdentifier($type);
-        if (null !== $groupType) {
-            $group->setType($groupType);
-        } else {
+
+        if (null === $groupType) {
             throw new \InvalidArgumentException(sprintf('Type "%s" does not exist', $type));
         }
+
+        if ($groupType->isVariant()) {
+            throw new \InvalidArgumentException(sprintf(
+                'Cannot process variant group "%s", only groups are accepted',
+                $group->getCode()
+            ));
+        }
+
+        $group->setType($groupType);
     }
 
     /**
      * @param GroupInterface $group
      * @param array          $labels
-     *
-     * @throws \InvalidArgumentException
      */
     protected function setLabels(GroupInterface $group, array $labels)
     {
@@ -117,5 +133,24 @@ class GroupUpdater implements ObjectUpdaterInterface
             $translation = $group->getTranslation();
             $translation->setLabel($label);
         }
+    }
+
+    /**
+     * @param GroupInterface $group
+     * @param string[]       $attributeCodes
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function setAxis(GroupInterface $group, array $attributeCodes)
+    {
+        $attributes = [];
+        foreach ($attributeCodes as $attributeCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            if (null === $attribute) {
+                throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $attributeCode));
+            }
+            $attributes[] = $attribute;
+        }
+        $group->setAxisAttributes($attributes);
     }
 }

@@ -4,6 +4,7 @@ namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Manager
@@ -15,30 +16,15 @@ use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
  */
 class Manager implements ManagerInterface
 {
-    /** @var Builder */
-    protected $datagridBuilder;
-
-    /** @var RequestParameters */
-    protected $requestParams;
-
-    /** @var ConfigurationProviderInterface */
-    protected $configurationProvider;
+    /** @var ContainerInterface */
+    private $container;
 
     /**
-     * Constructor
-     *
-     * @param ConfigurationProviderInterface $configurationProvider
-     * @param Builder                        $builder
-     * @param RequestParameters              $requestParams
+     * @param ContainerInterface $container
      */
-    public function __construct(
-        ConfigurationProviderInterface $configurationProvider,
-        Builder $builder,
-        RequestParameters $requestParams
-    ) {
-        $this->configurationProvider = $configurationProvider;
-        $this->datagridBuilder       = $builder;
-        $this->requestParams         = $requestParams;
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
     }
 
     /**
@@ -47,10 +33,8 @@ class Manager implements ManagerInterface
     public function getDatagrid($name)
     {
         // prepare for work with current grid
-        $this->requestParams->setRootParameter($name);
-
+        $this->getRequestParameters()->setRootParameter($name);
         $config = $this->getConfigurationForGrid($name);
-
         $datagrid = $this->getDatagridBuilder()->build($config);
 
         return $datagrid;
@@ -61,7 +45,7 @@ class Manager implements ManagerInterface
      */
     public function getConfigurationForGrid($name)
     {
-        return $this->configurationProvider->getConfiguration($name);
+        return $this->getConfigurationProvider()->getConfiguration($name);
     }
 
     /**
@@ -69,8 +53,28 @@ class Manager implements ManagerInterface
      *
      * @return Builder
      */
-    protected function getDatagridBuilder()
+    final protected function getDatagridBuilder()
     {
-        return $this->datagridBuilder;
+        return $this->container->get('oro_datagrid.datagrid.builder');
+    }
+
+    /**
+     * Internal getter for builder
+     *
+     * @return ConfigurationProviderInterface
+     */
+    final protected function getConfigurationProvider()
+    {
+        return $this->container->get('oro_datagrid.configuration.provider.chain');
+    }
+
+    /**
+     * Internal getter for builder
+     *
+     * @return RequestParameters
+     */
+    final protected function getRequestParameters()
+    {
+        return $this->container->get('oro_datagrid.datagrid.request_params');
     }
 }

@@ -12,3 +12,7 @@ pim_dashboard:
         export: Exportar
         mass_edit: Edició massiva
         quick_export: Exportació ràpida
+    completeness:
+      load_more: Carrega'n més...
+    header:
+      view_all: Mostra tots

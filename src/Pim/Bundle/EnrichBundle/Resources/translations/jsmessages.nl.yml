@@ -15,6 +15,8 @@ confirmation:
     role: Weet u zeker dat u deze rol wilt verwijderen?
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: Bulkacties
     quick_export:
       label: Snelle Export
   mass_action:
@@ -67,6 +69,7 @@ error:
     attribute_option: Fout tijdens verwijderen van de attribuut-optie
   saving:
     attribute_option: Kan attribuut-optie niet opslaan
+    export_profile: Kan exportprofiel niet opslaan. Gelieve na te kijken of alle filters zijn ingevuld
 alert:
   attribute_option:
     error_occured_during_submission: Er is een fout op de server opgetreden bij het versturen van het formulier
@@ -88,8 +91,17 @@ Classify the product: Classificeren van het product
 Delete the product: Het product verwijderen
 Change status: Status wijzigen
 Toggle status: Schakel status
-pim.grid.mass_action.delete: Verwijderen
-pim.grid.mass_action.mass_edit: Massa bewerken
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_grid_context: CSV (rastercontext)
+        xlsx_all: Excel (alle attributen)
+        xlsx_grid_context: Excel (rastercontext)
+      delete: Verwijder producten
+      mass_edit: Pas productinformatie aan
+      category_edit: Verplaats producten naar categorieën
+      sequential_edit: Wijzig producten in stappen
 jstree.create: Aanmaken
 switch_on: "Ja"
 switch_off: "Nee"
@@ -178,13 +190,43 @@ pim_enrich:
         unavailable: Dit specifiek veld van de landinstelling is niet beschikbaar in deze landinstelling
       localizable:
         channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
+      media:
+        upload: Klik-en-sleep om te uploaden of klik hier
+      create_popin:
+        title: Een nieuw product aanmaken
+        labels:
+          family: Kies een familie
+          save: Opslaan
+          cancel: Annuleren
     attribute_option:
       code: Code
       label: Label
+    variant_group:
+      title: Variant groep
+      info:
+        deletion_successful: Variant groep met succes verwijderd.
+        deletion_failed: De variant groep kon niet worden verwijderd.
+        update_successful: Variant groep succesvol bijgewerkt.
+        update_failed: De variant groep kon niet geüpdatet worden.
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - velden
+        already_in_upload: Voor dit attribuut is al een bestand geüpload in de locale "{{ locale }}" en scope "{{ scope }}"
+        no_attributes: Deze variant groep heeft nog geen kenmerken
+      btn:
+        save: Opslaan
+      meta:
+        product_count: Producten
+        created: Aangemaakt
+        created_by: Aangemaakt door
+        updated: Bijgewerkt
+        updated_by: Bijgewerkt door
   confirmation:
     leave: Weet u zeker dat u deze pagina wilt verlaten?
     discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
     delete_item: Verwijderen bevestigen
+    delete:
+      attribute: Bent u zeker dat u dit attribuut wil verwijderen van het product?
   info:
     not_applicable: Niet beschikbaar
     entity:
@@ -195,6 +237,7 @@ pim_enrich:
     not_allowed: U heeft geen toegang tot deze pagina
     error_occured: Er deed zich een four voor tijdens het laden van de pagina
   form:
+    required: (vereist)
     product:
       tab:
         associations:
@@ -261,6 +304,152 @@ pim_enrich:
       switch:
         "no": Nee
         "yes": Ja
+    variant_group:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemene eigenschappen
+          code: Code
+          type: Type
+          axis: As
+          label_translations: Labelvertalingen
+        history:
+          title: Geschiedenis
+        products:
+          title: Producten
+        attributes:
+          title: Attributen
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Toevoegen
+            add_attributes: Attributen toevoegen
+          info:
+            search_attributes: Zoeken...
+            no_available_attributes: Er zijn geen attributen meer om toe te voegen
+  export:
+    product:
+      data:
+        title: Filter de producten
+      structure:
+        title: Filter de data
+        attributes:
+          title: Attributen
+      filter:
+        channel:
+          title: Kanaal
+          help: Het kanaal definieert de scope voor product waarden, de landinstelling gebruikt om data te selecteren en de tak gebruikt om producten te selecteren.
+        locales:
+          title: Lokalisaties
+        attributes:
+          title: Attributen
+          edit: Bewerken
+          label: '{0} alle attributen|{1} 1 attribuut geselecteerd|]1,Inf[ {{ count }} attributen geselecteerd'
+          help: Selecteer de product informatie om te exporteren. Bv. enkel technische attributen.
+          empty: Alle attributen worden geëxporteerd
+          modal:
+            apply: Toepassen
+            cancel: Annuleren
+            title: Attribuut selectie
+        attributes_selector:
+          attribute_group: Attribuutgroepen
+          attributes: Zoek in {{ attributeCount }} attributen
+          selected: Selecteer attributen
+          clear: Opruimen
+          all_group: Alle groepen
+          empty_selection: Alle attributen worden geëxporteerd
+        family:
+          title: Familie
+          help: Selecteer de producten om te importeren volgens hun familie. Bv. exporteer enkel schoenen en jurken.
+          operators:
+            NOT IN: Niet in de lijst
+            EMPTY: Producten die geen familie hebben
+            NOT EMPTY: Producten die een familie hebben
+          empty_selection: Geen voorwaarde voor families
+        updated:
+          title: Tijdsvoorwaarde
+          operators:
+            ALL: Geen datum voorwaarde
+            SINCE LAST N DAYS: Geüpdatete producten gedurende de laatste n dagen (bv. 6)
+            >: Geüpdatete producten sinds deze datum
+            SINCE LAST JOB: Geüpdatete producten sinds laatste export
+        enabled:
+          title: Status
+          help: Selecteer de producten om te exporteren volgens hun status. Bv. exporteer allerlei producten volgens hun status.
+          value:
+            all: Alle
+            enabled: Ingeschakeld
+            disabled: Uitgeschakeld
+        completeness:
+          title: Volledigheid
+          help: Selecteer de producten om te exporteren volgens hun volledigheid.
+          operators:
+            ALL: Geen voorwaarde op volledigheid
+            >=: Vervolledig op z'n minst één gekozen landinstelling
+            GREATER OR EQUALS THAN ON ALL LOCALES: Voltooi op alle geselecteerde landinstellingen
+            LOWER THAN ON ALL LOCALES: Niet volledig op alle geselecteerde landinstellingen
+          empty_selection: Selecteer een familie
+        category:
+          title: Categorie
+        identifier:
+          title: Id
+        metric:
+          operators:
+            =: Is gelijk aan
+            !=: Is niet gelijk aan
+            >=: Groter dan of gelijk aan
+            >: Groter dan
+            <=: Kleiner dan of gelijk aan
+            <: Kleiner dan
+            NOT EMPTY: Is niet leeg
+        string:
+          operators:
+            ALL: Alle
+            CONTAINS: Bevat
+            DOES NOT CONTAIN: Bevat geen
+            =: Is gelijk aan
+            STARTS WITH: Begint met
+            ENDS WITH: Eindigt met
+            NOT EMPTY: Is niet leeg
+        price-collection:
+          operators:
+            =: Is gelijk aan
+            !=: Is niet gelijk aan
+            >=: Groter dan of gelijk aan
+            >: Groter dan
+            <=: Kleiner dan of gelijk aan
+            <: Kleiner dan
+            NOT EMPTY: Is niet leeg
+        multi_select:
+          operators:
+            NOT EMPTY: Is niet leeg
+        media:
+          operators:
+            CONTAINS: Bevat
+            DOES NOT CONTAIN: Bevat geen
+            =: Is gelijk aan
+            STARTS WITH: Begint met
+            ENDS WITH: Eindigt met
+            NOT EMPTY: Is niet leeg
+        date:
+          operators:
+            >: Groter dan
+            <: Kleiner dan
+            =: Is gelijk aan
+            !=: Is niet gelijk aan
+            BETWEEN: Tussen
+            NOT BETWEEN: Niet tussen
+            NOT EMPTY: Is niet leeg
+        number:
+          operators:
+            =: Is gelijk aan
+            !=: Is niet gelijk aan
+            >=: Groter dan of gelijk aan
+            >: Groter dan
+            <=: Kleiner dan of gelijk aan
+            <: Kleiner dan
+            NOT EMPTY: Is niet leeg
   mass_edit_action:
     edit_common_attributes:
       description: Het attribuut van het geselecteerde product zal worden gewijzigd met de volgende data voor de landinstelling <span class="highlight">{{ locale }}</span> en het kanaal <span class="highlight">{{ channel }}</span> gekozen in het product raster.

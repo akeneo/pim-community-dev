@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Filter;
 
-use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -53,10 +54,10 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
         LocaleRepositoryInterface $localeRepository,
         ChannelRepositoryInterface $channelRepository
     ) {
-        $this->objectFilter        = $objectFilter;
+        $this->objectFilter = $objectFilter;
         $this->attributeRepository = $attributeRepository;
-        $this->localeRepository    = $localeRepository;
-        $this->channelRepository   = $channelRepository;
+        $this->localeRepository = $localeRepository;
+        $this->channelRepository = $channelRepository;
     }
 
     /**
@@ -161,8 +162,6 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /**
      * @param string $code
      *
-     * @throws ObjectNotFoundException
-     *
      * @return AttributeInterface
      */
     protected function getAttribute($code)
@@ -176,9 +175,6 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
 
     /**
      * @param string $code
-     * @param bool   $activeOnly
-     *
-     * @throws ObjectNotFoundException
      *
      * @return LocaleInterface
      */
@@ -193,8 +189,6 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
 
     /**
      * @param string $code
-     *
-     * @throws ObjectNotFoundException
      *
      * @return ChannelInterface
      */

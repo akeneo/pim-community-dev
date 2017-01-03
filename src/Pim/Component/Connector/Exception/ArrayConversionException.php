@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Exception;
 
 /**
- * Exception which may be thrown when we convert an array
+ * Exception thrown during a conversion of an array
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

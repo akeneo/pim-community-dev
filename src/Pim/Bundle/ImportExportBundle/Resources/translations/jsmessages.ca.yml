@@ -2,3 +2,17 @@ job_execution:
   summary:
     display_item: Visualitzar element
     hide_item: Amagar element
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Selecció de les categories
+          cancel: Cancelar
+          confirm: Confirmar
+        label: '{0} Tots els productes |{1} Una categoria seleccionada |] 1, Inf [{{ count }} categories seleccionades'
+        edit: Editar
+        title: Selecciona categories
+    locales:
+      validation:
+        not_blank: S'ha de seleccionar una configuració regional, trieu una configuració regional per exportar.

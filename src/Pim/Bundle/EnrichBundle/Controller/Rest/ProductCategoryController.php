@@ -3,9 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -32,7 +32,7 @@ class ProductCategoryController
         ProductRepositoryInterface $productRepository,
         ProductCategoryRepositoryInterface $productCategoryRepository
     ) {
-        $this->productRepository         = $productRepository;
+        $this->productRepository = $productRepository;
         $this->productCategoryRepository = $productCategoryRepository;
     }
 
@@ -48,9 +48,9 @@ class ProductCategoryController
     public function listAction($id)
     {
         $product = $this->findProductOr404($id);
-        $trees   = $this->productCategoryRepository->getProductCountByTree($product);
+        $trees = $this->productCategoryRepository->getItemCountByTree($product);
 
-        $result['trees']      = $this->buildTrees($trees);
+        $result['trees'] = $this->buildTrees($trees);
         $result['categories'] = $this->buildCategories($product);
 
         return new JsonResponse($result);

@@ -1,0 +1,7 @@
+parameters:
+    akeneo_batch.entity.warning.class:        Akeneo\Component\Batch\Model\Warning
+    akeneo_batch.entity.job_instance.class:   Akeneo\Component\Batch\Model\JobInstance
+    akeneo_batch.entity.job_execution.class:  Akeneo\Component\Batch\Model\JobExecution
+    akeneo_batch.entity.step_execution.class: Akeneo\Component\Batch\Model\StepExecution
+    akeneo_batch.job.batch_status.class:      Akeneo\Component\Batch\Job\BatchStatus
+    akeneo_batch.job.job_parameters.class:    Akeneo\Component\Batch\Job\JobParameters

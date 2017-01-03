@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ReferenceDataNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = [\Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer::FORMAT];
+    protected $supportedFormats = [ProductNormalizer::FORMAT];
 
     /**
      * {@inheritdoc}

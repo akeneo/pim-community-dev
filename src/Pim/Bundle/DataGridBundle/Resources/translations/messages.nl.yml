@@ -32,7 +32,7 @@ flash.datagrid view:
   updated: Datarasterweergave succesvol bijgewerkt
   removed: Datarasterweergave succesvol verwijderd
   not removable: U hoeft niet de rechten deze weergave te verwijderen
-quick_export: Snelle Export
-import: Import
-export: Export
+quick_export: Snelle export
+import: Importeer
+export: Exporteer
 mass_edit: Massa bewerken

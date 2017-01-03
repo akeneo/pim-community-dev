@@ -2,3 +2,17 @@ job_execution:
   summary:
     display_item: Näytä kohde
     hide_item: Piilota kohde
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Kategoriavalinta
+          cancel: Peruuta
+          confirm: Vahvista
+        label: '{0} Kaikki tuotteet|{1} Yksi kategoria valittu|]1,Inf[ {{ count }} kategoriaa valittu'
+        edit: Muokkaa
+        title: Valitse kategoriat
+    locales:
+      validation:
+        not_blank: Yksi lokaatio on valittava, valitse vietävä lokaatio.

@@ -9,7 +9,7 @@ datagrid:
                 columnName: is_checked
         source:
             type: pim_datasource_default
-            entity: %pim_catalog.entity.group.class%
+            entity: '%pim_catalog.entity.group.class%'
             repository_method: createAssociationDatagridQueryBuilder
         columns:
             is_checked:
@@ -42,7 +42,7 @@ datagrid:
                 type:
                     data_name: typeLabel
             default:
-                is_associated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                is_associated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 is_associated:
@@ -65,4 +65,4 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.manager.group->getTypeChoices'
+                            choices:  '@pim_enrich.repository.group_type->findTranslatedLabels'

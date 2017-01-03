@@ -1,9 +1,18 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
+    {%set upload_is_allowed = uploadForm is defined and uploadForm is not empty and uploadAllowed and uploadViolations|length == 0 %}
 
-    {% include 'PimImportExportBundle:JobProfile:_show_headers.html.twig' %}
+    {% if not upload_is_allowed %}
+        {{ form_start(form) }}
+    {% endif %}
 
-    {% include 'PimImportExportBundle:JobProfile:_show_form.html.twig' %}
+    {% include 'PimImportExportBundle:JobProfile:_show_headers.html.twig' with {'form': form} %}
 
+    {% include 'PimImportExportBundle:JobProfile:_form.html.twig' %}
+
+    {% if not upload_is_allowed %}
+        {{ form_end(form) }}
+    {% endif %}
 {% endblock %}

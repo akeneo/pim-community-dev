@@ -7,14 +7,14 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager;
-use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Component\Catalog\Manager\AttributeGroupManager;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Enrich\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -107,19 +107,19 @@ class AttributeGroupController
         AttributeGroupRepositoryInterface $attributeGroupRepo,
         AttributeRepositoryInterface $attributeRepo
     ) {
-        $this->request            = $request;
-        $this->router             = $router;
-        $this->formFactory        = $formFactory;
-        $this->translator         = $translator;
-        $this->eventDispatcher    = $eventDispatcher;
-        $this->securityFacade     = $securityFacade;
-        $this->formHandler        = $formHandler;
-        $this->form               = $form;
-        $this->manager            = $manager;
-        $this->attributeSaver     = $attributeSaver;
-        $this->attrGroupRemover   = $attrGroupRemover;
+        $this->request = $request;
+        $this->router = $router;
+        $this->formFactory = $formFactory;
+        $this->translator = $translator;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->securityFacade = $securityFacade;
+        $this->formHandler = $formHandler;
+        $this->form = $form;
+        $this->manager = $manager;
+        $this->attributeSaver = $attributeSaver;
+        $this->attrGroupRemover = $attrGroupRemover;
         $this->attributeGroupRepo = $attributeGroupRepo;
-        $this->attributeRepo      = $attributeRepo;
+        $this->attributeRepo = $attributeRepo;
     }
 
     /**
@@ -315,10 +315,10 @@ class AttributeGroupController
      */
     public function addAttributesAction(Request $request, $id)
     {
-        $group               = $this->findAttributeGroupOr404($id);
+        $group = $this->findAttributeGroupOr404($id);
         $availableAttributes = new AvailableAttributes();
 
-        $attributesForm      = $this->getAvailableAttributesForm(
+        $attributesForm = $this->getAvailableAttributesForm(
             $this->getGroupedAttributes(),
             $availableAttributes
         );
@@ -345,7 +345,7 @@ class AttributeGroupController
      */
     public function removeAttributeAction($groupId, $attributeId)
     {
-        $group     = $this->findAttributeGroupOr404($groupId);
+        $group = $this->findAttributeGroupOr404($groupId);
         $attribute = $this->findAttributeOr404($attributeId);
 
         if (false === $group->hasAttribute($attribute)) {

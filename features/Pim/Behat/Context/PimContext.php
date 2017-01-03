@@ -66,6 +66,22 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
         return $this->kernel->getContainer()->getParameter($name);
     }
 
+    /**
+     * Transform a list to array
+     *
+     * @param string $list
+     *
+     * @return array
+     */
+    protected function listToArray($list)
+    {
+        if (empty($list)) {
+            return [];
+        }
+
+        return preg_split('/ *, *| and /', $list);
+    }
+
     /*************************************************************/
     /**** transitional methods that should be deleted ideally ****/
     /*************************************************************/
@@ -110,5 +126,13 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     protected function wait($condition = null)
     {
         $this->getMainContext()->wait($condition);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRootDir()
+    {
+        return $this->kernel->getRootDir();
     }
 }

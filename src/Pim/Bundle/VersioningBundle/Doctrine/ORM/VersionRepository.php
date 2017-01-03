@@ -2,7 +2,11 @@
 
 namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
 /**
@@ -12,8 +16,11 @@ use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VersionRepository extends EntityRepository implements VersionRepositoryInterface
+class VersionRepository extends EntityRepository implements VersionRepositoryInterface, CursorableRepositoryInterface
 {
+    /** @var CursorFactoryInterface */
+    protected $cursorFactory;
+
     /**
      * {@inheritdoc}
      */
@@ -21,7 +28,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     {
         return $this->findBy(
             ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
-            ['loggedAt'   => 'desc']
+            ['loggedAt' => 'desc']
         );
     }
 
@@ -115,6 +122,84 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
         }
 
         return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findPotentiallyPurgeableBy(array $options = [])
+    {
+        if (null === $this->cursorFactory) {
+            throw new \RuntimeException('The cursor factory is not initialized');
+        }
+
+        $qb = $this->createQueryBuilder('v');
+
+        if (isset($options['resource_name'])) {
+            $qb->where('v.resourceName = :resourceName');
+            $qb->setParameter(':resourceName', $options['resource_name']);
+        }
+
+        if (isset($options['date_operator']) && isset($options['limit_date'])) {
+            if ('<' === $options['date_operator']) {
+                $qb->andWhere($qb->expr()->lt('v.loggedAt', ':limit_date'));
+            } else {
+                $qb->andWhere($qb->expr()->gt('v.loggedAt', ':limit_date'));
+            }
+            $qb->setParameter('limit_date', $options['limit_date'], Type::DATETIME);
+        }
+
+        return $this->cursorFactory->createCursor($qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByIds(array $versionIds)
+    {
+        if (empty($versionIds)) {
+            throw new \InvalidArgumentException('Array must contain at least one version id');
+        }
+
+        $qb = $this->createQueryBuilder('v');
+        $qb->where($qb->expr()->in('v.id', ':version_ids'));
+        $qb->setParameter(':version_ids', $versionIds);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNewestVersionIdForResource($resourceName, $resourceId)
+    {
+        $qb = $this->createQueryBuilder('v');
+        $qb->select('v.id')
+            ->where($qb->expr()->eq('v.resourceName', ':resource_name'))
+            ->andWhere(
+                $qb->expr()->eq('v.resourceId', ':resource_id')
+            )
+            ->orderBy('v.version', 'desc')
+            ->setMaxResults(1);
+
+        $qb->setParameter(':resource_name', $resourceName)
+            ->setParameter(':resource_id', $resourceId);
+
+        try {
+            $versionId = (int) $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException $e) {
+            $versionId = null;
+        }
+
+        return $versionId;
+    }
+
+    /**
+     * @param CursorFactoryInterface $cursorFactory
+     */
+    public function setCursorFactory(CursorFactoryInterface $cursorFactory)
+    {
+        $this->cursorFactory = $cursorFactory;
     }
 
     /**

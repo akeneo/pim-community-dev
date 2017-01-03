@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Select form type
- * A form type to display an asynchonous dropdown
+ * A form type to display an asynchronous dropdown
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -37,7 +37,7 @@ class AsyncSelectType extends AbstractType
         RouterInterface $router,
         IdentifiableModelTransformerFactory $transformerFactory
     ) {
-        $this->router             = $router;
+        $this->router = $router;
         $this->transformerFactory = $transformerFactory;
     }
 
@@ -105,7 +105,7 @@ class AsyncSelectType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['attr']['data-url']              = $this->getUrl($options);
+        $view->vars['attr']['data-url'] = $this->getUrl($options);
         $view->vars['attr']['data-min-input-length'] = $options['min-input-length'];
         if ($options['required']) {
             $view->vars['attr']['data-required'] = 'required';

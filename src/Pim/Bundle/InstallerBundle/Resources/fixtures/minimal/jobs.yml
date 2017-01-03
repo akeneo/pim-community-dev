@@ -9,6 +9,11 @@ jobs:
         alias:     add_product_value
         label:     Mass add products values
         type:      mass_edit
+    remove_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_product_value
+        label:     Mass remove products values
+        type:      mass_edit
     edit_common_attributes:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes
@@ -25,7 +30,7 @@ jobs:
         label:     Mass add products to variant group
         type:      mass_edit
     csv_product_quick_export:
-        connector: Akeneo Mass Edit Connector
+        connector: Akeneo CSV Connector
         alias: csv_product_quick_export
         label: CSV product quick export
         type: quick_export
@@ -34,3 +39,35 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv
+            with_media: true
+    csv_product_grid_context_quick_export:
+        connector: Akeneo CSV Connector
+        alias: csv_product_grid_context_quick_export
+        label: CSV product quick export grid context
+        type: quick_export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.csv
+            with_media: true
+    xlsx_product_quick_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_product_quick_export
+        label: XLSX product quick export
+        type: quick_export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
+            with_media: true
+    xlsx_product_grid_context_quick_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_product_grid_context_quick_export
+        label: XLSX product quick export grid context
+        type: quick_export
+        configuration:
+            withHeader:   true
+            filePath:     /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
+            linesPerFile: 10000
+            with_media:   true

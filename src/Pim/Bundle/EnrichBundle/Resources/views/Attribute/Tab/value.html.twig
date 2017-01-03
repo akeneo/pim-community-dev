@@ -23,5 +23,5 @@
         {% set accordionContent = accordionContent|merge({ 'pane.accordion.options': optionsContent }) %}
     {% endif %}
 
-    {{ elements.accordion(accordionContent, 2) }}
+    {{ elements.tabSections(accordionContent, 2) }}
 </div>

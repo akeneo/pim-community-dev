@@ -23,13 +23,13 @@ Feature: Filter products by reference data
     Given I should not see the filter sole_color
     And the grid should contain 2 elements
     And I should be able to use the following filters:
-      | filter      | value                 | result |
-      | Sole color  | red                   | postit |
-      | Sole color  | red,blue              | postit |
-      | Sole color  | is empty              | mug    |
-      | Sole color  | Green                 |        |
-      | Sole fabric | Cashmerewool          | postit |
-      | Sole fabric | Cashmerewool,Neoprene | postit |
-      | Sole fabric | Silk                  | postit |
-      | Sole fabric | Neoprene              |        |
-      | Sole fabric | is empty              | mug    |
+      | filter      | operator | value                 | result |
+      | sole_color  | in list  | Red                   | postit |
+      | sole_color  | in list  | Red,Blue              | postit |
+      | sole_color  | is empty |                       | mug    |
+      | sole_color  | in list  | Green                 |        |
+      | sole_fabric | in list  | Cashmerewool          | postit |
+      | sole_fabric | in list  | Cashmerewool,Neoprene | postit |
+      | sole_fabric | in list  | Silk                  | postit |
+      | sole_fabric | in list  | Neoprene              |        |
+      | sole_fabric | is empty |                       | mug    |

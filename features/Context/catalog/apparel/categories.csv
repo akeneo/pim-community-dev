@@ -1,0 +1,18 @@
+code;parent;label-en_US;label-en_GB;label-fr_FR;label-de_DE
+2013_collection;;2013 collection;2013 collection;;
+2014_collection;;2014 collection;2014 collection;Collection 2014;2014 Kollektion
+2015_collection;;2015 collection;;;Kollektion
+men_2013;2013_collection;2013 men's collection;2013 men's collection;;
+women_2013;2013_collection;2013 women's collection;2013 women's collection;;
+men_2014;2014_collection;2014 men's collection;2014 men's collection;La collection de 2014 hommes;2014 Männer-Kollektion
+women_2014;2014_collection;2014 women's collection;2014 women's collection;La collection de 2014 femmes;2014 Damenkollektion
+men_2015;2015_collection;2015 men's collection;;;2015 Männer-Kollektion
+women_2015;2015_collection;2015 women's collection;;;2015 Damenkollektion
+men_2015_spring;men_2015;2015 men's spring collection;;;2015 Männer-Frühjahrskollektion
+men_2015_summer;men_2015;2015 men's summer collection;;;2015 Männer-Sommer-Kollektion
+men_2015_autumn;men_2015;2015 men's autumn collection;;;2015 Männer-Herbstkollektion
+men_2015_winter;men_2015;2015 men's winter collection;;;2015 Männer-Winterkollektion
+women_2015_spring;women_2015;2015 women's spring collection;;;2015 Damen-Frühjahrskollektion
+women_2015_summer;women_2015;2015 women's summer collection;;;2015 Damen-Sommer-Kollektion
+women_2015_autumn;women_2015;2015 women's autumn collection;;;2015 Damen-Herbstkollektion
+women_2015_winter;women_2015;2015 women's winter collection;;;2015 Damen-Winterkollektion

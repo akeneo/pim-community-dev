@@ -66,7 +66,7 @@ class ValidateProductCommand extends ContainerAwareCommand
     protected function getProduct($identifier)
     {
         $repository = $this->getContainer()->get('pim_catalog.repository.product');
-        $product    = $repository->findOneByIdentifier($identifier);
+        $product = $repository->findOneByIdentifier($identifier);
 
         return $product;
     }
@@ -78,7 +78,7 @@ class ValidateProductCommand extends ContainerAwareCommand
      */
     protected function validate(ProductInterface $product)
     {
-        $validator = $this->getContainer()->get('pim_validator');
+        $validator = $this->getContainer()->get('pim_catalog.validator.product');
         $errors = $validator->validate($product);
 
         return $errors;

@@ -7,7 +7,7 @@ datagrid:
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_datasource_product
-            entity:            %pim_catalog.entity.product.class%
+            entity:            '%pim_catalog.entity.product.class%'
             repository_method: createDatagridQueryBuilder
         columns:
             label:
@@ -91,10 +91,37 @@ datagrid:
                 icon:  retweet
                 link:  toggle_status_link
         mass_actions_groups:
+            bulk_actions:
+                label: pim_datagrid.mass_action_group.bulk_actions.label
             quick_export:
                 label: pim_datagrid.mass_action_group.quick_export.label
-                icon: download-alt
         mass_actions:
+            mass_edit:
+                type: edit
+                acl_resource: pim_enrich_mass_edit
+                label: pim.grid.mass_action.mass_edit
+                handler: product_mass_edit
+                route: pim_enrich_mass_edit_product_action_choose
+                launcherOptions:
+                    group: bulk_actions
+            sequential_edit:
+                type: edit
+                acl_resource: pim_enrich_product_edit_attributes
+                label: pim.grid.mass_action.sequential_edit
+                handler: sequential_edit
+                route: pim_enrich_mass_edit_action_sequential_edit
+                launcherOptions:
+                    group: bulk_actions
+            category_edit:
+                type: edit
+                acl_resource: pim_enrich_mass_edit
+                label: pim.grid.mass_action.category_edit
+                handler: product_mass_edit
+                route: pim_enrich_mass_edit_product_action_choose
+                route_parameters:
+                    operationGroup: category-edit
+                launcherOptions:
+                    group: bulk_actions
             delete:
                 type: delete
                 label: pim.grid.mass_action.delete
@@ -109,38 +136,71 @@ datagrid:
                     error: pim_datagrid.mass_action.delete.error
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
                 launcherOptions:
-                    icon: trash
-            quick_export_csv:
+                    group: bulk_actions
+            quick_export_grid_context_xlsx:
                 type: export
-                label: pim.grid.mass_action.quick_export.csv_all
-                icon: download
+                label: pim.grid.mass_action.quick_export.xlsx_grid_context
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
-                    _format: csv
-                    _contentType: text/csv
-                    _jobCode: csv_product_quick_export
+                    _format: xlsx
+                    _contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                    _jobCode: xlsx_product_grid_context_quick_export
+                    _displayedColumnsOnly: 1
                 context:
                     withHeader: true
                 messages:
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
                 launcherOptions:
                     group: quick_export
-            mass_edit:
-                type: edit
-                acl_resource: pim_enrich_mass_edit
-                label: pim.grid.mass_action.mass_edit
-                handler: product_mass_edit
-                route: pim_enrich_mass_edit_action_choose
-                icon: edit
-
-            sequential_edit:
-                type: edit
-                acl_resource: pim_enrich_product_edit_attributes
-                label: pim.grid.mass_action.sequential_edit
-                handler: sequential_edit
-                route: pim_enrich_mass_edit_action_sequential_edit
-                icon: sort-by-attributes
+            quick_export_xlsx:
+                type: export
+                label: pim.grid.mass_action.quick_export.xlsx_all
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: xlsx
+                    _contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                    _jobCode: xlsx_product_quick_export
+                    _displayedColumnsOnly: 0
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+                launcherOptions:
+                    group: quick_export
+            quick_export_grid_context_csv:
+                type: export
+                label: pim.grid.mass_action.quick_export.csv_grid_context
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                    _jobCode: csv_product_grid_context_quick_export
+                    _displayedColumnsOnly: 1
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+                launcherOptions:
+                    group: quick_export
+            quick_export_csv:
+                type: export
+                label: pim.grid.mass_action.quick_export.csv_all
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                    _jobCode: csv_product_quick_export
+                    _displayedColumnsOnly: 0
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+                launcherOptions:
+                    group: quick_export
         sorters:
             columns:
                 family:
@@ -159,7 +219,7 @@ datagrid:
                     data_name: updated
                     sorter:    product_field
             default:
-                updated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                updated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 family:
@@ -194,7 +254,7 @@ datagrid:
                     data_name: values.scope
                     options:
                         field_options:
-                            choices: '@pim_catalog.manager.channel->getChannelChoices'
+                            choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode'
                 completeness:
                     type:      product_completeness
                     label:     Complete

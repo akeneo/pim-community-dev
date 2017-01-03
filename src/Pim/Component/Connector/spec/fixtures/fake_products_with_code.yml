@@ -1,0 +1,8 @@
+products:
+    mug_akeneo:
+        sku: mug_akeneo
+    t_shirt_akeneo_purple:
+        sku: t_shirt_akeneo_purple
+        color: purple
+    mouse_akeneo:
+        sku: mouse_akeneo

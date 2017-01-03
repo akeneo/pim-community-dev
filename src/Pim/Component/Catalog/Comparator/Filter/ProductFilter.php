@@ -40,10 +40,10 @@ class ProductFilter implements ProductFilterInterface
         AttributeRepositoryInterface $attributeRepository,
         array $productFields
     ) {
-        $this->normalizer          = $normalizer;
-        $this->comparatorRegistry  = $comparatorRegistry;
+        $this->normalizer = $normalizer;
+        $this->comparatorRegistry = $comparatorRegistry;
         $this->attributeRepository = $attributeRepository;
-        $this->productFields       = $productFields;
+        $this->productFields = $productFields;
     }
 
     /**
@@ -157,7 +157,7 @@ class ProductFilter implements ProductFilterInterface
      */
     protected function getOriginalProduct(ProductInterface $product)
     {
-        $originalProduct = $this->normalizer->normalize($product, 'json', ['exclude_associations' => true]);
+        $originalProduct = $this->normalizer->normalize($product, 'json');
 
         return $this->flatProductValues($originalProduct);
     }

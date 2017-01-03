@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Save extension
  *
@@ -9,69 +10,61 @@
 define(
     [
         'jquery',
-        'underscore',
+        'oro/translator',
         'module',
         'pim/form',
         'oro/mediator',
         'oro/loading-mask',
-        'oro/messenger',
-        'text!pim/template/form/common/save'
+        'oro/messenger'
     ],
     function (
         $,
-        _,
+        __,
         module,
         BaseForm,
         mediator,
         LoadingMask,
-        messenger,
-        template
+        messenger
     ) {
         return BaseForm.extend({
-            template: _.template(template),
-            updateFailureMessage: _.__('pim_enrich.entity.info.update_failed'),
-            updateSuccessMessage: _.__('pim_enrich.entity.info.update_successful'),
-            events: {
-                'click': 'save'
-            },
+            loadingMask: null,
+            updateFailureMessage: __('pim_enrich.entity.info.update_failed'),
+            updateSuccessMessage: __('pim_enrich.entity.info.update_successful'),
+            label: __('pim_enrich.entity.save.label'),
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.html(this.template({
-                    label: _.__('pim_enrich.entity.save.label')
-                }));
+            configure: function () {
+                this.trigger('save-buttons:register-button', {
+                    className: 'save',
+                    priority: 200,
+                    label: this.label,
+                    events: {
+                        'click .save': this.save.bind(this)
+                    }
+                });
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
              * Save the current form
              */
             save: function () {
-                var loadingMask = new LoadingMask();
-                loadingMask.render().$el.appendTo(this.getRoot().$el).show();
-
-                this.getRoot().trigger('pim_enrich:form:entity:pre_save');
-                $.ajax({
-                    method: 'POST',
-                    url: this.getSaveUrl(),
-                    contentType: 'application/json',
-                    data: JSON.stringify(this.getFormData())
-                })
-                .then(this.postSave.bind(this))
-                .fail(this.fail.bind(this))
-                .always(function () {
-                    loadingMask.hide().$el.remove();
-                });
+                throw new Error('This method must be implemented');
             },
 
             /**
-             * Get the save url
-             *
-             * @return {String}
+             * Show the loading mask
              */
-            getSaveUrl: function () {
-                throw new Error('This method must be implemented');
+            showLoadingMask: function () {
+                this.loadingMask = new LoadingMask();
+                this.loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+            },
+
+            /**
+             * Hide the loading mask
+             */
+            hideLoadingMask: function () {
+                this.loadingMask.hide().$el.remove();
             },
 
             /**
@@ -89,7 +82,7 @@ define(
             /**
              * On save fail
              *
-             * @param {Object}
+             * @param {Object} response
              */
             fail: function (response) {
                 switch (response.status) {

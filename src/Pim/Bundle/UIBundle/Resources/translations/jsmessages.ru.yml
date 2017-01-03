@@ -9,11 +9,11 @@ Selected Rows: Выбранные строки
 "Ok, got it.": "Ок, я понял."
 "Cancel": "Отмена"
 "Delete Confirmation": "Подтверждение удаления"
-"Edit": "Редактировать"
+"Edit": "Изменить"
 "Unexpected error occured. Please contact system administrator.": "Произошла непредвиденная ошибка. Пожалуйста, свяжитесь с системным администратором."
 Now: Сейчас
 Prev: Предыдущий
-Next: Следующая
+Next: Следующий
 Today: Сегодня
 Wk: Нед
 Done: Готово
@@ -38,7 +38,7 @@ Unit: Единица
 Currency: Валюта
 jstree:
   all: Все товары
-  unclassified: Неклассифицированные товары
+  unclassified: Неклассифицированные продукты
   product:
     all: Все товары
     unclassified: Неклассифицированные товары
@@ -88,7 +88,7 @@ datetimepicker:
     Feb: Фев
     Mar: Мар
     Apr: Апр
-    May: Май
+    May: Mай
     Jun: Июн
     Jul: Июл
     Aug: Авг

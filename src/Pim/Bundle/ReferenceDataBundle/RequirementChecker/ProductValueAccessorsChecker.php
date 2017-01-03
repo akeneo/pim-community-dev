@@ -37,7 +37,7 @@ class ProductValueAccessorsChecker implements CheckerInterface
      */
     public function check(ConfigurationInterface $configuration)
     {
-        $reflection  = new \ReflectionClass($this->productValueClass);
+        $reflection = new \ReflectionClass($this->productValueClass);
 
         foreach ($this->getRequiredAccessorForSimpleReferenceData($configuration->getName()) as $accessor) {
             if (!$reflection->hasMethod($accessor)) {
@@ -89,7 +89,7 @@ class ProductValueAccessorsChecker implements CheckerInterface
      */
     protected function getRequiredAccessorForSimpleReferenceData($referenceData)
     {
-        $accessors   = [];
+        $accessors = [];
         $accessors[] = MethodNameGuesser::guess('get', $referenceData);
         $accessors[] = MethodNameGuesser::guess('set', $referenceData);
 
@@ -103,7 +103,7 @@ class ProductValueAccessorsChecker implements CheckerInterface
      */
     protected function getRequiredAccessorForMultipleReferenceData($referenceData)
     {
-        $accessors   = [];
+        $accessors = [];
         $accessors[] = MethodNameGuesser::guess('add', $referenceData, true);
         $accessors[] = MethodNameGuesser::guess('remove', $referenceData, true);
 

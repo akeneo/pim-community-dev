@@ -37,6 +37,11 @@ pim_enrich_product_rest_get:
         id: '[0-9a-f]+'
     methods: [GET]
 
+pim_enrich_product_rest_create:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.product:createAction, _format: json }
+    methods: [POST]
+
 pim_enrich_product_rest_post:
     path: /rest/{id}
     defaults: { _controller: pim_enrich.controller.rest.product:postAction, _format: json }
@@ -73,10 +78,10 @@ pim_enrich_product_history_rest_get:
     methods: [GET]
 
 pim_enrich_product_remove_attribute_rest:
-    path: /rest/{productId}/{attributeId}
+    path: /rest/{id}/{attributeId}
     defaults: { _controller: pim_enrich.controller.rest.product:removeAttributeAction, _format: json }
     requirements:
-        productId: '[0-9a-f]+'
+        id: '[0-9a-f]+'
         attributeId: '\d+'
         _format: json
     methods: [DELETE]

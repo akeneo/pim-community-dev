@@ -25,49 +25,49 @@ Feature: Filter products by reference data with locale and scope
     Given I should not see the filter cap_color
     And the grid should contain 2 elements
     And I should be able to use the following filters:
-      | filter      | value        | result |
-      | Cap color   | black        | postit |
-      | Cap color   | black,orange | postit |
-      | Cap color   | is empty     | mug    |
-      | Cap color   | orange       |        |
-      | Lace fabric | cotton       | postit |
-      | Lace fabric | cotton,straw | postit |
-      | Lace fabric | flax         | postit |
-      | Lace fabric | straw        |        |
-      | Lace fabric | is empty     | mug    |
-    When I filter by "Channel" with value "Mobile"
+      | filter      | operator | value        | result |
+      | cap_color   | in list  | Black        | postit |
+      | cap_color   | in list  | Black,Orange | postit |
+      | cap_color   | is empty |              | mug    |
+      | cap_color   | in list  | Orange       |        |
+      | lace_fabric | in list  | Cotton       | postit |
+      | lace_fabric | in list  | Cotton,Straw | postit |
+      | lace_fabric | in list  | Flax         | postit |
+      | lace_fabric | in list  | Straw        |        |
+      | lace_fabric | is empty |              | mug    |
+    When I filter by "scope" with operator "" and value "Mobile"
     Then I should be able to use the following filters:
-      | filter      | value         | result |
-      | Cap color   | purple        | postit |
-      | Cap color   | purple,orange | postit |
-      | Cap color   | is empty      | mug    |
-      | Cap color   | orange        |        |
-      | Lace fabric | straw         | postit |
-      | Lace fabric | cotton,straw  | postit |
-      | Lace fabric | flax          |        |
-      | Lace fabric | cotton        |        |
-      | Lace fabric | is empty      | mug    |
+      | filter      | operator | value         | result |
+      | cap_color   | in list  | Purple        | postit |
+      | cap_color   | in list  | Purple,Orange | postit |
+      | cap_color   | is empty |               | mug    |
+      | cap_color   | in list  | Orange        |        |
+      | lace_fabric | in list  | Straw         | postit |
+      | lace_fabric | in list  | Cotton,Straw  | postit |
+      | lace_fabric | in list  | Flax          |        |
+      | lace_fabric | in list  | Cotton        |        |
+      | lace_fabric | is empty |               | mug    |
 
   Scenario: Successfully filter product with multi reference data filters
-    Given I show the filter "Cap color"
-    And I filter by "Cap color" with value "Black"
+    Given I show the filter "cap_color"
+    And I filter by "cap_color" with operator "in list" and value "Black"
     And I should be able to use the following filters:
-      | filter      | value        | result |
-      | Lace fabric | Cotton       | postit |
-      | Lace fabric | Flax         | postit |
-      | Lace fabric | Cotton,Straw | postit |
-      | Lace fabric | Cotton,Flax  | postit |
-      | Lace fabric | Straw        |        |
-      | Lace fabric | is empty     |        |
-    When I filter by "Channel" with value "Mobile"
-    And I hide the filter "Cap color"
-    And I show the filter "Cap color"
-    And I filter by "Cap color" with value "Purple"
+      | filter      | operator | value        | result |
+      | lace_fabric | in list  | Cotton       | postit |
+      | lace_fabric | in list  | Flax         | postit |
+      | lace_fabric | in list  | Cotton,Straw | postit |
+      | lace_fabric | in list  | Cotton,Flax  | postit |
+      | lace_fabric | in list  | Straw        |        |
+      | lace_fabric | is empty |              |        |
+    When I filter by "scope" with operator "" and value "Mobile"
+    And I hide the filter "cap_color"
+    And I show the filter "cap_color"
+    And I filter by "cap_color" with operator "in list" and value "Purple"
     Then I should be able to use the following filters:
-      | filter      | value        | result |
-      | Lace fabric | Straw        | postit |
-      | Lace fabric | Flax         |        |
-      | Lace fabric | Cotton,Straw | postit |
-      | Lace fabric | Cotton,Flax  |        |
-      | Lace fabric | Cotton       |        |
-      | Lace fabric | is empty     |        |
+      | filter      | operator | value        | result |
+      | lace_fabric | in list  | Straw        | postit |
+      | lace_fabric | in list  | Flax         |        |
+      | lace_fabric | in list  | Cotton,Straw | postit |
+      | lace_fabric | in list  | Cotton,Flax  |        |
+      | lace_fabric | in list  | Cotton       |        |
+      | lace_fabric | is empty |              |        |

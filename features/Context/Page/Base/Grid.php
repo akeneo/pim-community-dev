@@ -24,6 +24,121 @@ class Grid extends Index
     const FILTER_IS_EMPTY         = 'empty';
     const FILTER_IN_LIST          = 'in';
 
+    protected $filterDecorators = [
+        'tree' => [
+            'Pim\Behat\Decorator\Tree\JsTreeDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\CategoryDecorator',
+        ],
+        'boolean' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\BooleanDecorator',
+        ],
+        'choice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
+        ],
+        'date' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\DateDecorator'
+        ],
+        'datetime' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\DateDecorator'
+        ],
+        'metric' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\MetricDecorator',
+        ],
+        'multichoice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
+        ],
+        'number' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\NumberDecorator',
+        ],
+        'price' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\PriceDecorator',
+        ],
+        'product_completeness' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
+        ],
+        'product_scope' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
+        ],
+        'select2-choice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\Select2ChoiceDecorator',
+        ],
+        'select2-rest-choice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\Select2ChoiceDecorator',
+        ],
+        'string' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\StringDecorator',
+        ],
+        'akeneo-product-enabled-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+        ],
+        'akeneo-product-family-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+        ],
+        'akeneo-product-completeness-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+        ],
+        'akeneo-product-updated-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\UpdatedDecorator',
+        ],
+        'akeneo-attribute-identifier-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\IdentifierDecorator',
+        ],
+        'akeneo-attribute-boolean-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\BooleanDecorator',
+        ],
+        'akeneo-attribute-metric-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\MetricDecorator',
+        ],
+        'akeneo-attribute-number-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\NumberDecorator',
+        ],
+        'akeneo-attribute-string-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\StringDecorator',
+        ],
+        'akeneo-attribute-date-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\DateDecorator'
+        ],
+        'akeneo-attribute-price-collection-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\PriceDecorator',
+        ],
+        'akeneo-attribute-select-reference-data-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+        ],
+        'akeneo-attribute-select-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+        ],
+        'akeneo-attribute-media-filter' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\MediaDecorator',
+        ]
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -36,14 +151,13 @@ class Grid extends Index
                 'Grid container'        => ['css' => '.grid-container'],
                 'Grid'                  => ['css' => 'table.grid'],
                 'Grid content'          => ['css' => 'table.grid tbody'],
-                'Filters'               => ['css' => 'div.filter-box'],
+                'Filters'               => ['css' => '.filter-box, .filter-wrapper'],
                 'Grid toolbar'          => ['css' => 'div.grid-toolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
                 'Configure columns'     => ['css' => '#configure-columns'],
                 'View selector'         => ['css' => '#view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],
-                'Mass Edit'             => ['css' => '.mass-actions-panel .action i.icon-edit'],
                 'Main context selector' => [
                     'css'        => '#container',
                     'decorators' => [
@@ -62,14 +176,17 @@ class Grid extends Index
      */
     public function getGrid()
     {
+        $body = $this->getElement('Body');
+        $container = $this->getElement('Container');
+
         return $this->spin(
-            function () {
-                $modal = $this->getElement('Body')->find('css', $this->elements['Dialog']['css']);
+            function () use ($body, $container) {
+                $modal = $body->find('css', $this->elements['Dialog']['css']);
                 if (null !== $modal && $modal->isVisible()) {
                     return $modal->find('css', $this->elements['Grid']['css']);
                 }
 
-                return $this->getElement('Container')->find('css', $this->elements['Grid']['css']);
+                return $container->find('css', $this->elements['Grid']['css']);
             },
             'No visible grid found'
         );
@@ -90,25 +207,15 @@ class Grid extends Index
      *
      * @param string $value
      *
-     * @throws \InvalidArgumentException
-     *
      * @return NodeElement
      */
     public function getRow($value)
     {
-        $value   = str_replace('"', '', $value);
+        $value = str_replace('"', '', $value);
 
-        try {
-            $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
-        } catch (TimeoutException $e) {
-            $gridRow = null;
-        }
-
-        if (null === $gridRow) {
-            throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a row for value "%s"', $value)
-            );
-        }
+        $gridRow = $this->spin(function () use ($value) {
+            return $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
+        }, sprintf('Couldn\'t find a row for value "%s"', $value));
 
         return $gridRow->getParent();
     }
@@ -161,107 +268,68 @@ class Grid extends Index
     }
 
     /**
-     * @param string               $filterName The name of the filter
-     * @param string               $value      The value to filter by
-     * @param bool|string          $operator   If false, no operator will be selected
-     * @param DriverInterface|null $driver     Required to filter by multiple choices
+     * @param array  $expectedOptions
+     * @param string $filterName
      *
      * @throws \InvalidArgumentException
      */
-    public function filterBy($filterName, $value, $operator = false, DriverInterface $driver = null)
+    public function checkOptionInFilter(array $expectedOptions, $filterName)
     {
         $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
 
-        if ($elt = $filter->find('css', 'select')) {
-            if ($elt->getText() === "between not between more than less than is empty") {
-                $this->filterByDate($filter, $value, $operator);
-            } elseif ($elt->getParent()->find('css', 'button.ui-multiselect')) {
-                if (!$driver || !$driver instanceof Selenium2Driver) {
-                    throw new \InvalidArgumentException('Selenium2Driver is required to filter by a choice filter');
-                }
-                $values = explode(',', $value);
+        $filter->open();
+        $options = $filter->getOptions();
 
-                foreach ($values as $value) {
-                    $driver->executeScript(
-                        sprintf(
-                            "$('.ui-multiselect-menu:visible input[title=\"%s\"]').attr('checked', true).trigger('click');",
-                            $value
-                        )
-                    );
-                    $driver->executeScript(
-                        sprintf(
-                            "$('.ui-multiselect-menu:visible input[title=\"%s\"]:visible').click().trigger('click');",
-                            $value
-                        )
-                    );
-                    sleep(1);
-                }
-
-                // Uncheck the 'All' option
-                if (!in_array('All', $values)) {
-                    $driver->executeScript(
-                        "var all = $('.ui-multiselect-menu:visible input[title=\"All\"]');" .
-                        "if (all.length && all.is(':checked')) { all.click().trigger('click'); }"
-                    );
-                }
-            }
-        } elseif ($elt = $filter->find('css', 'div.filter-criteria')) {
-            $results = $this->getElement('Select2 results');
-            $select2 = $filter->find('css', '.select2-input');
-
-            if (in_array($value, ['empty', 'is empty'])) {
-                $operator = 'empty';
-            }
-
-            if (null !== $results && null !== $select2) {
-                $driver->executeScript("jQuery('.select2-drop-mask').click();");
-            }
-
-            if (false !== $operator) {
-                $filter->find('css', 'button.dropdown-toggle')->click();
-                $filter->find('css', sprintf('[data-value="%s"]', $operator))->click();
-            }
-
-            if (null !== $results && null !== $select2) {
-                if (!in_array($value, ['empty', 'is empty'])) {
-                    $values = explode(',', $value);
-                    foreach ($values as $value) {
-                        $driver->getWebDriverSession()
-                            ->element('xpath', $select2->getXpath())
-                            ->postValue(['value' => [$value]]);
-                        sleep(2);
-                        $results->find('css', 'li')->click();
-                        sleep(2);
-                    }
-                }
-            } elseif ($value !== false) {
-                $elt->fillField('value', $value);
-            }
-
-            $filter->find('css', 'button.filter-update')->click();
-        } else {
+        if ($options != $expectedOptions) {
             throw new \InvalidArgumentException(
-                sprintf('Filtering by "%s" is not yet implemented"', $filterName)
+                sprintf(
+                    'Expecting filter "%s" to contain the options "%s", got "%s"',
+                    $filterName,
+                    implode(', ', $expectedOptions),
+                    implode(', ', $options)
+                )
             );
         }
     }
 
     /**
-     * @param NodeElement $filter
-     * @param string      $value
-     * @param string      $operator
+     * @param string      $filterName The name of the filter
+     * @param bool|string $operator   The operator
+     * @param string      $value      The value to filter by
+     *
+     * @throws \InvalidArgumentException
      */
-    protected function filterByDate($filter, $value, $operator)
+    public function filterBy($filterName, $operator, $value)
     {
-        $elt = $filter->find('css', 'select');
-        if ('empty' === $operator) {
-            $elt->selectOption('is empty');
-        } else {
-            $elt->selectOption($operator);
+        $filter = $this->getFilter($filterName);
+
+        $filter->open();
+        $filter->filter($operator, $value);
+    }
+
+    /**
+     * Get grid filter from label name
+     *
+     * @param string $filterName
+     *
+     * @return NodeElement
+     */
+    public function getFilter($filterName)
+    {
+        // We find the node element
+        $filter = $this->spin(function () use ($filterName) {
+            $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+
+            return $filter;
+        }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
+
+        // We decorate it
+        $filterType = $filter->getAttribute('data-type');
+        if (isset($this->filterDecorators[$filterType])) {
+            $filter = $this->decorate($filter, $this->filterDecorators[$filterType]);
         }
 
-        $filter->find('css', 'button.filter-update')->click();
+        return $filter;
     }
 
     /**
@@ -306,49 +374,22 @@ class Grid extends Index
             ->getElement('Grid toolbar')
             ->find('css', 'div label.dib:contains("record")');
 
-        // If pagination not found or is empty, count rows
-        if (!$pagination || !$pagination->getText()) {
+        /**
+         * If pagination not found or is empty, it actually count rows
+         *
+         * TODO Remove this. We have to find another toolbar count.
+         * If there is no toolbar count, this method
+         * should even not be called or should raise a not found exception.
+         */
+        if (!$pagination || !$pagination->getText() || false !== strstr($pagination->getText(), 'null')) {
             return $this->countRows();
         }
 
-        if (preg_match('/([0-9][0-9 ]*) records?$/', $pagination->getText(), $matches)) {
-            return $matches[1];
+        if (preg_match('/(?P<count>[0-9][0-9 ]*) records?$/', $pagination->getText(), $matches)) {
+            return (int) preg_replace('/[^0-9]/', '', $matches['count']);
         } else {
             throw new \InvalidArgumentException('Impossible to get count of datagrid records');
         }
-    }
-
-    /**
-     * @param int $num
-     */
-    public function changePageSize($num)
-    {
-        assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
-
-        $element = $this->spin(function () {
-            return $this->getGrid()
-                ->getParent()
-                ->getParent()
-                ->getParent()
-                ->find('css', $this->elements['Grid toolbar']['css']);
-        }, 'Cannot find the grid toolbar');
-
-        $dropdownButton = $this->spin(function () use ($element) {
-            return $element->find('css', '.page-size button.dropdown-toggle');
-        }, 'Cannot find the change page size button');
-        $dropdownButton->click();
-
-        $element->find('css', sprintf('ul.dropdown-menu li a:contains("%d")', $num))->click();
-    }
-
-    /**
-     * @param int $num
-     */
-    public function pageSizeIs($num)
-    {
-        assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
-        $element = $this->getElement('Grid toolbar')->find('css', '.page-size');
-        assertNotNull($element->find('css', sprintf('button:contains("%d")', $num)));
     }
 
     /**
@@ -523,26 +564,6 @@ class Grid extends Index
     }
 
     /**
-     * Get grid filter from label name
-     *
-     * @param string $filterName
-     *
-     * @return NodeElement
-     */
-    public function getFilter($filterName)
-    {
-        $filter = $this->spin(function () use ($filterName) {
-            if (strtolower($filterName) === 'channel') {
-                return $this->getElement('Grid toolbar')->find('css', '.filter-item');
-            }
-
-            return $this->getElement('Filters')->find('css', sprintf('.filter-item:contains("%s")', $filterName));
-        }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
-
-        return $filter;
-    }
-
-    /**
      * @param string $filterName
      *
      * @return bool
@@ -550,10 +571,7 @@ class Grid extends Index
     public function isFilterAvailable($filterName)
     {
         $this->clickFiltersList();
-
-        $filterElement = $this
-            ->getElement('Manage filters')
-            ->find('css', sprintf('label:contains("%s")', $filterName));
+        $filterElement = $this->getElement('Manage filters')->find('css', sprintf('input[value="%s"]', $filterName));
 
         return null !== $filterElement;
     }
@@ -565,11 +583,12 @@ class Grid extends Index
      */
     public function showFilter($filterName)
     {
-        try {
-            if (!$this->getFilter($filterName)->isVisible()) {
-                $this->clickOnFilterToManage($filterName);
-            }
-        } catch (TimeoutException $e) {
+        $this->spin(function () {
+            return $this->getElement('Body')->find('css', '.filter-box, .filter-wrapper');
+        }, 'The filter box is not loaded');
+
+        $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+        if (null === $filter || !$filter->isVisible()) {
             $this->clickOnFilterToManage($filterName);
         }
     }
@@ -581,9 +600,21 @@ class Grid extends Index
      */
     public function hideFilter($filterName)
     {
-        if ($this->getFilter($filterName)->isVisible()) {
-            $this->clickOnFilterToManage($filterName);
+        $filter = $this->getFilter($filterName);
+        if ($filter->isVisible()) {
+            $filter->remove();
         }
+    }
+
+    /**
+     * Expand filter
+     *
+     * @param string $filterName
+     */
+    public function expandFilter($filterName)
+    {
+        $filter = $this->getFilter($filterName);
+        $filter->expand();
     }
 
     /**
@@ -660,21 +691,27 @@ class Grid extends Index
             $this->clickFiltersList();
         }
 
-        $searchField   = $this->spin(function () use ($manageFilters) {
-            return $manageFilters->find('css', 'input[type="search"]');
-        }, 'Cannot find manage filters search field');
-        $searchField->setValue($filterName);
+        $this->spin(function () use ($manageFilters, $filterName) {
+            $filterElement = $manageFilters->find('css', sprintf('input[value="%s"]', $filterName));
 
-        $filterElement = $this->spin(function () use ($manageFilters, $filterName) {
-            $filterElement = $manageFilters->find('css', sprintf('label:contains("%s")', $filterName));
-            if (null === $filterElement || !$filterElement->isVisible()) {
-                return false;
+            if (null !== $filterElement && $filterElement->isVisible()) {
+                $filterElement->click();
+
+                return true;
             }
 
-            return $filterElement;
-        }, sprintf('Impossible to activate filter "%s"', $filterName));
+            if (null !== $searchField = $manageFilters->find('css', 'input[type="search"]')) {
+                $searchField->setValue($filterName);
+            }
 
-        $filterElement->click();
+            if (null !== $filterElement && $filterElement->isVisible()) {
+                $filterElement->click();
+
+                return true;
+            }
+
+            return false;
+        }, sprintf('Impossible to activate filter "%s"', $filterName));
     }
 
     /**
@@ -692,27 +729,48 @@ class Grid extends Index
     }
 
     /**
+     * Set the content of filter search
+     *
+     * @param string $text
+     */
+    public function typeInManageFilterInput($text)
+    {
+        $manageFilters = $this->getElement('Manage filters');
+        if (!$manageFilters->isVisible()) {
+            $this->clickFiltersList();
+        }
+
+        $manageFilters
+            ->find('css', 'input')
+            ->setValue($text);
+    }
+
+    /**
      * Select a row
      *
      * @param string $value
      * @param bool   $check
-     *
-     * @return NodeElement|null
      */
     public function selectRow($value, $check = true)
     {
-        $row      = $this->getRow($value);
-        $checkbox = $this->spin(function () use ($row) {
-            return $row->find('css', 'input[type="checkbox"]');
-        }, sprintf('Couldn\'t find a checkbox for row "%s"', $value));
+        $this->spin(function () use ($value, $check) {
+            $row      = $this->getRow($value);
+            $checkbox = $row->find('css', 'input[type="checkbox"]');
 
-        if ($check) {
-            $checkbox->check();
-        } else {
+            if (null === $checkbox || !$checkbox->isVisible()) {
+                return false;
+            }
+
+            if (true === $check) {
+                $checkbox->check();
+
+                return $checkbox->isChecked();
+            }
+
             $checkbox->uncheck();
-        }
 
-        return $checkbox;
+            return !$checkbox->isChecked();
+        }, sprintf('Couldn\'t find a checkbox for row "%s"', $value));
     }
 
     /**
@@ -739,20 +797,6 @@ class Grid extends Index
         }
 
         return $cells[$position];
-    }
-
-    /**
-     * Open the filter
-     *
-     * @param NodeElement $filter
-     */
-    public function openFilter(NodeElement $filter)
-    {
-        $element = $this->spin(function () use ($filter) {
-            return $filter->find('css', 'button');
-        }, 'Impossible to open filter or maybe its type is not yet implemented');
-
-        $element->click();
     }
 
     /**
@@ -836,98 +880,9 @@ class Grid extends Index
      */
     protected function getRows()
     {
-        return $this->getGridContent()->findAll('xpath', '/tr');
-    }
-
-    /**
-     * @param string $filterName The name of the price filter
-     * @param string $action     Type of filtering (>, >=, etc.)
-     * @param number $value      Value to filter
-     * @param string $currency   Currency on which to filter
-     */
-    public function filterPerPrice($filterName, $action, $value, $currency)
-    {
-        $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
-
-        if (null !== $value) {
-            $criteriaElt = $filter->find('css', 'div.filter-criteria');
-            $criteriaElt->fillField('value', $value);
-        }
-
-        $buttons        = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
-        $actionButton   = array_shift($buttons);
-        $currencyButton = array_shift($buttons);
-
-        // Open the dropdown menu with currency list and click on $currency line
-        $currencyButton->click();
-        $currencyButton->getParent()->find('css', sprintf('ul a:contains("%s")', $currency))->click();
-
-        // Open the dropdown menu with action list and click on $action line
-        $actionButton->click();
-        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
-
-        $filter->find('css', 'button.filter-update')->click();
-    }
-
-    /**
-     * @param string $filterName The name of the metric filter
-     * @param string $action     Type of filtering (>, >=, etc.)
-     * @param float  $value      Value to filter
-     * @param string $unit       Unit on which to filter
-     */
-    public function filterPerMetric($filterName, $action, $value, $unit)
-    {
-        $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
-
-        $criteriaElt = $this->spin(
-            function () use ($filter) {
-                return $filter->find('css', 'div.filter-criteria');
-            }
-        );
-        $criteriaElt->fillField('value', $value);
-
-        $buttons = $this->spin(
-            function () use ($filter) {
-                return $filter->findAll('css', '.metricfilter button.dropdown-toggle');
-            }
-        );
-        $actionButton = array_shift($buttons);
-        $unitButton = array_shift($buttons);
-
-        // Open the dropdown menu with unit list and click on $unit line
-        $unitButton->click();
-        $unitButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $unit))->click();
-
-        // Open the dropdown menu with action list and click on $action line
-        $actionButton->click();
-        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
-
-        $filter->find('css', 'button.filter-update')->click();
-    }
-
-    /**
-     * @param string $filterName The name of the number filter
-     * @param string $action     Type of filtering (>, >=, etc.)
-     * @param float  $value      Value to filter
-     */
-    public function filterPerNumber($filterName, $action, $value)
-    {
-        $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
-
-        $criteriaElt = $filter->find('css', 'div.filter-criteria');
-        $criteriaElt->fillField('value', $value);
-
-        $buttons      = $filter->findAll('css', '.filter-criteria button.dropdown-toggle');
-        $actionButton = array_shift($buttons);
-
-        // Open the dropdown menu with action list and click on $action line
-        $actionButton->click();
-        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
-
-        $filter->find('css', 'button.filter-update')->click();
+        return $this->spin(function () {
+            return $this->getGridContent()->findAll('xpath', '/tr');
+        }, 'Cannot get the grid rows.');
     }
 
     /**
@@ -977,43 +932,6 @@ class Grid extends Index
     public function moveColumn($source, $target)
     {
         return $this->getElement('Configuration Popin')->moveColumn($source, $target);
-    }
-
-    /**
-     * Press the mass edit button
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function massEdit()
-    {
-        $button = $this->getElement('Mass Edit');
-        $parent = $button->getParent();
-
-        if (null === $parent) {
-            throw new \InvalidArgumentException('"Mass edit" button not found');
-        }
-
-        $this->pressButton($parent->getText());
-    }
-
-    /**
-     * Press the mass delete button
-     */
-    public function massDelete()
-    {
-        $this->pressButton('Delete');
-    }
-
-    /**
-     * Press the sequential edit button
-     */
-    public function sequentialEdit()
-    {
-        $this->spin(function () {
-            $this->pressButton('Sequential Edit');
-
-            return true;
-        });
     }
 
     /**

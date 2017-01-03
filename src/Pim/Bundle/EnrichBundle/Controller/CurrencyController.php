@@ -5,8 +5,8 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Exception\LinkedChannelException;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use Pim\Component\Catalog\Exception\LinkedChannelException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,8 +37,8 @@ class CurrencyController
      */
     public function __construct(Request $request, RouterInterface $router, SaverInterface $currencySaver)
     {
-        $this->request       = $request;
-        $this->router        = $router;
+        $this->request = $request;
+        $this->router = $router;
         $this->currencySaver = $currencySaver;
     }
 

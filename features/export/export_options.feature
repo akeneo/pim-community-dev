@@ -1,18 +1,18 @@
+@javascript
 Feature: Export options
   In order to be able to access and modify options data outside PIM
   As a product manager
   I need to be able to export options
 
-  @javascript
-  Scenario: Successfully export options
+  Scenario: Successfully export options in CSV
     Given a "footwear" catalog configuration
-    And the following job "footwear_option_export" configuration:
+    And the following job "csv_footwear_option_export" configuration:
       | filePath | %tmp%/option_export/option_export.csv |
     And I am logged in as "Julia"
-    And I am on the "footwear_option_export" export job page
+    And I am on the "csv_footwear_option_export" export job page
     When I launch the export job
-    And I wait for the "footwear_option_export" job to finish
-    Then exported file of "footwear_option_export" should contain:
+    And I wait for the "csv_footwear_option_export" job to finish
+    Then exported file of "csv_footwear_option_export" should contain:
     """
     attribute;code;sort_order;label-en_US
     manufacturer;Converse;1;Converse
@@ -52,6 +52,4 @@ Feature: Export options
     lace_color;laces_black;1;Black
     lace_color;laces_brown;2;Brown
     lace_color;laces_white;3;White
-
     """
-

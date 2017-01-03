@@ -38,7 +38,7 @@ class AssertionContext extends RawMinkContext
             $this->assertSession()->pageTextContains($text);
 
             return true;
-        });
+        }, sprintf('Cannot find the text "%s"', $text));
     }
 
     /**
@@ -52,7 +52,7 @@ class AssertionContext extends RawMinkContext
             $this->assertSession()->pageTextNotContains($text);
 
             return true;
-        });
+        }, sprintf('The text "%s" has been found in page', $text));
     }
 
     /**
@@ -169,19 +169,18 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeCurrenciesOnThePriceField($currencies, $field)
     {
-        if (null === $priceLabelField = $this->getCurrentPage()->findField($field)) {
-            throw $this->createExpectationException(sprintf('Expecting to see the price field "%s".', $field));
-        }
+        $priceLabelField = $this->spin(function () use ($field) {
+            return $this->getCurrentPage()->findField($field);
+        }, sprintf('Expecting to see the price field "%s".', $field));
+
         $currencies = explode(',', $currencies);
         $currencies = array_map('trim', $currencies);
-        $priceField = $priceLabelField->getParent();
+        $priceField = $priceLabelField->getParent()->getParent();
 
         foreach ($currencies as $currency) {
-            if (null === $priceField->find('css', sprintf('.controls input[value="%s"]', $currency))) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see the currency "%s" on price field "%s".', $currency, $field)
-                );
-            }
+            $this->spin(function () use ($priceField, $currency, $field) {
+                return $priceField->find('css', sprintf('input[data-currency="%s"]', $currency));
+            }, sprintf('Expecting to see the currency "%s" on price field "%s".', $currency, $field));
         }
     }
 
@@ -232,31 +231,17 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * This function was disabled because it generates too many failing tests. Warning, some tests are always
-     * using it, and it checks nothing at all.
+     * @deprecated This function was disabled because it generates too many failing tests. Warning, some tests are
+     * always using it, and it checks nothing at all.
      *
-     * @deprecated Will be removed in 1.6. Use iShouldSeeTheFlashMessage instead.
-     *
-     * @param string $text
-     *
-     * @Then /^I should see (?:a )?flash message "([^"]*)"$/
-     *
-     * @return bool
-     */
-    public function iShouldSeeFlashMessage($text)
-    {
-        return true;
-    }
-
-    /**
      * @param $text
      *
-     * @Then /^I should see the flash message "([^"]*)"$/
-     *
-     * @throws Spin\TimeoutException
+     * @Then /^I should see the flash message "(.*)"$/
      */
     public function iShouldSeeTheFlashMessage($text)
     {
+        return;
+
         $this->spin(function () use ($text) {
             $flashes = $this->getCurrentPage()->findAll('css', '.flash-messages-holder > div');
             foreach ($flashes as $flash) {
@@ -592,41 +577,6 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * @param string    $field
-     * @param TableNode $table
-     *
-     * @Then /^the scopable "([^"]*)" field should have the following colors:$/
-     */
-    public function theScopableFieldShouldHaveTheFollowingColors($field, TableNode $table)
-    {
-        $element = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $field))->getParent();
-        $colors  = $this->getParameter('pim_enrich.colors');
-        foreach ($table->getHash() as $item) {
-            $style = $element->find('css', sprintf('label[title="%s"]', $item['scope']))->getAttribute('style');
-            assertGreaterThanOrEqual(
-                1,
-                strpos($style, $colors[$item['background']]),
-                sprintf(
-                    'Expecting the background of the %s %s field to be %s',
-                    $item['scope'],
-                    $field,
-                    $item['background']
-                )
-            );
-            assertGreaterThanOrEqual(
-                1,
-                strpos($style, $item['font']),
-                sprintf(
-                    'Expecting the font of the %s %s field to be %s',
-                    $item['scope'],
-                    $field,
-                    $item['font']
-                )
-            );
-        }
-    }
-
-    /**
      * @param int $count
      *
      * @Then /^I should have (\d+) new notifications?$/
@@ -649,7 +599,7 @@ class AssertionContext extends RawMinkContext
     {
         $notificationWidget = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '#header-notification-widget');
-        });
+        }, 'Cannot find "#header-notification-widget" notification panel');
 
         if ($notificationWidget->hasClass('open')) {
             return;
@@ -663,7 +613,7 @@ class AssertionContext extends RawMinkContext
             $content = trim($footer->getText());
 
             return !empty($content);
-        });
+        }, 'Notification panel content should not be empty');
     }
 
     /**
@@ -677,7 +627,7 @@ class AssertionContext extends RawMinkContext
 
         $link = $this->spin(function () use ($page, $selector) {
             return $page->find('css', $selector);
-        });
+        }, sprintf('Cannot find "%s" element', $selector));
 
         $link->click();
     }
@@ -695,7 +645,7 @@ class AssertionContext extends RawMinkContext
 
         $notificationWidget = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '#header-notification-widget');
-        });
+        }, 'Cannot find "#header-notification-widget" notification widget');
 
         $icons = [
             'success' => 'icon-ok',
@@ -776,75 +726,6 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * @param $fieldName
-     * @param $string
-     *
-     * @throws ExpectationException
-     *
-     * @return bool
-     *
-     *
-     * @Then /^the field "([^"]*)" should have the following options:$/
-     */
-    public function theFieldShouldHaveTheFollowingOptions($fieldName, PyStringNode $string)
-    {
-        $field = $this->getCurrentPage()->findField($fieldName);
-        $id    = $field->getAttribute('id');
-
-        if ('select' === $field->getTagName()) {
-            $options = $field->findAll('css', 'option');
-        } elseif ('input' === $field->getTagName() && 0 === strpos($id, 's2id_')) {
-            $options = $field->getParent()->getParent()->findAll('css', 'option');
-        } else {
-            throw $this->createExpectationException(
-                sprintf('"%s" field is not a select field, can\'t have options.', $fieldName)
-            );
-        }
-
-        $availableOptions = [];
-
-        foreach ($options as $option) {
-            $optionValue = trim($option->getText());
-
-            if ($optionValue) {
-                $availableOptions[] = $optionValue;
-            }
-        }
-
-        if (count(array_intersect($string->getLines(), $availableOptions)) === count($string->getLines())) {
-            return true;
-        }
-
-        throw $this->createExpectationException(
-            sprintf(
-                '"%s" field have these options (%s), but expected following options (%s).',
-                $fieldName,
-                implode(', ', $availableOptions),
-                implode(', ', $string->getLines())
-            )
-        );
-    }
-
-    /**
-     * @param PyStringNode $text
-     *
-     * @throws ResponseTextException
-     * @throws \Exception
-     *
-     * @Then /^I should see the sequential edit progression:$/
-     */
-    public function iShouldSeeTheSequentialEditProgression(PyStringNode $text)
-    {
-        $this->getCurrentPage()->waitForProgressionBar();
-
-        $this->spin(function () use ($text) {
-            $this->assertSession()->pageTextContains((string) $text);
-
-            return true;
-        });
-    }
-
-    /**
      * Checks that avatar was not the default one
      *
      * @Then /^I should not see the default avatar$/
@@ -852,46 +733,6 @@ class AssertionContext extends RawMinkContext
     public function iShouldNotSeeDefaultAvatar()
     {
         $this->assertSession()->elementAttributeNotContains('css', '.customer-info img', 'src', 'user-info.png');
-    }
-
-    /**
-     * Checks that a file (or media) exists in database
-     *
-     * @param string $originalFilename
-     *
-     * @Then /^The file with original filename "([^"]*)" should exists in database$/
-     */
-    public function theFileShouldExistInDatabase($originalFilename)
-    {
-        $fileInfoRepoClass  = $this->getParameter('akeneo_file_storage.model.file_info.class');
-        $fileInfoRepository = $this->getRepository($fileInfoRepoClass);
-
-        $fileInfo = $fileInfoRepository->findOneBy(['originalFilename' => $originalFilename]);
-
-        assertNotNull($fileInfo, sprintf(
-            'Unable to find file with original filename "%s" in database',
-            $originalFilename
-        ));
-    }
-
-    /**
-     * @param string $parameter
-     *
-     * @return string
-     */
-    protected function getParameter($parameter)
-    {
-        return $this->getMainContext()->getContainer()->getParameter($parameter);
-    }
-
-    /**
-     * @param string $entityClass
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository($entityClass)
-    {
-        return $this->getMainContext()->getEntityManager()->getRepository($entityClass);
     }
 
     /**

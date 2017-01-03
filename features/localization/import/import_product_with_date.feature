@@ -15,12 +15,12 @@ Feature: Import product information with date
       SKU-001;28/10/2014;sku
       SKU-002;;sku
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath   | %file to import% |
       | dateFormat | dd/MM/yyyy       |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 2 products
     Then the product "SKU-001" should have the following values:
       | destocking_date | 2014-10-28 |
@@ -37,12 +37,12 @@ Feature: Import product information with date
       SKU-004;2014-10-28;
       SKU-005;;sku
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath   | %file to import% |
       | dateFormat | yyyy-MM-dd       |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 2 products
     Then I should see "skipped 3"
     Then the product "SKU-004" should have the following values:

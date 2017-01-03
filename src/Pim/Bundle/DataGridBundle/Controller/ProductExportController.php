@@ -22,6 +22,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ProductExportController
 {
+    const DATETIME_FORMAT = 'Y-m-d_H:i:s';
+
     /** @var Request */
     protected $request;
 
@@ -61,13 +63,13 @@ class ProductExportController
         JobLauncherInterface $jobLauncher,
         DataGridManager $datagridManager
     ) {
-        $this->request              = $request;
+        $this->request = $request;
         $this->massActionDispatcher = $massActionDispatcher;
-        $this->gridFilterAdapter    = $gridFilterAdapter;
-        $this->jobInstanceRepo      = $jobInstanceRepo;
-        $this->tokenStorage         = $tokenStorage;
-        $this->jobLauncher          = $jobLauncher;
-        $this->datagridManager      = $datagridManager;
+        $this->gridFilterAdapter = $gridFilterAdapter;
+        $this->jobInstanceRepo = $jobInstanceRepo;
+        $this->tokenStorage = $tokenStorage;
+        $this->jobLauncher = $jobLauncher;
+        $this->datagridManager = $datagridManager;
     }
 
     /**
@@ -77,24 +79,39 @@ class ProductExportController
      */
     public function indexAction()
     {
-        $jobCode     = $this->request->get('_jobCode');
-        $jobInstance = $this->jobInstanceRepo->findOneBy(['code' => $jobCode]);
+        $displayedColumnsOnly = (bool) $this->request->get('_displayedColumnsOnly');
+        $jobCode = $this->request->get('_jobCode');
+        $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(['code' => $jobCode]);
 
         if (null === $jobInstance) {
             throw new \RuntimeException(sprintf('Jobinstance "%s" is not well configured', $jobCode));
         }
 
-        $filters          = $this->gridFilterAdapter->adapt($this->request);
-        $rawConfiguration = addslashes(
-            json_encode(
-                [
-                    'filters'     => $filters,
-                    'mainContext' => $this->getContextParameters()
-                ]
-            )
-        );
+        $filters = $this->gridFilterAdapter->adapt($this->request);
+        $rawParameters = $jobInstance->getRawParameters();
+        $contextParameters = $this->getContextParameters();
+        $rawParameters['filePath'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
+        $dynamicConfiguration = $contextParameters + ['filters' => $filters];
 
-        $this->jobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+        if ($displayedColumnsOnly) {
+            $gridName = (null !== $this->request->get('gridName')) ? $this->request->get('gridName') : 'product-grid';
+            if (isset($this->request->get($gridName)['_parameters'])) {
+                $columns = explode(',', $this->request->get($gridName)['_parameters']['view']['columns']);
+            } else {
+                $columns = array_keys($this->datagridManager->getConfigurationForGrid($gridName)['columns']);
+            }
+
+            $dynamicConfiguration = array_merge(
+                $dynamicConfiguration,
+                [
+                    'selected_properties' => $columns
+                ]
+            );
+        }
+
+        $configuration = array_merge($rawParameters, $dynamicConfiguration);
+
+        $this->jobLauncher->launch($jobInstance, $this->getUser(), $configuration);
 
         return new Response();
     }
@@ -126,8 +143,8 @@ class ProductExportController
     protected function getContextParameters()
     {
         $datagridName = $this->request->get('gridName');
-        $datagrid     = $this->datagridManager->getDatagrid($datagridName);
-        $dataSource   = $datagrid->getDatasource();
+        $datagrid = $this->datagridManager->getDatagrid($datagridName);
+        $dataSource = $datagrid->getDatasource();
 
         if (!$dataSource instanceof ProductDatasource) {
             throw new \LogicException('getContextParameters is only implemented for ProductDatasource');
@@ -135,7 +152,7 @@ class ProductExportController
 
         $user = $this->getUser();
         $dataSourceParams = $dataSource->getParameters();
-        $contextParams    = [];
+        $contextParams = [];
         if (is_array($dataSourceParams)) {
             $contextParams = [
                 'locale'    => $dataSourceParams['dataLocale'],
@@ -145,5 +162,23 @@ class ProductExportController
         }
 
         return $contextParams;
+    }
+
+    /**
+     * Build file path to replace pattern like %locale%, %scope% by real data
+     *
+     * @param string $filePath
+     * @param array  $contextParameters
+     *
+     * @return string
+     */
+    protected function buildFilePath($filePath, array $contextParameters)
+    {
+        $data = ['%datetime%' => date(static::DATETIME_FORMAT)];
+        foreach ($contextParameters as $key => $value) {
+            $data['%' . $key . '%'] = $value;
+        }
+
+        return strtr($filePath, $data);
     }
 }

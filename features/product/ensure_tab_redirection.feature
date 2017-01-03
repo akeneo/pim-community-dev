@@ -10,10 +10,12 @@ Feature: Ensures the appropriate tab is displayed to the user
       | sku          |
       | jacket-white |
       | jacket-black |
-    And I am logged in as "Julia"
+    When I am logged in as "Julia"
     And I am on the "Catalog manager" role page
-    And I grant rights to Consult the categories of a product
+    And I visit the "Permissions" tab
+    And I grant rights to resource Consult the categories of a product
     And I save the role
+    Then I should not see the text "There are unsaved changes."
 
   @jira https://akeneo.atlassian.net/browse/PIM-5395
   Scenario: Successfully keeps tabs between products
@@ -28,8 +30,9 @@ Feature: Ensures the appropriate tab is displayed to the user
     Given I am on the "jacket-white" product page
     And I visit the "Categories" tab
     And I am on the "Catalog manager" role page
-    And I remove rights to Consult the categories of a product
+    And I visit the "Permissions" tab
+    And I revoke rights to resource Consult the categories of a product
     And I save the role
+    Then I should not see the text "There are unsaved changes."
     When I am on the "jacket-white" product page
     Then I should be on the "Attributes" tab
-

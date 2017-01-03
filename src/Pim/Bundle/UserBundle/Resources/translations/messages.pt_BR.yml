@@ -5,8 +5,8 @@ pim_user:
       additional.title: Adicional
       group_and_role.title: Grupos e Funções
       password.title: Senha
-      business_unit.title: Unidades de Negócios
-      email_synchronization.title: Configurações de sincronização de E-Mail
+      business_unit.title: Unidades de Negócio
+      email_synchronization.title: Configuração da Sincronização de emails
       interfaces.title: Interfaces
 oro.user.controller:
   group.message.saved: Grupo salvo
@@ -37,7 +37,7 @@ user.title: Usuário
 user.overview: Usuário
 Users Management: Gerenciamento de usuários
 Create user: Criar usuário
-btn.create.user: Criar usuário
+btn.create.user: Criar Usuário
 New user: Novo usuário
 Additional: Adicional
 Groups and Roles: Grupos e Funções
@@ -60,6 +60,7 @@ Business Units: Unidades de Negócios
 Email synchronization settings: Configurações de sincronização de E-Mail
 Host: Servidor
 Port: Porta
+Ssl: SSL
 Last logged in: Último acesso em
 Login count: Contagem de acessos
 Additional Information: Informações Adicionais
@@ -102,7 +103,7 @@ rights:
 oro_security:
   acl_group:
     user: Usuários
-    role: Funções
+    role: Papeis
     group: Grupo de usuários
   acl:
     user:
@@ -137,7 +138,7 @@ oro:
       SYSTEM: Sistema
       NONE: Nenhum
 Create group: Criar grupo
-btn.create.user-group: Criar grupo
+btn.create.user-group: Criar Grupo
 Has group: Possui grupo
 Save and Close: Salvar e Fechar
 user-group.overview: Grupos

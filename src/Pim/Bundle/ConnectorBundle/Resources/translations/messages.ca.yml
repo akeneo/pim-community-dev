@@ -1,59 +1,4 @@
 pim_connector:
-  jobs:
-    csv_product_export:
-      title: Exportar productes a CSV
-      export.title: Exportar productes
-    csv_category_export:
-      title: Exportar categories en CSV
-      export.title: Exportar categories
-    csv_attribute_export:
-      title: Exportar atributs a CSV
-      export.title: Exportar atributs
-    csv_attribute_option_export:
-      title: Exportar opcions d'atribut en CSV
-      export.title: Exportar opcions d'atribut
-    csv_association_type_export:
-      title: Exportar tipus d'associació en CSV
-      export.title: Exportar tipus d'associacions
-    csv_group_export:
-      title: Exportar grups en CSV
-      export.title: Exportar grups
-    csv_variant_group_export:
-      title: Exportar grup de variants a CSV
-      export.title: Exportar grup de variants
-    csv_product_import:
-      title: Importar producte en CSV
-      validation.title: Validar arxius
-      import.title: Importar productes
-      import_associations.title: Importar associacions
-    csv_category_import:
-      title: Importar categories en CSV
-      validation.title: Validar arxius
-      import.title: Importar categories
-    csv_attribute_import:
-      title: Importar atributs en CSV
-      validation.title: Validar arxius
-      import.title: Importar atributs
-    csv_attribute_option_import:
-      title: Importar opcions d'atribut en CSV
-      validation.title: Validar arxius
-      import.title: Importar opcions d'atribut
-    csv_association_type_import:
-      title: Importar tipus d'associació en CSV
-      validation.title: Validar arxius
-      import.title: Importar tipus d'associació
-    csv_family_import:
-      title: Importar famílies en CSV
-      validation.title: Validar arxius
-      import.title: Importar família
-    csv_group_import:
-      title: Importar grups en CSV
-      validation.title: Validar arxius
-      import.title: Importar grups
-    csv_variant_group_import:
-      title: Importar Grup de variants des d'un CSV
-      validation.title: Validar arxius
-      import.title: Importació de grupo de variants
   steps:
     dummy_reader.title: Lector de proves
     product_reader.title: Extracció de productes
@@ -84,70 +29,142 @@ pim_connector:
     writer.title: Emmagatzematge d'entitats
     csv_writer.title: Editor de CSV
   export:
-    delimiter:
-      label: Delimitador
-      help: Caràcter utilitzat per definir el delimitador de camp
-    enclosure:
-      label: Enquadrament
-      help: Caràcter utilitzat per enquadrar el camp
-    withHeader:
-      label: Amb capçalera
-      help: Si vol imprimir el nom de la columna o no
-    filePath:
-      label: Ruta de l'arxiu
-      help: On guardar l'arxiu generat al servidor
-    channel:
-      label: Canal
-    header:
-      label: Capçalera
+    csv:
+      delimiter:
+        label: Delimitador
+        help: Caràcter utilitzat per definir el delimitador de camp
+      enclosure:
+        label: Enquadrament
+        help: Caràcter utilitzat per enquadrar el camp
+      withHeader:
+        label: Amb capçalera
+        help: Si vol imprimir el nom de la columna o no
+      with_media:
+        label: Exportar arxius i imatges
+        help: Exportar, o no, arxius i imatges de productes
+      filePath:
+        label: Ruta de l'arxiu
+        help: On guardar l'arxiu generat al servidor
+      decimalSeparator:
+        label: Separador de decimals
+        help: Determinar el separador de decimals
+      dateFormat:
+        label: Format de data
+        help: Determinar el format dels camps de data
+    xlsx:
+      lines_per_files:
+        label: Nombre de línies per arxiu
+        help: Definir el nombre límit de línies per arxiu
+      withHeader:
+        label: Amb capçalera
+        help: Si vol imprimir el nom de la columna o no
+      with_media:
+        label: Exportar arxius i imatges
+        help: Exportar, o no, arxius i imatges de productes
+      filePath:
+        label: Ruta de l'arxiu
+        help: On guardar l'arxiu generat al servidor
+      decimalSeparator:
+        label: Separador de decimals
+        help: Determinar el separador de decimals
+      dateFormat:
+        label: Format de data
+        help: Determinar el format dels camps de data
+    yml:
+      filePath:
+        label: Ruta de l'arxiu
+        help: On guardar l'arxiu generat al servidor
   import:
-    enabled:
-      label: Habilitar el producte
-      help: Habilitar o no els productes importats
-    categoriesColumn:
-      label: Columna de categories
-      help: Nom de la columna categories
-    familyColumn:
-      label: Columna de famílies
-      help: Nom de la família de columnes
-    groupsColumn:
-      label: Columna de grups
-      help: Nom de la columna de grups
-    filePath:
-      label: Arxiu
-      help: Arxiu CSV per importar
-    yamlFilePath:
-      label: Arxiu
-    uploadAllowed:
-      label: Permetre la càrrega d'arxius
-      help: Permetre o no la càrrega directa de l'arxiu
-    delimiter:
-      label: Delimitador
-      help: Caràcter utilitzat per delimitar el camp per l'arxiu CSV
-    enclosure:
-      label: Enquadrament
-      help: Caràcter utilitzat per enquadrar el camp
-    escape:
-      label: Escapada
-      help: Caràcter per establir l'escapada del camp
-    circularRefsChecked:
-      label: Comprovar referències circulars
-      help: En cas afirmatiu, les dades seran tractades per assegurar-se que no hi ha cap referència circular entre les categories
-    realTimeVersioning:
-      label: Actualització de l'historial en temps real
-      help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
-    copyValuesToProducts:
-      label: Copia els valors de grup de variants a productes
-      help: Vol dir que els productes s'actualitzen automàticament amb valors de variants de grup, es pot deshabilitar per que només s'actualitzin les variants de grup
-    enabledComparison:
-      label: Comparar valors
-      help: Permet la comparació entre valors originals i valors importats. Pot accelerar la importació si el valors importats són molt similars als valors originals
-    decimalSeparator:
-      label: Separador de decimals
-      help: Caràcter utilitzat per definir el separador de camps com a decimal
-    dateFormat:
-      label: Format de data
-      help: 'Especifiqueu el format de les columnes de data a l''arxiu, per exemple: DD/MM/AAAA per un format 31/04/2014.'
+    csv:
+      enabled:
+        label: Habilitar el producte
+        help: Habilitar o no els productes importats
+      categoriesColumn:
+        label: Columna de categories
+        help: Nom de la columna categories
+      familyColumn:
+        label: Columna de famílies
+        help: Nom de la família de columnes
+      groupsColumn:
+        label: Columna de grups
+        help: Nom de la columna de grups
+      filePath:
+        label: Arxiu
+        help: Arxiu CSV per importar
+      uploadAllowed:
+        label: Permetre la càrrega d'arxius
+        help: Permetre o no la càrrega directa de l'arxiu
+      delimiter:
+        label: Delimitador
+        help: Caràcter utilitzat per delimitar el camp per l'arxiu CSV
+      enclosure:
+        label: Enquadrament
+        help: Caràcter utilitzat per enquadrar el camp
+      escape:
+        label: Escapada
+        help: Caràcter per establir l'escapada del camp
+      circularRefsChecked:
+        label: Comprovar referències circulars
+        help: En cas afirmatiu, les dades seran tractades per assegurar-se que no hi ha cap referència circular entre les categories
+      realTimeVersioning:
+        label: Actualització de l'historial en temps real
+        help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
+      copyValuesToProducts:
+        label: Copia els valors de grup de variants a productes
+        help: Vol dir que els productes s'actualitzen automàticament amb valors de variants de grup, es pot deshabilitar per que només s'actualitzin les variants de grup
+      enabledComparison:
+        label: Comparar valors
+        help: Permet la comparació entre valors originals i valors importats. Pot accelerar la importació si el valors importats són molt similars als valors originals
+      decimalSeparator:
+        label: Separador de decimals
+        help: Caràcter utilitzat per definir el separador de camps com a decimal
+      dateFormat:
+        label: Format de data
+        help: 'Especifiqueu el format de les columnes de data a l''arxiu, per exemple: DD/MM/AAAA per la data 31/04/2014.'
+    xlsx:
+      enabled:
+        label: Habilitar el producte
+        help: Habilitar o no els productes importats
+      categoriesColumn:
+        label: Columna de categories
+        help: Nom de la columna categories
+      familyColumn:
+        label: Columna de famílies
+        help: Nom de la família de columnes
+      groupsColumn:
+        label: Columna de grups
+        help: Nom de la columna de grups
+      filePath:
+        label: Arxiu
+        help: L'arxiu XLSX a importar
+      uploadAllowed:
+        label: Permetre la càrrega d'arxius
+        help: Permetre o no la càrrega directa de l'arxiu
+      circularRefsChecked:
+        label: Comprovar referències circulars
+        help: En cas afirmatiu, les dades seran tractades per assegurar-se que no hi ha cap referència circular entre les categories
+      realTimeVersioning:
+        label: Actualització de l'historial en temps real
+        help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
+      copyValuesToProducts:
+        label: Copia els valors de grup de variants a productes
+        help: Vol dir que els productes s'actualitzen automàticament amb valors de variants de grup, es pot deshabilitar per que només s'actualitzin les variants de grup
+      enabledComparison:
+        label: Comparar valors
+        help: Permet la comparació entre valors originals i valors importats. Pot accelerar la importació si el valors importats són molt similars als valors originals
+      decimalSeparator:
+        label: Separador de decimals
+        help: Caràcter utilitzat per definir el separador de camps com a decimal
+      dateFormat:
+        label: Format de data
+        help: 'Especifiqueu el format de les columnes de data a l''arxiu, per exemple: DD/MM/AAAA per la data 31/04/2014.'
+    yml:
+      filePath:
+        label: Arxiu
+        help: L'arxiu YML a importar
+      uploadAllowed:
+        label: Permetre la càrrega d'arxius
+        help: Permetre o no la càrrega directa de l'arxiu
 job_execution.summary:
   read: llegir
   read_lines: llegir les línies
@@ -160,6 +177,191 @@ job_execution.summary:
   skip_products: productes omesos
   displayed: primers avisos mostrats
   charset_validator:
-    title: 'Codificació de l''arxiu:'
+    title: 'Codificació de l''archiu:'
     skipped: omès, extensió a la llista blanca
   product_skipped_no_diff: producte omès (no hi ha diferències)
+batch_jobs:
+  csv_product_export:
+    label: Exportar productes a CSV
+    export.label: Exportar productes
+  csv_category_export:
+    label: Exportar categories en CSV
+    export.label: Exportar categories
+  csv_attribute_export:
+    label: Exportar atributs a CSV
+    export.label: Exportar atributs
+  csv_attribute_option_export:
+    label: Exportar opcions d'atribut en CSV
+    export.label: Exportar opcions d'atribut
+  csv_association_type_export:
+    label: Exportar tipus d'associació en CSV
+    export.label: Exportar tipus d'associacions
+  csv_group_export:
+    label: Exportar grups en CSV
+    export.label: Exportar grups
+  csv_variant_group_export:
+    label: Exportar grup de variants a CSV
+    export.label: Exportar grup de variants
+  csv_family_export:
+    label: Exportar famílies en CSV
+    export.label: Exportar família
+  csv_product_import:
+    label: Importar producte en CSV
+    validation.label: Validar arxius
+    import.label: Importar productes
+    import_associations.label: Importar associacions
+  csv_category_import:
+    label: Importar categories en CSV
+    validation.label: Validar arxius
+    import.label: Importar categories
+  csv_attribute_import:
+    label: Importar atributs en CSV
+    validation.label: Validar arxius
+    import.label: Importar atributs
+  csv_attribute_option_import:
+    label: Importar opcions d'atribut en CSV
+    validation.label: Validar arxius
+    import.label: Importar opcions d'atribut
+  csv_association_type_import:
+    label: Importar tipus d'associació en CSV
+    validation.label: Validar arxius
+    import.label: Importar tipus d'associació
+  csv_family_import:
+    label: Importar famílies en CSV
+    validation.label: Validar arxius
+    import.label: Importar família
+  csv_group_import:
+    label: Importar grups en CSV
+    validation.label: Validar arxius
+    import.label: Importar grups
+  csv_variant_group_import:
+    label: Importar Grup de variants des d'un CSV
+    validation.label: Validar arxius
+    import.label: Importació de grupo de variants
+  csv_channel_export:
+    label: Canal d'exportació en CSV
+    export.label: Canal d'exportació
+  csv_locale_export:
+    label: Exportació de configuració regional en CSV
+    export.label: Exportació de configuració regional
+  csv_attribute_group_export:
+    label: Exportació de grup d'atribut en CSV
+    export.label: Exportació de grup d'atribut
+  csv_currency_export:
+    label: Exportació de moneda en CSV
+    export.label: Exportació de moneda
+  csv_group_type_export:
+    label: Exportació de tipus de grup en CSV
+    export.label: Exportació de tipus de grup
+  csv_channel_import:
+    label: Importació de canal en CSV
+    validation.label: Validar arxius
+    import.label: Importació de canal
+  csv_locale_import:
+    label: Importació de configuració regional en CSV
+    validation.label: Validar arxius
+    import.label: Importació de configuració regional
+  csv_attribute_group_import:
+    label: Impoftació de grup d'atribut en CSV
+    validation.label: Validar arxius
+    import.label: Exportació de grup d'atribut
+  csv_currency_import:
+    label: Importació de moneda en CSV
+    validation.label: Validar arxius
+    import.label: Importació de moneda
+  csv_group_type_import:
+    label: Importació de tipus de grup en CSV
+    validation.label: Validar arxius
+    import.label: Importació de tipus de grup
+  xlsx_category_import:
+    label: Importació de categoria en XLSX
+    validation.label: Validar arxius
+    import.label: Importar categories
+  xlsx_association_type_import:
+    label: Importar tipus d'associació en XLSX
+    validation.label: Validar arxius
+    import.label: Importar tipus d'associació
+  xlsx_attribute_import:
+    label: Atribut importació en XLSX
+    validation.label: Validar arxius
+    import.label: Importar atributs
+  xlsx_attribute_option_import:
+    label: Importació d'opcions d'atribut en XLSX
+    validation.label: Validar arxius
+    import.label: Importar opcions d'atribut
+  xlsx_family_import:
+    label: Importació de família en XLSX
+    validation.label: Validar arxius
+    import.label: Importar família
+  xlsx_product_export:
+    label: Exportació de producte en XLSX
+    export.label: Exportar productes
+  xlsx_product_import:
+    label: Importació de producte en XLSX
+    validation.label: Validar arxius
+    import.label: Importar productes
+    import_associations.label: Importar associacions
+  xlsx_group_export:
+    label: Exportació de grup en XLSX
+    export.label: Exportar grups
+  xlsx_variant_group_export:
+    label: Exportació de variant de grup en XLSX
+    export.label: Exportar grup de variants
+  xlsx_group_import:
+    label: Importació de grup en XLSX
+    validation.label: Validar arxius
+    import.label: Importar grups
+  xlsx_variant_group_import:
+    label: Importacin de variant de grup en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de variant grup
+  xlsx_family_export:
+    label: Exportació de família en XLSX
+    export.label: Exportar família
+  xlsx_category_export:
+    label: Exportació de categoria en XLSX
+    export.label: Exportar categories
+  xlsx_attribute_export:
+    label: Importació d'atribut de XLSX
+    export.label: Importació d'atribut de XLSX
+  xlsx_attribute_option_export:
+    label: Exportació d'opcions d'atribut en XLSX
+    export.label: Exportació d'opcions d'atribut en XLSX
+  xlsx_association_type_export:
+    label: Exportació de tipus d'associació en CSV
+    export.label: Exportació de tipus d'associació en CSV
+  xlsx_channel_export:
+    label: Exportació de canal en XLSX
+    export.label: Exportació de canal
+  xlsx_locale_export:
+    label: Exportació de configuració regional en XLSX
+    export.label: Exportació de configuració regional
+  xlsx_attribute_group_export:
+    label: Exportació de grup d'atribut en XLSX
+    export.label: Exportació de grup d'atribut
+  xlsx_currency_export:
+    label: Exportació de moneda en XLSX
+    export.label: Exportació de moneda
+  xlsx_group_type_export:
+    label: Exportació de tipus de grup en XLSX
+    export.label: Exportació de tipus de grup
+  xlsx_channel_import:
+    label: Importació de canal de XLSX
+    validation.label: Validar arxius
+    import.label: Importació de canal
+  xlsx_locale_import:
+    label: Importació de configuració regional en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de configuració regional
+  xlsx_attribute_group_import:
+    label: Impoftació de grup d'atribut en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de grup d'atribut
+  xlsx_currency_import:
+    label: Importació de moneda en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de moneda
+  xlsx_group_type_import:
+    label: Importació de tipus de grup en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de tipus de grup

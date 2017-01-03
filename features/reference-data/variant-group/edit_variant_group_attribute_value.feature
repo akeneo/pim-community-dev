@@ -54,7 +54,7 @@ Feature: Editing attribute values of a variant group also updates products with 
       | fabric | crispy | Crispy |
     When I add available attributes Sole fabric
     And I visit the "Other" group
-    And I change the "Sole fabric" to "Gold, [smooth]"
+    And I change the "Sole fabric" to "Gold, smooth"
     And I save the variant group
     And I am on the "boot" product page
     And I visit the "Other" group

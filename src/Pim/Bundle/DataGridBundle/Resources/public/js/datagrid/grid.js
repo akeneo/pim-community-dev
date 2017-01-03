@@ -35,7 +35,7 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
                 '<div class="toolbar"></div>' +
                     '<div class="container-fluid">' +
                     '<div class="grid-container">' +
-                    '<table class="grid table-hover table table-bordered table-condensed"></table>' +
+                    '<table class="grid table-hover table"></table>' +
                     '<div class="no-data"></div>' +
                     '<div class="loading-mask"></div>' +
                     '</div>' +
@@ -355,10 +355,9 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
 
                 this.collection.on('remove', this._onRemove, this);
 
-                var self = this;
                 this.collection.on('change', function (model) {
-                    self.$el.trigger('datagrid:change:' + self.name, model);
-                });
+                    this.$el.trigger('datagrid:change:' + this.name, model);
+                }.bind(this));
             },
 
             /**

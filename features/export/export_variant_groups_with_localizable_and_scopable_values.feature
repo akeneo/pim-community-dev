@@ -1,4 +1,4 @@
-Feature: Export variant groups
+Feature: Export variant groups with localizable and scopable values
   In order to be able to access and modify groups data outside PIM
   As a product manager
   I need to be able to export variant groups

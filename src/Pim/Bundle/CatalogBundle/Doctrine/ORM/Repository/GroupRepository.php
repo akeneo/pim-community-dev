@@ -4,10 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 /**
  * Group repository
@@ -28,25 +28,6 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         $choices = [];
         foreach ($groups as $group) {
             $choices[$group->getId()] = $group->getCode();
-        }
-
-        return $choices;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChoices()
-    {
-        $groups = $this
-            ->createQueryBuilder($this->getAlias())
-            ->addOrderBy($this->getAlias() .'.code', 'ASC')
-            ->getQuery()
-            ->getResult();
-
-        $choices = [];
-        foreach ($groups as $group) {
-            $choices[$group->getId()] = $group->getLabel();
         }
 
         return $choices;
@@ -240,7 +221,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = [])
     {
         $qb = $this->createQueryBuilder('o')
-            ->select('o.id as id, COALESCE(t.label, CONCAT(\'[\', o.code, \']\')) as text')
+            ->select('o.id as id, COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', o.code, \']\')) as text')
             ->leftJoin('o.translations', 't', 'WITH', 't.locale=:locale')
             ->addOrderBy('text', 'ASC')
             ->setParameter('locale', $dataLocale);

@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Job instance validator
- * Validate connector and alias for a job instance
+ * Validate connector and job name for a job instance
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -22,7 +22,7 @@ class JobInstance extends Constraint
     /**
      * @var string
      */
-    public $property = 'alias';
+    public $property = 'jobName';
 
     /**
      * {@inheritdoc}

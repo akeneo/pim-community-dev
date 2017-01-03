@@ -51,8 +51,8 @@ datagrid:
                     data_name: has_role
 
             default:
-                has_role: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
-                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                has_role: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                lastName: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
 
         options:
             requireJSModules:

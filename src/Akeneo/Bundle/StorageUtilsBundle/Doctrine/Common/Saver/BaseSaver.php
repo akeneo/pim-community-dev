@@ -4,7 +4,6 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
@@ -23,9 +22,6 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var SavingOptionsResolverInterface */
-    protected $optionsResolver;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -34,20 +30,17 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * @param ObjectManager                  $objectManager
-     * @param SavingOptionsResolverInterface $optionsResolver
      * @param EventDispatcherInterface       $eventDispatcher
      * @param string                         $savedClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         $savedClass
     ) {
-        $this->objectManager   = $objectManager;
-        $this->optionsResolver = $optionsResolver;
+        $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->savedClass      = $savedClass;
+        $this->savedClass = $savedClass;
     }
 
     /**
@@ -55,24 +48,15 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof $this->savedClass) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "%s", "%s" provided.',
-                    $this->savedClass,
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
+        $this->validateObject($object);
 
-        $options = $this->optionsResolver->resolveSaveOptions($options);
+        $options['unitary'] = true;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $options));
 
         $this->objectManager->persist($object);
 
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
+        $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
     }
@@ -86,20 +70,40 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $allOptions));
+        $options['unitary'] = false;
 
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $options));
 
         foreach ($objects as $object) {
-            $this->save($object, $itemOptions);
+            $this->validateObject($object);
+
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $options));
+
+            $this->objectManager->persist($object);
         }
 
-        if (true === $allOptions['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
+
+        foreach ($objects as $object) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $allOptions));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $options));
+    }
+
+    /**
+     * @param $object
+     */
+    protected function validateObject($object)
+    {
+        if (!$object instanceof $this->savedClass) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "%s", "%s" provided.',
+                    $this->savedClass,
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
     }
 }

@@ -4,9 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -27,17 +25,13 @@ class UpdateProductValueProcessor extends AbstractProcessor
     /**
      * @param PropertySetterInterface             $propertySetter
      * @param ValidatorInterface                  $validator
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
-        ValidatorInterface $validator,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
+        ValidatorInterface $validator
     ) {
-        parent::__construct($jobConfigurationRepo);
-
         $this->propertySetter = $propertySetter;
-        $this->validator      = $validator;
+        $this->validator = $validator;
     }
 
     /**
@@ -45,17 +39,10 @@ class UpdateProductValueProcessor extends AbstractProcessor
      */
     public function process($product)
     {
-        $configuration = $this->getJobConfiguration();
-
-        if (!array_key_exists('actions', $configuration)) {
-            throw new InvalidArgumentException('Missing configuration for \'actions\'.');
-        }
-
-        $actions = $configuration['actions'];
-
+        $actions = $this->getConfiguredActions();
         $this->setData($product, $actions);
 
-        if (null === $product || (null !== $product && !$this->isProductValid($product))) {
+        if (!$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
 
             return null;
@@ -92,7 +79,5 @@ class UpdateProductValueProcessor extends AbstractProcessor
         foreach ($actions as $action) {
             $this->propertySetter->setData($product, $action['field'], $action['value']);
         }
-
-        return $this;
     }
 }

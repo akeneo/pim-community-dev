@@ -3,14 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -39,7 +35,6 @@ class SetAttributeRequirements extends AbstractProcessor
     protected $detacher;
 
     /**
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param ChannelRepositoryInterface          $channelRepository
      * @param AttributeRequirementFactory         $factory
@@ -47,20 +42,17 @@ class SetAttributeRequirements extends AbstractProcessor
      * @param ObjectDetacherInterface             $detacher
      */
     public function __construct(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $factory,
         ValidatorInterface $validator = null,
         ObjectDetacherInterface $detacher = null
     ) {
-        parent::__construct($jobConfigurationRepo);
-
         $this->attributeRepository = $attributeRepository;
-        $this->channelRepository   = $channelRepository;
-        $this->factory             = $factory;
-        $this->validator           = $validator;
-        $this->detacher            = $detacher;
+        $this->channelRepository = $channelRepository;
+        $this->factory = $factory;
+        $this->validator = $validator;
+        $this->detacher = $detacher;
     }
 
     /**
@@ -68,13 +60,7 @@ class SetAttributeRequirements extends AbstractProcessor
      */
     public function process($family)
     {
-        $configuration = $this->getJobConfiguration();
-
-        if (!array_key_exists('actions', $configuration)) {
-            throw new InvalidArgumentException('Missing configuration for \'actions\'.');
-        }
-
-        $actions = $configuration['actions'];
+        $actions = $this->getConfiguredActions();
 
         foreach ($actions as $action) {
             $attribute = $this->attributeRepository->findOneByIdentifier($action['attribute_code']);

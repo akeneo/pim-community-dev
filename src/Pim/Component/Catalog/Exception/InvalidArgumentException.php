@@ -11,6 +11,27 @@ namespace Pim\Component\Catalog\Exception;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
+    const EXPECTED_CODE = 100;
+    const BOOLEAN_EXPECTED_CODE = 101;
+    const FLOAT_EXPECTED_CODE = 102;
+    const INTEGER_EXPECTED_CODE = 103;
+    const NUMERIC_EXPECTED_CODE = 104;
+    const STRING_EXPECTED_CODE = 105;
+    const ARRAY_EXPECTED_CODE = 106;
+    const ARRAY_OF_ARRAYS_EXPECTED_CODE = 107;
+
+    const ARRAY_KEY_EXPECTED_CODE = 200;
+    const ARRAY_INVALID_KEY_CODE = 201;
+    const ARRAY_NUMERIC_KEY_EXPECTED_CODE = 202;
+    const ARRAY_STRING_KEY_EXPECTED_CODE = 203;
+    const ARRAY_STRING_VALUE_EXPECTED_CODE = 204;
+    const EMPTY_ARRAY_CODE = 205;
+
+    const VALID_ENTITY_CODE_EXPECTED_CODE = 300;
+    const LOCALE_AND_SCOPE_EXPECTED_CODE = 301;
+    const SCOPE_EXPECTED_CODE = 302;
+    const ASSOCIATION_FORMAT_EXPECTED_CODE = 303;
+
     /**
      * @param string $name
      * @param string $expected
@@ -30,7 +51,8 @@ class InvalidArgumentException extends \InvalidArgumentException
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::EXPECTED_CODE
         );
     }
 
@@ -51,49 +73,52 @@ class InvalidArgumentException extends \InvalidArgumentException
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::BOOLEAN_EXPECTED_CODE
         );
     }
 
     /**
-     * @param string $attribute
+     * @param string $name
      * @param string $action
      * @param string $type
      * @param string $data
      *
      * @return InvalidArgumentException
      */
-    public static function floatExpected($attribute, $action, $type, $data)
+    public static function floatExpected($name, $action, $type, $data)
     {
         return new self(
             sprintf(
                 'Attribute or field "%s" expects a float as data, "%s" given (for %s %s).',
-                $attribute,
+                $name,
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::FLOAT_EXPECTED_CODE
         );
     }
 
     /**
-     * @param string $attribute
+     * @param string $name
      * @param string $action
      * @param string $type
      * @param string $data
      *
      * @return InvalidArgumentException
      */
-    public static function integerExpected($attribute, $action, $type, $data)
+    public static function integerExpected($name, $action, $type, $data)
     {
         return new self(
             sprintf(
                 'Attribute or field "%s" expects an integer as data, "%s" given (for %s %s).',
-                $attribute,
+                $name,
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::INTEGER_EXPECTED_CODE
         );
     }
 
@@ -108,7 +133,14 @@ class InvalidArgumentException extends \InvalidArgumentException
     public static function numericExpected($name, $action, $type, $data)
     {
         return new self(
-            sprintf('Attribute or field "%s" expects a numeric as data (for %s %s).', $name, $data, $action, $type)
+            sprintf(
+                'Attribute or field "%s" expects a numeric as data, "%s" given (for %s %s).',
+                $name,
+                $data,
+                $action,
+                $type
+            ),
+            self::NUMERIC_EXPECTED_CODE
         );
     }
 
@@ -129,7 +161,8 @@ class InvalidArgumentException extends \InvalidArgumentException
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::STRING_EXPECTED_CODE
         );
     }
 
@@ -150,28 +183,30 @@ class InvalidArgumentException extends \InvalidArgumentException
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::ARRAY_EXPECTED_CODE
         );
     }
 
     /**
-     * @param string $attribute
+     * @param string $name
      * @param string $action
      * @param string $type
      * @param string $data
      *
      * @return InvalidArgumentException
      */
-    public static function arrayOfArraysExpected($attribute, $action, $type, $data)
+    public static function arrayOfArraysExpected($name, $action, $type, $data)
     {
         return new self(
             sprintf(
                 'Attribute or field "%s" expects an array of arrays as data, "%s" given (for %s %s).',
-                $attribute,
+                $name,
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::ARRAY_OF_ARRAYS_EXPECTED_CODE
         );
     }
 
@@ -194,7 +229,8 @@ class InvalidArgumentException extends \InvalidArgumentException
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::ARRAY_KEY_EXPECTED_CODE
         );
     }
 
@@ -212,7 +248,10 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         $err = 'Attribute or field "%s" expects an array with valid data for the key "%s". %s, "%s" given (for %s %s).';
 
-        return new self(sprintf($err, $name, $key, $because, $data, $action, $type));
+        return new self(
+            sprintf($err, $name, $key, $because, $data, $action, $type),
+            self::ARRAY_INVALID_KEY_CODE
+        );
     }
 
     /**
@@ -229,11 +268,14 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         $err = 'Attribute or field "%s" expects a valid %s. %s, "%s" given (for %s %s).';
 
-        return new self(sprintf($err, $name, $key, $because, $data, $action, $type));
+        return new self(
+            sprintf($err, $name, $key, $because, $data, $action, $type),
+            self::VALID_ENTITY_CODE_EXPECTED_CODE
+        );
     }
 
     /**
-     * @param string $attribute
+     * @param string $name
      * @param string $key
      * @param string $action
      * @param string $type
@@ -241,17 +283,18 @@ class InvalidArgumentException extends \InvalidArgumentException
      *
      * @return InvalidArgumentException
      */
-    public static function arrayNumericKeyExpected($attribute, $key, $action, $type, $data)
+    public static function arrayNumericKeyExpected($name, $key, $action, $type, $data)
     {
         return new self(
             sprintf(
                 'Attribute or field "%s" expects an array with numeric data for the key "%s", "%s" given (for %s %s).',
-                $attribute,
+                $name,
                 $key,
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::ARRAY_NUMERIC_KEY_EXPECTED_CODE
         );
     }
 
@@ -274,7 +317,8 @@ class InvalidArgumentException extends \InvalidArgumentException
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::ARRAY_STRING_KEY_EXPECTED_CODE
         );
     }
 
@@ -298,7 +342,21 @@ class InvalidArgumentException extends \InvalidArgumentException
                 $data,
                 $action,
                 $type
-            )
+            ),
+            self::ARRAY_STRING_VALUE_EXPECTED_CODE
+        );
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return InvalidArgumentException
+     */
+    public static function emptyArray($name)
+    {
+        return new self(
+            sprintf('Attribute or field "%s" expects a non empty array.', $name),
+            self::EMPTY_ARRAY_CODE
         );
     }
 
@@ -317,7 +375,28 @@ class InvalidArgumentException extends \InvalidArgumentException
                 $name,
                 $action,
                 $type
-            )
+            ),
+            self::LOCALE_AND_SCOPE_EXPECTED_CODE
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param string $action
+     * @param string $type
+     *
+     * @return InvalidArgumentException
+     */
+    public static function scopeExpected($name, $action, $type)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects a valid scope (for %s %s).',
+                $name,
+                $action,
+                $type
+            ),
+            self::SCOPE_EXPECTED_CODE
         );
     }
 
@@ -335,7 +414,8 @@ class InvalidArgumentException extends \InvalidArgumentException
                 '["products" => ["sku1, "sku2"], "groups" => ["group1"]]]", "%s" given.',
                 $name,
                 print_r($data, true)
-            )
+            ),
+            self::ASSOCIATION_FORMAT_EXPECTED_CODE
         );
     }
 
@@ -351,7 +431,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             sprintf(
-                'Attribute or field "%s" excepts valid data, scope and locale (for %s %s). %s',
+                'Attribute or field "%s" expects valid data, scope and locale (for %s %s). %s',
                 $name,
                 $action,
                 $type,

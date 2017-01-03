@@ -5,6 +5,7 @@ namespace Akeneo\Component\Batch\Step;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Component\Batch\Event\StepExecutionEvent;
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\JobInterruptedException;
@@ -25,55 +26,28 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 abstract class AbstractStep implements StepInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $name;
 
-    /**
-     * @var EventDispatcherInterface
-     */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /**
-     * @var JobRepositoryInterface
-     */
+    /** @var JobRepositoryInterface */
     protected $jobRepository;
 
     /**
-     * @param string $name
-     */
-    public function __construct($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * Set the event dispatcher
-     *
+     * @param string                   $name
      * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return AbstractStep
+     * @param JobRepositoryInterface   $jobRepository
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
-    }
-
-    /**
-     * Public setter for {@link JobRepositoryInterface}.
-     *
-     * @param JobRepositoryInterface $jobRepository jobRepository is a mandatory dependence (no default).
-     *
-     * @return AbstractStep
-     */
-    public function setJobRepository(JobRepositoryInterface $jobRepository)
-    {
+    public function __construct(
+        $name,
+        EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository
+    ) {
+        $this->name = $name;
         $this->jobRepository = $jobRepository;
-
-        return $this;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -93,52 +67,16 @@ abstract class AbstractStep implements StepInterface
     }
 
     /**
-     * Set the name property
-     *
-     * @param string $name
-     *
-     * @return AbstractStep
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Extension point for subclasses to execute business logic. Subclasses should set the {@link ExitStatus} on the
      * {@link StepExecution} before returning.
+     *
+     * Do not catch exception here. It will be correctly handled by the execute() method.
      *
      * @param StepExecution $stepExecution the current step context
      *
      * @throws \Exception
      */
     abstract protected function doExecute(StepExecution $stepExecution);
-
-    /**
-     * Provide the configuration of the step
-     *
-     * @return array
-     */
-    abstract public function getConfiguration();
-
-    /**
-     * Set the configuration for the step
-     *
-     * @param array $config
-     */
-    abstract public function setConfiguration(array $config);
-
-    /**
-     * Get the configurable step elements
-     *
-     * @return array
-     */
-    public function getConfigurableStepElements()
-    {
-        return array();
-    }
 
     /**
      * Template method for step execution logic
@@ -250,11 +188,11 @@ abstract class AbstractStep implements StepInterface
      * @param string $class
      * @param string $reason
      * @param array  $reasonParameters
-     * @param array  $item
+     * @param InvalidItemInterface  $item
      */
-    protected function dispatchInvalidItemEvent($class, $reason, array $reasonParameters, array $item)
+    protected function dispatchInvalidItemEvent($class, $reason, array $reasonParameters, InvalidItemInterface $item)
     {
-        $event = new InvalidItemEvent($class, $reason, $reasonParameters, $item);
+        $event = new InvalidItemEvent($item, $class, $reason, $reasonParameters);
         $this->dispatch(EventInterface::INVALID_ITEM, $event);
     }
 

@@ -1,45 +1,326 @@
 parameters:
-    pim_connector.reader.dummy_item.class:       Pim\Component\Connector\Reader\DummyItemReader
-    pim_connector.reader.file.csv.class:         Pim\Component\Connector\Reader\File\CsvReader
-    pim_connector.reader.file.csv_product.class: Pim\Component\Connector\Reader\File\CsvProductReader
-    pim_connector.reader.doctrine.base.class:    Pim\Component\Connector\Reader\Doctrine\BaseReader
+    pim_connector.reader.dummy_item.class: Pim\Component\Connector\Reader\DummyItemReader
+
+    pim_connector.reader.database.class: Pim\Component\Connector\Reader\Database\Reader
+    pim_connector.reader.database.product.class: Pim\Component\Connector\Reader\Database\ProductReader
+    pim_connector.reader.database.atribute_option.class: Pim\Component\Connector\Reader\Database\AttributeOptionReader
+    pim_connector.reader.database.category.class: Pim\Component\Connector\Reader\Database\CategoryReader
+    pim_connector.reader.database.group.class: Pim\Component\Connector\Reader\Database\GroupReader
+    pim_connector.reader.database.variant_group.class: Pim\Component\Connector\Reader\Database\VariantGroupReader
+
+    pim_connector.reader.file.csv.class:               Pim\Component\Connector\Reader\File\Csv\Reader
+    pim_connector.reader.file.csv_variant_group.class: Pim\Component\Connector\Reader\File\Csv\VariantGroupReader
+    pim_connector.reader.file.csv_association.class:   Pim\Component\Connector\Reader\File\Csv\ProductAssociationReader
+    pim_connector.reader.file.csv_product.class:       Pim\Component\Connector\Reader\File\Csv\ProductReader
+
+    pim_connector.reader.file.xlsx.class:         Pim\Component\Connector\Reader\File\Xlsx\Reader
+    pim_connector.reader.file.xlsx_product.class: Pim\Component\Connector\Reader\File\Xlsx\ProductReader
+
+    pim_connector.reader.file.yaml.class: Pim\Component\Connector\Reader\File\Yaml\Reader
+
+    pim_connector.reader.file.file_iterator.class:          Pim\Component\Connector\Reader\File\FileIterator
+    pim_connector.reader.file.file_iterator_factory.class:  Pim\Component\Connector\Reader\File\FileIteratorFactory
+    pim_connector.reader.file.media_path_transformer.class: Pim\Component\Connector\Reader\File\MediaPathTransformer
+    pim_connector.reader.file.array_reader.class:           Pim\Component\Connector\Reader\File\ArrayReader
 
 services:
-    # Dummy Reader
-    pim_connector.reader.dummy_item:
-        class: %pim_connector.reader.dummy_item.class%
+    # Database readers
+    pim_connector.reader.database.product:
+        class: '%pim_connector.reader.database.product.class%'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.converter.metric'
+            - true
 
-    # CSV File Readers
-    pim_connector.reader.file.csv:
-        class: %pim_connector.reader.file.csv.class%
+    pim_connector.reader.database.family:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
 
-    pim_connector.reader.file.csv_association_type:
-        alias: pim_connector.reader.file.csv
-
-    pim_connector.reader.file.csv_family:
-        alias: pim_connector.reader.file.csv
-
-    pim_connector.reader.file.csv_association:
-        alias: pim_connector.reader.file.csv
-
-    pim_connector.reader.file.csv_attribute:
-        alias: pim_connector.reader.file.csv
-
-    pim_connector.reader.file.csv_attribute_option:
-        alias: pim_connector.reader.file.csv
-
-    pim_connector.reader.file.csv_group:
-        alias: pim_connector.reader.file.csv
-
-    pim_connector.reader.file.csv_variant_group:
-        alias: pim_connector.reader.file.csv_product
-
-    pim_connector.reader.file.csv_category:
-        alias: pim_connector.reader.file.csv
-
-    pim_connector.reader.file.csv_product:
-        class: %pim_connector.reader.file.csv_product.class%
+    pim_connector.reader.database.attribute:
+        class: '%pim_connector.reader.database.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
-            - %pim_catalog.localization.decimal_separators%
-            - %pim_catalog.localization.date_formats%
+
+    pim_connector.reader.database.association_type:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.association_type'
+
+    pim_connector.reader.database.attribute_option:
+        class: '%pim_connector.reader.database.atribute_option.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+
+    pim_connector.reader.database.category:
+        class: '%pim_connector.reader.database.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+
+    pim_connector.reader.database.group:
+        class: '%pim_connector.reader.database.group.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
+
+    pim_connector.reader.database.variant_group:
+        class: '%pim_connector.reader.database.variant_group.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
+
+    pim_connector.reader.database.channel:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    pim_connector.reader.database.locale:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.locale'
+
+    pim_connector.reader.database.attribute_group:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+
+    pim_connector.reader.database.currency:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.currency'
+
+    pim_connector.reader.database.group_type:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.group_type'
+
+    # Misc
+    pim_connector.reader.file.csv_iterator_factory:
+        class: '%pim_connector.reader.file.file_iterator_factory.class%'
+        arguments:
+            - '%pim_connector.reader.file.file_iterator.class%'
+            - 'csv'
+
+    pim_connector.reader.file.xlsx_iterator_factory:
+        class: '%pim_connector.reader.file.file_iterator_factory.class%'
+        arguments:
+            - '%pim_connector.reader.file.file_iterator.class%'
+            - 'xlsx'
+
+    pim_connector.reader.file.media_path_transformer:
+        class: '%pim_connector.reader.file.media_path_transformer.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_connector.reader.dummy_item:
+        class: '%pim_connector.reader.dummy_item.class%'
+
+    # CSV File Readers
+    pim_connector.reader.file.csv_association_type:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.association_type'
+
+    pim_connector.reader.file.csv_family:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family'
+
+    pim_connector.reader.file.csv_association:
+        class: '%pim_connector.reader.file.csv_association.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_association'
+
+    pim_connector.reader.file.csv_attribute:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute'
+
+    pim_connector.reader.file.csv_attribute_option:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_option'
+
+    pim_connector.reader.file.csv_group:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.group'
+
+    pim_connector.reader.file.csv_variant_group:
+        class: '%pim_connector.reader.file.csv_variant_group.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.variant_group'
+            - '@pim_connector.reader.file.media_path_transformer'
+
+    pim_connector.reader.file.csv_category:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.category'
+
+    pim_connector.reader.file.csv_channel:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.channel'
+
+    pim_connector.reader.file.csv_locale:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.locale'
+
+    pim_connector.reader.file.csv_attribute_group:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_group'
+
+    pim_connector.reader.file.csv_group_type:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.group_type'
+
+    pim_connector.reader.file.csv_currency:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.currency'
+
+    pim_connector.reader.file.csv_product:
+        class: '%pim_connector.reader.file.csv_product.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
+            - '@pim_connector.reader.file.media_path_transformer'
+            - []
+
+    pim_connector.reader.file.csv_user:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user'
+
+    pim_connector.reader.file.csv_user_group:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user_group'
+
+    pim_connector.reader.file.csv_user_role:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user_role'
+
+    # XLSX file Readers
+    pim_connector.reader.file.xlsx:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.dummy'
+
+    pim_connector.reader.file.xlsx_product:
+       class: '%pim_connector.reader.file.xlsx_product.class%'
+       arguments:
+           - '@pim_connector.reader.file.xlsx_iterator_factory'
+           - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
+           - '@pim_connector.reader.file.media_path_transformer'
+           - []
+
+    pim_connector.reader.file.xlsx_association_type:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.association_type'
+
+    pim_connector.reader.file.xlsx_association:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_association'
+
+    pim_connector.reader.file.xlsx_group:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.group'
+
+    pim_connector.reader.file.xlsx_variant_group:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.variant_group'
+
+    pim_connector.reader.file.xlsx_attribute:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute'
+
+    pim_connector.reader.file.xlsx_attribute_option:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_option'
+
+    pim_connector.reader.file.xlsx_family:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family'
+
+    pim_connector.reader.file.xlsx_category:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.category'
+
+    pim_connector.reader.file.xlsx_channel:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.channel'
+
+    pim_connector.reader.file.xlsx_locale:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.locale'
+
+    pim_connector.reader.file.xlsx_attribute_group:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_group'
+
+    pim_connector.reader.file.xlsx_currency:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.currency'
+
+    pim_connector.reader.file.xlsx_group_type:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.group_type'
+
+    # Yaml file readers
+    pim_connector.reader.file.yaml:
+        class: '%pim_connector.reader.file.yaml.class%'
+        arguments:
+            - '@pim_connector.array_converter.dummy'
+
+    pim_connector.reader.file.yaml_job_instance:
+        class: '%pim_connector.reader.file.yaml.class%'
+        arguments:
+            - '@pim_connector.array_converter.structured.job_instance'

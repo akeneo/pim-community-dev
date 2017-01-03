@@ -94,6 +94,8 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      */
     protected function normalizeChannelCompleteness($format, array $context, array $channels, array $locales)
     {
+        $normalizedCompChannels = [];
+
         //TODO: workaround in order to handle behat empty completeness
         foreach ($channels as $channelCompleteness) {
             $channelCode = null;

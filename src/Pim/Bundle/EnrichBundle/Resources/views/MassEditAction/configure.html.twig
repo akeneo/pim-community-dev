@@ -1,0 +1,146 @@
+{% extends 'PimEnrichBundle:MassEditAction:layout.html.twig' %}
+
+{% block content %}
+    {{ elements.page_header(title|default('title')|trans, null, subtitle|default('subtitle')|transchoice(itemsCount)) }}
+
+    {{ parent() }}
+
+    {{ JSFV(form) }}
+    {{ form_start(form, {'attr': {'class': 'span12 '~operationAlias}, 'action': path(performRoute, queryParams|merge({ 'operationAlias': operationAlias })) }) }}
+
+        <div class="row">
+            <div class="offset1 span12">
+                <h3>{{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.label')|trans }}</h3>
+                {% block formDescription %}
+                    <h4>{{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.description')|trans }}</h4>
+                {% endblock %}
+                <div class="pull-right">
+                    {% block formTitle %}{% endblock %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row offset1 span12 buffer-top confirmation hide">
+            <div class="alert alert-info">
+                {{ confirmLabel|default('confirm')|transchoice(itemsCount) }}
+            </div>
+        </div>
+
+        <div class="row buffer-top">
+            <div class="offset1 span12 mass-edit-form">
+                <div class="errors">
+                    {{ elements.form_errors(form) }}
+                </div>
+                {% block formContent %}
+                {% endblock %}
+            </div>
+        </div>
+
+        <div class="row span12 offset1 buffer-top configuration">
+            {{ elements.link('btn.back', path(backButtonRoute, queryParams), {'class': 'btn-cancel', 'icon': 'chevron-left'}) }}
+            {{ elements.link('btn.next', null, {'class': ['next btn-next', 'btn-primary'], 'icon': 'chevron-right'}) }}
+        </div>
+
+        <div class="row offset1 buffer-top confirmation hide">
+            {{ elements.link('btn.cancel', null, {'class': 'cancel btn-cancel', 'icon': 'chevron-left'}) }}
+            {{ elements.submitBtn('btn.confirm', 'ok') }}
+        </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block head_script_component %}
+    {% set currentStep = 3 %}
+    {{ parent() }}
+
+    {% set action = path(configureRoute, queryParams|merge({ 'operationAlias': operationAlias })) %}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'oro/mediator', 'wysiwyg', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
+            function ($, mediator, wysiwyg) {
+                'use strict';
+
+                $(function () {
+                    var disableForm = function() {
+                        $('form').addClass('disabled-fields');
+
+                        // Disable common fields
+                        $('input, select, textarea').each(function() {
+                            $(this).prop('readonly', true);
+                        });
+
+                        // Disable select2
+                        $('select').select2('readonly', true);
+
+                        // Disable multiselect
+                        $('select.pimmultiselect').multiselect('disable');
+
+                        // Disable switcher
+                        $('.has-switch').bootstrapSwitch('setActive', false);
+
+                        // Trigger jstree lock
+                        mediator.trigger('jstree:lock');
+
+                        // Disable wysiwyg
+                        $('textarea.wysiwyg[id]').each(function () {
+                            wysiwyg.readonly($(this), true);
+                        });
+
+                        {% block disableFormScript %}
+                        {% endblock %}
+                    }
+
+                    var enableForm = function() {
+                        $('form').removeClass('disabled-fields');
+
+                        // Enable common fields
+                        $('input, textarea').each(function() {
+                            $(this).prop('readonly', false);
+                        });
+
+                        // Enable select2
+                        $('select').select2('readonly', false);
+
+                        // Enable multiselect
+                        $('select.pimmultiselect').multiselect('enable');
+
+                        // Enable switcher
+                        $('.has-switch').bootstrapSwitch('setActive', true);
+
+                        // Trigger jstree unlock
+                        mediator.trigger('jstree:unlock');
+
+                        // Enable wysiwyg
+                        $('textarea.wysiwyg[id]').each(function () {
+                            wysiwyg.readonly($(this), false);
+                        });
+
+                        {% block enableFormScript %}
+                        {% endblock %}
+                    };
+
+                    $('select.operation-param').change(function () {
+                        $('#{{ form.vars.id }}').attr('action', '{{ action|raw }}').submit();
+                    });
+
+                    /**
+                     * Confirmation
+                     */
+                    $('a.next').on('click', function() {
+                        $('.wizard').wizard({ currentStep: {{ nextStepNumber|default(4) }} });
+                        disableForm();
+                        $('.configuration').addClass('hide');
+                        $('.confirmation').removeClass('hide');
+                    });
+
+                    $('a.cancel').on('click', function() {
+                        $('.wizard').wizard({ currentStep: {{ previousStepNumber|default(3) }} });
+                        enableForm();
+                        $('.configuration').removeClass('hide');
+                        $('.confirmation').addClass('hide');
+                    });
+                });
+            }
+        );
+    </script>
+{% endblock %}

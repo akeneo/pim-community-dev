@@ -1,3 +1,4 @@
+@javascript
 Feature: Add attributes to a variant group
   In order to easily edit common attributes of variant group products
   As a product manager
@@ -21,7 +22,6 @@ Feature: Add attributes to a variant group
     And I should not see available attribute SKU in group "Product information"
     And I should not see available attribute Unique in group "Marketing"
 
-  @javascript
   Scenario: Add some available attributes to a variant group
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
@@ -35,7 +35,6 @@ Feature: Add attributes to a variant group
     And I should not see available attribute Name in group "Product information"
     And I should not see available attribute Price in group "Marketing"
 
-  @javascript
   Scenario: Update values of products in a variant group only after saving the group (not immediately after adding a new attribute)
     Given the following product:
       | sku  | groups            | name-en_US | color | size |
@@ -44,12 +43,11 @@ Feature: Add attributes to a variant group
     Then the english Name of "boot" should be "foo"
     When I visit the "Attributes" tab
     And I add available attribute Name
-    Then the english Name of "boot" should be "foo"
     When I save the variant group
     And I should see the flash message "Variant group successfully updated"
-    Then the english Name of "boot" should be ""
+    When I am on the "boot" product page
+    Then the field Name should contain ""
 
-  @javascript
   Scenario: Update products when values are changed on the variant group page
     Given the following products:
       | sku  | groups            | color | size |
@@ -61,32 +59,31 @@ Feature: Add attributes to a variant group
      | Name | bar |
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
-    Then the english Name of "boot" should be "bar"
+    When I am on the "boot" product page
+    Then the field Name should contain "bar"
 
-  @javascript
   Scenario: Remove an attribute which is linked to a variant group
     Given the following products:
       | sku  | groups            | color | size |
       | boot | caterpillar_boots | black | 39   |
     And I am on the "caterpillar_boots" variant group page
     When I visit the "Attributes" tab
-    And I add available attribute Name
-    And I add available attribute Description
+    And I add available attributes Name, Description
+    And I save the variant group
     Then I am on the attributes page
-    When I filter by "Label" with value "Name"
+    When I filter by "label" with operator "is equal to" and value "Name"
     And I click on the "Delete" action of the row which contains "Name"
     And I confirm the deletion
     Then I am on the "caterpillar_boots" variant group page
     And I should not see available attribute Name in group "Product information"
 
-  @javascript
   Scenario: The price attribute should be visible once added
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
     When I add available attributes Price
     And I should see "EUR, USD" currencies on the Price price field
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-5208
+  @jira https://akeneo.atlassian.net/browse/PIM-5208
   Scenario: View only attribute filters that are usable as grid filters and view variant axes in columns
     Given the following attributes:
       | code                       | label-en_US                | type         | group  | useable_as_grid_filter |
@@ -106,6 +103,6 @@ Feature: Add attributes to a variant group
       | sku     | family     | high_heel_main_color | high_heel_main_fabric |
       | heel001 | high_heels | Red                  | Silk                  |
     When I am on the "high_heels" variant group page
-    Then I should see the available filters High heel main color and High heel secondary fabric
+    Then I should see the available filters high_heel_main_color and high_heel_secondary_fabric
     And I should not see the available filters High heel main fabric and High heel secondary color
     And I should see the columns In group, Sku, High heel main color, High heel main fabric, Label, Family, Status, Complete, Created at and Updated at

@@ -4,15 +4,13 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver as BaseProductSaver;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -60,7 +58,6 @@ class ProductSaver extends BaseProductSaver
     public function __construct(
         DocumentManager $documentManager,
         CompletenessManager $completenessManager,
-        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         BulkVersionBuilderInterface $bulkVersionBuilder,
         BulkSaverInterface $versionSaver,
@@ -69,14 +66,14 @@ class ProductSaver extends BaseProductSaver
         $productClass,
         $databaseName
     ) {
-        parent::__construct($documentManager, $completenessManager, $optionsResolver, $eventDispatcher);
+        parent::__construct($documentManager, $completenessManager, $eventDispatcher);
 
         $this->bulkVersionBuilder = $bulkVersionBuilder;
-        $this->versionSaver       = $versionSaver;
-        $this->normalizer         = $normalizer;
-        $this->mongoFactory       = $mongoFactory;
-        $this->productClass       = $productClass;
-        $this->databaseName       = $databaseName;
+        $this->versionSaver = $versionSaver;
+        $this->normalizer = $normalizer;
+        $this->mongoFactory = $mongoFactory;
+        $this->productClass = $productClass;
+        $this->databaseName = $databaseName;
 
         $this->collection = $this->objectManager->getDocumentCollection($this->productClass);
     }
@@ -92,7 +89,8 @@ class ProductSaver extends BaseProductSaver
             return;
         }
 
-        $options = $this->optionsResolver->resolveSaveAllOptions($options);
+        $options['unitary'] = false;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
         $productsToInsert = [];
@@ -105,6 +103,8 @@ class ProductSaver extends BaseProductSaver
             } else {
                 $productsToUpdate[] = $product;
             }
+
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
         }
 
         $insertDocs = $this->getDocsFromProducts($productsToInsert);
@@ -117,11 +117,11 @@ class ProductSaver extends BaseProductSaver
         if (count($updateDocs) > 0) {
             $this->updateDocuments($updateDocs);
         }
-        
-        if (true === $options['recalculate']) {
-            foreach ($products as $product) {
-                $this->completenessManager->generateMissingForProduct($product);
-            }
+
+        foreach ($products as $product) {
+            $this->completenessManager->generateMissingForProduct($product);
+
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
         }
 
         $versions = $this->bulkVersionBuilder->buildVersions($products);

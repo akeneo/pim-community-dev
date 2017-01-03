@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_serializer.normalizer.comment:
-        class: %pim_serializer.normalizer.comment.class%
+        class: '%pim_serializer.normalizer.comment.class%'
         arguments:
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_enrich.resolver.locale'

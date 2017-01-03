@@ -3,6 +3,6 @@ parameters:
 
 services:
   pim_user.provider.user:
-    class: %pim_user.provider.user.class%
+    class: '%pim_user.provider.user.class%'
     arguments:
       - '@pim_user.repository.user'

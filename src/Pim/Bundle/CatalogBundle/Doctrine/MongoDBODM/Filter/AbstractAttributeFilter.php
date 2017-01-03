@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Abstract MongoDB attribute filter
@@ -18,6 +18,25 @@ abstract class AbstractAttributeFilter extends AbstractFilter implements Attribu
 {
     /** @var AttributeValidatorHelper */
     protected $attrValidatorHelper;
+
+    /** @var string[] */
+    protected $supportedAttributeTypes;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeTypes()
+    {
+        return $this->supportedAttributeTypes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AttributeInterface $attribute)
+    {
+        return in_array($attribute->getAttributeType(), $this->supportedAttributeTypes);
+    }
 
     /**
      * Check locale and scope are valid

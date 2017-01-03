@@ -1,0 +1,33 @@
+{
+    "name": "akeneo/measure-bundle",
+    "type": "symfony-bundle",
+    "description": "Akeneo Measure Bundle",
+    "keywords": ["Akeneo", "Measure", "Convert"],
+    "homepage": "https://github.com/akeneo/MeasureBundle",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Akeneo",
+            "homepage": "http://www.akeneo.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": ">=2.1.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "3.0.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": { "Akeneo\\Bundle\\MeasureBundle\\": "" }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.6.x-dev"
+        }
+    }
+}

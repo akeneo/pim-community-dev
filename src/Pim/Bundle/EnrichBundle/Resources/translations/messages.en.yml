@@ -133,11 +133,23 @@ pim_enrich:
                 invalid_attribute: Attribute with code "attribute_code" is not common to selected products, attribute skipped.
                 no_valid_attribute: None of selected attribute can be applied on this product.
 
-        classify:
+        classify-add:
             label:          Classify products in categories
             description:    The products will be positioned into following categories, the existing placement is kept.
             success_flash:  Product(s) have been classified into selected categories
-            launched_flash: The bulk action "classify" has been launched. You will be notified when it is done.
+            launched_flash: The bulk action "add to categories" has been launched. You will be notified when it is done.
+
+        classify-move:
+            label:          Move products to categories
+            description:    The products will be positioned into following categories, the existing placement is lost.
+            success_flash:  Product(s) have been moved to selected categories
+            launched_flash: The bulk action "move to categories" has been launched. You will be notified when it is done.
+
+        classify-remove:
+            label:          Remove products from categories
+            description:    The products will be removed from the following categories.
+            success_flash:  Product(s) have been removed from the selected categories
+            launched_flash: The bulk action "remove from categories" has been launched. You will be notified when it is done.
 
         change-family:
             label:          Change the family of products
@@ -545,18 +557,6 @@ info:
     completeness:
         not calculated:       Not yet calculated
 
-# Labels for channel colors
-color:
-    title:   Color
-    gray:    Gray
-    white:   White
-    yellow:  Yellow
-    orange:  Orange
-    magenta: Magenta
-    violet:  Violet
-    blue:    Blue
-    cyan:    Cyan
-
 # Form elements
 Options:                             Options
 Created at:                          Created at
@@ -610,11 +610,10 @@ Translate from:                      Translate from
 switch_on:                           "Yes"
 switch_off:                          "No"
 Close:                               Close
-Choose a color:                      Choose a color
 Search:                              Search
 Choose the attribute type:           Choose the attribute type
 Choose the attribute group:          Choose the attribute group
-Drop a file or click here:           Drop a file or click here
+Drag and drop a file or click here:  Drag and drop a file or click here
 Drop an image or click here:         Drop an image or click here
 Automatic option sorting:            Automatic option sorting
 save_attribute_before_manage_option: To manage options, please save the attribute first
@@ -731,7 +730,11 @@ pim_title.group_type:
     index: "Group types"
     edit: "Group types %group type.label% | Edit"
 
-pim_title.mass_edit_action:
+pim_title.mass_edit_product_action:
+    choose: "Mass Edit | Choose"
+    configure: "Mass Edit | Configure"
+
+pim_title.mass_edit_family_action:
     choose: "Mass Edit | Choose"
     configure: "Mass Edit | Configure"
 
@@ -973,11 +976,57 @@ pim_mass_edit_execution_show:  Mass edit executions | Details
 
 edit_common_attributes.steps.edit_common_attributes_processor.title: Edit common attributes
 update_product_value.steps.update_product_value_processor.title: Update product value
+remove_product_value.steps.update_product_value_processor.title: Remove product value
 add_to_variant_group_clean.steps.excluded.title: Excluded product
 add_to_variant_group_clean.steps.duplicated.title: Duplicated Axis
+add_to_variant_group.steps.excluded.title: Excluded product
+add_to_variant_group.steps.duplicated.title: Duplicated Axis
 add_to_variant_group.steps.cleaner.warning.description: "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
 edit_common_attributes: Edit common attributes
 edit_common_attributes_clean: Clean files for common attributes
+perform.steps.duplicated.title: Duplicated Axis
+perform.steps.excluded.title: Excluded product
+
+# Background jobs & steps labels
+batch_jobs:
+    add_product_value:
+        label: Add product value
+        perform:
+            label: Add product value
+    update_product_value:
+        label: Update product value
+        perform:
+            label: Update product value
+    edit_common_attributes:
+        label: Edit common attributes
+        perform:
+            label: Edit common attributes
+        clean:
+            label: Clean files for common attributes
+    set_attribute_requirements:
+        label: Set attribute requirements
+        perform:
+            label: Set attribute requirements
+    csv_product_quick_export:
+        quick_export.label: Csv product quick export
+        perform:
+            label: Csv product quick export
+    csv_product_grid_context_quick_export:
+        quick_export.label: Csv product grid context quick export
+        perform:
+            label: Csv product grid context quick export
+    xlsx_product_quick_export:
+        quick_export.label: Xlsx product quick export
+        perform:
+            label: Xlsx product quick export
+    xlsx_product_grid_context_quick_export:
+        quick_export.label: Xlsx product grid context quick export
+        perform:
+            label: Xlsx product grid context quick export
+    add_to_variant_group:
+        label: Add to variant group
+        perform:
+            label: Add to variant group
 
 mass_edit report:
     overview: Mass edit reports
@@ -987,3 +1036,15 @@ job_tracker:
         title: Process tracker
     filter:
         started_at: Started at
+
+pim_enrich_attribute_form:
+    code: Code
+    attributeType: Attribute Type
+    reference_data_name: Reference data name
+    scopable: Scope
+    localizable: Localizable
+    unique: Unique value
+    availableLocales: Available locales
+    locale_specific: Locale specific
+    group: Attribute group
+    useableAsGridFilter: Usable in grid

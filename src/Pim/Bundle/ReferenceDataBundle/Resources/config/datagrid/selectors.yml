@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_reference_data.extension.selector.orm.reference_data:
-        class: %pim_reference_data.extension.selector.orm.reference_data.class%
+        class: '%pim_reference_data.extension.selector.orm.reference_data.class%'
         arguments:
             - '@pim_datagrid.extension.selector.orm.product_value.base_selector'
         tags:

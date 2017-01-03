@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\CatalogBundle\Exception\LinkedChannelException;
+use Pim\Component\Catalog\Exception\LinkedChannelException;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -41,6 +41,8 @@ class CurrencyDisablingSubscriber implements EventSubscriberInterface
      * Pre remove
      *
      * @param GenericEvent $event
+     *
+     * @throws LinkedChannelException
      */
     public function checkChannelLink(GenericEvent $event)
     {
@@ -50,7 +52,9 @@ class CurrencyDisablingSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$object->isActivated() && 0 < $this->channelRepository->getChannelCountUsingCurrency($object)) {
+        if (null !== $object->getId() &&
+            !$object->isActivated() &&
+            0 < $this->channelRepository->getChannelCountUsingCurrency($object)) {
             throw new LinkedChannelException('You cannot disable a currency linked to a channel.');
         }
     }

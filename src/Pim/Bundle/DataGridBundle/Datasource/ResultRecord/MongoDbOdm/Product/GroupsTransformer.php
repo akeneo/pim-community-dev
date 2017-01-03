@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product;
 
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 
 /**
  * Transform sub-part or product
@@ -36,7 +36,7 @@ class GroupsTransformer
             $groups = [];
             foreach ($normalizedData['groups'] as $group) {
                 $code = $group['code'];
-                $label = isset($group['label'][$locale]) ? $group['label'][$locale] : null;
+                $label = isset($group['labels'][$locale]) ? $group['labels'][$locale] : null;
                 $groups[$code] = ['code' => $code, 'label' => $label];
             }
             $result['groups'] = $groups;

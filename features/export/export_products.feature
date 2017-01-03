@@ -72,6 +72,7 @@ Feature: Export products
     Given an "apparel" catalog configuration
     And the following job "tablet_product_export" configuration:
       | filePath | %tmp%/tablet_product_export/tablet_product_export.csv |
+      | filters  | {"structure": {"locales": ["en_US", "en_GB"], "scope": "tablet"},"data":[{"field":"completeness","operator":"=","value":100}, {"field":"categories.code","operator":"IN","value":["men_2013"]}]} |
     And the following products:
       | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
@@ -101,6 +102,7 @@ Feature: Export products
     Given an "apparel" catalog configuration
     And the following job "tablet_product_export" configuration:
       | filePath | %tmp%/tablet_product_export/tablet_product_export.csv |
+      | filters  | {"structure": {"locales": ["en_US", "en_GB"], "scope": "tablet"},"data":[{"field":"completeness","operator":"=","value":100}, {"field":"categories.code","operator":"IN CHILDREN","value":["2013_collection"]}]} |
     And the following attributes:
       | code                      | type | localizable | available_locales |
       | locale_specific_attribute | text | yes         | en_US,fr_FR       |
@@ -202,7 +204,7 @@ Feature: Export products
 
   Scenario: Export attributes with full numeric codes
     Given a "footwear" catalog configuration
-    And the following job "footwear_product_export" configuration:
+    And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     And the following products:
       | sku      | family   | categories        | price          | size | color    | name-en_US | 123 |
@@ -210,13 +212,93 @@ Feature: Export products
       | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    | bbb |
       | SNKRS-1C | sneakers | summer_collection | 55 EUR, 75 USD | 45   | charcoal | Model 1    | ccc |
     And I am logged in as "Julia"
-    When I am on the "footwear_product_export" export job page
+    When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
-    And I wait for the "footwear_product_export" job to finish
-    Then exported file of "footwear_product_export" should contain:
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
     """
     sku;123;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-    SNKRS-1B;aaa;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
-    SNKRS-1R;bbb;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
-    SNKRS-1C;ccc;summer_collection;charcoal;;1;sneakers;;;;"Model 1";55.00;75.00;;;45;;
+    SNKRS-1B;aaa;summer_collection;black;;;1;sneakers;;;;"Model 1";;50.00;70.00;;;45;;
+    SNKRS-1R;bbb;summer_collection;red;;;1;sneakers;;;;"Model 1";;50.00;70.00;;;45;;
+    SNKRS-1C;ccc;summer_collection;charcoal;;;1;sneakers;;;;"Model 1";;55.00;75.00;;;45;;
+    """
+
+  Scenario: Export attributes with a predefine order
+    Given a "footwear" catalog configuration
+    And the following job "csv_footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv |
+    And the following products:
+      | sku      | family   | categories        | price          | size | color    | name-en_US | 123 |
+      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    | aaa |
+      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    | bbb |
+      | SNKRS-1C | sneakers | summer_collection | 55 EUR, 75 USD | 45   | charcoal | Model 1    | ccc |
+    And I am logged in as "Julia"
+    When I am on the "csv_footwear_product_export" export job page
+    And I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contains the following headers:
+    """
+    sku;categories;enabled;family;groups;123;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+    """
+
+  Scenario: Successfully export products with a selection of attributes
+    Given an "apparel" catalog configuration
+    And I am logged in as "Julia"
+    And the following job "tablet_product_export" configuration:
+      | filters | {"structure":{"locales":["en_US"],"scope":"tablet","attributes":["price","size","color","cost","description","name","image","release_date","weight"]}, "data": []} |
+    And the following products:
+      | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
+      | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |
+      | tshirt-green  | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | green  | american_apparel | cotton   | usa                    |
+    And the following product values:
+      | product       | attribute       | value                                | locale | scope     |
+      | tshirt-yellow | name            | Yellow t-shirt                       | en_US  |           |
+      | tshirt-yellow | name            | Yellow t-shirt                       | en_GB  |           |
+      | tshirt-yellow | name            | T-shirt blanc                        | fr_FR  |           |
+      | tshirt-yellow | name            | Weißes T-Shirt                       | de_DE  |           |
+      | tshirt-yellow | image           | %fixtures%/SNKRS-1R.png              |        |           |
+      | tshirt-yellow | cost            | 10 EUR, 20 USD, 30 GBP               |        |           |
+      | tshirt-yellow | release_date    | 2016-10-12                           |        | tablet    |
+      | tshirt-yellow | customer_rating | 2                                    |        | tablet    |
+      | tshirt-yellow | handmade        | 1                                    |        |           |
+      | tshirt-yellow | weight          | 5 KILOGRAM                           |        |           |
+      | tshirt-yellow | number_in_stock | 10                                   |        | tablet    |
+      | tshirt-yellow | description     | A stylish yellow t-shirt             | en_US  | tablet    |
+      | tshirt-yellow | description     | Un T-shirt blanc élégant             | fr_FR  | ecommerce |
+      | tshirt-yellow | description     | A really stylish yellow t-shirt      | en_US  | print     |
+      | tshirt-green  | name            | Green t-shirt                        | en_US  |           |
+      | tshirt-green  | name            | Green t-shirt                        | en_GB  |           |
+      | tshirt-green  | name            | T-shirt noir                         | fr_FR  |           |
+      | tshirt-green  | name            | Schwarzes T-Shirt                    | de_DE  |           |
+      | tshirt-green  | description     | Un T-shirt noir élégant              | fr_FR  | ecommerce |
+      | tshirt-green  | description     | Ein elegantes schwarzes T-Shirt      | de_DE  | ecommerce |
+      | tshirt-green  | description     | A really stylish green t-shirt       | en_US  | print     |
+      | tshirt-green  | description     | Ein sehr elegantes schwarzes T-Shirt | de_DE  | print     |
+    When I am on the "tablet_product_export" export job page
+    And I launch the export job
+    And I wait for the "tablet_product_export" job to finish
+    Then exported file of "tablet_product_export" should contain:
+    """
+    sku;categories;color;cost-EUR;cost-GBP;cost-USD;description-en_US-tablet;enabled;family;groups;image;name-en_US;price-EUR;price-GBP;price-USD;release_date-tablet;size;weight;weight-unit
+    tshirt-yellow;men_2013,men_2014,men_2015;yellow;10.00;20.00;30.00;;A stylish yellow t-shirt;1;tshirts;;files/tshirt-yellow/image/SNKRS-1R.png;Yellow t-shirt;10.00;9.00;15.00;2016-10-12;size_M;5;KILOGRAM
+    tshirt-green;men_2013,men_2014,men_2015;green;;;;;;1;tshirts;;;Green t-shirt;10.00;9.00;15.00;;size_L;;
+    """
+
+  Scenario: Successfully export products with an empty array of attributes
+    Given an "apparel" catalog configuration
+    And I am logged in as "Julia"
+    And the following job "tablet_product_export" configuration:
+      | filters | {"structure":{"locales":["en_US"],"scope":"tablet","attributes":["sku"]}, "data": []} |
+    And the following products:
+      | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
+      | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |
+      | tshirt-green  | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | green  | american_apparel | cotton   | usa                    |
+    When I am on the "tablet_product_export" export job page
+    And I launch the export job
+    And I wait for the "tablet_product_export" job to finish
+    Then exported file of "tablet_product_export" should contain:
+    """
+    sku;categories;enabled;family;groups
+    tshirt-yellow;men_2013,men_2014,men_2015;1;tshirts;
+    tshirt-green;men_2013,men_2014,men_2015;1;tshirts;
     """

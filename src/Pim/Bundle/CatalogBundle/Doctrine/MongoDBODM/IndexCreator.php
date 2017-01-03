@@ -4,7 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
@@ -60,10 +61,10 @@ class IndexCreator
         $attributeClass
     ) {
         $this->managerRegistry = $managerRegistry;
-        $this->namingUtility   = $namingUtility;
-        $this->productClass    = $productClass;
-        $this->logger          = $logger;
-        $this->attributeClass  = $attributeClass;
+        $this->namingUtility = $namingUtility;
+        $this->productClass = $productClass;
+        $this->logger = $logger;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
@@ -77,11 +78,11 @@ class IndexCreator
     {
         $attributeFields = $this->namingUtility->getAttributeNormFields($attribute);
         switch ($attribute->getBackendType()) {
-            case AbstractAttributeType::BACKEND_TYPE_PRICE:
+            case AttributeTypes::BACKEND_TYPE_PRICE:
                 $attributeFields = $this->addFieldsFromPrices($attributeFields);
                 break;
-            case AbstractAttributeType::BACKEND_TYPE_OPTION:
-            case AbstractAttributeType::BACKEND_TYPE_OPTIONS:
+            case AttributeTypes::BACKEND_TYPE_OPTION:
+            case AttributeTypes::BACKEND_TYPE_OPTIONS:
                 $attributeFields = $this->addFieldsFromOption($attributeFields);
                 break;
         }
@@ -106,7 +107,8 @@ class IndexCreator
 
         $scopables = $this->namingUtility->getScopableAttributes();
         foreach ($scopables as $scopable) {
-            $this->ensureIndexesFromAttribute($scopable);
+            $indexType = $this->getIndexTypeFromAttribute($scopable);
+            $this->ensureIndexesFromAttribute($scopable, $indexType);
         }
     }
 
@@ -126,7 +128,8 @@ class IndexCreator
 
         $localizables = $this->namingUtility->getLocalizableAttributes();
         foreach ($localizables as $localizable) {
-            $this->ensureIndexesFromAttribute($localizable);
+            $indexType = $this->getIndexTypeFromAttribute($localizable);
+            $this->ensureIndexesFromAttribute($localizable, $indexType);
         }
     }
 
@@ -142,7 +145,8 @@ class IndexCreator
     {
         $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
-            $this->ensureIndexesFromAttribute($pricesAttribute);
+            $indexType = $this->getIndexTypeFromAttribute($pricesAttribute);
+            $this->ensureIndexesFromAttribute($pricesAttribute, $indexType);
         }
     }
 
@@ -167,7 +171,8 @@ class IndexCreator
         );
 
         foreach ($attributes as $attribute) {
-            $this->ensureIndexesFromAttribute($attribute);
+            $indexType = $this->getIndexTypeFromAttribute($attribute);
+            $this->ensureIndexesFromAttribute($attribute, $indexType);
         }
     }
 
@@ -183,7 +188,8 @@ class IndexCreator
         );
 
         foreach ($attributes as $attribute) {
-            $this->ensureIndexesFromAttribute($attribute);
+            $indexType = $this->getIndexTypeFromAttribute($attribute);
+            $this->ensureIndexesFromAttribute($attribute, $indexType);
         }
     }
 
@@ -313,7 +319,7 @@ class IndexCreator
      */
     protected function getIndexTypeFromAttribute(AttributeInterface $attribute)
     {
-        return (AbstractAttributeType::BACKEND_TYPE_TEXT === $attribute->getBackendType()) ?
+        return (AttributeTypes::BACKEND_TYPE_TEXT === $attribute->getBackendType()) ?
             self::HASHED_INDEX_TYPE : self::ASCENDANT_INDEX_TYPE;
     }
 }

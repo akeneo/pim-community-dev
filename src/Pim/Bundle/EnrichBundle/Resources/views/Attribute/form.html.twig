@@ -16,8 +16,11 @@
 
         {% set title = form.vars.value.id ? 'attribute.edit'|trans ~ ' - ' ~ form.vars.value.label : 'attribute.create'|trans %}
 
-        {% set buttons %}
+        {% set titleButtons %}
             {{ elements.backLink(path('pim_enrich_attribute_index')) }}
+        {% endset %}
+
+        {% set buttons %}
             {% if form.vars.value.id and form.attributeType.vars.value != 'pim_catalog_identifier' %}
                 {{ elements.deleteLink(
                     path('pim_enrich_attribute_remove', { id: form.vars.value.id }),
@@ -39,7 +42,7 @@
             {% endif %}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
+        {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id), titleButtons) }}
 
         {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 

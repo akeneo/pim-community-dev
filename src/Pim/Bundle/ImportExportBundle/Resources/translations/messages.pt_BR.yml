@@ -1,6 +1,8 @@
 Job: Tarefa
 Connector: Conector
 pim_import_export:
+  job: Tarefa
+  connector: Conector
   status:
     - Pronto
   batch_status:
@@ -15,7 +17,8 @@ pim_import_export:
   download_archive:
     output: baixar arquivo gerado | baixar arquivos gerados
     input: baixar arquivo de leitura|baixar arquivos de leitura
-    invalid: baixar dados inválidos
+    invalid_xlsx: baixar dados inválidos
+    invalid_csv: baixar dados inválidos
   notification:
     export:
       error: Exportação <strong>%label%</strong> falhou
@@ -26,6 +29,11 @@ pim_import_export:
       warning: Importação <strong>%label%</strong> terminou com alguns avisos
       success: Importação <strong>%label%</strong> completa
   list: Selecione uma tarefa
+  job_profile:
+    tab:
+      property.title: Propriedades gerais
+      history.title: Histórico
+      job_content.title: Conteúdo
 pim_title.export_profile.index: Gerenciamento dos perfis de exportação
 pim_title.export_profile.edit: Perfis de exportação %job.label% | Editar
 pim_title.export_profile.show: Perfis de exportação %job.label% | Mostrar
@@ -79,13 +87,12 @@ pim_importexport:
       dl_log: Baixar o log do relatório de importação
       dl_files: Baixar os arquivos importados
   acl_group:
-    export: Perfis de exportação
-    import: Perfis de importação
+    export: Exportar perfis
+    import: Importar perfis
 btn:
   create:
-    export profile: criar perfil de exportação
-    import profile: criar perfil de importação
-Upload and import: Carregar e importar
+    export profile: criar um perfil de exportação
+    import profile: criar um perfil de importação
 Upload and import now: Enviar e Importar Agora
 import now: Importar Agora
 export now: Exportar Agora
@@ -115,6 +122,7 @@ History: Histórico
 pane.accordion:
   properties: Propriedades
   global_settings: Configurações globais
+  filters: Filtros
 popin.create:
   export_profile.title: Criar um novo perfil de exportação
   import_profile.title: Criar um novo perfil de exportação
@@ -151,3 +159,4 @@ STOPPED: PARADO
 FAILED: FALHOU
 ABANDONED: ABANDONADO
 UNKNOWN: DESCONHECIDO
+warning.label: Aviso

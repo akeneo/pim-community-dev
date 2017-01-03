@@ -14,10 +14,10 @@ Feature: Browse families
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code, Label and Attribute as label
     And I should be able to use the following filters:
-      | filter             | value | result                             |
-      | Code               | a     | sandals and sneakers               |
-      | Label              | Boo   | boots                              |
-      | Attribute as label | Name  | boots, heels, sandals, led_tvs and sneakers |
+      | filter           | operator | value | result                                      |
+      | code             | contains | a     | sandals and sneakers                        |
+      | label            | contains | Boo   | boots                                       |
+      | attributeAsLabel |          | Name  | boots, heels, led_tvs, sandals and sneakers |
 
   Scenario: Successfully keep descending sorting order after refreshing the page
     Given a "footwear" catalog configuration
@@ -49,7 +49,8 @@ Feature: Browse families
       | vans        | sneakers |
     And I am logged in as "Julia"
     And I am on the products page
-    And I sort by "family" value ascending
-    And the rows should be sorted ascending by family
-    Then I mass-edit products caterpillar and dr-martens
-    And I should see "Mass Edit (2 products)"
+    When I sort by "family" value ascending
+    Then the rows should be sorted ascending by family
+    When I select rows caterpillar and dr-martens
+    And I press "Change product information" on the "Bulk Actions" dropdown button
+    Then I should see "Mass Edit (2 products)"

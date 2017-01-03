@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -27,17 +26,11 @@ class AddProductValueProcessor extends AbstractProcessor
     /**
      * @param PropertyAdderInterface              $propertyAdder
      * @param ValidatorInterface                  $validator
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
-    public function __construct(
-        PropertyAdderInterface $propertyAdder,
-        ValidatorInterface $validator,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
-    ) {
-        parent::__construct($jobConfigurationRepo);
-
+    public function __construct(PropertyAdderInterface $propertyAdder, ValidatorInterface $validator)
+    {
         $this->propertyAdder = $propertyAdder;
-        $this->validator      = $validator;
+        $this->validator = $validator;
     }
 
     /**
@@ -45,17 +38,10 @@ class AddProductValueProcessor extends AbstractProcessor
      */
     public function process($product)
     {
-        $configuration = $this->getJobConfiguration();
-
-        if (!array_key_exists('actions', $configuration)) {
-            throw new InvalidArgumentException('Missing configuration for \'actions\'.');
-        }
-
-        $actions = $configuration['actions'];
-
+        $actions = $this->getConfiguredActions();
         $this->addData($product, $actions);
 
-        if (null === $product || (null !== $product && !$this->isProductValid($product))) {
+        if (!$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
 
             return null;
@@ -84,15 +70,11 @@ class AddProductValueProcessor extends AbstractProcessor
      *
      * @param ProductInterface $product
      * @param array            $actions
-     *
-     * @return AddProductValueProcessor
      */
     protected function addData(ProductInterface $product, array $actions)
     {
         foreach ($actions as $action) {
             $this->propertyAdder->addData($product, $action['field'], $action['value']);
         }
-
-        return $this;
     }
 }

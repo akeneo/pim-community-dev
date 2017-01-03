@@ -5,6 +5,7 @@ pim_user:
       additional.title: Adicional
       group_and_role.title: Grupos e Funções
       password.title: Senha
+      business_unit.title: Unidades de negócios
       email_synchronization.title: Configurações de sincronização de e-mail
       interfaces.title: Interfaces
 oro.user.controller:
@@ -14,7 +15,7 @@ oro.user.controller:
   status.message.saved: Estado gravado
 oro.user.grid.users:
   columns:
-    username: Nome do Utilizador
+    username: Nome de utilizador
     email: Email
     firstName: Primeiro nome
     lastName: Último nome

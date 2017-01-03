@@ -4,8 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Abstract product attribute
@@ -164,17 +163,17 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function __construct()
     {
-        $this->options             = new ArrayCollection();
-        $this->required            = false;
-        $this->unique              = false;
-        $this->localizable         = false;
-        $this->scopable            = false;
+        $this->options = new ArrayCollection();
+        $this->required = false;
+        $this->unique = false;
+        $this->localizable = false;
+        $this->scopable = false;
         $this->useableAsGridFilter = false;
-        $this->availableLocales    = new ArrayCollection();
-        $this->families            = new ArrayCollection();
-        $this->translations        = new ArrayCollection();
-        $this->validationRule      = null;
-        $this->properties          = [];
+        $this->availableLocales = new ArrayCollection();
+        $this->families = new ArrayCollection();
+        $this->translations = new ArrayCollection();
+        $this->validationRule = null;
+        $this->properties = [];
     }
 
     /**
@@ -443,7 +442,7 @@ abstract class AbstractAttribute implements AttributeInterface
         if ($this->isScopable()) {
             $groups[] = 'scopable';
         }
-        if ($this->isScopable()) {
+        if ($this->isLocalizable()) {
             $groups[] = 'localizable';
         }
         if ($rule = $this->getValidationRule()) {
@@ -550,16 +549,6 @@ abstract class AbstractAttribute implements AttributeInterface
     public function hasLocaleSpecific(LocaleInterface $locale)
     {
         return in_array($locale->getCode(), $this->getLocaleSpecificCodes());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAvailableLocales(ArrayCollection $availableLocales)
-    {
-        $this->availableLocales = $availableLocales;
-
-        return $this;
     }
 
     /**
@@ -932,7 +921,7 @@ abstract class AbstractAttribute implements AttributeInterface
         }
 
         $translationClass = $this->getTranslationFQCN();
-        $translation      = new $translationClass();
+        $translation = new $translationClass();
         $translation->setLocale($locale);
         $translation->setForeignKey($this);
         $this->addTranslation($translation);
@@ -1057,8 +1046,8 @@ abstract class AbstractAttribute implements AttributeInterface
     public function isBackendTypeReferenceData()
     {
         return in_array($this->getBackendType(), [
-            AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION,
-            AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTIONS
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
         ]);
     }
 }

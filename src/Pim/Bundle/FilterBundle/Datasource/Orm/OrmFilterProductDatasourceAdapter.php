@@ -4,8 +4,8 @@ namespace Pim\Bundle\FilterBundle\Datasource\Orm;
 
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
 /**
  * Customize the OroPlatform datasource adapter
@@ -30,7 +30,7 @@ class OrmFilterProductDatasourceAdapter extends OrmFilterDatasourceAdapter imple
      */
     public function __construct(DatasourceInterface $datasource)
     {
-        $this->qb  = $datasource->getQueryBuilder();
+        $this->qb = $datasource->getQueryBuilder();
         $this->pqb = $datasource->getProductQueryBuilder();
         $this->expressionBuilder = null;
     }

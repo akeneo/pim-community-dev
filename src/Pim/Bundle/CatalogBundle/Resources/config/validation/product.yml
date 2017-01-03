@@ -1,14 +1,14 @@
 Pim\Component\Catalog\Model\Product:
     constraints:
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\HasVariantAxes:
+        - Pim\Component\Catalog\Validator\Constraints\HasVariantAxes:
             groups:
                 - Default
                 - pim_catalog_variant_group
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis:
+        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis:
             groups:
                 - Default
                 - pim_catalog_variant_group
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantGroup:
+        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroup:
             groups:
                 - Default
                 - pim_catalog_variant_group

@@ -2,3 +2,17 @@ job_execution:
   summary:
     display_item: Object weergeven
     hide_item: Object verbergen
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Categorie selectie
+          cancel: Annuleer
+          confirm: Bevestig
+        label: '{0} alle producten |{1} één categorie geselecteerd |] 1, Inf [{{ count }} categorieën geselecteerd'
+        edit: Wijzig
+        title: Selecteer categorieën
+    locales:
+      validation:
+        not_blank: Één landinstelling moet worden geselecteerd, kies een landinstelling om te exporteren.

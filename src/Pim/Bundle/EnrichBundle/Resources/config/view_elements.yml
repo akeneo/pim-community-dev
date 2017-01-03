@@ -8,23 +8,23 @@ parameters:
 
 services:
     pim_enrich.view_element.registry:
-        class: %pim_enrich.view_element.registry.class%
+        class: '%pim_enrich.view_element.registry.class%'
 
     pim_enrich.view_element.base:
-        class: %pim_enrich.view_element.base.class%
+        class: '%pim_enrich.view_element.base.class%'
 
     pim_enrich.view_element.visibility_checker.acl:
-        class: %pim_enrich.view_element.visibility_checker.acl.class%
+        class: '%pim_enrich.view_element.visibility_checker.acl.class%'
         arguments:
             - '@oro_security.security_facade'
 
     pim_enrich.view_element.visibility_checker.voter:
-        class: %pim_enrich.view_element.visibility_checker.voter.class%
+        class: '%pim_enrich.view_element.visibility_checker.voter.class%'
         arguments:
             - '@oro_security.security_facade'
 
     pim_enrich.view_element.visibility_checker.edit_form:
-        class: %pim_enrich.view_element.visibility_checker.edit_form.class%
+        class: '%pim_enrich.view_element.visibility_checker.edit_form.class%'
 
     pim_enrich.view_element.visibility_checker.non_empty_property:
-        class: %pim_enrich.view_element.visibility_checker.non_empty_property.class%
+        class: '%pim_enrich.view_element.visibility_checker.non_empty_property.class%'

@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnexpectedResultException;
-use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Group type repository
@@ -21,8 +21,7 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
     public function getAllGroupsExceptVariantQB()
     {
         $qb = $this->createQueryBuilder('group_type')
-            ->andWhere('group_type.code != :variant')
-            ->setParameter('variant', 'VARIANT')
+            ->andWhere('group_type.variant = 0')
             ->addOrderBy('group_type.code', 'ASC');
 
         return $qb;
@@ -83,5 +82,35 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
     public function getIdentifierProperties()
     {
         return ['code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findTypeIds($isVariant)
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->select('g.id')
+            ->from($this->_entityName, 'g', 'g.id')
+            ->leftJoin('g.translations', 't')
+            ->andWhere('g.variant = :variant')
+            ->setParameter('variant', $isVariant)
+            ->getQuery();
+
+        return array_keys($query->getArrayResult());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVariantGroupType()
+    {
+        $query = $this
+            ->createQueryBuilder('group_type')
+            ->andWhere('group_type.variant = 1')
+            ->getQuery()
+        ;
+
+        return $query->getOneOrNullResult();
     }
 }

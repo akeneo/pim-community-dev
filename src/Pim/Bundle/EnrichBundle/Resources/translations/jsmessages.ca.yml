@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Esteu segur que voleu eliminar aquest element?
+    item: Està segur que voleu eliminar aquest element?
     association type: Esteu segur que voleu suprimir aquest tipus d'associació?
     attribute: Esteu segur que voleu suprimir aquest atribut?
     family: Esteu segur que voleu suprimir aquesta família?
@@ -15,6 +15,8 @@ confirmation:
     role: Estàs segur que vols suprimir aquest rol?
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: Accions massives
     quick_export:
       label: Exportació ràpida
   mass_action:
@@ -26,27 +28,27 @@ flash:
   item:
     removed: Element suprimit correctament
   association type:
-    removed: Tipus d'associació suprimit correctament
+    removed: Tipus d'associació eliminat correctament
   attribute:
     removed: Atribut suprimit correctament
   family:
-    removed: Família eliminada correctament
+    removed: Família suprimida correctament
   product:
     removed: Producte suprimit correctament
   channel:
-    removed: Canal suprimit correctament
+    removed: Canal eliminat correctament
   group:
-    removed: Grup suprimit correctament
+    removed: Grup eliminat correctament
   variant group:
-    removed: Grup de variants suprimit correctament
+    removed: Variant de grups eliminada correctament
   group type:
-    removed: Tipus de grup suprimit correctament
+    removed: Tipus de grup eliminat correctament
   import profile:
     removed: Perfil d'importació eliminat correctament
   export profile:
     removed: Perfil d'exportació eliminat correctament
   user:
-    removed: Usuari suprimit correctament
+    removed: Usuari eliminat correctament
   role:
     removed: Rol eliminat correctament
 error:
@@ -67,6 +69,7 @@ error:
     attribute_option: Error en suprimir la opció d'atribut
   saving:
     attribute_option: No es pot desar aquesta opció d'atribut
+    export_profile: No es pot desar el perfil d'exportació. Comproveu que tots els filtres estan ben informats
 alert:
   attribute_option:
     error_occured_during_submission: S'ha produït un error durant l'enviament del formulari al servidor
@@ -82,22 +85,31 @@ label:
     add_option: Afegir una opció
 Code: Codi
 Edit: Editar
-Delete: Suprimir
+Delete: Esborrar
 Edit attributes of the product: Editar els atributs del producte
 Classify the product: Classificar el producte
 Delete the product: Eliminar el producte
 Change status: Canviar l'estat
 Toggle status: Tancar estat
-pim.grid.mass_action.quick_export.csv_all: CSV (tots els atributs)
-pim.grid.mass_action.delete: Suprimir
-pim.grid.mass_action.mass_edit: Edició massiva
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (tots els atributs)
+        csv_grid_context: CSV (marc de quadrícula)
+        xlsx_all: Excel (tots els atributs)
+        xlsx_grid_context: Excel (marc de quadrícula)
+      delete: Eliminar productes
+      mass_edit: Canviar la informació del producte
+      category_edit: Moure els productes a les categories
+      sequential_edit: Editar els productes seqüencialment
 jstree.create: Crear
 switch_on: "Sí"
 switch_off: "No"
 pim_enrich:
   item:
     list:
-      delete.label: Suprimir
+      delete.label: Esborrar
       delete.error: Error suprimint l'element
     delete:
       confirm.content: Esteu segur que voleu suprimir aquest {{ itemName }}? Aquesta acció no es pot desfer
@@ -120,7 +132,7 @@ pim_enrich:
         disabled: Deshabilitat
         download_pdf: PDF
         compare_translate: Comparar / traduir
-        delete: Suprimir
+        delete: Esborrar
         save: Desar
         save_and_back: Desar i tornar a la quadrícula
       history:
@@ -179,21 +191,54 @@ pim_enrich:
         unavailable: Aquest camp específic no està disponible per aquesta configuració regional
       localizable:
         channel_locale_unavailable: Aquest camp regionalitzable no està disponible per la configuració regional '{{ locale }}' i el canal '{{ channel }}'
+      media:
+        upload: Arrossegueu-lo aquí per carregar o feu-hi clic
+      create_popin:
+        title: Crear un nou producte
+        labels:
+          family: Triar una Familia
+          save: Desar
+          cancel: Cancelar
     attribute_option:
       code: Codi
       label: Etiqueta
+    variant_group:
+      title: Grups de variants
+      info:
+        deletion_successful: El grup variants s'ha suprimit correctament.
+        deletion_failed: El grup variants no s'ha pogut suprimir.
+        update_successful: El grup de variants s'ha actualitzat correctament.
+        update_failed: El grup variants no s'ha pogut actualitzar.
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - camps
+        already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
+        no_attributes: Aquesta grup de variants encara no té cap atribut
+      btn:
+        save: Desar
+      meta:
+        product_count: Productes
+        created: Creat
+        created_by: Creat per
+        updated: Actualitzat
+        updated_by: Actualitzat per
   confirmation:
     leave: Esteu segur que voleu sortir d'aquesta pàgina?
     discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
     delete_item: Confirmar l'eliminació
+    delete:
+      attribute: Esteu segur que voleu suprimir aquest atribut del producte?
   info:
-    not_applicable: N/D
+    not_applicable: N/A
     entity:
       updated: Hi ha canvis sense guardar.
+  error:
+    upload: S'ha produït un error carregant el fitxer
   alert:
     not_allowed: No té permís per accedir a aquesta pàgina
     error_occured: S'ha produït un error durant la càrrega de la pàgina
   form:
+    required: (obligatori)
     product:
       tab:
         associations:
@@ -241,8 +286,8 @@ pim_enrich:
           title: Canviar la família del producte
           merge_attributes: Els atributs actuals es combinaran amb els de la nova família.
           keep_attributes: No s'eliminarà cap atribut.
-          change_family_to: Canviar la família a
-          empty_selection: Trieu una família
+          change_family_to: Canviar família a
+          empty_selection: Triar una Familia
       flash:
         attribute_deletion_error: S'ha produït un error durant la supressió de l'atribut
       mass_edit:
@@ -260,6 +305,164 @@ pim_enrich:
       switch:
         "no": No
         "yes": Sí
+    variant_group:
+      tab:
+        properties:
+          title: Propietats
+          general: Propietats generals
+          code: Codi
+          type: Tipus
+          axis: Eix
+          label_translations: Traduccions d'etiqueta
+        history:
+          title: Històric
+        products:
+          title: Productes
+        attributes:
+          title: Atributs
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Afegir
+            add_attributes: Afegir atributs
+          info:
+            search_attributes: Cercar...
+            no_available_attributes: No hi ha més atributs a afegir
+  export:
+    product:
+      data:
+        title: Filtrar els productes
+      structure:
+        title: Filtrar les dades
+        attributes:
+          title: Atributs
+      filter:
+        channel:
+          title: Canal
+          help: El canal defineix l'abast per els valors de producte, les configuracions regionals utilitzades per seleccionar les dades i l'arbre utilitzat per seleccionar els productes.
+        locales:
+          title: Configuracions regionals
+          help: 'Les configuracions regionals defineixen els valors regionalitzats de producte a exportar. Ex: només informació en francès.'
+        attributes:
+          title: Atributs
+          edit: Editar
+          label: '{0} Tots els atributs |{1} Un atribut seleccionat |] 1, Inf [{{ count }} atributs seleccionats'
+          help: 'Seleccionar la informació del producte a exportar. Ex: només els atributs tècnics.'
+          empty: S'exportaran tots els atributs
+          modal:
+            apply: Aplicar
+            cancel: Cancelar
+            title: Selecció de l'atribut
+        attributes_selector:
+          attribute_group: Grups d'atributs
+          attributes: Cercar a {{ attributeCount }} atributs
+          selected: Atributs seleccionats
+          clear: Restablir
+          all_group: Tots els grups
+          empty_selection: S'exportaran tots els atributs
+        family:
+          title: Família
+          help: 'Seleccionar els productes per exportar de la seva família. Ex: Exportar només sabates i vestits.'
+          operators:
+            IN: A la llista
+            NOT IN: Fora de llista
+            EMPTY: Productes sense família
+            NOT EMPTY: Productes amb família
+          empty_selection: Cap condició sobre les famílies
+        updated:
+          title: Condició de temps
+          operators:
+            ALL: Cap condició de data
+            SINCE LAST N DAYS: Actualització dels productes dels últims n dies (p. ex. 6)
+            >: Productes actualitzats des d'aquesta data
+            SINCE LAST JOB: Productes actualitzats des de la última exportació
+        enabled:
+          title: Estat
+          help: 'Seleccionar els productes d''exportació per la seva condició. Ex: Exportar productes independentment del seu estatus.'
+          value:
+            all: Tots
+            enabled: Habilitat
+            disabled: Deshabilitat
+        completeness:
+          title: Integritat
+          help: Seleccionar els productes d'exportació per la seva integritat.
+          operators:
+            ALL: Cap condició sobre integritat
+            >=: Completar almenys a una configuració regional seleccionada
+            GREATER OR EQUALS THAN ON ALL LOCALES: Completar a totes les configuracions regionals seleccionades
+            LOWER THAN ON ALL LOCALES: No completar a totes les configuracions regionals seleccionades
+          empty_selection: Seleccioneu una família
+        category:
+          title: Categoria
+          help: Utilitzeu les categories de producte a l'arbre (definit al canal de dalt) per seleccionar els productes a exportar
+        identifier:
+          title: Identificador
+          help: Els identificadors de producte que voleu exportar separats per comes, espais o salts de línia
+        metric:
+          operators:
+            =: És igual a
+            !=: No és igual a
+            >=: Major o igual
+            >: Més gran que
+            <=: Inferiors o iguals
+            <: Inferiors a
+            EMPTY: Està buit
+            NOT EMPTY: No és buit
+        string:
+          operators:
+            ALL: Tots
+            CONTAINS: Conté
+            DOES NOT CONTAIN: No conté
+            =: És igual a
+            STARTS WITH: S'inicia amb
+            ENDS WITH: Acaba amb
+            EMPTY: Està buit
+            NOT EMPTY: No és buit
+        price-collection:
+          operators:
+            =: És igual a
+            !=: No és igual a
+            >=: Major o igual
+            >: Més gran que
+            <=: Inferiors o iguals
+            <: Inferiors a
+            EMPTY: Està buit
+            NOT EMPTY: No és buit
+        multi_select:
+          operators:
+            IN: A la llista
+            EMPTY: Està buit
+            NOT EMPTY: No és buit
+        media:
+          operators:
+            CONTAINS: Conté
+            DOES NOT CONTAIN: No conté
+            =: És igual a
+            STARTS WITH: S'inicia amb
+            ENDS WITH: Acaba amb
+            EMPTY: Està buit
+            NOT EMPTY: No és buit
+        date:
+          operators:
+            >: Més gran que
+            <: Inferior a
+            =: És igual a
+            !=: No és igual a
+            BETWEEN: Entre
+            NOT BETWEEN: No entre
+            EMPTY: Està buit
+            NOT EMPTY: No és buit
+        number:
+          operators:
+            =: És igual a
+            !=: No és igual a
+            >=: Major o igual
+            >: Més gran que
+            <=: Inferiors o iguals
+            <: Inferior a
+            EMPTY: Està buit
+            NOT EMPTY: No és buit
   mass_edit_action:
     edit_common_attributes:
       description: Els atributs del producte seleccionat s'editaran amb les següents dades per la configuració regional <span class="highlight">{{ locale }}</span> i el canal <span class="highlight">{{ channel }}</span>, seleccionats a la quadrícula de productes.

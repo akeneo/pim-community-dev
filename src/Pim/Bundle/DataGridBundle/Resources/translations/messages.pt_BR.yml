@@ -32,7 +32,7 @@ flash.datagrid view:
   updated: Visualização de grid atualizada com sucesso
   removed: Visualização de grid removida com sucesso
   not removable: Você não tem permissão para remover essa visualização
-quick_export: Exportação rápida
-import: Importar
-export: Exportar
+quick_export: Exportação Rápida
+import: Importação
+export: Exportação
 mass_edit: Edição em Massa

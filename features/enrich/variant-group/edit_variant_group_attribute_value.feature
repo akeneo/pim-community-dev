@@ -32,7 +32,7 @@ Feature: Editing attribute values of a variant group also updates products
       | caterpillar_boots | price              | 39.99 EUR     |        |        |
       | caterpillar_boots | rating             | 1             |        |        |
       | caterpillar_boots | name               | Old name      | en_US  |        |
-      | caterpillar_boots | description        | A product.    | en_US  | mobile |
+      | caterpillar_boots | description        | A product.    | en_US  | tablet |
     And the following products:
       | sku  | groups            | color | size |
       | boot | caterpillar_boots | black | 40   |
@@ -51,54 +51,66 @@ Feature: Editing attribute values of a variant group also updates products
     And I check the "Handmade" switch
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
-    Then the product "boot" should have the following values:
-      | handmade | 1 |
+    And I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
+    And I visit the "Other" group
+    Then the field Handmade should contain "on"
 
   Scenario: Change a pim_catalog_date attribute of a variant group
     Given I visit the "Other" group
     When I change the "Destocking date" to "01/01/2001"
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
-    Then the product "boot" should have the following values:
-      | destocking_date | 2001-01-01 |
+    And I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
+    And I visit the "Other" group
+    Then the field Destocking date should contain "01/01/2001"
 
   Scenario: Change a pim_catalog_metric attribute of a variant group
     When I change the "Length" to "5"
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
-    Then the product "boot" should have the following values:
-      | length | 5.0000 CENTIMETER |
+    And I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
+    Then the field Length should contain "5"
 
   Scenario: Change a pim_catalog_multiselect attribute of a variant group
     When I change the "Weather conditions" to "Wet, Cold"
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
-    Then the product "boot" should have the following values:
-      | weather_conditions | [wet], [cold] |
+    And I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
+    Then the field Weather conditions should contain "Wet, Cold"
 
   Scenario: Change a pim_catalog_number attribute of a variant group
     When I visit the "Other" group
     And I change the "Number in stock" to "8000"
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
-    Then the product "boot" should have the following values:
-      | number_in_stock | 8000.0000 |
+    And I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
+    And I visit the "Other" group
+    Then the field Number in stock should contain "8000"
 
   Scenario: Change a pim_catalog_price_collection attribute of a variant group
     When I visit the "Marketing" group
-    And I change the "€ Price" to "89"
+    And I change the "Price" to "89 EUR"
     And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    Then the product "boot" should have the following values:
-      | price | 89.00 EUR |
+    Then I should see the flash message "Variant group successfully updated"
+    And I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
+    And I visit the "Marketing" group
+    Then the field Price should contain "89"
 
   Scenario: Change a pim_catalog_simpleselect attribute of a variant group
     When I visit the "Marketing" group
     And I change the "Rating" to "5"
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
-    Then the product "boot" should have the following values:
-      | rating | [5] |
+    And I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
+    And I visit the "Marketing" group
+    Then the field Rating should contain "5 stars"
 
   Scenario: Change a pim_catalog_simpleselect locale specific attribute of a variant group
     Given I set the "English (United States), French (France)" locales to the "mobile" channel
@@ -113,13 +125,13 @@ Feature: Editing attribute values of a variant group also updates products
     And I visit the "Attributes" tab
     And I visit the "Marketing" group
     And I add available attributes Simple
+    And I switch the scope to "mobile"
     And I change the "Simple" to "red"
     And I save the variant group
-    And I wait for the options to load
     And I switch the locale to "fr_FR"
     When I change the "Simple" to "blue"
     And I save the variant group
-    Then I should see the flash message "Variant group successfully updated"
+    Then I should not see the text "There are unsaved changes."
     When I am on the "boot" product page
     And I visit the "Marketing" group
     And I switch the scope to "mobile"
@@ -130,38 +142,40 @@ Feature: Editing attribute values of a variant group also updates products
   Scenario: Change a pim_catalog_text attribute of a variant group
     When I change the "Name" to "In a galaxy far far away"
     And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    Then the product "boot" should have the following values:
-      | name-en_US | In a galaxy far far away |
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
+    Then the field Name should contain "In a galaxy far far away"
 
   Scenario: Change a pim_catalog_textarea attribute of a variant group
-    When I change the "mobile Description" to "The best boots!"
+    When I change the "Description" to "The best boots!"
     And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
     Then the product "boot" should have the following values:
-      | description-en_US-mobile | The best boots! |
+      | description-en_US-tablet | The best boots! |
 
   Scenario: Change a pim_catalog_image attribute of a variant group
     When I add available attributes Side view
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Side view"
     And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    Then the product "boot" should have the following values:
-      | side_view | SNKRS-1R.png |
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
+    And I visit the "Media" group
+    Then I should see the text "SNKRS-1R.png"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5335
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-5335
   Scenario: Change a pim_catalog_image attribute of a variant group and ensure saving
     When I add available attributes Side view
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Side view"
     And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    And I visit the "Products" tab
+    Then I should not see the text "There are unsaved changes."
+    When I visit the "Products" tab
     And I uncheck the row "boot"
     And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    And I reload the page
+    Then I should not see the text "There are unsaved changes."
+    When I reload the page
     Then the row "boot" should not be checked
 
   Scenario: Change a pim_catalog_file attribute of a variant group
@@ -169,6 +183,12 @@ Feature: Editing attribute values of a variant group also updates products
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Technical description"
     And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    Then the product "boot" should have the following values:
-      | technical_description | SNKRS-1R.png |
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "boot" product page
+    And I visit the "Media" group
+    Then I should see the text "SNKRS-1R.png"
+
+  Scenario: Successfully see a warning message on page exit
+    When I add available attribute Handmade
+    And I click back to grid
+    Then I should see the text "You will lose changes to the Variant group if you leave the page"

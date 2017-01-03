@@ -10,7 +10,7 @@ Feature: Create an attribute
     And I am on the attributes page
     And I create a "Text" attribute
 
-  Scenario: Sucessfully create and validate a text attribute
+  Scenario: Successfully create and validate a text attribute
     Given I fill in the following information:
       | Code            | short_description |
       | Attribute group | Other             |

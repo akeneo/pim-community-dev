@@ -1,0 +1,6 @@
+parameters:
+    pim_import_export.view_element.visibility_checker.job_name.class: Pim\Bundle\ImportExportBundle\ViewElement\Checker\JobNameVisibilityChecker
+
+services:
+    pim_import_export.view_element.visibility_checker.job_name:
+        class: '%pim_import_export.view_element.visibility_checker.job_name.class%'

@@ -4,8 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 
 /**
  * Completeness Repository for ODM
@@ -16,42 +18,34 @@ use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
  */
 class CompletenessRepository implements CompletenessRepositoryInterface
 {
-    /**
-     * @var DocumentManager
-     */
+    /** @var DocumentManager */
     protected $documentManager;
 
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
-    /**
-     * @var CategoryRepositoryInterface
-     */
+    /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productClass;
 
     /**
      * @param DocumentManager             $documentManager
-     * @param ChannelManager              $channelManager
+     * @param ChannelRepositoryInterface  $channelRepository
      * @param CategoryRepositoryInterface $categoryRepository
      * @param string                      $productClass
      */
     public function __construct(
         DocumentManager $documentManager,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         $productClass
     ) {
-        $this->documentManager    = $documentManager;
-        $this->channelManager     = $channelManager;
+        $this->documentManager = $documentManager;
+        $this->channelRepository = $channelRepository;
         $this->categoryRepository = $categoryRepository;
-        $this->productClass       = $productClass;
+        $this->productClass = $productClass;
     }
 
     /**
@@ -59,24 +53,26 @@ class CompletenessRepository implements CompletenessRepositoryInterface
      */
     public function getProductsCountPerChannels()
     {
-        $channels = $this->channelManager->getFullChannels();
+        $channels = $this->channelRepository->findAll();
         $productRepo = $this->documentManager->getRepository($this->productClass);
 
         $productsCount = [];
         foreach ($channels as $channel) {
             $category = $channel->getCategory();
-            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
-            $categoryIds = $this->categoryRepository->getCategoryIds($category, $categoryQb);
+            $categoryIds = $this->categoryRepository->getAllChildrenIds($category, true);
 
-            $qb = $productRepo->createQueryBuilder()
+            $total = $productRepo->createQueryBuilder()
                 ->hydrate(false)
                 ->field('categoryIds')->in($categoryIds)
                 ->field('enabled')->equals(true)
-                ->select('_id');
+                ->select('_id')
+                ->getQuery()
+                ->execute()
+                ->count();
 
             $productsCount[] = [
                 'label' => $channel->getLabel(),
-                'total' => $qb->getQuery()->execute()->count()
+                'total' => $total
             ];
         }
 
@@ -88,28 +84,29 @@ class CompletenessRepository implements CompletenessRepositoryInterface
      */
     public function getCompleteProductsCountPerChannels()
     {
-        $channels = $this->channelManager->getFullChannels();
+        $channels = $this->channelRepository->findAll();
         $productRepo = $this->documentManager->getRepository($this->productClass);
 
         $productsCount = [];
         foreach ($channels as $channel) {
             $category = $channel->getCategory();
-            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
-            $categoryIds = $this->categoryRepository->getCategoryIds($category, $categoryQb);
+            $categoryIds = $this->categoryRepository->getAllChildrenIds($category, true);
 
             foreach ($channel->getLocales() as $locale) {
                 $data = [];
                 $compSuffix = $channel->getCode().'-'.$locale->getCode();
 
-                $qb = $productRepo->createQueryBuilder()
+                $localeCount = $productRepo->createQueryBuilder()
                     ->hydrate(false)
                     ->field('categoryIds')->in($categoryIds)
                     ->field('enabled')->equals(true)
                     ->field('normalizedData.completenesses.'.$compSuffix)
                     ->equals(100)
-                    ->select('_id');
+                    ->select('_id')
+                    ->getQuery()
+                    ->execute()
+                    ->count();
 
-                $localeCount = $qb->getQuery()->execute()->count();
                 $data['locale'] = $locale->getCode();
                 $data['label'] = $channel->getLabel();
                 $data['total'] = $localeCount;
@@ -119,5 +116,25 @@ class CompletenessRepository implements CompletenessRepositoryInterface
         }
 
         return $productsCount;
+    }
+
+    /**
+     * Return categories ids provided by the categoryQb
+     *
+     * @param OrmQueryBuilder $categoryQb
+     *
+     * @return array
+     */
+    protected function getCategoryIds(OrmQueryBuilder $categoryQb)
+    {
+        $categoryIds = [];
+        $categoryAlias = $categoryQb->getRootAlias();
+        $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
+
+        foreach ($categories as $category) {
+            $categoryIds[] = $category['id'];
+        }
+
+        return $categoryIds;
     }
 }

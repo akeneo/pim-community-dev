@@ -21,9 +21,9 @@ Feature: Filter products by boolean field
     Then the grid should contain 5 elements
     And I should see products pants, shirt, shoes, hat and socks
     And I should be able to use the following filters:
-      | filter   | value | result               |
-      | Handmade | yes   | pants and socks      |
-      | Handmade | no    | shirt, shoes and hat |
+      | filter   | operator | value | result               |
+      | handmade |          | yes   | pants and socks      |
+      | handmade |          | no    | shirt, shoes and hat |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3406
   Scenario: Successfully filter products by boolean value for boolean attributes
@@ -43,9 +43,9 @@ Feature: Filter products by boolean field
     Then the grid should contain 5 elements
     And I should see products pants, shirt, shoes, hat and socks
     And I should be able to use the following filters:
-      | filter | value    | result               |
-      | Status | Enabled  | pants, shirt and hat |
-      | Status | Disabled | shoes and socks      |
+      | filter  | operator | value    | result               |
+      | enabled |          | Enabled  | pants, shirt and hat |
+      | enabled |          | Disabled | shoes and socks      |
 
   @jira https://akeneo.atlassian.net/browse/PIM-5334
   Scenario: Successfully filter products by boolean value for boolean attributes and refresh the grid
@@ -59,13 +59,13 @@ Feature: Filter products by boolean field
     And I am on the products page
     Then the grid should contain 5 elements
     And I should see products pants, shirt, shoes, hat and socks
-    When I show the filter "Handmade"
-    And I filter by "Handmade" with value "yes"
+    When I show the filter "handmade"
+    And I filter by "handmade" with operator "" and value "yes"
     Then the grid should contain 2 elements
     And I should see entities pants and socks
     When I reload the page
     And I am on the products page
-    And I show the filter "Handmade"
+    And I show the filter "handmade"
     Then the grid should contain 2 elements
     And I should see entities pants and socks
 
@@ -75,8 +75,8 @@ Feature: Filter products by boolean field
       | sku              | family  | handmade |
       | lumberjack-shirt | tshirts | 1        |
     And I am on the products page
-    And I show the filter "Handmade"
-    And I filter by "Handmade" with value "yes"
+    And I show the filter "handmade"
+    And I filter by "handmade" with operator "" and value "yes"
     When I am on the dashboard page
     And I am on the products page
-    Then I should see the text "Handmade: yes"
+    Then I should see the text "handmade: yes"

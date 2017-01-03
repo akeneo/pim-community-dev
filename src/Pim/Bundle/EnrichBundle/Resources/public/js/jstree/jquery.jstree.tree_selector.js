@@ -86,6 +86,7 @@
                 // open it if setup to auto_open_root
                 var selected_tree = this.get_tree_select().find(':selected');
                 var root_node_id = $(selected_tree).attr('value');
+                var root_node_code = $(selected_tree).attr('data-code');
 
                 if (!root_node_id || (root_node_id === -1)) {
                     return null;
@@ -93,7 +94,8 @@
 
                 var root_node = this._prepare_node(
                     'node_' + root_node_id,
-                    selected_tree.text()
+                    selected_tree.text(),
+                    root_node_code
                 );
 
                 this.get_container_ul().empty();
@@ -148,7 +150,8 @@
 
                     var option = $('<option>', {
                         value: tree.id,
-                        text: option_text
+                        text: option_text,
+                        'data-code': tree.code
                     });
 
                     if (tree.selected === 'true') {
@@ -189,10 +192,11 @@
                 return trees;
 
             },
-            _prepare_node: function (id, node_name) {
+            _prepare_node: function (id, node_name, node_code) {
                 var node = $('<li>', {
                     id: id,
-                    rel: 'folder'
+                    rel: 'folder',
+                    'data-code': node_code
                 });
 
                 // Make the node 'openable' by switching back to initial state

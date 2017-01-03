@@ -7,8 +7,9 @@ Feature: Edit an import
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
 
+  @javascript
   Scenario: Successfully edit an import job
-    Given I am on the "footwear_product_import" import job edit page
+    Given I am on the "csv_footwear_product_import" import job edit page
     Then I should see the Code field
     And the field Code should be disabled
     When I fill in the following information:
@@ -18,23 +19,23 @@ Feature: Edit an import
 
   @javascript
   Scenario: Successfully update import job configuration
-    Given I am on the "footwear_product_import" import job edit page
-    Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator and Date format fields
+    Given I am on the "csv_footwear_product_import" import job edit page
+    Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
     When I fill in the following information:
-      | File               | file.csv   |
-      | Delimiter          | \|         |
-      | Enclosure          | '          |
-      | Escape             | \\         |
-      | Categories column  | cat        |
-      | Family column      | fam        |
-      | Groups column      | grp        |
-      | Decimal separator  | .          |
-      | Date format        | yyyy-MM-dd |
+      | File              | /tmp/file.csv |
+      | Delimiter         | \|            |
+      | Enclosure         | '             |
+      | Escape            | \\            |
+      | Categories column | cat           |
+      | Family column     | fam           |
+      | Groups column     | grp           |
+      | Decimal separator | .             |
+      | Date format       | yyyy-MM-dd    |
     And I uncheck the "Allow file upload" switch
     And I uncheck the "Enable the product" switch
     And I uncheck the "Real time history update" switch
     And I press the "Save" button
-    Then I should see the text "File file.csv"
+    Then I should see the text "File /tmp/file.csv"
     And I should see "Allow file upload No"
     And I should see "Delimiter |"
     And I should see "Enclosure '"
@@ -48,7 +49,7 @@ Feature: Edit an import
     And I should see "Date format yyyy-mm-dd"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
-    Given I am on the "footwear_product_import" import job edit page
+    Given I am on the "csv_footwear_product_import" import job edit page
     When I fill in the following information:
       | Label | My import |
     When I click on the Akeneo logo
@@ -58,7 +59,7 @@ Feature: Edit an import
 
   @javascript @skip
   Scenario: Successfully display a message when there are unsaved changes
-    Given I am on the "footwear_product_import" import job edit page
+    Given I am on the "csv_footwear_product_import" import job edit page
     When I fill in the following information:
       | Label | My import |
     Then I should see "There are unsaved changes."

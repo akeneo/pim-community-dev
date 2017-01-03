@@ -5,7 +5,7 @@ datagrid:
             entityHint: attribute
         source:
             acl_resource: pim_enrich_attribute_index
-            entity: %pim_catalog.entity.attribute.class%
+            entity: '%pim_catalog.entity.attribute.class%'
         columns:
             attributeType:
                 label: Type
@@ -44,7 +44,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.manager.attribute->getAttributeTypes'
+                            choices:  '@pim_catalog.registry.attribute_type->getSortedAliases'
                 scopable:
                     type:      boolean
                     data_name: a.scopable
@@ -57,4 +57,4 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.repository.attribute_group->getAttributeGroupChoices'
+                            choices:  '@pim_enrich.repository.attribute_group->findTranslatedLabels'

@@ -62,11 +62,6 @@ oro_translation:
     resource: "@OroTranslationBundle/Resources/config/oro/routing.yml"
 
 # other third party
-
-nelmio_api_doc:
-    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /api/doc
-
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 

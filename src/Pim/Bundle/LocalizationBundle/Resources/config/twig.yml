@@ -5,12 +5,12 @@ parameters:
 
 services:
     pim_localization.twig.locale_extension:
-        class: %pim_localization.twig.locale_extension.class%
+        class: '%pim_localization.twig.locale_extension.class%'
         tags:
             - { name: twig.extension }
 
     pim_localization.twig.attribute_option_extension:
-        class: %pim_localization.twig.attribute_option_extension.class%
+        class: '%pim_localization.twig.attribute_option_extension.class%'
         arguments:
             - '@pim_catalog.localization.presenter.registry'
             - '@pim_enrich.resolver.locale'
@@ -18,7 +18,7 @@ services:
             - { name: twig.extension }
 
     pim_localization.twig.attribute_extension:
-        class: %pim_localization.twig.attribute_extension.class%
+        class: '%pim_localization.twig.attribute_extension.class%'
         arguments:
             - '@pim_catalog.localization.presenter.date'
             - '@pim_catalog.localization.presenter.datetime'

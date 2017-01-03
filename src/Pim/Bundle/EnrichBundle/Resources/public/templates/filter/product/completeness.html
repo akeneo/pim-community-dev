@@ -1,0 +1,7 @@
+<select class="select2 operator" <%- isEditable ? '' : 'disabled' %> name="filter-operator">
+    <% _.each(operatorChoices, function (operatorChoice) { %>
+        <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
+            <%- __('pim_enrich.export.product.filter.completeness.operators.' + operatorChoice) %>
+        </option>
+    <% }); %>
+</select>

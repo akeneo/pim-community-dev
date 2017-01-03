@@ -6,9 +6,13 @@ pim_dashboard:
       date: Päivämäärä
       type: Tyyppi
       profile name: Profiilinimi
-      details: Lisätiedot
+      details: Yksityiskohdat
       job_type:
         import: Tuonti
         export: Vienti
         mass_edit: Massaeditori
         quick_export: Nopea vienti
+    completeness:
+      load_more: Lataa lisää...
+    header:
+      view_all: Näytä kaikki

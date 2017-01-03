@@ -17,7 +17,7 @@ class BooleanFilterType extends AbstractChoiceType
 {
     /** @staticvar integer */
     const TYPE_YES = 1;
-    const TYPE_NO  = 0;
+    const TYPE_NO = 0;
 
     /** @staticvar string */
     const NAME = 'pim_type_boolean_filter';

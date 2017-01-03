@@ -51,5 +51,5 @@ Feature: Display notifications for import and export jobs
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type  | message                      |
-      | error | Import Product import failed |
+      | type  | message                          |
+      | error | Import CSV Product import failed |

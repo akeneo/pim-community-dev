@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -40,7 +40,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
-        $this->productBuilder      = $productBuilder;
+        $this->productBuilder = $productBuilder;
         $this->attrValidatorHelper = $attrValidatorHelper;
 
         $this->resolver = new OptionsResolver();
@@ -53,7 +53,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
         $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+        $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
 
         return $supportsFrom && $supportsTo;
     }

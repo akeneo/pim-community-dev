@@ -8,5 +8,5 @@ twig:
             layout:      PimEnrichBundle::base.html.twig
             start_route: oro_default
         ws:
-            port:        %websocket_port%
-            host:        %websocket_host%
+            port:        '%websocket_port%'
+            host:        '%websocket_host%'

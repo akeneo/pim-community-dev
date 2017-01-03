@@ -4,10 +4,9 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
-use Pim\Component\Catalog\Model\AbstractProduct;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
@@ -37,7 +36,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
     public function __construct(IndexCreator $indexCreator, IndexPurger $indexPurger)
     {
         $this->indexCreator = $indexCreator;
-        $this->indexPurger  = $indexPurger;
+        $this->indexPurger = $indexPurger;
     }
 
     /**

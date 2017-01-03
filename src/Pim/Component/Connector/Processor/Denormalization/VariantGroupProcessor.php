@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Item\InvalidItemException;
-use Pim\Component\Catalog\Model\GroupInterface;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 
 /**
  * Variant group import processor, allows to,
@@ -15,44 +15,16 @@ use Pim\Component\Catalog\Model\GroupInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupProcessor extends GroupProcessor
+class VariantGroupProcessor extends Processor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     /**
-     * Find or create the variant group
-     *
-     * @param array $convertedItem
-     *
-     * @return GroupInterface
+     * {@inheritdoc}
      */
-    protected function findOrCreateGroup(array $convertedItem)
+    protected function validate($group)
     {
-        if (null === $variantGroup = $this->findObject($this->repository, $convertedItem)) {
-            $variantGroup = $this->groupFactory->createGroup($convertedItem['type']);
-        }
+        $violations = parent::validate($group);
 
-        $isExistingGroup = (null !== $variantGroup->getType() && false === $variantGroup->getType()->isVariant());
-        if ($isExistingGroup) {
-            $this->skipItemWithMessage(
-                $convertedItem,
-                sprintf('Cannot process group "%s", only variant groups are accepted', $convertedItem['code'])
-            );
-        }
-
-        return $variantGroup;
-    }
-
-    /**
-     * @param GroupInterface $group
-     *
-     * @throws InvalidItemException
-     *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
-     */
-    protected function validateGroup(GroupInterface $group)
-    {
-        $violations = $this->validator->validate($group);
         $template = $group->getProductTemplate();
-
         if (null !== $template) {
             $values = $group->getProductTemplate()->getValues();
 

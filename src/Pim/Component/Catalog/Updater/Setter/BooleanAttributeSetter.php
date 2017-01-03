@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Sets a boolean value in many products
@@ -83,7 +83,7 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
      *
      * This method should be removed when boolean attribute will be rework to support 3 states: true/false/null
      *
-     * @deprecated will be removed in 1.6
+     * @deprecated will be removed in 1.7
      *
      * @param ProductInterface   $product    product to update
      * @param AttributeInterface $attribute  attribute

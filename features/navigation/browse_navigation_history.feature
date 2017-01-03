@@ -14,6 +14,8 @@ Feature: Browse the history in the history tab of the pinbar
   @jira https://akeneo.atlassian.net/browse/PIM-5828
   Scenario: Add pages to the pinbar
     Given I am on the "pineapple" product page
+    And I click back to grid
+    And I am on the family index page
     And I am on the home page
     When I click on the pin bar dot menu
     And I press the "History" button

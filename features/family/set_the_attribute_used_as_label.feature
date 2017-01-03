@@ -50,4 +50,4 @@ Feature: Set the attribute used as label
     And I visit the "Attributes" tab
     And I remove the "Brand" attribute
     And I confirm the deletion
-    Then I should see flash message "This attribute can not be removed because it is used as the label of the family"
+    Then I should see the flash message "This attribute can not be removed because it is used as the label of the family"

@@ -4,12 +4,12 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Metric filter
@@ -26,38 +26,25 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /** @var MeasureConverter */
     protected $measureConverter;
 
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MeasureManager           $measureManager
      * @param MeasureConverter         $measureConverter
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->measureManager      = $measureManager;
-        $this->measureConverter    = $measureConverter;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+        $this->measureManager = $measureManager;
+        $this->measureConverter = $measureConverter;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -73,18 +60,15 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
             $value = $this->convertValue($attribute, $value);
-        } else {
-            $value = null;
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $fieldData = sprintf('%s.baseData', $field);
+        $field = sprintf('%s.%s.baseData', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        $this->applyFilter($operator, $fieldData, $value);
+        $this->applyFilter($operator, $field, $value);
 
         return $this;
     }
@@ -99,6 +83,13 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected function applyFilter($operator, $fieldData, $data)
     {
         switch ($operator) {
+            case Operators::EQUALS:
+                $this->qb->field($fieldData)->equals($data);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($fieldData)->exists(true);
+                $this->qb->field($fieldData)->notEqual($data);
+                break;
             case Operators::LOWER_THAN:
                 $this->qb->field($fieldData)->lt($data);
                 break;
@@ -112,10 +103,11 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $this->qb->field($fieldData)->gte($data);
                 break;
             case Operators::IS_EMPTY:
-                $this->qb->field($fieldData)->equals(null);
+                $this->qb->field($fieldData)->exists(false);
                 break;
-            default:
-                $this->qb->field($fieldData)->equals($data);
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($fieldData)->exists(true);
+                break;
         }
     }
 
@@ -151,7 +143,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        if (!is_numeric($data['data']) && null !== $data['data']) {
+        if (null !== $data['data'] && !is_numeric($data['data'])) {
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
                 'data',

@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -18,27 +18,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class StringFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var array */
-    protected $supportedAttributes;
-
     /** @var OptionsResolver */
     protected $resolver;
 
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -68,13 +63,13 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
 
-        if ($operator !== Operators::IS_EMPTY) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
         }
 
-        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
-        if ($operator === Operators::IS_EMPTY) {
+        if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,
@@ -84,25 +79,42 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-            $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
+            if (Operators::IS_NOT_EMPTY === $operator) {
+                $condition .= sprintf(
+                    'AND (%s AND %s)',
+                    $this->qb->expr()->isNotNull($backendField),
+                    $this->qb->expr()->neq($backendField, $this->qb->expr()->literal(''))
+                );
+                $this->qb->innerJoin(
+                    $this->qb->getRootAlias() . '.values',
+                    $joinAlias,
+                    'WITH',
+                    $condition
+                );
+            } elseif (Operators::DOES_NOT_CONTAIN === $operator) {
+                $whereCondition = $this->prepareCondition($backendField, $operator, $value) .
+                    ' OR ' .
+                    $this->prepareCondition($backendField, Operators::IS_NULL, null);
 
-            $this->qb->innerJoin(
-                $this->qb->getRootAlias() . '.values',
-                $joinAlias,
-                'WITH',
-                $condition
-            );
+                $this->qb->leftJoin(
+                    $this->qb->getRootAlias() . '.values',
+                    $joinAlias,
+                    'WITH',
+                    $condition
+                );
+                $this->qb->andWhere($whereCondition);
+            } else {
+                $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
+                $this->qb->innerJoin(
+                    $this->qb->getRootAlias() . '.values',
+                    $joinAlias,
+                    'WITH',
+                    $condition
+                );
+            }
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**
@@ -122,26 +134,26 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         switch ($operator) {
             case Operators::STARTS_WITH:
-                $operator = 'LIKE';
-                $value    = $value . '%';
+                $operator = Operators::IS_LIKE;
+                $value = $value . '%';
                 break;
             case Operators::ENDS_WITH:
-                $operator = 'LIKE';
-                $value    = '%' . $value;
+                $operator = Operators::IS_LIKE;
+                $value = '%' . $value;
                 break;
             case Operators::CONTAINS:
-                $operator = 'LIKE';
-                $value    = '%' . $value . '%';
+                $operator = Operators::IS_LIKE;
+                $value = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
-                $operator = 'NOT LIKE';
-                $value    = '%' . $value . '%';
+                $operator = Operators::NOT_LIKE;
+                $value = '%' . $value . '%';
                 break;
             case Operators::EQUALS:
-                $operator = 'LIKE';
-                $value    = $value;
+                $operator = Operators::IS_LIKE;
                 break;
-            default:
+            case Operators::NOT_EQUAL:
+                $operator = Operators::NOT_LIKE;
                 break;
         }
 

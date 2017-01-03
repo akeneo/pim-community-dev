@@ -2,8 +2,11 @@
 
 {% set actionRoute = path('pim_importexport_import_profile_edit', { 'id': form.vars.value.id }) %}
 
+{% set showRoute = path('pim_importexport_import_profile_show', { 'id': form.vars.value.id }) %}
+
 {% set entityName = 'import profile' %}
 {% set title = (entityName ~ '.edit')|trans ~ ' - ' ~ form.vars.value.label %}
+{% set viewElementsAliases = form.vars.id ~ '.import.form_tab' %}
 
 {% set indexRoute = path('pim_importexport_import_profile_index') %}
 {% if form.vars.value.id %}

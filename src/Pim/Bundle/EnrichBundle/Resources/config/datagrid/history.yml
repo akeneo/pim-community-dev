@@ -2,7 +2,7 @@ datagrid:
     history-grid:
         source:
             type: pim_datasource_smart
-            entity: %pim_versioning.entity.version.class%
+            entity: '%pim_versioning.entity.version.class%'
             repository_method: createDatagridQueryBuilder
         columns:
             version:
@@ -38,4 +38,4 @@ datagrid:
                 loggedAt:
                     data_name: loggedAt
             default:
-                loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                loggedAt: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'

@@ -55,11 +55,11 @@ class SequentialEditController
         UserContext $userContext,
         NormalizerInterface $normalizer
     ) {
-        $this->router               = $router;
+        $this->router = $router;
         $this->massActionDispatcher = $massActionDispatcher;
-        $this->seqEditManager       = $seqEditManager;
-        $this->userContext          = $userContext;
-        $this->normalizer           = $normalizer;
+        $this->seqEditManager = $seqEditManager;
+        $this->userContext = $userContext;
+        $this->normalizer = $normalizer;
     }
 
     /**

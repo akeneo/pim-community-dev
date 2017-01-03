@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 
 /**
  * Currency repository

@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
@@ -16,46 +15,6 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  */
 class PriceCollectionType extends AbstractAttributeType
 {
-    /**
-     * @var CurrencyManager
-     */
-    protected $currencyManager;
-
-    /**
-     * Constructor
-     *
-     * @param string                     $backendType       the backend type
-     * @param string                     $formType          the form type
-     * @param ConstraintGuesserInterface $constraintGuesser the constraint guesser
-     * @param CurrencyManager            $manager           the currency manager
-     */
-    public function __construct(
-        $backendType,
-        $formType,
-        ConstraintGuesserInterface $constraintGuesser,
-        CurrencyManager $manager
-    ) {
-        parent::__construct($backendType, $formType, $constraintGuesser);
-
-        $this->currencyManager = $manager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        return array_merge(
-            parent::prepareValueFormOptions($value),
-            [
-                'type'         => 'pim_enrich_price',
-                'allow_add'    => true,
-                'allow_delete' => false,
-                'by_reference' => false,
-            ]
-        );
-    }
-
     /**
      * {@inheritdoc}
      */

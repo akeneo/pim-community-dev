@@ -6,11 +6,12 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Updates and validates a variant group
@@ -33,27 +34,33 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $productQueryBuilderFactory;
+
     /** @var string */
     protected $productTemplateClass;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param GroupTypeRepositoryInterface $groupTypeRepository
-     * @param ProductBuilderInterface      $productBuilder
-     * @param ObjectUpdaterInterface       $productUpdater
-     * @param string                       $productTemplateClass
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param GroupTypeRepositoryInterface        $groupTypeRepository
+     * @param ProductBuilderInterface             $productBuilder
+     * @param ObjectUpdaterInterface              $productUpdater
+     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+     * @param string                              $productTemplateClass
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
         ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $productUpdater,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         $productTemplateClass
     ) {
-        $this->attributeRepository  = $attributeRepository;
-        $this->groupTypeRepository  = $groupTypeRepository;
-        $this->productBuilder       = $productBuilder;
-        $this->productUpdater       = $productUpdater;
+        $this->attributeRepository = $attributeRepository;
+        $this->groupTypeRepository = $groupTypeRepository;
+        $this->productBuilder = $productBuilder;
+        $this->productUpdater = $productUpdater;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->productTemplateClass = $productTemplateClass;
     }
 
@@ -133,6 +140,10 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
 
             case 'values':
                 $this->setValues($variantGroup, $data);
+                break;
+
+            case 'products':
+                $this->setProducts($variantGroup, $data);
                 break;
         }
     }
@@ -378,5 +389,29 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         }
 
         return $mergedValuesData;
+    }
+
+    /**
+     * @param GroupInterface $group
+     * @param array          $labels
+     */
+    protected function setProducts(GroupInterface $variantGroup, array $productIds)
+    {
+        foreach ($variantGroup->getProducts() as $product) {
+            $variantGroup->removeProduct($product);
+        }
+
+        if (empty($productIds)) {
+            return;
+        }
+
+        $pqb = $this->productQueryBuilderFactory->create();
+        $pqb->addFilter('id', 'IN', $productIds);
+
+        $products = $pqb->execute();
+
+        foreach ($products as $product) {
+            $variantGroup->addProduct($product);
+        }
     }
 }

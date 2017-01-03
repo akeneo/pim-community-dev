@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_enrich.manager.sequential_edit:
-        class: %pim_enrich.manager.sequential_edit.class%
+        class: '%pim_enrich.manager.sequential_edit.class%'
         arguments:
             - '@pim_enrich.repository.sequential_edit'
             - '@pim_enrich.factory.sequential_edit'

@@ -1,0 +1,9 @@
+code;sort_order;label-en_US;label-fr_FR;label-de_DE
+marketing;1;Marketing;Marketing;Marketing
+technical;2;Technical;Technique;Technische
+design;3;Design;Style;Stil
+manufacturing;4;Manufacturing;Fabrication;Herstellung
+color;5;Color;Couleur;Farbe
+size;6;Size;Taille;Größe
+media;7;Media;Media;Media
+other;100;Other;Autre;Ander

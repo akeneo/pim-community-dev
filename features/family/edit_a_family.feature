@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit a family
   In order to provide accurate information about a family
   As an administrator
@@ -51,32 +52,33 @@ Feature: Edit a family
       | title   | Are you sure you want to leave this page?                  |
       | content | You will lose changes to the family if you leave the page. |
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "Boots" family page
     And I fill in the following information:
       | English (United States) | NewBoots |
     Then I should see "There are unsaved changes."
 
-  @javascript
   Scenario: Disable property fields when the user can't edit a family
     Given I am on the "Administrator" role page
-    And I remove rights to Edit properties of a family
+    And I visit the "Permissions" tab
+    And I visit the "Families" group
+    And I revoke rights to resources Edit properties of a family
     And I save the role
+    Then I should not see the text "There are unsaved changes."
     When I am on the "sneakers" family page
     Then the field Code should be disabled
     And the field Attribute used as label should be disabled
     And the field English (United States) should be disabled
-    And I reset the "Administrator" rights
 
-  @javascript
   Scenario: Disable attribute fields when the user can't edit a family
     Given I am on the "Administrator" role page
-    And I remove rights to Edit attributes of a family
+    And I visit the "Permissions" tab
+    And I visit the "Families" group
+    And I revoke rights to resource Edit attributes of a family
     And I save the role
+    Then I should not see the text "There are unsaved changes."
     When I am on the "sneakers" family page
     And I visit the "Attributes" tab
     Then attribute "name" should be required in channels mobile and tablet
     When I switch the attribute "Name" requirement in channel "Tablet"
     Then attribute "name" should be required in channels mobile and tablet
-    And I reset the "Administrator" rights

@@ -17,6 +17,20 @@ pim_analytics:
     pim_environment: Ympäristö
     pim_install_time: Asennusaika
     registered_bundles: Rekisteröidyt ohjelmapaketit
+    nb_channels: Kanavien määrä
+    nb_products: Tuotteiden määrä
+    nb_attributes: Attribuuttien määrä
+    nb_locales: Lokaatioiden määrä
+    nb_families: Perheiden määrä
+    nb_users: Käyttäjien määrä
+    pim_storage_version: Tallennusversio
+    os_version: Käyttöjärjestelmäversio
+    php_version: PHP-versio
+    mysql_version: MySQL-versio
+    mariadb_version: MariaDB-versio
+    mongodb_version: MongoDB-versio
+    server_version: Palvelimen versio
+    php_extensions: PHP-laajennukset
   acl:
     system_info:
       index: Järjestelmätiedot

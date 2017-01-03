@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * Product id filter
@@ -13,14 +13,9 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
+class ProductIdFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    /** @var array */
-    protected $supportedFields;
-
     /**
-     * Instanciate the filter
-     *
      * @param array $supportedFields
      * @param array $supportedOperators
      */
@@ -28,16 +23,8 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields    = $supportedFields;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        return in_array($field, $this->supportedFields);
     }
 
     /**
@@ -49,10 +36,7 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
             throw InvalidArgumentException::expected($field, 'array or string value', 'filter', 'productId', $value);
         }
 
-        $field = '_id';
-        $value = is_array($value) ? $value : [$value];
-
-        $this->applyFilter($value, $field, $operator);
+        $this->applyFilter('_id', $operator, $value);
 
         return $this;
     }
@@ -60,16 +44,25 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
     /**
      * Apply the filter to the query with the given operator
      *
-     * @param array  $value
-     * @param string $field
-     * @param string $operator
+     * @param string       $field
+     * @param string       $operator
+     * @param string|array $value
      */
-    protected function applyFilter(array $value, $field, $operator)
+    protected function applyFilter($field, $operator, $value)
     {
-        if ($operator === Operators::NOT_IN_LIST) {
-            $this->qb->field($field)->notIn($value);
-        } else {
-            $this->qb->field($field)->in($value);
+        switch ($operator) {
+            case Operators::EQUALS:
+                $this->qb->field($field)->equals($value);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->notEqual($value);
+                break;
+            case Operators::IN_LIST:
+                $this->qb->field($field)->in($value);
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->field($field)->notIn($value);
+                break;
         }
     }
 }

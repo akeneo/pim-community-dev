@@ -5,8 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
-use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -79,15 +78,15 @@ class JobExecutionController
         JobExecutionRepository $jobExecutionRepo,
         $jobType
     ) {
-        $this->templating          = $templating;
-        $this->translator          = $translator;
-        $this->eventDispatcher     = $eventDispatcher;
-        $this->batchLogHandler     = $batchLogHandler;
-        $this->archivist           = $archivist;
-        $this->serializer          = $serializer;
+        $this->templating = $templating;
+        $this->translator = $translator;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->batchLogHandler = $batchLogHandler;
+        $this->archivist = $archivist;
+        $this->serializer = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
-        $this->jobExecutionRepo    = $jobExecutionRepo;
-        $this->jobType             = $jobType;
+        $this->jobExecutionRepo = $jobExecutionRepo;
+        $this->jobType = $jobType;
     }
 
     /**

@@ -53,7 +53,7 @@ interface ProductInterface extends
     /**
      * Get values
      *
-     * @return ArrayCollection
+     * @return ArrayCollection | ProductValueInterface[]
      */
     public function getValues();
 
@@ -135,7 +135,7 @@ interface ProductInterface extends
     /**
      * Get types of associations
      *
-     * @return AssociationInterface[]|null
+     * @return AssociationInterface[]|ArrayCollection
      */
     public function getAssociations();
 

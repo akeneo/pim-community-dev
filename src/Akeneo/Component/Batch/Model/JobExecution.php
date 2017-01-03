@@ -5,6 +5,7 @@ namespace Akeneo\Component\Batch\Model;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -67,6 +68,9 @@ class JobExecution
     /** @var string */
     private $logFile;
 
+    /** @var JobParameters */
+    private $jobParameters;
+
     /**
      * Constructor
      */
@@ -76,8 +80,8 @@ class JobExecution
         $this->setExitStatus(new ExitStatus(ExitStatus::UNKNOWN));
         $this->executionContext = new ExecutionContext();
         $this->stepExecutions = new ArrayCollection();
-        $this->createTime = new \DateTime();
-        $this->failureExceptions = array();
+        $this->createTime = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->failureExceptions = [];
     }
 
     /**
@@ -434,13 +438,13 @@ class JobExecution
      */
     public function addFailureException(\Exception $e)
     {
-        $this->failureExceptions[] = array(
+        $this->failureExceptions[] = [
             'class'             => get_class($e),
             'message'           => $e->getMessage(),
-            'messageParameters' => $e instanceof RuntimeErrorException ? $e->getMessageParameters() : array(),
+            'messageParameters' => $e instanceof RuntimeErrorException ? $e->getMessageParameters() : [],
             'code'              => $e->getCode(),
             'trace'             => $e->getTraceAsString()
-        );
+        ];
 
         return $this;
     }
@@ -528,9 +532,9 @@ class JobExecution
      */
     public function __toString()
     {
-        $startTime       = self::formatDate($this->startTime);
-        $endTime         = self::formatDate($this->endTime);
-        $updatedTime     = self::formatDate($this->updatedTime);
+        $startTime = self::formatDate($this->startTime);
+        $endTime = self::formatDate($this->endTime);
+        $updatedTime = self::formatDate($this->updatedTime);
         $jobInstanceCode = $this->jobInstance != null ? $this->jobInstance->getCode() : '';
 
         $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%d, exitStatus=%s, exitDescription=[%s], job=[%s]";
@@ -564,5 +568,21 @@ class JobExecution
         }
 
         return $formattedDate;
+    }
+
+    /**
+     * @param JobParameters $jobParameters
+     */
+    public function setJobParameters(JobParameters $jobParameters)
+    {
+        $this->jobParameters = $jobParameters;
+    }
+
+    /**
+     * @return JobParameters
+     */
+    public function getJobParameters()
+    {
+        return $this->jobParameters;
     }
 }

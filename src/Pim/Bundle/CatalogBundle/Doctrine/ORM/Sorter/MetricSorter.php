@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
-use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 
 /**
  * Metric sorter
@@ -44,7 +44,7 @@ class MetricSorter implements AttributeSorterInterface
     public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $scope = null)
     {
         $aliasPrefix = 'sorter';
-        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
+        $joinAlias = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
         // join to value
@@ -75,7 +75,7 @@ class MetricSorter implements AttributeSorterInterface
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
+     * @throws \Pim\Component\Catalog\Exception\ProductQueryException
      *
      * @return string
      */

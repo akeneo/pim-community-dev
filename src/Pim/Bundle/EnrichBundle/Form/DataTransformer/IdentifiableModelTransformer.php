@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\DataTransformer;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,7 +33,7 @@ class IdentifiableModelTransformer implements DataTransformerInterface
     public function __construct(IdentifiableObjectRepositoryInterface $repository, array $options)
     {
         $this->repository = $repository;
-        $resolver         = new OptionsResolver();
+        $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
         $this->multiple = $resolver->resolve($options)['multiple'];
     }
@@ -76,7 +76,7 @@ class IdentifiableModelTransformer implements DataTransformerInterface
         }
 
         $identifierProperty = $this->repository->getIdentifierProperties()[0];
-        $propertyAccessor   = PropertyAccess::createPropertyAccessor();
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         if ($this->multiple) {
             if (!is_array($model)) {

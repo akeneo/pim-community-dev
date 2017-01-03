@@ -6,6 +6,7 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\TimeoutException;
 
 /**
  * Product Edit Form
@@ -31,9 +32,13 @@ class ProductEditForm extends Form
                 // Note: It erases parent add-attributes selector values because of the new JS module,
                 // once refactoring done everywhere, it should be set in parent like before
                 'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
+                'Available attributes'            => [
+                    'css'        => '.add-attribute',
+                    'decorators' => ['Pim\Behat\Decorator\Common\AddAttributeDecorator']
+                ],
                 'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
                 'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
-                'Available attributes add button' => ['css' => '.add-attribute .ui-multiselect-footer button'],
+                'Select2 dropmask'                => ['css' => '.select2-drop-mask'],
             ]
         );
     }
@@ -81,8 +86,8 @@ class ProductEditForm extends Form
             }
         }
 
-        // Close select2 if open
-        $this->getDriver()->executeScript("jQuery('.select2-drop-mask').click();");
+        // Close select2
+        $this->find('css', '#select2-drop-mask')->click();
 
         return isset($results[$attribute]) ? $results[$attribute] : null;
     }
@@ -95,36 +100,10 @@ class ProductEditForm extends Form
      */
     public function addAvailableAttributes(array $attributes = [])
     {
-        $searchSelector = $this->elements['Available attributes search']['css'];
-
-        $selector = $this->spin(function () {
-            return $this->find('css', $this->elements['Available attributes button']['css']);
-        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
-
-        // Open select2
-        $selector->click();
-
-        $list = $this->spin(function () {
-            return $this->getElement('Available attributes list');
-        }, sprintf('Cannot find the attribute list element'));
-
-        foreach ($attributes as $attributeLabel) {
-            // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
-            // because select2 selects the first element on TAB key press.
-            $this->getSession()->evaluateScript(
-                sprintf("jQuery('%s').val('%s').trigger('input');", $searchSelector, $attributeLabel)
-            );
-            $label = $this->spin(
-                function () use ($list, $attributeLabel) {
-                    return $list->find('css', sprintf('li .attribute-label:contains("%s")', $attributeLabel));
-                },
-                sprintf('Could not find available attribute "%s".', $attributeLabel)
-            );
-
-            $label->click();
-        }
-
-        $this->getElement('Available attributes add button')->press();
+        $availableAttribute = $this->spin(function () {
+            return $this->getElement('Available attributes');
+        }, 'Cannot find the add attribute element');
+        $availableAttribute->addAttributes($attributes);
     }
 
     /**
@@ -190,17 +169,13 @@ class ProductEditForm extends Form
             $label = explode(' in ', $label)[0];
         }
 
-        try {
-            $labelNode = $this->spin(function () use ($label) {
-                return $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
-            }, 'Cannot find the field label');
-        } catch (\Exception $e) {
-            throw new ElementNotFoundException($this->getSession());
-        }
+        $labelNode = $this->spin(function () use ($label) {
+            return $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
+        }, 'Cannot find the field label');
 
         $container = $this->spin(function () use ($labelNode) {
             return $labelNode->getParent()->getParent()->getParent();
-        });
+        }, sprintf('Cannot find parents for "%s" field', $label));
 
         $container->name = $label;
 
@@ -228,11 +203,11 @@ class ProductEditForm extends Form
         $subContainer = $this->spin(function () use ($label, $copy) {
             return $this->findFieldContainer($label)
                 ->find('css', $copy ? '.copy-container .form-field' : '.form-field');
-        });
+        }, sprintf('Cannot find "%s" sub container', $label));
 
         $field = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.field-input input, .field-input textarea');
-        });
+        }, sprintf('Cannot find ".field-input input" or ".field-input textarea" in sub container "%s"', $label));
 
         return $field;
     }
@@ -270,41 +245,19 @@ class ProductEditForm extends Form
      *
      * @param NodeElement $fieldContainer
      * @param string      $value
-     *
-     * @throws ExpectationException
      */
     protected function fillSelectField(NodeElement $fieldContainer, $value)
     {
-        if ('' === $value || null === $value) {
-            $emptyLink = $this->spin(function () use ($fieldContainer) {
-                return $fieldContainer->find('css', '.select2-search-choice-close');
-            });
+        $element = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.select2-container');
+        }, 'Can not find the select2 container.');
 
-            $emptyLink->click();
-
-            $this->getSession()->executeScript(
-                '$(\'.field-input input[type="hidden"].select-field\').trigger(\'change\');'
-            );
-
-            return;
-        }
-
-        $link = $this->spin(function () use ($fieldContainer) {
-            return $fieldContainer->find('css', 'a.select2-choice');
-        }, sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
-
-
-        $link->click();
-
-        $item = $this->spin(function () use ($link, $value) {
-            return $this->find('css', sprintf('.select2-results li:contains("%s")', $value));
-        });
-
-        $item->click();
-
-        $this->getSession()->executeScript(
-            '$(\'.field-input input[type="hidden"].select-field\').trigger(\'change\');'
+        $field = $this->decorate(
+            $element,
+            ['Pim\Behat\Decorator\Field\Select2Decorator']
         );
+
+        $field->setValue($value);
 
         return;
     }
@@ -333,10 +286,10 @@ class ProductEditForm extends Form
 
                 $item = $this->spin(function () use ($select) {
                     return $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
-                });
+                }, sprintf('Cannot find "%s" in select2 widget', $value));
             }
 
-            if (!$item) {
+            if (null === $item) {
                 throw new \InvalidArgumentException(
                     sprintf('Could not find select2 widget inside %s', $field->getParent()->getHtml())
                 );
@@ -359,45 +312,17 @@ class ProductEditForm extends Form
      */
     protected function fillMultiSelectField(NodeElement $fieldContainer, $values)
     {
-        $field = $fieldContainer->find('css', '.form-field');
+        $element = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.select2-container');
+        }, 'Can not find the select2 container.');
 
-        // clear multi select first
-        $fieldClasses = $field->getAttribute('class');
-        if (preg_match('/akeneo-multi-select(-reference-data)?-field/', $fieldClasses, $matches)) {
-            $select2Selector = sprintf('.%s div.field-input > input', $matches[0]);
-            $script          = sprintf('$("%s").select2("val", "");$("%1$s").trigger("change");', $select2Selector);
-            $this->getSession()->executeScript($script);
-        }
-
-        $link = $fieldContainer->find('css', 'ul.select2-choices');
-        if (null === $link) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml())
-            );
-        }
-
-        foreach ($this->listToArray($values) as $value) {
-            $link->click();
-            $item = $this->spin(function () use ($value) {
-                return $this->find(
-                    'css',
-                    sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $value)
-                );
-            });
-
-            // Select the value in the displayed dropdown
-            if (null !== $item) {
-                $item->click();
-            } else {
-                throw new \InvalidArgumentException(
-                    sprintf('Could not find select2 item with value %s inside %s', $value, $link->getHtml())
-                );
-            }
-        }
-
-        $this->getSession()->executeScript(
-            '$(\'.field-input input.select-field\').trigger(\'change\');'
+        $field = $this->decorate(
+            $element,
+            ['Pim\Behat\Decorator\Field\Select2Decorator']
         );
+
+        $this->getSession()->wait($this->getTimeout(), '!$.active');
+        $field->setValue($values);
     }
 
     /**
@@ -507,7 +432,7 @@ class ProductEditForm extends Form
         } elseif ($formFieldWrapper->hasClass('akeneo-metric-field')) {
             return 'metric';
         } elseif ($formFieldWrapper->hasClass('akeneo-multi-select-field') ||
-                  $formFieldWrapper->hasClass('akeneo-multi-select-reference-data-field')
+            $formFieldWrapper->hasClass('akeneo-multi-select-reference-data-field')
         ) {
             return 'multiSelect';
         } elseif ($formFieldWrapper->hasClass('akeneo-number-field')) {
@@ -515,13 +440,13 @@ class ProductEditForm extends Form
         } elseif ($formFieldWrapper->hasClass('akeneo-price-collection-field')) {
             return 'price';
         } elseif ($formFieldWrapper->hasClass('akeneo-simple-select-field') ||
-                  $formFieldWrapper->hasClass('akeneo-simple-select-reference-data-field')
+            $formFieldWrapper->hasClass('akeneo-simple-select-reference-data-field')
         ) {
             return 'select';
         } elseif ($formFieldWrapper->hasClass('akeneo-text-field')) {
             return 'text';
         } elseif ($formFieldWrapper->hasClass('akeneo-textarea-field') ||
-                  $formFieldWrapper->hasClass('akeneo-wysiwyg-field')
+            $formFieldWrapper->hasClass('akeneo-wysiwyg-field')
         ) {
             return 'textArea';
         } elseif ($formFieldWrapper->hasClass('akeneo-media-uploader-field')) {
@@ -538,6 +463,8 @@ class ProductEditForm extends Form
      *
      * @param NodeElement $fieldContainerOrLabel
      * @param string      $value
+     *
+     * @throws ElementNotFoundException
      */
     protected function fillTextField(NodeElement $fieldContainerOrLabel, $value)
     {
@@ -550,6 +477,13 @@ class ProductEditForm extends Form
 
         if (!$field) {
             $field = $fieldContainerOrLabel->getParent()->find('css', 'div.controls input');
+        }
+
+        if (null === $field) {
+            throw new ElementNotFoundException(sprintf(
+                'No text field can be found from "%s".',
+                $fieldContainerOrLabel->getText()
+            ));
         }
 
         $field->setValue($value);
@@ -569,11 +503,11 @@ class ProductEditForm extends Form
             return $this->find(
                 'css',
                 sprintf(
-                    '.validation-errors span.error-message:contains("%s")',
+                    '.validation-errors .error-message:contains("%s")',
                     $text
                 )
             );
-        });
+        }, sprintf('Cannot find error message "%s" in validation tooltip', $text));
     }
 
     /**
@@ -652,7 +586,7 @@ class ProductEditForm extends Form
     {
         $field = $subContainer->find('css', '.field-input textarea');
 
-        if (!$field || !$field->isVisible()) {
+        if (null === $field || !$field->isVisible()) {
             // the textarea can be hidden (display=none) when using WYSIWYG
             $div = $subContainer->find('css', '.note-editor > .note-editable');
 
@@ -674,7 +608,7 @@ class ProductEditForm extends Form
         $input  = $subContainer->find('css', '.data');
         $select = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.select2-container');
-        });
+        }, 'Cannot find ".select2-container" in metric field');
 
         return sprintf(
             '%s %s',
@@ -694,7 +628,7 @@ class ProductEditForm extends Form
     {
         $input = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', 'input[type="hidden"].select-field');
-        });
+        }, 'Cannot find ".select-field" in multiselect field');
 
         return '' === $input->getValue() ? [] : explode(',', $input->getValue());
     }
@@ -710,7 +644,7 @@ class ProductEditForm extends Form
     {
         $input = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', 'input[type="hidden"].select-field');
-        });
+        }, 'Cannot find ".select-field" in simple select field');
 
         return $input->getValue();
     }
@@ -726,7 +660,7 @@ class ProductEditForm extends Form
     {
         $widget = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.field-input .media-uploader');
-        });
+        }, 'Cannot find ".media-uploader" in media field');
 
         $filenameNode = $widget->find('css', '.filename');
 
@@ -746,7 +680,7 @@ class ProductEditForm extends Form
     {
         $widget = $this->spin(function () use ($fieldContainer) {
             return $fieldContainer->find('css', '.field-input .switch.has-switch');
-        });
+        }, 'Cannot find ".switch.has-switch" in switch field');
 
         if ($widget->find('css', '.switch-on')) {
             return true;
@@ -756,5 +690,42 @@ class ProductEditForm extends Form
         }
 
         throw new \LogicException(sprintf('Switch "%s" is in an undefined state', $fieldContainer->name));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function save()
+    {
+        $element = $this->getElement('Save');
+
+        $this->spin(function () use ($element) {
+            return $element->isVisible();
+        }, 'Save button is not visible');
+
+        $element->click();
+
+        $this->spin(function () {
+            return null === $this->find(
+                'css',
+                '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
+            );
+        }, 'The loading mask didn\'t disapeared');
+    }
+
+    /**
+     * @param string $field
+     *
+     * @return NodeElement
+     */
+    public function getRemoveLinkFor($field)
+    {
+        return $this->spin(function () use ($field) {
+            return $this->find('css', sprintf(
+                '.control-group:contains("%s") .remove-attribute, .field-container:contains("%s") .remove-attribute',
+                $field,
+                $field
+            ));
+        }, sprintf('Spining to get remove link on product edit form for field "%s"', $field));
     }
 }

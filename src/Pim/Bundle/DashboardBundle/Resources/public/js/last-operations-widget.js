@@ -1,15 +1,17 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget'],
-    function ($, _, Routing, Navigation, AbstractWidget) {
+    [
+        'jquery',
+        'underscore',
+        'routing',
+        'oro/navigation',
+        'pim/dashboard/abstract-widget',
+        'text!pim/dashboard/template/last-operations-widget',
+        'text!pim/dashboard/template/view-all-btn'
+    ],
+    function ($, _, Routing, Navigation, AbstractWidget, template, viewAllBtnTemplate) {
         'use strict';
 
         return AbstractWidget.extend({
-            tagName: 'table',
-
-            id: 'last-operations-widget',
-
-            className: 'table table-condensed table-light groups unspaced',
-
             labelClasses: {
                 1: 'success',
                 3: 'info',
@@ -20,91 +22,42 @@ define(
                 8: 'inverse'
             },
 
+            viewAllTitle: 'Show job tracker',
+
             options: {
                 contentLoaded: false
             },
 
-            showListBtnTemplate: _.template(
-                '<a class="pull-right" id ="btn-show-list" href="javascript:void(0);" style="color: #444">' +
-                    '<i class="icon-tasks"></i>' +
-                '</a>'
-            ),
+            template: _.template(template),
 
-            template: _.template(
-                [
-                    '<% if (!_.isEmpty(data)) { %>',
-                        '<thead>',
-                            '<tr>',
-                                '<th class="center">',
-                                    '<%= _.__("pim_dashboard.widget.last_operations.date") %>',
-                                '</th>',
-                                '<th class="center">',
-                                    '<%= _.__("pim_dashboard.widget.last_operations.type") %>',
-                                '</th>',
-                                '<th class="center">',
-                                    '<%= _.__("pim_dashboard.widget.last_operations.profile name") %>',
-                                '</th>',
-                                '<th class="center">',
-                                    '<%= _.__("pim_dashboard.widget.last_operations.status") %>',
-                                '</th>',
-                                '<th></th>',
-                            '</tr>',
-                        '</thead>',
-                        '<tbody>',
-                            '<% _.each(data, function (operation) { %>',
-                                '<tr>',
-                                    '<td>',
-                                        '<%= operation.date %>',
-                                    '</td>',
-                                    '<td>',
-                                        '<%= _.__("pim_dashboard.widget.last_operations.job_type."+operation.type) %>',
-                                    '</td>',
-                                    '<td><%= operation.label %></td>',
-                                    '<td>',
-                                        '<span class="label <%= operation.labelClass %> fullwidth">',
-                                            '<%= operation.statusLabel %>',
-                                        '</span>',
-                                    '</td>',
-                                    '<td>',
-                                        '<a class="btn btn-mini" href="javascript:void(0);" ',
-                                            'data-id="<%= operation.id %>" ',
-                                            'data-operation-type="<%= operation.type %>">',
-                                            '<%= _.__("pim_dashboard.widget.last_operations.details") %>',
-                                        '</a>',
-                                    '</td>',
-                                '</tr>',
-                            '<% }); %>',
-                        '</tbody>',
-                    '<% } else if (options.contentLoaded) {%>',
-                        '<span class="label text-center buffer-small-top buffer-small-bottom fullwidth">',
-                            '<%= _.__("pim_dashboard.widget.last_operations.empty") %>',
-                        '</span>',
-                    '<% } %>'
-                ].join('')
-            ),
+            jobTrackerBtnTemplate: _.template(viewAllBtnTemplate),
 
             events: {
-                'click a.btn': 'followLink',
-                'click a#btn-show-list': 'showList'
+                'click .show-details-btn': 'showOperationDetails'
             },
 
-            followLink: function (e) {
-                e.preventDefault();
+            /**
+             * Redirect to the clicked operation page
+             *
+             * @param {Object} event
+             */
+            showOperationDetails: function (event) {
+                event.preventDefault();
                 var route;
-                var operationType = $(e.currentTarget).data('operation-type');
+                var operationType = $(event.currentTarget).data('operation-type');
 
                 switch (operationType) {
                     case 'mass_edit':
                     case 'quick_export':
                         route = Routing.generate(
                             'pim_enrich_job_tracker_show',
-                            { id: $(e.currentTarget).data('id') }
+                            { id: $(event.currentTarget).data('id') }
                         );
                         break;
                     default:
                         route = Routing.generate(
                             'pim_importexport_' + operationType + '_execution_show',
-                            { id: $(e.currentTarget).data('id') }
+                            { id: $(event.currentTarget).data('id') }
                         );
                         break;
                 }
@@ -112,21 +65,51 @@ define(
                 Navigation.getInstance().setLocation(route);
             },
 
-            setShowListBtn: function () {
-                this.$showListBtn = $(this.showListBtnTemplate());
-
-                this.$el.parent().siblings('.widget-header').append(this.$showListBtn);
-                this.$showListBtn.on('click', _.bind(this.showList, this));
-
-                return this;
-            },
-
-            showList: function (e) {
-                e.preventDefault();
+            /**
+             * Call when user clicks on the show job tracker button. Redirect to the Job tracker.
+             *
+             * @param {Object} event
+             */
+            showTracker: function (event) {
+                event.preventDefault();
 
                 Navigation.getInstance().setLocation(Routing.generate('pim_enrich_job_tracker_index'));
             },
 
+            /**
+             * {@inheritdoc}
+             */
+            _afterLoad: function () {
+                AbstractWidget.prototype._afterLoad.apply(this, arguments);
+
+                var $btn = this._getViewAllBtn();
+
+                if (!_.isEmpty(this.data)) {
+                    this._addShowTrackerBtn();
+                } else if (0 > $btn.length) {
+                    $btn.hide();
+                }
+            },
+
+            /**
+             * Add the button which show the job tracker
+             */
+            _addShowTrackerBtn: function () {
+                var $btn = this._getViewAllBtn();
+
+                if (0 < $btn.length) {
+                    return;
+                }
+
+                var $jobTrackerBtn = $(this.jobTrackerBtnTemplate({ title: this.viewAllTitle }));
+
+                this.$el.parent().siblings('.widget-header').append($jobTrackerBtn);
+                $jobTrackerBtn.on('click', this.showTracker.bind(this));
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             _processResponse: function (data) {
                 this.options.contentLoaded = true;
 
@@ -139,6 +122,15 @@ define(
                 }, this);
 
                 return data;
+            },
+
+            /**
+             * Returns the view all button
+             *
+             * @return {jQuery}
+             */
+            _getViewAllBtn: function () {
+                return $('.view-all-btn[title="' + this.viewAllTitle + '"]');
             }
         });
     }

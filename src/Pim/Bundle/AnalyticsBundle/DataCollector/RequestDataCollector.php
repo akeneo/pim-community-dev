@@ -6,7 +6,7 @@ use Akeneo\Component\Analytics\DataCollectorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Class RequestDataCollector
+ * Collects information about the current request.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

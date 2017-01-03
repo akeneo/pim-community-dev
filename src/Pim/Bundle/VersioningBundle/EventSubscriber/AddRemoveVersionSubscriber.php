@@ -5,6 +5,7 @@ namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
@@ -50,11 +51,11 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
         AuthorizationCheckerInterface $authorizationChecker,
         SaverInterface $versionSaver
     ) {
-        $this->versionFactory       = $versionFactory;
-        $this->versionRepository    = $versionRepository;
-        $this->tokenStorage         = $tokenStorage;
+        $this->versionFactory = $versionFactory;
+        $this->versionRepository = $versionRepository;
+        $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->versionSaver         = $versionSaver;
+        $this->versionSaver = $versionSaver;
     }
 
     /**
@@ -72,8 +73,12 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
      */
     public function addRemoveVersion(RemoveEvent $event)
     {
-        $author  = '';
+        $author = '';
         $subject = $event->getSubject();
+
+        if (!$subject instanceof VersionableInterface) {
+            return;
+        }
 
         if (null !== ($token = $this->tokenStorage->getToken()) &&
             $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')

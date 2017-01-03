@@ -4,11 +4,11 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Metric filter
@@ -25,30 +25,25 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /** @var MeasureConverter */
     protected $measureConverter;
 
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MeasureManager           $measureManager
      * @param MeasureConverter         $measureConverter
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->measureManager      = $measureManager;
-        $this->measureConverter    = $measureConverter;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->measureManager = $measureManager;
+        $this->measureConverter = $measureConverter;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -64,59 +59,52 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
+            $this->addEmptyTypeFilter($attribute, $operator, $locale, $scope);
+        } else {
             $this->checkValue($attribute, $value);
             $value = $this->convertValue($attribute, $value);
-            $this->addNonEmptyFilter($attribute, $operator, $value, $locale, $scope);
-        } else {
-            $this->addEmptyFilter($attribute, $locale, $scope);
+            $this->addFilter($attribute, $operator, $value, $locale, $scope);
         }
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
-    }
-
-    /**
-     * Add empty filter to the qb
+     * Add empty or not empty filter to the qb
      *
      * @param AttributeInterface $attribute
+     * @param string             $operator
      * @param string             $locale
      * @param string             $scope
      */
-    protected function addEmptyFilter(
+    protected function addEmptyTypeFilter(
         AttributeInterface $attribute,
+        $operator,
         $locale = null,
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
-
-        // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->leftJoin(
             $this->qb->getRootAlias() . '.values',
             $joinAlias,
             'WITH',
-            $condition
+            $joinCondition
         );
 
         $joinAliasOpt = $this->getUniqueAlias('filterM' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-        $condition = $this->prepareCriteriaCondition($backendField, Operators::IS_EMPTY, null);
+        $whereCondition = $this->prepareCriteriaCondition($backendField, $operator, null);
+
         $this->qb->leftJoin($joinAlias . '.' . $backendType, $joinAliasOpt);
-        $this->qb->andWhere($condition);
+        $this->qb->andWhere($whereCondition);
     }
 
     /**
-     * Add non empty filter to the query
+     * Add filter to the query
      *
      * @param AttributeInterface $attribute
      * @param string             $operator
@@ -124,7 +112,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
      * @param string             $locale
      * @param string             $scope
      */
-    protected function addNonEmptyFilter(
+    protected function addFilter(
         AttributeInterface $attribute,
         $operator,
         $value,
@@ -132,7 +120,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -146,7 +134,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $joinAliasOpt = $this->getUniqueAlias('filterM' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-        $condition    = $this->prepareCriteriaCondition($backendField, $operator, $value);
+        $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
         $this->qb->innerJoin($joinAlias . '.' . $backendType, $joinAliasOpt, 'WITH', $condition);
     }
 
@@ -182,7 +170,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        if (!is_numeric($data['data']) && null !== $data['data']) {
+        if (null !== $data['data'] && !is_numeric($data['data'])) {
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
                 'data',

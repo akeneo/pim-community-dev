@@ -1,0 +1,14 @@
+{% block _pim_enrich_attribute_form_availableLocales_row %}
+    <div class="control-group">
+        <label class="control-label" for="limitLocales">{{ 'pim_enrich_attribute_form.locale_specific'|trans }}</label>
+        <div class="controls">
+            <div id="limitLocales-switch"
+                 class="switch switch-small"
+                 data-on-label="{{ 'switch_on'|trans }}"
+                 data-off-label="{{ 'switch_off'|trans }}">
+                <input type="checkbox" name="limitLocales">
+            </div>
+        </div>
+    </div>
+    {{ block('form_row') }}
+{% endblock %}

@@ -19,8 +19,10 @@
         {% if usageCount %}
             {% set confirmationMessage = confirmationMessage ~ '<br />' ~ 'info.association type.remove from products'|trans({ '%count%': usageCount }) %}
         {% endif %}
-        {% set buttons %}
+        {% set titleButtons %}
             {{ elements.backLink(path('pim_enrich_associationtype_index')) }}
+        {% endset %}
+        {% set buttons %}
             {{ elements.deleteLink(
                 path('pim_enrich_associationtype_remove', { id: form.vars.value.id }),
                 'pim_enrich_associationtype_remove',
@@ -31,7 +33,7 @@
             {{ elements.submitBtn('', 'ok') }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id), titleButtons) }}
 
         {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 

@@ -1,6 +1,7 @@
 Pim\Bundle\CatalogBundle\Entity\Channel:
     type: entity
     table: pim_catalog_channel
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository
     fields:
         id:
@@ -19,10 +20,6 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
         conversionUnits:
             type: array
             nullable: false
-        color:
-            type: string
-            length: 15
-            nullable: true
     manyToOne:
         category:
             targetEntity: Pim\Component\Catalog\Model\CategoryInterface
@@ -33,10 +30,6 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
     manyToMany:
         currencies:
             targetEntity: Pim\Component\Catalog\Model\CurrencyInterface
-            mappedBy: null
-            inversedBy: null
-            cascade:
-                - persist
             joinTable:
                 name: pim_catalog_channel_currency
                 schema: null
@@ -53,6 +46,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
             inversedBy: channels
             cascade:
                 - persist
+                - detach
             joinTable:
                 name: pim_catalog_channel_locale
                 schema: null

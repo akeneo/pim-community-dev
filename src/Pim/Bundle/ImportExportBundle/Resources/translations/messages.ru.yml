@@ -1,6 +1,8 @@
 Job: Работа
 Connector: Соединитель
 pim_import_export:
+  job: Работа
+  connector: Соединитель
   status:
     - Готов
   batch_status:
@@ -13,10 +15,11 @@ pim_import_export:
     7: ОТМЕНЕНО
     8: НЕИЗВЕСТНО
   download_archive:
-    archive: Скачать созданный архив|Скачать созданные архивы|Скачать созданные архивы
+    archive: Скачать созданный архив|Скачать созданные архивы
     output: Скачать созданный файл|скачать созданные файлы
     input: Скачать прочитанный файл|Скачать прочитанные файлы
-    invalid: Скачать недопустимые значения
+    invalid_xlsx: Скачать недопустимые значения
+    invalid_csv: Скачать недопустимые значения
   notification:
     export:
       error: Экспорт <strong>%label%</strong> не удался
@@ -27,6 +30,11 @@ pim_import_export:
       warning: Импорт <strong>%label%</strong> завершен с некоторыми предупреждениями
       success: Импорт <strong>%label%</strong> завершен
   list: Выберите задание
+  job_profile:
+    tab:
+      property.title: Общие свойства
+      history.title: Журнал
+      job_content.title: Содержание
 pim_title.export_profile.index: Управление профилями экспорта
 pim_title.export_profile.edit: Профиль экспорта %job.label% | Редактировать
 pim_title.export_profile.show: Профиль экспорта %job.label% | Показать
@@ -60,7 +68,11 @@ pim_importexport:
       edit: Редактировать профиль экспорта
       remove: Удалить профиль экспорта
       launch: Запуск исполнения профиля экспорта
+      property_edit: Редактировать общие свойства профиля экспорта
+      property_show: Показать общие свойства профиля экспорта
       history: Просмотр журнала профиля экспорта
+      content_edit: Редактировать содержимое профиля экспорта
+      content_show: Показать содержимое профиля экспорта
     import_profile:
       index: Просмотр списка профилей импорта
       create: Создать профиль импорта
@@ -86,7 +98,6 @@ btn:
   create:
     export profile: Создать профиль экспорта
     import profile: Создать профиль импорта
-Upload and import: Загрузить и импортировать
 Upload and import now: Загрузить и импортировать сейчас
 import now: Импортировать сейчас
 export now: Экспортировать сейчас
@@ -116,6 +127,7 @@ History: Журнал
 pane.accordion:
   properties: Свойства
   global_settings: Глобальные настройки
+  filters: Фильтры
 popin.create:
   export_profile.title: Создать новый профиль экспорта
   import_profile.title: Создать новый профиль импорта
@@ -139,7 +151,7 @@ job_execution.summary:
     title: 'Кодировка файла:'
     skipped: пропущено, расширение из белого списка
 Step: Этап
-Status: Статус
+Status: Состояние
 Summary: Сводка
 Start: Начало
 End: Конец
@@ -152,3 +164,4 @@ STOPPED: ОСТАНОВЛЕНО
 FAILED: НЕ УДАЛОСЬ
 ABANDONED: ОТМЕНЕНО
 UNKNOWN: НЕИЗВЕСТНО
+warning.label: Предупреждение

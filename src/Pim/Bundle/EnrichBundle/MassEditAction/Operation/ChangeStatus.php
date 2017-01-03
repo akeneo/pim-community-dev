@@ -61,14 +61,6 @@ class ChangeStatus extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      */
-    public function getItemsName()
-    {
-        return 'product';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getActions()
     {
         return [
@@ -77,13 +69,5 @@ class ChangeStatus extends AbstractMassEditOperation
                 'value' => $this->isToEnable()
             ]
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return 'update_product_value';
     }
 }

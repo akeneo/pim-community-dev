@@ -52,7 +52,7 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (this.code !== this.getParent().state.get('currentPanel')) {
+                if (!this.configured || this.code !== this.getParent().getCurrentPanelCode()) {
                     return this;
                 }
 
@@ -160,7 +160,7 @@ define(
              */
             getAttributeLabel: function (attribute, key) {
                 var uiLocale = UserContext.get('catalogLocale');
-                var label    = i18n.getLabel(attribute.label, uiLocale, attribute.code);
+                var label    = i18n.getLabel(attribute.labels, uiLocale, attribute.code);
 
                 key = key.split('-');
                 key.shift();

@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_ui.twig.style_extension:
-        class: %pim_ui.twig.style_extension.class%
+        class: '%pim_ui.twig.style_extension.class%'
         public: false
         tags:
             - { name: twig.extension }

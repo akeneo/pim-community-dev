@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Subscriber;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Test related class
@@ -34,20 +35,20 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreSetData()
     {
-        $mobile      = $this->getChannelMock('mobile');
-        $ecommerce   = $this->getChannelMock('ecommerce');
+        $mobile = $this->getChannelMock('mobile');
+        $ecommerce = $this->getChannelMock('ecommerce');
 
-        $channelManager = $this->getChannelManagerMock([$mobile, $ecommerce]);
+        $channelRepository = $this->getChannelRepositoryMock([$mobile, $ecommerce]);
 
-        $name        = $this->getAttributeMock('name');
+        $name = $this->getAttributeMock('name');
         $description = $this->getAttributeMock('description');
 
-        $family      = new Family();
+        $family = new Family();
         $family->addAttribute($name);
         $family->addAttribute($description);
-        $event       = $this->getEventMock($family);
+        $event = $this->getEventMock($family);
 
-        $subscriber  = new AddAttributeRequirementsSubscriber($channelManager);
+        $subscriber = new AddAttributeRequirementsSubscriber($channelRepository);
 
         $existingRequirement = $this->getAttributeRequirementMock($name, $mobile);
         $family->setAttributeRequirements([$existingRequirement]);
@@ -73,10 +74,10 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostSetData()
     {
-        $mobile      = $this->getChannelMock('mobile');
-        $ecommerce   = $this->getChannelMock('ecommerce');
+        $mobile = $this->getChannelMock('mobile');
+        $ecommerce = $this->getChannelMock('ecommerce');
 
-        $channels    = [$mobile, $ecommerce];
+        $channels = [$mobile, $ecommerce];
 
         $requirement1 = $this->getAttributeRequirementMock($this->getAttributeMock('', 'bar'));
         $requirement2 = $this->getAttributeRequirementMock($this->getAttributeMock('', 'pim_catalog_identifier'));
@@ -90,8 +91,8 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $form   = $this->getFormMock();
-        $event  = $this->getEventMock($family, $form);
+        $form = $this->getFormMock();
+        $event = $this->getEventMock($family, $form);
 
         $requirementsForm = $this->getFormMock();
         $form->expects($this->any())
@@ -107,7 +108,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('remove')
             ->with('baz');
 
-        $subscriber  = new AddAttributeRequirementsSubscriber($this->getChannelManagerMock($channels));
+        $subscriber = new AddAttributeRequirementsSubscriber($this->getChannelRepositoryMock($channels));
         $subscriber->postSetData($event);
     }
 
@@ -249,20 +250,20 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
      *
      * @param array $channels
      *
-     * @return ChannelManager
+     * @return ChannelRepositoryInterface
      */
-    protected function getChannelManagerMock(array $channels = [])
+    protected function getChannelRepositoryMock(array $channels = [])
     {
-        $channelManager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
+        $channelRepository = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $channelManager
+        $channelRepository
             ->expects($this->any())
-            ->method('getChannels')
+            ->method('findAll')
             ->will($this->returnValue($channels));
 
-        return $channelManager;
+        return $channelRepository;
     }
 }

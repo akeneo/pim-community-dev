@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -39,6 +40,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var FormProviderInterface */
     protected $formProvider;
 
+    /** @var AttributeConverterInterface */
+    protected $localizedConverter;
+
     /**
      * @param NormalizerInterface               $productNormalizer
      * @param NormalizerInterface               $versionNormalizer
@@ -46,6 +50,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param LocaleRepositoryInterface         $localeRepository
      * @param StructureVersionProviderInterface $structureVersionProvider
      * @param FormProviderInterface             $formProvider
+     * @param AttributeConverterInterface       $localizedConverter
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
@@ -53,14 +58,16 @@ class ProductNormalizer implements NormalizerInterface
         VersionManager $versionManager,
         LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
-        FormProviderInterface $formProvider
+        FormProviderInterface $formProvider,
+        AttributeConverterInterface $localizedConverter
     ) {
-        $this->productNormalizer        = $productNormalizer;
-        $this->versionNormalizer        = $versionNormalizer;
-        $this->versionManager           = $versionManager;
-        $this->localeRepository         = $localeRepository;
+        $this->productNormalizer = $productNormalizer;
+        $this->versionNormalizer = $versionNormalizer;
+        $this->versionManager = $versionManager;
+        $this->localeRepository = $localeRepository;
         $this->structureVersionProvider = $structureVersionProvider;
-        $this->formProvider             = $formProvider;
+        $this->formProvider = $formProvider;
+        $this->localizedConverter = $localizedConverter;
     }
 
     /**
@@ -69,6 +76,10 @@ class ProductNormalizer implements NormalizerInterface
     public function normalize($product, $format = null, array $context = [])
     {
         $normalizedProduct = $this->productNormalizer->normalize($product, 'json', $context);
+        $normalizedProduct['values'] = $this->localizedConverter->convertToLocalizedFormats(
+            $normalizedProduct['values'],
+            $context
+        );
 
         $oldestLog = $this->versionManager->getOldestLogEntry($product);
         $newestLog = $this->versionManager->getNewestLogEntry($product);

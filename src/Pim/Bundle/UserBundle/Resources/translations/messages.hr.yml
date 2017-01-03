@@ -43,7 +43,7 @@ Additional: Dodatno
 Groups and Roles: Grupe i role
 Username: Korisničko ime
 Password: Lozinka
-Re-enter password: Ponovo upišite lozinku
+Re-enter password: Ponovo upiši lozinku
 Name prefix: Prefiks imena
 First name: Ime
 Middle name: Srednje ime
@@ -55,12 +55,12 @@ Additional emails: Dodatni e-mailovi
 Add another email: Dodaj drugi e-mail
 Catalog locale: Katalog regionalnih postavki
 Catalog scope: Katalog opsega
-Default tree: Zadani prikaz stabla
+Default tree: Zadano stablo
 Business Units: Poslovne jedinice
 Email synchronization settings: Postavke sinkronizacije e-pošte
-Host: Host
+Host: Računalo
 Port: Port
-Ssl: Ssl
+Ssl: SSL
 Last logged in: Zadnji prijavljeni
 Login count: Broj prijava
 Additional Information: Dodatne informacije
@@ -80,9 +80,9 @@ Generate key: Generiraj ključ
 Primary: glavno
 Removed user: Uklonjen korisnik
 user:
-  product_grid_filters: Filter proizvoda
+  product_grid_filters: Filtri tablice proizvoda
   default_product_grid_view:
-    label: Zadani prikaz prikaza tablice proizvoda
+    label: Zadani prikaz tablice proizvoda
   default_grid_view:
     none: Niti jedan
 Role: Rola
@@ -109,7 +109,7 @@ oro_security:
     user:
       view: Popis korisnika
       create: Kreiraj korisnika
-      edit: Uređivanje korisnika
+      edit: Uredi korisnika
       delete: Ukloni korisnika
     role:
       view: Popis rola
@@ -137,8 +137,8 @@ oro:
       GLOBAL: Organizacija
       SYSTEM: Sustav
       NONE: Niti jedan
-Create group: Napravi grupu
-btn.create.user-group: Napravi grupu
+Create group: Kreiraj grupu
+btn.create.user-group: Kreiraj grupu
 Has group: Sadržava grupu
 Save and Close: Spremi i zatvori
 user-group.overview: Grupe
@@ -146,8 +146,8 @@ Log in: Prijava
 Remember me on this computer: Zapamti me na ovom računalu
 Forgot your password?: Zaboravili ste svoju lozinku?
 Username or Email: Korisničko ime ili E-mail
-Forgot Password: Zaboravili ste lozinku
+Forgot Password: Zaboravio/la si lozinku
 Request: Zahtjev
-Check Email: Provjerite e-poštu
+Check Email: Provjeri e-poštu
 password_reset_email_sent: E-mail je poslan na %email%. Sadrži poveznicu za ponovno postavljanje lozinke.
-Go to homepage: Početna stranica
+Go to homepage: Idi na početnu stranicu

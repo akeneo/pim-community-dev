@@ -2,13 +2,14 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
+use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Load the jobs used to load fixtures
+ * Load in database the job instances that can be used to install the PIM, once install, these job instance can be
+ * removed
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -19,128 +20,112 @@ class FixtureJobLoader
     /** @staticvar */
     const JOB_TYPE = 'fixtures';
 
-    /** @var array */
-    protected $jobsFilePaths;
+    /** @var FixturePathProvider */
+    protected $pathProvider;
 
-    /** @var string */
-    protected $installerDataPath;
+    /** @var JobInstancesBuilder */
+    protected $jobInstancesBuilder;
 
-    /** @var TransformerProcessor */
-    protected $processor;
-
-    /** @var YamlReader */
-    protected $reader;
-
-    /** @var EntityManagerInterface */
-    protected $em;
+    /** @var JobInstancesConfigurator */
+    protected $jobInstancesConfigurator;
 
     /** @var ContainerInterface */
     protected $container;
 
     /**
-     * @param ContainerInterface $container
-     * @param array              $jobsFilePaths
-     * @throws \Exception
+     * @param FixturePathProvider      $pathProvider
+     * @param JobInstancesBuilder      $jobInstancesBuilder
+     * @param JobInstancesConfigurator $jobInstancesConfigurator
+     * @param ContainerInterface       $container
      */
-    public function __construct(ContainerInterface $container, array $jobsFilePaths)
-    {
+    public function __construct(
+        FixturePathProvider $pathProvider,
+        JobInstancesBuilder $jobInstancesBuilder,
+        JobInstancesConfigurator $jobInstancesConfigurator,
+        ContainerInterface $container
+    ) {
         $this->container = $container;
-        $this->reader = $container->get('pim_installer.reader.file.yaml');
-        $this->em = $container->get('doctrine.orm.entity_manager');
-        $this->processor = $container->get('pim_base_connector.processor.job_instance');
-        $this->jobsFilePaths = $jobsFilePaths;
-
-        $this->installerDataPath = $this->getInstallerDataPath();
-        if (!is_dir($this->installerDataPath)) {
-            throw new \Exception(sprintf('Path "%s" not found', $this->installerDataPath));
-        }
+        $this->pathProvider = $pathProvider;
+        $this->jobInstancesBuilder = $jobInstancesBuilder;
+        $this->jobInstancesConfigurator = $jobInstancesConfigurator;
     }
 
     /**
      * Load the fixture jobs in database
+     *
+     * @param array $replacePaths
      */
-    public function load()
+    public function loadJobInstances(array $replacePaths = [])
     {
-        $rawJobs = [];
-        $fileLocator = $this->container->get('file_locator');
-
-        foreach ($this->jobsFilePaths as $jobsFilePath) {
-            $realPath = $fileLocator->locate('@' . $jobsFilePath);
-            $this->reader->setFilePath($realPath);
-
-            // read the jobs list
-            while ($rawJob = $this->reader->read()) {
-                $rawJobs[] = $rawJob;
-            }
-
-            // sort the jobs by order
-            usort(
-                $rawJobs,
-                function ($item1, $item2) {
-                    if ($item1['order'] === $item2['order']) {
-                        return 0;
-                    }
-
-                    return ($item1['order'] < $item2['order']) ? -1 : 1;
-                }
-            );
-        }
-
-        // store the jobs
-        foreach ($rawJobs as $rawJob) {
-            unset($rawJob['order']);
-            $job = $this->processor->process($rawJob);
-            $config = $job->getRawConfiguration();
-            $config['filePath'] = sprintf('%s%s', $this->installerDataPath, $config['filePath']);
-            $job->setRawConfiguration($config);
-
-            $this->em->persist($job);
-        }
-
-        $this->em->flush();
+        $jobInstances = $this->jobInstancesBuilder->build();
+        $configuredJobInstances = $this->configureJobInstances($jobInstances, $replacePaths);
+        $saver = $this->getJobInstanceSaver();
+        $saver->saveAll($configuredJobInstances);
     }
 
     /**
      * Deletes all the fixtures job
      */
-    public function deleteJobs()
+    public function deleteJobInstances()
     {
-        $jobs = $this->em->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
-            ->findBy(['type' => static::JOB_TYPE]);
-
-        foreach ($jobs as $job) {
-            $this->em->remove($job);
-        }
-
-        $this->em->flush();
+        $jobInstances = $this->getJobInstanceRepository()->findBy(['type' => static::JOB_TYPE]);
+        $remover = $this->getJobInstanceRemover();
+        $remover->removeAll($jobInstances);
     }
 
     /**
-     * Get the path of the data used by the installer
+     * Get the list of stored jobs
      *
-     * @return string
+     * @return JobInstance[]
      */
-    protected function getInstallerDataPath()
+    public function getLoadedJobInstances()
     {
-        $installerDataDir = null;
-        $installerData = $this->container->getParameter('installer_data');
+        $jobs = $this->getJobInstanceRepository()->findBy(['type' => self::JOB_TYPE]);
 
-        if (preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $installerData, $matches)) {
-            $bundles = $this->container->getParameter('kernel.bundles');
-            $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
-            $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
+        return $jobs;
+    }
+
+    /**
+     * @param JobInstance[] $jobInstances
+     * @param array         $replacePaths
+     * @throws \Exception
+     * @return JobInstance[]
+     */
+    protected function configureJobInstances(array $jobInstances, array $replacePaths)
+    {
+        if (0 === count($replacePaths)) {
+            return $this->jobInstancesConfigurator->configureJobInstancesWithInstallerData($jobInstances);
         } else {
-            $installerDataDir = $this->container->getParameter('installer_data');
+            return $this->jobInstancesConfigurator->configureJobInstancesWithReplacementPaths(
+                $jobInstances,
+                $replacePaths
+            );
         }
+    }
 
-        if (null === $installerDataDir || !is_dir($installerDataDir)) {
-            throw new \RuntimeException('Installer data directory cannot be found.');
-        }
+    /**
+     * @return BulkSaverInterface
+     */
+    protected function getJobInstanceSaver()
+    {
+        return $this->container->get('akeneo_batch.saver.job_instance');
+    }
 
-        if (DIRECTORY_SEPARATOR !== substr($installerDataDir, -1, 1)) {
-            $installerDataDir .= DIRECTORY_SEPARATOR;
-        }
+    /**
+     * @return BulkRemoverInterface
+     */
+    protected function getJobInstanceRemover()
+    {
+        return $this->container->get('akeneo_batch.remover.job_instance');
+    }
 
-        return $installerDataDir;
+    /**
+     * @return ObjectRepository
+     */
+    protected function getJobInstanceRepository()
+    {
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        return $em->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'));
     }
 }

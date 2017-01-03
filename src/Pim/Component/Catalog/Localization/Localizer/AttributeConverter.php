@@ -33,7 +33,7 @@ class AttributeConverter implements AttributeConverterInterface
         LocalizerRegistryInterface $localizerRegistry,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->localizerRegistry   = $localizerRegistry;
+        $this->localizerRegistry = $localizerRegistry;
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -71,6 +71,78 @@ class AttributeConverter implements AttributeConverterInterface
     public function getViolations()
     {
         return $this->violations;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Before:
+     * [
+     *     "name": [{
+     *         "locale": "fr_FR",
+     *         "scope":  null,
+     *         "data":  "T-shirt super beau",
+     *     }],
+     *     "price": [
+     *          {
+     *              "locale": null,
+     *              "scope":  ecommerce,
+     *              "data":   [
+     *                  {"data": 10.78, "currency": "EUR"},
+     *                  {"data": 24, "currency": "USD"},
+     *                  {"data": 20.75, "currency": "CHF"}
+     *              ]
+     *          }
+     *     ],
+     *     "length": [{
+     *         "locale": "en_US",
+     *         "scope":  "mobile",
+     *         "data":   {"data": 10.45, "unit": "CENTIMETER"}
+     *     }]
+     *     [...]
+     *
+     * After:
+     * [
+     *     "name": [{
+     *         "locale": "fr_FR",
+     *         "scope":  null,
+     *         "data":  "T-shirt super beau",
+     *     }],
+     *     "price": [
+     *          {
+     *              "locale": null,
+     *              "scope":  ecommerce,
+     *              "data":   [
+     *                  {"data": "10,78", "currency": "EUR"},
+     *                  {"data": "24", "currency": "USD"},
+     *                  {"data": "20,75", "currency": "CHF"}
+     *              ]
+     *          }
+     *     ],
+     *     "length": [{
+     *         "locale": "en_US",
+     *         "scope":  "mobile",
+     *         "data":   {"data": "10,45", "unit": "CENTIMETER"}
+     *     }]
+     *     [...]
+     */
+    public function convertToLocalizedFormats(array $items, array $options = [])
+    {
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($items));
+
+        foreach ($items as $code => $item) {
+            if (isset($attributeTypes[$code])) {
+                $localizer = $this->localizerRegistry->getLocalizer($attributeTypes[$code]);
+
+                if (null !== $localizer) {
+                    foreach ($item as $index => $data) {
+                        $items[$code][$index]['data'] = $localizer->localize($data['data'], $options);
+                    }
+                }
+            }
+        }
+
+        return $items;
     }
 
     /**

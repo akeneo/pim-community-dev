@@ -10,56 +10,56 @@ parameters:
 
 services:
     oro_datagrid.extension.formatter:
-        class: %oro_datagrid.extension.formatter.class%
+        class: '%oro_datagrid.extension.formatter.class%'
         arguments:
-            - @translator
+            - '@translator'
         tags:
             - { name: oro_datagrid.extension }
 
     oro_datagrid.extension.orm_pager:
-        class: %oro_datagrid.extension.orm_pager.class%
+        class: '%oro_datagrid.extension.orm_pager.class%'
         arguments:
-            - @oro_datagrid.extension.pager.orm.pager
-            - @oro_datagrid.datagrid.request_params
+            - '@oro_datagrid.extension.pager.orm.pager'
+            - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }
 
     oro_datagrid.extension.pager.orm.pager:
-        class: %oro_datagrid.extension.pager.orm.pager.class%
+        class: '%oro_datagrid.extension.pager.orm.pager.class%'
 
     oro_datagrid.extension.orm_sorter:
-        class: %oro_datagrid.extension.orm_sorter.class%
+        class: '%oro_datagrid.extension.orm_sorter.class%'
         arguments:
-            - @oro_datagrid.datagrid.request_params
+            - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }
 
     oro_datagrid.extension.action:
-        class: %oro_datagrid.extension.action.class%
+        class: '%oro_datagrid.extension.action.class%'
         arguments:
-            - @service_container
-            - @oro_security.security_facade
-            - @translator
+            - '@service_container'
+            - '@oro_security.security_facade'
+            - '@translator'
         tags:
             - { name: oro_datagrid.extension }
 
     oro_datagrid.extension.mass_action:
-        class: %oro_datagrid.extension.mass_action.class%
+        class: '%oro_datagrid.extension.mass_action.class%'
         arguments:
-            - @service_container
-            - @oro_security.security_facade
-            - @translator
+            - '@service_container'
+            - '@oro_security.security_facade'
+            - '@translator'
         tags:
             - { name: oro_datagrid.extension }
 
     oro_datagrid.extension.toolbar:
-        class: %oro_datagrid.extension.toolbar.class%
+        class: '%oro_datagrid.extension.toolbar.class%'
         tags:
             - { name: oro_datagrid.extension }
 
     oro_datagrid.extension.views:
-        class: %oro_datagrid.extension.views.class%
+        class: '%oro_datagrid.extension.views.class%'
         arguments:
-            - @oro_datagrid.datagrid.request_params
+            - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }

@@ -1,0 +1,5 @@
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Neste tipo de valor deve utilizar {{ decimal_separator }} para separar as casas decimais.
+"This type of value expects the use of dot (.) to separate decimals.": Neste tipo de valor deve utilizar o ponto (.) para separar as casas decimais.
+"This type of value expects the use of comma (,) to separate decimals.": Neste tipo de valor deve utilizar a vírgula (,) para separar as casas decimais.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Neste tipo de valor deve utilizar o separador decimal árabe (٫) para separar as casas decimais.
+"This type of value expects the use of the format {{ date_format }} for dates.": Neste tipo de valor deve utilizar o formato {{ date_format }} para datas.

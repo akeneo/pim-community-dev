@@ -5,7 +5,7 @@ datagrid:
             entityHint: group type
         source:
             acl_resource: pim_enrich_grouptype_index
-            entity: %pim_catalog.entity.group_type.class%
+            entity: '%pim_catalog.entity.group_type.class%'
         properties:
             edit_link:
                 route: pim_enrich_grouptype_edit

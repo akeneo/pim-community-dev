@@ -1,6 +1,8 @@
 Job: Posao
 Connector: Priključak
 pim_import_export:
+  job: Posao
+  connector: Priključak
   status:
     - Spreman
   batch_status:
@@ -16,10 +18,11 @@ pim_import_export:
     archive: preuzimanje generirane arhive|preuzimanje generiranih arhiva
     output: preuzimanje generirane datoteke|preuzimanje generiranih datoteka
     input: preuzimanje datoteke za čitanje | preuzimanje datoteka za čitanje
-    invalid: preuzmite podatke koji nisu valjani
+    invalid_xlsx: preuzmite podatke koji nisu valjani
+    invalid_csv: preuzmite podatke koji nisu valjani
   notification:
     export:
-      error: Izvoz <strong>%label%</strong> nije uspjelo
+      error: Izvoz <strong>%label%</strong> nije uspio
       warning: Izvoz <strong>%label%</strong> je završio sa upozorenjima
       success: Izvoz <strong>%label%</strong> je završen
     import:
@@ -27,15 +30,20 @@ pim_import_export:
       warning: Uvoz <strong>%label%</strong> je završio sa upozorenjima
       success: Uvoz <strong>%label%</strong> je završen
   list: Odaberite posao
-pim_title.export_profile.index: Izvoz profila upravljanja
+  job_profile:
+    tab:
+      property.title: Opća svojstva
+      history.title: Povijest
+      job_content.title: Sadržaj
+pim_title.export_profile.index: Upravljanje profilima izvoza
 pim_title.export_profile.edit: Izvoz profila %job.label% | Uredi
 pim_title.export_profile.show: Izvoz profila %job.label% | Prikaži
 pim_title.export_execution.index: Povijest izvođenja izvoza
-pim_title.export_execution.show: Izvoz radnji | Detalji
-pim_title.import_profile.index: Uvoz profila upravljanja
+pim_title.export_execution.show: Izvoz izvođenja | Detalji
+pim_title.import_profile.index: Upravljanje profilima uvoza
 pim_title.import_profile.edit: Uvoz profila %job.label% | Uredi
 pim_title.import_profile.show: Uvoz profila %job.label% | Prikaži
-pim_title.import_execution.index: Uvezi povijest izvođenja
+pim_title.import_execution.index: Povijest izvođenja uvoza
 pim_title.import_execution.show: Uvoz izvođenja | Detalji
 export profile:
   title: izvoz profila
@@ -60,11 +68,15 @@ pim_importexport:
       edit: Uredi profil izvoza
       remove: Ukloni profil izvoza
       launch: Pokreni profil izvoza
+      property_edit: Uredi opća svojstva profila izvoza
+      property_show: Prikaži opća svojstva profila izvoza
       history: Pogledaj povijest izvoznih profila
+      content_edit: Uredi sadržaj profila izvoza
+      content_show: Prikaži sadržaj profila izvoza
     import_profile:
       index: Pogledaj listu uvoznih profila
       create: Kreiraj profil uvoza
-      show: Prikaži profil izvoza
+      show: Prikaži profil uvoza
       edit: Uredi profil uvoza
       remove: Ukloni profil uvoza
       launch: Pokreni profil uvoza
@@ -86,14 +98,13 @@ btn:
   create:
     export profile: kreiraj profil izvoza
     import profile: kreiraj profil uvoza
-Upload and import: Prebacivanje i uvoz
 Upload and import now: Prebaci i uvezi odmah
 import now: Uvezi odmah
 export now: Izvezi odmah
 confirmation:
   remove:
-    export profile: Da li si siguran da želiš izbrisati profil izvoza %name%?
-    import profile: Da li si siguran da želiš izbrisati profil uvoza %name%?
+    export profile: Da li ste sigurni da želite izbrisati izvozni profil %name%?
+    import profile: Da li ste sigurni da želite izbrisati uvozni profil %name%?
 flash:
   export:
     created: Izvoz je uspješno kreiran
@@ -116,13 +127,14 @@ History: Povijest
 pane.accordion:
   properties: Svojstva
   global_settings: Globalne postavke
+  filters: Filteri
 popin.create:
   export_profile.title: Kreiraj novi profil izvoza
   import_profile.title: Kreiraj novi profil uvoza
 'Display item': Prikaži stavku
 'Hide item': Sakrij stavku
 'Collecting data about job execution...': Prikupljanje podataka o izvršenju posla...
-'You must select a file to upload': Mora se odabrati datoteku za prenošenje
+'You must select a file to upload': Morate odabrati datoteku za prijenos
 Download log: Preuzmi log
 Show profile: Prikaži profil
 execution details: detalji pokretanja
@@ -152,3 +164,4 @@ STOPPED: ZAUSTAVLJEN
 FAILED: NIJE USPJELO
 ABANDONED: OBUSTAVLJENO
 UNKNOWN: NEPOZNATO
+warning.label: Upozorenje

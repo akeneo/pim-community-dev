@@ -3,16 +3,17 @@
 namespace Akeneo\Component\Batch\Model;
 
 use Akeneo\Component\Batch\Item\ExecutionContext;
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 
 /**
- * Batch domain object representation the execution of a step. Unlike
- * JobExecution, there are additional properties related the processing
- * of items such as commit count, etc.
+ * Batch domain object representation the execution of a step. Unlike JobExecution, there are additional properties
+ * related the processing of items such as commit count, etc.
  *
  * Inspired by Spring Batch  org.springframework.batch.core.StepExecution
  *
@@ -68,13 +69,13 @@ class StepExecution
     private $failureExceptions = null;
 
     /** @var array */
-    private $errors = array();
+    private $errors = [];
 
     /** @var ArrayCollection */
     private $warnings;
 
     /** @var array */
-    private $summary = array();
+    private $summary = [];
 
     /**
      * Constructor with mandatory properties.
@@ -92,8 +93,8 @@ class StepExecution
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::EXECUTING));
 
-        $this->failureExceptions = array();
-        $this->errors = array();
+        $this->failureExceptions = [];
+        $this->errors = [];
 
         $this->startTime = new \DateTime();
     }
@@ -130,7 +131,7 @@ class StepExecution
      *
      * @param ExecutionContext $executionContext the attributes
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setExecutionContext(ExecutionContext $executionContext)
     {
@@ -154,7 +155,7 @@ class StepExecution
      *
      * @param \DateTime $endTime the time that this execution ended
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setEndTime(\DateTime $endTime)
     {
@@ -178,7 +179,7 @@ class StepExecution
      *
      * @param integer $readCount the current number of read items for this execution
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setReadCount($readCount)
     {
@@ -210,7 +211,7 @@ class StepExecution
      *
      * @param integer $writeCount the current number of written items for this execution
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setWriteCount($writeCount)
     {
@@ -249,7 +250,7 @@ class StepExecution
      * Set a flag that will signal to an execution environment that this
      * execution (and its surrounding job) wishes to exit.
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setTerminateOnly()
     {
@@ -261,7 +262,7 @@ class StepExecution
     /**
      * Gets the time this execution started
      *
-     * @return the time this execution started
+     * @return \DateTime The time this execution started
      */
     public function getStartTime()
     {
@@ -273,7 +274,7 @@ class StepExecution
      *
      * @param \DateTime $startTime the time this execution started
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setStartTime(\DateTime $startTime)
     {
@@ -297,7 +298,7 @@ class StepExecution
      *
      * @param BatchStatus $status the current status of this step
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setStatus(BatchStatus $status)
     {
@@ -313,7 +314,7 @@ class StepExecution
      *
      * @param mixed $status the new status value
      *
-     * @return $this
+     * @return StepExecution
      */
     public function upgradeStatus($status)
     {
@@ -335,7 +336,7 @@ class StepExecution
     /**
      * @param ExitStatus $exitStatus
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setExitStatus(ExitStatus $exitStatus)
     {
@@ -366,6 +367,17 @@ class StepExecution
     }
 
     /**
+     * Accessor for the job parameters
+     *
+     * @return JobParameters
+     *
+     */
+    public function getJobParameters()
+    {
+        return $this->jobExecution->getJobParameters();
+    }
+
+    /**
      * Get failure exceptions
      * @return mixed
      */
@@ -378,17 +390,17 @@ class StepExecution
      * Add a failure exception
      * @param \Exception $e
      *
-     * @return $this
+     * @return StepExecution
      */
     public function addFailureException(\Exception $e)
     {
-        $this->failureExceptions[] = array(
+        $this->failureExceptions[] = [
             'class'             => get_class($e),
             'message'           => $e->getMessage(),
-            'messageParameters' => $e instanceof RuntimeErrorException ? $e->getMessageParameters() : array(),
+            'messageParameters' => $e instanceof RuntimeErrorException ? $e->getMessageParameters() : [],
             'code'              => $e->getCode(),
             'trace'             => $e->getTraceAsString()
-        );
+        ];
 
         return $this;
     }
@@ -432,31 +444,32 @@ class StepExecution
     /**
      * Add a warning
      *
-     * @param string $name
-     * @param string $reason
-     * @param array  $reasonParameters
-     * @param mixed  $item
+     * @param string               $reason
+     * @param array                $reasonParameters
+     * @param InvalidItemInterface $item
      */
-    public function addWarning($name, $reason, array $reasonParameters, $item)
+    public function addWarning($reason, array $reasonParameters, InvalidItemInterface $item)
     {
-        $element = $this->stepName;
-        if (strpos($element, '.')) {
-            $element = substr($element, 0, strpos($element, '.'));
+        $data = $item->getInvalidData();
+
+        if (null === $data) {
+            $data = [];
         }
-        if (is_object($item)) {
-            $item = [
-                'class'  => ClassUtils::getClass($item),
-                'id'     => method_exists($item, 'getId') ? $item->getId() : '[unknown]',
-                'string' => method_exists($item, '__toString') ? (string) $item : '[unknown]',
+
+        if (is_object($data)) {
+            $data = [
+                'class'  => ClassUtils::getClass($data),
+                'id'     => method_exists($data, 'getId') ? $data->getId() : '[unknown]',
+                'string' => method_exists($data, '__toString') ? (string) $data : '[unknown]',
             ];
         }
+
         $this->warnings->add(
             new Warning(
                 $this,
-                sprintf('%s.steps.%s.title', $element, $name),
                 $reason,
                 $reasonParameters,
-                $item
+                $data
             )
         );
     }

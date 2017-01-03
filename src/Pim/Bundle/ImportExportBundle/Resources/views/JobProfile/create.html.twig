@@ -13,7 +13,6 @@
         'data-button-cancel': 'btn.cancel'|trans|capitalize
     }
 }) }}
-    {{ JSFV(form) }}
 
 <script type="text/javascript">
     require(
@@ -21,7 +20,7 @@
         function($) {
             'use strict';
             $(function() {
-                var formNameAlias = '#{{ form.alias.vars.id }}';
+                var formNameAlias = '#{{ form.jobName.vars.id }}';
 
                 $(formNameAlias).change(function() {
                     var alias = $(formNameAlias).val();
@@ -40,6 +39,6 @@
         {{ form_row(form.code) }}
         {{ form_row(form.label) }}
         {{ form_row(form.connector) }}
-        {{ form_row(form.alias) }}
+        {{ form_row(form.jobName) }}
     </div>
 {{ form_end(form) }}

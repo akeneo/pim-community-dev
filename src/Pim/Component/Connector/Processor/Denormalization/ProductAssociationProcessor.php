@@ -2,12 +2,14 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,11 +19,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationProcessor extends AbstractProcessor
+class ProductAssociationProcessor extends AbstractProcessor implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
-    /** @var StandardArrayConverterInterface */
-    protected $arrayConverter;
-
     /** @var IdentifiableObjectRepositoryInterface */
     protected $repository;
 
@@ -41,15 +42,13 @@ class ProductAssociationProcessor extends AbstractProcessor
     protected $enabledComparison = true;
 
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter     array converter
      * @param IdentifiableObjectRepositoryInterface $repository         product repository
      * @param ObjectUpdaterInterface                $updater            product updater
      * @param ValidatorInterface                    $validator          validator of the object
      * @param ProductFilterInterface                $productAssocFilter product association filter
-     * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
+     * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
      */
     public function __construct(
-        StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
@@ -58,12 +57,11 @@ class ProductAssociationProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter     = $arrayConverter;
-        $this->repository         = $repository;
-        $this->updater            = $updater;
-        $this->validator          = $validator;
+        $this->repository = $repository;
+        $this->updater = $updater;
+        $this->validator = $validator;
         $this->productAssocFilter = $productAssocFilter;
-        $this->detacher           = $detacher;
+        $this->detacher = $detacher;
     }
 
     /**
@@ -71,6 +69,10 @@ class ProductAssociationProcessor extends AbstractProcessor
      */
     public function process($item)
     {
+        $item = array_merge(
+            ['associations' => []],
+            $item
+        );
         $identifier = $this->getIdentifier($item);
 
         if (null === $identifier) {
@@ -83,17 +85,18 @@ class ProductAssociationProcessor extends AbstractProcessor
             $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $identifier));
         }
 
-        $convertedItem = $this->convertItemData($item);
-        if ($this->enabledComparison) {
-            $convertedItem = $this->filterIdenticalData($product, $convertedItem);
+        $parameters = $this->stepExecution->getJobParameters();
+        $enabledComparison = $parameters->get('enabledComparison');
+        if ($enabledComparison) {
+            $item = $this->filterIdenticalData($product, $item);
 
-            if (empty($convertedItem)) {
+            if (empty($item)) {
                 $this->detachProduct($product);
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
                 return null;
             }
-        } elseif (!$this->hasImportedAssociations($convertedItem)) {
+        } elseif (!$this->hasImportedAssociations($item)) {
             $this->detachProduct($product);
             $this->stepExecution->incrementSummaryInfo('product_skipped_no_associations');
 
@@ -101,7 +104,7 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         try {
-            $this->updateProduct($product, $convertedItem);
+            $this->updateProduct($product, $item);
         } catch (\InvalidArgumentException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
@@ -117,86 +120,37 @@ class ProductAssociationProcessor extends AbstractProcessor
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'enabledComparison' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.import.enabledComparison.label',
-                    'help'  => 'pim_connector.import.enabledComparison.help'
-                ]
-            ],
-        ];
-    }
-
-    /**
-     * Set whether or not the comparison between original values and imported values should be activated
+     * @param ProductInterface $product
+     * @param array            $item
      *
-     * @param bool $enabledComparison
+     * @return array
      */
-    public function setEnabledComparison($enabledComparison)
+    protected function filterIdenticalData(ProductInterface $product, array $item)
     {
-        $this->enabledComparison = $enabledComparison;
-    }
-
-    /**
-     * Whether or not the comparison between original values and imported values is activated
-     *
-     * @return bool
-     */
-    public function isEnabledComparison()
-    {
-        return $this->enabledComparison;
+        return $this->productAssocFilter->filter($product, $item);
     }
 
     /**
      * @param ProductInterface $product
-     * @param array            $convertedItem
+     * @param array            $item
      *
-     * @return array
+     * @throws \InvalidArgumentException
      */
-    protected function filterIdenticalData(ProductInterface $product, array $convertedItem)
+    protected function updateProduct(ProductInterface $product, array $item)
     {
-        return $this->productAssocFilter->filter($product, $convertedItem);
+        $this->updater->update($product, $item);
     }
 
     /**
      * @param array $item
      *
-     * @return array
-     */
-    protected function convertItemData(array $item)
-    {
-        $items = $this->arrayConverter->convert($item, ['with_associations' => true]);
-        $associations = isset($items['associations']) ? $items['associations'] : [];
-
-        return ['associations' => $associations];
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $convertItems
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function updateProduct(ProductInterface $product, array $convertItems)
-    {
-        $this->updater->update($product, $convertItems);
-    }
-
-    /**
-     * @param array $convertedItem
-     *
      * @return string
      */
-    protected function getIdentifier(array $convertedItem)
+    protected function getIdentifier(array $item)
     {
         $identifierProperty = $this->repository->getIdentifierProperties();
 
-        return $convertedItem[$identifierProperty[0]];
+        return $item[$identifierProperty[0]][0]['data'];
     }
 
     /**
@@ -214,7 +168,7 @@ class ProductAssociationProcessor extends AbstractProcessor
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface|null
+     * @return ConstraintViolationListInterface|null
      */
     protected function validateProductAssociations(ProductInterface $product)
     {
@@ -244,17 +198,17 @@ class ProductAssociationProcessor extends AbstractProcessor
     /**
      * It there association(s) in new values ?
      *
-     * @param array $convertedItem
+     * @param array $item
      *
      * @return bool
      */
-    protected function hasImportedAssociations(array $convertedItem)
+    protected function hasImportedAssociations(array $item)
     {
-        if (!isset($convertedItem['associations'])) {
+        if (!isset($item['associations'])) {
             return false;
         }
 
-        foreach ($convertedItem['associations'] as $association) {
+        foreach ($item['associations'] as $association) {
             if (!empty($association['products']) || !empty($association['groups'])) {
                 return true;
             }

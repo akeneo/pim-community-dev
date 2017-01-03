@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
@@ -14,18 +15,6 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  */
 class TextAreaType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValueFormAlias(ProductValueInterface $value)
-    {
-        if ($value->getAttribute()->isWysiwygEnabled()) {
-            return 'pim_wysiwyg';
-        }
-
-        return parent::prepareValueFormAlias($value);
-    }
-
     /**
      * {@inheritdoc}
      */

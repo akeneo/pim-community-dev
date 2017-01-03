@@ -1,6 +1,6 @@
 Close: Zatvori
 Update: Ažuriraj
-Selected Rows: Odabrani reci
+Selected Rows: Odabrani retci
 "Yes": "Da"
 "Yes, Delete": "Da, Izbriši"
 "Yes, I Agree": "Da, slažem se"
@@ -63,13 +63,13 @@ datetimepicker:
     Fri: Pet
     Sat: Sub
   daysMin:
-    Su: Ned
-    Mo: Pon
-    Tu: Uto
-    We: Sri
-    Th: Č
-    Fr: Pet
-    Sa: Sub
+    Su: Ne
+    Mo: Po
+    Tu: Ut
+    We: Sr
+    Th: Če
+    Fr: Pe
+    Sa: Su
   months:
     January: Siječanj
     February: Veljača
@@ -88,7 +88,7 @@ datetimepicker:
     Feb: Velj
     Mar: Ožu
     Apr: Tra
-    May: Svibanj
+    May: Svi
     Jun: Lip
     Jul: Srp
     Aug: Kol

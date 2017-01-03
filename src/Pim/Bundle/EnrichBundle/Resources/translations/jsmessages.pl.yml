@@ -26,25 +26,27 @@ flash:
   item:
     removed: Element usunięty pomyślnie
   association type:
-    removed: Typ powiązania został pomyślnie usunięty
+    removed: Typ powiązania usunięty pomyślnie
   attribute:
-    removed: Atrybut został pomyślnie usunięty
+    removed: Pomyślnie usunięto atrybut
   family:
-    removed: Rodzina produktów została usunięta pomyślnie
+    removed: Rodzina została usunięta pomyślnie
+  product:
+    removed: Produkt pomyślnie usunięty
   channel:
-    removed: Kanał został pomyślnie usunięty
+    removed: Kanał pomyślnie usunięty
   group:
     removed: Grupa została pomyślnie usunięta
   variant group:
-    removed: Grupa wariantów została pomyślnie usunięta
+    removed: Grupa wariantów usunięta pomyślnie
   group type:
-    removed: Typ grupy został pomyślnie usunięty
+    removed: Typ grupy usunięty pomyślnie
   import profile:
     removed: Profil importu usunięty pomyślnie
   export profile:
     removed: Profil eksportu usunięty pomyślnie
   user:
-    removed: Użytkownik został pomyślnie usunięty
+    removed: Użytkownik usunięty pomyślnie
   role:
     removed: Rola usunięta pomyślnie
 error:
@@ -86,10 +88,11 @@ Classify the product: Klasyfikuj produkt
 Delete the product: Usuń produkt
 Change status: Zmień status
 Toggle status: Ustaw stan
-pim.grid.mass_action.quick_export.csv_all: CSV (wszystkie atrybuty)
-pim.grid.mass_action.delete: Usuń
-pim.grid.mass_action.mass_edit: Edycja masowa
-pim.grid.mass_action.sequential_edit: Sekwencyjna Edycja
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (wszystkie atrybuty)
 jstree.create: Utwórz
 switch_on: "Tak"
 switch_off: "Nie"
@@ -111,6 +114,7 @@ pim_enrich:
       update_failed: Błąd aktualizacji
       update_successful: Pomyślnie zaktualizowano
     product:
+      title: produkt
       btn:
         enable: Włacz
         enabled: Włączony
@@ -134,19 +138,23 @@ pim_enrich:
         new_values: Nowe wartości
         actions: Działania
       info:
+        deletion_successful: Produkt pomyślnie usunięty.
         deletion_failed: Produktu nie można usunąć.
         update_successful: Produkt pomyślnie zaktualizowany.
         update_failed: Produktu nie można zaktualizować.
+        field_not_ready:
+          The product cannot be saved right now. The following fields are not ready:
+            - pola
       error:
         upload: Wystąpił błąd podczas przekazywania pliku
       meta:
         created: Utworzono
         created_by: Przez
         updated_by: Przez
-        updated: Ostatnia aktualizacja
+        updated: Modyfikowany
         family:
           title: Rodzina
-          none: Brak
+          none: Żaden
         groups:
           title: Grupy
           modal:
@@ -170,15 +178,33 @@ pim_enrich:
         remove: Usuń ten atrybut
       media:
         upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
+      create_popin:
+        title: Utwórz nowy produkt
+        labels:
+          family: Wybierz rodzinę
+          save: Zapisz
+          cancel: Anuluj
     attribute_option:
       code: Kod
       label: Etykieta
+    variant_group:
+      info:
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - pola
+        no_attributes: Ta grupa wariantów nie posiada jeszcze żadnych atrybutów
+      btn:
+        save: Zapisz
+      meta:
+        product_count: Produkty
+        created: Utworzono
+        updated: Zaktualizowano
   confirmation:
     leave: Czy na pewno chcesz opuścić tę stronę?
     discard_changes: Utracisz wszystkie zmiany w {{ entity }}, jeśli opuścisz tę stronę.
     delete_item: Potwiedź usunięcie
     delete:
-      product_attribute: Czy na pewno chcesz usunąć ten atrybut z produktu?
+      attribute: Czy na pewno chcesz usunąć ten atrybut z produktu?
   info:
     not_applicable: N/A
     entity:
@@ -255,6 +281,87 @@ pim_enrich:
       switch:
         "no": Nie
         "yes": Tak
+    variant_group:
+      tab:
+        properties:
+          title: Właściwości
+          general: Ustawienia ogólne
+          code: Kod
+          type: Typ
+          axis: Oś
+          label_translations: Tłumaczenia etykiety
+        history:
+          title: Historia
+        products:
+          title: Produkty
+        attributes:
+          title: Atrybuty
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Dodaj
+            add_attributes: Dodaj atrybuty
+          info:
+            search_attributes: Szukaj...
+            no_available_attributes: Nie ma więcej atrybutów do dodania
+  export:
+    product:
+      structure:
+        attributes:
+          title: Atrybuty
+      filter:
+        channel:
+          title: Kanał
+        locales:
+          title: Ustawienia regionalne
+        attributes:
+          title: Atrybuty
+          edit: Edytuj
+          modal:
+            apply: Zastosuj
+            cancel: Anuluj
+        attributes_selector:
+          attribute_group: Grupy Atrybutów
+          clear: Wyczyść
+          all_group: Wszystkie grupy
+        family:
+          title: Rodzina
+          operators:
+            IN: Na liście
+        enabled:
+          title: Status
+          value:
+            all: Wszystkie
+            enabled: Włączony
+            disabled: Nieaktywny
+        completeness:
+          title: Kompletność
+        identifier:
+          title: Identyfikator
+        metric:
+          operators:
+            EMPTY: Jest pusty
+        string:
+          operators:
+            ALL: Wszystkie
+            EMPTY: Jest pusty
+        price-collection:
+          operators:
+            EMPTY: Jest pusty
+        multi_select:
+          operators:
+            IN: Na liście
+            EMPTY: Jest pusty
+        media:
+          operators:
+            EMPTY: Jest pusty
+        date:
+          operators:
+            EMPTY: Jest pusty
+        number:
+          operators:
+            EMPTY: Jest pusty
   mass_edit_action:
     edit_common_attributes:
       description: Atrybuty wybranych produktów będą edytowane z następującymi danymi dla ustawienia regionalnego <span class = "highlight"> {{ locale }} </span> oraz kanału <span class = "highlight"> {{ channel }} </span>, wybrane z listy produktów.

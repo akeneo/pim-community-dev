@@ -14,7 +14,7 @@ define(
     [
         'pim/field-manager',
         'pim/security-context',
-        'pim/product-edit-form/attributes'
+        'pim/form/common/attributes'
     ],
     function (
         FieldManager,

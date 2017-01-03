@@ -21,18 +21,19 @@ Feature: Display the family history
       | Code | Flyer |
     And I save the family
     And I should see the flash message "Family successfully created"
+    And I should not see the text "There are unsaved changes."
     And I edit the "Flyer" family
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
       | version | property | value |
       | 1       | code     | Flyer |
-
     When I visit the "Properties" tab
     And I fill in the following information:
       | English (United States) | Fly |
     And I save the family
     And I should see the flash message "Family successfully updated"
+    And I should not see the text "There are unsaved changes."
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:

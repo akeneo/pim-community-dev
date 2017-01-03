@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 
 /**
  * Product id filter
@@ -12,14 +12,9 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
+class ProductIdFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    /** @var array */
-    protected $supportedFields;
-
     /**
-     * Instanciate the base filter
-     *
      * @param array $supportedFields
      * @param array $supportedOperators
      */
@@ -27,7 +22,7 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields    = $supportedFields;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -45,13 +40,5 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
         $this->qb->andWhere($condition);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        return in_array($field, $this->supportedFields);
     }
 }

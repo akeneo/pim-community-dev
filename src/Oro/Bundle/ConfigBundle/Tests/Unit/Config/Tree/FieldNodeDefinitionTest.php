@@ -10,7 +10,7 @@ class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_NAME = 'testNodeName';
     const TEST_TYPE = 'text';
-    const TEST_ACL  = 'acl';
+    const TEST_ACL = 'acl';
 
     protected $testDefinition = [
         'options'      => [

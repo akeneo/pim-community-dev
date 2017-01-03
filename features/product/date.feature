@@ -10,9 +10,16 @@ Feature: Check that imported date is properly displayed
     And the following attributes:
       | label   | type | localizable | scopable | useable_as_grid_filter |
       | release | date | no          | no       | yes                    |
-    And the following products:
-      | sku    | release    |
-      | postit | 2014-05-01 |
+    And the following CSV file to import:
+      """
+      sku;release
+      postit;2014-05-01
+      """
+    And the following job "csv_default_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_default_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_default_product_import" job to finish
 
   Scenario: Successfully display a date in the grid (PIM-2971)
     Given I am on the products page

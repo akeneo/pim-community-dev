@@ -1,5 +1,5 @@
 @javascript
-Feature: Export products
+Feature: Export and download exported products file
   In order to use the enriched product data
   As a product manager
   I need to be able to export the products

@@ -40,8 +40,8 @@ class CommandExecutor
      */
     public function __construct(InputInterface $input, OutputInterface $output, Application $application)
     {
-        $this->input       = $input;
-        $this->output      = $output;
+        $this->input = $input;
+        $this->output = $output;
         $this->application = $application;
     }
 

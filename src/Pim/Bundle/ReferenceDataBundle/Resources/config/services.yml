@@ -7,21 +7,21 @@ parameters:
 
 services:
     pim_reference_data.registry:
-        class: %pim_reference_data.registry.class%
+        class: '%pim_reference_data.registry.class%'
 
     pim_reference_data.method_guesser:
-        class: %pim_reference_data.method_guesser.class%
+        class: '%pim_reference_data.method_guesser.class%'
 
     pim_reference_data.repository_resolver:
-        class: %pim_reference_data.repository_resolver.class%
+        class: '%pim_reference_data.repository_resolver.class%'
         arguments:
             - '@pim_reference_data.registry'
             - '@doctrine'
 
     pim_reference_data.id_resolver:
-        class: %pim_reference_data.id_resolver.class%
+        class: '%pim_reference_data.id_resolver.class%'
         arguments:
             - '@pim_reference_data.repository_resolver'
 
     pim_reference_data.label_renderer:
-        class: %pim_reference_data.label_renderer.class%
+        class: '%pim_reference_data.label_renderer.class%'

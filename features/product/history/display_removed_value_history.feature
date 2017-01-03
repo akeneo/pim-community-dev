@@ -13,7 +13,7 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I add available attributes Weather conditions
     And I change the "Weather conditions" to "Cold, Snowy"
     And I save the product
@@ -44,12 +44,12 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I edit the "boots" product
+    And I wait to be on the "boots" product page
     And I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I expand the "Winter collection" category
-    And I click on the "Winter boots" category
+    And I expand the "2014_collection" category
+    And I expand the "winter_collection" category
+    And I click on the "winter_boots" category
     And I save the product
     When I open the history
     Then there should be 2 update
@@ -76,16 +76,16 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I edit the "boots" product
+    And I wait to be on the "boots" product page
     And I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I click on the "2014 men's collection" category
+    And I expand the "2014_collection" category
+    And I click on the "men_2014" category
     And I select the "2015 collection" tree
-    And I expand the "2015 collection" category
-    And I expand the "2015 men's collection" category
-    And I click on the "2015 men's autumn collection" category
-    And I click on the "2015 men's winter collection" category
+    And I expand the "2015_collection" category
+    And I expand the "men_2015" category
+    And I click on the "men_2015_autumn" category
+    And I click on the "men_2015_winter" category
     And I save the product
     When I open the history
     Then there should be 2 update
@@ -113,7 +113,7 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I add available attributes Manufacturer
     And I change the "Manufacturer" to "Converse"
     And I save the product
@@ -144,7 +144,7 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I add available attributes Weather conditions, Comment
     And I change the "Weather conditions" to "Cold, Snowy"
     And I visit the "Other" group

@@ -63,12 +63,12 @@ class DatagridViewController
         TranslatorInterface $translator,
         DatagridViewManager $datagridViewManager
     ) {
-        $this->request             = $request;
-        $this->templating          = $templating;
-        $this->tokenStorage        = $tokenStorage;
-        $this->formFactory         = $formFactory;
-        $this->validator           = $validator;
-        $this->translator          = $translator;
+        $this->request = $request;
+        $this->templating = $templating;
+        $this->tokenStorage = $tokenStorage;
+        $this->formFactory = $formFactory;
+        $this->validator = $validator;
+        $this->translator = $translator;
         $this->datagridViewManager = $datagridViewManager;
     }
 
@@ -130,9 +130,10 @@ class DatagridViewController
         return $this->templating->renderResponse(
             'PimDataGridBundle:Datagrid:_views.html.twig',
             [
-                'alias' => $alias,
-                'views' => $views,
-                'form'  => $form->createView(),
+                'alias'              => $alias,
+                'views'              => $views,
+                'defaultViewColumns' => array_keys($this->datagridViewManager->getColumnChoices($alias, true)),
+                'form'               => $form->createView(),
             ]
         );
     }

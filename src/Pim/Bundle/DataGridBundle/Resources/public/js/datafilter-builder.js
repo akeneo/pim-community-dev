@@ -59,7 +59,7 @@ function($, _, tools,  mediator, FiltersManager) {
                         if (options.type == 'selectrow') {
                             options.collection = collection
                         }
-                        filters[options.name] = new (modules[options.type].extend(options));
+                        filters[options.name] = new (modules[options.type].extend(options))(options);
                     }
                 });
                 return {filters: filters};

@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -16,63 +15,20 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractFileWriter extends AbstractConfigurableStepElement implements
-    ItemWriterInterface,
-    StepExecutionAwareInterface
+abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
-    /** @var FilePathResolverInterface */
-    protected $filePathResolver;
-
-    /** @var string */
-    protected $filePath = '/tmp/export_%datetime%.csv';
-
     /** @var StepExecution */
     protected $stepExecution;
-
-    /** @var string */
-    protected $resolvedFilePath;
-
-    /** @var array */
-    protected $filePathResolverOptions;
 
     /** @var Filesystem */
     protected $localFs;
 
-    /**
-     * @param FilePathResolverInterface $filePathResolver
-     */
-    public function __construct(FilePathResolverInterface $filePathResolver)
+    /** @var string Datetime format for the file path placeholder */
+    protected $datetimeFormat = 'Y-m-d_H-i-s';
+
+    public function __construct()
     {
-        $this->filePathResolver = $filePathResolver;
-        $this->filePathResolverOptions = [
-            'parameters' => ['%datetime%' => date('Y-m-d_H:i:s')]
-        ];
         $this->localFs = new Filesystem();
-    }
-
-    /**
-     * Set the file path
-     *
-     * @param string $filePath
-     *
-     * @return AbstractFileWriter
-     */
-    public function setFilePath($filePath)
-    {
-        $this->filePath = $filePath;
-        $this->resolvedFilePath = null;
-
-        return $this;
-    }
-
-    /**
-     * Get the file path
-     *
-     * @return string
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
     }
 
     /**
@@ -80,28 +36,25 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(array $placeholders = [])
     {
-        if (null === $this->resolvedFilePath) {
-            $this->resolvedFilePath = $this->filePathResolver->resolve($this->filePath, $this->filePathResolverOptions);
+        $parameters = $this->stepExecution->getJobParameters();
+        $filePath = $parameters->get('filePath');
+
+        if (false !== strpos($filePath, '%')) {
+            $defaultPlaceholders = ['%datetime%' => date($this->datetimeFormat), '%job_label%' => ''];
+            $jobExecution = $this->stepExecution->getJobExecution();
+
+            if (isset($placeholders['%job_label%'])) {
+                $placeholders['%job_label%'] = $this->sanitize($placeholders['%job_label%']);
+            } elseif (null !== $jobExecution->getJobInstance()) {
+                $defaultPlaceholders['%job_label%'] = $this->sanitize($jobExecution->getJobInstance()->getLabel());
+            }
+            $replacePairs = array_merge($defaultPlaceholders, $placeholders);
+            $filePath = strtr($filePath, $replacePairs);
         }
 
-        return $this->resolvedFilePath;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
-                ]
-            ]
-        ];
+        return $filePath;
     }
 
     /**
@@ -110,5 +63,17 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * Replace [^A-Za-z0-9\.] from a string by '_'
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function sanitize($value)
+    {
+        return preg_replace('#[^A-Za-z0-9\.]#', '_', $value);
     }
 }

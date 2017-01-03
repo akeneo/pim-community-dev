@@ -10,34 +10,34 @@ parameters:
 
 services:
     akeneo_storage_utils.event_subscriber.resolve_target_repository:
-        class: %akeneo_storage_utils.event_subscriber.resolve_target_repository.class%
+        class: '%akeneo_storage_utils.event_subscriber.resolve_target_repository.class%'
         public: false
         tags:
             - { name: doctrine.event_subscriber }
 
     akeneo_storage_utils.doctrine.smart_manager_registry:
-        class: %akeneo_storage_utils.doctrine.smart_manager_registry.class%
+        class: '%akeneo_storage_utils.doctrine.smart_manager_registry.class%'
         calls:
             - [addRegistry, ['@doctrine']]
 
     akeneo_storage_utils.doctrine.table_name_builder:
-        class: %akeneo_storage_utils.doctrine.table_name_builder.class%
+        class: '%akeneo_storage_utils.doctrine.table_name_builder.class%'
         arguments:
             - '@service_container'
             - '@akeneo_storage_utils.doctrine.smart_manager_registry'
 
     akeneo_storage_utils.doctrine.object_detacher:
-        class: %akeneo_storage_utils.doctrine.object_detacher.class%
+        class: '%akeneo_storage_utils.doctrine.object_detacher.class%'
         arguments:
             - '@akeneo_storage_utils.doctrine.smart_manager_registry'
 
     akeneo_storage_utils.doctrine.orm_mappings_override_configurator:
-        class: %akeneo_storage_utils.doctrine.orm_mappings_override_configurator.class%
+        class: '%akeneo_storage_utils.doctrine.orm_mappings_override_configurator.class%'
 
     akeneo_storage_utils.event_subscriber.configure_orm_mappings:
-        class: %akeneo_storage_utils.event_subscriber.configure_orm_mappings.class%
+        class: '%akeneo_storage_utils.event_subscriber.configure_orm_mappings.class%'
         arguments:
             - '@akeneo_storage_utils.doctrine.orm_mappings_override_configurator'
-            - %akeneo_storage_utils.mapping_overrides%
+            - '%akeneo_storage_utils.mapping_overrides%'
         tags:
             - { name: doctrine.event_subscriber }

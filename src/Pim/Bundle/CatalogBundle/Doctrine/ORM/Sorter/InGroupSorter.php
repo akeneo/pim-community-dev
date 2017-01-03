@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
+use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
 
 /**
  * In group sorter

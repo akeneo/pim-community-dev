@@ -34,7 +34,7 @@ class ProductPropertyCopier implements PropertyCopierInterface
         CopierRegistryInterface $copierRegistry
     ) {
         $this->attributeRepository = $repository;
-        $this->copierRegistry      = $copierRegistry;
+        $this->copierRegistry = $copierRegistry;
     }
 
     /**
@@ -64,7 +64,7 @@ class ProductPropertyCopier implements PropertyCopierInterface
 
         if ($copier instanceof AttributeCopierInterface) {
             $fromAttribute = $this->getAttribute($fromField);
-            $toAttribute   = $this->getAttribute($toField);
+            $toAttribute = $this->getAttribute($toField);
             $copier->copyAttributeData($fromProduct, $toProduct, $fromAttribute, $toAttribute, $options);
         } else {
             $copier->copyFieldData($fromProduct, $toProduct, $fromField, $toField, $options);

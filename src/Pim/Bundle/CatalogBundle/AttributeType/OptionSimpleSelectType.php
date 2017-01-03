@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
@@ -14,21 +15,6 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  */
 class OptionSimpleSelectType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        $options = parent::prepareValueFormOptions($value);
-        $attribute = $value->getAttribute();
-        $options['class']                = 'PimCatalogBundle:AttributeOption';
-        $options['collection_id']        = $attribute->getId();
-        $options['required']             = false;
-        $options['minimum_input_length'] = $attribute->getMinimumInputLength();
-
-        return $options;
-    }
-
     /**
      * {@inheritdoc}
      */

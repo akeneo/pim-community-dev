@@ -5,7 +5,6 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
@@ -23,9 +22,6 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var RemovingOptionsResolverInterface */
-    protected $optionsResolver;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -34,20 +30,17 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
 
     /**
      * @param ObjectManager                    $objectManager
-     * @param RemovingOptionsResolverInterface $optionsResolver
      * @param EventDispatcherInterface         $eventDispatcher
      * @param string                           $removedClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        RemovingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         $removedClass
     ) {
-        $this->objectManager   = $objectManager;
-        $this->optionsResolver = $optionsResolver;
+        $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->removedClass    = $removedClass;
+        $this->removedClass = $removedClass;
     }
 
     /**
@@ -55,25 +48,16 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
      */
     public function remove($object, array $options = [])
     {
-        if (!$object instanceof $this->removedClass) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "%s", "%s" provided.',
-                    $this->removedClass,
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
+        $this->validateObject($object);
 
-        $options  = $this->optionsResolver->resolveRemoveOptions($options);
         $objectId = $object->getId();
+
+        $options['unitary'] = true;
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $objectId, $options));
 
         $this->objectManager->remove($object);
-
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
+        $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_REMOVE, new RemoveEvent($object, $objectId, $options));
     }
@@ -87,16 +71,40 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
             return;
         }
 
-        $allOptions = $this->optionsResolver->resolveRemoveAllOptions($options);
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
+        $options['unitary'] = false;
+
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE_ALL, new RemoveEvent($objects, null));
 
         foreach ($objects as $object) {
-            $this->remove($object, $itemOptions);
+            $this->validateObject($object);
+
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $object->getId(), $options));
+
+            $this->objectManager->remove($object);
         }
 
-        if (true === $allOptions['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
+
+        foreach ($objects as $object) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_REMOVE, new RemoveEvent($object, $object->getId(), $options));
+        }
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_REMOVE_ALL, new RemoveEvent($objects, null));
+    }
+
+    /**
+     * @param $object
+     */
+    protected function validateObject($object)
+    {
+        if (!$object instanceof $this->removedClass) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "%s", "%s" provided.',
+                    $this->removedClass,
+                    ClassUtils::getClass($object)
+                )
+            );
         }
     }
 }

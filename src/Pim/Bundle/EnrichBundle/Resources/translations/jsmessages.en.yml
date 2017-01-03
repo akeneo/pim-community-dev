@@ -17,6 +17,8 @@ confirmation:
 
 pim_datagrid:
     mass_action_group:
+        bulk_actions:
+            label: Bulk Actions
         quick_export:
             label: Quick Export
     mass_action:
@@ -71,6 +73,8 @@ error:
         attribute_option: Error during deletion of the attribute option
     saving:
         attribute_option: Cannot save attribute option
+        export_profile: Cannot save export profile. Please check that all filters are well filled
+
 alert:
     attribute_option:
         error_occured_during_submission: An error occured during the form submission on the server
@@ -97,10 +101,18 @@ Change status:                  Change status
 Toggle status:                  Toggle status
 
 # Quick export labels
-pim.grid.mass_action.quick_export.csv_all: CSV (All attributes)
-pim.grid.mass_action.delete:               Delete
-pim.grid.mass_action.mass_edit:            Mass Edit
-pim.grid.mass_action.sequential_edit:      Sequential Edit
+pim:
+    grid:
+        mass_action:
+            quick_export:
+                csv_all: CSV (All attributes)
+                csv_grid_context: CSV (Grid context)
+                xlsx_all: Excel (All attributes)
+                xlsx_grid_context: Excel (Grid context)
+            delete: Delete products
+            mass_edit: Change product information
+            category_edit: Move products in categories
+            sequential_edit: Edit products sequentially
 
 # Jstree context menu actions
 jstree.create: Create
@@ -193,15 +205,39 @@ pim_enrich:
                 channel_locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
             media:
                 upload: Drag and drop to upload or click here
+            create_popin:
+                title: Create a new product
+                labels:
+                    family: Choose a family
+                    save: Save
+                    cancel: Cancel
         attribute_option:
             code: Code
             label: Label
+        variant_group:
+            title: Variant group
+            info:
+                deletion_successful: Variant group successfully deleted.
+                deletion_failed: The variant group could not be deleted.
+                update_successful: Variant group successfully updated.
+                update_failed: The variant group could not be updated.
+                field_not_ready: The variant group cannot be saved right now. The following fields are not ready: {{ fields }}
+                already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
+                no_attributes: This variant group has no attributes yet
+            btn:
+                save: Save
+            meta:
+                product_count: Products
+                created: Created
+                created_by: Created by
+                updated: Updated
+                updated_by: Updated by
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
         delete_item:     Confirm deletion
         delete:
-            product_attribute: Are you sure you want to delete this attribute from the product?
+            attribute: Are you sure you want to delete this attribute from the product?
     info:
         not_applicable: N/A
         entity:
@@ -212,6 +248,7 @@ pim_enrich:
         not_allowed: You are not allowed to access this page
         error_occured: An error occured during the loading of the page
     form:
+        required: (required)
         product:
             tab:
                 associations:
@@ -278,6 +315,165 @@ pim_enrich:
             switch:
                 "no": "No"
                 "yes": "Yes"
+        variant_group:
+            tab:
+                properties:
+                    title: Properties
+                    general: General properties
+                    code: Code
+                    type: Type
+                    axis: Axis
+                    label_translations: Label translations
+                history:
+                    title: History
+                products:
+                    title: Products
+                attributes:
+                    title: Attributes
+        common:
+            tab:
+                attributes:
+                    btn:
+                        add: Add
+                        add_attributes: Add attributes
+                    info:
+                        search_attributes: Search...
+                        no_available_attributes: There are no more attributes to add
+
+    export:
+        product:
+            data:
+                title: Filter the products
+            structure:
+                title: Filter the data
+                attributes:
+                    title: Attributes
+            filter:
+                channel:
+                    title: Channel
+                    help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
+                locales:
+                    title: Locales
+                    help: "The locales defines the localized product values to export. Ex: only product information in French."
+                attributes:
+                    title: Attributes
+                    edit: Edit
+                    label: "{0} All attributes|{1} One attribute selected|]1,Inf[ {{ count }} attributes selected"
+                    help: "Select the product information to export. Ex: only the technical attributes."
+                    empty: All attributes will be exported
+                    modal:
+                        apply: Apply
+                        cancel: Cancel
+                        title: Attribute selection
+                attributes_selector:
+                    attribute_group: Attribute groups
+                    attributes: "Search in {{ attributeCount }} attributes"
+                    selected: "Selected attributes"
+                    clear: Clear
+                    all_group: All groups
+                    empty_selection: All attributes will be exported
+                family:
+                    title: Family
+                    help: "Select the products to export by their family. Ex: Export only the shoes and dresses."
+                    operators:
+                        IN: In list
+                        "NOT IN": Not in list
+                        EMPTY: Products that don't have a family
+                        "NOT EMPTY": Products that have a family
+                    empty_selection: No condition on families
+                updated:
+                    title: Time condition
+                    operators:
+                        ALL: No date condition
+                        "SINCE LAST N DAYS": Updated products over the last n days (e.g. 6)
+                        ">": Updated products since this date
+                        "SINCE LAST JOB": Updated products since last export
+                enabled:
+                    title: Status
+                    help: "Select the products to export by their status. Ex: Export products whatsoever their status."
+                    value:
+                        all: All
+                        enabled: Enabled
+                        disabled: Disabled
+                completeness:
+                    title: Completeness
+                    help: Select the products to export by their completeness.
+                    operators:
+                        ALL: No condition on completeness
+                        ">=": Complete on at least one selected locale
+                        "GREATER OR EQUALS THAN ON ALL LOCALES": Complete on all selected locales
+                        LOWER THAN ON ALL LOCALES: Not complete on all selected locales
+                    empty_selection: Select a family
+                category:
+                    title: Category
+                    help: Use the product categories in the tree (defined by the channel above) to select the products to export
+                identifier:
+                    title: Identifier
+                    help: Identifiers of products you want to export separated by commas, spaces or line breaks
+                metric:
+                    operators:
+                        "=": Is equal to
+                        "!=": Is not equal to
+                        ">=": Greater than or equals
+                        ">": Greater than
+                        "<=": Lower than or equals
+                        "<": Lower than
+                        EMPTY: Is empty
+                        NOT EMPTY: Is not empty
+                string:
+                    operators:
+                        ALL: All
+                        CONTAINS: Contains
+                        DOES NOT CONTAIN: Does not contain
+                        "=": Is equal to
+                        STARTS WITH: Starts with
+                        ENDS WITH: Ends with
+                        EMPTY: Is empty
+                        NOT EMPTY: Is not empty
+                price-collection:
+                    operators:
+                        "=": Is equal to
+                        "!=": Is not equal to
+                        ">=": Greater than or equals
+                        ">": Greater than
+                        "<=": Lower than or equals
+                        "<": Lower than
+                        EMPTY: Is empty
+                        NOT EMPTY: Is not empty
+                multi_select:
+                    operators:
+                        IN: In list
+                        EMPTY: Is empty
+                        NOT EMPTY: Is not empty
+                media:
+                    operators:
+                        CONTAINS: Contains
+                        DOES NOT CONTAIN: Does not contain
+                        "=": Is equal to
+                        STARTS WITH: Starts with
+                        ENDS WITH: Ends with
+                        EMPTY: Is empty
+                        NOT EMPTY: Is not empty
+                date:
+                    operators:
+                        ">": Greater than
+                        "<": Lower than
+                        "=": Is equal to
+                        "!=": Is not equal to
+                        BETWEEN: Between
+                        NOT BETWEEN: Not between
+                        EMPTY: Is empty
+                        NOT EMPTY: Is not empty
+                number:
+                    operators:
+                        "=": Is equal to
+                        "!=": Is not equal to
+                        ">=": Greater than or equals
+                        ">": Greater than
+                        "<=": Lower than or equals
+                        "<": Lower than
+                        EMPTY: Is empty
+                        NOT EMPTY: Is not empty
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.

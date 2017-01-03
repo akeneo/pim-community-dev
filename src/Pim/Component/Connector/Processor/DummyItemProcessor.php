@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Processor;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 
 /**

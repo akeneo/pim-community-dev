@@ -15,8 +15,9 @@ Feature: Edit common attributes of many products at once
 
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit scoped product values
-    Given I filter by "channel" with value "Print"
-    And I mass-edit products black_jacket and white_jacket
+    Given I filter by "scope" with operator "equals" and value "Print"
+    And I select rows black_jacket and white_jacket
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should see the text "The selected product's attributes will be edited with the following data for the locale English (United States) and the channel Print, chosen in the products grid."
     When I display the Customer rating attribute
@@ -31,8 +32,9 @@ Feature: Edit common attributes of many products at once
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit localized product values
     Given I switch the locale to "de_DE"
-    And I filter by "channel" with value "Ecommerce"
-    And I mass-edit products black_jacket and white_jacket
+    And I filter by "scope" with operator "equals" and value "Ecommerce"
+    And I select rows black_jacket and white_jacket
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should see the text "The selected product's attributes will be edited with the following data for the locale German (Germany) and the channel Ecommerce, chosen in the products grid."
     When I display the Name attribute

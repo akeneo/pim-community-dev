@@ -14,7 +14,7 @@ Feature: Browse channels
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code, Label and Category tree
     And I should be able to use the following filters:
-      | filter        | value           | result               |
-      | Code          | t               | tablet and print     |
-      | Label         | e               | ecommerce and tablet |
-      | Category tree | 2015 collection | print                |
+      | filter   | operator | value           | result               |
+      | code     | contains | t               | tablet and print     |
+      | label    | contains | e               | ecommerce and tablet |
+      | category |          | 2015 collection | print                |

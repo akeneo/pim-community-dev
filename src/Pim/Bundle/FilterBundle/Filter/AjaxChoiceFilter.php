@@ -4,8 +4,8 @@ namespace Pim\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 /**
@@ -72,9 +72,9 @@ class AjaxChoiceFilter extends ChoiceFilter
         $metadata[FilterUtility::TYPE_KEY] = $formView->vars['preload_choices'] ? 'ajax-choice' : 'select2-choice';
 
         $metadata['populateDefault'] = $formView->vars['populate_default'];
-        $metadata['choiceUrl']       = $formView->vars['choice_url'];
+        $metadata['choiceUrl'] = $formView->vars['choice_url'];
         $metadata['choiceUrlParams'] = $formView->vars['choice_url_params'];
-        $metadata['emptyChoice']     = $formView->vars['empty_choice'];
+        $metadata['emptyChoice'] = $formView->vars['empty_choice'];
 
         return $metadata;
     }

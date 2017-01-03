@@ -62,7 +62,7 @@ class ValidateObjectsCommand extends ContainerAwareCommand
     protected function validateObjects(ObjectRepository $repository, $type)
     {
         $validator = $this->getService('validator');
-        $entities  = $repository->findAll();
+        $entities = $repository->findAll();
 
         foreach ($entities as $entity) {
             $violations = $validator->validate($entity);

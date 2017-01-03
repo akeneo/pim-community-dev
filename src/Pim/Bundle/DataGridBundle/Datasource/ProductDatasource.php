@@ -4,9 +4,9 @@ namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
 /**
  * Product datasource, allows to prepare query builder from repository
@@ -30,9 +30,9 @@ class ProductDatasource extends Datasource
         HydratorInterface $hydrator,
         ProductQueryBuilderFactoryInterface $factory
     ) {
-        $this->om       = $om;
+        $this->om = $om;
         $this->hydrator = $hydrator;
-        $this->factory  = $factory;
+        $this->factory = $factory;
     }
 
     /**
@@ -76,7 +76,7 @@ class ProductDatasource extends Datasource
     {
         $factoryConfig['repository_parameters'] = $config;
         $factoryConfig['repository_method'] = $method;
-        $factoryConfig['default_locale'] =  $this->getConfiguration('locale_code');
+        $factoryConfig['default_locale'] = $this->getConfiguration('locale_code');
         $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
 
         $this->pqb = $this->factory->create($factoryConfig);

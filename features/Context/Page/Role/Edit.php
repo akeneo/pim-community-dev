@@ -13,50 +13,26 @@ use Context\Page\Base\Form;
  */
 class Edit extends Form
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $path = '/user/role/update/{id}';
 
     /**
-     * Grant rights to all ACL resources
+     * {@inheritdoc}
      */
-    public function grantAllResourceRights()
+    public function __construct($session, $pageFactory, $parameters = [])
     {
-        $iconSelector = '.acl-permission i.acl-permission-toggle.non-granted';
+        parent::__construct($session, $pageFactory, $parameters);
 
-        $this->getSession()->executeScript(
-            sprintf('$("%s").each(function () { $(this).click(); });', $iconSelector)
-        );
-    }
-
-    /**
-     * Grant ACL resource rights
-     *
-     * @param string $resource
-     */
-    public function grantResourceRights($resource)
-    {
-        $resourceSelector = sprintf(".acl-permission strong:contains('%s')", $resource);
-        $iconSelector     = 'i.acl-permission-toggle.non-granted';
-
-        $this->getSession()->executeScript(
-            sprintf('$("%s").parent().parent().find("%s").click();', $resourceSelector, $iconSelector)
-        );
-    }
-
-    /**
-     * Remove ACL resource rights
-     *
-     * @param string $resource
-     */
-    public function removeResourceRights($resource)
-    {
-        $resourceSelector = sprintf(".acl-permission strong:contains('%s')", $resource);
-        $iconSelector     = 'i.acl-permission-toggle.granted';
-
-        $this->getSession()->executeScript(
-            sprintf('$("%s").parent().parent().find("%s").click();', $resourceSelector, $iconSelector)
+        $this->elements = array_merge(
+            [
+                'Permission' => [
+                    'css'        => '#rights-action',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Permission\PermissionDecorator'
+                    ]
+                ],
+            ],
+            $this->elements
         );
     }
 }

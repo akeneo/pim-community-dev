@@ -6,7 +6,7 @@ services:
         parent: pim_enrich.view_element.base
         arguments:
             - 'pim_enrich.view_element.mass_edit.warning'
-            - %pim_enrich.view_element.mass_edit.warning.template%
+            - '%pim_enrich.view_element.mass_edit.warning.template%'
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form][operation].vars[warningMessages]'}] ]
         tags:

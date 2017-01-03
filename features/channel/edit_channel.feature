@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit a channel
   In order to manage existing channels in the catalog
   As an administrator
@@ -26,7 +27,6 @@ Feature: Edit a channel
       | title   | Are you sure you want to leave this page?                    |
       | content | You will lose changes to the channel if you leave this page. |
 
-  @javascript @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am logged in as "Peter"
     And  I am on the "mobile" channel page
@@ -34,14 +34,13 @@ Feature: Edit a channel
       | Default label | My mobile |
     Then I should see "There are unsaved changes."
 
-  @javascript
   Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel
     Given I am logged in as "Peter"
     And  I am on the "tablet" channel page
     And I change the "Locales" to "Breton (France)"
     And I press the "Save" button
     When I am on the locales page
-    And I filter by "Activated" with value "yes"
+    And I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 2 elements
     And I should see locales "en_US" and "br_FR"
     When I am on the "tablet" channel page
@@ -55,4 +54,19 @@ Feature: Edit a channel
     Given I am logged in as "Julien"
     And  I am on the "tablet" channel page
     And I fill in the following information:
-      | Length | Kilomètre |
+      | Longueur | Kilomètre |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6025
+  Scenario: Successfully replace a channel locale by another one when there is only one channel
+    Given I am logged in as "Peter"
+    And I am on the channels page
+    And I click on the "Delete" action of the row which contains "tablet"
+    And I confirm the deletion
+    And I am on the "mobile" channel page
+    When I change the "Locales" to "German (Germany)"
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
+    When I am on the locales page
+    And I filter by "activated" with operator "equals" and value "yes"
+    Then the grid should contain 1 elements
+    And I should see locales "de_DE"

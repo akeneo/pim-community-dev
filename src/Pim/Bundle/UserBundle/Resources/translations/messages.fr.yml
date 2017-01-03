@@ -2,10 +2,10 @@ pim_user:
   user:
     tab:
       general.title: Général
-      additional.title: Supplémentaire
+      additional.title: Complément
       group_and_role.title: Groupes et rôles
       password.title: Mot de passe
-      business_unit.title: Entités commerciales
+      business_unit.title: Business Units
       email_synchronization.title: Paramètres de synchronisation de messagerie
       interfaces.title: Interfaces
 oro.user.controller:
@@ -19,7 +19,7 @@ oro.user.grid.users:
     email: Email
     firstName: Prénom
     lastName: Nom
-    createdAt: Crée le
+    createdAt: Créé le
     updatedAt: Mis à jour le
     enabled: État
 oro.user.grid.roles:
@@ -60,7 +60,7 @@ Business Units: Entités commerciales
 Email synchronization settings: Paramètres de synchronisation de messagerie
 Host: Hôte
 Port: Port
-Ssl: SSL
+Ssl: SSL 
 Last logged in: Dernière connexion
 Login count: Nombre de connexions
 Additional Information: Informations complémentaires
@@ -84,7 +84,7 @@ user:
   default_product_grid_view:
     label: Vue par défaut de la grille des produits
   default_grid_view:
-    none: Aucun
+    none: Aucune
 Role: Rôle
 Owner: Propriétaire
 General: Général

@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Step;
 
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\AbstractStep;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner;
-use Pim\Bundle\EnrichBundle\Step\MassEditRemoveTemporaryMediaStep;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * BatchBundle Step for standard mass edit products
@@ -17,11 +18,24 @@ use Pim\Bundle\EnrichBundle\Step\MassEditRemoveTemporaryMediaStep;
  */
 class MassEditStep extends AbstractStep
 {
-    /** @var array */
-    protected $configuration;
-
     /** @var StepExecutionAwareInterface */
     protected $cleaner;
+
+    /**
+     * @param string                   $name
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param JobRepositoryInterface   $jobRepository
+     * @param TemporaryFileCleaner     $cleaner
+     */
+    public function __construct(
+        $name,
+        EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository,
+        TemporaryFileCleaner $cleaner
+    ) {
+        parent::__construct($name, $eventDispatcher, $jobRepository);
+        $this->cleaner = $cleaner;
+    }
 
     /**
      * {@inheritdoc}
@@ -29,33 +43,7 @@ class MassEditStep extends AbstractStep
     protected function doExecute(StepExecution $stepExecution)
     {
         $this->cleaner->setStepExecution($stepExecution);
-        $this->cleaner->execute($this->configuration);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        $this->configuration = $config;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurableStepElements()
-    {
-        return [];
+        $this->cleaner->execute();
     }
 
     /**

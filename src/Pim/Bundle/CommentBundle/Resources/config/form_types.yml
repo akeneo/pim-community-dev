@@ -3,10 +3,10 @@ parameters:
 
 services:
     pim_comment.form.type.comment:
-        class: %pim_comment.form.type.comment.class%
+        class: '%pim_comment.form.type.comment.class%'
         arguments:
             - '@pim_comment.repository.comment'
             - '@translator'
-            - %pim_comment.entity.comment.class%
+            - '%pim_comment.entity.comment.class%'
         tags:
             - { name: form.type, alias: pim_comment_comment }

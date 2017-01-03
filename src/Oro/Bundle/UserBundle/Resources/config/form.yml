@@ -56,76 +56,76 @@ services:
 
     oro_user.form.type.user.api:
         scope: request
-        class:                        %oro_user.form.type.user.api.class%
+        class:                        '%oro_user.form.type.user.api.class%'
         arguments:                    ["@security.token_storage", "@request"]
         tags:
             - { name: form.type, alias: user }
 
     oro_user.form.type.change_password:
-        class: %oro_user.form.type.change_password.class%
+        class: '%oro_user.form.type.change_password.class%'
         arguments:                    ["@oro_user.change_password.subscriber"]
         tags:
              - { name: form.type, alias: oro_change_password }
 
     oro_user.form.type.role.api:
-        class:                        %oro_user.form.type.role.api.class%
+        class:                        '%oro_user.form.type.role.api.class%'
         tags:
             - { name: form.type, alias: role }
 
     oro_user.form.type.group:
-        class:                        %oro_user.form.type.group.class%
+        class:                        '%oro_user.form.type.group.class%'
         tags:
             - { name: form.type, alias: oro_user_group }
 
     oro_user.form.type.group.api:
-        class:                        %oro_user.form.type.group.api.class%
+        class:                        '%oro_user.form.type.group.api.class%'
         tags:
             - { name: form.type, alias: group }
 
     oro_user.form.type.reset:
-        class:                        %oro_user.form.type.reset.class%
-        arguments:                    [%oro_user.entity.class%]
+        class:                        '%oro_user.form.type.reset.class%'
+        arguments:                    ['%oro_user.entity.class%']
         tags:
             - { name: form.type, alias: oro_user_reset }
 
     oro_user.form.handler.user:
-        class:                        %oro_user.form.handler.user.class%
+        class:                        '%oro_user.form.handler.user.class%'
         scope:                        request
         arguments:                    ["@oro_user.form.user", "@request", "@oro_user.manager"]
         tags:
             - { name: oro_tag.tag_manager }
 
     oro_user.form.handler.user.api:
-        class:                        %oro_user.form.handler.user.class%
+        class:                        '%oro_user.form.handler.user.class%'
         scope:                        request
         arguments:                    ["@oro_user.form.user.api", "@request", "@oro_user.manager"]
         tags:
             - { name: oro_tag.tag_manager }
 
     oro_user.form.handler.role.api:
-        class:                        %oro_user.form.handler.role.class%
+        class:                        '%oro_user.form.handler.role.class%'
         scope:                        request
         arguments:                    ["@oro_user.form.role.api", "@request", "@doctrine.orm.entity_manager"]
 
     oro_user.form.handler.group:
-        class:                        %oro_user.form.handler.group.class%
+        class:                        '%oro_user.form.handler.group.class%'
         scope:                        request
         arguments:                    ["@oro_user.form.group", "@request", "@doctrine.orm.entity_manager"]
 
     oro_user.form.handler.group.api:
-        class:                        %oro_user.form.handler.group.class%
+        class:                        '%oro_user.form.handler.group.class%'
         scope:                        request
         arguments:                    ["@oro_user.form.group.api", "@request", "@doctrine.orm.entity_manager"]
 
     oro_user.form.handler.reset:
-        class:                        %oro_user.form.handler.reset.class%
+        class:                        '%oro_user.form.handler.reset.class%'
         scope:                        request
         arguments:                    ["@oro_user.form.reset", "@request", "@oro_user.manager"]
 
     oro_user.form.handler.acl_role:
-        class:                        %oro_user.form.handler.acl_role.class%
+        class:                        '%oro_user.form.handler.acl_role.class%'
         scope:                        prototype
-        arguments:                    ["@form.factory", %oro_user.privileges%]
+        arguments:                    ["@form.factory", '%oro_user.privileges%']
         calls:
                     - [setAclManager, ["@oro_security.acl.manager"]]
                     - [setEntityManager, ["@doctrine.orm.entity_manager"]]

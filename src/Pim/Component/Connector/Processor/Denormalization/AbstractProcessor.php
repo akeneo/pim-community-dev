@@ -2,15 +2,14 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Pim\Component\Connector\Exception\MissingIdentifierException;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -23,9 +22,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractProcessor extends AbstractConfigurableStepElement implements
-    ItemProcessorInterface,
-    StepExecutionAwareInterface
+abstract class AbstractProcessor implements StepExecutionAwareInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -39,14 +36,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     public function __construct(IdentifiableObjectRepositoryInterface $repository)
     {
         $this->repository = $repository;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
     }
 
     /**
@@ -74,7 +63,11 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
         $references = [];
         foreach ($properties as $property) {
             if (!isset($data[$property])) {
-                throw new MissingIdentifierException();
+                throw new MissingIdentifierException(sprintf(
+                    'Missing identifier column "%s". Columns found: %s.',
+                    $property,
+                    implode(', ', array_keys($data))
+                ));
             }
             $references[] = $data[$property];
         }
@@ -97,7 +90,12 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        throw new InvalidItemException($message, $item, [], 0, $previousException);
+        $invalidItem = new FileInvalidItem(
+            $item,
+            ($this->stepExecution->getSummaryInfo('read_lines') + 1)
+        );
+
+        throw new InvalidItemException($message, $invalidItem, [], 0, $previousException);
     }
 
     /**
@@ -118,29 +116,12 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        $errors = [];
-        /** @var ConstraintViolationInterface $violation */
-        foreach ($violations as $violation) {
-            // TODO re-format the message, property path doesn't exist for class constraint
-            // for instance cf VariantGroupAxis
-            $invalidValue = $violation->getInvalidValue();
-            if ($invalidValue instanceof ProductPriceInterface) {
-                $invalidValue = sprintf('%s %s', $invalidValue->getData(), $invalidValue->getCurrency());
-            } elseif (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
-                $invalidValue = (string) $invalidValue;
-            } elseif (is_object($invalidValue)) {
-                $invalidValue = get_class($invalidValue);
-            } elseif (is_array($invalidValue)) {
-                $invalidValue = implode(', ', $invalidValue);
-            }
-            $errors[] = sprintf(
-                "%s: %s: %s\n",
-                $violation->getPropertyPath(),
-                $violation->getMessage(),
-                $invalidValue
-            );
-        }
-
-        throw new InvalidItemException(implode("\n", $errors), $item, [], 0, $previousException);
+        throw new InvalidItemFromViolationsException(
+            $violations,
+            new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+            [],
+            0,
+            $previousException
+        );
     }
 }

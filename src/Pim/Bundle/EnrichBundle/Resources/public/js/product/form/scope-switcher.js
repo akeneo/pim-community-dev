@@ -29,11 +29,10 @@ define(
                 FetcherRegistry.getFetcher('channel')
                     .fetchAll()
                     .done(function (channels) {
-                        if (!this.getParent().getScope()) {
-                            this.getParent().setScope(channels[0].code, {silent: true});
-                        }
+                        var params = { scopeCode: channels[0].code };
+                        this.trigger('pim_enrich:form:scope_switcher:pre_render', params);
 
-                        var scope = _.findWhere(channels, { code: this.getParent().getScope() });
+                        var scope = _.findWhere(channels, { code: params.scopeCode });
 
                         this.$el.html(
                             this.template({
@@ -54,7 +53,10 @@ define(
              * @param {Event} event
              */
             changeScope: function (event) {
-                this.getParent().setScope(event.currentTarget.dataset.scope);
+                this.trigger('pim_enrich:form:scope_switcher:change', {
+                    scopeCode: event.currentTarget.dataset.scope
+                });
+
                 this.render();
             }
         });

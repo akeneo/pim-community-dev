@@ -58,7 +58,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
         fetch: function (identifier, options) {
             options = options || {};
 
-            if (!(identifier in this.entityPromises)) {
+            if (!(identifier in this.entityPromises) || false === options.cached) {
                 var deferred = $.Deferred();
 
                 if (this.options.urls.get) {
@@ -67,7 +67,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                     ).then(_.identity).done(function (entity) {
                         deferred.resolve(entity);
                     }).fail(function () {
-                        console.log(arguments);
+                        console.error('Error during fetching: ', arguments);
 
                         return deferred.reject();
                     });
@@ -111,7 +111,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                     this.getIdentifierField()
                 ).then(function (entities, identifierCode) {
                     _.each(entities, function (entity) {
-                        this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity);
+                        this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity).promise();
                     }.bind(this));
 
                     return this.getObjects(_.pick(this.entityPromises, identifiers));

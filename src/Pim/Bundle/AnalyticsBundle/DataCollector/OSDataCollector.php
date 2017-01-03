@@ -5,7 +5,7 @@ namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 use Akeneo\Component\Analytics\DataCollectorInterface;
 
 /**
- * Class OSDataCollector
+ * Collects basic data (OS and php version) about the host system.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -18,6 +18,10 @@ class OSDataCollector implements DataCollectorInterface
      */
     public function collect()
     {
-        return ['os_version' => php_uname(), 'php_version' => phpversion()];
+        return [
+            'os_version'     => php_uname(),
+            'php_version'    => phpversion(),
+            'php_extensions' => get_loaded_extensions(),
+        ];
     }
 }

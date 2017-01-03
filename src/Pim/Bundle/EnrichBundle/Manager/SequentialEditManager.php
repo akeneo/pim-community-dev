@@ -4,11 +4,11 @@ namespace Pim\Bundle\EnrichBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
 use Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -51,17 +51,17 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
         SaverInterface $saver,
         RemoverInterface $remover
     ) {
-        $this->repository        = $repository;
-        $this->factory           = $factory;
+        $this->repository = $repository;
+        $this->factory = $factory;
         $this->productRepository = $productRepository;
-        $this->saver             = $saver;
-        $this->remover           = $remover;
+        $this->saver = $saver;
+        $this->remover = $remover;
     }
 
     /**
     * {@inheritdoc}
     *
-    * @deprecated will be removed in 1.6 please use SaverInterface::save
+    * @deprecated will be removed in 1.7 please use SaverInterface::save
     */
     public function save($object, array $options = [])
     {
@@ -84,7 +84,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.6 please use RemoverInterface::remove
+     * @deprecated will be removed in 1.7 please use RemoverInterface::remove
      */
     public function remove($object, array $options = [])
     {
@@ -128,7 +128,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
         $currentKey = array_search($product->getId(), $objectSet);
 
         $previous = $this->findPrevious($sequentialEdit, $currentKey);
-        $next     = $this->findNext($sequentialEdit, $currentKey);
+        $next = $this->findNext($sequentialEdit, $currentKey);
 
         $sequentialEdit->setCurrent($product);
         $sequentialEdit->setPrevious($previous);

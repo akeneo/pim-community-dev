@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DashboardBundle\Widget;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
+use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 
 /**
  * Widget to display completeness of products over channels and locales
@@ -27,7 +27,7 @@ class CompletenessWidget implements WidgetInterface
     public function __construct(CompletenessRepositoryInterface $completenessRepo, LocaleHelper $localeHelper)
     {
         $this->completenessRepo = $completenessRepo;
-        $this->localeHelper     = $localeHelper;
+        $this->localeHelper = $localeHelper;
     }
 
     /**

@@ -1,6 +1,8 @@
 Job: Tâche
 Connector: Connecteur
 pim_import_export:
+  job: Tâche
+  connector: Connecteur
   status:
     - Prêt
   batch_status:
@@ -16,7 +18,8 @@ pim_import_export:
     archive: Télécharger l'archive générée|Télécharger les archives générées
     output: Télécharger le fichier généré|Télécharger les fichiers générés
     input: Télécharger le fichier lu|Télécharger les fichiers lus
-    invalid: Télécharger données invalides
+    invalid_xlsx: télécharger les données invalides
+    invalid_csv: télécharger les données invalides
   notification:
     export:
       error: L'export de <strong>%label%</strong> a échoué
@@ -27,6 +30,11 @@ pim_import_export:
       warning: L'import de <strong>%label%</strong> est terminé mais il y a des avertissements
       success: L'import de <strong>%label%</strong> est terminé
   list: Sélectionner une tâche
+  job_profile:
+    tab:
+      property.title: Propriétés générales
+      history.title: Historique
+      job_content.title: Contenu
 pim_title.export_profile.index: Gestion des profils d'export
 pim_title.export_profile.edit: Profil d'export %job.label% | Modification
 pim_title.export_profile.show: Profil d'export %job.label% | Visualisation
@@ -60,7 +68,11 @@ pim_importexport:
       edit: Modifier un profil d'export
       remove: Supprimer un profil d'export
       launch: Lancer un profil d'export
+      property_edit: Modifier les propriétés générales d'un profil d'export
+      property_show: Voir les propriétés générales d'un profil d'export
       history: Afficher l'historique du profil d'export
+      content_edit: Modifier le contenu d'un profil d'export
+      content_show: Voir le contenu d'un profil d'export
     import_profile:
       index: Visualiser la liste des profils d'import
       create: Créer un profil d'import
@@ -86,7 +98,6 @@ btn:
   create:
     export profile: Créer un profil d'export
     import profile: Créer un profil d'import
-Upload and import: Upload et importation
 Upload and import now: Télécharger et importer maintenant
 import now: Importer maintenant
 export now: Exporter maintenant
@@ -116,6 +127,7 @@ History: Historique
 pane.accordion:
   properties: Propriétés
   global_settings: Paramètres généraux
+  filters: Filtres
 popin.create:
   export_profile.title: Créer un nouveau profil d'export
   import_profile.title: Créer un nouveau profil d'import
@@ -143,7 +155,7 @@ Status: État
 Summary: Résumé
 Start: Début
 End: Fin
-set_attribute_requirements: Choisir les attributs requis
+set_attribute_requirements: Configurer les exigences d'attributs des familles
 COMPLETED: TERMINÉ
 STARTING: DÉMARRAGE EN COURS
 STARTED: DÉMARRÉ
@@ -152,3 +164,4 @@ STOPPED: ARRÊTÉ
 FAILED: EN ÉCHEC
 ABANDONED: ABANDONNÉ
 UNKNOWN: INCONNU
+warning.label: Attention

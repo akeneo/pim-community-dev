@@ -15,6 +15,8 @@ confirmation:
     role: 确定要删除这个角色吗？
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: 批量操作
     quick_export:
       label: 快速导出
   mass_action:
@@ -26,21 +28,21 @@ flash:
   item:
     removed: 项目已删除
   association type:
-    removed: 关联类型已删除
+    removed: 相关类型已删除
   attribute:
     removed: 属性已删除
   family:
-    removed: 产品族已删除
+    removed: 分类已删除
   product:
     removed: 产品已删除
   channel:
-    removed: 通道已删除
+    removed: 频道已删除
   group:
     removed: 分组已删除
   variant group:
-    removed: 属性组已删除
+    removed: 多个组已删除
   group type:
-    removed: 分组类型已删除
+    removed: 组类型已删除
   import profile:
     removed: 导入配置文件已删除
   export profile:
@@ -67,6 +69,7 @@ error:
     attribute_option: 在属性选项删除错误
   saving:
     attribute_option: 无法保存属性选项
+    export_profile: 无法保存导出配置文件。请检查是否配置好所有的筛选器
 alert:
   attribute_option:
     error_occured_during_submission: 表单提交给服务器时发生错误
@@ -88,12 +91,21 @@ Classify the product: 产品分类
 Delete the product: 删除产品
 Change status: 更改状态
 Toggle status: 切换状态
-pim.grid.mass_action.quick_export.csv_all: CSV （所有属性）
-pim.grid.mass_action.delete: 删除
-pim.grid.mass_action.mass_edit: 批量编辑
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV （所有属性）
+        csv_grid_context: CSV （网格内容）
+        xlsx_all: Excel （所有属性）
+        xlsx_grid_context: Excel （网格上下文）
+      delete: 删除产品
+      mass_edit: 更改产品信息
+      category_edit: 在类别中移动产品
+      sequential_edit: 按顺序编辑产品
 jstree.create: 创建
-switch_on: "是"
-switch_off: "否　"
+switch_on: "确定"
+switch_off: "取消"
 pim_enrich:
   item:
     list:
@@ -134,6 +146,7 @@ pim_enrich:
         property: 属性
         old_values: 原值
         new_values: 新值
+        actions: 操作
       info:
         deletion_successful: 产品被成功删除。
         deletion_failed: 产品不能被删除。
@@ -146,7 +159,7 @@ pim_enrich:
       error:
         upload: 上传文件时发生错误
       meta:
-        created: 已创建
+        created: 创建
         created_by: 由
         updated_by: 由
         updated: 上次更新
@@ -180,15 +193,43 @@ pim_enrich:
         channel_locale_unavailable: 这个可本地化的字段不能用于本地化语言 '{{ locale }}' 和 '{{ channel }}' 通道
       media:
         upload: 拖放式操作可上传或点击这里
+      create_popin:
+        title: 创建新商品
+        labels:
+          family: 选择一个品类
+          save: 保存
+          cancel: 取消
     attribute_option:
       code: 代码
       label: 标签
+    variant_group:
+      title: 款式组
+      info:
+        deletion_successful: 款式组已成功删除。
+        deletion_failed: 款式组不能被删除。
+        update_successful: 款式组已更新
+        update_failed: 款式组不能被删除。
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - 字段
+        already_in_upload: 在针对本地化语言"{{ locale }}"和"{{ scope }}"范围中的这个属性中，一个文件已经在上传。
+        no_attributes: 这个款式组还没有属性
+      btn:
+        save: 保存
+      meta:
+        product_count: 商品
+        created: 已创建
+        created_by: '创建者:'
+        updated: 已更新
+        updated_by: 更新者：
   confirmation:
     leave: 你确定你要离开此页面？
     discard_changes: 如果你离开页面，将丢失更改 {{ entity }}。
     delete_item: 确定删除
+    delete:
+      attribute: 你确定你想要从产品中删除此属性？
   info:
-    not_applicable: 不适用
+    not_applicable: N/A
     entity:
       updated: 更新未保存。
   error:
@@ -197,6 +238,7 @@ pim_enrich:
     not_allowed: 你不是允许访问此页
     error_occured: 在页面加载时出错
   form:
+    required: '（必填）'
     product:
       tab:
         associations:
@@ -210,7 +252,7 @@ pim_enrich:
           title: 属性
           btn:
             add: 增加
-            add_attributes: 添加属性
+            add_attributes: 增加属性
           info:
             search_attributes: 搜索...
             no_available_attributes: 没有需要添加的属性
@@ -263,6 +305,164 @@ pim_enrich:
       switch:
         "no": 否　
         "yes": 是
+    variant_group:
+      tab:
+        properties:
+          title: 属性
+          general: 常规属性
+          code: 代码
+          type: 类型
+          axis: 轴
+          label_translations: 标签翻译
+        history:
+          title: 历史
+        products:
+          title: 商品
+        attributes:
+          title: 属性
+    common:
+      tab:
+        attributes:
+          btn:
+            add: 增加
+            add_attributes: 添加属性
+          info:
+            search_attributes: 搜索...
+            no_available_attributes: 没有需要添加的属性
+  export:
+    product:
+      data:
+        title: 产品过滤：
+      structure:
+        title: 筛选数据
+        attributes:
+          title: 属性
+      filter:
+        channel:
+          title: 通道
+          help: 渠道定义了产品值的范围、 用于选择数据的本地化语言，以及用来选择产品的目录树。
+        locales:
+          title: 本地化语言
+          help: 本地化语言定义了要导出的本地化产品值。例如， 仅法国的产品信息
+        attributes:
+          title: 属性
+          edit: 编辑
+          label: '{0} 所有产品 |{1} 一类别选择 |]1，Inf [{{ count }} 类别选择'
+          help: 选择要导出的产品信息。例如︰ 仅导出有技术类的属性。
+          empty: 将导出所有属性
+          modal:
+            apply: 应用
+            cancel: 取消
+            title: 属性选择
+        attributes_selector:
+          attribute_group: 属性组
+          attributes: 在 {{ attributeCount }} 属性中搜索
+          selected: 选定的属性
+          clear: 清除
+          all_group: 所有群组
+          empty_selection: 将导出所有属性
+        family:
+          title: 产品族
+          help: 按品类选中产品进行导出。例如︰ 只导出鞋和衣服。
+          operators:
+            IN: 在列表中
+            NOT IN: 不在列表中
+            EMPTY: 没有品类的产品
+            NOT EMPTY: 有品类的产品
+          empty_selection: 在品类上没有条件
+        updated:
+          title: 时间条件
+          operators:
+            ALL: 日期条件
+            SINCE LAST N DAYS: 在过去 n 天中更新过的产品 (例如， 6)
+            >: 从该日期开始更新过的产品
+            SINCE LAST JOB: 从上次导出后更新过的产品
+        enabled:
+          title: 状态
+          help: 根据它们的状态来选择产品导出。例如，导出所有状态的产品。
+          value:
+            all: 所有
+            enabled: 已启用
+            disabled: 已禁用
+        completeness:
+          title: 完成度
+          help: 根据它们的完成度来选择产品导出
+          operators:
+            ALL: 在完成度上没有条件
+            >=: 完成至少一个选定的本地化语言
+            GREATER OR EQUALS THAN ON ALL LOCALES: 在所有选择的本地化语言中是完整的
+            LOWER THAN ON ALL LOCALES: 在所有选择的本地化语言中是不完整的
+          empty_selection: 选择一个品类
+        category:
+          title: 分类
+          help: 使用在目录树上 （由渠道中定义） 的产品类别来选择要导出的产品
+        identifier:
+          title: 标识
+          help: 你想要导出的产品标识，用逗号，空格或换行来隔开
+        metric:
+          operators:
+            =: 等于
+            !=: 不等于
+            >=: 大于或等于
+            >: 大于
+            <=: 低于或等于
+            <: 低于
+            EMPTY: 为空
+            NOT EMPTY: 不是空的
+        string:
+          operators:
+            ALL: 所有
+            CONTAINS: 包含
+            DOES NOT CONTAIN: 未包含
+            =: 等于
+            STARTS WITH: 开始于
+            ENDS WITH: 结束于
+            EMPTY: 为空
+            NOT EMPTY: 不是空的
+        price-collection:
+          operators:
+            =: 等于
+            !=: 不等于
+            >=: 大于或等于
+            >: 大于
+            <=: 低于或等于
+            <: 低于
+            EMPTY: 为空
+            NOT EMPTY: 不是空的
+        multi_select:
+          operators:
+            IN: 在列表中
+            EMPTY: 为空
+            NOT EMPTY: 不是空的
+        media:
+          operators:
+            CONTAINS: 包含
+            DOES NOT CONTAIN: 未包含
+            =: 等于
+            STARTS WITH: 开始于
+            ENDS WITH: 结束于
+            EMPTY: 为空
+            NOT EMPTY: 不是空的
+        date:
+          operators:
+            >: 大于
+            <: 低于
+            =: 等于
+            !=: 不等于
+            BETWEEN: 介于
+            NOT BETWEEN: 不介于
+            EMPTY: 为空
+            NOT EMPTY: 不是空的
+        number:
+          operators:
+            =: 等于
+            !=: 不等于
+            >=: 大于或等于
+            >: 大于
+            <=: 低于或等于
+            <: 低于
+            EMPTY: 为空
+            NOT EMPTY: 不是空的
   mass_edit_action:
     edit_common_attributes:
       description: 使用产品网格中的本地化语言 <span class="highlight">{{ locale }}</span> 和通道 <span class="highlight">{{ channel }}</span>对应的数据，对所选的产品属性进行编辑

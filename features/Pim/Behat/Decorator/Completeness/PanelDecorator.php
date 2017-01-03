@@ -19,73 +19,79 @@ class PanelDecorator extends ElementDecorator
 
     /** @var array Selectors to ease find */
     protected $selectors = [
-        'Completeness blocks' => [
-            'css'        => '.completeness-block',
-            'decorators' => [
-                'Pim\Behat\Decorator\Completeness\BlockDecorator'
-            ]
-        ]
+        'Completeness blocks' => ['css' => '.completeness-block']
     ];
 
     /**
-     * @param string $locale en_US, fr_FR, etc.
-     *
-     * @return NodeElement
-     */
-    public function findCompletenessForLocale($locale)
-    {
-        $block = $this->findBlock(
-            sprintf($this->selectors['Completeness blocks']['css'] . ' header .locale[data-locale="%s"]', $locale)
-        );
-        $completeness = $block->getParent()->getParent();
+     * Return Completeness Panel as an array
+     * [
+     *      'en_US' => [
+     *          'opened'   => true,
+     *          'position' => 1,
+     *          'data'     => [
+     *              'mobile' => [
+     *                  'ratio'          => '90%',
+     *                  'state'          => 'warning',
+     *                  'missing_values' => [
+     *                      'price' => 'Price'
+     *                  ]
+     *              ]
+     *          ]
+     *      ], ...
+     * ]
 
-        return $this->decorate($completeness, $this->selectors['Completeness blocks']['decorators']);
-    }
-
-    /**
-     * @param int $position Begin to 1
-     *
-     * @throws \LogicException If the nth completeness is not found
-     *
-     * @return null|NodeElement
+     * @return array
      */
-    public function findNthCompleteness($position)
+    public function getCompletenessData()
     {
-        $blocks = $this->findAllBlocks($this->selectors['Completeness blocks']['css']);
-        if (!is_array($blocks) || count($blocks) < $position) {
-            throw new \LogicException(sprintf(
-                'The completeness in position %s has not been found. It seems there is less then %s completenesses',
-                $position,
-                $position
-            ));
+        $completenesses = [];
+
+        $completenessBlocks = $this->findAll('css', $this->selectors['Completeness blocks']['css']);
+        foreach ($completenessBlocks as $position => $block) {
+            $locale = $block->find('css', '.locale')->getAttribute('data-locale');
+            $opened = 'false' === $block->getAttribute('data-closed');
+
+            $completenesses[$locale] = [
+                'opened'   => $opened,
+                'position' => $position + 1,
+                'data'     => [],
+            ];
+
+            $scopeBlocks = $block->findAll('css', '.content > div');
+            foreach ($scopeBlocks as $scopeBlock) {
+                $scope = $scopeBlock->find('css', '.channel')->getAttribute('data-channel');
+                $completenesses[$locale]['data'][$scope] = $this->getScopeData($scopeBlock);
+            }
         }
 
-        return $this->decorate($blocks[$position - 1], $this->selectors['Completeness blocks']['decorators']);
+        return $completenesses;
     }
 
     /**
-     * Spin to know if the panel is available
+     * @param NodeElement $scopeBlock
      *
-     * @param string $selector
-     *
-     * @return NodeElement
+     * @return array
      */
-    protected function findBlock($selector)
+    protected function getScopeData(NodeElement $scopeBlock)
     {
-        return $this->spin(function () use ($selector) {
-            return $this->find('css', $selector);
-        }, 'Can\'t find completeness block in panel');
-    }
+        $ratio = $scopeBlock ? $scopeBlock->find('css', '.literal-progress')->getHtml() : '';
+        $state = $scopeBlock ? explode('-', $scopeBlock->find('css', '.progress')->getAttribute('class'))[1] : '';
 
-    /**
-     * @param string $selector
-     *
-     * @return []NodeElement
-     */
-    protected function findAllBlocks($selector)
-    {
-        return $this->spin(function () use ($selector) {
-            return $this->findAll('css', $selector);
-        }, 'Can\'t find completeness block in panel');
+        $missingValuesBlocks = $scopeBlock ? $scopeBlock->findAll('css', '.missing-attributes [data-attribute]') : [];
+
+        $missingValues = [];
+        if (!empty($missingValuesBlocks)) {
+            foreach ($missingValuesBlocks as $missingValuesBlock) {
+                $attributeCode  = $missingValuesBlock->getAttribute('data-attribute');
+                $attributeLabel = $missingValuesBlock->getHtml();
+                $missingValues[$attributeCode] = $attributeLabel;
+            }
+        }
+
+        return [
+            'ratio'          => $ratio,
+            'state'          => $state,
+            'missing_values' => $missingValues
+        ];
     }
 }
