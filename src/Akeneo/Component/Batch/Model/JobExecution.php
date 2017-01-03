@@ -80,7 +80,7 @@ class JobExecution
         $this->setExitStatus(new ExitStatus(ExitStatus::UNKNOWN));
         $this->executionContext = new ExecutionContext();
         $this->stepExecutions = new ArrayCollection();
-        $this->createTime = new \DateTime();
+        $this->createTime = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->failureExceptions = [];
     }
 
