@@ -52,6 +52,22 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addFilter('id', '=', '42', []);
     }
 
+    function it_adds_a_field_filter_even_if_an_attribute_is_similar(
+        $repository,
+        $filterRegistry,
+        AttributeInterface $attribute,
+        FieldFilterInterface $filter
+    ) {
+        $repository->findOneBy(['code' => 'id'])->willReturn($attribute);
+        $attribute->getCode()->willReturn('ID');
+        $filterRegistry->getFieldFilter('id')->willReturn($filter);
+        $filter->supportsOperator('=')->willReturn(true);
+        $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $filter->addFieldFilter('id', '=', '42', 'en_US', 'print')->shouldBeCalled();
+
+        $this->addFilter('id', '=', '42', []);
+    }
+
     function it_adds_an_attribute_filter(
         $repository,
         $filterRegistry,
@@ -59,6 +75,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $repository->findOneBy(['code' => 'sku'])->willReturn($attribute);
+        $attribute->getCode()->willReturn('sku');
         $filterRegistry->getAttributeFilter($attribute)->willReturn($filter);
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
