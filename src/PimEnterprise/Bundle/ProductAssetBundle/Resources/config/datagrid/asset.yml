@@ -104,7 +104,7 @@ datagrid:
                 type:      navigate
                 label:     pimee_product_asset.enrich_asset.grid.edit
                 tab:       pim_product_asset_properties
-                icon:      edit
+                icon:      pencil
                 link:      edit_link
                 rowAction: true
         properties:

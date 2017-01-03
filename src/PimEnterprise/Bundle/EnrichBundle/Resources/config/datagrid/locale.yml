@@ -26,7 +26,7 @@ datagrid:
             edit:
                 type:         navigate
                 label:        Edit locale
-                icon:         edit
+                icon:         pencil
                 link:         edit_link
                 acl_resource: pimee_enrich_locale_edit_permissions
                 rowAction:    true
