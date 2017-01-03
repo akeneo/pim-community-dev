@@ -105,7 +105,15 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFilter($field, $operator, $value, array $context = [])
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier(FieldFilterHelper::getCode($field));
+        $code = FieldFilterHelper::getCode($field);
+        $attribute = $this->attributeRepository->findOneByIdentifier($code);
+
+        // In case of non case sensitive database configuration you can have attributes with code matching a field.
+        // For example "id" would match an attribute named "ID" so we double check here that we are adding the desired
+        // filter (ref PIM-6064)
+        if (null !== $attribute && $attribute->getCode() !== $code) {
+            $attribute = null;
+        }
 
         if (null !== $attribute) {
             $filter = $this->filterRegistry->getAttributeFilter($attribute, $operator);
