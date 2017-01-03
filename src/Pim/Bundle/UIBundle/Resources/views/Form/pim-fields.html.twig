@@ -240,7 +240,7 @@
                         {% endif %}
                     </div>
                     {% if empty %}
-                        {{ form_widget(form.uploadedFile, { attr: { 'class': 'AknMediaField-fileUploaderInput' }}) }}
+                        {{ form_widget(form.uploadedFile, { attr: { 'class': 'AknTextField--fileDropZone' }}) }}
                     {% else %}
                         {{ form_widget(form.uploadedFile, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
                         {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
