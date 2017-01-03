@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\UnknownPropertyException;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -72,7 +73,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
             try {
                 $this->accessor->setValue($associationType, $field, $data);
             } catch (\Exception $e) {
-                throw new InvalidPropertyException($field, "A message");
+                throw new UnknownPropertyException($field, "A message");
             }
         }
     }

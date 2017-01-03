@@ -2,8 +2,8 @@
 
 namespace Akeneo\Component\StorageUtils\Updater;
 
-// catch this exception if you need to get the property with a invalid data
-class InvalidPropertyException extends ObjectUpdaterException
+// catch this exception if you need to get the not available property
+class UnknownPropertyException extends ObjectUpdaterException
 {
     protected $property;
 
