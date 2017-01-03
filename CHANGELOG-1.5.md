@@ -1,3 +1,13 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6064: Fix a grid issue with attribute named ID 
+
+## Technical improvements
+
+- PIM-6064: ProductQueryBuilder addFilter is now case sensitive.
+
 # 1.5.16 (2016-12-28)
 
 ## Bug fixes
