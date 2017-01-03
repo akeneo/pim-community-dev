@@ -18,7 +18,8 @@ interface ObjectUpdaterInterface
      * @param array  $data    The data to update
      * @param array  $options The options to use
      *
-     * @throws \InvalidArgumentException
+     * @throws ObjectUpdaterException
+     * @throws /InvalidArgumentException
      *
      * @return ObjectUpdaterInterface
      */

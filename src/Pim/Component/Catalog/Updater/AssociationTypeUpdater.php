@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Updater\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
@@ -39,7 +40,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
     public function update($associationType, array $data, array $options = [])
     {
         if (!$associationType instanceof AssociationTypeInterface) {
-            throw new \InvalidArgumentException(
+            throw new InvalidObjectException(
                 sprintf(
                     'Expects a "Pim\Component\Catalog\Model\AssociationTypeInterface", "%s" provided.',
                     ClassUtils::getClass($associationType)
@@ -68,7 +69,11 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
                 $translation->setLabel($label);
             }
         } else {
-            $this->accessor->setValue($associationType, $field, $data);
+            try {
+                $this->accessor->setValue($associationType, $field, $data);
+            } catch (\Exception $e) {
+                throw new InvalidPropertyException($field, "A message");
+            }
         }
     }
 }

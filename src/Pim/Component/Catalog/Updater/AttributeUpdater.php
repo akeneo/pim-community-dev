@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\AttributeTypeRegistry;
@@ -55,7 +56,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     public function update($attribute, array $data, array $options = [])
     {
         if (!$attribute instanceof AttributeInterface) {
-            throw new \InvalidArgumentException(
+            throw new InvalidObjectException (
                 sprintf(
                     'Expects a "Pim\Component\Catalog\Model\AttributeInterface", "%s" provided.',
                     ClassUtils::getClass($attribute)
@@ -167,6 +168,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         if (null !== $attributeGroup) {
             $attribute->setGroup($attributeGroup);
         } else {
+            // use InvalidPropertyException with a dedicated static for not existing related object?
             throw new \InvalidArgumentException(sprintf('AttributeGroup "%s" does not exist', $data));
         }
     }
@@ -178,6 +180,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     protected function setType($attribute, $data)
     {
         if (('' === $data) || (null === $data)) {
+            // use InvalidPropertyException with a dedicated static for required property
             throw new \InvalidArgumentException('attributeType must be filled.');
         }
 
@@ -214,10 +217,12 @@ class AttributeUpdater implements ObjectUpdaterInterface
         try {
             new \DateTime($data);
         } catch (\Exception $e) {
+            // use InvalidPropertyException with a dedicated static for expected date
             throw new \InvalidArgumentException(sprintf('Invalid date, "%s" given', $data), 0, $e);
         }
 
         if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+            // use InvalidPropertyException with a dedicated static for expected date in an expected format
             throw new \InvalidArgumentException(
                 sprintf('Attribute expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
             );
