@@ -17,7 +17,7 @@
 
 {% block formContent %}
     {# Requirements grid #}
-    <table class="AknGrid table groups attributes">
+    <table class="AknGrid AknGrid--unclickable table groups attributes">
         <thead>
             <th class="AknGrid-headerCell">{{ 'Label'|trans|upper }}</th>
             {% for channel in form.operation.vars.value.channels %}
