@@ -127,7 +127,7 @@ Feature: Import rules
       sony_beautiful_description:
         priority: 10
         conditions:
-          - field:    SKU
+          - field:    sku
             operator: CONTAINS
             value:    "42"
         actions:
@@ -142,13 +142,13 @@ Feature: Import rules
     rules:
         canon_beautiful_description:
             conditions:
-                - field:    SKU
+                - field:    sku
                   operator: CONTAINS
                   value:    42
                   locale:   en_US
             actions:
                 - type:  set
-                  field: SKU
+                  field: sku
                   value: 42
                   locale: en_US
                   scope: tablet
@@ -160,7 +160,7 @@ Feature: Import rules
                   locale:   en_US
             actions:
                 - type:  set
-                  field: SKU
+                  field: sku
                   value: 42
                   locale: en_US
                   scope: tablet
