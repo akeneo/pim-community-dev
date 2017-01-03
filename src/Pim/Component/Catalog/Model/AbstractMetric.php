@@ -11,9 +11,6 @@ namespace Pim\Component\Catalog\Model;
  */
 abstract class AbstractMetric implements MetricInterface
 {
-    /** @var int|string */
-    protected $id;
-
     /**
      * Store decimal value
      *
@@ -49,25 +46,20 @@ abstract class AbstractMetric implements MetricInterface
      */
     protected $family;
 
-    /** @var ProductValueInterface */
-    protected $value;
-
     /**
-     * {@inheritdoc}
+     * @param string $family
+     * @param string $unit
+     * @param string $data
+     * @param string $baseUnit
+     * @param string $baseData
      */
-    public function getId()
+    public function __construct($family, $unit, $data, $baseUnit, $baseData)
     {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
+        $this->family = $family;
+        $this->unit = $unit;
+        $this->data = $data;
+        $this->baseUnit = $baseUnit;
+        $this->baseData = $baseData;
     }
 
     /**
@@ -81,29 +73,9 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * {@inheritdoc}
      */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getUnit()
     {
         return $this->unit;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUnit($unit)
-    {
-        $this->unit = $unit;
-
-        return $this;
     }
 
     /**
@@ -117,16 +89,6 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * {@inheritdoc}
      */
-    public function setBaseData($baseData)
-    {
-        $this->baseData = $baseData;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBaseUnit()
     {
         return $this->baseUnit;
@@ -135,47 +97,9 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * {@inheritdoc}
      */
-    public function setBaseUnit($baseUnit)
-    {
-        $this->baseUnit = $baseUnit;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFamily()
     {
         return $this->family;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFamily($family)
-    {
-        $this->family = $family;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setValue(ProductValueInterface $value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getValue()
-    {
-        return $this->value;
     }
 
     /**
