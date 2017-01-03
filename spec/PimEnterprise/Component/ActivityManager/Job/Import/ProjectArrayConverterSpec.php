@@ -34,11 +34,11 @@ class ProjectArrayConverterSpec extends ObjectBehavior
             'owner' => 'admin',
             'locale' => 'fr_FR',
             'channel' => 'print',
-            'datagrid_view-columns' => 'my json columns',
-            'datagrid_view-filters' => '/filters',
+            'datagrid_columns' => 'sku,enable,',
+            'datagrid_filters' => '/filters',
         ];
 
-        $mandatoriesField = ['owner', 'label', 'locale', 'channel', 'datagrid_view-columns', 'datagrid_view-filters'];
+        $mandatoriesField = ['owner', 'label', 'locale', 'channel', 'datagrid_columns', 'datagrid_filters'];
 
         $fieldsRequirementChecker->checkFieldsPresence($dataToConvert, $mandatoriesField)
             ->shouldBeCalled();
@@ -59,7 +59,7 @@ class ProjectArrayConverterSpec extends ObjectBehavior
             'locale' => 'fr_FR',
             'channel' => 'print',
             'datagrid_view' => [
-                'columns' => 'my json columns',
+                'columns' => 'sku,enable,',
                 'filters' => '/filters',
             ]
         ]);

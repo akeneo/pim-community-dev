@@ -37,7 +37,7 @@ class ProjectArrayConverter implements ArrayConverterInterface
      */
     public function convert(array $projectData, array $options = [])
     {
-        $mandatoriesField = ['owner', 'label', 'locale', 'channel', 'datagrid_view-columns', 'datagrid_view-filters'];
+        $mandatoriesField = ['owner', 'label', 'locale', 'channel', 'datagrid_columns', 'datagrid_filters'];
 
         $this->fieldsRequirementChecker->checkFieldsPresence($projectData, $mandatoriesField);
         $this->fieldsRequirementChecker->checkFieldsFilling($projectData, $mandatoriesField);
@@ -63,8 +63,8 @@ class ProjectArrayConverter implements ArrayConverterInterface
      */
     protected function convertField($convertedProject, $field, $value)
     {
-        if (false !== strpos($field, 'datagrid_view-', 0)) {
-            list($prefix, $datagridViewColumn) = explode('-', $field);
+        if (false !== strpos($field, 'datagrid_', 0)) {
+            list($prefix, $datagridViewColumn) = explode('_', $field);
             $convertedProject['datagrid_view'][$datagridViewColumn] = $value;
         } elseif ('product_filters' === $field) {
             $convertedProject[$field] = unserialize($value);
