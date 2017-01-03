@@ -48,7 +48,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $product->getId()->willreturn(42);
 
         $connection->insert(
-            'akeneo_activity_manager_completeness_per_attribute_group',
+            'pimee_activity_manager_completeness_per_attribute_group',
             [
                 'product_id' => 42,
                 'channel_id' => 13,
@@ -60,7 +60,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $connection->insert(
-            'akeneo_activity_manager_completeness_per_attribute_group',
+            'pimee_activity_manager_completeness_per_attribute_group',
             [
                 'product_id' => 42,
                 'channel_id' => 13,
@@ -88,7 +88,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $entityManager->getConnection()->willReturn($connection);
 
-        $connection->insert('akeneo_activity_manager_project_product', [
+        $connection->insert('pimee_activity_manager_project_product', [
             'project_id' => 13,
             'product_id' => 37,
         ])->shouldBeCalled();
@@ -102,7 +102,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $connection->executeUpdate(Argument::type('string'), ['project_id' => 40])->shouldBeCalled();
 
-        $connection->delete('akeneo_activity_manager_project_product', [
+        $connection->delete('pimee_activity_manager_project_product', [
             'project_id' => 40,
         ])->shouldBeCalled();
 

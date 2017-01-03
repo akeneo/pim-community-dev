@@ -33,7 +33,7 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
         $connection = $this->entityManager->getConnection();
 
         foreach ($attributeGroupCompleteness as $attributeGroup) {
-            $connection->insert('akeneo_activity_manager_completeness_per_attribute_group', [
+            $connection->insert('pimee_activity_manager_completeness_per_attribute_group', [
                 'product_id'                                 => $product->getId(),
                 'channel_id'                                 => $project->getChannel()->getId(),
                 'locale_id'                                  => $project->getLocale()->getId(),
@@ -51,7 +51,7 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     {
         $connection = $this->entityManager->getConnection();
 
-        $connection->insert('akeneo_activity_manager_project_product', [
+        $connection->insert('pimee_activity_manager_project_product', [
             'project_id' => $project->getId(),
             'product_id' => $product->getId(),
         ]);
@@ -67,14 +67,14 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
 
         $sql = <<<SQL
 DELETE `cag`
-FROM `akeneo_activity_manager_completeness_per_attribute_group` AS `cag`
-LEFT JOIN `akeneo_activity_manager_project_product` AS `pp` 
+FROM `pimee_activity_manager_completeness_per_attribute_group` AS `cag`
+LEFT JOIN `pimee_activity_manager_project_product` AS `pp` 
 	ON `pp`.`product_id` = `cag`.`product_id`
 WHERE `pp`.`project_id` = :project_id
 SQL;
 
         $connection->executeUpdate($sql, ['project_id' => $projectId]);
-        $connection->delete('akeneo_activity_manager_project_product', [
+        $connection->delete('pimee_activity_manager_project_product', [
             'project_id' => $projectId,
         ]);
     }

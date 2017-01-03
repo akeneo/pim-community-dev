@@ -39,7 +39,7 @@ services:
         class: '%pimee_activity_manager.repository.pre_processing.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - 'akeneo_activity_manager_completeness_per_attribute_group'
+            - 'pimee_activity_manager_completeness_per_attribute_group'
 
     ### Notifications
     pimee_activity_manager.factory.project_calculation_notification:

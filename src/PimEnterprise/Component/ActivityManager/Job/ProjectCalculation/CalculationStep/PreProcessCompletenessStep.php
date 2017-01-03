@@ -18,9 +18,9 @@ use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementReposito
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 
 /**
- * Fill the sql table used to return the project completeness.
+ * Fill in the sql table used to return the project completeness.
  *
- * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class PreProcessCompletenessStep implements CalculationStepInterface
 {
