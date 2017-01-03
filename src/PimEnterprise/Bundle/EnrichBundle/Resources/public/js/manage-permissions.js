@@ -31,7 +31,11 @@ define(
 
             $(opts.elementId + ' select').on('change', function (e) {
                 var permissionId = 'change-' + $(this).attr('id') + '-';
-                var permissionLabel = $.trim($(this).parents('.control-group').children('label').text()).toLowerCase();
+                var permissionLabel = $.trim(
+                    $(this).closest('.AknFieldContainer')
+                        .find('label:first')
+                        .text()
+                    ).toLowerCase();
 
                 if (!_.isUndefined(e.added)) {
                     permissionId += e.added.id;
