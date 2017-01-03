@@ -19,7 +19,6 @@ interface ObjectUpdaterInterface
      * @param array  $options The options to use
      *
      * @throws ObjectUpdaterException
-     * @throws /InvalidArgumentException
      *
      * @return ObjectUpdaterInterface
      */
