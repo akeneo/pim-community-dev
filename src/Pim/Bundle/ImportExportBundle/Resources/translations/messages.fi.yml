@@ -13,6 +13,7 @@ pim_import_export:
     7: HYLÄTTY
     8: TUNTEMATON
   download_archive:
+    archive: lataa luotu arkisto|lataa luodut arkistot
     output: lataus loi tiedoston|latauksien luomat tiedostot
     input: lataus lukema tiedosto|latauksien lukemat tiedostot
     invalid: lataa virheellisiä tietoja

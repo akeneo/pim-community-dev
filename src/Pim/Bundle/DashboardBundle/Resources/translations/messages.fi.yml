@@ -5,6 +5,7 @@ pim_dashboard:
     product: Tuotteiden hallinta
     category: Kategorioiden hallinta
     attribute: Attribuuttien hallinta
+    family: Tuoteperheiden hallinta
   widget:
     error:
       title: Virhe ladatessa widgettiä
