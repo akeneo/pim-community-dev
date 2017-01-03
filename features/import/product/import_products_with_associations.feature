@@ -164,9 +164,9 @@ Feature: Execute a job
       | SKU-002 | sku-002    |
       | SKU-003 | sku-003    |
     And the following associations for the product "SKU-001":
-      | type   | product     |
-      | X_SELL | SKU-002     |
-      | UPSELL | SKU-002     |
+      | type   | products |
+      | X_SELL | SKU-002  |
+      | UPSELL | SKU-002  |
     And the following CSV file to import:
       """
       sku;UPSELL-products
