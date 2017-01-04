@@ -12,43 +12,51 @@ namespace Pim\Component\Catalog\Model;
 interface MetricInterface
 {
     /**
-     * Get base unit
+     * Gets the metric base unit (standard unit of the measure family).
      *
      * @return string
      */
     public function getBaseUnit();
 
     /**
-     * Get base data
+     * Gets the metric base data (amount converted according to the
+     * standard unit of the measure family).
      *
      * @return float
      */
     public function getBaseData();
 
     /**
-     * Get used unit
+     * Gets used unit.
      *
      * @return string
      */
     public function getUnit();
 
     /**
-     * Get data
+     * Gets the metric amount.
      *
      * @return float
      */
     public function getData();
 
     /**
-     * Get family
+     * Gets the measure family of the metric.
      *
      * @return string
      */
     public function getFamily();
 
     /**
-     * To string
+     * Checks if the metric is equal to another one.
      *
+     * @param MetricInterface $metric
+     *
+     * @return bool
+     */
+    public function isEqual(MetricInterface $metric);
+
+    /**
      * @return string
      */
     public function __toString();
