@@ -40,7 +40,6 @@ css:
         - bundles/pimui/less/components/grid/FilterBox.less
         - bundles/pimui/less/components/grid/FilterChoice.less
         - bundles/pimui/less/components/grid/FilterDate.less
-        - bundles/pimui/less/components/grid/FilterMetric.less
         - bundles/pimui/less/components/grid/Grid.less
         - bundles/pimui/less/components/grid/GridsLine.less
         - bundles/pimui/less/components/grid/GridContainer.less

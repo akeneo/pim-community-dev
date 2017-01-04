@@ -29,7 +29,7 @@
                         {% for attribute in group.attributes %}
                             <tr class="AknGrid-bodyRow">
                                 {% if sortGranted %}
-                                    <td class="AknGrid-bodyCell AknGrid-bodyCell--checkbox">
+                                    <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
                                         <span class="handle">
                                             <i class="icon-reorder"></i>
                                             <input name="{{ attribute.id }}" type="hidden" value="{{ attribute.sortOrder }}">
