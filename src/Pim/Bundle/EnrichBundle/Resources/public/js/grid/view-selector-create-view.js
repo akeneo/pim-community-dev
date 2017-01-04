@@ -1,6 +1,9 @@
 'use strict';
 
 /**
+ * Create extension for the Datagrid View Selector.
+ * It displays a button near the selector to allow the user to create a new view.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -15,8 +18,6 @@ define(
         'text!pim/template/grid/view-selector/create-view',
         'text!pim/template/grid/view-selector/create-view-label-input',
         'pim/datagrid/state',
-        'pim/dialog',
-        'routing',
         'pim/saver/datagrid-view',
         'oro/messenger'
     ],
@@ -29,8 +30,6 @@ define(
         template,
         templateInput,
         DatagridState,
-        Dialog,
-        Routing,
         DatagridViewSaver,
         messenger
     ) {
@@ -46,20 +45,11 @@ define(
             /**
              * {@inheritdoc}
              */
-            configure: function () {
-                //this.listenTo(this.getRoot(), 'grid:view-selector:state-changed', this.onDatagridStateChange);
-
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             render: function () {
                 if ('view' !== this.getRoot().currentViewType) {
                     this.$el.html('');
 
-                    return;
+                    return this;
                 }
 
                 this.$el.html(this.template({
@@ -67,6 +57,8 @@ define(
                 }));
 
                 this.$('[data-toggle="tooltip"]').tooltip();
+
+                return this;
             },
 
             /**

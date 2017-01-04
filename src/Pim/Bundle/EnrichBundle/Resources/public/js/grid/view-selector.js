@@ -205,17 +205,8 @@ define(
                     this.selectView(view);
                 }.bind(this));
 
-                var $menu = this.$('.select2-drop');
                 var $search = this.$('.select2-search');
-
                 $search.prepend($('<i class="icon-search"></i>'));
-
-                //FormBuilder.buildForm('pim-grid-view-selector-footer').then(function (form) {
-                //    form.setParent(this);
-                //    form.configure().then(function () {
-                //        $menu.append(form.render().$el);
-                //    });
-                //}.bind(this));
             },
 
             /**

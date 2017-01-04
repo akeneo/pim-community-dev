@@ -1,9 +1,8 @@
 'use strict';
 
 /**
- * Save extension for the Datagrid View Selector.
- * It displays a button near the selector to allow the user to save the current changes
- * to the current view.
+ * Remove extension for the Datagrid View Selector.
+ * It displays a button near the selector to allow the user to remove the current view.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -45,7 +44,7 @@ define(
                 if ('view' !== this.getRoot().currentViewType || this.getRoot().currentView.id === 0) {
                     this.$el.html('');
 
-                    return;
+                    return this;
                 }
 
                 this.$el.html(this.template({
@@ -53,6 +52,8 @@ define(
                 }));
 
                 this.$('[data-toggle="tooltip"]').tooltip();
+
+                return this;
             },
 
             /**
@@ -69,7 +70,7 @@ define(
             },
 
             /**
-             * Remove the Datagrid View of this line and triggers an event to the parent.
+             * Remove the current Datagrid View and triggers an event to the parent.
              *
              * @param {Object} view
              */
