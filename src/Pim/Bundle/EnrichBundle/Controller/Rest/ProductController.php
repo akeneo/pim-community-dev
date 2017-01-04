@@ -363,7 +363,7 @@ class ProductController
 
         $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $values]);
 
-        if (null !== $dataFiltered) {
+        if (!empty($dataFiltered)) {
             $data = array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];
