@@ -15,8 +15,9 @@
                     if (_.isUndefined(event.bubbles)) {
                         return false;
                     }
-                    var iconDiv = codeInput.parent().find('.icons-container');
-                    var icon    = $('<i class="validation-tooltip"></i>');
+                    var iconDiv = codeInput.closest('.AknFieldContainer').find('.icons-container');
+                    var icon = $('<i/>')
+                            .addClass('AknIconButton AknIconButton--important icon-warning-sign validation-tooltip');
 
                     iconDiv.empty();
                     icon.tooltip('destroy');
