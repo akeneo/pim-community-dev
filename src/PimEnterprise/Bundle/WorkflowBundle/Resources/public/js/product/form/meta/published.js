@@ -19,13 +19,16 @@ define(
             render: function () {
                 var product = this.getFormData();
 
-                this.$el.html(
-                    this.template({
-                        isPublished: product.meta.published,
-                        label: _.__('pimee_enrich.entity.product.meta.published'),
-                        publishedVersion: this.getPublishedVersion(product)
-                    })
-                );
+                if (product.meta.published) {
+                    this.$el.html(
+                        this.template({
+                            label: _.__('pimee_enrich.entity.product.meta.published'),
+                            publishedVersion: this.getPublishedVersion(product)
+                        })
+                    );
+                } else {
+                    this.$el.html('');
+                }
 
                 return this;
             },
