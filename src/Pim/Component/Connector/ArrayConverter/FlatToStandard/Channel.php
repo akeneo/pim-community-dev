@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  * Channel Flat to Standard format Converter
@@ -100,7 +101,7 @@ class Channel implements ArrayConverterInterface
      */
     protected function convertUnits($flatUnits)
     {
-        $units = explode(',', $flatUnits);
+        $units = array_filter(explode(',', $flatUnits));
 
         $formattedUnits = [];
         foreach ($units as $unit) {

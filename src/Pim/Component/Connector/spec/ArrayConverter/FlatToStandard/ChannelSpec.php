@@ -46,4 +46,9 @@ class ChannelSpec extends ObjectBehavior
 
         $this->convert($item)->shouldReturn($result);
     }
+
+    function it_converts_empty_conversion_units()
+    {
+        $this->convert(['conversion_units' => ''])->shouldReturn(['conversion_units' => []]);
+    }
 }
