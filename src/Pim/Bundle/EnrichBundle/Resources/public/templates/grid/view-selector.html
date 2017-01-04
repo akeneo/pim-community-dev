@@ -1,7 +1,7 @@
 <div class="AknButtonList grid-view-selector">
     <div class="AknDropdown AknDropdownButton AknDropdownButton--grey AknDropdownButton--sticked-right <%- displayViewSwitcher ? '' : 'hide' %>">
         <a class="AknDropdownButton-button" data-toggle="dropdown" href="#">
-            <%- __('pim_datagrid.view_selector.' + currentViewType) %>
+            <span class="current-view-type"><%- __('pim_datagrid.view_selector.' + currentViewType) %></span>
             <div class="AknDropdownButton-caretContainer">
                 <span class="AknCaret"></span>
             </div>
@@ -17,7 +17,7 @@
         </ul>
     </div>
 
-    <input type="hidden" class="AknButtonList-item select-field" value="0" />
+    <input type="hidden" class="AknButtonList-item select-field <%- displayViewSwitcher ? 'sticked-left' : '' %>" value="0" />
     <div class="AknButtonList-item buttons" data-drop-zone="buttons">
     </div>
 </div>

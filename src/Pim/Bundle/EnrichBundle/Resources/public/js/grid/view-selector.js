@@ -97,11 +97,13 @@ define(
             render: function () {
                 var deferred = $.Deferred().resolve();
 
-                if (null === this.currentViewType) {
-                    deferred = this.initializeViewTypes();
+                if (null === this.currentView) {
+                    deferred = this.initializeSelection();
                 }
 
                 deferred.then(function () {
+                    this.initializeViewTypes();
+
                     this.$el.html(this.template({
                         __: __,
                         currentViewType: this.currentViewType,
@@ -116,13 +118,9 @@ define(
 
             /**
              * Initialize the view type to display at initialization.
-             *
-             * @return {Promise}
              */
             initializeViewTypes: function () {
                 this.currentViewType = 'view';
-
-                return $.Deferred().resolve();
             },
 
             /**
@@ -197,9 +195,7 @@ define(
                      * we select the user's one. If he doesn't have one, we create a default one for him!
                      */
                     initSelection: function (element, callback) {
-                        this.initializeSelection().then(function (view) {
-                            callback(view);
-                        });
+                        callback(this.currentView);
                     }.bind(this)
                 };
 
@@ -305,6 +301,7 @@ define(
                     id: 0,
                     text: __('grid.view_selector.default_view'),
                     columns: this.defaultColumns,
+                    type: 'view',
                     filters: ''
                 };
             },

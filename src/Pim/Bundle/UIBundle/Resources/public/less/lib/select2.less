@@ -199,6 +199,16 @@
   .select2-container {
     width: 200px;
 
+    &.sticked-left .select2-choice {
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+
+      border-top: 1px solid #848fa1;
+      border-right: 1px solid #848fa1;
+      border-bottom: 1px solid #848fa1;
+      border-left: none;
+    }
+
     .select2-choice {
       background: lighten(@AknGrey, 25%);
       font-style: @AknFontSizeBig;
