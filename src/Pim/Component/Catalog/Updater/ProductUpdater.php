@@ -129,6 +129,10 @@ class ProductUpdater implements ObjectUpdaterInterface
             $product->setUpdated(new \Datetime('now', new \DateTimeZone('UTC')));
         }
 
+        if (null === $product->getCreated()) {
+            $product->setCreated(new \Datetime('now', new \DateTimeZone('UTC')));
+        }
+
         return $this;
     }
 
