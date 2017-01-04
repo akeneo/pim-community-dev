@@ -46,6 +46,10 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
         $groupIdentifiers = $this->extractContributorGroupIdentifier($project);
 
+        if (empty($groupIdentifiers)) {
+            return [];
+        }
+
         $qb->leftJoin('u.groups', 'g')
             ->where($qb->expr()->neq('u.id', $project->getOwner()->getId()))
             ->andWhere($qb->expr()->in('g.id', $groupIdentifiers));
