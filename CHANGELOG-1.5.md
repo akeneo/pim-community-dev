@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6064: Fix a grid issue with attribute named ID 
+- PIM-6038: Fix product imports that do not change the product update date correctly (mongodb)
 
 ## Technical improvements
 
