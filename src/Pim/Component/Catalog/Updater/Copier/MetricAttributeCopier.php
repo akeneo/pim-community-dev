@@ -100,12 +100,11 @@ class MetricAttributeCopier extends AbstractAttributeCopier
                 $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
 
-            if (null === $metric = $toValue->getMetric()) {
-                $metric = $this->metricFactory->createMetric($fromData->getFamily());
-            }
-
-            $metric->setUnit($fromData->getUnit());
-            $metric->setData($fromData->getData());
+            $metric = $this->metricFactory->createMetric(
+                $fromData->getFamily(),
+                $fromData->getUnit(),
+                $fromData->getData()
+            );
 
             $toValue->setMetric($metric);
         }

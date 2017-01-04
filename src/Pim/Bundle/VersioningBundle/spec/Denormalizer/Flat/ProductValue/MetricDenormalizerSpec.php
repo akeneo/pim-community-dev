@@ -23,61 +23,30 @@ class MetricDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_a_existing_metric_from_many_fields_and_set_only_the_unit(
-        ProductValueInterface $metricValue,
-        MetricInterface $metric
-    ) {
-        $context = ['value' => $metricValue];
-
-        $metricValue->getMetric()->willReturn($metric);
-
-        $metric->setUnit('KILOGRAM')->shouldBeCalled();
-
-        $this->denormalize('KILOGRAM', 'className', null, $context)->shouldReturn($metric);
-    }
-
-    function it_denormalizes_a_new_metric_from_many_fields_and_set_only_the_data(
+    function it_denormalizes_a_new_metric(
+        $metricFactory,
         ProductValueInterface $metricValue,
         MetricInterface $metric,
-        AttributeInterface $weight,
-        $metricFactory
+        AttributeInterface $weight
     ) {
-        $context = ['value' => $metricValue];
-
-        $metricValue->getMetric()->willReturn(null);
         $metricValue->getAttribute()->willReturn($weight);
         $weight->getMetricFamily()->willReturn('Weight');
 
-        $metricFactory->createMetric('Weight')->willReturn($metric);
+        $metricFactory->createMetric('Weight', 'KILOGRAM', 100)->willReturn($metric);
 
-        $metric->setData('100')->shouldBeCalled();
-
-        $this->denormalize('100', 'className', null, $context)->shouldReturn($metric);
+        $this->denormalize('100 KILOGRAM', 'className', null, ['value' => $metricValue])->shouldReturn($metric);
     }
 
-    function it_denormalizes_a_new_metric_from_a_single_field_and_set_data_and_unit(
+    function it_returns_a_metric_if_the_data_is_empty(
+        $metricFactory,
         ProductValueInterface $metricValue,
         MetricInterface $metric,
-        AttributeInterface $weight,
-        $metricFactory
+        AttributeInterface $weight
     ) {
-        $context = ['value' => $metricValue];
-
-        $metricValue->getMetric()->willReturn(null);
         $metricValue->getAttribute()->willReturn($weight);
         $weight->getMetricFamily()->willReturn('Weight');
 
-        $metricFactory->createMetric('Weight')->willReturn($metric);
-
-        $metric->setData('100')->shouldBeCalled();
-        $metric->setUnit('KILOGRAM')->shouldBeCalled();
-
-        $this->denormalize('100 KILOGRAM', 'className', null, $context)->shouldReturn($metric);
-    }
-
-    function it_returns_a_metric_if_the_data_is_empty(ProductValueInterface $metricValue, MetricInterface $metric)
-    {
-        $metricValue->getMetric()->willReturn($metric);
+        $metricFactory->createMetric('Weight', null, null)->willReturn($metric);
 
         $this->denormalize('', 'className', null, ['value' => $metricValue])->shouldReturn($metric);
         $this->denormalize(null, 'className', null, ['value' => $metricValue])->shouldReturn($metric);

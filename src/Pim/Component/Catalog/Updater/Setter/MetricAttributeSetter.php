@@ -106,8 +106,8 @@ class MetricAttributeSetter extends AbstractAttributeSetter
      *
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
-     * @param mixed              $amount
-     * @param string             $unit
+     * @param null|float         $amount
+     * @param null|string        $unit
      * @param string             $locale
      * @param string             $scope
      */
@@ -124,12 +124,8 @@ class MetricAttributeSetter extends AbstractAttributeSetter
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
 
-        if (null === $metric = $value->getMetric()) {
-            $metric = $this->metricFactory->createMetric($attribute->getMetricFamily());
-        }
+        $metric = $this->metricFactory->createMetric($attribute->getMetricFamily(), $unit, $amount);
 
         $value->setMetric($metric);
-        $metric->setUnit($unit);
-        $metric->setData($amount);
     }
 }
