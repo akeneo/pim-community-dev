@@ -45,8 +45,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $filter,
         $serializer,
         ProductInterface $product,
-        AttributeInterface $attribute,
-        ProductValueInterface $value,
         FamilyInterface $family,
         ArrayCollection $values,
         \ArrayIterator $iterator,
@@ -61,9 +59,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $product->isEnabled()->willReturn(true);
 
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('name');
-
         $product->getIdentifier()->willReturn($identifier);
         $identifier->getData()->willReturn('my_code');
 
@@ -73,21 +68,11 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($values);
 
-        $iterator->rewind()->willReturn(null);
-        $valueCount = 1;
-        $iterator->valid()->will(
-            function () use (&$valueCount) {
-                return $valueCount-- > 0;
-            }
-        );
-        $iterator->current()->willReturn($value);
-        $iterator->next()->willReturn(null);
-
         $context = ['filter_types' => ['pim.transform.product_value.structured']];
 
         $serializer
-            ->normalize($value, 'standard', $context)
-            ->willReturn(['locale' => null, 'scope' => null, 'value' => 'foo']);
+            ->normalize($values, 'standard', $context)
+            ->willReturn(['name' => [['locale' => null, 'scope' => null, 'value' => 'foo']]]);
 
         $created = new \DateTime('2010-06-23');
         $product->getCreated()->willReturn($created);

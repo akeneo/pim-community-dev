@@ -24,7 +24,7 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
         $result = [];
 
         foreach ($data as $value) {
-            $normalizedValue = $this->serializer->normalize($value, 'standard', $context);
+            $normalizedValue = $this->serializer->normalize($value, $format, $context);
             if ($value instanceof ProductValueInterface) {
                 $result[$value->getAttribute()->getCode()][] = $normalizedValue;
             } else {
@@ -40,6 +40,20 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Collection && 'standard' === $format;
+        $isCollection = $data instanceof Collection || is_array($data);
+        $isStandardFormat = 'standard' === $format;
+
+        if (!$isCollection || !$isStandardFormat) {
+            return false;
+        }
+
+        $firstElementIsValue =
+            (is_array($data) && empty($data)) ||
+            ($data instanceof Collection && $data->isEmpty()) ||
+            (is_array($data) && !empty($data) && $data[0] instanceof ProductValueInterface) ||
+            ($data instanceof Collection && !$data->isEmpty() && $data->first() instanceof ProductValueInterface)
+        ;
+
+        return $firstElementIsValue;
     }
 }

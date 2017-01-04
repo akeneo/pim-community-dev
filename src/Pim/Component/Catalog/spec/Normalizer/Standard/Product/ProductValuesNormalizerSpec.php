@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -30,11 +31,19 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
     function it_supports_standard_format_and_collection_values()
     {
-        $collection = new ArrayCollection();
+        $valuesCollection = new ArrayCollection([new ProductValue()]);
+        $valuesArray = [new ProductValue()];
+        $emptyValuesCollection = new ArrayCollection();
+        $randomCollection = new ArrayCollection([new \stdClass()]);
+        $randomArray = [new \stdClass()];
 
-        $this->supportsNormalization($collection, 'standard')->shouldReturn(true);
+        $this->supportsNormalization($valuesCollection, 'standard')->shouldReturn(true);
+        $this->supportsNormalization($valuesArray, 'standard')->shouldReturn(true);
+        $this->supportsNormalization($emptyValuesCollection, 'standard')->shouldReturn(true);
+        $this->supportsNormalization($randomCollection, 'standard')->shouldReturn(false);
+        $this->supportsNormalization($randomArray, 'standard')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
-        $this->supportsNormalization($collection, 'other_format')->shouldReturn(false);
+        $this->supportsNormalization($valuesCollection, 'other_format')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
