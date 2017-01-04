@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Builder;
+namespace PimEnterprise\Component\ActivityManager\Factory;
 
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-interface ProjectBuilderInterface
+interface ProjectFactoryInterface
 {
     /**
      * Build a project with its dependencies, project data look like :
@@ -31,9 +31,9 @@ interface ProjectBuilderInterface
      *     'owner' => 'julia', *
      *     'datagrid_view' => [
      *          'filters' => 'i=1&p=10&s%5Bupdated',
-     *          'columns' => 'a:1{blublublu...}',
+     *          'columns' => 'sku,name,description',
      *     ],
- *          'product_filters' => [
+     *     'product_filters' => [
      *          'field' => 'family',
      *          'operator' => 'IN',
      *          'value' => ['mugs'],
@@ -45,5 +45,5 @@ interface ProjectBuilderInterface
      *
      * @return ProjectInterface
      */
-    public function build(array $projectData);
+    public function create(array $projectData);
 }

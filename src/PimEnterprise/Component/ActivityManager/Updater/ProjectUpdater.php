@@ -90,8 +90,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 $project->setDescription($value);
                 break;
             case 'owner':
-                $value = $this->userRepository->findOneByIdentifier($value);
-                $project->setOwner($value);
+                $user = $this->userRepository->findOneByIdentifier($value);
+                $project->setOwner($user);
                 break;
             case 'datagrid_view':
                 $project->setDatagridView($value);

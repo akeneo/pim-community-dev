@@ -98,15 +98,16 @@ services:
 
     ### Array converter
     pimee_activity_manager.array_converter.flat_to_standard:
-        class: '%pimee_activity_manager.array_converter.flat_to_standard.class%'
+        class: '%pim_connector.array_converter.dummy.class%'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
+            - ['owner', 'label', 'locale', 'channel', 'datagrid_view', 'product_filters']
+            - ['owner', 'label', 'locale', 'channel', 'datagrid_view', 'product_filters']
 
     ### Reader
-    pimee_activity_manager.reader.file.csv_project:
-        class: '%pim_connector.reader.file.csv.class%'
+    pimee_activity_manager.reader.file.yaml_project:
+        class: '%pim_connector.reader.file.yaml.class%'
         arguments:
-            - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pimee_activity_manager.array_converter.flat_to_standard'
 
     ### Processor
@@ -114,7 +115,7 @@ services:
         class: '%pimee_activity_manager.import.processor.project.class%'
         arguments:
             - '@pimee_activity_manager.repository.project'
-            - '@pimee_activity_manager.builder.project'
+            - '@pimee_activity_manager.factory.project'
             - '@pimee_activity_manager.updater.project'
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'

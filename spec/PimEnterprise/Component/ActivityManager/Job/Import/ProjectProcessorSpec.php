@@ -9,7 +9,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
-use PimEnterprise\Component\ActivityManager\Builder\ProjectBuilderInterface;
+use PimEnterprise\Component\ActivityManager\Factory\ProjectFactoryInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Job\Import\ProjectProcessor;
 use PhpSpec\ObjectBehavior;
@@ -21,13 +21,13 @@ class ProjectProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $projectRepository,
-        ProjectBuilderInterface $projectBuilder,
+        ProjectFactoryInterface $projectFactory,
         ObjectUpdaterInterface $projectUpdater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($projectRepository, $projectBuilder, $projectUpdater, $validator, $objectDetacher);
+        $this->beConstructedWith($projectRepository, $projectFactory, $projectUpdater, $validator, $objectDetacher);
 
         $this->setStepExecution($stepExecution);
     }
@@ -49,13 +49,13 @@ class ProjectProcessorSpec extends ObjectBehavior
 
     function it_creates_a_project(
         $projectRepository,
-        $projectBuilder,
+        $projectFactory,
         $validator,
         ConstraintViolationListInterface $constraintViolationList,
         ProjectInterface $project
     ) {
         $projectRepository->findOneByIdentifier('my-project-ecommerce-fr-fr')->willReturn(null);
-        $projectBuilder->build([
+        $projectFactory->create([
             'label' => 'My project',
             'locale' => 'fr_Fr',
             'channel' => 'ecommerce',

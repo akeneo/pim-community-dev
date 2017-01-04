@@ -12,15 +12,9 @@ parameters:
     pimee_activity_manager.controller.project_completeness_controller.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Controller\ProjectCompletenessController'
     pimee_activity_manager.widget.completeness.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectCompletenessWidget'
     pimee_activity_manager.voter.project.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter'
-    pimee_activity_manager.builder.project.class: 'PimEnterprise\Component\ActivityManager\Builder\ProjectBuilder'
+    pimee_activity_manager.factory.project.class: 'PimEnterprise\Component\ActivityManager\Factory\ProjectFactory'
 
 services:
-    ### Factory
-    pimee_activity_manager.factory.project:
-        class: '%akeneo_storage_utils.factory.simple.class%'
-        arguments:
-            - '%pimee_activity_manager.model.project.class%'
-
     ### Normalizer
     pimee_activity_manager.normalizer.project:
         class: '%pimee_activity_manager.normalizer.project.class%'
@@ -48,14 +42,14 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_user.repository.user'
 
-    ### Builder
-    pimee_activity_manager.builder.project:
-        class: '%pimee_activity_manager.builder.project.class%'
+    ### Factory
+    pimee_activity_manager.factory.project:
+        class: '%pimee_activity_manager.factory.project.class%'
         arguments:
-            - '@pimee_activity_manager.factory.project'
             - '@pimee_activity_manager.updater.project'
             - '@pim_datagrid.factory.datagrid_view'
             - '@pim_datagrid.updater.datagrid_view'
+            - '%pimee_activity_manager.model.project.class%'
 
     ### Saver
     pimee_activity_manager.saver.project:
@@ -100,7 +94,7 @@ services:
         class: '%pimee_activity_manager.controller.project_controller.class%'
         arguments:
             - '@pimee_activity_manager.converter.filter'
-            - '@pimee_activity_manager.builder.project'
+            - '@pimee_activity_manager.factory.project'
             - '@pimee_activity_manager.saver.project'
             - '@validator'
             - '@pimee_activity_manager.launcher.job.project_calculation'

@@ -9,22 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Builder;
+namespace PimEnterprise\Component\ActivityManager\Factory;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
+use PimEnterprise\Component\ActivityManager\Factory\ProjectFactoryInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ProjectBuilder implements ProjectBuilderInterface
+class ProjectFactory implements ProjectFactoryInterface
 {
     /** @var SimpleFactoryInterface */
     protected $datagridViewFactory;
-
-    /** @var SimpleFactoryInterface */
-    protected $projectFactory;
 
     /** @var SimpleFactoryInterface */
     protected $projectUpdater;
@@ -32,28 +30,31 @@ class ProjectBuilder implements ProjectBuilderInterface
     /** @var SimpleFactoryInterface */
     protected $datagridViewUpdater;
 
+    /** @var string */
+    protected $projectClassname;
+
     /**
-     * @param SimpleFactoryInterface $projectFactory
      * @param ObjectUpdaterInterface $projectUpdater
      * @param SimpleFactoryInterface $datagridViewFactory
      * @param ObjectUpdaterInterface $datagridViewUpdater
+     * @param string                 $projectClassName
      */
     public function __construct(
-        SimpleFactoryInterface $projectFactory,
         ObjectUpdaterInterface $projectUpdater,
         SimpleFactoryInterface $datagridViewFactory,
-        ObjectUpdaterInterface $datagridViewUpdater
+        ObjectUpdaterInterface $datagridViewUpdater,
+        $projectClassName
     ) {
-        $this->projectFactory = $projectFactory;
         $this->projectUpdater = $projectUpdater;
         $this->datagridViewFactory = $datagridViewFactory;
         $this->datagridViewUpdater = $datagridViewUpdater;
+        $this->projectClassname = $projectClassName;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function build(array $projectData)
+    public function create(array $projectData)
     {
         $datagridViewData = $projectData['datagrid_view'];
         $datagridViewData['type'] = DatagridViewTypes::PROJECT_VIEW;
@@ -65,7 +66,7 @@ class ProjectBuilder implements ProjectBuilderInterface
 
         $projectData['datagrid_view'] = $datagridView;
 
-        $project = $this->projectFactory->create();
+        $project = new $this->projectClassname();
         $this->projectUpdater->update($project, $projectData);
 
         return $project;

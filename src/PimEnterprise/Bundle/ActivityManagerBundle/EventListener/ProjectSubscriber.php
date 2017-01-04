@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Gedmo\Sluggable\Util\Urlizer;
+use PimEnterprise\Component\ActivityManager\Model\ProjectIdentifier;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -42,20 +42,16 @@ class ProjectSubscriber implements EventSubscriberInterface
     public function generateCode(GenericEvent $event)
     {
         $project = $event->getSubject();
-
         if (!$project instanceof ProjectInterface) {
             return;
         }
 
         $datagridView = $project->getDatagridView();
 
-        $projectCode = Urlizer::transliterate(
-            sprintf(
-                '%s %s %s',
-                $project->getLabel(),
-                $project->getChannel()->getCode(),
-                $project->getLocale()->getCode()
-            )
+        $projectCode = new ProjectIdentifier(
+            $project->getLabel(),
+            $project->getChannel()->getCode(),
+            $project->getLocale()->getCode()
         );
 
         $project->setCode($projectCode);

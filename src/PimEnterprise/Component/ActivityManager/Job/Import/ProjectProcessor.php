@@ -16,10 +16,10 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Gedmo\Sluggable\Util\Urlizer;
 use Pim\Component\Catalog\Exception\MissingIdentifierException;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
-use PimEnterprise\Component\ActivityManager\Builder\ProjectBuilderInterface;
+use PimEnterprise\Component\ActivityManager\Factory\ProjectFactoryInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectIdentifier;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -33,8 +33,8 @@ class ProjectProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var IdentifiableObjectRepositoryInterface */
     protected $projectRepository;
 
-    /** @var ProjectBuilderInterface */
-    protected $projectBuilder;
+    /** @var ProjectFactoryInterface */
+    protected $projectFactory;
 
     /** @var ObjectUpdaterInterface */
     protected $projectUpdater;
@@ -45,15 +45,22 @@ class ProjectProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
 
+    /**
+     * @param IdentifiableObjectRepositoryInterface $projectRepository
+     * @param ProjectFactoryInterface               $projectFactory
+     * @param ObjectUpdaterInterface                $projectUpdater
+     * @param ValidatorInterface                    $validator
+     * @param ObjectDetacherInterface               $objectDetacher
+     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $projectRepository,
-        ProjectBuilderInterface $projectBuilder,
+        ProjectFactoryInterface $projectFactory,
         ObjectUpdaterInterface $projectUpdater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher
     ) {
         $this->projectRepository = $projectRepository;
-        $this->projectBuilder = $projectBuilder;
+        $this->projectFactory = $projectFactory;
         $this->projectUpdater = $projectUpdater;
         $this->validator = $validator;
         $this->objectDetacher = $objectDetacher;
@@ -67,7 +74,7 @@ class ProjectProcessor extends AbstractProcessor implements ItemProcessorInterfa
      */
     public function process($projectData)
     {
-        $project = $this->findOrBuildUpdatedProject($projectData);
+        $project = $this->findOrCreateProject($projectData);
 
         $violations = $this->validator->validate($project);
         if ($violations->count() > 0) {
@@ -85,13 +92,13 @@ class ProjectProcessor extends AbstractProcessor implements ItemProcessorInterfa
      *
      * @return ProjectInterface
      */
-    protected function findOrBuildUpdatedProject(array $projectData)
+    protected function findOrCreateProject(array $projectData)
     {
         $project = $this->projectRepository->findOneByIdentifier($this->generateProjectCode($projectData));
 
         try {
             if (null === $project) {
-                $project = $this->projectBuilder->build($projectData);
+                $project = $this->projectFactory->create($projectData);
             } else {
                 $this->projectUpdater->update($project, $projectData);
             }
@@ -120,13 +127,10 @@ class ProjectProcessor extends AbstractProcessor implements ItemProcessorInterfa
             ));
         }
 
-        $projectCode = Urlizer::transliterate(
-            sprintf(
-                '%s %s %s',
-                $projectData['label'],
-                $projectData['channel'],
-                $projectData['locale']
-            )
+        $projectCode = new ProjectIdentifier(
+            $projectData['label'],
+            $projectData['channel'],
+            $projectData['locale']
         );
 
         return $projectCode;

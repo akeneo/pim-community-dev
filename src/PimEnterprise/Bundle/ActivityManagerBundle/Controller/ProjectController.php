@@ -16,7 +16,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher;
 use PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter;
-use PimEnterprise\Component\ActivityManager\Builder\ProjectBuilderInterface;
+use PimEnterprise\Component\ActivityManager\Factory\ProjectFactoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -41,6 +41,9 @@ class ProjectController
 
     /** @var ValidatorInterface */
     protected $validator;
+
+    /** @var ProjectFactoryInterface */
+    protected $projectFactory;
 
     /** @var SaverInterface */
     protected $projectSaver;
@@ -84,7 +87,7 @@ class ProjectController
      */
     public function __construct(
         FilterConverter $filterConverter,
-        ProjectBuilderInterface $projectBuilder,
+        ProjectFactoryInterface $projectFactory,
         SaverInterface $projectSaver,
         ValidatorInterface $validator,
         ProjectCalculationJobLauncher $projectCalculationJobLauncher,
@@ -97,7 +100,7 @@ class ProjectController
         RouterInterface $router
     ) {
         $this->filterConverter = $filterConverter;
-        $this->projectBuilder = $projectBuilder;
+        $this->projectFactory = $projectFactory;
         $this->validator = $validator;
         $this->projectSaver = $projectSaver;
         $this->projectCalculationJobLauncher = $projectCalculationJobLauncher;
@@ -130,7 +133,7 @@ class ProjectController
             json_encode($datagridViewFilters['f'])
         );
 
-        $project = $this->projectBuilder->build($projectData);
+        $project = $this->projectFactory->create($projectData);
         $violations = $this->validator->validate($project);
 
         if (0 === $violations->count()) {

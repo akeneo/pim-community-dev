@@ -8,7 +8,7 @@ parameters:
     pimee_installer.job_name.fixtures_asset_csv: 'fixtures_asset_csv'
     pimee_installer.job_name.fixtures_asset_category_access_csv: 'fixtures_asset_category_access_csv'
     pimee_installer.job_name.fixtures_asset_channel_configurations_yml: 'fixtures_asset_channel_configurations_yml'
-    pimee_installer.job_name.fixtures_project_csv: 'fixtures_project_csv'
+    pimee_installer.job_name.fixtures_project_yml: 'fixtures_project_yml'
 
 services:
     # Data Fixture ----------------------------------------------------------------------------------------------------
@@ -113,13 +113,13 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
-    pimee_installer.job.fixtures_project_csv:
+    pimee_installer.job.fixtures_project_yml:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%pimee_installer.job_name.fixtures_project_csv%'
+            - '%pimee_installer.job_name.fixtures_project_yml%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_installer.step.fixtures_project_csv.import'
+                - '@pimee_installer.step.fixtures_project_yml.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
