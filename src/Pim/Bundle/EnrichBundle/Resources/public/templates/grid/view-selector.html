@@ -1,4 +1,22 @@
 <div class="AknButtonList grid-view-selector">
+    <div class="AknDropdown AknDropdownButton AknDropdownButton--grey AknDropdownButton--sticked-right <%- displayViewSwitcher ? '' : 'hide' %>">
+        <a class="AknDropdownButton-button" data-toggle="dropdown" href="#">
+            <%- __('pim_datagrid.view_selector.' + currentViewType) %>
+            <div class="AknDropdownButton-caretContainer">
+                <span class="AknCaret"></span>
+            </div>
+        </a>
+        <ul class="AknDropdown-menu">
+            <% viewTypes.forEach(function (type) { %>
+            <li>
+                <a data-value="<%- type %>" class="AknDropdown-menuLink view-type-item" title="<%- __('pim_datagrid.view_selector.' + type) %>">
+                    <%- __('pim_datagrid.view_selector.' + type) %>
+                </a>
+            </li>
+            <% });  %>
+        </ul>
+    </div>
+
     <input type="hidden" class="AknButtonList-item select-field" value="0" />
     <div class="AknButtonList-item buttons" data-drop-zone="buttons">
     </div>

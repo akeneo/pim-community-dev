@@ -81,6 +81,12 @@
     background: darken(@AknGrey, 10%);
   }
 
+  &--sticked-right &-caretContainer,
+  &--sticked-right &-button {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
   &--small &-button {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
