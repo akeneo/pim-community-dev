@@ -22,7 +22,7 @@ class Channel extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'locales':
             case 'currencies':
             case 'conversion_units':
-                $convertedItem[$property] = implode(',', $data);
+                $convertedItem[$property] = implode(',', array_filter($data));
                 break;
             case 'category_tree':
                 $convertedItem['tree'] = (string) $data;
