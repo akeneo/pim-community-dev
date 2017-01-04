@@ -21,7 +21,7 @@ class BooleanComparatorSpec extends ObjectBehavior
         $this->supports('pim_catalog_boolean')->shouldBe(true);
     }
 
-    function it_gets_changes_when_adding_value()
+    function it_gets_changes_when_adding_true_value()
     {
         $changes = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = [];
@@ -29,6 +29,19 @@ class BooleanComparatorSpec extends ObjectBehavior
         $this->compare($changes, $originals)->shouldReturn($changes);
 
         $changes = ['data' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = [];
+
+        $this->compare($changes, $originals)->shouldReturn($changes);
+    }
+
+    function it_gets_changes_when_adding_false_value()
+    {
+        $changes = ['data' => false, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = [];
+
+        $this->compare($changes, $originals)->shouldReturn($changes);
+
+        $changes = ['data' => 0, 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = [];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
