@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -20,12 +22,23 @@ class AssociationTypeNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var VersionManager */
+    protected $versionManager;
+
+    /** @var NormalizerInterface */
+    protected $versionNormalizer;
+
     /**
      * @param NormalizerInterface $normalizer
      */
-    public function __construct(NormalizerInterface $normalizer)
-    {
+    public function __construct(
+        NormalizerInterface $normalizer,
+        VersionManager $versionManager,
+        NormalizerInterface $versionNormalizer
+    ) {
         $this->normalizer = $normalizer;
+        $this->versionManager = $versionManager;
+        $this->versionNormalizer = $versionNormalizer;
     }
 
     /**
@@ -35,6 +48,25 @@ class AssociationTypeNormalizer implements NormalizerInterface
     {
         $result = $this->normalizer->normalize($object, 'standard', $context);
         $result['id'] = $object->getId();
+
+        $firstVersion = $this->versionManager->getOldestLogEntry($object);
+        $lastVersion = $this->versionManager->getNewestLogEntry($object);
+
+        $firstVersion = null !== $firstVersion ?
+            $this->versionNormalizer->normalize($firstVersion, 'internal_api') :
+            null;
+
+        $lastVersion = null !== $lastVersion ?
+            $this->versionNormalizer->normalize($lastVersion, 'internal_api') :
+            null;
+
+        $result['meta'] = [
+            'id'                => $object->getId(),
+            'form'              => 'pim-association-type-edit-form',
+            'model_type'        => 'association_type',
+            'created'           => $firstVersion,
+            'updated'           => $lastVersion,
+        ];
 
         return $result;
     }
