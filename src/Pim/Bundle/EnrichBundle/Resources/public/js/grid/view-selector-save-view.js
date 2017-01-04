@@ -15,7 +15,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/grid/view-selector/save',
+        'text!pim/template/grid/view-selector/save-view',
         'pim/datagrid/state',
         'pim/dialog',
         'routing',
@@ -36,11 +36,10 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            hidden: true,
             tagName: 'span',
             className: 'save-button',
             events: {
-                'click [data-action="save"]': 'saveView'
+                'click .save': 'saveView'
             },
 
             /**
@@ -56,6 +55,12 @@ define(
              * {@inheritdoc}
              */
             render: function () {
+                if ('view' !== this.getRoot().currentViewType) {
+                    this.$el.html('');
+
+                    return;
+                }
+
                 this.$el.html(this.template({
                     dirty: this.dirty,
                     label: __('grid.view_selector.save_changes')

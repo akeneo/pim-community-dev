@@ -210,12 +210,12 @@ define(
 
                 $search.prepend($('<i class="icon-search"></i>'));
 
-                FormBuilder.buildForm('pim-grid-view-selector-footer').then(function (form) {
-                    form.setParent(this);
-                    form.configure().then(function () {
-                        $menu.append(form.render().$el);
-                    });
-                }.bind(this));
+                //FormBuilder.buildForm('pim-grid-view-selector-footer').then(function (form) {
+                //    form.setParent(this);
+                //    form.configure().then(function () {
+                //        $menu.append(form.render().$el);
+                //    });
+                //}.bind(this));
             },
 
             /**
@@ -329,6 +329,9 @@ define(
              */
             onGridStateChange: function () {
                 var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns']);
+                if (null === datagridState.columns) {
+                    datagridState.columns = '';
+                }
 
                 if (null !== this.currentView) {
                     this.currentView.filters = datagridState.filters;

@@ -4,20 +4,15 @@ extensions:
         config:
             viewTypes: ['view']
 
-    pim-grid-view-selector-footer:
-        module: pim/grid/view-selector/footer
-
-    pim-grid-view-selector-footer-create:
-        module: pim/grid/view-selector/footer/create
-        parent: pim-grid-view-selector-footer
-        targetZone: buttons
-        position: 100
-
-    pim-grid-view-selector-footer-create-view:
-        module: pim/grid/view-selector/footer/create/view
-        parent: pim-grid-view-selector-footer-create
-        targetZone: action-list
-        position: 100
+#    pim-grid-view-selector-footer:
+#        module: pim/grid/view-selector/footer
+#
+#    pim-grid-view-selector-footer-create:
+#        module: pim/grid/view-selector/footer/create
+#        parent: pim-grid-view-selector-footer
+#        targetZone: buttons
+#        position: 100
+#
 
     pim-grid-view-selector-line:
         module: pim/grid/view-selector/line
@@ -25,14 +20,33 @@ extensions:
     pim-grid-view-selector-current:
         module: pim/grid/view-selector/current
 
-    pim-grid-view-selector-line-remove:
-        module: pim/grid/view-selector/line-remove
-        parent: pim-grid-view-selector-line
-        targetZone: overlay
-        position: 100
+#    pim-grid-view-selector-line-remove:
+#        module: pim/grid/view-selector/line-remove
+#        parent: pim-grid-view-selector-line
+#        targetZone: overlay
+#        position: 100
 
-    pim-grid-view-selector-save:
-        module: pim/grid/view-selector/save
+
+    pim-grid-view-selector-create-view:
+        module: pim/grid/view-selector/create-view
         parent: pim-grid-view-selector
         targetZone: buttons
-        position: 100
+        position: 110
+
+#    pim-grid-view-selector-edit:
+#        module: pim/grid/view-selector/edit
+#        parent: pim-grid-view-selector
+#        targetZone: buttons
+#        position: 120
+
+    pim-grid-view-selector-save-view:
+        module: pim/grid/view-selector/save-view
+        parent: pim-grid-view-selector
+        targetZone: buttons
+        position: 130
+
+    pim-grid-view-selector-remove-view:
+        module: pim/grid/view-selector/remove-view
+        parent: pim-grid-view-selector
+        targetZone: buttons
+        position: 140

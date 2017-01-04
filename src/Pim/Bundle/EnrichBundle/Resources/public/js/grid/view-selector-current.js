@@ -64,6 +64,10 @@ define(
              * @param {Object} datagridState
              */
             onDatagridStateChange: function (datagridState) {
+                if (null === datagridState.columns) {
+                    datagridState.columns = '';
+                }
+
                 var initialView = this.getRoot().initialView;
                 var initialViewExists = null !== initialView && 0 !== initialView.id;
 

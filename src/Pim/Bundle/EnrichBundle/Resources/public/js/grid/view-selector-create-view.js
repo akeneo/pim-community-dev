@@ -1,27 +1,22 @@
 'use strict';
 
 /**
- * Create view button extension for the Datagrid footer View Selector.
- *
- * Contains a "create" button to allow the user to create a view from the current
- * state of the grid (regarding filters and columns).
- *
- * @author    Adrien Petremann <adrien.petremann@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 define(
     [
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/form',
         'backbone',
-        'text!pim/template/grid/view-selector/footer/create/view',
+        'pim/form',
+        'text!pim/template/grid/view-selector/create-view',
         'text!pim/template/grid/view-selector/create-view-label-input',
+        'pim/datagrid/state',
         'pim/dialog',
         'routing',
-        'pim/datagrid/state',
         'pim/saver/datagrid-view',
         'oro/messenger'
     ],
@@ -29,13 +24,13 @@ define(
         $,
         _,
         __,
-        BaseForm,
         Backbone,
+        BaseForm,
         template,
         templateInput,
+        DatagridState,
         Dialog,
         Routing,
-        DatagridState,
         DatagridViewSaver,
         messenger
     ) {
@@ -43,37 +38,35 @@ define(
             template: _.template(template),
             templateInput: _.template(templateInput),
             tagName: 'span',
-            className: 'action',
+            className: 'create-button',
+            events: {
+                'click .create': 'promptCreateView'
+            },
 
             /**
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this, 'grid:view-selector:create-new', this.handleViewCreation);
+                //this.listenTo(this.getRoot(), 'grid:view-selector:state-changed', this.onDatagridStateChange);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * We check if this extension can handle the action by checking the extension code.
-             *
-             * @param {Object} data '{extensionCode: "the_extension_code"}'
-             */
-            handleViewCreation: function (data) {
-                if (data.extensionCode === this.code) {
-                    this.promptCreateView();
-                }
             },
 
             /**
              * {@inheritdoc}
              */
             render: function () {
+                if ('view' !== this.getRoot().currentViewType) {
+                    this.$el.html('');
+
+                    return;
+                }
+
                 this.$el.html(this.template({
-                    viewButtonTitle: __('grid.view_selector.create_view')
+                    label: __('grid.view_selector.create_view')
                 }));
 
-                return this;
+                this.$('[data-toggle="tooltip"]').tooltip();
             },
 
             /**
