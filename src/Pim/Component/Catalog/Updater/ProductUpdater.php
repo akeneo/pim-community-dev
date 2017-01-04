@@ -117,13 +117,13 @@ class ProductUpdater implements ObjectUpdaterInterface
 
         foreach ($data as $field => $values) {
             if (in_array($field, ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'])) {
-                $isProductUpdated |= $this->updateProductFields($product, $field, $values);
+                $isProductUpdated = $this->updateProductFields($product, $field, $values) || $isProductUpdated;
             } else {
-                $isProductUpdated |= $this->updateProductValues($product, $field, $values);
+                $isProductUpdated = $this->updateProductValues($product, $field, $values) || $isProductUpdated;
             }
         }
 
-        $isProductUpdated |= $this->updateProductVariantValues($product, $data);
+        $isProductUpdated = $this->updateProductVariantValues($product, $data) || $isProductUpdated;
 
         if ($isProductUpdated) {
             $product->setUpdated(new \Datetime('now', new \DateTimeZone('UTC')));

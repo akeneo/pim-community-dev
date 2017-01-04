@@ -78,7 +78,6 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         $context[self::MONGO_ID] = $data[self::MONGO_ID];
 
-
         if (null !== $product->getFamily()) {
             $data['family'] = $product->getFamily()->getId();
         }
