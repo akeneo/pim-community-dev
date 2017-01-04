@@ -21,6 +21,34 @@ Feature: Import channels
       | code | label | currencies | locales           | tree            | conversion_units                                                                                 |
       | site | Site  | EUR,USD    | de_DE,en_US,hy_AM | 2014_collection | weight: GRAM, maximum_scan_size: KILOMETER, display_diagonal: DEKAMETER, viewing_area: DEKAMETER |
 
+  @jira https://akeneo.atlassian.net/browse/PIM-6041
+  Scenario: Successfully import channel do not create empty conversion unit
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      code;label;currencies;locales;tree;conversion_units
+      mobile;Mobile app;EUR,USD;en_US,fr_FR;2014_collection;
+      """
+    And the following job "csv_footwear_channel_import" configuration:
+      | filePath | %file to import% |
+    And the following job "csv_footwear_channel_export" configuration:
+      | filePath | %tmp%/channel_export/channel_export.csv |
+    When I am on the "csv_footwear_channel_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_channel_import" job to finish
+    And I am on the "csv_footwear_channel_export" export job page
+    When I launch the export job
+    And I wait for the "csv_footwear_channel_export" job to finish
+    Then I should see "Read 2"
+    And I should see "Written 2"
+    And exported file of "csv_footwear_channel_export" should contain:
+    """
+    code;label;conversion_units;currencies;locales;tree
+    mobile;"Mobile app";;USD,EUR;en_US,fr_FR;2014_collection
+    tablet;Tablet;;USD,EUR;en_US;2014_collection
+    """
+
   Scenario: Successfully update existing channel and add a new one
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"

@@ -54,7 +54,8 @@ class ChannelNormalizerSpec extends ObjectBehavior
         $channel->getConversionUnits()->willReturn(
             [
                 'Weight' => 'Kilogram',
-                'Size' => 'Centimeter'
+                'Size' => '',
+                'Length' => 'Centimeter',
             ]
         );
 
@@ -71,8 +72,9 @@ class ChannelNormalizerSpec extends ObjectBehavior
                         'en_US' => 'label'
                     ],
                 ],
-                'conversion_units' => 'Weight: Kilogram, Size: Centimeter'
+                'conversion_units' => 'Weight: Kilogram, Length: Centimeter'
             ]
         );
     }
 }
+

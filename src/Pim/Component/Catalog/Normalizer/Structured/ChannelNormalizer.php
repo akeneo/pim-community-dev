@@ -124,7 +124,9 @@ class ChannelNormalizer implements NormalizerInterface
     {
         $result = [];
         foreach ($channel->getConversionUnits() as $family => $unit) {
-            $result[] = sprintf('%s: %s', $family, $unit);
+            if (!empty($unit)) {
+                $result[] = sprintf('%s: %s', $family, $unit);
+            }
         }
 
         return implode(', ', $result);
