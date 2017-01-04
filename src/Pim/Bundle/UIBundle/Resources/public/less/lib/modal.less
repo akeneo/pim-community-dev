@@ -4,13 +4,26 @@
 .modal {
   border-radius: 0;
   border: none;
-  top: 20%;
+  top: 50%;
   position: fixed;
   left: 50%;
   z-index: 1050;
   width: 560px;
   margin-left: -280px;
   background-color: white;
+  transform: translate(0, -50%);
+
+  &.modal-large {
+    width: 90%;
+    left: 5%;
+    top: 5%;
+    margin-left: 0;
+    transform: none;
+
+    .modal-body {
+      max-height: inherit;
+    }
+  }
 
   .modal-header {
     background: @AknPurple;
@@ -34,7 +47,7 @@
 
   .modal-body {
     position: relative;
-    max-height: @AknMaxModalHeight;
+    max-height: ~"calc(100vh - 140px)"; // 140px is the height of the header and the buttons
     padding: 15px;
     overflow-y: auto;
   }
@@ -45,15 +58,6 @@
   }
 }
 
-.modal-large {
-  width: 90%;
-  left: 5%;
-  top: 5%;
-  margin-left: 0;
-  .modal-body {
-    max-height: inherit;
-  }
-}
 
 .modal-backdrop {
   position: fixed;
