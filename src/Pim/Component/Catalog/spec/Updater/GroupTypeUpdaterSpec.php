@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 
@@ -20,8 +21,9 @@ class GroupTypeUpdaterSpec extends ObjectBehavior
     function it_throw_an_exception_when_trying_to_update_anything_else_than_a_group_type()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "Pim\Component\Catalog\Model\GroupTypeInterface", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\GroupTypeInterface'
             )
         )->during(
             'update',

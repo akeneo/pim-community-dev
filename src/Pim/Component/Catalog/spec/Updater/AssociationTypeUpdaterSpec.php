@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation;
@@ -27,8 +29,9 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_update_anything_else_than_an_association_type()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "Pim\Component\Catalog\Model\AssociationTypeInterface", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\AssociationTypeInterface'
             )
         )->during(
             'update',
@@ -54,5 +57,16 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
         ];
 
         $this->update($associationType, $values, []);
+    }
+
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(AssociationTypeInterface $associationType) {
+        $values = [
+            'non_existent_field' => 'field',
+            'code'               => 'mycode',
+        ];
+
+        $this
+            ->shouldThrow(new UnknownPropertyException('non_existent_field', 'Property "non_existent_field" does not exist.'))
+            ->during('update', [$associationType, $values, []]);
     }
 }

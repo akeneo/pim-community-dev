@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -62,6 +63,11 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
 
     function it_throw_an_exception_id_it_is_not_a_job_instance()
     {
-        $this->shouldThrow('\InvalidArgumentException')->during('update', [new \stdClass(), []]);
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Akeneo\Component\Batch\Model\JobInstance'
+            )
+        )->during('update', [new \stdClass(), []]);
     }
 }
