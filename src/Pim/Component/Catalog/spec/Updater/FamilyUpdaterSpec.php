@@ -2,6 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
@@ -15,6 +18,7 @@ use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class FamilyUpdaterSpec extends ObjectBehavior
 {
@@ -47,8 +51,9 @@ class FamilyUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_family()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "Pim\Component\Catalog\Model\FamilyInterface", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\FamilyInterface'
             )
         )->during(
             'update',
@@ -293,8 +298,84 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('sku')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException(sprintf('Attribute with "%s" code does not exist', 'sku')))
-            ->during('update', [$family, $data]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'attributes',
+                'code',
+                'The attribute does not exist',
+                'updater',
+                'family',
+                'sku'
+            )
+        )->during('update', [$family, $data]);
+    }
+
+    public function it_throws_an_exception_if_required_attribute_does_not_exist(
+        $attributeRepository,
+        $channelRepository,
+        FamilyInterface $family,
+        AttributeInterface $attribute,
+        ChannelInterface $channel
+    ) {
+        $data = [
+            'code'                   => 'mycode',
+            'attribute_requirements' => [
+                'mobile' => ['sku', 'name'],
+                'print'  => ['sku', 'name', 'description'],
+            ]
+        ];
+        $family->getAttributeRequirements()->willReturn([]);
+        $family->setCode('mycode')->shouldBeCalled();
+
+        $attributeRepository->findOneByIdentifier('sku')->willReturn(null);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+        $channelRepository->findOneByIdentifier('print')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'attribute_requirements',
+                'code',
+                'The attribute does not exist',
+                'updater',
+                'family',
+                'sku'
+            )
+        )->during('update', [$family, $data]);
+    }
+
+    public function it_throws_an_exception_if_attribute_as_label_does_not_exist(
+        $attributeRepository,
+        FamilyInterface $family,
+        AttributeInterface $priceAttribute
+    ) {
+        $data = [
+            'attribute_as_label'     => 'unknown',
+            'code'                   => 'mycode',
+            'attributes'             => ['sku', 'name', 'description', 'price'],
+            'attribute_requirements' => [
+                'mobile' => ['sku', 'name'],
+                'print'  => ['sku', 'name', 'description'],
+            ],
+            'labels'                 => [
+                'fr_FR' => 'Moniteurs',
+                'en_US' => 'PC Monitors',
+            ],
+        ];
+
+        $attributeRepository->findOneByIdentifier('unknown')->willReturn(null);
+
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'attributes',
+                'code',
+                'The attribute does not exist',
+                'updater',
+                'family',
+                'unknown'
+            )
+        )->during('update', [$family, $data]);
     }
 
     function it_throws_an_exception_if_channel_not_found(
@@ -320,7 +401,30 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier('print')->willReturn(null);
         $channelRepository->findOneByIdentifier('mobile')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException(sprintf('Channel with "%s" code does not exist', 'mobile')))
-            ->during('update', [$family, $data]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'attribute_requirements',
+                'code',
+                'The channel does not exist',
+                'updater',
+                'family',
+                'mobile'
+            )
+        )->during('update', [$family, $data]);
+    }
+
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(FamilyInterface $family) {
+        $values = [
+            'unknown_field' => 'field',
+            'code'          => 'mycode',
+            'parent'        => 'master',
+        ];
+
+        $this->shouldThrow(
+                UnknownPropertyException::unknownProperty(
+                    'unknown_field',
+                    new NoSuchPropertyException()
+                )
+        )->during('update', [$family, $values, []]);
     }
 }
