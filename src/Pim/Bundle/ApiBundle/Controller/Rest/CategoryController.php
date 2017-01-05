@@ -124,6 +124,11 @@ class CategoryController
         }
 
         $data = json_decode($request->getContent(), true);
+
+        if (null === $data) {
+            throw new BadRequestHttpException('JSON is not valid.');
+        }
+
         if (empty($data)) {
             throw new BadRequestHttpException('Nothing to update.');
         }
