@@ -42,6 +42,7 @@ class MetricFactory
      * @param string $unit
      * @param double $data
      *
+     * @throws \InvalidArgumentException
      * @return MetricInterface
      */
     public function createMetric($family, $unit, $data)

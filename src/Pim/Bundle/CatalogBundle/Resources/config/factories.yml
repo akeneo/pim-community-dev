@@ -2,6 +2,7 @@ parameters:
     pim_catalog.factory.family.class:                Pim\Component\Catalog\Factory\FamilyFactory
     pim_catalog.factory.attribute_requirement.class: Pim\Component\Catalog\Factory\AttributeRequirementFactory
     pim_catalog.factory.metric.class:                Pim\Component\Catalog\Factory\MetricFactory
+    pim_catalog.factory.price.class:                 Pim\Component\Catalog\Factory\PriceFactory
     pim_catalog.factory.group.class:                 Pim\Component\Catalog\Factory\GroupFactory
     pim_catalog.factory.attribute.class:             Pim\Component\Catalog\Factory\AttributeFactory
     pim_catalog.factory.group_type.class:            Pim\Component\Catalog\Factory\GroupTypeFactory
@@ -71,6 +72,12 @@ services:
             - '@akeneo_measure.measure_converter'
             - '@akeneo_measure.manager'
             - '%pim_catalog.entity.metric.class%'
+
+    pim_catalog.factory.price:
+        class: '%pim_catalog.factory.price.class%'
+        arguments:
+            - '@pim_catalog.repository.currency'
+            - '%pim_catalog.entity.product_price.class%'
 
     pim_catalog.factory.group:
         class: '%pim_catalog.factory.group.class%'
