@@ -26,8 +26,10 @@ class CategoryIntegration extends TestCase
     public function testCategoryWithParent()
     {
         $expected = [
-            'code'   => 'categoryA',
-            'parent' => 'master',
+            'code'        => 'categoryA',
+            'parent'      => 'master',
+            'label-en_US' => 'Category A',
+            'label-fr_FR' => 'Catégorie A',
         ];
 
         $this->assert('categoryA', $expected);
