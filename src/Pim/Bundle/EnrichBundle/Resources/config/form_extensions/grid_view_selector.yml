@@ -33,20 +33,14 @@ extensions:
         targetZone: buttons
         position: 110
 
-#    pim-grid-view-selector-edit:
-#        module: pim/grid/view-selector/edit
-#        parent: pim-grid-view-selector
-#        targetZone: buttons
-#        position: 120
-
     pim-grid-view-selector-save-view:
         module: pim/grid/view-selector/save-view
         parent: pim-grid-view-selector
         targetZone: buttons
-        position: 130
+        position: 120
 
     pim-grid-view-selector-remove-view:
         module: pim/grid/view-selector/remove-view
         parent: pim-grid-view-selector
         targetZone: buttons
-        position: 140
+        position: 130
