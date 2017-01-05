@@ -72,6 +72,7 @@ Feature: Notify users after a project creation
       | tshirt   | TShirts     | sku, name, description, size, weight, release_date, material | sku, name, size, description, material | sku, name, size, description, material |
       | usb_keys | USB Keys    | sku, name, description, weight, release_date, capacity       | sku, name, size, description, capacity | sku, name, size, description, capacity |
       | posters  | Posters     | sku, name, description, size, release_date, picture          | sku, name, size, description, picture  | sku, name, size, description, picture  |
+      | car      | Car         | sku, description                                             | sku, description                       | sku, description                       |
     And the following products:
       | sku                  | family   | categories         | name-en_US                | size-en_US | weight-en_US | weight-en_US-unit | release_date-en_US | release_date-fr_FR | material-en_US | capacity | capacity-unit |
       | tshirt-the-witcher-3 | tshirt   | clothing           | T-Shirt "The Witcher III" | M          | 5            | OUNCE             | 2015-06-20         | 2015-06-20         | cotton         |          |               |
@@ -80,6 +81,7 @@ Feature: Notify users after a project creation
       | usb-key-big          | usb_keys | high_tech          | USB Key Big 64Go          |            | 1            | OUNCE             | 2016-08-13         | 2016-10-13         |                |          |               |
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
+      | my-awesome-car       | car      | decoration         | Awesome car               |            |              |                   |                    |                    |                |          |               |
 
   Scenario: Successfully notify users when creating a project on clothing
     And I am logged in as "Julia"
@@ -326,3 +328,49 @@ Feature: Notify users after a project creation
     And I should see notification:
       | type    | message                                                                                 |
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+
+  Scenario: Successfully not notify users if the project is 100% done at project creation
+    Given the following product values:
+      | product        | attribute   | value                                | locale | scope     |
+      | my-awesome-car | description | My awesome description for ecommerce | en_US  | ecommerce |
+    And I am logged in as "admin"
+    When I am on the products page
+    And I filter by "category" with operator "" and value "decoration"
+    And I filter by "family" with operator "in list" and value "Car"
+    And I open the view selector
+    And I click on "Create project" action in the dropdown
+    When I fill in the following information in the popin:
+      | project-label       | 2016 summer collection |
+      | project-description | 2016 summer collection |
+      | project-due-date    | 12/13/2018             |
+    And I press the "Save" button
+    Then I should be on the products page
+    And I go on the last executed job resume of "project_calculation"
+    And I wait for the "project_calculation" job to finish
+    Then I logout
+    And I am logged in as "Julia"
+    And I should see the text "Julia"
+    And I should have 0 new notification
+
+  Scenario: Successfully notify users if the project is not 100% done at project creation
+    Given the following product values:
+      | product        | attribute   | value                                | locale | scope     |
+      | my-awesome-car | description |  | en_US  | ecommerce |
+    And I am logged in as "admin"
+    When I am on the products page
+    And I filter by "category" with operator "" and value "decoration"
+    And I filter by "family" with operator "in list" and value "Car"
+    And I open the view selector
+    And I click on "Create project" action in the dropdown
+    When I fill in the following information in the popin:
+      | project-label       | 2016 summer collection |
+      | project-description | 2016 summer collection |
+      | project-due-date    | 12/13/2018             |
+    And I press the "Save" button
+    Then I should be on the products page
+    And I go on the last executed job resume of "project_calculation"
+    And I wait for the "project_calculation" job to finish
+    Then I logout
+    And I am logged in as "Julia"
+    And I should see the text "Julia"
+    And I should have 1 new notification
