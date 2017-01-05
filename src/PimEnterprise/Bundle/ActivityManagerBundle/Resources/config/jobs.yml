@@ -11,12 +11,7 @@ parameters:
     pimee_activity_manager.launcher.job.project_calculation.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher'
     pimee_activity_manager.job.project_calculation_parameter.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationJobParameters'
 
-    pimee_activity_manager.import.processor.project.class: 'PimEnterprise\Component\ActivityManager\Job\Import\ProjectProcessor'
-    pimee_activity_manager.array_converter.flat_to_standard.class: 'PimEnterprise\Component\ActivityManager\Job\Import\ProjectArrayConverter'
-
 services:
-    ### Project calculation Job
-
     ### Tasklet
     pimee_activity_manager.tasklet.project_calculation:
         class: '%pimee_activity_manager.tasklet.project_calculation.class%'
@@ -93,36 +88,3 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
-
-    ### Import Job
-
-    ### Array converter
-    pimee_activity_manager.array_converter.flat_to_standard:
-        class: '%pim_connector.array_converter.dummy.class%'
-        arguments:
-            - '@pim_connector.array_convertor.checker.fields_requirement'
-            - ['owner', 'label', 'locale', 'channel', 'datagrid_view', 'product_filters']
-            - ['owner', 'label', 'locale', 'channel', 'datagrid_view', 'product_filters']
-
-    ### Reader
-    pimee_activity_manager.reader.file.yaml_project:
-        class: '%pim_connector.reader.file.yaml.class%'
-        arguments:
-            - '@pimee_activity_manager.array_converter.flat_to_standard'
-
-    ### Processor
-    pimee_activity_manager.processor.denormalization.project:
-        class: '%pimee_activity_manager.import.processor.project.class%'
-        arguments:
-            - '@pimee_activity_manager.repository.project'
-            - '@pimee_activity_manager.factory.project'
-            - '@pimee_activity_manager.updater.project'
-            - '@validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-
-    ### Writer
-    pimee_activity_manager.writer.database.project:
-        class: '%pim_connector.writer.database.class%'
-        arguments:
-            - '@pimee_activity_manager.saver.project'
-            - '@akeneo_storage_utils.doctrine.object_detacher'

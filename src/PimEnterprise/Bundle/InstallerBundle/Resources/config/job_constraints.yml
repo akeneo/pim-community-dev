@@ -22,6 +22,5 @@ services:
             -
                 - 'fixtures_rule_yml'
                 - 'fixtures_asset_channel_configurations_yml'
-                - 'fixtures_project_yml'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
