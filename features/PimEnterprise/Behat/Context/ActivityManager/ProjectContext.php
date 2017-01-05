@@ -97,14 +97,17 @@ class ProjectContext extends PimContext
     public function theFollowingProjects(TableNode $table)
     {
         $factory = $this->getService('pimee_activity_manager.factory.project');
-        $updater = $this->getService('pimee_activity_manager.updater.project');
 
         $projects = [];
         foreach ($table->getHash() as $field => $data) {
-            $project = $factory->create();
-            $data = $this->mapProjectData($data);
-            $updater->update($project, $data);
-            $projects[] = $project;
+            if (!isset($data['datagrid_view'])) {
+                $data['datagrid_view']['columns'] = 'sku,enable';
+                $data['datagrid_view']['filters'] = '/filters';
+            }
+
+            $data['product_filters'] = json_decode($data['product_filters'], true);
+
+            $projects[] = $factory->create($data);
         }
         $this->getService('pimee_activity_manager.saver.project')->saveAll($projects);
 
@@ -149,37 +152,6 @@ class ProjectContext extends PimContext
                 )
             );
         }
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    private function mapProjectData(array $data)
-    {
-        array_walk($data, function (&$value, $field) {
-            switch ($field) {
-                case 'owner':
-                    $value = $this->getService('pim_user.repository.user')->findOneByIdentifier($value);
-                    break;
-                case 'product_filters':
-                    $value = json_decode($value, true);
-                    break;
-            }
-        });
-
-        $datagridView = $this->getService('pim_datagrid.factory.datagrid_view')->create();
-        $datagridView
-            ->setLabel(uniqid('Behat testing'))
-            ->setType(DatagridView::TYPE_PUBLIC)
-            ->setDatagridAlias(uniqid('behat_testing'))
-            ->setColumns([])
-            ->setOwner($data['owner'])
-            ->setFilters(json_encode([]));
-        $data['datagrid_view'] = $datagridView;
-
-        return $data;
     }
 
     /**
