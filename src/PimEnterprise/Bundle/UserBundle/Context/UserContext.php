@@ -88,6 +88,11 @@ class UserContext extends BaseUserContext
      */
     public function getCurrentGrantedLocale()
     {
+        $locale = $this->getSessionLocale();
+        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
+            return $locale;
+        }
+
         $locale = $this->getRequestLocale();
         if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
             return $locale;
