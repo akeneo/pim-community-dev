@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
@@ -139,5 +140,18 @@ class AttributeUpdaterSpec extends ObjectBehavior
             'update',
             [$attribute, ['date_min' => '2016/12/12']]
         );
+    }
+
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(AttributeInterface $attribute) {
+        $values = [
+            'non_existent_field' => 'field',
+            'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
+            'group' => 'marketing',
+            'attribute_type' => 'pim_catalog_text'
+        ];
+
+        $this
+            ->shouldThrow(new UnknownPropertyException('non_existent_field'))
+            ->during('update', [$attribute, $values, []]);
     }
 }

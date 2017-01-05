@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Updater\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
@@ -54,5 +55,16 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
         ];
 
         $this->update($associationType, $values, []);
+    }
+
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(AssociationTypeInterface $associationType) {
+        $values = [
+            'non_existent_field' => 'field',
+            'code'               => 'mycode',
+        ];
+
+        $this
+            ->shouldThrow(new UnknownPropertyException('non_existent_field'))
+            ->during('update', [$associationType, $values, []]);
     }
 }
