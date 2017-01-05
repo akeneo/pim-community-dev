@@ -65,6 +65,22 @@
     background: lighten(@AknRed, 20%);
   }
 
+  &--grey &-button {
+    background: @AknGrey;
+    color: white;
+    border: 1px solid darken(@AknGrey, 10%);
+  }
+
+  &--grey &-caretContainer {
+    background: darken(@AknGrey, 10%);
+    color: white;
+  }
+
+  &--grey:hover &-button,
+  &--grey.open &-button {
+    background: darken(@AknGrey, 10%);
+  }
+
   &--small &-button {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
