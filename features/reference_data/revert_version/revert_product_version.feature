@@ -32,7 +32,6 @@ Feature: Revert a product to a previous version
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
 
-  @skip
   Scenario: Revert a product with simple reference data
     Given I am on the "red-heels" product page
     And I add available attribute color
@@ -55,7 +54,7 @@ Feature: Revert a product to a previous version
     Then I should see history:
       | version | property   | value |
       | 4       | Main color | blue  |
-    When I revert the product version number 2
+    When I revert the product version number 2 and then see 5 total versions
     Then the product "red-heels" should have the following values:
       | main_color | [red] |
 
