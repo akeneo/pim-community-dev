@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6038: Fix product imports that do not change the product update date correctly (mongodb)
+
 # 1.5.17 (2017-01-18)
 
 ## Bug fixes
