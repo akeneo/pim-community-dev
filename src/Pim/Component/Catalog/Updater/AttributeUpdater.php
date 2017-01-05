@@ -2,6 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\AttributeTypeRegistry;
@@ -9,6 +12,7 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -55,11 +59,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
     public function update($attribute, array $data, array $options = [])
     {
         if (!$attribute instanceof AttributeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\AttributeInterface", "%s" provided.',
-                    ClassUtils::getClass($attribute)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($attribute),
+                'Pim\Component\Catalog\Model\AttributeInterface'
             );
         }
 
@@ -75,7 +77,8 @@ class AttributeUpdater implements ObjectUpdaterInterface
      * @param string             $field
      * @param mixed              $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
+     * @throws UnknownPropertyException
      */
     protected function setData(AttributeInterface $attribute, $field, $data)
     {
@@ -93,12 +96,12 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 $this->setAvailableLocales($attribute, $field, $data);
                 break;
             case 'date_min':
-                $this->validateDateFormat($data);
+                $this->validateDateFormat('date_min', $data);
                 $date = $this->getDate($data);
                 $attribute->setDateMin($date);
                 break;
             case 'date_max':
-                $this->validateDateFormat($data);
+                $this->validateDateFormat('date_max', $data);
                 $date = $this->getDate($data);
                 $attribute->setDateMax($date);
                 break;
@@ -106,7 +109,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 $attribute->setAllowedExtensions(implode(',', $data));
                 break;
             default:
-                $this->accessor->setValue($attribute, $field, $data);
+                $this->setValue($attribute, $field, $data);
         }
     }
 
@@ -120,6 +123,22 @@ class AttributeUpdater implements ObjectUpdaterInterface
         $attributeGroup = $this->attrGroupRepo->findOneByIdentifier($code);
 
         return $attributeGroup;
+    }
+
+    /**
+     * @param $attribute
+     * @param $field
+     * @param $data
+     *
+     * @throws UnknownPropertyException
+     */
+    protected function setValue($attribute, $field, $data)
+    {
+        try {
+            $this->accessor->setValue($attribute, $field, $data);
+        } catch (NoSuchPropertyException $e) {
+            throw UnknownPropertyException::unknownProperty($field, $e);
+        }
     }
 
     /**
@@ -141,6 +160,8 @@ class AttributeUpdater implements ObjectUpdaterInterface
      * @param AttributeInterface $attribute
      * @param string             $field
      * @param array              $availableLocaleCodes
+     *
+     * @throw UnknownPropertyException
      */
     protected function setAvailableLocales(AttributeInterface $attribute, $field, array $availableLocaleCodes)
     {
@@ -152,14 +173,14 @@ class AttributeUpdater implements ObjectUpdaterInterface
             }
         }
 
-        $this->accessor->setValue($attribute, $field, $locales);
+        $this->setValue($attribute, $field, $locales);
     }
 
     /**
      * @param AttributeInterface $attribute
      * @param string             $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setGroup(AttributeInterface $attribute, $data)
     {
@@ -167,18 +188,31 @@ class AttributeUpdater implements ObjectUpdaterInterface
         if (null !== $attributeGroup) {
             $attribute->setGroup($attributeGroup);
         } else {
-            throw new \InvalidArgumentException(sprintf('AttributeGroup "%s" does not exist', $data));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'group',
+                'code',
+                'The attribute group does not exist',
+                'updater',
+                'attribute',
+                $data
+            );
         }
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param string|null        $data
+     * @param $attribute
+     * @param $data
+     *
+     * @throws InvalidPropertyException
      */
     protected function setType($attribute, $data)
     {
         if (('' === $data) || (null === $data)) {
-            throw new \InvalidArgumentException('attributeType must be filled.');
+            throw InvalidPropertyException::valueNotEmptyExpected(
+                'attribute_type',
+                'updater',
+                'attribute'
+            );
         }
 
         try {
@@ -187,7 +221,14 @@ class AttributeUpdater implements ObjectUpdaterInterface
             $attribute->setBackendType($attributeType->getBackendType());
             $attribute->setUnique($attributeType->isUnique());
         } catch (\LogicException $exception) {
-            throw new \InvalidArgumentException(sprintf('AttributeType "%s" does not exist.', $data));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'attribute_type',
+                'attribute type',
+                'The attribute type does not exist',
+                'updater',
+                'attribute',
+                $data
+            );
         }
     }
 
@@ -201,11 +242,12 @@ class AttributeUpdater implements ObjectUpdaterInterface
      * - "2015-45-31"
      * - "not a date"
      *
+     * @param string $field
      * @param string $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
-    protected function validateDateFormat($data)
+    protected function validateDateFormat($field, $data)
     {
         if (null === $data) {
             return;
@@ -214,12 +256,22 @@ class AttributeUpdater implements ObjectUpdaterInterface
         try {
             new \DateTime($data);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Invalid date, "%s" given', $data), 0, $e);
+            throw InvalidPropertyException::dateExpected(
+                $field,
+                'yyyy-mm-dd',
+                'updater',
+                'attribute',
+                $data
+            );
         }
 
         if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-            throw new \InvalidArgumentException(
-                sprintf('Attribute expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
+            throw InvalidPropertyException::dateExpected(
+                $field,
+                'yyyy-mm-dd',
+                'updater',
+                'attribute',
+                $data
             );
         }
     }

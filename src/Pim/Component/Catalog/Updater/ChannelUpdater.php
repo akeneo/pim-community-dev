@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -58,11 +60,9 @@ class ChannelUpdater implements ObjectUpdaterInterface
     public function update($channel, array $data, array $options = [])
     {
         if (!$channel instanceof ChannelInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\ChannelInterface", "%s" provided.',
-                    ClassUtils::getClass($channel)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($channel),
+                'Pim\Component\Catalog\Model\ChannelInterface'
             );
         }
 
@@ -78,7 +78,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * @param string           $field
      * @param mixed            $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData(ChannelInterface $channel, $field, $data)
     {
@@ -107,12 +107,21 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /**
      * @param ChannelInterface $channel
      * @param string           $treeCode
+     *
+     * @throws InvalidPropertyException
      */
     protected function setCategoryTree(ChannelInterface $channel, $treeCode)
     {
         $category = $this->categoryRepository->findOneByIdentifier($treeCode);
         if (null === $category) {
-            throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $treeCode));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'category_tree',
+                'code',
+                'The category does not exist',
+                'updater',
+                'channel',
+                $treeCode
+            );
         }
         $channel->setCategory($category);
     }
@@ -120,6 +129,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /**
      * @param ChannelInterface $channel
      * @param array            $currencyCodes
+     *
+     * @throws InvalidPropertyException
      */
     protected function setCurrencies(ChannelInterface $channel, array $currencyCodes)
     {
@@ -127,7 +138,14 @@ class ChannelUpdater implements ObjectUpdaterInterface
         foreach ($currencyCodes as $currencyCode) {
             $currency = $this->currencyRepository->findOneByIdentifier($currencyCode);
             if (null === $currency) {
-                throw new \InvalidArgumentException(sprintf('Currency with "%s" code does not exist', $currencyCode));
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'currencies',
+                    'code',
+                    'The currency does not exist',
+                    'updater',
+                    'channel',
+                    $currencyCode
+                );
             }
 
             $currencies[] = $currency;
@@ -139,6 +157,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /**
      * @param ChannelInterface $channel
      * @param array            $localeCodes
+     *
+     * @throws InvalidPropertyException
      */
     protected function setLocales(ChannelInterface $channel, array $localeCodes)
     {
@@ -146,7 +166,14 @@ class ChannelUpdater implements ObjectUpdaterInterface
         foreach ($localeCodes as $localeCode) {
             $locale = $this->localeRepository->findOneByIdentifier($localeCode);
             if (null === $locale) {
-                throw new \InvalidArgumentException(sprintf('Locale with "%s" code does not exist', $localeCode));
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'locales',
+                    'code',
+                    'The locale does not exist',
+                    'updater',
+                    'channel',
+                    $localeCode
+                );
             }
 
             $locales[] = $locale;

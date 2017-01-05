@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 
@@ -42,11 +43,9 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
     public function update($jobInstance, array $data, array $options = [])
     {
         if (!$jobInstance instanceof JobInstance) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Akeneo\Component\Batch\Model\JobInstance", "%s" provided.',
-                    ClassUtils::getClass($jobInstance)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($jobInstance),
+                'Akeneo\Component\Batch\Model\JobInstance'
             );
         }
 

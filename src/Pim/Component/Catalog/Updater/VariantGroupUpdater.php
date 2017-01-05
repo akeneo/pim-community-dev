@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -97,11 +99,9 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     public function update($variantGroup, array $data, array $options = [])
     {
         if (!$variantGroup instanceof GroupInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
-                    ClassUtils::getClass($variantGroup)
-                )
+            throw InvalidPropertyException::objectExpected(
+                ClassUtils::getClass($variantGroup),
+                'Pim\Component\Catalog\Model\GroupInterface'
             );
         }
 
@@ -117,7 +117,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * @param string         $field
      * @param mixed          $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
+     * @throws ImmutablePropertyException
      */
     protected function setData(GroupInterface $variantGroup, $field, $data)
     {
@@ -161,7 +162,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $variantGroup
      * @param string         $type
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setType(GroupInterface $variantGroup, $type)
     {
@@ -169,15 +170,20 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         if (null !== $groupType) {
             $variantGroup->setType($groupType);
         } else {
-            throw new \InvalidArgumentException(sprintf('Type "%s" does not exist', $type));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'type',
+                'group type',
+                'The group type does not exist',
+                'updater',
+                'variant group',
+                $type
+            );
         }
     }
 
     /**
      * @param GroupInterface $variantGroup
      * @param array          $labels
-     *
-     * @throws \InvalidArgumentException
      */
     protected function setLabels(GroupInterface $variantGroup, array $labels)
     {
@@ -192,13 +198,19 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $variantGroup
      * @param array          $axes
      *
-     * @throws \InvalidArgumentException
+     * @throws ImmutablePropertyException
+     * @throws InvalidPropertyException
      */
     protected function setAxes(GroupInterface $variantGroup, array $axes)
     {
         if (null !== $variantGroup->getId()) {
             if (array_diff($this->getOriginalAxes($variantGroup->getAxisAttributes()), array_values($axes))) {
-                throw new \InvalidArgumentException('Attributes: This property cannot be changed.');
+                throw ImmutablePropertyException::immutableProperty(
+                    'axes',
+                    implode(',', $axes),
+                    'updater',
+                    'variant group'
+                );
             }
         }
 
@@ -207,7 +219,14 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
             if (null !== $attribute) {
                 $variantGroup->addAxisAttribute($attribute);
             } else {
-                throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $axis));
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'axes',
+                    'attribute code',
+                    'The attribute does not exist',
+                    'updater',
+                    'variant group',
+                    $axis
+                );
             }
         }
     }

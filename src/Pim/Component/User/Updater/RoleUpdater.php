@@ -2,6 +2,7 @@
 
 namespace Pim\Component\User\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
@@ -40,11 +41,9 @@ class RoleUpdater implements ObjectUpdaterInterface
     public function update($role, array $data, array $options = [])
     {
         if (!$role instanceof Role) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Oro\Bundle\UserBundle\Entity\Role", "%s" provided.',
-                    ClassUtils::getClass($role)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($role),
+                'Oro\Bundle\UserBundle\Entity\Role'
             );
         }
 

@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -54,11 +56,9 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     public function update($attributeGroup, array $data, array $options = [])
     {
         if (!$attributeGroup instanceof AttributeGroupInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\AttributeGroupInterface", "%s" provided.',
-                    ClassUtils::getClass($attributeGroup)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($attributeGroup),
+                'Pim\Component\Catalog\Model\AttributeGroupInterface'
             );
         }
 
@@ -74,7 +74,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
      * @param string                  $field
      * @param mixed                   $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData($attributeGroup, $field, $data)
     {
@@ -105,6 +105,8 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     /**
      * @param AttributeGroupInterface $attributeGroup
      * @param string[]                $data
+     *
+     * @throws InvalidPropertyException
      */
     protected function setAttributes(AttributeGroupInterface $attributeGroup, array $data)
     {
@@ -123,10 +125,14 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
         foreach ($data as $attributeCode) {
             $attribute = $this->findAttribute($attributeCode);
             if (null === $attribute) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Attribute with "%s" code does not exist',
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'attributes',
+                    'attribute code',
+                    'The attribute does not exist',
+                    'updater',
+                    'attribute group',
                     $attributeCode
-                ));
+                );
             }
             $attributeGroup->addAttribute($attribute);
         }
