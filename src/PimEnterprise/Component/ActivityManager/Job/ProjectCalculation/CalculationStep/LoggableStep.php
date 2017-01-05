@@ -11,9 +11,6 @@
 
 namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
-use Box\Spout\Writer\WriterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
@@ -27,9 +24,9 @@ class LoggableStep implements CalculationStepInterface
     /** @var string */
     protected $fileLog;
 
-    /** @var WriterInterface */
-    protected $csvWriter = null;
-
+    /**
+     * @param string $fileLog
+     */
     public function __construct($fileLog)
     {
         $this->fileLog = $fileLog;
@@ -40,11 +37,9 @@ class LoggableStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
-        if (null === $this->csvWriter) {
-            $this->csvWriter = WriterFactory::create(Type::CSV);
-            $this->csvWriter->openToFile($this->fileLog);
-        }
-
-        $this->csvWriter->addRow([$project->getCode(), $product->getId(), memory_get_usage()/1024/1024]);
+        $newRow = [$project->getCode(), $product->getId(), memory_get_usage()/1024/1024];
+        $handle = fopen($this->fileLog, 'a+');
+        fputcsv($handle, $newRow);
+        fclose($handle);
     }
 }
