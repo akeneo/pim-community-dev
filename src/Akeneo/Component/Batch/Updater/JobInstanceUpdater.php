@@ -42,11 +42,9 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
     public function update($jobInstance, array $data, array $options = [])
     {
         if (!$jobInstance instanceof JobInstance) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Akeneo\Component\Batch\Model\JobInstance", "%s" provided.',
-                    ClassUtils::getClass($jobInstance)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($jobInstance),
+                'Akeneo\Component\Batch\Model\JobInstance'
             );
         }
 

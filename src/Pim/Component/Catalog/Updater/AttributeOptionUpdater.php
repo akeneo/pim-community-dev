@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -45,11 +46,9 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
     public function update($attributeOption, array $data, array $options = [])
     {
         if (!$attributeOption instanceof AttributeOptionInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\AttributeOptionInterface", "%s" provided.',
-                    ClassUtils::getClass($attributeOption)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($attributeOption),
+                'Pim\Component\Catalog\Model\AttributeOptionInterface'
             );
         }
 
@@ -70,7 +69,7 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
      * @param string                   $field
      * @param mixed                    $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData(AttributeOptionInterface $attributeOption, $field, $data)
     {
@@ -83,7 +82,14 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
             if (null !== $attribute) {
                 $attributeOption->setAttribute($attribute);
             } else {
-                throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $data));
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'attribute',
+                    'attribute code',
+                    'The attribute does not exist',
+                    'updater',
+                    'attribute option',
+                    $data
+                );
             }
         }
 

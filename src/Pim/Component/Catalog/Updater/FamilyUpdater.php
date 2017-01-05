@@ -2,6 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +17,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -72,11 +76,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
     public function update($family, array $data, array $options = [])
     {
         if (!$family instanceof FamilyInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\FamilyInterface", "%s" provided.',
-                    ClassUtils::getClass($family)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($family),
+                'Pim\Component\Catalog\Model\FamilyInterface'
             );
         }
 
@@ -91,6 +93,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @param FamilyInterface $family
      * @param string          $field
      * @param mixed           $data
+     *
+     * @throws UnknownPropertyException
+     * @throws InvalidPropertyException
      */
     protected function setData(FamilyInterface $family, $field, $data)
     {
@@ -108,7 +113,23 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 $this->setAttributeAsLabel($family, $data);
                 break;
             default:
-                $this->accessor->setValue($family, $field, $data);
+                $this->setValue($family, $field, $data);
+        }
+    }
+
+    /**
+     * @param $attribute
+     * @param $field
+     * @param $data
+     *
+     * @throws UnknownPropertyException
+     */
+    protected function setValue($attribute, $field, $data)
+    {
+        try {
+            $this->accessor->setValue($attribute, $field, $data);
+        } catch (NoSuchPropertyException $e) {
+            throw UnknownPropertyException::unknownProperty($field, $e);
         }
     }
 
@@ -128,6 +149,8 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /**
      * @param FamilyInterface $family
      * @param array           $data
+     *
+     * @throws InvalidPropertyException
      */
     protected function setAttributeRequirements(FamilyInterface $family, array $data)
     {
@@ -173,6 +196,8 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @param array           $attributeCodes
      * @param string          $channelCode
      *
+     * @throws InvalidPropertyException
+     *
      * @return array
      */
     protected function createAttributeRequirementsByChannel(
@@ -184,8 +209,13 @@ class FamilyUpdater implements ObjectUpdaterInterface
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             if (null === $attribute) {
-                throw new \InvalidArgumentException(
-                    sprintf('Attribute with "%s" code does not exist', $attributeCode)
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'attribute_requirements',
+                    'code',
+                    'The attribute does not exist',
+                    'updater',
+                    'family',
+                    $attributeCode
                 );
             }
             if (AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
@@ -199,6 +229,8 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /**
      * @param FamilyInterface                 $family
      * @param AttributeRequirementInterface[] $requirements
+     *
+     * @throws InvalidPropertyException
      *
      * @return AttributeRequirementInterface[]
      */
@@ -225,14 +257,21 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @param AttributeInterface $attribute
      * @param string             $channelCode
      *
+     * @throws InvalidPropertyException
+     *
      * @return AttributeRequirementInterface
      */
     protected function createAttributeRequirement(FamilyInterface $family, AttributeInterface $attribute, $channelCode)
     {
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
-            throw new \InvalidArgumentException(
-                sprintf('Channel with "%s" code does not exist', $channelCode)
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'attribute_requirements',
+                'code',
+                'The channel does not exist',
+                'updater',
+                'family',
+                $channelCode
             );
         }
 
@@ -253,7 +292,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @param FamilyInterface $family
      * @param array           $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function addAttributes(FamilyInterface $family, array $data)
     {
@@ -266,8 +305,13 @@ class FamilyUpdater implements ObjectUpdaterInterface
             if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode)) {
                 $family->addAttribute($attribute);
             } else {
-                throw new \InvalidArgumentException(
-                    sprintf('Attribute with "%s" code does not exist', $attributeCode)
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'attributes',
+                    'code',
+                    'The attribute does not exist',
+                    'updater',
+                    'family',
+                    $attributeCode
                 );
             }
         }
@@ -277,15 +321,20 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @param FamilyInterface $family
      * @param string          $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setAttributeAsLabel(FamilyInterface $family, $data)
     {
         if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($data)) {
             $family->setAttributeAsLabel($attribute);
         } else {
-            throw new \InvalidArgumentException(
-                sprintf('Attribute with "%s" code does not exist', $data)
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'attributes',
+                'code',
+                'The attribute does not exist',
+                'updater',
+                'family',
+                $data
             );
         }
     }

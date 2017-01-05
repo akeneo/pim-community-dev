@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -26,11 +27,9 @@ class LocaleUpdater implements ObjectUpdaterInterface
     public function update($locale, array $data, array $options = [])
     {
         if (!$locale instanceof LocaleInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\LocaleInterface", "%s" provided.',
-                    ClassUtils::getClass($locale)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($locale),
+                'Pim\Component\Catalog\Model\LocaleInterface'
             );
         }
 
@@ -45,8 +44,6 @@ class LocaleUpdater implements ObjectUpdaterInterface
      * @param LocaleInterface $locale
      * @param string          $field
      * @param mixed           $data
-     *
-     * @throws \InvalidArgumentException
      */
     protected function setData(LocaleInterface $locale, $field, $data)
     {

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
@@ -22,12 +23,9 @@ class DatagridViewUpdater implements ObjectUpdaterInterface
     public function update($datagridView, array $data, array $options = [])
     {
         if (!$datagridView instanceof DatagridView) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "%s", "%s" provided.',
-                    DatagridView::class,
-                    ClassUtils::getClass($datagridView)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($datagridView),
+                DatagridView::class
             );
         }
 
