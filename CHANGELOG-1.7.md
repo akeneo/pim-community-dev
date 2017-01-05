@@ -156,3 +156,4 @@
 - Remove useless class `Pim\Bundle\ImportExportBundle\JobTemplate\JobTemplateProviderInterface`
 - Remove useless class `Pim\Bundle\ImportExportBundle\Twig\NormalizeConfigurationExtension`
 - Remove useless class `Pim\Bundle\ImportExportBundle\ViewElement\Checker\JobNameVisibilityChecker`
+- Change exception `\InvalidArgumentException` by `Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException` thrown by `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface:update()`
