@@ -91,7 +91,7 @@ class ProjectCalculationTasklet implements TaskletInterface
 
         if (null === $project) {
             throw new \RuntimeException(
-                sprintf('Try to run a project calculation but the project %s does not exist.', $projectCode)
+                sprintf('Could not run the project calculation, as the project %s doesn\'t exist.', $projectCode)
             );
         }
 

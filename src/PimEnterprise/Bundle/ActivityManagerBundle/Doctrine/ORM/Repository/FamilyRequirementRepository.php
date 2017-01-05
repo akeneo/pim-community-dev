@@ -11,17 +11,13 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Presenter\PresenterInterface;
 use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
-use PimEnterprise\Component\ActivityManager\Repository\PreProcessingCompletenessProviderInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -30,7 +26,7 @@ class FamilyRequirementRepository extends EntityRepository implements FamilyRequ
 {
     /**
      * @param EntityManager $em
-     * @param string $class
+     * @param string        $class
      */
     public function __construct(EntityManager $em, $class)
     {
