@@ -59,3 +59,4 @@ services:
             - '@pim_connector.reader.file.csv_asset_category_access'
             - '@pimee_security.processor.denormalization.asset_category_access'
             - '@pimee_security.writer.database.asset_category_access'
+

@@ -18,9 +18,10 @@ class ProjectUpdaterSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $userRepository
     ) {
-        $this->beConstructedWith($channelRepository, $localeRepository);
+        $this->beConstructedWith($channelRepository, $localeRepository, $userRepository);
     }
 
     function it_is_initializable()
@@ -39,33 +40,30 @@ class ProjectUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_a_project_properties(
+        $userRepository,
         $channelRepository,
         $localeRepository,
         ProjectInterface $project,
         UserInterface $user,
         DatagridView $datagridView,
         ChannelInterface $channel,
-        LocaleInterface $locale,
-        Group $userGroup
+        LocaleInterface $locale
     ) {
+        $userRepository->findOneByIdentifier('julia')->willreturn($user);
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel);
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($locale);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($locale);
+
         $project->setLabel('Summer collection 2017')->shouldBeCalled();
-        $project->setOwner($user)->shouldBeCalled();
         $project->setDueDate(Argument::type(\DateTime::class))->shouldBeCalled();
         $project->setDescription('My description')->shouldBeCalled();
+        $project->setOwner($user)->shouldBeCalled();
         $project->setDatagridView($datagridView)->shouldBeCalled();
         $project->setChannel($channel)->shouldBeCalled();
         $project->setLocale($locale)->shouldBeCalled();
-        $project->addUserGroup($userGroup)->shouldBeCalled();
 
         $project->getLabel()->willReturn('Summer collection 2017');
         $project->getChannel()->willReturn($channel);
         $project->getLocale()->willReturn($locale);
-        $locale->getCode()->willReturn('fr_FR');
-        $channel->getCode()->willReturn('print');
-
-        $project->setCode('summer-collection-2017-print-fr-fr')->shouldBeCalled();
 
         $this->update(
             $project,
@@ -73,11 +71,10 @@ class ProjectUpdaterSpec extends ObjectBehavior
                 'label' => 'Summer collection 2017',
                 'due_date' => '2012-07-16',
                 'description' => 'My description',
-                'owner' => $user,
+                'owner' => 'julia',
                 'datagrid_view' => $datagridView,
                 'channel' => 'ecommerce',
-                'locale' => 'en_US',
-                'user_groups' => [$userGroup],
+                'locale' => 'fr_FR',
             ]
         );
     }

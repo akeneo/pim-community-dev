@@ -11,14 +11,12 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher;
 use PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter;
+use PimEnterprise\Component\ActivityManager\Factory\ProjectFactoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -28,7 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -42,20 +39,11 @@ class ProjectController
     /** @var FilterConverter */
     protected $filterConverter;
 
-    /** @var SimpleFactoryInterface */
-    protected $datagridViewFactory;
-
-    /** @var SimpleFactoryInterface */
-    protected $projectFactory;
-
-    /** @var ObjectUpdaterInterface */
-    protected $datagridViewUpdater;
-
-    /** @var ObjectUpdaterInterface */
-    protected $projectUpdater;
-
     /** @var ValidatorInterface */
     protected $validator;
+
+    /** @var ProjectFactoryInterface */
+    protected $projectFactory;
 
     /** @var SaverInterface */
     protected $projectSaver;
@@ -86,10 +74,6 @@ class ProjectController
 
     /**
      * @param FilterConverter                        $filterConverter
-     * @param SimpleFactoryInterface                 $datagridViewFactory
-     * @param SimpleFactoryInterface                 $projectFactory
-     * @param ObjectUpdaterInterface                 $datagridViewUpdater
-     * @param ObjectUpdaterInterface                 $projectUpdater
      * @param SaverInterface                         $projectSaver
      * @param ValidatorInterface                     $validator
      * @param ProjectCalculationJobLauncher          $projectCalculationJobLauncher
@@ -103,10 +87,7 @@ class ProjectController
      */
     public function __construct(
         FilterConverter $filterConverter,
-        SimpleFactoryInterface $datagridViewFactory,
-        SimpleFactoryInterface $projectFactory,
-        ObjectUpdaterInterface $datagridViewUpdater,
-        ObjectUpdaterInterface $projectUpdater,
+        ProjectFactoryInterface $projectFactory,
         SaverInterface $projectSaver,
         ValidatorInterface $validator,
         ProjectCalculationJobLauncher $projectCalculationJobLauncher,
@@ -119,10 +100,7 @@ class ProjectController
         RouterInterface $router
     ) {
         $this->filterConverter = $filterConverter;
-        $this->datagridViewFactory = $datagridViewFactory;
         $this->projectFactory = $projectFactory;
-        $this->datagridViewUpdater = $datagridViewUpdater;
-        $this->projectUpdater = $projectUpdater;
         $this->validator = $validator;
         $this->projectSaver = $projectSaver;
         $this->projectCalculationJobLauncher = $projectCalculationJobLauncher;
@@ -142,46 +120,25 @@ class ProjectController
      */
     public function createAction(Request $request)
     {
-        $user = $this->tokenStorage->getToken()->getUser();
-
         $datagridViewFilters = [];
         $projectData = $request->request->get('project');
+        $user = $this->tokenStorage->getToken()->getUser();
 
         parse_str($projectData['datagrid_view']['filters'], $datagridViewFilters);
 
-        $filters = json_encode($datagridViewFilters['f']);
-        $filters = $this->filterConverter->convert($request, $filters);
-
-        $projectData['product_filters'] = $filters;
-        $projectData['owner'] = $user;
+        $projectData['owner'] = $user->getUsername();
         $projectData['channel'] = $datagridViewFilters['f']['scope']['value'];
+        $projectData['product_filters'] = $this->filterConverter->convert(
+            $request,
+            json_encode($datagridViewFilters['f'])
+        );
 
-        $projectDatagridView = isset($projectData['datagrid_view']) ? $projectData['datagrid_view'] : null;
-        unset($projectData['datagrid_view']);
-
-        $project = $this->projectFactory->create();
-        $this->projectUpdater->update($project, $projectData);
-
-        $datagridViewData = [];
-        if (null !== $projectDatagridView) {
-            $datagridViewData = $projectDatagridView;
-            $datagridViewData['type'] = DatagridViewTypes::PROJECT_VIEW;
-            $datagridViewData['owner'] = $projectData['owner'];
-            $datagridViewData['label'] = $project->getCode();
-            $datagridViewData['datagrid_alias'] = 'product-grid';
-        }
-
-        $datagridView = $this->datagridViewFactory->create();
-        $this->datagridViewUpdater->update($datagridView, $datagridViewData);
-
-        $projectData['datagrid_view'] = $datagridView;
-        $this->projectUpdater->update($project, $projectData);
-
+        $project = $this->projectFactory->create($projectData);
         $violations = $this->validator->validate($project);
 
         if (0 === $violations->count()) {
             $this->projectSaver->save($project);
-            $this->projectCalculationJobLauncher->launch($user, $project);
+            $this->projectCalculationJobLauncher->launch($project);
 
             $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
 

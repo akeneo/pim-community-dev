@@ -26,11 +26,12 @@ class ProjectCalculationJobLauncherSpec extends ObjectBehavior
         $jobInstanceRepository->findOneByIdentifier('job_name')->willReturn($jobInstance);
 
         $project->getCode()->willReturn('project_code');
+        $project->getOwner()->willReturn($user);
 
         $configuration = ['project_code' => 'project_code'];
 
         $simpleJobLauncher->launch($jobInstance, $user, $configuration)->shouldBeCalled();
 
-        $this->launch($user, $project);
+        $this->launch($project);
     }
 }

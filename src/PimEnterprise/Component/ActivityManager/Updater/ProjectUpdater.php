@@ -14,8 +14,8 @@ namespace PimEnterprise\Component\ActivityManager\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Gedmo\Sluggable\Util\Urlizer;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Project updater is able to hydrate a project with given parameters.
@@ -30,16 +30,22 @@ class ProjectUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $localeRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $userRepository;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
+     * @param IdentifiableObjectRepositoryInterface $userRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $userRepository
     ) {
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -60,8 +66,6 @@ class ProjectUpdater implements ObjectUpdaterInterface
         foreach ($data as $field => $value) {
             $this->setData($project, $field, $value);
         }
-
-        $this->generateCode($project);
 
         return $this;
     }
@@ -86,7 +90,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 $project->setDescription($value);
                 break;
             case 'owner':
-                $project->setOwner($value);
+                $user = $this->userRepository->findOneByIdentifier($value);
+                $project->setOwner($user);
                 break;
             case 'datagrid_view':
                 $project->setDatagridView($value);
@@ -102,30 +107,6 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 $locale = $this->localeRepository->findOneByIdentifier($value);
                 $project->setLocale($locale);
                 break;
-            case 'user_groups':
-                foreach ($value as $userGroup) {
-                    $project->addUserGroup($userGroup);
-                }
-                break;
         }
-    }
-
-    /**
-     * Generate the project code from the project label, channel and the locale.
-     *
-     * @param ProjectInterface $project
-     */
-    protected function generateCode(ProjectInterface $project)
-    {
-        $projectCode = Urlizer::transliterate(
-            sprintf(
-                '%s %s %s',
-                $project->getLabel(),
-                $project->getChannel()->getCode(),
-                $project->getLocale()->getCode()
-            )
-        );
-
-        $project->setCode($projectCode);
     }
 }

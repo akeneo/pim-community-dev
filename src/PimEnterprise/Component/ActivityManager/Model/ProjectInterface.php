@@ -34,7 +34,7 @@ interface ProjectInterface
     public function getCode();
 
     /**
-     * @param string $code
+     * @param string|ProjectIdentifier $code
      */
     public function setCode($code);
 
