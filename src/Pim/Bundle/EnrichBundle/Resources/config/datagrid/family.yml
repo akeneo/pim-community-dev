@@ -74,4 +74,4 @@ datagrid:
                 route: pim_enrich_mass_edit_family_action_choose
                 acl_resource: pim_enrich_family_edit_attributes
                 icon: pencil
-                className: AknActionButtonList-button
+                className: AknActionButton

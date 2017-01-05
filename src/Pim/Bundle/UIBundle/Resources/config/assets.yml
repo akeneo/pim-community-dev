@@ -30,7 +30,6 @@ css:
         - bundles/pimui/less/base/general.less
 
         - bundles/pimui/less/components/button/ActionButton.less
-        - bundles/pimui/less/components/button/ActionButtonList.less
         - bundles/pimui/less/components/button/SeveralActionsButton.less
         - bundles/pimui/less/components/button/Button.less
         - bundles/pimui/less/components/button/ButtonList.less
