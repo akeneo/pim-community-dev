@@ -3,6 +3,8 @@
 namespace Pim\Component\User\Updater;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -81,11 +83,9 @@ class UserUpdater implements ObjectUpdaterInterface
     public function update($user, array $data, array $options = [])
     {
         if (!$user instanceof UserInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Bundle\UserBundle\Entity\UserInterface", "%s" provided.',
-                    ClassUtils::getClass($user)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($user),
+                UserInterface::class
             );
         }
 
@@ -105,7 +105,7 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param string        $field
      * @param mixed         $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData(UserInterface $user, $field, $data)
     {
@@ -143,10 +143,10 @@ class UserUpdater implements ObjectUpdaterInterface
                 $user->setEmailNotifications($data);
                 break;
             case 'catalog_locale':
-                $user->setCatalogLocale($this->findLocale($data));
+                $user->setCatalogLocale($this->findLocale('catalog_locale', $data));
                 break;
             case 'user_locale':
-                $user->setUiLocale($this->findLocale($data));
+                $user->setUiLocale($this->findLocale('user_locale', $data));
                 break;
             case 'catalog_scope':
                 $user->setCatalogScope($this->findChannel($data));
@@ -179,30 +179,49 @@ class UserUpdater implements ObjectUpdaterInterface
     /**
      * @param string $code
      *
-     * @return CategoryInterface|null
+     * @throws InvalidPropertyException
+     *
+     * @return CategoryInterface
      */
     protected function findCategory($code)
     {
         $category = $this->categoryRepository->findOneByIdentifier($code);
 
         if (null === $category) {
-            throw new \InvalidArgumentException(sprintf('Category %s was not found', $code));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'default_tree',
+                'category code',
+                'The category does not exist',
+                'updater',
+                'user',
+                $code
+            );
         }
 
         return $category;
     }
 
     /**
+     * @param string $field
      * @param string $code
      *
-     * @return LocaleInterface|null
+     * @throws InvalidPropertyException
+     *
+     * @return LocaleInterface
      */
-    protected function findLocale($code)
+    protected function findLocale($field, $code)
     {
         $locale = $this->localeRepository->findOneByIdentifier($code);
 
         if (null === $locale) {
-            throw new \InvalidArgumentException(sprintf('Locale %s was not found', $code));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                $field,
+                'locale code',
+                'The locale does not exist',
+                'updater',
+                'user',
+                $code
+            );
         }
 
         return $locale;
@@ -211,6 +230,8 @@ class UserUpdater implements ObjectUpdaterInterface
     /**
      * @param string $code
      *
+     * @throws InvalidPropertyException
+     *
      * @return ChannelInterface|null
      */
     protected function findChannel($code)
@@ -218,7 +239,14 @@ class UserUpdater implements ObjectUpdaterInterface
         $channel = $this->channelRepository->findOneByIdentifier($code);
 
         if (null === $channel) {
-            throw new \InvalidArgumentException(sprintf('Channel %s was not found', $code));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'catalog_scope',
+                'channel code',
+                'The channel does not exist',
+                'updater',
+                'user',
+                $code
+            );
         }
 
         return $channel;
@@ -227,14 +255,23 @@ class UserUpdater implements ObjectUpdaterInterface
     /**
      * @param string $code
      *
-     * @return Role|null
+     * @throws InvalidPropertyException
+     *
+     * @return Role
      */
     protected function findRole($code)
     {
         $role = $this->roleRepository->findOneByIdentifier($code);
 
         if (null === $role) {
-            throw new \InvalidArgumentException(sprintf('Role %s was not found', $code));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'roles',
+                'role',
+                'The role does not exist',
+                'updater',
+                'user',
+                $code
+            );
         }
 
         return $role;
@@ -243,14 +280,23 @@ class UserUpdater implements ObjectUpdaterInterface
     /**
      * @param string $code
      *
-     * @return GroupInterface|null
+     * @throws InvalidPropertyException
+     *
+     * @return GroupInterface
      */
     protected function findGroup($code)
     {
         $group = $this->groupRepository->findOneByIdentifier($code);
 
         if (null === $group) {
-            throw new \InvalidArgumentException(sprintf('Group %s was not found', $code));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'groups',
+                'group',
+                'The group does not exist',
+                'updater',
+                'user',
+                $code
+            );
         }
 
         return $group;
