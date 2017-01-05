@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\CurrencyInterface;
@@ -27,11 +28,9 @@ class CurrencyUpdater implements ObjectUpdaterInterface
     public function update($currency, array $data, array $options = [])
     {
         if (!$currency instanceof CurrencyInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\CurrencyInterface", "%s" provided.',
-                    ClassUtils::getClass($currency)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($currency),
+                'Pim\Component\Catalog\Model\CurrencyInterface'
             );
         }
 

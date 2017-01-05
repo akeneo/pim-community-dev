@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -58,11 +60,9 @@ class GroupUpdater implements ObjectUpdaterInterface
     public function update($group, array $data, array $options = [])
     {
         if (!$group instanceof GroupInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
-                    ClassUtils::getClass($group)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($group),
+                'Pim\Component\Catalog\Model\GroupInterface'
             );
         }
 
@@ -77,6 +77,8 @@ class GroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $group
      * @param string         $field
      * @param mixed          $data
+     *
+     * @throws InvalidPropertyException
      */
     protected function setData(GroupInterface $group, $field, $data)
     {
@@ -112,21 +114,31 @@ class GroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $group
      * @param string         $type
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setType(GroupInterface $group, $type)
     {
         $groupType = $this->groupTypeRepository->findOneByIdentifier($type);
 
         if (null === $groupType) {
-            throw new \InvalidArgumentException(sprintf('Type "%s" does not exist', $type));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'type',
+                'group type',
+                'The group type does not exist',
+                'updater',
+                'group',
+                $type
+            );
         }
 
         if ($groupType->isVariant()) {
-            throw new \InvalidArgumentException(sprintf(
-                'Cannot process variant group "%s", only groups are accepted',
+            throw InvalidPropertyException::validGroupTypeExpected(
+                'type',
+                'Cannot process variant group, only groups are accepted',
+                'updater',
+                'group',
                 $group->getCode()
-            ));
+            );
         }
 
         $group->setType($groupType);
@@ -149,7 +161,7 @@ class GroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $group
      * @param string[]       $attributeCodes
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setAxis(GroupInterface $group, array $attributeCodes)
     {
@@ -157,7 +169,14 @@ class GroupUpdater implements ObjectUpdaterInterface
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             if (null === $attribute) {
-                throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $attributeCode));
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'axis',
+                    'attribute code',
+                    'The attribute does not exist',
+                    'updater',
+                    'group',
+                    $attributeCode
+                );
             }
             $attributes[] = $attribute;
         }
@@ -166,7 +185,7 @@ class GroupUpdater implements ObjectUpdaterInterface
 
     /**
      * @param GroupInterface $group
-     * @param array          $labels
+     * @param array          $productIds
      */
     protected function setProducts(GroupInterface $group, array $productIds)
     {

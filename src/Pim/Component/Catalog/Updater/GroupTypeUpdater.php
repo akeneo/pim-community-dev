@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
@@ -31,11 +32,9 @@ class GroupTypeUpdater implements ObjectUpdaterInterface
     public function update($groupType, array $data, array $options = [])
     {
         if (!$groupType instanceof GroupTypeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\GroupTypeInterface", "%s" provided.',
-                    ClassUtils::getClass($groupType)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($groupType),
+                'Pim\Component\Catalog\Model\GroupTypeInterface'
             );
         }
 

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
@@ -322,5 +323,17 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $this->shouldThrow(new \InvalidArgumentException(sprintf('Channel with "%s" code does not exist', 'mobile')))
             ->during('update', [$family, $data]);
+    }
+
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(FamilyInterface $family) {
+        $values = [
+            'non_existent_field' => 'field',
+            'code'               => 'mycode',
+            'parent'             => 'master',
+        ];
+
+        $this
+            ->shouldThrow(new UnknownPropertyException('non_existent_field'))
+            ->during('update', [$family, $values, []]);
     }
 }

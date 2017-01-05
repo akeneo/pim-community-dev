@@ -67,7 +67,7 @@ Feature: Import options
     And I launch the import job
     And I wait for the "csv_footwear_option_import" job to finish
     Then I should see "skipped 1"
-    And I should see "Attribute \"unknown\" does not exist"
+    And I should see "Property \"attribute\" expects a valid attribute code. The attribute does not exist, \"unknown\" given (for updater attribute option)."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3820
   Scenario: Import options with localizable label
