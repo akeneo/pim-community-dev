@@ -176,7 +176,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         usort(
             $options,
             function ($first, $second) {
-                return $first->getSortOrder() > $second->getSortOrder();
+                return $first->getSortOrder() - $second->getSortOrder();
             }
         );
         $sortedCollection = new ArrayCollection($options);
