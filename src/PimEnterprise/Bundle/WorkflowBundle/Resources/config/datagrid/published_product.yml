@@ -79,7 +79,7 @@ datagrid:
                 label: pim.grid.mass_action.mass_edit
                 handler: product_mass_edit
                 route: pimee_workflow_mass_edit_published_action_choose
-                icon: edit
+                icon: pencil
             quick_export_grid_context_xlsx:
                 type: export
                 label: pim.grid.mass_action.quick_export.xlsx_grid_context

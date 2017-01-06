@@ -9,7 +9,7 @@ define(
     function (_, BaseForm, formTemplate) {
         var FormView = BaseForm.extend({
             tagName: 'span',
-            className: 'published-version',
+            className: 'AknTitleContainer-metaItem published-version',
             template: _.template(formTemplate),
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
@@ -19,13 +19,16 @@ define(
             render: function () {
                 var product = this.getFormData();
 
-                this.$el.html(
-                    this.template({
-                        isPublished: product.meta.published,
-                        label: _.__('pimee_enrich.entity.product.meta.published'),
-                        publishedVersion: this.getPublishedVersion(product)
-                    })
-                );
+                if (product.meta.published) {
+                    this.$el.html(
+                        this.template({
+                            label: _.__('pimee_enrich.entity.product.meta.published'),
+                            publishedVersion: this.getPublishedVersion(product)
+                        })
+                    );
+                } else {
+                    this.$el.html('');
+                }
 
                 return this;
             },

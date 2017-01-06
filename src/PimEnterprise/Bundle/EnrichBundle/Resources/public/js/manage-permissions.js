@@ -19,7 +19,10 @@ define(
             if (!opts.elementId) {
                 return;
             }
-            var $changeList = $('<ul>', {id: 'permission-changes', 'class': 'permission-changes'});
+            var $changeList = $('<ul>', {
+                id: 'permission-changes',
+                class: 'permission-changes AknList AknList--withDisc'
+            });
             var $changeBlock = $('<div>', {'class': 'control-group hide'}).append(
                 $('<label>', {'class': 'control-label', 'text': opts.changeBlockLabel})
             ).append(
@@ -28,14 +31,18 @@ define(
 
             $(opts.elementId + ' select').on('change', function (e) {
                 var permissionId = 'change-' + $(this).attr('id') + '-';
-                var permissionLabel = $.trim($(this).parents('.control-group').children('label').text()).toLowerCase();
+                var permissionLabel = $.trim(
+                    $(this).closest('.AknFieldContainer')
+                        .find('label:first')
+                        .text()
+                    ).toLowerCase();
 
                 if (!_.isUndefined(e.added)) {
                     permissionId += e.added.id;
                     if ($('#' + permissionId).length) {
                         $('#' + permissionId).remove();
                     } else {
-                        $changeList.append($('<li>', {id: permissionId}).html(
+                        $changeList.append($('<li>', {id: permissionId, 'class': 'AknList-item'}).html(
                             _.__(opts.grantMessage, {'permission': permissionLabel, 'group': e.added.text})
                         ));
                     }
@@ -58,7 +65,7 @@ define(
                     if ($('#' + permissionId).length) {
                         $('#' + permissionId).remove();
                     } else {
-                        $changeList.append($('<li>', {id: permissionId}).html(
+                        $changeList.append($('<li>', {id: permissionId, 'class': 'AknList-item'}).html(
                             _.__(opts.revokeMessage, {'permission': permissionLabel, 'group': e.removed.text})
                         ));
                     }
