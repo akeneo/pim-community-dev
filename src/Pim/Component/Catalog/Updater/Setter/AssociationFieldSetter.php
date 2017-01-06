@@ -122,8 +122,9 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * Set products and groups to associations
      *
      * @param ProductInterface $product
+     * @param array            $data
      */
-    protected function setProductsAndGroupsToAssociations(ProductInterface $product, $data)
+    protected function setProductsAndGroupsToAssociations(ProductInterface $product, array $data)
     {
         foreach ($data as $typeCode => $items) {
             $association = $product->getAssociationForTypeCode($typeCode);
@@ -149,7 +150,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * @param AssociationInterface $association
      * @param array                $productsIdentifiers
      */
-    protected function setAssociatedProducts(AssociationInterface $association, $productsIdentifiers)
+    protected function setAssociatedProducts(AssociationInterface $association, array $productsIdentifiers)
     {
         foreach ($productsIdentifiers as $productIdentifier) {
             $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
@@ -170,7 +171,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * @param AssociationInterface $association
      * @param array                $groupsCodes
      */
-    protected function setAssociatedGroups(AssociationInterface $association, $groupsCodes)
+    protected function setAssociatedGroups(AssociationInterface $association, array $groupsCodes)
     {
         foreach ($groupsCodes as $groupCode) {
             $associatedGroup = $this->groupRepository->findOneByIdentifier($groupCode);
