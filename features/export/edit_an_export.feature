@@ -25,7 +25,7 @@ Feature: Edit an export
       | Enclosure         | '             |
       | File path         | /tmp/file.csv |
       | Decimal separator | ,             |
-      | Date format       | yyyy-MM-dd    |
+      | Date format       | yyyy-mm-dd    |
     And I uncheck the "With header" switch
     When I visit the "Content" tab
     Then I should see the Channel, Locales fields

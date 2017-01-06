@@ -30,7 +30,6 @@ css:
         - bundles/pimui/less/base/general.less
 
         - bundles/pimui/less/components/button/ActionButton.less
-        - bundles/pimui/less/components/button/ActionButtonList.less
         - bundles/pimui/less/components/button/SeveralActionsButton.less
         - bundles/pimui/less/components/button/Button.less
         - bundles/pimui/less/components/button/ButtonList.less
@@ -40,12 +39,10 @@ css:
         - bundles/pimui/less/components/grid/FilterBox.less
         - bundles/pimui/less/components/grid/FilterChoice.less
         - bundles/pimui/less/components/grid/FilterDate.less
-        - bundles/pimui/less/components/grid/FilterMetric.less
         - bundles/pimui/less/components/grid/Grid.less
         - bundles/pimui/less/components/grid/GridsLine.less
         - bundles/pimui/less/components/grid/GridContainer.less
         - bundles/pimui/less/components/grid/GridToolbar.less
-        - bundles/pimui/less/components/grid/Pagination.less
 
         - bundles/pimui/less/components/product-edit-form/AttributeActions.less
         - bundles/pimui/less/components/product-edit-form/CommentPanel.less
@@ -53,7 +50,7 @@ css:
         - bundles/pimui/less/components/product-edit-form/ComparableFields.less
         - bundles/pimui/less/components/product-edit-form/FieldContainer.less
         - bundles/pimui/less/components/product-edit-form/FormContainer.less
-        - bundles/pimui/less/components/product-edit-form/HorizontalTabnav.less
+        - bundles/pimui/less/components/product-edit-form/HorizontalNavtab.less
         - bundles/pimui/less/components/product-edit-form/MediaField.less
         - bundles/pimui/less/components/product-edit-form/MetricField.less
         - bundles/pimui/less/components/product-edit-form/PanelContainer.less
@@ -85,6 +82,7 @@ css:
         - bundles/pimui/less/components/NotificationList.less
         - bundles/pimui/less/components/Progress.less
         - bundles/pimui/less/components/ProjectWidget.less
+        - bundles/pimui/less/components/Rule.less
         - bundles/pimui/less/components/SequentialEdit.less
         - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/TitleContainer.less

@@ -252,11 +252,11 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
         },
 
         activate: function() {
-            this.$icon.addClass('icon-gold');
+            this.$icon.closest('.AknIconButton').addClass('AknIconButton--gold');
         },
 
         inactivate: function() {
-            this.$icon.removeClass('icon-gold');
+            this.$icon.closest('.AknIconButton').removeClass('AknIconButton--gold');
         },
 
         /**

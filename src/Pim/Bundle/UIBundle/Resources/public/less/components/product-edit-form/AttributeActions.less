@@ -6,13 +6,14 @@
   align-items: center;
 
   &-editActions {
+    @verticalPadding: ((@AknTabHeight - @AknDefaultButtonSize - 1px) / 2); // To have the same size than tab
+
+    padding: @verticalPadding 10px @verticalPadding 0;
     display: flex;
     justify-content: space-between;
     flex-grow: 1;
     align-items: center;
-    height: 100%;
     margin-right: 10px;
-    padding: 5px 10px 5px 0;
   }
 
   &-copyActions {

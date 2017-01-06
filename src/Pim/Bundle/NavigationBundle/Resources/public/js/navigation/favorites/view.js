@@ -50,11 +50,11 @@ function(_, Backbone, app, mediator, error,
         },
 
         activate: function() {
-            this.$icon.addClass('icon-gold');
+            this.$icon.closest('.AknIconButton').addClass('AknIconButton--gold');
         },
 
         inactivate: function() {
-            this.$icon.removeClass('icon-gold');
+            this.$icon.closest('.AknIconButton').removeClass('AknIconButton--gold');
         },
 
         toggleItem: function(e) {

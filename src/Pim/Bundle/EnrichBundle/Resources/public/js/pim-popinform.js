@@ -9,6 +9,11 @@ define(
                 throw new Error('Unable to instantiate available attributes form on this element');
             }
 
+            var classes = 'pimmultiselect pimmultiselect_' + elementId;
+            if (!_.isUndefined($el.attr('data-classes'))) {
+                classes = classes + ' ' + $el.attr('data-classes');
+            }
+
             var opts = {
                 title: $el.attr('data-title'),
                 placeholder: $el.attr('data-placeholder'),
@@ -16,7 +21,7 @@ define(
                 header: '',
                 height: 175,
                 minWidth: 225,
-                classes: 'pimmultiselect pimmultiselect_' + elementId,
+                classes: classes,
                 position: {
                     my: 'right top',
                     at: 'right bottom',

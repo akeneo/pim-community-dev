@@ -47,7 +47,10 @@ define(
                 }));
                 this.$el
                     .addClass(status ? 'AknDropdownButton--apply' : 'AknDropdownButton--important')
-                    .removeClass(status ? 'AknDropdownButton--important' : 'AknDropdownButton--apply');
+                    .removeClass(status ? 'AknDropdownButton--important' : 'AknDropdownButton--apply')
+                    .find('.AknCaret')
+                    .addClass(status ? 'AknCaret--apply' : 'AknCaret--important')
+                    .removeClass(status ? 'AknCaret--important' : 'AknCaret--apply');
                 this.delegateEvents();
 
                 return this;

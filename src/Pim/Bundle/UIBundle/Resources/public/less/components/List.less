@@ -3,6 +3,15 @@
 .AknList {
   font-size: @AknDefaultFontSize;
   color: @AknDefaultFontColor;
-  margin: 10px;
+  margin: 5px 10px;
   min-width: 300px;
+
+  &--withDisc &-item {
+    list-style: disc;
+  }
+
+  &--withDisc {
+    list-style: disc outside none;
+    margin-left: 20px;
+  }
 }

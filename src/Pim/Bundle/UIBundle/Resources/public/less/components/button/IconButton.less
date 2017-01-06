@@ -51,6 +51,10 @@
     }
   }
 
+  &--gold {
+    color: @AknOrange;
+  }
+
   &--apply {
     background-color: @AknGreen;
     color: white;
@@ -70,5 +74,11 @@
 
   &--hide {
     display: none !important; // Font awesome adds !important
+  }
+
+  &--noFocus {
+    &:focus {
+      outline: none;
+    }
   }
 }

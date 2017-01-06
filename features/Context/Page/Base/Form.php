@@ -652,11 +652,11 @@ class Form extends Base
             if (0 === strpos($for, 's2id_')) {
                 if ($this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container-multi')) {
                     return 'multiSelect2';
-                } elseif ($this->getClosest($label, 'AknFieldContainer')->find('css', 'select')) {
-                    return 'select';
+                } elseif ($this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container')) {
+                    return 'simpleSelect2';
                 }
 
-                return 'simpleSelect2';
+                return 'select';
             }
 
             if (null !== $this->find('css', sprintf('#date_selector_%s', $for))) {

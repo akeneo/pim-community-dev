@@ -140,19 +140,19 @@
 {% endmacro %}
 
 {% macro form_navbar(tabs, translationSuffix = '.title') %}
-    <div id="form-navbar" class="AknHorizontalTabnav scrollspy-nav">
+    <div id="form-navbar" class="AknHorizontalNavtab scrollspy-nav">
         <div class="navbar-inner">
             <div class="row-fluid">
                 {% if tabs is not empty %}
-                    <ul class="AknHorizontalTabnav-list nav nav-tabs">
+                    <ul class="AknHorizontalNavtab-list nav nav-tabs">
                         {% if tabs is iterable %}
                             {% for tab in tabs %}
-                                <li class="AknHorizontalTabnav-item{% if loop.first %} AknHorizontalTabnav-item--active active{% endif %}">
-                                    <a class="AknHorizontalTabnav-link" href="#{{ tab|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tab ~ translationSuffix)|trans }}</a>
+                                <li class="AknHorizontalNavtab-item{% if loop.first %} AknHorizontalNavtab-item--active active{% endif %}">
+                                    <a class="AknHorizontalNavtab-link" href="#{{ tab|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tab ~ translationSuffix)|trans }}</a>
                                 </li>
                             {% endfor %}
                         {% else %}
-                            <li class="AknHorizontalTabnav-item AknHorizontalTabnav-item--active active"><a href="#{{ tabs|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tabs ~ translationSuffix)|trans }}</a></li>
+                            <li class="AknHorizontalNavtab-item AknHorizontalNavtab-item--active active"><a href="#{{ tabs|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tabs ~ translationSuffix)|trans }}</a></li>
                         {% endif %}
                     </ul>
                 {% endif %}

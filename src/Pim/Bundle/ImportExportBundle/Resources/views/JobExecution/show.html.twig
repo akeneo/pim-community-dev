@@ -10,7 +10,7 @@
     {% endset %}
 
     {% set buttons %}
-        <span id="archives"></span>
+        <span id="archives" class="AknButtonList"></span>
         <span id="log"></span>
         {{ elements.link(
             'Show profile',
@@ -159,15 +159,17 @@
 
             <% } else { %>
 
-                <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="icon-download-alt"></i> <%= archive.label %>
-                        <span class="caret"></span>
+                <div class="AknDropdownButton AknDropdownButton--grey AknDropdown AknButtonList-item">
+                    <a class="AknDropdownButton-button" data-toggle="dropdown" href="#">
+                        <%= archive.label %>
+                        <span class="AknDropdownButton-caretContainer">
+                            <span class="AknCaret AknCaret--big AknCaret--inverse caret"></span>
+                        </span>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="AknDropdown-menu dropdown-menu">
                         <% _.each(archive.files, function (file, key) { %>
                         <li>
-                            <a href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
+                            <a class="AknDropdown-menuLink" href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
                             <%= key %>
                             </a>
                         </li>
