@@ -13,7 +13,6 @@ parameters:
 
     pim_enrich.form.type.product_grid_filter_choice.class: Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType
 
-    pim_enrich.form.type.image.class:                               Pim\Bundle\EnrichBundle\Form\Type\ImageType
     pim_enrich.form.type.conversion_units.class:                    Pim\Bundle\EnrichBundle\Form\Type\ConversionUnitsType
     pim_enrich.form.type.attribute_option.class:                    Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType
     pim_enrich.form.type.attribute_option_create.class:             Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionCreateType
@@ -205,13 +204,6 @@ services:
             - '%pim_catalog.entity.attribute.class%'
         tags:
             - { name: form.type, alias: pim_enrich_conversion_units }
-
-    pim_enrich.form.type.image:
-        class: '%pim_enrich.form.type.image.class%'
-        arguments:
-            - '%akeneo_file_storage.model.file_info.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_image }
 
     pim_enrich.form.type.light_entity:
         class: '%pim_enrich.form.type.light_entity.class%'
