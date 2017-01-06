@@ -28,19 +28,38 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeGroup(ProductInterface $product, ProjectInterface $project, array $attributeGroupCompleteness)
-    {
+    public function addAttributeGroup(
+        ProductInterface $product,
+        ProjectInterface $project,
+        array $attributeGroupCompleteness
+    ) {
         $connection = $this->entityManager->getConnection();
 
         foreach ($attributeGroupCompleteness as $attributeGroup) {
-            $connection->insert('pimee_activity_manager_completeness_per_attribute_group', [
-                'product_id'                                 => $product->getId(),
-                'channel_id'                                 => $project->getChannel()->getId(),
-                'locale_id'                                  => $project->getLocale()->getId(),
-                'attribute_group_id'                         => $attributeGroup[0],
-                'has_at_least_one_required_attribute_filled' => $attributeGroup[1],
-                'is_complete'                                => $attributeGroup[2],
-            ]);
+
+            $sql = <<<SQL
+REPLACE INTO pimee_activity_manager_completeness_per_attribute_group
+VALUE (
+    :locale_id,
+    :channel_id,
+    :product_id,
+    :attribute_group_id,
+    :has_at_least_one_required_attribute_filled,
+    :is_complete
+)
+SQL;
+
+            $connection->executeQuery(
+                $sql,
+                [
+                    'product_id'                                 => $product->getId(),
+                    'channel_id'                                 => $project->getChannel()->getId(),
+                    'locale_id'                                  => $project->getLocale()->getId(),
+                    'attribute_group_id'                         => $attributeGroup[0],
+                    'has_at_least_one_required_attribute_filled' => $attributeGroup[1],
+                    'is_complete'                                => $attributeGroup[2],
+                ]
+            );
         }
     }
 
