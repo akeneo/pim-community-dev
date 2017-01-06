@@ -5,6 +5,8 @@ def storages = ["orm", "odm"]
 def features = "features,vendor/akeneo/pim-community-dev/features"
 def automaticBranches = ["1.4", "1.5", "1.6", "master"]
 def behatAttempts = 5
+def php_version = "5.6"
+def mysql_version = "5.5"
 
 stage('build') {
     if (!automaticBranches.contains(env.BRANCH_NAME)) {
@@ -44,6 +46,8 @@ stage('build') {
         storages = [userInput['storage']]
         editions = [userInput['edition']]
         features = userInput['features']
+        php_version = userInput['php_version']
+        mysql_version = userInput['mysql_version']
     }
 
     node {
