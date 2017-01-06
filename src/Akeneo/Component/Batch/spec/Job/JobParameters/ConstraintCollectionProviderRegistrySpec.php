@@ -21,7 +21,7 @@ class ConstraintCollectionProviderRegistrySpec extends ObjectBehavior
         $job->getName()->willReturn('myname');
         $this->shouldThrow(
             new NonExistingServiceException(
-                'No contraint collection provider has been defined for the Job "myname"'
+                'No constraint collection provider has been defined for the Job "myname"'
             )
         )->during(
             'get',
