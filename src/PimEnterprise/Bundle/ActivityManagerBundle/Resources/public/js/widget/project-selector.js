@@ -81,7 +81,9 @@ define(
 
                     dropdownCssClass: 'select2-drop--forProjectWidget' +
                         ' select2--withArrowRight' +
-                        ' activity-manager-widget-project-dropdown'
+                        ' activity-manager-widget-project-dropdown',
+
+                    containerCssClass: 'select2--withoutBorder'
                 };
 
                 $select.select2(options);
