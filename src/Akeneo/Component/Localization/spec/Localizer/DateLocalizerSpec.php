@@ -11,9 +11,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DateLocalizerSpec extends ObjectBehavior
 {
+    const TEST_TIMEZONE = 'Europe/Paris';
+
+    protected $userTimezone;
+
     function let(ValidatorInterface $validator, DateFactory $dateFactory)
     {
+        $this->userTimezone = date_default_timezone_get();
+        date_default_timezone_set(self::TEST_TIMEZONE);
+
         $this->beConstructedWith($validator, $dateFactory, ['pim_catalog_date']);
+    }
+
+    function letGo()
+    {
+        date_default_timezone_set($this->userTimezone);
     }
 
     function it_is_a_localizer()
