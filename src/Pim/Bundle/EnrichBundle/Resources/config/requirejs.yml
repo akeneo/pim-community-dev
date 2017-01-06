@@ -33,12 +33,17 @@ config:
         pim/variant-group-manager:
             urls:
                 get: pim_enrich_variant_group_rest_get
+
+        pim/remover/association-type:
+            url: pim_enrich_associationtype_rest_remove
         pim/remover/variant-group:
             url: pim_enrich_variant_group_rest_remove
         pim/remover/group:
             url: pim_enrich_group_rest_remove
         pim/remover/product:
             url: pim_enrich_product_rest_remove
+        pim/saver/association-type:
+            url: pim_enrich_associationtype_rest_post
         pim/saver/variant-group:
             url: pim_enrich_variant_group_rest_post
         pim/saver/product:
@@ -48,6 +53,12 @@ config:
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
+                association-type:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_enrich_associationtype_rest_index
+                            get: pim_enrich_associationtype_rest_get
                 attribute-group:
                     module: pim/base-fetcher
                     options:
@@ -86,11 +97,6 @@ config:
                     options:
                         urls:
                             list: pim_enrich_currency_rest_index
-                association-type:
-                    module: pim/base-fetcher
-                    options:
-                        urls:
-                            list: pim_enrich_associationtype_rest_index
                 product-completeness:
                     module: pim/completeness-fetcher
                     options:
@@ -172,16 +178,18 @@ config:
         pim/variant-group-fetcher: pimenrich/js/fetcher/variant-group-fetcher
 
         # Remover
-        pim/remover/base:          pimenrich/js/remover/base-remover
-        pim/remover/product:       pimenrich/js/remover/product-remover
-        pim/remover/variant-group: pimenrich/js/remover/variant-group-remover
-        pim/remover/group:         pimenrich/js/remover/group-remover
+        pim/remover/base:               pimenrich/js/remover/base-remover
+        pim/remover/association-type:   pimenrich/js/remover/association-type-remover
+        pim/remover/product:            pimenrich/js/remover/product-remover
+        pim/remover/variant-group:      pimenrich/js/remover/variant-group-remover
+        pim/remover/group:              pimenrich/js/remover/group-remover
 
         # Saver
-        pim/saver/base:          pimenrich/js/saver/base-saver
-        pim/saver/product:       pimenrich/js/saver/product-saver
-        pim/saver/variant-group: pimenrich/js/saver/variant-group-saver
-        pim/saver/group:         pimenrich/js/saver/group-saver
+        pim/saver/base:             pimenrich/js/saver/base-saver
+        pim/saver/association-type: pimenrich/js/saver/association-type-saver
+        pim/saver/product:          pimenrich/js/saver/product-saver
+        pim/saver/variant-group:    pimenrich/js/saver/variant-group-saver
+        pim/saver/group:            pimenrich/js/saver/group-saver
 
         # Generator
         pim/media-url-generator:  pimenrich/js/generator/media-url-generator
@@ -194,11 +202,13 @@ config:
 
         pim/form: pimenrich/js/product/form
 
+        # Association type
+        pim/association-type-edit-form/delete:                 pimenrich/js/association-type/form/delete
+        pim/association-type-edit-form/save:                   pimenrich/js/association-type/form/save
+        pim/association-type-edit-form/properties/general:     pimenrich/js/association-type/form/properties/general
+
         # Variant group
         pim/variant-group-edit-form/save: pimenrich/js/variant-group/form/save
-
-        # Group
-        pim/group-edit-form/save: pimenrich/js/group/form/save
 
         # Product
         pim/product-edit-form/product-label:               pimenrich/js/product/form/product-label
@@ -290,6 +300,7 @@ config:
         pim/group-edit-form/delete:                 pimenrich/js/group/form/delete
         pim/group-edit-form/properties/general:     pimenrich/js/group/form/properties/general
         pim/group-edit-form/meta/product-count:     pimenrich/js/group/form/meta/product-count
+        pim/group-edit-form/save:                   pimenrich/js/group/form/save
 
         # Common
         pim/common/tab/history:            pimenrich/js/form/common/tab/history
@@ -372,6 +383,8 @@ config:
         pim/template/form/tab/attribute/attribute-group-selector: pimenrich/templates/form/tab/attributes/attribute-group-selector.html
         pim/template/form/tab/attribute/copy:                     pimenrich/templates/form/tab/attributes/copy.html
         pim/template/form/tab/attribute/copy-field:               pimenrich/templates/form/tab/attributes/copy-field.html
+
+        pim/template/association-type/tab/properties/general:     pimenrich/templates/association-type/tab/properties/general.html
 
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/attribute/validation-error: pimenrich/templates/product/tab/attributes/validation-error.html

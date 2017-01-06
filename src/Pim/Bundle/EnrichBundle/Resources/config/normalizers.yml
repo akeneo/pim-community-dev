@@ -87,6 +87,8 @@ services:
         class: '%pim_enrich.normalizer.association_type.class%'
         arguments:
             - '@pim_serializer'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

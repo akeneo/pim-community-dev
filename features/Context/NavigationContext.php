@@ -68,13 +68,12 @@ class NavigationContext extends BaseNavigationContext
      * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" association type$/
+     * @Given /^I am on the "([^"]*)" association type page$/
      */
     public function iEditTheAssociationType($identifier)
     {
         $page   = 'AssociationType';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->openPage(sprintf('%s edit', $page), ['code' => $identifier]);
     }
 
     /**
@@ -130,19 +129,6 @@ class NavigationContext extends BaseNavigationContext
     public function iAmOnTheGroupTypeEditPage($identifier)
     {
         $page   = 'GroupType';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @Given /^I am on the "([^"]*)" association type page$/
-     */
-    public function iAmOnTheAssociationTypeEditPage($identifier)
-    {
-        $page   = 'AssociationType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
@@ -244,7 +230,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheAssociationTypePage(AssociationTypeInterface $associationType)
     {
-        $expectedAddress = $this->getPage('AssociationType edit')->getUrl(['id' => $associationType->getId()]);
+        $expectedAddress = $this->getPage('AssociationType edit')->getUrl(['code' => $associationType->getCode()]);
         $this->assertAddress($expectedAddress);
     }
 

@@ -305,6 +305,11 @@ services:
         arguments:
             - '@pim_catalog.repository.association_type'
             - '@pim_internal_api_serializer'
+            - '@pim_catalog.remover.association_type'
+            - '@pim_catalog.updater.association_type'
+            - '@pim_catalog.saver.association_type'
+            - '@validator'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.attribute:
         class: '%pim_enrich.controller.rest.attribute.class%'

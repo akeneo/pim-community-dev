@@ -13,7 +13,7 @@ Feature: Display the association type history
       | Code | REPLACEMENT |
     And I press the "Save" button
     And I am on the association types page
-    Then I should see association type REPLACEMENT
+    Then I should see "REPLACEMENT"
     When I am on the "REPLACEMENT" association type page
     And I visit the "History" tab
     Then there should be 1 update

@@ -116,7 +116,7 @@ class AssociationTypeController
                 'status' => 1,
                 'url'    => $this->router->generate(
                     'pim_enrich_associationtype_edit',
-                    ['id' => $associationType->getId()]
+                    ['code' => $associationType->getCode()]
                 )
             ];
 
@@ -131,51 +131,17 @@ class AssociationTypeController
     /**
      * Edit an association type
      *
-     * @param int     $id
+     * @param string $code
      *
      * @Template
      * @AclAncestor("pim_enrich_associationtype_edit")
      *
      * @return array
      */
-    public function editAction($id)
+    public function editAction($code)
     {
-        $associationType = $this->assocTypeRepo->find($id);
-
-        if (!$associationType) {
-            throw new NotFoundHttpException(sprintf('%s entity not found', 'PimCatalogBundle:AssociationType'));
-        }
-
-        if ($this->assocTypeHandler->process($associationType)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.association type.updated'));
-
-            return new RedirectResponse($this->router->generate('pim_enrich_associationtype_edit', ['id' => $id]));
-        }
-        $usageCount = $this->assocRepository->countForAssociationType($associationType);
-
         return [
-            'form'       => $this->assocTypeForm->createView(),
-            'usageCount' => $usageCount
+            'code'       => $code
         ];
-    }
-
-    /**
-     * Remove an association type
-     *
-     * @param AssociationType $associationType
-     *
-     * @AclAncestor("pim_enrich_associationtype_remove")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function removeAction(AssociationType $associationType)
-    {
-        $this->assocTypeRemover->remove($associationType);
-
-        if ($this->request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return new RedirectResponse($this->router->generate('pim_enrich_associationtype_index'));
-        }
     }
 }
