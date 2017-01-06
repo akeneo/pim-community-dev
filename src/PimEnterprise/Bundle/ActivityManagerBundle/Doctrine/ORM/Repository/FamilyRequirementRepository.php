@@ -15,6 +15,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 
 /**
@@ -53,5 +55,36 @@ class FamilyRequirementRepository extends EntityRepository implements FamilyRequ
             ]);
 
         return array_column($queryBuilder->getQuery()->getArrayResult(), 'code');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findRequiredAttributes(ProductInterface $product, ProjectInterface $project)
+    {
+        $queryBuilder = $this->createQueryBuilder('ar');
+
+        $queryBuilder->select('a.code as attribute_code, g.id as attribute_group_id')
+            ->leftJoin('ar.family', 'f')
+            ->leftJoin('ar.channel', 'c')
+            ->leftJoin('ar.attribute', 'a')
+            ->leftJoin('a.group', 'g')
+            ->where('f.code = :family_code')
+            ->andWhere('c.code = :channel_code')
+            ->andWhere('ar.required = :required')
+            ->setParameters([
+                'family_code'  => $product->getFamily()->getCode(),
+                'channel_code' => $project->getChannel()->getCode(),
+                'required'     => true,
+            ]);
+
+        $familyRequirements = $queryBuilder->getQuery()->getArrayResult();
+
+        $formattedRequirements = [];
+        foreach ($familyRequirements as $attribute) {
+            $formattedRequirements[$attribute['attribute_group_id']][] = $attribute['attribute_code'];
+        }
+
+        return $formattedRequirements;
     }
 }

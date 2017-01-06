@@ -92,13 +92,15 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
     }
 
     /**
+     * TODO: manage transaction/error during the project calculation
+     *
      * {@inheritdoc}
      */
     public function addProduct(ProjectInterface $project, ProductInterface $product)
     {
         $this->_em->getConnection()->insert('pimee_activity_manager_project_product', [
             'project_id' => $project->getId(),
-            'product_id' => $product->getId(),
+            'product_id' => $productId,
         ]);
     }
 

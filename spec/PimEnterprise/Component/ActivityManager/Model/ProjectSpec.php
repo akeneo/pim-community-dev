@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ActivityManager\Model;
 
+use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\ActivityManager\Model\Project;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
@@ -67,11 +68,19 @@ class ProjectSpec extends ObjectBehavior
         $this->getDatagridView()->shouldReturn($datagridView);
     }
 
-    function it_has_a_unique_user_group(Group $group, Group $otherGroup)
+    function it_has_a_unique_user_group(GroupInterface $group, GroupInterface $otherGroup)
     {
         $this->addUserGroup($group)->shouldReturn(null);
         $this->addUserGroup($otherGroup)->shouldReturn(null);
         $this->removeUserGroup($otherGroup)->shouldReturn(null);
         $this->getUserGroups()->toArray()->shouldReturn([$group]);
+    }
+
+    function its_user_groups_is_resettable(GroupInterface $group, GroupInterface $otherGroup)
+    {
+        $this->addUserGroup($group)->shouldReturn(null);
+        $this->addUserGroup($otherGroup)->shouldReturn(null);
+        $this->resetUserGroups()->shouldReturn(null);
+        $this->getUserGroups()->toArray()->shouldReturn([]);
     }
 }

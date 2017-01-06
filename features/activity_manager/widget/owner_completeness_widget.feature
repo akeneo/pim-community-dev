@@ -92,6 +92,7 @@ Feature: Follow project completeness
     And I should see the text "Collection Winter 2030 [ecommerce] | English (United States)"
     And I should see the text "Due date: 08/28/2030"
 
+  @skip
   Scenario: Successfully display completeness on widget
     Given I am on the dashboard page
     Then I should see the text "Activity Manager"
@@ -99,9 +100,9 @@ Feature: Follow project completeness
     And I should see the text "all contributors"
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
-      |    0 |           0 |    0 |
+      |    0 |           3 |    0 |
     And I should see the text "0% PRODUCTS TO ENRICH"
-    And I should see the text "0% PRODUCTS IN PROGRESS"
+    And I should see the text "100% PRODUCTS IN PROGRESS"
     And I should see the text "0% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Winter."
     And I should see the text "Due date: 08/28/2030"
@@ -110,9 +111,9 @@ Feature: Follow project completeness
     And I should see the text "all contributors"
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
-      |    0 |           0 |    0 |
+      |    0 |           5 |    0 |
     And I should see the text "0% PRODUCTS TO ENRICH"
-    And I should see the text "0% PRODUCTS IN PROGRESS"
+    And I should see the text "100% PRODUCTS IN PROGRESS"
     And I should see the text "0% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/28/2030"
@@ -121,9 +122,9 @@ Feature: Follow project completeness
     And I should see the text "Claude Yachifeur"
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
-      |    0 |           0 |    0 |
+      |    0 |           3 |    3 |
     And I should see the text "0% PRODUCTS TO ENRICH"
-    And I should see the text "0% PRODUCTS IN PROGRESS"
-    And I should see the text "0% PRODUCTS DONE"
+    And I should see the text "50% PRODUCTS IN PROGRESS"
+    And I should see the text "50% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/28/2030"

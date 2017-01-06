@@ -17,6 +17,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 
 /**
@@ -35,6 +36,9 @@ class ProjectCalculationTasklet implements TaskletInterface
     /** @var CalculationStepInterface */
     protected $calculationStep;
 
+    /** @var PreProcessingRepositoryInterface */
+    protected $preProcessingRepository;
+
     /** @var SaverInterface */
     protected $projectSaver;
 
@@ -48,6 +52,7 @@ class ProjectCalculationTasklet implements TaskletInterface
      * @param ProductRepositoryInterface            $productRepository
      * @param IdentifiableObjectRepositoryInterface $projectRepository
      * @param CalculationStepInterface              $calculationStep
+     * @param PreProcessingRepositoryInterface      $preProcessingRepository
      * @param SaverInterface                        $projectSaver
      * @param ObjectDetacherInterface               $objectDetacher
      */
@@ -55,12 +60,14 @@ class ProjectCalculationTasklet implements TaskletInterface
         ProductRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $projectRepository,
         CalculationStepInterface $calculationStep,
+        PreProcessingRepositoryInterface $preProcessingRepository,
         SaverInterface $projectSaver,
         ObjectDetacherInterface $objectDetacher
     ) {
         $this->productRepository = $productRepository;
         $this->projectRepository = $projectRepository;
         $this->calculationStep = $calculationStep;
+        $this->preProcessingRepository = $preProcessingRepository;
         $this->projectSaver = $projectSaver;
         $this->objectDetacher = $objectDetacher;
     }
@@ -79,9 +86,19 @@ class ProjectCalculationTasklet implements TaskletInterface
     public function execute()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
+        $projectCode = $jobParameters->get('project_code');
+        $project = $this->projectRepository->findOneByIdentifier($projectCode);
 
-        $project = $this->projectRepository->findOneByIdentifier($jobParameters->get('project_code'));
+        if (null === $project) {
+            throw new \RuntimeException(
+                sprintf('Could not run the project calculation, as the project %s doesn\'t exist.', $projectCode)
+            );
+        }
+
         $products = $this->productRepository->findByProject($project);
+
+        $this->preProcessingRepository->reset($project);
+        $project->resetUserGroups();
 
         foreach ($products as $product) {
             $this->calculationStep->execute($product, $project);

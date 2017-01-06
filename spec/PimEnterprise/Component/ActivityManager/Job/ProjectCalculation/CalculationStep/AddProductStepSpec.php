@@ -3,22 +3,23 @@
 namespace spec\PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\ProductCalculationStep;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\AddProductStep;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 
-class ProductCalculationStepSpec extends ObjectBehavior
+class AddProductStepSpec extends ObjectBehavior
 {
-    function let(ProjectRepositoryInterface $projectRepository)
+    function let(PreProcessingRepositoryInterface $preProcessingRepository)
     {
-        $this->beConstructedWith($projectRepository);
+        $this->beConstructedWith($preProcessingRepository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductCalculationStep::class);
+        $this->shouldHaveType(AddProductStep::class);
     }
 
     function it_is_a_calculation_step()
@@ -26,9 +27,9 @@ class ProductCalculationStepSpec extends ObjectBehavior
         $this->shouldImplement(CalculationStepInterface::class);
     }
 
-    function it_adds_product_to_the_project($projectRepository, ProjectInterface $project, ProductInterface $product)
+    function it_adds_product_to_the_project($preProcessingRepository, ProjectInterface $project, ProductInterface $product)
     {
-        $projectRepository->addProduct($project, $product)->shouldBeCalled();
+        $preProcessingRepository->addProduct($project, $product)->shouldBeCalled();
 
         $this->execute($product, $project);
     }

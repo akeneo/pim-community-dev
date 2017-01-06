@@ -25,11 +25,4 @@ interface ProjectRepositoryInterface extends
     IdentifiableObjectRepositoryInterface,
     SearchableRepositoryInterface
 {
-    /**
-     * Add a product to a project.
-     *
-     * @param ProjectInterface $project
-     * @param ProductInterface $product
-     */
-    public function addProduct(ProjectInterface $project, ProductInterface $product);
 }

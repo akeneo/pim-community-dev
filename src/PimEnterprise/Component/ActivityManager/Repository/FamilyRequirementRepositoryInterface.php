@@ -13,6 +13,8 @@ namespace PimEnterprise\Component\ActivityManager\Repository;
 
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -29,4 +31,25 @@ interface FamilyRequirementRepositoryInterface
      * @return string[]
      */
     public function findAttributeGroupIdentifiers(FamilyInterface $family, ChannelInterface $channel);
+
+    /**
+     * Return the attribute codes required by the product family depending on the project channel.
+     * Those attributes are indexed by attribute group ids.
+     *
+     * [
+     *      40 => [
+     *          'sku',
+     *          'name',
+     *      ],
+     *      33 => [
+     *          'description',
+     *      ],
+     * ];
+     *
+     * @param ProductInterface $product
+     * @param ProjectInterface $project
+     *
+     * @return array
+     */
+    public function findRequiredAttributes(ProductInterface $product, ProjectInterface $project);
 }

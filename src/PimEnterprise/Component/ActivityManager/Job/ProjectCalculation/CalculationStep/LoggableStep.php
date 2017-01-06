@@ -13,24 +13,23 @@ namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\Calcula
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 
 /**
- * Add the product to the current project.
+ * Log the memory usage. Use it to debug.
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ProductCalculationStep implements CalculationStepInterface
+class LoggableStep implements CalculationStepInterface
 {
-    /** @var ProjectRepositoryInterface */
-    protected $projectRepository;
+    /** @var string */
+    protected $fileLog;
 
     /**
-     * @param ProjectRepositoryInterface $projectRepository
+     * @param string $fileLog
      */
-    public function __construct(ProjectRepositoryInterface $projectRepository)
+    public function __construct($fileLog)
     {
-        $this->projectRepository = $projectRepository;
+        $this->fileLog = $fileLog;
     }
 
     /**
@@ -38,6 +37,9 @@ class ProductCalculationStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
-        $this->projectRepository->addProduct($project, $product);
+        $newRow = [$project->getCode(), $product->getId(), memory_get_usage()/1024/1024];
+        $handle = fopen($this->fileLog, 'a+');
+        fputcsv($handle, $newRow);
+        fclose($handle);
     }
 }
