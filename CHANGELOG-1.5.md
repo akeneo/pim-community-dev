@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6064: Fix a grid issue with attribute named ID 
+- PIM-6092: Always allow to create new option on select2
 
 ## Technical improvements
 
