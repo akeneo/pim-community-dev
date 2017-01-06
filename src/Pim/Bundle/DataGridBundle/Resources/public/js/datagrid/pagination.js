@@ -15,7 +15,7 @@ function($, _, Backbone) {
         tagName: 'div',
 
         /** @property */
-        className: 'AknPagination',
+        className: 'AknGridToolbar-center',
 
         /** @property */
         windowSize: 10,
@@ -56,11 +56,11 @@ function($, _, Backbone) {
         fastForwardHandleConfig: {
             prev: {
                 label: 'Prev',
-                wrapClass: 'AknPagination-arrow icon-chevron-left hide-text'
+                wrapClass: 'icon-chevron-left hide-text'
             },
             next: {
                 label: 'Next',
-                wrapClass: 'AknPagination-arrow icon-chevron-right hide-text'
+                wrapClass: 'icon-chevron-right hide-text'
             }
         },
 
@@ -182,7 +182,7 @@ function($, _, Backbone) {
                 handles.unshift({
                     label: _.has(ffConfig.prev, 'label') ? ffConfig.prev.label : undefined,
                     wrapClass: _.has(ffConfig.prev, 'wrapClass') ? ffConfig.prev.wrapClass : undefined,
-                    className: collection.hasPrevious() ? undefined : "AknPagination-item--disabled"
+                    className: collection.hasPrevious() ? undefined : 'AknActionButton--disabled'
                 });
             }
 
@@ -190,7 +190,7 @@ function($, _, Backbone) {
                 handles.push({
                     label: _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined,
                     wrapClass: _.has(ffConfig.next, 'wrapClass') ? ffConfig.next.wrapClass : undefined,
-                    className: collection.hasNext() ? void 0 : "AknPagination-item--disabled"
+                    className: collection.hasNext() ? void 0 : 'AknActionButton--disabled'
                 });
             }
 

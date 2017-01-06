@@ -15,6 +15,9 @@
   &-center {
     order: 5;
     flex-grow: 1;
+    justify-content: center;
+    display: flex;
+    align-items: center;
   }
 
   &-right {
@@ -37,6 +40,11 @@
     min-width: @AknLittleButtonSize - 2px;
     margin-left: 5px;
     text-align: center;
+  }
+
+  &-label {
+    margin-left: 5px;
+    margin-right: 5px;
   }
 
   &-left &-actionButton:first-child {
