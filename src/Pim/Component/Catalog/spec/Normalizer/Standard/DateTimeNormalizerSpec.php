@@ -7,9 +7,24 @@ use Prophecy\Argument;
 
 class DateTimeNormalizerSpec extends ObjectBehavior
 {
+    const TEST_TIMEZONE = 'Europe/Paris';
+
+    protected $userTimezone;
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer');
+    }
+
+    function let()
+    {
+        $this->userTimezone = date_default_timezone_get();
+        date_default_timezone_set(self::TEST_TIMEZONE);
+    }
+
+    function letGo()
+    {
+        date_default_timezone_set($this->userTimezone);
     }
 
     function it_is_a_normalizer()
