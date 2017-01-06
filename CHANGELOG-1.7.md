@@ -29,6 +29,7 @@
 - TIP-575: Rename FileIterator classes to FlatFileIterator and changes the reader/processor behavior to iterate over the item's position in the file instead of the item's line number in the file.
 - TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product` as it was not used anymore.
 - TIP-667: Introduce a product value factory service to instanciate product values.
+- GITHUB-5391: Redo association type edit form using backbonejs architecture and internal REST API
 
 ## BC breaks
 - Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
@@ -123,3 +124,7 @@
 - Remove deprecated bundle "Oro\Bundle\UIBundle\OroUIBundle"
 - Remove deprecated bundle "Oro\Bundle\FormBundle\OroFormBundle"
 - Remove useless service and parameter: `pim_enrich_image` and `pim_enrich.form.type.image.class`
+- Change `Pim\Bundle\EnrichBundle\Normalizer\AssociationTypeNormalizer` constructor to add `versionManager` and `versionNormalizer`
+- Change `Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController` constructor to add `remover`, `updater`, `saver`, `validator` and `userContext`
+- Change `Pim\Bundle\EnrichBundle\Controller\AssociationTypeController` to remove `removeAction` and change `editAction`
+- Change association type route to use `code` instead of `id` for fetching
