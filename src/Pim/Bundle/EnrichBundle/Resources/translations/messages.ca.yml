@@ -653,6 +653,12 @@ pim_title.association_type:
 pim_title.group_type:
   index: Tipus de grup
   edit: Tipus de grup %group type.label% | Editar
+pim_title.mass_edit_product_action:
+  choose: Editar en massa | Triar
+  configure: Editar en massa | Configurar
+pim_title.mass_edit_family_action:
+  choose: Editar en massa | Triar
+  configure: Editar en massa | Configurar
 pim_title.job_tracker:
   index: Seguiment del procés
   show: Seguiment del procés | Mostrar tasca
