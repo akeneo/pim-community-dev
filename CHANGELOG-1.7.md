@@ -122,3 +122,4 @@
 - Update classes and services to use the interface `Pim\Component\User\Model\GroupInterface`in place of `Oro\Bundle\UserBundle\Entity\Group`
 - Remove deprecated bundle "Oro\Bundle\UIBundle\OroUIBundle"
 - Remove deprecated bundle "Oro\Bundle\FormBundle\OroFormBundle"
+- Remove useless service and parameter: `pim_enrich_image` and `pim_enrich.form.type.image.class`
