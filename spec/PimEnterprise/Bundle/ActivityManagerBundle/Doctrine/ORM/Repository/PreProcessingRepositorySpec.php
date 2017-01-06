@@ -22,7 +22,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $entityManager->getConnection()->willReturn($connection);
     }
 
-    function it_is_pre_pressing_repository()
+    function it_is_pre_processing_repository()
     {
         $this->shouldImplement(PreProcessingRepositoryInterface::class);
     }
