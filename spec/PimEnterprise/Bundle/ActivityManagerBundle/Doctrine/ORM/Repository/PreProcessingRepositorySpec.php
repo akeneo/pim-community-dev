@@ -9,6 +9,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\PreProcessingRepository;
+use PimEnterprise\Component\ActivityManager\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 use Prophecy\Argument;
@@ -47,8 +48,8 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $product->getId()->willreturn(42);
 
-        $connection->insert(
-            'pimee_activity_manager_completeness_per_attribute_group',
+        $connection->executeQuery(
+            Argument::type('string'),
             [
                 'product_id' => 42,
                 'channel_id' => 13,
@@ -59,8 +60,8 @@ class PreProcessingRepositorySpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $connection->insert(
-            'pimee_activity_manager_completeness_per_attribute_group',
+        $connection->executeQuery(
+            Argument::type('string'),
             [
                 'product_id' => 42,
                 'channel_id' => 13,
@@ -71,9 +72,9 @@ class PreProcessingRepositorySpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->addAttributeGroup($product, $project,[
-            [40,  0, 1],
-            [33,  1, 1],
+        $this->addAttributeGroupCompleteness($product, $project,[
+            new AttributeGroupCompleteness(40,  0, 1),
+            new AttributeGroupCompleteness(33,  1, 1),
         ])->shouldReturn(null);
     }
 

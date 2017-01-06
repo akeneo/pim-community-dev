@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\Calcula
 
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\ActivityManager\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
@@ -52,7 +53,7 @@ class PreProcessCompletenessStep implements CalculationStepInterface
         $filledAttributes = $this->normalizeProduct($product, $project);
         $attributeGroupCompleteness = $this->getAttributeGroupCompleteness($filledAttributes, $requiredAttributes);
 
-        $this->preProcessingRepository->addAttributeGroup(
+        $this->preProcessingRepository->addAttributeGroupCompleteness(
             $product,
             $project,
             $attributeGroupCompleteness
@@ -73,11 +74,11 @@ class PreProcessCompletenessStep implements CalculationStepInterface
         $result = [];
         foreach ($requiredAttributes as $attributeGroupId => $attributes) {
             if (!array_key_exists($attributeGroupId, $filledAttributes)) {
-                $result[] = [$attributeGroupId, 0, 0];
+                $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 0);
             } elseif (!empty(array_diff($attributes, $filledAttributes[$attributeGroupId]))) {
-                $result[] = [$attributeGroupId, 1, 0];
+                $result[] = new AttributeGroupCompleteness($attributeGroupId, 1, 0);
             } else {
-                $result[] = [$attributeGroupId, 0, 1];
+                $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 1);
             }
         }
 

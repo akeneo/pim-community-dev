@@ -28,7 +28,7 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeGroup(
+    public function addAttributeGroupCompleteness(
         ProductInterface $product,
         ProjectInterface $project,
         array $attributeGroupCompleteness
@@ -55,9 +55,9 @@ SQL;
                     'product_id'                                 => $product->getId(),
                     'channel_id'                                 => $project->getChannel()->getId(),
                     'locale_id'                                  => $project->getLocale()->getId(),
-                    'attribute_group_id'                         => $attributeGroup[0],
-                    'has_at_least_one_required_attribute_filled' => $attributeGroup[1],
-                    'is_complete'                                => $attributeGroup[2],
+                    'attribute_group_id'                         => $attributeGroup->getAttributeGroupId(),
+                    'has_at_least_one_required_attribute_filled' => $attributeGroup->hasAtLeastOneAttributeFilled(),
+                    'is_complete'                                => $attributeGroup->isComplete(),
                 ]
             );
         }

@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\PreProcessCompletenessStep;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\ActivityManager\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
@@ -130,9 +131,9 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
                 ],
             ]);
 
-        $preProcessingRepository->addAttributeGroup($product, $project, [
-            [40, 0, 1],
-            [33, 0, 1],
+        $preProcessingRepository->addAttributeGroupCompleteness($product, $project, [
+            new AttributeGroupCompleteness(40, 0, 1),
+            new AttributeGroupCompleteness(33, 0, 1),
         ])->shouldBeCalled();
 
         $this->execute($product, $project)->shouldReturn(null);
@@ -165,8 +166,8 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
                 ],
             ]);
 
-        $preProcessingRepository->addAttributeGroup($product, $project, [
-            [40, 1, 0],
+        $preProcessingRepository->addAttributeGroupCompleteness($product, $project, [
+            new AttributeGroupCompleteness(40, 1, 0),
         ])->shouldBeCalled();
 
         $this->execute($product, $project);
@@ -200,9 +201,9 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
                 ],
             ]);
 
-        $preProcessingRepository->addAttributeGroup($product, $project, [
-            [40, 0, 0],
-            [33, 0, 0],
+        $preProcessingRepository->addAttributeGroupCompleteness($product, $project, [
+            new AttributeGroupCompleteness(40, 0, 0),
+            new AttributeGroupCompleteness(33, 0, 0),
         ])->shouldBeCalled();
 
         $this->execute($product, $project);

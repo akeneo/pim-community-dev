@@ -26,7 +26,7 @@ interface PreProcessingRepositoryInterface
      * @param ProjectInterface $project
      * @param array            $attributeGroupCompleteness
      */
-    public function addAttributeGroup(ProductInterface $product, ProjectInterface $project, array $attributeGroupCompleteness);
+    public function addAttributeGroupCompleteness(ProductInterface $product, ProjectInterface $project, array $attributeGroupCompleteness);
 
     /**
      * Link a product to a project
