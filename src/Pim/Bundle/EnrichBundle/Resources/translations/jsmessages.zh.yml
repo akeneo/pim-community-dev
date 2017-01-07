@@ -24,25 +24,30 @@ pim_datagrid:
       confirm_content: 您确定需要删除选定的产品吗？
       success: 选定的产品被成功删除。
       error: 删除选定的产品时发生错误，请重试。
+  view_selector:
+    view: 视图
+    create_view_modal:
+      confirm: 好的
+      cancel: 取消
 flash:
   item:
     removed: 项目已删除
   association type:
-    removed: 相关类型已删除
+    removed: 关联类型已删除
   attribute:
     removed: 属性已删除
   family:
-    removed: 分类已删除
+    removed: 产品族已删除
   product:
     removed: 产品已删除
   channel:
-    removed: 频道已删除
+    removed: 通道已删除
   group:
     removed: 分组已删除
   variant group:
-    removed: 多个组已删除
+    removed: 属性组已删除
   group type:
-    removed: 组类型已删除
+    removed: 分组类型已删除
   import profile:
     removed: 导入配置文件已删除
   export profile:
@@ -104,8 +109,8 @@ pim:
       category_edit: 在类别中移动产品
       sequential_edit: 按顺序编辑产品
 jstree.create: 创建
-switch_on: "确定"
-switch_off: "取消"
+switch_on: "是"
+switch_off: "否　"
 pim_enrich:
   item:
     list:
@@ -146,7 +151,6 @@ pim_enrich:
         property: 属性
         old_values: 原值
         new_values: 新值
-        actions: 操作
       info:
         deletion_successful: 产品被成功删除。
         deletion_failed: 产品不能被删除。
@@ -159,7 +163,7 @@ pim_enrich:
       error:
         upload: 上传文件时发生错误
       meta:
-        created: 创建
+        created: 已创建
         created_by: 由
         updated_by: 由
         updated: 上次更新
@@ -183,8 +187,8 @@ pim_enrich:
       variant_group:
         updated_by: 创建属性组
         switch:
-          "yes": 是
-          "no": 否　
+          "yes": "是"
+          "no": "否　"
       optional_attribute:
         remove: 删除此属性
       locale_specific_attribute:
@@ -222,14 +226,26 @@ pim_enrich:
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
+    group:
+      title: 分组
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - 字段
+      btn:
+        save: 保存
+      meta:
+        product_count: 商品
+        created: 已创建
+        created_by: '创建者:'
+        updated: 已更新
+        updated_by: 更新者：
   confirmation:
     leave: 你确定你要离开此页面？
     discard_changes: 如果你离开页面，将丢失更改 {{ entity }}。
     delete_item: 确定删除
-    delete:
-      attribute: 你确定你想要从产品中删除此属性？
   info:
-    not_applicable: N/A
+    not_applicable: 不适用
     entity:
       updated: 更新未保存。
   error:
@@ -247,16 +263,16 @@ pim_enrich:
             none_exist: 没有关联的类型存在。
             show_products: 显示产品
             show_groups: 显示组
-            number_of_associations: '{{ productCount }} 产品和 {{ groupCount }} 组'
+            number_of_associations: "{{ productCount }} 产品和 {{ groupCount }} 组"
         attributes:
           title: 属性
           btn:
             add: 增加
-            add_attributes: 增加属性
+            add_attributes: 添加属性
           info:
             search_attributes: 搜索...
             no_available_attributes: 没有需要添加的属性
-            attributes_selected: '{{ attributeCount }} 属性选择'
+            attributes_selected: "{{ attributeCount }} 属性选择"
             no_match: 未找到匹配项
             load_more: 正在加载更多的结果...
         categories:
@@ -271,8 +287,8 @@ pim_enrich:
         history:
           title: 历史
       switch:
-        "no": 否　
-        "yes": 是
+        "no": "否　"
+        "yes": "是"
       sequential_edit:
         info:
           products: 产品
@@ -303,8 +319,8 @@ pim_enrich:
         cancel: 取消
     entity:
       switch:
-        "no": 否　
-        "yes": 是
+        "no": "否　"
+        "yes": "是"
     variant_group:
       tab:
         properties:
@@ -320,6 +336,18 @@ pim_enrich:
           title: 商品
         attributes:
           title: 属性
+    group:
+      tab:
+        properties:
+          title: 属性
+          general: 常规属性
+          code: 代码
+          type: 类型
+          label_translations: 标签翻译
+        history:
+          title: 历史
+        products:
+          title: 商品
     common:
       tab:
         attributes:
@@ -347,7 +375,7 @@ pim_enrich:
         attributes:
           title: 属性
           edit: 编辑
-          label: '{0} 所有产品 |{1} 一类别选择 |]1，Inf [{{ count }} 类别选择'
+          label: "{0} 所有产品 |{1} 一类别选择 |]1，Inf [{{ count }} 类别选择"
           help: 选择要导出的产品信息。例如︰ 仅导出有技术类的属性。
           empty: 将导出所有属性
           modal:
@@ -356,8 +384,8 @@ pim_enrich:
             title: 属性选择
         attributes_selector:
           attribute_group: 属性组
-          attributes: 在 {{ attributeCount }} 属性中搜索
-          selected: 选定的属性
+          attributes: "在 {{ attributeCount }} 属性中搜索"
+          selected: "选定的属性"
           clear: 清除
           all_group: 所有群组
           empty_selection: 将导出所有属性
@@ -365,18 +393,16 @@ pim_enrich:
           title: 产品族
           help: 按品类选中产品进行导出。例如︰ 只导出鞋和衣服。
           operators:
-            IN: 在列表中
-            NOT IN: 不在列表中
+            "NOT IN": 不在列表中
             EMPTY: 没有品类的产品
-            NOT EMPTY: 有品类的产品
-          empty_selection: 在品类上没有条件
+            "NOT EMPTY": 有品类的产品
         updated:
           title: 时间条件
           operators:
             ALL: 日期条件
-            SINCE LAST N DAYS: 在过去 n 天中更新过的产品 (例如， 6)
-            >: 从该日期开始更新过的产品
-            SINCE LAST JOB: 从上次导出后更新过的产品
+            "SINCE LAST N DAYS": 在过去 n 天中更新过的产品 (例如， 6)
+            ">": 从该日期开始更新过的产品
+            "SINCE LAST JOB": 从上次导出后更新过的产品
         enabled:
           title: 状态
           help: 根据它们的状态来选择产品导出。例如，导出所有状态的产品。
@@ -385,12 +411,12 @@ pim_enrich:
             enabled: 已启用
             disabled: 已禁用
         completeness:
-          title: 完成度
+          title: 完整性
           help: 根据它们的完成度来选择产品导出
           operators:
             ALL: 在完成度上没有条件
-            >=: 完成至少一个选定的本地化语言
-            GREATER OR EQUALS THAN ON ALL LOCALES: 在所有选择的本地化语言中是完整的
+            ">=": 完成至少一个选定的本地化语言
+            "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选择的本地化语言中是完整的
             LOWER THAN ON ALL LOCALES: 在所有选择的本地化语言中是不完整的
           empty_selection: 选择一个品类
         category:
@@ -401,67 +427,59 @@ pim_enrich:
           help: 你想要导出的产品标识，用逗号，空格或换行来隔开
         metric:
           operators:
-            =: 等于
-            !=: 不等于
-            >=: 大于或等于
-            >: 大于
-            <=: 低于或等于
-            <: 低于
-            EMPTY: 为空
+            "=": 等于
+            "!=": 不等于
+            ">=": 大于或等于
+            ">": 大于
+            "<=": 低于或等于
+            "<": 低于
             NOT EMPTY: 不是空的
         string:
           operators:
             ALL: 所有
             CONTAINS: 包含
             DOES NOT CONTAIN: 未包含
-            =: 等于
+            "=": 等于
             STARTS WITH: 开始于
             ENDS WITH: 结束于
-            EMPTY: 为空
             NOT EMPTY: 不是空的
         price-collection:
           operators:
-            =: 等于
-            !=: 不等于
-            >=: 大于或等于
-            >: 大于
-            <=: 低于或等于
-            <: 低于
-            EMPTY: 为空
+            "=": 等于
+            "!=": 不等于
+            ">=": 大于或等于
+            ">": 大于
+            "<=": 低于或等于
+            "<": 低于
             NOT EMPTY: 不是空的
         multi_select:
           operators:
-            IN: 在列表中
-            EMPTY: 为空
             NOT EMPTY: 不是空的
         media:
           operators:
             CONTAINS: 包含
             DOES NOT CONTAIN: 未包含
-            =: 等于
+            "=": 等于
             STARTS WITH: 开始于
             ENDS WITH: 结束于
-            EMPTY: 为空
             NOT EMPTY: 不是空的
         date:
           operators:
-            >: 大于
-            <: 低于
-            =: 等于
-            !=: 不等于
+            ">": 大于
+            "<": 低于
+            "=": 等于
+            "!=": 不等于
             BETWEEN: 介于
             NOT BETWEEN: 不介于
-            EMPTY: 为空
             NOT EMPTY: 不是空的
         number:
           operators:
-            =: 等于
-            !=: 不等于
-            >=: 大于或等于
-            >: 大于
-            <=: 低于或等于
-            <: 低于
-            EMPTY: 为空
+            "=": 等于
+            "!=": 不等于
+            ">=": 大于或等于
+            ">": 大于
+            "<=": 低于或等于
+            "<": 低于
             NOT EMPTY: 不是空的
   mass_edit_action:
     edit_common_attributes:
