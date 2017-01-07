@@ -10,31 +10,32 @@ pimee_catalog_rule:
         actions: Acció
   actions:
     type:
-      copy: Llavors %from_field% es copia en %to_field%
-      copy_value: Llavors %from_field% es copia en %to_field%
-      set: Llavors %value% es col·loca a %field%
-      set_value: Llavors %value% es col·loca a %field%
-      add: Llavors %value% s'afegeix a %field%
+      "copy": Llavors %from_field% es copia en %to_field%
+      "copy_value": Llavors %from_field% es copia en %to_field%
+      "set": Llavors %value% es col·loca a %field%
+      "set_value": Llavors %value% es col·loca a %field%
+      "add": Llavors %value% s'afegeix a %field%
   condition:
     label: Si %field% %operator% %value%
     operators:
-      STARTS WITH: s'inicia amb
-      ENDS WITH: acaba amb
-      CONTAINS: conté
-      DOES NOT CONTAIN: no conté
-      IN: en
-      NOT IN: no en
-      IN CHILDREN: als fills
-      NOT IN CHILDREN: no als fills
-      UNCLASSIFIED: està sense classificar
-      IN OR UNCLASSIFIED: està sense classificar o en
-      BETWEEN: entre
-      NOT BETWEEN: no entre
-      =: és igual a
-      >: més gran que
-      >=: és igual o superior a
-      <: menys que
-      <=: és igual o menor que
+      "STARTS WITH": s'inicia amb
+      "ENDS WITH": acaba amb
+      "CONTAINS": conté
+      "DOES NOT CONTAIN": no conté
+      "EMPTY": buit
+      "IN": en
+      "NOT IN": no en
+      "IN CHILDREN": als fills
+      "NOT IN CHILDREN": no als fills
+      "UNCLASSIFIED": està sense classificar
+      "IN OR UNCLASSIFIED": està sense classificar o en
+      "BETWEEN": entre
+      "NOT BETWEEN": no entre
+      "=": és igual a
+      ">": més gran que
+      ">=": és igual o superior a
+      "<": menys que
+      "<=": és igual o menor que
   acl_group:
     rule: Regles
   acl:

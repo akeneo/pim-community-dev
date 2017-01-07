@@ -10,32 +10,32 @@ pimee_catalog_rule:
         actions: Ação
   actions:
     type:
-      copy: Então %from_field% é copiado para %to_field%
-      copy_value: Então %from_field% é copiado para %to_field%
-      set: Então %value% é colocado em %field%
-      set_value: Então %value% é colocado em %field%
-      add: Então %value% é adicionado a %field%
+      "copy": Então %from_field% é copiado para %to_field%
+      "copy_value": Então %from_field% é copiado para %to_field%
+      "set": Então %value% é colocado em %field%
+      "set_value": Então %value% é colocado em %field%
+      "add": Então %value% é adicionado a %field%
   condition:
     label: Se %field% %operator% %value%
     operators:
-      STARTS WITH: começa com
-      ENDS WITH: termina com
-      CONTAINS: contém
-      DOES NOT CONTAIN: não contém
-      EMPTY: vazio
-      IN: em
-      NOT IN: não está em
-      IN CHILDREN: em descendentes
-      NOT IN CHILDREN: não está em descendentes
-      UNCLASSIFIED: não classificado
-      IN OR UNCLASSIFIED: não classificado ou em
-      BETWEEN: entre
-      NOT BETWEEN: não está entre
-      =: igual
-      >: maior que
-      >=: igual ou maior que
-      <: menor que
-      <=: igual ou menor que
+      "STARTS WITH": começa com
+      "ENDS WITH": termina com
+      "CONTAINS": contém
+      "DOES NOT CONTAIN": não contém
+      "EMPTY": vazio
+      "IN": em
+      "NOT IN": não está em
+      "IN CHILDREN": em descendentes
+      "NOT IN CHILDREN": não está em descendentes
+      "UNCLASSIFIED": não classificado
+      "IN OR UNCLASSIFIED": não classificado ou em
+      "BETWEEN": entre
+      "NOT BETWEEN": não está entre
+      "=": igual
+      ">": maior que
+      ">=": igual ou maior que
+      "<": menor que
+      "<=": igual ou menor que
   acl_group:
     rule: Regras
   acl:

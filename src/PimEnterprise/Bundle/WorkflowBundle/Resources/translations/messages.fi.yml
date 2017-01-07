@@ -85,8 +85,8 @@ pim_title:
     index: Julkaistut tuotteet
     view: Julkaistut tuotteet %product.sku% | Näkymä
   product:
-    dispatch: Tuotteet %product.sku%
-    show: Tuotteet %product.sku% | Näytä
+    dispatch: "Tuotteet %product.sku%"
+    show: "Tuotteet %product.sku% | Näytä"
   proposal:
     index: Ehdotukset
 btn.editworkingcopy: Muokkaa työn alla olevaa kopiota

@@ -80,8 +80,8 @@ pim_title:
     index: Gepubliceerde producten
     view: Gepubliceerde producten %product.sku% | Bekijk
   product:
-    dispatch: Producten %product.sku%
-    show: Producten %product.sku% | Toon
+    dispatch: "Producten %product.sku%"
+    show: "Producten %product.sku% | Toon"
   proposal:
     index: Voorstellen
 btn.editworkingcopy: Wijzig werkkopie

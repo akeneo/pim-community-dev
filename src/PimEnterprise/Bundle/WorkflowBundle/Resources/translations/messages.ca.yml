@@ -32,6 +32,8 @@ pimee_workflow:
       partial_approve_number: '%owner% ha acceptat els valors pels atributs %attributes_count% pel producte %product%'
       partial_reject: '%owner% ha rebutjat el/s valor/s per a %attributes% pel producte %product%'
       partial_reject_number: '%owner% ha rebutjat els valors pels atributs %attributes_count% pel producte %product%'
+      partial_remove: '%owner% ha eliminat el/s valor/s per a %attributes% del producte %product%'
+      partial_remove_number: '%owner% ha suprimit els valors pels atributs %attributes_count% del producte %product%'
       approve: '%owner% ha acceptat la seva proposta pel producte %product%'
       refuse: '%owner% ha rebutjat la proposta pel producte %product%'
       remove: '%owner% ha rebutjat la proposta pel producte %product%'
@@ -82,6 +84,7 @@ btn.publish: Publicar
 btn.unpublish: Despublicar
 pimee_workflow_product_draft_notification_partial_approve: Proposta aprovada parcialment
 pimee_workflow_product_draft_notification_partial_reject: Proposta rebutjada parcialment
+pimee_workflow_product_draft_notification_partial_remove: Proposta suprimida parcialment
 pimee_workflow_product_draft_notification_approve: Proposta aprovada
 pimee_workflow_product_draft_notification_refuse: Proposta rebutjada
 pimee_workflow_product_draft_notification_remove: Proposta esborrada
@@ -106,8 +109,8 @@ pim_title:
     index: Productes publicats
     view: Productes publicats %product.sku% | Veure
   product:
-    dispatch: Productes %product.sku%
-    show: Productes %product.sku% | Mostrar
+    dispatch: "Productes %product.sku%"
+    show: "Productes %product.sku% | Mostrar"
   proposal:
     index: Propostes
 btn.editworkingcopy: Editar la còpia de treball

@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Locale %locale.code% | Modifier
+  edit: "Locale %locale.code% | Modifier"
 Permissions: Permissions
 pane.accordion.permissions: Permissions
 attribute group.permissions:

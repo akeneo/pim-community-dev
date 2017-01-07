@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Configuracions regionals %locale.code% | Editar
+  edit: "Configuracions regionals %locale.code% | Editar"
 Permissions: Permisos
 pane.accordion.permissions: Permisos
 attribute group.permissions:
@@ -49,8 +49,12 @@ pim_enrich:
       not_editable: No teniu permissos per editar els productes "%identifiers%".
     published_product:
       page_title: Productes publicats
+      page_subtitle: Edició en massa (1 producte publicat) | Edició en massa (%count% productes publicats)
       title: Trieu l'operació
+      subtitle: Trieu la operació que voleu realitzar sobre el producte seleccionat i publicat | Trieu la operació que voleu realitzar sobre els %count% productes seleccionats i publicats
+      confirm: Esteu a punt d'actualitzar un producte publicat amb la informació següent, confirmeu. | Esteu a punt d'actualitzar %count% productes publicats amb la informació següent, confirmeu.
       steps:
+        first: Triar productes publicats
         second: Trieu l'operació
         third: Configurar
         fourth: Confirmar
@@ -100,6 +104,9 @@ pimee_enrich:
   locale:
     tab:
       permission.title: Permisos
+  channel:
+    tab:
+      asset_transformation.title: Transformacions de recurs
   acl.product_ownership.title: Propietat
   attributes:
     empty: cap
@@ -111,6 +118,10 @@ pimee_enrich:
     title:
       transformation: Transformació
       options: Opcions
+    colorspace:
+      title: Espai de color
+      options:
+        colorspace: Espai de color %value%
     resize:
       title: Redimensiona
       options:
@@ -141,3 +152,4 @@ job_execution.summary:
   mass_unpublished: Producte despublicat
   proposal: Proposta creada
   proposal_deleted: suprimit
+pim_assets_collection: Col·lecció de recursos

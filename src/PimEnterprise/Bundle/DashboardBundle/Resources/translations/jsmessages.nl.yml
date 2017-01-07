@@ -6,3 +6,4 @@ pimee_dashboard:
       product: Product
       review: Recensie
       empty: Geen voorstellen te herzien
+      view_all: Alles weergeven

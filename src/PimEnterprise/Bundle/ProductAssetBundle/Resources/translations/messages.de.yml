@@ -33,7 +33,7 @@ pimee_product_asset:
       code: Code
       description: Beschreibung
       end_of_use: Gültig bis  
-      reference: Verwendungszweck
+      reference: Referenz
       filename: Dateiname
       width: Breite
       height: Höhe
@@ -96,7 +96,7 @@ pimee_product_asset:
   endOfUse:
     label: Ende der Nutzung
   createdAt:
-    label: Angelegt am
+    label: Erstellt am
   updatedAt:
     label: Zuletzt aktualisiert am
   tags:

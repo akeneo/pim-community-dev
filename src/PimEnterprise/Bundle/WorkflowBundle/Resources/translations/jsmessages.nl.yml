@@ -1,8 +1,40 @@
 View the product: Bekijk het product
 Unpublish the product: Maak publicatie van dit product ongedaan
 Approve: Keur goed
+Refuse: Keur af
+Approve selected: Geselecteerde goedkeuren
+Refuse selected: Geselecteerde afkeuren
+oro:
+  datagrid:
+    noentities:
+      proposal: Er is geen voorstel om na te kijken.
+    noresults:
+      proposal: Er is geen voorstel om na te kijken. Probeer je zoekcriteria aan te passen.
 pimee_workflow:
   entity:
     published_product:
       btn:
         original_product: Wijzig werkkopie
+    proposal:
+      modal.title: Schrijf een reactie (optioneel - 255 tekens max.)
+  proposal:
+    mass_action_group:
+      review:
+        label: Bulkacties
+    partial_accept:
+      modal.title: Keur gedeeltelijke informatie goed
+      modal.label: Schrijf een reactie (optioneel)
+      modal.error: Er deed zich een fout voor. Het voorstel is niet gedeeltelijk goedgekeurd
+      modal.success: Het voorstel werd met succes gedeeltelijk goedgekeurd
+    partial_approve:
+      modal:
+        title: Keur wijzigingen gedeeltelijk goed
+        label: Schrijf een reactie (optioneel)
+        error: Er deed zich een fout voor. Het voorstel is niet gedeeltelijk goedgekeurd
+        success: De wijzigingen zijn met succes goedgekeurd
+    partial_reject:
+      modal:
+        title: Keur wijzigingen gedeeltelijk af
+        label: Schrijf een reactie (optioneel)
+        error: Er deed zich een fout voor. Het voorstel is niet gedeeltelijk afgekeurd
+        success: De wijzigingen zijn met succes afgekeurd

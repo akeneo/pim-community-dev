@@ -20,7 +20,7 @@ pimee_enrich:
         published: Publicado
         revert: Restaurar
       smart_attribute:
-        come_from: 'Este atributo puede ser actualizado por una regla:'
+        come_from: "Este atributo puede ser actualizado por una regla:"
       btn:
         publish: Publicar
         publish_this_version: Publicar esta versión
@@ -69,7 +69,7 @@ pimee_enrich:
         source:
           working_copy: Copia de trabajo
           draft: Mi borrador
-          draft_of: Borrador de {{ author }}
+          draft_of: "Borrador de {{ author }}"
     product_draft:
       info:
         update_successful: El borrador del producto ha sido guardado con éxito

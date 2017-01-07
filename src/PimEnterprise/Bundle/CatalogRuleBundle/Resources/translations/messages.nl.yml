@@ -10,21 +10,21 @@ pimee_catalog_rule:
         actions: Actie
   condition:
     operators:
-      STARTS WITH: begint met
-      ENDS WITH: eindigt op
-      CONTAINS: bevat
-      DOES NOT CONTAIN: bevat geen
-      IN: in
-      NOT IN: niet in
-      UNCLASSIFIED: is niet-geclassificeerd
-      IN OR UNCLASSIFIED: is niet-geclassificeerd of in
-      BETWEEN: tussen
-      NOT BETWEEN: niet tussen
-      =: is gelijk aan
-      >: groter dan
-      >=: is gelijk aan of groter dan
-      <: minder dan
-      <=: is gelijk aan of minder dan
+      "STARTS WITH": begint met
+      "ENDS WITH": eindigt op
+      "CONTAINS": bevat
+      "DOES NOT CONTAIN": bevat geen
+      "IN": in
+      "NOT IN": niet in
+      "UNCLASSIFIED": is niet-geclassificeerd
+      "IN OR UNCLASSIFIED": is niet-geclassificeerd of in
+      "BETWEEN": tussen
+      "NOT BETWEEN": niet tussen
+      "=": is gelijk aan
+      ">": groter dan
+      ">=": is gelijk aan of groter dan
+      "<": minder dan
+      "<=": is gelijk aan of minder dan
   acl_group:
     rule: Regels
   acl:
@@ -47,6 +47,13 @@ pimee_catalog_rule:
   product_value:
     tooltip:
       affected_by.title: 'Beïnvloed door regel(s):'
+  jobs:
+    yml_rule_import:
+      title: Regel importeren in YAML
+      import.title: Regel importeren
+    yml_rule_export:
+      title: Regel exporteren in YAML
+      export.title: Regel exporteren
   steps:
     product_rule_definition_reader.title: Product regel importeer lezer
     rule_definition_processor.title: Product regel importeer processor

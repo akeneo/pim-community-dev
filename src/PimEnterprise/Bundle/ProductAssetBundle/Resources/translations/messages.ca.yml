@@ -20,7 +20,9 @@ pimee_product_asset:
     category: Categories de recursos
   enrich_asset:
     button:
+      upload: Carregar
       delete: Suprimir
+      download: Descarregar
       generate_from_reference: Generar des de la referència
       reset_variations: Reiniciar variacions
     confirmation.remove: Esteu segur que voleu suprimir el recurs "%asset%"?
@@ -109,7 +111,18 @@ pimee_product_asset:
       unique: El codi ha de ser únic.
       new_generation: N'hem generat un de nou per a vostè.
   jobs:
+    csv_asset_import.title: Importació de recurs en csv
+    csv_asset_export.title: Exportació de recurs a csv
+    csv_asset_variation_export.title: Exportació de variants de recurs a csv
+    csv_tag_import.title: Importació d'etiqueta en csv
+    csv_asset_category_import.title: Importació de categoria de recurs en csv
+    csv_asset_configuration_import.title: Importació de configuració de recurs de canal en csv
+    yml_asset_configuration_export.title: Exportació de configuració de recurs de canal a Yaml
+    csv_asset_category_export.title: Exportació de categoria de recurs a csv
+    yml_asset_channel_configuration_import.title: Importació de configuració de recurs de canal en Yaml
     assets_mass_upload.title: Carregar recursos en massa
+  steps:
+    channel_configuration.processor.title: Configuracions de procés de canal
   notAvailable:
     label: no disponible
   asset:
@@ -120,6 +133,7 @@ pimee_product_asset:
     add_files: afegir arxius
     start: Iniciar càrrega
     cancel: Cancel·lar càrrega
+    schedule: planificació
     executed: Càrrega en massa executada
     error:
       upload: S'ha produït un error durant la càrrega
@@ -139,6 +153,7 @@ pimee_product_asset:
 btn.create.asset: Crear un recurs
 btn.drag_or_upload: Arrossegui aquí un arxiu o feu-hi clic
 job_execution.summary:
+  asset_file_processed: Arxiu de recurs processat
   variations_not_generated: No s'han generat variacions
   pimee_product_asset.mass_upload.new: Recurs creat des de l'arxiu
   pimee_product_asset.mass_upload.updated: Recurs actualitzat

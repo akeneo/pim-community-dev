@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Alueelliset asetukset %locale.code% | Muokkaa
+  edit: "Alueelliset asetukset %locale.code% | Muokkaa"
 Permissions: Käyttöoikeudet
 pane.accordion.permissions: Käyttöoikeudet
 attribute group.permissions:

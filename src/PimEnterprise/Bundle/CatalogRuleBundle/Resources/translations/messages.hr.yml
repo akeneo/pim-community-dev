@@ -10,32 +10,32 @@ pimee_catalog_rule:
         actions: Akcija
   actions:
     type:
-      copy: Tada se %from_field% kopira u %to_field%
-      copy_value: Tada se %from_field% kopira u %to_field%
-      set: Tada se %value% postavlja u %field%
-      set_value: Tada se %value% postavlja u %field%
-      add: Tada se %value% dodaje u %field%
+      "copy": Tada se %from_field% kopira u %to_field%
+      "copy_value": Tada se %from_field% kopira u %to_field%
+      "set": Tada se %value% postavlja u %field%
+      "set_value": Tada se %value% postavlja u %field%
+      "add": Tada se %value% dodaje u %field%
   condition:
     label: Ako %field% %operator% %value%
     operators:
-      STARTS WITH: počinje sa
-      ENDS WITH: završava sa
-      CONTAINS: sadrži
-      DOES NOT CONTAIN: ne sadrži
-      EMPTY: prazno
-      IN: u
-      NOT IN: nije u
-      IN CHILDREN: u djeci
-      NOT IN CHILDREN: nije u djeci
-      UNCLASSIFIED: neraspoređeno
-      IN OR UNCLASSIFIED: neraspoređeno ili u
-      BETWEEN: između
-      NOT BETWEEN: nije između
-      =: jednako je
-      >: veći od
-      >=: jednako ili veće od
-      <: manje od
-      <=: jednako ili manje od
+      "STARTS WITH": počinje sa
+      "ENDS WITH": završava sa
+      "CONTAINS": sadrži
+      "DOES NOT CONTAIN": ne sadrži
+      "EMPTY": prazno
+      "IN": u
+      "NOT IN": nije u
+      "IN CHILDREN": u djeci
+      "NOT IN CHILDREN": nije u djeci
+      "UNCLASSIFIED": neraspoređeno
+      "IN OR UNCLASSIFIED": neraspoređeno ili u
+      "BETWEEN": između
+      "NOT BETWEEN": nije između
+      "=": jednako je
+      ">": veći od
+      ">=": jednako ili veće od
+      "<": manje od
+      "<=": jednako ili manje od
   acl_group:
     rule: Pravila
   acl:

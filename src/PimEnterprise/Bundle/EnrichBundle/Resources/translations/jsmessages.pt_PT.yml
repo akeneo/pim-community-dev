@@ -20,7 +20,7 @@ pimee_enrich:
         published: Publicado
         revert: Reverter
       smart_attribute:
-        come_from: 'Este atributo pode ser atualizado por uma regra:'
+        come_from: "Este atributo pode ser atualizado por uma regra:"
       btn:
         publish: Publicar
         publish_this_version: Publicar esta versão
@@ -69,7 +69,7 @@ pimee_enrich:
         source:
           working_copy: Cópia de trabalho
           draft: Meu rascunho
-          draft_of: rascunho de {{ author }}
+          draft_of: "rascunho de {{ author }}"
     product_draft:
       info:
         update_successful: O rascunho de produto foi guardado com sucesso

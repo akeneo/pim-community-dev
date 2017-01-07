@@ -109,8 +109,8 @@ pim_title:
     index: Veröffentlichte Produkte
     view: Veröffentlichte Produkte %product.sku% | Ansehen
   product:
-    dispatch: Produkte %product.sku%
-    show: Produkte %product.sku% | Zeigen
+    dispatch: "Produkte %product.sku%"
+    show: "Produkte %product.sku% | Zeigen"
   proposal:
     index: Vorschläge
 btn.editworkingcopy: Arbeitskopie bearbeiten
@@ -130,7 +130,7 @@ job_execution.summary:
   refused: Abgelehnt
   mass_published: Produkt veröffentlicht
   mass_unpublished: Produktveröffentlichung entzogen
-  proposal: Vorschlag angelegt
+  proposal: Vorschlag erstellt
   proposal_deleted: Vorschlag gelöscht
   proposal_updated: Vorschlag aktualisiert
   proposal_created: Vorschlag erstellt

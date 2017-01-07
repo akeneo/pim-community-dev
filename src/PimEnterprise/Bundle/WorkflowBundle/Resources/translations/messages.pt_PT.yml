@@ -35,8 +35,8 @@ pim_title:
     index: Produtos publicados
     view: Produtos publicados %product.sku% | Visualizar
   product:
-    dispatch: Produtos %product.sku%
-    show: Produtos %product.sku% | Mostrar
+    dispatch: "Produtos %product.sku%"
+    show: "Produtos %product.sku% | Mostrar"
   proposal:
     index: Propostas
 btn.editworkingcopy: Editar cópia de trabalho

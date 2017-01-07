@@ -20,7 +20,7 @@ pimee_enrich:
         published: Publié
         revert: Restaurer
       smart_attribute:
-        come_from: 'Cet attribut peut être mis à jour par une règle :'
+        come_from: "Cet attribut peut être mis à jour par une règle :"
       btn:
         publish: Publier
         publish_this_version: Publier cette version
@@ -69,7 +69,7 @@ pimee_enrich:
         source:
           working_copy: Version de travail
           draft: Mon brouillon
-          draft_of: Brouillon de {{ author }}
+          draft_of: "Brouillon de {{ author }}"
     product_draft:
       info:
         update_successful: Le brouillon a bien été enregistré

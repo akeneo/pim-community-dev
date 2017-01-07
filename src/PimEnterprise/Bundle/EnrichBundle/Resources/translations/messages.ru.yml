@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Локали %locale.code% | Изменить
+  edit: "Локали %locale.code% | Изменить"
 Permissions: Права доступа
 pane.accordion.permissions: Права доступа
 attribute group.permissions:
