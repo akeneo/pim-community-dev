@@ -116,7 +116,7 @@ Feature: Follow project completeness
   Scenario: Successfully display the widget without project
     Given I am logged in as "admin"
     And I am on the dashboard page
-    Then I should see the text "Activity Manager"
+    Then I should see the text "You have no current project"
     And I should not see the project selector
     And I should not see the contributor selector
     And I should see the text "You have no current project."

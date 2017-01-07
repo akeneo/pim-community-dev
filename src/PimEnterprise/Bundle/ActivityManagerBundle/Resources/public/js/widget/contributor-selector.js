@@ -97,7 +97,9 @@ define(
 
                     dropdownCssClass: 'select2-drop--forProjectWidget' +
                     ' select2--withArrowLeft' +
-                    ' activity-manager-widget-contributor-dropdown'
+                    ' activity-manager-widget-contributor-dropdown',
+
+                    containerCssClass: 'select2--withoutBorder'
                 };
 
                 $select.select2(options);
