@@ -384,6 +384,26 @@
   }
 }
 
+.select2-container.select2--withoutBorder {
+  &.select2-container-active {
+    .select2-choice {
+      box-shadow: none;
+    }
+  }
+
+  .select2-choice {
+    border: none;
+
+    & > .select2-chosen {
+      margin-right: 34px;
+    }
+
+    .select2-arrow {
+      border-left: none;
+    }
+  }
+}
+
 .select2-searchIcon {
   font-size: @AknBigIconFontSize;
   color: @AknBorderColor;
