@@ -1,5 +1,6 @@
 confirmation:
   remove:
+    item: Esteu segur que voleu eliminar aquest element?
     association type: Esteu segur que voleu suprimir aquest tipus d'associació?
     attribute: Esteu segur que voleu suprimir aquest atribut?
     family: Esteu segur que voleu suprimir aquesta família?
@@ -21,10 +22,28 @@ pim_datagrid:
 flash:
   item:
     removed: Element suprimit correctament
+  association type:
+    removed: Tipus d'associació suprimida correctament
+  attribute:
+    removed: Atribut suprimit correctament
+  family:
+    removed: Família suprimida correctament
+  product:
+    removed: Producte suprimit correctament
+  channel:
+    removed: Canal suprimit correctament
+  group:
+    removed: Grup suprimit correctament
+  variant group:
+    removed: Grup de variants suprimit correctament
+  group type:
+    removed: Tipus de grup suprimit correctament
   import profile:
     removed: Perfil d'importació eliminat correctament
   export profile:
     removed: Perfil d'exportació eliminat correctament
+  user:
+    removed: Usuari suprimit correctament
   role:
     removed: Rol eliminat correctament
 error:
@@ -43,5 +62,39 @@ error:
     user: No podeu eliminar aquest usuari
     role: No podeu eliminar aquest rol
     attribute_option: Error en suprimir la opció d'atribut
+  saving:
+    attribute_option: No es pot desar aquesta opció d'atribut
+alert:
+  attribute_option:
+    error_occured_during_submission: S'ha produït un error durant l'enviament del formulari al servidor
+    save_before_edit_other: Si us plau registri les seves modificacions en les altres files abans d'editar aquesta
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: 'Avís: perdreu les dades no desades. Esteu segur que voleu cancel·lar la modificació d''aquesta nova opció?'
+    cancel_edition_on_new_option_title: '﻿Cancel·lar la modificació'
+label:
+  attribute_option:
+    add_option: Afegir una opció
+Code: Codi
+Edit: Editar
+Delete: Suprimir
+Edit attributes of the product: Editar els atributs del producte
+Classify the product: Classificar el producte
+Delete the product: Eliminar el producte
+Change status: Canvi d'estat
+Toggle status: Tancar estat
 pim.grid.mass_action.quick_export.csv_all: CSV (tots els atributs)
+pim.grid.mass_action.delete: Suprimir
 pim.grid.mass_action.mass_edit: Edició massiva
+pim.grid.mass_action.sequential_edit: Editar seqüencialment
+jstree.create: Crear
+switch_on: "Sí"
+switch_off: "No"
+pim_enrich:
+  item:
+    list:
+      delete.label: Suprimir
+      delete.error: Error suprimint l'element
+    delete:
+      confirm.content: Esteu segur que voleu suprimir aquest {{ itemName }}? No es pot desfer aquesta acció
+      confirm.title: Suprimir aquest {{ itemName }}

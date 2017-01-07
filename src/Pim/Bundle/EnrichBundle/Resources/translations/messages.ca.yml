@@ -1,13 +1,803 @@
+pim_enrich:
+  product:
+    tab:
+      attribute.title: Atributs
+      category.title: Categories
+      association.title: Associacions
+      completeness.title: Integritat
+      history.title: Històric
+    no_comparison_locale_available: Cap altre locale està disponible per a la comparació
+    no_compared_media: No hi ha cap fitxer multimèdia disponible per a la comparació
+  attribute:
+    tab:
+      parameter.title: Paràmetres
+      value.title: Valors
+      history.title: Històric
+  attribute_group:
+    tab:
+      property.title: Propietats
+      attribute.title: Atributs
+      history.title: Històric
+  family:
+    tab:
+      property.title: Propietats
+      attribute.title: Atributs
+      history.title: Històric
+  association_type:
+    tab:
+      property.title: Propietats
+      history.title: Històric
+  group_type:
+    tab:
+      property.title: Propietats
+  channel:
+    pick_conversion_unit: Tria una unitat de conversió per a cada mètrica d'atribut que s'utilitzarà durant l'exportació de producte
+    tab:
+      property.title: Propietats
+      history.title: Històric
+  category:
+    tab:
+      property.title: Propietats
+      history.title: Històric
+  group:
+    axis.help: 'Els eixos defineixen els atributs sobre els que les productes del grup han de variar. Els eixos són atributs amb opcions, sense configuració regional i sense abast. No es poden canviar després de la creació del grup de variants.'
+    type:
+      VARIANT: Variant
+      X_SELL: Venda creuada
+      ADDITIONAL: Addicional
+      RELATED: Relacionat
+    tab:
+      product.title: Productes
+      property.title: Propietats
+      history.title: Històric
+  variant_group:
+    type:
+      VARIANT: Variant
+      X_SELL: Venda creuada
+      ADDITIONAL: Addicional
+      RELATED: Relacionat
+    tab:
+      product.title: Productes
+      property.title: Propietats
+      history.title: Històric
+      attribute.title: Atributs
+    info:
+      no_attributes: Aquesta variant de grup encara no té cap atribut
+      no_attributes_in_selected_locale: Aquesta variant de grup no té cap atribut en aquesta configuració regional
+  completeness:
+    progress_bar.title: '%ratio% completa (1 valor requerit) |%ratio%% completa (%count% valors requerits)'
+    subtitle: '{0} Complet|{1} falta 1 valor|] 1, Inf] %count% valors perduts'
+    missing_attributes: Valor perdut|Valors perduts
+    legend:
+      locale_not_associated: Configuració regional no associada a aquest canal
+  mass_edit_action:
+    limit_exceeded: Trieu menys de %limit% elements per editar
+    product:
+      page_title: Productes
+      page_subtitle: Editar en massa (1 producte) | Editar en massa (%count% productes)
+      title: Trieu operació
+      subtitle: Trieu la operació que voleu realitzar al producte seleccionat| Trieu la operació que voleu realitzar als %count% productes seleccionats
+      confirm: Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu si us plau.
+      steps:
+        first: Escollir productes
+        second: Escollir operació
+        third: Configurar
+        fourth: Confirmar
+    family:
+      page_title: Famílies
+      page_subtitle: Editar en massa (1 família) | Editar en massa (%count% famílies)
+      title: Escollir operació
+      subtitle: Trieu la operació que voleu realitzar a la familília seleccionada | Trieu la operació que desitja realitzar en les %count% famílies seleccionades
+      confirm: Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu-ho si us plau.
+      steps:
+        first: Triar famílies
+        second: Triar operació
+        third: Configurar
+        fourth: Confirmar
+    change-status:
+      label: Canviar l'estat (activar / desactivar)
+      description: Els productes seleccionats seran activats o desactivats.
+      success_flash: S'ha canviat l'estatus del(s) producte(s)
+    edit-common-attributes:
+      label: Editar atributs
+      description: Els atributs del producte seleccionat s'editaran amb les dades següents pels paràmetres regionals triats.
+      empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
+      success_flash: S'han actualitzat l'atribut o atributs de producte
+      message:
+        warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
+    classify:
+      label: Classificar els productes en categories
+      description: Els productes es posicionaran en les categories següents, tot mantenint l'emplaçament actual.
+      success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
+    change-family:
+      label: Canviar la família de productes
+      description: La família dels productes seleccionats es canviarà a la família escollida
+      success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
+    add-to-groups:
+      label: Afegir a grups
+      description: Seleccioneu els grups on volgueu afegir els productes seleccionats
+      success_flash: Els productes s'han afegit correctament als grups seleccionats
+      no_group: Cap grup ara mateix. Si us plau, comenceu creant un grup.
+    add-to-variant-group:
+      label: Afegir a un grup de variants
+      description: Seleccioneu el grup variant on afegir els productes seleccionats
+      success_flash: Els productes s'han afegit correctament al grup de variants seleccionat
+      already_in_variant_group_or_not_valid: No podeu agrupar els següents productes (%products%) perquè ja estan en un grup de variants o per que no tenen l'eix del grup.
+      no_variant_group: Cap grup variant ara ara. Si us plau, comenceu creant un grup de variants.
+      no_valid_variant_group: Cap grup variant comparteix atributs amb els productes seleccionats.
+      some_variant_groups_are_skipped:
+        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
+    set-attribute-requirements:
+      label: Conjunt de requeriments d'atribut
+      description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
+      success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
+  sequential_edit_action:
+    product:
+      previous: Tornar a "%product%" sense desar.
+      next: Vés a "%product%" sense desar.
+  acl:
+    locale:
+      index: Llistar configuracions regionals
+    currency:
+      index: Llistar monedes
+      toggle: Tancar monedes
+    product:
+      index: Llistar productes
+      create: Crear un producte
+      edit_attributes: Edita els atributs d'un producte
+      remove: Treure un producte
+      add_attribute: Afegir un atribut a un producte
+      remove_attribute: Treure un atribut d'un producte
+      categories_view: Consultar les categories d'un producte
+      associations_view: Mostra els tipus d'associació d'un producte
+      change_family: Canviar la família del producte
+      change_state: Canviar l'estat del producte
+      add_to_groups: Afegir al producte a grups
+      add_to_variant_group: Afegir el producte a un grup de variants
+      mass_edit: Accions d'edició en massa del producte
+      comment: Comentar productes
+      download: Descarregar el producte en format PDF
+      history: Veure l'històric del producte
+    category:
+      list: Llistar categories
+      create: Crear una categoria
+      edit: Editar una categoria
+      remove: Eliminar una categoria
+      move: Moure categoria
+      children: Veure subcategories
+      products: Veure productes de la categoria
+      history: Veure l'històric de la categoria
+    channel:
+      index: Llistar canals
+      create: Crear un canal
+      edit: Editar un canal
+      remove: Treure un canal
+      history: Veure l'històric del canal
+    family:
+      index: Llistar famílies
+      create: Crear una família
+      edit_properties: Editar les propietats d'una família
+      edit_attributes: Editar els atributs d'una família
+      remove: Treure una família
+      history: Veure històric de la família
+    attribute_group:
+      index: Llistar grups d'atribut
+      create: Crear un grup d'atributs
+      edit: Editar un grup d'atributs
+      remove: Suprimir un grup d'atributs
+      sort: Ordenar grups d'atribut
+      add_attribute: Afegir l'atribut a un grup
+      remove_attribute: Suprimir l'atribut d'un grup
+      history: Veure l'històric d'un grup d'atributs
+    attribute:
+      index: Llistar atributs
+      create: Crear un atribut
+      edit: Editar un atribut
+      remove: Eliminar un atribut
+      sort: Ordena els atributs dins els grups d'atributs
+      history: Veure històric d'atributs
+    group:
+      index: Llistar grups
+      create: Crear un grup
+      edit: Editar un grup
+      remove: Eliminar un grup
+      history: Veure històric del grup
+    variant_group:
+      index: Llistar grups variants de
+      create: Crear un grup de variants
+      edit: Editar un grup de variants
+      remove: Eliminar una variant de grup
+      history: Veure històric de la variant de grup
+      edit_attributes: Editar atributs dels grups de variants
+      add_attributes: Afegir atributs a variants de grup
+      remove_attribute: Treure atributs de grups de variant
+    group_type:
+      index: Llistar tipus de grup
+      create: Crear un tipus de grup
+      edit: Editar un tipus de grup
+      remove: Eliminar un tipus de grup
+    association_type:
+      index: Llistar tipus d'associació
+      create: Crear un tipus d'associació
+      edit: Editar un tipus d'associació
+      remove: Eliminar un tipus d'associació
+      history: Veure històric de tipus d'associació
+  acl_group:
+    association_type: Tipus d'associació
+    attribute: Atributs
+    attribute_group: Grups d'atributs
+    category: Categories
+    channel: Canals
+    currency: Monedes
+    family: Famílies
+    group: Grups
+    variant_group: Grups de variants
+    group_type: Tipus de grup
+    locale: Configuracions regionals
+    product: Productes
+  product_value:
+    tooltip:
+      from_variant:
+        title: Actualitzat per un grup de variants
+        content: Aquest camp s'actualitza pel següent grup de variants
+attribute:
+  title: atribut
+  overview: resum de l'atribut
+  create: crear atribut
+  edit: editar atribut
+attribute group:
+  title: grup d'atributs
+  overview: resum de grup d'atributs
+  create: crear grup d'atributs
+  edit: editar grup d'atributs
+  suggest creation: Seleccioneu un grup d'atribut a l'esquerra
+  or: o
+  create new: Crear un nou grup d'atribut
+category:
+  title: categoria
+  overview: resum de categoria
+  create: crear categoria
+  edit: editar categoria
+  suggest selection: Si us plau seleccioni una categoria a l'esquerra
+  or: o
+  create new: Crear una nova categoria
+tree:
+  title: arbre
+  create: crear arbre
+  edit: editar arbre
+channel:
+  title: canal
+  overview: resum del canal
+  create: crear canal
+  edit: editar canal
+currency:
+  title: moneda
+  overview: resum de moneda
+  create: crear moneda
+  edit: editar moneda
+family:
+  title: família
+  overview: resum de família
+  create: crear família
+  edit: editar família
+locale:
+  title: configuració regional
+  overview: resum de configuració regional
+  create: crear configuració regional
+  edit: editar configuració regional
+product:
+  title: producte
+  overview: resum del producte
+  create: crear producte
+  edit: editar producte
+group:
+  title: grup
+  overview: resum del grup
+  create: crear grup
+  edit: editar grup
+group type:
+  title: tipus de grup
+  overview: resum de tipus de grup
+  create: crear tipus de grup
+  edit: editar tipus de grup
+variant group:
+  title: variant de grup
+  overview: resum de variants de grup
+  create: crear variant de grup
+  edit: editar variant de grup
+association type:
+  title: tipus d'associació
+  overview: resum de tipus d'associació
+  create: crear tipus d'associació
+  edit: editar tipus d'associació
+products: productes
+btn:
+  create:
+    attribute: crear atribut
+    attribute group: crear grup d'atributs
+    category: crear categoria
+    tree: crear arbre
+    channel: crear canal
+    currency: crear moneda
+    family: crear família
+    locale: crear configuració regional
+    product: crear producte
+    group: crear grup
+    variant group: crear variant de grup
+    association type: crear tipus d'associació
+    group type: crear tipus de grup
+  edit: editar
+  save: guardar
+  save and back: guardar i tornar a la quadrícula
+  save and create: guardar i crear-ne de nous
+  save and next: guardar i seguir
+  save and finish: guardar i acabar
+  remove: eliminar
+  delete: eliminar
+  cancel: cancel·lar
+  next: següent
+  back: enrere
+  confirm: confirmar
+  to grid: tornar a la quadrícula
+  to parent: tornar al nivell superior
+  download_pdf: PDF
 confirmation:
   confirm: Confirmació
+  delete: Confirmar eliminació
+  leave: Esteu segur que voleu deixar aquesta pàgina?
+  discard changes: Perdreu els canvis a %entity% si sortiu de la pàgina.
+  remove:
+    item: Esteu segur que voleu eliminar aquest element?
+    attribute: Esteu segur que voleu eliminar l'atribut %name%?
+    attribute group: Esteu segur que voleu eliminar el grup d'atributs %name%?
+    category: Esteu segur que voleu eliminar la categoria %name%?
+    family: Esteu segur que voleu eliminar la família %name%?
+    product: Esteu segur que voleu suprimir el producte %name%?
+    channel: Esteu segur que voleu suprimir el canal %name%?
+    group: Esteu segur que voleu eliminar el grup %name%?
+    variant group: Esteu segur que voleu eliminar la variant de grups %name%?
+    association type: Esteu segur que voleu suprimir el tipus d'associació %name%?
+    group type: Esteu segur que voleu suprimir el tipus de grup %name%?
+    user: Esteu segur que voleu suprimir l'usuari %name%?
+  attribute group:
+    remove attribute: Esteu segur que voleu suprimir l'atribut %name% d'aquest grup d'atributs?
+  family:
+    remove attribute: Esteu segur que voleu suprimir l'atribut %name% d'aquesta família?
+  product:
+    remove attribute: Esteu segur que voleu suprimir l'atribut %name% d'aquest producte?
+  variant_group:
+    remove_attribute: Esteu segur que voleu suprimir l'atribut %name% d'aquesta variant de grup?
+flash:
+  entity:
+    removed: L'element ha estat suprimit
+  attribute:
+    created: Atribut creat correctament
+    updated: Atribut actualitzat correctament
+    removed: Atribut suprimit correctament
+    identifier not removable: L'atribut identificador no es pot suprimir
+    used by groups: Aquest atribut no es pot suprimir perquè s'utilitza a %count% variants de grup
+  attribute group:
+    created: Grup d'atributs creat correctament
+    updated: Grup d'atributs actualitzat correctament
+    removed: Grup d'atributs suprimit correctament
+    attributes added: Atributs afegits correctament al grup d'atributs
+    attribute removed: Atributs suprimirts correctament del grup d'atributs
+    not removed attributes: El grup d'atributs no es pot suprimir per que conté atributs
+    not removed default: El grup d'atribut per defecte no pot ser suprimit
+    not removed default attributes: L'atribut no es pot suprimir del grup d'atributs per defecte
+  category:
+    created: Categoria creada correctament
+    updated: Categoria actualitzada correctament
+    removed: Categoria esborrada correctament
+  tree:
+    created: Arbre creat correctament
+    updated: Arbre actualitzat correctament
+    removed: Arbre suprimit correctament
+    not removable: Els arbres connectats a canals no es poden suprimir.
+  channel:
+    saved: Canal guardat correctament
+    removed: Canal suprimit correctament
+    not removable: No es pot suprimir el darrer canal
+  currency:
+    updated: Moneda actualitzada correctament
+  family:
+    created: Família creada correctament
+    updated: Família actualitzada correctament
+    removed: Família suprimida correctament
+    identifier not removable: L'atribut identificador no es pot suprimir d'una família
+    label attribute not removable: Aquest atribut no es pot suprimir perquè s'utilitza com a segell de la família
+    attribute not found: L'atribut no pertany a aquesta família
+    attributes added: Atributs afegits correctament a la família
+    attribute removed: Atribut esborrat correctament de la família
+  product:
+    created: Producte creat correctament
+    updated: Producte actualitzat correctament
+    removed: Producte suprimit correctament
+    invalid: Comproveu la vostra entrada i torneu-ho a provar
+    attributes added: Atributs afegits correctament al producte
+    attribute removed: Atribut suprimit correctament del producte
+    attribute not removable: L'atribut no es pot suprimir d'aquest producte
+    enabled: El producte ha estat habilitat
+    disabled: El producte ha estat inhabilitat
+  group:
+    created: Grup creat correctament
+    updated: Grup actualitzat correctament
+    removed: Grup suprimit correctament
+  variant group:
+    created: Grup de variants creat correctament
+    updated: Grup de variants actualitzat correctament
+    removed: Grup de variants suprimit correctament
+    attributes_added: Atributs afegits correctament al grup de variants
+    attribute_removed: Atribut correctament suprimit del grup de variants
+  group type:
+    created: Tipus de grup creat correctament
+    updated: Tipus de grup actualitzat correctament
+    removed: Tipus de grup suprimit correctament
+    cant remove variant: Aquest tipus de grup no pot ser suprimit
+    cant remove used: Aquest tipus de grup és utilitzat per alguns grups i no es pot suprimir
+  association type:
+    created: Tipus d'associació creat correctament
+    updated: Tipus d'associació actualitzat correctament
+    removed: Tipus d'associació suprimid correctament
+  user:
+    removed: Usuari suprimit correctament
+  error ocurred: Acció fallida. Si us plau, torneu-ho a provar.
+info:
+  updated: Hi ha canvis sense guardar.
+  category:
+    remove children: Totes les subcategories seran suprimides.
+    keep products: Els productes dins aquestes categories no seran eliminats.
+    products limit exceeded: Aquesta categoria conté més productes dels permesos per aquesta operació (màxim %limit% productes)
+  product:
+    no available attributes: No hi ha més atributs a afegir
+    no family defined: No hi ha cap família definida
+    change family: Canviar la família del producte
+    change family to: Canviar família a
+    merge attributes: Els atributs actuals es combinaran amb els de la nova família.
+    keep attributes: No s'eliminarà cap atribut.
+    number of associations: '%productCount% productes i %groupCount% grups'
+    enable: Habilitar
+    enabled: Habilitat
+    disable: Deshabilitar
+    disabled: Deshabilitat
+  group:
+    axis: 'Eix de variació: %attributes%'
+    select products: Si us plau seleccioneu els productes que haurien de pertànyer a aquest grup.
+    selectable products: Els següents productes seleccionables tenen un valor definit per a cada eix.
+    no group types: No existeix cap tipus de grup, feu clic aquí per crear-ne un
+    more products: '%count% més productes...'
+  association type:
+    show products: Mostrar productes
+    show groups: Mostrar grups
+    remove from products: Si suprimiu aquest tipus d'associació, se suprimirà de %count% productes.
+    none exist: No existeix cap tipus d'associació.
+    create one: Feu clic aquí per crear-ne un
+  attribute:
+    auto option sorting: Si s'activa, les opcions s'ordenaran automàticament per les seves etiquetes configurades regionalment
+  completeness:
+    not calculated: No s'ha calculat encara
+color:
+  title: Color
+  gray: Gris
+  white: Blanc
+  yellow: Groc
+  orange: Taronja
+  magenta: Magenta
+  violet: Violeta
+  blue: Blau
+  cyan: Cian
+Options: Opcions
+Created at: Creat el
+Updated at: Actualitzat el
+Created: Creat
+Updated: Actualitzat
+Last update: Darrera actualització
+by: Per
+N/A: N/D
+Manage products: Gestionar productes
+Manage groups: Gestionar grups
+Code: Codi
+Name: Nom
+Type: Tipus
+Scope: Abast
+Required: Obligatori
+Unique: Únic
+Not required: No és obligatori
+Translatable: Traduïble
+Scopable: Abastable
+Localizable: Configurable regionalment
+Unique value: Valor únic
+Attribute group: Grup d'atributs
+Other: Altres
+Variants behavior when edited: Comportament de les variants quan s'editen
+Edit: Editar
+Remove: Eliminar
+Delete: Suprimir
+Parameters: Paràmetres
+System: Sistema
+Values: Valors
+General parameters: Paràmetres generals
+Backend parameters: Paràmetres del servidor principal
+Label: Etiqueta
+Default label: Etiqueta per defecte
+Default value: Valor per defecte
+Attributetype: Tipus d'atribut
+Attribute type: Tipus d'atribut
+Defaultvalue: Valor per defecte
+Variant: Variant
+Smart: Intel·ligent
+Useable as grid column: Utilitzable com a columna de quadrícula
+Useable as grid filter: Utilitzable en quadrícula
+Family: Família
+Available locales: Configuracions regionals disponibles
+Locale specific: Configuració regional específica
+default: Per defecte
+Axis: Eix
+Add attributes: Afegir atributs
+Translate from: Traduir de
+switch_on: "Sí"
+switch_off: "No"
+Close: Tancar
+Choose a color: Trieu un color
+Search: Cercar
+Choose the attribute type: Trieu el tipus d'atribut
+Choose the attribute group: Trieu el grup de l'atribut
+Drop a file or click here: Porteu un arxiu o feu clic aquí
+Drop an image or click here: Porteu una imatge o feu clic aquí
+Automatic option sorting: Ordenació automàtica de les opcions
+save_attribute_before_manage_option: Per administrar opcions, guardeu l'atribut primer si us plau
+Create: Crear
+Cancel: Cancelar
+Choose a family: Trieu una Familia
+Choose a unit: Trieu una unitat
+No matches found: No s’han trobat coincidències
+Category tree: Arbre de categories
+Completeness: Integritat
+Attribute used as label: Atribut utilitzat com a etiqueta
+Global: Global
 Channel: Canal
+Expand all channels: Ampliar tots els canals
+Collapse all channels: Col·lapsa tots els canals
+Always override: Anul·lar sempre
+Ask: Preguntar
+General Properties: Propietats generals
+Group values: Valors de grup
+New group: Grup nou
+Groups overview: Resum de grups
+'Y-m-d h:i:s': 'A-m-d H:m:s'
+Max characters: Màxim de caràcters
+Validation rule: Regla de validació
+Validation regexp: Validació regexp
+Wysiwyg enabled: WYSIWYG habilitat
+Number min: Nombre mínim
+Number max: Nombre màxim
+Decimals allowed: Permetre els decimals
+Negative allowed: Permetre valors negatius
+Date min: Data mínima
+Date max: Data màxima
+Metric family: Família mètrica
+Default metric unit: Unitat mètrica per defecte
+Max file size: Mida màxima de l'arxiu (MB)
+Allowed extensions: Extensions permeses
+None: Cap
 E-mail: Correu electrònic
+URL: URL
+Regular expression: Expressió regular
+Minimum input length: Longitud mínima d'entrada
+Default: Per defecte
+Attributes: Atributs
+Title: Títol
+pim_title.attribute_group:
+  index: "Grups d'atributs"
+  create: "Grups d'atributs: Crear"
+  edit: "Grups d'atributs %group.label% | Editar"
+pim_title.category:
+  index: "Arbre de categories"
+  create: "Arbres de categoria | Crear"
+  edit: "Arbres de categoria %category.label% | Editar"
+pim_title.attribute:
+  index: "Atributs"
+  create: "Atributs | Crear"
+  edit: "Atributs %attribute.label% | Editar"
+pim_title.product:
+  index: "Productes"
+  edit: "Productes %product.sku% | Editar"
+pim_title.family:
+  index: "Famílies"
+  edit: "Famílies %family.label% | Editar"
+pim_title.channel:
+  index: "Canals"
+  create: "Canals | Crear"
+  edit: "Canals %channel.label% | Editar"
+pim_title.currency:
+  index: "Monedes"
+pim_title.locale:
+  index: "Configuracions regionals"
+pim_title.group:
+  index: "Grups"
+  edit: "Grups %group.label% | Editar"
+pim_title.variant_group:
+  index: "Grups de variants"
+  edit: "Grups de variants %group.label% | Editar"
+pim_title.association_type:
+  index: "Tipus d'associació"
+  edit: "Tipus d'Associació %association type.label% | Editar"
+pim_title.group_type:
+  index: "Tipus de grup"
+  edit: "Tipus de grup %group type.label% | Editar"
+pim_title.mass_edit_action:
+  choose: "Editar en massa | Triar"
+  configure: "Editar en massa | Configurar"
+pim_title.dashboard: "Panell de contol"
+pim_catalog_identifier: Identificador
+pim_catalog_text: Texte
+pim_catalog_textarea: Àrea de Text
 pim_catalog_number: Nombre
 pim_catalog_price_collection: Preu
 pim_catalog_multiselect: Selecció múltiple
 pim_catalog_simpleselect: Selecció simple
 pim_catalog_file: Arxiu
+pim_catalog_image: Imatge
 pim_catalog_boolean: "Sí/No"
 pim_catalog_date: Data
 pim_catalog_metric: Mètrica
+Activated: Activat
+Disable: Deshabilitar
+pim_enrich.sequential_edit_action:
+  product:
+    previous: Tornar a "%product%" sense guardar.
+    next: Vés a "%product%" sense guardar.
+pim_enrich.mass_edit_action:
+  limit_exceeded: Trieu menys de %limit% elements per editar
+  product:
+    page_title: Productes
+    page_subtitle: Editar en massa (1 producte) | Editar en massa (%count% productes)
+    title: Triar operació
+    subtitle: Trieu la operació que voleu realitzar al producte seleccionat| Trieu la operació que voleu realitzar als %count% productes seleccionats
+    confirm: Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu si us plau.
+    steps:
+      first: Escollir productes
+      second: Escollir operació
+      third: Configurar
+      fourth: Confirmar
+  family:
+    page_title: Famílies
+    page_subtitle: Editar en massa (1 família) | Editar en massa (%count% famílies)
+    title: Triar operació
+    subtitle: Trieu la operació que voleu realitzar a la familília seleccionada | Trieu la operació que desitja realitzar en les %count% famílies seleccionades
+    confirm: Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu-ho si us plau.
+    steps:
+      first: Triar famílies
+      second: Triar operació
+      third: Configurar
+      fourth: Confirmar
+  change-status:
+    label: Canviar l'estat (activar / desactivar)
+    description: Els productes seleccionats seran activats o desactivats.
+    success_flash: S'ha canviat l'estatus del(s) producte(s)
+  edit-common-attributes:
+    label: Editar atributs comuns
+    description: Els atributs del producte seleccionat s'editaran amb les dades següents pels paràmetres regionals triats.
+    empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
+    success_flash: S'ha actualitzat l'atribut o atributs de producte
+    message.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
+    no_attribute.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
+    truncated_by_variant_attribute.warning: 'Alguns atributs comuns de productes seleccionats provenen d''un grup de variants. No estan disponibles per a edició massiva: %attributes%.'
+  classify:
+    label: Classificar els productes en categories
+    description: Els productes es posicionaran en les categories següents, tot mantenint l'emplaçament actual.
+    success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
+  change-family:
+    label: Canviar la família de productes
+    description: La família dels productes seleccionats es canviarà a la família escollida
+    success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
+  add-to-groups:
+    label: Afegir a grups
+    description: Seleccioneu els grups on volgueu afegir els productes seleccionats
+    success_flash: Els productes s'han afegit correctament als grups seleccionats
+  set-attribute-requirements:
+    label: Conjunt de requeriments d'atribut
+    description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
+    success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
+To enable: Per activar
+Select attributes: Seleccionar atributs
+Select: Seleccionar
+Remove this attribute: Eliminar aquest atribut
+Copy: Copiar
+Current tab: Pestanya actual
+Group: Grup
+View group: Veure grup
+Products: Productes
+pim_menu:
+  tab:
+    collect: Recollir
+    enrich: Enriquir
+    settings: Preferències
+    spread: Abast
+  item:
+    association_type: Tipus d'associació
+    attribute: Atributs
+    attribute_group: Grups d'atributs
+    category: Categories
+    channel: Canals
+    currency: Monedes
+    family: Famílies
+    group: Grups
+    group_type: Tipus de grup
+    locale: Configuracions regionals
+    product: Productes
+    variant_group: Grups de variants
+Properties: Propietats
+History: Històric
+pane.accordion:
+  node_values: Valors de node
+  general_properties: Propietats generals
+  locale_values: Valors de configuració regional
+  backend_parameters: Paràmetres del servidor principal
+  general_parameters: Paràmetres generals
+  validation_parameters: Paràmetres de validació
+  label_translations: Traduccions d'etiqueta
+  options: Opcions
+  group_values: Valors de grup
+popin.create:
+  association_type.title: Crear un nou tipus d'associació
+  family.title: Crear una nova família
+  group.title: Crea un grup nou
+  group_type.title: Crear un nou tipus de grup
+  product.title: Crear un nou producte
+  variant_group.title: Crear un nou grup de variants
+  option.title: Crear una nova opció
+In group: En grup
+Attribute as label: Atribut com a etiqueta
+Is associated: Està associat
+Complete: Complet
+Created At: Creat el
+Updated At: Actualitzat el
+Enabled: Habilitat
+Disabled: Deshabilitat
 Status: Estat
+Change History: Historial de canvis
+Data Audit: Auditoria de dades
+Data Audit - System: 'Auditoria de dades - sistema'
+Action: Acció
+Version: Versió
+Entity type: Tipus d'entitat
+Entity name: Nom d'entitat
+Entity id: Identificador de l'entitat
+Data: Dades
+Author: Autor/a
+Logged at: Connectat a
+Deleted: Eliminat
+Old values: Valors antics
+New values: Valors nous
+System configuration: Configuració de sistema
+General setup: Organització general
+Localization: Configuració regional
+Localization options: Opcions de configuració regional
+Locale: Idioma (locale)
+Location: Localització
+Format address by address country: Format d'adreça per país
+Language: Llenguatge
+Timezone: Zona horària
+Currency: Moneda
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "parròquia"
+      state: "estat"
+      island: "illa"
+      county: "comtat"
+      area: "àrea"
+      prefecture: "prefectura"
+      department: "departament"
+      district: "districte"
+      province: "província"
+  form:
+    tooltip:
+      locale: "Seleccioneu l'opció d'idioma que feu servir pel format de nombres, adreces, noms i dates"
+      location: " La ubicació servirà per formatar les adreces quan la opció 'Format per adreça país' estigui desactivada"
+      format_address_by_address_country: "Seleccionant aquesta opció, les adreces habilitades seran formatades pel país on s'hi trobin. Deshabilitant aquesta opció farà que les adreces agafin el format d'adreça de la ubicació configurada"
+      language: "Seleccioneu la llengua de sistema que desitjeu utilitzar"
+      timezone: "Seleccioneu la zona horària per mostrar data i hora"
+      currency: "Seleccioneu la moneda per defecte"
+Selected products successfully deleted: Els productes seleccionats s'han eliminat correctament

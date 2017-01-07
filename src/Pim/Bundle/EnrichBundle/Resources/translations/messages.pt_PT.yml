@@ -40,7 +40,7 @@ pim_enrich:
       property.title: Propriedades
       history.title: Histórico
   group:
-    axis.help: Os eixos definem os atributos sobre os quais os produtos do grupo devem variar. Os eixos são atributos com opções, não localizáveis e sem âmbito. Eles não podem ser alterados após a criação do grupo variante.
+    axis.help: 'Os eixos definem os atributos sobre os quais os produtos do grupo devem variar. Os eixos são atributos com opções, não localizáveis e sem âmbito. Eles não podem ser alterados após a criação do grupo variante.'
     type:
       VARIANT: Variante
       ADDITIONAL: Adicional
@@ -569,46 +569,46 @@ Default: Padrão
 Attributes: Atributos
 Title: Título
 pim_title.attribute_group:
-  index: Grupos de atributos
-  create: Grupos de atributos | Criar
-  edit: Grupos de atributos %group.label% | Editar
+  index: "Grupos de atributos"
+  create: "Grupos de atributos | Criar"
+  edit: "Grupos de atributos %group.label% | Editar"
 pim_title.category:
-  index: Árvores de categorias
-  create: Árvores de categorias | Criar
-  edit: Árvores de categorias %category.label% | Editar
+  index: "Árvores de categorias"
+  create: "Árvores de categorias | Criar"
+  edit: "Árvores de categorias %category.label% | Editar"
 pim_title.attribute:
-  index: Atributos
-  create: Atributos | Criar
-  edit: Atributos %attribute.label% | Editar
+  index: "Atributos"
+  create: "Atributos | Criar"
+  edit: "Atributos %attribute.label% | Editar"
 pim_title.product:
-  index: Produtos
-  edit: Produtos %product.sku% | Editar
+  index: "Produtos"
+  edit: "Produtos %product.sku% | Editar"
 pim_title.family:
-  index: Famílias
-  edit: Famílias %family.label% | Editar
+  index: "Famílias"
+  edit: "Famílias %family.label% | Editar"
 pim_title.channel:
-  index: Canais
-  create: Canais | Criar
-  edit: Canais %channel.label% | Editar
+  index: "Canais"
+  create: "Canais | Criar"
+  edit: "Canais %channel.label% | Editar"
 pim_title.currency:
-  index: Moedas
+  index: "Moedas"
 pim_title.locale:
-  index: Linguagens
+  index: "Linguagens"
 pim_title.group:
-  index: Grupos
-  edit: Grupos %group.label% | Editar
+  index: "Grupos"
+  edit: "Grupos %group.label% | Editar"
 pim_title.variant_group:
-  index: Grupos variantes
-  edit: Grupos variantes %group.label% | Editar
+  index: "Grupos variantes"
+  edit: "Grupos variantes %group.label% | Editar"
 pim_title.association_type:
-  index: Tipos de associação
-  edit: Tipos de associação %association type.label% | Editar
+  index: "Tipos de associação"
+  edit: "Tipos de associação %association type.label% | Editar"
 pim_title.group_type:
-  index: Tipos de grupo
-  edit: Tipos de grupo %group type.label% | Editar
+  index: "Tipos de grupo"
+  edit: "Tipos de grupo %group type.label% | Editar"
 pim_title.mass_edit_action:
-  choose: Editar em massa | Escolher
-  configure: Editar em massa | Configurar
+  choose: "Editar em massa | Escolher"
+  configure: "Editar em massa | Configurar"
 pim_title.dashboard: "Painel"
 pim_catalog_identifier: Identificador
 pim_catalog_text: Texto
@@ -741,5 +741,5 @@ Currency: Moeda
 oro.locale:
   form:
     tooltip:
-      currency: Selecione a moeda padrão
+      currency: "Selecione a moeda padrão"
 Selected products successfully deleted: Os produtos selecionados foram eliminados com êxito

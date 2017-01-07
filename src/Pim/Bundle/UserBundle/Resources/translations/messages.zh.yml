@@ -8,25 +8,25 @@ pim_user:
       business_unit.title: 业务单元
       email_synchronization.title: 电子邮件同步设置
 oro.user.controller:
-  group.message.saved: 分组已保存
-  role.message.saved: 角色已保存
-  user.message.saved: 用户已保存
-  status.message.saved: 状态已保存
+  group.message.saved: "分组已保存"
+  role.message.saved: "角色已保存"
+  user.message.saved: "用户已保存"
+  status.message.saved: "状态已保存"
 oro.user.grid.users:
   columns:
-    username: 用户名
-    email: 电子邮件
-    firstName: 名
-    lastName: 姓
-    createdAt: 创建于
-    updatedAt: 更新于
-    enabled: 状态
+    username: "用户名"
+    email: "电子邮件"
+    firstName: "名"
+    lastName: "姓"
+    createdAt: "创建于"
+    updatedAt: "更新于"
+    enabled: "状态"
 oro.user.grid.roles:
   columns:
-    label: 标签
+    label: "标签"
 oro.user.grid.groups:
   columns:
-    name: 名称
+    name: "名称"
 pim_title:
   user.index: 用户
   user_role.index: 角色

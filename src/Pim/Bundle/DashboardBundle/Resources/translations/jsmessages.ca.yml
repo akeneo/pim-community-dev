@@ -3,6 +3,8 @@ pim_dashboard:
     last_operations:
       empty: No s'han trobat operacions
       status: Estat
+      date: Data
+      type: Tipus
       profile name: Nom del perfil
       details: Detalls
       job_type:

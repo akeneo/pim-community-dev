@@ -40,7 +40,7 @@ pim_enrich:
       property.title: Propriétés
       history.title: Historique
   group:
-    axis.help: Les axes sont des attributs qui définissent les groupes de variantes. Les axes sont des attributs avec des options, non localisables et ayant une portée globale. Ils ne peuvent pas être modifiés après leur création.
+    axis.help: 'Les axes sont des attributs qui définissent les groupes de variantes. Les axes sont des attributs avec des options, non localisables et ayant une portée globale. Ils ne peuvent pas être modifiés après leur création.'
     type:
       VARIANT: Variante
       X_SELL: Vente croisée
@@ -588,46 +588,46 @@ Default: Défaut
 Attributes: Attributs
 Title: Titre
 pim_title.attribute_group:
-  index: Groupes d'attributs
-  create: Groupe d'attributs | Créer
-  edit: Groupe d'attribut %group.label% | Modifier
+  index: "Groupes d'attributs"
+  create: "Groupe d'attributs | Créer"
+  edit: "Groupe d'attribut %group.label% | Modifier"
 pim_title.category:
-  index: Arborescences des catégories
-  create: Arborescences | Créer
-  edit: Arborescences %category.label% | Modifier
+  index: "Arborescences des catégories"
+  create: "Arborescences | Créer"
+  edit: "Arborescences %category.label% | Modifier"
 pim_title.attribute:
-  index: Attributs
-  create: Attributs | Créer
-  edit: Attributs %attribute.label% | Modifier
+  index: "Attributs"
+  create: "Attributs | Créer"
+  edit: "Attributs %attribute.label% | Modifier"
 pim_title.product:
-  index: Produits
-  edit: Produit %product.sku% | Modifier
+  index: "Produits"
+  edit: "Produit %product.sku% | Modifier"
 pim_title.family:
-  index: Familles
-  edit: Famille %family.label% | Modifier
+  index: "Familles"
+  edit: "Famille %family.label% | Modifier"
 pim_title.channel:
-  index: Canaux
-  create: Canaux | Créer
-  edit: Canal %channel.label% | Modifier
+  index: "Canaux"
+  create: "Canaux | Créer"
+  edit: "Canal %channel.label% | Modifier"
 pim_title.currency:
-  index: Devises
+  index: "Devises"
 pim_title.locale:
-  index: Locales
+  index: "Locales"
 pim_title.group:
-  index: Groupes
-  edit: Groupes %group.label% | Modifier
+  index: "Groupes"
+  edit: "Groupes %group.label% | Modifier"
 pim_title.variant_group:
-  index: Groupes de variantes
-  edit: Groupe de variantes %group.label% | Modifier
+  index: "Groupes de variantes"
+  edit: "Groupe de variantes %group.label% | Modifier"
 pim_title.association_type:
-  index: Types d'association
-  edit: Types d'association %association type.label% | Modifier
+  index: "Types d'association"
+  edit: "Types d'association %association type.label% | Modifier"
 pim_title.group_type:
-  index: Types de groupe
-  edit: Type de groupes %group type.label% | Modifier
+  index: "Types de groupe"
+  edit: "Type de groupes %group type.label% | Modifier"
 pim_title.mass_edit_action:
-  choose: Edition de masse | Choisir
-  configure: Edition de masse | Configurer
+  choose: "Edition de masse | Choisir"
+  configure: "Edition de masse | Configurer"
 pim_title.dashboard: "Tableau de bord"
 pim_catalog_identifier: Identifiant
 pim_catalog_text: Texte
@@ -783,21 +783,21 @@ Currency: Devise
 oro.locale:
   address_format:
     region_name_type:
-      parish: Commune
-      state: État
-      island: île
-      county: Comté
-      area: zone
-      prefecture: préfecture
-      department: département
-      district: quartier
-      province: province
+      parish: "Commune"
+      state: "État"
+      island: "île"
+      county: "Comté"
+      area: "zone"
+      prefecture: "préfecture"
+      department: "département"
+      district: "quartier"
+      province: "province"
   form:
     tooltip:
-      locale: Sélectionnez l'option de paramètre régional utilisée pour le format des nombres, des adresses, des noms et des dates
-      location: ' L''emplacement sera utilisé pour mettre en forme les adresses lorsque l''option ''Formate l''adresse par adresse de pays'' est désactivée'
-      format_address_by_address_country: En sélectionnant cette option, les adresses seront formatées selon le pays où elles sont localisées. Si l'option est désactivée, les adresses seront formatées selon le format de votre adresse de localisation
-      language: Sélectionnez la langue du système que vous souhaitez utiliser
-      timezone: Sélectionnez le fuseau horaire pour afficher la date et l'heure
-      currency: Sélectionnez la monnaie par défaut
+      locale: "Sélectionnez l'option de paramètre régional utilisée pour le format des nombres, des adresses, des noms et des dates"
+      location: " L'emplacement sera utilisé pour mettre en forme les adresses lorsque l'option 'Formate l'adresse par adresse de pays' est désactivée"
+      format_address_by_address_country: "En sélectionnant cette option, les adresses seront formatées selon le pays où elles sont localisées. Si l'option est désactivée, les adresses seront formatées selon le format de votre adresse de localisation"
+      language: "Sélectionnez la langue du système que vous souhaitez utiliser"
+      timezone: "Sélectionnez le fuseau horaire pour afficher la date et l'heure"
+      currency: "Sélectionnez la monnaie par défaut"
 Selected products successfully deleted: La sélection de produits a été supprimée
