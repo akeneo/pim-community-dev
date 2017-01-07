@@ -172,8 +172,8 @@ pim_enrich:
       variant_group:
         updated_by: Обновлено группой вариантов
         switch:
-          "yes": Да
-          "no": Нет
+          "yes": "Да"
+          "no": "Нет"
       optional_attribute:
         remove: Удалить этот атрибут
       locale_specific_attribute:
@@ -209,7 +209,7 @@ pim_enrich:
             none_exist: Титпы ассоциаций отсутствуют.
             show_products: Показать продукты
             show_groups: Показать группы
-            number_of_associations: '{{ productCount }} продуктов и {{ groupCount }} групп'
+            number_of_associations: "{{ productCount }} продуктов и {{ groupCount }} групп"
         attributes:
           title: Атрибуты
           btn:
@@ -218,7 +218,7 @@ pim_enrich:
           info:
             search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
-            attributes_selected: Выбран(o) {{ attributeCount }} атрибут(ов)
+            attributes_selected: "Выбран(o) {{ attributeCount }} атрибут(ов)"
             no_match: Совпадений не найдено
             load_more: Загрузка дополнительных результатов...
         categories:
@@ -233,8 +233,8 @@ pim_enrich:
         history:
           title: Журнал
       switch:
-        "no": Нет
-        "yes": Да
+        "no": "Нет"
+        "yes": "Да"
       sequential_edit:
         info:
           products: продукты
@@ -265,8 +265,8 @@ pim_enrich:
         cancel: Отмена
     entity:
       switch:
-        "no": Нет
-        "yes": Да
+        "no": "Нет"
+        "yes": "Да"
   mass_edit_action:
     edit_common_attributes:
       description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.

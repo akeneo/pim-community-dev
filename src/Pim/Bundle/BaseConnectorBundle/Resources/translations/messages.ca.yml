@@ -97,6 +97,7 @@ pim_base_connector:
       help: On guardar l'arxiu generat al servidor
     channel:
       label: Canal
+      help: El canal que vol exportar
     decimalSeparator:
       label: Separador de decimals
       help: Determinar el separador de decimals
@@ -121,6 +122,7 @@ pim_base_connector:
       help: Arxiu CSV per importar
     yamlFilePath:
       label: Arxiu
+      help: Arxiu YAML per importar
     uploadAllowed:
       label: Permetre la càrrega d'arxius
       help: Permetre o no la càrrega directa de l'arxiu

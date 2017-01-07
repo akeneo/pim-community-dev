@@ -88,8 +88,10 @@ Classify the product: Classificeren van het product
 Delete the product: Het product verwijderen
 Change status: Status wijzigen
 Toggle status: Schakel status
+pim.grid.mass_action.quick_export.csv_all: CSV (alle kenmerken)
 pim.grid.mass_action.delete: Verwijderen
 pim.grid.mass_action.mass_edit: Massa bewerken
+pim.grid.mass_action.sequential_edit: Sequentiële bewerking
 jstree.create: Aanmaken
 switch_on: "Ja"
 switch_off: "Nee"
@@ -170,8 +172,8 @@ pim_enrich:
       variant_group:
         updated_by: Geüpdatet door variant groep
         switch:
-          "yes": Ja
-          "no": Nee
+          "yes": "Ja"
+          "no": "Nee"
       optional_attribute:
         remove: Dit attribuut verwijderen
       locale_specific_attribute:
@@ -203,7 +205,7 @@ pim_enrich:
             none_exist: Er bestaan geen associatietypes.
             show_products: Toon producten
             show_groups: Toon groepen
-            number_of_associations: '{{ productCount }} producten en {{ groupCount }} groepen'
+            number_of_associations: "{{ productCount }} producten en {{ groupCount }} groepen"
         attributes:
           title: Attributen
           btn:
@@ -212,7 +214,7 @@ pim_enrich:
           info:
             search_attributes: Zoeken...
             no_available_attributes: Er zijn geen attributen meer om toe te voegen
-            attributes_selected: '{{ attributeCount }} attribu(u) t(en) geselecteerd'
+            attributes_selected: "{{ attributeCount }} attribu(u) t(en) geselecteerd"
             no_match: Geen overeenkomsten gevonden
             load_more: Meer resultaten laden...
         categories:
@@ -227,8 +229,8 @@ pim_enrich:
         history:
           title: Geschiedenis
       switch:
-        "no": Nee
-        "yes": Ja
+        "no": "Nee"
+        "yes": "Ja"
       sequential_edit:
         info:
           products: producten
@@ -259,8 +261,8 @@ pim_enrich:
         cancel: Annuleren
     entity:
       switch:
-        "no": Nee
-        "yes": Ja
+        "no": "Nee"
+        "yes": "Ja"
   mass_edit_action:
     edit_common_attributes:
       description: Het attribuut van het geselecteerde product zal worden gewijzigd met de volgende data voor de landinstelling <span class="highlight">{{ locale }}</span> en het kanaal <span class="highlight">{{ channel }}</span> gekozen in het product raster.

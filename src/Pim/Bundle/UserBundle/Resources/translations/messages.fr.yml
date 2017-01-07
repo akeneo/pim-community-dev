@@ -9,25 +9,25 @@ pim_user:
       email_synchronization.title: Paramètres de synchronisation de messagerie
       interfaces.title: Interfaces
 oro.user.controller:
-  group.message.saved: Groupe enregistré
-  role.message.saved: Rôle enregistré
-  user.message.saved: Utilisateur enregistré
-  status.message.saved: Statut enregistré
+  group.message.saved: "Groupe enregistré"
+  role.message.saved: "Rôle enregistré"
+  user.message.saved: "Utilisateur enregistré"
+  status.message.saved: "Statut enregistré"
 oro.user.grid.users:
   columns:
-    username: Nom d'utilisateur
-    email: Email
-    firstName: Prénom
-    lastName: Nom
-    createdAt: Crée le
-    updatedAt: Mis à jour le
-    enabled: État
+    username: "Nom d'utilisateur"
+    email: "Email"
+    firstName: "Prénom"
+    lastName: "Nom"
+    createdAt: "Crée le"
+    updatedAt: "Mis à jour le"
+    enabled: "État"
 oro.user.grid.roles:
   columns:
-    label: Libellé
+    label: "Libellé"
 oro.user.grid.groups:
   columns:
-    name: Nom
+    name: "Nom"
 pim_title:
   user.index: Utilisateurs
   user_role.index: Rôles

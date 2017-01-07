@@ -172,8 +172,8 @@ pim_enrich:
       variant_group:
         updated_by: Päivitetty variant-ryhmittäin
         switch:
-          "yes": Kyllä
-          "no": Ei
+          "yes": "Kyllä"
+          "no": "Ei"
       optional_attribute:
         remove: Poista tämä attribuutti
       locale_specific_attribute:
@@ -209,7 +209,7 @@ pim_enrich:
             none_exist: Sidostyyppiä ei ole olemassa.
             show_products: Näytä tuotteet
             show_groups: Näytä ryhmät
-            number_of_associations: '{{ productCount }} ja {{ groupCount }} ryhmistä'
+            number_of_associations: "{{ productCount }} ja {{ groupCount }} ryhmistä"
         attributes:
           title: Attribuutit
           btn:
@@ -218,7 +218,7 @@ pim_enrich:
           info:
             search_attributes: Hae...
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
-            attributes_selected: '{{ attributeCount }} attribuuttia valittu'
+            attributes_selected: "{{ attributeCount }} attribuuttia valittu"
             no_match: Vastaavuuksia ei löydy
             load_more: Ladataan lisää tuloksia...
         categories:
@@ -233,8 +233,8 @@ pim_enrich:
         history:
           title: Historia
       switch:
-        "no": Ei
-        "yes": Kyllä
+        "no": "Ei"
+        "yes": "Kyllä"
       sequential_edit:
         info:
           products: tuotteet
@@ -265,8 +265,8 @@ pim_enrich:
         cancel: Peruuta
     entity:
       switch:
-        "no": Ei
-        "yes": Kyllä
+        "no": "Ei"
+        "yes": "Kyllä"
   mass_edit_action:
     edit_common_attributes:
       description: Tuoteruudukosta valitun tuotteen attribuutit muokataan seuraavilla tiedoilla lokaatiolle <span class="highlight">{{ locale }}</span> ja kanavalle <span class="highlight">{{ channel }}</span>.

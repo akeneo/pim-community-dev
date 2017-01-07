@@ -40,6 +40,9 @@ oro_datagrid.select.all: "Alle"
 oro_datagrid.select.visible: "Alle zichtbare"
 oro_datagrid.select.none: "Geen"
 pim.grid.ajax_choice_filter.label_empty: is leeg
+pim.grid.choice_filter:
+  label_empty: Is leeg
+  label_in_list: In lijst
 Available Columns: Beschikbare kolommen
 datagrid_view.columns.min_message: U moet ten minste één dataraster kolom selecteren om weer te geven
 pim_datagrid:
@@ -54,7 +57,9 @@ pim_datagrid:
     remove_column: Verwijderen
   mass_action:
     delete:
+      confirm_title: Verwijderen bevestigen.
       confirm_ok: OK
+      empty_selection: Geen product geselecteerd.
 pim.grid.mass_action.quick_export.title: Snelle Export
 pim.grid.mass_action.quick_export.launched: Snelle export is gelanceerd
 pim.grid.action.launch.title: Starten

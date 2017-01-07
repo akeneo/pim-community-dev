@@ -170,8 +170,8 @@ pim_enrich:
       variant_group:
         updated_by: 创建属性组
         switch:
-          "yes": 是
-          "no": 否　
+          "yes": "是"
+          "no": "否　"
       optional_attribute:
         remove: 删除此属性
       locale_specific_attribute:
@@ -205,7 +205,7 @@ pim_enrich:
             none_exist: 没有关联的类型存在。
             show_products: 显示产品
             show_groups: 显示组
-            number_of_associations: '{{ productCount }} 产品和 {{ groupCount }} 组'
+            number_of_associations: "{{ productCount }} 产品和 {{ groupCount }} 组"
         attributes:
           title: 属性
           btn:
@@ -214,7 +214,7 @@ pim_enrich:
           info:
             search_attributes: 搜索...
             no_available_attributes: 没有需要添加的属性
-            attributes_selected: '{{ attributeCount }} 属性选择'
+            attributes_selected: "{{ attributeCount }} 属性选择"
             no_match: 未找到匹配项
             load_more: 正在加载更多的结果...
         categories:
@@ -229,8 +229,8 @@ pim_enrich:
         history:
           title: 历史
       switch:
-        "no": 否　
-        "yes": 是
+        "no": "否　"
+        "yes": "是"
       sequential_edit:
         info:
           products: 产品
@@ -261,8 +261,8 @@ pim_enrich:
         cancel: 取消
     entity:
       switch:
-        "no": 否　
-        "yes": 是
+        "no": "否　"
+        "yes": "是"
   mass_edit_action:
     edit_common_attributes:
       description: 使用产品网格中的本地化语言 <span class="highlight">{{ locale }}</span> 和通道 <span class="highlight">{{ channel }}</span>对应的数据，对所选的产品属性进行编辑
