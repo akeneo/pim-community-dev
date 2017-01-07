@@ -94,6 +94,7 @@ pim_connector:
       help: On guardar l'arxiu generat al servidor
     channel:
       label: Canal
+      help: El canal que vol exportar
   import:
     enabled:
       label: Habilitar el producte
@@ -112,6 +113,7 @@ pim_connector:
       help: Arxiu CSV per importar
     yamlFilePath:
       label: Arxiu
+      help: Arxiu YAML per importar
     uploadAllowed:
       label: Permetre la càrrega d'arxius
       help: Permetre o no la càrrega directa de l'arxiu
