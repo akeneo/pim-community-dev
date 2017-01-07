@@ -8,25 +8,25 @@ pim_user:
       business_unit.title: Unitats de negoci
       email_synchronization.title: Configuració de sincronització de correu electrònic
 oro.user.controller:
-  group.message.saved: Grup desat
-  role.message.saved: Rol desat
-  user.message.saved: Usuari desat
-  status.message.saved: Estat desat
+  group.message.saved: "Grup desat"
+  role.message.saved: "Rol desat"
+  user.message.saved: "Usuari desat"
+  status.message.saved: "Estat desat"
 oro.user.grid.users:
   columns:
-    username: Nom d’usuari
-    email: Adreça electrònica
-    firstName: Nom
-    lastName: Segon cognom
-    createdAt: Creat el
-    updatedAt: Actualitzat el
-    enabled: Estat
+    username: "Nom d’usuari"
+    email: "Adreça electrònica"
+    firstName: "Nom"
+    lastName: "Segon cognom"
+    createdAt: "Creat el"
+    updatedAt: "Actualitzat el"
+    enabled: "Estat"
 oro.user.grid.roles:
   columns:
-    label: Etiqueta
+    label: "Etiqueta"
 oro.user.grid.groups:
   columns:
-    name: Nom
+    name: "Nom"
 pim_title:
   user.index: Usuaris
   user_role.index: Rols
@@ -59,6 +59,7 @@ Business Units: Unitats de negoci
 Email synchronization settings: Configuració de sincronització de correu electrònic
 Host: Host
 Port: Port
+Ssl: Ssl
 Last logged in: Darrer inici de sessió
 Login count: Recompte d'inicis de sessió
 Additional Information: Informació addicional
