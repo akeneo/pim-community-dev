@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=5.4.4",
-        "akeneo/storage-utils": "0.6.x-dev",
+        "akeneo/storage-utils": "0.7.x-dev",
         "symfony/dependency-injection": "^2.3",
         "symfony/http-kernel": "^2.3",
         "symfony/config": "^2.3",
@@ -34,7 +34,8 @@
     "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
-            "dev-master": "0.6.x-dev"
+            "dev-1.6": "0.6.x-dev",
+            "dev-master": "0.7.x-dev"
         }
     }
 }
