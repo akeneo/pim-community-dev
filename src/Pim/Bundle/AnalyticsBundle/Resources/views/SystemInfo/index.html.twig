@@ -2,7 +2,7 @@
 
 {% block content %}
     {% set buttons %}
-        <a href="{{ path('pim_analytics_system_info_download') }}" class="AknButton AknButton--withIcon AknButton--grey">
+        <a href="{{ path('pim_analytics_system_info_download') }}" class="AknButton AknButton--withIcon AknButton--grey no-hash">
             <i class="AknButton-icon icon-download-alt"></i>
             {{ 'pim_analytics.system_info.download'|trans }}
         </a>
@@ -10,12 +10,12 @@
 
     {{ elements.page_header('pim_analytics.system_info.title'|trans, buttons) }}
 
-    <div class="row-fluid tab-content">
-        <table class="table">
+    <div class="AknGridContainer row-fluid tab-content">
+        <table class="AknGrid AknGrid--unclickable AknGrid--condensed table">
             {% for infoType,info in data %}
-                <tr>
-                    <th>{{ ('pim_analytics.info_type.' ~ infoType)|trans }}</th>
-                    <td>
+                <tr class="AknGrid-bodyRow">
+                    <th class="AknGrid-bodyCell">{{ ('pim_analytics.info_type.' ~ infoType)|trans }}</th>
+                    <td class="AknGrid-bodyCell">
                         {% if info is iterable %}
                             {{ info|join('<br>')|raw }}
                         {% else %}

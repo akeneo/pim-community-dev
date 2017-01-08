@@ -27,7 +27,6 @@ define([
 
             this.selectOptions = {
                 allowClear: true,
-                containerCss: {width: 500},
                 multiple: true,
                 ajax: {
                     url: Routing.generate(this.config.url),
@@ -83,7 +82,7 @@ define([
          */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-                _.defaults(data, {field: this.getCode() + '.code', operator: '='});
+                _.defaults(data, {field: this.getCode(), operator: '='});
             }.bind(this));
 
             return BaseFilter.prototype.configure.apply(this, arguments);

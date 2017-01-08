@@ -6,21 +6,26 @@
   align-items: center;
 
   &-editActions {
+    @verticalPadding: ((@AknTabHeight - @AknDefaultButtonSize - 1px) / 2); // To have the same size than tab
+
+    padding: @verticalPadding 10px @verticalPadding 0;
     display: flex;
     justify-content: space-between;
     flex-grow: 1;
     align-items: center;
+    margin-right: 10px;
   }
 
   &-copyActions {
     order: 10;
     display: flex;
-    padding-left: 10px;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   &-otherActions {
     display: flex;
+    align-items: center;
   }
 
   &-contextSelectors {
@@ -29,10 +34,17 @@
 
   &--comparisonMode &-editActions {
     border-right: 1px solid @AknBorderColor;
-    max-width: @AknMaxFormWidth + 30px;
+    flex-basis: @AknMaxFormWidth + 20px;
+    flex-grow: 0;
   }
 
   &--comparisonMode &-copyActions {
     flex-grow: 1;
+  }
+
+  &-help {
+    color: @AknLightFontColor;
+    padding: 0 10px;
+    text-align: right;
   }
 }

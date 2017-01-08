@@ -6,6 +6,7 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -18,10 +19,11 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class InGroupFilter extends BooleanFilter
 {
-    /**
-     * @var RequestParametersExtractorInterface
-     */
+    /** @var RequestParametersExtractorInterface */
     protected $extractor;
+
+    /** @var ObjectCodeResolver */
+    protected $codeResolver;
 
     /**
      * Constructor
@@ -29,14 +31,17 @@ class InGroupFilter extends BooleanFilter
      * @param FormFactoryInterface                $factory
      * @param FilterUtility                       $util
      * @param RequestParametersExtractorInterface $extractor
+     * @param ObjectCodeResolver                  $codeResolver
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
-        RequestParametersExtractorInterface $extractor
+        RequestParametersExtractorInterface $extractor,
+        ObjectCodeResolver $codeResolver
     ) {
         parent::__construct($factory, $util);
         $this->extractor = $extractor;
+        $this->codeResolver = $codeResolver;
     }
 
     /**
@@ -54,9 +59,10 @@ class InGroupFilter extends BooleanFilter
             throw new \LogicException('The current product group must be configured');
         }
 
-        $value = [$groupId];
+        $groupCodes = $this->codeResolver->getCodesFromIds('group', [$groupId]);
+
         $operator = ($data['value'] === BooleanFilterType::TYPE_YES) ? 'IN' : 'NOT IN';
-        $this->util->applyFilter($ds, 'groups.id', $operator, $value);
+        $this->util->applyFilter($ds, 'groups', $operator, $groupCodes);
 
         return true;
     }

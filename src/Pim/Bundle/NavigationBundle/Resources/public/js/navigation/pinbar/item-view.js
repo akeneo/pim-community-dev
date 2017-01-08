@@ -27,7 +27,7 @@ function($, _, Backbone, app, Navigation, mediator, error) {
         events: {
             'click .btn-close': 'unpin',
             'click .close': 'unpin',
-            'click .pin-holder div a': 'maximize',
+            'click .pin-holder .AknHeader-pinLink': 'maximize',
             'click span': 'maximize'
         },
 

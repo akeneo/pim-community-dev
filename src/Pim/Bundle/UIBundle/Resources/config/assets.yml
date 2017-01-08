@@ -8,31 +8,28 @@ css:
         - bundles/pimui/lib/slimbox2/slimbox2.css
         - bundles/pimui/lib/summernote/summernote.css
 
-    pim_ui:
-        - bundles/pimui/css/jquery-ui.grid.less
-        - bundles/pimui/css/header.less
-        - bundles/pimui/css/pinbar.less
-        - bundles/pimui/css/select2.less
-
+    lib_customization:
         - bundles/pimui/less/lib/bootstrap.switch.less
         - bundles/pimui/less/lib/dialog.less
         - bundles/pimui/less/lib/dropdown.less
         - bundles/pimui/less/lib/flags.less
         - bundles/pimui/less/lib/font-awesome.less
         - bundles/pimui/less/lib/jquery.jstree.less
+        - bundles/pimui/less/lib/jquery-ui.less
         - bundles/pimui/less/lib/jquery.multiselect.less
         - bundles/pimui/less/lib/jquery.sidebarize.less
         - bundles/pimui/less/lib/modal.less
         - bundles/pimui/less/lib/navs.less
+        - bundles/pimui/less/lib/select2.less
         - bundles/pimui/less/lib/slimbox2.less
         - bundles/pimui/less/lib/tabs.less
         - bundles/pimui/less/lib/wizard.less
+        - bundles/pimui/less/lib/select2.less
 
     bem:
         - bundles/pimui/less/base/general.less
 
         - bundles/pimui/less/components/button/ActionButton.less
-        - bundles/pimui/less/components/button/ActionButtonList.less
         - bundles/pimui/less/components/button/SeveralActionsButton.less
         - bundles/pimui/less/components/button/Button.less
         - bundles/pimui/less/components/button/ButtonList.less
@@ -42,12 +39,10 @@ css:
         - bundles/pimui/less/components/grid/FilterBox.less
         - bundles/pimui/less/components/grid/FilterChoice.less
         - bundles/pimui/less/components/grid/FilterDate.less
-        - bundles/pimui/less/components/grid/FilterMetric.less
         - bundles/pimui/less/components/grid/Grid.less
         - bundles/pimui/less/components/grid/GridsLine.less
         - bundles/pimui/less/components/grid/GridContainer.less
         - bundles/pimui/less/components/grid/GridToolbar.less
-        - bundles/pimui/less/components/grid/Pagination.less
 
         - bundles/pimui/less/components/product-edit-form/AttributeActions.less
         - bundles/pimui/less/components/product-edit-form/CommentPanel.less
@@ -55,7 +50,7 @@ css:
         - bundles/pimui/less/components/product-edit-form/ComparableFields.less
         - bundles/pimui/less/components/product-edit-form/FieldContainer.less
         - bundles/pimui/less/components/product-edit-form/FormContainer.less
-        - bundles/pimui/less/components/product-edit-form/HorizontalTabnav.less
+        - bundles/pimui/less/components/product-edit-form/HorizontalNavtab.less
         - bundles/pimui/less/components/product-edit-form/MediaField.less
         - bundles/pimui/less/components/product-edit-form/MetricField.less
         - bundles/pimui/less/components/product-edit-form/PanelContainer.less
@@ -65,6 +60,7 @@ css:
         - bundles/pimui/less/components/product-edit-form/TextField.less
         - bundles/pimui/less/components/product-edit-form/VerticalNavtab.less
 
+        - bundles/pimui/less/components/Acl.less
         - bundles/pimui/less/components/Badge.less
         - bundles/pimui/less/components/Bell.less
         - bundles/pimui/less/components/Breadcrumb.less
@@ -72,16 +68,22 @@ css:
         - bundles/pimui/less/components/Caret.less
         - bundles/pimui/less/components/ColumnConfigurator.less
         - bundles/pimui/less/components/DashboardButtons.less
+        - bundles/pimui/less/components/Diff.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/Flash.less
         - bundles/pimui/less/components/Footer.less
         - bundles/pimui/less/components/Header.less
+        - bundles/pimui/less/components/InfoBlock.less
+        - bundles/pimui/less/components/List.less
         - bundles/pimui/less/components/LoadingMask.less
         - bundles/pimui/less/components/MessageBox.less
         - bundles/pimui/less/components/MainMenu.less
         - bundles/pimui/less/components/Notification.less
         - bundles/pimui/less/components/NotificationList.less
         - bundles/pimui/less/components/Progress.less
+        - bundles/pimui/less/components/ProjectWidget.less
+        - bundles/pimui/less/components/Rule.less
+        - bundles/pimui/less/components/SequentialEdit.less
         - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/TitleContainer.less
         - bundles/pimui/less/components/UserMenu.less
@@ -90,5 +92,3 @@ css:
 
         - bundles/pimui/less/pages/Default.less
         - bundles/pimui/less/pages/Login.less
-
-        - bundles/pimui/less/bemFixes.less

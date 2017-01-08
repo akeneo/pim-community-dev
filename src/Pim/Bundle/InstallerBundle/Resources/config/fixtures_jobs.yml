@@ -160,7 +160,7 @@ jobs:
             realTimeVersioning: true
             enabledComparison: true
             decimalSeparator: .
-            dateFormat: Y-m-d
+            dateFormat: yyyy-MM-dd
 
     fixtures_job_yml:
         order: 100

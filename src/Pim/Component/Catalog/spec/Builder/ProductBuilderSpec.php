@@ -3,13 +3,14 @@
 namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\ProductEvents;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
@@ -30,11 +31,11 @@ class ProductBuilderSpec extends ObjectBehavior
         CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
-        AttributeValuesResolver $valuesResolver
+        AttributeValuesResolver $valuesResolver,
+        ProductValueFactory $productValueFactory
     ) {
         $entityConfig = [
             'product' => self::PRODUCT_CLASS,
-            'product_value' => self::VALUE_CLASS,
             'product_price' => self::PRICE_CLASS,
             'association' => self::ASSOCIATION_CLASS
         ];
@@ -46,21 +47,42 @@ class ProductBuilderSpec extends ObjectBehavior
             $assocTypeRepository,
             $eventDispatcher,
             $valuesResolver,
+            $productValueFactory,
             $entityConfig
         );
     }
 
-    function it_creates_product_without_family($attributeRepository, $eventDispatcher, AttributeInterface $skuAttribute)
-    {
+    function it_creates_product_without_family(
+        $attributeRepository,
+        $eventDispatcher,
+        $productValueFactory,
+        ProductValueInterface $productValue,
+        AttributeInterface $skuAttribute
+    ) {
         $attributeRepository->getIdentifier()->willReturn($skuAttribute);
+        $skuAttribute->getCode()->willReturn('sku');
+
+        $productValue->getAttribute()->willReturn($skuAttribute);
+        $productValue->setEntity(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
+        $productValueFactory->create($skuAttribute, null, null)
+            ->willReturn($productValue);
+
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any());
 
         $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
 
-    function it_creates_product_with_a_family($attributeRepository, $familyRepository, $eventDispatcher, AttributeInterface $skuAttribute, FamilyInterface $tshirtFamily)
-    {
+    function it_creates_product_with_a_family(
+        $attributeRepository,
+        $familyRepository,
+        $eventDispatcher,
+        $productValueFactory,
+        AttributeInterface $skuAttribute,
+        FamilyInterface $tshirtFamily,
+        ProductValueInterface $productValue
+    ) {
         $attributeRepository->getIdentifier()->willReturn($skuAttribute);
+
         $skuAttribute->getCode()->willReturn('sku');
         $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
         $skuAttribute->getBackendType()->willReturn('varchar');
@@ -74,11 +96,18 @@ class ProductBuilderSpec extends ObjectBehavior
         $tshirtFamily->getId()->shouldBeCalled();
         $tshirtFamily->getAttributes()->willReturn([]);
 
-        $this->createProduct("mysku", "tshirt")->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
+        $productValue->setData('mysku')->shouldBeCalled();
+        $productValue->setEntity(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
+        $productValue->getAttribute()->willReturn($skuAttribute);
+        $productValueFactory->create($skuAttribute, null, null)
+            ->willReturn($productValue);
+
+        $this->createProduct('mysku', 'tshirt')->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
 
     function it_adds_missing_product_values_from_family_on_new_product(
         $valuesResolver,
+        $productValueFactory,
         FamilyInterface $family,
         ProductInterface $product,
         AttributeInterface $sku,
@@ -86,6 +115,8 @@ class ProductBuilderSpec extends ObjectBehavior
         AttributeInterface $desc,
         ProductValueInterface $skuValue
     ) {
+        $valueClass = self::VALUE_CLASS;
+
         $sku->getCode()->willReturn('sku');
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
@@ -162,6 +193,12 @@ class ProductBuilderSpec extends ObjectBehavior
         // add 6 new values : 4 desc (locales x scopes) + 2 name (locales
         $product->addValue(Argument::any())->shouldBeCalledTimes(6);
 
+        // Create 6 empty product values and add them to the product
+        $productValueFactory->create(Argument::cetera())
+            ->shouldBeCalledTimes(6)
+            ->willReturn(new $valueClass());
+        $product->addValue(Argument::any())->shouldBeCalledTimes(6);
+
         $this->addMissingProductValues($product);
     }
 
@@ -180,34 +217,16 @@ class ProductBuilderSpec extends ObjectBehavior
         $this->addMissingAssociations($productTwo);
     }
 
-    function it_adds_product_value(ProductInterface $product, AttributeInterface $size)
+    function it_adds_product_value($productValueFactory, ProductInterface $product, AttributeInterface $size)
     {
+        $valueClass = self::VALUE_CLASS;
         $size->isLocalizable()->willReturn(false);
         $size->isScopable()->willReturn(false);
+
+        $productValueFactory->create($size, null, null)->willReturn(new $valueClass());
+
         $product->addValue(Argument::any())->shouldBeCalled();
 
         $this->addProductValue($product, $size);
-    }
-
-    function it_throws_exception_when_locale_is_not_provided_but_expected(ProductInterface $product, AttributeInterface $name)
-    {
-        $name->getCode()->willReturn('name');
-        $name->isLocalizable()->willReturn(true);
-        $name->isScopable()->willReturn(false);
-
-        $this->shouldThrow(
-            new \InvalidArgumentException('A locale must be provided to create a value for the localizable attribute name')
-        )->duringAddProductValue($product, $name);
-    }
-
-    function it_throws_exception_when_scope_is_not_provided_but_expected(ProductInterface $product, AttributeInterface $price)
-    {
-        $price->getCode()->willReturn('price');
-        $price->isLocalizable()->willReturn(false);
-        $price->isScopable()->willReturn(true);
-
-        $this->shouldThrow(
-            new \InvalidArgumentException('A scope must be provided to create a value for the scopable attribute price')
-        )->duringAddProductValue($product, $price);
     }
 }

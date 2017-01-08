@@ -32,6 +32,7 @@ class Form extends Base
                 'Dialog'                          => ['css' => 'div.modal'],
                 'Associations list'               => ['css' => '.associations-list'],
                 'Groups'                          => ['css' => '.tab-groups, .AknVerticalNavtab'],
+                'Group'                           => ['css' => '.AknVerticalNavtab-link:contains("%s")'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -154,49 +155,17 @@ class Form extends Base
      * Visit the specified group
      *
      * @param string $group
-     *
-     * @throws ElementNotFoundException
-     * @throws \Exception
-     *
-     * @return bool
      */
     public function visitGroup($group)
     {
         $this->spin(function () use ($group) {
-            $groups = $this->find('css', $this->elements['Groups']['css']);
+            $group = $this->find('css', sprintf($this->elements['Group']['css'], $group));
+            if (null !== $group && $group->isVisible()) {
+                $group->click();
 
-            if (null === $groups) {
-                return null;
+                return true;
             }
-
-            $groupsContainer = $groups->find('css', sprintf(
-                '.AknVerticalNavtab-link:contains("%s"), .group-label:contains("%s")',
-                $group,
-                $group
-            ));
-
-            $button = null;
-            if (null !== $groupsContainer) {
-                $button = $groupsContainer->getParent();
-            }
-
-            if (null === $button) {
-                $labels = array_map(function ($element) {
-                    return $element->getText();
-                }, $groups->findAll('css', '.group-label'));
-
-                throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
-                    $group,
-                    implode(', ', $labels)
-                ));
-            }
-
-            $button->click();
-
-            return true;
-        }, 'Cannot find the group selector.');
-
-        return true;
+        }, sprintf('Cannot find the group "%s".', $group));
     }
 
     /**
@@ -683,11 +652,11 @@ class Form extends Base
             if (0 === strpos($for, 's2id_')) {
                 if ($this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container-multi')) {
                     return 'multiSelect2';
-                } elseif ($this->getClosest($label, 'AknFieldContainer')->find('css', 'select')) {
-                    return 'select';
+                } elseif ($this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container')) {
+                    return 'simpleSelect2';
                 }
 
-                return 'simpleSelect2';
+                return 'select';
             }
 
             if (null !== $this->find('css', sprintf('#date_selector_%s', $for))) {

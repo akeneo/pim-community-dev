@@ -78,6 +78,7 @@ define([
                         label: this.config.label,
                         fieldBaseId: this.config.fieldBaseId
                     }));
+                    this.delegateEvents();
                 }.bind(this));
 
                 this.renderExtensions();

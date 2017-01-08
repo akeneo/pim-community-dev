@@ -62,7 +62,10 @@ class ReferenceDataFilter extends ChoiceFilter
                 'choice_url_params' => [
                     'class'        => $referenceData->getClass(),
                     'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
-                    'collectionId' => $attribute->getId()
+                    'collectionId' => $attribute->getId(),
+                    'options'      => [
+                        'type' => 'code',
+                    ],
                 ]
             ]
         );

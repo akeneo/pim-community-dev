@@ -89,11 +89,11 @@ interface ProductBuilderInterface
      *
      * @param ProductValueInterface $value
      * @param string                $currency
-     * @param float|int             $data
+     * @param float|int             $amount
      *
      * @return null|ProductPriceInterface
      */
-    public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $data);
+    public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $amount);
 
     /**
      * Remove extra prices that are not in the currencies passed in arguments
@@ -137,6 +137,8 @@ interface ProductBuilderInterface
      * @param string             $scope
      *
      * @return ProductValueInterface
+     *
+     * @deprecated will be removed in 1.8. Please use ProductValueFactory::create instead.
      */
     public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null);
 }

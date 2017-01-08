@@ -6,7 +6,6 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -15,6 +14,7 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\User\Model\GroupInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -110,7 +110,7 @@ class User implements UserInterface
     /** @var Role[] */
     protected $roles;
 
-    /** @var Group[] */
+    /** @var GroupInterface[] */
     protected $groups;
 
     /** @var string */
@@ -641,7 +641,7 @@ class User implements UserInterface
     {
         $roles = $this->roles->toArray();
 
-        /** @var Group $group */
+        /** @var GroupInterface $group */
         foreach ($this->getGroups() as $group) {
             $roles = array_merge($roles, $group->getRoles()->toArray());
         }
@@ -790,7 +790,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function addGroup(Group $group)
+    public function addGroup(GroupInterface $group)
     {
         if (!$this->getGroups()->contains($group)) {
             $this->getGroups()->add($group);
@@ -802,7 +802,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function removeGroup(Group $group)
+    public function removeGroup(GroupInterface $group)
     {
         if ($this->getGroups()->contains($group)) {
             $this->getGroups()->removeElement($group);

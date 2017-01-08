@@ -2,6 +2,7 @@
 
 namespace Context\Page\Attribute;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Form;
 
 /**
@@ -58,22 +59,54 @@ class Creation extends Form
     public function addOption($name, array $labels = [])
     {
         if (null === $this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
-            $this->getElement('add_option_button')->click();
-
-            $this->spin(function () {
-                return $this->getElement('attribute_option_table')->find('css', '.attribute_option_code');
-            }, 'The click on new option has not added a new line.');
+            $this->createOption();
         }
 
-        $rows = $this->getOptionsElement();
-        $row  = end($rows);
+        $this->fillLastOption($name, $labels);
+        $this->saveLastOption();
+    }
+
+    public function createOption()
+    {
+        $this->spin(function () {
+            $this->getElement('add_option_button')->click();
+
+            return true;
+        }, 'Cannot add a new attribute option');
+
+        $this->spin(function () {
+            return $this->getElement('attribute_option_table')->find('css', '.attribute_option_code');
+        }, 'The click on new option has not added a new line.');
+    }
+
+    /**
+     * @param string $name
+     * @param array  $labels
+     */
+    public function fillLastOption($name, $labels = [])
+    {
+        $row = $this->getLastOption();
 
         $row->find('css', '.attribute_option_code')->setValue($name);
 
         foreach ($labels as $locale => $label) {
             $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale))->setValue($label);
         }
-        $row->find('css', '.update-row')->click();
+    }
+
+    public function saveLastOption()
+    {
+        $this->getLastOption()->find('css', '.update-row')->click();
+    }
+
+    /**
+     * @return NodeElement
+     */
+    protected function getLastOption()
+    {
+        $rows = $this->getOptionsElement();
+
+        return end($rows);
     }
 
     /**

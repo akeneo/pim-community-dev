@@ -21,6 +21,11 @@
 
 ### Global updates for any project
 
+#### Remove deprecated bundles from your AppKernel
+
+Remove "new Oro\Bundle\UIBundle\OroUIBundle()" from your app/AppKernel.php
+Remove "new Oro\Bundle\FormBundle\OroFormBundle()" from your app/AppKernel.php
+
 #### Update references to moved `Pim\Bundle\ConnectorBundle\Reader` business classes
 
 In order to be more precise about the roles our existing file iterators have we renamed some existing classed as existing file iterators would only supports only tabular file format like CSV and XLSX.
@@ -111,6 +116,7 @@ The following command helps to migrate references to Normalizer classes or servi
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.denormalizer\.datetime/pim_catalog\.denormalizer\.standard\.datetime/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.denormalizer\.file/pim_catalog\.denormalizer\.standard\.file/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.denormalizer\.boolean/pim_catalog\.denormalizer\.standard\.boolean/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_user_user_rest_get/pim_user_user_rest_get_current/g'
 ```
 
 #### Versioning

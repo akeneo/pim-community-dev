@@ -23,7 +23,7 @@ Feature: Edit an association type
     When I fill in the following information:
       | English (United States) | My pack |
     And I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
+    And I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                             |
       | content | You will lose changes to the association type if you leave this page. |
 
@@ -31,5 +31,5 @@ Feature: Edit an association type
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "PACK" association type page
     When I fill in the following information:
-      | English (United States) | My pack |
+      | English (United States) | My new substitution |
     Then I should see "There are unsaved changes."

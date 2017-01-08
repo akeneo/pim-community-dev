@@ -13,29 +13,25 @@ function($, _, Pagination) {
     return Pagination.extend({
         /** @property */
         template: _.template(
-            '<label><%= _.__("oro.datagrid.pagination.label") %>:</label>' +
-            '<ul class="AknPagination-icons">' +
+            '<label class="AknGridToolbar-label"><%= _.__("oro.datagrid.pagination.label") %>:</label>' +
+            '<div>' +
                 '<% _.each(handles, function (handle) { %>' +
-                    '<li class="AknPagination-item <% if (handle.className || disabled) { %><%= handle.className %> <% if (disabled) { %>disabled<% } %><% } %>">' +
-                        '<% if (handle.type == "input") { %>' +
-                            '<input class="AknPagination-input" type="text" value="<%= state.firstPage == 0 ? state.currentPage + 1 : state.currentPage %>"' +
-                                ' <% if (disabled) { %>disabled="disabled"<% } %>' +
-                            '/>' +
-                        '<% } else { %>' +
-                            '<a href="#" class="AknPagination-link" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
-                                '<% if (handle.wrapClass) {%>' +
-                                    '<i <% if (handle.wrapClass) { %>class="<%= handle.wrapClass %>"<% } %>>' +
-                                        '<%= handle.label %>' +
-                                    '</i>' +
-                                '<% } else { %>' +
+                    '<% if (handle.type == "input") { %>' +
+                        '<input class="AknActionButton AknActionButton--input AknActionButton--glued <% if (handle.className || disabled) { %><%= handle.className %> <% if (disabled) { %>disabled<% } %><% } %>" type="text" value="<%= state.firstPage == 0 ? state.currentPage + 1 : state.currentPage %>" size="1"/>' +
+                    '<% } else { %>' +
+                        '<a class="AknActionButton AknActionButton--square AknActionButton--glued <% if (handle.className || disabled) { %><%= handle.className %> <% if (disabled) { %>disabled<% } %><% } %>" href="#" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
+                            '<% if (handle.wrapClass) {%>' +
+                                '<i <% if (handle.wrapClass) { %>class="<%= handle.wrapClass %>"<% } %>>' +
                                     '<%= handle.label %>' +
-                                '<% } %>' +
-                            '</a>' +
-                        '<% } %>' +
-                    '</li>' +
+                                '</i>' +
+                            '<% } else { %>' +
+                                '<%= handle.label %>' +
+                            '<% } %>' +
+                        '</a>' +
+                    '<% } %>' +
                 '<% }); %>' +
-            '</ul>' +
-            '<label><%= _.__("oro.datagrid.pagination.totalPages", {totalPages: state.totalPages || 1}) %> | <%= _.__("oro.datagrid.pagination.totalRecords", {totalRecords: state.totalRecords}) %></label>'
+            '</div>' +
+            '<label class="AknGridToolbar-label"><%= _.__("oro.datagrid.pagination.totalPages", {totalPages: state.totalPages || 1}) %> | <%= _.__("oro.datagrid.pagination.totalRecords", {totalRecords: state.totalRecords}) %></label>'
         ),
 
         /** @property */

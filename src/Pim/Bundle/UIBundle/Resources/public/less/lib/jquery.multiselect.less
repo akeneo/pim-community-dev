@@ -1,5 +1,8 @@
 @import '../base/variables';
 
+// This file override jquery.multiselect. It contains several !important annotation because the CSS file is loaded
+// on the fly (after pim.css).
+
 .ui-multiselect {
   height: @AknLittleButtonSize;
   line-height: @AknLittleButtonSize;
@@ -10,22 +13,50 @@
   border-radius: 2px;
   font-weight: normal;
   padding: 0 10px !important;
-  vertical-align: middle;
   display: inline-block;
   cursor: pointer;
   white-space: nowrap;
   outline: none;
 }
 
+.ui-multiselect-filter {
+  float: none !important;
+}
+
 .ui-multiselect-menu {
+  @minWidth: 150px;
+
   padding: 0;
   max-width: 235px;
+  min-width: @minWidth !important;
+  border: 1px solid @AknBorderColor;
+  background: white;
+
+  &.select-filter-widget {
+    .ui-multiselect-header .ui-helper-reset {
+      display: none; // Removes the check all / uncheck all.
+    }
+
+    ul {
+      max-height: 200px;
+    }
+  }
+
+  input[type="search"] {
+    height: @AknFormHeight;
+    line-height: @AknFormHeight;
+    color: @AknDefaultFontColor;
+    border: 1px solid @AknBorderColor;
+    min-width: @minWidth - 4 * 2px;
+    width: 100%;
+    border-radius: 2px;
+    padding: 0 8px;
+  }
 
   .ui-multiselect-header {
-    padding: 2px;
+    padding: 0 2px 2px 2px;
     margin-bottom: 0;
     border: none;
-    background-color: @AknBorderColor;
   }
 
   .ui-multiselect-filter input {
@@ -37,13 +68,22 @@
     border-radius: 2px;
     padding: 0 8px;
     margin: 0;
+    width: ~"calc(100% - 8px) !important";
   }
 
   .ui-multiselect-checkboxes {
-    border-left: 1px solid @AknBorderColor;
-    border-right: 1px solid @AknBorderColor;
-    border-bottom: 1px solid @AknBorderColor;
-    padding: 0 10px 10px 10px;
+    padding: @AknDropdownMenuVerticalPadding 0;
+    clear: both;
+    background: white;
+
+    label {
+      line-height: 25px;
+      padding: 0 10px !important;
+    }
+
+    &.ui-helper-reset li {
+      font-size: @AknDefaultFontSize;
+    }
   }
 
   .ui-multiselect-checkboxes label {
@@ -54,6 +94,7 @@
     text-align: left;
     text-transform: uppercase;
     padding: 0;
+    margin: -12px 0 -4px 0;
   }
 
   .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label {
@@ -66,24 +107,68 @@
     margin-right: 5px;
   }
 
-  .ui-multiselect-footer {
-    text-align: right;
+  .ui-multiselect-checkboxes label {
+    padding: 3px 10px;
+    cursor: pointer;
+    font-weight: normal;
 
-    .btn.btn-small {
-      padding: 0 @AknButtonsPadding;
-      height: @AknLittleButtonSize;
-      line-height: @AknLittleButtonSize;
-      min-width: @AknLittleButtonSize;
-      font-size: @AknDefaultFontSize;
-      background-color: @AknGreen;
-      display: inline-block;
-      border-radius: 2px;
-      border: none;
-      cursor: pointer;
-      text-align: left;
-      white-space: nowrap;
-      transition: background 0.1s ease;
+    &:hover {
+      background: @AknDefaultHoverBackground;
+    }
+
+    &.ui-state-active {
+      background: @AknPurple;
       color: white;
     }
+  }
+}
+
+.ui-multiselect-footer {
+  text-align: right;
+  padding: 0 4px 4px 0;
+
+  .btn.btn-small {
+    padding: 0 @AknButtonsPadding;
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    min-width: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+    background-color: @AknGreen;
+    display: inline-block;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
+    transition: background 0.1s ease;
+    color: white;
+  }
+}
+
+// Modifiers
+.ui-multiselect.ui-multiselect--select2 {
+  height: @AknDefaultButtonSize;
+  line-height: @AknDefaultButtonSize;
+  padding: 0 0 0 10px !important;
+  display: flex;
+
+  &:hover {
+    background: @AknDefaultHoverBackground;
+  }
+
+  .caret {
+    float: none;
+    width: @AknDefaultButtonSize;
+    height: @AknDefaultButtonSize - 2px;
+    display: inline-block;
+    border-left: 1px solid @AknBorderColor;
+    background-size: 96px 48px;
+    background-image: url('../../css/images/select2x2.png');
+    background-position: 3px 2px;
+    margin-left: 10px;
+  }
+
+  &.ui-state-active .caret {
+    background-color: @AknDefaultHoverBackground;
   }
 }

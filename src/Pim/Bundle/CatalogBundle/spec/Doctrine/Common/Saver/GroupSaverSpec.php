@@ -3,16 +3,16 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
 use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
-use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
@@ -131,13 +131,14 @@ class GroupSaverSpec extends ObjectBehavior
         );
 
         $pqbFactory->create()->willReturn($pqb);
-        $pqb->addFilter('groups.id', 'IN', [42])->shouldBeCalled();
+        $pqb->addFilter('groups', 'IN', ['foo'])->shouldBeCalled();
         $pqb->execute()->willReturn([$removedProduct]);
 
         $group->getProducts()->willReturn(new ArrayCollection([]));
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');
         $group->getId()->willReturn(42);
+        $group->getCode()->willReturn('foo');
 
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();

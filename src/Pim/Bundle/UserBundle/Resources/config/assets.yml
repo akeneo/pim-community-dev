@@ -1,4 +1,0 @@
-css:
-    user:
-        - bundles/pimuser/css/jquery-ui-1.10.2.custom.css
-        - bundles/pimuser/css/permissions.less

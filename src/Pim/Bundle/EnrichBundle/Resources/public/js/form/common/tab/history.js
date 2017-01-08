@@ -13,7 +13,7 @@ define([
         __
     ) {
         return BaseForm.extend({
-            className: 'tabbable tabs-left history',
+            className: 'AknTabContainer-content tabbable tabs-left history',
             historyGrid: null,
 
             /**

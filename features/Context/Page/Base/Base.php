@@ -33,7 +33,7 @@ class Base extends Page
         'Container'        => ['css' => '#container'],
         'Locales dropdown' => ['css' => '#locale-switcher'],
         'Tabs'             => ['css' => '#form-navbar'],
-        'Oro tabs'         => ['css' => '.navbar.scrollspy-nav, .AknHorizontalTabnav'],
+        'Oro tabs'         => ['css' => '.navbar.scrollspy-nav, .AknHorizontalNavtab'],
         'Form tabs'        => ['css' => '.nav-tabs.form-tabs'],
         'Active tab'       => ['css' => '.form-horizontal .tab-pane.active'],
     ];

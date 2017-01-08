@@ -33,7 +33,7 @@ class DummyFilterSpec extends ObjectBehavior
         $this->supportsField('categories')->shouldReturn(false);
         $this->supportsField('enabled')->shouldReturn(true);
         $this->supportsField('completeness')->shouldReturn(true);
-        $this->supportsField('family.code')->shouldReturn(false);
+        $this->supportsField('family')->shouldReturn(false);
     }
 
     function it_checks_if_attribute_is_supported(

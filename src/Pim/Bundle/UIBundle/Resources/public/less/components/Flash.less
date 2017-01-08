@@ -8,19 +8,26 @@
   padding: 2px 20px;
   display: flex;
   align-items: flex-start;
+  margin-top: 4px;
 
   &-closeButton {
     font-size: @AknFontSizeBig;
     flex-basis: @AknFontSizeBig;
-    margin-left: 10px;
+    color: darken(@AknOrange, 20%);
+    margin: 0 -16px 0 10px;
     background: none;
     border: none;
     order: 10;
+    cursor: pointer;
   }
 
   &--success {
     border: 1px solid darken(@AknGreen, 10%);
     background: lighten(@AknGreen, 30%);
+    color: darken(@AknGreen, 20%);
+  }
+
+  &--success &-closeButton {
     color: darken(@AknGreen, 20%);
   }
 
@@ -31,7 +38,12 @@
     color: darken(@AknRed, 20%);
   }
 
+  &--danger &-closeButton,
+  &--error &-closeButton {
+    color: darken(@AknRed, 20%);
+  }
+
   & + & {
-    margin-top: 10px;
+    margin-top: 8px;
   }
 }

@@ -44,7 +44,7 @@ define(
 
         var EditableItemView = Backbone.View.extend({
             tagName: 'tr',
-            className: 'editable-item-row',
+            className: 'AknGrid-bodyRow editable-item-row',
             showTemplate: _.template(showTemplate),
             editTemplate: _.template(editTemplate),
             events: {
@@ -166,7 +166,7 @@ define(
                             ) {
                                 var message = response.children.code.errors.join('<br/>');
                                 this.$el.find('.validation-tooltip')
-                                    .addClass('visible')
+                                    .removeClass('AknIconButton--hide')
                                     .tooltip('destroy')
                                     .tooltip({title: message})
                                     .tooltip('show');
@@ -248,7 +248,7 @@ define(
                 '</thead>' +
                 '<tbody></tbody>' +
                 '<tfoot>' +
-                    '<tr>' +
+                    '<tr class="AknGrid-bodyRow">' +
                         '<td class="AknGrid-bodyCell AknGrid-bodyCell--right" colspan="<%= 2 + locales.length %>">' +
                             '<span class="AknButton AknButton--grey AknButton--small option-add">' +
                                 '<%= add_option_label %>' +
@@ -391,7 +391,11 @@ define(
                     }
                 }
 
-                this.currentlyEditedItemView = attributeOptionRow;
+                if (attributeOptionRow.model.id)
+                {
+                    this.currentlyEditedItemView = attributeOptionRow;
+                }
+
                 this.updateEditionStatus();
 
                 return true;

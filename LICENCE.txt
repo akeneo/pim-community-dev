@@ -2,6 +2,6 @@ Akeneo PIM
 
 The Open Software License version 3.0
 
-Copyright (c) 2013, Akeneo SAS.
+Copyright (c) 2013-2017, Akeneo SAS.
 
 Full license is at: http://opensource.org/licenses/OSL-3.0

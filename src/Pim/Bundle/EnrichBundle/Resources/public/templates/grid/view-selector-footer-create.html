@@ -1,16 +1,16 @@
 <% if (!isMultiple) { %>
-    <div class="btn btn-primary pull-right icons-holder-text create-button">
-        <i class="icon-plus"></i><span data-drop-zone="action-list"></span>
-    </div>
+    <button class="AknButton AknButton--apply AknButton--withIcon create-button">
+        <i class="AknButton-icon icon-plus"></i><span data-drop-zone="action-list"></span>
+    </button>
 <% } else if (isMultiple) { %>
-    <div class="btn-group create-group">
-        <div class="btn-primary dropdown-toggle action btn create-button create-dropdown" data-toggle="dropdown">
+    <div class="AknSeveralActionsButton AknSeveralActionsButton--apply AknDropdown">
+        <button class="AknSeveralActionsButton-mainAction create-button">
             <%- createButtonTitle %>
-        </div>
-        <div class="btn dropdown-toggle create-carret" data-toggle="dropdown">
-            <span class="caret"></span>
-        </div>
-
-        <ul class="dropdown-menu AknDropdown-menu--right" data-drop-zone="action-list"></ul>
+        </button>
+        <button class="AknSeveralActionsButton-caretContainer create-view-dropdown" data-toggle="dropdown">
+            <span class="AknCaret AknCaret--inverse"></span>
+        </button>
+        <ul class="AknSeveralActionsButton-menu AknDropdown-menu AknDropdown-menu--right create-view-dropdown-menu" data-drop-zone="action-list">
+        </ul>
     </div>
 <% } %>

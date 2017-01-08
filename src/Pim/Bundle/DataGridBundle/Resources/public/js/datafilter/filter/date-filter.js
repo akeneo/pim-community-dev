@@ -7,6 +7,7 @@ define(
         'oro/datafilter/choice-filter',
         'datepicker',
         'pim/date-context',
+        'pim/formatter/date',
         'text!pim/template/datagrid/filter/date-filter'
     ],
 function(
@@ -16,6 +17,7 @@ function(
     ChoiceFilter,
     Datepicker,
     DateContext,
+    DateFormatter,
     template
 ) {
     'use strict';
@@ -53,7 +55,7 @@ function(
          *
          * @property
          */
-        inputClass: 'AknFilterDate-dateInput',
+        inputClass: 'AknTextField',
 
         /**
          * Date widget options
@@ -229,7 +231,7 @@ function(
             Datepicker.init($('<input>'), this.datetimepickerOptions).data('datetimepicker');
             _.each(value.value, function(dateValue, name) {
                 if (dateValue) {
-                    value.value[name] = this._formatDate(
+                    value.value[name] = DateFormatter.format(
                         dateValue,
                         this.datetimepickerOptions.defaultFormat,
                         this.datetimepickerOptions.format
@@ -246,7 +248,7 @@ function(
         _formatRawValue: function(value) {
             _.each(value.value, function(dateValue, name) {
                 if (dateValue) {
-                    value.value[name] = this._formatDate(
+                    value.value[name] = DateFormatter.format(
                         dateValue,
                         this.datetimepickerOptions.format,
                         this.datetimepickerOptions.defaultFormat
@@ -255,28 +257,6 @@ function(
             }, this);
 
             return value;
-        },
-
-        /**
-         * Format a date according to specified format.
-         * It instantiates a datepicker on-the-fly to perform the conversion. Not possible to use the "real" ones since
-         * we need to format a date even when the UI is not initialized yet.
-         *
-         * @param {String} date
-         * @param {String} fromFormat
-         * @param {String} toFormat
-         *
-         * @return {String}
-         */
-        _formatDate: function (date, fromFormat, toFormat) {
-            var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
-            var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
-
-            fakeDatepicker.setValue(date);
-            fakeDatepicker.format = toFormat;
-            fakeDatepicker._compileFormat();
-
-            return fakeDatepicker.formatDate(fakeDatepicker.getDate());
         },
 
         /**

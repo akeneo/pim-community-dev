@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Prophecy\Argument;
 
 class CategoryFilterSpec extends ObjectBehavior
 {
@@ -37,28 +38,58 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->supportsField('groups')->shouldReturn(false);
     }
 
-    function it_adds_a_in_filter_on_categories_in_the_query($qb, $itemRepo)
+    function it_adds_a_filter_on_category_codes_by_default($qb, $itemRepo, $objectIdResolver)
     {
         $itemRepo->applyFilterByCategoryIds($qb, [42, 84], true)->shouldBeCalled();
-        $this->addFieldFilter('categories', 'IN', [42, 84]);
+        $objectIdResolver->getIdsFromCodes('category', ['foo', 'bar'])->willReturn([42, 84]);
+
+        $this->addFieldFilter('categories', 'IN', ['foo', 'bar']);
     }
 
-    function it_adds_a_not_in_filter_on_categories_in_the_query($qb, $itemRepo)
+    function it_adds_a_filter_on_category_codes($qb, $itemRepo, $objectIdResolver)
+    {
+        $itemRepo->applyFilterByCategoryIds($qb, [42, 84], true)->shouldBeCalled();
+        $objectIdResolver->getIdsFromCodes('category', ['foo', 'bar'])->willReturn([42, 84]);
+
+        $this->addFieldFilter('categories.code', 'IN', ['foo', 'bar']);
+    }
+
+    function it_adds_a_filter_on_category_ids($qb, $itemRepo, $objectIdResolver)
+    {
+        $itemRepo->applyFilterByCategoryIds($qb, [42, 84], true)->shouldBeCalled();
+        $objectIdResolver->getIdsFromCodes(Argument::cetera())->shouldNotBeCalled();
+
+        $this->addFieldFilter('categories.id', 'IN', [42, 84]);
+    }
+
+    function it_adds_a_in_filter_on_categories_in_the_query($qb, $itemRepo, $objectIdResolver)
+    {
+        $itemRepo->applyFilterByCategoryIds($qb, [42, 84], true)->shouldBeCalled();
+        $objectIdResolver->getIdsFromCodes('category', ['foo', 'bar'])->willReturn([42, 84]);
+
+        $this->addFieldFilter('categories', 'IN', ['foo', 'bar']);
+    }
+
+    function it_adds_a_not_in_filter_on_categories_in_the_query($qb, $itemRepo, $objectIdResolver)
     {
         $itemRepo->applyFilterByCategoryIds($qb, [42, 84], false)->shouldBeCalled();
-        $this->addFieldFilter('categories', 'NOT IN', [42, 84]);
+        $objectIdResolver->getIdsFromCodes('category', ['foo', 'bar'])->willReturn([42, 84]);
+
+        $this->addFieldFilter('categories', 'NOT IN', ['foo', 'bar']);
     }
 
-    function it_adds_a_in_children_filter_on_categories_in_the_query($qb, $itemRepo, $categoryRepo, CategoryInterface $parent)
+    function it_adds_a_in_children_filter_on_categories_in_the_query($qb, $itemRepo, $categoryRepo, $objectIdResolver, CategoryInterface $parent)
     {
         $categoryRepo->find(21)->shouldBeCalled()->willReturn($parent);
         $parent->getId()->willReturn(21);
         $categoryRepo->getAllChildrenIds($parent)->shouldBeCalled()->willReturn([42, 84]);
         $itemRepo->applyFilterByCategoryIds($qb, [42, 84, 21], true)->shouldBeCalled();
-        $this->addFieldFilter('categories', 'IN CHILDREN', [21]);
+        $objectIdResolver->getIdsFromCodes('category', ['baz'])->willReturn([21]);
+
+        $this->addFieldFilter('categories', 'IN CHILDREN', ['baz']);
     }
 
-    function it_adds_a_in_children_filter_with_many_parents_on_categories_in_the_query($qb, $itemRepo, $categoryRepo, CategoryInterface $parent, CategoryInterface $anotherParent)
+    function it_adds_a_in_children_filter_with_many_parents_on_categories_in_the_query($qb, $itemRepo, $categoryRepo, $objectIdResolver, CategoryInterface $parent, CategoryInterface $anotherParent)
     {
         $categoryRepo->find(21)->shouldBeCalled()->willReturn($parent);
         $parent->getId()->willReturn(21);
@@ -69,16 +100,20 @@ class CategoryFilterSpec extends ObjectBehavior
         $categoryRepo->getAllChildrenIds($anotherParent)->shouldBeCalled()->willReturn([4, 8]);
 
         $itemRepo->applyFilterByCategoryIds($qb, [42, 84, 21, 4, 8, 2], true)->shouldBeCalled();
-        $this->addFieldFilter('categories', 'IN CHILDREN', [21, 2]);
+        $objectIdResolver->getIdsFromCodes('category', ['foo', 'bar'])->willReturn([21, 2]);
+
+        $this->addFieldFilter('categories', 'IN CHILDREN', ['foo', 'bar']);
     }
 
-    function it_adds_a_not_in_children_filter_on_categories_in_the_query($qb, $itemRepo, $categoryRepo, CategoryInterface $parent)
+    function it_adds_a_not_in_children_filter_on_categories_in_the_query($qb, $itemRepo, $categoryRepo, $objectIdResolver, CategoryInterface $parent)
     {
         $categoryRepo->find(21)->shouldBeCalled()->willReturn($parent);
         $parent->getId()->willReturn(21);
         $categoryRepo->getAllChildrenIds($parent)->shouldBeCalled()->willReturn([42, 84]);
         $itemRepo->applyFilterByCategoryIds($qb, [42, 84, 21], false)->shouldBeCalled();
-        $this->addFieldFilter('categories', 'NOT IN CHILDREN', [21]);
+        $objectIdResolver->getIdsFromCodes('category', ['foo'])->willReturn([21]);
+
+        $this->addFieldFilter('categories', 'NOT IN CHILDREN', ['foo']);
     }
 
     function it_adds_a_unclassified_filter_on_categories_in_the_query($qb, $itemRepo)
@@ -87,10 +122,12 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->addFieldFilter('categories', 'UNCLASSIFIED', []);
     }
 
-    function it_adds_a_in_or_unclassified_filter_on_categories_in_the_query($qb, $itemRepo)
+    function it_adds_a_in_or_unclassified_filter_on_categories_in_the_query($qb, $itemRepo, $objectIdResolver)
     {
         $itemRepo->applyFilterByCategoryIdsOrUnclassified($qb, [42, 84])->shouldBeCalled();
-        $this->addFieldFilter('categories', 'IN OR UNCLASSIFIED', [42, 84]);
+        $objectIdResolver->getIdsFromCodes('category', ['foo', 'bar'])->willReturn([42, 84]);
+
+        $this->addFieldFilter('categories', 'IN OR UNCLASSIFIED', ['foo', 'bar']);
     }
 
     function it_returns_supported_fields()

@@ -1,4 +1,4 @@
-# 1.4.x 
+# 1.4.28 (2016-12-13)
 
 ## Bug fixes
 - PIM-6008: Fix mass edit execution when using specials chars in text field edition

@@ -54,3 +54,4 @@ class AssociationTypeTypeSpec extends ObjectBehavior
         )->shouldHaveBeenCalled();
     }
 }
+

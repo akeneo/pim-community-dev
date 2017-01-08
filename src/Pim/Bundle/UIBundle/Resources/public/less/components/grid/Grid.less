@@ -1,11 +1,12 @@
 @import '../../base/variables';
 
 .AknGrid {
+  font-size: @AknDefaultFontSize;
   width: 100%;
   border-collapse: collapse;
 
-  &-bodyRow {
-    border-bottom: 1px solid @AknBorderColor;
+  &-bodyRow + &-bodyRow {
+    border-top: 1px solid @AknBorderColor;
   }
 
   &-bodyCell,
@@ -15,6 +16,10 @@
     padding: 12px 10px;
     transition: background 0.1s ease;
     background: white;
+
+    &--tight {
+      width: 1px;
+    }
   }
 
   &-bodyRow:hover &-bodyCell,
@@ -32,10 +37,6 @@
 
     &--actions {
       opacity: 0;
-      width: 1px;
-    }
-
-    &--checkbox {
       width: 1px;
     }
   }
@@ -87,7 +88,6 @@
 
   &--condensed {
     border: 1px solid @AknBorderColor;
-    width: auto;
   }
 
   &--condensed &-bodyCell,

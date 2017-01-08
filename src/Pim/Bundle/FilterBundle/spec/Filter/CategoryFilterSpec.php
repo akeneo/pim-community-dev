@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter;
 
-use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class CategoryFilterSpec extends ObjectBehavior
@@ -37,8 +37,8 @@ class CategoryFilterSpec extends ObjectBehavior
     ) {
         $tree->getId()->willReturn(1);
         $categoryRepo->find(1)->willReturn($tree);
-        $categoryRepo->getAllChildrenIds($tree)->willReturn([2, 3]);
-        $utility->applyFilter($datasource, 'categories.id', 'NOT IN', [2, 3])->shouldBeCalled();
+        $categoryRepo->getAllChildrenCodes($tree)->willReturn(['bar', 'baz']);
+        $utility->applyFilter($datasource, 'categories', 'NOT IN', ['bar', 'baz'])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => -1, 'treeId' => 1]]);
     }
@@ -50,8 +50,8 @@ class CategoryFilterSpec extends ObjectBehavior
         CategoryInterface $category
     ) {
         $categoryRepo->find(42)->willReturn($category);
-        $category->getId()->willReturn(42);
-        $utility->applyFilter($datasource, 'categories.id', 'IN', [42])->shouldBeCalled();
+        $category->getCode()->willReturn('foo');
+        $utility->applyFilter($datasource, 'categories', 'IN', ['foo'])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => 42], 'type' => false]);
     }
@@ -63,11 +63,11 @@ class CategoryFilterSpec extends ObjectBehavior
         CategoryInterface $category
     ) {
         $categoryRepo->find(42)->willReturn($category);
-        $category->getId()->willReturn(42);
+        $category->getCode()->willReturn('foo');
         $categoryRepo->find(42)->willReturn($category);
-        $categoryRepo->getAllChildrenIds($category)->willReturn([2, 3]);
+        $categoryRepo->getAllChildrenCodes($category)->willReturn(['bar', 'baz']);
 
-        $utility->applyFilter($datasource, 'categories.id', 'IN', [2, 3, 42])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories', 'IN', ['bar', 'baz', 'foo'])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => 42], 'type' => true]);
     }

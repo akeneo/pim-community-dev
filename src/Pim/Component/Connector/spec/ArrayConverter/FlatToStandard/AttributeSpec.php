@@ -7,8 +7,15 @@ use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class AttributeSpec extends ObjectBehavior
 {
+    const TEST_TIMEZONE = 'Europe/Paris';
+
+    protected $userTimezone;
+
     function let(FieldsRequirementChecker $fieldChecker)
     {
+        $this->userTimezone = date_default_timezone_get();
+        date_default_timezone_set(self::TEST_TIMEZONE);
+
         $booleanFields = [
             'localizable',
             'useable_as_grid_filter',
@@ -20,6 +27,11 @@ class AttributeSpec extends ObjectBehavior
             'negative_allowed',
         ];
         $this->beConstructedWith($fieldChecker, $booleanFields);
+    }
+
+    function letGo()
+    {
+        date_default_timezone_set($this->userTimezone);
     }
 
     function it_is_a_standard_array_converter()

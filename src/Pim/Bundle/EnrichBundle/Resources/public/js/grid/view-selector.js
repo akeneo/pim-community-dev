@@ -17,8 +17,7 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'pim/grid/view-selector/line',
-        'pim/grid/view-selector/footer',
+        'pim/grid/view-selector/type-switcher',
         'text!pim/template/grid/view-selector',
         'pim/initselect2',
         'pim/datagrid/state',
@@ -32,8 +31,7 @@ define(
         __,
         Backbone,
         BaseForm,
-        ViewSelectorLine,
-        ViewSelectorFooter,
+        ViewSelectorTypeSwitcher,
         template,
         initSelect2,
         DatagridState,
@@ -46,12 +44,24 @@ define(
             resultsPerPage: 20,
             queryTimer: null,
             config: {},
+            viewTypes: [],
+            currentViewType: null,
             currentView: null,
             initialView: null,
             defaultColumns: [],
             defaultUserView: null,
             gridAlias: null,
-            $select2Instance: null,
+            select2Instance: null,
+            viewTypeSwitcher: null,
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (meta) {
+                this.config = meta.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -85,8 +95,22 @@ define(
              */
             render: function () {
                 this.$el.html(this.template());
-                this.initializeSelectWidget();
-                this.renderExtensions();
+
+                this.initializeViewTypes().then(function () {
+                    this.initializeSelectWidget();
+                    this.renderExtensions();
+                }.bind(this));
+            },
+
+            /**
+             * Initialize the view type to display at initialization.
+             *
+             * @return {Promise}
+             */
+            initializeViewTypes: function () {
+                this.currentViewType = 'view';
+
+                return $.Deferred().resolve();
             },
 
             /**
@@ -96,7 +120,7 @@ define(
                 var $select = this.$('input[type="hidden"]');
 
                 var options = {
-                    dropdownCssClass: 'bigdrop grid-view-selector',
+                    dropdownCssClass: 'select2--bigDrop grid-view-selector',
                     closeOnSelect: false,
 
                     /**
@@ -104,11 +128,10 @@ define(
                      * This way we can display views and their infos beside them.
                      */
                     formatResult: function (item, $container) {
-                        FormBuilder.buildForm('pim-grid-view-selector-line').then(function (form) {
+                        FormBuilder.build('pim-grid-view-selector-line').then(function (form) {
                             form.setParent(this);
-                            return form.configure(item).then(function () {
-                                $container.append(form.render().$el);
-                            });
+                            form.setView(item, this.currentViewType, this.currentView.id === item.id);
+                            $container.append(form.render().$el);
                         }.bind(this));
                     }.bind(this),
 
@@ -118,7 +141,9 @@ define(
                     formatSelection: function (item, $container) {
                         FormBuilder.buildForm('pim-grid-view-selector-current').then(function (form) {
                             form.setParent(this);
-                            return form.configure(item).then(function () {
+                            form.setView(item);
+
+                            return form.configure().then(function () {
                                 $container.append(form.render().$el);
                                 this.onGridStateChange();
                             }.bind(this));
@@ -133,9 +158,11 @@ define(
                             if (options.context && options.context.page) {
                                 page = options.context.page;
                             }
-                            var searchParameters = this.getSelectSearchParameters(options.term, page);
 
-                            FetcherRegistry.getFetcher('datagrid-view').search(searchParameters).then(function (views) {
+                            var searchParameters = this.getSelectSearchParameters(options.term, page);
+                            var fetcher = 'datagrid-' + this.currentViewType;
+
+                            FetcherRegistry.getFetcher(fetcher).search(searchParameters).then(function (views) {
                                 var choices = this.toSelect2Format(views);
 
                                 if (page === 1 && !options.term) {
@@ -165,11 +192,11 @@ define(
                     }.bind(this)
                 };
 
-                this.$select2Instance = initSelect2.init($select, options);
+                this.select2Instance = initSelect2.init($select, options);
 
-                // Select2 catches ALL events when user clicks on an element in the dropdown.
+                // Select2 catches ALL events when user clicks on an element in the dropdown list.
                 // This method bypasses it to allow to click on sub-elements such as buttons, link...
-                var select2 = this.$select2Instance.data('select2');
+                var select2 = this.select2Instance.data('select2');
                 select2.onSelect = (function (fn) {
                     return function (data, options) {
                         var target = null;
@@ -179,18 +206,37 @@ define(
                         }
 
                         // If we clicked on something else than the line (eg. a button), we don't capture the event
-                        if (null === target || target.hasClass('select2-result-label-view')) {
+                        if (null === target || target.hasClass('grid-view-selector-line-overlay')) {
                             return fn.apply(this, arguments);
                         }
                     };
                 })(select2.onSelect);
 
-                this.$select2Instance.on('select2-selecting', function (event) {
+                this.select2Instance.on('select2-selecting', function (event) {
                     var view = event.object;
                     this.selectView(view);
                 }.bind(this));
 
                 var $menu = this.$('.select2-drop');
+                var $search = this.$('.select2-search');
+
+                $search.prepend($('<i class="icon-search"></i>'));
+
+                // If more than 1 view type, we display the view type switcher module
+                if (this.config.viewTypes.length > 1) {
+                    this.viewTypeSwitcher = new ViewSelectorTypeSwitcher(this.config.viewTypes);
+                    $search.append(this.viewTypeSwitcher.render().$el);
+
+                    this.listenTo(
+                        this.viewTypeSwitcher,
+                        'grid:view-selector:view-type-switching',
+                        this.switchViewType.bind(this)
+                    );
+
+                    this.viewTypeSwitcher.trigger('grid:view-selector:view-type-switched', this.currentViewType);
+
+                    $search.find('.select2-input').addClass('with-dropdown');
+                }
 
                 FormBuilder.buildForm('pim-grid-view-selector-footer').then(function (form) {
                     form.setParent(this);
@@ -201,10 +247,27 @@ define(
             },
 
             /**
+             * Method called on view type switching (triggered by the Type Switcher module).
+             * We need to re-trigger the select2 search event to fetch new views.
+             *
+             * @param {string} selectedType
+             */
+            switchViewType: function (selectedType) {
+                this.currentViewType = selectedType;
+
+                // Force the trigger of the search of select2
+                var searchTerm = this.select2Instance.data('select2').search.val();
+                this.select2Instance.select2('search', '');
+                this.select2Instance.select2('search', searchTerm);
+
+                this.viewTypeSwitcher.trigger('grid:view-selector:view-type-switched', this.currentViewType);
+            },
+
+            /**
              * Initialize the Select2 selection based on the DatagridState.
              * Could be the User default one, or an existing view edited or whatever.
              *
-             * @returns {Promise}
+             * @return {Promise}
              */
             initializeSelection: function () {
                 var activeViewId = DatagridState.get(this.gridAlias, 'view');
@@ -215,11 +278,12 @@ define(
                     if ('0' === activeViewId) {
                         deferred.resolve(this.getDefaultView());
                     } else {
-                        FetcherRegistry.getFetcher('datagrid-view').fetch(activeViewId, {alias: this.gridAlias})
+                        FetcherRegistry.getFetcher('datagrid-view')
+                            .fetch(activeViewId, {alias: this.gridAlias})
+                            .then(this.postFetchDatagridView.bind(this))
                             .then(function (view) {
-                                view.text = view.label;
                                 deferred.resolve(view);
-                            }.bind(this));
+                            });
                     }
                 } else if (userDefaultView) {
                     userDefaultView.text = userDefaultView.label;
@@ -248,9 +312,23 @@ define(
             },
 
             /**
+             * Method called right after fetching the view from the backend.
+             * This is where we can handle the view before it goes to select2.
+             *
+             * @param {Object} view
+             *
+             * @return {Promise}
+             */
+            postFetchDatagridView: function (view) {
+                view.text = view.label;
+
+                return $.Deferred().resolve(view).promise();
+            },
+
+            /**
              * Return the default view object which contains default columns & no filter.
              *
-             * @returns {Object}
+             * @return {Object}
              */
             getDefaultView: function () {
                 return {
@@ -269,7 +347,7 @@ define(
              * @return {array}
              */
             ensureDefaultView: function (choices) {
-                if (null !== this.defaultUserView) {
+                if (null !== this.defaultUserView || 'view' !== this.currentViewType) {
                     return choices;
                 }
 
@@ -331,8 +409,8 @@ define(
              * Close the Select2 instance of this View Selector
              */
             closeSelect2: function () {
-                if (null !== this.$select2Instance) {
-                    this.$select2Instance.select2('close');
+                if (null !== this.select2Instance) {
+                    this.select2Instance.select2('close');
                 }
             },
 
@@ -378,11 +456,15 @@ define(
              *
              * @param {array} data
              *
-             * @returns {array}
+             * @return {array}
              */
             toSelect2Format: function (data) {
                 return _.map(data, function (view) {
                     view.text = view.label;
+
+                    if (!_.has(view, 'id') && _.has(view, 'code')) {
+                        view.id = view.code;
+                    }
 
                     return view;
                 });

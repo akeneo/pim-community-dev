@@ -1,7 +1,6 @@
 @import '../../base/variables';
 
 .AknTabHeader {
-  height: @AknTabHeight;
   background: lighten(@AknGrey, 30%);
   border-bottom: 1px solid @AknBorderColor;
   display: flex;
@@ -12,8 +11,8 @@
   &-title {
     color: @AknPurple;
     font-size: @AknTitleFontSize;
-    height: @AknDefaultButtonSize;
-    line-height: @AknDefaultButtonSize;
+    height: @AknTabHeight - 1px;
+    line-height: @AknTabHeight - 1px;
     margin: 0;
     font-weight: normal;
     white-space: nowrap;

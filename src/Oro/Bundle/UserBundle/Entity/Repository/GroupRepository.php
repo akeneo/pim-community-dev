@@ -3,17 +3,17 @@ namespace Oro\Bundle\UserBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Component\User\Model\GroupInterface;
 
 class GroupRepository extends EntityRepository
 {
     /**
      * Get user query builder
      *
-     * @param  Group        $group
+     * @param  GroupInterface $group
      * @return QueryBuilder
      */
-    public function getUserQueryBuilder(Group $group)
+    public function getUserQueryBuilder(GroupInterface $group)
     {
         return $this->_em->createQueryBuilder()
             ->select('u')

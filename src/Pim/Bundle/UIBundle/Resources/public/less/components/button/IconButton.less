@@ -1,21 +1,21 @@
 @import '../../base/variables';
 
 .AknIconButton {
-  color: lighten(@AknGrey, 25%);
+  color: lighten(@AknGrey, 15%);
   width: @AknIconSize;
   height: @AknIconSize;
   line-height: @AknIconSize;
-  font-size: @AknLittleIconFontSize;
+  font-size: @AknBigIconFontSize;
   border: none;
   background: white;
   display: inline-block;
   padding: 0;
   border-radius: 2px;
   text-align: center;
-  transition: background 0.1s ease;
+  transition: background 0.1s ease, color 0.1s ease;
 
   &:hover {
-    background: lighten(@AknGrey, 25%);
+    background: lighten(@AknGrey, 15%);
     color: white;
     cursor: pointer;
   }
@@ -51,6 +51,10 @@
     }
   }
 
+  &--gold {
+    color: @AknOrange;
+  }
+
   &--apply {
     background-color: @AknGreen;
     color: white;
@@ -69,6 +73,12 @@
   }
 
   &--hide {
-    display: none;
+    display: none !important; // Font awesome adds !important
+  }
+
+  &--noFocus {
+    &:focus {
+      outline: none;
+    }
   }
 }

@@ -33,7 +33,7 @@ jobs:
                         operator: '='
                         value: true
                     -
-                        field: categories.code
+                        field: categories
                         operator: 'IN CHILDREN'
                         value: ['2014_collection']
                     -

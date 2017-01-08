@@ -27,6 +27,7 @@ class Registry
         } else {
             $this->add($widget, ++$position);
         }
+        ksort($this->widgets);
     }
 
     /**

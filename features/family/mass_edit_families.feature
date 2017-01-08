@@ -93,7 +93,7 @@ Feature: Mass Edit Families
     And I am logged in as "Julia"
     And I am on the families page
     When I select all entities
-    And I press mass-edit button
+    And I press the "Change product information" button
     And I choose the "Set attribute requirements" operation
     And I display the Name attribute
     And I move on to the next step

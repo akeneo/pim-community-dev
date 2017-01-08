@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\EventSubscriber;
 
-use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\OroUserEvents;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Component\User\Model\GroupInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -57,7 +57,7 @@ class GroupSubscriber implements EventSubscriberInterface
      */
     protected function checkDefaultGroup(GenericEvent $event)
     {
-        /** @var Group $group */
+        /** @var GroupInterface $group */
         $group = $event->getSubject();
 
         if (strtolower(User::GROUP_DEFAULT) === strtolower($group->getName())) {

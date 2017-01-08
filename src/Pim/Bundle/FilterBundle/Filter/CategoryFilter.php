@@ -113,8 +113,8 @@ class CategoryFilter extends NumberFilter
     {
         $tree = $this->categoryRepo->find($data['treeId']);
         if ($tree) {
-            $categoryIds = $this->getAllChildrenIds($tree);
-            $this->util->applyFilter($ds, 'categories.id', 'NOT IN', $categoryIds);
+            $categoryCodes = $this->getAllChildrenCodes($tree);
+            $this->util->applyFilter($ds, 'categories', 'NOT IN', $categoryCodes);
 
             return true;
         }
@@ -140,12 +140,12 @@ class CategoryFilter extends NumberFilter
 
         if ($category) {
             if ($data['includeSub']) {
-                $categoryIds = $this->getAllChildrenIds($category);
+                $categoryCodes = $this->getAllChildrenCodes($category);
             } else {
-                $categoryIds = [];
+                $categoryCodes = [];
             }
-            $categoryIds[] = $category->getId();
-            $this->util->applyFilter($ds, 'categories.id', 'IN', $categoryIds);
+            $categoryCodes[] = $category->getCode();
+            $this->util->applyFilter($ds, 'categories', 'IN', $categoryCodes);
 
             return true;
         }
@@ -154,17 +154,15 @@ class CategoryFilter extends NumberFilter
     }
 
     /**
-     * Get children category ids
+     * Get children category codes
      *
      * @param CategoryInterface $category
      *
-     * @return integer[]
+     * @return string[]
      */
-    protected function getAllChildrenIds(CategoryInterface $category)
+    protected function getAllChildrenCodes(CategoryInterface $category)
     {
-        $categoryIds = $this->categoryRepo->getAllChildrenIds($category);
-
-        return $categoryIds;
+        return $this->categoryRepo->getAllChildrenCodes($category);
     }
 
     /**

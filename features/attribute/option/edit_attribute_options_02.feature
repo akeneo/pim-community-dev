@@ -9,6 +9,7 @@ Feature: Edit attribute options
     And I am logged in as "Julia"
     And I am on the attributes page
     And I create a "Simple select" attribute
+    And I scroll down
     And I fill in the following information:
       | Code            | size  |
       | Attribute group | Other |
@@ -51,6 +52,5 @@ Feature: Edit attribute options
       | blue  | blue  |
       | green | green |
     And I save the attribute
-    And I wait for options to load
     And I edit the code "red" to turn it to "red" and cancel
     Then I should see the text "r\"ed"

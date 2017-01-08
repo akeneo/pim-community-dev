@@ -30,7 +30,7 @@ Feature: Edit an import
       | Family column     | fam           |
       | Groups column     | grp           |
       | Decimal separator | .             |
-      | Date format       | yyyy-MM-dd    |
+      | Date format       | yyyy-mm-dd    |
     And I uncheck the "Allow file upload" switch
     And I uncheck the "Enable the product" switch
     And I uncheck the "Real time history update" switch

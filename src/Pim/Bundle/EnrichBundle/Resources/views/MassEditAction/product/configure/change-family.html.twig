@@ -4,11 +4,12 @@
     <div class="AknFormContainer AknFormContainer--withPadding">
         <div class="AknFieldContainer">
             <div class="AknFieldContainer-header">
-                <label class="control-label">{{ 'Family'|trans }}</label>
+                <label class="AknFieldContainer-label control-label">{{ 'Family'|trans }}</label>
             </div>
             <div class="AknFieldContainer-inputContainer">
                 {{ form_row(
-                    form.operation.family
+                    form.operation.family,
+                    { 'attr': { 'class': 'pim-ajax-entity AknTextField--select2'} }
                 ) }}
             </div>
         </div>

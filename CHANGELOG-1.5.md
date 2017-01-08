@@ -2,7 +2,26 @@
 
 ## Bug fixes
 
+- PIM-6064: Fix a grid issue with attribute named ID 
+
+## Technical improvements
+
+- PIM-6064: ProductQueryBuilder addFilter is now case sensitive.
+
+# 1.5.16 (2016-12-28)
+
+## Bug fixes
+
+- PIM-6019: Successfully import products without removing already existing associations when option "compare values" is disabled
+- PIM-6034: Fix date format on fixtures
+- PIM-6039: Call validation on family mass edit
+
+# 1.5.15 (2016-12-13)
+
+## Bug fixes
+
 - PIM-6026: Fix an error on family mass edit that occurs when working on more families than the mass edit batch size
+- PIM-5991: Focus on wysiwig field when clicking on the product edit form completeness link
 
 # 1.5.14 (2016-12-01)
 

@@ -1,6 +1,8 @@
 extensions:
     pim-grid-view-selector:
-        module: pim/grid/view-selector
+        module: pim/grid/view-selector/selector
+        config:
+            viewTypes: ['view']
 
     pim-grid-view-selector-footer:
         module: pim/grid/view-selector/footer
@@ -24,9 +26,9 @@ extensions:
         module: pim/grid/view-selector/current
 
     pim-grid-view-selector-line-remove:
-        module: pim/grid/view-selector/line/remove
+        module: pim/grid/view-selector/line-remove
         parent: pim-grid-view-selector-line
-        targetZone: after
+        targetZone: overlay
         position: 100
 
     pim-grid-view-selector-save:

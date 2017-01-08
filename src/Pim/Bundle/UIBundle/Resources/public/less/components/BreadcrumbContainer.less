@@ -1,8 +1,11 @@
+@import '../base/variables';
+
 .AknBreadcrumbContainer {
   display: flex;
   justify-content: space-between;
-  padding: 2px 20px;
+  padding: 0 20px;
   align-items: center;
+  border-bottom: 1px solid @AknBorderColor;
 
   &-flashContainer {
     flex-grow: 1;
@@ -18,5 +21,10 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+  }
+
+  &-pinButtonsContainer {
+    padding-top: 2px;
+    padding-bottom: 2px;
   }
 }

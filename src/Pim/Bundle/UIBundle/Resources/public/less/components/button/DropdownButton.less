@@ -1,16 +1,20 @@
 @import '../../base/variables';
 
 .AknDropdownButton {
+  white-space: nowrap;
+  display: inline-block;
+
   &-button {
     background: lighten(@AknGrey, 25%);
     height: @AknDefaultButtonSize;
     line-height: @AknDefaultButtonSize - 2px;
     font-size: @AknFontSizeBig;
     border: 1px solid @AknBorderColor;
-    border-radius: 2px;
+    color: @AknDefaultFontColor;
     padding: 0 0 0 @AknButtonsPadding;
-    display: inline-block;
+    border-radius: 2px;
     cursor: pointer;
+    display: flex;
   }
 
   &-button:hover,
@@ -61,9 +65,26 @@
     background: lighten(@AknRed, 20%);
   }
 
+  &--grey &-button {
+    background: @AknGrey;
+    color: white;
+    border: 1px solid darken(@AknGrey, 10%);
+  }
+
+  &--grey &-caretContainer {
+    background: darken(@AknGrey, 10%);
+    color: white;
+  }
+
+  &--grey:hover &-button,
+  &--grey.open &-button {
+    background: darken(@AknGrey, 10%);
+  }
+
   &--small &-button {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
   }
 
   &--small &-caretContainer {

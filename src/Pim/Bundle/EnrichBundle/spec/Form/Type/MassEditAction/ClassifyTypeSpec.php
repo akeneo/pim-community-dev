@@ -45,7 +45,7 @@ class ClassifyTypeSpec extends ObjectBehavior
 
         $builder ->add(
             'trees',
-            'oro_entity_identifier',
+            'pim_enrich_entity_identifier',
             [
                 'class'    => 'Pim\Bundle\CatalogBundle\Entity\Category',
                 'required' => false,
@@ -56,7 +56,7 @@ class ClassifyTypeSpec extends ObjectBehavior
 
         $builder->add(
             'categories',
-            'oro_entity_identifier',
+            'pim_enrich_entity_identifier',
             [
                 'class'    => 'Pim\Bundle\CatalogBundle\Entity\Category',
                 'required' => true,

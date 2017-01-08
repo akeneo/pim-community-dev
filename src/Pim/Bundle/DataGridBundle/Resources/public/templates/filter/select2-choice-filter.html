@@ -1,7 +1,7 @@
 <div class="AknFilterChoice choicefilter">
     <div class="AknFilterChoice-operator AknDropdown">
         <% if (emptyChoice) { %>
-            <button type="button" class="AknActionButton AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">
                 <%= selectedOperatorLabel %>
                 <span class="AknCaret"></span>
             </button>
@@ -14,6 +14,6 @@
             </ul>
         <% } %>
     </div>
-    <input type="text" name="value" class="AknFilterChoice-field select-field">
-    <button type="button" class="AknButton AknButton--apply AknButton--small AknButton--noLeftRadius filter-update"><%- _.__('Update') %></button>
+    <input type="text" name="value" class="AknTextField AknTextField--select2 AknTextField--noRadius AknFilterChoice-field select-field">
+    <button type="button" class="AknFilterChoice-button AknButton AknButton--apply AknButton--noLeftRadius filter-update"><%- _.__('Update') %></button>
 </div>

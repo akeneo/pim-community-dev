@@ -190,7 +190,7 @@
             <arg value="fix" />
             <arg path="${basedir}/src" />
             <arg value="-v" />
-            <arg value="--config-file=${basedir}/.php_cs.local.php" />
+            <arg value="--config-file=${basedir}/.php_cs.php" />
             <arg value="--dry-run" />
         </exec>
     </target>

@@ -89,7 +89,9 @@ class Select2Decorator extends ElementDecorator
             $openerElement = $this->find('css', '.select2-search-field');
         }
 
-        $openerElement->click();
+        if (!$this->element->hasClass('select2-dropdown-open')) {
+            $openerElement->click();
+        }
     }
 
     /**
@@ -186,8 +188,16 @@ class Select2Decorator extends ElementDecorator
         $results = [];
 
         $resultElements = $this->spin(function () use ($widget) {
-            return $widget->findAll('css', '.select2-result-label');
-        }, 'Cannot find any .select2-result-label element.');
+            return $widget->findAll('css', '.select2-result-label, .select2-no-results');
+        }, 'Cannot find any .select2-result-label nor select2-no-results element.');
+
+        // Maybe a "No matches found"
+        $firstResult = $resultElements[0];
+        $noMatchesFound = $firstResult->hasClass('select2-no-results');
+
+        if ($noMatchesFound) {
+            return $results;
+        }
 
         foreach ($resultElements as $element) {
             $results[] = $element->getText();
@@ -200,5 +210,28 @@ class Select2Decorator extends ElementDecorator
         }, 'Cannot close the select2 field');
 
         return $results;
+    }
+
+    /**
+     * Type in a text in the search input of this select2 widget.
+     *
+     * @param string $text
+     */
+    public function search($text)
+    {
+        $widget = $this->getWidget();
+        $widgetClasses = '.' . str_replace(' ', '.', $widget->getAttribute('class'));
+
+        $text = trim($text);
+
+        $this->getSession()->executeScript(
+            sprintf(
+                '$(\'%s .select2-search input[type="text"]\')' .
+                '.val(\'%s\')' .
+                '.trigger(\'input\');',
+                $widgetClasses,
+                $text
+            )
+        );
     }
 }

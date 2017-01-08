@@ -312,4 +312,41 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $this->process($convertedData)
             ->shouldReturn(null);
     }
+
+    function it_skips_a_product_when_there_is_no_association_to_update(
+        $productRepository,
+        $productUpdater,
+        $productAssocFilter,
+        $stepExecution,
+        $productDetacher,
+        ProductInterface $product,
+        JobParameters $jobParameters
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(false);
+
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $convertedData = [
+            'identifier' => 'tshirt',
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => 'tshirt'
+                ],
+            ],
+            'associations' => []
+        ];
+
+        $productAssocFilter->filter(Argument::any())->shouldNotBeCalled()->willReturn([]);
+        $productUpdater->update(Argument::any())->shouldNotBeCalled();
+
+        $stepExecution->incrementSummaryInfo('product_skipped_no_associations')->shouldBeCalled();
+        $this->setStepExecution($stepExecution);
+        $productDetacher->detach($product)->shouldBeCalled();
+        $this->process($convertedData)->shouldReturn(null);
+    }
 }

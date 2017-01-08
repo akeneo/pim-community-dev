@@ -19,7 +19,7 @@ function($, _, __, app, TextFilter, initSelect2) {
         popupCriteriaTemplate: _.template(
             '<div class="AknFilterChoice choicefilter">' +
                 '<div class="AknFilterChoice-operator AknDropdown">' +
-                    '<button class="AknActionButton AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
+                    '<button class="AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
                         '<%= selectedChoiceLabel %>' +
                         '<span class="AknActionButton-caret AknCaret"></span>' +
                     '</button>' +
@@ -30,8 +30,8 @@ function($, _, __, app, TextFilter, initSelect2) {
                     '</ul>' +
                     '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
                 '</div>' +
-                '<input type="text" class="AknFilterChoice-field select-field" name="value" value="">' +
-                '<button class="AknButton AknButton--apply AknButton--small AknButton--noLeftRadius filter-update" type="button"><%- _.__("Update") %></button>' +
+                '<input type="text" class="AknTextField AknTextField--noRadius AknFilterChoice-field select-field" name="value" value="">' +
+                '<button class="AknFilterChoice-button AknButton AknButton--apply AknButton--noLeftRadius filter-update" type="button"><%- _.__("Update") %></button>' +
             '</div>'
         ),
 

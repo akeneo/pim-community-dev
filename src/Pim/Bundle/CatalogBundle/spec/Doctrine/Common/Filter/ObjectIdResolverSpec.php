@@ -19,7 +19,7 @@ class ObjectIdResolverSpec extends ObjectBehavior
         $this->addFieldMapping('option', 'optionClass');
     }
 
-    function it_gets_ids_from_code(
+    function it_gets_ids_from_codes(
         $managerRegistry,
         ObjectManager $manager,
         ObjectRepository $repository,
@@ -41,7 +41,7 @@ class ObjectIdResolverSpec extends ObjectBehavior
         $this->getIdsFromCodes('family', ['camcorders', 'shirt', 'men'])->shouldReturn([2, 12, 32]);
     }
 
-    function it_gets_ids_from_code_with_attribute(
+    function it_gets_ids_from_codes_with_attribute(
         $managerRegistry,
         ObjectManager $manager,
         ObjectRepository $repository,

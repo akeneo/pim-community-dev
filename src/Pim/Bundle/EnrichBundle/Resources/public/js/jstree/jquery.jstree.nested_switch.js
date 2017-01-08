@@ -22,7 +22,8 @@
                     var _this = this;
 
                     var nested_switch_bar = $('<div>', {
-                        id: 'nested-switch'
+                        id: 'nested-switch',
+                        class: 'jstree-footer'
                     });
 
                     var nested_switch = $('<input>', {

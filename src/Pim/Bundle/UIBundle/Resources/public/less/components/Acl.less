@@ -1,0 +1,32 @@
+@import '../base/variables';
+
+.AknAcl {
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    color: lighten(@AknGrey, 20%);
+    cursor: pointer;
+    width: 15px;
+    text-align: center;
+    transition: font-size 0.1s ease;
+
+    &--granted {
+      font-size: 125%; // Granted icon is smaller than circle
+      color: @AknGreen;
+    }
+
+    &--nonGranted {
+      font-size: 125%; // Non granted icon is smaller than circle
+      color: @AknRed;
+    }
+  }
+
+  &--hide {
+    display: none;
+  }
+
+  &--centered {
+    justify-content: center;
+  }
+}

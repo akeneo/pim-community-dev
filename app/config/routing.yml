@@ -20,9 +20,6 @@ pim_user:
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
-pim_webservice:
-    resource: "@PimWebServiceBundle/Resources/config/routing.yml"
-
 pim_comment:
     resource: "@PimCommentBundle/Resources/config/routing.yml"
 
@@ -37,6 +34,9 @@ pim_localization:
 
 pim_reference_data:
     resource: "@PimReferenceDataBundle/Resources/config/routing.yml"
+
+pim_api:
+    resource: "@PimApiBundle/Resources/config/routing.yml"
 
 # Oro platform
 

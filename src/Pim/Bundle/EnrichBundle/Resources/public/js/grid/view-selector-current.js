@@ -26,15 +26,18 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             datagridView: null,
-            dirty: false,
+            dirtyColumns: false,
+            dirtyFilters: false,
 
             /**
              * {@inheritdoc}
              */
-            configure: function (datagridView) {
-                this.datagridView = datagridView;
-
-                this.listenTo(this.getRoot(), 'grid:view-selector:state-changed', this.onDatagridStateChange);
+            configure: function () {
+                this.listenTo(
+                    this.getRoot(),
+                    'grid:view-selector:state-changed',
+                    this.onDatagridStateChange.bind(this)
+                );
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -45,7 +48,8 @@ define(
             render: function () {
                 this.$el.html(this.template({
                     view: this.datagridView,
-                    dirty: this.dirty
+                    dirtyFilters: this.dirtyFilters,
+                    dirtyColumns: this.dirtyColumns
                 }));
 
                 this.renderExtensions();
@@ -67,14 +71,26 @@ define(
                 var columnsModified = !_.isEqual(initialView.columns, datagridState.columns.split(','));
 
                 if (initialViewExists) {
-                    this.dirty = filtersModified || columnsModified;
+                    this.dirtyFilters = filtersModified;
+                    this.dirtyColumns = columnsModified;
                 } else {
                     var isDefaultFilters = ('' === datagridState.filters);
                     var isDefaultColumns = _.isEqual(this.getRoot().defaultColumns, datagridState.columns.split(','));
-                    this.dirty = !isDefaultColumns || !isDefaultFilters;
+
+                    this.dirtyFilters = !isDefaultFilters;
+                    this.dirtyColumns = !isDefaultColumns;
                 }
 
                 this.render();
+            },
+
+            /**
+             * Set the view of this module.
+             *
+             * @param {Object} view
+             */
+            setView: function (view) {
+                this.datagridView = view;
             }
         });
     }

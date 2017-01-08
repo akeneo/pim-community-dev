@@ -38,7 +38,7 @@ datagrid:
                 type:          navigate
                 label:         Update
                 link:          update_link
-                icon:          edit
+                icon:          pencil
                 acl_resource:  pim_user_role_edit
                 rowAction:     true
             delete:
