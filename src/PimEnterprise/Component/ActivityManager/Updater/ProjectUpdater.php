@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ActivityManager\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -54,12 +55,9 @@ class ProjectUpdater implements ObjectUpdaterInterface
     public function update($project, array $data, array $options = [])
     {
         if (!$project instanceof ProjectInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "%s", "%s" provided.',
-                    ProjectInterface::class,
-                    ClassUtils::getClass($project)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($project),
+                ProjectInterface::class
             );
         }
 

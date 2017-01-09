@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Component\Security\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -56,11 +58,9 @@ class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
     public function update($categoryAccess, array $data, array $options = [])
     {
         if (!$categoryAccess instanceof AssetCategoryAccess) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess", "%s" provided.',
-                    ClassUtils::getClass($categoryAccess)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($categoryAccess),
+                AssetCategoryAccess::class
             );
         }
 
@@ -76,7 +76,7 @@ class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
      * @param string              $field
      * @param mixed               $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData(AssetCategoryAccess $categoryAccess, $field, $data)
     {
@@ -84,14 +84,28 @@ class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
             case 'category':
                 $category = $this->categoryRepository->findOneByIdentifier($data);
                 if (null === $category) {
-                    throw new \InvalidArgumentException(sprintf('Asset category with "%s" code does not exist', $data));
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'category',
+                        'category code',
+                        'The category does not exist',
+                        'updater',
+                        'asset category access',
+                        $data
+                    );
                 }
                 $categoryAccess->setCategory($category);
                 break;
             case 'user_group':
                 $group = $this->groupRepository->findOneByIdentifier($data);
                 if (null === $group) {
-                    throw new \InvalidArgumentException(sprintf('Group with "%s" code does not exist', $data));
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'user_group',
+                        'group code',
+                        'The group does not exist',
+                        'updater',
+                        'asset category access',
+                        $data
+                    );
                 }
                 $categoryAccess->setUserGroup($group);
                 break;

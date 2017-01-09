@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\User\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -75,6 +76,8 @@ class UserUpdater extends BaseUserUpdater
      *
      * @param string $code
      *
+     * @throws InvalidPropertyException
+     *
      * @return CategoryInterface
      */
     protected function findAssetCategory($code)
@@ -82,7 +85,14 @@ class UserUpdater extends BaseUserUpdater
         $category = $this->categoryAssetRepository->findOneByIdentifier($code);
 
         if (null === $category) {
-            throw new \InvalidArgumentException(sprintf('Category %s was not found', $code));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'defaultAssetTree',
+                'category code',
+                'The category does not exist',
+                'updater',
+                'user',
+                $code
+            );
         }
 
         return $category;
