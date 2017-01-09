@@ -10,7 +10,7 @@ pim_connector:
           title: Categorie selectie
           cancel: Annuleer
           confirm: Bevestig
-        label: '{0} alle producten |{1} één categorie geselecteerd |] 1, Inf [{{ count }} categorieën geselecteerd'
+        label: "{0} alle producten |{1} één categorie geselecteerd |] 1, Inf [{{ count }} categorieën geselecteerd"
         edit: Wijzig
         title: Selecteer categorieën
     locales:

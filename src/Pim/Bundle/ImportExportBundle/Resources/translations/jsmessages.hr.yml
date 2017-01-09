@@ -10,7 +10,7 @@ pim_connector:
           title: Odabir kategorija
           cancel: Poništi
           confirm: Potvrdi
-        label: '{0} svi proizvodi |{1} jedna kategorija odabrana |] 1, Inf [{{ count }} odabranih kategorija'
+        label: "{0} svi proizvodi |{1} jedna kategorija odabrana |] 1, Inf [{{ count }} odabranih kategorija"
         edit: Uredi
         title: Odaberi kategorije
     locales:

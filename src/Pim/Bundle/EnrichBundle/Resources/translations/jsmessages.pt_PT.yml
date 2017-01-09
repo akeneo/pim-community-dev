@@ -169,8 +169,8 @@ pim_enrich:
       variant_group:
         updated_by: Atualizado por um grupo variante
         switch:
-          "yes": Sim
-          "no": Não
+          "yes": "Sim"
+          "no": "Não"
       optional_attribute:
         remove: Remover este atributo
       locale_specific_attribute:
@@ -223,7 +223,7 @@ pim_enrich:
             none_exist: Nenhum tipo de associação existente.
             show_products: Mostrar produtos
             show_groups: Mostrar grupos
-            number_of_associations: '{{ productCount }} produtos e {{ groupCount }} grupos'
+            number_of_associations: "{{ productCount }} produtos e {{ groupCount }} grupos"
         attributes:
           title: Atributos
           btn:
@@ -232,7 +232,7 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
-            attributes_selected: '{{ attributeCount }} atributo(s) selecionado(s)'
+            attributes_selected: "{{ attributeCount }} atributo(s) selecionado(s)"
             no_match: Nenhuma correspondência encontrada
             load_more: A carregar mais resultados...
         categories:
@@ -247,8 +247,8 @@ pim_enrich:
         history:
           title: Histórico
       switch:
-        "no": Não
-        "yes": Sim
+        "no": "Não"
+        "yes": "Sim"
       sequential_edit:
         info:
           products: produtos
@@ -279,8 +279,8 @@ pim_enrich:
         cancel: Cancelar
     entity:
       switch:
-        "no": Não
-        "yes": Sim
+        "no": "Não"
+        "yes": "Sim"
     variant_group:
       tab:
         properties:
@@ -330,7 +330,7 @@ pim_enrich:
         updated:
           operators:
             ALL: Sem restrição de data
-            SINCE LAST JOB: Produtos atualizados desde a última exportação
+            "SINCE LAST JOB": Produtos atualizados desde a última exportação
         enabled:
           title: Estado
           value:
@@ -340,8 +340,8 @@ pim_enrich:
         completeness:
           title: '% de Dados Completos'
           operators:
-            >=: Completo em pelo menos uma das linguagens selecionadas
-            GREATER OR EQUALS THAN ON ALL LOCALES: Completo em todas as linguagens escolhidas
+            ">=": Completo em pelo menos uma das linguagens selecionadas
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Completo em todas as linguagens escolhidas
             LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
         identifier:
           title: Identificador

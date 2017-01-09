@@ -90,6 +90,7 @@ pim_connector:
         help: Naam van de groepskolom
       filePath:
         label: Bestand
+        help: Het CSV-bestand om te importeren
       uploadAllowed:
         label: Bestanden uploaden toestaan
         help: Of direct uploaden van het bestand is toegestaan
@@ -108,6 +109,9 @@ pim_connector:
       realTimeVersioning:
         label: Real-time geschiedenis bijwerken
         help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
+      copyValuesToProducts:
+        label: Kopieer variant groepswaarden naar producten
+        help: Betekent dat de producten automatisch geupdate worden met variant groep waarden, kan uitgeschakeld worden om alleen variant groep te updaten
       enabledComparison:
         label: Vergelijk de waarden
         help: Activeer de vergelijking tussen originele en geïmporteerde waarden. Kan import versnellen als geïmporteerde waarden erg gelijkaardig zijn aan originele waarden
@@ -142,6 +146,9 @@ pim_connector:
       realTimeVersioning:
         label: Real-time geschiedenis bijwerken
         help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
+      copyValuesToProducts:
+        label: Kopieer variant groepswaarden naar producten
+        help: Betekent dat de producten automatisch geupdate worden met variant groep waarden, kan uitgeschakeld worden om alleen variant groep te updaten
       enabledComparison:
         label: Vergelijk de waarden
         help: Activeer de vergelijking tussen originele en geïmporteerde waarden. Kan import versnellen als geïmporteerde waarden erg gelijkaardig zijn aan originele waarden
@@ -192,31 +199,45 @@ batch_jobs:
   csv_group_export:
     label: Groepexport in CSV
     export.label: Groepexport
+  csv_variant_group_export:
+    label: Variant groep export in CSV
+    export.label: Variant groep export
   csv_family_export:
     label: Familie export in CSV
     export.label: Familie export
   csv_product_import:
     label: Productimport in CSV
+    validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
   csv_category_import:
     label: Categorie-import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Categorie-import
   csv_attribute_import:
     label: Attribuut-import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Attribuut-import
   csv_attribute_option_import:
     label: Attribuutoptie-import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Attribuutoptie-import
   csv_association_type_import:
     label: Associatietype-import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Associatietype-import
   csv_family_import:
     label: Familie import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Familie import
   csv_group_import:
     label: Groep importeren in CSV
+    validation.label: Bestandsvalidatie
     import.label: Groep importeren
+  csv_variant_group_import:
+    label: Variant groep import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Variant groep import
   csv_channel_export:
     label: Kanaal export in CSV
     export.label: Kanaal export
@@ -234,39 +255,50 @@ batch_jobs:
     export.label: Groepstype export
   csv_channel_import:
     label: Kanaal import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Kanaal import
   csv_locale_import:
     label: Locale import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Locale import
   csv_attribute_group_import:
     label: Attribuut groep import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Attritbuut groep import
   csv_currency_import:
     label: Valuta import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Valuta import
   csv_group_type_import:
     label: Groepstype-import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Groep type import
   xlsx_category_import:
     label: Categorie import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Categorie-import
   xlsx_association_type_import:
     label: Associatie type import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Associatietype-import
   xlsx_attribute_import:
     label: Attribuut import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Attribuut-import
   xlsx_attribute_option_import:
     label: Attribuut optie import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Attribuutoptie-import
   xlsx_family_import:
     label: Familie import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Familie import
   xlsx_product_export:
     label: Product export in XLSX
     export.label: Productexport
   xlsx_product_import:
     label: Product import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
   xlsx_group_export:
@@ -274,11 +306,14 @@ batch_jobs:
     export.label: Groepexport
   xlsx_variant_group_export:
     label: Variant groep export in XLSX
+    export.label: Variant groep export
   xlsx_group_import:
     label: Groep import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Groep importeren
   xlsx_variant_group_import:
     label: Variant groep import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Variant Groep import
   xlsx_family_export:
     label: Familie export in XLSX
@@ -312,16 +347,21 @@ batch_jobs:
     export.label: Groep type export
   xlsx_channel_import:
     label: Kanaal import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Kanaal import
   xlsx_locale_import:
     label: Locale import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Locale import
   xlsx_attribute_group_import:
     label: Attribuut groep import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Attritbuut groep import
   xlsx_currency_import:
     label: Valuta import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Valuta import
   xlsx_group_type_import:
     label: Groepstype-import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Groep type import
