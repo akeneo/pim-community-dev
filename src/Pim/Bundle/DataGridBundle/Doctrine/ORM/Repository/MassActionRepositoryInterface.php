@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Repository;
+namespace Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository;
 
 /**
  * Mass action repository interface
@@ -11,4 +11,12 @@ namespace Pim\Component\Catalog\Repository;
  */
 interface MassActionRepositoryInterface
 {
+    /**
+     * @param mixed $qb
+     * @param bool  $inset
+     * @param array $values
+     *
+     * @return mixed
+     */
+    public function applyMassActionParameters($qb, $inset, array $values);
 }

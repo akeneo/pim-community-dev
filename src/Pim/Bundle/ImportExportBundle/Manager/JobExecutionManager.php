@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Manager;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 
 /**
  * Job execution manager

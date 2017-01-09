@@ -40,7 +40,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function applyMassActionParameters($qb, $inset, $values)
+    public function applyMassActionParameters($qb, $inset, array $values)
     {
         // manage inset for selected entities
         if ($values) {
