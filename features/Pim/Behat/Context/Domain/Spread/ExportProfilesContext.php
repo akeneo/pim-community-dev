@@ -6,11 +6,14 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\ImportExportContext;
 use Symfony\Component\Yaml\Yaml;
 
 class ExportProfilesContext extends ImportExportContext
 {
+    use SpinCapableTrait;
+
     /**
      * @param string       $code
      * @param PyStringNode $csv
@@ -106,8 +109,11 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function iLaunchTheExportJob(JobInstance $job)
     {
-        $jobType = ucfirst($job->getType());
-        $this->getNavigationContext()->openPage(sprintf('%s launch', $jobType), ['id' => $job->getId()]);
+        $exportButton = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.AknButton.AknButton--apply');
+        }, 'Cannot find the export button');
+
+        $exportButton->click();
     }
 
     /**

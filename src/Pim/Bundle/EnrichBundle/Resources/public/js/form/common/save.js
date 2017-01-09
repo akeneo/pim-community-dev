@@ -32,6 +32,18 @@ define(
             updateSuccessMessage: __('pim_enrich.entity.info.update_successful'),
             label: __('pim_enrich.entity.save.label'),
 
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                this.config = config.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('save-buttons:register-button', {
                     className: 'save',

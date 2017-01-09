@@ -9,7 +9,7 @@ datagrid:
             edit_link:
                 route: pim_importexport_export_profile_edit
             delete_link:
-                route: pim_importexport_export_profile_remove
+                route: pim_enrich_job_instance_rest_export_delete
             show_link:
                 route: pim_importexport_export_profile_show
         filters:

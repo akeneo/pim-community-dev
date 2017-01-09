@@ -14,5 +14,5 @@ class Launch extends Show
     /**
      * @var string
      */
-    protected $path = '/spread/export/{id}/launch';
+    protected $path = '/job_instance/rest/{code}/launch';
 }

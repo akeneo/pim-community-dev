@@ -16,7 +16,7 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/spread/export/{id}/edit';
+    protected $path = '/spread/export/{code}/edit';
 
     /**
      * {@inheritdoc}

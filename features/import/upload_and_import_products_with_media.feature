@@ -38,8 +38,5 @@ Feature: Upload and import products with media
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the "csv_footwear_product_import" import job page
-    And I execute javascript:
-      """
-      $('#pim_importexport_import_upload').submit()
-      """
-    Then I should see "You must select a file to upload"
+    Then I should see the text "Import now"
+    Then I should not see the text "Import and launch now"

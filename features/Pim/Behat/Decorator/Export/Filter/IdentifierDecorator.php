@@ -21,5 +21,6 @@ class IdentifierDecorator extends ElementDecorator
             return $this->find('css', '.identifier');
         }, 'Cannot find identifier element.');
         $field->setValue($value);
+        $this->getSession()->executeScript('$(\'.identifier\').trigger(\'change\')');
     }
 }

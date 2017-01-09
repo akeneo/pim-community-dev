@@ -3,12 +3,13 @@ parameters:
     pim_enrich.provider.field.chained.class:       Pim\Bundle\EnrichBundle\Provider\Field\FieldChainedProvider
     pim_enrich.provider.field.base.class:          Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
     pim_enrich.provider.field.wysiwyg.class:       Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider
-    pim_enrich.provider.filter.chained.class:       Pim\Bundle\EnrichBundle\Provider\Filter\FilterChainedProvider
-    pim_enrich.provider.filter.base.class:          Pim\Bundle\EnrichBundle\Provider\Filter\BaseFilterProvider
+    pim_enrich.provider.filter.chained.class:      Pim\Bundle\EnrichBundle\Provider\Filter\FilterChainedProvider
+    pim_enrich.provider.filter.base.class:         Pim\Bundle\EnrichBundle\Provider\Filter\BaseFilterProvider
     pim_enrich.provider.empty_value.chained.class: Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueChainedProvider
     pim_enrich.provider.empty_value.base.class:    Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider
     pim_enrich.provider.form.chained.class:        Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider
     pim_enrich.provider.form.product.class:        Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
+    pim_enrich.provider.form.job_instance.class:   Pim\Bundle\EnrichBundle\Provider\Form\JobInstanceFormProvider
     pim_enrich.provider.structure_version.class:   Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProvider
 
 services:
@@ -54,6 +55,65 @@ services:
 
     pim_enrich.provider.form.product:
         class: '%pim_enrich.provider.form.product.class%'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrich.provider.form.job_instance:
+        class: '%pim_enrich.provider.form.job_instance.class%'
+        arguments:
+            -
+                csv_association_type_export: pim-job-instance-csv-base-export
+                csv_attribute_export: pim-job-instance-csv-base-export
+                csv_attribute_group_export: pim-job-instance-csv-base-export
+                csv_attribute_option_export: pim-job-instance-csv-base-export
+                csv_category_export: pim-job-instance-csv-base-export
+                csv_channel_export: pim-job-instance-csv-base-export
+                csv_currency_export: pim-job-instance-csv-base-export
+                csv_family_export: pim-job-instance-csv-base-export
+                csv_group_export: pim-job-instance-csv-base-export
+                csv_group_type_export: pim-job-instance-csv-base-export
+                csv_locale_export: pim-job-instance-csv-base-export
+                csv_product_export: pim-job-instance-csv-product-export
+                csv_variant_group_export: pim-job-instance-csv-base-export
+                xlsx_association_type_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_group_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_option_export: pim-job-instance-xlsx-base-export
+                xlsx_category_export: pim-job-instance-xlsx-base-export
+                xlsx_channel_export: pim-job-instance-xlsx-base-export
+                xlsx_currency_export: pim-job-instance-xlsx-base-export
+                xlsx_family_export: pim-job-instance-xlsx-base-export
+                xlsx_group_export: pim-job-instance-xlsx-base-export
+                xlsx_group_type_export: pim-job-instance-xlsx-base-export
+                xlsx_locale_export: pim-job-instance-xlsx-base-export
+                xlsx_product_export: pim-job-instance-xlsx-product-export
+                xlsx_variant_group_export: pim-job-instance-xlsx-base-export
+                csv_association_type_import: pim-job-instance-csv-base-import
+                csv_attribute_import: pim-job-instance-csv-base-import
+                csv_attribute_group_import: pim-job-instance-csv-base-import
+                csv_attribute_option_import: pim-job-instance-csv-base-import
+                csv_category_import: pim-job-instance-csv-base-import
+                csv_channel_import: pim-job-instance-csv-base-import
+                csv_currency_import: pim-job-instance-csv-base-import
+                csv_family_import: pim-job-instance-csv-base-import
+                csv_group_import: pim-job-instance-csv-base-import
+                csv_group_type_import: pim-job-instance-csv-base-import
+                csv_locale_import: pim-job-instance-csv-base-import
+                csv_product_import: pim-job-instance-csv-product-import
+                csv_variant_group_import: pim-job-instance-csv-base-import
+                xlsx_association_type_import: pim-job-instance-csv-base-import
+                xlsx_attribute_import: pim-job-instance-csv-base-import
+                xlsx_attribute_group_import: pim-job-instance-csv-base-import
+                xlsx_attribute_option_import: pim-job-instance-csv-base-import
+                xlsx_category_import: pim-job-instance-csv-base-import
+                xlsx_channel_import: pim-job-instance-csv-base-import
+                xlsx_currency_import: pim-job-instance-csv-base-import
+                xlsx_family_import: pim-job-instance-csv-base-import
+                xlsx_group_import: pim-job-instance-csv-base-import
+                xlsx_group_type_import: pim-job-instance-csv-base-import
+                xlsx_locale_import: pim-job-instance-csv-base-import
+                xlsx_product_import: pim-job-instance-csv-product-import
+                xlsx_variant_group_import: pim-job-instance-csv-base-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 
