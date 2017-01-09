@@ -40,7 +40,7 @@ class ConstraintCollectionProviderRegistry
         }
 
         throw new NonExistingServiceException(
-            sprintf('No contraint collection provider has been defined for the Job "%s"', $job->getName())
+            sprintf('No constraint collection provider has been defined for the Job "%s"', $job->getName())
         );
     }
 }

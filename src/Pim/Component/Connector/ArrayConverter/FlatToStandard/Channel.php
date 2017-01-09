@@ -104,7 +104,7 @@ class Channel implements ArrayConverterInterface
      */
     protected function convertUnits($flatUnits)
     {
-        $units = explode(',', $flatUnits);
+        $units = array_filter(explode(',', $flatUnits));
 
         $formattedUnits = [];
         foreach ($units as $unit) {

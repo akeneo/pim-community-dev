@@ -16,7 +16,7 @@ class Show extends Form
     /**
      * @var string
      */
-    protected $path = '/spread/export/{id}';
+    protected $path = '/spread/export/{code}';
 
     /**
      * {@inheritdoc}

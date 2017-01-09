@@ -19,19 +19,19 @@ datagrid:
                 type:      translateable
                 data_name: statusLabel
         properties:
-            id: ~
+            code: ~
             edit_link:
                 type: url
                 params:
-                    - id
+                    - code
             delete_link:
                 type: url
                 params:
-                    - id
+                    - code
             show_link:
                 type: url
                 params:
-                    - id
+                    - code
         actions:
             view:
                 type:      navigate
@@ -42,7 +42,7 @@ datagrid:
             edit:
                 type:  navigate
                 label: Edit
-                icon:  edit
+                icon:  pencil
                 link:  edit_link
             delete:
                 type:  delete

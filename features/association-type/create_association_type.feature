@@ -10,14 +10,13 @@ Feature: Association type creation
     And I am on the association types page
     And I create a new association type
 
-  @skip
   Scenario: Successfully create an association type
     Then I should see the Code field
     When I fill in the following information in the popin:
       | Code | up_sell |
     And I press the "Save" button
     Then I should be on the "up_sell" association type page
-    And I should see "Edit association type - [up_sell]"
+    And I should see "up_sell"
 
   Scenario: Fail to create an association type with an empty or invalid code
     Given I press the "Save" button

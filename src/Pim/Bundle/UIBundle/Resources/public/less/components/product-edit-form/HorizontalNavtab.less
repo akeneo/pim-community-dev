@@ -1,0 +1,43 @@
+@import '../../base/variables.less';
+
+.AknHorizontalNavtab {
+  border-bottom: 3px solid @AknPurple;
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
+
+  &-list {
+    display: flex;
+  }
+
+  &-item:not(:last-child) {
+    margin-right: 5px;
+  }
+
+  &-link {
+    height: @AknTabHeight;
+    line-height: @AknTabHeight;
+    color: @AknDefaultFontColor;
+    background: lighten(@AknGrey, 30%);
+    padding: 0 20px;
+    display: block;
+    border-top: 1px solid @AknBorderColor;
+    border-left: 1px solid @AknBorderColor;
+    border-right: 1px solid @AknBorderColor;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    cursor: pointer;
+  };
+
+  &-item:not(&-item--active) &-link:not(&-link--active):hover {
+    background: @AknDefaultHoverBackground;
+  }
+
+  &-item--active &-link,
+  &-link--active {
+    background: @AknPurple;
+    border-color: @AknPurple;
+    color: white;
+    font-weight: bold;
+  }
+}

@@ -24,7 +24,7 @@ datagrid:
             edit:
                 type:      navigate
                 label:     Edit
-                icon:      edit
+                icon:      pencil
                 link:      edit_link
                 rowAction: true
             delete:

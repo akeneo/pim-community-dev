@@ -280,7 +280,7 @@ class Form extends Base
 
             $label->click();
         }
-        
+
         $this->getElement('Available attributes add button')->press();
     }
 
@@ -327,7 +327,9 @@ class Form extends Base
         }, sprintf('Cannot find "%s" file field', $locator));
 
         $field->attachFile($path);
-        $this->getSession()->executeScript('$(\'.edit .field-input input[type="file"]\').trigger(\'change\');');
+        $this
+            ->getSession()
+            ->executeScript('$(\'.edit .field-input input[type="file"], .AknMediaField-fileUploaderInput\').trigger(\'change\');');
     }
 
     /**
@@ -375,7 +377,6 @@ class Form extends Base
     {
         $label     = $this->extractLabelElement($field, $element);
         $fieldType = $this->getFieldType($label);
-
         switch ($fieldType) {
             case 'multiSelect2':
                 $this->fillMultiSelect2Field($label, $value);
@@ -652,11 +653,11 @@ class Form extends Base
             if (0 === strpos($for, 's2id_')) {
                 if ($this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container-multi')) {
                     return 'multiSelect2';
-                } elseif ($this->getClosest($label, 'AknFieldContainer')->find('css', 'select')) {
-                    return 'select';
+                } elseif ($this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container')) {
+                    return 'simpleSelect2';
                 }
 
-                return 'simpleSelect2';
+                return 'select';
             }
 
             if (null !== $this->find('css', sprintf('#date_selector_%s', $for))) {
@@ -788,9 +789,15 @@ class Form extends Base
         }
 
         $for   = $label->getAttribute('for');
-        $field = $this->find('css', sprintf('#%s', $for));
+        $field = $this->spin(function () use ($for) {
+            return $this->find('css', sprintf('#%s', $for));
+        }, sprintf('Cannot find element field with id %s', $for));
 
         $field->setValue($value);
+
+        $this->getSession()->executeScript(
+            sprintf("$('#%s').trigger('change');", $for)
+        );
     }
 
     /**

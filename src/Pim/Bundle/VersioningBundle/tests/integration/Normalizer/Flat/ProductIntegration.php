@@ -223,7 +223,7 @@ class ProductIntegration extends TestCase
             'a_metric_without_decimal-unit'                      => 'CENTIMETER',
             'a_metric_without_decimal_negative'                  => '-20',
             'a_metric_without_decimal_negative-unit'             => 'CELSIUS',
-            'a_multi_select'                                     => 'optionB,optionA',
+            'a_multi_select'                                     => 'optionA,optionB',
             'a_number_float'                                     => '12.5678',
             'a_number_float_negative'                            => '-99.8732',
             'a_number_integer'                                   => '42',

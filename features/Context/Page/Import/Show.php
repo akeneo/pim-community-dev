@@ -16,13 +16,17 @@ class Show extends JobShow
     /**
      * @var string
      */
-    protected $path = '/collect/import/{id}';
+    protected $path = '/collect/import/{code}';
 
     /**
      * Click the job execution link
      */
     public function execute()
     {
-        $this->clickLink('Import now');
+        $launchButton = $this->spin(function () {
+            return $this->find('css', sprintf('button:contains("%s")', 'Import now'));
+        }, 'Cannot find the launch button');
+
+        $launchButton->click();
     }
 }

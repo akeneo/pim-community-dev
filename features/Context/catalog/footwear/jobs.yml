@@ -33,13 +33,13 @@ jobs:
                         operator: '='
                         value: true
                     -
-                        field: categories
-                        operator: 'IN CHILDREN'
-                        value: ['2014_collection']
-                    -
                         field: completeness
                         operator: '>='
                         value: 100
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value: ['2014_collection']
                 structure:
                     scope: mobile
                     locales:

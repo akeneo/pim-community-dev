@@ -62,12 +62,16 @@ define(
                 GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
                     groups = this.prepareGroupsForTemplate(groups);
 
-                    this.$el.html(
-                        this.template({
-                            label: _.__('pim_enrich.entity.product.meta.groups.title'),
-                            groups: groups
-                        })
-                    );
+                    if (groups.length) {
+                        this.$el.html(
+                            this.template({
+                                label: _.__('pim_enrich.entity.product.meta.groups.title'),
+                                groups: groups
+                            })
+                        );
+                    } else {
+                        this.$el.html('');
+                    }
                 }.bind(this));
 
                 return this;

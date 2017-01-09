@@ -31,7 +31,7 @@ datagrid:
             edit:
                 type:      navigate
                 label:     Edit
-                icon:      edit
+                icon:      pencil
                 link:      edit_link
                 rowAction: true
             delete:
@@ -73,4 +73,5 @@ datagrid:
                 label: pim.grid.mass_action.mass_edit
                 route: pim_enrich_mass_edit_family_action_choose
                 acl_resource: pim_enrich_family_edit_attributes
-                icon: edit
+                icon: pencil
+                className: AknActionButton

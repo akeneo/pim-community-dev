@@ -2,7 +2,7 @@
 confirmation:
     remove:
         item:             Are you sure you want to delete this item?
-        association type: Are you sure you want to delete this association type?
+        association_type: Are you sure you want to delete this association type?
         attribute:        Are you sure you want to delete this attribute?
         family:           Are you sure you want to delete this family?
         product:          Are you sure you want to delete this product?
@@ -35,7 +35,7 @@ pim_datagrid:
 flash:
     item:
         removed: Item successfully removed
-    association type:
+    association_type:
         removed: Association type successfully removed
     attribute:
         removed: Attribute successfully removed
@@ -65,7 +65,7 @@ error:
         product: No attribute is configured as a product identifier or you don't have the rights to edit it.
     removing:
         item:             Cannot delete this item
-        association type: Cannot delete this association type
+        association_type: Cannot delete this association type
         attribute:        Cannot delete this attribute
         family:           Cannot delete this family
         product:          Cannot delete this product
@@ -218,6 +218,20 @@ pim_enrich:
                     family: Choose a family
                     save: Save
                     cancel: Cancel
+        association_type:
+            info:
+                deletion_successful: Association type successfully deleted.
+                deletion_failed: Association type could not be deleted.
+                update_successful: Association type successfully updated.
+                update_failed: The association type could not be updated.
+                field_not_ready: The association type cannot be saved right now. The following fields are not ready: {{ fields }}
+            meta:
+                created: Created
+                created_by: Created by
+                updated: Updated
+                updated_by: Updated by
+            btn:
+                save: Save
         attribute_option:
             code: Code
             label: Label
@@ -256,6 +270,9 @@ pim_enrich:
                 created_by: Created by
                 updated: Updated
                 updated_by: Updated by
+        job_instance:
+            info:
+                update_failed: The job profile could not be updated.
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
@@ -327,6 +344,15 @@ pim_enrich:
             mass_edit:
                 select_attributes: Select attributes
                 select: Select
+        association_type:
+            tab:
+                properties:
+                    title: Properties
+                    general: General properties
+                    code: Code
+                    label_translations: Label translations
+                history:
+                    title: History
         attribute_option:
             flash:
                 option_created: Attribute option successfully created
@@ -375,7 +401,82 @@ pim_enrich:
                     info:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
-
+        job_instance:
+            fail:
+                launch: Failed to launch the job profile. Make sure it is valid and that you have right to launch it.
+                save: Failed to save the job profile. Make sure that you have right to edit it.
+            title:
+                import: Import profile
+                export: Export profile
+            button:
+                edit.title: Edit
+                export.title: Export now
+                import.launch: Import now
+                import.upload: Upload and import now
+            meta:
+                job: Job
+                connector: Connector
+            tab:
+                content:
+                    title: Content
+                properties:
+                    title: General properties
+                    code:
+                        title: Code
+                    label:
+                        title: Label
+                    decimal_separator:
+                        title: Decimal separator
+                        help: Determine the decimal separator
+                    date_format:
+                        title: Date format
+                        help: Determine the format of date fields
+                    file_path:
+                        title: File path
+                        help: Where to write the generated file on the file system
+                    delimiter:
+                        title: Delimiter
+                        help: One character used to set the field delimiter
+                    enclosure:
+                        title: Enclosure
+                        help: One character used to set the field enclosure
+                    with_header:
+                        title: With header
+                        help: Whether or not to print the column name
+                    with_media:
+                        title: Export files and images
+                        help: Whether or not to export product files and images
+                    lines_per_file:
+                        title: Number of lines per file
+                        help: Define the limit number of lines per file
+                    upload_allowed:
+                        title: Allow file upload
+                        help: Whether or not to allow uploading the file directly
+                    categories_column:
+                        title: Categories column
+                        help: Name of the categories column
+                    escape:
+                        title: Escape
+                        help: One character used to set the field escape
+                    family_column:
+                        title: Family column
+                        help: Name of the family column
+                    groups_column:
+                        title: Groups column
+                        help: Name of the groups column
+                    enabled:
+                        title: Enable the product
+                        help: Whether or not imported product should be enabled
+                    enabled_comparison:
+                        title: Compare values
+                        help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
+                    real_time_versioning:
+                        title: Real time history update
+                        help: Means that the product history is automatically updated, can be switched off to improve performances
+                history:
+                    title: History
+    job:
+        upload: Drag and drop file or click here
     export:
         product:
             data:
@@ -510,6 +611,10 @@ pim_enrich:
                         "<": Lower than
                         EMPTY: Is empty
                         NOT EMPTY: Is not empty
+            properties:
+                title: Properties
+            global_settings:
+                title: Global settings
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.

@@ -102,6 +102,9 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             if (_.isUndefined(options.icon) && !_.isUndefined(this.icon)) {
                 options.icon = this.icon;
             }
+            if (_.isUndefined(options.className) && !_.isUndefined(this.className)) {
+                options.className = this.className;
+            }
             _.defaults(options, this.launcherOptions);
 
             return new (this.launcherPrototype)(options);

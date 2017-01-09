@@ -355,18 +355,21 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $pageName
-     * @param array  $options
+     * @param string  $pageName
+     * @param array   $options
+     * @param boolean $wait     should the script wait for the page to load
      *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    public function openPage($pageName, array $options = [])
+    public function openPage($pageName, array $options = [], $wait = true)
     {
         $this->currentPage = $pageName;
 
         $page = $this->getCurrentPage()->open($options);
 
-        $this->wait();
+        if ($wait) {
+            $this->wait();
+        }
 
         return $page;
     }

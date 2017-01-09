@@ -68,13 +68,12 @@ class NavigationContext extends BaseNavigationContext
      * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" association type$/
+     * @Given /^I am on the "([^"]*)" association type page$/
      */
     public function iEditTheAssociationType($identifier)
     {
         $page   = 'AssociationType';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->openPage(sprintf('%s edit', $page), ['code' => $identifier]);
     }
 
     /**
@@ -94,7 +93,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iAmOnTheExportJobPage(JobInstance $job)
     {
-        $this->openPage('Export show', ['id' => $job->getId()]);
+        $this->openPage('Export show', ['code' => $job->getCode()]);
     }
 
     /**
@@ -104,7 +103,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iAmOnTheExportJobEditPage(JobInstance $job)
     {
-        $this->openPage('Export edit', ['id' => $job->getId()]);
+        $this->openPage('Export edit', ['code' => $job->getCode()]);
     }
 
     /**
@@ -130,19 +129,6 @@ class NavigationContext extends BaseNavigationContext
     public function iAmOnTheGroupTypeEditPage($identifier)
     {
         $page   = 'GroupType';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @Given /^I am on the "([^"]*)" association type page$/
-     */
-    public function iAmOnTheAssociationTypeEditPage($identifier)
-    {
-        $page   = 'AssociationType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
@@ -180,7 +166,7 @@ class NavigationContext extends BaseNavigationContext
     public function iShouldBeOnTheJobPage(JobInstance $job)
     {
         $jobPage         = sprintf('%s show', ucfirst($job->getType()));
-        $expectedAddress = $this->getPage($jobPage)->getUrl(['id' => $job->getId()]);
+        $expectedAddress = $this->getPage($jobPage)->getUrl(['code' => $job->getCode()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -192,7 +178,7 @@ class NavigationContext extends BaseNavigationContext
     public function iShouldBeOnTheJobEditPage(JobInstance $job)
     {
         $jobPage         = sprintf('%s edit', ucfirst($job->getType()));
-        $expectedAddress = $this->getPage($jobPage)->getUrl(['id' => $job->getId()]);
+        $expectedAddress = $this->getPage($jobPage)->getUrl(['code' => $job->getCode()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -244,7 +230,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheAssociationTypePage(AssociationTypeInterface $associationType)
     {
-        $expectedAddress = $this->getPage('AssociationType edit')->getUrl(['id' => $associationType->getId()]);
+        $expectedAddress = $this->getPage('AssociationType edit')->getUrl(['code' => $associationType->getCode()]);
         $this->assertAddress($expectedAddress);
     }
 

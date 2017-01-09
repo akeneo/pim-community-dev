@@ -34,7 +34,7 @@
   &-icon {
     height: @AknDefaultButtonSize;
     width: @AknDefaultButtonSize;
-    line-height: @AknDefaultButtonSize - 2px;
+    line-height: @AknDefaultButtonSize;
     background: darken(@AknLightGray, @darken);
     margin-right: @AknButtonsPadding;
     position: absolute;
@@ -158,11 +158,19 @@
     font-size: @AknDefaultFontSize;
   }
 
+  &--small&--withIcon {
+    padding-left: @AknButtonsPadding + @AknLittleButtonSize;
+  }
+
   &--micro {
     height: @AknMicroButtonSize;
-    line-height: @AknMicroButtonSize - 2px;
+    line-height: @AknMicroButtonSize;
     min-width: @AknMicroButtonSize;
     font-size: @AknDefaultFontSize;
+  }
+
+  &--micro&--withIcon {
+    padding-left: @AknButtonsPadding + @AknMicroButtonSize;
   }
 
   &--micro &-icon {
@@ -183,5 +191,9 @@
 
   &--uppercase {
     text-transform: uppercase;
+  }
+
+  &--disabled:focus {
+    outline: -webkit-focus-ring-color auto 0;
   }
 }

@@ -144,3 +144,31 @@
     color: white;
   }
 }
+
+// Modifiers
+.ui-multiselect.ui-multiselect--select2 {
+  height: @AknDefaultButtonSize;
+  line-height: @AknDefaultButtonSize;
+  padding: 0 0 0 10px !important;
+  display: flex;
+
+  &:hover {
+    background: @AknDefaultHoverBackground;
+  }
+
+  .caret {
+    float: none;
+    width: @AknDefaultButtonSize;
+    height: @AknDefaultButtonSize - 2px;
+    display: inline-block;
+    border-left: 1px solid @AknBorderColor;
+    background-size: 96px 48px;
+    background-image: url('../../css/images/select2x2.png');
+    background-position: 3px 2px;
+    margin-left: 10px;
+  }
+
+  &.ui-state-active .caret {
+    background-color: @AknDefaultHoverBackground;
+  }
+}

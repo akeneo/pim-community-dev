@@ -7,13 +7,24 @@
   padding: 10px 20px;
 
   &-left {
+    order: 1;
     display: flex;
+    flex-grow: 1;
   }
 
-  &-center { }
+  &-center {
+    order: 5;
+    flex-grow: 1;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+  }
 
   &-right {
+    order: 10;
     display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
   }
 
   &-pageSize {
@@ -31,7 +42,21 @@
     text-align: center;
   }
 
+  &-label {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
   &-left &-actionButton:first-child {
     margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 1360px) {
+  .AknGridToolbar {
+    &-center {
+      order: 15;
+      flex-basis: 100%;
+    }
   }
 }

@@ -15,6 +15,7 @@ Feature: Edit an export
     When I fill in the following information:
       | Label | My export |
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     Then I should see "My export"
 
   Scenario: Successfully update export job configuration
@@ -25,7 +26,7 @@ Feature: Edit an export
       | Enclosure         | '             |
       | File path         | /tmp/file.csv |
       | Decimal separator | ,             |
-      | Date format       | yyyy-MM-dd    |
+      | Date format       | yyyy-mm-dd    |
     And I uncheck the "With header" switch
     When I visit the "Content" tab
     Then I should see the Channel, Locales fields
@@ -37,13 +38,20 @@ Feature: Edit an export
     And I filter by "completeness" with operator "Not complete on all selected locales" and value ""
     And I filter by "sku" with operator "" and value "identifier1 identifier2,identifier3 ,identifier4"
     Then I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
     When I visit the "General" tab
-    Then I should see the text "File path /tmp/file.csv"
-    And I should see the text "Delimiter |"
-    And I should see the text "Enclosure '"
-    And I should see the text "With header No"
-    And I should see the text "Decimal Separator comma (,)"
-    And I should see the text "Date format yyyy-MM-dd"
+    Then I should see the text "File path"
+    And the "File path" field should contain "/tmp/file.csv"
+    And I should see the text "Delimiter"
+    And the "Delimiter" field should contain "|"
+    And I should see the text "Enclosure"
+    And the "Enclosure" field should contain "'"
+    And I should see the text "With header"
+    And the "With header" field should contain ""
+    And I should see the text "Decimal separator"
+    And I should see the text "comma (,)"
+    And I should see the text "Date format"
+    And I should see the text "yyyy-MM-dd"
     When I visit the "Content" tab
     Then I should see the text "Channel (required) Tablet"
     And I should see the text "Status disabled"

@@ -71,7 +71,7 @@ datagrid:
                 type:      tab-redirect
                 label:     Edit attributes of the product
                 tab:       pim-product-edit-form-attributes
-                icon:      edit
+                icon:      pencil
                 link:      edit_link
             edit_categories:
                 type:  tab-redirect

@@ -7,7 +7,7 @@
 </select>
 
 <% if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) { %>
-    <input type="text" name="filter-data" class="value" value="<%- value.amount %>" <%- editable ? '' : 'disabled' %>>
+    <input type="text" name="filter-data" class="AknTextField AknTextField--noRightRadius AknTextField--noLeftRadius value" value="<%- value.amount %>" <%- editable ? '' : 'disabled' %>>
 
     <select class="select2 unit" name="filter-unit" <%- editable ? '' : 'disabled' %>>
         <% _.each(_.keys(units.units), function (key) { %>

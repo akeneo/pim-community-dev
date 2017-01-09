@@ -9,6 +9,7 @@ Feature: Delete attribute options
     And I am logged in as "Julia"
     And I am on the attributes page
     And I create a "Simple select" attribute
+    And I scroll down
     And I fill in the following information:
       | Code            | size  |
       | Attribute group | Other |

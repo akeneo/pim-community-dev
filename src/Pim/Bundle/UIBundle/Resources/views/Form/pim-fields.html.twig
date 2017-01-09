@@ -115,11 +115,12 @@
 {% block form_label %}
 {% spaceless %}
     {% if label is not sameas(false) %}
+        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' AknFieldContainer-label')|trim}) %}
         {% if not compound %}
             {% set label_attr = label_attr|merge({'for': id}) %}
         {% endif %}
         {% if required %}
-            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class ~ ' required')|trim}) %}
         {% endif %}
         {% if label is empty %}
             {% set label = name|humanize %}
@@ -240,7 +241,7 @@
                         {% endif %}
                     </div>
                     {% if empty %}
-                        {{ form_widget(form.uploadedFile, { attr: { 'class': 'AknMediaField-fileUploaderInput' }}) }}
+                        {{ form_widget(form.uploadedFile, { attr: { 'class': 'AknTextField--fileDropZone' }}) }}
                     {% else %}
                         {{ form_widget(form.uploadedFile, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
                         {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
@@ -428,6 +429,7 @@
 {% endblock %}
 
 {%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
     {% if attr.class is defined %}
         {% if 'input-' not in attr.class %}
             {% set class = attr.class ~ ' AknTextField' %}
@@ -437,8 +439,10 @@
     {% else %}
         {% set class = ' AknTextField' %}
     {% endif %}
+    {% if 'file' == type %}
+        {% set class = class ~ ' AknTextField--file' %}
+    {% endif %}
     {% set attr = attr|merge({'class': class }) %}
-    {%- set type = type|default('text') -%}
     <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
 {%- endblock form_widget_simple -%}
 

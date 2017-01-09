@@ -9,8 +9,8 @@
 
 ## Deprecations
 
-- In the _Product Query Builder_, aka _PQB_, (`Pim\Component\Catalog\Query\ProductQueryBuilderInterface`), filtering products by the following filters is now deprecated: `categories.id`, `family.id`, `groups.id`. 
-  Filters `categories`, `family` and `groups` have been introduced and the _PQB_ now uses them by default. The filters `categories.code`, `family.code` and `groups.code` are deprecated. 
+- In the _Product Query Builder_, aka _PQB_, (`Pim\Component\Catalog\Query\ProductQueryBuilderInterface`), filtering products by the following filters is now deprecated: `categories.id`, `family.id`, `groups.id`.
+  Filters `categories`, `family` and `groups` have been introduced and the _PQB_ now uses them by default. The filters `categories.code`, `family.code` and `groups.code` are deprecated.
   In the next version, the deprecated filters will be removed.
 - As it's not needed anymore to convert `codes` to `ids` in order to filter products, `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` and `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface` are now deprecated.
 - Creating a product value with the ProductBuilder (`Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer`) using the `createProductValue` function is now deprecated. It is advised to use the ProductValueFactory (`Pim\Component\Catalog\Factory\ProductValueFactory`) instead.
@@ -29,11 +29,13 @@
 - TIP-575: Rename FileIterator classes to FlatFileIterator and changes the reader/processor behavior to iterate over the item's position in the file instead of the item's line number in the file.
 - TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product` as it was not used anymore.
 - TIP-667: Introduce a product value factory service to instanciate product values.
+- GITHUB-5391: Redo association type edit form using backbonejs architecture and internal REST API
+- TIP-652: Redo the import/export screens in new PEF architecture
 
 ## BC breaks
 - Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
 - Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
-- Add `getAllChildrenCodes` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface` 
+- Add `getAllChildrenCodes` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
 - Change the constructor of `Pim\Bundle\FilterBundle\Filter\Product\InGroupFilter` to add `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver`
 - Remove WebServiceBundle
 - Remove `wsse_secured` firewall in security.yml
@@ -122,3 +124,34 @@
 - Update classes and services to use the interface `Pim\Component\User\Model\GroupInterface`in place of `Oro\Bundle\UserBundle\Entity\Group`
 - Remove deprecated bundle "Oro\Bundle\UIBundle\OroUIBundle"
 - Remove deprecated bundle "Oro\Bundle\FormBundle\OroFormBundle"
+- Remove useless service and parameter: `pim_enrich_image` and `pim_enrich.form.type.image.class`
+- Change `Pim\Bundle\EnrichBundle\Normalizer\AssociationTypeNormalizer` constructor to add `versionManager` and `versionNormalizer`
+- Change `Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController` constructor to add `remover`, `updater`, `saver`, `validator` and `userContext`
+- Change `Pim\Bundle\EnrichBundle\Controller\AssociationTypeController` to remove `removeAction` and change `editAction`
+- Change association type route to use `code` instead of `id` for fetching
+- Change the constructor of `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to remove `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface`, `Symfony\Component\HttpFoundation\Request`, `Symfony\Component\EventDispatcher\EventDispatcherInterface`, `Symfony\Component\Validator\Validator\ValidatorInterface`, `Pim\Bundle\ImportExportBundle\JobTemplate\JobTemplateProviderInterface`, `Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository`, `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Akeneo\Component\Batch\Job\JobParametersValidator`
+- Remove useless class `Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobNameVisibilityCheckerPass`
+- Remove useless class `Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobParametersFormsOptionsPass`
+- Remove useless class `Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobParametersModelTransformersPass`
+- Remove useless class `Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobTemplatePass`
+- Remove useless class `Pim\Bundle\ImportExportBundle\Form\DataTransformer\ConfigurationToJobParametersTransformer`
+- Remove useless class `Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\LocaleChoiceType`
+- Remove useless class `Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\ProductCsvExport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\ProductCsvImport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\ProductXlsxExport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\SimpleCsvExport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\SimpleCsvImport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\SimpleXlsxExport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\SimpleXlsxImport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\SimpleYamlExport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\SimpleYamlImport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\VariantGroupCsvExport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\VariantGroupCsvImport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\VariantGroupXlsxExport`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderRegistry`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobTemplate\JobTemplateProvider`
+- Remove useless class `Pim\Bundle\ImportExportBundle\JobTemplate\JobTemplateProviderInterface`
+- Remove useless class `Pim\Bundle\ImportExportBundle\Twig\NormalizeConfigurationExtension`
+- Remove useless class `Pim\Bundle\ImportExportBundle\ViewElement\Checker\JobNameVisibilityChecker`

@@ -41,7 +41,7 @@ parameters:
     pim_enrich.controller.rest.versioning.class:              Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController
     pim_enrich.controller.mass_edit.abstract:                 Pim\Bundle\EnrichBundle\Controller\MassEdit\AbstractMassEditController
     pim_enrich.controller.rest.attribute_option.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController
-
+    pim_enrich.controller.rest.job_instance.class:            Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController
 
 services:
     pim_enrich.controller.attribute_group:
@@ -305,6 +305,11 @@ services:
         arguments:
             - '@pim_catalog.repository.association_type'
             - '@pim_internal_api_serializer'
+            - '@pim_catalog.remover.association_type'
+            - '@pim_catalog.updater.association_type'
+            - '@pim_catalog.saver.association_type'
+            - '@validator'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.attribute:
         class: '%pim_enrich.controller.rest.attribute.class%'
@@ -480,3 +485,21 @@ services:
         arguments:
             - '@pim_enrich.repository.attribute_option.search'
             - '@pim_enrich.normalizer.structured.attribute_option'
+
+    pim_enrich.controller.rest.job_instance:
+        class: '%pim_enrich.controller.rest.job_instance.class%'
+        arguments:
+            - '@pim_import_export.repository.job_instance'
+            - '@akeneo_batch.job.job_registry'
+            - '@pim_catalog.normalizer.standard.job_instance'
+            - '@akeneo_batch.updater.job_instance'
+            - '@akeneo_batch.saver.job_instance'
+            - '@akeneo_batch.remover.job_instance'
+            - '@validator'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@security.token_storage'
+            - '@router'
+            - '@pim_enrich.provider.form.chained'
+            - '@pim_catalog.filter.chained'

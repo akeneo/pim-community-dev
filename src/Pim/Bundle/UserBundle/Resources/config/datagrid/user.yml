@@ -119,7 +119,7 @@ datagrid:
                 type:          navigate
                 label:         Update
                 link:          update_link
-                icon:          edit
+                icon:          pencil
                 acl_resource:  pim_user_user_edit
             delete:
                 type:          delete

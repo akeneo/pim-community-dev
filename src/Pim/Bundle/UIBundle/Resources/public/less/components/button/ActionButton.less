@@ -40,9 +40,10 @@
   }
 
   &-selectButton {
+    color: @AknDefaultFontColor;
+    cursor: pointer;
     background: none;
     border: none;
-    color: @AknDefaultFontColor;
 
     &:hover, &:active, &:focus {
       outline: none;
@@ -58,5 +59,47 @@
   .ui-multiselect {
     width: auto !important;
     padding: 0 !important;
+  }
+
+  &--glued {
+    border-radius: 0;
+
+    &:first-child {
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
+
+    & + & {
+      border-left: none;
+    }
+  }
+
+  &--disabled {
+    color: @AknLightFontColor;
+    background: @AknDisabledInputColor;
+    cursor: not-allowed;
+  }
+
+  &--input {
+    cursor: inherit;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-align: center;
+    
+    &:hover {
+      background: white;
+    }
+  }
+
+  &--square {
+    min-width: @AknLittleButtonSize;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
   }
 }

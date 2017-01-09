@@ -12,6 +12,7 @@
 | --------------------------------- | ---
 | Added Specs                       | :white_check_mark: :red_circle: :negative_squared_cross_mark: :clock1:
 | Added Behats                      | :white_check_mark: :red_circle: :negative_squared_cross_mark: :clock1:
+| Added integration tests           | :white_check_mark: :red_circle: :negative_squared_cross_mark: :clock1:
 | Changelog updated                 | :white_check_mark: :red_circle: :negative_squared_cross_mark: :clock1:
 | Review and 2 GTM                  | :white_check_mark: :red_circle: :negative_squared_cross_mark: :clock1:
 | Micro Demo to the PO (Story only) | :white_check_mark: :red_circle: :negative_squared_cross_mark: :clock1:

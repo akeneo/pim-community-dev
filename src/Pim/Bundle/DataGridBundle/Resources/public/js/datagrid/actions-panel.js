@@ -59,7 +59,7 @@ function(_, Backbone, groupTemplate) {
             });
 
             if (simpleLaunchers.length) {
-                var $container = $('<div class="AknGridToolbar-actionButton AknActionButtonList"></div>');
+                var $container = $('<div class="AknGridToolbar-actionButton"></div>');
                 _.each(simpleLaunchers, function (launcher) {
                     $container.append(launcher.render().$el);
                 }, this);

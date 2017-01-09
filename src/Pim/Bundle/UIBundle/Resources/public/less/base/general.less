@@ -14,7 +14,15 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Lato';
+  src: url('/bundles/pimui/fonts/Lato-Light.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+
 * {
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -22,7 +30,7 @@ html {
   font-size: 100%;
   height: 100%;
   margin: 0;
-  padding: 0 ;
+  padding: 0;
 }
 
 body {
@@ -35,6 +43,7 @@ body {
   min-height: 600px;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 
   &.konami:hover {
     cursor: url("/bundles/pimui/images/unicorn-akeneo_43.png"), pointer !important;
@@ -49,8 +58,9 @@ ul, ol, li, menu {
 
 input[type="radio"],
 input[type="checkbox"] {
-  margin: 4px 0 0;
   line-height: normal;
+  vertical-align: middle;
+  margin: -2px 0 0 0;
 }
 
 input,

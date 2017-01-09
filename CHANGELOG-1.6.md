@@ -4,6 +4,8 @@
 
 - PIM-6033: Fix validation issue when you add a blank attribute option line
 - PIM-6042: Successfully import product associations without removing already existing associations when option "compare values" is set to true
+- PIM-6041: Fix wrong conversion units output for channel export profiles csv and xlsx
+- PIM-6047: Do not export conversion units of channels if no conversion is set
 
 # 1.6.7 (2016-12-20)
 

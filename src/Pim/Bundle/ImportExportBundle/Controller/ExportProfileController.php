@@ -47,9 +47,9 @@ class ExportProfileController extends JobProfileController
      *
      * @AclAncestor("pim_importexport_export_profile_show")
      */
-    public function showAction($id)
+    public function showAction($code)
     {
-        return parent::showAction($id);
+        return parent::showAction($code);
     }
 
     /**
@@ -57,29 +57,9 @@ class ExportProfileController extends JobProfileController
      *
      * @AclAncestor("pim_importexport_export_profile_edit")
      */
-    public function editAction(Request $request, $id)
+    public function editAction($code)
     {
-        return parent::editAction($request, $id);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @AclAncestor("pim_importexport_export_profile_remove")
-     */
-    public function removeAction(Request $request, $id)
-    {
-        return parent::removeAction($request, $id);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @AclAncestor("pim_importexport_export_profile_launch")
-     */
-    public function launchAction($id)
-    {
-        return parent::launchAction($id);
+        return parent::editAction($code);
     }
 
     /**

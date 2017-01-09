@@ -8,9 +8,13 @@ Feature: Browse export executions
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the exports page
+    And I am on the "csv_footwear_product_export" export job page
     And I launch the "csv_footwear_product_export" export job
+    And I am on the "csv_footwear_category_export" export job page
     And I launch the "csv_footwear_category_export" export job
+    And I am on the "csv_footwear_attribute_export" export job page
     And I launch the "csv_footwear_attribute_export" export job
+    And I am on the "csv_footwear_product_export" export job page
     And I launch the "csv_footwear_product_export" export job
     Then I am on the export executions page
     And the grid should contain 4 elements

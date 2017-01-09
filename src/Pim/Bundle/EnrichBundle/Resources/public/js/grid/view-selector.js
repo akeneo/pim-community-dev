@@ -105,11 +105,10 @@ define(
             /**
              * Initialize the view type to display at initialization.
              *
-             * @returns {Promise}
+             * @return {Promise}
              */
             initializeViewTypes: function () {
                 this.currentViewType = 'view';
-                // TODO: IF PROJECT/VIEW ALREADY SELECTED, PICK THE RIGHT VIEW TYPE
 
                 return $.Deferred().resolve();
             },
@@ -142,7 +141,9 @@ define(
                     formatSelection: function (item, $container) {
                         FormBuilder.buildForm('pim-grid-view-selector-current').then(function (form) {
                             form.setParent(this);
-                            return form.configure(item).then(function () {
+                            form.setView(item);
+
+                            return form.configure().then(function () {
                                 $container.append(form.render().$el);
                                 this.onGridStateChange();
                             }.bind(this));
@@ -266,7 +267,7 @@ define(
              * Initialize the Select2 selection based on the DatagridState.
              * Could be the User default one, or an existing view edited or whatever.
              *
-             * @returns {Promise}
+             * @return {Promise}
              */
             initializeSelection: function () {
                 var activeViewId = DatagridState.get(this.gridAlias, 'view');
@@ -277,11 +278,12 @@ define(
                     if ('0' === activeViewId) {
                         deferred.resolve(this.getDefaultView());
                     } else {
-                        FetcherRegistry.getFetcher('datagrid-view').fetch(activeViewId, {alias: this.gridAlias})
+                        FetcherRegistry.getFetcher('datagrid-view')
+                            .fetch(activeViewId, {alias: this.gridAlias})
+                            .then(this.postFetchDatagridView.bind(this))
                             .then(function (view) {
-                                view.text = view.label;
                                 deferred.resolve(view);
-                            }.bind(this));
+                            });
                     }
                 } else if (userDefaultView) {
                     userDefaultView.text = userDefaultView.label;
@@ -310,9 +312,23 @@ define(
             },
 
             /**
+             * Method called right after fetching the view from the backend.
+             * This is where we can handle the view before it goes to select2.
+             *
+             * @param {Object} view
+             *
+             * @return {Promise}
+             */
+            postFetchDatagridView: function (view) {
+                view.text = view.label;
+
+                return $.Deferred().resolve(view).promise();
+            },
+
+            /**
              * Return the default view object which contains default columns & no filter.
              *
-             * @returns {Object}
+             * @return {Object}
              */
             getDefaultView: function () {
                 return {
@@ -440,7 +456,7 @@ define(
              *
              * @param {array} data
              *
-             * @returns {array}
+             * @return {array}
              */
             toSelect2Format: function (data) {
                 return _.map(data, function (view) {

@@ -143,7 +143,7 @@
   }
 
   .select2-search-choice-close {
-    top: 7px;
+    top: 8px;
   }
 
   &.select2-container-active .select2-choices {
@@ -180,6 +180,7 @@
 
     input[type="checkbox"] {
       flex-basis: 14px;
+      margin-top: 4px;
     }
 
     .attribute-label {
@@ -383,10 +384,44 @@
   }
 }
 
+.select2-container.select2--withoutBorder {
+  &.select2-container-active {
+    .select2-choice {
+      box-shadow: none;
+    }
+  }
+
+  .select2-choice {
+    border: none;
+
+    & > .select2-chosen {
+      margin-right: 34px;
+    }
+
+    .select2-arrow {
+      border-left: none;
+    }
+  }
+}
+
 .select2-searchIcon {
   font-size: @AknBigIconFontSize;
   color: @AknBorderColor;
   line-height: @AknFormHeight - 2px;
   position: absolute;
   left: 10px;
+}
+
+// Fix for Retina icons
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  {
+  .select2-search input,
+  .select2-search-choice-close,
+  .select2-container .select2-choice abbr,
+  .select2-container .select2-choice .select2-arrow b {
+    background-size: 90px 48px !important
+  }
+  
+  .select2-search input {
+    background-position: 0 0 !important;
+  }
 }

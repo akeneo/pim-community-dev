@@ -3,6 +3,7 @@
 .AknProjectWidget {
   border: 1px solid @AknBorderColor;
   padding: 15px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
 
   &-boxes {
     display: flex;
@@ -25,9 +26,12 @@
   }
 
   &-box {
+    color: @AknDarkBlue;
     border: 1px solid @AknBorderColor;
+    font-size: @AknDefaultFontSize;
     padding: 40px 0 30px;
     font-weight: bold;
+    position: relative;
 
     &--important {
       border-bottom: 4px solid @AknRed;
@@ -46,12 +50,46 @@
     font-size: @AknHugeFontSize;
     line-height: @AknHugeFontSize;
     padding-bottom: 15px;
-    font-weight: normal;
+    font-weight: 200;
     color: @AknGrey;
+  }
+
+  &-box:hover &-boxHover {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &-boxHover {
+    background: fade(@AknDarkBlue, 90%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.1s linear;
+  }
+
+  &-boxHoverText {
+    font-size: @AknDefaultFontSize;
+    color: white;
+    text-transform: uppercase;
+    border: 1px solid white;
+    padding: 5px 10px;
+    border-radius: 2px;
   }
 
   &-resume {
     font-size: @AknFontSizeBig;
+    font-weight: bold;
     margin-top: 10px;
   }
 
@@ -65,7 +103,7 @@
   &-topBar {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid @AknPurple;
+    border-bottom: 3px solid @AknPurple;
     margin-bottom: 10px;
     align-items: center;
     padding-bottom: 10px;
@@ -76,7 +114,7 @@
   }
 
   &-mainSelectorCurrent {
-    color: @AknDefaultFontColor;
+    color: @AknPurple;
     font-size: @AknFontSizeBig;
   }
 
@@ -85,10 +123,14 @@
     font-size: @AknFontSizeBig;
     font-weight: bold;
     text-transform: uppercase;
+
+    &:after {
+      content: ' - ';
+    }
   }
 
   &-secondarySelectorCurrentTitle {
-    font-size: @AknFontSizeBig;
+    font-size: @AknDefaultFontSize;
     font-weight: bold;
     text-transform: uppercase;
   }
