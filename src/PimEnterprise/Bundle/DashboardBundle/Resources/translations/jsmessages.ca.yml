@@ -6,3 +6,4 @@ pimee_dashboard:
       product: Producte
       review: Revisar
       empty: No hi ha propostes per revisar
+      view_all: Veure tots

@@ -23,18 +23,28 @@ pimee_product_asset:
         title: Reiniciar variacions
         message: Esteu segur que voleu reiniciar totes les variacions?
   mass_upload:
+    menu: Carregar recursos
     btn:
+      add_files: Afegir arxius
+      cancel: Cancel·lar càrrega
       delete: Suprimir
+      schedule: Planificar
       start: Iniciar càrrega
     success:
       new: Es crearà un nou recurs
+      scheduled: Arxius planificats pel recurs actiu
+      canceled: L'intent de càrrega ha estat cancel·lat correctament
+      deleted: L'arxiu carregat s'ha eliminat correctament
     error:
+      list: No es poden llegir els arxius que s'han carregat
       upload: S'ha produït un error durant la càrrega
       delete: No es pot eliminar aquest arxiu del servidor
+      schedule: S'ha produït un error en carregar el processament de planificació
       filename: Aquest nom de fitxer no és vàlid pel recurs
       code: Format de codi invàlid pel recurs
       locale: Ja existeix un recurs però no se li pot aplicar cap configuració regional
       invalid_locale: La configuració regional està desactivada o no és vàlida
+      exists: Ja existeix la programació de càrrega d'un arxiu amb el mateix nom
       conflicts: Conflicte de nom d'arxius
     grid:
       filename: nom d'arxiu
@@ -48,5 +58,11 @@ pimee_product_asset:
     status:
       added: Afegit|Afegides
       queued: En cua
+      uploading: Carregant
       error: Error
       success: Correcte
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Carregar en massa

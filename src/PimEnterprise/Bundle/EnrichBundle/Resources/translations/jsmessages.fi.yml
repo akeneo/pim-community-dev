@@ -20,7 +20,7 @@ pimee_enrich:
         published: Julkaistu
         revert: Palauta
       smart_attribute:
-        come_from: 'Tämä attribuutti voidaan päivittää säännöllä:'
+        come_from: "Tämä attribuutti voidaan päivittää säännöllä:"
       btn:
         publish: Julkaise
         publish_this_version: Julkaise tämä versio
@@ -69,7 +69,7 @@ pimee_enrich:
         source:
           working_copy: Työkopio
           draft: Luonnokseni
-          draft_of: '{{ author }}: n luonnos'
+          draft_of: "{{ author }}: n luonnos"
     product_draft:
       info:
         update_successful: Tuotteen luonnos tallennettu onnistuneesti

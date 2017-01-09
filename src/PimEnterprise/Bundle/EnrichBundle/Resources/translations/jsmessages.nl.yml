@@ -20,7 +20,7 @@ pimee_enrich:
         published: Gepubliceerd
         revert: Herstel
       smart_attribute:
-        come_from: 'Dit attribuut kan geüpdatet worden door een regel:'
+        come_from: "Dit attribuut kan geüpdatet worden door een regel:"
       btn:
         publish: Publiceren
         publish_this_version: Publiceer deze versie

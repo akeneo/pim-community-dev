@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Lokalisatie %locale.code% | Bewerken
+  edit: "Lokalisatie %locale.code% | Bewerken"
 Permissions: Machtigingen
 pane.accordion.permissions: Machtigingen
 attribute group.permissions:
@@ -39,7 +39,9 @@ pim_enrich:
     published_product:
       page_title: Gepubliceerde producten
       title: Kies bewerking
+      confirm: U staat op het punt een gepubliceerd product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% gepubliceerde producten bij te werken met de volgende informatie. Alstublieft bevestigen.
       steps:
+        first: Kies gepubliceerde producten
         second: Kies bewerking
     unpublish:
       label: Depubliceer producten

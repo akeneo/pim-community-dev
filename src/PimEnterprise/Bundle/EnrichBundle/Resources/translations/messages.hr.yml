@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Lokacije %locale.code% | Uredi
+  edit: "Lokacije %locale.code% | Uredi"
 Permissions: Dozvole
 pane.accordion.permissions: Dozvole
 attribute group.permissions:
