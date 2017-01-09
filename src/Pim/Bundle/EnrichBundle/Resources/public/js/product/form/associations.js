@@ -267,6 +267,7 @@ define(
                     .siblings('.target-button')
                     .removeClass('AknButton--hidden');
 
+                this.renderPanes();
                 this.updateListenerSelectors();
 
                 var currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
