@@ -1,4 +1,5 @@
 Item deleted: Element suprimit
+Are you sure you want to delete this item?: Esteu segur que voleu eliminar aquest element?
 Delete Error: Error a l'esborrar
 Are you sure you want to do remove selected items?: Esteu segur que voleu suprimir els elements seleccionats?
 Selected items were removed.: Els elements seleccionats han estat retirats.
@@ -10,7 +11,9 @@ Your local changes will be lost. Are you sure you want to refresh grid?: Es perd
 Reset Confirmation: Reiniciar la confirmació
 Your local changes will be lost. Are you sure you want to reset grid?: Es perdran els canvis locals. Esteu segur que voleu reiniciar la graella?
 Confirmation: Confirmació
+edit: editar
 copy: copiar
+remove: eliminar
 Status: Estat
 All: Tots
 Per page: Per pàgina
@@ -35,20 +38,30 @@ oro.datagrid.action.reset: "Reinicia"
 oro.datagrid.action.refresh: "Actualitza"
 oro_datagrid.select.all: "Tots"
 oro_datagrid.select.visible: "Tot visible"
+oro_datagrid.select.none: "Cap"
 pim.grid.ajax_choice_filter.label_empty: està buit
 pim.grid.choice_filter:
   label_empty: Està buit
   label_in_list: A la llista
 Available Columns: Columnes disponibles
+Displayed Columns: Columnes mostrades
 datagrid_view.columns.min_message: Heu de seleccionar almenys una columna de la graella de dades per mostrar
 pim_datagrid:
   column_configurator:
+    label: Columnes
     title: Selecció de columna
     all_groups: Tots els grups
+    search: Cercar
     clear: Restablir
+    displayed_columns: Columnes mostrades
+    apply: Aplicar
+    cancel: Cancelar
+    remove_column: Eliminar
   mass_action:
     delete:
+      confirm_title: Confirmació de l'eliminació.
       confirm_ok: OK
+      empty_selection: Cap producte seleccionat.
 pim.grid.mass_action.quick_export.title: Exportació ràpida
 pim.grid.action.launch.title: Arrencar
 pim.grid.action.show.title: Mostrar

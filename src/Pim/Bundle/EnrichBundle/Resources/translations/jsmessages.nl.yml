@@ -83,8 +83,10 @@ Classify the product: Classificeren van het product
 Delete the product: Het product verwijderen
 Change status: Status wijzigen
 Toggle status: Schakel status
+pim.grid.mass_action.quick_export.csv_all: CSV (alle kenmerken)
 pim.grid.mass_action.delete: Verwijderen
 pim.grid.mass_action.mass_edit: Massa bewerken
+pim.grid.mass_action.sequential_edit: Sequentiële bewerking
 jstree.create: Aanmaken
 switch_on: "Ja"
 switch_off: "Nee"

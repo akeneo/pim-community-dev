@@ -15,6 +15,7 @@ oro.grid.datagrid.page_size.all: Alle
 oro.grid.mass_action.delete.success_message: "{0} Geen entiteiten werden verwijderd|{1} Eén entiteit was verwijderd|{1}, Inf [%count% entiteiten werden verwijderd"
 datagrid_view:
   views: Weergaves
+  default: Mijn standaardweergave
   create: Weergave maken
   placeholder: Naam van nieuwe weergave
   remove: Deze weergave verwijderen

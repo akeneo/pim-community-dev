@@ -15,6 +15,7 @@ oro.grid.datagrid.page_size.all: Tots
 oro.grid.mass_action.delete.success_message: "{0} no s'ha eliminat cap entitat|{1} s'ha eliminat una entitat|] 1, Inf [s'han eliminat %count% entitats"
 datagrid_view:
   views: Vistes
+  default: Visualització per defecte
   create: Crear vista
   placeholder: Nom de la nova vista
   remove: Eliminar aquesta vista
