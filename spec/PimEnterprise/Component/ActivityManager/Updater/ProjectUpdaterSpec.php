@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Component\ActivityManager\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Updater\ProjectUpdater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -34,9 +34,14 @@ class ProjectUpdaterSpec extends ObjectBehavior
         $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    function it_updates_nothing_else_than_project($object)
+    function it_updates_nothing_else_than_project()
     {
-        $this->shouldThrow('\InvalidArgumentException')->during('update', [$object, []]);
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                ProjectInterface::class
+            )
+        )->during('update', [new \stdClass(), []]);
     }
 
     function it_updates_a_project_properties(

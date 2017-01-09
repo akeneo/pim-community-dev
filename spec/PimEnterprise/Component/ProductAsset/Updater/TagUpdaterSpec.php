@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
-use Prophecy\Argument;
 
 class TagUpdaterSpec extends ObjectBehavior
 {
@@ -21,8 +21,9 @@ class TagUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_tag()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "PimEnterprise\Component\ProductAsset\Model\TagInterface", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'PimEnterprise\Component\ProductAsset\Model\TagInterface'
             )
         )->during(
             'update',

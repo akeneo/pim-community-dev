@@ -1,8 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\PimEnterprise\Component\Security\Updater;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\User\Model\GroupInterface;
@@ -30,8 +32,9 @@ class ProductCategoryAccessUpdaterSpec extends ObjectBehavior
     function it_throw_an_exception_when_trying_to_update_anything_else_than_a_product_category_access()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess'
             )
         )->during('update', [new \stdClass(), []]);
     }
@@ -69,8 +72,16 @@ class ProductCategoryAccessUpdaterSpec extends ObjectBehavior
     ) {
         $groupRepository->findOneByIdentifier('foo')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException('Group with "foo" code does not exist'))
-            ->during('update', [$categoryAccess, ['user_group' => 'foo']]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'user_group',
+                'group code',
+                'The group does not exist',
+                'updater',
+                'product category access',
+                'foo'
+            )
+        )->during('update', [$categoryAccess, ['user_group' => 'foo']]);
     }
 
     function it_throws_an_exception_if_locale_not_found(
@@ -79,7 +90,15 @@ class ProductCategoryAccessUpdaterSpec extends ObjectBehavior
     ) {
         $categoryRepository->findOneByIdentifier('foo')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException('Product category with "foo" code does not exist'))
-            ->during('update', [$categoryAccess, ['category' => 'foo']]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'category',
+                'category code',
+                'The category does not exist',
+                'updater',
+                'product category access',
+                'foo'
+            )
+        )->during('update', [$categoryAccess, ['category' => 'foo']]);
     }
 }

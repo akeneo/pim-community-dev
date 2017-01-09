@@ -1,7 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\PimEnterprise\Component\Security\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -30,8 +32,9 @@ class LocaleAccessUpdaterSpec extends ObjectBehavior
     function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute_group()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "PimEnterprise\Component\Security\Model\LocaleAccessInterface", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'PimEnterprise\Component\Security\Model\LocaleAccessInterface'
             )
         )->during('update', [new \stdClass(), []]);
     }
@@ -67,8 +70,16 @@ class LocaleAccessUpdaterSpec extends ObjectBehavior
     ) {
         $groupRepository->findOneByIdentifier('foo')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException('Group with "foo" code does not exist'))
-            ->during('update', [$localeAccess, ['user_group' => 'foo']]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'user_group',
+                'group code',
+                'The group does not exist',
+                'updater',
+                'locale access',
+                'foo'
+            )
+        )->during('update', [$localeAccess, ['user_group' => 'foo']]);
     }
 
     function it_throws_an_exception_if_locale_not_found(
@@ -77,7 +88,15 @@ class LocaleAccessUpdaterSpec extends ObjectBehavior
     ) {
         $localeRepository->findOneByIdentifier('foo')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException('Locale with "foo" code does not exist'))
-            ->during('update', [$localeAccess, ['locale' => 'foo']]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'locale',
+                'locale code',
+                'The locale does not exist',
+                'updater',
+                'locale access',
+                'foo'
+            )
+        )->during('update', [$localeAccess, ['locale' => 'foo']]);
     }
 }

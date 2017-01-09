@@ -1,7 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\PimEnterprise\Component\Security\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
@@ -30,8 +32,9 @@ class AttributeGroupAccessUpdaterSpec extends ObjectBehavior
     function it_throw_an_exception_when_trying_to_update_anything_else_than_an_asset_category_access()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface'
             )
         )->during('update', [new \stdClass(), []]);
     }
@@ -44,7 +47,7 @@ class AttributeGroupAccessUpdaterSpec extends ObjectBehavior
         AttributeGroupInterface $attributeGroup
     ) {
         $values = [
-            'attributeGroup'  => 'other',
+            'attribute_group'  => 'other',
             'user_group'      => 'IT Manager',
             'view_attributes' => true,
             'edit_attributes' => false,
@@ -67,17 +70,33 @@ class AttributeGroupAccessUpdaterSpec extends ObjectBehavior
     ) {
         $userGroupRepo->findOneByIdentifier('foo')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException('Group with "foo" code does not exist'))
-            ->during('update', [$groupAccess, ['user_group' => 'foo']]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'user_group',
+                'group code',
+                'The group does not exist',
+                'updater',
+                'attribute group access',
+                'foo'
+            )
+        )->during('update', [$groupAccess, ['user_group' => 'foo']]);
     }
 
-    function it_throws_an_exception_if_locale_not_found(
+    function it_throws_an_exception_if_attribute_group_not_found(
         $attributeGroupRepo,
-        AttributeGroupInterface $groupAccess
+        AttributeGroupAccessInterface $groupAccess
     ) {
         $attributeGroupRepo->findOneByIdentifier('foo')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException('Attribute group with "foo" code does not exist'))
-            ->during('update', [$groupAccess, ['category' => 'foo']]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'attribute_group',
+                'attribute group code',
+                'The attribute group does not exist',
+                'updater',
+                'attribute group access',
+                'foo'
+            )
+        )->during('update', [$groupAccess, ['attribute_group' => 'foo']]);
     }
 }
