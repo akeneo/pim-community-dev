@@ -11,10 +11,11 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Controller;
 
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -38,22 +39,28 @@ class PermissionRestController
     /** @var UserContext */
     protected $userContext;
 
+    /** @var EntityRepository */
+    protected $jobInstanceRepo;
+
     /**
      * @param AuthorizationCheckerInterface     $authorizationChecker
      * @param AttributeGroupRepositoryInterface $attributeGroupRepo
      * @param CategoryAccessRepository          $categoryAccessRepo
      * @param UserContext                       $userContext
+     * @param EntityRepository                  $jobInstanceRepo
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         AttributeGroupRepositoryInterface $attributeGroupRepo,
         CategoryAccessRepository $categoryAccessRepo,
-        UserContext $userContext
+        UserContext $userContext,
+        EntityRepository $jobInstanceRepo
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->attributeGroupRepo = $attributeGroupRepo;
-        $this->categoryAccessRepo = $categoryAccessRepo;
-        $this->userContext = $userContext;
+        $this->attributeGroupRepo   = $attributeGroupRepo;
+        $this->categoryAccessRepo   = $categoryAccessRepo;
+        $this->userContext          = $userContext;
+        $this->jobInstanceRepo      = $jobInstanceRepo;
     }
 
     /**
@@ -85,6 +92,17 @@ class PermissionRestController
             $this->attributeGroupRepo->findAll()
         );
 
+        $jobInstances = array_map(
+            function ($jobInstance) use ($authorizationChecker) {
+                return [
+                    'code' => $jobInstance->getCode(),
+                    'execute' => $authorizationChecker->isGranted(Attributes::EXECUTE, $jobInstance),
+                    'edit'    => $authorizationChecker->isGranted(Attributes::EDIT, $jobInstance)
+                ];
+            },
+            $this->jobInstanceRepo->findAll()
+        );
+
         $user = $this->userContext->getUser();
 
         $categories = [];
@@ -102,6 +120,7 @@ class PermissionRestController
                 'locales'          => $locales,
                 'attribute_groups' => $attributeGroups,
                 'categories'       => $categories,
+                'job_instances'    => $jobInstances
             ]
         );
     }

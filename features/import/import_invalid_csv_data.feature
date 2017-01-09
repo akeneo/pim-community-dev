@@ -20,6 +20,7 @@ Feature: Handle import of invalid CSV data
     And the following job "csv_clothing_asset_category_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "csv_clothing_asset_category_import" import job page
     And I launch the "csv_clothing_asset_category_import" import job
     And I wait for the "csv_clothing_asset_category_import" job to finish
     Then I should see the text "Download invalid data"
@@ -44,6 +45,7 @@ Feature: Handle import of invalid CSV data
     And the following job "csv_clothing_asset_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "csv_clothing_asset_import" import job page
     And I launch the "csv_clothing_asset_import" import job
     And I wait for the "csv_clothing_asset_import" job to finish
     Then I should see the text "Download invalid data"
@@ -67,6 +69,7 @@ Feature: Handle import of invalid CSV data
     And the following job "csv_clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
+    And I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the "csv_clothing_product_proposal_import" import job
     And I wait for the "csv_clothing_product_proposal_import" job to finish
     Then I should see the text "Download invalid data"

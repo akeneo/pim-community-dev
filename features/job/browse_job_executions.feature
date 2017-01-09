@@ -10,11 +10,17 @@ Feature: Browse job executions
 
   Scenario: Successfully view job executions depending on given permissions
     Given I am on the exports page
+    And I am on the "csv_clothing_product_export" export job page
     And I launch the "csv_clothing_product_export" export job
+    And I am on the "csv_clothing_category_export" export job page
     And I launch the "csv_clothing_category_export" export job
+    And I am on the "csv_clothing_attribute_export" export job page
     And I launch the "csv_clothing_attribute_export" export job
+    And I am on the "csv_clothing_category_export" export job page
     And I launch the "csv_clothing_category_export" export job
+    And I am on the "csv_clothing_option_export" export job page
     And I launch the "csv_clothing_option_export" export job
+    And I am on the "csv_clothing_product_import" import job page
     And I launch the "csv_clothing_product_import" import job
     When I am on the export executions page
     Then the grid should contain 5 elements
@@ -25,6 +31,7 @@ Feature: Browse job executions
       | Allowed to execute job profile | Redactor |
       | Allowed to edit job profile    | Redactor |
     And I save the job profile
-    Then I am on the export executions page
+    Then I should not see the text "There are unsaved changes."
+    And I am on the export executions page
     And the grid should contain 3 elements
     And I should see export profiles csv_clothing_product_export, csv_clothing_attribute_export and csv_clothing_option_export

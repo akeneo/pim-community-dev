@@ -16,6 +16,16 @@ permission-changes:
         revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong>
 
 pimee_enrich:
+    form:
+        job_instance:
+            tab:
+                permission:
+                    title: Permissions
+                    added: The group {{ group }} will be allowed to {{ permission }} job profile
+                    execute.label: Allowed to execute job profile
+                    edit.label: Allowed to edit job profile
+                    removed: The group {{ group }} will not be allowed to {{ permission }} job profile
+
     entity:
         product:
             history:

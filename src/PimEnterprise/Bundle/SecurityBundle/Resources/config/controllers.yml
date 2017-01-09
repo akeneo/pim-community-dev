@@ -9,3 +9,4 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pimee_security.repository.category_access'
             - '@pim_user.context.user'
+            - '@pim_import_export.repository.job_instance'

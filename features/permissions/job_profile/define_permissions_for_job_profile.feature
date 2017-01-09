@@ -16,6 +16,7 @@ Feature: Define permissions for a job profile
       | Allowed to execute job profile | IT support |
       | Allowed to edit job profile    | IT support |
     And I save the job profile
-    Then I should be on the "csv_clothing_product_import" import job page
+    Then I should not see the text "There are unsaved changes."
+    And I should be on the "csv_clothing_product_import" import job page
     And I should see the "Edit" button
     And I should see the "Import now" button

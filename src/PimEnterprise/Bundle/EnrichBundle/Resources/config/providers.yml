@@ -24,3 +24,31 @@ services:
             - [addResource, ['%pim_catalog.entity.group.class%']]
             - [addResource, ['%pim_catalog.entity.locale.class%']]
             - [addResource, ['%pimee_product_asset.model.asset.class%']]
+
+
+    pimee_enrich.provider.form.job_instance:
+        class: '%pim_enrich.provider.form.job_instance.class%'
+        arguments:
+            -
+                yml_rule_import: pim-job-instance-yml-base-import
+                yml_rule_export: pim-job-instance-yml-base-export
+                yml_asset_channel_configuration_import: pim-job-instance-yml-base-import
+                yml_asset_channel_configuration_export: pim-job-instance-yml-base-export
+                csv_product_import_with_rules: pim-job-instance-csv-product-import
+                csv_product_proposal_import: pim-job-instance-csv-product-import
+                csv_published_product_export: pim-job-instance-csv-product-export
+                csv_asset_category_import: pim-job-instance-csv-base-import
+                csv_asset_category_export: pim-job-instance-csv-base-export
+                csv_asset_export: pim-job-instance-csv-base-export
+                csv_asset_variation_export: pim-job-instance-csv-base-export
+                csv_asset_import: pim-job-instance-csv-base-import
+                xlsx_published_product_export: pim-job-instance-xlsx-product-export
+                xlsx_asset_category_export: pim-job-instance-xlsx-base-export
+                xlsx_product_import_with_rules: pim-job-instance-csv-product-import
+                xlsx_product_proposal_import: pim-job-instance-csv-product-import
+                xlsx_asset_category_import: pim-job-instance-csv-base-import
+                xlsx_asset_import: pim-job-instance-csv-base-import
+                xlsx_asset_variation_export: pim-job-instance-xlsx-base-export
+                xlsx_asset_export: pim-job-instance-xlsx-base-export
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
