@@ -90,10 +90,7 @@ class MetricAttributeCopierSpec extends ObjectBehavior
 
         $metric->getFamily()->shouldBeCalled()->willReturn('Weight');
         $metric->getData()->shouldBeCalled()->willReturn(123);
-        $metric->getUnit()->shouldBeCalled()->willReturn('kg');
-
-        $metric->setData(123)->shouldBeCalled();
-        $metric->setUnit('kg')->shouldBeCalled();
+        $metric->getUnit()->shouldBeCalled()->willReturn('KILOGRAM');
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
@@ -107,9 +104,12 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue2);
 
-        $metricFactory->createMetric('Weight')->shouldBeCalledTimes(1)->willReturn($metric);
+        $metricFactory->createMetric('Weight', 'KILOGRAM', 123)->shouldBeCalledTimes(3)->willReturn($metric);
 
-        $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
+        $builder
+            ->addProductValue($product3, $toAttribute, $toLocale, $toScope)
+            ->shouldBeCalledTimes(1)
+            ->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
         foreach ($products as $product) {

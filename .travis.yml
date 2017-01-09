@@ -16,12 +16,8 @@ before_install:
     - phpenv config-rm xdebug.ini || echo "xdebug not available for PHP $TRAVIS_PHP_VERSION"
     - echo 'date.timezone = "Europe/Paris"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - if [ "$TRAVIS_PHP_VERSION" = "5.6" ]; then
-        echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
-      fi;
-    - if [ "$TRAVIS_PHP_VERSION" = "7.0" ] || [ "$TRAVIS_PHP_VERSION" = "7.1" ]; then
-        pecl install mongodb;
-      fi;
+    - composer self-update --no-interaction
+    - cp phpspec.yml.dist phpspec.yml
     - if [ "$TRAVIS_PHP_VERSION" = "5.6" ]; then
         yes '' | pecl install apcu-4.0.11;
       fi;
@@ -31,13 +27,11 @@ before_install:
     - npm install -g grunt-cli
 
 install:
+    - composer update --prefer-dist --no-interaction
     - mysql -u root -e 'CREATE DATABASE akeneo_pim;'
     - mysql -u root -e 'CREATE USER "akeneo_pim"@"localhost" IDENTIFIED BY "akeneo_pim";'
     - mysql -u root -e 'GRANT ALL ON akeneo_pim.* TO "akeneo_pim"@"localhost";'
-    - composer update --prefer-dist --no-interaction --ignore-platform-reqs
-    - if [ "$TRAVIS_PHP_VERSION" = "7.0" ] || [ "$TRAVIS_PHP_VERSION" = "7.1" ]; then
-        composer require alcaeus/mongo-php-adapter --ignore-platform-reqs;
-      fi;
+    - composer update --prefer-dist --no-interaction
     - ./app/console pim:install
     - ./app/console oro:requirejs:generate-config
     - npm install

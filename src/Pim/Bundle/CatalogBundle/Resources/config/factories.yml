@@ -68,6 +68,8 @@ services:
     pim_catalog.factory.metric:
         class: '%pim_catalog.factory.metric.class%'
         arguments:
+            - '@akeneo_measure.measure_converter'
+            - '@akeneo_measure.manager'
             - '%pim_catalog.entity.metric.class%'
 
     pim_catalog.factory.group:

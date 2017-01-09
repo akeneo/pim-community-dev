@@ -46,52 +46,13 @@ class MetricDenormalizer extends AbstractValueDenormalizer
         $matches = [];
         $singleFieldPattern = '/(?P<data>\d+(.\d+)?) (?P<unit>\w+)/';
 
-        if (preg_match($singleFieldPattern, $data, $matches) === 0) {
-            $metric = $this->addFromManyFields($value, $data);
-        } else {
-            $metric = $this->addFromSingleField($value, $matches['data'], $matches['unit']);
-        }
+        preg_match($singleFieldPattern, $data, $matches);
 
-        return $metric;
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param string                $data
-     * @param string                $unit
-     *
-     * @return MetricInterface
-     */
-    protected function addFromSingleField(ProductValueInterface $value, $data, $unit)
-    {
-        if (null === $metric = $value->getMetric()) {
-            $metric = $this->factory->createMetric($value->getAttribute()->getMetricFamily());
-        }
-        $metric->setData($data);
-        $metric->setUnit($unit);
-
-        return $metric;
-    }
-
-    /**
-     * The metric is built by many ordered calls, one for the data column, one for the unit column
-     *
-     * @param ProductValueInterface $value
-     * @param string                $dataOrUnit
-     *
-     * @return MetricInterface
-     */
-    protected function addFromManyFields(ProductValueInterface $value, $dataOrUnit)
-    {
-        // TODO come from original implementation, really FRAGIL because depends on many ordered calls
-        if (null === $metric = $value->getMetric()) {
-            $metric = $this->factory->createMetric($value->getAttribute()->getMetricFamily());
-            $metric->setData($dataOrUnit);
-        } else {
-            $metric->setUnit($dataOrUnit);
-        }
-
-        return $metric;
+        return $this->factory->createMetric(
+            $value->getAttribute()->getMetricFamily(),
+            isset($matches['unit']) ? $matches['unit'] : null,
+            isset($matches['data']) ? $matches['data'] : null
+        );
     }
 
     /**
@@ -103,8 +64,6 @@ class MetricDenormalizer extends AbstractValueDenormalizer
     {
         $resolver
             ->setRequired(['value'])
-            ->setDefined(
-                ['entity', 'locale_code', 'product', 'scope_code', 'metric_unit']
-            );
+            ->setDefined(['entity', 'locale_code', 'product', 'scope_code', 'metric_unit']);
     }
 }

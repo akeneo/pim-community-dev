@@ -7,7 +7,6 @@ parameters:
     pim_catalog.repository.product_category.class:                   Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository
     pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
     pim_catalog.event_subscriber.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventSubscriber\ORM\InjectProductReferenceSubscriber
-    pim_catalog.event_subscriber.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventSubscriber\ORM\MetricBaseValuesSubscriber
 
     pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\ProductIdFilter
     pim_catalog.doctrine.query.filter.number.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\NumberFilter

@@ -48,6 +48,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
 
     function it_checks_locale_and_scope_when_setting_an_attribute_data(
         $attrValidatorHelper,
+        $factory,
         AttributeInterface $attribute,
         ProductInterface $product,
         ProductValueInterface $metricValue,
@@ -59,9 +60,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $attribute->getMetricFamily()->willReturn('Weight');
 
         $product->getValue('weight', 'fr_FR', 'mobile')->willReturn($metricValue);
-        $metricValue->getMetric()->willReturn($metric);
-        $metric->setUnit('KILOGRAM')->shouldBeCalled();
-        $metric->setData('107')->shouldBeCalled();
+        $factory->createMetric('Weight', 'KILOGRAM', 107)->willReturn($metric);
         $metricValue->setMetric($metric)->shouldBeCalled();
 
         $data = ['amount' => 107, 'unit' => 'KILOGRAM'];
@@ -115,12 +114,12 @@ class MetricAttributeSetterSpec extends ObjectBehavior
     }
 
     function it_sets_numeric_attribute_data_to_a_product_value(
+        $builder,
+        $factory,
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        $builder,
-        $factory,
         MetricInterface $metric,
         ProductValue $productValue
     ) {
@@ -131,17 +130,13 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
 
-        $productValue->getMetric()->willReturn(null);
         $productValue->setMetric($metric)->shouldBeCalled();
-
-        $metric->setUnit('KILOGRAM')->shouldBeCalled();
-        $metric->setData($data['amount'])->shouldBeCalled();
 
         $builder
             ->addProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
-        $factory->createMetric('Weight')->shouldBeCalledTimes(3)->willReturn($metric);
+        $factory->createMetric('Weight', $data['unit'], $data['amount'])->shouldBeCalledTimes(3)->willReturn($metric);
 
         $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
@@ -153,32 +148,28 @@ class MetricAttributeSetterSpec extends ObjectBehavior
     }
 
     function it_sets_non_numeric_attribute_data_to_a_product_value(
+        $builder,
+        $factory,
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        $builder,
-        $factory,
         MetricInterface $metric,
         ProductValue $productValue
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = ['amount' => 'foo', 'unit' => 'KILOGRAM'];
+        $data = ['amount' => 42, 'unit' => 'KILOGRAM'];
 
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
 
-        $productValue->getMetric()->willReturn(null);
         $productValue->setMetric($metric)->shouldBeCalled();
-
-        $metric->setUnit('KILOGRAM')->shouldBeCalled();
-        $metric->setData($data['amount'])->shouldBeCalled();
 
         $builder->addProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
-        $factory->createMetric('Weight')->shouldBeCalledTimes(3)->willReturn($metric);
+        $factory->createMetric('Weight', $data['unit'], $data['amount'])->willReturn($metric);
 
         $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);

@@ -91,7 +91,6 @@ services:
         arguments:
             - ['pim_catalog_metric']
             - '@pim_catalog.factory.metric'
-            - '@pim_catalog.localization.localizer.metric'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

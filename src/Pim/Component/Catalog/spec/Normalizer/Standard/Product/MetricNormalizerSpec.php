@@ -28,14 +28,8 @@ class MetricNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
-    function it_normalizes_metric_in_standard_format_only_with_decimal_allowed(
-        MetricInterface $metric,
-        ProductValueInterface $productValue,
-        AttributeInterface $attribute
-    ) {
-        $metric->getValue()->willReturn($productValue);
-        $productValue->getAttribute()->willReturn($attribute);
-
+    function it_normalizes_metric_in_standard_format_only_with_decimal_allowed(MetricInterface $metric)
+    {
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('12.1231');
 
@@ -45,15 +39,8 @@ class MetricNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normalizes_metric_in_standard_format_only_with_decimal_disallowed(
-        MetricInterface $metric,
-        ProductValueInterface $productValue,
-        AttributeInterface $attribute
-    ) {
-        $metric->getValue()->willReturn($productValue);
-        $productValue->getAttribute()->willReturn($attribute);
-        $attribute->isDecimalsAllowed()->willReturn(false);
-
+    function it_normalizes_metric_in_standard_format_only_with_decimal_disallowed(MetricInterface $metric)
+    {
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('12.0000');
 
@@ -63,15 +50,8 @@ class MetricNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_returns_data_if_it_is_not_a_numeric(
-        MetricInterface $metric,
-        ProductValueInterface $productValue,
-        AttributeInterface $attribute
-    ) {
-        $metric->getValue()->willReturn($productValue);
-        $productValue->getAttribute()->willReturn($attribute);
-        $attribute->isDecimalsAllowed()->willReturn(false);
-
+    function it_returns_data_if_it_is_not_a_numeric(MetricInterface $metric)
+    {
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('a_metric_data');
 
