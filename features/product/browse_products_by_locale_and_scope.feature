@@ -67,3 +67,11 @@ Feature: Browse products by locale and scope
     And I am on the dashboard page
     When I am on the products page
     Then I should see the text "Products fr"
+
+  Scenario: Keep working scope context through navigation
+    Given I filter by "scope" with operator "equals" and value "Mobile"
+    And I am on the dashboard page
+    When I am on the products page
+    Then I should see the text "Mobile"
+    When I refresh current page
+    Then I should see the text "Mobile"
