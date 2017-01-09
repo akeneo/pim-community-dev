@@ -37,18 +37,25 @@ config:
 
         pim/remover/association-type:
             url: pim_enrich_associationtype_rest_remove
+        pim/remover/channel:
+            url: pim_enrich_channel_rest_remove
         pim/remover/variant-group:
             url: pim_enrich_variant_group_rest_remove
         pim/remover/group:
             url: pim_enrich_group_rest_remove
         pim/remover/product:
             url: pim_enrich_product_rest_remove
-        pim/saver/association-type:
-            url: pim_enrich_associationtype_rest_post
         pim/remover/job-instance-import:
             url: pim_enrich_job_instance_rest_import_delete
         pim/remover/job-instance-export:
             url: pim_enrich_job_instance_rest_export_delete
+        pim/saver/association-type:
+            url: pim_enrich_associationtype_rest_post
+        pim/saver/channel:
+            postUrl: pim_enrich_channel_rest_post
+            putUrl: pim_enrich_channel_rest_put
+        pim/channel-edit-form/save:
+            redirectUrl: pim_enrich_channel_edit
         pim/saver/variant-group:
             url: pim_enrich_variant_group_rest_post
         pim/saver/product:
@@ -91,11 +98,18 @@ config:
                     options:
                         urls:
                             list: pim_enrich_channel_rest_index
+                            get: pim_enrich_channel_rest_get
+                            post: pim_enrich_channel_rest_post
                 locale:
                     module: pim/base-fetcher
                     options:
                         urls:
                             list: pim_enrich_locale_rest_index
+                activated-locale:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_enrich_locale_rest_activated
                 measure:
                     module: pim/base-fetcher
                     options:
@@ -106,6 +120,11 @@ config:
                     options:
                         urls:
                             list: pim_enrich_currency_rest_index
+                conversion-unit:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_enrich_channel_rest_metric_attributes
                 product-completeness:
                     module: pim/completeness-fetcher
                     options:
@@ -142,6 +161,7 @@ config:
                     module: pim/base-fetcher
                     options:
                         urls:
+                            list: pim_enrich_category_rest_list
                             get: pim_enrich_category_rest_get
                 job-instance-export:
                     module: pim/base-fetcher
@@ -210,6 +230,7 @@ config:
         # Remover
         pim/remover/base:                pimenrich/js/remover/base-remover
         pim/remover/association-type:    pimenrich/js/remover/association-type-remover
+        pim/remover/channel:            pimenrich/js/remover/channel
         pim/remover/product:             pimenrich/js/remover/product-remover
         pim/remover/variant-group:       pimenrich/js/remover/variant-group-remover
         pim/remover/group:               pimenrich/js/remover/group-remover
@@ -219,6 +240,7 @@ config:
         # Saver
         pim/saver/base:                pimenrich/js/saver/base-saver
         pim/saver/association-type:    pimenrich/js/saver/association-type-saver
+        pim/saver/channel:          pimenrich/js/saver/channel
         pim/saver/product:             pimenrich/js/saver/product-saver
         pim/saver/variant-group:       pimenrich/js/saver/variant-group-saver
         pim/saver/group:               pimenrich/js/saver/group-saver
@@ -240,6 +262,15 @@ config:
         pim/association-type-edit-form/delete:                 pimenrich/js/association-type/form/delete
         pim/association-type-edit-form/save:                   pimenrich/js/association-type/form/save
         pim/association-type-edit-form/properties/general:     pimenrich/js/association-type/form/properties/general
+
+        # Channel
+        pim/channel-edit-form/delete:                           pimenrich/js/channel/form/delete
+        pim/channel-edit-form/save:                             pimenrich/js/channel/form/save
+        pim/channel-edit-form/properties/general:               pimenrich/js/channel/form/properties/general
+        pim/channel-edit-form/properties/general/currencies:    pimenrich/js/channel/form/properties/general/currencies
+        pim/channel-edit-form/properties/general/locales:       pimenrich/js/channel/form/properties/general/locales
+        pim/channel-edit-form/properties/general/category:      pimenrich/js/channel/form/properties/general/category
+        pim/channel-edit-form/properties/conversion-unit:       pimenrich/js/channel/form/properties/conversion-unit
 
         # Variant group
         pim/variant-group-edit-form/save: pimenrich/js/variant-group/form/save
@@ -441,6 +472,12 @@ config:
         pim/template/form/redirect:                               pimenrich/templates/form/redirect.html
 
         pim/template/association-type/tab/properties/general:     pimenrich/templates/association-type/tab/properties/general.html
+
+        pim/template/channel/tab/properties/general:                pimenrich/templates/channel/tab/properties/general.html
+        pim/template/channel/tab/properties/general/currencies:     pimenrich/templates/channel/tab/properties/general/currencies.html
+        pim/template/channel/tab/properties/general/locales:        pimenrich/templates/channel/tab/properties/general/locales.html
+        pim/template/channel/tab/properties/general/category-tree:  pimenrich/templates/channel/tab/properties/general/category-tree.html
+        pim/template/channel/tab/properties/conversion-unit:        pimenrich/templates/channel/tab/properties/conversion-unit.html
 
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/attribute/validation-error: pimenrich/templates/product/tab/attributes/validation-error.html

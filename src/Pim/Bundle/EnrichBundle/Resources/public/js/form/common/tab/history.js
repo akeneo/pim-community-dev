@@ -17,20 +17,25 @@ define([
             historyGrid: null,
 
             /**
-             * @param {Object} meta
+             * @param {Object} config
              */
-            initialize: function (meta) {
-                this.config = _.extend({}, meta.config);
+            initialize: function (config) {
+                this.config = _.extend({}, config.config);
             },
 
             /**
              * {@inheritdoc}
              */
             configure: function () {
-                this.trigger('tab:register', {
-                    code: this.config.tabCode ? this.config.tabCode : this.code,
-                    label: __(this.config.title)
-                });
+                this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', function () {
+                    var model = this.getParent().getParent().getFormData();
+                    if (0 < model.code.length) {
+                        this.trigger('tab:register', {
+                            code: this.code,
+                            label: __(this.config.title)
+                        });
+                    }
+                }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

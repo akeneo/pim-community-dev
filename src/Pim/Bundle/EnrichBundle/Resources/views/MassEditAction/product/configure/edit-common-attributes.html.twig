@@ -38,7 +38,7 @@
                         FetcherRegistry.initialize().then(function() {
                             $.when(
                                 FetcherRegistry.getFetcher('channel').fetch(UserContext.get('catalogScope')),
-                                FetcherRegistry.getFetcher('locale').fetch(UserContext.get('catalogLocale')),
+                                FetcherRegistry.getFetcher('activated-locale').fetch(UserContext.get('catalogLocale')),
                                 FormBuilder.build('pim-mass-product-edit-form')
                             ).then(function (channel, locale, form) {
                                 form.setData(product);

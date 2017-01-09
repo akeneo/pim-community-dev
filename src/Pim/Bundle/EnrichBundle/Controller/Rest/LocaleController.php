@@ -43,9 +43,22 @@ class LocaleController
     /**
      * Get the list of all locales
      *
-     * @return JsonResponse all activated locales
+     * @return JsonResponse
      */
     public function indexAction()
+    {
+        $locales = $this->localeRepository->findAll();
+        $normalizedLocales = $this->normalizer->normalize($locales, 'internal_api');
+
+        return new JsonResponse($normalizedLocales);
+    }
+
+    /**
+     * Get the list of all activated locales
+     *
+     * @return JsonResponse
+     */
+    public function activatedAction()
     {
         $locales = $this->localeRepository->getActivatedLocales();
         $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');

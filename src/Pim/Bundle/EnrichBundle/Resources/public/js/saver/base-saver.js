@@ -22,6 +22,7 @@ define([
              */
             save: function (code, data) {
                 return $.ajax({
+                    /* TODO: POST/PUT? */
                     type: 'POST',
                     url: this.getUrl(code),
                     data: JSON.stringify(data)

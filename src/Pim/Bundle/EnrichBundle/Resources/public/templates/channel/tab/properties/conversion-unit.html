@@ -1,0 +1,29 @@
+<div class="tabsection-title">
+    <%- label %>
+</div>
+<div class="tabsection-content">
+    <div class="AknFormContainer AknFormContainer--withPadding">
+    <% _.each(attributes, function (attribute, key) { %>
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label" for="<% fieldBaseId + attribute.code %>">
+                    <%- _.has(attribute.labels, catalogLocale) ? attribute.labels[catalogLocale] : '[' + attribute.code + ']' %>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <select class="select2" id="<%- fieldBaseId + attribute.code %>" data-attribute="<%- attribute.code %>">
+                    <% key = _.findIndex(conversionUnits, function (unit) { return _.has(unit, attribute.code) }) %>
+                    <option <%- (0 > key) ? 'selected' : '' %>>
+                    <%- doNotConvertLabel %>
+                    </option>
+                    <% _.each(attribute.units, function (translation, value) { %>
+                        <option value="<%- value %>" <%- (0 <= key && value == conversionUnits[key][attribute.code]) ? 'selected' : '' %>>
+                            <%- translation %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>

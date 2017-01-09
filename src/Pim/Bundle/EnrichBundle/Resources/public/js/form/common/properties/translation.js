@@ -70,7 +70,7 @@ define([
              * {@inheritdoc}
              */
             render: function () {
-                FetcherRegistry.getFetcher('locale').fetchAll().then(function (locales) {
+                FetcherRegistry.getFetcher('activated-locale').fetchAll().then(function (locales) {
                     this.$el.html(this.template({
                         model: this.getFormData(),
                         locales: locales,

@@ -80,6 +80,22 @@ class CategoryController
     }
 
     /**
+     * @return JsonResponse
+     */
+    public function listAction()
+    {
+        $categories = $this->repository->findBy(
+            [
+                'parent' => null,
+            ]
+        );
+
+        return new JsonResponse(
+            $this->normalizer->normalize($categories, 'internal_api')
+        );
+    }
+
+    /**
      * @param string $identifier
      *
      * @return JsonResponse
