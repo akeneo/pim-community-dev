@@ -91,23 +91,34 @@ class UserContext
      */
     public function getCurrentLocale()
     {
-        if (null !== $locale = $this->getRequestLocale()) {
-            return $locale;
+        $locale = $this->getRequestLocale();
+
+        if (null === $locale) {
+            $locale = $this->getSessionLocale();
         }
 
-        if (null !== $locale = $this->getUserLocale()) {
-            return $locale;
+        if (null === $locale) {
+            $locale = $this->getUserLocale();
         }
 
-        if (null !== $locale = $this->getDefaultLocale()) {
-            return $locale;
+        if (null === $locale) {
+            $locale = $this->getDefaultLocale();
         }
 
-        if ($locale = current($this->getUserLocales())) {
-            return $locale;
+        if (null === $locale) {
+            $locale = current($this->getUserLocales());
+            $locale = (false === $locale) ? null : $locale;
         }
 
-        throw new \LogicException('There are no activated locales');
+        if (null === $locale) {
+            throw new \LogicException('There are no activated locales');
+        }
+
+        if (null !== $this->getCurrentRequest()) {
+            $this->getCurrentRequest()->getSession()->set('dataLocale', $locale->getCode());
+        }
+
+        return $locale;
     }
 
     /**
@@ -293,6 +304,27 @@ class UserContext
             if ($localeCode) {
                 $locale = $this->localeRepository->findOneByIdentifier($localeCode);
                 if ($locale && $this->isLocaleAvailable($locale)) {
+                    return $locale;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the user session locale
+     *
+     * @return LocaleInterface|null
+     */
+    protected function getSessionLocale()
+    {
+        $request = $this->getCurrentRequest();
+        if (null !== $request) {
+            $localeCode = $request->getSession()->get('dataLocale');
+            if (null !== $localeCode) {
+                $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+                if (null !== $locale && $this->isLocaleAvailable($locale)) {
                     return $locale;
                 }
             }
