@@ -10,6 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Pim\Component\Connector\Writer\File\CsvWriter;
 use Prophecy\Argument;
+use Symfony\Component\Finder\Adapter\AdapterInterface;
 
 class InvalidItemsCsvArchiverSpec extends ObjectBehavior
 {
@@ -42,12 +43,13 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
         $this->archive($jobExecution);
     }
 
-    function it_archives_unvalid_items(
+    function it_archives_invalid_items(
         InvalidItemsCollector $collector,
         CsvWriter $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        AdapterInterface $adapter
     ) {
         $collector->getInvalidItems()->willReturn(['items']);
 
@@ -58,7 +60,10 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('alias');
 
         $filesystem->put('type/alias/id/invalid/invalid_items.csv', '')->shouldBeCalled();
-        $writer->setFilePath('/tmp/archivist/type/alias/id/invalid/invalid_items.csv')->shouldBeCalled();
+        $filesystem->getAdapter()->willReturn($adapter);
+        $adapter->getPathPrefix()->willReturn('/file/path/prefix/');
+
+        $writer->setFilePath('/file/path/prefix/type/alias/id/invalid/invalid_items.csv')->shouldBeCalled();
         $writer->initialize()->shouldBeCalled();
         $writer->write(['items'])->shouldBeCalled();
         $writer->flush()->shouldBeCalled();
