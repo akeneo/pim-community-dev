@@ -333,13 +333,13 @@ Feature: Notify users after a project creation
     Given the following product values:
       | product        | attribute   | value                                | locale | scope     |
       | my-awesome-car | description | My awesome description for ecommerce | en_US  | ecommerce |
-    And I am logged in as "admin"
-    When I am on the products page
+    When I am logged in as "admin"
+    And I am on the products page
     And I filter by "category" with operator "" and value "decoration"
     And I filter by "family" with operator "in list" and value "Car"
     And I open the view selector
     And I click on "Create project" action in the dropdown
-    When I fill in the following information in the popin:
+    And I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
       | project-due-date    | 12/13/2018             |
@@ -347,7 +347,7 @@ Feature: Notify users after a project creation
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    Then I logout
+    When I logout
     And I am logged in as "Julia"
     And I should see the text "Julia"
     And I should have 0 new notification
@@ -356,13 +356,13 @@ Feature: Notify users after a project creation
     Given the following product values:
       | product        | attribute   | value                                | locale | scope     |
       | my-awesome-car | description |  | en_US  | ecommerce |
-    And I am logged in as "admin"
-    When I am on the products page
+    When I am logged in as "admin"
+    And I am on the products page
     And I filter by "category" with operator "" and value "decoration"
     And I filter by "family" with operator "in list" and value "Car"
     And I open the view selector
     And I click on "Create project" action in the dropdown
-    When I fill in the following information in the popin:
+    And I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
       | project-due-date    | 12/13/2018             |
@@ -370,7 +370,7 @@ Feature: Notify users after a project creation
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    Then I logout
+    When I logout
     And I am logged in as "Julia"
     And I should see the text "Julia"
     And I should have 1 new notification

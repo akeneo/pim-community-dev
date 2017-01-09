@@ -85,7 +85,7 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
 
         foreach ($users as $user) {
             $completeness = $this->projectCompletenessRepository->getProjectCompleteness($project, $user);
-            $completeness = $completeness['done']/array_sum($completeness) * 100;
+            $completeness = (int) $completeness['done']/(int) array_sum($completeness) * 100;
 
             if (99 < (int) $completeness) {
                 continue;
