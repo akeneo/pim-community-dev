@@ -410,9 +410,7 @@ config:
         # Grid view selector
         pim/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pim/grid/view-selector/footer: pimenrich/js/grid/view-selector-footer
-        pim/grid/view-selector/footer/create: pimenrich/js/grid/view-selector-footer-create
         pim/grid/view-selector/line: pimenrich/js/grid/view-selector-line
-        pim/grid/view-selector/line-remove: pimenrich/js/grid/view-selector-line-remove
         pim/grid/view-selector/create-view: pimenrich/js/grid/view-selector-create-view
         pim/grid/view-selector/save-view: pimenrich/js/grid/view-selector-save-view
         pim/grid/view-selector/remove-view: pimenrich/js/grid/view-selector-remove-view
