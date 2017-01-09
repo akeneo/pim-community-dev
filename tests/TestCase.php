@@ -18,14 +18,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class TestCase extends KernelTestCase
 {
+    /** @var int Count of test inside the same test class */
+    protected static $count = 0;
+
     /** @var ContainerInterface */
     protected $container;
 
-    /** @var string Catalog configuration path */
-    protected $catalogPath = 'catalog';
-
     /** @var string */
-    protected $catalog = 'technical';
+    protected $catalogName = 'technical';
 
     /** @var string */
     protected $extraDirectories = [];
@@ -33,8 +33,8 @@ class TestCase extends KernelTestCase
     /** @var bool If you don't need to purge database between each test in the same test class, set to false */
     protected $purgeDatabaseForEachTest = true;
 
-    /** @var int Count of test inside the same test class */
-    protected static $count = 0;
+    /** @var string */
+    protected $catalogDirectory;
 
     /** @var string */
     protected $fixturesDirectory;
@@ -56,15 +56,14 @@ class TestCase extends KernelTestCase
 
         $this->container = static::$kernel->getContainer();
 
-        $this->fixturesDirectory = $this->getParameter('kernel.root_dir') .
-            DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'tests' .
-            DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR;
+        $projectRoot = $this->getParameter('kernel.root_dir').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
+
+        $this->catalogDirectory = $projectRoot.'tests'.DIRECTORY_SEPARATOR.'catalog'.DIRECTORY_SEPARATOR;
+        $this->fixturesDirectory = $projectRoot.'tests'.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR;
 
         self::$count++;
 
-        // if $purgeDatabaseForEachTest = true: purge database before each test
-        // if $purgeDatabaseForEachTest = false: purge database before the first test of a test class
-        if ($this->purgeDatabaseForEachTest || (!$this->purgeDatabaseForEachTest && 1 === self::$count)) {
+        if ($this->purgeDatabaseForEachTest || 1 === self::$count) {
             $this->purgeDatabase();
 
             $files = $this->getConfigurationFiles();
@@ -144,7 +143,6 @@ class TestCase extends KernelTestCase
             }
         }
 
-        // delete the job instances
         $jobLoader->deleteJobInstances();
     }
 
@@ -157,11 +155,11 @@ class TestCase extends KernelTestCase
      */
     protected function getConfigurationFiles()
     {
-        $directories = array_merge([__DIR__ . '/' . $this->catalogPath], $this->extraDirectories);
+        $directories = array_merge([$this->catalogDirectory], $this->extraDirectories);
 
         $files = [];
         foreach ($directories as &$directory) {
-            $directory = sprintf('%s/%s', $directory, strtolower($this->catalog));
+            $directory .= DIRECTORY_SEPARATOR.$this->catalogName;
             $files     = array_merge($files, glob($directory.'/*'));
         }
 
@@ -169,7 +167,7 @@ class TestCase extends KernelTestCase
             throw new \InvalidArgumentException(
                 sprintf(
                     'No configuration found for catalog "%s", looked in "%s"',
-                    $this->catalog,
+                    $this->catalogName,
                     implode(', ', $directories)
                 )
             );

@@ -16,7 +16,7 @@ class AttributeOptionIntegration extends TestCase
         $expected = [
             'code'       => 'optionA',
             'attribute'  => 'a_multi_select',
-            'sort_order' => 1,
+            'sort_order' => 10,
             'labels'     => [
                 'en_US' => 'Option A'
             ]
