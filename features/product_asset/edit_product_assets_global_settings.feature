@@ -44,6 +44,15 @@ Feature: Edit product assets properties
     Then I should be on the "blue_shirt" asset edit page
     And the field Tags should contain "men"
 
+  @jira https://akeneo.atlassian.net/browse/PIM-6092
+  Scenario: Successfully remove tags from an asset
+    Given I am on the "blue_shirt" asset page
+    And I visit the "Properties" tab
+    When I add the following tags in the "Tags" select2 : back
+    And I press the "Save" button
+    Then I should be on the "blue_shirt" asset edit page
+    And the field Tags should contain "solid_color, men, back"
+
   @unstable
   Scenario: Successfully edit the end of use at of an asset
     Given I am on the "blue_shirt" asset page
