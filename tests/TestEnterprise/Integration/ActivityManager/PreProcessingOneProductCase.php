@@ -33,16 +33,16 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
         // TODO
         $expectedAttributeGroupCompleteness = [
             'marketing' => [
-                'has_at_least_one_required_attribute_filled' => 1,
-                'is_complete' => 0
+                'has_at_least_one_required_attribute_filled' => '1',
+                'is_complete' => '0'
             ],
             'technical' => [
-                'has_at_least_one_required_attribute_filled' => 0,
-                'is_complete' => 0
+                'has_at_least_one_required_attribute_filled' => '0',
+                'is_complete' => '1'
             ],
             'other' => [
-                'has_at_least_one_required_attribute_filled' => 0,
-                'is_complete' => 0
+                'has_at_least_one_required_attribute_filled' => '0',
+                'is_complete' => '1'
             ],
         ];
 
@@ -78,7 +78,7 @@ AND `channel_id` = :channel_id
 AND `locale_id` = :locale_id
 SQL;
 
-        $numberOfRow = $this->getConnection()->fetchColumn($sql, [
+        $numberOfRow = (int) $this->getConnection()->fetchColumn($sql, [
             'product_id' => $productId,
             'channel_id' => $this::$project->getChannel()->getId(),
             'locale_id' => $this::$project->getLocale()->getId(),
