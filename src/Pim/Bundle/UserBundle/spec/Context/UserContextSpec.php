@@ -11,8 +11,10 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -33,10 +35,16 @@ class UserContextSpec extends ObjectBehavior
         CategoryInterface $secondTree,
         CategoryRepositoryInterface $productCategoryRepo,
         RequestStack $requestStack,
-        ChoicesBuilderInterface $choicesBuilder
+        ChoicesBuilderInterface $choicesBuilder,
+        Request $request,
+        SessionInterface $session
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
+
+        $requestStack->getCurrentRequest()->willReturn($request);
+        $request->getSession()->willReturn($session);
+        $session->set('dataLocale', Argument::any())->willReturn(null);
 
         $en->getCode()->willReturn('en_US');
         $fr->getCode()->willReturn('fr_FR');
@@ -65,30 +73,60 @@ class UserContextSpec extends ObjectBehavior
         );
     }
 
-    function it_provides_locale_from_the_request_if_it_has_been_set(
-        RequestStack $requestStack,
-        Request $request,
-        $fr)
+    function it_provides_locale_from_the_request_if_it_has_been_set($request, $fr)
     {
-        $requestStack->getCurrentRequest()->willReturn($request);
         $request->get('dataLocale')->willReturn('fr_FR');
 
         $this->getCurrentLocale()->shouldReturn($fr);
     }
 
-    function it_provides_user_locale_if_locale_is_not_present_in_request(User $user, $de)
-    {
+    function it_provides_user_session_locale_if_locale_is_not_present_in_request(
+        $request,
+        $session,
+        $fr
+    ) {
+        $request->get('dataLocale')->willReturn(null);
+        $session->get('dataLocale')->willReturn('fr_FR');
+
+        $this->getCurrentLocale()->shouldReturn($fr);
+    }
+
+    function it_provides_user_locale_if_locale_is_not_present_in_user_session(
+        User $user,
+        $request,
+        $session,
+        $de
+    ) {
+        $request->get('dataLocale')->willReturn(null);
+        $session->get('dataLocale')->willReturn(null);
         $user->getCatalogLocale()->willReturn($de);
+
         $this->getCurrentLocale()->shouldReturn($de);
     }
 
-    function it_provides_first_activated_locale_if_locale_is_not_present_in_request_and_user_properties($en)
-    {
+    function it_provides_first_activated_locale_if_locale_is_not_present_in_request_and_user_properties(
+        User $user,
+        $request,
+        $session,
+        $en
+    ) {
+        $request->get('dataLocale')->willReturn(null);
+        $session->get('dataLocale')->willReturn(null);
+        $user->getCatalogLocale()->willReturn(null);
+
         $this->getCurrentLocale()->shouldReturn($en);
     }
 
-    function it_throws_an_exception_if_there_are_no_activated_locales($localeRepository)
-    {
+    function it_throws_an_exception_if_there_are_no_activated_locales(
+        User $user,
+        $request,
+        $session,
+        $localeRepository
+    ) {
+        $request->get('dataLocale')->willReturn(null);
+        $session->get('dataLocale')->willReturn(null);
+        $user->getCatalogLocale()->willReturn(null);
+
         $localeRepository->findOneByIdentifier('en_US')->willReturn(null);
         $localeRepository->getActivatedLocales()->willReturn([]);
 
@@ -97,8 +135,15 @@ class UserContextSpec extends ObjectBehavior
             ->duringGetCurrentLocale();
     }
 
-    function its_get_current_locale_code_method_returns_a_locale_code()
-    {
+    function its_get_current_locale_code_method_returns_a_locale_code(
+        User $user,
+        $request,
+        $session
+    ) {
+        $request->get('dataLocale')->willReturn(null);
+        $session->get('dataLocale')->willReturn(null);
+        $user->getCatalogLocale()->willReturn(null);
+
         $this->getCurrentLocaleCode()->shouldReturn('en_US');
     }
 
