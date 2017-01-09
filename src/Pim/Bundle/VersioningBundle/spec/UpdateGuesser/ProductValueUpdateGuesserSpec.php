@@ -31,20 +31,6 @@ class ProductValueUpdateGuesserSpec extends ObjectBehavior
         $this->supportAction('foo')->shouldReturn(false);
     }
 
-    function it_marks_product_as_updated_when_a_product_price_is_removed(
-        EntityManager $em,
-        UnitOfWork $unitOfWork,
-        ProductInterface $product,
-        ProductValueInterface $value,
-        ProductPriceInterface $price
-    ) {
-        $price->getValue()->willReturn($value);
-        $value->getEntity()->willReturn($product);
-        $em->getUnitOfWork()->willReturn($unitOfWork);
-        $unitOfWork->getEntityState($product)->willReturn(UnitOfWork::STATE_MANAGED);
-        $this->guessUpdates($em, $price, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$product]);
-    }
-
     function it_marks_product_as_updated_when_a_product_value_is_updated(
         EntityManager $em,
         ProductInterface $product,
@@ -52,21 +38,5 @@ class ProductValueUpdateGuesserSpec extends ObjectBehavior
     ) {
         $value->getEntity()->willReturn($product);
         $this->guessUpdates($em, $value, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$product]);
-    }
-
-    function it_marks_product_as_updated_when_a_product_price_is_updated(
-        EntityManager $em,
-        UnitOfWork $uow,
-        ProductInterface $product,
-        ProductValueInterface $value,
-        ProductPriceInterface $price
-    ) {
-        $price->getValue()->willReturn($value);
-        $value->getEntity()->willReturn($product);
-
-        $em->getUnitOfWork()->willReturn($uow);
-        $uow->getEntityChangeSet($price)->willReturn(['data' => ['10', '11']]);
-
-        $this->guessUpdates($em, $price, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$product]);
     }
 }

@@ -119,11 +119,11 @@ interface ProductValueInterface
     /**
      * Set prices, used for multi select to set many prices
      *
-     * @param ArrayCollection $prices
+     * @param PriceCollectionInterface $prices
      *
      * @return ProductValue
      */
-    public function setPrices($prices);
+    public function setPrices(PriceCollectionInterface $prices);
 
     /**
      * Get id
@@ -206,7 +206,8 @@ interface ProductValueInterface
     /**
      * Get prices
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return PriceCollectionInterface
+     *
      */
     public function getPrices();
 

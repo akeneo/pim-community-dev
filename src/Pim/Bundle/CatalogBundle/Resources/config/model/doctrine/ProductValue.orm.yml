@@ -112,12 +112,3 @@ Pim\Component\Catalog\Model\ProductValue:
                         referencedColumnName: id
                         nullable: true
                         onDelete: CASCADE
-    oneToMany:
-        prices:
-            targetEntity: Pim\Component\Catalog\Model\ProductPriceInterface
-            cascade:
-                - remove
-                - persist
-                - refresh
-                - detach
-            mappedBy: value
