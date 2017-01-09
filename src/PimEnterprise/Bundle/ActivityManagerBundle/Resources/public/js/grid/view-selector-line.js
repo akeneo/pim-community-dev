@@ -81,9 +81,9 @@ define(
                 var project = this.datagridView;
                 var completionStatus = 'wip';
 
-                if (project.completeness.completenessDone === 0) {
+                if (project.completeness.ratioDone === 0) {
                     completionStatus = 'todo';
-                } else if (project.completeness.completenessDone === 100) {
+                } else if (project.completeness.ratioDone === 100) {
                     completionStatus = 'done';
                 }
 
@@ -100,7 +100,7 @@ define(
                     ),
                     localeLabel: project.locale.label,
                     isCurrent: this.isCurrentView,
-                    completionPercentage: project.completeness.completenessDone,
+                    completionRatio: project.completeness.ratioDone,
                     completionStatus: completionStatus
                 };
             }

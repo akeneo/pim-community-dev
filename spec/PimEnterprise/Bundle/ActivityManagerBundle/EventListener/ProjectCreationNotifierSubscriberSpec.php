@@ -6,7 +6,7 @@ use PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectCreationNoti
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
-use PimEnterprise\Component\ActivityManager\Model\Completeness;
+use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
@@ -58,7 +58,7 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         UserInterface $user,
         NotificationInterface $notification,
         LocaleInterface $locale,
-        Completeness $completeness
+        ProjectCompleteness $projectCompleteness
     ) {
         $datetime = new \DateTime('2019-12-23');
         $event->getProject()->willReturn($project);
@@ -72,8 +72,8 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         $user->getUiLocale()->willReturn($locale);
         $locale->getCode()->willReturn('en_US');
 
-        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($completeness);
-        $completeness->isComplete()->willReturn(false);
+        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($projectCompleteness);
+        $projectCompleteness->isComplete()->willReturn(false);
 
         $factory->create(
             [
@@ -99,7 +99,7 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         UserInterface $user,
         NotificationInterface $notification,
         LocaleInterface $locale,
-        Completeness $completeness
+        ProjectCompleteness $projectCompleteness
     ) {
         $datetime = new \DateTime('2019-12-23');
         $event->getProject()->willReturn($project);
@@ -115,8 +115,8 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
 
         $userRepository->findContributorsToNotify($project)->willReturn([$user]);
 
-        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($completeness);
-        $completeness->isComplete()->willReturn(true);
+        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($projectCompleteness);
+        $projectCompleteness->isComplete()->willReturn(true);
 
         $notifier->notify($notification, [$user])->shouldNotBeCalled();
 

@@ -16,51 +16,60 @@ namespace PimEnterprise\Component\ActivityManager\Model;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class Completeness
+class ProjectCompleteness
 {
-    /** @var array */
-    protected $productNumbers;
+    /** @var int */
+    protected $productCount;
 
     /** @var int */
-    protected $totalProducts;
+    protected $productCountTodo;
+
+    /** @var int */
+    protected $productCountInProgress;
+
+    /** @var int */
+    protected $productCountDone;
 
     /**
      * @param array $productNumbers
      */
     public function __construct(array $productNumbers)
     {
-        $this->productNumbers = array_map('intval', $productNumbers);
-        $this->totalProducts = array_sum($this->productNumbers);
+        $this->productCountTodo = (int) $productNumbers['todo'];
+        $this->productCountInProgress = (int) $productNumbers['in_progress'];
+        $this->productCountDone = (int) $productNumbers['done'];
+
+        $this->productCount = $this->productCountDone + $this->productCountInProgress + $this->productCountTodo;
     }
 
     /**
      * Returns the number of products for todo.
      *
-     * @return array
+     * @return int
      */
-    public function getProductsNumberForTodo()
+    public function getProductsCountTodo()
     {
-        return $this->productNumbers['todo'];
+        return $this->productCountTodo;
     }
 
     /**
      * Returns the number of products for in progress.
      *
-     * @return array
+     * @return int
      */
-    public function getProductsNumberForInProgress()
+    public function getProductsCountInProgress()
     {
-        return $this->productNumbers['in_progress'];
+        return $this->productCountInProgress;
     }
 
     /**
      * Returns the number of products for Done.
      *
-     * @return array
+     * @return int
      */
-    public function getProductsNumberForDone()
+    public function getProductsCountDone()
     {
-        return $this->productNumbers['done'];
+        return $this->productCountDone;
     }
 
     /**
@@ -68,9 +77,9 @@ class Completeness
      *
      * @return int
      */
-    public function getCompletenessForTodo()
+    public function getRatioForTodo()
     {
-        return $this->productNumbers['todo'] / $this->totalProducts * 100;
+        return $this->productCountTodo / $this->productCount * 100;
     }
 
     /**
@@ -78,9 +87,9 @@ class Completeness
      *
      * @return int
      */
-    public function getCompletenessForInProgress()
+    public function getRatioForInProgress()
     {
-        return $this->productNumbers['in_progress'] / $this->totalProducts * 100;
+        return $this->productCountInProgress / $this->productCount * 100;
     }
 
     /**
@@ -88,9 +97,9 @@ class Completeness
      *
      * @return int
      */
-    public function getCompletenessForDone()
+    public function getRatioForDone()
     {
-        return $this->productNumbers['done'] / $this->totalProducts * 100;
+        return $this->productCountDone / $this->productCount * 100;
     }
 
     /**
@@ -100,6 +109,6 @@ class Completeness
      */
     public function isComplete()
     {
-        return 99 < $this->getCompletenessForDone();
+        return 99 < $this->getRatioForDone();
     }
 }

@@ -39,27 +39,27 @@ class ProjectCompletenessController
     protected $authorizationChecker;
 
     /** @var NormalizerInterface */
-    protected $completenessNormalizer;
+    protected $projectCompletenessNormalizer;
 
     /**
      * @param IdentifiableObjectRepositoryInterface  $projectRepository
      * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
      * @param TokenStorageInterface                  $tokenStorage
      * @param AuthorizationCheckerInterface          $authorizationChecker
-     * @param NormalizerInterface                    $completenessNormalizer
+     * @param NormalizerInterface                    $projectCompletenessNormalizer
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $projectRepository,
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        NormalizerInterface $completenessNormalizer
+        NormalizerInterface $projectCompletenessNormalizer
     ) {
         $this->projectRepository = $projectRepository;
         $this->projectCompletenessRepository = $projectCompletenessRepository;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->completenessNormalizer = $completenessNormalizer;
+        $this->projectCompletenessNormalizer = $projectCompletenessNormalizer;
     }
 
     /**
@@ -90,7 +90,7 @@ class ProjectCompletenessController
         }
 
         $projectCompleteness = $this->projectCompletenessRepository->getProjectCompleteness($project, $contributor);
-        $projectCompleteness = $this->completenessNormalizer->normalize($projectCompleteness, 'internal_api');
+        $projectCompleteness = $this->projectCompletenessNormalizer->normalize($projectCompleteness, 'internal_api');
 
         return new JsonResponse($projectCompleteness);
     }

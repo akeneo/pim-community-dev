@@ -73,7 +73,7 @@ class ProjectController
     protected $router;
 
     /** @var NormalizerInterface */
-    protected $completenessNormalizer;
+    protected $projectCompletenessNormalizer;
 
     /**
      * @param FilterConverter                        $filterConverter
@@ -88,7 +88,7 @@ class ProjectController
      * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
      * @param AuthorizationCheckerInterface          $authorizationChecker
      * @param RouterInterface                        $router
-     * @param NormalizerInterface                    $completenessNormalizer
+     * @param NormalizerInterface                    $projectCompletenessNormalizer
      */
     public function __construct(
         FilterConverter $filterConverter,
@@ -103,7 +103,7 @@ class ProjectController
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         RouterInterface $router,
-        NormalizerInterface $completenessNormalizer
+        NormalizerInterface $projectCompletenessNormalizer
     ) {
         $this->filterConverter = $filterConverter;
         $this->projectFactory = $projectFactory;
@@ -117,7 +117,7 @@ class ProjectController
         $this->projectCompletenessRepository = $projectCompletenessRepository;
         $this->authorizationChecker = $authorizationChecker;
         $this->router = $router;
-        $this->completenessNormalizer = $completenessNormalizer;
+        $this->projectCompletenessNormalizer = $projectCompletenessNormalizer;
     }
 
     /**
@@ -189,7 +189,7 @@ class ProjectController
 
         foreach ($projects as $project) {
             $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
-            $normalizedProject['completeness'] = $this->completenessNormalizer->normalize(
+            $normalizedProject['completeness'] = $this->projectCompletenessNormalizer->normalize(
                 $this->projectCompletenessRepository->getProjectCompleteness(
                     $project,
                     $contributor

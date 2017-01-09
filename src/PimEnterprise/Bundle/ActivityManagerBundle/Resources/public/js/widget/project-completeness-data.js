@@ -51,9 +51,9 @@ define(
                             todoLabel: __(this.config.labels.todo),
                             inProgressLabel: __(this.config.labels.inProgress),
                             displayProductsLabel: __(this.config.labels.displayProducts),
-                            percentageTodoLabel: __(this.config.labels.percentageTodo),
-                            percentageInProgressLabel: __(this.config.labels.percentageInProgress),
-                            percentageDoneLabel: __(this.config.labels.percentageDone),
+                            ratioTodoLabel: __(this.config.labels.ratioTodo),
+                            ratioInProgressLabel: __(this.config.labels.ratioInProgress),
+                            ratioDoneLabel: __(this.config.labels.ratioDone),
                             doneLabel: __(this.config.labels.done),
                             url: Routing.generate(
                                 'activity_manager_project_show',
