@@ -78,24 +78,24 @@ pim_enrich:
     limit_exceeded: Trieu menys de %limit% elements per editar
     product:
       page_title: Productes
-      page_subtitle: Editar en massa (1 producte) | Editar en massa (%count% productes)
-      title: Trieu operació
+      page_subtitle: Edició en massa (1 producte) | Edició en massa (%count% productes)
+      title: Trieu l'operació
       subtitle: Trieu la operació que voleu realitzar al producte seleccionat| Trieu la operació que voleu realitzar als %count% productes seleccionats
       confirm: Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu-ho si us plau.
       steps:
         first: Triar productes
-        second: Triar operació
+        second: Trieu l'operació
         third: Configurar
         fourth: Confirmar
     family:
       page_title: Famílies
       page_subtitle: Editar en massa (1 família) | Editar en massa (%count% famílies)
-      title: Triar operació
+      title: Trieu l'operació
       subtitle: Trieu la operació que voleu realitzar a la familília seleccionada | Trieu la operació que desitja realitzar a les %count% famílies seleccionades
-      confirm: Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu-ho si us plau.
+      confirm: Esteu a punt d'actualitzar una família amb la següent informació, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% famílies amb la següent informació, confirmeu-ho si us plau.
       steps:
         first: Triar famílies
-        second: Triar operació
+        second: Trieu l'operació
         third: Configurar
         fourth: Confirmar
     change-status:
@@ -130,7 +130,7 @@ pim_enrich:
       launched_flash: L'acció en massa "eliminar de categories" ja s'ha engegat. Se li notificarà una cop acabi.
     change-family:
       label: Canviar la família de productes
-      description: La família dels productes seleccionats es canviarà a la família escollida
+      description: La família dels productes seleccionats es canviarà per la família escollida
       success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
       launched_flash: L'acció en massa "canviar família" ja s'ha engegat. Se li notificarà una cop acabi.
     add-to-groups:
@@ -150,7 +150,7 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: L'acció en massa "afegir a grup de variants" ja s'ha engegat. Se li notificarà una cop acabi.
     set-attribute-requirements:
-      label: Establecer requeriments d'atribut
+      label: Establir els requeriments d'atribut
       description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
       success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
       launched_flash: L'acció en massa "definiu els requeriments d'atribut" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -160,7 +160,7 @@ pim_enrich:
   sequential_edit_action:
     product:
       previous: Tornar a "%product%" sense guardar.
-      next: Anar a "%product%" sense guardar.
+      next: Vés a "%product%" sense guardar.
   acl:
     locale:
       index: Llistar configuracions regionals
@@ -253,13 +253,13 @@ pim_enrich:
   acl_group:
     association_type: Tipus d'associació
     attribute: Atributs
-    attribute_group: Grups d'atributs
+    attribute_group: Grups d'atribut
     category: Categories
     channel: Canals
     currency: Monedes
     family: Famílies
     group: Grups
-    variant_group: Grup de variants
+    variant_group: Grups de variants
     group_type: Tipus de grup
     locale: Configuracions regionals
     product: Productes
@@ -616,7 +616,7 @@ Default: Per defecte
 Attributes: Atributs
 Title: Títol
 pim_title.attribute_group:
-  index: Grups d'atributs
+  index: Grups d'atribut
   create: Grups d'atributs | Crear
   edit: Grups d'atributs %group.label% | Editar
 pim_title.category:
@@ -645,7 +645,7 @@ pim_title.group:
   index: Grups
   edit: Grups %group.label% | Editar
 pim_title.variant_group:
-  index: Grup de variants
+  index: Grups de variants
   edit: Grups de variants %group.label% | Editar
 pim_title.association_type:
   index: Tipus d'associació
@@ -653,6 +653,12 @@ pim_title.association_type:
 pim_title.group_type:
   index: Tipus de grup
   edit: Tipus de grup %group type.label% | Editar
+pim_title.mass_edit_product_action:
+  choose: Editar en massa | Triar
+  configure: Editar en massa | Configurar
+pim_title.mass_edit_family_action:
+  choose: Editar en massa | Triar
+  configure: Editar en massa | Configurar
 pim_title.job_tracker:
   index: Seguiment del procés
   show: Seguiment del procés | Mostrar tasca
@@ -669,6 +675,8 @@ pim_catalog_image: Imatge
 pim_catalog_boolean: "Sí/No"
 pim_catalog_date: Data
 pim_catalog_metric: Mètrica
+pim_reference_data_simpleselect: Selecció simple de dades de referència
+pim_reference_data_multiselect: Selecció múltiple de dades de referència
 Activated: Activat
 Disable: Deshabilitar
 pim_enrich.sequential_edit_action:
@@ -874,9 +882,9 @@ batch_jobs:
     clean:
       label: Netejar arxius per atributs comuns
   set_attribute_requirements:
-    label: Conjunt de requeriments d'atribut
+    label: Establir els requeriments d'atribut
     perform:
-      label: Conjunt de requeriments d'atribut
+      label: Establir els requeriments d'atribut
   csv_product_quick_export:
     quick_export.label: Exportació ràpida de producte en CSV
     perform:

@@ -18,7 +18,7 @@ oro.user.grid.users:
     username: Nom d’usuari
     email: Adreça electrònica
     firstName: Nom
-    lastName: Cognoms
+    lastName: Segon cognom
     createdAt: Creat el
     updatedAt: Actualitzat el
     enabled: Estat
@@ -70,6 +70,7 @@ Contact Information: Informació de contacte
 User name: Nom d'usuari
 Birthday: Aniversari
 API key: Clau d'API
+User salt: Usuari per sal
 Current password: Contrasenya actual
 New password: Contrasenya nova
 Repeat new password: Nova contrasenya (repetir)

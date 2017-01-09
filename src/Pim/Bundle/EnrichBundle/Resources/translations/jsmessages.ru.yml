@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Вы действительно хотите удалить этот элемент?
+    item: Вы уверены, что хотите удалить этот элемент?
     association type: Вы действительно хотите удалить этот тип ассоциации?
     attribute: Вы действительно хотите удалить этот атрибут?
     family: Вы действительно хотите удалить это семейство?
@@ -24,6 +24,8 @@ pim_datagrid:
       confirm_content: Вы уверены, что хотите удалить выбранные продукты?
       success: Выбранные продукты успешно удалены.
       error: Oшибка при попытке удаления выбранных продуктов, пожалуйста, попробуйте снова.
+  view_selector:
+    view: Представления
 flash:
   item:
     removed: Элемент успешно удален
@@ -40,9 +42,9 @@ flash:
   group:
     removed: Группа успешно удалена
   variant group:
-    removed: Группа вариантов успешно удалена
+    removed: Вариативная группа успешно удалена
   group type:
-    removed: Группа типов успешно удалена
+    removed: Тип группы успешно удален
   import profile:
     removed: Профиль импорта успешно удален
   export profile:
@@ -84,7 +86,7 @@ label:
   attribute_option:
     add_option: Добавить новый элемента списка
 Code: Код
-Edit: Изменить
+Edit: Редактировать
 Delete: Удалить
 Edit attributes of the product: Изменение атрибутов продукта
 Classify the product: Классифицировать продукт
@@ -126,10 +128,10 @@ pim_enrich:
     product:
       title: продукт
       btn:
-        enable: Активировать
-        enabled: Активирован
-        disable: Деактивировать
-        disabled: Деактивирован
+        enable: Включить
+        enabled: Включено
+        disable: Отключить
+        disabled: Отключено
         download_pdf: PDF
         compare_translate: Сравнить / Перевести
         delete: Удалить
@@ -159,27 +161,27 @@ pim_enrich:
       error:
         upload: Произошла ошибка при загрузке файла
       meta:
-        created: Создан
-        created_by: Создан
-        updated_by: Обновлен
+        created: Создано
+        created_by: Создано
+        updated_by: Создано
         updated: Последнее обновление
         family:
           title: Семейство
-          none: (Пусто)
+          none: Нет
         groups:
           title: Группы
           modal:
             title: Группа {{ group }}
             view_group: Посмотреть группу
-            group_label: Ярлык
+            group_label: Метка
             more_products: '{{ count }} больше продуктов...'
             close: Закрыть
       copy:
         select: Выбрать
         all: Все
         all_visible: Все видимые
-        none: (Пусто)
-        copy: Копировать
+        none: Нет
+        copy: Копия
       variant_group:
         updated_by: Обновлено группой вариантов
         switch:
@@ -201,7 +203,8 @@ pim_enrich:
           cancel: Отмена
     attribute_option:
       code: Код
-      label: Ярлык
+      label: Метка
+      actions: Действия
     variant_group:
       title: Группа вариантов
       info:
@@ -222,6 +225,20 @@ pim_enrich:
         created_by: Создана
         updated: Обновлено
         updated_by: Обновлена
+    group:
+      title: Группа
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - поля
+      btn:
+        save: Сохранить
+      meta:
+        product_count: Продукты
+        created: Создано
+        created_by: Создана
+        updated: Обновлено
+        updated_by: Обновлена
   confirmation:
     leave: Вы уверены, что хотите покинуть эту страницу?
     discard_changes: Если вы покините страницу изменения будут потеряны для {{ entity }}.
@@ -229,7 +246,7 @@ pim_enrich:
     delete:
       attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
   info:
-    not_applicable: '-'
+    not_applicable: Н/Д
     entity:
       updated: Имеются несохраненные изменения.
   error:
@@ -244,7 +261,7 @@ pim_enrich:
         associations:
           title: Ассоциации
           info:
-            none_exist: Типы ассоциаций отсутствуют.
+            none_exist: Титпы ассоциаций отсутствуют.
             show_products: Показать продукты
             show_groups: Показать группы
             number_of_associations: '{{ productCount }} продуктов и {{ groupCount }} групп'
@@ -275,7 +292,7 @@ pim_enrich:
         "yes": Да
       sequential_edit:
         info:
-          products: продуктов
+          products: продукты
           previous: Перейти обратно к {{ product }} без сохранения.
           next: Перейти к {{ product }} без сохранения.
         btn:
@@ -284,7 +301,7 @@ pim_enrich:
       change_family:
         modal:
           title: Изменить семейство продуктов
-          merge_attributes: Текущие атрибуты будут объединены с существующими в новом семействе.
+          merge_attributes: Текущие атрибуты будут объединены с существующими, в новом семействе.
           keep_attributes: Атрибуты не будут удалены.
           change_family_to: Изменить семейство на
           empty_selection: Выберите семейство
@@ -292,7 +309,7 @@ pim_enrich:
         attribute_deletion_error: Произошла ошибка при удалении атрибута
       mass_edit:
         select_attributes: Выберите атрибуты
-        select: Выберите
+        select: Выбрать
     attribute_option:
       flash:
         option_created: Элемент в списке атрибута успешно создан
@@ -300,7 +317,7 @@ pim_enrich:
       add_option_modal:
         title: Добавить элемента списка для атрибута
         confirm: Добавить
-        cancel: Отменить
+        cancel: Отмена
     entity:
       switch:
         "no": Нет
@@ -320,6 +337,18 @@ pim_enrich:
           title: Продукты
         attributes:
           title: Атрибуты
+    group:
+      tab:
+        properties:
+          title: Свойства
+          general: Общие свойства
+          code: Код
+          type: Тип
+          label_translations: Переводы меток
+        history:
+          title: Журнал
+        products:
+          title: Продукты
     common:
       tab:
         attributes:
@@ -369,7 +398,6 @@ pim_enrich:
             NOT IN: Нет в списке
             EMPTY: Продукты, которые не имеют семейства
             NOT EMPTY: Продукты, которые имеют семейство
-          empty_selection: Нет условия для семейств
         updated:
           title: Условие времени
           operators:

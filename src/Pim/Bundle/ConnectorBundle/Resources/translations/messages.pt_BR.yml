@@ -158,8 +158,7 @@ pim_connector:
         help: Permitir ou não o upload direto do arquivo
 job_execution.summary:
   read: ler
-  read_lines: ler linhas
-  write: escrito
+  write: escrever
   skip: pulado
   create: criado
   process: processado
@@ -171,6 +170,7 @@ job_execution.summary:
     title: 'Codificação do arquivo:'
     skipped: pulado, extensão na lista branca
   product_skipped_no_diff: produto pulado (nenhuma diferença)
+  item_position: ler linhas
 batch_jobs:
   csv_product_export:
     label: Exportação de produto em CSV
@@ -229,19 +229,14 @@ batch_jobs:
     label: Importar grupo variante em CSV
     validation.label: Validação de arquivo
     import.label: Importação de Grupo Variante
-  csv_currency_export:
-    export.label: Exportação de moeda
   csv_channel_import:
     validation.label: Validação de arquivo
-    import.label: Importação de canal
   csv_locale_import:
     validation.label: Validação de arquivo
   csv_attribute_group_import:
     validation.label: Validação de arquivo
   csv_currency_import:
-    label: Importar moeda em CSV
     validation.label: Validação de arquivo
-    import.label: Importação de moeda
   csv_group_type_import:
     validation.label: Validação de arquivo
   xlsx_category_import:
@@ -301,10 +296,6 @@ batch_jobs:
   xlsx_association_type_export:
     label: Exportação de tipos de associação em XLSX
     export.label: Exportação de tipos de associação em XLSX
-  xlsx_channel_export:
-    export.label: Exportação de canal
-  xlsx_currency_export:
-    label: Exportar moeda em CSV
   xlsx_channel_import:
     validation.label: Validação de arquivo
   xlsx_locale_import:
@@ -313,6 +304,5 @@ batch_jobs:
     validation.label: Validação de arquivo
   xlsx_currency_import:
     validation.label: Validação de arquivo
-    import.label: Importação de moeda
   xlsx_group_type_import:
     validation.label: Validação de arquivo
