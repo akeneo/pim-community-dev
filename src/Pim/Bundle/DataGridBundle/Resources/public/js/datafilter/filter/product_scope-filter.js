@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'oro/mediator', 'oro/datafilter/select-filter', 'pim/user-context'],
-    function ($, _, mediator, SelectFilter, UserContext) {
+    ['jquery', 'underscore', 'oro/mediator', 'oro/datafilter/select-filter', 'pim/user-context', 'pim/datagrid/state'],
+    function ($, _, mediator, SelectFilter, UserContext, DatagridState) {
         'use strict';
 
         /**
@@ -59,8 +59,13 @@ define(
              * Update the current filter value using the UserContext.
              */
             resetValue: function () {
-                this.setValue({value: this.catalogScope});
-                UserContext.set('catalogScope', this.catalogScope);
+                var scope = DatagridState.get('product-grid', 'scope');
+                if (!scope) {
+                    scope = this.catalogScope;
+                }
+
+                this.setValue({value: scope});
+                UserContext.set('catalogScope', scope);
                 this.selectWidget.multiselect('refresh');
             },
 
@@ -85,6 +90,21 @@ define(
                 UserContext.set('catalogScope', newValue.value);
 
                 return SelectFilter.prototype._onValueUpdated.apply(this, arguments);
+            },
+
+            /**
+             * @inheritDoc
+             *
+             * Override to save the scope into the product grid state.
+             *
+             * We don't put this logic in the setValue method because we want this behavior only when the value
+             * comes from a change of the select element, not from a view/url for example.
+             */
+            _onSelectChange: function() {
+                SelectFilter.prototype._onSelectChange.apply(this, arguments);
+
+                var value = this._formatRawValue(this._readDOMValue());
+                DatagridState.set('product-grid', 'scope', value.value);
             },
 
             /**
