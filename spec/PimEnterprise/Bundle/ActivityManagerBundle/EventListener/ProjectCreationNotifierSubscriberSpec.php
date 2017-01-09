@@ -6,12 +6,12 @@ use PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectCreationNoti
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
+use PimEnterprise\Component\ActivityManager\Model\Completeness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -57,7 +57,8 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         ProjectInterface $project,
         UserInterface $user,
         NotificationInterface $notification,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        Completeness $completeness
     ) {
         $datetime = new \DateTime('2019-12-23');
         $event->getProject()->willReturn($project);
@@ -71,13 +72,8 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         $user->getUiLocale()->willReturn($locale);
         $locale->getCode()->willReturn('en_US');
 
-        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn(
-            [
-                'done' => '3',
-                'todo' => '7',
-                'in_progress' => '5'
-            ]
-        );
+        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($completeness);
+        $completeness->isComplete()->willReturn(false);
 
         $factory->create(
             [
@@ -102,7 +98,8 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         ProjectInterface $project,
         UserInterface $user,
         NotificationInterface $notification,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        Completeness $completeness
     ) {
         $datetime = new \DateTime('2019-12-23');
         $event->getProject()->willReturn($project);
@@ -118,13 +115,8 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
 
         $userRepository->findContributorsToNotify($project)->willReturn([$user]);
 
-        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn(
-            [
-                'done' => '55',
-                'todo' => '0',
-                'in_progress' => '0'
-            ]
-        );
+        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($completeness);
+        $completeness->isComplete()->willReturn(true);
 
         $notifier->notify($notification, [$user])->shouldNotBeCalled();
 

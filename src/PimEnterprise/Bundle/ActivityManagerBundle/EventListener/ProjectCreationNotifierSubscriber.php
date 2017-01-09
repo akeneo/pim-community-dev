@@ -85,24 +85,21 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
 
         foreach ($users as $user) {
             $completeness = $this->projectCompletenessRepository->getProjectCompleteness($project, $user);
-            $completeness = (int) $completeness['done']/(int) array_sum($completeness) * 100;
 
-            if (99 < (int) $completeness) {
-                continue;
+            if (!$completeness->isComplete()) {
+                $userLocale = $user->getUiLocale();
+                $formattedDate = $this->datePresenter->present(
+                    $project->getDueDate(),
+                    ['locale' => $userLocale->getCode()]
+                );
+
+                $parameters['due_date'] = $formattedDate;
+                $parameters['project_label'] = $project->getLabel();
+                $parameters['project_code'] = $project->getCode();
+
+                $notification = $this->factory->create($parameters);
+                $this->notifier->notify($notification, [$user]);
             }
-
-            $userLocale = $user->getUiLocale();
-            $formattedDate = $this->datePresenter->present(
-                $project->getDueDate(),
-                ['locale' => $userLocale->getCode()]
-            );
-
-            $parameters['due_date'] = $formattedDate;
-            $parameters['project_label'] = $project->getLabel();
-            $parameters['project_code'] = $project->getCode();
-
-            $notification = $this->factory->create($parameters);
-            $this->notifier->notify($notification, [$user]);
         }
     }
 }
