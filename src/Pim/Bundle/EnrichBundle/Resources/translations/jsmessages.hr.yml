@@ -172,8 +172,8 @@ pim_enrich:
       variant_group:
         updated_by: Ažurirano sa varijantom grupe
         switch:
-          "yes": Da
-          "no": Ne
+          "yes": "Da"
+          "no": "Ne"
       optional_attribute:
         remove: Ukloni ovaj atribut
       locale_specific_attribute:
@@ -209,7 +209,7 @@ pim_enrich:
             none_exist: Ne postoji tip pridruživanja.
             show_products: Prikaži proizvode
             show_groups: Prikaži grupe
-            number_of_associations: '{{ productCount }} proizvoda i {{ groupCount }} grupe'
+            number_of_associations: "{{ productCount }} proizvoda i {{ groupCount }} grupe"
         attributes:
           title: Atributi
           btn:
@@ -218,7 +218,7 @@ pim_enrich:
           info:
             search_attributes: Pretraži...
             no_available_attributes: Nema više atributa koje se može dodati
-            attributes_selected: '{{ attributeCount }} atributa odabrano'
+            attributes_selected: "{{ attributeCount }} atributa odabrano"
             no_match: Nisu pronađeni rezultati
             load_more: Učitavanje više rezultata...
         categories:
@@ -233,8 +233,8 @@ pim_enrich:
         history:
           title: Povijest
       switch:
-        "no": Ne
-        "yes": Da
+        "no": "Ne"
+        "yes": "Da"
       sequential_edit:
         info:
           products: proizvodi
@@ -265,8 +265,8 @@ pim_enrich:
         cancel: Poništi
     entity:
       switch:
-        "no": Ne
-        "yes": Da
+        "no": "Ne"
+        "yes": "Da"
   mass_edit_action:
     edit_common_attributes:
       description: Atributi odabranih proizvoda u tabličnom prikazu proizvoda će se promijeniti s podacima za lokalizaciju <span class="highlight">{{ locale }}</span> i kanala <span class="highlight">{{ channel }}</span>.

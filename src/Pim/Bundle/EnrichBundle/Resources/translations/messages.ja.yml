@@ -538,46 +538,46 @@ Default: デフォルト
 Attributes: 属性
 Title: タイトル
 pim_title.attribute_group:
-  index: 属性グループ
-  create: 属性グループ |作成
-  edit: 属性グループ %group.label% |編集
+  index: "属性グループ"
+  create: "属性グループ |作成"
+  edit: "属性グループ %group.label% |編集"
 pim_title.category:
-  index: カテゴリツリー
-  create: カテゴリ ツリー |作成
-  edit: カテゴリツリー %category.label% |編集
+  index: "カテゴリツリー"
+  create: "カテゴリ ツリー |作成"
+  edit: "カテゴリツリー %category.label% |編集"
 pim_title.attribute:
-  index: 属性
-  create: 属性 |作成
-  edit: 属性 %attribute.label% |編集
+  index: "属性"
+  create: "属性 |作成"
+  edit: "属性 %attribute.label% |編集"
 pim_title.product:
-  index: 製品
-  edit: 製品 %product.sku% |編集
+  index: "製品"
+  edit: "製品 %product.sku% |編集"
 pim_title.family:
-  index: ファミリー
-  edit: ファミリー %family.label% |編集
+  index: "ファミリー"
+  edit: "ファミリー %family.label% |編集"
 pim_title.channel:
-  index: チャンネル
-  create: チャンネル |作成
-  edit: チャンネル %channel.label% |編集
+  index: "チャンネル"
+  create: "チャンネル |作成"
+  edit: "チャンネル %channel.label% |編集"
 pim_title.currency:
-  index: 通貨
+  index: "通貨"
 pim_title.locale:
-  index: ロケール
+  index: "ロケール"
 pim_title.group:
-  index: グループ
-  edit: グループ %group.label% |編集
+  index: "グループ"
+  edit: "グループ %group.label% |編集"
 pim_title.variant_group:
-  index: バリアントグループ
-  edit: バリアントグループ %group.label% |編集
+  index: "バリアントグループ"
+  edit: "バリアントグループ %group.label% |編集"
 pim_title.association_type:
-  index: 関連タイプ
-  edit: 関連タイプ %association type.label% |編集
+  index: "関連タイプ"
+  edit: "関連タイプ %association type.label% |編集"
 pim_title.group_type:
-  index: グループタイプ
-  edit: グループタイプ %group type.label% |編集
+  index: "グループタイプ"
+  edit: "グループタイプ %group type.label% |編集"
 pim_title.mass_edit_action:
-  choose: 一括編集 |選択
-  configure: 一括編集 |構成
+  choose: "一括編集 |選択"
+  configure: "一括編集 |構成"
 pim_title.dashboard: "ダッシュ ボード"
 pim_catalog_identifier: 識別子
 pim_catalog_text: テキスト
@@ -728,23 +728,23 @@ Currency: 通貨
 oro.locale:
   address_format:
     region_name_type:
-      parish: 教区
-      state: 都道府県
-      island: 島
-      county: 郡
-      area: エリア
-      prefecture: 都道府県
-      department: 部門
-      district: 地区
-      province: 都道府県
+      parish: "教区"
+      state: "都道府県"
+      island: "島"
+      county: "郡"
+      area: "エリア"
+      prefecture: "都道府県"
+      department: "部門"
+      district: "地区"
+      province: "都道府県"
   form:
     tooltip:
-      locale: 数値、住所、名前、日付の書式設定に使用するロケール オプションを選択します
-      location: ロケーションは '住所の国で住所を整形' オプションが無効である場合に住所の整形に使用されます
-      format_address_by_address_country: このオプションを有効にすると、住所は関連する国に基づいて整形されます。無効にすると、住所はあなたのロケーションに基づいて整形されます。
-      language: 使用したいシステムの言語を選択
-      timezone: 日付と時刻を表示する時間帯を選択
-      currency: 既定の通貨を選択
+      locale: "数値、住所、名前、日付の書式設定に使用するロケール オプションを選択します"
+      location: "ロケーションは '住所の国で住所を整形' オプションが無効である場合に住所の整形に使用されます"
+      format_address_by_address_country: "このオプションを有効にすると、住所は関連する国に基づいて整形されます。無効にすると、住所はあなたのロケーションに基づいて整形されます。"
+      language: "使用したいシステムの言語を選択"
+      timezone: "日付と時刻を表示する時間帯を選択"
+      currency: "既定の通貨を選択"
 Selected products successfully deleted: 選択した製品が正常に削除されました
 edit_common_attributes.steps.edit_common_attributes_processor.title: 共通の属性を編集
 edit_common_attributes: 共通の属性を編集

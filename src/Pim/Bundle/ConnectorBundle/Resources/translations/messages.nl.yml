@@ -18,25 +18,40 @@ pim_connector:
     csv_group_export:
       title: Groepexport in CSV
       export.title: Groepexport
+    csv_variant_group_export:
+      title: Variant groep export in CSV
+      export.title: Variant groep export
     csv_product_import:
       title: Productimport in CSV
+      validation.title: Bestandsvalidatie
       import.title: Productimport
       import_associations.title: Productassociatie import
     csv_category_import:
       title: Categorie-import in CSV
+      validation.title: Bestandsvalidatie
       import.title: Categorie-import
     csv_attribute_import:
       title: Attribuut-import in CSV
+      validation.title: Bestandsvalidatie
       import.title: Attribuut-import
     csv_attribute_option_import:
       title: Attribuutoptie-import in CSV
+      validation.title: Bestandsvalidatie
       import.title: Attribuutoptie-import
     csv_association_type_import:
       title: Associatietype-import in CSV
+      validation.title: Bestandsvalidatie
       import.title: Associatietype-import
+    csv_family_import:
+      validation.title: Bestandsvalidatie
     csv_group_import:
       title: Groep importeren in CSV
+      validation.title: Bestandsvalidatie
       import.title: Groep importeren
+    csv_variant_group_import:
+      title: Variant groep import in CSV
+      validation.title: Bestandsvalidatie
+      import.title: Variant groep import
   steps:
     dummy_reader.title: Dummy lezer
     product_reader.title: Product extractie
@@ -97,8 +112,10 @@ pim_connector:
       help: Naam van de groepskolom
     filePath:
       label: Bestand
+      help: Het CSV-bestand om te importeren
     yamlFilePath:
       label: Bestand
+      help: Het YAML-bestand om te importeren
     uploadAllowed:
       label: Bestanden uploaden toestaan
       help: Of direct uploaden van het bestand is toegestaan
@@ -116,6 +133,9 @@ pim_connector:
     realTimeVersioning:
       label: Real-time geschiedenis bijwerken
       help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
+    copyValuesToProducts:
+      label: Kopieer variant groepswaarden naar producten
+      help: Betekent dat de producten automatisch geupdate worden met variant groep waarden, kan uitgeschakeld worden om alleen variant groep te updaten
 job_execution.summary:
   read: lezen
   read_lines: lees de lijnen

@@ -8,25 +8,25 @@ pim_user:
       business_unit.title: Bedrijfsdivisies
       email_synchronization.title: Synchronisatie-instellingen voor e-mail
 oro.user.controller:
-  group.message.saved: Groep opgeslagen
-  role.message.saved: Rol opgeslagen
-  user.message.saved: Gebruiker opgeslagen
-  status.message.saved: Status opgeslagen
+  group.message.saved: "Groep opgeslagen"
+  role.message.saved: "Rol opgeslagen"
+  user.message.saved: "Gebruiker opgeslagen"
+  status.message.saved: "Status opgeslagen"
 oro.user.grid.users:
   columns:
-    username: Gebruikersnaam
-    email: E-mail
-    firstName: Voornaam
-    lastName: Achternaam
-    createdAt: Aangemaakt op
-    updatedAt: Bijgewerkt op
-    enabled: Status
+    username: "Gebruikersnaam"
+    email: "E-mail"
+    firstName: "Voornaam"
+    lastName: "Achternaam"
+    createdAt: "Aangemaakt op"
+    updatedAt: "Bijgewerkt op"
+    enabled: "Status"
 oro.user.grid.roles:
   columns:
-    label: Label
+    label: "Label"
 oro.user.grid.groups:
   columns:
-    name: Naam
+    name: "Naam"
 pim_title:
   user.index: Gebruikers
   user_role.index: Rollen

@@ -132,8 +132,8 @@ pim_enrich:
         copy: コピー
       variant_group:
         switch:
-          "yes": はい
-          "no": いいえ
+          "yes": "はい"
+          "no": "いいえ"
       optional_attribute:
         remove: 属性を削除
     attribute_option:
@@ -169,8 +169,8 @@ pim_enrich:
         history:
           title: 履歴
       switch:
-        "no": いいえ
-        "yes": はい
+        "no": "いいえ"
+        "yes": "はい"
       sequential_edit:
         info:
           products: 製品
@@ -190,5 +190,5 @@ pim_enrich:
         cancel: キャンセル
     entity:
       switch:
-        "no": いいえ
-        "yes": はい
+        "no": "いいえ"
+        "yes": "はい"
