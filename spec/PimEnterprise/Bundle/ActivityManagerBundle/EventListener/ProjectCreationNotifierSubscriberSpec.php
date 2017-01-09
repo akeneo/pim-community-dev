@@ -75,7 +75,7 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
             [
                 'done' => '3',
                 'todo' => '7',
-                'in_progess' => '5'
+                'in_progress' => '5'
             ]
         );
 
@@ -122,7 +122,7 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
             [
                 'done' => '55',
                 'todo' => '0',
-                'in_progess' => '0'
+                'in_progress' => '0'
             ]
         );
 
