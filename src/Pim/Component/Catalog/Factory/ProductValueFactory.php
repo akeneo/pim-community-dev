@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory;
 
+use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryRegistry;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -18,24 +19,19 @@ class ProductValueFactory
     /** @var AttributeValidatorHelper */
     protected $attributeValidatorHelper;
 
-    /** @var string */
-    protected $productValueClass;
+    /** @var ProductValueFactoryRegistry */
+    protected $registry;
 
     /**
-     * @param AttributeValidatorHelper $attributeValidatorHelper
-     * @param string                   $productValueClass
+     * @param AttributeValidatorHelper    $attributeValidatorHelper
+     * @param ProductValueFactoryRegistry $registry
      */
     public function __construct(
         AttributeValidatorHelper $attributeValidatorHelper,
-        $productValueClass
+        ProductValueFactoryRegistry $registry
     ) {
-        if (!class_exists($productValueClass)) {
-            throw new \InvalidArgumentException(
-                sprintf('The product value class "%s" does not exist.', $productValueClass)
-            );
-        }
 
-        $this->productValueClass = $productValueClass;
+        $this->registry = $registry;
         $this->attributeValidatorHelper = $attributeValidatorHelper;
     }
 
@@ -57,11 +53,8 @@ class ProductValueFactory
         $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
         $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
 
-        /** @var ProductValueInterface $value */
-        $value = new $this->productValueClass();
-        $value->setAttribute($attribute);
-        $value->setScope($channelCode);
-        $value->setLocale($localeCode);
+        $factory = $this->registry->get($attribute->getAttributeType());
+        $value = $factory->create($attribute, $channelCode, $localeCode);
 
         return $value;
     }

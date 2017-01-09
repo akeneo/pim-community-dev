@@ -9,6 +9,8 @@ parameters:
     pim_catalog.factory.currency.class:              Pim\Component\Catalog\Factory\CurrencyFactory
     pim_catalog.factory.product_template.class:      Pim\Component\Catalog\Factory\ProductTemplateFactory
     pim_catalog.factory.product_value.class:         Pim\Component\Catalog\Factory\ProductValueFactory
+    pim_catalog.factory.product_value.registry.class: Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryRegistry
+    pim_catalog.factory.product_value.simple.class: Pim\Component\Catalog\Factory\ProductValue\SimpleProductValueFactory
 
 services:
     pim_catalog.factory.family:
@@ -105,4 +107,28 @@ services:
         class: '%pim_catalog.factory.product_value.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.factory.product_value.registry'
+
+    pim_catalog.factory.product_value.registry:
+        class: '%pim_catalog.factory.product_value.registry.class%'
+        public: false
+
+    pim_catalog.factory.product_value.simple:
+        class: '%pim_catalog.factory.product_value.simple.class%'
+        public: false
+        arguments:
             - '%pim_catalog.entity.product_value.class%'
+            -
+                - pim_catalog_text
+                - pim_catalog_textarea
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_multiselect
+                - pim_catalog_simpleselect
+                - pim_catalog_file
+                - pim_catalog_image
+                - pim_catalog_boolean
+                - pim_catalog_date
+                - pim_catalog_metric
+        tags:
+            - { name: pim_catalog.factory.product_value }
