@@ -1,5 +1,6 @@
 code;type;label-en_US;localizable;scopable;decimals_allowed;metric_family;default_metric_unit;useable_as_grid_filter;group;allowed_extensions
-sku;pim_catalog_identifier;tutu;0;0;;;;1;other;
+sku;pim_catalog_identifier;sku;0;0;;;;1;general;
+brand;pim_catalog_simpleselect;brand;0;0;;;;1;general;
 name;pim_catalog_text;Name;1;0;;;;1;marketing;
 description;pim_catalog_text;Description;1;1;;;;0;marketing;
 size;pim_catalog_text;Size;1;0;;;;1;marketing;
@@ -8,3 +9,4 @@ release_date;pim_catalog_date;Releasedate;1;0;;;;1;other;
 capacity;pim_catalog_metric;Capacity;0;0;0;Binary;GIGABYTE;1;technical;
 material;pim_catalog_text;Material;1;0;;;;1;technical;
 picture;pim_catalog_image;Picture;0;1;;;;0;media;jpg
+other;pim_catalog_text;Other;0;0;;;;;other;

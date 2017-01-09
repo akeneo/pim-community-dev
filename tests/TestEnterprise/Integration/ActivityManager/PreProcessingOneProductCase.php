@@ -10,7 +10,7 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
     /** @var ProjectInterface */
     private static $project;
 
-    public function testProjectCreationWithOneProduct()
+    public function testProjectCreation()
     {
         $this::$project = $this->createProject([
             'label' => 'test-project',
@@ -26,23 +26,28 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
                 ],
             ],
         ]);
+
+        $this->calculateProject($this::$project);
     }
 
     public function testAttributeGroupCompleteness()
     {
-        // TODO
         $expectedAttributeGroupCompleteness = [
+            'general' => [
+                'has_at_least_one_required_attribute_filled' => '0',
+                'is_complete' => '1'
+            ],
             'marketing' => [
                 'has_at_least_one_required_attribute_filled' => '1',
                 'is_complete' => '0'
             ],
             'technical' => [
                 'has_at_least_one_required_attribute_filled' => '0',
-                'is_complete' => '1'
+                'is_complete' => '0'
             ],
             'other' => [
                 'has_at_least_one_required_attribute_filled' => '0',
-                'is_complete' => '1'
+                'is_complete' => '0'
             ],
         ];
 
@@ -60,11 +65,15 @@ SQL;
             $actualCompleteness = $this->getConnection()
                 ->fetchAssoc($sql, ['attribute_group_id' => $attributeGroupId]);
 
-            $this->assertSame($expectedCompleteness, $actualCompleteness);
+            $this->assertSame(
+                $actualCompleteness,
+                $expectedCompleteness,
+                sprintf('Attribute group complete is not valid for the attribute group %s', $group)
+            );
         }
     }
 
-    public function testTheNumberOfLinePreProcessed()
+    public function testTheNumberOfAttributeGroupCompleteness()
     {
         $productId = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('tshirt-the-witcher-3')
@@ -84,6 +93,18 @@ SQL;
             'locale_id' => $this::$project->getLocale()->getId(),
         ]);
 
-        $this->assertSame($numberOfRow, 3);
+        $this->assertSame(
+            $numberOfRow,
+            4,
+            sprintf('Invalid number of generated attribute group completeness for the product %s', $productId)
+        );
+    }
+
+    public function testThatTheProjectRecalculationDoesNotAddAttributeGroupCompleteness()
+    {
+        $this->calculateProject($this::$project);
+
+        $this->testAttributeGroupCompleteness();
+        $this->testTheNumberOfAttributeGroupCompleteness();
     }
 }

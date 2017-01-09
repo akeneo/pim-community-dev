@@ -73,12 +73,17 @@ class PreProcessCompletenessStep implements CalculationStepInterface
     {
         $result = [];
         foreach ($requiredAttributes as $attributeGroupId => $attributes) {
-            if (!array_key_exists($attributeGroupId, $filledAttributes)) {
-                $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 0);
-            } elseif (!empty(array_diff($attributes, $filledAttributes[$attributeGroupId]))) {
+            if (!isset($filledAttributes[$attributeGroupId])) {
+                $filledAttributes[$attributeGroupId] = [];
+            }
+
+            $intersection = array_intersect($attributes, $filledAttributes[$attributeGroupId]);
+            if ($intersection === $attributes) {
+                $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 1);
+            } elseif (count($intersection) > 0) {
                 $result[] = new AttributeGroupCompleteness($attributeGroupId, 1, 0);
             } else {
-                $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 1);
+                $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 0);
             }
         }
 
