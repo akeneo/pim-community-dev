@@ -93,7 +93,7 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         $this->projectCreated($event)->shouldReturn(null);
     }
 
-    function it_does_not_notify_users_when_the_project_is_created_and_they_project_is_already_100_percent_done(
+    function it_does_not_notify_users_when_the_project_is_created_and_already_to_100_percent_done(
         $notifier,
         $userRepository,
         $datePresenter,
