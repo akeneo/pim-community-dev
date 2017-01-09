@@ -6,7 +6,7 @@ pim_user:
       group_and_role.title: Grupos y Roles
       password.title: Contraseña
       business_unit.title: Unidades de negocio
-      email_synchronization.title: Configuraciones de sincronización de e-mail
+      email_synchronization.title: Configuración de sincronización de correo electrónico
       interfaces.title: Interfaces
 oro.user.controller:
   group.message.saved: Grupo guardado
@@ -84,7 +84,7 @@ user:
   default_product_grid_view:
     label: Vista de grilla de producto automática
   default_grid_view:
-    none: Ninguna
+    none: Ninguno
 Role: Rol
 Owner: Propietario
 General: General
@@ -125,7 +125,7 @@ oro_security:
 VIEW: Vista
 CREATE: Crear
 EDIT: Editar
-DELETE: Borrar
+DELETE: Eliminar
 ASSIGN: Asignar
 SHARE: Compartir
 oro:

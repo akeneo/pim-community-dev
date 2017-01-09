@@ -14,24 +14,15 @@ oro.grid.mass_action.delete.confirm_content: 您确定要删除所选的项目�
 oro.grid.datagrid.page_size.all: 所有
 oro.grid.mass_action.delete.success_message: "{0} 没有实体被删除 |{1} 一个实体被删除 |]1，Inf [%count% 实体被删除"
 datagrid_view:
-  views: 视图
-  default: 默认视图
-  create: 创建视图
-  placeholder: 新视图的名称
-  remove: 删除此视图
-  save_changes: 保存此视图
-  choose_label: 选择视图的标签
   columns:
     min_message: 您必须选择至少一个要显示的 datagrid 列
   label:
     unique_message: 标签名称必须是唯一的
     not_blank_message: 标题不得为空。
-confirmation.remove.datagrid view: 您是否确定要删除此数据视图?
-flash.datagrid view:
+grid.view_selector.flash:
   created: 数据视图已创建
-  updated: 数据视图已更新
   removed: 数据视图已删除
-  not removable: 你没有权限删除此视图
+  not_removable: 你没有权限删除此视图
 quick_export: 快速导出
 import: 导入
 export: 导出

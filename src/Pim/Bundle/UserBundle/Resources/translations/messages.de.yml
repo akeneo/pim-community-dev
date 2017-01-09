@@ -2,7 +2,7 @@ pim_user:
   user:
     tab:
       general.title: Allgemein
-      additional.title: Weiteres
+      additional.title: Ergänzend
       group_and_role.title: Gruppen und Rollen
       password.title: Kennwort
       business_unit.title: Geschäftsbereich
@@ -60,6 +60,7 @@ Business Units: Geschäftsbereich
 Email synchronization settings: Einstellungen für E-Mail Synchronisierung
 Host: Host
 Port: Port
+Ssl: SSL
 Last logged in: Zuletzt eingeloggt
 Login count: Anzahl der Anmeldungen
 Additional Information: Zusätzliche Informationen

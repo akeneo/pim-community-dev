@@ -26,27 +26,27 @@ flash:
   item:
     removed: Element usunięty pomyślnie
   association type:
-    removed: Typ powiązania usunięty pomyślnie
+    removed: Typ powiązania został pomyślnie usunięty
   attribute:
-    removed: Pomyślnie usunięto atrybut
+    removed: Atrybut został pomyślnie usunięty
   family:
-    removed: Rodzina została usunięta pomyślnie
+    removed: Rodzina produktów została usunięta pomyślnie
   product:
     removed: Produkt pomyślnie usunięty
   channel:
-    removed: Kanał pomyślnie usunięty
+    removed: Kanał został pomyślnie usunięty
   group:
     removed: Grupa została pomyślnie usunięta
   variant group:
-    removed: Grupa wariantów usunięta pomyślnie
+    removed: Grupa wariantów została pomyślnie usunięta
   group type:
-    removed: Typ grupy usunięty pomyślnie
+    removed: Typ grupy został pomyślnie usunięty
   import profile:
     removed: Profil importu usunięty pomyślnie
   export profile:
     removed: Profil eksportu usunięty pomyślnie
   user:
-    removed: Użytkownik usunięty pomyślnie
+    removed: Użytkownik został pomyślnie usunięty
   role:
     removed: Rola usunięta pomyślnie
 error:
@@ -151,10 +151,10 @@ pim_enrich:
         created: Utworzono
         created_by: Przez
         updated_by: Przez
-        updated: Modyfikowany
+        updated: Ostatnia aktualizacja
         family:
           title: Rodzina
-          none: Żaden
+          none: Brak
         groups:
           title: Grupy
           modal:
@@ -187,12 +187,25 @@ pim_enrich:
     attribute_option:
       code: Kod
       label: Etykieta
+      actions: Działania
     variant_group:
       info:
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - pola
         no_attributes: Ta grupa wariantów nie posiada jeszcze żadnych atrybutów
+      btn:
+        save: Zapisz
+      meta:
+        product_count: Produkty
+        created: Utworzono
+        updated: Zaktualizowano
+    group:
+      title: Grupa
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - pola
       btn:
         save: Zapisz
       meta:
@@ -296,6 +309,18 @@ pim_enrich:
           title: Produkty
         attributes:
           title: Atrybuty
+    group:
+      tab:
+        properties:
+          title: Właściwości
+          general: Ustawienia ogólne
+          code: Kod
+          type: Typ
+          label_translations: Tłumaczenia etykiety
+        history:
+          title: Historia
+        products:
+          title: Produkty
     common:
       tab:
         attributes:

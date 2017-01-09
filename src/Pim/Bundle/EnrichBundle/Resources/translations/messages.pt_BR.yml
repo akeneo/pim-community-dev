@@ -4,29 +4,29 @@ pim_enrich:
       attribute.title: Atributos
       category.title: Categorias
       association.title: Associações
-      completeness.title: Plenitude
-      history.title: História
+      completeness.title: Completude
+      history.title: Histórico
     no_comparison_locale_available: Não há outra localidade disponível para comparação
     no_compared_media: Não há mídia disponível para comparação
   attribute:
     tab:
-      parameter.title: Parametros
+      parameter.title: Parâmetros
       value.title: Valores
-      history.title: História
+      history.title: Histórico
   attribute_group:
     tab:
       property.title: Propriedades
       attribute.title: Atributos
-      history.title: História
+      history.title: Histórico
   family:
     tab:
       property.title: Propriedades
       attribute.title: Atributos
-      history.title: História
+      history.title: Histórico
   association_type:
     tab:
       property.title: Propriedades
-      history.title: História
+      history.title: Histórico
   group_type:
     tab:
       property.title: Propriedades
@@ -34,11 +34,11 @@ pim_enrich:
     pick_conversion_unit: Escolha uma unidade de conversão para cada atributo métrico que será usado durante a exportação de produto
     tab:
       property.title: Propriedades
-      history.title: História
+      history.title: Histórico
   category:
     tab:
       property.title: Propriedades
-      history.title: História
+      history.title: Histórico
   locale:
     tab:
       property.title: Propriedades
@@ -52,8 +52,8 @@ pim_enrich:
       RELATED: Relacionado
     tab:
       product.title: Produtos
-      property.title: Propriedade
-      history.title: História
+      property.title: Propriedades
+      history.title: Histórico
   variant_group:
     type:
       VARIANT: Variante
@@ -62,8 +62,8 @@ pim_enrich:
       RELATED: Relacionado
     tab:
       product.title: Produtos
-      property.title: Propriedade
-      history.title: História
+      property.title: Propriedades
+      history.title: Histórico
       attribute.title: Atributos
     info:
       no_attributes: Este grupo variante ainda não tem atributos
@@ -79,23 +79,23 @@ pim_enrich:
     product:
       page_title: Produtos
       page_subtitle: Editar em Massa (1 produto) | Editar em Massa (%count% produtos)
-      title: Escolha uma Operação
+      title: Escolher operação
       subtitle: Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados
       confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
       steps:
-        first: Escolha os produtos
-        second: Escolher Operação
+        first: Escolher produtos
+        second: Escolher operação
         third: Configurar
         fourth: Confirmar
     family:
       page_title: Famílias
       page_subtitle: Editar em Massa (1 família) | Editar em Massa (%count% famílias)
-      title: Escolher Operação
+      title: Escolher operação
       subtitle: Escolha a operação que deseja executar na familia selecionada| Escolha a operação que deseja executar nas %count% famílias selecionadas
       confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
       steps:
         first: Escolher famílias
-        second: Escolher Operação
+        second: Escolher operação
         third: Configurar
         fourth: Confirmar
     change-status:
@@ -251,9 +251,9 @@ pim_enrich:
     job_tracker:
       index: Ver processos executados
   acl_group:
-    association_type: Tipos de Associação
+    association_type: Tipos de associação
     attribute: Atributos
-    attribute_group: Grupos de Atributos
+    attribute_group: Grupo de atributos
     category: Categorias
     channel: Canais
     currency: Moedas
@@ -261,7 +261,7 @@ pim_enrich:
     group: Grupos
     variant_group: Grupos de variantes
     group_type: Tipos de grupos
-    locale: Locais
+    locale: Localidades
     product: Produtos
   product_value:
     tooltip:
@@ -703,7 +703,7 @@ pim_enrich.mass_edit_action:
     confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
     steps:
       first: Escolher famílias
-      second: Escolher Operação
+      second: Escolher operação
       third: Configurar
       fourth: Confirmar
   change-status:
