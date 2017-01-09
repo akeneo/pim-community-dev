@@ -1,4 +1,4 @@
-Area: 区
+Area: 区域
 ACRE: 英亩
 ARE: 公亩
 ARPENT: Arpent
@@ -51,7 +51,7 @@ Power: 功率
 GIGAWATT: 千兆瓦
 KILOWATT: 千瓦
 MEGAWATT: 兆瓦
-TERAWATT: 兆兆瓦
+TERAWATT: 太瓦
 WATT: 瓦特
 Resistance: 电阻
 MILLIOHM: 毫欧
@@ -105,7 +105,7 @@ METER_PER_SECOND: 米/秒
 MILE_PER_HOUR: 英里/小时
 YARD_PER_HOUR: 码/小时
 Temperature: 温度
-CELSIUS: 摄氏
+CELSIUS: 摄氏度
 FAHRENHEIT: 华氏度
 KELVIN: 开尔文
 RANKINE: 兰金温度

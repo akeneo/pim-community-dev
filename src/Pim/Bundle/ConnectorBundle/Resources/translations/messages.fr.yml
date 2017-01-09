@@ -14,7 +14,7 @@ pim_connector:
     variant_group_processor.title: Création / Mise à jour des groupes de variantes
     category_processor.title: Création des catégories
     association_processor.title: Création d'association
-    product_association_processor.title: Création des associations
+    product_association_processor.title: Création d'association
     group_processor.title: Création des groupes
     attribute_processor.title: Création des attributs
     attribute_option_processor.title: Création des options d'attributs
@@ -27,7 +27,7 @@ pim_connector:
     category_writer.title: Stockage des catégories
     variant_group_writer.title: Stockage des groupes de variantes
     writer.title: Stockage des entités
-    csv_writer.title: Ecriture des fichiers en CSV
+    csv_writer.title: Ecriture CSV
   export:
     csv:
       delimiter:
@@ -167,7 +167,6 @@ pim_connector:
         help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
 job_execution.summary:
   read: lu(s)
-  read_lines: lignes lues
   write: écrit(s)
   skip: ignoré(s)
   create: créé(s)
@@ -180,9 +179,10 @@ job_execution.summary:
     title: 'Encodage du fichier :'
     skipped: ignoré(s), extension dans la liste blanche
   product_skipped_no_diff: produit(s) ignoré(s) (aucune différence)
+  item_position: lignes lues
 batch_jobs:
   csv_product_export:
-    label: Export des produits en CSV
+    label: Export produits en CSV
     export.label: Export des produits
   csv_category_export:
     label: Export des catégories en CSV
@@ -303,7 +303,7 @@ batch_jobs:
     import_associations.label: Import des associations de produits
   xlsx_group_export:
     label: Export des groupes en XLSX
-    export.label: Export des groupes
+    export.label: Export de groupes
   xlsx_variant_group_export:
     label: Export des groupes de variantes en XLSX
     export.label: Export des groupes de variantes

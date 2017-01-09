@@ -2,32 +2,32 @@ pim_user:
   user:
     tab:
       general.title: Général
-      additional.title: Complément
+      additional.title: Supplémentaire
       group_and_role.title: Groupes et rôles
       password.title: Mot de passe
-      business_unit.title: Business Units
+      business_unit.title: Entités commerciales
       email_synchronization.title: Paramètres de synchronisation de messagerie
       interfaces.title: Interfaces
 oro.user.controller:
-  group.message.saved: Groupe enregistré
-  role.message.saved: Rôle enregistré
-  user.message.saved: Utilisateur enregistré
-  status.message.saved: Statut enregistré
+  group.message.saved: "Groupe enregistré"
+  role.message.saved: "Rôle enregistré"
+  user.message.saved: "Utilisateur enregistré"
+  status.message.saved: "Statut enregistré"
 oro.user.grid.users:
   columns:
-    username: Nom d'utilisateur
-    email: Email
-    firstName: Prénom
-    lastName: Nom
-    createdAt: Créé le
-    updatedAt: Mis à jour le
-    enabled: État
+    username: "Nom d'utilisateur"
+    email: "Email"
+    firstName: "Prénom"
+    lastName: "Nom"
+    createdAt: "Crée le"
+    updatedAt: "Mis à jour le"
+    enabled: "État"
 oro.user.grid.roles:
   columns:
-    label: Libellé
+    label: "Libellé"
 oro.user.grid.groups:
   columns:
-    name: Nom
+    name: "Nom"
 pim_title:
   user.index: Utilisateurs
   user_role.index: Rôles
@@ -84,7 +84,7 @@ user:
   default_product_grid_view:
     label: Vue par défaut de la grille des produits
   default_grid_view:
-    none: Aucune
+    none: Aucun
 Role: Rôle
 Owner: Propriétaire
 General: Général

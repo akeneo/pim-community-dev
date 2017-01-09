@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Tem a certeza que pretende eliminar este item?
+    item: Tem a certeza que pretende remover este item?
     association type: Tem certeza que deseja eliminar este tipo de associação?
     attribute: Tem certeza que deseja eliminar este atributo?
     family: Tem certeza que deseja eliminar esta família?
@@ -22,6 +22,11 @@ pim_datagrid:
       confirm_content: Tem certeza que deseja eliminar os produtos selecionados?
       success: Produtos selecionados eliminados com sucesso.
       error: Ocorreu um erro ao tentar eliminar os produtos seleccionados, por favor tente novamente.
+  view_selector:
+    view: Visualizações
+    create_view_modal:
+      confirm: OK
+      cancel: Cancelar
 flash:
   item:
     removed: Item removido com sucesso
@@ -132,7 +137,6 @@ pim_enrich:
         from: De
         modified: Modificado
         property: Propriedade
-        actions: Ações
       info:
         deletion_successful: Produto eliminado com sucesso.
         deletion_failed: Não foi possível eliminar o produto.
@@ -169,8 +173,8 @@ pim_enrich:
       variant_group:
         updated_by: Atualizado por um grupo variante
         switch:
-          "yes": Sim
-          "no": Não
+          "yes": "Sim"
+          "no": "Não"
       optional_attribute:
         remove: Remover este atributo
       locale_specific_attribute:
@@ -201,6 +205,18 @@ pim_enrich:
         product_count: Produtos
         created: Criado
         updated: Atualizado
+    group:
+      title: Grupo
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - campos
+      btn:
+        save: Guardar
+      meta:
+        product_count: Produtos
+        created: Criado
+        updated: Atualizado
   confirmation:
     leave: Tem certeza que deseja sair desta página?
     discard_changes: Irá perderá as alterações para {{ entity }}, se abandonar a página.
@@ -223,7 +239,7 @@ pim_enrich:
             none_exist: Nenhum tipo de associação existente.
             show_products: Mostrar produtos
             show_groups: Mostrar grupos
-            number_of_associations: '{{ productCount }} produtos e {{ groupCount }} grupos'
+            number_of_associations: "{{ productCount }} produtos e {{ groupCount }} grupos"
         attributes:
           title: Atributos
           btn:
@@ -232,7 +248,7 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
-            attributes_selected: '{{ attributeCount }} atributo(s) selecionado(s)'
+            attributes_selected: "{{ attributeCount }} atributo(s) selecionado(s)"
             no_match: Nenhuma correspondência encontrada
             load_more: A carregar mais resultados...
         categories:
@@ -247,8 +263,8 @@ pim_enrich:
         history:
           title: Histórico
       switch:
-        "no": Não
-        "yes": Sim
+        "no": "Não"
+        "yes": "Sim"
       sequential_edit:
         info:
           products: produtos
@@ -279,8 +295,8 @@ pim_enrich:
         cancel: Cancelar
     entity:
       switch:
-        "no": Não
-        "yes": Sim
+        "no": "Não"
+        "yes": "Sim"
     variant_group:
       tab:
         properties:
@@ -296,6 +312,18 @@ pim_enrich:
           title: Produtos
         attributes:
           title: Atributos
+    group:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          type: Tipo
+          label_translations: Traduções de rótulo
+        history:
+          title: Histórico
+        products:
+          title: Produtos
     common:
       tab:
         attributes:
@@ -330,7 +358,7 @@ pim_enrich:
         updated:
           operators:
             ALL: Sem restrição de data
-            SINCE LAST JOB: Produtos atualizados desde a última exportação
+            "SINCE LAST JOB": Produtos atualizados desde a última exportação
         enabled:
           title: Estado
           value:
@@ -340,8 +368,8 @@ pim_enrich:
         completeness:
           title: '% de Dados Completos'
           operators:
-            >=: Completo em pelo menos uma das linguagens selecionadas
-            GREATER OR EQUALS THAN ON ALL LOCALES: Completo em todas as linguagens escolhidas
+            ">=": Completo em pelo menos uma das linguagens selecionadas
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Completo em todas as linguagens escolhidas
             LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
         identifier:
           title: Identificador

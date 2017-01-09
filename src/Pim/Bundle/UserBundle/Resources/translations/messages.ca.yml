@@ -9,25 +9,25 @@ pim_user:
       email_synchronization.title: Configuració de sincronització de correu electrònic
       interfaces.title: Interfícies
 oro.user.controller:
-  group.message.saved: Grup desat
-  role.message.saved: Rol desat
-  user.message.saved: Usuari desat
-  status.message.saved: Estat desat
+  group.message.saved: "Grup desat"
+  role.message.saved: "Rol desat"
+  user.message.saved: "Usuari desat"
+  status.message.saved: "Estat desat"
 oro.user.grid.users:
   columns:
-    username: Nom d’usuari
-    email: Adreça electrònica
-    firstName: Nom
-    lastName: Cognoms
-    createdAt: Creat el
-    updatedAt: Actualitzat el
-    enabled: Estat
+    username: "Nom d’usuari"
+    email: "Adreça electrònica"
+    firstName: "Nom"
+    lastName: "Segon cognom"
+    createdAt: "Creat el"
+    updatedAt: "Actualitzat el"
+    enabled: "Estat"
 oro.user.grid.roles:
   columns:
-    label: Etiqueta
+    label: "Etiqueta"
 oro.user.grid.groups:
   columns:
-    name: Nom
+    name: "Nom"
 pim_title:
   user.index: Usuaris
   user_role.index: Rols
@@ -70,6 +70,7 @@ Contact Information: Informació de contacte
 User name: Nom d'usuari
 Birthday: Aniversari
 API key: Clau d'API
+User salt: Usuari per sal
 Current password: Contrasenya actual
 New password: Contrasenya nova
 Repeat new password: Nova contrasenya (repetir)
