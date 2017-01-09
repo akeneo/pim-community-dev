@@ -84,7 +84,7 @@ Feature: Notify users after a project creation
       | my-awesome-car       | car      | decoration         | Awesome car               |            |              |                   |                    |                    |                |          |               |
 
   Scenario: Successfully notify users when creating a project on clothing
-    And I am logged in as "Julia"
+    Given I am logged in as "Julia"
     When I am on the products page
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
@@ -147,7 +147,7 @@ Feature: Notify users after a project creation
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
 
   Scenario: Successfully notify users when creating a project with a product which is in two categories
-    And I am logged in as "Julia"
+    Given I am logged in as "Julia"
     When I am on the products page
     And I filter by "category" with operator "" and value "clothing"
     And I open the view selector
@@ -208,7 +208,7 @@ Feature: Notify users after a project creation
       | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
 
   Scenario: Successfully notify users when creating a project on high-tech
-    And I am logged in as "Marc"
+    Given I am logged in as "Marc"
     When I am on the products page
     And I filter by "category" with operator "" and value "high_tech"
     And I show the filter "weight"
@@ -344,13 +344,13 @@ Feature: Notify users after a project creation
       | project-description | 2016 summer collection |
       | project-due-date    | 12/13/2018             |
     And I press the "Save" button
-    Then I should be on the products page
+    And I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
     When I logout
     And I am logged in as "Julia"
-    And I should see the text "Julia"
-    And I should have 0 new notification
+    Then I should see the text "Julia"
+    Then I should have 0 new notification
 
   Scenario: Successfully notify users if the project is not 100% done at project creation
     Given the following product values:
@@ -372,5 +372,5 @@ Feature: Notify users after a project creation
     And I wait for the "project_calculation" job to finish
     When I logout
     And I am logged in as "Julia"
-    And I should see the text "Julia"
-    And I should have 1 new notification
+    Then I should see the text "Julia"
+    Then I should have 1 new notification
