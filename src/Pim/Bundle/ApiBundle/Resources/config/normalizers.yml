@@ -1,0 +1,8 @@
+parameters:
+    pim_api.normalizer.simple_violation.class: Pim\Component\Api\Normalizer\SimpleEntityViolationNormalizer
+
+services:
+    pim_api.normalizer.simple_violation:
+        class: '%pim_api.normalizer.simple_violation.class%'
+        tags:
+            - { name: pim_serializer.normalizer }

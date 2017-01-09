@@ -62,28 +62,39 @@ class CategoryUpdater implements ObjectUpdaterInterface
     protected function setData(CategoryInterface $category, $field, $data)
     {
         if ('labels' === $field) {
+            if (null === $data) {
+                throw new \InvalidArgumentException(sprintf('Labels of category cannot be null.'));
+            }
+
             foreach ($data as $localeCode => $label) {
                 $category->setLocale($localeCode);
             }
         } elseif ('parent' === $field) {
-            $categoryParent = $this->findParent($data);
-            if (null !== $categoryParent) {
-                $category->setParent($categoryParent);
-            } else {
-                throw new \InvalidArgumentException(sprintf('The parent category "%s" does not exist', $data));
-            }
+            $this->updateParent($category, $data);
         } else {
             $this->accessor->setValue($category, $field, $data);
         }
     }
 
     /**
-     * @param string $code
+     * @param CategoryInterface $category
+     * @param string            $data
      *
-     * @return CategoryInterface|null
+     * @throws \InvalidArgumentException
      */
-    protected function findParent($code)
+    protected function updateParent(CategoryInterface $category, $data)
     {
-        return $this->categoryRepository->findOneByIdentifier($code);
+        if (null === $data || '' === $data) {
+            $category->setParent(null);
+
+            return;
+        }
+
+        $categoryParent = $this->categoryRepository->findOneByIdentifier($data);
+        if (null !== $categoryParent) {
+            $category->setParent($categoryParent);
+        } else {
+            throw new \InvalidArgumentException(sprintf('The parent category "%s" does not exist', $data));
+        }
     }
 }

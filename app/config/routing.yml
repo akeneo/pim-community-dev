@@ -37,6 +37,7 @@ pim_reference_data:
 
 pim_api:
     resource: "@PimApiBundle/Resources/config/routing.yml"
+    prefix: /api
 
 # Oro platform
 
