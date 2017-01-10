@@ -27,18 +27,15 @@ before_install:
     - npm install -g grunt-cli
 
 install:
-    - composer update --prefer-dist --no-interaction
     - mysql -u root -e 'CREATE DATABASE akeneo_pim;'
     - mysql -u root -e 'CREATE USER "akeneo_pim"@"localhost" IDENTIFIED BY "akeneo_pim";'
     - mysql -u root -e 'GRANT ALL ON akeneo_pim.* TO "akeneo_pim"@"localhost";'
     - composer update --prefer-dist --no-interaction
-    - ./app/console pim:install
-    - ./app/console oro:requirejs:generate-config
+    - cp ./app/config/parameters_test.yml.dist ./app/config/parameters_test.yml
+    - ./app/console --env=test pim:install
+    - ./app/console --env=test oro:requirejs:generate-config
     - npm install
     - curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
-
-before_script:
-    - cp ./app/config/parameters.yml ./app/config/parameters_test.yml
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
