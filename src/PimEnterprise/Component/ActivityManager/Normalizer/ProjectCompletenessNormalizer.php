@@ -42,13 +42,13 @@ class ProjectCompletenessNormalizer implements NormalizerInterface
     public function normalize($projectCompleteness, $format = null, array $context = [])
     {
         return [
-            'is_complete' => $projectCompleteness->isComplete(),
-            'products_count_todo' => $projectCompleteness->getProductsCountTodo(),
+            'is_complete'                => $projectCompleteness->isComplete(),
+            'products_count_todo'        => $projectCompleteness->getProductsCountTodo(),
             'products_count_in_progress' => $projectCompleteness->getProductsCountInProgress(),
-            'products_count_done' => $projectCompleteness->getProductsCountDone(),
-            'ratio_todo' => $projectCompleteness->getRatioForTodo(),
-            'ratio_in_progress' => $projectCompleteness->getRatioForInProgress(),
-            'ratio_done' => $projectCompleteness->getRatioForDone(),
+            'products_count_done'        => $projectCompleteness->getProductsCountDone(),
+            'ratio_todo'                 => $projectCompleteness->getRatioForTodo(),
+            'ratio_in_progress'          => $projectCompleteness->getRatioForInProgress(),
+            'ratio_done'                 => $projectCompleteness->getRatioForDone(),
         ];
     }
 
