@@ -68,14 +68,16 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
             $qb->where('project.label LIKE :search')->setParameter('search', sprintf('%%%s%%', $search));
         }
 
+        $qb->join('project.owner', 'owner', 'WITH', 'owner.username = :username')
+            ->setParameter('username', $options['user']->getUsername());
+
         $userGroups = $options['user']->getGroups();
         if (!$userGroups->isEmpty()) {
             $userGroupsId = array_map(function (Group $userGroup) {
                 return $userGroup->getId();
             }, $userGroups->toArray());
 
-            $qb->innerJoin('project.userGroups', 'u_groups')
-                ->andWhere('u_groups.id IN (:groups)')
+            $qb->leftJoin('project.userGroups', 'u_groups', 'WITH', 'u_groups.id IN (:groups)')
                 ->setParameter('groups', $userGroupsId);
         }
 

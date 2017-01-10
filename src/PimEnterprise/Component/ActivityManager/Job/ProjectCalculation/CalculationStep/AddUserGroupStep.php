@@ -67,7 +67,9 @@ class AddUserGroupStep implements CalculationStepInterface
         $attributeContributorGroups = $this->findUserGroupForAttribute($product, $project);
 
         foreach ($attributeContributorGroups as $attributeUserGroup) {
-            if (in_array($attributeUserGroup->getName(), $productContributorsGroupNames, true)) {
+            if (0 === count($productContributorsGroupNames) && 0 === count($product->getCategories())) {
+                $project->addUserGroup($attributeUserGroup);
+            } elseif (in_array($attributeUserGroup->getName(), $productContributorsGroupNames, true)) {
                 $project->addUserGroup($attributeUserGroup);
             }
         }

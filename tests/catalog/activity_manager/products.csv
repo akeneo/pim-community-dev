@@ -4,6 +4,7 @@ tshirt-skyrim;;;clothing;;;;;1;tshirt;;;;"T-Shirt ""Skyrim""";;;;;M;;5;OUNCE;;;;
 tshirt-lcd;;;clothing,high_tech;;;;;1;tshirt;;;;T-shirt LCD screen;;;2016-08-13;;M;;6;OUNCE;;;;;;;;;;;;;;;;;;
 usb-key-big;16;GIGABYTE;high_tech;;;;;1;usb_keys;;;;USB Key Big 64Go;;;2016-08-13;2016-10-13;;;1;OUNCE;;;;;;;;;;;;;;;;;;
 usb-key-small;8;GIGABYTE;high_tech;;;;;1;usb_keys;;;;;;;;;;;1;OUNCE;;;;;;;;;;;;;;;;;;
+categoriesless;;;;;;;;;tshirt;;;;;1;;;;;;;;;;;;;;
 poster-movie-contact;;;decoration;;;;;1;posters;;;;"Movie poster ""Contact""";;;;;A1;;;;;;;;;;;;;;;;;;;;;
 empty-technical-product;;;default;;;;;;technical_family;;;;;;;;;;;;;;;;;localizable_attribute-fr_FR;;scopable_attribute-mobile;;localizable_scopable_attribute-fr_FR-mobile;;;;;;;;;
 full-technical-product;;;default;;;;;;technical_family;;;;;;;;;;;;;;;;simple_attribute;;localizable_attribute-en_US;;scopable_attribute-ecommerce;;localizable_scopable_attribute-en_US-ecommerce;simple_attribute;files/file.txt;10;GRAM;100;90;option_1;option_2

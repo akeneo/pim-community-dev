@@ -227,7 +227,7 @@ SQL;
     }
 
     /**
-     * Check that the calculated number of attribute group completeness is correct.
+     * Checks that the calculated number of attribute group completeness is correct.
      *
      * A attribute group completeness is only calculated if the one of those attributes
      * are filled and require by the family.
