@@ -11,8 +11,9 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -26,16 +27,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectRepository extends EntityRepository implements ProjectRepositoryInterface
+class ProjectRepository extends EntityRepository implements ProjectRepositoryInterface, CursorableRepositoryInterface
 {
-    /**
-     * @param EntityManager $em
-     * @param string        $class
-     */
-    public function __construct(EntityManager $em, $class)
-    {
-        parent::__construct($em, $em->getClassMetadata($class));
-    }
+    /** @var CursorFactoryInterface */
+    protected $cursorFactory;
 
     /**
      * {@inheritdoc}
@@ -100,8 +95,50 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
     {
         $this->_em->getConnection()->insert('pimee_activity_manager_project_product', [
             'project_id' => $project->getId(),
-            'product_id' => $productId,
+            'product_id' => $product->getId(),
         ]);
+    }
+
+    /**
+     * Returns a cursor with all products
+     *
+     * @throws \RuntimeException If cursor has not been set
+     *
+     * @return CursorInterface
+     */
+    public function findAll()
+    {
+        if (null === $this->cursorFactory) {
+            throw new \RuntimeException('The cursor factory is not initialized');
+        }
+
+        $qb = $this->createQueryBuilder('project');
+
+        return $this->cursorFactory->createCursor($qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByIds(array $projectIds)
+    {
+        if (empty($projectIds)) {
+            throw new \InvalidArgumentException('Array must contain at least one project id');
+        }
+
+        $qb = $this->createQueryBuilder('project');
+        $qb->where($qb->expr()->in('project.id', ':project_ids'));
+        $qb->setParameter(':project_ids', $projectIds);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param CursorFactoryInterface $cursorFactory
+     */
+    public function setCursorFactory(CursorFactoryInterface $cursorFactory)
+    {
+        $this->cursorFactory = $cursorFactory;
     }
 
     /**

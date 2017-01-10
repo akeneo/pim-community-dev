@@ -1,6 +1,7 @@
 PimEnterprise\Component\ActivityManager\Model\Project:
     type: entity
     table: pimee_activity_manager_project
+    repositoryClass: PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectRepository
     changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
