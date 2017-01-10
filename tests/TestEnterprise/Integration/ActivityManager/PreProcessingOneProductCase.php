@@ -10,6 +10,13 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
     /** @var ProjectInterface */
     private static $project;
 
+    /**
+     * Create a project with only one product to test that the pre processed data are well calculted
+     *
+     * Product : tshirt-the-witcher-3
+     * Channel: ecommerce
+     * Locale: en_US
+     */
     public function testProjectCreation()
     {
         $this::$project = $this->createProject([
@@ -28,9 +35,25 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
         ]);
 
         $this->calculateProject($this::$project);
+
+        $this->checkAttributeGroupCompleteness();
+        $this->checkTheNumberOfAttributeGroupCompleteness();
     }
 
-    public function testAttributeGroupCompleteness()
+    /**
+     * When you recalculate a project it must have the same number of attribute group completeness
+     */
+    public function testThatTheProjectRecalculationDoesNotAddAttributeGroupCompleteness()
+    {
+        $this->reCalculateProject($this::$project);
+
+        $this->checkTheNumberOfAttributeGroupCompleteness();
+    }
+
+    /**
+     * Check that the attribute group completeness is well calculated
+     */
+    private function checkAttributeGroupCompleteness()
     {
         $expectedAttributeGroupCompleteness = [
             'general' => [
@@ -68,12 +91,18 @@ SQL;
             $this->assertSame(
                 $actualCompleteness,
                 $expectedCompleteness,
-                sprintf('Attribute group complete is not valid for the attribute group %s', $group)
+                sprintf('Attribute group completeness is not valid for the attribute group %s', $group)
             );
         }
     }
 
-    public function testTheNumberOfAttributeGroupCompleteness()
+    /**
+     * Check that the calculated number of attribute group completeness is correct.
+     *
+     * A attribute group completeness is only calculated if the one of those attributes
+     * are filled and require by the family.
+     */
+    private function checkTheNumberOfAttributeGroupCompleteness()
     {
         $productId = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('tshirt-the-witcher-3')
@@ -96,15 +125,7 @@ SQL;
         $this->assertSame(
             $numberOfRow,
             4,
-            sprintf('Invalid number of generated attribute group completeness for the product %s', $productId)
+            sprintf('Invalid number of calculated attribute group completeness for the product %s', $productId)
         );
-    }
-
-    public function testThatTheProjectRecalculationDoesNotAddAttributeGroupCompleteness()
-    {
-        $this->calculateProject($this::$project);
-
-        $this->testAttributeGroupCompleteness();
-        $this->testTheNumberOfAttributeGroupCompleteness();
     }
 }

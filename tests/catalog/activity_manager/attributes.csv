@@ -9,4 +9,7 @@ release_date;pim_catalog_date;Releasedate;1;0;;;;1;other;
 capacity;pim_catalog_metric;Capacity;0;0;0;Binary;GIGABYTE;1;technical;
 material;pim_catalog_text;Material;1;0;;;;1;technical;
 picture;pim_catalog_image;Picture;0;1;;;;0;media;jpg
-other;pim_catalog_text;Other;0;0;;;;;other;
+simple_attribute;pim_catalog_text;simple_attribute;0;0;;;;;other;
+localizable_attribute;pim_catalog_text;localizable_attribute;1;0;;;;;other;
+scopable_attribute;pim_catalog_text;scopable_attribute;0;1;;;;;other;
+localizable_scopable_attribute;pim_catalog_text;localizable_scopable_attribute;1;1;;;;;other;
