@@ -23,6 +23,7 @@ class GridCapableDecorator extends ElementDecorator
         'Dialog grid'        => '.modal',
         'Grid'               => 'table.grid',
         'View selector'      => '.grid-view-selector .select2-container',
+        'View type switcher' => '.grid-view-selector .view-selector-type-switcher',
         'Create view button' => '.grid-view-selector .create-button .create',
         'Save view button'   => '.grid-view-selector .save-button .save',
         'Remove view button' => '.grid-view-selector .remove-button .remove',
@@ -163,16 +164,16 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function switchViewType($type)
     {
-        $widget = $this->getViewSelector()->getWidget();
+        $selector = $this->selectors['View type switcher'];
 
-        $viewTypeSwitcher = $this->spin(function () use ($widget) {
-            return $widget->find('css', '.view-selector-type-switcher');
-        }, 'Cannot find the View Type Switcher in the View Selector.');
+        $viewTypeSwitcher = $this->spin(function () use ($selector) {
+            return $this->find('css', $selector);
+        }, 'Cannot find the View Type Switcher.');
 
         $viewTypeSwitcher->click();
 
-        $viewType = $this->spin(function () use ($widget, $type) {
-            return $widget->find('css', sprintf('.view-type-item[title="%s"]', $type));
+        $viewType = $this->spin(function () use ($type) {
+            return $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
         }, sprintf('Cannot find element in the View Type Switcher dropdown with name "%s".', $type));
 
         $viewType->click();
