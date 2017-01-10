@@ -36,7 +36,6 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
         $connection = $this->entityManager->getConnection();
 
         foreach ($attributeGroupCompleteness as $attributeGroup) {
-
             $sql = <<<SQL
 REPLACE INTO pimee_activity_manager_completeness_per_attribute_group
 VALUE (
