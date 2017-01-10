@@ -20,10 +20,12 @@ class GridCapableDecorator extends ElementDecorator
 
     /** @var array Selectors to ease find */
     protected $selectors = [
-        'Dialog grid'   => '.modal',
-        'Grid'          => 'table.grid',
-        'View selector' => '.grid-view-selector .select2-container',
-        'Save button'   => '.save-button [data-action="save"]:not(.hide)'
+        'Dialog grid'        => '.modal',
+        'Grid'               => 'table.grid',
+        'View selector'      => '.grid-view-selector .select2-container',
+        'Create view button' => '.grid-view-selector .create-button .create',
+        'Save view button'   => '.grid-view-selector .save-button .save',
+        'Remove view button' => '.grid-view-selector .remove-button .remove',
     ];
 
     /** @var array */
@@ -75,14 +77,13 @@ class GridCapableDecorator extends ElementDecorator
         }, 'Could not open view selector');
     }
 
-    /**
-     * @param string $button
-     */
-    public function clickCreateOnButton($button)
+    public function clickOnCreateViewButton()
     {
-        $button = $this->spin(function () use ($button) {
-            return $this->find('css', sprintf('.create-button .action:contains("%s")', $button));
-        }, sprintf('Button "%s" not found.', $button));
+        $selector = $this->selectors['Create view button'];
+
+        $button = $this->spin(function () use ($selector) {
+            return $this->find('css', $selector);
+        }, sprintf('Create view button not found (%s).', $selector));
 
         $this->spin(function () use ($button) {
             $button->click();
@@ -110,37 +111,27 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function saveView()
     {
-        $viewSelector = $this->getViewSelector()->getParent();
+        $selector = $this->selectors['Save view button'];
 
-        $saveButton = $this->spin(function () use ($viewSelector) {
-            return $viewSelector->find('css', $this->selectors['Save button']);
-        }, 'Save button not found.');
+        $button = $this->spin(function () use ($selector) {
+            return $this->find('css', $selector);
+        }, sprintf('Save view button not found (%s).', $selector));
 
-        $saveButton->click();
+        $button->click();
     }
 
     /**
-     * Remove the datagrid view with the given $viewLabel
-     *
-     * @param $viewLabel
-     *
-     * @throws TimeoutException
+     * Remove the current view
      */
-    public function removeView($viewLabel)
+    public function removeView()
     {
-        $widget = $this->getViewSelector()->getWidget();
+        $selector = $this->selectors['Remove view button'];
 
-        $row = $this->spin(function () use ($widget, $viewLabel) {
-            return $widget->find('css', sprintf('.select2-result-label:contains("%s")', $viewLabel));
-        }, sprintf('Row "%s" in view selector not found.', $viewLabel));
+        $button = $this->spin(function () use ($selector) {
+            return $this->find('css', $selector);
+        }, sprintf('Remove view button not found (%s).', $selector));
 
-        $row->mouseOver();
-
-        $deleteButton = $this->spin(function () use ($row) {
-            return $this->find('css', '[data-action="prompt-deletion"]');
-        }, sprintf('Delete button not found on row "%s"', $viewLabel));
-
-        $deleteButton->click();
+        $button->click();
     }
 
     /**

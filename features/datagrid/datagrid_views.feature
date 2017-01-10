@@ -137,7 +137,7 @@ Feature: Datagrid views
     Then I should not see the text "There are unsaved changes."
     When I am on the products page
     Then I should see the text "Sneakers only"
-    When I delete the view "Sneakers only"
+    When I delete the view
     And I confirm the deletion
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully removed"
@@ -189,3 +189,8 @@ Feature: Datagrid views
     And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Mobile only"
     And I should see the text "Mobile"
+
+  @ce
+  Scenario: Don't display view type switcher if there is only one view type
+    Given I am on the products page
+    Then I should not see the text "Views"
