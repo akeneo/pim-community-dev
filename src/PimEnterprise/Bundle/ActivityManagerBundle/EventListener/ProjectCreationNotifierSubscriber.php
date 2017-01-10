@@ -16,6 +16,7 @@ use Pim\Bundle\NotificationBundle\NotifierInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -38,22 +39,28 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
     /** @var PresenterInterface */
     protected $datePresenter;
 
+    /** @var ProjectCompletenessRepositoryInterface */
+    protected $projectCompletenessRepository;
+
     /**
-     * @param ProjectCreatedNotificationFactory $factory
-     * @param NotifierInterface                 $notifier
-     * @param UserRepositoryInterface           $userRepository
-     * @param PresenterInterface                $datePresenter
+     * @param ProjectCreatedNotificationFactory      $factory
+     * @param NotifierInterface                      $notifier
+     * @param UserRepositoryInterface                $userRepository
+     * @param PresenterInterface                     $datePresenter
+     * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
      */
     public function __construct(
         ProjectCreatedNotificationFactory $factory,
         NotifierInterface $notifier,
         UserRepositoryInterface $userRepository,
-        PresenterInterface $datePresenter
+        PresenterInterface $datePresenter,
+        ProjectCompletenessRepositoryInterface $projectCompletenessRepository
     ) {
         $this->factory = $factory;
         $this->notifier = $notifier;
         $this->userRepository = $userRepository;
         $this->datePresenter = $datePresenter;
+        $this->projectCompletenessRepository = $projectCompletenessRepository;
     }
 
     /**
@@ -77,18 +84,22 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
         $users = $this->userRepository->findContributorsToNotify($project);
 
         foreach ($users as $user) {
-            $userLocale = $user->getUiLocale();
-            $formattedDate = $this->datePresenter->present(
-                $project->getDueDate(),
-                ['locale' => $userLocale->getCode()]
-            );
+            $completeness = $this->projectCompletenessRepository->getProjectCompleteness($project, $user);
 
-            $parameters['due_date'] = $formattedDate;
-            $parameters['project_label'] = $project->getLabel();
-            $parameters['project_code'] = $project->getCode();
+            if (!$completeness->isComplete()) {
+                $userLocale = $user->getUiLocale();
+                $formattedDate = $this->datePresenter->present(
+                    $project->getDueDate(),
+                    ['locale' => $userLocale->getCode()]
+                );
 
-            $notification = $this->factory->create($parameters);
-            $this->notifier->notify($notification, [$user]);
+                $parameters['due_date'] = $formattedDate;
+                $parameters['project_label'] = $project->getLabel();
+                $parameters['project_code'] = $project->getCode();
+
+                $notification = $this->factory->create($parameters);
+                $this->notifier->notify($notification, [$user]);
+            }
         }
     }
 }

@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
+use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 
@@ -39,7 +40,9 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
         $query = $this->buildSqlQuery($username);
         $parameters = $this->buildQueryParameters($project, $username);
 
-        return $this->entityManger->getConnection()->fetchAssoc($query, $parameters);
+        $completeness = $this->entityManger->getConnection()->fetchAssoc($query, $parameters);
+
+        return new ProjectCompleteness($completeness['todo'], $completeness['in_progress'], $completeness['done']);
     }
 
     /**

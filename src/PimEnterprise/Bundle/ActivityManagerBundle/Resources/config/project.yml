@@ -3,6 +3,7 @@ parameters:
     pimee_activity_manager.model.project.interface: 'PimEnterprise\Component\ActivityManager\Model\ProjectInterface'
 
     pimee_activity_manager.normalizer.project.class: 'PimEnterprise\Component\ActivityManager\Normalizer\ProjectNormalizer'
+    pimee_activity_manager.normalizer.project_completeness.class: 'PimEnterprise\Component\ActivityManager\Normalizer\ProjectCompletenessNormalizer'
     pimee_activity_manager.repository.project.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectRepository'
     pimee_activity_manager.repository.project_completeness.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectCompletenessRepository'
     pimee_activity_manager.updater.project.class: 'PimEnterprise\Component\ActivityManager\Updater\ProjectUpdater'
@@ -18,6 +19,12 @@ services:
     ### Normalizer
     pimee_activity_manager.normalizer.project:
         class: '%pimee_activity_manager.normalizer.project.class%'
+        public: false
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pimee_activity_manager.normalizer.project_completeness:
+        class: '%pimee_activity_manager.normalizer.project_completeness.class%'
         public: false
         tags:
             - { name: pim_internal_api_serializer.normalizer }
@@ -105,6 +112,7 @@ services:
             - '@pimee_activity_manager.repository.project_completeness'
             - '@security.authorization_checker'
             - '@router'
+            - '@pim_internal_api_serializer'
 
     pimee_activity_manager.controller.project_completeness_controller:
         class: '%pimee_activity_manager.controller.project_completeness_controller.class%'
@@ -113,3 +121,4 @@ services:
             - '@pimee_activity_manager.repository.project_completeness'
             - '@security.token_storage'
             - '@security.authorization_checker'
+            - '@pim_internal_api_serializer'

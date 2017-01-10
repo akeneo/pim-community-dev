@@ -14,10 +14,9 @@ define(
         'backbone',
         'routing',
         'pim/fetcher-registry',
-        'text!activity-manager/templates/widget/project-completeness-data',
-        'activity-manager/project/completeness-formatter'
+        'text!activity-manager/templates/widget/project-completeness-data'
     ],
-    function ($, _, __, BaseForm, Backbone, Routing, FetcherRegistry, template, completenessFormatter) {
+    function ($, _, __, BaseForm, Backbone, Routing, FetcherRegistry, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'AknProjectWidget-boxes',
@@ -47,17 +46,14 @@ define(
 
                 FetcherRegistry.getFetcher('project').getCompleteness(data.currentProjectCode, contributorUsername)
                     .then(function (completeness) {
-                        var completenessProgress = completenessFormatter.getCompletenessProgress(completeness);
-                        completenessProgress.todo += '% ' + __(this.config.labels.percentageTodo);
-                        completenessProgress.in_progress += '% ' + __(this.config.labels.percentageInProgress);
-                        completenessProgress.done += '% ' + __(this.config.labels.percentageDone);
-
                         this.$el.html(this.template({
                             completeness: completeness,
-                            percentage: completenessProgress,
                             todoLabel: __(this.config.labels.todo),
                             inProgressLabel: __(this.config.labels.inProgress),
                             displayProductsLabel: __(this.config.labels.displayProducts),
+                            ratioTodoLabel: __(this.config.labels.ratioTodo),
+                            ratioInProgressLabel: __(this.config.labels.ratioInProgress),
+                            ratioDoneLabel: __(this.config.labels.ratioDone),
                             doneLabel: __(this.config.labels.done),
                             url: Routing.generate(
                                 'activity_manager_project_show',

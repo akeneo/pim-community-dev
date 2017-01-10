@@ -40,7 +40,6 @@ config:
         activity-manager/grid/view-selector/footer/create/project: pimenterpriseactivitymanager/js/grid/view-selector-footer-create-project
         activity-manager/project/create-form: pimenterpriseactivitymanager/js/project/create-form
         activity-manager/project/fetcher: pimenterpriseactivitymanager/js/fetcher/project-fetcher
-        activity-manager/project/completeness-formatter: pimenterpriseactivitymanager/js/project/completeness-formatter
         activity-manager/widget/project-widget: pimenterpriseactivitymanager/js/widget/project-widget
         activity-manager/widget/project-selector: pimenterpriseactivitymanager/js/widget/project-selector
         activity-manager/widget/contributor-selector: pimenterpriseactivitymanager/js/widget/contributor-selector

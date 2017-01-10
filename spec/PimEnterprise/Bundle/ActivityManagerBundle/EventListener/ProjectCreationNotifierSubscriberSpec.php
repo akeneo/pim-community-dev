@@ -6,11 +6,12 @@ use PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectCreationNoti
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
+use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -23,9 +24,10 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         ProjectCreatedNotificationFactory $factory,
         NotifierInterface $notifier,
         UserRepositoryInterface $userRepository,
-        PresenterInterface $datePresenter
+        PresenterInterface $datePresenter,
+        ProjectCompletenessRepositoryInterface $projectCompletenessRepository
     ) {
-        $this->beConstructedWith($factory, $notifier, $userRepository, $datePresenter);
+        $this->beConstructedWith($factory, $notifier, $userRepository, $datePresenter, $projectCompletenessRepository);
     }
 
     function it_is_initializable()
@@ -50,11 +52,13 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         $userRepository,
         $notifier,
         $datePresenter,
+        $projectCompletenessRepository,
         ProjectEvent $event,
         ProjectInterface $project,
         UserInterface $user,
         NotificationInterface $notification,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        ProjectCompleteness $projectCompleteness
     ) {
         $datetime = new \DateTime('2019-12-23');
         $event->getProject()->willReturn($project);
@@ -68,6 +72,9 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
         $user->getUiLocale()->willReturn($locale);
         $locale->getCode()->willReturn('en_US');
 
+        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($projectCompleteness);
+        $projectCompleteness->isComplete()->willReturn(false);
+
         $factory->create(
             [
                 'due_date' => '2019-12-23',
@@ -78,6 +85,40 @@ class ProjectCreationNotifierSubscriberSpec extends ObjectBehavior
 
         $userRepository->findContributorsToNotify($project)->willReturn([$user]);
         $notifier->notify($notification, [$user])->shouldBeCalled();
+
+        $this->projectCreated($event)->shouldReturn(null);
+    }
+
+    function it_does_not_notify_users_when_the_project_is_created_and_already_to_100_percent_done(
+        $notifier,
+        $userRepository,
+        $datePresenter,
+        $projectCompletenessRepository,
+        ProjectEvent $event,
+        ProjectInterface $project,
+        UserInterface $user,
+        NotificationInterface $notification,
+        LocaleInterface $locale,
+        ProjectCompleteness $projectCompleteness
+    ) {
+        $datetime = new \DateTime('2019-12-23');
+        $event->getProject()->willReturn($project);
+        $project->getDueDate()->willReturn($datetime);
+        $project->getLabel()->willReturn('project label');
+        $project->getCode()->willReturn('project-label-en_US-mobile');
+
+        $datePresenter->present($datetime, ['locale' => 'en_US'])->willReturn('2019-12-23');
+
+        $user->getId()->willReturn(42);
+        $user->getUiLocale()->willReturn($locale);
+        $locale->getCode()->willReturn('en_US');
+
+        $userRepository->findContributorsToNotify($project)->willReturn([$user]);
+
+        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($projectCompleteness);
+        $projectCompleteness->isComplete()->willReturn(true);
+
+        $notifier->notify($notification, [$user])->shouldNotBeCalled();
 
         $this->projectCreated($event)->shouldReturn(null);
     }

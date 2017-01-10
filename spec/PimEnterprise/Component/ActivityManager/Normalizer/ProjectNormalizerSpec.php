@@ -60,11 +60,6 @@ class ProjectNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws_an_exception_if_object_to_normalize_is_not_a_project($object)
-    {
-        $this->shouldThrow('\InvalidArgumentException')->during('normalize', [$object]);
-    }
-
     function it_specifies_that_the_normalizer_can_be_apply_on_a_project_with_the_internal_format(
         ProjectInterface $project,
         $object

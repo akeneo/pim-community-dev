@@ -1,7 +1,7 @@
 <div class="select2-result-label-view">
     <div class="project-line <%- isCurrent ? 'project-line-current' : '' %>">
         <div class="project-completeness project-completeness--<%- completionStatus %>">
-            <%- completionPercentage %>%
+            <%- project.completeness.ratio_done %>%
         </div>
         <div class="project-main-infos">
             <span class="project-label"><%- project.label %></span>

@@ -27,9 +27,9 @@ extensions:
         position: 100
         config:
             labels:
-                percentageTodo: activity_manager.widget.completeness.to_enrich
-                percentageInProgress: activity_manager.widget.completeness.in_progress
-                percentageDone: activity_manager.widget.completeness.done
+                ratioTodo: activity_manager.widget.completeness.to_enrich
+                ratioInProgress: activity_manager.widget.completeness.in_progress
+                ratioDone: activity_manager.widget.completeness.done
                 todo: activity_manager.widget.todo
                 inProgress: activity_manager.widget.in_progress
                 done: activity_manager.widget.done

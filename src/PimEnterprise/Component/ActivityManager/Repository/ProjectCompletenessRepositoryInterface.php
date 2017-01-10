@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
 
+use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
@@ -24,7 +25,7 @@ interface ProjectCompletenessRepositoryInterface
      * @param ProjectInterface $project
      * @param string|null      $username
      *
-     * @return array
+     * @return ProjectCompleteness
      */
     public function getProjectCompleteness(ProjectInterface $project, $username = null);
 }

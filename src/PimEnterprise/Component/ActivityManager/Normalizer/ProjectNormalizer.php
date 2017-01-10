@@ -48,16 +48,6 @@ class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($project, $format = null, array $context = [])
     {
-        if (!$project instanceof ProjectInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "%s", "%s" provided.',
-                    ProjectInterface::class,
-                    ClassUtils::getClass($project)
-                )
-            );
-        }
-
         return [
             'label'        => $project->getLabel(),
             'code'         => $project->getCode(),

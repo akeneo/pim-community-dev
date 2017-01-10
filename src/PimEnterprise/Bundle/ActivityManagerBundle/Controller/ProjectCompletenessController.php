@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -37,22 +38,28 @@ class ProjectCompletenessController
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
+    /** @var NormalizerInterface */
+    protected $projectCompletenessNormalizer;
+
     /**
      * @param IdentifiableObjectRepositoryInterface  $projectRepository
      * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
      * @param TokenStorageInterface                  $tokenStorage
      * @param AuthorizationCheckerInterface          $authorizationChecker
+     * @param NormalizerInterface                    $projectCompletenessNormalizer
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $projectRepository,
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        NormalizerInterface $projectCompletenessNormalizer
     ) {
         $this->projectRepository = $projectRepository;
         $this->projectCompletenessRepository = $projectCompletenessRepository;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
+        $this->projectCompletenessNormalizer = $projectCompletenessNormalizer;
     }
 
     /**
@@ -83,6 +90,7 @@ class ProjectCompletenessController
         }
 
         $projectCompleteness = $this->projectCompletenessRepository->getProjectCompleteness($project, $contributor);
+        $projectCompleteness = $this->projectCompletenessNormalizer->normalize($projectCompleteness, 'internal_api');
 
         return new JsonResponse($projectCompleteness);
     }

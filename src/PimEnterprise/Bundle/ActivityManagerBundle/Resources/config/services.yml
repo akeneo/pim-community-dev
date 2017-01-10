@@ -63,6 +63,7 @@ services:
             - '@pim_notification.notifier'
             - '@pimee_activity_manager.repository.user'
             - '@pim_catalog.localization.presenter.date'
+            - '@pimee_activity_manager.repository.project_completeness'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -72,8 +72,12 @@ class ProjectController
     /** @var RouterInterface */
     protected $router;
 
+    /** @var NormalizerInterface */
+    protected $projectCompletenessNormalizer;
+
     /**
      * @param FilterConverter                        $filterConverter
+     * @param ProjectFactoryInterface                $projectFactory
      * @param SaverInterface                         $projectSaver
      * @param ValidatorInterface                     $validator
      * @param ProjectCalculationJobLauncher          $projectCalculationJobLauncher
@@ -84,6 +88,7 @@ class ProjectController
      * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
      * @param AuthorizationCheckerInterface          $authorizationChecker
      * @param RouterInterface                        $router
+     * @param NormalizerInterface                    $projectCompletenessNormalizer
      */
     public function __construct(
         FilterConverter $filterConverter,
@@ -97,7 +102,8 @@ class ProjectController
         TokenStorageInterface $tokenStorage,
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
         AuthorizationCheckerInterface $authorizationChecker,
-        RouterInterface $router
+        RouterInterface $router,
+        NormalizerInterface $projectCompletenessNormalizer
     ) {
         $this->filterConverter = $filterConverter;
         $this->projectFactory = $projectFactory;
@@ -111,6 +117,7 @@ class ProjectController
         $this->projectCompletenessRepository = $projectCompletenessRepository;
         $this->authorizationChecker = $authorizationChecker;
         $this->router = $router;
+        $this->projectCompletenessNormalizer = $projectCompletenessNormalizer;
     }
 
     /**
@@ -182,9 +189,12 @@ class ProjectController
 
         foreach ($projects as $project) {
             $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
-            $normalizedProject['completeness'] = $this->projectCompletenessRepository->getProjectCompleteness(
-                $project,
-                $contributor
+            $normalizedProject['completeness'] = $this->projectCompletenessNormalizer->normalize(
+                $this->projectCompletenessRepository->getProjectCompleteness(
+                    $project,
+                    $contributor
+                ),
+                'internal_api'
             );
 
             $normalizedProjects[] = $normalizedProject;
