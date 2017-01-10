@@ -11,7 +11,7 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
     private static $project;
 
     /**
-     * Create a project with only one product to test that the pre processed data are well calculted
+     * Create a project with only one product to test that the pre processed data are well calculated
      *
      * Product : tshirt-the-witcher-3
      * Channel: ecommerce
