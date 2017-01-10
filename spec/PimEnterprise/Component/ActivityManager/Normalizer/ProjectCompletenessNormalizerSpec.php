@@ -26,19 +26,14 @@ class ProjectCompletenessNormalizerSpec extends ObjectBehavior
         $projectCompleteness->getRatioForDone()->willReturn(100);
 
         $this->normalize($projectCompleteness, 'internal_api')->shouldReturn([
-            'isComplete' => true,
-            'productsCountTodo' => 0,
-            'productsCountInProgress' => 0,
-            'productsCountDone' => 1,
-            'ratioTodo' => 0,
-            'ratioInProgress' => 0,
-            'ratioDone' => 100,
+            'is_complete' => true,
+            'products_count_todo' => 0,
+            'products_count_in_progress' => 0,
+            'products_count_done' => 1,
+            'ratio_todo' => 0,
+            'ratio_in_progress' => 0,
+            'ratio_done' => 100,
         ]);
-    }
-
-    function it_throws_an_exception_if_object_to_normalize_is_not_a_project_completeness($object)
-    {
-        $this->shouldThrow('\InvalidArgumentException')->during('normalize', [$object]);
     }
 
     function it_specifies_that_the_normalizer_can_be_apply_on_a_project_with_the_internal_format(

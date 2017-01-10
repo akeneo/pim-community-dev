@@ -41,24 +41,14 @@ class ProjectCompletenessNormalizer implements NormalizerInterface
      */
     public function normalize($projectCompleteness, $format = null, array $context = [])
     {
-        if (!$projectCompleteness instanceof ProjectCompleteness) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "%s", "%s" provided.',
-                    ProjectCompleteness::class,
-                    ClassUtils::getClass($projectCompleteness)
-                )
-            );
-        }
-
         return [
-            'isComplete' => $projectCompleteness->isComplete(),
-            'productsCountTodo' => $projectCompleteness->getProductsCountTodo(),
-            'productsCountInProgress' => $projectCompleteness->getProductsCountInProgress(),
-            'productsCountDone' => $projectCompleteness->getProductsCountDone(),
-            'ratioTodo' => $projectCompleteness->getRatioForTodo(),
-            'ratioInProgress' => $projectCompleteness->getRatioForInProgress(),
-            'ratioDone' => $projectCompleteness->getRatioForDone(),
+            'is_complete' => $projectCompleteness->isComplete(),
+            'products_count_todo' => $projectCompleteness->getProductsCountTodo(),
+            'products_count_in_progress' => $projectCompleteness->getProductsCountInProgress(),
+            'products_count_done' => $projectCompleteness->getProductsCountDone(),
+            'ratio_todo' => $projectCompleteness->getRatioForTodo(),
+            'ratio_in_progress' => $projectCompleteness->getRatioForInProgress(),
+            'ratio_done' => $projectCompleteness->getRatioForDone(),
         ];
     }
 

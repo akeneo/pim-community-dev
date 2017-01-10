@@ -333,8 +333,8 @@ Feature: Notify users after a project creation
     Given the following product values:
       | product        | attribute   | value                                | locale | scope     |
       | my-awesome-car | description | My awesome description for ecommerce | en_US  | ecommerce |
-    When I am logged in as "admin"
-    And I am on the products page
+    And I am logged in as "admin"
+    Then I am on the products page
     And I filter by "category" with operator "" and value "decoration"
     And I filter by "family" with operator "in list" and value "Car"
     And I open the view selector
@@ -343,14 +343,14 @@ Feature: Notify users after a project creation
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
       | project-due-date    | 12/13/2018             |
-    And I press the "Save" button
+    When I press the "Save" button
     And I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
     When I logout
     And I am logged in as "Julia"
     Then I should see the text "Julia"
-    Then I should have 0 new notification
+    And I should have 0 new notification
 
   Scenario: Successfully notify users if the project is not 100% done at project creation
     Given the following product values:

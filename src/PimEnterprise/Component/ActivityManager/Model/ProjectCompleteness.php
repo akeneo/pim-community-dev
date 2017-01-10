@@ -31,13 +31,15 @@ class ProjectCompleteness
     protected $productCountDone;
 
     /**
-     * @param array $productNumbers
+     * @param int $todo
+     * @param int $inProgress
+     * @param int $done
      */
-    public function __construct(array $productNumbers)
+    public function __construct($todo, $inProgress, $done)
     {
-        $this->productCountTodo = (int) $productNumbers['todo'];
-        $this->productCountInProgress = (int) $productNumbers['in_progress'];
-        $this->productCountDone = (int) $productNumbers['done'];
+        $this->productCountTodo = (int) $todo;
+        $this->productCountInProgress = (int) $inProgress;
+        $this->productCountDone = (int) $done;
 
         $this->productCount = $this->productCountDone + $this->productCountInProgress + $this->productCountTodo;
     }
@@ -79,7 +81,7 @@ class ProjectCompleteness
      */
     public function getRatioForTodo()
     {
-        return $this->productCountTodo / $this->productCount * 100;
+        return (int) ($this->productCountTodo / $this->productCount * 100);
     }
 
     /**
@@ -89,7 +91,7 @@ class ProjectCompleteness
      */
     public function getRatioForInProgress()
     {
-        return $this->productCountInProgress / $this->productCount * 100;
+        return (int) ($this->productCountInProgress / $this->productCount * 100);
     }
 
     /**
@@ -99,7 +101,7 @@ class ProjectCompleteness
      */
     public function getRatioForDone()
     {
-        return $this->productCountDone / $this->productCount * 100;
+        return (int) ($this->productCountDone / $this->productCount * 100);
     }
 
     /**
