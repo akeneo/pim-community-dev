@@ -1,0 +1,52 @@
+<?php
+
+namespace spec\Pim\Component\Catalog\Normalizer\Storage\Product;
+
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
+use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Normalizer\Storage\Product\MetricNormalizer;
+use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
+class MetricNormalizerSpec extends ObjectBehavior
+{
+    function let(NormalizerInterface $stdNormalizer)
+    {
+        $this->beConstructedWith($stdNormalizer);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(MetricNormalizer::class);
+    }
+
+    function it_support_metrics(MetricInterface $metric)
+    {
+        $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), 'storage')->shouldReturn(false);
+        $this->supportsNormalization($metric, 'whatever')->shouldReturn(false);
+        $this->supportsNormalization($metric, 'storage')->shouldReturn(true);
+    }
+
+    function it_normalizes_product_assocations(
+        $stdNormalizer,
+        MetricInterface $metric,
+        ProductValueInterface $value,
+        AttributeInterface $attribute
+    ) {
+        $stdNormalizer->normalize($metric, 'storage', ['context'])->willReturn(['std-metric']);
+
+        $metric->getValue()->willReturn($value);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getMetricFamily()->willReturn('Length');
+
+        $metric->getBaseData()->willReturn(100);
+        $metric->getBaseUnit()->willReturn('M');
+
+        $this->normalize($metric, 'storage', ['context'])->shouldReturn(
+            ['std-metric', 'base_data' => 100, 'base_unit' => 'M', 'family' => 'Length']
+        );
+    }
+}
