@@ -209,9 +209,13 @@ class EnterpriseFeatureContext extends FeatureContext
 
     /**
      * @When /^I revert the product version number (\d+)$/
+     * @When /^I revert the product version number (\d+) and then see (\d+) total versions$/
      */
-    public function iRevertTheProductVersionNumber($version)
+    public function iRevertTheProductVersionNumber($version, $total = null)
     {
+        $version = (int) $version;
+        $total = (null === $total ? $version + 1 : (int) $total);
+
         $button = $this->spin(function () use ($version) {
             return $this->getSession()->getPage()
                 ->find('css', sprintf('tr[data-version="%s"]', $version))
@@ -222,8 +226,8 @@ class EnterpriseFeatureContext extends FeatureContext
 
         $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
 
-        $this->spin(function () use ($version) {
-            return ($version + 1) === count($this->getSession()->getPage()->findAll('css', 'tr[data-version]'));
+        $this->spin(function () use ($total) {
+            return $total === count($this->getSession()->getPage()->findAll('css', 'tr[data-version]'));
         }, 'Revert failed');
     }
 
