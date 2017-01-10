@@ -112,8 +112,14 @@ class PreProcessCompletenessStep implements CalculationStepInterface
     {
         $filledAttributes = [];
         foreach ($product->getValues() as $value) {
+            $attribute = $value->getAttribute();
+            if ($attribute->isScopable() && $value->getScope() !== $project->getChannel()->getCode() ||
+                $attribute->isLocalizable() && $value->getLocale() !== $project->getLocale()->getCode()
+            ) {
+                continue;
+            }
+
             if ($this->productValueChecker->isComplete($value, $project->getChannel(), $project->getLocale())) {
-                $attribute = $value->getAttribute();
                 $filledAttributes[$attribute->getGroup()->getId()][] = $attribute->getCode();
             }
         }
