@@ -1536,13 +1536,23 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * We cannot use the product saver to update the product as it automatically updates the product updatedAt date.
+     *
      * @Given /^I set the updated date of the (product "([^"]+)") to "([^"]+)"$/
      */
     public function theProductUpdatedDateIs(ProductInterface $product, $identifier, $expected)
     {
         $product->setUpdated(new \DateTime($expected));
 
-        $this->getProductSaver()->save($product);
+        $objectManager = null;
+        if ($this->isMongoDB()) {
+            $objectManager = $this->getDocumentManager();
+        } else {
+            $objectManager = $this->getEntityManager();
+        }
+
+        $objectManager->persist($product);
+        $objectManager->flush();
     }
 
     /**
@@ -2206,5 +2216,31 @@ class FixturesContext extends BaseFixturesContext
     protected function listToArray($list)
     {
         return $this->getMainContext()->listToArray($list);
+    }
+
+    /**
+     * @return boolean
+     */
+    protected function isMongoDB()
+    {
+        return 'doctrine/mongodb-odm' === $this->getParameter('pim_catalog_product_storage_driver');
+    }
+
+    /**
+     * Return doctrine manager instance
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine')->getManager();
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected function getDocumentManager()
+    {
+        return $this->getContainer()->get('doctrine_mongodb')->getManager();
     }
 }

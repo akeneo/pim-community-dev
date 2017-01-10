@@ -34,6 +34,7 @@ parameters:
     pim_catalog.event_subscriber.mongodb.update_normalized_product_data.class: Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\UpdateNormalizedProductDataSubscriber
     pim_catalog.event_subscriber.mongodb.product_related_entity_removal.class: Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\ProductRelatedEntityRemovalSubscriber
     pim_catalog.event_subscriber.mongodb.ensure_indexes.class:                 Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EnsureIndexesSubscriber
+    pim_catalog.event_subscriber.mongodb.timestampable.class:                  Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\TimestampableSubscriber
 
     pim_catalog.event_subscriber.metric_base_values.class:    Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\MetricBaseValuesSubscriber
     pim_catalog.event_subscriber.remove_outdated_products_from_associations.class: Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\RemoveOutdatedProductsFromAssociationsSubscriber
@@ -485,3 +486,8 @@ services:
                 - 'LOWER THAN ON ALL LOCALES'
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.event_subscriber.mongodb.timestampable:
+        class: '%pim_catalog.event_subscriber.mongodb.timestampable.class%'
+        tags:
+            - { name: kernel.event_subscriber, event: akeneo.storage.pre_save }
