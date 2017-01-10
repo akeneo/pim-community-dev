@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Database preparing command
@@ -106,7 +105,7 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this
             ->loadFixturesStep($input, $output)
-            ->launchCommands($input, $output);
+            ->launchCommands();
 
         return $this;
     }
@@ -148,9 +147,10 @@ class DatabaseCommand extends ContainerAwareCommand
             $input->setOption('fixtures', self::LOAD_BASE);
         }
 
-        $output->writeln(
-            sprintf('<info>Load jobs for fixtures. (data set: %s)</info>', $this->getContainer()->getParameter('installer_data'))
-        );
+        $output->writeln(sprintf(
+            '<info>Load jobs for fixtures. (data set: %s)</info>',
+            $this->getContainer()->getParameter('installer_data')
+        ));
         $this->getFixtureJobLoader()->loadJobInstances();
 
         $jobInstances = $this->getFixtureJobLoader()->getLoadedJobInstances();
@@ -172,18 +172,13 @@ class DatabaseCommand extends ContainerAwareCommand
     }
 
     /**
-     * Launchs all commands needed after fixtures loading
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * Launches all commands needed after fixtures loading
      *
      * @return DatabaseCommand
      */
-    protected function launchCommands(InputInterface $input, OutputInterface $output)
+    protected function launchCommands()
     {
-        $this->commandExecutor
-            ->runCommand('pim:versioning:refresh')
-            ->runCommand('pim:completeness:calculate');
+        $this->commandExecutor->runCommand('pim:versioning:refresh');
 
         return $this;
     }
