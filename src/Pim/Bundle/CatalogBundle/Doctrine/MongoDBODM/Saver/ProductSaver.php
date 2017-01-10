@@ -98,13 +98,9 @@ class ProductSaver extends BaseProductSaver
 
         foreach ($products as $product) {
             if (null === $product->getId()) {
-                $product->setId($this->mongoFactory->createMongoId());
-                $product->setCreated(new \Datetime('now', new \DateTimeZone('UTC')));
-                $product->setUpdated(new \Datetime('now', new \DateTimeZone('UTC')));
-
                 $productsToInsert[] = $product;
+                $product->setId($this->mongoFactory->createMongoId());
             } else {
-                $product->setUpdated(new \Datetime('now', new \DateTimeZone('UTC')));
                 $productsToUpdate[] = $product;
             }
 
