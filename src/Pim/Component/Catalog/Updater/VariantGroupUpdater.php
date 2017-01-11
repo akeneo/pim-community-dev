@@ -382,8 +382,12 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         foreach ($mergedValues as $value) {
             if (null !== $value->getMedia()) {
                 $attributeCode = $value->getAttribute()->getCode();
-                foreach (array_keys($mergedValuesData[$attributeCode]) as $index) {
-                    $mergedValuesData[$attributeCode][$index]['data']['filePath'] = $value->getMedia()->getKey();
+                foreach ($mergedValuesData[$attributeCode] as $index => $mergedValuesDataValues) {
+                    if ($value->getLocale() === $mergedValuesDataValues['locale'] &&
+                        $value->getScope() === $mergedValuesDataValues['scope']
+                    ) {
+                        $mergedValuesData[$attributeCode][$index]['data']['filePath'] = $value->getMedia()->getKey();
+                    }
                 }
             }
         }
