@@ -11,11 +11,6 @@ use Pim\Component\Catalog\Model\AssociationTypeInterface;
 
 class AssociationTypeUpdaterSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $associationTypeRepository)
-    {
-        $this->beConstructedWith($associationTypeRepository);
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Component\Catalog\Updater\AssociationTypeUpdater');
