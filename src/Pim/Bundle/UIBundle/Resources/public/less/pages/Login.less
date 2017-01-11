@@ -32,7 +32,7 @@
   }
 
   &-formInput {
-    color: @AknDefaultFontColor;
+    color: @AknDarkBlue;
     border: 1px solid @AknGrey;
     background-color: @AknGrey;
     -webkit-box-shadow: 0 0 0 1000px @AknGrey inset;
@@ -44,6 +44,16 @@
     margin-right: 10px;
     border-radius: 2px;
     padding: 0 10px;
+
+    &::-webkit-input-placeholder {
+      color: @AknDefaultFontColor;
+      -webkit-text-fill-color: @AknDefaultFontColor;
+    }
+
+    &:-webkit-autofill {
+      background-color: @AknGrey;
+      -webkit-box-shadow: 0 0 0 1000px @AknGrey inset;
+    }
   }
 
   &-subTitle {
