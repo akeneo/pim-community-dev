@@ -102,6 +102,11 @@ suites:
         psr4_prefix: Pim\Bundle\AnalyticsBundle
         spec_path: src/Pim/Bundle/AnalyticsBundle
         src_path: src/Pim/Bundle/AnalyticsBundle
+    ApiBundle:
+        namespace: Pim\Bundle\ApiBundle
+        psr4_prefix: Pim\Bundle\ApiBundle
+        spec_path: src/Pim/Bundle/ApiBundle
+        src_path: src/Pim/Bundle/ApiBundle
     CatalogBundle:
         namespace: Pim\Bundle\CatalogBundle
         psr4_prefix: Pim\Bundle\CatalogBundle
