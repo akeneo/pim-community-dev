@@ -58,6 +58,17 @@ class PreProcessCompletenessStepSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn('camcorder');
 
+        $skuAttribute->isScopable()->willReturn(false);
+        $skuAttribute->isLocalizable()->willReturn(false);
+        $nameAttribute->isScopable()->willReturn(false);
+        $nameAttribute->isLocalizable()->willReturn(false);
+        $weightAttribute->isScopable()->willReturn(false);
+        $weightAttribute->isLocalizable()->willReturn(false);
+        $heightAttribute->isScopable()->willReturn(false);
+        $heightAttribute->isLocalizable()->willReturn(false);
+        $documentationAttribute->isScopable()->willReturn(false);
+        $documentationAttribute->isLocalizable()->willReturn(false);
+
         $skuAttribute->getCode()->willReturn('sku');
         $nameAttribute->getCode()->willReturn('name');
         $weightAttribute->getCode()->willReturn('weight');
