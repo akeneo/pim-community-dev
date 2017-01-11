@@ -107,7 +107,7 @@ class PriceCollectionAttributeCopier extends AbstractAttributeCopier
     {
         foreach ($fromValue->getData() as $price) {
             $this->productBuilder
-                ->addPriceForCurrencyWithData($toValue, $price->getCurrency(), $price->getData());
+                ->addPriceForCurrency($toValue, $price->getCurrency(), $price->getData());
         }
     }
 }

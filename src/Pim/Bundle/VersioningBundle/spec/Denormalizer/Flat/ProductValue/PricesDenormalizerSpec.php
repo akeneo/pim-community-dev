@@ -30,13 +30,13 @@ class PricesDenormalizerSpec extends ObjectBehavior
         ProductPriceInterface $productPriceEur,
         ProductPriceInterface $productPriceUsd
     ) {
-        $productBuilder->addPriceForCurrencyWithData($priceValue, 'EUR', '100')
+        $productBuilder->addPriceForCurrency($priceValue, 'EUR', '100')
             ->willReturn($productPriceEur)
             ->shouldBeCalled();
         $priceValue->addPrice($productPriceEur)
             ->shouldBeCalled();
 
-        $productBuilder->addPriceForCurrencyWithData($priceValue, 'USD', '25')
+        $productBuilder->addPriceForCurrency($priceValue, 'USD', '25')
             ->willReturn($productPriceUsd)
             ->shouldBeCalled();
         $priceValue->addPrice($productPriceUsd)
@@ -57,19 +57,19 @@ class PricesDenormalizerSpec extends ObjectBehavior
         ProductPriceInterface $productPriceEur,
         ProductPriceInterface $productPriceUsd
     ) {
-        $productBuilder->addPriceForCurrencyWithData($priceValue, 'EUR', '120.00')
+        $productBuilder->addPriceForCurrency($priceValue, 'EUR', '120.00')
             ->willReturn($productPriceEur)
             ->shouldBeCalled();
         $priceValue->addPrice($productPriceEur)
             ->shouldBeCalled();
 
-        $productBuilder->addPriceForCurrencyWithData($priceValue, 'USD', '145.40')
+        $productBuilder->addPriceForCurrency($priceValue, 'USD', '145.40')
             ->willReturn($productPriceUsd)
             ->shouldBeCalled();
         $priceValue->addPrice($productPriceUsd)
             ->shouldBeCalled();
 
-        $productBuilder->addPriceForCurrencyWithData($priceValue, 'CHF', '100')
+        $productBuilder->addPriceForCurrency($priceValue, 'CHF', '100')
             ->willReturn($productPriceUsd)
             ->shouldBeCalled();
         $priceValue->addPrice($productPriceUsd)
@@ -87,7 +87,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
         ProductPriceInterface $price,
         ArrayCollection $priceCollection
     ) {
-        $productBuilder->addPriceForCurrencyWithData(Argument::cetera())->willReturn($price);
+        $productBuilder->addPriceForCurrency(Argument::cetera())->willReturn($price);
         $priceValue->addPrice($price)->shouldBeCalled();
         $priceValue->getPrices()->willReturn($priceCollection);
 

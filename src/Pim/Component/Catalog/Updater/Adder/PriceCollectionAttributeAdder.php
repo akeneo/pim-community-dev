@@ -157,7 +157,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
         }
 
         foreach ($data as $price) {
-            $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['amount']);
+            $this->productBuilder->addPriceForCurrency($value, $price['currency'], $price['amount']);
         }
     }
 }

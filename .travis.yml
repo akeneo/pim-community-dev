@@ -38,19 +38,16 @@ install:
     - if [ "$TRAVIS_PHP_VERSION" = "7.0" ] || [ "$TRAVIS_PHP_VERSION" = "7.1" ]; then
         composer require alcaeus/mongo-php-adapter --ignore-platform-reqs;
       fi;
-    - ./app/console pim:install
-    - ./app/console oro:requirejs:generate-config
+    - cp ./app/config/parameters_test.yml.dist ./app/config/parameters_test.yml
+    - ./app/console --env=test pim:install
+    - ./app/console --env=test oro:requirejs:generate-config
     - npm install
-    - curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
-
-before_script:
-    - cp ./app/config/parameters.yml ./app/config/parameters_test.yml
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Integration_Test
     - ./bin/phpspec run
-    - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
+    - ./bin/php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
     - grunt travis
 
 notifications:

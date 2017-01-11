@@ -82,7 +82,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
      */
     protected function addPriceForCurrency(ProductValueInterface $value, $data, $currency)
     {
-        $priceValue = $this->productBuilder->addPriceForCurrencyWithData($value, $currency, $data);
+        $priceValue = $this->productBuilder->addPriceForCurrency($value, $currency, $data);
         $value->addPrice($priceValue);
     }
 

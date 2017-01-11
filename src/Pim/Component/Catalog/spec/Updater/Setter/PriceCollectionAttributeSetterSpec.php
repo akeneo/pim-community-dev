@@ -157,13 +157,13 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $productValue->getPrices()->willReturn([$price]);
         $price->setData(null)->shouldBeCalled();
 
-        $builder->addPriceForCurrencyWithData($productValue, 'EUR', 123.2)->shouldBeCalled();
+        $builder->addPriceForCurrency($productValue, 'EUR', 123.2)->shouldBeCalled();
         $this->setattributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setattributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setattributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
 
         $data = [['amount' => 'foo', 'currency' => 'EUR']];
-        $builder->addPriceForCurrencyWithData($productValue, 'EUR', 'foo')->shouldBeCalled();
+        $builder->addPriceForCurrency($productValue, 'EUR', 'foo')->shouldBeCalled();
         $this->setattributeData($product4, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
 }
