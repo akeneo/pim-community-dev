@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -37,7 +38,7 @@ class ProductBuilder implements ProductBuilderInterface
 
     /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;
-    
+
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -48,13 +49,13 @@ class ProductBuilder implements ProductBuilderInterface
     protected $productClass;
 
     /** @var string */
-    protected $productPriceClass;
-
-    /** @var string */
     protected $associationClass;
 
     /** @var ProductValueFactory */
     protected $productValueFactory;
+
+    /** @var PriceFactory */
+    protected $priceFactory;
 
     /**
      * Constructor
@@ -66,6 +67,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
      * @param AttributeValuesResolver            $valuesResolver      Attributes values resolver
      * @param ProductValueFactory                $productValueFactory Product value factory
+     * @param PriceFactory                       $priceFactory        Price factory
      * @param array                              $classes             Model classes
      */
     public function __construct(
@@ -76,6 +78,7 @@ class ProductBuilder implements ProductBuilderInterface
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
         ProductValueFactory $productValueFactory,
+        PriceFactory $priceFactory,
         array $classes
     ) {
         $this->attributeRepository = $attributeRepository;
@@ -85,8 +88,8 @@ class ProductBuilder implements ProductBuilderInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->valuesResolver = $valuesResolver;
         $this->productValueFactory = $productValueFactory;
+        $this->priceFactory = $priceFactory;
         $this->productClass = $classes['product'];
-        $this->productPriceClass = $classes['product_price'];
         $this->associationClass = $classes['association'];
     }
 
@@ -184,10 +187,10 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addPriceForCurrency(ProductValueInterface $value, $currency)
+    public function addPriceForCurrency(ProductValueInterface $value, $currency, $amount)
     {
         if (!$this->hasPriceForCurrency($value, $currency)) {
-            $value->addPrice(new $this->productPriceClass(null, $currency));
+            $value->addPrice($this->priceFactory->createPrice($amount, $currency));
         }
 
         return $this->getPriceForCurrency($value, $currency);
@@ -198,10 +201,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $amount)
     {
-        $price = $this->addPriceForCurrency($value, $currency);
-        $price->setData($amount);
-
-        return $price;
+        return $this->addPriceForCurrency($value, $currency, $amount);
     }
 
     /**
@@ -249,7 +249,7 @@ class ProductBuilder implements ProductBuilderInterface
 
             foreach ($activeCurrencyCodes as $currencyCode) {
                 if (null === $value->getPrice($currencyCode)) {
-                    $this->addPriceForCurrency($value, $currencyCode);
+                    $this->addPriceForCurrency($value, $currencyCode, null);
                 }
             }
 
@@ -319,16 +319,6 @@ class ProductBuilder implements ProductBuilderInterface
         }
 
         return $attributes;
-    }
-
-    /**
-     * Get product value class
-     *
-     * @return string
-     */
-    protected function getProductValueClass()
-    {
-        return $this->productValueClass;
     }
 
     /**

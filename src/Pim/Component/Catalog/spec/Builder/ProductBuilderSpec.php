@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
@@ -32,11 +33,11 @@ class ProductBuilderSpec extends ObjectBehavior
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
-        ProductValueFactory $productValueFactory
+        ProductValueFactory $productValueFactory,
+        PriceFactory $priceFactory
     ) {
         $entityConfig = [
             'product' => self::PRODUCT_CLASS,
-            'product_price' => self::PRICE_CLASS,
             'association' => self::ASSOCIATION_CLASS
         ];
 
@@ -48,6 +49,7 @@ class ProductBuilderSpec extends ObjectBehavior
             $eventDispatcher,
             $valuesResolver,
             $productValueFactory,
+            $priceFactory,
             $entityConfig
         );
     }

@@ -78,10 +78,11 @@ interface ProductBuilderInterface
      *
      * @param ProductValueInterface $value
      * @param string                $currency
+     * @param float|int             $amount
      *
      * @return null|ProductPriceInterface
      */
-    public function addPriceForCurrency(ProductValueInterface $value, $currency);
+    public function addPriceForCurrency(ProductValueInterface $value, $currency, $amount);
 
     /**
      * Add a product price with currency and data to the value. If the price already exists, its data is

@@ -79,7 +79,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store date value
      *
-     * @var date
+     * @var \DateTime
      */
     protected $date;
 
@@ -95,7 +95,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * This field must by overrided in concret value class
      *
-     * @var ArrayCollection
+     * @var Collection
      */
     protected $options;
 
@@ -126,7 +126,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store prices value
      *
-     * @var ArrayCollection
+     * @var PriceCollectionInterface
      */
     protected $prices;
 
@@ -136,7 +136,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function __construct()
     {
         $this->options = new ArrayCollection();
-        $this->prices = new ArrayCollection();
+        $this->prices = new PriceCollection();
     }
 
     /**
@@ -575,14 +575,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function getPrices()
     {
-        $prices = [];
-        foreach ($this->prices as $price) {
-            $prices[$price->getCurrency()] = $price;
-        }
-
-        ksort($prices);
-
-        return new ArrayCollection($prices);
+        return $this->prices;
     }
 
     /**
@@ -602,7 +595,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setPrices($prices)
+    public function setPrices(PriceCollectionInterface $prices)
     {
         foreach ($prices as $price) {
             $this->addPrice($price);
@@ -621,7 +614,6 @@ abstract class AbstractProductValue implements ProductValueInterface
         }
 
         $this->prices->add($price);
-        $price->setValue($this);
 
         return $this;
     }
