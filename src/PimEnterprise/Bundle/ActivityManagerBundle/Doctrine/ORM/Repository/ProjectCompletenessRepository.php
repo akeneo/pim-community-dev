@@ -111,7 +111,7 @@ SELECT
     COALESCE(
         SUM(
             CASE 
-                WHEN `attribute_group_done` <> `total_attribute_group` AND `attribute_group_in_progress` > 0
+                WHEN `attribute_group_done` <> `total_attribute_group` AND (`attribute_group_in_progress` > 0 OR `attribute_group_done` > 0)
                 THEN 1 ELSE 0 
             END
         ),

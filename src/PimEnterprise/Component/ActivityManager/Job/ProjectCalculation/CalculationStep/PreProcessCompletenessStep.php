@@ -50,7 +50,7 @@ class PreProcessCompletenessStep implements CalculationStepInterface
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
         $requiredAttributes = $this->familyRequirementRepository->findRequiredAttributes($product, $project);
-        $filledAttributes = $this->normalizeProduct($product, $project);
+        $filledAttributes = $this->findFilledAttributes($product, $project);
         $attributeGroupCompleteness = $this->getAttributeGroupCompleteness($filledAttributes, $requiredAttributes);
 
         $this->preProcessingRepository->addAttributeGroupCompleteness(
@@ -73,12 +73,17 @@ class PreProcessCompletenessStep implements CalculationStepInterface
     {
         $result = [];
         foreach ($requiredAttributes as $attributeGroupId => $attributes) {
-            if (!array_key_exists($attributeGroupId, $filledAttributes)) {
-                $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 0);
-            } elseif (!empty(array_diff($attributes, $filledAttributes[$attributeGroupId]))) {
+            if (!isset($filledAttributes[$attributeGroupId])) {
+                $filledAttributes[$attributeGroupId] = [];
+            }
+
+            $intersection = array_intersect($attributes, $filledAttributes[$attributeGroupId]);
+            if ($intersection === $attributes) {
+                $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 1);
+            } elseif (count($intersection) > 0) {
                 $result[] = new AttributeGroupCompleteness($attributeGroupId, 1, 0);
             } else {
-                $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 1);
+                $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 0);
             }
         }
 
@@ -103,12 +108,18 @@ class PreProcessCompletenessStep implements CalculationStepInterface
      *
      * @return array
      */
-    protected function normalizeProduct(ProductInterface $product, ProjectInterface $project)
+    protected function findFilledAttributes(ProductInterface $product, ProjectInterface $project)
     {
         $filledAttributes = [];
         foreach ($product->getValues() as $value) {
+            $attribute = $value->getAttribute();
+            if ($attribute->isScopable() && $value->getScope() !== $project->getChannel()->getCode() ||
+                $attribute->isLocalizable() && $value->getLocale() !== $project->getLocale()->getCode()
+            ) {
+                continue;
+            }
+
             if ($this->productValueChecker->isComplete($value, $project->getChannel(), $project->getLocale())) {
-                $attribute = $value->getAttribute();
                 $filledAttributes[$attribute->getGroup()->getId()][] = $attribute->getCode();
             }
         }
