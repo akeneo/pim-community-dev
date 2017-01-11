@@ -81,9 +81,10 @@ Feature: Follow project completeness
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
     And the following projects:
-      | label                  | owner | due_date   | description                                  | channel   | locale | product_filters                                                 |
-      | Collection Summer 2030 | julia | 2030-10-28 | Please do your best to finish before Summer. | ecommerce | en_US  | []                                                              |
-      | Collection Winter 2030 | julia | 2030-08-28 | Please do your best to finish before Winter. | ecommerce | en_US  | [{"field":"family.code", "operator":"IN", "value": ["tshirt"]}] |
+      | label                                | owner | due_date   | description                                         | channel   | locale | product_filters                                                               |
+      | Collection Summer 2030               | julia | 2030-10-28 | Please do your best to finish before Summer.        | ecommerce | en_US  | []                                                                            |
+      | Collection Winter 2030               | julia | 2030-08-28 | Please do your best to finish before Winter.        | ecommerce | en_US  | [{"field":"family.code", "operator":"IN", "value": ["tshirt"]}]               |
+      | Collection SpaceSuits so trendy 2030 | julia | 2030-08-28 | Please we need to go on Mars before the end of 2030 | ecommerce | en_US  | [{"field":"sku", "operator":"=", "value": "product-that-does-not-exist-yet"}] |
     And I am logged in as "Julia"
 
   Scenario: Successfully see the project with the nearest due date first
@@ -127,3 +128,10 @@ Feature: Follow project completeness
     And I should see the text "50% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/28/2030"
+
+  Scenario: Successfully see the project when I am the creator even if it doesn't have any product yet
+    Given I am on the dashboard page
+    When I select "Collection SpaceSuits so trendy 2030" project
+    Then I should see the text "Collection SpaceSuits so trendy 2030"
+    And I should see the text "[ecommerce] | English (United States)"
+    And I should see the text "Due date: 08/28/2030"
