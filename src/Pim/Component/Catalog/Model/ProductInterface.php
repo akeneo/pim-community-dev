@@ -65,7 +65,7 @@ interface ProductInterface extends
     /**
      * Get values
      *
-     * @return ProductValueCollection
+     * @return ProductValueCollectionInterface
      */
     public function getValues();
 
@@ -254,7 +254,7 @@ interface ProductInterface extends
     public function hasAttribute(AttributeInterface $attribute);
 
     /**
-     * Get the list of used attribute code
+     * Get the list of used attribute codes from the indexed values
      *
      * @return array
      */
@@ -300,11 +300,6 @@ interface ProductInterface extends
      * @return mixed|string
      */
     public function getLabel($locale = null);
-
-    /**
-     * @param mixed $normalizedData
-     */
-    public function setNormalizedData($normalizedData);
 
     /**
      * Set family

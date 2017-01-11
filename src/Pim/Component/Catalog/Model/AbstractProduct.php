@@ -76,9 +76,6 @@ abstract class AbstractProduct implements ProductInterface
     /** @var ArrayCollection $completenesses */
     protected $completenesses;
 
-    /** @var array */
-    protected $normalizedData;
-
     /**
      * Constructor
      */
@@ -658,13 +655,5 @@ abstract class AbstractProduct implements ProductInterface
     public function getReference()
     {
         return $this->getIdentifier()->getData();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setNormalizedData($normalizedData)
-    {
-        $this->normalizedData = $normalizedData;
     }
 }
