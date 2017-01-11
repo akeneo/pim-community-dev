@@ -7,10 +7,10 @@ Feature: Datagrid views
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-      | sku             | family   | name-en_US      |
-      | purple-sneakers | sneakers | Purple sneakers |
-      | black-sneakers  | sneakers | Black sneakers  |
-      | black-boots     | boots    | Black boots     |
+      | sku             | family   | name-en_US      | manufacturer |
+      | purple-sneakers | sneakers | Purple sneakers | Nike         |
+      | black-sneakers  | sneakers | Black sneakers  |              |
+      | black-boots     | boots    | Black boots     |              |
     And I am logged in as "Mary"
 
   Scenario: Successfully display the default view
@@ -141,8 +141,8 @@ Feature: Datagrid views
 
   Scenario: Successfully display values in grid when using a custom default view
     Given I am on the products page
-    And I display the columns SKU, Name and Family
-    Then I should see the text "purple-sneakers"
+    And I display the columns SKU, Name, Family and Manufacturer
+    Then I should see the text "Nike"
     When I create the view:
       | new-view-label | With name |
     Then I should be on the products page
