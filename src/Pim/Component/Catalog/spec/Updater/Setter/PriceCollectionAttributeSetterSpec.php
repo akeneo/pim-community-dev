@@ -53,7 +53,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('price');
         $product->getValue('price', 'fr_FR', 'mobile')->willReturn($priceValue);
-        $priceValue->setPrices(new PriceCollection())->shouldBeCalled();
+        $product->removeValue($priceValue)->shouldBeCalled()->willReturn($product);
 
         $data = [['amount' => 123.2, 'currency' => 'EUR']];
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
@@ -134,32 +134,35 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        ProductInterface $product4,
         ProductValue $productValue
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = [['amount' => 123.2, 'currency' => 'EUR']];
+        $dataNum = [['amount' => 123.2, 'currency' => 'EUR']];
+        $dataTxt = [['amount' => 'foo', 'currency' => 'EUR']];
 
         $attribute->getCode()->willReturn('attributeCode');
 
+        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product1->removeValue($productValue)->shouldBeCalled()->willReturn($product1);
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addProductValue($product1, $attribute, $locale, $scope, $dataNum)
             ->willReturn($productValue);
 
-        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
+        $product2->removeValue($productValue)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, $dataNum)
+            ->willReturn($productValue);
+
         $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
-        $product4->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
-        $productValue->setPrices(new PriceCollection())->shouldBeCalled();
+        $product3->removeValue($productValue)->shouldBeCalled()->willReturn($product3);
+        $builder
+            ->addProductValue($product3, $attribute, $locale, $scope, $dataTxt)
+            ->willReturn($productValue);
 
-        $builder->addPriceForCurrency($productValue, 'EUR', 123.2)->shouldBeCalled();
-        $this->setattributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setattributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setattributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-
-        $data = [['amount' => 'foo', 'currency' => 'EUR']];
-        $builder->addPriceForCurrency($productValue, 'EUR', 'foo')->shouldBeCalled();
-        $this->setattributeData($product4, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        $this->setattributeData($product1, $attribute, $dataNum, ['locale' => $locale, 'scope' => $scope]);
+        $this->setattributeData($product2, $attribute, $dataNum, ['locale' => $locale, 'scope' => $scope]);
+        $this->setattributeData($product3, $attribute, $dataTxt, ['locale' => $locale, 'scope' => $scope]);
     }
 }

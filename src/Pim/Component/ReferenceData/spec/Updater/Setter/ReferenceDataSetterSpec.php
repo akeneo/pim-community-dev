@@ -53,7 +53,7 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         ReferenceDataInterface $refData,
         AttributeInterface $attribute,
         ProductInterface $product,
-        CustomProductValue $productValue1
+        ProductValueInterface $productValue
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -64,7 +64,8 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('customMaterials');
         $attribute->getCode()->willReturn('custom_material');
 
-        $product->getValue('custom_material', $locale, $scope)->willReturn($productValue1);
+        $product->getValue('custom_material', $locale, $scope)->willReturn($productValue);
+        $product->removeValue($productValue)->shouldBeCalled()->willReturn($product);
 
         $repositoryResolver->resolve('customMaterials')->willReturn($repository);
         $repository->findOneBy(['code' => 'shiny_metal'])->willReturn($refData);
@@ -121,34 +122,6 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_if_product_value_method_is_not_implemented(
-        $repositoryResolver,
-        ObjectRepository $repository,
-        ReferenceDataInterface $refData,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        ProductValueInterface $productValue
-    ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-
-        $attribute->getCode()->willReturn('custom_material');
-        $attribute->getReferenceDataName()->willReturn('notImplemented');
-
-        $repositoryResolver->resolve('notImplemented')->willReturn($repository);
-        $repository->findOneBy(['code' => 'shiny_metal'])->willReturn($refData);
-
-        $product->getValue('custom_material', $locale, $scope)->willReturn($productValue);
-
-        $this->shouldThrow(new \LogicException('ProductValue method "setNotImplemented" is not implemented'))
-            ->during('setAttributeData', [
-                $product,
-                $attribute,
-                'shiny_metal',
-                ['locale' => $locale, 'scope' => $scope]
-            ]);
-    }
-
     function it_sets_reference_data_to_a_product_value(
         $builder,
         $attrValidatorHelper,
@@ -158,10 +131,7 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
-        CustomProductValue $productValue1,
-        CustomProductValue $productValue2,
-        CustomProductValue $productValue3
+        ProductValueInterface $productValue
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -176,19 +146,20 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $repository->findOneBy(['code' => 'shiny_metal'])->willReturn($refData);
 
         $product1->getValue('custom_material', $locale, $scope)->willReturn(null);
-        $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue2);
-        $product3->getValue('custom_material', $locale, $scope)->willReturn($productValue3);
-
-        $builder->addProductValue($product1, $attribute, $locale, $scope)
+        $product1->removeValue($productValue)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product1, $attribute, $locale, $scope, $refData)
             ->shouldBeCalled()
-            ->willReturn($productValue1);
+            ->willReturn($productValue);
 
-        $products = [$product1, $product2, $product3];
+        $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue);
+        $product2->removeValue($productValue)->shouldBeCalled()->willReturn($product2);
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, $refData)
+            ->shouldBeCalled()
+            ->willReturn($productValue);
 
-        $productValue1->setCustomMaterial($refData)->shouldBeCalled();
-        $productValue2->setCustomMaterial($refData)->shouldBeCalled();
-        $productValue3->setCustomMaterial($refData)->shouldBeCalled();
-
+        $products = [$product1, $product2];
         foreach ($products as $product) {
             $this->setAttributeData($product, $attribute, 'shiny_metal', ['locale' => $locale, 'scope' => $scope]);
         }
@@ -200,8 +171,7 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        CustomProductValue $productValue1,
-        CustomProductValue $productValue2
+        ProductValueInterface $productValue
     ) {
         $locale = 'en_US';
         $scope = 'ecommerce';
@@ -213,26 +183,22 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('customMaterials');
 
         $product1->getValue('custom_material', $locale, $scope)->willReturn(null);
-        $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue2);
-
-        $builder->addProductValue($product1, $attribute, $locale, $scope)
+        $product1->removeValue($productValue)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product1, $attribute, $locale, $scope, null)
             ->shouldBeCalled()
-            ->willReturn($productValue1);
+            ->willReturn($productValue);
+
+        $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue);
+        $product2->removeValue($productValue)->shouldBeCalled()->willReturn($product2);
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, null)
+            ->shouldBeCalled()
+            ->willReturn($productValue);
 
         $products = [$product1, $product2];
-
-        $productValue1->setCustomMaterial(null)->shouldBeCalled();
-        $productValue2->setCustomMaterial(null)->shouldBeCalled();
-
         foreach ($products as $product) {
             $this->setAttributeData($product, $attribute, null, ['locale' => $locale, 'scope' => $scope]);
         }
-    }
-}
-
-class CustomProductValue extends AbstractProductValue
-{
-    public function setCustomMaterial(ReferenceDataInterface $refData = null)
-    {
     }
 }

@@ -80,38 +80,39 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateUnitFamilies(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn($metric);
-        $toProductValue->setMetric($metric)->shouldBeCalledTimes(2);
         $toProductValue->getData()->willReturn($metric);
         $toProductValue->getMetric()->willReturn($metric);
-
-        $toProductValue2->setMetric($metric)->shouldBeCalledTimes(1);
-        $toProductValue2->getData()->willReturn($metric);
-        $toProductValue2->getMetric()->willReturn(null);
 
         $metric->getFamily()->shouldBeCalled()->willReturn('Weight');
         $metric->getData()->shouldBeCalled()->willReturn(123);
         $metric->getUnit()->shouldBeCalled()->willReturn('KILOGRAM');
 
+        $metricFactory->createMetric('Weight', 'KILOGRAM', 123)->shouldBeCalledTimes(2)->willReturn($metric);
+
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
-
-        $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue2);
-
-        $metricFactory->createMetric('Weight', 'KILOGRAM', 123)->shouldBeCalledTimes(3)->willReturn($metric);
-
+        $product1->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn($toProductValue);
+        $product1->removeValue($toProductValue)->shouldBeCalled()->willReturn($product1);
         $builder
-            ->addProductValue($product3, $toAttribute, $toLocale, $toScope)
-            ->shouldBeCalledTimes(1)
+            ->addProductValue($product1, $toAttribute, $toLocale, $toScope, $metric)
+            ->shouldBeCalled()
             ->willReturn($toProductValue);
 
-        $products = [$product1, $product2, $product3, $product4];
+        $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
+        $product2->getValue('toAttributeCode', $toLocale, $toScope)->shouldNotBeCalled();
+        $product2->removeValue(Argument::any())->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product2, $toAttribute, $toLocale, $toScope, null)
+            ->shouldNotBeCalled();
+
+        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product3->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn(null);
+        $product3->removeValue(null)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product3, $toAttribute, $toLocale, $toScope, $metric)
+            ->shouldBeCalled()
+            ->willReturn($toProductValue);
+
+        $products = [$product1, $product2, $product3];
         foreach ($products as $product) {
             $this->copyAttributeData(
                 $product,

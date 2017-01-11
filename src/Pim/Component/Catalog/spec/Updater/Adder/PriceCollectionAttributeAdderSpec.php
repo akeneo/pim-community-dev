@@ -59,6 +59,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('price');
         $product->getValue('price', 'fr_FR', 'mobile')->willReturn($priceValue);
+        $product->removeValue($priceValue)->shouldBeCalled()->willReturn($product);
         $priceValue->getPrices()->willReturn([$price]);
 
         $data = [['amount' => 123.2, 'currency' => 'EUR']];
@@ -182,8 +183,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductValue $productValue,
-        ProductPriceInterface $price
+        ProductValue $productValue
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -198,10 +198,13 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product1->removeValue($productValue)->shouldBeCalled()->willReturn($product1);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $productValue->getPrices()->willReturn([$price]);
+        $product2->removeValue(null)->shouldNotBeCalled();
 
-        $builder->addPriceForCurrency($productValue, 'EUR', 123.2)->shouldBeCalledTimes(2);
+        $builder->addProductValue($product1, $attribute, $locale, $scope, $data)->shouldBeCalled();
+        $builder->addProductValue($product2, $attribute, $locale, $scope, $data)->shouldBeCalled();
+
         $this->addattributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->addattributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }

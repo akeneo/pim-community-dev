@@ -32,19 +32,6 @@ class ProductValueFactoryRegistrySpec extends ObjectBehavior
         $this->get('text')->shouldReturn($factory2);
     }
 
-    function it_gets_a_registered_factory_with_higher_priority(
-        ProductValueFactoryInterface $factory1,
-        ProductValueFactoryInterface $factory2
-    ) {
-        $this->register($factory1);
-        $this->register($factory2, 100);
-
-        $factory1->supports('text')->willReturn(true);
-        $factory2->supports('text')->willReturn(true);
-
-        $this->get('text')->shouldReturn($factory2);
-    }
-
     function it_throws_an_exception_when_there_is_no_registered_factory(ProductValueFactoryInterface $factory)
     {
         $this->register($factory);

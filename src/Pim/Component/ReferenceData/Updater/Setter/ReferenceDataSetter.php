@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Pim\Component\ReferenceData\MethodNameGuesser;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
@@ -118,19 +117,10 @@ class ReferenceDataSetter extends AbstractAttributeSetter
         $scope = null
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
 
-        $setMethod = MethodNameGuesser::guess('set', $attribute->getReferenceDataName(), true);
-
-        if (!method_exists($value, $setMethod)) {
-            throw new \LogicException(
-                sprintf('ProductValue method "%s" is not implemented', $setMethod)
-            );
-        }
-
-        $value->$setMethod($referenceData);
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $referenceData);
     }
 }

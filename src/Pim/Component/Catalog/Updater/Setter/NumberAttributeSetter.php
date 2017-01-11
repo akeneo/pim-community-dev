@@ -59,9 +59,10 @@ class NumberAttributeSetter extends AbstractAttributeSetter
     protected function setData(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
-        $value->setData($data);
+
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $data);
     }
 }

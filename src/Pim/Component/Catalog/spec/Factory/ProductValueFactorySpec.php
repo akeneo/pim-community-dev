@@ -42,9 +42,9 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attributeValidatorHelper->validateScope($attribute, null)->shouldBeCalled();
 
         $registry->get('text')->willReturn($productValueFactory);
-        $productValueFactory->create($attribute, null, null)->willReturn($productValue);
+        $productValueFactory->create($attribute, null, null, 'foobar')->willReturn($productValue);
 
-        $this->create($attribute, null, null)->shouldReturn($productValue);
+        $this->create($attribute, null, null, 'foobar')->shouldReturn($productValue);
     }
 
     function it_creates_a_simple_localizable_and_scopable_empty_product_value(
@@ -67,8 +67,8 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($attribute, 'en_US')->shouldBeCalled();
 
         $registry->get('text')->willReturn($productValueFactory);
-        $productValueFactory->create($attribute, 'ecommerce', 'en_US')->willReturn($productValue);
+        $productValueFactory->create($attribute, 'ecommerce', 'en_US', 'foobar')->willReturn($productValue);
 
-        $this->create($attribute, 'ecommerce', 'en_US')->shouldReturn($productValue);
+        $this->create($attribute, 'ecommerce', 'en_US', 'foobar')->shouldReturn($productValue);
     }
 }

@@ -59,12 +59,14 @@ class TextAttributeSetter extends AbstractAttributeSetter
     protected function setData(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
+
         if (is_string($data) && '' === trim($data)) {
             $data = null;
         }
-        $value->setData($data);
+
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $data);
     }
 }

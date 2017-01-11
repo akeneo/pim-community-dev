@@ -102,11 +102,17 @@ class BaseAttributeCopier extends AbstractAttributeCopier
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
             $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
+            if (null !== $toValue) {
+                $toProduct->removeValue($toValue);
             }
 
-            $toValue->setData($fromValue->getData());
+            $this->productBuilder->addProductValue(
+                $toProduct,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $fromValue->getData()
+            );
         }
     }
 }

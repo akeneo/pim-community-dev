@@ -13,13 +13,8 @@ namespace Pim\Component\Catalog\Factory\ProductValue;
  */
 class ProductValueFactoryRegistry
 {
-    /** @var \SplPriorityQueue */
+    /** @var array */
     protected $factories;
-
-    public function __construct()
-    {
-        $this->factories = new \SplPriorityQueue();
-    }
 
     /**
      * @param string $attributeType
@@ -43,10 +38,9 @@ class ProductValueFactoryRegistry
 
     /**
      * @param ProductValueFactoryInterface $factory
-     * @param int                          $priority
      */
-    public function register(ProductValueFactoryInterface $factory, $priority = 0)
+    public function register(ProductValueFactoryInterface $factory)
     {
-        $this->factories->insert($factory, $priority);
+        $this->factories[] = $factory;
     }
 }

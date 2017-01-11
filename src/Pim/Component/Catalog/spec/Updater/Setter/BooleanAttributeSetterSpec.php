@@ -48,7 +48,7 @@ class BooleanAttributeSetterSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('displayable');
         $product->getValue('displayable', 'fr_FR', 'mobile')->willReturn($booleanValue);
-        $booleanValue->setData(true)->shouldBeCalled();
+        $product->removeValue($booleanValue)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, true, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -58,7 +58,6 @@ class BooleanAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
         ProductValue $productValue
     ) {
         $locale = 'fr_FR';
@@ -67,21 +66,22 @@ class BooleanAttributeSetterSpec extends ObjectBehavior
 
         $product1->getFamily()->willReturn(null);
         $product2->getFamily()->willReturn(null);
-        $product3->getFamily()->willReturn(null);
 
         $attribute->getCode()->willReturn('attributeCode');
-        $productValue->setData($data)->shouldBeCalled();
-
-        $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product1->removeValue($productValue)->shouldBeCalled()->willReturn($product1);
+        $builder
+            ->addProductValue($product1, $attribute, $locale, $scope, $data)
+            ->willReturn($productValue);
+
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product2->removeValue(null)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, $data)
+            ->willReturn($productValue);
 
         $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
 }

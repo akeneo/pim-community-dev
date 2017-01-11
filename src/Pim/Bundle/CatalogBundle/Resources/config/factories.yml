@@ -8,9 +8,16 @@ parameters:
     pim_catalog.factory.group_type.class:            Pim\Component\Catalog\Factory\GroupTypeFactory
     pim_catalog.factory.currency.class:              Pim\Component\Catalog\Factory\CurrencyFactory
     pim_catalog.factory.product_template.class:      Pim\Component\Catalog\Factory\ProductTemplateFactory
-    pim_catalog.factory.product_value.class:         Pim\Component\Catalog\Factory\ProductValueFactory
-    pim_catalog.factory.product_value.registry.class: Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryRegistry
-    pim_catalog.factory.product_value.simple.class: Pim\Component\Catalog\Factory\ProductValue\SimpleProductValueFactory
+
+    pim_catalog.factory.product_value.class:                  Pim\Component\Catalog\Factory\ProductValueFactory
+    pim_catalog.factory.product_value.registry.class:         Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryRegistry
+    pim_catalog.factory.product_value.simple.class:           Pim\Component\Catalog\Factory\ProductValue\SimpleProductValueFactory
+    pim_catalog.factory.product_value.metric.class:           Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory
+    pim_catalog.factory.product_value.price_collection.class: Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactory
+    pim_catalog.factory.product_value.option.class:           Pim\Component\Catalog\Factory\ProductValue\OptionProductValueFactory
+    pim_catalog.factory.product_value.options.class:          Pim\Component\Catalog\Factory\ProductValue\OptionsProductValueFactory
+    pim_catalog.factory.product_value.media.class:            Pim\Component\Catalog\Factory\ProductValue\MediaProductValueFactory
+    pim_catalog.factory.product_value.date.class:             Pim\Component\Catalog\Factory\ProductValue\DateProductValueFactory
 
 services:
     pim_catalog.factory.family:
@@ -113,22 +120,111 @@ services:
         class: '%pim_catalog.factory.product_value.registry.class%'
         public: false
 
-    pim_catalog.factory.product_value.simple:
+    pim_catalog.factory.product_value.text:
         class: '%pim_catalog.factory.product_value.simple.class%'
         public: false
         arguments:
             - '%pim_catalog.entity.product_value.class%'
-            -
-                - pim_catalog_text
-                - pim_catalog_textarea
-                - pim_catalog_number
-                - pim_catalog_price_collection
-                - pim_catalog_multiselect
-                - pim_catalog_simpleselect
-                - pim_catalog_file
-                - pim_catalog_image
-                - pim_catalog_boolean
-                - pim_catalog_date
-                - pim_catalog_metric
+            - 'pim_catalog_text'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.textarea:
+        class: '%pim_catalog.factory.product_value.simple.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_textarea'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.number:
+        class: '%pim_catalog.factory.product_value.simple.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_number'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.boolean:
+        class: '%pim_catalog.factory.product_value.simple.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_boolean'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.identifier:
+        class: '%pim_catalog.factory.product_value.simple.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_identifier'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.metric:
+        class: '%pim_catalog.factory.product_value.metric.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_metric'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.price_collection:
+        class: '%pim_catalog.factory.product_value.price_collection.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_price_collection'
+            - '@pim_catalog.factory.price'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.option:
+        class: '%pim_catalog.factory.product_value.option.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_simpleselect'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.options:
+        class: '%pim_catalog.factory.product_value.options.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_multiselect'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.file:
+        class: '%pim_catalog.factory.product_value.media.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_file'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.image:
+        class: '%pim_catalog.factory.product_value.media.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_image'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_catalog.factory.product_value.date:
+        class: '%pim_catalog.factory.product_value.date.class%'
+        public: false
+        arguments:
+            - '%pim_catalog.entity.product_value.class%'
+            - 'pim_catalog_date'
         tags:
             - { name: pim_catalog.factory.product_value }

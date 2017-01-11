@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
 /**
  * Factory that creates empty product values
  *
- * @internal  Interface for the factories that are used internally by \Pim\Component\Catalog\Factory\ProductValueFactory.
+ * @internal  Interface for the factories used internally by \Pim\Component\Catalog\Factory\ProductValueFactory.
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -16,19 +16,20 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
 interface ProductValueFactoryInterface
 {
     /**
-     * This method effectively creates an empty product.
-     * Channel and locale codes validity MUST HAVE BEEN checked before.
+     * This method effectively creates an empty product value.
+     * Channel and locale codes validity MUST HAVE BEEN checked BEFORE.
      * The Data for this product value should be set in a second time using ProductValue::setData method.
      *
      * @param AttributeInterface $attribute
      * @param string             $channelCode
      * @param string             $localeCode
+     * @param mixed              $data
      *
      * @throws \LogicException
      *
      * @return ProductValueInterface
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode);
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data);
 
     /**
      * @param string $attributeType

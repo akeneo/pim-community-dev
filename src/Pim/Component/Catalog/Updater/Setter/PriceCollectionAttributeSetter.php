@@ -123,15 +123,10 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
     protected function setPrices(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-        } else {
-            $value->setPrices(new PriceCollection());
+        if (null !== $value) {
+            $product->removeValue($value);
         }
 
-        foreach ($data as $price) {
-            $this->productBuilder->addPriceForCurrency($value, $price['currency'], $price['amount']);
-        }
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $data);
     }
 }

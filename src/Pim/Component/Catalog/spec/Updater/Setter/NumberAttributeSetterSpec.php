@@ -45,17 +45,16 @@ class NumberAttributeSetterSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('response_to_universe');
         $product->getValue('response_to_universe', 'fr_FR', 'mobile')->willReturn($numberValue);
-        $numberValue->setData(42)->shouldBeCalled();
+        $product->removeValue($numberValue)->shouldBeCalled()->willReturn($product);
 
         $this->setAttributeData($product, $attribute, 42, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
     function it_sets_number_value_to_a_product_attribute_data_value(
+        $builder,
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
-        $builder,
         ProductValue $productValue
     ) {
         $locale = 'fr_FR';
@@ -63,27 +62,28 @@ class NumberAttributeSetterSpec extends ObjectBehavior
         $data = 44;
 
         $attribute->getCode()->willReturn('attributeCode');
-        $productValue->setData($data)->shouldBeCalled();
-
-        $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product1->removeValue($productValue)->shouldBeCalled()->willReturn($product1);
+        $builder
+            ->addProductValue($product1, $attribute, $locale, $scope, $data)
+            ->willReturn($productValue);
+
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product2->removeValue(null)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, $data)
+            ->willReturn($productValue);
 
         $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
 
     function it_sets_non_number_value_to_a_product_attribute_data_value(
+        $builder,
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
-        $builder,
         ProductValue $productValue
     ) {
         $locale = 'fr_FR';
@@ -91,18 +91,20 @@ class NumberAttributeSetterSpec extends ObjectBehavior
         $data = 'foo';
 
         $attribute->getCode()->willReturn('attributeCode');
-        $productValue->setData($data)->shouldBeCalled();
-
-        $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product1->removeValue($productValue)->shouldBeCalled()->willReturn($product1);
+        $builder
+            ->addProductValue($product1, $attribute, $locale, $scope, $data)
+            ->willReturn($productValue);
+
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product2->removeValue(null)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, $data)
+            ->willReturn($productValue);
 
         $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
 }

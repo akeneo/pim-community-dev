@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Updater\Copier;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
@@ -90,37 +89,17 @@ class MultiSelectAttributeCopier extends AbstractAttributeCopier
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
             $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
+            if (null !== $toValue) {
+                $toProduct->removeValue($toValue);
             }
 
-            $this->removeOptions($toValue);
-            $this->copyOptions($fromValue, $toValue);
-        }
-    }
-
-    /**
-     * Remove options from attribute
-     *
-     * @param ProductValueInterface $toValue
-     */
-    protected function removeOptions(ProductValueInterface $toValue)
-    {
-        foreach ($toValue->getOptions() as $attributeOption) {
-            $toValue->removeOption($attributeOption);
-        }
-    }
-
-    /**
-     * Copy attribute options into a multi select attribute
-     *
-     * @param ProductValueInterface $fromValue
-     * @param ProductValueInterface $toValue
-     */
-    protected function copyOptions(ProductValueInterface $fromValue, ProductValueInterface $toValue)
-    {
-        foreach ($fromValue->getOptions() as $attributeOption) {
-            $toValue->addOption($attributeOption);
+            $this->productBuilder->addProductValue(
+                $toProduct,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $fromValue->getOptions()
+            );
         }
     }
 }

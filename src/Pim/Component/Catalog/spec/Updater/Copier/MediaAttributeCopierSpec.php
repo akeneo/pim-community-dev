@@ -66,6 +66,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
     }
 
     function it_copies_when_a_product_value_has_the_values_and_the_media(
+        $builder,
         $attrValidatorHelper,
         $filesystemProvider,
         FileInfoInterface $fromMedia,
@@ -98,15 +99,25 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $fromMedia->getOriginalFilename()->willReturn('akeneo.jpg');
         $fromMedia->getKey()->willReturn('key');
 
-        $filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
+        $filesystemProvider
+            ->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)
+            ->shouldBeCalled()
+            ->willReturn($fileSystem);
 
-        $fileFetcher->fetch($fileSystem, 'key')->willReturn($rawFile);
-        $fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($fileInfo);
+        $fileFetcher->fetch($fileSystem, 'key')->shouldBeCalled()->willReturn($rawFile);
+
+        $fileStorer
+            ->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)
+            ->shouldBeCalled()
+            ->willReturn($fileInfo);
+
+        $fileInfo->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+        $product->removeValue($toProductValue)->shouldBeCalled()->willReturn($product);
 
-        $toProductValue->setMedia($fileInfo)->shouldBeCalled();
+        $builder->addProductValue($product, $toAttribute, $toLocale, $toScope, $fileInfo);
 
         $this->copyAttributeData(
             $product,
@@ -117,13 +128,18 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         );
     }
 
-    function it_copies_when_a_source_product_value_has_no_media($builder,
+    function it_copies_when_a_source_product_value_has_no_media(
+        $builder,
         $attrValidatorHelper,
+        $filesystemProvider,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product,
         ProductValueInterface $fromProductValue,
-        ProductValueInterface $toProductValue
+        ProductValueInterface $toProductValue,
+        FileStorerInterface $fileStorer,
+        FileFetcherInterface $fileFetcher,
+        FileInfoInterface $fileInfo
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -138,10 +154,16 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $fromProductValue->getMedia()->willReturn(null);
 
+        $filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->shouldNotBeCalled();
+        $fileFetcher->fetch(Argument::cetera())->shouldNotBeCalled();
+        $fileStorer->store(Argument::cetera())->shouldNotBeCalled();
+        $fileInfo->setOriginalFilename(Argument::any())->shouldNotBeCalled();
+
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+        $product->removeValue($toProductValue)->shouldBeCalled()->willReturn($product);
 
-        $toProductValue->setMedia(null)->shouldBeCalled();
+        $builder->addProductValue($product, $toAttribute, $toLocale, $toScope, null);
 
         $this->copyAttributeData(
             $product,
@@ -185,18 +207,25 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $fromMedia->getOriginalFilename()->willReturn('akeneo.jpg');
         $fromMedia->getKey()->willReturn('key');
 
-        $filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
+        $filesystemProvider
+            ->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)
+            ->shouldBeCalled()
+            ->willReturn($fileSystem);
 
-        $fileFetcher->fetch($fileSystem, 'key')->willReturn($rawFile);
-        $fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($fileInfo);
+        $fileFetcher->fetch($fileSystem, 'key')->shouldBeCalled()->willReturn($rawFile);
+
+        $fileStorer
+            ->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)
+            ->shouldBeCalled()
+            ->willReturn($fileInfo);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
 
-        $builder->addProductValue($product, $toAttribute, $toLocale, $toScope)->willReturn($toProductValue);
         $toProductValue->getMedia()->willReturn($toMedia);
+        $product->removeValue($toProductValue)->shouldNotBeCalled();
 
-        $toProductValue->setMedia($fileInfo)->shouldBeCalled();
+        $builder->addProductValue($product, $toAttribute, $toLocale, $toScope, $fileInfo);
 
         $this->copyAttributeData(
             $product,

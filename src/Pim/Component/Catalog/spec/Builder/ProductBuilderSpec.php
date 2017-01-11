@@ -68,8 +68,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $productValue->getScope()->willReturn(null);
         $productValue->getLocale()->willReturn(null);
         $productValue->setProduct(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
-        $productValueFactory->create($skuAttribute, null, null)
-            ->willReturn($productValue);
+        $productValueFactory->create($skuAttribute, null, null, null)->willReturn($productValue);
 
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any());
 
@@ -105,8 +104,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $productValue->getLocale()->willReturn(null);
         $productValue->setProduct(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
         $productValue->getAttribute()->willReturn($skuAttribute);
-        $productValueFactory->create($skuAttribute, null, null)
-            ->willReturn($productValue);
+        $productValueFactory->create($skuAttribute, null, null, 'mysku')->willReturn($productValue);
 
         $this->createProduct('mysku', 'tshirt')->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
@@ -229,7 +227,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $size->isLocalizable()->willReturn(false);
         $size->isScopable()->willReturn(false);
 
-        $productValueFactory->create($size, null, null)->willReturn(new $valueClass());
+        $productValueFactory->create($size, null, null, null)->willReturn(new $valueClass());
 
         $product->addValue(Argument::any())->shouldBeCalled();
 

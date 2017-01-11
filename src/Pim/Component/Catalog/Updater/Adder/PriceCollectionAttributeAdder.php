@@ -73,7 +73,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @return mixed
+     * @throws InvalidArgumentException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -151,13 +151,10 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
     protected function addPrices(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
 
-        foreach ($data as $price) {
-            $this->productBuilder->addPriceForCurrency($value, $price['currency'], $price['amount']);
-        }
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $data);
     }
 }

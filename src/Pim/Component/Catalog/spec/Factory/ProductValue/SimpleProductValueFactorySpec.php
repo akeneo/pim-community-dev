@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
-use Pim\Component\Catalog\Factory\ProductValue\SimpleProductValueFactory;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Factory\ProductValue\SimpleProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use Prophecy\Argument;
@@ -12,7 +12,7 @@ class SimpleProductValueFactorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(['text', 'number'], ProductValue::class);
+        $this->beConstructedWith(ProductValue::class, Argument::any());
     }
 
     function it_is_initializable()
@@ -20,57 +20,580 @@ class SimpleProductValueFactorySpec extends ObjectBehavior
         $this->shouldHaveType(SimpleProductValueFactory::class);
     }
 
-    function it_supports_some_attribute_types()
+    function it_creates_an_empty_text_product_value(AttributeInterface $attribute)
     {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
         $this->supports('foo')->shouldReturn(false);
-        $this->supports('text')->shouldReturn(true);
-        $this->supports('number')->shouldReturn(true);
-    }
+        $this->supports('pim_catalog_text')->shouldReturn(true);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
 
-    function it_creates_a_simple_empty_product_value(AttributeInterface $attribute)
-    {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
-        $attribute->getCode()->willReturn('simple_attribute');
+        $attribute->getCode()->willReturn('text_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_text');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
         $productValue = $this->create(
             $attribute,
             null,
+            null,
             null
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
-        $productValue->shouldHaveAttribute('simple_attribute');
+        $productValue->shouldHaveAttribute('text_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_a_simple_localizable_and_scopable_empty_product_value(AttributeInterface $attribute)
+    function it_creates_a_localizable_and_scopable_empty_text_product_value(AttributeInterface $attribute)
     {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(true);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
-        $attribute->getCode()->willReturn('simple_attribute');
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('text_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_text');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
         $productValue = $this->create(
             $attribute,
             'ecommerce',
-            'en_US'
+            'en_US',
+            null
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
-        $productValue->shouldHaveAttribute('simple_attribute');
+        $productValue->shouldHaveAttribute('text_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
         $productValue->shouldBeEmpty();
+    }
+
+    function it_creates_a_text_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(true);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('text_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getBackendType()->willReturn('text');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            'foobar'
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('text_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->getData()->shouldReturn('foobar');
+    }
+
+    function it_creates_a_localizable_and_scopable_text_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(true);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('text_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getBackendType()->willReturn('text');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
+            'foobar'
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('text_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->getData()->shouldReturn('foobar');
+    }
+
+    function it_creates_an_empty_textarea_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_textarea');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(true);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('textarea_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $attribute->getBackendType()->willReturn('varchar');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            null
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('textarea_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldBeEmpty();
+    }
+
+    function it_creates_a_localizable_and_scopable_empty_textarea_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_textarea');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(true);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('textarea_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $attribute->getBackendType()->willReturn('varchar');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
+            null
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('textarea_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->shouldBeEmpty();
+    }
+
+    function it_creates_an_textarea_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_textarea');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(true);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('textarea_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $attribute->getBackendType()->willReturn('varchar');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            'foobar'
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('textarea_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->getData()->shouldReturn('foobar');
+    }
+
+    function it_creates_a_localizable_and_scopable_textarea_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_textarea');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(true);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('textarea_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $attribute->getBackendType()->willReturn('varchar');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
+            'foobar'
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('textarea_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->getData()->shouldReturn('foobar');
+    }
+
+    function it_creates_an_empty_integer_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_number');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(true);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('integer_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getBackendType()->willReturn('integer');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            null
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('integer_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldBeEmpty();
+    }
+
+    function it_creates_a_localizable_and_scopable_empty_integer_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_number');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(true);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('integer_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getBackendType()->willReturn('integer');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
+            null
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('integer_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->shouldBeEmpty();
+    }
+
+    function it_creates_an_numeric_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_number');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(true);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('integer_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getBackendType()->willReturn('integer');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            42
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('integer_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->getData()->shouldReturn(42);
+    }
+
+    function it_creates_a_localizable_and_scopable_numeric_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_number');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(true);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('integer_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getBackendType()->willReturn('integer');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
+            42
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('integer_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->getData()->shouldReturn(42);
+    }
+
+    function it_creates_an_empty_boolean_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_boolean');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(true);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('boolean_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attribute->getBackendType()->willReturn('boolean');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            null
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('boolean_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldBeEmpty();
+    }
+
+    function it_creates_a_localizable_and_scopable_empty_boolean_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_boolean');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(true);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('boolean_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attribute->getBackendType()->willReturn('boolean');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
+            null
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('boolean_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->shouldBeEmpty();
+    }
+
+    function it_creates_a_boolean_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_boolean');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(true);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('boolean_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attribute->getBackendType()->willReturn('boolean');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            true
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('boolean_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->getData()->shouldReturn(true);
+    }
+
+    function it_creates_a_localizable_and_scopable_boolean_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_boolean');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(true);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('boolean_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attribute->getBackendType()->willReturn('boolean');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
+            true
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('boolean_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->getData()->shouldReturn(true);
+    }
+
+    function it_creates_an_empty_identifier_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_identifier');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(true);
+
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('identifier_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $attribute->getBackendType()->willReturn('text');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            null
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('identifier_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldBeEmpty();
+    }
+
+    function it_creates_an_identifier_product_value(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_identifier');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(false);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(true);
+
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('identifier_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $attribute->getBackendType()->willReturn('text');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            'foobar'
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldHaveAttribute('identifier_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->getData()->shouldReturn('foobar');
     }
 
     public function getMatchers()

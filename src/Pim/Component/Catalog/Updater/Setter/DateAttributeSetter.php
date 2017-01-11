@@ -18,7 +18,7 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 class DateAttributeSetter extends AbstractAttributeSetter
 {
     /**
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
+     * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param array                    $supportedTypes
      */
@@ -117,14 +117,14 @@ class DateAttributeSetter extends AbstractAttributeSetter
     protected function setData(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
 
         if (null !== $data) {
             $data = new \DateTime($data);
         }
 
-        $value->setData($data);
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $data);
     }
 }

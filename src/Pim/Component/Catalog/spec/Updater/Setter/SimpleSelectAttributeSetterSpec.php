@@ -63,8 +63,8 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
             ->willReturn($attributeOption);
 
         $product->getValue('color', 'fr_FR', 'mobile')->willReturn($optionValue);
+        $product->removeValue($optionValue)->shouldBeCalled()->willReturn($product);
         $optionValue->getOption()->willReturn($attributeOption);
-        $optionValue->setOption($attributeOption)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, 'red', ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -131,7 +131,6 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
         ProductValueInterface $productValue,
         AttributeOptionInterface $attributeOption
     ) {
@@ -144,25 +143,27 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
 
         $attrOptionRepository
             ->findOneByIdentifier('attributeCode.red')
-            ->shouldBeCalledTimes(3)
+            ->shouldBeCalledTimes(2)
             ->willReturn($attributeOption);
 
-        $productValue->setOption($attributeOption)->shouldBeCalled();
-
+        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product1->removeValue($productValue)->shouldBeCalled()->willReturn($product1);
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addProductValue($product1, $attribute, $locale, $scope, $attributeOption)
             ->willReturn($productValue);
 
-        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product2->removeValue(null)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, $attributeOption)
+            ->willReturn($productValue);
 
         $this->setAttributeData($product1, $attribute, 'red', ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product2, $attribute, 'red', ['locale' => $locale, 'scope' => $scope]);
-        $this->setAttributeData($product3, $attribute, 'red', ['locale' => $locale, 'scope' => $scope]);
     }
 
     function it_allows_setting_attribute_data_option_to_null(
+        $builder,
         ProductInterface $product,
         AttributeInterface $attribute,
         ProductValueInterface $value
@@ -170,8 +171,10 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('choice');
 
         $product->getValue('choice', 'fr_FR', 'mobile')->shouldBeCalled()->willReturn($value);
-
-        $value->setOption(null)->shouldBeCalled();
+        $product->removeValue($value)->shouldBeCalled()->willReturn($product);
+        $builder
+            ->addProductValue($product, $attribute, 'fr_FR', 'mobile', null)
+            ->willReturn($value);
 
         $this->setAttributeData($product, $attribute, null, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }

@@ -15,5 +15,7 @@
 - Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to add `Pim\Component\Catalog\Factory\PriceFactory`
 - Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValue\PricesDenormalizer` to remove `Akeneo\Component\Localization\Localizer\LocalizerInterface` and replace `"Pim\Component\Catalog\Model\ProductPrice"` `Pim\Component\Catalog\Factory\PriceFactory`
 - Add a new argument `$amount` (string) in `Pim\Component\Catalog\Builder\ProductBuilderInterface::addPriceForCurrency()`
-- Remove method `setId`, `getId`, `setValue`, `getValue`, `setCurrency` and `setData` from `Pim\Component\Catalog\Model\ProductPriceInterface`
+- Remove methods `setId`, `getId`, `setValue`, `getValue`, `setCurrency` and `setData` from `Pim\Component\Catalog\Model\ProductPriceInterface`
 - Add method `isEqual` to `Pim\Component\Catalog\Model\ProductPriceInterface`
+- Add a new argument `$data` to `AddProductValue` and `CreateProductValue` methods of `Pim\Component\Catalog\BuilderProductBuilderInterface`
+- Remove methods `addPriceForCurrencyWithData` and `removePricesNotInCurrency` from `Pim\Component\Catalog\BuilderProductBuilderInterface`

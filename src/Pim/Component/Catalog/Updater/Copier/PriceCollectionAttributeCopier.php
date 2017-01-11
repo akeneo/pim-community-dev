@@ -90,24 +90,17 @@ class PriceCollectionAttributeCopier extends AbstractAttributeCopier
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
             $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
+            if (null !== $toValue) {
+                $toProduct->removeValue($toValue);
             }
-            $this->copyPrices($fromValue, $toValue);
-        }
-    }
 
-    /**
-     * Copy attribute price into a price collection attribute
-     *
-     * @param ProductValueInterface $fromValue
-     * @param ProductValueInterface $toValue
-     */
-    protected function copyPrices(ProductValueInterface $fromValue, ProductValueInterface $toValue)
-    {
-        foreach ($fromValue->getData() as $price) {
-            $this->productBuilder
-                ->addPriceForCurrency($toValue, $price->getCurrency(), $price->getData());
+            $this->productBuilder->addProductValue(
+                $toProduct,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $fromValue->getData()
+            );
         }
     }
 }

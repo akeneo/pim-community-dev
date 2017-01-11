@@ -35,7 +35,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_checks_locale_and_scope_when_setting_a_value(
+    function it_checks_locale_and_scope_when_setting_a_date_value(
         $attrValidatorHelper,
         AttributeInterface $attribute,
         ProductInterface $product,
@@ -46,23 +46,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('release_date');
         $product->getValue('release_date', 'fr_FR', 'mobile')->willReturn($dateValue);
-        $dateValue->setData(Argument::any())->shouldBeCalled();
-
-        $this->setAttributeData($product, $attribute, '1970-01-01T00:00:00+01:00', ['locale' => 'fr_FR', 'scope' => 'mobile']);
-    }
-
-    function it_checks_locale_and_scope_when_setting_an_attribute_data(
-        $attrValidatorHelper,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        ProductValueInterface $dateValue
-    ) {
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-
-        $attribute->getCode()->willReturn('release_date');
-        $product->getValue('release_date', 'fr_FR', 'mobile')->willReturn($dateValue);
-        $dateValue->setData(Argument::any())->shouldBeCalled();
+        $product->removeValue($dateValue)->shouldBeCalled()->willReturn($product);
 
         $this->setAttributeData($product, $attribute, '1970-01-01T00:00:00+01:00', ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -114,7 +98,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
 
         $product->getValue('attributeCode', null, null)->shouldBeCalled()->willReturn($value);
 
-        $value->setData(null)->shouldBeCalled();
+        $product->removeValue($value)->shouldBeCalled()->willReturn($product);
 
         $this->setAttributeData($product, $attribute, null, ['locale' => null, 'scope' => null]);
     }
@@ -142,7 +126,6 @@ class DateAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
         $builder,
         ProductValueInterface $productValue
     ) {
@@ -151,43 +134,20 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $data = '1970-01-01T00:00:00+01:00';
 
         $attribute->getCode()->willReturn('attributeCode');
-        $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();
-
-        $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product1->removeValue($productValue)->shouldBeCalled()->willReturn($product1);
+        $builder
+            ->addProductValue($product1, $attribute, $locale, $scope, new \DateTime($data))
+            ->willReturn($productValue);
+
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product2->removeValue($productValue)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, new \DateTime($data))
+            ->willReturn($productValue);
 
         $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-    }
-
-    function it_sets_attribute_data_date_value_to_a_product_value_with_datetime(
-        AttributeInterface $attribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3,
-        $builder,
-        ProductValueInterface $productValue
-    ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-        $data = new \DateTime();
-        $attribute->getCode()->willReturn('attributeCode');
-        $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();
-        $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
-        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
-        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
-
-        $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
 }

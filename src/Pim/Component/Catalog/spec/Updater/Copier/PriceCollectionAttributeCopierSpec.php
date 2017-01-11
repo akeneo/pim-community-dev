@@ -55,7 +55,6 @@ class PriceCollectionAttributeCopierSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        ProductInterface $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
         ProductPriceInterface $price
@@ -71,28 +70,35 @@ class PriceCollectionAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getData()->willReturn([$price]);
+        $fromProductValue->getData()->willReturn([$price])->shouldBeCalledTimes(2);
 
         $price->getCurrency()->willReturn('USD');
         $price->getData()->willReturn(123);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+        $product1->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn($toProductValue);
+        $product1->removeValue($toProductValue)->shouldBeCalled()->willReturn($product1);
+        $builder
+            ->addProductValue($product1, $toAttribute, $toLocale, $toScope, [$price])
+            ->shouldBeCalled()
+            ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+        $product2->getValue('toAttributeCode', $toLocale, $toScope)->shouldNotBeCalled();
+        $product2->removeValue(Argument::any())->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product2, $toAttribute, $toLocale, $toScope, [$price])
+            ->shouldNotBeCalled();
 
         $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
+        $product3->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn(null);
+        $product3->removeValue(null)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product3, $toAttribute, $toLocale, $toScope, [$price])
+            ->shouldBeCalled()
+            ->willReturn($toProductValue);
 
-        $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
-
-        $builder->addPriceForCurrency($toProductValue, 'USD', 123)->shouldBeCalled();
-
-        $products = [$product1, $product2, $product3, $product4];
+        $products = [$product1, $product2, $product3];
         foreach ($products as $product) {
             $this->copyAttributeData(
                 $product,

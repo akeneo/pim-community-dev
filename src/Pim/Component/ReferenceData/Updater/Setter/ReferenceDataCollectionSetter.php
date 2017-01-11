@@ -2,14 +2,13 @@
 
 namespace Pim\Component\ReferenceData\Updater\Setter;
 
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Pim\Component\ReferenceData\MethodNameGuesser;
+use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
@@ -118,11 +117,11 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
     /**
      * Set reference data collection into the product value
      *
-     * @param AttributeInterface $attribute
-     * @param ProductInterface   $product
-     * @param array              $refDataCollection
-     * @param string|null        $locale
-     * @param string|null        $scope
+     * @param AttributeInterface       $attribute
+     * @param ProductInterface         $product
+     * @param ReferenceDataInterface[] $refDataCollection
+     * @param string|null              $locale
+     * @param string|null              $scope
      *
      * @throws \LogicException
      */
@@ -134,39 +133,10 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
         $scope = null
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
 
-        $referenceDataName = $attribute->getReferenceDataName();
-        $addMethod = MethodNameGuesser::guess('add', $referenceDataName, true);
-        $removeMethod = MethodNameGuesser::guess('remove', $referenceDataName, true);
-        $getMethod = MethodNameGuesser::guess('get', $referenceDataName);
-
-        if (!method_exists($value, $addMethod) ||
-            !method_exists($value, $removeMethod) ||
-            !method_exists($value, $getMethod)
-        ) {
-            throw new \LogicException(
-                sprintf(
-                    'One of these methods is not implemented in %s: "%s", "%s", "%s"',
-                    ClassUtils::getClass($value),
-                    $addMethod,
-                    $removeMethod,
-                    $getMethod
-                )
-            );
-        }
-
-        $currentCollection = $value->$getMethod();
-
-        foreach ($currentCollection as $currentReferenceData) {
-            $value->$removeMethod($currentReferenceData);
-        }
-
-        foreach ($refDataCollection as $referenceData) {
-            $value->$addMethod($referenceData);
-        }
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $refDataCollection);
     }
 }

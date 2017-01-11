@@ -120,12 +120,16 @@ class MetricAttributeSetter extends AbstractAttributeSetter
         $scope
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
 
-        $metric = $this->metricFactory->createMetric($attribute->getMetricFamily(), $unit, $amount);
-
-        $value->setMetric($metric);
+        $this->productBuilder->addProductValue(
+            $product,
+            $attribute,
+            $locale,
+            $scope,
+            $this->metricFactory->createMetric($attribute->getMetricFamily(), $unit, $amount)
+        );
     }
 }

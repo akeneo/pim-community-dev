@@ -60,8 +60,8 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $attribute->getMetricFamily()->willReturn('Weight');
 
         $product->getValue('weight', 'fr_FR', 'mobile')->willReturn($metricValue);
+        $product->removeValue($metricValue)->shouldBeCalled()->willReturn($product);
         $factory->createMetric('Weight', 'KILOGRAM', 107)->willReturn($metric);
-        $metricValue->setMetric($metric)->shouldBeCalled();
 
         $data = ['amount' => 107, 'unit' => 'KILOGRAM'];
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
@@ -119,41 +119,6 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
-        MetricInterface $metric,
-        ProductValue $productValue
-    ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-        $data = ['amount' => 107, 'unit' => 'KILOGRAM'];
-
-        $attribute->getCode()->willReturn('attributeCode');
-        $attribute->getMetricFamily()->willReturn('Weight');
-
-        $productValue->setMetric($metric)->shouldBeCalled();
-
-        $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
-
-        $factory->createMetric('Weight', $data['unit'], $data['amount'])->shouldBeCalledTimes(3)->willReturn($metric);
-
-        $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
-        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
-
-        $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-    }
-
-    function it_sets_non_numeric_attribute_data_to_a_product_value(
-        $builder,
-        $factory,
-        AttributeInterface $attribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3,
         MetricInterface $metric,
         ProductValue $productValue
     ) {
@@ -164,19 +129,55 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
 
-        $productValue->setMetric($metric)->shouldBeCalled();
-
-        $builder->addProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
-
-        $factory->createMetric('Weight', $data['unit'], $data['amount'])->willReturn($metric);
+        $factory->createMetric('Weight', $data['unit'], $data['amount'])->shouldBeCalledTimes(2)->willReturn($metric);
 
         $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product1->removeValue($productValue)->shouldBeCalled()->willReturn($product1);
+        $builder
+            ->addProductValue($product1, $attribute, $locale, $scope, $metric)
+            ->willReturn($productValue);
+
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product2->removeValue(null)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, $metric)
+            ->willReturn($productValue);
 
         $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+    }
+
+    function it_sets_non_numeric_attribute_data_to_a_product_value(
+        $builder,
+        $factory,
+        AttributeInterface $attribute,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        MetricInterface $metric,
+        ProductValue $productValue
+    ) {
+        $locale = 'fr_FR';
+        $scope = 'mobile';
+        $data = ['amount' => 'foobar', 'unit' => 'KILOGRAM'];
+
+        $attribute->getCode()->willReturn('attributeCode');
+        $attribute->getMetricFamily()->willReturn('Weight');
+
+        $factory->createMetric('Weight', $data['unit'], $data['amount'])->shouldBeCalledTimes(2)->willReturn($metric);
+
+        $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product1->removeValue($productValue)->shouldBeCalled()->willReturn($product1);
+        $builder
+            ->addProductValue($product1, $attribute, $locale, $scope, $metric)
+            ->willReturn($productValue);
+
+        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
+        $product2->removeValue(null)->shouldNotBeCalled();
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, $metric)
+            ->willReturn($productValue);
+
+        $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
 }

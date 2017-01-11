@@ -112,10 +112,11 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
         $scope = null
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
-        $value->setOption($option);
+
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $option);
     }
 
     /**

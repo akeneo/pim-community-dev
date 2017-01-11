@@ -102,27 +102,31 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
             $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
+            if (null !== $toValue) {
+                $toProduct->removeValue($toValue);
             }
 
-            $fromDataGetter = $this->getValueMethodName($fromValue, $fromAttribute, 'get');
-            $toDataSetter = $this->getValueMethodName($toValue, $toAttribute, 'set');
+            $fromDataGetter = $this->getValueGetterName($fromValue, $fromAttribute);
 
-            $toValue->$toDataSetter($fromValue->$fromDataGetter());
+            $this->productBuilder->addProductValue(
+                $toProduct,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $fromValue->$fromDataGetter()
+            );
         }
     }
 
     /**
      * @param ProductValueInterface $value
      * @param AttributeInterface    $attribute
-     * @param string                $type
      *
      * @return string
      */
-    private function getValueMethodName(ProductValueInterface $value, AttributeInterface $attribute, $type)
+    private function getValueGetterName(ProductValueInterface $value, AttributeInterface $attribute)
     {
-        $method = MethodNameGuesser::guess($type, $attribute->getReferenceDataName(), true);
+        $method = MethodNameGuesser::guess('get', $attribute->getReferenceDataName(), true);
 
         if (!method_exists($value, $method)) {
             throw new \LogicException(

@@ -76,7 +76,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('front_view');
         $product->getValue('front_view', 'fr_FR', 'mobile')->willReturn($mediaValue);
-        $mediaValue->setMedia($fileInfo)->shouldBeCalled();
+        $product->removeValue($mediaValue)->shouldBeCalled()->willReturn($product);
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -114,6 +114,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
     }
 
     function it_allows_setting_attribute_data_media_to_null(
+        $builder,
         ProductInterface $product,
         AttributeInterface $file,
         AttributeInterface $image,
@@ -124,10 +125,12 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $image->getCode()->willReturn('image');
 
         $product->getValue('file', null, null)->shouldBeCalled()->willReturn($fileValue);
-        $product->getValue('image', null, null)->shouldBeCalled()->willReturn($imageValue);
+        $product->removeValue($fileValue)->shouldBeCalled()->willReturn($product);
+        $builder->addProductValue($product, $file, null, null, null);
 
-        $fileValue->setMedia(null)->shouldBeCalled();
-        $imageValue->setMedia(null)->shouldBeCalled();
+        $product->getValue('image', null, null)->shouldBeCalled()->willReturn($imageValue);
+        $product->removeValue($imageValue)->shouldBeCalled()->willReturn($product);
+        $builder->addProductValue($product, $image, null, null, null);
 
         $this->setAttributeData($product, $file, null, ['locale' => null, 'scope' => null]);
         $this->setAttributeData($product, $image, null, ['locale' => null, 'scope' => null]);
@@ -136,6 +139,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
     function it_sets_an_attribute_data_media_to_a_product(
         $repository,
         $storer,
+        $builder,
         AttributeInterface $attribute,
         ProductInterface $product,
         ProductValueInterface $value,
@@ -148,7 +152,9 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
         $storer->store(Argument::cetera())->willReturn($fileInfo);
-        $value->setMedia($fileInfo)->shouldBeCalled();
+
+        $product->removeValue($value)->shouldBeCalled()->willReturn($product);
+        $builder->addProductValue($product, $attribute, 'fr_FR', 'mobile', $data);
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -177,6 +183,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
     function it_does_not_store_an_attribute_data_that_has_already_been_stored_as_media(
         $repository,
         $storer,
+        $builder,
         AttributeInterface $attribute,
         ProductInterface $product,
         ProductValueInterface $value,
@@ -189,7 +196,9 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $repository->findOneByIdentifier(Argument::any())->willReturn($fileInfo);
         $storer->store(Argument::cetera())->shouldNotBeCalled();
-        $value->setMedia($fileInfo)->shouldBeCalled();
+
+        $product->removeValue($value)->shouldBeCalled()->willReturn($product);
+        $builder->addProductValue($product, $attribute, 'fr_FR', 'mobile', $data);
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }

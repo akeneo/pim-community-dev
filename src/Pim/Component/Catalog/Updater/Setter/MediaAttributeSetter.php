@@ -89,11 +89,11 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         $scope = null
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
 
-        $value->setMedia($fileInfo);
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $fileInfo);
     }
 
     /**

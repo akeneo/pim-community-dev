@@ -121,13 +121,11 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
         $scope
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
 
-        foreach ($attributeOptions as $attributeOption) {
-            $value->addOption($attributeOption);
-        }
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $attributeOptions);
     }
 
     /**

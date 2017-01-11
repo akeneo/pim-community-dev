@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -105,31 +106,25 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
     /**
      * Set options into the product value
      *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param array              $attributeOptions
-     * @param string             $locale
-     * @param string             $scope
+     * @param ProductInterface           $product
+     * @param AttributeInterface         $attribute
+     * @param AttributeOptionInterface[] $attributeOptions
+     * @param string                     $locale
+     * @param string                     $scope
      */
     protected function setOptions(
         ProductInterface $product,
         AttributeInterface $attribute,
-        $attributeOptions,
+        array $attributeOptions,
         $locale,
         $scope
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $product->removeValue($value);
         }
 
-        foreach ($value->getOptions() as $option) {
-            $value->removeOption($option);
-        }
-
-        foreach ($attributeOptions as $attributeOption) {
-            $value->addOption($attributeOption);
-        }
+        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $attributeOptions);
     }
 
     /**

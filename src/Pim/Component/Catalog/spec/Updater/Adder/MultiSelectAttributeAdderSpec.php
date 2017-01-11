@@ -57,6 +57,7 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         $red->getCode()->willReturn('red');
         $attribute->getCode()->willReturn('color');
         $product->getValue('color', 'fr_FR', 'mobile')->willReturn($colorValue);
+        $product->removeValue($colorValue)->shouldBeCalled()->willReturn($product);
 
         $attrOptionRepository
             ->findOneByIdentifier('color.red')
@@ -64,7 +65,6 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
             ->willReturn($red);
 
         $colorValue->getOptions()->willReturn([]);
-        $colorValue->addOption($red)->shouldBeCalled();
 
         $this->addAttributeData($product, $attribute, ['red'], ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -136,15 +136,22 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
             ->shouldBeCalledTimes(3)
             ->willReturn($attributeOption);
 
-        $productValue->addOption($attributeOption)->shouldBeCalled();
-
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addProductValue($product1, $attribute, $locale, $scope, [$attributeOption])
+            ->willReturn($productValue);
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope, [$attributeOption])
+            ->willReturn($productValue);
+        $builder
+            ->addProductValue($product3, $attribute, $locale, $scope, [$attributeOption])
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product1->removeValue($productValue)->shouldBeCalled()->willReturn($product1);
         $product2->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn(null);
+        $product2->removeValue(null)->shouldNotBeCalled();
         $product3->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product3->removeValue($productValue)->shouldBeCalled()->willReturn($product3);
 
         $this->addAttributeData($product1, $attribute, ['attributeOptionCode'], ['locale' => $locale, 'scope' => $scope]);
         $this->addAttributeData($product2, $attribute, ['attributeOptionCode'], ['locale' => $locale, 'scope' => $scope]);

@@ -15,32 +15,60 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterProductValueFactoryPass implements CompilerPassInterface
 {
-    /** @staticvar string The registry id */
-    const REGISTRY_ID = 'pim_catalog.factory.product_value.registry';
+    /** @const integer */
+    const DEFAULT_PRIORITY = 25;
 
-    /** @staticvar string */
-    const TAG = 'pim_catalog.factory.product_value';
+    /** @const string The registry id */
+    const PRODUCT_VALUE_FACTORY_REGISTRY = 'pim_catalog.factory.product_value.registry';
+
+    /** @const string */
+    const PRODUCT_VALUE_FACTORY_TAG = 'pim_catalog.factory.product_value';
 
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $containerBuilder)
     {
-        if (!$container->hasDefinition(static::REGISTRY_ID)) {
-            return;
+        if (!$containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY)) {
+            throw new \LogicException('Product value factory must be configured');
         }
 
-        $registryDefinition = $container->getDefinition(static::REGISTRY_ID);
+        $registry = $containerBuilder->getDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY);
 
-        foreach ($container->findTaggedServiceIds(static::TAG) as $serviceId => $attributes) {
-            foreach ($attributes as $attribute) {
-                $priority = isset($attribute['priority']) ? $attribute['priority'] : 0;
+        $filters = $this->findSortedTaggedServices(static::PRODUCT_VALUE_FACTORY_TAG, $containerBuilder);
+        foreach ($filters as $filter) {
+            $registry->addMethodCall('register', [$filter]);
+        }
+    }
 
-                $registryDefinition->addMethodCall(
-                    'register',
-                    [new Reference($serviceId), $priority]
-                );
+    /**
+     * Returns a sorted array of service references for a specified tag name.
+     *
+     * @param string           $tagName
+     * @param ContainerBuilder $containerBuilder
+     *
+     * @return Reference[]
+     */
+    protected function findSortedTaggedServices($tagName, ContainerBuilder $containerBuilder)
+    {
+        $services = $containerBuilder->findTaggedServiceIds($tagName);
+
+        if (empty($services)) {
+            throw new \RuntimeException(sprintf(
+                'You must tag at least one service as "%s" to use the product value factory service',
+                $tagName
+            ));
+        }
+
+        $sortedServices = [];
+        foreach ($services as $serviceId => $tags) {
+            foreach ($tags as $tag) {
+                $priority = isset($tag['priority']) ? $tag['priority'] : static::DEFAULT_PRIORITY;
+                $sortedServices[$priority][] = new Reference($serviceId);
             }
         }
+        krsort($sortedServices);
+
+        return count($sortedServices) > 0 ? call_user_func_array('array_merge', $sortedServices) : [];
     }
 }
