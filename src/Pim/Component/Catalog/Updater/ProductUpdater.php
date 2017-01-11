@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -111,8 +112,9 @@ class ProductUpdater implements ObjectUpdaterInterface
      */
     public function update($product, array $data, array $options = [])
     {
+        // InvalidArgumentException (our own exception extending UpdaterException)
         if (!$product instanceof ProductInterface) {
-            throw new \InvalidArgumentException(
+            throw new InvalidObjectException(
                 sprintf(
                     'Expects a "Pim\Component\Catalog\Model\ProductInterface", "%s" provided.',
                     ClassUtils::getClass($product)

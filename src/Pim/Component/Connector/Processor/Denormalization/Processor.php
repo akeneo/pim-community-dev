@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -63,7 +64,7 @@ class Processor extends AbstractProcessor implements ItemProcessorInterface, Ste
 
         try {
             $this->updater->update($entity, $item);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (ObjectUpdaterException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 

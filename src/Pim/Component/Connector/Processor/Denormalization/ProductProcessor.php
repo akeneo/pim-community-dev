@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
@@ -107,11 +108,10 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
 
         try {
             $this->updateProduct($product, $filteredItem);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (ObjectUpdaterException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
-
         $violations = $this->validateProduct($product);
 
         if ($violations->count() > 0) {
