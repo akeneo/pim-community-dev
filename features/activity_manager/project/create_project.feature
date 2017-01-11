@@ -6,6 +6,9 @@ Feature: Create enrichment project
 
   Scenario: A project creator can create an enrichment project
     Given a "footwear" catalog configuration
+    And the following products:
+      | sku         | family   | categories        |
+      | blue_sandal | Sneakers | summer_collection |
     And I am logged in as "Julia"
     When I am on the products page
     And I filter by "family" with operator "in list" and value "Sneakers"
