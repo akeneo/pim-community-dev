@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Updater\Setter;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\PriceCollection;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -125,6 +126,8 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
 
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        } else {
+            $value->setPrices(new PriceCollection());
         }
 
         foreach ($data as $price) {

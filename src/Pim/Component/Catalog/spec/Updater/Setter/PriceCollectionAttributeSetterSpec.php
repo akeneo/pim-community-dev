@@ -6,8 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\PriceCollection;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -46,15 +46,14 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $attrValidatorHelper,
         AttributeInterface $attribute,
         ProductInterface $product,
-        ProductValueInterface $priceValue,
-        ProductPriceInterface $price
+        ProductValueInterface $priceValue
     ) {
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $attribute->getCode()->willReturn('price');
         $product->getValue('price', 'fr_FR', 'mobile')->willReturn($priceValue);
-        $priceValue->getPrices()->willReturn([$price]);
+        $priceValue->setPrices(new PriceCollection())->shouldBeCalled();
 
         $data = [['amount' => 123.2, 'currency' => 'EUR']];
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
@@ -136,8 +135,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3,
         ProductInterface $product4,
-        ProductValue $productValue,
-        ProductPriceInterface $price
+        ProductValue $productValue
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -153,7 +151,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
         $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
         $product4->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
-        $productValue->getPrices()->willReturn([$price]);
+        $productValue->setPrices(new PriceCollection())->shouldBeCalled();
 
         $builder->addPriceForCurrencyWithData($productValue, 'EUR', 123.2)->shouldBeCalled();
         $this->setattributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);

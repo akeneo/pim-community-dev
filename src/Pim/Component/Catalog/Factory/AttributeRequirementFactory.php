@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 
 /**
- * Attribute requirement factory
+ * Creates and configures an attribute requirement instance.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -27,7 +27,8 @@ class AttributeRequirementFactory
     }
 
     /**
-     * Create and configure an attribute requirement instance
+     * This method creates an attribute requirement instance.
+     * Attribute, channel and requirement are set after instantiation.
      *
      * @param AttributeInterface $attribute
      * @param ChannelInterface   $channel

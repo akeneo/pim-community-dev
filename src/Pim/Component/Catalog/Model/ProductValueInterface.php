@@ -207,7 +207,6 @@ interface ProductValueInterface
      * Get prices
      *
      * @return PriceCollectionInterface
-     *
      */
     public function getPrices();
 

@@ -26,6 +26,11 @@ class MetricFactory
     protected $metricClass;
 
     /**
+     * This method creates a metric instance, after calculating base amount and
+     * base unit accordingly the the provided measure family.
+     * All the data (amount, base amount, unit, base unit, measure family) are
+     * directly set during metric instantiation.
+     *
      * @param MeasureConverter $measureConverter
      * @param MeasureManager   $measureManager
      * @param string           $metricClass

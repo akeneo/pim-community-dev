@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Factory;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 
 /**
- * Class GroupTypeFactory
+ * Creates and configures a GroupeType instance.
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
