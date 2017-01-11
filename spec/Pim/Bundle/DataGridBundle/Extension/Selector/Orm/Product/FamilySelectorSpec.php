@@ -10,17 +10,17 @@ use Prophecy\Argument;
 
 class FamilySelectorSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Bundle\DataGridBundle\Extension\Selector\Orm\Product\FamilySelector');
     }
 
-    function it_is_a_selector()
+    public function it_is_a_selector()
     {
         $this->shouldImplement('Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface');
     }
 
-    function it_applies_a_selector(
+    public function it_applies_a_selector(
         DatasourceInterface $datasource, 
         DatagridConfiguration $configuration,
         QueryBuilder $queryBuilder

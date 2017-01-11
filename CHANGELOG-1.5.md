@@ -2,6 +2,8 @@
 
 ## Bug fixes
 
+- PIM-5854: On MySQL, the family code is not displayed if the family label is empty
+- PIM-6107: On MongoDb, the family code is not displayed if the family label is empty
 - PIM-6064: Fix a grid issue with attribute named ID 
 - PIM-6092: Always allow to create new option on select2
 

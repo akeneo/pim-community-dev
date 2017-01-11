@@ -121,8 +121,8 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
         $qb
             ->select('a.id')
-            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
-            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\')) as group_label')
+            ->addSelect('COALESCE(NULLIF(at.label, \'\'), CONCAT(\'[\', a.code, \']\')) as attribute_label')
+            ->addSelect('COALESCE(NULLIF(gt.label, \'\'), CONCAT(\'[\', g.code, \']\')) as group_label')
             ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
             ->leftJoin('a.group', 'g')
             ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
@@ -275,8 +275,8 @@ class AttributeRepository extends EntityRepository implements
         $results = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         if ($withLabel) {
-            $labelExpr = 'COALESCE(trans.label, CONCAT(CONCAT(\'[\', att.code), \']\'))';
-            $groupLabelExpr = 'COALESCE(gtrans.label, CONCAT(CONCAT(\'[\', g.code), \']\'))';
+            $labelExpr = 'COALESCE(NULLIF(trans.label, \'\'), CONCAT(CONCAT(\'[\', att.code), \']\'))';
+            $groupLabelExpr = 'COALESCE(NULLIF(gtrans.label, \'\'), CONCAT(CONCAT(\'[\', g.code), \']\'))';
 
             $qb = $this->_em->createQueryBuilder()
                 ->select('att.code', sprintf('%s as label', $labelExpr))
