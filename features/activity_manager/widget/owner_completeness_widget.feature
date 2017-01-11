@@ -93,7 +93,6 @@ Feature: Follow project completeness
     And I should see the text "[ecommerce] | English (United States)"
     And I should see the text "Due date: 08/28/2030"
 
-  @skip
   Scenario: Successfully display completeness on widget
     Given I am on the dashboard page
     And I should see the text "Collection Winter 2030 [ecommerce] | English (United States)"
@@ -111,7 +110,7 @@ Feature: Follow project completeness
     And I should see the text "all contributors"
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
-      |    0 |           5 |    0 |
+      |    0 |           6 |    0 |
     And I should see the text "0% PRODUCTS TO ENRICH"
     And I should see the text "100% PRODUCTS IN PROGRESS"
     And I should see the text "0% PRODUCTS DONE"
