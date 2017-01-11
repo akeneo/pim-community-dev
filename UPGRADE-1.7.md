@@ -15,7 +15,7 @@
 
 ## Standard Normalizers
 
-In order to use the standard format, Structured Normalizers have been replaced by Standard Normalizers. 
+In order to use the standard format, Structured Normalizers have been replaced by Standard Normalizers.
 
 The following command helps to migrate references to these classes or services.
 ```
@@ -35,7 +35,7 @@ The following command helps to migrate references to these classes or services.
 
 ## Rule structure modifications
 
-### Metrics 
+### Metrics
 
 In the enrichment rules, the key "data" has been replaced by the key "amount" for metrics.
 
@@ -59,7 +59,7 @@ value:
  unit: KILOGRAM
 ```
 
-### Prices 
+### Prices
 
 In the enrichment rules, the key "data" has been replaced by the key "amount" for prices.
 
@@ -95,7 +95,7 @@ field: small_image
 operator: CONTAIN
 value:
   - filePath: /tmp/image.jpg
-  - originalFilename: akeneo.jpg 
+  - originalFilename: akeneo.jpg
 ```
 
 In 1.7 version, the rule structure is defined like this :

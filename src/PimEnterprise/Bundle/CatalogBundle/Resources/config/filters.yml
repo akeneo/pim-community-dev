@@ -76,6 +76,7 @@ services:
         parent: pimee_catalog.filter.abstract_authorization
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.locale.view }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.locale.view }
 
     pimee_catalog.filter.locale_edit_right:
         class: '%pimee_catalog.filter.locale_edit_right.class%'
