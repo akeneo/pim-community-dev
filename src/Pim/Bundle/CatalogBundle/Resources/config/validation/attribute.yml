@@ -149,7 +149,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
     properties:
         label:
             - Length:
-                max: 100
+                max: 255
 
 Pim\Bundle\CatalogBundle\Entity\AttributeOption:
     constraints:
