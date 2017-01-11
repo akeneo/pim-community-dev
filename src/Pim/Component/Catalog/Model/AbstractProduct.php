@@ -43,9 +43,9 @@ abstract class AbstractProduct implements ProductInterface
     protected $scope;
 
     /**
-     * Not persisted. Loaded on the fly.
+     * Not persisted. Loaded on the fly via the $rawValues.
      *
-     * @var ProductValueCollection
+     * @var ProductValueCollectionInterface
      */
     protected $values;
 
@@ -311,6 +311,14 @@ abstract class AbstractProduct implements ProductInterface
     public function getValues()
     {
         return $this->values;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValues(ProductValueCollectionInterface $values)
+    {
+        $this->values = $values;
     }
 
     /**

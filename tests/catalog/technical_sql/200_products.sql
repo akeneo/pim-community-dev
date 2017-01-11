@@ -16,15 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `acme_catalog_product_value_fabric`
---
-
-/*!40000 ALTER TABLE `acme_catalog_product_value_fabric` DISABLE KEYS */;
-INSERT INTO `acme_catalog_product_value_fabric` VALUES (216,5),(216,6);
-/*!40000 ALTER TABLE `acme_catalog_product_value_fabric` ENABLE KEYS */;
-
-
---
 -- Dumping data for table `pim_catalog_association`
 --
 

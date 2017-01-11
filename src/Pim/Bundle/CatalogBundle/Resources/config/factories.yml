@@ -9,6 +9,7 @@ parameters:
     pim_catalog.factory.currency.class:              Pim\Component\Catalog\Factory\CurrencyFactory
     pim_catalog.factory.product_template.class:      Pim\Component\Catalog\Factory\ProductTemplateFactory
 
+    pim_catalog.factory.product_value_collection.class:       Pim\Component\Catalog\Factory\ProductValueCollectionFactory
     pim_catalog.factory.product_value.class:                  Pim\Component\Catalog\Factory\ProductValueFactory
     pim_catalog.factory.product_value.scalar.class:           Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory
     pim_catalog.factory.product_value.metric.class:           Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory
@@ -108,6 +109,12 @@ services:
         class: '%pim_catalog.factory.product_template.class%'
         arguments:
             - '%pim_catalog.entity.product_template.class%'
+
+    pim_catalog.factory.product_value_collection:
+        class: '%pim_catalog.factory.product_value_collection.class%'
+        arguments:
+            - '@pim_catalog.factory.product_value'
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.factory.product_value:
         class: '%pim_catalog.factory.product_value.class%'

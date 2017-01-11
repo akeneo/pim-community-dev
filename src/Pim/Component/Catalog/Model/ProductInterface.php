@@ -70,6 +70,13 @@ interface ProductInterface extends
     public function getValues();
 
     /**
+     * Set values
+     *
+     * @param ProductValueCollectionInterface $values
+     */
+    public function setValues(ProductValueCollectionInterface $values);
+
+    /**
      * Get value related to attribute code
      *
      * @param string $attributeCode
