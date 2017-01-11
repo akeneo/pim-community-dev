@@ -7,3 +7,7 @@ Pim\Bundle\ApiBundle\Entity\Client:
             id: true
             generator:
                 strategy: AUTO
+        label:
+            type: string
+            length: 255
+            nullable: true
