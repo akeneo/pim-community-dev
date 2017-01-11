@@ -39,8 +39,14 @@
 
   &-link--active,
   &-item--active &-link {
-    background: white;
+    background: lighten(@AknGrey, 20%);
+    color: @AknDarkFontColor;
     font-weight: bold;
+
+    &:hover {
+      background: lighten(@AknGrey, 20%);
+      color: @AknDarkFontColor;
+    }
   }
 
   &--condensed &-link {
