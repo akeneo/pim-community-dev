@@ -4,7 +4,7 @@ Feature: Follow project calculation job
   I need to be able to see the project calculation job in the process tracker
 
   @javascript
-  Scenario: A project creator can see the project calculation job in the process tracker
+  Scenario: A project creator can see the project calculatirm on job in the process tracker
     Given the "activity_manager" catalog configuration
     And I am logged in as "Julia"
     When I am on the products page
@@ -18,5 +18,5 @@ Feature: Follow project calculation job
     When I am on the job tracker page
     Then I should see entity Project calculation
     And the grid should contain 1 element
-    When I click on the "Show" action of the row which contains "project_calculation"
-    Then I should see the text "execution details - Project calculation [project_calculation]"
+    When I click on the "Show" action of the row which contains "Project calculation"
+    Then I should see the text "execution details - Project calculation"
