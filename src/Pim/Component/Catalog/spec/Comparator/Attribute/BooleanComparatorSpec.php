@@ -27,21 +27,11 @@ class BooleanComparatorSpec extends ObjectBehavior
         $originals = [];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
-
-        $changes = ['data' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = [];
-
-        $this->compare($changes, $originals)->shouldReturn($changes);
     }
 
     function it_gets_changes_when_adding_false_value()
     {
         $changes = ['data' => false, 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = [];
-
-        $this->compare($changes, $originals)->shouldReturn($changes);
-
-        $changes = ['data' => 0, 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = [];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
@@ -53,20 +43,10 @@ class BooleanComparatorSpec extends ObjectBehavior
         $originals = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
-
-        $changes = ['data' => 0, 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
-
-        $this->compare($changes, $originals)->shouldReturn($changes);
     }
 
     function it_returns_null_when_values_are_the_same()
     {
-        $changes = ['data' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
-
-        $this->compare($changes, $originals)->shouldReturn(null);
-
         $changes = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
