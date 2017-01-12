@@ -12,6 +12,8 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Remover\ProjectRemoverEngine;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -41,7 +43,8 @@ class ProjectRemoverSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::PRE_REMOVE => 'removeProjects'
+            StorageEvents::PRE_REMOVE => 'removeProjects',
+            StorageEvents::POST_SAVE => 'removeProjectsFromDeactivatedLocale'
         ];
     }
 
@@ -51,6 +54,23 @@ class ProjectRemoverSubscriber implements EventSubscriberInterface
     public function removeProjects(GenericEvent $event)
     {
         $entity = $event->getSubject();
+        if ($entity instanceof ProjectInterface) {
+            return;
+        }
         $this->projectRemoverEngine->remove($entity);
+    }
+
+    /**
+     * Removes projects impacted by a locale deactivation.
+     *
+     * @param GenericEvent $event
+     */
+    public function removeProjectsFromDeactivatedLocale(GenericEvent $event)
+    {
+        $locale = $event->getSubject();
+        if (!$locale instanceof LocaleInterface) {
+            return;
+        }
+        $this->projectRemoverEngine->remove($locale);
     }
 }

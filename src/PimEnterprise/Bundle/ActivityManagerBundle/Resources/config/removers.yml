@@ -2,6 +2,7 @@ parameters:
     pimee_activity_manager.project_remover.engine.class: PimEnterprise\Component\ActivityManager\Remover\ProjectRemoverEngine
     pimee_activity_manager.project_remover.chained_rule.class: PimEnterprise\Component\ActivityManager\Remover\ChainedProjectRemoverRule
     pimee_activity_manager.project_remover.channel_rule.class: PimEnterprise\Component\ActivityManager\Remover\ChannelProjectRemoverRule
+    pimee_activity_manager.project_remover.locale_rule.class: PimEnterprise\Component\ActivityManager\Remover\LocaleProjectRemoverRule
 
 services:
     pimee_activity_manager.project_remover.engine:
@@ -19,6 +20,12 @@ services:
 
     pimee_activity_manager.project_remover.channel_rule:
         class: '%pimee_activity_manager.project_remover.channel_rule.class%'
+        public: false
+        tags:
+            - { name: pimee_activity_manager.project_remover.rule }
+
+    pimee_activity_manager.project_remover.locale_rule:
+        class: '%pimee_activity_manager.project_remover.locale_rule.class%'
         public: false
         tags:
             - { name: pimee_activity_manager.project_remover.rule }

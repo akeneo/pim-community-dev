@@ -20,6 +20,8 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 class ChannelProjectRemoverRule implements ProjectRemoverRuleInterface
 {
     /**
+     * A project has to be removed if its channel is removed.
+     *
      * {@inheritdoc}
      */
     public function hasToBeRemoved(ProjectInterface $project, $channel)
