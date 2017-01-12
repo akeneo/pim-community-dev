@@ -69,8 +69,10 @@ class TestCase extends KernelTestCase
         if ($this->purgeDatabaseForEachTest || 1 === self::$count) {
             $this->purgeDatabase();
 
-            $files = $this->getConfigurationFiles();
-            $this->loadCatalog($files);
+            $files = $this->getFilesToLoad();
+            $filesByType = $this->getFilesToLoadByType($files);
+            $this->loadSqlFiles($filesByType['sql']);
+            $this->loadImportFiles($filesByType['import']);
         }
     }
 
@@ -95,11 +97,27 @@ class TestCase extends KernelTestCase
     }
 
     /**
-     * @param string[] $files Catalog configuration files to load
+     * Load SQL file directly by a regular SQL query
+     *
+     * @param array $files
+     */
+    protected function loadSqlFiles(array $files)
+    {
+        $db = $this->get('doctrine.orm.entity_manager')->getConnection();
+
+        foreach ($files as $file) {
+            $db->executeQuery(file_get_contents($file));
+        }
+    }
+
+    /**
+     * Load import files via akeneo:batch:job
+     *
+     * @param array $files
      *
      * @throws \Exception
      */
-    protected function loadCatalog($files)
+    protected function loadImportFiles(array $files)
     {
         // prepare replace paths to use catalog paths and not the minimal fixtures path, please note that we can
         // have several files per job in case of Enterprise Catalog, for instance,
@@ -155,13 +173,54 @@ class TestCase extends KernelTestCase
     }
 
     /**
+     * Separate files to load by their type. Either they are regular files to load from an import.
+     * Either they are a SQL file.
+     *
+     * @param array $files
+     *
+     * @return array
+     */
+    protected function getFilesToLoadByType(array $files)
+    {
+        $filesByType = [
+            'sql' => [],
+            'import' => []
+        ];
+
+        foreach ($files as $filePath) {
+            //TODO: should be done in the getFilesToLoad method
+            if (false === $realFilePath = realpath($filePath)) {
+                continue;
+            }
+
+            $realPathParts = pathinfo($realFilePath);
+            switch ($realPathParts['extension']) {
+                case 'sql':
+                    $filesByType['sql'][] = $realFilePath;
+                    break;
+                case 'csv':
+                case 'xls':
+                case 'xlsx':
+                case 'yml':
+                case 'yaml':
+                    $filesByType['import'][] = $realFilePath;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $filesByType;
+    }
+
+    /**
      * Get the list of catalog configuration file paths to load
      *
      * @throws \InvalidArgumentException If configuration is not found
      *
      * @return string[]
      */
-    protected function getConfigurationFiles()
+    protected function getFilesToLoad()
     {
         $directories = array_merge([$this->catalogDirectory], $this->extraDirectories);
 
