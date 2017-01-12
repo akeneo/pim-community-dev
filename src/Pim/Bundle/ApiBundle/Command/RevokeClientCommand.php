@@ -28,7 +28,7 @@ class RevokeClientCommand extends ContainerAwareCommand
             ->setName('pim:oauth-server:revoke-client')
             ->setDescription('This command revokes a pair of client id / secret')
             ->addArgument(
-                'client-id',
+                'client_id',
                 InputArgument::REQUIRED,
                 'The client id to revoke.'
             )
@@ -40,8 +40,8 @@ class RevokeClientCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $clientManager = $this->getClientManager();
-        $client = $clientManager->findClientByPublicId($input->getArgument('client-id'));
+        $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
+        $client = $clientManager->findClientByPublicId($input->getArgument('client_id'));
 
         if (null === $client) {
             $output->writeln('<error>No client found for this id.</error>');
@@ -71,13 +71,5 @@ class RevokeClientCommand extends ContainerAwareCommand
         ));
 
         return 0;
-    }
-
-    /**
-     * @return ClientManagerInterface
-     */
-    private function getClientManager()
-    {
-        return $this->getContainer()->get('fos_oauth_server.client_manager.default');
     }
 }

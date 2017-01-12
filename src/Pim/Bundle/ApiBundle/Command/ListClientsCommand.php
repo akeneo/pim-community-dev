@@ -33,8 +33,14 @@ class ListClientsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $repository = $this->getClientRepository();
+        $repository = $this->getContainer()->get('pim_api.repository.client');
         $clients = $repository->findAll();
+
+        if (empty($clients)) {
+            $output->writeln('No client is currently registered.');
+
+            return 0;
+        }
 
         $table = $this->getHelper('table');
         $table->setHeaders(['client id', 'secret', 'label']);
@@ -50,13 +56,5 @@ class ListClientsCommand extends ContainerAwareCommand
         $table->render($output);
 
         return 0;
-    }
-
-    /**
-     * @return EntityRepository
-     */
-    private function getClientRepository()
-    {
-        return $this->getContainer()->get('pim_api.repository.client');
     }
 }

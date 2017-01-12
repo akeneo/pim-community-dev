@@ -29,13 +29,13 @@ class CreateClientCommand extends ContainerAwareCommand
             ->setName('pim:oauth-server:create-client')
             ->setDescription('Creates a new pair of client id / secret for the web API')
             ->addOption(
-                'redirect-uri',
+                'redirect_uri',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Sets redirect uri for client.'
             )
             ->addOption(
-                'grant-type',
+                'grant_type',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Sets allowed grant type for client.',
@@ -55,11 +55,11 @@ class CreateClientCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $clientManager = $this->getClientManager();
+        $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
         $client = $clientManager->createClient();
 
-        $client->setRedirectUris($input->getOption('redirect-uri'));
-        $client->setAllowedGrantTypes($input->getOption('grant-type'));
+        $client->setRedirectUris($input->getOption('redirect_uri'));
+        $client->setAllowedGrantTypes($input->getOption('grant_type'));
 
         if ($input->hasOption('label')) {
             $client->setLabel($input->getOption('label'));
@@ -73,14 +73,11 @@ class CreateClientCommand extends ContainerAwareCommand
             sprintf('secret: <info>%s</info>', $client->getSecret()),
         ]);
 
-        return 0;
-    }
+        $label = $client->getLabel();
+        if (null !== $label) {
+            $output->writeln(sprintf('label: <info>%s</info>', $label));
+        }
 
-    /**
-     * @return ClientManagerInterface
-     */
-    private function getClientManager()
-    {
-        return $this->getContainer()->get('fos_oauth_server.client_manager.default');
+        return 0;
     }
 }
