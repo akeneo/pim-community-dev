@@ -55,6 +55,7 @@ abstract class TestCase extends KernelTestCase
             $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
             $filesByType = $this->getFilesToLoadByType($files);
             $this->loadSqlFiles($filesByType['sql']);
+            $this->loadMongoDbFiles($filesByType['mongodb']);
             $this->loadImportFiles($filesByType['import']);
         }
     }
@@ -98,6 +99,24 @@ abstract class TestCase extends KernelTestCase
 
         foreach ($files as $file) {
             $db->executeQuery(file_get_contents($file));
+        }
+    }
+
+    /**
+     * Load Mongo files directly by a regular MongoDB query
+     *
+     * @param array $files
+     */
+    protected function loadMongoDbFiles(array $files)
+    {
+        $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
+        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM !== $storage) {
+            return;
+        }
+
+        $db = $this->get('doctrine.odm.mongodb.document_manager')->getConnection()->akeneo_pim;
+        foreach ($files as $file) {
+            $db->execute(file_get_contents($file));
         }
     }
 
@@ -164,8 +183,10 @@ abstract class TestCase extends KernelTestCase
     }
 
     /**
-     * Separate files to load by their type. Either they are regular files to load from an import.
-     * Either they are a SQL file.
+     * Separate files to load by their type. They can be:
+     *  - regular files to load from an import.
+     *  - SQL files
+     *  - mongo files
      *
      * @param array $files
      *
@@ -175,26 +196,46 @@ abstract class TestCase extends KernelTestCase
     {
         $filesByType = [
             'sql' => [],
-            'import' => []
+            'mongodb' => [],
+            'import' => [],
         ];
 
         foreach ($files as $filePath) {
-            //TODO: should be done in the getFilesToLoad method
-            if (false === $realFilePath = realpath($filePath)) {
+            $realPathParts = pathinfo($filePath);
+
+            // do not try to load files without extension
+            if (!isset($realPathParts['extension'])) {
                 continue;
             }
 
-            $realPathParts = pathinfo($realFilePath);
+            // do not try to load product file that do not match the storage
+            if ('200_products' === $realPathParts['filename']) {
+                $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
+                if ($storage === AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM &&
+                    'sql' === $realPathParts['extension']
+                ) {
+                    continue;
+                }
+                elseif ($storage === AkeneoStorageUtilsExtension::DOCTRINE_ORM &&
+                    'json' === $realPathParts['extension']
+                ) {
+                    continue;
+                }
+            }
+
             switch ($realPathParts['extension']) {
+                case 'json':
+                    $filesByType['mongodb'][] = $filePath;
+                    break;
                 case 'sql':
-                    $filesByType['sql'][] = $realFilePath;
+                    $filesByType['sql'][] = $filePath;
                     break;
                 case 'csv':
                 case 'xls':
                 case 'xlsx':
                 case 'yml':
                 case 'yaml':
-                    $filesByType['import'][] = $realFilePath;
+                    $filesByType['import'][] = $filePath;
                     break;
                 default:
                     break;
@@ -215,18 +256,26 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getFilesToLoad(array $directories)
     {
-        $files = [];
+        $rawFiles = [];
         foreach ($directories as $directory) {
-            $files = array_merge($files, glob($directory.'/*'));
+            $rawFiles = array_merge($rawFiles, glob($directory.'/*'));
         }
 
-        if (empty($files)) {
+        if (empty($rawFiles)) {
             throw new \Exception(
                 sprintf(
                     'No catalog file to load found in "%s"',
                     implode(', ', $directories)
                 )
             );
+        }
+
+        $files = [];
+        foreach ($rawFiles as $rawFilePath) {
+            if (false === $realFilePath = realpath($rawFilePath)) {
+                continue;
+            }
+            $files[] = $rawFilePath;
         }
 
         return $files;
