@@ -64,9 +64,6 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
 
         $qb = $this->createQueryBuilder('project');
         $qb->distinct(true);
-        if (null !== $search && '' !== $search) {
-            $qb->where('project.label LIKE :search')->setParameter('search', sprintf('%%%s%%', $search));
-        }
 
         $qb->leftJoin('project.userGroups', 'u_groups');
         $qb->join('project.owner', 'owner');
@@ -86,6 +83,10 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
 
         $qb->orWhere($qb->expr()->eq('owner.username', ':username'));
         $qb->setParameter('username', $options['user']->getUsername());
+
+        if (null !== $search && '' !== $search) {
+            $qb->andWhere('project.label LIKE :search')->setParameter('search', sprintf('%%%s%%', $search));
+        }
 
         $qb->setMaxResults($options['limit']);
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
