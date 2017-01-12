@@ -59,10 +59,13 @@ class ActivityManagerTestCase extends TestCase
      */
     protected function calculateProject(ProjectInterface $project)
     {
+        $numberOfExecutedJob = $this->findJobExecutionCount();
+
         $this->get('pimee_activity_manager.launcher.job.project_calculation')->launch($project);
 
-        $this->isCompleteJobExecution(false);
+        $this->isCompleteJobExecution($numberOfExecutedJob);
     }
+
     /**
      * re run the project calculation
      *
@@ -70,9 +73,11 @@ class ActivityManagerTestCase extends TestCase
      */
     protected function reCalculateProject(ProjectInterface $project)
     {
+        $numberOfExecutedJob = $this->findJobExecutionCount();
+
         $this->get('pimee_activity_manager.launcher.job.project_calculation')->launch($project);
 
-        $this->isCompleteJobExecution(true);
+        $this->isCompleteJobExecution($numberOfExecutedJob);
     }
 
     /**
@@ -88,27 +93,17 @@ class ActivityManagerTestCase extends TestCase
     /**
      * Check if the project calculation is complete before the timeout.
      *
-     * @param bool $isRecalculation
+     * @param int $numberOfExecutedJob
      *
      * @return bool
      *
      * @throws \RuntimeException
      */
-    private function isCompleteJobExecution($isRecalculation)
+    private function isCompleteJobExecution($numberOfExecutedJob)
     {
-        $sql = <<<SQL
-SELECT count(`execution`.`id`)
-FROM `akeneo_batch_job_execution` AS `execution`
-LEFT JOIN `akeneo_batch_job_instance` AS `instance` ON `execution`.`job_instance_id` = `instance`.`id`
-WHERE `instance`.`code` = :project_calculation 
-AND `execution`.`exit_code` = 'COMPLETED'
-SQL;
-
         $countOfJobExecution = $timeout = 0;
-        while(!$isRecalculation && 1 !== $countOfJobExecution || $isRecalculation && 2 !== $countOfJobExecution ) {
-            $countOfJobExecution = (int) $this->getConnection()->fetchColumn($sql, [
-                'project_calculation' => $this->getParameter('pimee_activity_manager.project_calculation.job_name'),
-            ]);
+        while ($numberOfExecutedJob >= $countOfJobExecution) {
+            $countOfJobExecution = $this->findJobExecutionCount();
 
             if (50 === $timeout) {
                 throw new \RuntimeException('The job does not finished before timeout');
@@ -119,5 +114,25 @@ SQL;
         }
 
         return true;
+    }
+
+    /**
+     * Find the number of execution for a project calculation job.
+     *
+     * @return int
+     */
+    private function findJobExecutionCount()
+    {
+        $sql = <<<SQL
+SELECT count(`execution`.`id`)
+FROM `akeneo_batch_job_execution` AS `execution`
+LEFT JOIN `akeneo_batch_job_instance` AS `instance` ON `execution`.`job_instance_id` = `instance`.`id`
+WHERE `instance`.`code` = :project_calculation 
+AND `execution`.`exit_code` = 'COMPLETED'
+SQL;
+
+        return (int)$this->getConnection()->fetchColumn($sql, [
+            'project_calculation' => $this->getParameter('pimee_activity_manager.project_calculation.job_name'),
+        ]);
     }
 }

@@ -41,11 +41,15 @@ class ProjectCompleteness
         $this->productCountInProgress = (int) $inProgress;
         $this->productCountDone = (int) $done;
 
-        $this->productCount = $this->productCountDone + $this->productCountInProgress + $this->productCountTodo;
+        if (0 === $productCount = $this->productCountDone + $this->productCountInProgress + $this->productCountTodo) {
+            $productCount = 1; // Avoid division by 0
+        }
+
+        $this->productCount = $productCount;
     }
 
     /**
-     * Returns the number of products for todo.
+     * Returns the number of products for to do.
      *
      * @return int
      */
@@ -75,13 +79,13 @@ class ProjectCompleteness
     }
 
     /**
-     * Returns the project completeness in percent for todo.
+     * Returns the project completeness in percent for to do.
      *
      * @return int
      */
     public function getRatioForTodo()
     {
-        return (int) ($this->productCountTodo / $this->productCount * 100);
+        return round($this->productCountTodo / $this->productCount * 100, 2);
     }
 
     /**
@@ -91,7 +95,7 @@ class ProjectCompleteness
      */
     public function getRatioForInProgress()
     {
-        return (int) ($this->productCountInProgress / $this->productCount * 100);
+        return round($this->productCountInProgress / $this->productCount * 100, 2);
     }
 
     /**
@@ -101,7 +105,7 @@ class ProjectCompleteness
      */
     public function getRatioForDone()
     {
-        return (int) ($this->productCountDone / $this->productCount * 100);
+        return round($this->productCountDone / $this->productCount * 100, 2);
     }
 
     /**
@@ -111,6 +115,6 @@ class ProjectCompleteness
      */
     public function isComplete()
     {
-        return 99 < $this->getRatioForDone();
+        return $this->productCountDone === $this->productCount;
     }
 }

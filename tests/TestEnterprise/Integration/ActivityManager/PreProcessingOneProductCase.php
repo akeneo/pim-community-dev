@@ -2,7 +2,7 @@
 
 namespace TestEnterprise\Integration\ActivityManager;
 
-
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 class PreProcessingOneProductCase extends ActivityManagerTestCase
@@ -13,7 +13,7 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
     /**
      * Create a project with only one product to test that the pre processed data are well calculated
      *
-     * Product : tshirt-the-witcher-3
+     * Product: tshirt-the-witcher-3
      * Channel: ecommerce
      * Locale: en_US
      */
@@ -34,9 +34,27 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
             ],
         ]);
 
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('tshirt-the-witcher-3');
+
         $this->calculateProject($this::$project);
 
-        $this->checkAttributeGroupCompleteness();
+        $this->checkAttributeGroupCompleteness(
+            [
+                'general' => [
+                    'has_at_least_one_required_attribute_filled' => '0',
+                    'is_complete' => '1'
+                ],
+                'marketing' => [
+                    'has_at_least_one_required_attribute_filled' => '1',
+                    'is_complete' => '0'
+                ],
+                'technical' => [
+                    'has_at_least_one_required_attribute_filled' => '0',
+                    'is_complete' => '0'
+                ],
+            ],
+            $product
+        );
         $this->checkTheNumberOfAttributeGroupCompleteness();
     }
 
@@ -51,33 +69,142 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
     }
 
     /**
-     * Check that the attribute group completeness is well calculated
+     * Check that we get the value of product properties on the right channel, locale and we are able to get the
+     * value for every attributes
+     *
+     * For that test all value should be empties, the "other" attribute group completeness should be "to do"
+     *
+     * Note: "other" has not a filled property for en_US and ecommerce but it has for mobile and fr_FR
+     *
+     * Product: empty-technical-product
+     * Channel: ecommerce
+     * Locale: en_US
      */
-    private function checkAttributeGroupCompleteness()
+    public function testThatProductPropertyIsEmpty()
     {
-        $expectedAttributeGroupCompleteness = [
-            'general' => [
-                'has_at_least_one_required_attribute_filled' => '0',
-                'is_complete' => '1'
+        $project = $this->createProject([
+            'label' => 'test-empty-property',
+            'locale' => 'en_US',
+            'owner'=> 'admin',
+            'channel' => 'ecommerce',
+            'product_filters' =>[
+                [
+                    'field' => 'sku',
+                    'operator' => '=',
+                    'value' => 'empty-technical-product',
+                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                ],
             ],
-            'marketing' => [
-                'has_at_least_one_required_attribute_filled' => '1',
-                'is_complete' => '0'
-            ],
-            'technical' => [
-                'has_at_least_one_required_attribute_filled' => '0',
-                'is_complete' => '0'
-            ],
-            'other' => [
-                'has_at_least_one_required_attribute_filled' => '0',
-                'is_complete' => '0'
-            ],
-        ];
+        ]);
 
+        $this->calculateProject($project);
+
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('empty-technical-product');
+
+        $this->checkAttributeGroupCompleteness(
+            [
+                'other' => [
+                    'has_at_least_one_required_attribute_filled' => '0',
+                    'is_complete' => '0'
+                ]
+            ],
+            $product
+        );
+    }
+
+    /**
+     * For that test all value should be empties, the "other" attribute group completeness should be "done"
+     *
+     * Note: We need to insert reference data (color and fabric) to check that "other" is complete
+     *
+     * Product : full-technical-product
+     * Channel: ecommerce
+     * Locale: en_US
+     *
+     * TODO : Check asset collection.
+     */
+    public function testThatProductPropertyIsFull()
+    {
+        $this->getConnection()->insert('acme_reference_data_color', [
+            'code' => 'red',
+            'name' => 'red',
+            'hex' => '#FF0000',
+            'red' => 1,
+            'green' => 1,
+            'blue' => 1,
+            'hue' => 1,
+            'hslSaturation' => 1,
+            'light' => 1,
+            'hsvSaturation' => 1,
+            'value' => 1,
+            'sortOrder' => 10
+        ]);
+
+        $this->getConnection()->insert('acme_reference_data_fabric', [
+            'code' => 'latex',
+            'name' => 'Latex',
+            'sortOrder' => 10
+        ]);
+
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('full-technical-product');
+
+        $this->get('pim_catalog.updater.product')->update($product, [
+            'values' => [
+                'simple_reference_data_attribute' => [[
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => 'red',
+                ]],
+                'multi_reference_data_attribute' => [[
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => ['latex'],
+                ]]
+            ]
+        ]);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $project = $this->createProject([
+            'label' => 'test-full-property',
+            'locale' => 'en_US',
+            'owner'=> 'admin',
+            'channel' => 'ecommerce',
+            'product_filters' =>[
+                [
+                    'field' => 'sku',
+                    'operator' => '=',
+                    'value' => 'full-technical-product',
+                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                ],
+            ],
+        ]);
+
+        $this->calculateProject($project);
+
+        $this->checkAttributeGroupCompleteness(
+            [
+                'other' => [
+                    'has_at_least_one_required_attribute_filled' => '0',
+                    'is_complete' => '1'
+                ]
+            ],
+            $product
+        );
+    }
+
+    /**
+     * Check that the attribute group completeness is well calculated
+     *
+     * @param array            $expectedAttributeGroupCompleteness
+     * @param ProductInterface $product
+     */
+    private function checkAttributeGroupCompleteness(array $expectedAttributeGroupCompleteness, $product)
+    {
         $sql = <<<SQL
 SELECT `has_at_least_one_required_attribute_filled`, `is_complete`
 FROM `pimee_activity_manager_completeness_per_attribute_group`
 WHERE `attribute_group_id` = :attribute_group_id
+AND product_id = :product_id;
 SQL;
 
         foreach ($expectedAttributeGroupCompleteness as $group => $expectedCompleteness) {
@@ -86,7 +213,10 @@ SQL;
                 ->getId();
 
             $actualCompleteness = $this->getConnection()
-                ->fetchAssoc($sql, ['attribute_group_id' => $attributeGroupId]);
+                ->fetchAssoc($sql, [
+                    'attribute_group_id' => $attributeGroupId,
+                    'product_id' => $product->getId(),
+                ]);
 
             $this->assertSame(
                 $actualCompleteness,
@@ -124,7 +254,7 @@ SQL;
 
         $this->assertSame(
             $numberOfRow,
-            4,
+            3,
             sprintf('Invalid number of calculated attribute group completeness for the product %s', $productId)
         );
     }
