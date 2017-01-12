@@ -85,12 +85,10 @@ Feature: Follow project completeness
       | Collection Summer 2030 | julia | 2030-10-25 | Please do your best to finish before Summer. | ecommerce | en_US  | []                                                              |
       | Collection Winter 2030 | julia | 2030-08-25 | Please do your best to finish before Winter. | ecommerce | en_US  | [{"field":"family.code", "operator":"IN", "value": ["tshirt"]}] |
 
-  @skip
   Scenario: Successfully display completeness on widget
     Given I am logged in as "Claude"
     And I am on the dashboard page
     Then I should see the Activity Manager widget
-    And I should see the text "Activity Manager"
     And I should see the text "Collection Winter 2030 [ecommerce] | English (United States)"
     And I should not see the contributor selector
     And I should see the following activity manager completeness:

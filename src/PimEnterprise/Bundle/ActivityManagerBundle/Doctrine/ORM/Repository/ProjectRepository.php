@@ -68,18 +68,24 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
             $qb->where('project.label LIKE :search')->setParameter('search', sprintf('%%%s%%', $search));
         }
 
-        $qb->join('project.owner', 'owner', 'WITH', 'owner.username = :username')
-            ->setParameter('username', $options['user']->getUsername());
+        $qb->leftJoin('project.userGroups', 'u_groups');
+        $qb->join('project.owner', 'owner');
 
         $userGroups = $options['user']->getGroups();
         if (!$userGroups->isEmpty()) {
-            $userGroupsId = array_map(function (Group $userGroup) {
-                return $userGroup->getId();
-            }, $userGroups->toArray());
+            $userGroupsId = array_map(
+                function (Group $userGroup) {
+                    return $userGroup->getId();
+                },
+                $userGroups->toArray()
+            );
 
-            $qb->leftJoin('project.userGroups', 'u_groups', 'WITH', 'u_groups.id IN (:groups)')
-                ->setParameter('groups', $userGroupsId);
+            $qb->orWhere($qb->expr()->in('u_groups.id', ':groups'));
+            $qb->setParameter(':groups', $userGroupsId);
         }
+
+        $qb->orWhere($qb->expr()->eq('owner.username', ':username'));
+        $qb->setParameter('username', $options['user']->getUsername());
 
         $qb->setMaxResults($options['limit']);
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
