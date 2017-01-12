@@ -48,6 +48,8 @@ class ListClientsCommand extends ContainerAwareCommand
         }
 
         $table->render($output);
+
+        return 0;
     }
 
     /**

@@ -72,6 +72,8 @@ class CreateClientCommand extends ContainerAwareCommand
             sprintf('client_id: <info>%s</info>', $client->getPublicId()),
             sprintf('secret: <info>%s</info>', $client->getSecret()),
         ]);
+
+        return 0;
     }
 
     /**
