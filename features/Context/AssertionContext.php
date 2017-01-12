@@ -62,12 +62,13 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeTheTitle($expectedTitle)
     {
-        $actualTitle = $this->getCurrentPage()->getHeadTitle();
-        if (trim($actualTitle) !== trim($expectedTitle)) {
-            throw $this->createExpectationException(
-                sprintf('Incorrect title. Expected "%s", found "%s"', $expectedTitle, $actualTitle)
-            );
-        }
+        $this->spin(function () use ($expectedTitle) {
+            return trim($this->getCurrentPage()->getHeadTitle()) === trim($expectedTitle);
+        }, sprintf(
+            'Incorrect title. Expected "%s", found "%s"',
+            $expectedTitle,
+            $this->getCurrentPage()->getHeadTitle())
+        );
     }
 
     /**

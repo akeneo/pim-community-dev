@@ -74,7 +74,8 @@ interface ProductBuilderInterface
     public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute);
 
     /**
-     * Add a product price with currency to the value. If the price already exists, it is returned.
+     * Add a product price with currency and data to the value. If the price
+     * already exists, its data is updated and it is returned.
      *
      * @param ProductValueInterface $value
      * @param string                $currency
@@ -93,6 +94,9 @@ interface ProductBuilderInterface
      * @param float|int             $amount
      *
      * @return null|ProductPriceInterface
+     *
+     * @deprecated Will be removed in 1.8.
+     *             Please use "Pim\Component\Catalog\Builder\ProductBuilderInterface::addPriceForCurrency" instead.
      */
     public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $amount);
 

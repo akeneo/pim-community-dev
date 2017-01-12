@@ -90,7 +90,7 @@ class PriceCollectionAttributeCopierSpec extends ObjectBehavior
 
         $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
 
-        $builder->addPriceForCurrencyWithData($toProductValue, 'USD', 123)->shouldBeCalled();
+        $builder->addPriceForCurrency($toProductValue, 'USD', 123)->shouldBeCalled();
 
         $products = [$product1, $product2, $product3, $product4];
         foreach ($products as $product) {
