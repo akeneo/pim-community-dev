@@ -1,9 +1,16 @@
 parameters:
     pim_api.controller.rest.category.class: Pim\Bundle\ApiBundle\Controller\Rest\CategoryController
+    pim_api.controller.rest.family.class: Pim\Bundle\ApiBundle\Controller\Rest\FamilyController
 
 services:
     pim_api.controller.rest.category:
         class: '%pim_api.controller.rest.category.class%'
         arguments:
             - '@pim_catalog.repository.category'
+            - '@pim_serializer'
+
+    pim_api.controller.rest.family:
+        class: '%pim_api.controller.rest.family.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
             - '@pim_serializer'
