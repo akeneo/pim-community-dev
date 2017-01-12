@@ -28,5 +28,6 @@ class PimEnterpriseActivityManagerExtension extends Extension
         $loader->load('jobs.yml');
         $loader->load('project.yml');
         $loader->load('services.yml');
+        $loader->load('removers.yml');
     }
 }

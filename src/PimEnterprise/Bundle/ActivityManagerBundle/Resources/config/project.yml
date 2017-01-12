@@ -14,6 +14,9 @@ parameters:
     pimee_activity_manager.widget.completeness.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Widget\ProjectCompletenessWidget'
     pimee_activity_manager.voter.project.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter'
     pimee_activity_manager.factory.project.class: 'PimEnterprise\Component\ActivityManager\Factory\ProjectFactory'
+    pimee_activity_manager.doctrine.cursor_factory.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory'
+    pimee_activity_manager.doctrine.cursor.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor'
+    pimee_activity_manager.factory.project_cursor.page_size: 10
 
 services:
     ### Normalizer
@@ -32,8 +35,18 @@ services:
     ### Repository
     pimee_activity_manager.repository.project:
         class: '%pimee_activity_manager.repository.project.class%'
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
         arguments:
-            - '@doctrine.orm.default_entity_manager'
+            - '%pimee_activity_manager.model.project.class%'
+        calls:
+            - [ setCursorFactory, ['@pimee_activity_manager.factory.project_cursor']]
+
+    pimee_activity_manager.remover.project:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
             - '%pimee_activity_manager.model.project.class%'
 
     pimee_activity_manager.repository.project_completeness:
@@ -58,6 +71,13 @@ services:
             - '@pim_datagrid.updater.datagrid_view'
             - '%pimee_activity_manager.model.project.class%'
 
+    pimee_activity_manager.factory.project_cursor:
+        class: '%pimee_activity_manager.doctrine.cursor_factory.project.class%'
+        arguments:
+            - '%pimee_activity_manager.doctrine.cursor.project.class%'
+            - '@doctrine.orm.entity_manager'
+            - '%pimee_activity_manager.factory.project_cursor.page_size%'
+
     ### Saver
     pimee_activity_manager.saver.project:
         class: '%akeneo_storage_utils.saver.base.class%'
@@ -78,6 +98,8 @@ services:
 
     pimee_activity_manager.event_listener.project:
         class: '%pimee_activity_manager.event_listener.project.class%'
+        arguments:
+            - '@pimee_activity_manager.repository.pre_processing'
         tags:
             - { name: kernel.event_subscriber }
 

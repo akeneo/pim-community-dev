@@ -2,23 +2,21 @@
 
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectRepository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\Project;
 
 class ProjectRepositorySpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager, ClassMetadata $classMetadata)
+    function let(ClassMetadata $classMetadata)
     {
-        $entityManager->getClassMetadata('Project')->willReturn($classMetadata);
-
-        $this->beConstructedWith($entityManager, 'Project');
+        $this->beConstructedWith(Project::class, $classMetadata);
     }
 
     function it_is_initializable()
@@ -34,6 +32,11 @@ class ProjectRepositorySpec extends ObjectBehavior
     function it_is_a_searchable_repository()
     {
         $this->shouldImplement(SearchableRepositoryInterface::class);
+    }
+
+    function it_is_a_cursorable_repository()
+    {
+        $this->shouldImplement(CursorableRepositoryInterface::class);
     }
 
     function its_identifier_is_id()

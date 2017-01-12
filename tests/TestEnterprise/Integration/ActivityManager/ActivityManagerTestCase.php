@@ -81,6 +81,15 @@ class ActivityManagerTestCase extends TestCase
     }
 
     /**
+     * @param ProjectInterface $project
+     */
+    protected function removeProject(ProjectInterface $project)
+    {
+        $remover = $this->get('pimee_activity_manager.remover.project');
+        $remover->remove($project);
+    }
+
+    /**
      * Return a DBAL connection
      *
      * @return Connection

@@ -1,0 +1,24 @@
+parameters:
+    pimee_activity_manager.project_remover.engine.class: PimEnterprise\Component\ActivityManager\Remover\ProjectRemoverEngine
+    pimee_activity_manager.project_remover.chained_rule.class: PimEnterprise\Component\ActivityManager\Remover\ChainedProjectRemoverRule
+    pimee_activity_manager.project_remover.channel_rule.class: PimEnterprise\Component\ActivityManager\Remover\ChannelProjectRemoverRule
+
+services:
+    pimee_activity_manager.project_remover.engine:
+        class: '%pimee_activity_manager.project_remover.engine.class%'
+        arguments:
+            - '@pimee_activity_manager.project_remover.chained_rule'
+            - '@pimee_activity_manager.repository.project'
+            - '@pimee_activity_manager.remover.project'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pimee_activity_manager.project_remover.chained_rule:
+        class: '%pimee_activity_manager.project_remover.chained_rule.class%'
+        arguments:
+            - []
+
+    pimee_activity_manager.project_remover.channel_rule:
+        class: '%pimee_activity_manager.project_remover.channel_rule.class%'
+        public: false
+        tags:
+            - { name: pimee_activity_manager.project_remover.rule }
