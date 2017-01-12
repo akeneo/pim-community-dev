@@ -150,9 +150,6 @@ class CsvEncoder implements EncoderInterface
     {
         rewind($csvResource);
 
-        $stat = fstat($csvResource);
-        ftruncate($csvResource, $stat['size']-1);
-
         return stream_get_contents($csvResource);
     }
 
