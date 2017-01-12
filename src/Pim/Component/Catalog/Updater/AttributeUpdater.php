@@ -162,15 +162,25 @@ class AttributeUpdater implements ObjectUpdaterInterface
      * @param array              $availableLocaleCodes
      *
      * @throws UnknownPropertyException
+     * @throws InvalidPropertyException
      */
     protected function setAvailableLocales(AttributeInterface $attribute, $field, array $availableLocaleCodes)
     {
         $locales = [];
         foreach ($availableLocaleCodes as $localeCode) {
             $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-            if (null !== $locale) {
-                $locales[] = $locale;
+            if (null === $locale) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'available_locales',
+                    'locale code',
+                    'The locale does not exist',
+                    'updater',
+                    'attribute',
+                    $localeCode
+                );
             }
+
+            $locales[] = $locale;
         }
 
         $this->setValue($attribute, $field, $locales);

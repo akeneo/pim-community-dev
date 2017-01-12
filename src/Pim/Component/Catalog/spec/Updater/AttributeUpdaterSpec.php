@@ -226,4 +226,23 @@ class AttributeUpdaterSpec extends ObjectBehavior
             ->shouldThrow(UnknownPropertyException::unknownProperty('non_existent_field', new NoSuchPropertyException()))
             ->during('update', [$attribute, $values, []]);
     }
+
+    function it_throws_an_exception_if_locale_does_not_exist($localeRepository, AttributeInterface $attribute) {
+        $localeRepository->findOneByIdentifier('foo')->willReturn(null);
+
+        $values = [
+            'available_locales' => ['foo']
+        ];
+
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'available_locales',
+                'locale code',
+                'The locale does not exist',
+                'updater',
+                'attribute',
+                'foo'
+            )
+        )->during('update', [$attribute, $values, []]);
+    }
 }
