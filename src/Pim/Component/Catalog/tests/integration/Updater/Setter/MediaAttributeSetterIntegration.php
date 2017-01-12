@@ -2,6 +2,7 @@
 
 namespace tests\integration\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -14,7 +15,13 @@ class MediaAttributeSetterIntegration extends TestCase
     const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
     const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';
 
-    protected $purgeDatabaseForEachTest = false;
+    protected function getConfiguration()
+    {
+        return new Configuration(
+            [Configuration::getTechnicalCatalogPath()],
+            false
+        );
+    }
 
     public function testLocalizableMedia()
     {

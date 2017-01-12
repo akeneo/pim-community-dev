@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\tests\integration\Normalizer\Flat;
+namespace tests\integration\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\VersioningBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductIntegration extends TestCase
+class ProductIntegration extends AbstractFlatNormalizerTestCase
 {
     const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';
     const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
