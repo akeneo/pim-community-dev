@@ -211,4 +211,39 @@ class TestCase extends KernelTestCase
 
         parent::tearDown();
     }
+
+    /**
+     * @param callable $callable
+     * @param string   $message
+     * @param int      $loop
+     *
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    protected function spin($callable, $message, $loop = 10)
+    {
+        $i = 0;
+        $result = null;
+        $previousException = null;
+        do {
+            $i++;
+            try {
+                $result = $callable($this);
+            } catch (\Exception $exception) {
+                $previousException = $exception;
+            }
+            sleep(1);
+        } while ($i < $loop && (null === $result || false === $result || [] === $result));
+
+        if (null === $result || false === $result || [] === $result) {
+            throw new \Exception(
+                sprintf('[Spin] number of loop reach without result and message: %s', $message),
+                0,
+                $previousException
+            );
+        }
+
+        return $result;
+    }
 }
