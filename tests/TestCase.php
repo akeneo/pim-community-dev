@@ -273,4 +273,28 @@ class TestCase extends KernelTestCase
 
         parent::tearDown();
     }
+
+    /**
+     * Look in every fixture directory if a fixture $name exists.
+     * And return the pathname of the fixture if it exists.
+     *
+     * @param string $name
+     *
+     * @return string
+     *
+     * @throws \Exception if no fixture $name has been found
+     */
+    protected function getFixturePath($name)
+    {
+        $path = $this->fixturesDirectory . DIRECTORY_SEPARATOR . $name;
+        if (!is_file($path)) {
+            throw new \Exception(sprintf('The fixture "%s" does not exist.'));
+        }
+
+        if (false === $realPath = realpath($path)) {
+            throw new \Exception(sprintf('The fixture "%s" does not exist.'));
+        }
+
+        return $realPath;
+    }
 }

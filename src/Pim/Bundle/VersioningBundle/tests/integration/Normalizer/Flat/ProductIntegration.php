@@ -31,14 +31,14 @@ class ProductIntegration extends TestCase
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => $this->fixturesDirectory . 'akeneo.txt',
+                        'data'   => $this->getFixturePath('akeneo.txt'),
                     ],
                 ],
                 'an_image'                           => [
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => $this->fixturesDirectory . 'akeneo.jpg',
+                        'data'   => $this->getFixturePath('akeneo.jpg'),
                     ],
                 ],
                 'a_date'                             => [
@@ -131,12 +131,12 @@ class ProductIntegration extends TestCase
                     [
                         'locale' => 'en_US',
                         'scope'  => null,
-                        'data'   => $this->fixturesDirectory . 'akeneo.jpg',
+                        'data'   => $this->getFixturePath('akeneo.jpg'),
                     ],
                     [
                         'locale' => 'fr_FR',
                         'scope'  => null,
-                        'data'   => $this->fixturesDirectory . 'akeneo.jpg',
+                        'data'   => $this->getFixturePath('akeneo.jpg'),
                     ],
                 ],
                 'a_scopable_price'                   => [
