@@ -41,10 +41,10 @@ class AppKernel extends Kernel
         $bundles = $this->registerProjectBundles();
 
         if (in_array($this->getEnvironment(), ['dev', 'test', 'behat'])) {
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
+            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
         }
 
         $bundles = array_merge(
@@ -84,25 +84,24 @@ class AppKernel extends Kernel
     protected function getPimEnterpriseBundles()
     {
         return [
-            new PimEnterprise\Bundle\CatalogBundle\PimEnterpriseCatalogBundle(),
-            new PimEnterprise\Bundle\EnrichBundle\PimEnterpriseEnrichBundle(),
-            new PimEnterprise\Bundle\DashboardBundle\PimEnterpriseDashboardBundle(),
-            new PimEnterprise\Bundle\SecurityBundle\PimEnterpriseSecurityBundle(),
-            new PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle(),
-            new PimEnterprise\Bundle\InstallerBundle\PimEnterpriseInstallerBundle(),
-            new PimEnterprise\Bundle\DataGridBundle\PimEnterpriseDataGridBundle(),
-            new PimEnterprise\Bundle\FilterBundle\PimEnterpriseFilterBundle(),
-            new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
-            new PimEnterprise\Bundle\ImportExportBundle\PimEnterpriseImportExportBundle(),
-            new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
-            new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
-            new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle(),
-            new PimEnterprise\Bundle\ActivityManagerBundle\PimEnterpriseActivityManagerBundle(),
-
             new Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
             new Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
-            new PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle(),
+            new PimEnterprise\Bundle\ActivityManagerBundle\PimEnterpriseActivityManagerBundle(),
+            new PimEnterprise\Bundle\CatalogBundle\PimEnterpriseCatalogBundle(),
             new PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle(),
+            new PimEnterprise\Bundle\DashboardBundle\PimEnterpriseDashboardBundle(),
+            new PimEnterprise\Bundle\DataGridBundle\PimEnterpriseDataGridBundle(),
+            new PimEnterprise\Bundle\EnrichBundle\PimEnterpriseEnrichBundle(),
+            new PimEnterprise\Bundle\FilterBundle\PimEnterpriseFilterBundle(),
+            new PimEnterprise\Bundle\ImportExportBundle\PimEnterpriseImportExportBundle(),
+            new PimEnterprise\Bundle\InstallerBundle\PimEnterpriseInstallerBundle(),
+            new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle(),
+            new PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle(),
+            new PimEnterprise\Bundle\SecurityBundle\PimEnterpriseSecurityBundle(),
+            new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
+            new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
+            new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
+            new PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle(),
         ];
     }
 
@@ -121,26 +120,26 @@ class AppKernel extends Kernel
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
 
             // PIM bundles
-            new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
-            new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
-            new Pim\Bundle\UIBundle\PimUIBundle(),
-            new Pim\Bundle\NotificationBundle\PimNotificationBundle(),
-            new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
-            new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
-            new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
-            new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
-            new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
-            new Pim\Bundle\CommentBundle\PimCommentBundle(),
-            new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
-            new Akeneo\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle(),
-            new PimEnterprise\Bundle\CatalogRuleBundle\PimEnterpriseCatalogRuleBundle(),
-            new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
-            new PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle(),
-            new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
-            new Pim\Bundle\LocalizationBundle\PimLocalizationBundle(),
             new Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
-            new Pim\Bundle\ApiBundle\PimApiBundle()
+            new Akeneo\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle(),
+            new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
+            new Pim\Bundle\ApiBundle\PimApiBundle(),
+            new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
+            new Pim\Bundle\CommentBundle\PimCommentBundle(),
+            new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
+            new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
+            new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
+            new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
+            new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
+            new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
+            new Pim\Bundle\LocalizationBundle\PimLocalizationBundle(),
+            new Pim\Bundle\NotificationBundle\PimNotificationBundle(),
+            new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
+            new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
+            new Pim\Bundle\UIBundle\PimUIBundle(),
+            new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
+            new PimEnterprise\Bundle\CatalogRuleBundle\PimEnterpriseCatalogRuleBundle(),
+            new PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle(),
         ];
     }
 
@@ -152,14 +151,15 @@ class AppKernel extends Kernel
     protected function getPimDependenciesBundles()
     {
         return [
-            new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
-            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new Oneup\FlysystemBundle\OneupFlysystemBundle(),
-            new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
             new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
             new Akeneo\Bundle\BufferBundle\AkeneoBufferBundle(),
-            new Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
             new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
+            new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
+            new Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
+            new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+            new Oneup\FlysystemBundle\OneupFlysystemBundle(),
         ];
     }
 
@@ -171,16 +171,16 @@ class AppKernel extends Kernel
     protected function getSymfonyBundles()
     {
         return [
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-            new Symfony\Bundle\TwigBundle\TwigBundle(),
-            new Symfony\Bundle\MonologBundle\MonologBundle(),
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             // Uncomment the following line to use MongoDB implementation
             // new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new Symfony\Bundle\MonologBundle\MonologBundle(),
+            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
+            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+            new Symfony\Bundle\TwigBundle\TwigBundle(),
         ];
     }
 
