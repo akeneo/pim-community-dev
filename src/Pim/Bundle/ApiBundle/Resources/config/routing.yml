@@ -5,3 +5,7 @@ category:
 family:
     resource: '@PimApiBundle/Resources/config/routing/family.yml'
     prefix: /rest/v1/families
+
+attribute:
+    resource: '@PimApiBundle/Resources/config/routing/attribute.yml'
+    prefix: /rest/v1/attributes
