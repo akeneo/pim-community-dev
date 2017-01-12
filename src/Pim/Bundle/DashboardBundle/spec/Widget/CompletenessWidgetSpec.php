@@ -2,17 +2,19 @@
 
 namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 use Prophecy\Argument;
 
 class CompletenessWidgetSpec extends ObjectBehavior
 {
-    function let(CompletenessRepositoryInterface $completenessRepo, LocaleHelper $localeHelper, UserContext $userContext)
+    function let(CompletenessRepositoryInterface $completenessRepo, LocaleHelper $localeHelper, UserContext $userContext, ObjectFilterInterface $objectFilter, IdentifiableObjectRepositoryInterface $localeRepository)
     {
-        $this->beConstructedWith($completenessRepo, $localeHelper, $userContext);
+        $this->beConstructedWith($completenessRepo, $localeHelper, $userContext, $objectFilter, $localeRepository);
     }
 
     function it_is_a_widget()
