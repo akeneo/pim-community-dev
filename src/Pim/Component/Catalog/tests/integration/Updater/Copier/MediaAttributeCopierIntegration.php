@@ -3,7 +3,7 @@
 namespace tests\integration\Pim\Component\Catalog\Updater\Copier;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use Test\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>

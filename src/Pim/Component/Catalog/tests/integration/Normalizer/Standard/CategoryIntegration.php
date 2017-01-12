@@ -2,7 +2,7 @@
 
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
-use Test\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

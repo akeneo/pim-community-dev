@@ -2,7 +2,7 @@
 
 namespace tests\integration\Pim\Component\Catalog\Updater\Setter;
 
-use Test\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>

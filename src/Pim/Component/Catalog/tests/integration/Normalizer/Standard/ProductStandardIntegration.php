@@ -4,7 +4,7 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Test\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * Integration tests to verify data from database are well formatted in the standard format

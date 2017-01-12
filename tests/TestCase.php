@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Integration;
+namespace Akeneo\Test\Integration;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
