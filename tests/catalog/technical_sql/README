@@ -1,0 +1,12 @@
+This folder contains a database backup of the technical catalog + three products:
+- one empty enabled
+- one empty disabled
+- one with all possible attributes
+
+You can use this catalog when you don't want your tests to depend on the loading of the CSV files. The most common
+use case is when you want to test directly the result of something you have in database.
+
+For instance, let's say we want to test the normalization of a product to the standard format. If we rely on the CSV
+files, and if there is a bug in the way we store products (wrong format for the double for instance),
+the result of the normalization could be a false positive. By using directly this database backup,
+we are sure the data are reliable. Which means our test is reliable too.

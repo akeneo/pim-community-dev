@@ -23,17 +23,19 @@ class ProductStandardIntegration extends TestCase
     {
         parent::setUp();
 
+        $sqlFilesPath = $this->rootPath . 'tests/catalog/technical_sql/';
+
         $em = $this->get('doctrine.orm.entity_manager');
-        $em->getConnection()->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'common.sql'));
+        $em->getConnection()->executeQuery(file_get_contents($sqlFilesPath . '050_common.sql'));
 
         if (1 === self::$count) {
             $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
             if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $storage) {
                 $client = $this->get('doctrine.odm.mongodb.document_manager')->getConnection()->akeneo_pim;
-                $client->execute(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'products_mongodb.json'));
+                $client->execute(file_get_contents($sqlFilesPath . '200_products_mongodb.json'));
             } else {
                 $em->getConnection()
-                    ->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'products_orm.sql'));
+                    ->executeQuery(file_get_contents($sqlFilesPath . '200_products_orm.sql'));
             }
         }
     }

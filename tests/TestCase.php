@@ -39,6 +39,9 @@ class TestCase extends KernelTestCase
     /** @var string */
     protected $fixturesDirectory;
 
+    /** @var string */
+    protected $rootPath;
+
     /**
      * {@inheritdoc}
      */
@@ -56,10 +59,10 @@ class TestCase extends KernelTestCase
 
         $this->container = static::$kernel->getContainer();
 
-        $projectRoot = $this->getParameter('kernel.root_dir').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
+        $this->rootPath = $this->getParameter('kernel.root_dir').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
 
-        $this->catalogDirectory = $projectRoot.'tests'.DIRECTORY_SEPARATOR.'catalog'.DIRECTORY_SEPARATOR;
-        $this->fixturesDirectory = $projectRoot.'tests'.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR;
+        $this->catalogDirectory = $this->rootPath.'tests'.DIRECTORY_SEPARATOR.'catalog'.DIRECTORY_SEPARATOR;
+        $this->fixturesDirectory = $this->rootPath.'tests'.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR;
 
         self::$count++;
 
