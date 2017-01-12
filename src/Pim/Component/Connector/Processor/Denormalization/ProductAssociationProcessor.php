@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
@@ -104,6 +105,9 @@ class ProductAssociationProcessor extends AbstractProcessor implements
 
         try {
             $this->updateProduct($product, $item);
+        } catch (ObjectUpdaterException $exception) {
+            $this->detachProduct($product);
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         } catch (\InvalidArgumentException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
@@ -133,7 +137,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements
      * @param ProductInterface $product
      * @param array            $item
      *
-     * @throws \InvalidArgumentException
+     * @throws ObjectUpdaterException
      */
     protected function updateProduct(ProductInterface $product, array $item)
     {

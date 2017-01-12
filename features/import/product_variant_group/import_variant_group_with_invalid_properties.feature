@@ -40,7 +40,7 @@ Feature: Execute an import with invalid properties
     When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_variant_group_import" job to finish
-    Then I should see "Attributes: This property cannot be changed."
+    Then I should see "Property \"axes\" cannot be modified, \"manufacturer,size\" given (for updater variant group)."
     And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:
@@ -59,7 +59,7 @@ Feature: Execute an import with invalid properties
     When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_variant_group_import" job to finish
-    Then I should see "Attributes: This property cannot be changed."
+    Then I should see "Property \"axes\" cannot be modified, \"color\" given (for updater variant group)."
     And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:

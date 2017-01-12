@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -24,6 +26,19 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
     function it_is_a_updater()
     {
         $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+    }
+
+    function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute_option()
+    {
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\AttributeOptionInterface'
+            )
+        )->during(
+            'update',
+            [new \stdClass(), []]
+        );
     }
 
     function it_updates_all_fields_on_a_new_attribute_option(
@@ -66,7 +81,16 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         $attributeOption->setCode('mycode')->shouldBeCalled();
         $attributeRepository->findOneByIdentifier('myattribute')->willReturn(null);
 
-        $this->shouldThrow('\InvalidArgumentException')->during(
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'attribute',
+                'attribute code',
+                'The attribute does not exist',
+                'updater',
+                'attribute option',
+                'myattribute'
+            )
+        )->during(
             'update',
             [
                 $attributeOption,

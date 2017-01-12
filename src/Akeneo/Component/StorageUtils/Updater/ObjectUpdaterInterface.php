@@ -2,6 +2,8 @@
 
 namespace Akeneo\Component\StorageUtils\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+
 /**
  * Updates an object with a set of data
  *
@@ -18,7 +20,7 @@ interface ObjectUpdaterInterface
      * @param array  $data    The data to update
      * @param array  $options The options to use
      *
-     * @throws \InvalidArgumentException
+     * @throws ObjectUpdaterException
      *
      * @return ObjectUpdaterInterface
      */
