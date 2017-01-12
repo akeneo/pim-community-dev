@@ -6,6 +6,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -107,6 +108,7 @@ class ProductBuilder implements ProductBuilderInterface
         if (null !== $familyCode) {
             $family = $this->familyRepository->findOneByIdentifier($familyCode);
             $product->setFamily($family);
+            $this->addBooleanToProduct($product);
         }
 
         $event = new GenericEvent($product);
@@ -363,6 +365,38 @@ class ProductBuilder implements ProductBuilderInterface
     {
         foreach ($product->getValues() as $value) {
             $this->addMissingPrices($value);
+        }
+    }
+
+    /**
+     * Set product values to "false" by default for every boolean attributes in the product's family.
+     *
+     * This workaround is due to the UI that does not manage null values for boolean attributes, only false or true.
+     * It avoids to automatically submit boolean attributes belonging to the product's family in a proposal,
+     * even if those boolean attributes were not modified by the user.
+     *
+     * FIXME : To remove when the UI will manage null values in boolean attributes (PIM-6056).
+     *
+     * @param ProductInterface $product
+     */
+    protected function addBooleanToProduct(ProductInterface $product)
+    {
+        $family = $product->getFamily();
+
+        if (null === $family) {
+            return;
+        }
+
+        foreach ($family->getAttributes() as $attribute) {
+            if (AttributeTypes::BOOLEAN === $attribute->getAttributeType()) {
+                $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
+
+                foreach ($requiredValues as $value) {
+                    $productValue = $this->productValueFactory->create($attribute, $value['scope'], $value['locale']);
+                    $productValue->setBoolean(false);
+                    $product->addValue($productValue);
+                }
+            }
         }
     }
 }
