@@ -39,6 +39,14 @@ class ViewSelectorContext extends PimContext
     }
 
     /**
+     * @Given /^I click on the edit project button$/
+     */
+    public function iClickOnEditProjectButton()
+    {
+        $this->getCurrentPage()->clickOnEditProjectButton();
+    }
+
+    /**
      * @Then /^I should( not)? see the "([^"]*)" project$/
      *
      * @param string $not

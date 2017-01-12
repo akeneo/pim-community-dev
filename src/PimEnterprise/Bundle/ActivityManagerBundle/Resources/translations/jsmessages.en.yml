@@ -4,6 +4,7 @@ activity_manager:
     grid:
         view_selector:
             create: Create project
+            edit: Edit project
             create_from_view: Create a project from this view
             loading: Loading...
             start_new_project: Start a new project
@@ -14,6 +15,13 @@ activity_manager:
         due_date: Due Date
         due_date_past: You can't select a date in the past.
         leaving_scope: You're leaving project scope.
+    edit_project_modal:
+        label_placeholder: Project name
+        description_placeholder: Project description
+        saved: The project has been saved.
+        title: Edit project
+        confirm: Save
+        cancel: Cancel
     create_project_modal:
         label_placeholder: Name of the new project
         description_placeholder: Description of the new project

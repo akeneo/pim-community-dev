@@ -9,3 +9,9 @@ extensions:
         parent: pim-grid-view-selector
         targetZone: buttons
         position: 115
+
+    pimee-grid-view-selector-edit-project:
+        module: activity-manager/grid/view-selector/edit-project
+        parent: pim-grid-view-selector
+        targetZone: buttons
+        position: 120

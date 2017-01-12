@@ -55,6 +55,25 @@ define(
                 language: DateContext.get('language')
             },
             maxLengthLabel: 100,
+            type: 'create',
+
+            /**
+             * Set the backbone model for this view.
+             *
+             * @param {Backbone.Model} model
+             */
+            setModel: function (model) {
+                this.model = model;
+            },
+
+            /**
+             * Set the type of this form. Either "create" or "edit".
+             *
+             * @param {String} type
+             */
+            setType: function (type) {
+                this.type = type;
+            },
 
             /**
              * When an input occurs, it updates the model, validates fields and partial render form
@@ -171,7 +190,7 @@ define(
                     .done(function () {
                         messenger.notificationMessage(
                             'success',
-                            __('activity_manager.create_project_modal.saved')
+                            __('activity_manager.' + this.type + '_project_modal.saved')
                         );
                     })
                     .fail(function (response) {
@@ -220,10 +239,12 @@ define(
                 this.$el.html(this.template({
                     labelValue: model.get('label'),
                     labelLabel: __('activity_manager.project.label'),
-                    labelPlaceholder: __('activity_manager.create_project_modal.label_placeholder'),
+                    labelPlaceholder: __('activity_manager.' + this.type + '_project_modal.label_placeholder'),
                     descriptionValue: model.get('description'),
                     descriptionLabel: __('activity_manager.project.description'),
-                    descriptionPlaceholder: __('activity_manager.create_project_modal.description_placeholder'),
+                    descriptionPlaceholder: __(
+                        'activity_manager.' + this.type + '_project_modal.description_placeholder'
+                    ),
                     dueDateValue: model.get('due_date'),
                     dueDateLabel: __('activity_manager.project.due_date'),
                     errors: this.validationErrors,

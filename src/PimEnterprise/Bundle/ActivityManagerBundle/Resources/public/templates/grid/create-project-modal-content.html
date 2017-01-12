@@ -1,53 +1,54 @@
 <div class="control-group modal-project-form">
     <% _.each(_.where(errors, {status_code: 500}), function (error) { %>
-        <div class="alert alert-danger" >
-            <i class="icon-warning-sign"></i>
-            <span class="error-message"><%- error.status_text %></span>
+        <div class="AknFlash AknFlash--danger">
+            <i class="icon-warning-sign"></i> <%- error.status_text %>
         </div>
     <% }); %>
 
-    <div class="controls">
-        <label class="control-label required">
-            <%- labelLabel %> (<%- requiredLabel %>)
-            <input type="text" value="<%- labelValue %>" name="project-label" class="project-field AknTextField" placeholder="<%- labelPlaceholder %>" required />
-        </label>
-
-        <div class="validation-errors">
-            <span class="validation-errors label-errors">
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label"><%- labelLabel %> (<%- requiredLabel %>)</label>
+        </div>
+        <div class="AknFieldContainer-inputContainer">
+            <input type="text" value="<%- labelValue %>" name="project-label" class="AknTextField project-field" placeholder="<%- labelPlaceholder %>" required />
+        </div>
+        <div class="AknFieldContainer-footer">
+            <div class="AknFieldContainer-validationErrors label-errors">
                 <% _.each(_.where(errors, {field: 'label'}), function (error) { %>
-                    <span>
-                        <i class="icon-warning-sign"></i>
-                        <span class="error-message"><%- error.message %></span>
-                    </span>
+                    <div class="AknFieldContainer-validationError">
+                        <i class="icon-warning-sign"></i> <%- error.message %>
+                    </div>
                 <% }); %>
-            </span>
+            </div>
         </div>
     </div>
 
-    <div class="controls">
-        <label class="control-label">
-            <%- dueDateLabel %>
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label"><%- dueDateLabel %> (<%- requiredLabel %>)</label>
+        </div>
+        <div class="AknFieldContainer-inputContainer">
             <span class="date-wrapper">
-                <input name="project-due-date" value="<%- dueDateValue %>" class="add-on project-field AknTextField" type="text">
+                <input type="text" value="<%- dueDateValue %>" name="project-due-date" class="AknTextField project-field add-on"/>
             </span>
-        </label>
-
-        <div class="validation-errors">
-            <span class="validation-errors dueDate-errors">
+        </div>
+        <div class="AknFieldContainer-footer">
+            <div class="AknFieldContainer-validationErrors dueDate-errors">
                 <% _.each(_.where(errors, {field: 'dueDate'}), function (error) { %>
-                    <span>
-                        <i class="icon-warning-sign"></i>
-                        <span class="error-message"><%- error.message %></span>
-                    </span>
+                    <div class="AknFieldContainer-validationError">
+                        <i class="icon-warning-sign"></i> <%- error.message %>
+                    </div>
                 <% }); %>
-            </span>
+            </div>
         </div>
     </div>
 
-    <div class="controls">
-        <label class="control-label">
-            <%- descriptionLabel %>
-            <textarea name="project-description" class="project-field AknTextareaField" placeholder="<%- descriptionPlaceholder %>"><%- descriptionValue %></textarea>
-        </label>
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label"><%- descriptionLabel %></label>
+        </div>
+        <div class="AknFieldContainer-inputContainer">
+            <textarea name="project-description" class="AknTextareaField project-field" placeholder="<%- descriptionPlaceholder %>"><%- descriptionValue %></textarea>
+        </div>
     </div>
 </div>
