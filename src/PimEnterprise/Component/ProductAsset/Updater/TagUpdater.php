@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
@@ -33,11 +34,9 @@ class TagUpdater implements ObjectUpdaterInterface
     public function update($tag, array $data, array $options = [])
     {
         if (!$tag instanceof TagInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "PimEnterprise\Component\ProductAsset\Model\TagInterface", "%s" provided.',
-                    ClassUtils::getClass($tag)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($tag),
+                TagInterface::class
             );
         }
 

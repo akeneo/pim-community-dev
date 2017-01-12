@@ -2,6 +2,8 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -35,8 +37,9 @@ class AssetUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_asset()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "PimEnterprise\Component\ProductAsset\Model\AssetInterface", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'PimEnterprise\Component\ProductAsset\Model\AssetInterface'
             )
         )->during(
             'update',
@@ -110,7 +113,14 @@ class AssetUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new \InvalidArgumentException('Tag with "dog" code does not exist')
+                InvalidPropertyException::validEntityCodeExpected(
+                    'tags',
+                    'tag code',
+                    'The tag does not exist',
+                    'updater',
+                    'asset',
+                    'dog'
+                )
             )
             ->during('update', [$asset, $values, []]);
     }
@@ -146,7 +156,14 @@ class AssetUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new \InvalidArgumentException('Category with "cat1" code does not exist')
+                InvalidPropertyException::validEntityCodeExpected(
+                    'categories',
+                    'category code',
+                    'The category does not exist',
+                    'updater',
+                    'asset',
+                    'cat1'
+                )
             )
             ->during('update', [$asset, $values, []]);
     }
@@ -192,8 +209,12 @@ class AssetUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new \InvalidArgumentException(
-                    'Asset expects a string with the format "yyyy-mm-dd" as data, "2018/02/01" given'
+                InvalidPropertyException::dateExpected(
+                    'end_of_use',
+                    'yyyy-mm-dd',
+                    'updater',
+                    'asset',
+                    '2018/02/01'
                 )
             )
             ->during('update', [$asset, $values, []]);

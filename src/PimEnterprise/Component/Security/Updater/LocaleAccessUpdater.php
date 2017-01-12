@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Component\Security\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -55,11 +57,9 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
     public function update($localeAccess, array $data, array $options = [])
     {
         if (!$localeAccess instanceof LocaleAccessInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "PimEnterprise\Component\Security\Model\LocaleAccessInterface", "%s" provided.',
-                    ClassUtils::getClass($localeAccess)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($localeAccess),
+                LocaleAccessInterface::class
             );
         }
 
@@ -75,7 +75,7 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
      * @param string                $field
      * @param mixed                 $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData(LocaleAccessInterface $localeAccess, $field, $data)
     {
@@ -83,14 +83,28 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
             case 'locale':
                 $locale = $this->localeRepository->findOneByIdentifier($data);
                 if (null === $locale) {
-                    throw new \InvalidArgumentException(sprintf('Locale with "%s" code does not exist', $data));
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'locale',
+                        'locale code',
+                        'The locale does not exist',
+                        'updater',
+                        'locale access',
+                        $data
+                    );
                 }
                 $localeAccess->setLocale($locale);
                 break;
             case 'user_group':
                 $group = $this->groupRepository->findOneByIdentifier($data);
                 if (null === $group) {
-                    throw new \InvalidArgumentException(sprintf('Group with "%s" code does not exist', $data));
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'user_group',
+                        'group code',
+                        'The group does not exist',
+                        'updater',
+                        'locale access',
+                        $data
+                    );
                 }
                 $localeAccess->setUserGroup($group);
                 break;

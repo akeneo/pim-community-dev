@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Component\Security\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -56,11 +58,9 @@ class ProductCategoryAccessUpdater implements ObjectUpdaterInterface
     public function update($categoryAccess, array $data, array $options = [])
     {
         if (!$categoryAccess instanceof ProductCategoryAccess) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess", "%s" provided.',
-                    ClassUtils::getClass($categoryAccess)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($categoryAccess),
+                ProductCategoryAccess::class
             );
         }
 
@@ -76,7 +76,7 @@ class ProductCategoryAccessUpdater implements ObjectUpdaterInterface
      * @param string                $field
      * @param mixed                 $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData(ProductCategoryAccess $categoryAccess, $field, $data)
     {
@@ -84,14 +84,28 @@ class ProductCategoryAccessUpdater implements ObjectUpdaterInterface
             case 'category':
                 $category = $this->productRepository->findOneByIdentifier($data);
                 if (null === $category) {
-                    throw new \InvalidArgumentException(sprintf('Product category with "%s" code does not exist', $data));
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'category',
+                        'category code',
+                        'The category does not exist',
+                        'updater',
+                        'product category access',
+                        $data
+                    );
                 }
                 $categoryAccess->setCategory($category);
                 break;
             case 'user_group':
                 $group = $this->groupRepository->findOneByIdentifier($data);
                 if (null === $group) {
-                    throw new \InvalidArgumentException(sprintf('Group with "%s" code does not exist', $data));
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'user_group',
+                        'group code',
+                        'The group does not exist',
+                        'updater',
+                        'product category access',
+                        $data
+                    );
                 }
                 $categoryAccess->setUserGroup($group);
                 break;

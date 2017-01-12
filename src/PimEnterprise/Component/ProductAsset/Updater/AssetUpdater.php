@@ -13,6 +13,8 @@ namespace PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
@@ -63,11 +65,9 @@ class AssetUpdater implements ObjectUpdaterInterface
     public function update($asset, array $data, array $options = [])
     {
         if (!$asset instanceof AssetInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "PimEnterprise\Component\ProductAsset\Model\AssetInterface", "%s" provided.',
-                    ClassUtils::getClass($asset)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($asset),
+                AssetInterface::class
             );
         }
 
@@ -83,7 +83,7 @@ class AssetUpdater implements ObjectUpdaterInterface
      * @param string         $field
      * @param mixed          $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData(AssetInterface $asset, $field, $data)
     {
@@ -112,6 +112,8 @@ class AssetUpdater implements ObjectUpdaterInterface
      *
      * @param AssetInterface $asset
      * @param array          $data
+     *
+     * @throws InvalidPropertyException
      */
     protected function setTags(AssetInterface $asset, array $data)
     {
@@ -138,6 +140,8 @@ class AssetUpdater implements ObjectUpdaterInterface
      *
      * @param AssetInterface $asset
      * @param array          $data
+     *
+     * @throws InvalidPropertyException
      */
     protected function setCategories(AssetInterface $asset, array $data)
     {
@@ -161,7 +165,7 @@ class AssetUpdater implements ObjectUpdaterInterface
     /**
      * @param string $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function validateDateFormat($data)
     {
@@ -172,12 +176,22 @@ class AssetUpdater implements ObjectUpdaterInterface
         try {
             new \DateTime($data);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Invalid date, "%s" given', $data), 0, $e);
+            throw InvalidPropertyException::dateExpected(
+                'end_of_use',
+                'yyyy-mm-dd',
+                'updater',
+                'asset',
+                $data
+            );
         }
 
         if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-            throw new \InvalidArgumentException(
-                sprintf('Asset expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
+            throw InvalidPropertyException::dateExpected(
+                'end_of_use',
+                'yyyy-mm-dd',
+                'updater',
+                'asset',
+                $data
             );
         }
     }
@@ -185,7 +199,7 @@ class AssetUpdater implements ObjectUpdaterInterface
     /**
      * @param string $tagCode
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      *
      * @return TagInterface
      */
@@ -194,7 +208,14 @@ class AssetUpdater implements ObjectUpdaterInterface
         $tag = $this->tagRepository->findOneByIdentifier($tagCode);
 
         if (null === $tag) {
-            throw new \InvalidArgumentException(sprintf('Tag with "%s" code does not exist', $tagCode));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'tags',
+                'tag code',
+                'The tag does not exist',
+                'updater',
+                'asset',
+                $tagCode
+            );
         }
 
         return $tag;
@@ -203,7 +224,7 @@ class AssetUpdater implements ObjectUpdaterInterface
     /**
      * @param string $categoryCode
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      *
      * @return CategoryInterface
      */
@@ -212,7 +233,14 @@ class AssetUpdater implements ObjectUpdaterInterface
         $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
 
         if (null === $category) {
-            throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $categoryCode));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'categories',
+                'category code',
+                'The category does not exist',
+                'updater',
+                'asset',
+                $categoryCode
+            );
         }
 
         return $category;
@@ -221,6 +249,8 @@ class AssetUpdater implements ObjectUpdaterInterface
     /**
      * @param AssetInterface $asset
      * @param array          $tags
+     *
+     * @throws InvalidPropertyException
      */
     protected function removeTagsByCodes(AssetInterface $asset, array $tags)
     {
@@ -232,6 +262,8 @@ class AssetUpdater implements ObjectUpdaterInterface
     /**
      * @param AssetInterface $asset
      * @param array          $categories
+     *
+     * @throws InvalidPropertyException
      */
     protected function removeCategoriesByCodes(AssetInterface $asset, array $categories)
     {

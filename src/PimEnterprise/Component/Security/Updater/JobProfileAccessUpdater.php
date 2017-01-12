@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Component\Security\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -55,11 +57,9 @@ class JobProfileAccessUpdater implements ObjectUpdaterInterface
     public function update($jobProfileAccess, array $data, array $options = [])
     {
         if (!$jobProfileAccess instanceof JobProfileAccessInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "PimEnterprise\Component\Security\Model\JobProfileAccessInterface", "%s" provided.',
-                    ClassUtils::getClass($jobProfileAccess)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($jobProfileAccess),
+                JobProfileAccessInterface::class
             );
         }
 
@@ -75,7 +75,7 @@ class JobProfileAccessUpdater implements ObjectUpdaterInterface
      * @param string                    $field
      * @param mixed                     $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData(JobProfileAccessInterface $jobProfileAccess, $field, $data)
     {
@@ -83,14 +83,28 @@ class JobProfileAccessUpdater implements ObjectUpdaterInterface
             case 'job_profile':
                 $jobProfile = $this->jobRepository->findOneByIdentifier($data);
                 if (null === $jobProfile) {
-                    throw new \InvalidArgumentException(sprintf('Job Profile with "%s" code does not exist', $data));
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'job_profile',
+                        'job profile code',
+                        'The job profile does not exist',
+                        'updater',
+                        'job profile access',
+                        $data
+                    );
                 }
                 $jobProfileAccess->setJobProfile($jobProfile);
                 break;
             case 'user_group':
                 $group = $this->groupRepository->findOneByIdentifier($data);
                 if (null === $group) {
-                    throw new \InvalidArgumentException(sprintf('Group with "%s" code does not exist', $data));
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'user_group',
+                        'group code',
+                        'The group does not exist',
+                        'updater',
+                        'job profile access',
+                        $data
+                    );
                 }
                 $jobProfileAccess->setUserGroup($group);
                 break;

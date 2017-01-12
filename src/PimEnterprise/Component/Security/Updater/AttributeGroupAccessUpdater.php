@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Component\Security\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -55,11 +57,9 @@ class AttributeGroupAccessUpdater implements ObjectUpdaterInterface
     public function update($groupAccess, array $data, array $options = [])
     {
         if (!$groupAccess instanceof AttributeGroupAccessInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface", "%s" provided.',
-                    ClassUtils::getClass($groupAccess)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($groupAccess),
+                AttributeGroupAccessInterface::class
             );
         }
 
@@ -75,7 +75,7 @@ class AttributeGroupAccessUpdater implements ObjectUpdaterInterface
      * @param string                        $field
      * @param mixed                         $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData(AttributeGroupAccessInterface $groupAccess, $field, $data)
     {
@@ -83,14 +83,28 @@ class AttributeGroupAccessUpdater implements ObjectUpdaterInterface
             case 'attribute_group':
                 $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($data);
                 if (null === $attributeGroup) {
-                    throw new \InvalidArgumentException(sprintf('Attribute group with "%s" code does not exist', $data));
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'attribute_group',
+                        'attribute group code',
+                        'The attribute group does not exist',
+                        'updater',
+                        'attribute group access',
+                        $data
+                    );
                 }
                 $groupAccess->setAttributeGroup($attributeGroup);
                 break;
             case 'user_group':
                 $group = $this->userGroupRepo->findOneByIdentifier($data);
                 if (null === $group) {
-                    throw new \InvalidArgumentException(sprintf('Group with "%s" code does not exist', $data));
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'user_group',
+                        'group code',
+                        'The group does not exist',
+                        'updater',
+                        'attribute group access',
+                        $data
+                    );
                 }
                 $groupAccess->setUserGroup($group);
                 break;
