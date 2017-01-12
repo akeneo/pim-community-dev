@@ -85,8 +85,7 @@ Feature: Select a project to display products to enrich
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
@@ -97,11 +96,17 @@ Feature: Select a project to display products to enrich
     And I wait for the "project_calculation" job to finish
     And I logout
 
+  Scenario: A message is displayed if I have no projects to work on
+    Given I am logged in as "Kathy"
+    And I am on the products page
+    And I switch view selector type to "Projects"
+    Then I should see the text "Start a new project"
+
   Scenario: A contributor can select a project by selecting it in the datagrid view selector
     Given I am logged in as "Mary"
     And I am on the products page
-    And I open the view selector
     And I switch view selector type to "Projects"
+    And I open the view selector
     When I apply the "2016 summer collection" project
     Then I should see products tshirt-skyrim and tshirt-the-witcher-3
     And I should see the text "2016 summer collection"
@@ -133,8 +138,8 @@ Feature: Select a project to display products to enrich
   Scenario: A contributor must be alerted if he's leaving project scope by changing grid filters
     Given I am logged in as "Mary"
     And I am on the products page
-    And I open the view selector
     And I switch view selector type to "Projects"
+    And I open the view selector
     When I apply the "2016 summer collection" project
     Then I should see products tshirt-skyrim and tshirt-the-witcher-3
     When I filter by "category" with operator "" and value "high_tech"

@@ -18,11 +18,8 @@ Feature: Published products datagrid views
   Scenario: A contributor can choose his default published products datagrid view from his profile
     Given I am on the published products page
     And I filter by "family" with operator "in list" and value "Sneakers"
-    And I open the view selector
-    And I click on "Create view" action in the dropdown
-    And I fill in the following information in the popin:
+    And I create the view:
       | new-view-label | Sneakers only |
-    And I press the "OK" button
     Then I should be on the published index page
     And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page

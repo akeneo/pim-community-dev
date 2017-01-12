@@ -3,3 +3,9 @@ extensions:
         module: pim/grid/view-selector/selector
         config:
             viewTypes: ['view', 'project']
+
+    pimee-grid-view-selector-create-project:
+        module: activity-manager/grid/view-selector/create-project
+        parent: pim-grid-view-selector
+        targetZone: buttons
+        position: 115

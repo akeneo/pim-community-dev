@@ -85,8 +85,7 @@ Feature: Display activity manager projects in the datagrid view selector
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
@@ -96,11 +95,13 @@ Feature: Display activity manager projects in the datagrid view selector
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
     When I am on the products page
+    And I switch view selector type to "Views"
+    And I apply the "Default view" view
+    Then I should be on the products page
     And I filter by "category" with operator "" and value "default"
     And I show the filter "capacity"
     And I filter by "capacity" with operator "=" and value "8 Gigabyte"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | project-label       | Tech project       |
       | project-description | Technical project. |
@@ -114,40 +115,34 @@ Feature: Display activity manager projects in the datagrid view selector
   Scenario: A contributor can display projects he can work on
     Given I am logged in as "Mary"
     When I am on the products page
-    And I open the view selector
-    Then view selector type switcher should be on "Projects"
-    And I should see the "2016 summer collection" project
+    And I switch view selector type to "Projects"
+    Then I should be on the products page
+    When I open the view selector
+    Then I should see the "2016 summer collection" project
 
   Scenario: A contributor can display projects based on filter he doesn't have access to
     Given I am logged in as "Kathy"
     When I am on the products page
-    And I open the view selector
-    Then view selector type switcher should be on "Projects"
-    And I should see the "Tech project" project
+    And I switch view selector type to "Projects"
+    Then I should be on the products page
+    When I open the view selector
+    Then I should see the "Tech project" project
 
   Scenario: A contributor won't see a project he can't work on
     Given I am logged in as "Teddy"
     And I am on the products page
-    And I open the view selector
-    Then view selector type switcher should be on "Projects"
+    And I switch view selector type to "Projects"
+    Then I should be on the products page
+    When I open the view selector
     Then I should not see the "2016 summer collection" project
     But I should see the "Tech project" project
 
   Scenario: A contributor can search for a project name
     Given I am logged in as "Mary"
     And I am on the products page
-    When I open the view selector
-    Then view selector type switcher should be on "Projects"
+    And I switch view selector type to "Projects"
+    And I open the view selector
     When I filter view selector with name "2016"
     Then I should see the "2016 summer collection" project
     When I filter view selector with name "bar"
     Then I should not see the "2016 summer collection" project
-
-  Scenario: A contributor can search for a view name, then switch to projects and keeps his search
-    Given I am logged in as "Mary"
-    And I am on the products page
-    When I open the view selector
-    And I switch view selector type to "Views"
-    And I filter view selector with name "2016"
-    And I switch view selector type to "Projects"
-    Then I should see the "2016 summer collection" project

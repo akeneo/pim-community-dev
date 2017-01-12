@@ -1,10 +1,10 @@
 'use strict';
 
 /**
- * Extension of view-selector-footer-create which add a button to create view.
- * This extension add dropdown with Create view and Create project instead.
+ * Create extension for the Datagrid View Selector.
+ * It displays a button near the selector to allow the user to create a new project.
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Adrien Petremann <adrien.petremann@akeneo.com>
  */
 define(
     [
@@ -13,9 +13,7 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'oro/loading-mask',
-        'pim/form-builder',
-        'text!activity-manager/templates/grid/view-selector/footer/create/project',
+        'text!activity-manager/templates/grid/view-selector/create-project',
         'activity-manager/project/create-form'
     ],
     function (
@@ -24,55 +22,48 @@ define(
         __,
         Backbone,
         BaseForm,
-        LoadingMask,
-        FormBuilder,
         template,
         CreateForm
     ) {
         return BaseForm.extend({
             template: _.template(template),
             tagName: 'span',
-            className: 'action',
+            className: 'create-project-button',
             fieldsStatuses: {},
             form: null,
-
-            /**
-             * {@inheritDoc}
-             */
-            configure: function () {
-                this.listenTo(this, 'grid:view-selector:create-new', this.handleProjectCreation);
-
-                return BaseForm.prototype.configure.apply(this, arguments);
+            events: {
+                'click .create': 'promptCreateProject'
             },
 
             /**
-             * {@inheritDoc}
+             * {@inheritdoc}
              */
             render: function () {
+                var label = '';
+                var icon = '';
+
+                if ('project' === this.getRoot().currentViewType) {
+                    label = __('activity_manager.grid.view_selector.create');
+                    icon = 'plus';
+                } else {
+                    label = __('activity_manager.grid.view_selector.create_from_view');
+                    icon = 'tasks';
+                }
+
                 this.$el.html(this.template({
-                    projectButtonTitle: __('activity_manager.grid.view_selector.create')
+                    label: label,
+                    icon: icon
                 }));
 
-                return this;
-            },
+                this.$('[data-toggle="tooltip"]').tooltip();
 
-            /**
-             * We check if this extension can handle the action by checking the extension code.
-             *
-             * @param {Object} data '{extensionCode: "the_extension_code"}'
-             */
-            handleProjectCreation: function (data) {
-                if (data.extensionCode === this.code) {
-                    this.promptCreateProject();
-                }
+                return this;
             },
 
             /**
              * Prompt the create project modal
              */
             promptCreateProject: function () {
-                this.getRoot().trigger('grid:view-selector:close-selector');
-
                 var modal = new Backbone.BootstrapModal({
                     title: __('activity_manager.create_project_modal.title'),
                     content: '',

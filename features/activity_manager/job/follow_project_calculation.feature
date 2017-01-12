@@ -8,8 +8,7 @@ Feature: Follow project calculation job
     Given the "activity_manager" catalog configuration
     And I am logged in as "Julia"
     When I am on the products page
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     And I fill in the following information in the popin:
       | project-label       | Collection 2017                 |
       | project-description | My very awesome collection 2007 |

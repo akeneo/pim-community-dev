@@ -37,7 +37,6 @@ config:
 
     paths:
         # Forms
-        activity-manager/grid/view-selector/footer/create/project: pimenterpriseactivitymanager/js/grid/view-selector-footer-create-project
         activity-manager/project/create-form: pimenterpriseactivitymanager/js/project/create-form
         activity-manager/project/fetcher: pimenterpriseactivitymanager/js/fetcher/project-fetcher
         activity-manager/widget/project-widget: pimenterpriseactivitymanager/js/widget/project-widget
@@ -49,15 +48,16 @@ config:
         activity-manager/grid/view-selector/selector: pimenterpriseactivitymanager/js/grid/view-selector
         activity-manager/grid/view-selector/line: pimenterpriseactivitymanager/js/grid/view-selector-line
         activity-manager/grid/view-selector/current: pimenterpriseactivitymanager/js/grid/view-selector-current
+        activity-manager/grid/view-selector/create-project: pimenterpriseactivitymanager/js/grid/view-selector-create-project
 
         # Savers
         activity-manager/saver/project: pimenterpriseactivitymanager/js/saver/project-saver
 
         # Templates
         activity-manager/templates/grid/create-project-modal-content: pimenterpriseactivitymanager/templates/grid/create-project-modal-content.html
-        activity-manager/templates/grid/view-selector/footer/create/project: pimenterpriseactivitymanager/templates/grid/view-selector-footer-create-project.html
         activity-manager/templates/field-error: pimenterpriseactivitymanager/templates/field-error.html
         activity-manager/templates/grid/view-selector/line-project: pimenterpriseactivitymanager/templates/grid/view-selector-line-project.html
+        activity-manager/templates/grid/view-selector/create-project: pimenterpriseactivitymanager/templates/grid/view-selector-create-project.html
         activity-manager/templates/widget/project-widget: pimenterpriseactivitymanager/templates/widget/project-widget.html
         activity-manager/templates/widget/project-widget-empty: pimenterpriseactivitymanager/templates/widget/project-widget-empty.html
         activity-manager/templates/widget/project-selector: pimenterpriseactivitymanager/templates/widget/project-selector.html

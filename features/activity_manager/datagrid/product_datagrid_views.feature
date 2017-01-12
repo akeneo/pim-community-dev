@@ -18,11 +18,8 @@ Feature: Products datagrid views
 
   Scenario: A contributor can create a product datagrid view
     Given I filter by "family" with operator "in list" and value "Sneakers"
-    And I open the view selector
-    And I click on "Create view" action in the dropdown
-    And I fill in the following information in the popin:
+    And I create the view:
       | new-view-label | Sneakers only |
-    And I press the "OK" button
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Sneakers only"
@@ -31,11 +28,8 @@ Feature: Products datagrid views
 
   Scenario: A contributor can update a product datagrid view
     Given I filter by "family" with operator "in list" and value "Boots"
-    And I open the view selector
-    And I click on "Create view" action in the dropdown
-    And I fill in the following information in the popin:
+    And I create the view:
       | new-view-label | Some shoes |
-    And I press the "OK" button
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Some shoes"
@@ -53,17 +47,14 @@ Feature: Products datagrid views
 
   Scenario: A contributor can delete a product datagrid view
     Given I filter by "family" with operator "in list" and value "Boots"
-    And I open the view selector
-    And I click on "Create view" action in the dropdown
-    And I fill in the following information in the popin:
+    And I create the view:
       | new-view-label | Boots only |
-    And I press the "OK" button
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Boots only"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
-    When I delete the view "Boots only"
+    When I delete the view
     And I confirm the deletion
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully removed"
@@ -73,11 +64,8 @@ Feature: Products datagrid views
 
   Scenario: A contributor can choose his default products datagrid view from his profile
     Given I filter by "family" with operator "in list" and value "Sneakers"
-    And I open the view selector
-    And I click on "Create view" action in the dropdown
-    And I fill in the following information in the popin:
+    And I create the view:
       | new-view-label | Sneakers only |
-    And I press the "OK" button
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page
@@ -104,11 +92,8 @@ Feature: Products datagrid views
 
   Scenario: A contributor can remove his default products datagrid view from his profile
     Given I filter by "family" with operator "in list" and value "Sneakers"
-    And I open the view selector
-    And I click on "Create view" action in the dropdown
-    And I fill in the following information in the popin:
+    And I create the view:
       | new-view-label | Sneakers only |
-    And I press the "OK" button
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page
@@ -122,7 +107,7 @@ Feature: Products datagrid views
     Then I should not see the text "There are unsaved changes."
     When I am on the products page
     Then I should see the text "Sneakers only"
-    When I delete the view "Sneakers only"
+    When I delete the view
     And I confirm the deletion
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully removed"

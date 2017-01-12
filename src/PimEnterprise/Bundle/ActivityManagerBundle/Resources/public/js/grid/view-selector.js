@@ -10,12 +10,18 @@
 define(
     [
         'jquery',
+        'underscore',
+        'oro/translator',
         'pim/grid/view-selector/selector',
+        'pim/datagrid/state',
         'pim/fetcher-registry'
     ],
     function (
         $,
+        _,
+        __,
         ViewSelector,
+        DatagridState,
         FetcherRegistry
     ) {
         return ViewSelector.extend({
@@ -23,27 +29,60 @@ define(
             /**
              * {@inheritdoc}
              *
-             * We define the default project view type if the current user has some project to work on.
-             * If the user doesn't have project, or if the server fails to answer, we fallback to view type.
+             * We define the default view type if the current user has a project as current view.
              */
             initializeViewTypes: function () {
-                var deferred = $.Deferred();
-                var searchParameters = this.getSelectSearchParameters('', 1);
+                if (null !== this.currentView) {
+                    this.currentViewType = 'project' === this.currentView.type ? 'project' : 'view';
+                }
+            },
 
-                FetcherRegistry
-                    .getFetcher('datagrid-project')
-                    .search(searchParameters)
-                    .then(function (projects) {
-                        if (projects.length > 0) {
-                            this.currentViewType = 'project';
-                        } else {
-                            this.currentViewType = 'view';
-                        }
+            /**
+             * {@inheritdoc}
+             *
+             * Override to handle activity manager projects.
+             */
+            switchViewType: function (event) {
+                var viewType = $(event.target).data('value');
 
-                        deferred.resolve();
+                if (this.currentViewType === viewType) {
+                    return;
+                }
+
+                this.$('.current-view-type').html(this.$('[data-value="'+viewType+'"]').html());
+                this.$('.select2-selection-label-view .current').html(
+                    __('activity_manager.grid.view_selector.loading')
+                );
+                this.select2Instance.select2('readonly', true);
+
+                this.currentViewType = viewType;
+                DatagridState.set(this.gridAlias, 'view', '0');
+
+                if ('project' === this.currentViewType) {
+                    FetcherRegistry.getFetcher('project')
+                        .search({search: null, options: {limit: 1, page: 1}})
+                        .then(function (projects) {
+                            var project = _.first(projects);
+
+                            if (undefined === project) {
+                                this.$('.select2-selection-label-view .current').html(
+                                    __('activity_manager.grid.view_selector.start_new_project')
+                                );
+                                this.$('.select2-arrow').remove();
+                                this.select2Instance.select2('readonly', true);
+
+                                this.renderExtensions();
+                            } else {
+                                this.selectView(project);
+                            }
+                        }.bind(this));
+                }
+
+                if ('view' === this.currentViewType) {
+                    this.initializeSelection().then(function (view) {
+                        this.selectView(view);
                     }.bind(this));
-
-                return deferred.promise();
+                }
             },
 
             /**

@@ -1,7 +1,12 @@
 activity_manager:
     common:
         required: Required
-    grid.view_selector.create: Create project
+    grid:
+        view_selector:
+            create: Create project
+            create_from_view: Create a project from this view
+            loading: Loading...
+            start_new_project: Start a new project
     project:
         label: Label
         label_maxlength: This value is too long. It should have {{ max }} characters or less.

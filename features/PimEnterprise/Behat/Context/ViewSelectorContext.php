@@ -31,16 +31,11 @@ class ViewSelectorContext extends PimContext
     }
 
     /**
-     * @Then /^I click on "Create ([^"]*)" action in the dropdown$/
-     *
-     * @param string $action
+     * @Given /^I click on the create project button$/
      */
-    public function iClickOnCreateAction($action)
+    public function iClickOnCreateProjectButton()
     {
-        $this->getCurrentPage()
-            ->getSelectViewActionDropdown()
-            ->open()
-            ->chooseAction($action);
+        $this->getCurrentPage()->clickOnCreateProjectButton();
     }
 
     /**

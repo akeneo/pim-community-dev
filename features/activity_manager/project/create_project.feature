@@ -15,8 +15,7 @@ Feature: Create enrichment project
     And I filter by "category" with operator "" and value "summer_collection"
     And I display in the products grid the columns sku, name, description
     And I should be on the products page
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     Then I should see the text "Label"
     Then I should see the text "Due date"
     Then I should see the text "Description"
@@ -39,8 +38,7 @@ Feature: Create enrichment project
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the products page
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | Due Date | 01/31/2020 |
     And I press the "Save" button
@@ -50,8 +48,7 @@ Feature: Create enrichment project
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the products page
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | Label | New collection |
     And I press the "Save" button
@@ -61,8 +58,7 @@ Feature: Create enrichment project
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the products page
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | Label | This is a very long label that has obviously more than one hundred characters which is irrelevant for a normal use |
     Then I should see the text "This value is too long. It should have 100 characters or less."
@@ -76,8 +72,7 @@ Feature: Create enrichment project
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the products page
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | Due Date | 10/06/2012 |
     Then I should see the text "You can't select a date in the past."
@@ -91,15 +86,13 @@ Feature: Create enrichment project
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the products page
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | Label    | Star Wars Collection |
       | Due Date | 01/31/2051           |
     And I press the "Save" button
     And I am on the products page
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | Label    | Star Wars Collection |
       | Due Date | 01/31/2051           |
@@ -107,8 +100,7 @@ Feature: Create enrichment project
     Then I should see the text "This value is already used."
     When I am on the products page
     And I filter by "scope" with operator "equals" and value "Mobile"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | Label    | Star Wars Collection |
       | Due Date | 01/31/2051           |

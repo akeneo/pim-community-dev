@@ -90,8 +90,7 @@ Feature: Notify users after a project creation
     And I show the filter "weight"
     # In order to remove the tshirt LCD which is in Clothing and High-Tech categories
     And I filter by "weight" with operator "<" and value "6 Ounce"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
@@ -150,8 +149,7 @@ Feature: Notify users after a project creation
     Given I am logged in as "Julia"
     When I am on the products page
     And I filter by "category" with operator "" and value "clothing"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
@@ -214,8 +212,7 @@ Feature: Notify users after a project creation
     And I show the filter "weight"
     # In order to remove the tshirt LCD which is in Clothing and High-Tech categories
     And I filter by "weight" with operator "<" and value "6 Ounce"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
@@ -274,8 +271,7 @@ Feature: Notify users after a project creation
     And I am logged in as "Julia"
     When I am on the products page
     And I filter by "category" with operator "" and value "decoration"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |

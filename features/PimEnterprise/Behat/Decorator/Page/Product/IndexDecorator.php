@@ -21,19 +21,23 @@ class IndexDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
-    /**
-     * @return mixed
-     */
-    public function getSelectViewActionDropdown()
-    {
-        $dropdownToggle = $this->spin(function () {
-            return $this->find('css', '.create-view-dropdown');
-        }, 'Dropdown toggle button not found');
+    /** @var array Selectors to ease find */
+    protected $selectors = [
+        'Create project button' => '.grid-view-selector .create-project-button .create',
+    ];
 
-        return $this->decorate(
-            $dropdownToggle,
-            ['PimEnterprise\Behat\Decorator\Element\Grid\ViewSelectorCreateButtonDecorator']
-        );
+    /**
+     * Click on the create project button
+     */
+    public function clickOnCreateProjectButton()
+    {
+        $selector = $this->selectors['Create project button'];
+
+        $button = $this->spin(function () use ($selector) {
+            return $this->find('css', $selector);
+        }, sprintf('Create project button not found (%s).', $selector));
+
+        $button->click();
     }
 
     /**
