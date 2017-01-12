@@ -7,17 +7,16 @@ Feature: Datagrid views
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-      | sku             | family   | name-en_US      |
-      | purple-sneakers | sneakers | Purple sneakers |
-      | black-sneakers  | sneakers | Black sneakers  |
-      | black-boots     | boots    | Black boots     |
+      | sku             | family   | name-en_US      | manufacturer |
+      | purple-sneakers | sneakers | Purple sneakers | Nike         |
+      | black-sneakers  | sneakers | Black sneakers  |              |
+      | black-boots     | boots    | Black boots     |              |
     And I am logged in as "Mary"
 
   Scenario: Successfully display the default view
     Given I am on the products page
     Then I should see the text "Default view"
 
-  @ce
   Scenario: Successfully create a new view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Sneakers"
@@ -38,7 +37,6 @@ Feature: Datagrid views
     Then I should be on the products page
     And I should see products black-boots, purple-sneakers and black-sneakers
 
-  @ce
   Scenario: Successfully update a view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Boots"
@@ -59,7 +57,6 @@ Feature: Datagrid views
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
-  @ce
   Scenario: Successfully delete a view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Boots"
@@ -70,7 +67,7 @@ Feature: Datagrid views
     And I should see the text "Boots only"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
-    When I delete the view "Boots only"
+    When I delete the view
     And I confirm the deletion
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully removed"
@@ -88,7 +85,6 @@ Feature: Datagrid views
     When I am on the attributes page
     Then the page size should be 50
 
-  @ce
   Scenario: Successfully choose my default view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Sneakers"
@@ -118,7 +114,6 @@ Feature: Datagrid views
     When I press the "Reset" button
     Then I should see products black-boots, purple-sneakers and black-sneakers
 
-  @ce
   Scenario: Successfully remove my default view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Sneakers"
@@ -137,18 +132,17 @@ Feature: Datagrid views
     Then I should not see the text "There are unsaved changes."
     When I am on the products page
     Then I should see the text "Sneakers only"
-    When I delete the view "Sneakers only"
+    When I delete the view
     And I confirm the deletion
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully removed"
     And I should see the text "Default view"
     But I should not see the text "Sneakers only"
 
-  @ce
   Scenario: Successfully display values in grid when using a custom default view
     Given I am on the products page
-    And I display the columns SKU, Name and Family
-    Then I should see the text "purple-sneakers"
+    And I display the columns SKU, Name, Family and Manufacturer
+    Then I should see the text "Nike"
     When I create the view:
       | new-view-label | With name |
     Then I should be on the products page
@@ -178,7 +172,6 @@ Feature: Datagrid views
       | Name   | Black boots |
       | Family | Boots       |
 
-  @ce
   Scenario: Successfully change grid channel
     Given I am on the products page
     Then I should see the text "Tablet"
@@ -189,3 +182,8 @@ Feature: Datagrid views
     And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Mobile only"
     And I should see the text "Mobile"
+
+  @ce
+  Scenario: Don't display view type switcher if there is only one view type
+    Given I am on the products page
+    Then I should not see the text "Views"

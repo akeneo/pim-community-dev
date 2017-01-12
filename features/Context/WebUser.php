@@ -1144,7 +1144,9 @@ class WebUser extends RawMinkContext
     {
         $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
         if ($popin && !$element) {
-            $element = $this->getCurrentPage()->find('css', '.modal');
+            $element = $this->spin(function () {
+                return $this->getCurrentPage()->find('css', '.modal');
+            }, 'Modal not found.');
         }
 
         foreach ($table->getRowsHash() as $field => $value) {
