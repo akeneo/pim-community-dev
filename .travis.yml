@@ -35,13 +35,12 @@ install:
     - ./app/console --env=test pim:install
     - ./app/console --env=test oro:requirejs:generate-config
     - npm install
-    - curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Integration_Test
     - ./bin/phpspec run
-    - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
+    - ./bin/php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
     - grunt travis
 
 notifications:

@@ -1017,11 +1017,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I delete the view "([^"]*)"$/
+     * @When /^I delete the view$/
      */
-    public function iDeleteTheView($viewLabel)
+    public function iDeleteTheView()
     {
-        $this->getCurrentPage()->removeView($viewLabel);
+        $this->getCurrentPage()->removeView();
     }
 
     /**
@@ -1033,8 +1033,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCreateTheView(TableNode $table)
     {
-        $this->getCurrentPage()->openViewSelector();
-        $this->getCurrentPage()->clickCreateOnButton("Create view");
+        $this->getCurrentPage()->clickOnCreateViewButton();
 
         return [
             new Step\Then('I fill in the following information in the popin:', $table),

@@ -1,26 +1,22 @@
 'use strict';
 
 /**
- * Create view button extension for the Datagrid footer View Selector.
+ * Create extension for the Datagrid View Selector.
+ * It displays a button near the selector to allow the user to create a new view.
  *
- * Contains a "create" button to allow the user to create a view from the current
- * state of the grid (regarding filters and columns).
- *
- * @author    Adrien Petremann <adrien.petremann@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 define(
     [
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/form',
         'backbone',
-        'text!pim/template/grid/view-selector/footer/create/view',
+        'pim/form',
+        'text!pim/template/grid/view-selector/create-view',
         'text!pim/template/grid/view-selector/create-view-label-input',
-        'pim/dialog',
-        'routing',
         'pim/datagrid/state',
         'pim/saver/datagrid-view',
         'oro/messenger'
@@ -29,12 +25,10 @@ define(
         $,
         _,
         __,
-        BaseForm,
         Backbone,
+        BaseForm,
         template,
         templateInput,
-        Dialog,
-        Routing,
         DatagridState,
         DatagridViewSaver,
         messenger
@@ -43,35 +37,26 @@ define(
             template: _.template(template),
             templateInput: _.template(templateInput),
             tagName: 'span',
-            className: 'action',
-
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.listenTo(this, 'grid:view-selector:create-new', this.handleViewCreation);
-
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * We check if this extension can handle the action by checking the extension code.
-             *
-             * @param {Object} data '{extensionCode: "the_extension_code"}'
-             */
-            handleViewCreation: function (data) {
-                if (data.extensionCode === this.code) {
-                    this.promptCreateView();
-                }
+            className: 'create-button',
+            events: {
+                'click .create': 'promptCreateView'
             },
 
             /**
              * {@inheritdoc}
              */
             render: function () {
+                if ('view' !== this.getRoot().currentViewType) {
+                    this.$el.html('');
+
+                    return this;
+                }
+
                 this.$el.html(this.template({
-                    viewButtonTitle: __('grid.view_selector.create_view')
+                    label: __('grid.view_selector.create_view')
                 }));
+
+                this.$('[data-toggle="tooltip"]').tooltip();
 
                 return this;
             },
