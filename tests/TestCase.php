@@ -16,31 +16,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TestCase extends KernelTestCase
+abstract class TestCase extends KernelTestCase
 {
     /** @var int Count of test inside the same test class */
     protected static $count = 0;
 
     /** @var ContainerInterface */
     protected $container;
-
-    /** @var string */
-    protected $catalogName = 'technical';
-
-    /** @var string */
-    protected $extraDirectories = [];
-
-    /** @var bool If you don't need to purge database between each test in the same test class, set to false */
-    protected $purgeDatabaseForEachTest = true;
-
-    /** @var string */
-    protected $catalogDirectory;
-
-    /** @var string */
-    protected $fixturesDirectory;
-
-    /** @var string */
-    protected $rootPath;
 
     /**
      * {@inheritdoc}
@@ -51,6 +33,11 @@ class TestCase extends KernelTestCase
     }
 
     /**
+     * @return Configuration
+     */
+    abstract protected function getConfiguration();
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -59,17 +46,13 @@ class TestCase extends KernelTestCase
 
         $this->container = static::$kernel->getContainer();
 
-        $this->rootPath = $this->getParameter('kernel.root_dir').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
-
-        $this->catalogDirectory = $this->rootPath.'tests'.DIRECTORY_SEPARATOR.'catalog'.DIRECTORY_SEPARATOR;
-        $this->fixturesDirectory = $this->rootPath.'tests'.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR;
-
+        $configuration = $this->getConfiguration();
         self::$count++;
 
-        if ($this->purgeDatabaseForEachTest || 1 === self::$count) {
+        if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
             $this->purgeDatabase();
 
-            $files = $this->getFilesToLoad();
+            $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
             $filesByType = $this->getFilesToLoadByType($files);
             $this->loadSqlFiles($filesByType['sql']);
             $this->loadImportFiles($filesByType['import']);
@@ -94,6 +77,14 @@ class TestCase extends KernelTestCase
     protected function getParameter($service)
     {
         return $this->container->getParameter($service);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRootPath()
+    {
+        return realpath($this->getParameter('kernel.root_dir').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -216,25 +207,23 @@ class TestCase extends KernelTestCase
     /**
      * Get the list of catalog configuration file paths to load
      *
-     * @throws \InvalidArgumentException If configuration is not found
+     * @param array $directories
      *
-     * @return string[]
+     * @return array
+     * @throws \Exception if no files can be loaded
+     *
      */
-    protected function getFilesToLoad()
+    protected function getFilesToLoad(array $directories)
     {
-        $directories = array_merge([$this->catalogDirectory], $this->extraDirectories);
-
         $files = [];
-        foreach ($directories as &$directory) {
-            $directory .= DIRECTORY_SEPARATOR.$this->catalogName;
-            $files     = array_merge($files, glob($directory.'/*'));
+        foreach ($directories as $directory) {
+            $files = array_merge($files, glob($directory.'/*'));
         }
 
         if (empty($files)) {
-            throw new \InvalidArgumentException(
+            throw new \Exception(
                 sprintf(
-                    'No configuration found for catalog "%s", looked in "%s"',
-                    $this->catalogName,
+                    'No catalog file to load found in "%s"',
                     implode(', ', $directories)
                 )
             );
@@ -286,15 +275,14 @@ class TestCase extends KernelTestCase
      */
     protected function getFixturePath($name)
     {
-        $path = $this->fixturesDirectory . DIRECTORY_SEPARATOR . $name;
-        if (!is_file($path)) {
-            throw new \Exception(sprintf('The fixture "%s" does not exist.'));
+        $configuration = $this->getConfiguration();
+        foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
+            $path = $fixtureDirectory . $name;
+            if (is_file($path) && false !== realpath($path)) {
+                return realpath($path);
+            }
         }
 
-        if (false === $realPath = realpath($path)) {
-            throw new \Exception(sprintf('The fixture "%s" does not exist.'));
-        }
-
-        return $realPath;
+        throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
     }
 }
