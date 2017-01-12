@@ -49,7 +49,7 @@ class FamilySorter implements FieldSorterInterface
             ->leftJoin($rootAlias.'.family', $family)
             ->leftJoin($family.'.translations', $trans, 'WITH', $trans.'.locale = :dataLocale');
         $this->qb
-            ->addSelect('COALESCE('.$trans.'.label, CONCAT(\'[\', '.$family.'.code, \']\')) as '.$field);
+            ->addSelect('COALESCE(NULLIF('.$trans.'.label, \'\'), CONCAT(\'[\', '.$family.'.code, \']\')) as '.$field);
 
         $this->qb->addOrderBy($field, $direction);
 

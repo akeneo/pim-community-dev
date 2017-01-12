@@ -38,4 +38,20 @@ class FamilyTransformerSpec extends ObjectBehavior
 
         $this->transform($result, $locale)->shouldReturn($expected);
     }
+
+    function it_transforms_product_family_label_if_empty(\MongoId $id)
+    {
+        $result = [
+            'normalizedData' => [
+                'family' => [
+                    'code' => 'expected-code',
+                    'label' => ['fr_FR' => ''],
+                ]
+            ]
+        ];
+
+        $expected = $result + ['familyLabel'  => '[expected-code]'];
+
+        $this->transform($result, 'fr_FR')->shouldReturn($expected);
+    }
 }

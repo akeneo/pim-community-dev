@@ -64,7 +64,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
 
         $qb = $this->_em->createQueryBuilder()
             ->select('f.id')
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', f.code, \']\')) as label')
+            ->addSelect('COALESCE(NULLIF(ft.label, \'\'), CONCAT(\'[\', f.code, \']\')) as label')
             ->from('Pim\Bundle\CatalogBundle\Entity\Family', 'f')
             ->leftJoin('f.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->orderBy('label')

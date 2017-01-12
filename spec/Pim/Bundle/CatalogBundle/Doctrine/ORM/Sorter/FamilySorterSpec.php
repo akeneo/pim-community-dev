@@ -46,7 +46,7 @@ class FamilySorterSpec extends ObjectBehavior
         ;
         $qb
             ->addSelect(
-                'COALESCE(sorterfamilyTranslations.label, CONCAT(\'[\', sorterfamily.code, \']\')) as sorterfamilyLabel'
+                'COALESCE(NULLIF(sorterfamilyTranslations.label, \'\'), CONCAT(\'[\', sorterfamily.code, \']\')) as sorterfamilyLabel'
             )
             ->shouldBeCalled()
             ->willReturn($qb)
