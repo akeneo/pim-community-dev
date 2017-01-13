@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6092: Allow to create tags starting with the same letters
+
 # 1.5.16 (2016-12-28)
 
 ## Bug fixes
