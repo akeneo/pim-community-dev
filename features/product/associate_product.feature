@@ -203,7 +203,7 @@ Feature: Associate a product
     And I save the product
     And I visit the "Attributes" tab
     And I add available attributes Name
-    When I fill in "Name" with "test"
+    And I fill in "Name" with "test"
     And I save the product
     And I visit the "Associations" tab
     Then the rows "gray-boots" should be checked
