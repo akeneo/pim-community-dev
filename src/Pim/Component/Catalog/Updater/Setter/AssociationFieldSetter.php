@@ -98,10 +98,14 @@ class AssociationFieldSetter extends AbstractFieldSetter
             ->forAll(function ($key, AssociationInterface $association) use ($data) {
                 $currentData = $data[$association->getAssociationType()->getCode()];
                 if (isset($currentData['products'])) {
-                    $association->getProducts()->clear();
+                    foreach ($association->getProducts() as $productToRemove) {
+                        $association->removeProduct($productToRemove);
+                    }
                 }
                 if (isset($currentData['groups'])) {
-                    $association->getGroups()->clear();
+                    foreach ($association->getGroups() as $groupToRemove) {
+                        $association->removeGroup($groupToRemove);
+                    }
                 }
 
                 return true;
