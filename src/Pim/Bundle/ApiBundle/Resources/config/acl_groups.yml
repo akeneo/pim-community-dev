@@ -1,0 +1,3 @@
+pim_api.acl_group.overall_access:
+    order: 10
+    permission_group: api

@@ -1,0 +1,7 @@
+pim_api:
+    acl:
+        rights: Web API permissions
+    acl_group:
+        overall_access: Overall Web API access
+
+rights.api: Web API permissions
