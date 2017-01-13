@@ -16,7 +16,7 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
-            "Test\\Integration\\": "tests/"
+            "Akeneo\\Test\\Integration\\": "tests/"
         }
     },
     "require": {

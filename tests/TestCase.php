@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Integration;
+namespace Akeneo\Test\Integration;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
@@ -16,28 +16,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TestCase extends KernelTestCase
+abstract class TestCase extends KernelTestCase
 {
     /** @var int Count of test inside the same test class */
     protected static $count = 0;
 
     /** @var ContainerInterface */
     protected $container;
-
-    /** @var string */
-    protected $catalogName = 'technical';
-
-    /** @var string */
-    protected $extraDirectories = [];
-
-    /** @var bool If you don't need to purge database between each test in the same test class, set to false */
-    protected $purgeDatabaseForEachTest = true;
-
-    /** @var string */
-    protected $catalogDirectory;
-
-    /** @var string */
-    protected $fixturesDirectory;
 
     /**
      * {@inheritdoc}
@@ -48,6 +33,11 @@ class TestCase extends KernelTestCase
     }
 
     /**
+     * @return Configuration
+     */
+    abstract protected function getConfiguration();
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -56,18 +46,17 @@ class TestCase extends KernelTestCase
 
         $this->container = static::$kernel->getContainer();
 
-        $projectRoot = $this->getParameter('kernel.root_dir').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
-
-        $this->catalogDirectory = $projectRoot.'tests'.DIRECTORY_SEPARATOR.'catalog'.DIRECTORY_SEPARATOR;
-        $this->fixturesDirectory = $projectRoot.'tests'.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR;
-
+        $configuration = $this->getConfiguration();
         self::$count++;
 
-        if ($this->purgeDatabaseForEachTest || 1 === self::$count) {
+        if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
             $this->purgeDatabase();
 
-            $files = $this->getConfigurationFiles();
-            $this->loadCatalog($files);
+            $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
+            $filesByType = $this->getFilesToLoadByType($files);
+            $this->loadSqlFiles($filesByType['sql']);
+            $this->loadMongoDbFiles($filesByType['mongodb']);
+            $this->loadImportFiles($filesByType['import']);
         }
     }
 
@@ -92,11 +81,53 @@ class TestCase extends KernelTestCase
     }
 
     /**
-     * @param string[] $files Catalog configuration files to load
+     * @return string
+     */
+    public function getRootPath()
+    {
+        return realpath($this->getParameter('kernel.root_dir').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
+    }
+
+    /**
+     * Load SQL file directly by a regular SQL query
+     *
+     * @param array $files
+     */
+    protected function loadSqlFiles(array $files)
+    {
+        $db = $this->get('doctrine.orm.entity_manager')->getConnection();
+
+        foreach ($files as $file) {
+            $db->executeQuery(file_get_contents($file));
+        }
+    }
+
+    /**
+     * Load Mongo files directly by a regular MongoDB query
+     *
+     * @param array $files
+     */
+    protected function loadMongoDbFiles(array $files)
+    {
+        $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
+        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM !== $storage) {
+            return;
+        }
+
+        $db = $this->get('doctrine.odm.mongodb.document_manager')->getConnection()->akeneo_pim;
+        foreach ($files as $file) {
+            $db->execute(file_get_contents($file));
+        }
+    }
+
+    /**
+     * Load import files via akeneo:batch:job
+     *
+     * @param array $files
      *
      * @throws \Exception
      */
-    protected function loadCatalog($files)
+    protected function loadImportFiles(array $files)
     {
         // prepare replace paths to use catalog paths and not the minimal fixtures path, please note that we can
         // have several files per job in case of Enterprise Catalog, for instance,
@@ -152,30 +183,99 @@ class TestCase extends KernelTestCase
     }
 
     /**
-     * Get the list of catalog configuration file paths to load
+     * Separate files to load by their type. They can be:
+     *  - regular files to load from an import.
+     *  - SQL files
+     *  - mongo files
      *
-     * @throws \InvalidArgumentException If configuration is not found
+     * @param array $files
      *
-     * @return string[]
+     * @return array
      */
-    protected function getConfigurationFiles()
+    protected function getFilesToLoadByType(array $files)
     {
-        $directories = array_merge([$this->catalogDirectory], $this->extraDirectories);
+        $filesByType = [
+            'sql' => [],
+            'mongodb' => [],
+            'import' => [],
+        ];
 
-        $files = [];
-        foreach ($directories as &$directory) {
-            $directory .= DIRECTORY_SEPARATOR.$this->catalogName;
-            $files     = array_merge($files, glob($directory.'/*'));
+        foreach ($files as $filePath) {
+            $realPathParts = pathinfo($filePath);
+
+            // do not try to load files without extension
+            if (!isset($realPathParts['extension'])) {
+                continue;
+            }
+
+            // do not try to load product file that do not match the storage
+            if ('200_products' === $realPathParts['filename']) {
+                $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
+                if ($storage === AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM &&
+                    'sql' === $realPathParts['extension']
+                ) {
+                    continue;
+                }
+                elseif ($storage === AkeneoStorageUtilsExtension::DOCTRINE_ORM &&
+                    'json' === $realPathParts['extension']
+                ) {
+                    continue;
+                }
+            }
+
+            switch ($realPathParts['extension']) {
+                case 'json':
+                    $filesByType['mongodb'][] = $filePath;
+                    break;
+                case 'sql':
+                    $filesByType['sql'][] = $filePath;
+                    break;
+                case 'csv':
+                case 'xls':
+                case 'xlsx':
+                case 'yml':
+                case 'yaml':
+                    $filesByType['import'][] = $filePath;
+                    break;
+                default:
+                    break;
+            }
         }
 
-        if (empty($files)) {
-            throw new \InvalidArgumentException(
+        return $filesByType;
+    }
+
+    /**
+     * Get the list of catalog configuration file paths to load
+     *
+     * @param array $directories
+     *
+     * @return array
+     * @throws \Exception if no files can be loaded
+     *
+     */
+    protected function getFilesToLoad(array $directories)
+    {
+        $rawFiles = [];
+        foreach ($directories as $directory) {
+            $rawFiles = array_merge($rawFiles, glob($directory.'/*'));
+        }
+
+        if (empty($rawFiles)) {
+            throw new \Exception(
                 sprintf(
-                    'No configuration found for catalog "%s", looked in "%s"',
-                    $this->catalogName,
+                    'No catalog file to load found in "%s"',
                     implode(', ', $directories)
                 )
             );
+        }
+
+        $files = [];
+        foreach ($rawFiles as $rawFilePath) {
+            if (false === $realFilePath = realpath($rawFilePath)) {
+                continue;
+            }
+            $files[] = $rawFilePath;
         }
 
         return $files;
@@ -210,5 +310,28 @@ class TestCase extends KernelTestCase
         }
 
         parent::tearDown();
+    }
+
+    /**
+     * Look in every fixture directory if a fixture $name exists.
+     * And return the pathname of the fixture if it exists.
+     *
+     * @param string $name
+     *
+     * @return string
+     *
+     * @throws \Exception if no fixture $name has been found
+     */
+    protected function getFixturePath($name)
+    {
+        $configuration = $this->getConfiguration();
+        foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
+            $path = $fixtureDirectory . $name;
+            if (is_file($path) && false !== realpath($path)) {
+                return realpath($path);
+            }
+        }
+
+        throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
     }
 }
