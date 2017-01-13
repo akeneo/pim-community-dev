@@ -1,0 +1,5 @@
+# API
+pim_api_overall_access:
+    type: action
+    label: pim_api.acl.rights
+    group_name: pim_api.acl_group.overall_access
