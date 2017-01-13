@@ -2,9 +2,9 @@
 
 namespace tests\integration\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
 
-use TestEnterprise\Integration\TestCase;
+use PimEnterprise\Bundle\SecurityBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
 
-class LocaleIntegration extends TestCase
+class LocaleIntegration extends AbstractFlatNormalizerTestCase
 {
     public function testAssetLocale()
     {
