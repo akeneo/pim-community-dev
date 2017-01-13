@@ -112,13 +112,16 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
         ConstraintViolationListInterface $violations,
         \Exception $previousException = null
     ) {
+        $lineNumber = null;
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
+
+            $lineNumber = ($this->stepExecution->getSummaryInfo('read_lines') + 1);
         }
 
         throw new InvalidItemFromViolationsException(
             $violations,
-            new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+            new FileInvalidItem($item, $lineNumber),
             [],
             0,
             $previousException
