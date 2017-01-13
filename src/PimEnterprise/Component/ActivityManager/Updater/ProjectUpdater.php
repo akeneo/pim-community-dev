@@ -15,8 +15,8 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Project updater is able to hydrate a project with given parameters.
@@ -81,8 +81,13 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 break;
             case 'due_date':
                 if (!empty($value)) {
-                    $project->setDueDate(new \DateTime($value));
+                    $this->validateDateFormat($field, $value);
+                    $dateTime = new \DateTime($value);
+                } else {
+                    $dateTime = null;
                 }
+
+                $project->setDueDate($dateTime);
                 break;
             case 'description':
                 $project->setDescription($value);
@@ -105,6 +110,32 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 $locale = $this->localeRepository->findOneByIdentifier($value);
                 $project->setLocale($locale);
                 break;
+        }
+    }
+
+    /**
+     * @param string $field
+     * @param string $data
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function validateDateFormat($field, $data)
+    {
+        try {
+            new \DateTime($data);
+
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+                throw new \Exception('Invalid date');
+            }
+        } catch (\Exception $e) {
+            throw InvalidArgumentException::expected(
+                $field,
+                'a string with the format yyyy-mm-dd',
+                'setter',
+                'date',
+                gettype($data),
+                $data
+            );
         }
     }
 }

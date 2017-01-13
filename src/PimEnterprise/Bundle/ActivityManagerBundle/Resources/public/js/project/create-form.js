@@ -55,7 +55,7 @@ define(
                 language: DateContext.get('language')
             },
             maxLengthLabel: 100,
-            type: 'create',
+            formType: 'create',
 
             /**
              * Set the backbone model for this view.
@@ -69,10 +69,10 @@ define(
             /**
              * Set the type of this form. Either "create" or "edit".
              *
-             * @param {String} type
+             * @param {String} formType
              */
-            setType: function (type) {
-                this.type = type;
+            setFormType: function (formType) {
+                this.formType = formType;
             },
 
             /**
@@ -190,9 +190,9 @@ define(
                     .done(function () {
                         messenger.notificationMessage(
                             'success',
-                            __('activity_manager.' + this.type + '_project_modal.saved')
+                            __('activity_manager.' + this.formType + '_project_modal.saved')
                         );
-                    })
+                    }.bind(this))
                     .fail(function (response) {
                         if (_.isArray(response.responseJSON)) {
                             this.validationErrors = response.responseJSON;
@@ -239,11 +239,11 @@ define(
                 this.$el.html(this.template({
                     labelValue: model.get('label'),
                     labelLabel: __('activity_manager.project.label'),
-                    labelPlaceholder: __('activity_manager.' + this.type + '_project_modal.label_placeholder'),
+                    labelPlaceholder: __('activity_manager.' + this.formType + '_project_modal.label_placeholder'),
                     descriptionValue: model.get('description'),
                     descriptionLabel: __('activity_manager.project.description'),
                     descriptionPlaceholder: __(
-                        'activity_manager.' + this.type + '_project_modal.description_placeholder'
+                        'activity_manager.' + this.formType + '_project_modal.description_placeholder'
                     ),
                     dueDateValue: model.get('due_date'),
                     dueDateLabel: __('activity_manager.project.due_date'),

@@ -141,7 +141,10 @@ class ProjectController
         parse_str($projectData['datagrid_view']['filters'], $datagridViewFilters);
 
         if (isset($projectData['code'])) {
-            $project = $this->projectRepository->findOneByIdentifier($projectData['code']);
+            $project = $this->projectRepository->findOneBy([
+                'code' => $projectData['code'],
+                'owner' => $user
+            ]);
 
             if (null === $project) {
                 return new JsonResponse(sprintf('No project with code "%s"', $projectData['code']), 400);

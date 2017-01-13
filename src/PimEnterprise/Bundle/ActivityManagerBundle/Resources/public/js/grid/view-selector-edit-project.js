@@ -17,6 +17,7 @@ define(
         'activity-manager/project/create-form',
         'pim/formatter/date',
         'pim/date-context',
+        'pim/user-context',
         'pim/fetcher-registry'
     ],
     function (
@@ -29,6 +30,7 @@ define(
         CreateForm,
         DateFormatter,
         DateContext,
+        UserContext,
         FetcherRegistry
     ) {
         return BaseForm.extend({
@@ -45,7 +47,10 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if ('project' !== this.getRoot().currentViewType) {
+                var isProject = ('project' === this.getRoot().currentViewType);
+                var isOwner = (UserContext.get('meta').id === this.getRoot().currentView.owner_id);
+
+                if (!isProject || !isOwner) {
                     this.$el.html('');
 
                     return this;
@@ -87,7 +92,7 @@ define(
                         this.form = new CreateForm();
                         this.form.configure();
                         this.form.setModel(new Backbone.Model(project));
-                        this.form.setType('edit');
+                        this.form.setFormType('edit');
                         this.form.on(
                             'activity-manager:edit-project:field-validated',
                             this.onFieldValueValidated.bind(this)
