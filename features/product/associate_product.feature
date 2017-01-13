@@ -194,3 +194,16 @@ Feature: Associate a product
     And I should see the text "Type: [RELATED]"
     When I press the "Show products" button
     Then I should see the text "SKU: Contains \"gr\""
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6110
+  Scenario: Product associations are not erased when an attribute is saved
+    Given I edit the "charcoal-boots" product
+    When I visit the "Associations" tab
+    And I check the row "gray-boots"
+    And I save the product
+    And I visit the "Attributes" tab
+    And I add available attributes Name
+    When I fill in "Name" with "test"
+    And I save the product
+    And I visit the "Associations" tab
+    Then the rows "gray-boots" should be checked
