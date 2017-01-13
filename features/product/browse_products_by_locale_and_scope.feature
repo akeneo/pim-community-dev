@@ -19,7 +19,6 @@ Feature: Browse products by locale and scope
       | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    | large.jpeg      | small.jpeg   |
     And I am logged in as "Mary"
     And I am on the products page
-    And I display the columns SKU, Name, Image, Description and Family
 
   @skip
   Scenario: Successfully display english data on products page
@@ -62,3 +61,17 @@ Feature: Browse products by locale and scope
       | [image]       | small.jpeg            |
       | [description] | Ma description mobile |
       | family        | [furniture]           |
+
+  Scenario: Keep working local context through navigation
+    Given I switch the locale to "fr_FR"
+    And I am on the dashboard page
+    When I am on the products page
+    Then I should see the text "Products fr"
+
+  Scenario: Keep working scope context through navigation
+    Given I filter by "scope" with operator "equals" and value "Mobile"
+    And I am on the dashboard page
+    When I am on the products page
+    Then I should see the text "Mobile"
+    When I refresh current page
+    Then I should see the text "Mobile"

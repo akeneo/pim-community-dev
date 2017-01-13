@@ -199,6 +199,16 @@
   .select2-container {
     width: 200px;
 
+    &.stickedLeft .select2-choice {
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+
+      border-top: 1px solid #848fa1;
+      border-right: 1px solid #848fa1;
+      border-bottom: 1px solid #848fa1;
+      border-left: none;
+    }
+
     .select2-choice {
       background: lighten(@AknGrey, 25%);
       font-style: @AknFontSizeBig;
@@ -420,7 +430,7 @@
   .select2-container .select2-choice .select2-arrow b {
     background-size: 90px 48px !important
   }
-  
+
   .select2-search input {
     background-position: 0 0 !important;
   }

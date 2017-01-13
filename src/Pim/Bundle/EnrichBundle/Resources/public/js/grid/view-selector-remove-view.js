@@ -1,13 +1,12 @@
 'use strict';
 
 /**
- * Extension module for a dropdown line in the Datagrid View Selector.
- * Displays a button beside the attached view in the list to allow the user
- * to remove the view.
+ * Remove extension for the Datagrid View Selector.
+ * It displays a button near the selector to allow the user to remove the current view.
  *
- * @author    Adrien Petremann <adrien.petremann@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 define(
     [
@@ -15,9 +14,8 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/grid/view-selector/line/remove',
+        'text!pim/template/grid/view-selector/remove-view',
         'pim/dialog',
-        'routing',
         'pim/remover/datagrid-view',
         'oro/messenger'
     ],
@@ -28,49 +26,56 @@ define(
         BaseForm,
         template,
         Dialog,
-        Routing,
         DatagridViewRemover,
         messenger
     ) {
         return BaseForm.extend({
             template: _.template(template),
             tagName: 'span',
-            className: 'remove-button pull-right',
+            className: 'remove-button',
             events: {
-                'click [data-action="prompt-deletion"]': 'promptDeletion'
+                'click .remove': 'promptDeletion'
             },
 
             /**
              * {@inheritdoc}
              */
             render: function () {
+                if ('view' !== this.getRoot().currentViewType || this.getRoot().currentView.id === 0) {
+                    this.$el.html('');
+
+                    return this;
+                }
+
                 this.$el.html(this.template({
-                    hidden: 0 === this.getParent().datagridView.id
+                    label: __('grid.view_selector.remove')
                 }));
+
+                this.$('[data-toggle="tooltip"]').tooltip();
+
+                return this;
             },
 
             /**
              * Prompt the datagrid view deletion modal.
              */
             promptDeletion: function () {
-                this.getRoot().trigger('grid:view-selector:close-selector');
-
                 Dialog.confirm(
                     __('grid.view_selector.confirmation.remove'),
                     __('grid.view_selector.confirmation.delete'),
                     function () {
-                        this.removeView();
+                        this.removeView(this.getRoot().currentView);
                     }.bind(this)
                 );
             },
 
             /**
-             * Remove the Datagrid View of this line and triggers an event to the parent.
+             * Remove the current Datagrid View and triggers an event to the parent.
+             *
+             * @param {Object} view
              */
-            removeView: function () {
-                var lineView = this.getParent().datagridView;
-
-                DatagridViewRemover.remove(lineView)
+            removeView: function (view) {
+                DatagridViewRemover.remove(view)
                     .done(function () {
                         this.getRoot().trigger('grid:view-selector:view-removed');
                     }.bind(this))

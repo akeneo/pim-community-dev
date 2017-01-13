@@ -136,7 +136,7 @@ Feature: Import attributes
     And I launch the import job
     And I wait for the "csv_footwear_attribute_import" job to finish
     Then I should see "skipped 1"
-    And I should see "attributeType must be filled."
+    And I should see "Property \"attribute_type\" does not expect an empty value (for updater attribute)."
 
   Scenario: Successfully import and update existing attribute
     Given the "footwear" catalog configuration
@@ -172,7 +172,7 @@ Feature: Import attributes
     And I wait for the "csv_footwear_attribute_import" job to finish
     Then I should see "read lines 1"
     Then I should see "skipped 1"
-    Then I should see "Attribute expects a string with the format \"yyyy-mm-dd\" as data, \"2000/12/12\" given"
+    Then I should see "Property \"date_min\" expects a string with the format \"yyyy-mm-dd\" as data, \"2000/12/12\" given (for updater attribute)."
 
   Scenario: Fail to import attribute with invalid date
     Given the "footwear" catalog configuration
@@ -189,7 +189,7 @@ Feature: Import attributes
     And I wait for the "csv_footwear_attribute_import" job to finish
     Then I should see "read lines 1"
     Then I should see "skipped 1"
-    Then I should see "Invalid date, \"2000-99-12\" given"
+    Then I should see "Property \"date_min\" expects a string with the format \"yyyy-mm-dd\" as data, \"2000-99-12\" given (for updater attribute)."
 
   Scenario: Fail to import attribute with invalid data
     Given the "footwear" catalog configuration
@@ -208,7 +208,7 @@ Feature: Import attributes
     Then I should see "read lines 2"
     Then I should see "skipped 2"
     Then I should see "maxFileSize: This value should be a valid number.: not an int"
-    Then I should see "AttributeGroup \"not a group\" does not exist"
+    Then I should see "Property \"group\" expects a valid code. The attribute group does not exist, \"not a group\" given (for updater attribute)."
 
   Scenario: Successfully import new attribute
     Given the "footwear" catalog configuration

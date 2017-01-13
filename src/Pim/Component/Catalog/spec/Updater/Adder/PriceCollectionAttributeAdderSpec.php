@@ -201,7 +201,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
         $productValue->getPrices()->willReturn([$price]);
 
-        $builder->addPriceForCurrencyWithData($productValue, 'EUR', 123.2)->shouldBeCalledTimes(2);
+        $builder->addPriceForCurrency($productValue, 'EUR', 123.2)->shouldBeCalledTimes(2);
         $this->addattributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->addattributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }

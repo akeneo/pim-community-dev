@@ -242,6 +242,7 @@ define(
                     .siblings('.AknTitleContainer.association-type:not(.AknTitleContainer--hidden)')
                     .addClass('AknTitleContainer--hidden');
 
+                this.renderPanes();
                 this.updateListenerSelectors();
 
                 var currentGrid = this.datagrids[this.getCurrentAssociationTarget()];

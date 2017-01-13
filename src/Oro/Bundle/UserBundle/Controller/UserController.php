@@ -161,6 +161,8 @@ class UserController extends Controller
                 $this->get('translator')->trans('oro.user.controller.user.message.saved')
             );
 
+            $this->get('session')->remove('dataLocale');
+
             return new RedirectResponse(
                 $this->get('router')->generate('oro_user_update', ['id' => $user->getId()])
             );

@@ -37,7 +37,7 @@ class ProductBuilder implements ProductBuilderInterface
 
     /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;
-    
+
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -184,13 +184,16 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addPriceForCurrency(ProductValueInterface $value, $currency)
+    public function addPriceForCurrency(ProductValueInterface $value, $currency, $amount = null)
     {
         if (!$this->hasPriceForCurrency($value, $currency)) {
             $value->addPrice(new $this->productPriceClass(null, $currency));
         }
 
-        return $this->getPriceForCurrency($value, $currency);
+        $price = $this->getPriceForCurrency($value, $currency);
+        $price->setData($amount);
+
+        return $price;
     }
 
     /**
@@ -198,10 +201,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $amount)
     {
-        $price = $this->addPriceForCurrency($value, $currency);
-        $price->setData($amount);
-
-        return $price;
+        return $this->addPriceForCurrency($value, $currency, $amount);
     }
 
     /**

@@ -13,7 +13,7 @@ class LocaleHelperSpec extends ObjectBehavior
     function let(UserContext $userContext, LocaleRepositoryInterface $localeRepository, LocaleInterface $en)
     {
         $en->getCode()->willReturn('en_US');
-        $userContext->getCurrentLocale()->willReturn($en);
+        $userContext->getUiLocale()->willReturn($en);
 
         $this->beConstructedWith($userContext, $localeRepository);
     }

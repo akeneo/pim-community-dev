@@ -144,6 +144,11 @@ class TestCase extends WebTestCase
         }
 
         $jobLoader->deleteJobInstances();
+
+        // close the connection created specifically for this repository
+        // TODO: to remove when TIP-385 will be done
+        $doctrineJobRepository = $this->get('akeneo_batch.job_repository');
+        $doctrineJobRepository->getJobManager()->getConnection()->close();
     }
 
     /**
@@ -187,5 +192,23 @@ class TestCase extends WebTestCase
         foreach ($purgers as $purger) {
             $purger->purge();
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown()
+    {
+        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->getParameter('pim_catalog_product_storage_driver')) {
+            $doctrine = $this->get('doctrine_mongodb');
+        } else {
+            $doctrine = $this->get('doctrine');
+        }
+
+        foreach ($doctrine->getConnections() as $connection) {
+            $connection->close();
+        }
+
+        parent::tearDown();
     }
 }

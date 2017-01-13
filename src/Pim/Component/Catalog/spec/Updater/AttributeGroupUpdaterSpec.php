@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
@@ -33,8 +35,9 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
     function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute_group()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "Pim\Component\Catalog\Model\AttributeGroupInterface", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\AttributeGroupInterface'
             )
         )->during(
             'update',
@@ -99,7 +102,16 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
         $attributeGroup->getAttributes()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('foo')->willReturn(null);
-        $this->shouldThrow(new \InvalidArgumentException('Attribute with "foo" code does not exist'))
+
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+               'attributes',
+               'attribute code',
+               'The attribute does not exist',
+               'updater',
+               'attribute group',
+               'foo'
+            ))
             ->during('update', [$attributeGroup, $values]);
     }
 

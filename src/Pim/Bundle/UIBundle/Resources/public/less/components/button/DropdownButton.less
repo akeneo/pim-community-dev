@@ -81,6 +81,16 @@
     background: darken(@AknGrey, 10%);
   }
 
+  &--stickedRight &-caretContainer,
+  &--stickedRight &-button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &--stickedRight &-button {
+    border: 1px solid #848fa1;
+  }
+
   &--small &-button {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
@@ -90,5 +100,9 @@
   &--small &-caretContainer {
     width: @AknLittleButtonSize - 2px;
     height: @AknLittleButtonSize - 2px;
+  }
+
+  &--hide {
+    display: none;
   }
 }

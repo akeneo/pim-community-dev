@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\ChannelTranslation;
@@ -35,8 +37,9 @@ class ChannelUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_channel()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "Pim\Component\Catalog\Model\ChannelInterface", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\ChannelInterface'
             )
         )->during(
             'update',
@@ -120,8 +123,19 @@ class ChannelUpdaterSpec extends ObjectBehavior
 
         $channel->setCode('ecommerce')->shouldBeCalled();
 
-        $this->shouldThrow(new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', 'unknown')))
-            ->during('update', [$channel, $values]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'category_tree',
+                'code',
+                'The category does not exist',
+                'updater',
+                'channel',
+                'unknown'
+            )
+        )->during(
+            'update',
+            [$channel, $values]
+        );
     }
 
     function it_throws_an_exception_if_locale_not_found(
@@ -142,8 +156,19 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $localeRepository->findOneByIdentifier('unknown')->willReturn(null);
         $currencyRepository->findOneByIdentifier('EUR')->willReturn($eur);
 
-        $this->shouldThrow(new \InvalidArgumentException(sprintf('Locale with "%s" code does not exist', 'unknown')))
-            ->during('update', [$channel, $values]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'locales',
+                'code',
+                'The locale does not exist',
+                'updater',
+                'channel',
+                'unknown'
+            )
+        )->during(
+            'update',
+            [$channel, $values]
+        );
     }
 
     function it_throws_an_exception_if_currency_not_found(
@@ -167,7 +192,15 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
         $currencyRepository->findOneByIdentifier('unknown')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException(sprintf('Currency with "%s" code does not exist', 'unknown')))
-            ->during('update', [$channel, $values]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'currencies',
+                'code',
+                'The currency does not exist',
+                'updater',
+                'channel',
+                'unknown'
+            )
+        )->during('update', [$channel, $values]);
     }
 }
