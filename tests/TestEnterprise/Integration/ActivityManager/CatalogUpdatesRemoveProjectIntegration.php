@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace TestEnterprise\Integration\ActivityManager;
+namespace Akeneo\TestEnterprise\Integration\ActivityManager;
 
 class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
 {

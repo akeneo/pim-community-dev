@@ -2,10 +2,23 @@
 
 namespace tests\integration\Akeneo\Bundle\RuleEngineBundle\Normalizer\Standard;
 
-use TestEnterprise\Integration\TestCase;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 
 class RuleIntegration extends TestCase
 {
+    protected function getConfiguration()
+    {
+        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        return new Configuration(
+            [
+                Configuration::getTechnicalCatalogPath(),
+                $rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' .    DIRECTORY_SEPARATOR . 'technical'
+            ],
+            false
+        );
+    }
+
     public function testRule()
     {
         $expected = [

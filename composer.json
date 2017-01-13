@@ -14,12 +14,12 @@
             "": "src/",
             "Context": "features/",
             "PimEnterprise\\Behat": "features/",
-            "Pim\\Behat": "vendor/akeneo/pim-community-dev/features/",
-            "TestEnterprise\\Integration\\": "tests/",
-            "Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/"
+            "Pim\\Behat": "vendor/akeneo/pim-community-dev/features/"
         },
         "psr-4": {
-            "Pim\\Upgrade\\": "upgrades/"
+            "Pim\\Upgrade\\": "upgrades/",
+            "Akeneo\\TestEnterprise\\Integration\\": "tests/TestEnterprise/Integration",
+            "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/"
         }
     },
     "require": {

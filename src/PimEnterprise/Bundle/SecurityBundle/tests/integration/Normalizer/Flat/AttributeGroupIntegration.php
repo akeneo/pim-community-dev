@@ -2,9 +2,9 @@
 
 namespace tests\integration\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
 
-use TestEnterprise\Integration\TestCase;
+use PimEnterprise\Bundle\SecurityBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
 
-class AttributeGroupIntegration extends TestCase
+class AttributeGroupIntegration extends AbstractFlatNormalizerTestCase
 {
     public function testAttributeGroup()
     {

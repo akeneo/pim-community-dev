@@ -1,19 +1,23 @@
 <?php
 
-namespace TestEnterprise\Integration\ActivityManager;
+namespace Akeneo\TestEnterprise\Integration\ActivityManager;
 
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Pim\Behat\Context\DBALPurger;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use Test\Integration\TestCase;
 
 class ActivityManagerTestCase extends TestCase
 {
-    /** {@inheritdoc} */
-    protected $catalogName = 'activity_manager';
-
-    /** {@inheritdoc} */
-    protected $purgeDatabaseForEachTest = false;
+    protected function getConfiguration()
+    {
+        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        return new Configuration(
+            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' .    DIRECTORY_SEPARATOR . 'activity_manager'],
+            false
+        );
+    }
 
     /**
      * {@inheritdoc}
@@ -136,7 +140,7 @@ class ActivityManagerTestCase extends TestCase
 SELECT count(`execution`.`id`)
 FROM `akeneo_batch_job_execution` AS `execution`
 LEFT JOIN `akeneo_batch_job_instance` AS `instance` ON `execution`.`job_instance_id` = `instance`.`id`
-WHERE `instance`.`code` = :project_calculation 
+WHERE `instance`.`code` = :project_calculation
 AND `execution`.`exit_code` = 'COMPLETED'
 SQL;
 

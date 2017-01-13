@@ -1,6 +1,6 @@
 <?php
 
-namespace TestEnterprise\Integration\ActivityManager;
+namespace Akeneo\TestEnterprise\Integration\ActivityManager;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;

@@ -2,9 +2,9 @@
 
 namespace tests\integration\PimEnterprise\Component\ProductAsset\Normalizer\Standard;
 
-use TestEnterprise\Integration\TestCase;
+use PimEnterprise\Component\ProductAsset\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
 
-class VariationIntegration extends TestCase
+class VariationIntegration extends AbstractStandardNormalizerTestCase
 {
     public function testAsset()
     {
