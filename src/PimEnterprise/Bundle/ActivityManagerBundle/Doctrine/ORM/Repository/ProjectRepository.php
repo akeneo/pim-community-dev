@@ -64,19 +64,28 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
 
         $qb = $this->createQueryBuilder('project');
         $qb->distinct(true);
-        if (null !== $search && '' !== $search) {
-            $qb->where('project.label LIKE :search')->setParameter('search', sprintf('%%%s%%', $search));
-        }
+
+        $qb->leftJoin('project.userGroups', 'u_groups');
+        $qb->join('project.owner', 'owner');
 
         $userGroups = $options['user']->getGroups();
         if (!$userGroups->isEmpty()) {
-            $userGroupsId = array_map(function (Group $userGroup) {
-                return $userGroup->getId();
-            }, $userGroups->toArray());
+            $userGroupsId = array_map(
+                function (Group $userGroup) {
+                    return $userGroup->getId();
+                },
+                $userGroups->toArray()
+            );
 
-            $qb->innerJoin('project.userGroups', 'u_groups')
-                ->andWhere('u_groups.id IN (:groups)')
-                ->setParameter('groups', $userGroupsId);
+            $qb->orWhere($qb->expr()->in('u_groups.id', ':groups'));
+            $qb->setParameter(':groups', $userGroupsId);
+        }
+
+        $qb->orWhere($qb->expr()->eq('owner.username', ':username'));
+        $qb->setParameter('username', $options['user']->getUsername());
+
+        if (null !== $search && '' !== $search) {
+            $qb->andWhere('project.label LIKE :search')->setParameter('search', sprintf('%%%s%%', $search));
         }
 
         $qb->setMaxResults($options['limit']);

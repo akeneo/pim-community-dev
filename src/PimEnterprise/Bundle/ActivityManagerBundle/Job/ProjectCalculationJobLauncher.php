@@ -35,7 +35,7 @@ class ProjectCalculationJobLauncher
     /**
      * @param JobLauncherInterface  $simpleJobLauncher
      * @param JobInstanceRepository $jobInstanceRepository
-     * @param string        $projectCalculationJobName
+     * @param string                $projectCalculationJobName
      */
     public function __construct(
         JobLauncherInterface $simpleJobLauncher,

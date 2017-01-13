@@ -350,8 +350,8 @@ Feature: Notify users after a project creation
 
   Scenario: Successfully notify users if the project is not 100% done at project creation
     Given the following product values:
-      | product        | attribute   | value                                | locale | scope     |
-      | my-awesome-car | description |  | en_US  | ecommerce |
+      | product        | attribute   | value | locale | scope     |
+      | my-awesome-car | description |       | en_US  | ecommerce |
     When I am logged in as "admin"
     And I am on the products page
     And I filter by "category" with operator "" and value "decoration"

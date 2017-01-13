@@ -315,7 +315,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     public function getGrantedUserGroupsForProduct(ProductInterface $product, $accessLevel)
     {
         $categories = $product->getCategories();
-        if (count($categories) === 0) {
+        if (0 === count($categories)) {
             return [];
         }
         $categoryIds = [];
