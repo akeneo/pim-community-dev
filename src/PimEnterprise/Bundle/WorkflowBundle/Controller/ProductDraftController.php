@@ -12,13 +12,13 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -72,7 +72,7 @@ class ProductDraftController
     /** @var JobLauncherInterface */
     protected $simpleJobLauncher;
 
-    /** @var JobInstanceRepository */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepository;
 
     /** @var MassActionParametersParser */
@@ -88,19 +88,19 @@ class ProductDraftController
     protected $collectionFilter;
 
     /**
-     * @param Request                       $request
-     * @param RouterInterface               $router
-     * @param TokenStorageInterface         $tokenStorage
-     * @param TranslatorInterface           $translator
-     * @param ObjectRepository              $repository
-     * @param ProductDraftManager           $manager
-     * @param UserContext                   $userContext
-     * @param JobLauncherInterface          $simpleJobLauncher
-     * @param JobInstanceRepository         $jobInstanceRepository
-     * @param MassActionParametersParser    $gridParameterParser
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param OroToPimGridFilterAdapter     $gridFilterAdapter
-     * @param CollectionFilterInterface     $collectionFilter
+     * @param Request                               $request
+     * @param RouterInterface                       $router
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param TranslatorInterface                   $translator
+     * @param ObjectRepository                      $repository
+     * @param ProductDraftManager                   $manager
+     * @param UserContext                           $userContext
+     * @param JobLauncherInterface                  $simpleJobLauncher
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
+     * @param MassActionParametersParser            $gridParameterParser
+     * @param AuthorizationCheckerInterface         $authorizationChecker
+     * @param OroToPimGridFilterAdapter             $gridFilterAdapter
+     * @param CollectionFilterInterface             $collectionFilter
      */
     public function __construct(
         Request $request,
@@ -111,7 +111,7 @@ class ProductDraftController
         ProductDraftManager $manager,
         UserContext $userContext,
         JobLauncherInterface $simpleJobLauncher,
-        JobInstanceRepository $jobInstanceRepository,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         MassActionParametersParser $gridParameterParser,
         AuthorizationCheckerInterface $authorizationChecker,
         OroToPimGridFilterAdapter $gridFilterAdapter,

@@ -88,7 +88,7 @@ services:
         class: '%pimee_activity_manager.launcher.job.project_calculation.class%'
         arguments:
             - '@akeneo_batch.launcher.simple_job_launcher'
-            - '@pim_import_export.repository.job_instance'
+            - '@akeneo_batch.job.job_instance_repository'
             - '%pimee_activity_manager.project_calculation.job_name%'
 
     ### Job Parameters

@@ -10,6 +10,6 @@ services:
             - '@akeneo_rule_engine.remover.rule_definition'
             - '@security.token_storage'
             - '@akeneo_batch.launcher.simple_job_launcher'
-            - '@pim_import_export.repository.job_instance'
+            - '@akeneo_batch.job.job_instance_repository'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_catalog.command_launcher'

@@ -15,9 +15,9 @@ use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\Console\CommandLauncher;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +47,7 @@ class RuleController
     /** @var JobLauncherInterface */
     protected $simpleJobLauncher;
 
-    /** @var JobInstanceRepository */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepo;
 
     /** @var OroToPimGridFilterAdapter */
@@ -57,20 +57,20 @@ class RuleController
     protected $commandLauncher;
 
     /**
-     * @param RuleDefinitionRepositoryInterface $repository
-     * @param RemoverInterface                  $remover
-     * @param TokenStorageInterface             $tokenStorage
-     * @param JobLauncherInterface              $simpleJobLauncher
-     * @param JobInstanceRepository             $jobInstanceRepo
-     * @param OroToPimGridFilterAdapter         $gridFilterAdapter
-     * @param CommandLauncher                   $commandLauncher
+     * @param RuleDefinitionRepositoryInterface     $repository
+     * @param RemoverInterface                      $remover
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param JobLauncherInterface                  $simpleJobLauncher
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepo
+     * @param OroToPimGridFilterAdapter             $gridFilterAdapter
+     * @param CommandLauncher                       $commandLauncher
      */
     public function __construct(
         RuleDefinitionRepositoryInterface $repository,
         RemoverInterface $remover,
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $simpleJobLauncher,
-        JobInstanceRepository $jobInstanceRepo,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         OroToPimGridFilterAdapter $gridFilterAdapter,
         CommandLauncher $commandLauncher
     ) {
