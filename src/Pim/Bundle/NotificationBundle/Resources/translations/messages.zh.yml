@@ -1,0 +1,3 @@
+pim_notification:
+  no_notifications: 没有新通知
+  mark_all_as_read: 标记所有为已读

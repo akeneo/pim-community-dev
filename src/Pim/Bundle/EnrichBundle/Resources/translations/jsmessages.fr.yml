@@ -200,7 +200,7 @@ pim_enrich:
             none_exist: Aucun type d'association n'existe.
             show_products: Afficher les produits
             show_groups: Afficher les groupes
-            number_of_associations: '{{ productCount }} produits et {{ groupCount }} groupes'
+            number_of_associations: "{{ productCount }} produits et {{ groupCount }} groupes"
         attributes:
           title: Attributs
           btn:
@@ -209,7 +209,7 @@ pim_enrich:
           info:
             search_attributes: Rechercher
             no_available_attributes: Il n'y a plus d'attributs disponibles
-            attributes_selected: '{{ attributeCount }} attribut(s) sélectionné(s)'
+            attributes_selected: "{{ attributeCount }} attribut(s) sélectionné(s)"
         categories:
           title: Catégories
       panel:
