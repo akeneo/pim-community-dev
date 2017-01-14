@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -16,7 +16,7 @@ class OperationJobLauncherSpec extends ObjectBehavior
 {
     function let(
         SimpleJobLauncher $jobLauncher,
-        JobInstanceRepository $jobInstanceRepo,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         TokenStorageInterface $tokenStorage
     ) {
         $this->beConstructedWith($jobLauncher, $jobInstanceRepo, $tokenStorage);
@@ -32,7 +32,7 @@ class OperationJobLauncherSpec extends ObjectBehavior
         JobInstance $jobInstance
     ) {
         $operation->getJobInstanceCode()->willReturn('mass_classify');
-        $jobInstanceRepo->findOneBy(['code' => 'mass_classify'])->willReturn($jobInstance);
+        $jobInstanceRepo->findOneByIdentifier('mass_classify')->willReturn($jobInstance);
 
         $operation->finalize()->shouldBeCalled();
         $operation->getBatchConfig()->willReturn([
@@ -60,7 +60,7 @@ class OperationJobLauncherSpec extends ObjectBehavior
         AbstractMassEditOperation $operation
     ) {
         $operation->getJobInstanceCode()->willReturn('mass_colorize');
-        $jobInstanceRepo->findOneBy(['code' => 'mass_colorize'])->willReturn(null);
+        $jobInstanceRepo->findOneByIdentifier('mass_colorize')->willReturn(null);
 
         $this->shouldThrow(new NotFoundResourceException(
             'No JobInstance found with code "mass_colorize"'

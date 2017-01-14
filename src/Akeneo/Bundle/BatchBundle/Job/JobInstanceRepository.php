@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Entity\Repository;
+namespace Akeneo\Bundle\BatchBundle\Job;
 
-use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,8 +12,6 @@ use Doctrine\ORM\EntityRepository;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @deprecated will be removed in 1.7. Class will move to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository.
  */
 class JobInstanceRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
@@ -31,15 +29,5 @@ class JobInstanceRepository extends EntityRepository implements IdentifiableObje
     public function getIdentifierProperties()
     {
         return ['code'];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return JobInstance|null
-     */
-    public function findOneBy(array $criteria, array $orderBy = null)
-    {
-        return parent::findOneBy($criteria, $orderBy);
     }
 }

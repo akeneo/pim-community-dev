@@ -489,7 +489,7 @@ services:
     pim_enrich.controller.rest.job_instance:
         class: '%pim_enrich.controller.rest.job_instance.class%'
         arguments:
-            - '@pim_import_export.repository.job_instance'
+            - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch.job.job_registry'
             - '@pim_catalog.normalizer.standard.job_instance'
             - '@akeneo_batch.updater.job_instance'
