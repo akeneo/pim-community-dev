@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Repository;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Repository\MassActionRepositoryInterface;
+use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 
 /**
  * @author Marie Bochu <marie.bochu@akeneo.com>
@@ -36,9 +36,7 @@ class RuleDefinitionMassEditRepository implements MassActionRepositoryInterface
     }
 
     /**
-     * @param mixed $qb
-     * @param bool  $inset
-     * @param array $values
+     * {@inheritdoc}
      */
     public function applyMassActionParameters($qb, $inset, array $values)
     {

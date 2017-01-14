@@ -1,6 +1,8 @@
 parameters:
     pimee_enrich.repository.attribute.search.class: PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
     pimee_enrich.repository.attribute.class: PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository
+    pim_enrich.repository.job_instance.class:  PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobInstanceRepository
+    pim_enrich.repository.job_execution.class: PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository
 
 services:
     pimee_enrich.repository.attribute.search:

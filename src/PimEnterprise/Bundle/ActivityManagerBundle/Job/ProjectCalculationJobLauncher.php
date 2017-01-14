@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Job;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
