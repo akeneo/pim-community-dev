@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Repository;
 
+use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
+
 /**
  * Product mass action repository interface
  * Methods have been extracted from ProductRepository to be specialized for mass actions
@@ -12,15 +14,6 @@ namespace Pim\Component\Catalog\Repository;
  */
 interface ProductMassActionRepositoryInterface extends MassActionRepositoryInterface
 {
-    /**
-     * Apply mass action parameters on query builder
-     *
-     * @param mixed $qb
-     * @param bool  $inset
-     * @param array $values
-     */
-    public function applyMassActionParameters($qb, $inset, $values);
-
     /**
      * Find all common attribute ids linked to a family or with values from a list of product ids
      *

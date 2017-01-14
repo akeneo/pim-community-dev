@@ -35,7 +35,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function applyMassActionParameters($qb, $inset, $values)
+    public function applyMassActionParameters($qb, $inset, array $values)
     {
         $rootAlias = $qb->getRootAlias();
         if ($values) {

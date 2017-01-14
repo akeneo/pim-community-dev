@@ -18,24 +18,6 @@ use Doctrine\ORM\EntityRepository;
 class JobInstanceRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
     /**
-     * Create datagrid query builder
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function createDatagridQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('j');
-        $qb
-            ->addSelect("j.jobName as jobName")
-            ->addSelect(
-                "CONCAT('pim_import_export.status.', j.status) as statusLabel"
-            )
-            ->andWhere('j.type = :jobType');
-
-        return $qb;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function findOneByIdentifier($code)

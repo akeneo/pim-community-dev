@@ -159,34 +159,6 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('g');
-
-        $groupLabelExpr = '(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)';
-        $typeLabelExpr = '(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)';
-        $typeExpr = $qb->expr()->in('type.id', ':groupTypes');
-
-        $qb
-            ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
-            ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
-            ->addSelect('translation.label');
-
-        $qb
-            ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-            ->leftJoin('g.type', 'typ')
-            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :localeCode')
-            ->leftJoin('g.attributes', 'attribute')
-            ->innerJoin('g.type', 'type', 'WITH', $typeExpr);
-
-        $qb->groupBy('g');
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function createAssociationDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('g');

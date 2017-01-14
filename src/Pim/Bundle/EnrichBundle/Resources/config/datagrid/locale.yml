@@ -4,9 +4,7 @@ datagrid:
             entityHint: locale
         source:
             acl_resource: pim_enrich_locale_index
-            type: pim_datasource_default
-            entity: '%pim_catalog.entity.locale.class%'
-            repository_method: createDatagridQueryBuilder
+            type: pim_datasource_locale
         columns:
             code:
                 label: Code

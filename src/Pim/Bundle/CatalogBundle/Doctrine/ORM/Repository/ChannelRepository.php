@@ -50,38 +50,6 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('c');
-        $rootAlias = $qb->getRootAlias();
-
-        $treeExpr = '(CASE WHEN ct.label IS NULL THEN category.code ELSE ct.label END)';
-
-        $labelExpr = sprintf(
-            '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
-            $rootAlias
-        );
-
-        $qb
-            ->addSelect($rootAlias)
-            ->addSelect('category')
-            ->addSelect(sprintf('%s AS categoryLabel', $treeExpr))
-            ->addSelect(sprintf('%s AS channelLabel', $labelExpr))
-            ->addSelect('translation.label');
-
-        $qb
-            ->innerJoin(sprintf('%s.category', $rootAlias), 'category')
-            ->leftJoin('category.translations', 'ct', 'WITH', 'ct.locale = :localeCode')
-            ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
-
-        $qb->groupBy($rootAlias);
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDeletedLocaleIdsForChannel(ChannelInterface $channel)
     {
         $currentLocaleIds = array_map(
