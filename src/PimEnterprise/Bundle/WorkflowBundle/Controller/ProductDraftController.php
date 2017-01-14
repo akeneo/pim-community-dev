@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

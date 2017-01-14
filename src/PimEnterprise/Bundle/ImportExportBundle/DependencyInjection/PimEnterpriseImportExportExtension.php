@@ -31,7 +31,6 @@ class PimEnterpriseImportExportExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('form_types.yml');
         $loader->load('managers.yml');
-        $loader->load('repositories.yml');
         $loader->load('datagrid_listeners.yml');
     }
 }

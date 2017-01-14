@@ -17,7 +17,7 @@ use Akeneo\Component\Console\CommandLauncher;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
-use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

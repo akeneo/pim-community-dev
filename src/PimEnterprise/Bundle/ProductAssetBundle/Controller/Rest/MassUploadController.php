@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
 use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;

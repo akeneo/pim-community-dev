@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ImportExportBundle\Entity\Repository;
+namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository as BaseJobExecutionRepository;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository as BaseJobExecutionRepository;
 
 /**
  * Override of job execution repository
