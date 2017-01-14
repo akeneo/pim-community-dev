@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
@@ -112,16 +113,17 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
         ConstraintViolationListInterface $violations,
         \Exception $previousException = null
     ) {
-        $lineNumber = null;
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
 
-            $lineNumber = ($this->stepExecution->getSummaryInfo('read_lines') + 1);
+            $invalidItem = new FileInvalidItem($item, $this->stepExecution->getSummaryInfo('read_lines') + 1);
+        } else {
+            $invalidItem = new DataInvalidItem($item);
         }
 
         throw new InvalidItemFromViolationsException(
             $violations,
-            new FileInvalidItem($item, $lineNumber),
+            $invalidItem,
             [],
             0,
             $previousException
