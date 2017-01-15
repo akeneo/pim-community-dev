@@ -72,7 +72,7 @@ define([
              *
              * @param {Object} event
              */
-            updateState: function(event) {
+            updateState: function (event) {
                 this.setAttributeConversionUnit(
                     $(event.target).data('attribute'),
                     $(event.target).val()
@@ -89,7 +89,10 @@ define([
             setAttributeConversionUnit: function (attribute, value) {
                 var data = this.getFormData();
 
-                var key = _.findIndex(data.conversion_units, function (unit) { return _.has(unit, attribute); });
+                var key = _.findIndex(data.conversion_units, function (unit) {
+                    return _.has(unit, attribute);
+                });
+
                 if (0 > key) {
                     var conversionUnit = {};
                     conversionUnit[attribute] = value;

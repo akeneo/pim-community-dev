@@ -18,6 +18,7 @@ use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
+use Doctrine\DBAL\Schema\Table;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Component\Catalog\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -1135,15 +1136,25 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string    $popin
      * @param TableNode $table
      *
-     * @Given /^I fill in the following information(| in the popin):$/
+     * @Given /^I fill in the following information:$/
      */
-    public function iFillInTheFollowingInformation($popin, TableNode $table)
+    public function iFillInTheFollowingInformation(TableNode $table)
     {
-        $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
-        if ($popin && !$element) {
+        $element = null;
+        foreach ($table->getRowsHash() as $field => $value) {
+            $this->getCurrentPage()->fillField($field, $value, $element);
+        }
+    }
+
+    /**
+     * @Given /^I fill in the following information in the popin:$/
+     */
+    public function iFillInTheFollowingInformationInThePopin(TableNode $table)
+    {
+        $element = $this->getCurrentPage()->find('css', '.ui-dialog');
+        if (!$element) {
             $element = $this->spin(function () {
                 return $this->getCurrentPage()->find('css', '.modal');
             }, 'Modal not found.');
@@ -1347,9 +1358,9 @@ class WebUser extends RawMinkContext
     {
         $this->spin(function () use ($button) {
             $this->getCurrentPage()->pressButton($button, true);
-
             return true;
         }, sprintf("Can not find any '%s' button", $button));
+        $this->wait();
     }
 
     /**
@@ -2077,8 +2088,9 @@ class WebUser extends RawMinkContext
      *
      * @Given /^I should see "([^"]*)" fields:$/
      */
-    public function iShouldSeeFields($groupField, TableNode $fields)
+    public function iShouldSeeFields($groupField)
     {
+        $fields = new TableNode();
         foreach ($fields->getRows() as $data) {
             $this->getCurrentPage()->findFieldInTabSection($groupField, $data[0]);
         }

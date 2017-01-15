@@ -138,6 +138,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     {
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
         $this->openPage($page);
+        $this->wait();
     }
 
     /**

@@ -40,7 +40,7 @@ define([
             /**
              * {@inheritdoc}
              */
-            configure: function() {
+            configure: function () {
                 this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:bad_request',
@@ -81,7 +81,7 @@ define([
              *
              * @param {Object} event
              */
-            updateCode: function(event) {
+            updateCode: function (event) {
                 var data = this.getFormData();
                 data.code = event.target.value;
 
@@ -113,7 +113,7 @@ define([
                 this.errors = errors.response;
             },
 
-            resetValidationErrors: function(event) {
+            resetValidationErrors: function () {
                 this.errors = {};
             }
         });

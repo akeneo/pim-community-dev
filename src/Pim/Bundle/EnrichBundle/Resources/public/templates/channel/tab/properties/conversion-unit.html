@@ -13,13 +13,9 @@
             <div class="AknFieldContainer-inputContainer">
                 <select class="select2" id="<%- fieldBaseId + attribute.code %>" data-attribute="<%- attribute.code %>">
                     <% key = _.findIndex(conversionUnits, function (unit) { return _.has(unit, attribute.code) }) %>
-                    <option <%- (0 > key) ? 'selected' : '' %>>
-                    <%- doNotConvertLabel %>
-                    </option>
+                    <option <%- (0 > key) ? 'selected' : '' %>><%- doNotConvertLabel %></option>
                     <% _.each(attribute.units, function (translation, value) { %>
-                        <option value="<%- value %>" <%- (0 <= key && value == conversionUnits[key][attribute.code]) ? 'selected' : '' %>>
-                            <%- translation %>
-                        </option>
+                        <option value="<%- value %>" <%- (0 <= key && value == conversionUnits[key][attribute.code]) ? 'selected' : '' %>><%- translation %></option>
                     <% }) %>
                 </select>
             </div>

@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Save extension for association type
+ * Save extension for channel
  *
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -41,27 +41,27 @@ define(
             updateFailureMessage: __('pim_enrich.entity.channel.info.update_failed'),
             createSuccessMessage: __('pim_enrich.entity.channel.info.create_successful'),
             createFailureMessage: __('pim_enrich.entity.channel.info.create_failed'),
-            wasNew: false,
 
             /**
              * {@inheritdoc}
              */
-            postSave: function () {
+            postSave: function (isUpdate) {
                 this.getRoot().trigger('pim_enrich:form:entity:post_save');
                 var code = this.getFormData().code;
-                if (this.wasNew) {
+                if (!isUpdate) {
                     messenger.notificationFlashMessage(
                         'success',
                         this.createSuccessMessage
                     );
                     var navigation = Navigation.getInstance();
                     navigation.setLocation(Routing.generate(module.config().redirectUrl, {'code': code}));
-                } else {
-                    messenger.notificationFlashMessage(
-                        'success',
-                        this.updateSuccessMessage
-                    );
+                    return;
                 }
+
+                messenger.notificationFlashMessage(
+                    'success',
+                    this.updateSuccessMessage
+                );
             },
 
             /**
@@ -70,11 +70,13 @@ define(
             save: function () {
                 var channel = $.extend(true, {}, this.getFormData());
                 var code = null;
+                var isUpdate = false;
+                var method = 'POST';
 
                 if (_.has(channel.meta, 'id')) {
                     code = channel.code;
-                } else {
-                    this.wasNew = true;
+                    isUpdate = true;
+                    method = 'PUT';
                 }
 
                 delete channel.meta;
@@ -83,9 +85,9 @@ define(
                 this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
                 return ChannelSaver
-                    .save(code, channel)
+                    .save(code, channel, method)
                     .then(function (data) {
-                        this.postSave();
+                        this.postSave(isUpdate);
 
                         this.setData(data);
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);

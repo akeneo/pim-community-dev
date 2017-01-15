@@ -13,13 +13,11 @@
     </select>
 </div>
 <div class="AknFieldContainer-footer">
-    <span class="below-input">
-        <span class="AknFieldContainer-validationErrors validation-errors">
-            <% _.each(errors, function (error) { %>
-                <span class="AknFieldContainer-validationError">
-                    <i class="icon-warning-sign"></i> <span class="error-message"><%- error %></span>
-                </span>
-            <% }); %>
-        </span>
+    <span class="AknFieldContainer-validationErrors validation-errors">
+        <% _.each(errors, function (error) { %>
+            <span class="AknFieldContainer-validationError">
+                <i class="icon-warning-sign"></i> <span class="error-message"><%- error %></span>
+            </span>
+        <% }); %>
     </span>
 </div>

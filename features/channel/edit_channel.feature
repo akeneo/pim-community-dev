@@ -54,8 +54,7 @@ Feature: Edit a channel
   Scenario: Successfully display the translation of the unit of metrics
     Given I am logged in as "Julien"
     And  I visit the "tablet" channel
-    And I fill in the following information:
-      | Longueur | Kilomètre |
+    Then I should see "Longuere,Volume,Poids" fields:
 
   @jira https://akeneo.atlassian.net/browse/PIM-6025
   Scenario: Successfully replace a channel locale by another one when there is only one channel

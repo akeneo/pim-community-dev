@@ -236,7 +236,7 @@ class ChannelController
     {
         $translator = $this->translator;
 
-        array_map(function($unit) use ($translator, &$normalizedAttribute) {
+        array_map(function ($unit) use ($translator, &$normalizedAttribute) {
             return $normalizedAttribute['units'][$unit] = $translator->trans($unit);
         }, array_keys($units));
 

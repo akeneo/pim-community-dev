@@ -64,14 +64,14 @@ Feature: Enforce ACL on history
     Given a "footwear" catalog configuration
     And a "boot" product
     And I am logged in as "admin"
-    And I am on the "mobile" channel page
+    And I visit the "mobile" channel page
     And I should see "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View channel history
     And I save the role
     Then I should not see the text "There are unsaved changes."
-    When I am on the "mobile" channel page
+    When I visit the "mobile" channel
     Then I should not see "history"
 
   Scenario: Successfully hide family history when user doesn't have the rights

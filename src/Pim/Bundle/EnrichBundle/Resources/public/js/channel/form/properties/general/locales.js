@@ -33,7 +33,7 @@ define([
              *
              * @return {Promise}
              */
-            configure: function() {
+            configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -58,6 +58,7 @@ define([
 
                     this.$('.select2').select2().on('change', this.updateState.bind(this));
 
+                    this.delegateEvents();
                     this.renderExtensions();
                 }.bind(this));
 
@@ -69,8 +70,8 @@ define([
              *
              * @param {Object} event
              */
-            updateState: function(event) {
-                this.setLocales($(event.target).val())
+            updateState: function (event) {
+                this.setLocales($(event.target).val());
             },
 
             /**
@@ -79,7 +80,7 @@ define([
              * @param {Array} codes
              */
             setLocales: function (codes) {
-                if (null == codes) {
+                if (null === codes) {
                     codes = [];
                 }
                 var data = this.getFormData();

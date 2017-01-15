@@ -28,7 +28,7 @@ class ContextSwitcherDecorator extends ElementDecorator
                 return false;
             }
 
-            $toggle = $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]');
+            $toggle = $dropdown->find('css', '.locale-switcher, *[data-toggle="dropdown"]');
             if (null === $toggle) {
                 return false;
             }
@@ -79,7 +79,7 @@ class ContextSwitcherDecorator extends ElementDecorator
                 return false;
             }
 
-            $toggle = $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]');
+            $toggle = $dropdown->find('css', '.scope-switcher, *[data-toggle="dropdown"]');
 
             if (null === $toggle) {
                 return false;

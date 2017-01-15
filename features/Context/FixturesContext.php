@@ -698,7 +698,7 @@ class FixturesContext extends BaseFixturesContext
     public function iSetTheLocaleToTheChannel($locale, $channel)
     {
         return [
-            new Step\Given("I am on the \"$channel\" channel page"),
+            new Step\Given("I visit the \"$channel\" channel"),
             new Step\Given("I fill in \"Locales\" with \"$locale\" on the current page"),
             new Step\Given("I press \"Save\""),
         ];

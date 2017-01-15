@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class ChannelRemover
+ * ChannelRemover used as service to remove given channel
  *
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -37,11 +37,11 @@ class ChannelRemover implements RemoverInterface
     protected $entityClass;
 
     /**
-     * @param ObjectManager                    $objectManager
-     * @param EventDispatcherInterface         $eventDispatcher
-     * @param ChannelRepositoryInterface       $channelRepository
-     * @param TranslatorInterface              $translator
-     * @param string                           $entityClass
+     * @param ObjectManager               $objectManager
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param ChannelRepositoryInterface  $channelRepository
+     * @param TranslatorInterface         $translator
+     * @param string                      $entityClass
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -80,7 +80,7 @@ class ChannelRemover implements RemoverInterface
      * @param $object
      *
      * @throws InvalidArgumentException
-     * @throws DeleteException
+     * @throws \LogicException
      */
     private function validateObject($object)
     {
@@ -95,8 +95,8 @@ class ChannelRemover implements RemoverInterface
         }
 
         $channelCount = $this->channelRepository->countAll();
-        if (1 > $channelCount) {
-            throw \LogicException($this->translator->trans('flash.channel.not removable'));
+        if (1 == $channelCount) {
+            throw new \LogicException($this->translator->trans('flash.channel.not removable'));
         }
     }
 }

@@ -60,7 +60,7 @@ Feature: Display the completeness of a product
      | complete | 50%   |
 
   Scenario: Remove completeness when locales of a channel are deleted
-    Given I am on the "tablet" channel page
+    Given I visit the "tablet" channel page
     And I change the "Locales" to "French (France)"
     And I press the "Save" button
     And I am on the "sneakers" product page
@@ -79,7 +79,7 @@ Feature: Display the completeness of a product
       | tablet  | fr_FR  | warning  | Price, Rating, Side view, Size | 50%   |
 
   Scenario: Remove completeness from grid when locales of a channel are deleted
-    Given I am on the "tablet" channel page
+    Given I visit the "tablet" channel
     And I change the "Locales" to "French (France)"
     And I press the "Save" button
     And I am on the products page

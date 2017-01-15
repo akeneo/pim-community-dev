@@ -558,7 +558,11 @@ class AssertionContext extends RawMinkContext
         $steps = [];
 
         foreach ($table->getHash() as $item) {
-            $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
+            if ('"tablet" channel' !== $item['page']) {
+                $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
+            } else {
+                $steps[] = new Then(sprintf('I visit the %s page', $item['page']));
+            }
             $steps[] = new Then(sprintf('I should see the title "%s"', $item['title']));
         }
 

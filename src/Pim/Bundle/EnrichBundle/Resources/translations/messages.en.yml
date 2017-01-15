@@ -1048,7 +1048,3 @@ pim_enrich_attribute_form:
     locale_specific: Locale specific
     group: Attribute group
     useableAsGridFilter: Usable in grid
-popin:
-  create:
-    channel:
-      title: 'popin.create.channel.title'

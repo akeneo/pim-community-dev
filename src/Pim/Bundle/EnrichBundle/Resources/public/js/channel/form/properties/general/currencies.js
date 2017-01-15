@@ -33,7 +33,7 @@ define([
              *
              * @return {Promise}
              */
-            configure: function() {
+            configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -70,8 +70,8 @@ define([
              *
              * @param {Object} event
              */
-            updateState: function(event) {
-                this.setCategory($(event.target).val())
+            updateState: function (event) {
+                this.setCategory($(event.target).val());
             },
 
             /**
@@ -80,7 +80,7 @@ define([
              * @param {Array} codes
              */
             setCategory: function (codes) {
-                if (null == codes) {
+                if (null === codes) {
                     codes = [];
                 }
                 var data = this.getFormData();

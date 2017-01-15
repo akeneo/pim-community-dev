@@ -13,9 +13,9 @@ Feature: Update user preferences
     And I visit the "Additional" tab
     Then I should see the text "Default tree"
     And I should see the text "2013 collection"
-    When I edit the "tablet" channel
+    When I visit the "tablet" channel
     And I change the "Category tree" to "2014 collection"
-    And I save the channel
+    And I press the "Save" button
     And I should see the flash message "Channel successfully saved"
     And I edit the "2013_collection" category
     And I press the "Delete" button
@@ -29,7 +29,7 @@ Feature: Update user preferences
     And I visit the "Additional" tab
     Then I should see the text "Catalog scope"
     And I should see the text "Print"
-    When I edit the "Print" channel
+    When I visit the "Print" channel
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "Peter" user
@@ -46,7 +46,7 @@ Feature: Update user preferences
     When I visit the "Additional" tab
     Then I should see the text "Catalog locale"
     And I should see the text "fr_FR"
-    When I edit the "ecommerce" channel
+    When I visit the "ecommerce" channel
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "Julia" user

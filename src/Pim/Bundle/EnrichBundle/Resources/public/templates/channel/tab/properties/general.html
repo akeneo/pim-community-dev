@@ -13,14 +13,12 @@
                 <input id="pim_enrich_channel_form_code" class="AknTextField channel-code" type="text" <%- code == '' ? '' : 'readonly disabled' %> required value="<%- code %>">
             </div>
             <div class="AknFieldContainer-footer">
-                <span class="below-input">
-                    <span class="AknFieldContainer-validationErrors validation-errors">
-                        <% _.each(errors, function (error) { %>
-                            <span class="AknFieldContainer-validationError">
-                                <i class="icon-warning-sign"></i> <span class="error-message"><%- error %></span>
-                            </span>
-                        <% }); %>
-                    </span>
+                <span class="AknFieldContainer-validationErrors validation-errors">
+                    <% _.each(errors, function (error) { %>
+                        <span class="AknFieldContainer-validationError">
+                            <i class="icon-warning-sign"></i> <span class="error-message"><%- error %></span>
+                        </span>
+                    <% }); %>
                 </span>
             </div>
         </div>

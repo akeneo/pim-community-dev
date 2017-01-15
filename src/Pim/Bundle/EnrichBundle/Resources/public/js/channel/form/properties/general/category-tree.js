@@ -39,7 +39,6 @@ define([
                     return this;
                 }
 
-
                 FetcherRegistry.getFetcher('category').fetchAll().then(function (categories) {
 
                     var data = this.getFormData();
@@ -54,7 +53,7 @@ define([
                         catalogLocale: this.catalogLocale,
                         label: __('pim_enrich.form.channel.tab.properties.category_tree'),
                         requiredLabel: __('pim_enrich.form.required'),
-                        errors: this.getParent().getValidationErrorsForField('category_tree'),
+                        errors: this.getParent().getValidationErrorsForField('category_tree')
                     }));
 
                     this.$('.select2').select2().on('change', this.updateState.bind(this));
@@ -70,8 +69,8 @@ define([
              *
              * @param {Object} event
              */
-            updateState: function(event) {
-                this.setCategory($(event.target).val())
+            updateState: function (event) {
+                this.setCategory($(event.target).val());
             },
 
             /**

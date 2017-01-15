@@ -106,6 +106,7 @@ class NavigationContext extends BaseNavigationContext
     {
         $page   = 'Channel';
         $this->openPage(sprintf('%s edit', $page), ['code' => $identifier]);
+        $this->wait();
     }
 
     /**
