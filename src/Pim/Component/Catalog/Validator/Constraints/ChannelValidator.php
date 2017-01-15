@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Validator\Constraints;
+namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraint;

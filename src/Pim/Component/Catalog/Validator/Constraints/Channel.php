@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Validator\Constraints;
+namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\Choice;
 
@@ -22,6 +22,6 @@ class Channel extends Choice
      */
     public function validatedBy()
     {
-        return 'channel_validator';
+        return 'pim_at_least_a_channel';
     }
 }
