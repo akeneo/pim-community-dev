@@ -176,7 +176,7 @@ services:
     pim_connector.processor.denormalization.job_instance:
         class: '%pim_connector.processor.denormalization.job_instance.class%'
         arguments:
-            - '@pim_import_export.repository.job_instance' # TODO, alias should be changed and class should be moved
+            - '@akeneo_batch.job.job_instance_repository' # TODO, alias should be changed and class should be moved
             - '@pim_connector.factory.job_instance'
             - '@akeneo_batch.updater.job_instance'
             - '@validator'

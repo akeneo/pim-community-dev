@@ -1,26 +1,33 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Entity\Repository;
+namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 
 /**
- * Job execution repository
+ * Job tracker repository
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @deprecated will be moved to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository in 1.4
  */
-class JobExecutionRepository extends EntityRepository
+class JobTrackerRepository extends EntityRepository implements DatagridRepositoryInterface
 {
     /**
-     * Create job tracker datagrid query builder
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @param EntityManager $em
+     * @param string        $class
      */
-    public function createJobTrackerDatagridQueryBuilder()
+    public function __construct(EntityManager $em, $class)
+    {
+        parent::__construct($em, $em->getClassMetadata($class));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('e');
         $qb

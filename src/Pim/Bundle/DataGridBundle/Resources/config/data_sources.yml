@@ -96,6 +96,14 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_job_execution }
 
+    pim_datagrid.datasource.job_tracker:
+        class: '%pim_datagrid.datasource.repository.class%'
+        arguments:
+            - '@pim_enrich.repository.job_tracker'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_datasource_job_tracker }
+
     pim_datagrid.datasource.smart:
         class: '%pim_datagrid.datasource.default.class%'
         arguments:

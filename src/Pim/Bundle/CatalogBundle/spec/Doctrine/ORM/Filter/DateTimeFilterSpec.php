@@ -5,11 +5,11 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
@@ -17,7 +17,7 @@ class DateTimeFilterSpec extends ObjectBehavior
 {
     function let(
         QueryBuilder $qb,
-        JobInstanceRepository $jobInstanceRepository,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         JobRepositoryInterface $jobRepository
     ) {
         $this->beConstructedWith(
@@ -228,7 +228,7 @@ class DateTimeFilterSpec extends ObjectBehavior
         Expr $expr,
         Comparison $comparison
     ) {
-        $jobInstanceRepository->findOneBy(['code' => 'csv_product_export'])->willReturn($jobInstance);
+        $jobInstanceRepository->findOneByIdentifier('csv_product_export')->willReturn($jobInstance);
         $jobRepository->getLastJobExecution($jobInstance, 1)->shouldBeCalled()->willReturn($jobExecution);
 
         $jobExecution->getStartTime()->willReturn($startTime);
@@ -257,7 +257,7 @@ class DateTimeFilterSpec extends ObjectBehavior
         $jobRepository,
         JobInstance $jobInstance
     ) {
-        $jobInstanceRepository->findOneBy(['code' => 'csv_product_export'])->willReturn($jobInstance);
+        $jobInstanceRepository->findOneByIdentifier('csv_product_export')->willReturn($jobInstance);
         $jobRepository->getLastJobExecution($jobInstance, 1)->shouldBeCalled()->willReturn(null);
 
         $qb->andWhere(Argument::cetera())->shouldNotBeCalled();
