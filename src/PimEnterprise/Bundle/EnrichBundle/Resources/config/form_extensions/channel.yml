@@ -1,0 +1,8 @@
+extensions:
+    pimee-channel-edit-form-asset-transformation:
+        module: pim/common/tab/asset-transformation
+        parent: pim-channel-edit-form-form-tabs
+        targetZone: container
+        position: 160
+        config:
+            title: 'pimee_enrich.form.channel.tab.asset-transformation.title'

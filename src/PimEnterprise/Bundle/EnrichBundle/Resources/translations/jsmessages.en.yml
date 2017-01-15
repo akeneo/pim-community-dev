@@ -25,7 +25,10 @@ pimee_enrich:
                     execute.label: Allowed to execute job profile
                     edit.label: Allowed to edit job profile
                     removed: The group {{ group }} will not be allowed to {{ permission }} job profile
-
+        channel:
+            tab:
+                asset-transformation:
+                    title: Asset transformations
     entity:
         product:
             history:
