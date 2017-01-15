@@ -138,35 +138,6 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function findCommonAttributeIds(array $productIds)
-    {
-        // Prepare SQL query
-        $commonAttSql = $this->prepareCommonAttributesSQLQuery();
-        $commonAttSql = strtr(
-            $commonAttSql,
-            [
-                '%product_ids%'        => '('.implode($productIds, ',').')',
-                '%product_ids_count%'  => count($productIds)
-            ]
-        );
-        $commonAttSql = QueryBuilderUtility::prepareDBALQuery($this->em, $this->entityName, $commonAttSql);
-
-        // Execute SQL query
-        $stmt = $this->em->getConnection()->prepare($commonAttSql);
-        $stmt->execute();
-
-        $attributes = $stmt->fetchAll();
-        $attributeIds = [];
-        foreach ($attributes as $attributeId) {
-            $attributeIds[] = (int) $attributeId['a_id'];
-        }
-
-        return $attributeIds;
-    }
-
-    /**
      * Prepare SQL query to get common attributes
      *
      * - First subquery get all attributes (and count when they appear) added to products

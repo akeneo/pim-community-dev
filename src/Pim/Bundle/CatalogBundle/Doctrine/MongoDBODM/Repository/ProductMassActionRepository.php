@@ -55,32 +55,6 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findCommonAttributeIds(array $productIds)
-    {
-        $results = $this->findValuesCommonAttributeIds($productIds);
-
-        $familyIds = $this->findFamiliesFromProductIds($productIds);
-        if (!empty($familyIds)) {
-            $families = $this->familyRepository->findAttributeIdsFromFamilies($familyIds);
-        }
-
-        $attIds = null;
-        foreach ($results as $result) {
-            $familyAttr = isset($result['_id']['family']) ? $families[$result['_id']['family']] : [];
-            $prodAttIds = array_unique(array_merge($result['attribute'], $familyAttr));
-            if (null === $attIds) {
-                $attIds = $prodAttIds;
-            } else {
-                $attIds = array_intersect($attIds, $prodAttIds);
-            }
-        }
-
-        return $attIds;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function deleteFromIds(array $ids)
     {
         if (empty($ids)) {
