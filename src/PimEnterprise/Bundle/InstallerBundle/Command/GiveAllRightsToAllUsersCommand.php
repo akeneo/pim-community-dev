@@ -167,7 +167,7 @@ class GiveAllRightsToAllUsersCommand extends ContainerAwareCommand
      */
     protected function getJobInstanceRepository()
     {
-        return $this->getContainer()->get('pim_import_export.repository.job_instance');
+        return $this->getContainer()->get('akeneo_batch.job.job_instance_repository');
     }
 
     /**

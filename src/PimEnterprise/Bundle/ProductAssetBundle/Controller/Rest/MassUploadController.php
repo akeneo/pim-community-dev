@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
 use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;
@@ -50,20 +50,20 @@ class MassUploadController
     /** @var JobLauncherInterface */
     protected $jobLauncher;
 
-    /** @var JobInstanceRepository */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepo;
 
     /** @var string */
     protected $tmpStorageDir;
 
     /**
-     * @param AssetRepositoryInterface $assetRepository
-     * @param UploadCheckerInterface   $uploadChecker
-     * @param ImporterInterface        $importer
-     * @param TokenStorageInterface    $tokenStorage
-     * @param JobLauncherInterface     $jobLauncher
-     * @param JobInstanceRepository    $jobInstanceRepository
-     * @param string                   $tmpStorageDir
+     * @param AssetRepositoryInterface              $assetRepository
+     * @param UploadCheckerInterface                $uploadChecker
+     * @param ImporterInterface                     $importer
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param JobLauncherInterface                  $jobLauncher
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
+     * @param string                                $tmpStorageDir
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -71,7 +71,7 @@ class MassUploadController
         ImporterInterface $importer,
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
-        JobInstanceRepository $jobInstanceRepository,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         $tmpStorageDir
     ) {
         $this->assetRepository = $assetRepository;

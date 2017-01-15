@@ -131,7 +131,7 @@ class ProjectContext extends PimContext
         $batchJobCommand->setContainer($this->getMainContext()->getContainer());
         $command = new CommandTester($batchJobCommand);
 
-        $jobInstance = $this->getService('pim_import_export.repository.job_instance')
+        $jobInstance = $this->getService('akeneo_batch.job.job_instance_repository')
             ->findOneByIdentifier('project_calculation');
         $exitCode = $command->execute(
             [

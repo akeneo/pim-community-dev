@@ -49,7 +49,7 @@ services:
             - '@pim_user.repository.user'
             - '@pimee_workflow.provider.owner_groups'
             - '@pimee_workflow.provider.users_to_notify'
-            - '@pim_import_export.repository.job_instance'
+            - '@akeneo_batch.job.job_instance_repository'
             - '@pim_notification.factory.notification'
         tags:
             - { name: kernel.event_subscriber }
