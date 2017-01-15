@@ -5,8 +5,6 @@ namespace Pim\Component\Catalog\Repository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -56,24 +54,6 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return array
      */
     public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
-
-    /**
-     * Returns all products that have the given attribute
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return ProductInterface[]
-     */
-    public function findAllWithAttribute(AttributeInterface $attribute);
-
-    /**
-     * Returns all products that have the given attribute option
-     *
-     * @param AttributeOptionInterface $option
-     *
-     * @return ProductInterface[]
-     */
-    public function findAllWithAttributeOption(AttributeOptionInterface $option);
 
     /**
      * Returns a full product with all relations
