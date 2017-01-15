@@ -15,15 +15,6 @@ use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterf
 interface ProductMassActionRepositoryInterface extends MassActionRepositoryInterface
 {
     /**
-     * Find all common attribute ids linked to a family or with values from a list of product ids
-     *
-     * @param array $productIds
-     *
-     * @return integer[]
-     */
-    public function findCommonAttributeIds(array $productIds);
-
-    /**
      * Delete a list of product ids
      *
      * @param integer[] $ids
