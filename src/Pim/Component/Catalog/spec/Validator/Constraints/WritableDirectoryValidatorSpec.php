@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Validator\Constraints;
+namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory;
+use Pim\Component\Catalog\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 

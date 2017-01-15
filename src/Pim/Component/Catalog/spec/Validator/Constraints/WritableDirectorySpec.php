@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Validator\Constraints;
+namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 
@@ -25,6 +25,6 @@ class WritableDirectorySpec extends ObjectBehavior
     {
         $this
             ->validatedBy()
-            ->shouldReturn('Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectoryValidator');
+            ->shouldReturn('Pim\Component\Catalog\Validator\Constraints\WritableDirectoryValidator');
     }
 }
