@@ -24,7 +24,6 @@ define([
         template
     ) {
         return BaseForm.extend({
-            className: 'tabsection',
             template: _.template(template),
             requiredLabel: __('pim_enrich.form.required'),
             fieldPrefix: null,

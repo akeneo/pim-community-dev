@@ -43,6 +43,8 @@ define([
              * {@inheritdoc}
              */
             render: function () {
+
+                // generate place holders for form fields
                 this.$el.html(this.template({
                     sectionTitle: this.sectionTitle
                 }));
@@ -53,6 +55,10 @@ define([
             },
 
             onRender: function () {
+                // create promises here for fields that need additional data (ex.select options)
+                // $.when()
+                // when promise ready render
+                // .then
                 _.each(this.config.fields, function (field) {
                     console.log(field);
                     var fieldType = this.fieldTypes[field.type];
@@ -66,6 +72,8 @@ define([
                     formField.setParent(this);
                     formField.setElement(this.$('#' + field.name)).render();
                 }.bind(this));
+
+                // .endthen
             },
 
             getFieldError: function (field) {

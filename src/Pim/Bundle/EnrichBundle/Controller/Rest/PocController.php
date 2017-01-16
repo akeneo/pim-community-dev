@@ -116,6 +116,7 @@ class PocController
     {
         return [
             'code' => 'poc',
+            'new_name' => 'Newname value',
             'labels' => [
                 'en_US' => 'Label en',
                 'fr_FR' => 'Label fr',
