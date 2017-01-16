@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\TestEnterprise\Integration\ActivityManager;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
 

@@ -3,7 +3,7 @@
 namespace PimEnterprise\Component\ProductAsset\tests\integration\Normalizer\Standard;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\TestEnterprise\Integration\TestCase;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>

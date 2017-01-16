@@ -1,10 +1,19 @@
 <?php
 
-namespace Akeneo\TestEnterprise\Integration\ActivityManager;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
 
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
-class ProjectProductSelectionCase extends ActivityManagerTestCase
+class ProjectProductSelectionIntegration extends ActivityManagerTestCase
 {
     /**
      * Create a project with only one product to test that the pre processed data are well calculated for a product

@@ -1,11 +1,20 @@
 <?php
 
-namespace Akeneo\TestEnterprise\Integration\ActivityManager;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
-class PreProcessingOneProductCase extends ActivityManagerTestCase
+class PreProcessingIntegration extends ActivityManagerTestCase
 {
     /** @var ProjectInterface */
     private static $project;
@@ -17,7 +26,7 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
      * Channel: ecommerce
      * Locale: en_US
      */
-    public function testProjectCreation()
+    public function testProjectCalculationOnTshirtWitcher()
     {
         $this::$project = $this->createProject([
             'label' => 'test-project',
@@ -45,8 +54,8 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
                     'is_complete' => '1'
                 ],
                 'marketing' => [
-                    'has_at_least_one_required_attribute_filled' => '1',
-                    'is_complete' => '0'
+                    'has_at_least_one_required_attribute_filled' => '0',
+                    'is_complete' => '1'
                 ],
                 'technical' => [
                     'has_at_least_one_required_attribute_filled' => '0',
@@ -80,7 +89,7 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
      * Channel: ecommerce
      * Locale: en_US
      */
-    public function testThatProductPropertyIsEmpty()
+    public function testProjectCalculationWhenTheProductPropertiesAreEmpties()
     {
         $project = $this->createProject([
             'label' => 'test-empty-property',
@@ -123,7 +132,7 @@ class PreProcessingOneProductCase extends ActivityManagerTestCase
      *
      * TODO : Check asset collection.
      */
-    public function testThatProductPropertyIsFull()
+    public function testProjectCalculationWhenTheProductPropertiesAreFull()
     {
         $this->getConnection()->insert('acme_reference_data_color', [
             'code' => 'red',

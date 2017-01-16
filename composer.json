@@ -18,7 +18,7 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
-            "Akeneo\\TestEnterprise\\Integration\\": "tests/TestEnterprise/Integration",
+            "Akeneo\\TestEnterprise\\Integration\\": "tests",
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/"
         }
     },
