@@ -11,11 +11,10 @@
 
 namespace Akeneo\TestEnterprise\Integration\ActivityManager;
 
+use Akeneo\Test\Integration\Configuration;
+
 class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
 {
-    /** {@inheritdoc} */
-    protected $purgeDatabaseForEachTest = true;
-
     /**
      * A project has to be removed if its channel is removed.
      */
@@ -45,7 +44,7 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
         $channelRemover->remove($mobileChannel);
 
         $result = $projectRepository->findOneByIdentifier($projectCode);
-        $this->assertNull($result, 'Project not removed after its channel has been removed.');
+        $this->assertTrue(null === $result, 'Project not removed after its channel has been removed.');
     }
 
     /**
@@ -82,5 +81,17 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
 
         $result = $projectRepository->findOneByIdentifier($projectCode);
         $this->assertTrue(null === $result, 'Project not removed after its locale has been deactivated.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        return new Configuration(
+            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' .    DIRECTORY_SEPARATOR . 'activity_manager'],
+            true
+        );
     }
 }

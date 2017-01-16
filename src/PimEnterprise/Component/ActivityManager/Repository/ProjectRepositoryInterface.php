@@ -11,11 +11,13 @@
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -23,6 +25,20 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 interface ProjectRepositoryInterface extends
     ObjectRepository ,
     IdentifiableObjectRepositoryInterface,
-    SearchableRepositoryInterface
+    SearchableRepositoryInterface,
+    CursorableRepositoryInterface
 {
+    /**
+     * @param LocaleInterface $locale
+     *
+     * @return CursorInterface
+     */
+    public function findByLocale(LocaleInterface $locale);
+
+    /**
+     * @param ChannelInterface $channel
+     *
+     * @return CursorInterface
+     */
+    public function findByChannel(ChannelInterface $channel);
 }
