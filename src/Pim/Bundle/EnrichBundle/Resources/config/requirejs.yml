@@ -163,7 +163,28 @@ config:
                     options:
                         urls:
                             list: pim_user_user_group_rest_index
+                poc:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_poc_rest_get
     paths:
+        # POC common fields
+        pim/form/type/field/input:  pimenrich/js/form/type/field/input
+        pim/form/type/field/select:  pimenrich/js/form/type/field/select
+        pim/form/type/field/translation: pimenrich/js/form/type/field/translation
+
+        # POC common templates
+        pim/template/form/type/field/input: pimenrich/templates/form/type/field/input.html
+        pim/template/form/type/field/select: pimenrich/templates/form/type/field/select.html
+        pim/template/form/type/field/translation: pimenrich/templates/form/type/field/translation.html
+
+        # POC js
+        pim/poc/form/form: pimenrich/js/poc/form/form
+
+        # POC template
+        pim/template/poc/form/form: pimenrich/templates/poc/form/form
+
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
         jstree/nested_switch:               pimenrich/js/jstree/jquery.jstree.nested_switch

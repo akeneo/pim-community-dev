@@ -1,0 +1,56 @@
+pim_enrich_poc_create:
+    path: /create
+    defaults: { _controller: pim_enrich.controller.poc:createAction }
+    methods: [GET]
+
+pim_enrich_poc_edit:
+    path: /{code}/edit
+    defaults: { _controller: pim_enrich.controller.poc:editAction }
+    methods: [GET]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+pim_enrich_poc_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.poc:getAction, _format: json }
+    methods: [GET]
+    requirements:
+        _format: json
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_enrich_poc_rest_post:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.poc:postAction, _format: json }
+    methods: [POST]
+    requirements:
+        _format: json
+
+pim_enrich_poc_rest_put:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.poc:putAction, _format: json }
+    methods: [PUT]
+    requirements:
+        _format: json
+        code: '[a-zA-Z0-9_]+'
+
+pim_enrich_poc_rest_remove:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.poc:removeAction, _format: json }
+    methods: [DELETE]
+    requirements:
+        _format: json
+        code: '[a-zA-Z0-9_]+'
+
+pim_enrich_poc_rest_simple_select:
+    path: /rest/simple-select
+    defaults: { _controller: pim_enrich.controller.rest.poc:simpleSelectAction, _format: json }
+    methods: [GET]
+    requirements:
+        _format: json
+
+pim_enrich_poc_rest_multi_select:
+    path: /rest/multi-select
+    defaults: { _controller: pim_enrich.controller.rest.poc:multiSelectAction, _format: json }
+    methods: [GET]
+    requirements:
+        _format: json
