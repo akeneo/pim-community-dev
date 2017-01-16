@@ -38,6 +38,13 @@ abstract class TestCase extends KernelTestCase
     abstract protected function getConfiguration();
 
     /**
+     * Method executed after the fixture import
+     */
+    protected function doAfterFixtureImport(Application $application)
+    {
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -175,6 +182,8 @@ abstract class TestCase extends KernelTestCase
         }
 
         $jobLoader->deleteJobInstances();
+
+        $this->doAfterFixtureImport($application);
 
         // close the connection created specifically for this repository
         // TODO: to remove when TIP-385 will be done
