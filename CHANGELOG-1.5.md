@@ -2,7 +2,10 @@
 
 ## Bug fixes
 
+- PIM-5854: On MySQL, the family code is not displayed if the family label is empty
+- PIM-6107: On MongoDb, the family code is not displayed if the family label is empty
 - PIM-6064: Fix a grid issue with attribute named ID 
+- PIM-6092: Always allow to create new option on select2
 
 ## Technical improvements
 
@@ -22,6 +25,7 @@
 
 - PIM-6026: Fix an error on family mass edit that occurs when working on more families than the mass edit batch size
 - PIM-5991: Focus on wysiwig field when clicking on the product edit form completeness link
+- PIM-6022: Fix shell injection in mass-edit form
 
 # 1.5.14 (2016-12-01)
 
