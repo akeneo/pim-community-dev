@@ -22,7 +22,7 @@ class LocaleProjectRemoverSpec extends ObjectBehavior
         $this->beConstructedWith($projectRepository, $projectRemover, $detacher);
     }
 
-    function it_is_a_project_remover_rule()
+    function it_is_a_project_remover()
     {
         $this->shouldHaveType(LocaleProjectRemover::class);
         $this->shouldImplement(ProjectRemoverInterface::class);
