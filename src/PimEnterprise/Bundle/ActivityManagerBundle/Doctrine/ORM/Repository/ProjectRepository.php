@@ -19,6 +19,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
@@ -27,7 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectRepository extends EntityRepository implements ProjectRepositoryInterface, CursorableRepositoryInterface
+class ProjectRepository extends EntityRepository implements ProjectRepositoryInterface
 {
     /** @var CursorFactoryInterface */
     protected $cursorFactory;
@@ -96,19 +98,6 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
     }
 
     /**
-     * TODO: manage transaction/error during the project calculation
-     *
-     * {@inheritdoc}
-     */
-    public function addProduct(ProjectInterface $project, ProductInterface $product)
-    {
-        $this->_em->getConnection()->insert('pimee_activity_manager_project_product', [
-            'project_id' => $project->getId(),
-            'product_id' => $product->getId(),
-        ]);
-    }
-
-    /**
      * Returns a cursor with all products
      *
      * @throws \RuntimeException If cursor has not been set
@@ -140,6 +129,36 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
         $qb->setParameter(':project_ids', $projectIds);
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByLocale(LocaleInterface $locale)
+    {
+        if (null === $this->cursorFactory) {
+            throw new \RuntimeException('The cursor factory is not initialized');
+        }
+
+        $qb = $this->createQueryBuilder('project');
+        $qb->where($qb->expr()->eq('project.locale', $locale->getId()));
+
+        return $this->cursorFactory->createCursor($qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByChannel(ChannelInterface $channel)
+    {
+        if (null === $this->cursorFactory) {
+            throw new \RuntimeException('The cursor factory is not initialized');
+        }
+
+        $qb = $this->createQueryBuilder('project');
+        $qb->where($qb->expr()->eq('project.channel', $channel->getId()));
+
+        return $this->cursorFactory->createCursor($qb);
     }
 
     /**

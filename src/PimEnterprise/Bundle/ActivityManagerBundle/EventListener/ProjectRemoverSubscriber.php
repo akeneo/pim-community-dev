@@ -12,7 +12,9 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use PimEnterprise\Component\ActivityManager\Remover\ProjectRemoverEngine;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Remover\ChainedProjectRemover;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -24,15 +26,15 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProjectRemoverSubscriber implements EventSubscriberInterface
 {
-    /** @var ProjectRemoverEngine */
-    protected $projectRemoverEngine;
+    /** @var ChainedProjectRemover */
+    protected $chainedProjectRemover;
 
     /**
-     * @param ProjectRemoverEngine $projectRemoverEngine
+     * @param ChainedProjectRemover $chainedProjectRemover
      */
-    public function __construct(ProjectRemoverEngine $projectRemoverEngine)
+    public function __construct(ChainedProjectRemover $chainedProjectRemover)
     {
-        $this->projectRemoverEngine = $projectRemoverEngine;
+        $this->chainedProjectRemover = $chainedProjectRemover;
     }
 
     /**
@@ -41,16 +43,34 @@ class ProjectRemoverSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::PRE_REMOVE => 'removeProjects'
+            StorageEvents::PRE_REMOVE => 'removeProjectsImpactedByEntity',
+            StorageEvents::POST_SAVE => 'removeProjectsImpactedByLocale'
         ];
     }
 
     /**
      * @param GenericEvent $event
      */
-    public function removeProjects(GenericEvent $event)
+    public function removeProjectsImpactedByEntity(GenericEvent $event)
     {
         $entity = $event->getSubject();
-        $this->projectRemoverEngine->remove($entity);
+        if ($entity instanceof ProjectInterface) {
+            return;
+        }
+        $this->chainedProjectRemover->removeProjectsImpactedBy($entity);
+    }
+
+    /**
+     * Removes projects impacted by a locale deactivation.
+     *
+     * @param GenericEvent $event
+     */
+    public function removeProjectsImpactedByLocale(GenericEvent $event)
+    {
+        $locale = $event->getSubject();
+        if (!$locale instanceof LocaleInterface) {
+            return;
+        }
+        $this->chainedProjectRemover->removeProjectsImpactedBy($locale);
     }
 }

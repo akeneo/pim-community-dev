@@ -71,7 +71,7 @@ services:
     pimee_activity_manager.event_subscriber.project_remover:
         class: '%pimee_activity_manager.event_subscriber.project_remover.class%'
         arguments:
-            - '@pimee_activity_manager.project_remover.engine'
+            - '@pimee_activity_manager.project_remover.chained'
         tags:
             - { name: kernel.event_subscriber }
 

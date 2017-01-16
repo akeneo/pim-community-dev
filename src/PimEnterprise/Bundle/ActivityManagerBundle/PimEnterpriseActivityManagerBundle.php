@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
-use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\RegisterProjectRemoverRulePass;
+use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\RegisterProjectRemoverPass;
 use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -30,7 +30,7 @@ class PimEnterpriseActivityManagerBundle extends Bundle
     {
         $container->addCompilerPass(new ResolveDoctrineTargetModelPass());
         $container->addCompilerPass(new RegisterCalculationStepPass());
-        $container->addCompilerPass(new RegisterProjectRemoverRulePass());
+        $container->addCompilerPass(new RegisterProjectRemoverPass());
 
         $mappingConfig = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\ActivityManager\Model',

@@ -20,13 +20,13 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class RegisterProjectRemoverRulePass implements CompilerPassInterface
+class RegisterProjectRemoverPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const CHAINED_PROJECT_REMOVER = 'pimee_activity_manager.project_remover.chained_rule';
+    const CHAINED_PROJECT_REMOVER = 'pimee_activity_manager.project_remover.chained';
 
     /** @staticvar string */
-    const RULE_TAG = 'pimee_activity_manager.project_remover.rule';
+    const REMOVER_TAG = 'pimee_activity_manager.project_remover';
 
     /**
      * {@inheritdoc}
@@ -40,12 +40,12 @@ class RegisterProjectRemoverRulePass implements CompilerPassInterface
             ));
         }
 
-        $rules = [];
-        $rulesIds = array_keys($container->findTaggedServiceIds(static::RULE_TAG));
-        foreach ($rulesIds as $ruleId) {
-            $rules[] = new Reference($ruleId);
+        $removers = [];
+        $removersIds = array_keys($container->findTaggedServiceIds(static::REMOVER_TAG));
+        foreach ($removersIds as $removerId) {
+            $removers[] = new Reference($removerId);
         }
 
-        $container->getDefinition(static::CHAINED_PROJECT_REMOVER)->setArguments([$rules]);
+        $container->getDefinition(static::CHAINED_PROJECT_REMOVER)->setArguments([$removers]);
     }
 }
