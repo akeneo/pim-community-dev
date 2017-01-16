@@ -14,7 +14,7 @@ interface StructureVersionProviderInterface
     /**
      * Returns the last version of the structure which the provider is responsible
      *
-     * @return int The current structure version number
+     * @return null|int The current structure version number
      */
     public function getStructureVersion();
 }
