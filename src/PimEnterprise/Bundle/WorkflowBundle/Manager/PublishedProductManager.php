@@ -198,11 +198,20 @@ class PublishedProductManager
      */
     public function publishAll(array $products)
     {
+        $publishedContent = [];
         foreach ($products as $product) {
-            $this->publish($product, ['with_associations' => false, 'flush' => false]);
+            $published = $this->publish($product, ['with_associations' => false, 'flush' => false]);
+            $publishedContent[] = [
+                'published' => $published,
+                'product'   => $product,
+            ];
         }
 
         $this->getObjectManager()->flush();
+
+        foreach ($publishedContent as $content) {
+            $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $content['product'], $content['published']);
+        }
 
         $this->publishAssociations($products);
     }
@@ -240,6 +249,7 @@ class PublishedProductManager
             foreach ($product->getAssociations() as $association) {
                 $copiedAssociation = $this->publisher->publish($association, ['published' => $published]);
                 $published->addAssociation($copiedAssociation);
+                $this->getObjectManager()->persist($published);
             }
         }
         $this->getObjectManager()->flush();

@@ -63,7 +63,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $this->publish($product);
     }
 
-    function it_publishes_products(
+    function it_publishes_products_with_associations(
         $publisher,
         $repository,
         ProductInterface $productFoo,
@@ -96,8 +96,8 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $objectManager->remove(Argument::any())->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $objectManager->persist($publishedFoo)->shouldBeCalledTimes(1);
-        $objectManager->persist($publishedBar)->shouldBeCalledTimes(1);
+        $objectManager->persist($publishedFoo)->shouldBeCalledTimes(2);
+        $objectManager->persist($publishedBar)->shouldBeCalledTimes(2);
 
         $objectManager->flush()->shouldBeCalledTimes(4);
 
