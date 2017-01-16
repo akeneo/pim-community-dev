@@ -43,7 +43,7 @@ stage('build') {
 
         if (editions.contains('ee')) {
            checkout([$class: 'GitSCM',
-             branches: [[name: '1.4']],
+             branches: [[name: '1.6']],
              userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
            ])
 
