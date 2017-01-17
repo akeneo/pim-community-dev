@@ -44,33 +44,20 @@ class CatalogUpdatesSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::PRE_REMOVE => 'removeProjectsImpactedByEntity',
-            StorageEvents::POST_SAVE => 'removeProjectsImpactedByLocale'
+            StorageEvents::POST_SAVE => 'removeProjectsImpactedByEntity'
         ];
     }
 
     /**
      * @param GenericEvent $event
+     * @param string       $eventName
      */
-    public function removeProjectsImpactedByEntity(GenericEvent $event)
+    public function removeProjectsImpactedByEntity(GenericEvent $event, $eventName)
     {
         $entity = $event->getSubject();
         if ($entity instanceof ProjectInterface) {
             return;
         }
-        $this->chainedProjectRemover->removeProjectsImpactedBy($entity);
-    }
-
-    /**
-     * Removes projects impacted by a locale deactivation.
-     *
-     * @param GenericEvent $event
-     */
-    public function removeProjectsImpactedByLocale(GenericEvent $event)
-    {
-        $locale = $event->getSubject();
-        if (!$locale instanceof LocaleInterface) {
-            return;
-        }
-        $this->chainedProjectRemover->removeProjectsImpactedBy($locale);
+        $this->chainedProjectRemover->removeProjectsImpactedBy($entity, $eventName);
     }
 }

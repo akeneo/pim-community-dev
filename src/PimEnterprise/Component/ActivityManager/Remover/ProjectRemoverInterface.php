@@ -21,7 +21,18 @@ interface ProjectRemoverInterface
     /**
      * Removes projects that have to be removed in terms of the given entity.
      *
-     * @param mixed $entity
+     * @param mixed  $entity
+     * @param string $action
      */
-    public function removeProjectsImpactedBy($entity);
+    public function removeProjectsImpactedBy($entity, $action = null);
+
+    /**
+     * Is the project remover supported for the given entity and action ?
+     *
+     * @param mixed  $entity
+     * @param string $action
+     *
+     * @return bool
+     */
+    public function isSupported($entity, $action = null);
 }

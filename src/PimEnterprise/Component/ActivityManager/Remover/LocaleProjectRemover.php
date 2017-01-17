@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\ActivityManager\Remover;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
@@ -52,12 +53,8 @@ class LocaleProjectRemover implements ProjectRemoverInterface
      *
      * {@inheritdoc}
      */
-    public function removeProjectsImpactedBy($locale)
+    public function removeProjectsImpactedBy($locale, $action = null)
     {
-        if (!$locale instanceof LocaleInterface) {
-            return;
-        }
-
         foreach ($this->projectRepository->findByLocale($locale) as $project) {
             if ($this->hasToBeRemoved($project, $locale)) {
                 $this->projectRemover->remove($project);
@@ -65,6 +62,14 @@ class LocaleProjectRemover implements ProjectRemoverInterface
                 $this->detacher->detach($project);
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSupported($locale, $action = null)
+    {
+        return $locale instanceof LocaleInterface && StorageEvents::POST_SAVE === $action;
     }
 
     /**

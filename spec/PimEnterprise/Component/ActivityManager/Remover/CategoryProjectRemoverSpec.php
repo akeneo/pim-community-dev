@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Component\ActivityManager\Remover;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
@@ -52,10 +53,13 @@ class CategoryProjectRemoverSpec extends ObjectBehavior
         $this->removeProjectsImpactedBy($category);
     }
 
-    function it_removes_projects_impacted_only_by_a_category($projectRepository, ChannelInterface $channel)
-    {
-        $projectRepository->findAll()->shouldNotBeCalled();
-
-        $this->removeProjectsImpactedBy($channel);
+    function it_removes_projects_impacted_only_by_a_category_removal(
+        ChannelInterface $channel,
+        CategoryInterface $category
+    ) {
+        $this->isSupported($channel, StorageEvents::PRE_REMOVE)->shouldReturn(false);
+        $this->isSupported($channel, StorageEvents::POST_SAVE)->shouldReturn(false);
+        $this->isSupported($category, StorageEvents::POST_SAVE)->shouldReturn(false);
+        $this->isSupported($category, StorageEvents::PRE_REMOVE)->shouldReturn(true);
     }
 }

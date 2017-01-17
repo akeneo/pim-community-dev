@@ -2,7 +2,9 @@
 
 namespace spec\PimEnterprise\Component\ActivityManager\Remover;
 
+use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
@@ -27,9 +29,21 @@ class ChainedProjectRemoverSpec extends ObjectBehavior
         $localeRemover,
         ChannelInterface $channel
     ) {
+        $channelRemover->isSupported($channel, StorageEvents::PRE_REMOVE)->willReturn(true);
         $channelRemover->removeProjectsImpactedBy($channel)->shouldBeCalled();
-        $localeRemover->removeProjectsImpactedBy($channel)->shouldBeCalled();
+        $localeRemover->isSupported($channel, StorageEvents::PRE_REMOVE)->willReturn(false);
+        $localeRemover->removeProjectsImpactedBy($channel)->shouldNotBeCalled();
 
-        $this->removeProjectsImpactedBy($channel);
+        $this->removeProjectsImpactedBy($channel, StorageEvents::PRE_REMOVE);
+    }
+
+    function it_is_always_supported(AttributeInterface $attribute, ChannelInterface $channel)
+    {
+        $this->isSupported($attribute, StorageEvents::PRE_REMOVE)->shouldReturn(true);
+        $this->isSupported($attribute, StorageEvents::POST_SAVE)->shouldReturn(true);
+        $this->isSupported($attribute)->shouldReturn(true);
+        $this->isSupported($channel, StorageEvents::PRE_REMOVE)->shouldReturn(true);
+        $this->isSupported($channel, StorageEvents::POST_SAVE)->shouldReturn(true);
+        $this->isSupported($channel)->shouldReturn(true);
     }
 }

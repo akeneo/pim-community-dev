@@ -34,10 +34,20 @@ class ChainedProjectRemover implements ProjectRemoverInterface
     /**
      * {@inheritdoc}
      */
-    public function removeProjectsImpactedBy($entity)
+    public function removeProjectsImpactedBy($entity, $action = null)
     {
         foreach ($this->removers as $remover) {
-            $remover->removeProjectsImpactedBy($entity);
+            if ($remover->isSupported($entity, $action)) {
+                $remover->removeProjectsImpactedBy($entity, $action);
+            }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSupported($entity, $action = null)
+    {
+        return true;
     }
 }
