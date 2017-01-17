@@ -16,13 +16,13 @@ class ChainedProjectRemoverSpec extends ObjectBehavior
         $this->beConstructedWith([$channelRemover, $localeRemover]);
     }
 
-    function it_is_a_chained_project_remover_rule()
+    function it_is_a_chained_project_remover()
     {
         $this->shouldHaveType(ChainedProjectRemover::class);
         $this->shouldImplement(ProjectRemoverInterface::class);
     }
 
-    function it_asks_each_rules_to_remove_impacted_projects(
+    function it_asks_each_removers_to_remove_impacted_projects(
         $channelRemover,
         $localeRemover,
         ChannelInterface $channel

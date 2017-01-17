@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -21,7 +20,6 @@ use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -107,7 +105,7 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
     public function findAll()
     {
         if (null === $this->cursorFactory) {
-            throw new \RuntimeException('The cursor factory is not initialized');
+            throw new \LogicException('The cursor factory is not initialized');
         }
 
         $qb = $this->createQueryBuilder('project');
@@ -137,7 +135,7 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
     public function findByLocale(LocaleInterface $locale)
     {
         if (null === $this->cursorFactory) {
-            throw new \RuntimeException('The cursor factory is not initialized');
+            throw new \LogicException('The cursor factory is not initialized');
         }
 
         $qb = $this->createQueryBuilder('project');
@@ -152,7 +150,7 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
     public function findByChannel(ChannelInterface $channel)
     {
         if (null === $this->cursorFactory) {
-            throw new \RuntimeException('The cursor factory is not initialized');
+            throw new \LogicException('The cursor factory is not initialized');
         }
 
         $qb = $this->createQueryBuilder('project');

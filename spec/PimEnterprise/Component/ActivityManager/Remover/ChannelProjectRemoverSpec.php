@@ -20,7 +20,7 @@ class ChannelProjectRemoverSpec extends ObjectBehavior
         $this->beConstructedWith($projectRepository, $projectRemover);
     }
 
-    function it_is_a_project_remover_rule()
+    function it_is_a_project_remover()
     {
         $this->shouldHaveType(ChannelProjectRemover::class);
         $this->shouldImplement(ProjectRemoverInterface::class);
