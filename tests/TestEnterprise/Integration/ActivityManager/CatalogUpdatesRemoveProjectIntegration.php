@@ -116,7 +116,44 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
         $result = $projectRepository->findOneByIdentifier($projectCode);
         $this->assertTrue(
             null === $result,
-            'Project not removed after an attribute in product filters has been removed.'
+            'Project not removed after an attribute used in product filters has been removed.'
+        );
+    }
+
+    /**
+     * A project must be removed if a category used as product filter is removed.
+     */
+    public function testRemoveCategoryRemovesAssociatedProjects()
+    {
+        $categoryRemover = $this->get('pim_catalog.remover.category');
+        $categoryRepository = $this->get('pim_catalog.repository.category');
+        $projectRepository = $this->get('pimee_activity_manager.repository.project');
+        $project = $this->createProject(
+            [
+                'label'           => 'High-Tech project',
+                'locale'          => 'en_US',
+                'owner'           => 'admin',
+                'channel'         => 'mobile',
+                'product_filters' => [
+                    [
+                        'field'    => 'categories',
+                        'operator' => 'IN',
+                        'value'    => ['clothing'],
+                        'context'  => ['locale' => 'en_US', 'scope' => 'mobile'],
+                    ],
+                ],
+            ]
+        );
+        $this->calculateProject($project);
+        $projectCode = $project->getCode();
+
+        $category = $categoryRepository->findOneByIdentifier('clothing');
+        $categoryRemover->remove($category);
+
+        $result = $projectRepository->findOneByIdentifier($projectCode);
+        $this->assertTrue(
+            null === $result,
+            'Project not removed after a category used in product filters has been removed.'
         );
     }
 

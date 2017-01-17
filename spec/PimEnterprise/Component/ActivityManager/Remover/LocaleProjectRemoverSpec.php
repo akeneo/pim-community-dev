@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Component\ActivityManager\Remover;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -79,10 +80,13 @@ class LocaleProjectRemoverSpec extends ObjectBehavior
         $this->removeProjectsImpactedBy($locale);
     }
 
-    function it_removes_impacted_projects_only_for_locale($projectRepository, ChannelInterface $channel)
-    {
-        $projectRepository->findByLocale($channel)->shouldNotBeCalled();
-
-        $this->removeProjectsImpactedBy($channel);
+    function it_removes_impacted_projects_only_for_locale_post_save(
+        LocaleInterface $locale,
+        ChannelInterface $channel
+    ) {
+        $this->isSupported($channel, StorageEvents::PRE_REMOVE)->shouldReturn(false);
+        $this->isSupported($channel, StorageEvents::POST_SAVE)->shouldReturn(false);
+        $this->isSupported($locale, StorageEvents::PRE_REMOVE)->shouldReturn(false);
+        $this->isSupported($locale, StorageEvents::POST_SAVE)->shouldReturn(true);
     }
 }

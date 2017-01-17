@@ -19,12 +19,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * The goal of this subscriber is to listen on entities pre remove events to be able to know if this entity removing
+ * The goal of this subscriber is to listen on catalog updates events to be able to know if entities updates/removing
  * has impact on projects. If it's the case, it removes relevant projects.
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class ProjectRemoverSubscriber implements EventSubscriberInterface
+class CatalogUpdatesSubscriber implements EventSubscriberInterface
 {
     /** @var ChainedProjectRemover */
     protected $chainedProjectRemover;
@@ -44,33 +44,20 @@ class ProjectRemoverSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::PRE_REMOVE => 'removeProjectsImpactedByEntity',
-            StorageEvents::POST_SAVE => 'removeProjectsImpactedByLocale'
+            StorageEvents::POST_SAVE => 'removeProjectsImpactedByEntity'
         ];
     }
 
     /**
      * @param GenericEvent $event
+     * @param string       $eventName
      */
-    public function removeProjectsImpactedByEntity(GenericEvent $event)
+    public function removeProjectsImpactedByEntity(GenericEvent $event, $eventName)
     {
         $entity = $event->getSubject();
         if ($entity instanceof ProjectInterface) {
             return;
         }
-        $this->chainedProjectRemover->removeProjectsImpactedBy($entity);
-    }
-
-    /**
-     * Removes projects impacted by a locale deactivation.
-     *
-     * @param GenericEvent $event
-     */
-    public function removeProjectsImpactedByLocale(GenericEvent $event)
-    {
-        $locale = $event->getSubject();
-        if (!$locale instanceof LocaleInterface) {
-            return;
-        }
-        $this->chainedProjectRemover->removeProjectsImpactedBy($locale);
+        $this->chainedProjectRemover->removeProjectsImpactedBy($entity, $eventName);
     }
 }

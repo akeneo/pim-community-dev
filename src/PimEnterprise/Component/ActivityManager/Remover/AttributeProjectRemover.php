@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\ActivityManager\Remover;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
@@ -51,12 +52,8 @@ class AttributeProjectRemover implements ProjectRemoverInterface
      *
      * {@inheritdoc}
      */
-    public function removeProjectsImpactedBy($attribute)
+    public function removeProjectsImpactedBy($attribute, $action = null)
     {
-        if (!$attribute instanceof AttributeInterface) {
-            return false;
-        }
-
         $attributeCode = $attribute->getCode();
         foreach ($this->projectRepository->findAll() as $project) {
             if ($this->hasToBeRemoved($project, $attributeCode)) {
@@ -65,6 +62,14 @@ class AttributeProjectRemover implements ProjectRemoverInterface
                 $this->detacher->detach($project);
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSupported($attribute, $action = null)
+    {
+        return $attribute instanceof AttributeInterface && StorageEvents::PRE_REMOVE === $action;
     }
 
     /**

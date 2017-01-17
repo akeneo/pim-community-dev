@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\ActivityManager\Remover;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 
@@ -41,14 +42,18 @@ class ChannelProjectRemover implements ProjectRemoverInterface
      *
      * {@inheritdoc}
      */
-    public function removeProjectsImpactedBy($channel)
+    public function removeProjectsImpactedBy($channel, $action = null)
     {
-        if (!$channel instanceof ChannelInterface) {
-            return;
-        }
-
         foreach ($this->projectRepository->findByChannel($channel) as $project) {
             $this->projectRemover->remove($project);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSupported($channel, $action = null)
+    {
+        return $channel instanceof ChannelInterface && StorageEvents::PRE_REMOVE === $action;
     }
 }
