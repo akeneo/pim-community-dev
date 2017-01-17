@@ -98,3 +98,31 @@ Feature: Publish many products at once
     And I am on the published products page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6024
+  Scenario: Succesfully mass publish associated product
+    Given I am logged in as "Peter"
+    And I edit the "unionjack" product
+    When I visit the "Associations" tab
+    And I visit the "Cross sell" group
+    And I check the row "jackadi"
+    And I save the product
+    And I am on the products page
+    And I select rows unionjack and jackadi
+    And I press "Change product information" on the "Bulk Actions" dropdown button
+    When I choose the "Publish products" operation
+    Then I should see "The 2 selected products will be published"
+    And I move on to the next step
+    And I wait for the "publish" mass-edit job to finish
+    And I am on the published products page
+    Then the grid should contain 2 elements
+    And I should see product unionjack and jackadi
+    When I select rows unionjack and jackadi
+    And I press "CSV (All attributes)" on the "Quick Export" dropdown button
+    And I wait for the "csv_published_product_quick_export" quick export to finish
+    Then exported file of "csv_published_product_quick_export" should contain:
+    """
+    sku;categories;datasheet;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;enabled;family;gallery;groups;handmade;length;length-unit;manufacturer;name-de_DE;name-en_US;name-fr_FR;number_in_stock-mobile;PACK-groups;PACK-products;price-EUR;price-USD;rating;release_date-mobile;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-products;top_view;UPSELL-groups;UPSELL-products;weather_conditions;X_SELL-groups;X_SELL-products
+    unionjack;jackets;;;;;1;jackets;;;0;;;;;UnionJack;;;;;;;;;;;;;;;;;;jackadi
+    jackadi;jackets;;;;;1;jackets;;;0;;;;;Jackadi;;;;;;;;;;;;;;;;;;
+    """
