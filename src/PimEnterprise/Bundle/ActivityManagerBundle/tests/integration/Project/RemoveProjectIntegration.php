@@ -94,9 +94,12 @@ SELECT DISTINCT(`completeness`.`product_id`)
 FROM `pimee_activity_manager_completeness_per_attribute_group` AS `completeness`;
 SQL;
         $productsIdPreProcessing = $this->getConnection()->fetchAll($selectProductsPreProcessing);
-        $clothingProductsId = $this->getFormattedClothingProductsId();
+        $clothingProductsId = $this->getFormattedClothingProductsIds();
 
-        $this->assertEquals($productsIdPreProcessing, $clothingProductsId);
+        $this->assertCount(count($productsIdPreProcessing), $clothingProductsId);
+        foreach ($productsIdPreProcessing as $productId) {
+            $this->assertTrue(in_array($productId, $clothingProductsId));
+        }
     }
 
     /**
@@ -128,7 +131,7 @@ SQL;
     /**
      * @return array
      */
-    private function getFormattedClothingProductsId()
+    private function getFormattedClothingProductsIds()
     {
         $pqbFactory = $this->get('pim_catalog.query.product_query_builder_factory');
         $pqb = $pqbFactory->create([
