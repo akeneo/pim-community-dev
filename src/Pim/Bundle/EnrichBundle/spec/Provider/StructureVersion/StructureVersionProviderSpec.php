@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Versioning\Model\Version;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
-class ProductStructureVersionProviderSpec extends ObjectBehavior
+class StructureVersionProviderSpec extends ObjectBehavior
 {
     function let(VersionRepositoryInterface $versionRepository)
     {
