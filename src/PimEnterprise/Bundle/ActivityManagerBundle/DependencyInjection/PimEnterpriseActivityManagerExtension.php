@@ -34,9 +34,16 @@ class PimEnterpriseActivityManagerExtension extends Extension
         $loader->load('services.yml');
         $loader->load('removers.yml');
 
+        $categoryTable = 'pimee_activity_manager_product_category';
         $storageDriver = $containerBuilder->getParameter('pim_catalog_product_storage_driver');
         if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $storageDriver) {
             $containerBuilder->removeDefinition('pimee_activity_manager.calculation_step.link_product_category');
+            $categoryTable = $containerBuilder->getParameter('pim_catalog.entity.category.class');
         }
+
+        $containerBuilder->setParameter(
+            'pimee_activity_manager.project_completeness.product_category_link',
+            $categoryTable
+        );
     }
 }
