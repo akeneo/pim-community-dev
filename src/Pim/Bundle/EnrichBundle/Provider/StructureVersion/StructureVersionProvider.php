@@ -32,10 +32,13 @@ class StructureVersionProvider implements StructureVersionProviderInterface
      */
     public function getStructureVersion()
     {
-        return $this->versionRepository
-            ->getNewestLogEntryForRessources($this->resourceNames)
-            ->getLoggedAt()
-            ->getTimestamp();
+        $latest = $this->versionRepository->getNewestLogEntryForRessources($this->resourceNames);
+
+        if (null === $latest) {
+            return null;
+        }
+
+        return $latest->getLoggedAt()->getTimestamp();
     }
 
     /**
