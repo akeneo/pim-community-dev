@@ -44,6 +44,10 @@ security:
             pattern:                        ^/api/oauth/v1/token
             security:                       false
 
+        api_index:
+            pattern:                        ^/api/rest/v1$
+            security:                       false
+
         api:
             pattern:                        ^/api
             fos_oauth:                      true
@@ -67,4 +71,5 @@ security:
 
     access_control:
         - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/, role: pim_api_overall_access }

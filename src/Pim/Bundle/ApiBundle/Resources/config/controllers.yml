@@ -6,6 +6,7 @@ parameters:
     pim_api.controller.channel.class: Pim\Bundle\ApiBundle\Controller\ChannelController
     pim_api.controller.token.class: Pim\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.product.class: Pim\Bundle\ApiBundle\Controller\ProductController
+    pim_api.controller.root_endpoint.class: Pim\Bundle\ApiBundle\Controller\RootEndpointController
 
 services:
     pim_api.controller.category:
@@ -91,3 +92,8 @@ services:
             - '@router'
             - '@pim_catalog.comparator.filter.product'
             - 'https://docs.akeneo.com/%s/reference/standard_format/products.html'
+
+    pim_api.controller.root_endpoint:
+        class: '%pim_api.controller.root_endpoint.class%'
+        arguments:
+            - '@router'
