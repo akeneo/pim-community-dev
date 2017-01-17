@@ -19,12 +19,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * The goal of this subscriber is to listen on entities pre remove events to be able to know if this entity removing
+ * The goal of this subscriber is to listen on catalog updates events to be able to know if entities updates/removing
  * has impact on projects. If it's the case, it removes relevant projects.
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class ProjectRemoverSubscriber implements EventSubscriberInterface
+class CatalogUpdatesSubscriber implements EventSubscriberInterface
 {
     /** @var ChainedProjectRemover */
     protected $chainedProjectRemover;

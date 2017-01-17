@@ -3,6 +3,7 @@ parameters:
     pimee_activity_manager.project_remover.channel.class: PimEnterprise\Component\ActivityManager\Remover\ChannelProjectRemover
     pimee_activity_manager.project_remover.locale.class: PimEnterprise\Component\ActivityManager\Remover\LocaleProjectRemover
     pimee_activity_manager.project_remover.attribute.class: PimEnterprise\Component\ActivityManager\Remover\AttributeProjectRemover
+    pimee_activity_manager.project_remover.category.class: PimEnterprise\Component\ActivityManager\Remover\CategoryProjectRemover
 
 services:
     pimee_activity_manager.project_remover.chained:
@@ -31,6 +32,16 @@ services:
 
     pimee_activity_manager.project_remover.attribute:
         class: '%pimee_activity_manager.project_remover.attribute.class%'
+        arguments:
+            - '@pimee_activity_manager.repository.project'
+            - '@pimee_activity_manager.remover.project'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+        public: false
+        tags:
+            - { name: pimee_activity_manager.project_remover }
+
+    pimee_activity_manager.project_remover.category:
+        class: '%pimee_activity_manager.project_remover.category.class%'
         arguments:
             - '@pimee_activity_manager.repository.project'
             - '@pimee_activity_manager.remover.project'

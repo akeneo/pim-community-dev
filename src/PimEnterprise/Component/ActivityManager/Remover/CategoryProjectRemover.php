@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2017 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,13 +14,13 @@ namespace PimEnterprise\Component\ActivityManager\Remover;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class AttributeProjectRemover implements ProjectRemoverInterface
+class CategoryProjectRemover implements ProjectRemoverInterface
 {
     /** @var RemoverInterface */
     protected $projectRemover;
@@ -47,19 +47,19 @@ class AttributeProjectRemover implements ProjectRemoverInterface
     }
 
     /**
-     * A project must be removed if an attribute used as product filter is removed.
+     * A project must be removed if a category used as product filter is removed.
      *
      * {@inheritdoc}
      */
-    public function removeProjectsImpactedBy($attribute)
+    public function removeProjectsImpactedBy($category)
     {
-        if (!$attribute instanceof AttributeInterface) {
+        if (!$category instanceof CategoryInterface) {
             return;
         }
 
-        $attributeCode = $attribute->getCode();
+        $categoryCode = $category->getCode();
         foreach ($this->projectRepository->findAll() as $project) {
-            if ($this->hasToBeRemoved($project, $attributeCode)) {
+            if ($this->hasToBeRemoved($project, $categoryCode)) {
                 $this->projectRemover->remove($project);
             } else {
                 $this->detacher->detach($project);
@@ -69,15 +69,15 @@ class AttributeProjectRemover implements ProjectRemoverInterface
 
     /**
      * @param ProjectInterface $project
-     * @param string           $attributeCode
+     * @param string           $categoryCode
      *
      * @return bool
      */
-    protected function hasToBeRemoved(ProjectInterface $project, $attributeCode)
+    protected function hasToBeRemoved(ProjectInterface $project, $categoryCode)
     {
         $filters = $project->getProductFilters();
         foreach ($filters as $filter) {
-            if ($attributeCode === $filter['field']) {
+            if ('categories' === $filter['field'] && in_array($categoryCode, $filter['value'])) {
                 return true;
             }
         }

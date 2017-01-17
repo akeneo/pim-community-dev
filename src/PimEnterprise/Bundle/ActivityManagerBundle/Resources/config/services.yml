@@ -7,7 +7,7 @@ parameters:
     pimee_activity_manager.factory.project_calculation_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCalculationNotificationFactory'
     pimee_activity_manager.factory.project_created_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory'
     pimee_activity_manager.event_subscriber.project_creation_notifier.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectCreationNotifierSubscriber'
-    pimee_activity_manager.event_subscriber.project_remover.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectRemoverSubscriber'
+    pimee_activity_manager.event_subscriber.catalog_updates.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\CatalogUpdatesSubscriber'
     pimee_activity_manager.converter.filter.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter'
 
 services:
@@ -68,8 +68,8 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pimee_activity_manager.event_subscriber.project_remover:
-        class: '%pimee_activity_manager.event_subscriber.project_remover.class%'
+    pimee_activity_manager.event_subscriber.catalog_updates:
+        class: '%pimee_activity_manager.event_subscriber.catalog_updates.class%'
         arguments:
             - '@pimee_activity_manager.project_remover.chained'
         tags:

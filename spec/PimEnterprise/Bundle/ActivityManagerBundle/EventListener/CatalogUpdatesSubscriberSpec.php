@@ -6,22 +6,22 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectRemoverSubscriber;
+use PimEnterprise\Bundle\ActivityManagerBundle\EventListener\CatalogUpdatesSubscriber;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Remover\ChainedProjectRemover;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class ProjectRemoverSubscriberSpec extends ObjectBehavior
+class CatalogUpdatesSubscriberSpec extends ObjectBehavior
 {
     function let(ChainedProjectRemover $chainedRemover)
     {
         $this->beConstructedWith($chainedRemover);
     }
 
-    function it_is_project_remover_subscriber()
+    function it_is_catalog_updates_subscriber()
     {
-        $this->shouldHaveType(ProjectRemoverSubscriber::class);
+        $this->shouldHaveType(CatalogUpdatesSubscriber::class);
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
