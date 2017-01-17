@@ -207,3 +207,15 @@ Feature: Associate a product
     And I save the product
     And I visit the "Associations" tab
     Then the rows "gray-boots" should be checked
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6113
+  Scenario: Do not keep saved product association groups after switching association type
+    Given I edit the "charcoal-boots" product
+    And I visit the "Associations" tab
+    And I select the "Upsell" association
+    And I press the "Show groups" button
+    And I check the row "caterpillar_boots"
+    And I save the product
+    When I select the "Substitution" association
+    Then I should see the text "0 products and 0 groups"
+    And the row "caterpillar_boots" should not be checked
