@@ -292,6 +292,22 @@ define(
 
                 $.get(Routing.generate('pim_datagrid_load', urlParams)).then(function (response) {
                     var metadata = response.metadata;
+                    /* Next lines are related to PIM-6113 and need some comments.
+                     *
+                     * When you just saved a datagrid from the Product Edit Form, you will have an URL like
+                     * '/association-group-grid?...&associatedIds[]=1&associatedIds[]=2', in reference of the last
+                     * checked groups in the datagrid.
+                     *
+                     * The fact is that there is 2 places where these parameters are set: in the URL, and in the
+                     * datagrid state (state.parameters.associatedIds).
+                     *
+                     * If you do not drop the right part of the URL (containing associatedIds array), you will have
+                     * a mix of 2 times the same variable, defined at 2 different places. This leads to a refreshed
+                     * datagrid with wrong checkboxes.
+                     *
+                     * To prevent this behavior, we removed all the parameters passed in the URL before rendering the
+                     * grid, to only allow datagrid state parameters.
+                     */
                     metadata.options.url = metadata.options.url.split('?')[0];
 
                     this.$('#grid-' + gridName).data({ metadata: metadata, data: JSON.parse(response.data) });
