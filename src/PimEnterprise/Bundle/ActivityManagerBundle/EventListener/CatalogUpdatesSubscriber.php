@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Remover\ChainedProjectRemover;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

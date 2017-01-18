@@ -158,6 +158,46 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
     }
 
     /**
+     * A project must be removed if an attribute used as product filter is removed.
+     */
+    public function testRemoveCurrencyFromChannelRemovesAssociatedProjects()
+    {
+        $channelRepository = $this->get('pim_catalog.repository.channel');
+        $projectRepository = $this->get('pimee_activity_manager.repository.project');
+        $currencyRepository = $this->get('pim_catalog.repository.currency');
+        $channelSaver = $this->get('pim_catalog.saver.channel');
+        $project = $this->createProject(
+            [
+                'label'           => 'High-Tech project',
+                'locale'          => 'fr_FR',
+                'owner'           => 'admin',
+                'channel'         => 'ecommerce',
+                'product_filters' => [
+                    [
+                        'field'    => 'price_attribute',
+                        'operator' => '>',
+                        'value'    => ['amount' => 30, 'currency' => 'EUR'],
+                        'context'  => ['locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ],
+                ],
+            ]
+        );
+        $this->calculateProject($project);
+        $projectCode = $project->getCode();
+
+        $channel = $channelRepository->findOneByIdentifier('ecommerce');
+        $currencyEUR = $currencyRepository->findOneByIdentifier('EUR');
+        $channel->removeCurrency($currencyEUR);
+        $channelSaver->save($channel);
+
+        $result = $projectRepository->findOneByIdentifier($projectCode);
+        $this->assertTrue(
+            null === $result,
+            'Project not removed after its channel removed a currency used in product filters.'
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
