@@ -12,10 +12,10 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Component\Security\Attributes;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -95,7 +95,7 @@ class PermissionRestController
         $jobInstances = array_map(
             function ($jobInstance) use ($authorizationChecker) {
                 return [
-                    'code' => $jobInstance->getCode(),
+                    'code'    => $jobInstance->getCode(),
                     'execute' => $authorizationChecker->isGranted(Attributes::EXECUTE, $jobInstance),
                     'edit'    => $authorizationChecker->isGranted(Attributes::EDIT, $jobInstance)
                 ];

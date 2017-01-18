@@ -8,7 +8,7 @@ use PimEnterprise\Component\ActivityManager\Validator\ProjectIdentifier;
 use PimEnterprise\Component\ActivityManager\Validator\ProjectIdentifierValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -17,9 +17,9 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ProjectIdentifierValidatorSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $projectRepository)
+    function let(IdentifiableObjectRepositoryInterface $projectRepository, TranslatorInterface $translator)
     {
-        $this->beConstructedWith($projectRepository);
+        $this->beConstructedWith($projectRepository, $translator);
     }
 
     function it_is_initializable()
@@ -32,7 +32,8 @@ class ProjectIdentifierValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(ConstraintValidator::class);
     }
 
-    function it_adds_violation_if_the_identifier_is_valid(
+    function it_adds_violation_if_the_identifier_is_invalid(
+        $translator,
         $projectRepository,
         ExecutionContextInterface $context,
         ProjectIdentifier $constraint,
@@ -41,6 +42,9 @@ class ProjectIdentifierValidatorSpec extends ObjectBehavior
         $this->initialize($context);
 
         $projectRepository->findOneByIdentifier('project_code')->willReturn(null);
+
+        $translator->trans('activity_manager.project.project_identifier', ['{{ project }}' => 'project_code'])
+            ->willReturn('The project "project_code" doesn\'t exist.');
 
         $context->buildViolation('The project "project_code" doesn\'t exist.')
             ->willReturn($constraintViolationBuilder);

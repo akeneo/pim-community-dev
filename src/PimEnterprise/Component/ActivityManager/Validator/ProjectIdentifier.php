@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraint;
 class ProjectIdentifier extends Constraint
 {
     /** @var string */
-    public $message = 'The project "%s" doesn\'t exist.';
+    public $message = 'activity_manager.project.project_identifier';
 
     /**
      * {@inheritdoc}

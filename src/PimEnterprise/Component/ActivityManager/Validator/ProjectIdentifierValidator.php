@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\ActivityManager\Validator;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -24,12 +25,19 @@ class ProjectIdentifierValidator extends ConstraintValidator
     /** @var IdentifiableObjectRepositoryInterface */
     protected $projectRepository;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $projectRepository
+     * @param TranslatorInterface                   $translator
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $projectRepository)
-    {
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $projectRepository,
+        TranslatorInterface $translator
+    ) {
         $this->projectRepository = $projectRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -42,8 +50,9 @@ class ProjectIdentifierValidator extends ConstraintValidator
         }
 
         if (null === $this->projectRepository->findOneByIdentifier($projectIdentifier)) {
-            $this->context->buildViolation(sprintf($constraint->message, $projectIdentifier))
-                ->addViolation();
+            $message = $this->translator->trans($constraint->message, ['{{ project }}' => $projectIdentifier]);
+
+            $this->context->buildViolation($message)->addViolation();
         }
     }
 }

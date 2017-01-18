@@ -17,6 +17,11 @@ use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 
 /**
+ * Step executed before a project calculation.
+ *
+ * It will reset all data we must calculate during the calculation like the user groups impacted by the project
+ * unlike some data we only need to be refresh.
+ *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class PrepareProjectCalculationTasklet implements TaskletInterface
@@ -30,6 +35,10 @@ class PrepareProjectCalculationTasklet implements TaskletInterface
     /** @var StepExecution */
     protected $stepExecution;
 
+    /**
+     * @param PreProcessingRepositoryInterface      $preProcessingRepository
+     * @param IdentifiableObjectRepositoryInterface $projectRepository
+     */
     public function __construct(
         PreProcessingRepositoryInterface $preProcessingRepository,
         IdentifiableObjectRepositoryInterface $projectRepository

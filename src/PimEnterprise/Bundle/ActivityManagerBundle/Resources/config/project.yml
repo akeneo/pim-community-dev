@@ -153,5 +153,6 @@ services:
         class: '%pimee_activity_manager.validator.project_identifier.class%'
         arguments:
             - '@pimee_activity_manager.repository.project'
+            - '@translator'
         tags:
             - { name: validator.constraint_validator, alias: project_identifier_validator }

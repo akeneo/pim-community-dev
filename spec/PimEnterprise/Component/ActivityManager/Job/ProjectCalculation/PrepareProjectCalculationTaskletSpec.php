@@ -36,7 +36,7 @@ class PrepareProjectCalculationTaskletSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution)->shouldReturn(null);
     }
 
-    function it_prepare_the_project_calculation(
+    function it_prepare_the_project_calculation_by_resetting_user_groups(
         $preProcessingRepository,
         $projectRepository,
         StepExecution $stepExecution,
