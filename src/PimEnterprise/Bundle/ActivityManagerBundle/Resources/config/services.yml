@@ -7,7 +7,9 @@ parameters:
     pimee_activity_manager.repository.pre_processing.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\PreProcessingRepository'
     pimee_activity_manager.factory.project_calculation_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCalculationNotificationFactory'
     pimee_activity_manager.factory.project_created_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory'
+    pimee_activity_manager.factory.project_finished_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectFinishedNotificationFactory'
     pimee_activity_manager.event_subscriber.project_creation_notifier.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectCreationNotifierSubscriber'
+    pimee_activity_manager.event_subscriber.project_finished_notifier.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectFinishedNotifierSubscriber'
     pimee_activity_manager.event_subscriber.catalog_updates.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\CatalogUpdatesSubscriber'
     pimee_activity_manager.converter.filter.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter'
 
@@ -64,10 +66,26 @@ services:
         arguments:
             - '%pim_notification.entity.notification.class%'
 
+    pimee_activity_manager.factory.project_finished_notification:
+        class: '%pimee_activity_manager.factory.project_finished_notification.class%'
+        arguments:
+            - '%pim_notification.entity.notification.class%'
+
     pimee_activity_manager.event_subscriber.project_creation_notifier:
         class: '%pimee_activity_manager.event_subscriber.project_creation_notifier.class%'
         arguments:
             - '@pimee_activity_manager.factory.project_created_notification'
+            - '@pim_notification.notifier'
+            - '@pimee_activity_manager.repository.user'
+            - '@pim_catalog.localization.presenter.date'
+            - '@pimee_activity_manager.repository.project_completeness'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_activity_manager.event_subscriber.project_finished_notifier:
+        class: '%pimee_activity_manager.event_subscriber.project_finished_notifier.class%'
+        arguments:
+            - '@pimee_activity_manager.factory.project_finished_notification'
             - '@pim_notification.notifier'
             - '@pimee_activity_manager.repository.user'
             - '@pim_catalog.localization.presenter.date'
