@@ -2,3 +2,8 @@ pim_api_rest_attribute_get:
     path: /{code}
     defaults: { _controller: pim_api.controller.rest.attribute:getAction, _format: json }
     methods: [GET]
+
+pim_api_rest_attribute_option_get:
+    path: /{attributeCode}/options/{optionCode}
+    defaults: { _controller: pim_api.controller.rest.attribute_option:getAction, _format: json }
+    methods: [GET]

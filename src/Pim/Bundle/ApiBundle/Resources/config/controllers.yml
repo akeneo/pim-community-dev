@@ -2,6 +2,7 @@ parameters:
     pim_api.controller.rest.category.class: Pim\Bundle\ApiBundle\Controller\Rest\CategoryController
     pim_api.controller.rest.family.class: Pim\Bundle\ApiBundle\Controller\Rest\FamilyController
     pim_api.controller.rest.attribute.class: Pim\Bundle\ApiBundle\Controller\Rest\AttributeController
+    pim_api.controller.rest.attribute_option.class: Pim\Bundle\ApiBundle\Controller\Rest\AttributeOptionController
 
 services:
     pim_api.controller.rest.category:
@@ -21,3 +22,11 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_serializer'
+
+    pim_api.controller.rest.attribute_option:
+        class: '%pim_api.controller.rest.attribute_option.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
+            - '@pim_serializer'
+            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
