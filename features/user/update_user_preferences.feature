@@ -14,9 +14,11 @@ Feature: Update user preferences
     Then I should see the text "Default tree"
     And I should see the text "2013 collection"
     When I visit the "tablet" channel
-    And I change the "Category tree" to "2014 collection"
+    Then I should see the Code, English (United States), Currencies, Locales and Category tree fields
+    And I fill in the following information:
+      | Category tree | 2014 collection |
     And I press the "Save" button
-    And I should see the flash message "Channel successfully saved"
+    Then I should not see the text "There are unsaved changes."
     And I edit the "2013_collection" category
     And I press the "Delete" button
     And I confirm the deletion

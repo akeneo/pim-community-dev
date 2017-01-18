@@ -334,14 +334,12 @@ services:
         class: '%pim_enrich.controller.rest.channel.class%'
         arguments:
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.attribute'
             - '@pim_internal_api_serializer'
-            - '@akeneo_measure.manager'
             - '@pim_catalog.updater.channel'
             - '@pim_catalog.saver.channel'
             - '@pim_catalog.remover.channel'
+            - '@pim_catalog.factory.channel'
             - '@validator'
-            - '@translator'
 
     pim_enrich.controller.rest.completeness:
         class: '%pim_enrich.controller.rest.completeness.class%'

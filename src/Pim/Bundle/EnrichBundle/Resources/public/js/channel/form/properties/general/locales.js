@@ -27,6 +27,7 @@ define([
         return BaseForm.extend({
             className: 'AknFieldContainer',
             template: _.template(template),
+            currentLocales: null,
 
             /**
              * Configures this extension.
@@ -35,6 +36,9 @@ define([
              */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', this.setCurrentLocales.bind(this));
+
+                this.currentLocales = this.getFormData().locales;
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -71,7 +75,7 @@ define([
              * @param {Object} event
              */
             updateState: function (event) {
-                this.setLocales($(event.target).val());
+                this.setLocales(event.val);
             },
 
             /**
@@ -87,6 +91,22 @@ define([
 
                 data.locales = codes;
                 this.setData(data);
+            },
+
+            /**
+             * Sets current locales
+             */
+            setCurrentLocales: function () {
+                var oldLocales = this.currentLocales;
+                var newLocales = this.getFormData().locales;
+
+                if (!_.isEqual(oldLocales, newLocales)) {
+                    this.currentLocales = newLocales;
+                    this.getRoot().trigger('pim_enrich:form:entity:locales_updated');
+
+                    this.currentLocales = this.getFormData().locales;
+                }
+
             }
         });
     }

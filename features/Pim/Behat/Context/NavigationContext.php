@@ -138,7 +138,6 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     {
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
         $this->openPage($page);
-        $this->wait();
     }
 
     /**
@@ -222,7 +221,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      * @param string $page
      *
      * @Given /^I edit the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" (\w+) page$/
+     * @Given /^I am on the "([^"]*)" ((?!channel)\w+) page$/
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
@@ -230,6 +229,20 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I am on the "([^"]*)" (channel) page$/
+     */
+    public function iAmOnTheRedoEntityEditPage($identifier, $page)
+    {
+        $this->openPage(
+            sprintf('%s edit', ucfirst($page)),
+            ['code' => $identifier]
+        );
     }
 
     /**
@@ -454,7 +467,9 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * TODO: should be deleted
+     * @deprecated This method is deprecated and should be removed avoid its use
+     * @see For more information regarding to deprecation see TIP-442
+     * @todo Delete method
      *
      * @param string $condition
      */

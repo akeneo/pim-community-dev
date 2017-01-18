@@ -54,8 +54,6 @@ define([
                     this.resetValidationErrors.bind(this)
                 );
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
-
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
@@ -63,8 +61,13 @@ define([
              * {@inheritdoc}
              */
             render: function () {
+                if (!this.configured) {
+                    return this;
+                }
+
                 this.$el.html(this.template({
                     code: this.getFormData().code,
+                    hasId: _.has(this.getFormData().meta, 'id'),
                     sectionTitle: __('pim_enrich.form.channel.tab.properties.general'),
                     catalogLocale: this.catalogLocale,
                     errors: this.getValidationErrorsForField('code'),

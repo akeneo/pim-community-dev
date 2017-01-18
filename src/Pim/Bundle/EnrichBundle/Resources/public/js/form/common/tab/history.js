@@ -28,22 +28,12 @@ define([
              * {@inheritdoc}
              */
             configure: function () {
-                if (true === this.config.modelDependent) {
-                    this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', function () {
-                        var parentModel = this.getParent().getParent().getFormData();
-                        if (0 < parentModel.code.length) {
-                            this.trigger('tab:register', {
-                                code: this.config.tabCode ? this.config.tabCode : this.code,
-                                label: __(this.config.title)
-                            });
-                        }
-                    }.bind(this));
-                } else {
-                    this.trigger('tab:register', {
-                        code: this.config.tabCode ? this.config.tabCode : this.code,
-                        label: __(this.config.title)
-                    });
-                }
+
+                this.trigger('tab:register', {
+                    code: this.config.tabCode ? this.config.tabCode : this.code,
+                    label: __(this.config.title)
+                });
+
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

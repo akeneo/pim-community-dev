@@ -39,8 +39,8 @@ Feature: Edit a channel
     When  I visit the "tablet" channel
     And I change the "Locales" to "Breton (France)"
     And I press the "Save" button
-    And I wait 1 seconds
-    Then I am on the locales page
+    Then I should not see the text "There are unsaved changes."
+    And I am on the locales page
     And I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 2 elements
     And I should see locales "en_US" and "br_FR"
@@ -54,7 +54,10 @@ Feature: Edit a channel
   Scenario: Successfully display the translation of the unit of metrics
     Given I am logged in as "Julien"
     And  I visit the "tablet" channel
-    Then I should see "Longuere,Volume,Poids" fields:
+    And I fill in the following information:
+      | Volume   | Décilitre |
+      | Longueur | Kilomètre |
+      | Poids    | Once      |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6025
   Scenario: Successfully replace a channel locale by another one when there is only one channel

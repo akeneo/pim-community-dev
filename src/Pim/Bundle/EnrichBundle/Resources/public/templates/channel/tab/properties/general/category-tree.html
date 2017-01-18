@@ -6,7 +6,7 @@
 <div class="AknFieldContainer-inputContainer">
     <select class="select2" id="pim_enrich_channel_form_category_tree">
         <% _.each(categories, function (category) { %>
-        <option value="<%- category.code %>" <%- (categoryTree == category.code) ? 'selected' : '' %>>
+        <option value="<%- category.code %>" <%- (categoryTree == category.code) ? 'selected' : '' %> >
             <%- null !== category.labels[catalogLocale] ? category.labels[catalogLocale] : '[' + category.code + ']' %>
         </option>
         <% }); %>

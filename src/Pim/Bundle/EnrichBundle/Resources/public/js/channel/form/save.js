@@ -54,7 +54,7 @@ define(
                         this.createSuccessMessage
                     );
                     var navigation = Navigation.getInstance();
-                    navigation.setLocation(Routing.generate(module.config().redirectUrl, {'code': code}));
+                    navigation.setLocation(Routing.generate(this.config.redirectUrl, {'code': code}));
                     return;
                 }
 

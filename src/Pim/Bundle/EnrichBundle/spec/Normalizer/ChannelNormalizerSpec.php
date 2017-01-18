@@ -64,7 +64,6 @@ class ChannelNormalizerSpec extends ObjectBehavior
                 'meta' => [
                     'id' => 10,
                     'form' => 'pim-channel-edit-form',
-                    'model_type' => 'channel',
                     'created' => null,
                     'updated' => null,
                 ]

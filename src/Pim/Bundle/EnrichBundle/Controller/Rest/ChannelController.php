@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -20,7 +21,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Channel controller
+ * Channel controller responsible for internal api requests
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
@@ -32,14 +33,8 @@ class ChannelController
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var NormalizerInterface */
     protected $normalizer;
-
-    /** @var MeasureManager */
-    protected $measureManager;
 
     /** @var ChannelUpdater */
     protected $updater;
@@ -50,42 +45,42 @@ class ChannelController
     /** @var RemoverInterface */
     protected $remover;
 
+    /** @var SimpleFactoryInterface  */
+    protected $channelFactory;
+
     /** @var ValidatorInterface */
     protected $validator;
 
     /**
      * @param ChannelRepositoryInterface    $channelRepository
-     * @param AttributeRepositoryInterface  $attributeRepository
      * @param NormalizerInterface           $normalizer
-     * @param MeasureManager                $measureManager
      * @param ChannelUpdater                $updater
      * @param SaverInterface                $saver
      * @param RemoverInterface              $remover
+     * @param SimpleFactoryInterface        $channelFactory
      * @param ValidatorInterface            $validator
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
-        AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        MeasureManager $measureManager,
         ChannelUpdater $updater,
         SaverInterface $saver,
         RemoverInterface $remover,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator
+        SimpleFactoryInterface $channelFactory,
+        ValidatorInterface $validator
     ) {
         $this->channelRepository = $channelRepository;
-        $this->attributeRepository = $attributeRepository;
         $this->normalizer = $normalizer;
-        $this->measureManager = $measureManager;
         $this->updater = $updater;
         $this->saver = $saver;
         $this->remover = $remover;
+        $this->channelFactory = $channelFactory;
         $this->validator = $validator;
-        $this->translator = $translator;
     }
 
     /**
+     * Lists all channels
+     *
      * @return JsonResponse
      */
     public function indexAction()
@@ -98,6 +93,8 @@ class ChannelController
     }
 
     /**
+     * Gets channel by code value
+     *
      * @param string $identifier
      *
      * @return JsonResponse
@@ -112,18 +109,22 @@ class ChannelController
     }
 
     /**
+     * Saves new channel
+     *
      * @param Request $request
      *
      * @return JsonResponse
      */
     public function postAction(Request $request)
     {
-        $channel = new Channel(); /* TODO-a2x: use factory */
+        $channel = $this->channelFactory->create();
 
         return $this->saveChannel($channel, $request);
     }
 
     /**
+     * Updates channel
+     *
      * @param Request $request
      * @param string  $code
      *
@@ -137,6 +138,8 @@ class ChannelController
     }
 
     /**
+     * Removes channel
+     *
      * @param $code
      *
      * @return JsonResponse
@@ -147,27 +150,6 @@ class ChannelController
         $this->remover->remove($channel);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * @return JsonResponse
-     */
-    public function metricAttributesAction()
-    {
-        $metricAttributes = $this->attributeRepository->findBy(
-            ['attributeType' => AttributeTypes::METRIC]
-        );
-
-        $attributesWithConversionUnits = [];
-
-        foreach ($metricAttributes as $attribute) {
-            if ($units = $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily())) {
-                $normalizedAttribute = $this->normalizer->normalize($attribute, 'internal_api');
-                $attributesWithConversionUnits[] = $this->setUnits($normalizedAttribute, $units);
-            }
-        }
-
-        return new JsonResponse($attributesWithConversionUnits);
     }
 
     /**
@@ -224,22 +206,5 @@ class ChannelController
                 'internal_api'
             )
         );
-    }
-
-    /**
-     * @param array $normalizedAttribute
-     * @param array $units
-     *
-     * @return mixed
-     */
-    private function setUnits($normalizedAttribute, $units)
-    {
-        $translator = $this->translator;
-
-        array_map(function ($unit) use ($translator, &$normalizedAttribute) {
-            return $normalizedAttribute['units'][$unit] = $translator->trans($unit);
-        }, array_keys($units));
-
-        return $normalizedAttribute;
     }
 }

@@ -6,7 +6,10 @@
 <div class="AknFieldContainer-inputContainer">
     <select class="select2" multiple id="pim_enrich_channel_form_currencies">
         <% _.each(currencies, function (currency) { %>
-        <option value="<%- currency.code %>" <%- _.contains(currentCurrencies, currency.code) ? 'selected' : '' %>><%- currency.code %></option>
+        <option value="<%- currency.code %>"
+            <%- _.contains(currentCurrencies, currency.code) ? 'selected' : '' %>>
+            <%- currency.code %>
+        </option>
         <% }); %>
     </select>
 </div>

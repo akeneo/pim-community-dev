@@ -104,9 +104,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iEditTheChannel($identifier)
     {
-        $page   = 'Channel';
-        $this->openPage(sprintf('%s edit', $page), ['code' => $identifier]);
-        $this->wait();
+        $this->openPage(sprintf('%s edit', 'Channel'), ['code' => $identifier]);
     }
 
     /**
@@ -149,7 +147,6 @@ class NavigationContext extends BaseNavigationContext
     {
         $jobType = ucfirst($jobType);
         $this->getPage(sprintf('%s index', $jobType))->clickJobCreationLink($jobTitle);
-        $this->wait();
         $this->currentPage = sprintf('%s creation', $jobType);
     }
 

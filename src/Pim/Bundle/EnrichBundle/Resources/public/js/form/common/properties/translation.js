@@ -42,6 +42,7 @@ define([
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', this.onPreSave);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onValidationError);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:locales_updated', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -70,13 +71,15 @@ define([
              * {@inheritdoc}
              */
             render: function () {
-                FetcherRegistry.getFetcher('activated-locale').fetchAll().then(function (locales) {
-                    this.$el.html(this.template({
-                        model: this.getFormData(),
-                        locales: locales,
-                        errors: this.validationErrors,
-                        label: this.config.label,
-                        fieldBaseId: this.config.fieldBaseId
+                FetcherRegistry.getFetcher('locale')
+                    .search({'activated': true, cached: false})
+                    .then(function (locales) {
+                        this.$el.html(this.template({
+                            model: this.getFormData(),
+                            locales: locales,
+                            errors: this.validationErrors,
+                            label: this.config.label,
+                            fieldBaseId: this.config.fieldBaseId
                     }));
                     this.delegateEvents();
                 }.bind(this));

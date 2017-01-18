@@ -49,11 +49,11 @@ class ChannelNormalizer implements NormalizerInterface
         NormalizerInterface $versionNormalizer,
         CollectionFilterInterface $collectionFilter
     ) {
-        $this->channelNormalizer        = $channelNormalizer;
-        $this->localeNormalizer         = $localeNormalizer;
-        $this->versionManager           = $versionManager;
-        $this->versionNormalizer        = $versionNormalizer;
-        $this->collectionFilter         = $collectionFilter;
+        $this->channelNormalizer = $channelNormalizer;
+        $this->localeNormalizer  = $localeNormalizer;
+        $this->versionManager    = $versionManager;
+        $this->versionNormalizer = $versionNormalizer;
+        $this->collectionFilter  = $collectionFilter;
     }
 
     /**
@@ -78,7 +78,6 @@ class ChannelNormalizer implements NormalizerInterface
         $normalizedChannel['meta'] = [
             'id'         => $channel->getId(),
             'form'       => 'pim-channel-edit-form',
-            'model_type' => 'channel',
             'created'    => $firstVersion,
             'updated'    => $lastVersion,
         ];

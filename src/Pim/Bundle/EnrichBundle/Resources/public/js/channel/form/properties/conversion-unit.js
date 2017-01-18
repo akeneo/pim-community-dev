@@ -49,11 +49,15 @@ define([
                     return this;
                 }
 
-                FetcherRegistry.getFetcher('conversion-unit').fetchAll().then(function (attributes) {
+                $.when(
+                    FetcherRegistry.getFetcher('attribute').search({'types': 'pim_catalog_metric'}),
+                    FetcherRegistry.getFetcher('measure').fetchAll()
+                ).then(function (attributes, measures) {
 
                     this.$el.html(this.template({
-                        conversionUnits: this.getFormData().conversionUnits,
-                        attributes: attributes,
+                        conversionUnits: this.getFormData().conversion_units,
+                        metrics: attributes,
+                        measures: measures,
                         catalogLocale: this.catalogLocale,
                         label: __(this.config.label),
                         fieldBaseId: this.config.fieldBaseId,
@@ -74,8 +78,8 @@ define([
              */
             updateState: function (event) {
                 this.setAttributeConversionUnit(
-                    $(event.target).data('attribute'),
-                    $(event.target).val()
+                    event.currentTarget.id.replace(this.config.fieldBaseId, ''),
+                    event.currentTarget.value
                 );
 
             },
@@ -100,7 +104,6 @@ define([
                 } else {
                     data.conversion_units[key][attribute] = value;
                 }
-
                 this.setData(data);
             }
         });

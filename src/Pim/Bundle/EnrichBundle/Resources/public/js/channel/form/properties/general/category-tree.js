@@ -32,6 +32,17 @@ define([
             catalogLocale: UserContext.get('catalogLocale'),
 
             /**
+             * Initializes configuration.
+             *
+             * @param {Object} config
+             */
+            initialize: function (config) {
+                this.config = config.config;
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
              * {@inheritdoc}
              */
             render: function () {
@@ -40,24 +51,24 @@ define([
                 }
 
                 FetcherRegistry.getFetcher('category').fetchAll().then(function (categories) {
-
-                    var data = this.getFormData();
-                    if ('' === data.category_tree) {
-                        data.category_tree = categories[0].code;
-                        this.setData(data);
+                    if (0 === this.getFormData().category_tree.length) {
+                        var data = this.getFormData();
+                        data.category_tree = _.first(categories).code;
+                        this.setData(data, {'silent': true});
                     }
 
                     this.$el.html(this.template({
-                        categoryTree: data.category_tree,
+                        categoryTree: this.getFormData().category_tree,
                         categories: categories,
                         catalogLocale: this.catalogLocale,
                         label: __('pim_enrich.form.channel.tab.properties.category_tree'),
                         requiredLabel: __('pim_enrich.form.required'),
-                        errors: this.getParent().getValidationErrorsForField('category_tree')
+                        defaulValueLabel: __('pim_enrich.form.channel.tab.properties.label_category_tree'),
+                        errors: this.getParent().getValidationErrorsForField('category')
                     }));
 
-                    this.$('.select2').select2().on('change', this.updateState.bind(this));
-
+                    this.$('.select2').select2()
+                        .on('change', this.updateState.bind(this));
                     this.renderExtensions();
                 }.bind(this));
 
@@ -70,7 +81,7 @@ define([
              * @param {Object} event
              */
             updateState: function (event) {
-                this.setCategory($(event.target).val());
+                this.setCategory(event.currentTarget.value);
             },
 
             /**

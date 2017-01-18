@@ -48,7 +48,6 @@ define([
                 }
 
                 FetcherRegistry.getFetcher('currency').fetchAll().then(function (currencies) {
-
                     this.$el.html(this.template({
                         currentCurrencies: this.getFormData().currencies,
                         currencies: currencies,
@@ -71,7 +70,7 @@ define([
              * @param {Object} event
              */
             updateState: function (event) {
-                this.setCategory($(event.target).val());
+                this.setCurrencies(event.val);
             },
 
             /**
@@ -79,7 +78,7 @@ define([
              *
              * @param {Array} codes
              */
-            setCategory: function (codes) {
+            setCurrencies: function (codes) {
                 if (null === codes) {
                     codes = [];
                 }

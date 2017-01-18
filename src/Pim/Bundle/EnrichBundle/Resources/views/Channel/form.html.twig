@@ -27,20 +27,30 @@
                             ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation', 'oro/translator'],
                             function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error, Navigation, __) {
                                 $(function() {
+                                    var code = '{{ code is defined ? code : '' }}';
                                     FetcherRegistry.initialize().done(function () {
-                                        var code = {% if code is defined %}'{{ code }}'{% else %}''{% endif %};
                                         if ('' === code) {
-                                            var channel = getNewChannel();
                                             var label = 'pim_enrich.entity.channel.title.create';
-                                            createForm(channel, label);
+                                            createForm(
+                                                {
+                                                    'code': '',
+                                                    'currencies': [],
+                                                    'locales': [],
+                                                    'category_tree': '',
+                                                    'conversion_units': [],
+                                                    'labels': {},
+                                                    'meta': {}
+                                                },
+                                                label,
+                                                'pim-channel-create-form'
+                                            );
                                         } else {
                                             FetcherRegistry.getFetcher('channel').fetch(code, {
                                                 cached: false,
                                                 generateMissing: true
                                             }).then(function (channel) {
                                                 var label = _.escape(channel.labels[UserContext.get('catalogLocale')]);
-                                                createForm(channel, label);
-
+                                                createForm(channel, label, channel.meta.form);
                                             }).fail(function (response, textStatus, errorThrown) {
                                                 var errorView = new Error(response.responseJSON.message, response.status);
                                                 errorView.setElement('#channel-edit-form').render();
@@ -48,7 +58,7 @@
                                         }
                                     });
 
-                                    function createForm(channel, label) {
+                                    function createForm(channel, label, formExtension) {
                                         var newTitle = document.title.replace('%channel.label%', label);
 
                                         document.title  = newTitle;
@@ -60,27 +70,12 @@
                                         navigation.setPinButtonsData('title', navTitle);
                                         navigation.setPinButtonsData('title-rendered-short', newTitle);
 
-                                        FormBuilder.build(channel.meta.form)
+                                        FormBuilder.build(formExtension)
                                             .then(function (form) {
                                                 form.setData(channel);
                                                 mediator.trigger('pim_enrich:form:entity:post_fetch', channel);
                                                 form.setElement('#channel-edit-form').render();
                                             });
-                                    }
-
-                                    function getNewChannel() {
-                                        return {
-                                            "code": '',
-                                            "currencies": [],
-                                            "locales": [],
-                                            "category_tree": '',
-                                            "conversion_units": [],
-                                            "labels": {},
-                                            "meta": {
-                                                "form": "pim-channel-edit-form",
-                                                "model_type": "channel"
-                                            }
-                                        }
                                     }
                                 });
                             });

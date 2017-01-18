@@ -54,8 +54,6 @@ config:
         pim/saver/channel:
             postUrl: pim_enrich_channel_rest_post
             putUrl: pim_enrich_channel_rest_put
-        pim/channel-edit-form/save:
-            redirectUrl: pim_enrich_channel_edit
         pim/saver/variant-group:
             url: pim_enrich_variant_group_rest_post
         pim/saver/product:
@@ -99,17 +97,11 @@ config:
                         urls:
                             list: pim_enrich_channel_rest_index
                             get: pim_enrich_channel_rest_get
-                            post: pim_enrich_channel_rest_post
                 locale:
                     module: pim/base-fetcher
                     options:
                         urls:
                             list: pim_enrich_locale_rest_index
-                activated-locale:
-                    module: pim/base-fetcher
-                    options:
-                        urls:
-                            list: pim_enrich_locale_rest_activated
                 measure:
                     module: pim/base-fetcher
                     options:
@@ -120,11 +112,6 @@ config:
                     options:
                         urls:
                             list: pim_enrich_currency_rest_index
-                conversion-unit:
-                    module: pim/base-fetcher
-                    options:
-                        urls:
-                            list: pim_enrich_channel_rest_metric_attributes
                 product-completeness:
                     module: pim/completeness-fetcher
                     options:

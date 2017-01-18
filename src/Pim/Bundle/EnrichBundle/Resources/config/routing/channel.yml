@@ -20,11 +20,6 @@ pim_enrich_channel_rest_index:
     defaults: { _controller: pim_enrich.controller.rest.channel:indexAction, _format: json }
     methods: [GET]
 
-pim_enrich_channel_rest_metric_attributes:
-    path: /rest/conversion-units
-    defaults: { _controller: pim_enrich.controller.rest.channel:metricAttributesAction, _format: json }
-    methods: [GET]
-
 pim_enrich_channel_rest_get:
     path: /rest/{identifier}
     defaults: { _controller: pim_enrich.controller.rest.channel:getAction, _format: json }

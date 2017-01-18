@@ -80,6 +80,8 @@ class CategoryController
     }
 
     /**
+     * List root categories
+     *
      * @return JsonResponse
      */
     public function listAction()

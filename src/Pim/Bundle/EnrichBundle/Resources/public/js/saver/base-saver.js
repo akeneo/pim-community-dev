@@ -23,7 +23,7 @@ define([
             save: function (code, data, method) {
                 return $.ajax({
                     /* todo: remove ternary when all instances using this module will provide method parameter */
-                    type: typeof method === 'undefined' ? 'POST' : method,
+                    type: 'undefined' === typeof method ? 'POST' : method,
                     url: this.getUrl(code),
                     data: JSON.stringify(data)
                 }).then(function (entity) {

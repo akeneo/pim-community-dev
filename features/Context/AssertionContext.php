@@ -42,7 +42,7 @@ class AssertionContext extends RawMinkContext
     /**
      * Checks, that page does not contain specified text.
      *
-     * @Then /^(?:|I )should not see the text "(?P<text>(?:[^"]|\\")*)"$/
+     * @Then /^I should not see the text "([^"]*)"$/
      */
     public function assertPageNotContainsText($text)
     {
@@ -558,11 +558,7 @@ class AssertionContext extends RawMinkContext
         $steps = [];
 
         foreach ($table->getHash() as $item) {
-            if ('"tablet" channel' !== $item['page']) {
-                $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
-            } else {
-                $steps[] = new Then(sprintf('I visit the %s page', $item['page']));
-            }
+            $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
             $steps[] = new Then(sprintf('I should see the title "%s"', $item['title']));
         }
 

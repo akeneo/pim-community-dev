@@ -15,8 +15,8 @@ Feature: Well display navigation titles
       | attributes                                    | Attributes                                          |
       | "size" attribute                              | Attributes Size \| Edit                             |
       | channels                                      | Channels                                            |
-      | channel creation                              | Channels \| Create                                  |
       | "tablet" channel                              | Channels Tablet \| Edit                             |
+      | channel creation                              | Channels \| Create                                  |
       | categories                                    | Category trees                                      |
       | category tree creation                        | Category trees \| Create                            |
       | currencies                                    | Currencies                                          |
