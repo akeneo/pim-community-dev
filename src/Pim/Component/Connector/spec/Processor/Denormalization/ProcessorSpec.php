@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactory;
@@ -9,6 +10,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Connector\BulkIdentifierBag;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -38,13 +40,36 @@ class ProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
+    function it_fails_when_no_identifiers_is_specified(
+        $repository
+    ) {
+        $repository->getIdentifierProperties()->willReturn([]);
+
+        $values = $this->getValues();
+
+        $this
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->during(
+                'process',
+                [$values]
+            );
+    }
+
     function it_updates_an_existing_channel(
         $repository,
         $updater,
         $validator,
+        $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ChannelInterface $channel,
         ConstraintViolationListInterface $violationList
     ) {
+        $bulkIdentifierBag->has('mycode')->willReturn(false);
+        $bulkIdentifierBag->add('mycode')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier('mycode')->willReturn($channel);
 
@@ -69,9 +94,17 @@ class ProcessorSpec extends ObjectBehavior
         $repository,
         $updater,
         $validator,
+        $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ChannelInterface $channel,
         ConstraintViolationListInterface $violationList
     ) {
+        $bulkIdentifierBag->has('mycode')->willReturn(false);
+        $bulkIdentifierBag->add('mycode')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier(Argument::any())->willReturn($channel);
 
@@ -87,13 +120,12 @@ class ProcessorSpec extends ObjectBehavior
             ->validate($channel)
             ->willReturn($violationList);
 
-        $this
-            ->process($values)
-            ->shouldReturn($channel);
-
         $updater
             ->update($channel, $values)
             ->willThrow(new \InvalidArgumentException());
+
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
@@ -108,8 +140,16 @@ class ProcessorSpec extends ObjectBehavior
         $updater,
         $validator,
         $objectDetacher,
+        $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ChannelInterface $channel
     ) {
+        $bulkIdentifierBag->has('mycode')->willReturn(false);
+        $bulkIdentifierBag->add('mycode')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier(Argument::any())->willReturn($channel);
 
@@ -127,6 +167,39 @@ class ProcessorSpec extends ObjectBehavior
             ->willReturn($violations);
 
         $objectDetacher->detach($channel)->shouldBeCalled();
+
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
+
+        $this
+            ->shouldThrow('Pim\Component\Connector\Exception\InvalidItemFromViolationsException')
+            ->during(
+                'process',
+                [$values]
+            );
+    }
+
+    function it_does_not_process_an_already_processed_entity(
+        $repository,
+        $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
+        ChannelInterface $channel
+    ) {
+        $bulkIdentifierBag->has('mycode')->willReturn(true);
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
+        $repository->getIdentifierProperties()->willReturn(['code']);
+        $repository->findOneByIdentifier('mycode')->willReturn($channel);
+
+        $channel->getId()->willReturn(42);
+
+        $values = $this->getValues();
+
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
+
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(

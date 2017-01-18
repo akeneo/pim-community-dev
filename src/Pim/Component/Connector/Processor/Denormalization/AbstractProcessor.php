@@ -4,7 +4,6 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -141,7 +140,10 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
         }
 
         if ($bag->has($identifier)) {
-            $this->skipItemWithMessage($item, sprintf('An item with the identifier "%s" has already been processed.'));
+            $this->skipItemWithMessage(
+                $item,
+                sprintf('An item with the identifier "%s" has already been processed.', $identifier)
+            );
         }
 
         $bag->add($identifier);
