@@ -7,6 +7,12 @@ pim_connector:
     categories:
       selector:
         modal:
+          title: Kategorienauswahl
           cancel: Abbrechen
           confirm: Bestätigen
+        label: "{0} Alle Produkte |{1} eine Kategorie ausgewählt |] 1, Inf [{{ count }} Kategorien ausgewählt"
         edit: Bearbeiten
+        title: Kategorie(n) auswählen
+    locales:
+      validation:
+        not_blank: Ein Gebietsschema muss ausgewählt werden, bitte wählen Sie ein Gebietsschema für den Export.

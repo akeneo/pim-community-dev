@@ -15,7 +15,6 @@ pim_import_export:
     7: PORZUCONE
     8: NIEZNANY
   download_archive:
-    archive: pobierz utworzone archiwum|pobierz utworzone archiwa
     output: pobierz utworzony plik|pobierz utworzone pliki
     input: pobierz wczytany plik|pobierz wczytane pliki
     invalid_xlsx: pobierz nieprawidłowe dane
@@ -149,7 +148,7 @@ Status: Status
 Summary: Podsumowanie
 Start: Start
 End: Koniec
-set_attribute_requirements: Określone wymagania atrybutów
+set_attribute_requirements: Określ wymagania atrybutów
 COMPLETED: WYKONANO
 STARTING: ROZPOCZYNANIE
 STARTED: ROZPOCZĘTE

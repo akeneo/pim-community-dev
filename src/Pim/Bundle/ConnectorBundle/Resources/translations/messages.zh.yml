@@ -33,9 +33,6 @@ pim_connector:
       delimiter:
         label: 分隔符
         help: 作为字段分隔符的单个字符
-      enclosure:
-        label: 附件
-        help: 作为字段分隔符的单个字符
       withHeader:
         label: 包含标题
         help: 是否打印列名称
@@ -45,12 +42,6 @@ pim_connector:
       filePath:
         label: 文件路径
         help: 将生成的文件写到哪里
-      decimalSeparator:
-        label: 小数分隔符
-        help: 确定小数点分隔符
-      dateFormat:
-        label: 日期格式
-        help: 确定日期字段的格式
     xlsx:
       lines_per_files:
         label: 每个文件的行数
@@ -64,12 +55,6 @@ pim_connector:
       filePath:
         label: 文件路径
         help: 将生成的文件写到哪里
-      decimalSeparator:
-        label: 小数分隔符
-        help: 确定十进制数分割符
-      dateFormat:
-        label: 日期格式
-        help: 确定日期字段的格式
     yml:
       filePath:
         label: 文件路径
@@ -90,36 +75,18 @@ pim_connector:
         help: 分组类的名称
       filePath:
         label: 文件
-        help: 要导入的 csv 文件
       uploadAllowed:
         label: 允许文件上传
         help: 是否允许直接文件上传
       delimiter:
         label: 分隔符
-        help: 用于为 CSV 文件设置字段分隔符的一个字符
-      enclosure:
-        label: 附件
-        help: 作为字段分隔符的单个字符
-      escape:
-        label: 退出
-        help: 作为字段空白的单个字符
       circularRefsChecked:
         label: 检查循环引用
         help: 如果是，数据将被处理以确保在类别之间有没有循环引用
       realTimeVersioning:
         label: 实时历史记录更新
         help: 关闭产品历史自动更新以提高性能
-      copyValuesToProducts:
-        label: 将款式组值复制到产品
-        help: 是指产品款式组值自动更新，可以关掉的唯一更新款式组
-      enabledComparison:
-        label: 比对值
-        help: 开启原始值与导入值的比较。如果导入值与原始值比较接近，可以加快导入速度。
-      decimalSeparator:
-        label: 十进制数分割符
-        help: 用于为 十进制数设置字段分隔符的一个字符
       dateFormat:
-        label: 日期格式
         help: 在文件中，指定任何日期字段的格式。例如，在这里 DD/MM/YYYY 指定为30/04/2014
     xlsx:
       enabled:
@@ -146,17 +113,7 @@ pim_connector:
       realTimeVersioning:
         label: 实时历史记录更新
         help: 关闭产品历史自动更新以提高性能
-      copyValuesToProducts:
-        label: 将款式组值复制到产品
-        help: 是指产品款式组值自动更新，可以关掉的唯一更新款式组
-      enabledComparison:
-        label: 比对值
-        help: 开启原始值与导入值的比较。如果导入值与原始值比较接近，可以加快导入速度。
-      decimalSeparator:
-        label: 十进制数分割符
-        help: 用于为 十进制数设置字段分隔符的一个字符
       dateFormat:
-        label: 日期格式
         help: 在文件中，指定任何日期字段的格式。例如，在这里 DD/MM/YYYY 指定为30/04/2014
     yml:
       filePath:
@@ -167,9 +124,8 @@ pim_connector:
         help: 是否允许直接文件上传
 job_execution.summary:
   read: 读取
-  read_lines: 读行
   write: 已写入
-  skip: 跳过
+  skip: 已跳过：
   create: 已创建
   process: 已处理
   update_products: 已更新的产品
@@ -180,6 +136,7 @@ job_execution.summary:
     title: 文件编码：
     skipped: 跳过，在白名单中扩展
   product_skipped_no_diff: 跳过的产品 （无差异）
+  item_position: 读行
 batch_jobs:
   csv_product_export:
     label: 产品导出到CSV
@@ -199,12 +156,6 @@ batch_jobs:
   csv_group_export:
     label: 分组导出到CSV
     export.label: 分组导出
-  csv_variant_group_export:
-    label: 在 CSV中导入款式组
-    export.label: 导入款式组
-  csv_family_export:
-    label: 在CSV导入品类
-    export.label: 品类导出
   csv_product_import:
     label: 从CSV导入产品
     validation.label: 文件验证
@@ -227,52 +178,23 @@ batch_jobs:
     validation.label: 文件验证
     import.label: 相关类型导入
   csv_family_import:
-    label: 从CSV导入品类
     validation.label: 文件验证
-    import.label: 品类导入
   csv_group_import:
     label: 从CSV导入分组
     validation.label: 文件验证
     import.label: 分组导入
   csv_variant_group_import:
-    label: 在 CSV 中导入款式组
     validation.label: 文件验证
-    import.label: 导入款式组
-  csv_channel_export:
-    label: 渠道导出到CSV
-    export.label: 渠道导出
-  csv_locale_export:
-    label: 本地语言导出到CSV
-    export.label: 本地语言导出
-  csv_attribute_group_export:
-    label: 属性组导出到CSV
-    export.label: 属性组导出
-  csv_currency_export:
-    label: 货币导出到CSV
-    export.label: 货币导出
-  csv_group_type_export:
-    label: 组类型导出到CSV
-    export.label: 组类型导出
   csv_channel_import:
-    label: 从CSV导入渠道
     validation.label: 文件验证
-    import.label: 渠道导入
   csv_locale_import:
-    label: 从CSV导入本地语言
     validation.label: 文件验证
-    import.label: 本地语言导入
   csv_attribute_group_import:
-    label: 从CSV导入属性组
     validation.label: 文件验证
-    import.label: 属性组导入
   csv_currency_import:
-    label: 从CSV导入货币
     validation.label: 文件验证
-    import.label: 货币导入
   csv_group_type_import:
-    label: 从CSV导入分组类型
     validation.label: 文件验证
-    import.label: 组类型导入
   xlsx_category_import:
     label: 用XLSX导入分类
     validation.label: 文件验证
@@ -292,7 +214,6 @@ batch_jobs:
   xlsx_family_import:
     label: 在XLSX导入品类
     validation.label: 文件验证
-    import.label: 品类导入
   xlsx_product_export:
     label: 产品导出到 XLSX
     export.label: 产品导出
@@ -306,7 +227,6 @@ batch_jobs:
     export.label: 分组导出
   xlsx_variant_group_export:
     label: 款式组导出到XLSX
-    export.label: 款式组导出
   xlsx_group_import:
     label: 从XLSX导入分组
     validation.label: 文件验证
@@ -317,7 +237,6 @@ batch_jobs:
     import.label: 导入款式组
   xlsx_family_export:
     label: 在XLSX导入品类
-    export.label: 品类导出
   xlsx_category_export:
     label: 在XLSX中导出分类
     export.label: 分类导出
@@ -330,38 +249,13 @@ batch_jobs:
   xlsx_association_type_export:
     label: 关联类型导出到XLSX
     export.label: 关联类型导出到XLSX
-  xlsx_channel_export:
-    label: 渠道导出到XLSX
-    export.label: 渠道导出
-  xlsx_locale_export:
-    label: 本地语言导出到XLSX
-    export.label: 本地语言导出
-  xlsx_attribute_group_export:
-    label: 属性组导出到XLSX
-    export.label: 属性组导出
-  xlsx_currency_export:
-    label: 货币导出到XLSX
-    export.label: 货币导出
-  xlsx_group_type_export:
-    label: 组类型导出到XLSX
-    export.label: 组类型导出
   xlsx_channel_import:
-    label: 用XLSX导入渠道
     validation.label: 文件验证
-    import.label: 渠道导入
   xlsx_locale_import:
-    label: 用XLSX导入本地语言
     validation.label: 文件验证
-    import.label: 本地语言导入
   xlsx_attribute_group_import:
-    label: 用XLSX导入属性组
     validation.label: 文件验证
-    import.label: 属性组导入
   xlsx_currency_import:
-    label: 用XLSX导入货币
     validation.label: 文件验证
-    import.label: 货币导入
   xlsx_group_type_import:
-    label: 用XLSX导入组类型
     validation.label: 文件验证
-    import.label: 组类型导入
