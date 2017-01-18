@@ -290,10 +290,13 @@ define(
                     collection.processFiltersParams(urlParams, filters, gridName + '[_filter]');
                 }
 
-                $.get(Routing.generate('pim_datagrid_load', urlParams)).then(function (resp) {
-                    this.$('#grid-' + gridName).data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
+                $.get(Routing.generate('pim_datagrid_load', urlParams)).then(function (response) {
+                    var metadata = response.metadata;
+                    metadata.options.url = metadata.options.url.split('?')[0];
 
-                    var gridModules = resp.metadata.requireJSModules;
+                    this.$('#grid-' + gridName).data({ metadata: metadata, data: JSON.parse(response.data) });
+
+                    var gridModules = metadata.requireJSModules;
                     gridModules.push('pim/datagrid/state-listener');
                     require(gridModules, function () {
                         datagridBuilder(_.toArray(arguments));
