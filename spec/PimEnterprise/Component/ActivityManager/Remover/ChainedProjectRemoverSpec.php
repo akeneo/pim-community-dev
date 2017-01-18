@@ -30,9 +30,9 @@ class ChainedProjectRemoverSpec extends ObjectBehavior
         ChannelInterface $channel
     ) {
         $channelRemover->isSupported($channel, StorageEvents::PRE_REMOVE)->willReturn(true);
-        $channelRemover->removeProjectsImpactedBy($channel)->shouldBeCalled();
+        $channelRemover->removeProjectsImpactedBy($channel, StorageEvents::PRE_REMOVE)->shouldBeCalled();
         $localeRemover->isSupported($channel, StorageEvents::PRE_REMOVE)->willReturn(false);
-        $localeRemover->removeProjectsImpactedBy($channel)->shouldNotBeCalled();
+        $localeRemover->removeProjectsImpactedBy($channel, StorageEvents::PRE_REMOVE)->shouldNotBeCalled();
 
         $this->removeProjectsImpactedBy($channel, StorageEvents::PRE_REMOVE);
     }

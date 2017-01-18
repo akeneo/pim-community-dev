@@ -29,7 +29,7 @@ class CatalogUpdatesSubscriberSpec extends ObjectBehavior
     {
         $this::getSubscribedEvents()->shouldReturn([
             StorageEvents::PRE_REMOVE => 'removeProjectsImpactedByEntity',
-            StorageEvents::POST_SAVE => 'removeProjectsImpactedByLocale',
+            StorageEvents::POST_SAVE => 'removeProjectsImpactedByEntity',
         ]);
     }
 
@@ -39,54 +39,33 @@ class CatalogUpdatesSubscriberSpec extends ObjectBehavior
         ChannelInterface $channel
     ) {
         $event->getSubject()->willReturn($channel);
-        $chainedRemover->removeProjectsImpactedBy($channel)->shouldBeCalled();
+        $chainedRemover->removeProjectsImpactedBy($channel, StorageEvents::PRE_REMOVE)->shouldBeCalled();
 
-        $this->removeProjectsImpactedByEntity($event);
+        $this->removeProjectsImpactedByEntity($event, StorageEvents::PRE_REMOVE);
     }
 
-    function it_does_not_remove_projects_on_project_pre_remove(
-        $chainedRemover,
-        GenericEvent $event,
-        ProjectInterface $project
-    ) {
-        $event->getSubject()->willReturn($project);
-        $chainedRemover->removeProjectsImpactedBy($project)->shouldNotBeCalled();
-
-        $this->removeProjectsImpactedByEntity($event);
-    }
-
-    function it_does_not_check_projects_on_pre_remove(
-        $chainedRemover,
-        GenericEvent $event,
-        ProjectInterface $project
-    ) {
-        $event->getSubject()->willReturn($project);
-        $chainedRemover->removeProjectsImpactedBy($project)->shouldNotBeCalled();
-
-        $this->removeProjectsImpactedByEntity($event);
-    }
-
-    function it_removes_projects_from_locale(
+    function it_removes_projects_on_entities_post_save(
         $chainedRemover,
         GenericEvent $event,
         LocaleInterface $locale
     ) {
         $event->getSubject()->willReturn($locale);
+        $chainedRemover->removeProjectsImpactedBy($locale, StorageEvents::POST_SAVE)->shouldBeCalled();
 
-        $chainedRemover->removeProjectsImpactedBy($locale)->shouldBeCalled();
-
-        $this->removeProjectsImpactedByLocale($event);
+        $this->removeProjectsImpactedByEntity($event, StorageEvents::POST_SAVE);
     }
 
-    function it_does_not_remove_projects_from_on_post_save_another_entity_than_locale(
+    function it_does_not_remove_projects_from_on_project_events(
         $chainedRemover,
         GenericEvent $event,
-        ChannelInterface $channel
+        ProjectInterface $project
     ) {
-        $event->getSubject()->willReturn($channel);
+        $event->getSubject()->willReturn($project);
 
-        $chainedRemover->removeProjectsImpactedBy($channel)->shouldNotBeCalled();;
+        $chainedRemover->removeProjectsImpactedBy($project, StorageEvents::POST_SAVE)->shouldNotBeCalled();;
+        $chainedRemover->removeProjectsImpactedBy($project, StorageEvents::PRE_REMOVE)->shouldNotBeCalled();;
 
-        $this->removeProjectsImpactedByLocale($event);
+        $this->removeProjectsImpactedByEntity($event, StorageEvents::POST_SAVE);
+        $this->removeProjectsImpactedByEntity($event, StorageEvents::PRE_REMOVE);
     }
 }
