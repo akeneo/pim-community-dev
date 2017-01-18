@@ -48,16 +48,5 @@ class MultiSelectDecorator extends ElementDecorator
             }, sprintf('Cannot find option "%s"', $value));
             $option->click();
         }
-
-        // uncheck the "all" choice to avoid filtering problems
-        $all = $widget->find('css', 'li input[type="checkbox"][checked="checked"][value=""]');
-
-        if (null !== $all && $value !== 'All') {
-            if (null !== $search) {
-                $search->setValue('All');
-            }
-
-            $all->click();
-        }
     }
 }

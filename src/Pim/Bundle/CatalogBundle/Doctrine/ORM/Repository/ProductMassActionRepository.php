@@ -35,7 +35,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function applyMassActionParameters($qb, $inset, $values)
+    public function applyMassActionParameters($qb, $inset, array $values)
     {
         $rootAlias = $qb->getRootAlias();
         if ($values) {
@@ -135,35 +135,6 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
             ->where($qb->expr()->in('p.id', $ids));
 
         return $qb->getQuery()->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findCommonAttributeIds(array $productIds)
-    {
-        // Prepare SQL query
-        $commonAttSql = $this->prepareCommonAttributesSQLQuery();
-        $commonAttSql = strtr(
-            $commonAttSql,
-            [
-                '%product_ids%'        => '('.implode($productIds, ',').')',
-                '%product_ids_count%'  => count($productIds)
-            ]
-        );
-        $commonAttSql = QueryBuilderUtility::prepareDBALQuery($this->em, $this->entityName, $commonAttSql);
-
-        // Execute SQL query
-        $stmt = $this->em->getConnection()->prepare($commonAttSql);
-        $stmt->execute();
-
-        $attributes = $stmt->fetchAll();
-        $attributeIds = [];
-        foreach ($attributes as $attributeId) {
-            $attributeIds[] = (int) $attributeId['a_id'];
-        }
-
-        return $attributeIds;
     }
 
     /**

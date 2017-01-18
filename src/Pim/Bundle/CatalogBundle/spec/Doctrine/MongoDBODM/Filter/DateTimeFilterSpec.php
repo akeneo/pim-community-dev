@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
@@ -18,7 +18,7 @@ class DateTimeFilterSpec extends ObjectBehavior
 {
     function let(
         Builder $queryBuilder,
-        JobInstanceRepository $jobInstanceRepository,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         JobRepositoryInterface $jobRepository
     ) {
         $this->beConstructedWith(
@@ -134,7 +134,7 @@ class DateTimeFilterSpec extends ObjectBehavior
         JobExecution $jobExecution,
         \DateTime $startTime
     ) {
-        $jobInstanceRepository->findOneBy(['code' => 'csv_product_export'])->willReturn($jobInstance);
+        $jobInstanceRepository->findOneByIdentifier('csv_product_export')->willReturn($jobInstance);
         $jobRepository->getLastJobExecution($jobInstance, 1)->shouldBeCalled()->willReturn($jobExecution);
 
         $jobExecution->getStartTime()->willReturn($startTime);
@@ -159,7 +159,7 @@ class DateTimeFilterSpec extends ObjectBehavior
         $jobRepository,
         JobInstance $jobInstance
     ) {
-        $jobInstanceRepository->findOneBy(['code' => 'csv_product_export'])->willReturn($jobInstance);
+        $jobInstanceRepository->findOneByIdentifier('csv_product_export')->willReturn($jobInstance);
         $jobRepository->getLastJobExecution($jobInstance, 1)->shouldBeCalled()->willReturn(null);
 
         $queryBuilder->field(Argument::any())->shouldNotBeCalled();

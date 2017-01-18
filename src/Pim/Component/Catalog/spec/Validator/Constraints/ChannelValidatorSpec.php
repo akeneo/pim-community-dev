@@ -1,10 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Validator\Constraints;
+namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Connector\Validator\Constraints\Channel;
+use Pim\Component\Catalog\Validator\Constraints\Channel;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -21,7 +20,7 @@ class ChannelValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Component\Connector\Validator\Constraints\ChannelValidator');
+        $this->shouldHaveType('\Pim\Component\Catalog\Validator\Constraints\ChannelValidator');
     }
 
     function it_is_a_choice_validator()

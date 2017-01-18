@@ -87,19 +87,6 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('l');
-        $rootAlias = $qb->getRootAlias();
-
-        $qb->addSelect($rootAlias);
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDeletedLocalesForChannel(ChannelInterface $channel)
     {
         $currentLocaleIds = array_map(

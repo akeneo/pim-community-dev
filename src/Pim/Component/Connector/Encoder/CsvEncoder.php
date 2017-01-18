@@ -52,7 +52,7 @@ class CsvEncoder implements EncoderInterface
 
         $this->initializeContext($context);
 
-        $output = fopen('php://temp', 'r+');
+        $output = fopen('php://temp', 'r+b');
 
         $first = reset($data);
         if (isset($first) && is_array($first)) {
@@ -71,7 +71,10 @@ class CsvEncoder implements EncoderInterface
             $this->write($output, $data, $this->delimiter, $this->enclosure);
         }
 
-        return $this->readCsv($output);
+        $content = $this->readCsv($output);
+        fclose($output);
+
+        return $content;
     }
 
     /**

@@ -9,21 +9,15 @@ use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 class AttributeOptionUpdateGuesserSpec extends ObjectBehavior
 {
     function let(
-        ManagerRegistry $registry,
-        ProductRepositoryInterface $repository,
         EntityManager $em,
         AttributeInterface $attribute,
         AttributeOptionInterface $option,
         AttributeOptionValueInterface $optionValue
     ) {
-        $registry->getRepository('product')->willReturn($repository);
-        $repository->findAllWithAttributeOption($option)->willReturn([]);
-
         $option->getAttribute()->willReturn($attribute);
         $optionValue->getOption()->willReturn($option);
     }

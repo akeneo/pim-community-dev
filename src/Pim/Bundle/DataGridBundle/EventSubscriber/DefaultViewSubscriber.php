@@ -81,7 +81,7 @@ class DefaultViewSubscriber implements EventSubscriberInterface
                     'query_builder' => function (
                         DatagridViewRepositoryInterface $gridViewRepository
                     ) use ($user, $alias) {
-                        return $gridViewRepository->findDatagridViewByUserAndAlias($user, $alias);
+                        return $gridViewRepository->findDatagridViewByAlias($alias);
                     },
                     'required'      => false,
                     'attr'          => [

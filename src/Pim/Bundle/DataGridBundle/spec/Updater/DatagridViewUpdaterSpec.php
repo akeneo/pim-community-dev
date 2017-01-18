@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
@@ -26,9 +27,14 @@ class DatagridViewUpdaterSpec extends ObjectBehavior
         $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    function it_throws_an_exception_if_the_given_object_is_not_a_datagrid(UserInterface $user)
+    function it_throws_an_exception_if_the_given_object_is_not_a_datagrid()
     {
-        $this->shouldThrow('\InvalidArgumentException')->during('update', [$user, []]);
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                DatagridView::class
+            )
+        )->during('update', [new \stdClass(), []]);
     }
 
     function it_updates_the_data_grid_property($userRepository, DatagridView $datagridView, UserInterface $user)

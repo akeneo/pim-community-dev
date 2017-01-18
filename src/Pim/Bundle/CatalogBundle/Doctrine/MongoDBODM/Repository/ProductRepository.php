@@ -368,38 +368,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllWithAttribute(AttributeInterface $attribute)
-    {
-        return $this->createQueryBuilder('p')
-            ->field('values.attribute')->equals((int) $attribute->getId())
-            ->getQuery()
-            ->execute()
-            ->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllWithAttributeOption(AttributeOptionInterface $option)
-    {
-        $id = (int) $option->getId();
-        $qb = $this->createQueryBuilder('p');
-
-        if ('options' === $option->getAttribute()->getBackendType()) {
-            $qb->field('values.optionIds')->in([$id]);
-        } else {
-            $qb->field('values.option')->equals($id);
-        }
-
-        return $qb
-            ->getQuery()
-            ->execute()
-            ->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFullProduct($id)
     {
         return $this->find($id);

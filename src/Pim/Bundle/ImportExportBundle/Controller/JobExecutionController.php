@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

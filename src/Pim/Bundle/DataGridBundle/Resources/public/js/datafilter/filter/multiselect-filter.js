@@ -46,11 +46,25 @@ function(_, __, SelectFilter) {
             classes: 'AknActionButton-selectButton select-filter-widget multiselect-filter-widget'
         },
 
-        /**
-         * @inheritDoc
-         */
         _onSelectChange: function() {
-            SelectFilter.prototype._onSelectChange.apply(this, arguments);
+            var data = this._readDOMValue();
+
+            // At initialization, the value is `''` which mean 'All' but it should be `['']`
+            var previousValue = '' === this.getValue().value ? [''] : this.getValue().value;
+
+            // We try to guess if the user added 'All' to remove all previous selection
+            var addAll = _.contains(_.difference(data.value, previousValue), '');
+
+            data.value = _.contains(data.value, '') ? _.without(data.value, '') : data.value;
+            data.value = _.isEmpty(data.value) ? [''] : data.value;
+            data.value = addAll ? [''] : data.value;
+
+            // set value
+            this.setValue(this._formatRawValue(data));
+
+            // update dropdown
+            var widget = this.$(this.containerSelector);
+            this.selectWidget.updateDropdownPosition(widget);
             this._setDropdownWidth();
         }
     });

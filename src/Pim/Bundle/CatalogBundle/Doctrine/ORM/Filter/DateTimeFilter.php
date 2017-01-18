@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -23,17 +23,17 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     /** @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /** @var JobInstanceRepository */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepository;
 
     /**
-     * @param JobInstanceRepository  $jobInstanceRepository
-     * @param JobRepositoryInterface $jobRepository
-     * @param array                  $supportedFields
-     * @param array                  $supportedOperators
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
+     * @param JobRepositoryInterface                $jobRepository
+     * @param array                                 $supportedFields
+     * @param array                                 $supportedOperators
      */
     public function __construct(
-        JobInstanceRepository $jobInstanceRepository,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         JobRepositoryInterface $jobRepository,
         array $supportedFields = [],
         array $supportedOperators = []
@@ -119,7 +119,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
      */
     protected function addUpdatedSinceLastJob($field, $value)
     {
-        $jobInstance = $this->jobInstanceRepository->findOneBy(['code' => $value]);
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($value);
         $lastCompletedJobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
         if (null === $lastCompletedJobExecution) {
             return;

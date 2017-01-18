@@ -2,11 +2,13 @@
 
 namespace spec\Akeneo\Component\Classification\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
 use Akeneo\Component\Classification\Model\CategoryInterface;
-use Prophecy\Argument;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class CategoryUpdaterSpec extends ObjectBehavior
 {
@@ -28,8 +30,9 @@ class CategoryUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_category()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "Akeneo\Component\Classification\Model\CategoryInterface", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Akeneo\Component\Classification\Model\CategoryInterface'
             )
         )->during(
             'update',
@@ -54,5 +57,17 @@ class CategoryUpdaterSpec extends ObjectBehavior
         ];
 
         $this->update($category, $values, []);
+    }
+
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(CategoryInterface $category) {
+        $values = [
+            'non_existent_field' => 'field',
+            'code'               => 'mycode',
+            'parent'             => 'master',
+        ];
+
+        $this
+            ->shouldThrow(UnknownPropertyException::unknownProperty('non_existent_field', new NoSuchPropertyException()))
+            ->during('update', [$category, $values, []]);
     }
 }

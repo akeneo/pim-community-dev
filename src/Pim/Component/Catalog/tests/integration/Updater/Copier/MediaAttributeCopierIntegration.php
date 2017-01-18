@@ -2,8 +2,9 @@
 
 namespace tests\integration\Pim\Component\Catalog\Updater\Copier;
 
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Test\Integration\TestCase;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
@@ -15,7 +16,13 @@ class MediaAttributeCopierIntegration extends TestCase
     const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
     const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';
 
-    protected $purgeDatabaseForEachTest = false;
+    protected function getConfiguration()
+    {
+        return new Configuration(
+            [Configuration::getTechnicalCatalogPath()],
+            false
+        );
+    }
 
     public function testCopyToMediaWithLocale()
     {

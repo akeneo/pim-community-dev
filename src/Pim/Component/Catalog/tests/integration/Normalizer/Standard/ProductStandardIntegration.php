@@ -2,9 +2,9 @@
 
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Test\Integration\TestCase;
 
 /**
  * Integration tests to verify data from database are well formatted in the standard format
@@ -17,25 +17,12 @@ class ProductStandardIntegration extends TestCase
     const DATE_FIELD_PATTERN = '#[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2}$#';
     const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
 
-    protected $purgeDatabaseForEachTest = false;
-
-    public function setUp()
+    protected function getConfiguration()
     {
-        parent::setUp();
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        $em->getConnection()->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'common.sql'));
-
-        if (1 === self::$count) {
-            $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
-            if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $storage) {
-                $client = $this->get('doctrine.odm.mongodb.document_manager')->getConnection()->akeneo_pim;
-                $client->execute(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'products_mongodb.json'));
-            } else {
-                $em->getConnection()
-                    ->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'products_orm.sql'));
-            }
-        }
+        return new Configuration(
+            [Configuration::getTechnicalSqlCatalogPath()],
+            false
+        );
     }
 
     public function testEmptyDisabledProduct()

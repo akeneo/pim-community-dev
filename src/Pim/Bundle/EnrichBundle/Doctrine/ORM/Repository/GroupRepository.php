@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 
@@ -12,7 +13,9 @@ use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupRepository extends EntityRepository implements TranslatedLabelsProviderInterface
+class GroupRepository extends EntityRepository implements
+    TranslatedLabelsProviderInterface,
+    DatagridRepositoryInterface
 {
     /** @var UserContext */
     protected $userContext;
@@ -48,5 +51,33 @@ class GroupRepository extends EntityRepository implements TranslatedLabelsProvid
         }
 
         return $choices;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        $groupLabelExpr = '(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)';
+        $typeLabelExpr = '(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)';
+        $typeExpr = $qb->expr()->in('type.id', ':groupTypes');
+
+        $qb
+            ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
+            ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
+            ->addSelect('translation.label');
+
+        $qb
+            ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin('g.type', 'typ')
+            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :localeCode')
+            ->leftJoin('g.attributes', 'attribute')
+            ->innerJoin('g.type', 'type', 'WITH', $typeExpr);
+
+        $qb->groupBy('g');
+
+        return $qb;
     }
 }
