@@ -71,19 +71,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
                 $category->setLocale($localeCode);
             }
         } elseif ('parent' === $field) {
-            $categoryParent = $this->findParent($data);
-            if (null === $categoryParent) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'parent',
-                    'category code',
-                    'The category does not exist',
-                    'updater',
-                    'category',
-                    $data
-                );
-            }
-
-            $category->setParent($categoryParent);
+            $this->updateParent($category, $data);
         } else {
             try {
                 $this->accessor->setValue($category, $field, $data);
@@ -94,12 +82,30 @@ class CategoryUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param string $code
+     * @param CategoryInterface $category
+     * @param string            $data
      *
-     * @return CategoryInterface|null
+     * @throws InvalidPropertyException
      */
-    protected function findParent($code)
-    {
-        return $this->categoryRepository->findOneByIdentifier($code);
+    protected function updateParent(CategoryInterface $category, $data) {
+        if (null === $data || '' === $data) {
+            $category->setParent(null);
+
+            return;
+        }
+
+        $categoryParent = $this->categoryRepository->findOneByIdentifier($data);
+        if (null === $categoryParent) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'parent',
+                'category code',
+                'The category does not exist',
+                'updater',
+                'category',
+                $data
+            );
+        }
+
+        $category->setParent($categoryParent);
     }
 }
