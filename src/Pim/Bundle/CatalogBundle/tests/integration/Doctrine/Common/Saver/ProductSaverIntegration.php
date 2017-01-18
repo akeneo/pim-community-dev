@@ -3,11 +3,12 @@
 namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Test\Integration\TestCase;
 
 /**
  * Integration tests to verify a product is well saved in database.
@@ -39,10 +40,14 @@ class ProductSaverIntegration extends TestCase
 
         $em = $this->get('doctrine.orm.entity_manager');
         $this->db = $em->getConnection();
+    }
 
-        //TODO: clean that, see with Skeleton
-        $path = $this->getParameter('kernel.root_dir') . '/../src/Pim/Component/Catalog/tests/integration/Normalizer/Standard/common.sql';
-        $this->db->executeQuery(file_get_contents($path));
+    protected function getConfiguration()
+    {
+        return new Configuration(
+            [Configuration::getTechnicalSqlCatalogPath()],
+            false
+        );
     }
 
     public function testRawValuesForProductWithAllAttributes()
@@ -58,15 +63,6 @@ class ProductSaverIntegration extends TestCase
             json_encode($this->getStorageValuesWithAllAttributes()),
             $jsonRawValues
         );
-    }
-
-    /**
-     * Overwritte this method to have no catalog installed.
-     * Instead, we want to use the common.sql file.
-     */
-    protected function getConfigurationFiles()
-    {
-        return [];
     }
 
     private function getStandardValuesWithAllAttributes()
