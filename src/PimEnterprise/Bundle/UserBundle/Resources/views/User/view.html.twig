@@ -107,56 +107,56 @@
     ]
     %}
 
-    {% set yesTrans = 'user.proposals.notifications.yes' %}
-    {% set noTrans  = 'user.proposals.notifications.no' %}
+    {#{% set yesTrans = 'user.proposals.notifications.yes' %}#}
+    {#{% set noTrans  = 'user.proposals.notifications.no' %}#}
 
-    {% set notificationsSubblocks = [] %}
-    {% set proposal_to_review     = [] %}
-    {% set proposal_state         = [] %}
+    {#{% set notificationsSubblocks = [] %}#}
+    {#{% set proposal_to_review     = [] %}#}
+    {#{% set proposal_state         = [] %}#}
 
-    {% if is_proposal_to_review_field_visible(entity) %}
-        {% set notifyToReview     = entity.hasProposalsToReviewNotification ? yesTrans : noTrans %}
-        {% set proposal_to_review = [
-            {
-                'title': '',
-                'class': 'AknFormContainer AknFormContainer--withPadding',
-                'data': [
-                    UI.attibuteRow(
-                        'user.proposals.notifications.to_review'|trans,
-                        notifyToReview|trans
-                    ),
-                ]
-            }
-        ]
-        %}
-    {% endif %}
+    {#{% if is_proposal_to_review_field_visible(entity) %}#}
+        {#{% set notifyToReview     = entity.hasProposalsToReviewNotification ? yesTrans : noTrans %}#}
+        {#{% set proposal_to_review = [#}
+            {#{#}
+                {#'title': '',#}
+                {#'class': 'AknFormContainer AknFormContainer--withPadding',#}
+                {#'data': [#}
+                    {#UI.attibuteRow(#}
+                        {#'user.proposals.notifications.to_review'|trans,#}
+                        {#notifyToReview|trans#}
+                    {#),#}
+                {#]#}
+            {#}#}
+        {#]#}
+        {#%}#}
+    {#{% endif %}#}
 
-    {% if is_proposal_state_field_visible(entity) %}
-        {% set notifyState    = entity.hasProposalsStateNotification ? yesTrans : noTrans %}
-        {% set proposal_state = [
-            {
-                'title': '',
-                'class': 'AknFormContainer AknFormContainer--withPadding',
-                'data': [
-                    UI.attibuteRow(
-                        'user.proposals.notifications.state'|trans,
-                        notifyState|trans
-                    ),
-                ]
-            }
-        ]
-        %}
-    {% endif %}
+    {#{% if is_proposal_state_field_visible(entity) %}#}
+        {#{% set notifyState    = entity.hasProposalsStateNotification ? yesTrans : noTrans %}#}
+        {#{% set proposal_state = [#}
+            {#{#}
+                {#'title': '',#}
+                {#'class': 'AknFormContainer AknFormContainer--withPadding',#}
+                {#'data': [#}
+                    {#UI.attibuteRow(#}
+                        {#'user.proposals.notifications.state'|trans,#}
+                        {#notifyState|trans#}
+                    {#),#}
+                {#]#}
+            {#}#}
+        {#]#}
+        {#%}#}
+    {#{% endif %}#}
 
-    {% set notificationsSubblocks = notificationsSubblocks|merge(proposal_to_review)|merge(proposal_state) %}
+    {#{% set notificationsSubblocks = notificationsSubblocks|merge(proposal_to_review)|merge(proposal_state) %}#}
 
-    {% set notifications = [{
-        'title': 'pimee_user.user.tab.notifications.title'|trans,
-        'subblocks': notificationsSubblocks,
-    }]
-    %}
+    {#{% set notifications = [{#}
+        {#'title': 'pimee_user.user.tab.notifications.title'|trans,#}
+        {#'subblocks': notificationsSubblocks,#}
+    {#}]#}
+    {#%}#}
 
-    {% set dataBlocks = dataBlocks|merge(additional)|merge(interfaces)|merge(notifications) %}
+      {% set dataBlocks = dataBlocks|merge(additional)|merge(interfaces) %}
 
     {#
       EntityExtend fields END

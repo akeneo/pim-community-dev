@@ -6,6 +6,8 @@
 
 ## Technical improvements
 
+- Update to Symfony 2.7.23
+
 ## BC breaks
 
 - Add `applyCategoriesFilter` to `PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface` 
