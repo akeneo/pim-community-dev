@@ -23,6 +23,7 @@
 - Complete Duration measure family with week, month, year and related conversions cheers @JulienDotDev!
 - Add CaseBox measure family and conversions, cheers @gplanchat!
 - Add history support for the channel conversion units.
+- Add warning count on export execution grid and dashboard
 
 ## Technical improvements
 
@@ -180,7 +181,7 @@
 - Remove unused `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType`
 - Remove unused `Pim\Bundle\EnrichBundle\Form\Type\ChannelType`
 - Remove unused `Pim\Bundle\EnrichBundle\Form\Type\ConversionUnitsType`
-- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ChannelController` to remove all dependencies  
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ChannelController` to remove all dependencies
 - Remove `removeAction` method of `Pim\Bundle\EnrichBundle\Controller\ChannelController`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ChannelController` to add `Pim\Component\Catalog\Updater\ChannelUpdater`, `Akeneo\Component\StorageUtils\Saver\SaverInterface`, `Akeneo\Component\StorageUtils\Remover\RemoverInterface`, `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`, `Symfony\Component\Validator\Validator\ValidatorInterface`
 - Change route `pim_enrich_channel_edit` to use `code` identifier instead of `id`

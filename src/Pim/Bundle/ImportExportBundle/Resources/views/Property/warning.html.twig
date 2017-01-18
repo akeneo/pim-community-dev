@@ -1,0 +1,6 @@
+{% set status = 'success' %}
+{% set status = value is not null and value != 0 ? 'warning' : status  %}
+{% set status = 'FAILED' == record.getValue('exitStatus').exitCode ? 'important' : status %}
+{% set counter = 'FAILED' == record.getValue('exitStatus').exitCode ? 1 : value %}
+
+<span class="AknBadge AknBadge--{{ status }}">{{ counter }}</span>

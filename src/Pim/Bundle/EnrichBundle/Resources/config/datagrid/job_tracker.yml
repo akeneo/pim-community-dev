@@ -11,14 +11,22 @@ datagrid:
                 data_name: jobLabel
             user:
                 label: User
-            status:
-                label: Status
-                type: translateable
             started_at:
                 label: job_tracker.filter.started_at
                 data_name: startTime
                 type: product_value_datetime
                 frontend_type: datetime
+            status:
+                label:         Status
+                type:          twig
+                template:      PimImportExportBundle:Property:status.html.twig
+                frontend_type: html
+            warning:
+                label:         Warnings
+                type:          twig
+                data_name:     warningCount
+                template:      PimImportExportBundle:Property:warning.html.twig
+                frontend_type: html
         actions:
             view:
                 type:      navigate
@@ -34,10 +42,12 @@ datagrid:
                     data_name: jobLabel
                 user:
                     data_name: user
-                status:
-                    data_name: statusLabel
                 started_at:
                     data_name: startTime
+                status:
+                    data_name: statusLabel
+                warning:
+                    data_name: warningCount
             default:
                 started_at: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
@@ -54,6 +64,10 @@ datagrid:
                     type:      string
                     label:     User
                     data_name: user
+                started_at:
+                    type:             datetime
+                    data_name:        startTime
+                    filter_by_having: true
                 status:
                     type:             choice
                     data_name:        status
@@ -62,9 +76,9 @@ datagrid:
                         field_options:
                             multiple: true
                             choices: '%akeneo_batch.job.batch_status.class%::getAllLabels()'
-                started_at:
-                    type:             datetime
-                    data_name:        startTime
+                warning:
+                    type:             number
+                    data_name:        warningCount
                     filter_by_having: true
         properties:
             id: ~

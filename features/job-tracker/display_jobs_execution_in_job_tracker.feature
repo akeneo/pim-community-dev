@@ -17,7 +17,7 @@ Feature: Display jobs execution in job tracker
     When I am on the job tracker page
     Then I should see the "Refresh" button
     And I should see the "Reset" button
-    And I should see the columns Type, Job, User, Status and Started at
+    And I should see the columns Type, Job, User, Started at, Status and Warnings
     And the grid should contain 1 element
     And I should see entity CSV footwear category export
 
@@ -39,7 +39,7 @@ Feature: Display jobs execution in job tracker
     When I am on the job tracker page
     Then I should see the "Refresh" button
     And I should see the "Reset" button
-    And I should see the columns Type, Job, User, Status and Started at
+    And I should see the columns Type, Job, User, Started at, Status and Warnings
     And the grid should contain 1 element
     And I should see entity Mass edit common product attributes
 
@@ -61,6 +61,6 @@ Feature: Display jobs execution in job tracker
     And I am on the job tracker page
     And I should see the "Refresh" button
     And I should see the "Reset" button
-    And I should see the columns Type, Job, User, Status and Started at
+    And I should see the columns Type, Job, User, Started at, Status and Warnings
     And the grid should contain 1 element
     And I should see entity CSV footwear category import
