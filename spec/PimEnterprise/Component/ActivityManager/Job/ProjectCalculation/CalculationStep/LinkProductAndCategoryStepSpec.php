@@ -2,14 +2,15 @@
 
 namespace spec\PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\AddProductStep;
+use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\LinkProductAndCategoryStep;
+use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
-use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
 
-class AddProductStepSpec extends ObjectBehavior
+class LinkProductAndCategoryStepSpec extends ObjectBehavior
 {
     function let(PreProcessingRepositoryInterface $preProcessingRepository)
     {
@@ -18,7 +19,7 @@ class AddProductStepSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AddProductStep::class);
+        $this->shouldHaveType(LinkProductAndCategoryStep::class);
     }
 
     function it_is_a_calculation_step()
@@ -26,12 +27,15 @@ class AddProductStepSpec extends ObjectBehavior
         $this->shouldImplement(CalculationStepInterface::class);
     }
 
-    function it_adds_product_to_the_project(
+    function it_links_product_and_category(
         $preProcessingRepository,
         ProjectInterface $project,
-        ProductInterface $product
+        ProductInterface $product,
+        ArrayCollection $categories
     ) {
-        $preProcessingRepository->addProduct($project, $product)->shouldBeCalled();
+        $product->getCategories()->willReturn($categories);
+
+        $preProcessingRepository->link($product, $categories)->shouldBeCalled();
 
         $this->execute($product, $project);
     }

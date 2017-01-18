@@ -21,13 +21,16 @@ class HookContext extends BaseHookContext
      */
     public function purgeDatabase()
     {
-        $purger = new DBALPurger(
-            $this->getService('database_connection'),
-            [
-                'pimee_activity_manager_completeness_per_attribute_group',
-                'pimee_activity_manager_project_product',
-            ]
-        );
+        $sqlTables = [
+            'pimee_activity_manager_completeness_per_attribute_group',
+            'pimee_activity_manager_project_product',
+        ];
+
+        if ('doctrine/mongodb-odm' === $this->getParameter('pim_catalog_product_storage_driver')) {
+            $sqlTables[] = 'pimee_activity_manager_product_category';
+        }
+
+        $purger = new DBALPurger($this->getService('database_connection'), $sqlTables);
 
         $purger->purge();
 

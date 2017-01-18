@@ -41,8 +41,6 @@ class ActivityManagerTestCase extends TestCase
         parent::purgeDatabase();
     }
 
-
-
     /**
      * {@inheritdoc}
      */
