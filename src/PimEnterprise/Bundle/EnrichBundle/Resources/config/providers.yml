@@ -44,10 +44,10 @@ services:
                 csv_asset_import: pim-job-instance-csv-base-import
                 xlsx_published_product_export: pim-job-instance-xlsx-product-export
                 xlsx_asset_category_export: pim-job-instance-xlsx-base-export
-                xlsx_product_import_with_rules: pim-job-instance-csv-product-import
-                xlsx_product_proposal_import: pim-job-instance-csv-product-import
-                xlsx_asset_category_import: pim-job-instance-csv-base-import
-                xlsx_asset_import: pim-job-instance-csv-base-import
+                xlsx_asset_category_import: pim-job-instance-xlsx-base-import
+                xlsx_product_import_with_rules: pim-job-instance-xlsx-product-import
+                xlsx_product_proposal_import: pim-job-instance-xlsx-product-import
+                xlsx_asset_import: pim-job-instance-xlsx-base-import
                 xlsx_asset_variation_export: pim-job-instance-xlsx-base-export
                 xlsx_asset_export: pim-job-instance-xlsx-base-export
         tags:
