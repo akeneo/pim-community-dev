@@ -16,6 +16,8 @@ parameters:
     pimee_activity_manager.factory.project.class: 'PimEnterprise\Component\ActivityManager\Factory\ProjectFactory'
     pimee_activity_manager.doctrine.cursor_factory.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory'
     pimee_activity_manager.doctrine.cursor.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor'
+    pimee_activity_manager.validator.project_identifier.class: 'PimEnterprise\Component\ActivityManager\Validator\ProjectIdentifierValidator'
+
     pimee_activity_manager.factory.project_cursor.page_size: 10
 
 services:
@@ -145,3 +147,11 @@ services:
             - '@security.token_storage'
             - '@security.authorization_checker'
             - '@pim_internal_api_serializer'
+
+    ### Validation
+    pimee_activity_manager.validator.project_identifier:
+        class: '%pimee_activity_manager.validator.project_identifier.class%'
+        arguments:
+            - '@pimee_activity_manager.repository.project'
+        tags:
+            - { name: validator.constraint_validator, alias: project_identifier_validator }

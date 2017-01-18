@@ -97,16 +97,14 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $this->addProduct($project, $product);
     }
 
-    function it_resets_the_pre_processed_completeness($connection, ProjectInterface $project)
+    function it_prepare_the_project_calculation($connection, ProjectInterface $project)
     {
         $project->getId()->willReturn(40);
-
-        $connection->executeUpdate(Argument::type('string'), ['project_id' => 40])->shouldBeCalled();
 
         $connection->delete('pimee_activity_manager_project_product', [
             'project_id' => 40,
         ])->shouldBeCalled();
 
-        $this->reset($project)->shouldReturn(null);
+        $this->prepareProjectCalculation($project)->shouldReturn(null);
     }
 }

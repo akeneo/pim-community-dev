@@ -73,9 +73,6 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
 
         $productRepository->findByProject($project)->willReturn([$product, $otherProduct]);
 
-        $preProcessingRepository->reset($project)->shouldBeCalled();
-        $project->resetUserGroups()->shouldBeCalled();
-
         $chainCalculationStep->execute($product, $project);
         $chainCalculationStep->execute($otherProduct, $project);
 
@@ -85,20 +82,5 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $projectSaver->save($project);
 
         $this->execute()->shouldReturn(null);
-    }
-
-    function it_throws_a_logic_exception_if_we_run_a_calculation_on_non_existing_project(
-        $projectRepository,
-        StepExecution $stepExecution,
-        JobParameters $jobParameters
-    ) {
-        $this->setStepExecution($stepExecution);
-
-        $stepExecution->getJobParameters()->willreturn($jobParameters);
-        $jobParameters->get('project_code')->willReturn('project_code');
-
-        $projectRepository->findOneByIdentifier('project_code')->willReturn(null);
-
-        $this->shouldThrow(\RuntimeException::class)->during('execute');
     }
 }

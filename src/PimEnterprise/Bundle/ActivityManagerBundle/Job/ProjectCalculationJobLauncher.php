@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Job;
 
-use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
