@@ -2,34 +2,20 @@
 
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Storage;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Test\Integration\TestCase;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * Integration tests to verify data from database are well formatted in the storage format
  */
 class ProductValuesStorageIntegration extends TestCase
 {
-    const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';
-    const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
-
-    protected $purgeDatabaseForEachTest = false;
-
-    public function setUp()
+    protected function getConfiguration()
     {
-        parent::setUp();
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        //TODO: change the path
-
-        $em->getConnection()->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '../Standard/common.sql'));
-
-        if (1 === self::$count) {
-            //TODO: change the path
-            $em->getConnection()
-                ->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '../Standard/products_orm.sql'));
-        }
+        return new Configuration(
+            [Configuration::getTechnicalSqlCatalogPath()],
+            false
+        );
     }
 
     public function testProductWithAllAttributes()
