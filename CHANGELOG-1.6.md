@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6113: Fix wrong context switch on association groups
+
 # 1.6.9 (2017-01-17)
 
 ## Bug fixes
