@@ -41,3 +41,9 @@ activity_manager:
 pim_datagrid:
     view_selector:
         project: Projects
+
+pim_dashboard:
+    widget:
+        last_operations:
+            job_type:
+                project_calculation: Project calculation

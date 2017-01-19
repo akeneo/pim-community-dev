@@ -1,3 +1,5 @@
+project_calculation: Project calculation
+
 activity_manager:
     project:
         required: This value should not be blank.
@@ -10,4 +12,7 @@ activity_manager:
             start:   Start
         message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
 
-batch_jobs.project_calculation.project_calculation.label: Project calculation
+batch_jobs:
+    project_calculation:
+        project_calculation:
+            label: Project calculation
