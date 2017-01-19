@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -11,6 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Connector\BulkIdentifierBag;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -51,10 +53,17 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
         $jobParameters->get('familyColumn')->willReturn('family');
@@ -141,16 +150,92 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
+    function it_does_not_process_an_already_processed_product(
+        $productRepository,
+        $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
+        ProductInterface $product,
+        JobParameters $jobParameters
+    ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(true);
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSepara7tor')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $convertedData = [
+            'identifier' => 'tshirt',
+            'family'     => 'Summer Tshirt',
+            'values'     => [
+                'sku'         => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'tshirt'
+                    ],
+                ],
+                'name'        => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => null,
+                        'data'   => 'Mon super beau t-shirt'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => null,
+                        'data'   => 'My very awesome T-shirt'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'mobile',
+                        'data'   => 'My awesome description'
+                    ]
+                ]
+            ]
+        ];
+
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
+
+        $this
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->during(
+                'process',
+                [$convertedData]
+            );
+    }
+
     function it_updates_an_existing_product_with_filtered_values(
         $productRepository,
         $productUpdater,
         $productValidator,
         $productFilter,
         $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
         $jobParameters->get('familyColumn')->willReturn('family');
@@ -244,10 +329,17 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(false);
         $jobParameters->get('familyColumn')->willReturn('family');
@@ -341,10 +433,17 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
         $jobParameters->get('familyColumn')->willReturn('family');
@@ -477,9 +576,16 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productFilter,
         $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
         $jobParameters->get('familyColumn')->willReturn('family');
@@ -581,9 +687,16 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ProductInterface $product,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
         $jobParameters->get('familyColumn')->willReturn('family');
@@ -687,9 +800,16 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productFilter,
         $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
         $jobParameters->get('familyColumn')->willReturn('family');
@@ -780,10 +900,17 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
         $jobParameters->get('familyColumn')->willReturn('family');
@@ -879,10 +1006,17 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        ExecutionContext $executionContext,
+        BulkIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
         $jobParameters->get('familyColumn')->willReturn('family');
