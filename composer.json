@@ -35,6 +35,7 @@
         "dompdf/dompdf" : "0.6.1",
         "escapestudios/wsse-authentication-bundle": "2.0.2",
         "friendsofsymfony/jsrouting-bundle": "1.5.4",
+        "friendsofsymfony/oauth-server-bundle": "1.5.2",
         "friendsofsymfony/rest-bundle": "2.1.1",
         "gedmo/doctrine-extensions":"v2.4.3",
         "incenteev/composer-parameter-handler": "2.1.1",
