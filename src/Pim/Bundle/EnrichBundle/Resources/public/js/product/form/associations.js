@@ -301,14 +301,19 @@ define(
                      * The fact is that there is 2 places where these parameters are set: in the URL, and in the
                      * datagrid state (state.parameters.associatedIds).
                      *
-                     * If you do not drop the right part of the URL (containing associatedIds array), you will have
+                     * If you do not drop the params of the URL (containing associatedIds array), you will have
                      * a mix of 2 times the same variable, defined at 2 different places. This leads to a refreshed
                      * datagrid with wrong checkboxes.
                      *
-                     * To prevent this behavior, we removed all the parameters passed in the URL before rendering the
+                     * To prevent this behavior, we removed the parameters passed in the URL before rendering the
                      * grid, to only allow datagrid state parameters.
                      */
-                    metadata.options.url = metadata.options.url.split('?')[0];
+                    var queryParts = metadata.options.url.split('?');
+                    var url = queryParts[0];
+                    var queryString = queryParts[1];
+                    var queryStringDecoded = decodeURIComponent(queryString);
+                    var reg = new RegExp('&?association-group-grid\\[associatedIds\\]\\[\\d+\\]=\\d+', 'g');
+                    metadata.options.url = url + '?' + queryStringDecoded.replace(reg, '');
 
                     this.$('#grid-' + gridName).data({ metadata: metadata, data: JSON.parse(response.data) });
 
