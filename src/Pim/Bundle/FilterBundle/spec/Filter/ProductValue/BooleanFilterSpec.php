@@ -91,7 +91,7 @@ class BooleanFilterSpec extends ObjectBehavior
         $form->createView()->willReturn($formView);
 
         $formBuilder->get('type')->willReturn($typeFormBuilder);
-        $typeFormBuilder->getOption('choices')->willReturn([$noChoice, $yesChoice]);
+        $typeFormBuilder->getOption('choices')->willReturn(['overriden_choice_1' => 0, 'overriden_choice_2' => 1]);
         $formView->children = ['value' => $fieldView, 'type' => $typeView];
         $formView->vars = ['populate_default' => true];
         $fieldView->vars = ['multiple' => true, 'choices' => [$yesChoice, $noChoice]];
