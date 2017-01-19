@@ -40,7 +40,7 @@ Feature: Create enrichment project
     When I am on the products page
     And I click on the create project button
     When I fill in the following information in the popin:
-      | Due Date | 01/31/2020 |
+      | project-label | 01/31/2020 |
     And I press the "Save" button
     Then I should see the text "This value should not be blank."
 
@@ -50,7 +50,7 @@ Feature: Create enrichment project
     When I am on the products page
     And I click on the create project button
     When I fill in the following information in the popin:
-      | Label | New collection |
+      | project-label | New collection |
     And I press the "Save" button
     Then I should see the text "This value should not be blank."
 
@@ -60,11 +60,11 @@ Feature: Create enrichment project
     When I am on the products page
     And I click on the create project button
     When I fill in the following information in the popin:
-      | Label | This is a very long label that has obviously more than one hundred characters which is irrelevant for a normal use |
+      | project-label | This is a very long label that has obviously more than one hundred characters which is irrelevant for a normal use |
     Then I should see the text "This value is too long. It should have 100 characters or less."
     And The button "Save" should be disabled
     When I fill in the following information in the popin:
-      | Label | This is a normal label |
+      | project-label | This is a normal label |
     Then I should not see the text "This value is too long. It should have 100 characters or less."
     And The button "Save" should be enabled
 
@@ -74,11 +74,11 @@ Feature: Create enrichment project
     When I am on the products page
     And I click on the create project button
     When I fill in the following information in the popin:
-      | Due Date | 10/06/2012 |
+      | project-due-date | 10/06/2012 |
     Then I should see the text "You can't select a date in the past."
     And The button "Save" should be disabled
     When I fill in the following information in the popin:
-      | Due Date | 12/30/2099 |
+      | project-due-date | 12/30/2099 |
     Then I should not see the text "You can't select a date in the past."
     And The button "Save" should be enabled
 
@@ -88,22 +88,22 @@ Feature: Create enrichment project
     When I am on the products page
     And I click on the create project button
     When I fill in the following information in the popin:
-      | Label    | Star Wars Collection |
-      | Due Date | 01/31/2051           |
+      | project-label    | Star Wars Collection |
+      | project-due-date | 01/31/2051           |
     And I press the "Save" button
     And I am on the products page
     And I click on the create project button
     When I fill in the following information in the popin:
-      | Label    | Star Wars Collection |
-      | Due Date | 01/31/2051           |
+      | project-label    | Star Wars Collection |
+      | project-due-date | 01/31/2051           |
     And I press the "Save" button
     Then I should see the text "This value is already used."
     When I am on the products page
     And I filter by "scope" with operator "equals" and value "Mobile"
     And I click on the create project button
     When I fill in the following information in the popin:
-      | Label    | Star Wars Collection |
-      | Due Date | 01/31/2051           |
+      | project-label    | Star Wars Collection |
+      | project-due-date | 01/31/2051           |
     And I press the "Save" button
     Then I should be on the products page
     And the project "Star Wars Collection" for channel "tablet" and locale "en_US" has the following properties:

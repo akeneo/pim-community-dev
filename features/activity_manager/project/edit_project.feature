@@ -84,5 +84,6 @@ Feature: Edit basic project informations
       | project-label       | Existing project          |
       | project-due-date    | 05/20/2051                |
       | project-description | A rebellion built on hope |
+    And I press the "Save" button
     Then I should see the text "This value is already used."
 
