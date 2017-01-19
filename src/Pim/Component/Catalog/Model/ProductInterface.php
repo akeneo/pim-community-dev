@@ -65,7 +65,7 @@ interface ProductInterface extends
     /**
      * Get values
      *
-     * @return ArrayCollection | ProductValueInterface[]
+     * @return ProductValueCollection
      */
     public function getValues();
 
@@ -247,7 +247,7 @@ interface ProductInterface extends
     public function hasAttribute(AttributeInterface $attribute);
 
     /**
-     * Get the list of used attribute code from the indexed values
+     * Get the list of used attribute code
      *
      * @return array
      */
@@ -284,13 +284,6 @@ interface ProductInterface extends
      * @return bool
      */
     public function isAttributeEditable(AttributeInterface $attribute);
-
-    /**
-     * Mark the indexed as outdated
-     *
-     * @return ProductInterface
-     */
-    public function markIndexedValuesOutdated();
 
     /**
      * Get product label

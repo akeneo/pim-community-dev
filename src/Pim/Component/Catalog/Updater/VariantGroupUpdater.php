@@ -5,12 +5,12 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
@@ -342,7 +342,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      *
      * @param array $arrayValues
      *
-     * @return ArrayCollection
+     * @return ProductValueCollectionInterface
      */
     protected function transformArrayToValues(array $arrayValues)
     {
@@ -350,7 +350,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         $this->productUpdater->update($product, ['values' => $arrayValues]);
 
         $values = $product->getValues();
-        $values->removeElement($product->getIdentifier());
+        $values->remove($product->getIdentifier());
 
         return $values;
     }
@@ -391,13 +391,15 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * the file has already been stored during the construction of the product values
      * (in the method transformArrayToValues).
      *
-     * @param Collection $mergedValues
-     * @param array      $mergedValuesData
+     * @param ProductValueCollectionInterface $mergedValues
+     * @param array                           $mergedValuesData
      *
      * @return array
      */
-    protected function replaceMediaLocalPathsByStoredPaths(Collection $mergedValues, array $mergedValuesData)
-    {
+    protected function replaceMediaLocalPathsByStoredPaths(
+        ProductValueCollectionInterface $mergedValues,
+        array $mergedValuesData
+    ) {
         foreach ($mergedValues as $value) {
             if (null !== $value->getMedia()) {
                 $attributeCode = $value->getAttribute()->getCode();
