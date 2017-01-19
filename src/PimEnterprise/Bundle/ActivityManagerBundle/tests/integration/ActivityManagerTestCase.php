@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2017 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,8 +12,9 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\TestEnterprise\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
+use Pim\Behat\Context\DBALPurger;
 use PimEnterprise\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
@@ -22,6 +23,26 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class ActivityManagerTestCase extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function purgeDatabase()
+    {
+        $purger = new DBALPurger(
+            $this->get('database_connection'),
+            [
+                'pimee_activity_manager_completeness_per_attribute_group',
+                'pimee_activity_manager_project_product',
+            ]
+        );
+
+        $purger->purge();
+
+        parent::purgeDatabase();
+    }
+
+
+
     /**
      * {@inheritdoc}
      */
@@ -45,7 +66,7 @@ class ActivityManagerTestCase extends TestCase
     {
         $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
         return new Configuration(
-            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' .    DIRECTORY_SEPARATOR . 'activity_manager'],
+            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'activity_manager'],
             false
         );
     }

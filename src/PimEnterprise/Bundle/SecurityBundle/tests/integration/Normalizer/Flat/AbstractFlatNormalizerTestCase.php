@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Normalizer\Flat;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\TestEnterprise\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>
