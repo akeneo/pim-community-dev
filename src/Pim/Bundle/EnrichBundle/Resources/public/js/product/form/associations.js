@@ -310,10 +310,10 @@ define(
                      */
                     var queryParts = metadata.options.url.split('?');
                     var url = queryParts[0];
-                    var queryString = queryParts[1];
-                    var queryStringDecoded = decodeURIComponent(queryString);
-                    var reg = new RegExp('&?association-group-grid\\[associatedIds\\]\\[\\d+\\]=\\d+', 'g');
-                    metadata.options.url = url + '?' + queryStringDecoded.replace(reg, '');
+                    var queryString = decodeURIComponent(queryParts[1])
+                        .replace(/&?association-group-grid\[associatedIds\]\[\d+\]=\d+/g, '')
+                        .replace(/^&/, '');
+                    metadata.options.url = url + '?' + queryString;
 
                     this.$('#grid-' + gridName).data({ metadata: metadata, data: JSON.parse(response.data) });
 
