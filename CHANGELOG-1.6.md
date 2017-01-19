@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6113: Fix wrong context switch on association groups
+- PIM-6062: Fix potential Unix commands injection
 
 # 1.6.9 (2017-01-17)
 
