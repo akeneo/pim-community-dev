@@ -82,7 +82,7 @@ abstract class AbstractFilter implements FilterInterface
         $operatorChoices = $formBuilderType->getOption('choices');
 
         $choices = [];
-        foreach ($operatorChoices as $key => $choice) {
+        foreach ($operatorChoices as $choice => $key) {
             $choices[] = new ChoiceView($key, (string) $key, $choice);
         }
 
