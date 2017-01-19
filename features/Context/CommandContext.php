@@ -220,14 +220,15 @@ class CommandContext extends PimContext
     }
 
     /**
+     * Runs app/console $command in the test environment
+     *
      * @When /^I run '([^\']*)'$/
+     *
+     * @param string $command
      */
     public function iRun($command)
     {
-        $pathFinder   = new PhpExecutableFinder();
-        $php          = $pathFinder->find();
-        $rootDir      = $this->getRootDir();
-        $command      = $this->replacePlaceholders($command);
-        $this->output = shell_exec(sprintf('%s %s/console %s', $php, $rootDir, $command));
+        $commandLauncher = $this->getService('pim_catalog.command_launcher');
+        $commandLauncher->executeForeground($this->replacePlaceholders($command));
     }
 }
