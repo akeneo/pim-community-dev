@@ -6,6 +6,7 @@
 - GITHUB-5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
 - GITHUB-5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
 - GITHUB-5337: Fixed Widget Registry. Priority is now taken in account.
+- PIM-5897: Introducing a BulkIdentifierBag class used to keep track of the entities identifiers imported (avoiding to import duplicated entities).
 
 ## Deprecations
 
