@@ -32,6 +32,7 @@
 - TIP-667: Introduce a product value factory service to instanciate product values.
 - GITHUB-5391: Redo association type edit form using backbonejs architecture and internal REST API
 - TIP-652: Redo the import/export screens in new PEF architecture
+- TIP-682: Update to Symfony 2.7.23
 
 ## BC breaks
 - Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
