@@ -1,0 +1,5 @@
+services:
+    fos_rest.serializer:
+        class: FOS\RestBundle\Serializer\SymfonySerializerAdapter
+        arguments:
+            - '@pim_serializer'
