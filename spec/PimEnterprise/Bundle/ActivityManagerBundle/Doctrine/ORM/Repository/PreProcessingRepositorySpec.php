@@ -48,8 +48,15 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $product->getId()->willreturn(42);
 
-        $connection->executeQuery(
-            Argument::type('string'),
+        $connection->delete(
+            'pimee_activity_manager_completeness_per_attribute_group',
+            [
+                'product_id' => 42
+            ]
+        )->shouldBeCalled();
+
+        $connection->insert(
+            'pimee_activity_manager_completeness_per_attribute_group',
             [
                 'product_id' => 42,
                 'channel_id' => 13,
@@ -60,8 +67,8 @@ class PreProcessingRepositorySpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $connection->executeQuery(
-            Argument::type('string'),
+        $connection->insert(
+            'pimee_activity_manager_completeness_per_attribute_group',
             [
                 'product_id' => 42,
                 'channel_id' => 13,
@@ -97,16 +104,14 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $this->addProduct($project, $product);
     }
 
-    function it_resets_the_pre_processed_completeness($connection, ProjectInterface $project)
+    function it_prepare_the_project_calculation_by_deleting_associated_products($connection, ProjectInterface $project)
     {
         $project->getId()->willReturn(40);
-
-        $connection->executeUpdate(Argument::type('string'), ['project_id' => 40])->shouldBeCalled();
 
         $connection->delete('pimee_activity_manager_project_product', [
             'project_id' => 40,
         ])->shouldBeCalled();
 
-        $this->reset($project)->shouldReturn(null);
+        $this->prepareProjectCalculation($project)->shouldReturn(null);
     }
 }

@@ -41,7 +41,7 @@ interface PreProcessingRepositoryInterface
      *
      * @param ProjectInterface $project
      */
-    public function reset(ProjectInterface $project);
+    public function prepareProjectCalculation(ProjectInterface $project);
 
     /**
      * Remove entries with products linked to the given project AND not linked to others projects.

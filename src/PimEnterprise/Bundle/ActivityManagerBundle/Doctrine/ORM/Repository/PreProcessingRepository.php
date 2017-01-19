@@ -44,21 +44,16 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     ) {
         $connection = $this->entityManager->getConnection();
 
-        foreach ($attributeGroupCompleteness as $attributeGroup) {
-            $sql = <<<SQL
-REPLACE INTO pimee_activity_manager_completeness_per_attribute_group
-VALUE (
-    :locale_id,
-    :channel_id,
-    :product_id,
-    :attribute_group_id,
-    :has_at_least_one_required_attribute_filled,
-    :is_complete
-)
-SQL;
+        $connection->delete(
+            'pimee_activity_manager_completeness_per_attribute_group',
+            [
+                'product_id' => $product->getId()
+            ]
+        );
 
-            $connection->executeQuery(
-                $sql,
+        foreach ($attributeGroupCompleteness as $attributeGroup) {
+            $connection->insert(
+                'pimee_activity_manager_completeness_per_attribute_group',
                 [
                     'product_id'                                 => $product->getId(),
                     'channel_id'                                 => $project->getChannel()->getId(),
@@ -87,20 +82,11 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function reset(ProjectInterface $project)
+    public function prepareProjectCalculation(ProjectInterface $project)
     {
         $connection = $this->entityManager->getConnection();
         $projectId = $project->getId();
 
-        $sql = <<<SQL
-DELETE `cag`
-FROM `pimee_activity_manager_completeness_per_attribute_group` AS `cag`
-LEFT JOIN `pimee_activity_manager_project_product` AS `pp` 
-	ON `pp`.`product_id` = `cag`.`product_id`
-WHERE `pp`.`project_id` = :project_id
-SQL;
-
-        $connection->executeUpdate($sql, ['project_id' => $projectId]);
         $connection->delete('pimee_activity_manager_project_product', [
             'project_id' => $projectId,
         ]);

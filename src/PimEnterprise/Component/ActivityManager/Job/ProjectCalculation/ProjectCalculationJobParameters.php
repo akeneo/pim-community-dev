@@ -14,6 +14,7 @@ namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
+use PimEnterprise\Component\ActivityManager\Validator\ProjectIdentifier;
 use Symfony\Component\Validator\Constraints\Collection;
 
 /**
@@ -47,6 +48,7 @@ class ProjectCalculationJobParameters implements DefaultValuesProviderInterface,
     {
         return new Collection([
             'fields' => [
+                'project_code' => new ProjectIdentifier()
             ],
         ]);
     }

@@ -43,7 +43,7 @@ class CatalogUpdatesSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::PRE_REMOVE => 'removeProjectsImpactedByEntity',
-            StorageEvents::POST_SAVE => 'removeProjectsImpactedByEntity'
+            StorageEvents::POST_SAVE  => 'removeProjectsImpactedByEntity'
         ];
     }
 

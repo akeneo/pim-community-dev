@@ -42,7 +42,7 @@ class ProjectSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::PRE_SAVE => 'generateCode',
+            StorageEvents::PRE_SAVE   => 'generateCode',
             StorageEvents::PRE_REMOVE => 'removePreProcessedEntries',
         ];
     }

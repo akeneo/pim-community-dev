@@ -88,17 +88,7 @@ class ProjectCalculationTasklet implements TaskletInterface
         $jobParameters = $this->stepExecution->getJobParameters();
         $projectCode = $jobParameters->get('project_code');
         $project = $this->projectRepository->findOneByIdentifier($projectCode);
-
-        if (null === $project) {
-            throw new \RuntimeException(
-                sprintf('Could not run the project calculation, as the project %s doesn\'t exist.', $projectCode)
-            );
-        }
-
         $products = $this->productRepository->findByProject($project);
-
-        $this->preProcessingRepository->reset($project);
-        $project->resetUserGroups();
 
         foreach ($products as $product) {
             $this->calculationStep->execute($product, $project);
