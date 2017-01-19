@@ -81,6 +81,16 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
+# FOSOAuthServer Configuration
+fos_oauth_server:
+    db_driver:                orm
+    client_class:             Pim\Bundle\ApiBundle\Entity\Client
+    access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
+    refresh_token_class:      Pim\Bundle\ApiBundle\Entity\RefreshToken
+    auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
+    service:
+        user_provider:        pim_user.provider.user
+
 pim_reference_data:
     fabrics:
         class: AcmeEnterprise\Bundle\AppBundle\Entity\Fabric
