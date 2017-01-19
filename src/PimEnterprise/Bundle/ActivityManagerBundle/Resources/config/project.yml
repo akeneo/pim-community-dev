@@ -125,6 +125,7 @@ services:
             - '@pimee_activity_manager.converter.filter'
             - '@pimee_activity_manager.factory.project'
             - '@pimee_activity_manager.saver.project'
+            - '@pimee_activity_manager.updater.project'
             - '@validator'
             - '@pimee_activity_manager.launcher.job.project_calculation'
             - '@pim_internal_api_serializer'

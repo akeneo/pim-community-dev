@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher;
 use PimEnterprise\Bundle\ActivityManagerBundle\Security\ProjectVoter;
@@ -48,6 +49,9 @@ class ProjectController
     /** @var SaverInterface */
     protected $projectSaver;
 
+    /** @var ObjectUpdaterInterface */
+    protected $projectUpdater;
+
     /** @var ProjectCalculationJobLauncher*/
     protected $projectCalculationJobLauncher;
 
@@ -79,6 +83,7 @@ class ProjectController
      * @param FilterConverter                        $filterConverter
      * @param ProjectFactoryInterface                $projectFactory
      * @param SaverInterface                         $projectSaver
+     * @param ObjectUpdaterInterface                 $projectUpdater
      * @param ValidatorInterface                     $validator
      * @param ProjectCalculationJobLauncher          $projectCalculationJobLauncher
      * @param NormalizerInterface                    $projectNormalizer
@@ -94,6 +99,7 @@ class ProjectController
         FilterConverter $filterConverter,
         ProjectFactoryInterface $projectFactory,
         SaverInterface $projectSaver,
+        ObjectUpdaterInterface $projectUpdater,
         ValidatorInterface $validator,
         ProjectCalculationJobLauncher $projectCalculationJobLauncher,
         NormalizerInterface $projectNormalizer,
@@ -109,6 +115,7 @@ class ProjectController
         $this->projectFactory = $projectFactory;
         $this->validator = $validator;
         $this->projectSaver = $projectSaver;
+        $this->projectUpdater = $projectUpdater;
         $this->projectCalculationJobLauncher = $projectCalculationJobLauncher;
         $this->projectNormalizer = $projectNormalizer;
         $this->projectRepository = $projectRepository;
@@ -133,14 +140,29 @@ class ProjectController
 
         parse_str($projectData['datagrid_view']['filters'], $datagridViewFilters);
 
-        $projectData['owner'] = $user->getUsername();
-        $projectData['channel'] = $datagridViewFilters['f']['scope']['value'];
-        $projectData['product_filters'] = $this->filterConverter->convert(
-            $request,
-            json_encode($datagridViewFilters['f'])
-        );
+        if (isset($projectData['code'])) {
+            $project = $this->projectRepository->findOneBy([
+                'code' => $projectData['code'],
+                'owner' => $user
+            ]);
 
-        $project = $this->projectFactory->create($projectData);
+            if (null === $project) {
+                return new JsonResponse(sprintf('No project with code "%s"', $projectData['code']), 400);
+            }
+
+            $projectData = array_intersect_key($projectData, array_flip(['label', 'due_date', 'description']));
+            $this->projectUpdater->update($project, $projectData);
+        } else {
+            $projectData['owner'] = $user->getUsername();
+            $projectData['channel'] = $datagridViewFilters['f']['scope']['value'];
+            $projectData['product_filters'] = $this->filterConverter->convert(
+                $request,
+                json_encode($datagridViewFilters['f'])
+            );
+
+            $project = $this->projectFactory->create($projectData);
+        }
+
         $violations = $this->validator->validate($project);
 
         if (0 === $violations->count()) {

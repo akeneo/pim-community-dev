@@ -28,6 +28,15 @@ define(
 
             /**
              * {@inheritdoc}
+             */
+            configure: function (gridAlias) {
+                this.listenTo(this.getRoot(), 'grid:view-selector:project-edited', this.onProjectEdited.bind(this));
+
+                return ViewSelector.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
              *
              * We define the default view type if the current user has a project as current view.
              */
@@ -83,6 +92,13 @@ define(
                         this.selectView(view);
                     }.bind(this));
                 }
+            },
+
+            onProjectEdited: function () {
+                FetcherRegistry.getFetcher('datagrid-view').clear();
+                FetcherRegistry.getFetcher('project').clear();
+
+                this.reloadPage();
             },
 
             /**

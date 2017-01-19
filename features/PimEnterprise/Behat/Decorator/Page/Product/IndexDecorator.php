@@ -24,6 +24,7 @@ class IndexDecorator extends ElementDecorator
     /** @var array Selectors to ease find */
     protected $selectors = [
         'Create project button' => '.grid-view-selector .create-project-button .create',
+        'Edit project button' => '.grid-view-selector .edit-button .edit',
     ];
 
     /**
@@ -36,6 +37,20 @@ class IndexDecorator extends ElementDecorator
         $button = $this->spin(function () use ($selector) {
             return $this->find('css', $selector);
         }, sprintf('Create project button not found (%s).', $selector));
+
+        $button->click();
+    }
+
+    /**
+     * Click on the edit project button
+     */
+    public function clickOnEditProjectButton()
+    {
+        $selector = $this->selectors['Edit project button'];
+
+        $button = $this->spin(function () use ($selector) {
+            return $this->find('css', $selector);
+        }, sprintf('Edit project button not found (%s).', $selector));
 
         $button->click();
     }

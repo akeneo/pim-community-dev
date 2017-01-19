@@ -49,6 +49,7 @@ config:
         activity-manager/grid/view-selector/line: pimenterpriseactivitymanager/js/grid/view-selector-line
         activity-manager/grid/view-selector/current: pimenterpriseactivitymanager/js/grid/view-selector-current
         activity-manager/grid/view-selector/create-project: pimenterpriseactivitymanager/js/grid/view-selector-create-project
+        activity-manager/grid/view-selector/edit-project: pimenterpriseactivitymanager/js/grid/view-selector-edit-project
 
         # Savers
         activity-manager/saver/project: pimenterpriseactivitymanager/js/saver/project-saver
@@ -58,6 +59,7 @@ config:
         activity-manager/templates/field-error: pimenterpriseactivitymanager/templates/field-error.html
         activity-manager/templates/grid/view-selector/line-project: pimenterpriseactivitymanager/templates/grid/view-selector-line-project.html
         activity-manager/templates/grid/view-selector/create-project: pimenterpriseactivitymanager/templates/grid/view-selector-create-project.html
+        activity-manager/templates/grid/view-selector/edit-project: pimenterpriseactivitymanager/templates/grid/view-selector-edit-project.html
         activity-manager/templates/widget/project-widget: pimenterpriseactivitymanager/templates/widget/project-widget.html
         activity-manager/templates/widget/project-widget-empty: pimenterpriseactivitymanager/templates/widget/project-widget-empty.html
         activity-manager/templates/widget/project-selector: pimenterpriseactivitymanager/templates/widget/project-selector.html
