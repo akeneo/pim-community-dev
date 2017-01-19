@@ -54,8 +54,8 @@ class PreProcessingIntegration extends ActivityManagerTestCase
                     'is_complete' => '1'
                 ],
                 'marketing' => [
-                    'has_at_least_one_required_attribute_filled' => '0',
-                    'is_complete' => '1'
+                    'has_at_least_one_required_attribute_filled' => '1',
+                    'is_complete' => '0'
                 ],
                 'technical' => [
                     'has_at_least_one_required_attribute_filled' => '0',
