@@ -1,24 +1,28 @@
 <?php
 
-namespace Akeneo\TestEnterprise\Integration\ActivityManager;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2017 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Pim\Behat\Context\DBALPurger;
+use PimEnterprise\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
+use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class ActivityManagerTestCase extends TestCase
 {
-    protected function getConfiguration()
-    {
-        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
-        return new Configuration(
-            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' .    DIRECTORY_SEPARATOR . 'activity_manager'],
-            false
-        );
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -35,6 +39,36 @@ class ActivityManagerTestCase extends TestCase
         $purger->purge();
 
         parent::purgeDatabase();
+    }
+
+
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doAfterFixtureImport(Application $application)
+    {
+        $extraCommand = $application->add(new CleanCategoryAccessesCommand());
+        $extraCommand->setContainer($this->container);
+        $command = new CommandTester($extraCommand);
+
+        $exitCode = $command->execute([]);
+
+        if (0 !== $exitCode) {
+            throw new \Exception(sprintf('Catalog not installable! "%s"', $command->getDisplay()));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        return new Configuration(
+            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'activity_manager'],
+            false
+        );
     }
 
     /**
@@ -91,6 +125,20 @@ class ActivityManagerTestCase extends TestCase
     {
         $remover = $this->get('pimee_activity_manager.remover.project');
         $remover->remove($project);
+    }
+
+    /**
+     * Get the project completeness
+     *
+     * @param ProjectInterface $project
+     * @param string           $username
+     *
+     * @return ProjectCompleteness
+     */
+    protected function getProjectCompleteness(ProjectInterface $project, $username = null)
+    {
+        return $this->get('pimee_activity_manager.repository.project_completeness')
+            ->getProjectCompleteness($project, $username);
     }
 
     /**
