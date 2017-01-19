@@ -9,6 +9,7 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_serializer'
+            - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category'
 
     pim_api.controller.rest.family:
         class: '%pim_api.controller.rest.family.class%'
