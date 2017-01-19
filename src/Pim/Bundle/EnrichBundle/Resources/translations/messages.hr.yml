@@ -44,7 +44,7 @@ pim_enrich:
       property.title: Svojstva
       permission.title: Dozvole
   group:
-    axis.help: Osi definiraju atribute nad kojima treba razlikovati proizvode grupe. Osi su atributi s opcijama koje nisu lokalizirane niti u djelokrugu. Ne mogu se mijenjati nakon kreiranja varijante grupe.
+    axis.help: 'Osi definiraju atribute nad kojima treba razlikovati proizvode grupe. Osi su atributi s opcijama koje nisu lokalizirane niti u djelokrugu. Ne mogu se mijenjati nakon kreiranja varijante grupe.'
     type:
       VARIANT: Varijanta
       X_SELL: X-prodaja
@@ -75,11 +75,11 @@ pim_enrich:
     legend:
       locale_not_associated: Lokalizacija nije pridružena ovom kanalu
   mass_edit_action:
-    limit_exceeded: Odaberite manje od %limit% stvari za uređivanje
+    limit_exceeded: Odaberi manje od %limit% stvari za uređivanje
     product:
       page_title: Proizvodi
       page_subtitle: Masovno uređivanje (1 proizvod) | Masovno uređivanje (%count% proizvoda)
-      title: Odabir operacija
+      title: Odabiri operaciju
       subtitle: Odaberi operaciju koju želiš obaviti na odabranom proizvodu| Odaberi operaciju koju želiš izvesti na %count% odabranih proizvoda
       confirm: Spremate se ažurirati proizvod sa sljedećim podacima, molimo vas da potvrdite. | Spremate se ažurirati %count% proizvoda sa sljedećim podacima, molimo vas da potvrdite.
       steps:
@@ -106,7 +106,7 @@ pim_enrich:
     edit-common-attributes:
       label: Uredi atribute
       description: Atributi odabranih proizvoda će se uređivati s podacima za odabrane postavke lokalizacije.
-      empty: Odaberite atribute koje želite urediti
+      empty: Odaberi atribut(e) koje želiš urediti
       success_flash: Proces ažuriranja statusa proizvoda se izvodi
       launched_flash: Pokrenuta je masovna radnja "uređivanje zajedničkih atributa". Biti ćete obaviješteni kad bude gotovo.
       message:
@@ -152,7 +152,7 @@ pim_enrich:
     set-attribute-requirements:
       label: Postavi zahtjeve za atribute
       description: Sljedeći zahtjevi atributa će se primijeniti na odabrane obitelji
-      success_flash: Zahtjevi atributa su primjenjeni za odabrane obitelji
+      success_flash: Zahtjevi atributa su primjenjeni na odabrane obitelji
       launched_flash: Masovna akcija "postavi zahtjeve za atribute" je pokrenuta. Biti ćete obaviješteni kada bude gotovo.
     mass_action:
       quick_export:
@@ -259,9 +259,9 @@ pim_enrich:
     currency: Valute
     family: Obitelji
     group: Grupe
-    variant_group: Varijante grupe
+    variant_group: Varijante grupa
     group_type: Tipovi grupa
-    locale: Postavke jezika i regije
+    locale: Lokalizacija
     product: Proizvodi
   product_value:
     tooltip:
@@ -616,52 +616,52 @@ Default: Zadani
 Attributes: Atributi
 Title: Naslov
 pim_title.attribute_group:
-  index: Grupe atributa
-  create: Atribut grupe | Kreiraj
-  edit: Grupe atributa %group.label% | Uredi
+  index: "Grupe atributa"
+  create: "Atribut grupe | Kreiraj"
+  edit: "Grupe atributa %group.label% | Uredi"
 pim_title.category:
-  index: Kategorija stabala
-  create: Kategorija stabala | Kreiraj
-  edit: Kategorija stabala %category.label% | Uredi
+  index: "Kategorija stabala"
+  create: "Kategorija stabala | Kreiraj"
+  edit: "Kategorija stabala %category.label% | Uredi"
 pim_title.attribute:
-  index: Atributi
-  create: Atributi | Kreiraj
-  edit: Atributi %attribute.label% | Uredi
+  index: "Atributi"
+  create: "Atributi | Kreiraj"
+  edit: "Atributi %attribute.label% | Uredi"
 pim_title.product:
-  index: Proizvodi
-  edit: Proizvodi %product.sku% | Uredi
+  index: "Proizvodi"
+  edit: "Proizvodi %product.sku% | Uredi"
 pim_title.family:
-  index: Obitelji
-  edit: Obitelji %family.label% | Uredi
+  index: "Obitelji"
+  edit: "Obitelji %family.label% | Uredi"
 pim_title.channel:
-  index: Kanali
-  create: Kanali | Kreiraj
-  edit: Kanali %channel.label% | Uredi
+  index: "Kanali"
+  create: "Kanali | Kreiraj"
+  edit: "Kanali %channel.label% | Uredi"
 pim_title.currency:
-  index: Valute
+  index: "Valute"
 pim_title.locale:
-  index: Lokalizacija
+  index: "Lokalizacija"
 pim_title.group:
-  index: Grupe
-  edit: Grupe %group.label% | Uredi
+  index: "Grupe"
+  edit: "Grupe %group.label% | Uredi"
 pim_title.variant_group:
-  index: Varijante grupa
-  edit: Varijante grupe %group.label% | Uredi
+  index: "Varijante grupa"
+  edit: "Varijante grupe %group.label% | Uredi"
 pim_title.association_type:
-  index: Tipovi pridruživanja
-  edit: Tipovi pridruživanja %association type.label% | Uredi
+  index: "Tipovi pridruživanja"
+  edit: "Tipovi pridruživanja %association type.label% | Uredi"
 pim_title.group_type:
-  index: Tipovi grupa
-  edit: Tipovi grupa %group type.label% | Uredi
+  index: "Tipovi grupa"
+  edit: "Tipovi grupa %group type.label% | Uredi"
 pim_title.mass_edit_product_action:
-  choose: Masovno uredi | Odaberi
-  configure: Masovno uredi | Konfiguriraj
+  choose: "Masovno uredi | Odaberi"
+  configure: "Masovno uredi | Konfiguriraj"
 pim_title.mass_edit_family_action:
-  choose: Masovno uredi | Odaberi
-  configure: Masovno uredi | Konfiguriraj
+  choose: "Masovno uredi | Odaberi"
+  configure: "Masovno uredi | Konfiguriraj"
 pim_title.job_tracker:
   index: Proces praćenja
-  show: Proces praćenja | Pokaži posao
+  show: "Proces praćenja | Pokaži posao"
 pim_title.dashboard: "Nadzorna ploča"
 pim_catalog_identifier: Identifikator
 pim_catalog_text: Tekst
@@ -820,23 +820,23 @@ Currency: Valuta
 oro.locale:
   address_format:
     region_name_type:
-      parish: župa
-      state: država
-      island: otok
-      county: županija
-      area: područje
-      prefecture: prefektura
-      department: odjel
-      district: područje
-      province: pokrajina
+      parish: "župa"
+      state: "država"
+      island: "otok"
+      county: "županija"
+      area: "područje"
+      prefecture: "prefektura"
+      department: "odjel"
+      district: "područje"
+      province: "pokrajina"
   form:
     tooltip:
-      locale: Odaberi opcije lokalizacije koji se koriste za oblikovanje brojeva, adresa, imena i datuma
-      location: ' Lokacija će se koristiti za oblikovanje adresa kada je opcija ''Oblikuj adresu po adresi zemlje'' onemogućena'
-      format_address_by_address_country: Odabirom ove opcije omogućit će se da adrese budu oblikovane po zemlji u kojoj se nalaze. Onemogućavanje ove opcije rezultirat će da adrese budu oblikovane u obliku adrese lokacije
-      language: Odaberi jezik sustava koji želiš koristiti
-      timezone: Odaberi vremensku zonu za prikaz datuma i vremena
-      currency: Odaberi zadanu valutu
+      locale: "Odaberi opcije lokalizacije koji se koriste za oblikovanje brojeva, adresa, imena i datuma"
+      location: " Lokacija će se koristiti za oblikovanje adresa kada je opcija 'Oblikuj adresu po adresi zemlje' onemogućena"
+      format_address_by_address_country: "Odabirom ove opcije omogućit će se da adrese budu oblikovane po zemlji u kojoj se nalaze. Onemogućavanje ove opcije rezultirat će da adrese budu oblikovane u obliku adrese lokacije"
+      language: "Odaberi jezik sustava koji želiš koristiti"
+      timezone: "Odaberi vremensku zonu za prikaz datuma i vremena"
+      currency: "Odaberi zadanu valutu"
 Selected products successfully deleted: Odabrani proizvodi su uspješno izbrisani
 pim_mass_edit:
   notification:
@@ -868,9 +868,9 @@ perform.steps.duplicated.title: Dvostruke osi
 perform.steps.excluded.title: Isključeni proizvod
 batch_jobs:
   add_product_value:
-    label: Dodavanje vrijednosti proizvoda
+    label: Dodaj vrijednosti proizvoda
     perform:
-      label: Dodavanje vrijednosti proizvoda
+      label: Dodaj vrijednosti proizvoda
   update_product_value:
     label: Ažuriraj vrijednosti proizvoda
     perform:

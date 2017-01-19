@@ -12,5 +12,7 @@ pim_dashboard:
         export: Export
         mass_edit: Massenbearbeitung
         quick_export: Schnellexport
+    completeness:
+      load_more: 'Mehr laden...'
     header:
       view_all: Alle anzeigen

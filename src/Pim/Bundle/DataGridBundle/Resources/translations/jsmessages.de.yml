@@ -44,6 +44,7 @@ pim.grid.choice_filter:
   label_empty: ist leer
   label_in_list: in Liste
 Available Columns: Verfügbare Spalten
+Displayed Columns: Ausgewählte Spalten
 datagrid_view.columns.min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
 pim_datagrid:
   column_configurator:
@@ -52,6 +53,7 @@ pim_datagrid:
     all_groups: Alle Gruppen
     search: Suche
     clear: Zurücksetzen
+    displayed_columns: Ausgewählte Spalten
     apply: Anwenden
     cancel: Abbrechen
     remove_column: Entfernen
@@ -59,6 +61,7 @@ pim_datagrid:
     delete:
       confirm_title: Löschbestätigung
       confirm_ok: OK
+      empty_selection: Kein Produkt ausgewählt
 pim.grid.mass_action.quick_export.title: Schnell-Export
 pim.grid.mass_action.quick_export.launched: Der Schnellexport wurde gestartet
 pim.grid.action.launch.title: Starten
@@ -66,5 +69,19 @@ pim.grid.action.show.title: Anzeigen
 Please select view: Bitte Ansicht auswählen
 Loading...: Lädt...
 View: Ansehen
-from: Von
-to: An
+from: von
+to: bis
+grid.view_selector:
+  default_view: Standardansicht
+  save_changes: Diese Ansicht speichern
+  remove: Diese Ansicht löschen
+  create_view: Ansicht erstellen
+  create: Anlegen
+  search: Suche
+  views: Ansichten
+  placeholder: Name der neuen Ansicht
+  choose_label: Wählen Sie eine Bezeichnung für die Ansicht
+  confirmation:
+    remove: Sind Sie sicher, dass Sie diese Tabellen-Ansicht löschen möchten?
+    delete: Löschbestätigung
+grid.view_selector.flash.updated: Tabellen-Ansicht erfolgreich aktualisiert

@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: 仪表台
+  title: 监控面板
   version: 版本
   link.label:
     product: 管理产品
@@ -18,7 +18,7 @@ pim_dashboard:
       status: 状态
       date: 日期
       type: 类型
-      profile name: 配置方案名称
+      "profile name": 配置方案名称
       details: 详细资料
       job_type:
         import: 导入
