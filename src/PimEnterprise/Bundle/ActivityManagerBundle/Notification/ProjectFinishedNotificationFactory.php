@@ -45,9 +45,11 @@ class ProjectFinishedNotificationFactory
             ->setType('success')
             ->setMessage($message)
             ->setMessageParams($parameters)
-            ->setRoute('oro_default')
+            ->setRoute('activity_manager_project_show')
+            ->setRouteParams(['identifier' => $parameters['project_code']])
             ->setContext([
-                'actionType' => 'project_finished',
+                'actionType'     => 'project_finished',
+                'buttonLabel'    => sprintf('activity_manager.notification.%s.show', 'project_finished')
             ]);
 
         return $notification;

@@ -82,19 +82,18 @@ class ProjectFinishedNotifierSubscriber implements EventSubscriberInterface
     public function projectFinished(ProjectEvent $event)
     {
         $project = $event->getProject();
-        $contributors = $this->userRepository->findContributorsToNotify($project);
 
         $projectCompleteness = $this->projectCompletenessRepository
             ->getProjectCompleteness($project);
 
         if ($projectCompleteness->isComplete()) {
             $this->notifyOwner($project);
-            $this->notifyContributors($project, $contributors);
+            $this->notifyContributors($project);
 
             return;
         }
 
-        $this->notifyContributors($project, $contributors);
+        $this->notifyContributors($project);
     }
 
     /**
@@ -111,26 +110,27 @@ class ProjectFinishedNotifierSubscriber implements EventSubscriberInterface
         $parameters = [
             '%project_label%' => '"' . $project->getLabel() . '"',
             '%due_date%' => '"' . $formattedDate . '"',
+            'project_code' => $project->getCode(),
         ];
 
-        $notification = $this->factory->create('activity_manager.notification.owner.finished', $parameters);
+        $notification = $this->factory->create('activity_manager.notification.project_finished.owner', $parameters);
         $this->notifier->notify($notification, [$project->getOwner()]);
     }
 
     /**
      * @param ProjectInterface $project
-     * @param array            $contributors
      */
-    protected function notifyContributors(ProjectInterface $project, array $contributors)
+    protected function notifyContributors(ProjectInterface $project)
     {
-        $parameters = ['%project_label%' => '"' . $project->getLabel() . '"'];
+        $contributors = $this->userRepository->findContributorsToNotify($project);
+        $parameters = ['%project_label%' => '"' . $project->getLabel() . '"', 'project_code' => $project->getCode()];
         foreach ($contributors as $contributor) {
             $contributorCompleteness = $this->projectCompletenessRepository
                 ->getProjectCompleteness($project, $contributor);
 
             if ($contributorCompleteness->isComplete()) {
                 $notification = $this->factory->create(
-                    'activity_manager.notification.contributor.finished',
+                    'activity_manager.notification.project_finished.contributor',
                     $parameters
                 );
                 $this->notifier->notify($notification, [$contributor]);
