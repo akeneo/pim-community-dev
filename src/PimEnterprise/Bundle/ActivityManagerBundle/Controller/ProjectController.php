@@ -142,7 +142,7 @@ class ProjectController
 
         if (isset($projectData['code'])) {
             $project = $this->projectRepository->findOneBy([
-                'code' => $projectData['code'],
+                'code'  => $projectData['code'],
                 'owner' => $user
             ]);
 

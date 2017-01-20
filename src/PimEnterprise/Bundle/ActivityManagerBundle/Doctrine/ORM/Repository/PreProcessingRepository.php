@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
@@ -77,6 +78,26 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
             'project_id' => $project->getId(),
             'product_id' => $product->getId(),
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function link(ProductInterface $product, Collection $categories)
+    {
+        $connection = $this->entityManager->getConnection();
+        $productId = $product->getId();
+
+        $connection->delete('pimee_activity_manager_product_category', [
+            'product_id' => $productId
+        ]);
+
+        foreach ($categories as $category) {
+            $connection->insert('pimee_activity_manager_product_category', [
+                'product_id'  => $productId,
+                'category_id' => $category->getId(),
+            ]);
+        }
     }
 
     /**

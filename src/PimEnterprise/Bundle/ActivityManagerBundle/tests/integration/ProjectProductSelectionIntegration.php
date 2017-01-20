@@ -26,16 +26,16 @@ class ProjectProductSelectionIntegration extends ActivityManagerTestCase
     public function testProductWithoutCategoriesShouldBeProcessed()
     {
         $project = $this->createProject([
-            'label' => 'categoriesless-project',
-            'locale' => 'en_US',
-            'owner'=> 'admin',
-            'channel' => 'ecommerce',
-            'product_filters' =>[
+            'label'           => 'categoriesless-project',
+            'locale'          => 'en_US',
+            'owner'           => 'admin',
+            'channel'         => 'ecommerce',
+            'product_filters' => [
                 [
-                    'field' => 'sku',
+                    'field'    => 'sku',
                     'operator' => '=',
-                    'value' => 'categoriesless',
-                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                    'value'    => 'categoriesless',
+                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
                 ],
             ],
         ]);

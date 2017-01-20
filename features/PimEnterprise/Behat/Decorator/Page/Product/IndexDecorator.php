@@ -24,7 +24,7 @@ class IndexDecorator extends ElementDecorator
     /** @var array Selectors to ease find */
     protected $selectors = [
         'Create project button' => '.grid-view-selector .create-project-button .create',
-        'Edit project button' => '.grid-view-selector .edit-button .edit',
+        'Edit project button'   => '.grid-view-selector .edit-button .edit',
     ];
 
     /**

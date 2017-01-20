@@ -116,6 +116,13 @@ ALTER TABLE `pimee_activity_manager_project_product`
     ADD CONSTRAINT FK_E004BCB8166D1F9C FOREIGN KEY (`project_id`) REFERENCES `pimee_activity_manager_project` (id);
 ALTER TABLE `pimee_activity_manager_project_product`
     ADD CONSTRAINT project_fake_product_id_foreign_key UNIQUE (`project_id`, `product_id`)
+
+DROP TABLE IF EXISTS `pimee_activity_manager_product_category`;
+CREATE TABLE `pimee_activity_manager_product_category` (
+  `product_id` VARCHAR(36) NOT NULL,
+  `category_id` INT NOT NULL,
+  PRIMARY KEY (`product_id`, `category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL;
         }
 

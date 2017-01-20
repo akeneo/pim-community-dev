@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
 
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
@@ -26,7 +27,11 @@ interface PreProcessingRepositoryInterface
      * @param ProjectInterface $project
      * @param array            $attributeGroupCompleteness
      */
-    public function addAttributeGroupCompleteness(ProductInterface $product, ProjectInterface $project, array $attributeGroupCompleteness);
+    public function addAttributeGroupCompleteness(
+        ProductInterface $product,
+        ProjectInterface $project,
+        array $attributeGroupCompleteness
+    );
 
     /**
      * Link a product to a project
@@ -35,6 +40,14 @@ interface PreProcessingRepositoryInterface
      * @param ProductInterface $product
      */
     public function addProduct(ProjectInterface $project, ProductInterface $product);
+
+    /**
+     * Link a product to a category
+     *
+     * @param ProductInterface $product
+     * @param Collection       $categories
+     */
+    public function link(ProductInterface $product, Collection $categories);
 
     /**
      * Reset all pre processed completeness data

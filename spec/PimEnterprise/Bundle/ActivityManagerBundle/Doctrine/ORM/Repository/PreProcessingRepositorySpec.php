@@ -2,6 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
@@ -113,5 +115,40 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         ])->shouldBeCalled();
 
         $this->prepareProjectCalculation($project)->shouldReturn(null);
+    }
+
+    function it_links_between_product_and_category(
+        $connection,
+        ProductInterface $product,
+        CategoryInterface $category,
+        CategoryInterface $otherCategory,
+        ArrayCollection $categories,
+        \Iterator $iterator
+    ) {
+        $categories->getIterator()->willReturn($iterator);
+        $iterator->rewind()->shouldBeCalled();
+        $iterator->valid()->willReturn(true, true, false);
+        $iterator->current()->willReturn($category, $otherCategory);
+        $iterator->next()->shouldBeCalled();
+
+        $category->getId()->willReturn(40);
+        $otherCategory->getId()->willReturn(33);
+        $product->getId()->willReturn('fdsqf121s3s'); // mongo
+
+        $connection->delete('pimee_activity_manager_product_category', [
+            'product_id' => 'fdsqf121s3s'
+        ])->shouldBeCalled();
+
+        $connection->insert('pimee_activity_manager_product_category', [
+            'product_id' => 'fdsqf121s3s',
+            'category_id' => 40,
+        ])->shouldBeCalled();
+
+        $connection->insert('pimee_activity_manager_product_category', [
+            'product_id' => 'fdsqf121s3s',
+            'category_id' => 33,
+        ])->shouldBeCalled();
+
+        $this->link($product, $categories)->shouldReturn(null);
     }
 }

@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -21,6 +22,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class PimEnterpriseActivityManagerExtension extends Extension
 {
+    /**
+     * {@inheritdoc}
+     */
     public function load(array $configs, ContainerBuilder $containerBuilder)
     {
         $loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__.'/../Resources/config'));
@@ -29,5 +33,10 @@ class PimEnterpriseActivityManagerExtension extends Extension
         $loader->load('project.yml');
         $loader->load('services.yml');
         $loader->load('removers.yml');
+
+        $storageDriver = $containerBuilder->getParameter('pim_catalog_product_storage_driver');
+        if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $storageDriver) {
+            $containerBuilder->removeDefinition('pimee_activity_manager.calculation_step.link_product_category');
+        }
     }
 }
