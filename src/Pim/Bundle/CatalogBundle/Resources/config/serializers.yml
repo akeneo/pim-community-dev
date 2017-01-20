@@ -174,7 +174,7 @@ services:
     pim_serializer.normalizer.label_translation:
         class: '%pim_serializer.normalizer.label_translation.class%'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_serializer.normalizer, priority: 60 }
 
     pim_serializer.normalizer.file:
         class: '%pim_serializer.normalizer.file.class%'
