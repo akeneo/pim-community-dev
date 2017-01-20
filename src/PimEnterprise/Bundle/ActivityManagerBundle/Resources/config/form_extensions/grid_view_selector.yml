@@ -3,6 +3,9 @@ extensions:
         module: pim/grid/view-selector/selector
         config:
             viewTypes: ['view', 'project']
+            fetchers:
+                view: 'datagrid-view'
+                project: 'project'
 
     pimee-grid-view-selector-create-project:
         module: activity-manager/grid/view-selector/create-project
@@ -15,3 +18,9 @@ extensions:
         parent: pim-grid-view-selector
         targetZone: buttons
         position: 120
+
+    pimee-grid-view-selector-remove-project:
+        module: activity-manager/grid/view-selector/remove-project
+        parent: pim-grid-view-selector
+        targetZone: buttons
+        position: 130

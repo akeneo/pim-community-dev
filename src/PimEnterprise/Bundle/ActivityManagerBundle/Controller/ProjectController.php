@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -52,6 +53,9 @@ class ProjectController
     /** @var ObjectUpdaterInterface */
     protected $projectUpdater;
 
+    /** @var RemoverInterface */
+    protected $projectRemover;
+
     /** @var ProjectCalculationJobLauncher*/
     protected $projectCalculationJobLauncher;
 
@@ -84,6 +88,7 @@ class ProjectController
      * @param ProjectFactoryInterface                $projectFactory
      * @param SaverInterface                         $projectSaver
      * @param ObjectUpdaterInterface                 $projectUpdater
+     * @param RemoverInterface                       $projectRemover
      * @param ValidatorInterface                     $validator
      * @param ProjectCalculationJobLauncher          $projectCalculationJobLauncher
      * @param NormalizerInterface                    $projectNormalizer
@@ -100,6 +105,7 @@ class ProjectController
         ProjectFactoryInterface $projectFactory,
         SaverInterface $projectSaver,
         ObjectUpdaterInterface $projectUpdater,
+        RemoverInterface $projectRemover,
         ValidatorInterface $validator,
         ProjectCalculationJobLauncher $projectCalculationJobLauncher,
         NormalizerInterface $projectNormalizer,
@@ -125,6 +131,7 @@ class ProjectController
         $this->authorizationChecker = $authorizationChecker;
         $this->router = $router;
         $this->projectCompletenessNormalizer = $projectCompletenessNormalizer;
+        $this->projectRemover = $projectRemover;
     }
 
     /**
@@ -141,12 +148,9 @@ class ProjectController
         parse_str($projectData['datagrid_view']['filters'], $datagridViewFilters);
 
         if (isset($projectData['code'])) {
-            $project = $this->projectRepository->findOneBy([
-                'code'  => $projectData['code'],
-                'owner' => $user
-            ]);
+            $project = $this->projectRepository->findOneByIdentifier($projectData['code']);
 
-            if (null === $project) {
+            if (null === $project || !$this->authorizationChecker->isGranted([ProjectVoter::OWN], $project)) {
                 return new JsonResponse(sprintf('No project with code "%s"', $projectData['code']), 400);
             }
 
@@ -183,6 +187,24 @@ class ProjectController
         }
 
         return new JsonResponse($errors, 400);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     */
+    public function removeAction($identifier)
+    {
+        $project = $this->projectRepository->findOneByIdentifier($identifier);
+
+        if (null === $project || !$this->authorizationChecker->isGranted([ProjectVoter::OWN], $project)) {
+            return new JsonResponse(sprintf('No project with code "%s"', $identifier), 400);
+        }
+
+        $this->projectRemover->remove($project);
+
+        return new JsonResponse(null, 204);
     }
 
     /**
