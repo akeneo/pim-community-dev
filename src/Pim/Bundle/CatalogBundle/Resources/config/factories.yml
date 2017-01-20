@@ -11,7 +11,7 @@ parameters:
 
     pim_catalog.factory.product_value.class:                  Pim\Component\Catalog\Factory\ProductValueFactory
     pim_catalog.factory.product_value.registry.class:         Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryRegistry
-    pim_catalog.factory.product_value.simple.class:           Pim\Component\Catalog\Factory\ProductValue\SimpleProductValueFactory
+    pim_catalog.factory.product_value.scalar.class:           Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory
     pim_catalog.factory.product_value.metric.class:           Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory
     pim_catalog.factory.product_value.price_collection.class: Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactory
     pim_catalog.factory.product_value.option.class:           Pim\Component\Catalog\Factory\ProductValue\OptionProductValueFactory
@@ -121,7 +121,7 @@ services:
         public: false
 
     pim_catalog.factory.product_value.text:
-        class: '%pim_catalog.factory.product_value.simple.class%'
+        class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
             - '%pim_catalog.entity.product_value.class%'
@@ -130,7 +130,7 @@ services:
             - { name: pim_catalog.factory.product_value }
 
     pim_catalog.factory.product_value.textarea:
-        class: '%pim_catalog.factory.product_value.simple.class%'
+        class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
             - '%pim_catalog.entity.product_value.class%'
@@ -139,7 +139,7 @@ services:
             - { name: pim_catalog.factory.product_value }
 
     pim_catalog.factory.product_value.number:
-        class: '%pim_catalog.factory.product_value.simple.class%'
+        class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
             - '%pim_catalog.entity.product_value.class%'
@@ -148,7 +148,7 @@ services:
             - { name: pim_catalog.factory.product_value }
 
     pim_catalog.factory.product_value.boolean:
-        class: '%pim_catalog.factory.product_value.simple.class%'
+        class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
             - '%pim_catalog.entity.product_value.class%'
@@ -157,7 +157,7 @@ services:
             - { name: pim_catalog.factory.product_value }
 
     pim_catalog.factory.product_value.identifier:
-        class: '%pim_catalog.factory.product_value.simple.class%'
+        class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
             - '%pim_catalog.entity.product_value.class%'

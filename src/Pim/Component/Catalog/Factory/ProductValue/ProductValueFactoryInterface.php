@@ -5,7 +5,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
- * Factory that creates empty product values
+ * Factory that creates product values.
  *
  * @internal  Interface for the factories used internally by \Pim\Component\Catalog\Factory\ProductValueFactory.
  *
@@ -16,9 +16,8 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
 interface ProductValueFactoryInterface
 {
     /**
-     * This method effectively creates an empty product value.
+     * This method effectively creates a product value and directly set the data.
      * Channel and locale codes validity MUST HAVE BEEN checked BEFORE.
-     * The Data for this product value should be set in a second time using ProductValue::setData method.
      *
      * @param AttributeInterface $attribute
      * @param string             $channelCode

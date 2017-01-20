@@ -7,7 +7,6 @@ use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -133,7 +132,7 @@ class ProductBuilder implements ProductBuilderInterface
         );
 
         foreach ($missingValues as $value) {
-            $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope']);
+            $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope'], null);
         }
 
         $this->addMissingPricesToProduct($product);
@@ -166,7 +165,7 @@ class ProductBuilder implements ProductBuilderInterface
         $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
         foreach ($requiredValues as $value) {
-            $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
+            $this->addProductValue($product, $attribute, $value['locale'], $value['scope'], null);
         }
     }
 
@@ -197,15 +196,14 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addProductValue(
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        $locale = null,
-        $scope = null,
-        $data = null
-    ) {
-        $productValue = $this->productValueFactory->create($attribute, $scope, $locale, $data);
-        $product->addValue($productValue);
+    public function addProductValue(ProductInterface $product, AttributeInterface $attribute, $locale, $scope, $data)
+    {
+        $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
+        if (null !== $productValue) {
+            $product->removeValue($productValue);
+        }
+
+        $product->addValue($this->productValueFactory->create($attribute, $scope, $locale, $data));
 
         return $productValue;
     }

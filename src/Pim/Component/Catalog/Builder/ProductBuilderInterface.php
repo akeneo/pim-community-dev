@@ -99,17 +99,17 @@ interface ProductBuilderInterface
      *
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
-     * @param string|null        $locale
-     * @param string|null        $scope
-     * @param mixed|null         $data
+     * @param string             $locale
+     * @param string             $scope
+     * @param mixed              $data
      *
      * @return ProductValueInterface
      */
     public function addProductValue(
         ProductInterface $product,
         AttributeInterface $attribute,
-        $locale = null,
-        $scope = null,
-        $data = null
+        $locale,
+        $scope,
+        $data
     );
 }

@@ -4,12 +4,12 @@ namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
-use Pim\Component\Catalog\Factory\ProductValue\SimpleProductValueFactory;
+use Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use Prophecy\Argument;
 
-class SimpleProductValueFactorySpec extends ObjectBehavior
+class ScalarProductValueFactorySpec extends ObjectBehavior
 {
     function let()
     {
@@ -18,7 +18,7 @@ class SimpleProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SimpleProductValueFactory::class);
+        $this->shouldHaveType(ScalarProductValueFactory::class);
     }
 
     function it_throws_an_exception_when_product_value_class_is_wrong()

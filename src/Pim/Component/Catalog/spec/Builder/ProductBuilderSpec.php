@@ -99,7 +99,6 @@ class ProductBuilderSpec extends ObjectBehavior
         $tshirtFamily->getId()->shouldBeCalled();
         $tshirtFamily->getAttributes()->willReturn([]);
 
-        $productValue->setData('mysku')->shouldBeCalled();
         $productValue->getScope()->willReturn(null);
         $productValue->getLocale()->willReturn(null);
         $productValue->setProduct(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
@@ -194,10 +193,9 @@ class ProductBuilderSpec extends ObjectBehavior
         $skuValue->getScope()->willReturn(null);
         $product->getValues()->willReturn([$skuValue]);
 
-        // add 6 new values : 4 desc (locales x scopes) + 2 name (locales
-        $product->addValue(Argument::any())->shouldBeCalledTimes(6);
-
         // Create 6 empty product values and add them to the product
+        $product->getValue(Argument::cetera())->shouldBeCalledTimes(6)->willReturn(null);
+        $product->removeValue(Argument::any())->shouldNotBeCalled();
         $productValueFactory->create(Argument::cetera())
             ->shouldBeCalledTimes(6)
             ->willReturn(new $valueClass());
@@ -221,16 +219,91 @@ class ProductBuilderSpec extends ObjectBehavior
         $this->addMissingAssociations($productTwo);
     }
 
-    function it_adds_product_value($productValueFactory, ProductInterface $product, AttributeInterface $size)
-    {
-        $valueClass = self::VALUE_CLASS;
+    function it_adds_an_empty_product_value(
+        $productValueFactory,
+        ProductInterface $product,
+        AttributeInterface $size,
+        AttributeInterface $color,
+        ProductValueInterface $sizeValue,
+        ProductValueInterface $colorValue
+    ) {
+        $size->getCode()->willReturn('size');
+        $color->getCode()->willReturn('color');
+
         $size->isLocalizable()->willReturn(false);
         $size->isScopable()->willReturn(false);
 
-        $productValueFactory->create($size, null, null, null)->willReturn(new $valueClass());
+        $color->isLocalizable()->willReturn(true);
+        $color->isScopable()->willReturn(true);
 
-        $product->addValue(Argument::any())->shouldBeCalled();
+        $product->getValue('size', null, null)->shouldBeCalled()->willReturn($sizeValue);
+        $product->getValue('color', 'en_US', 'ecommerce')->shouldBeCalled()->willReturn($colorValue);
 
-        $this->addProductValue($product, $size);
+        $product->removeValue($sizeValue)->shouldBeCalled()->willReturn($product);
+        $product->removeValue($colorValue)->shouldBeCalled()->willReturn($product);
+
+        $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
+        $productValueFactory->create($color, 'ecommerce', 'en_US', null)->willReturn($colorValue);
+
+        $product->addValue($sizeValue)->shouldBeCalled()->willReturn($product);
+        $product->addValue($colorValue)->shouldBeCalled()->willReturn($product);
+
+        $this->addProductValue($product, $size, null, null, null);
+        $this->addProductValue($product, $color, 'en_US', 'ecommerce', null);
+    }
+
+    function it_adds_a_non_empty_product_value(
+        $productValueFactory,
+        ProductInterface $product,
+        AttributeInterface $size,
+        AttributeInterface $color,
+        ProductValueInterface $sizeValue,
+        ProductValueInterface $colorValue
+    ) {
+        $size->getCode()->willReturn('size');
+        $color->getCode()->willReturn('color');
+
+        $size->isLocalizable()->willReturn(false);
+        $size->isScopable()->willReturn(false);
+
+        $color->isLocalizable()->willReturn(true);
+        $color->isScopable()->willReturn(true);
+
+        $product->getValue('size', null, null)->shouldBeCalled()->willReturn($sizeValue);
+        $product->getValue('color', 'en_US', 'ecommerce')->shouldBeCalled()->willReturn($colorValue);
+
+        $product->removeValue($sizeValue)->shouldBeCalled()->willReturn($product);
+        $product->removeValue($colorValue)->shouldBeCalled()->willReturn($product);
+
+        $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
+        $productValueFactory->create($color, 'ecommerce', 'en_US', 'red')->willReturn($colorValue);
+
+        $product->addValue($sizeValue)->shouldBeCalled()->willReturn($product);
+        $product->addValue($colorValue)->shouldBeCalled()->willReturn($product);
+
+        $this->addProductValue($product, $size, null, null, null);
+        $this->addProductValue($product, $color, 'en_US', 'ecommerce', 'red');
+    }
+
+    function it_adds_a_product_value_if_there_was_not_a_previous_one(
+        $productValueFactory,
+        ProductInterface $product,
+        AttributeInterface $label,
+        ProductValueInterface $value
+    ) {
+        $label->getCode()->willReturn('label');
+
+        $label->isLocalizable()->willReturn(false);
+        $label->isScopable()->willReturn(false);
+
+        $product->getValue('label', null, null)->shouldBeCalled()->willReturn(null);
+
+        $product->removeValue(Argument::any())->shouldNotBeCalled();
+
+        $productValueFactory->create($label, null, null, 'foobar')->willReturn($value);
+
+        $product->addValue($value)->shouldBeCalled()->willReturn($product);
+
+        $this->addProductValue($product, $label, null, null, 'foobar');
     }
 }

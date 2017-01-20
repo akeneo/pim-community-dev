@@ -1,5 +1,9 @@
 # 1.8
 
+## Technical improvements
+
+- Introduce new product value factory registry `Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryRegistry`.
+
 ## BC breaks
 
 - Change method `fetchAll` of `Pim\Component\Connector\Processor\BulkMediaFetcher` to use a `Pim\Component\Catalog\Model\ProductValueCollectionInterface` instead of an `Doctrine\Common\Collections\ArrayCollection`
@@ -17,5 +21,10 @@
 - Add a new argument `$amount` (string) in `Pim\Component\Catalog\Builder\ProductBuilderInterface::addPriceForCurrency()`
 - Remove methods `setId`, `getId`, `setValue`, `getValue`, `setCurrency` and `setData` from `Pim\Component\Catalog\Model\ProductPriceInterface`
 - Add method `isEqual` to `Pim\Component\Catalog\Model\ProductPriceInterface`
-- Add a new argument `$data` to `AddProductValue` and `CreateProductValue` methods of `Pim\Component\Catalog\BuilderProductBuilderInterface`
-- Remove methods `addPriceForCurrencyWithData` and `removePricesNotInCurrency` from `Pim\Component\Catalog\BuilderProductBuilderInterface`
+- Add a new argument `$data` to `addProductValue` method of `Pim\Component\Catalog\BuilderProductBuilderInterface`
+- Remove methods `createProductValue`, `addPriceForCurrencyWithData` and `removePricesNotInCurrency` from `Pim\Component\Catalog\BuilderProductBuilderInterface`
+- Remove classes `Pim\Component\Catalog\Updater\Setter\TextAttributeSetter`, `Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter`, `Pim\Component\Catalog\Updater\Setter\BooleanAttributeSetter`,
+    `Pim\Component\Catalog\Updater\Setter\DateAttributeSetter`, `Pim\Component\Catalog\Updater\Setter\NumberAttributeSetter`, `Pim\Component\Catalog\Updater\Setter\SimpleSelectAttributeSetter`,
+    `Pim\Component\Catalog\Updater\Setter\MultiSelectAttributeSetter`, `Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter`, `Pim\Component\ReferenceData\Updater\Setter\ReferenceDataSetter`,
+    `Pim\Component\ReferenceData\Updater\Setter\ReferenceDataCollectionSetter`
+- Add `Pim\Component\Catalog\Updater\Setter\SimpleAttributeSetter`
