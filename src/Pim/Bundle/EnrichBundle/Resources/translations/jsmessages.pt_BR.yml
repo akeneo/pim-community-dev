@@ -177,8 +177,8 @@ pim_enrich:
       variant_group:
         updated_by: Atualizado por grupo variante
         switch:
-          "yes": Sim
-          "no": Não
+          "yes": "Sim"
+          "no": "Não"
       optional_attribute:
         remove: Remover esse atributo
       locale_specific_attribute:
@@ -232,7 +232,7 @@ pim_enrich:
             none_exist: Não existe nenhum tipo de associação.
             show_products: Exibir Produtos
             show_groups: Exibir Grupos
-            number_of_associations: '{{ productCount }} produtos e {{ groupCount }} grupos'
+            number_of_associations: "{{ productCount }} produtos e {{ groupCount }} grupos"
         attributes:
           title: Atributos
           btn:
@@ -241,7 +241,7 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não existe mais atributos a serem adicionados
-            attributes_selected: '{{ attributeCount }} atributo(s) selecionado(s)'
+            attributes_selected: "{{ attributeCount }} atributo(s) selecionado(s)"
             no_match: Nenhum resultado encontrado
             load_more: A carregar mais resultados...
         categories:
@@ -256,8 +256,8 @@ pim_enrich:
         history:
           title: História
       switch:
-        "no": Não
-        "yes": Sim
+        "no": "Não"
+        "yes": "Sim"
       sequential_edit:
         info:
           products: produtos
@@ -288,8 +288,8 @@ pim_enrich:
         cancel: Cancelar
     entity:
       switch:
-        "no": Não
-        "yes": Sim
+        "no": "Não"
+        "yes": "Sim"
     variant_group:
       tab:
         properties:
@@ -338,12 +338,12 @@ pim_enrich:
           title: Família
           operators:
             IN: Na lista
-            NOT IN: Não está na lista
+            "NOT IN": Não está na lista
         updated:
           title: Condição temporal
           operators:
             ALL: Sem restrição de data
-            SINCE LAST JOB: Produtos atualizados desde a última exportação
+            "SINCE LAST JOB": Produtos atualizados desde a última exportação
         enabled:
           title: Status
           value:
@@ -353,8 +353,8 @@ pim_enrich:
         completeness:
           title: Completude
           operators:
-            >=: Completo em pelo menos uma das linguagens selecionadas
-            GREATER OR EQUALS THAN ON ALL LOCALES: Completo em todas as linguagens escolhidas
+            ">=": Completo em pelo menos uma das linguagens selecionadas
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Completo em todas as linguagens escolhidas
             LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
         category:
           title: Categoria
@@ -362,10 +362,10 @@ pim_enrich:
           title: Identificador
         metric:
           operators:
-            =: É igual a
-            !=: Não é igual a
-            >: Maior que
-            <: Menor do que
+            "=": É igual a
+            "!=": Não é igual a
+            ">": Maior que
+            "<": Menor do que
             EMPTY: Está vazio
             NOT EMPTY: Não é vazio
         string:
@@ -376,10 +376,10 @@ pim_enrich:
             NOT EMPTY: Não é vazio
         price-collection:
           operators:
-            !=: Não é igual a
-            >: Maior que
-            <=: Inferior ou igual a
-            <: Menor do que
+            "!=": Não é igual a
+            ">": Maior que
+            "<=": Inferior ou igual a
+            "<": Menor do que
             EMPTY: Está vazio
             NOT EMPTY: Não é vazio
         multi_select:
@@ -391,29 +391,29 @@ pim_enrich:
           operators:
             CONTAINS: Contém
             DOES NOT CONTAIN: Não contém
-            =: É igual a
+            "=": É igual a
             STARTS WITH: Começa com
             ENDS WITH: Termina com
             EMPTY: Está vazio
             NOT EMPTY: Não é vazio
         date:
           operators:
-            >: Maior que
-            <: Menor do que
-            =: É igual a
-            !=: Não é igual a
+            ">": Maior que
+            "<": Menor do que
+            "=": É igual a
+            "!=": Não é igual a
             BETWEEN: Entre
             NOT BETWEEN: Não entre
             EMPTY: Está vazio
             NOT EMPTY: Não é vazio
         number:
           operators:
-            =: É igual a
-            !=: Não é igual a
-            >=: Maior que ou igual a
-            >: Maior que
-            <=: Inferior ou igual a
-            <: Menor do que
+            "=": É igual a
+            "!=": Não é igual a
+            ">=": Maior que ou igual a
+            ">": Maior que
+            "<=": Inferior ou igual a
+            "<": Menor do que
             EMPTY: Está vazio
             NOT EMPTY: Não é vazio
   mass_edit_action:

@@ -18,7 +18,7 @@ pim_dashboard:
       status: Status
       date: Datum
       type: Soort
-      profile name: Profielnaam
+      "profile name": Profielnaam
       details: Details
       job_type:
         import: Import

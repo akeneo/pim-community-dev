@@ -39,6 +39,9 @@ pim_connector:
       withHeader:
         label: Mit Kopfzeile
         help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
+      with_media:
+        label: Exportieren von Dateien und Bildern
+        help: Ob Produktdateien und Bilder exportiert werden oder nicht
       filePath:
         label: Dateipfad
         help: Wo die generierte Datei im Dateisystem abgelegt wird
@@ -49,9 +52,15 @@ pim_connector:
         label: Datumsformat
         help: Bestimmen Sie das Format der Datumsfelder
     xlsx:
+      lines_per_files:
+        label: Anzahl Zeilen pro Datei
+        help: Definieren Sie die max. Anzahl Zeilen je Datei
       withHeader:
         label: Mit Kopfzeile
         help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
+      with_media:
+        label: Exportieren von Dateien und Bildern
+        help: Ob Produktdateien und Bilder exportiert werden oder nicht
       filePath:
         label: Dateipfad
         help: Wo die generierte Datei im Dateisystem abgelegt wird
@@ -111,6 +120,7 @@ pim_connector:
         help: Einzelnes Zeichen, das als Dezimaltrennzeichen für Felder benutzt wird
       dateFormat:
         label: Datumsformat
+        help: Geben Sie das Datumsformat aller Datumsspalten der Datei an, z.B. DD/MM/YYYY für ein 31/12/2014 Format.
     xlsx:
       enabled:
         label: Produkt aktivieren
@@ -126,6 +136,7 @@ pim_connector:
         help: Name der Gruppenspalte
       filePath:
         label: Datei
+        help: Die zu importierende XLSX-Datei
       uploadAllowed:
         label: Datei-Upload erlauben
         help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
@@ -146,9 +157,11 @@ pim_connector:
         help: Einzelnes Zeichen, das als Dezimaltrennzeichen für Felder benutzt wird
       dateFormat:
         label: Datumsformat
+        help: Geben Sie das Datumsformat aller Datumsspalten der Datei an, z.B. DD/MM/YYYY für ein 31/12/2014 Format.
     yml:
       filePath:
         label: Datei
+        help: Die zu importierende YML-Datei
       uploadAllowed:
         label: Datei-Upload erlauben
         help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
@@ -190,8 +203,8 @@ batch_jobs:
     label: Variantengruppen-Export als CSV
     export.label: Variantengruppen-Export
   csv_family_export:
-    label: Exportiere Produktfamilie in CSV-Datei
-    export.label: Exportiere Produktfamilie
+    label: Produktfamilien-Export als CSV-Datei
+    export.label: Produktfamilien-Export
   csv_product_import:
     label: Produkt-Export als CSV-Datei
     validation.label: Dateivalidierung
@@ -225,57 +238,130 @@ batch_jobs:
     label: Variantengruppen-Import als CSV
     validation.label: Dateivalidierung
     import.label: Variantengruppen-Import
+  csv_channel_export:
+    label: Ausgabekanal-Export als CSV-Datei
+    export.label: Ausgabekanal-Export
+  csv_locale_export:
+    label: Gebietsschema-Export als CSV-Datei
+    export.label: Gebietsschema-Export
+  csv_attribute_group_export:
+    label: Attributgruppen-Export als CSV-Datei
+    export.label: Attributgruppen-Export
+  csv_currency_export:
+    label: Währungs-Export als CSV-Datei
+    export.label: Währungs-Export
+  csv_group_type_export:
+    label: Gruppentyp-Export als CSV-Datei
+    export.label: Gruppentyp-Export
   csv_channel_import:
+    label: Ausgabekanal-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import.label: Ausgabekanal-Import
   csv_locale_import:
+    label: Gebietsschema-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import.label: Gebietsschema-Import
   csv_attribute_group_import:
+    label: Attributgruppen-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import.label: Attributgruppen-Import
   csv_currency_import:
+    label: Währungs-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import.label: Währungs-Import
   csv_group_type_import:
+    label: Gruppentyp-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import.label: Gruppentyp-Import
   xlsx_category_import:
+    label: Kategorie-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Kategorie-Import
   xlsx_association_type_import:
+    label: Verbindungstyp-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Verbindungstyp-Import
   xlsx_attribute_import:
+    label: Attribut-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Attribut-Import
   xlsx_attribute_option_import:
+    label: Attributoptionen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Attribut-Option import
   xlsx_family_import:
+    label: Produktfamilien-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
   xlsx_product_export:
+    label: Produkt-Export als XLSX-Datei
     export.label: Produkt export
   xlsx_product_import:
+    label: Produkt-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Produkt import
     import_associations.label: Produktverbindungen-Import
   xlsx_group_export:
+    label: Gruppen-Export als XSLX-Datei
     export.label: Gruppen-Export
   xlsx_variant_group_export:
+    label: Variantengruppen-Export als XLSX-Datei
     export.label: Variantengruppen-Export
   xlsx_group_import:
+    label: Gruppen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Gruppen-Import
   xlsx_variant_group_import:
+    label: Variantengruppen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import.label: Variantengruppen-Import
   xlsx_family_export:
-    export.label: Exportiere Produktfamilie
+    label: Produktfamilien-Eport als XLSX-Datei
+    export.label: Produktfamilien-Export
   xlsx_category_export:
+    label: Kategorie-Export als XLSX-Datei
     export.label: Kategorie export
+  xlsx_attribute_export:
+    label: Attribut-Export als XLSX-Datei
+    export.label: Attribut-Export als XLSX-Datei
+  xlsx_attribute_option_export:
+    label: Attributoptionen-Export als XLSX-Datei
+    export.label: Attributoptionen-Export als XLSX-Datei
+  xlsx_association_type_export:
+    label: Verbindungstyp-Export als XLSX-Datei
+    export.label: Verbindungstyp-Export als XLSX-Datei
+  xlsx_channel_export:
+    label: Ausgabekanal-Export als XLSX-Datei
+    export.label: Ausgabekanal-Export
+  xlsx_locale_export:
+    label: Gebietsschema-Export als XLSX-Datei
+    export.label: Gebietsschema-Export
+  xlsx_attribute_group_export:
+    label: Attributgruppen-Export als XLSX-Datei
+    export.label: Attributgruppen-Export
+  xlsx_currency_export:
+    label: Währungs-Export als XLSX-Datei
+    export.label: Währungs-Export
+  xlsx_group_type_export:
+    label: Gruppentyp-Export als XLSX-Datei
+    export.label: Gruppentyp-Export
   xlsx_channel_import:
+    label: Ausgabekanal-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import.label: Ausgabekanal-Import
   xlsx_locale_import:
+    label: Gebietsschema-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import.label: Gebietsschema-Import
   xlsx_attribute_group_import:
+    label: Attributgruppen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import.label: Attributgruppen-Import
   xlsx_currency_import:
+    label: Währungs-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import.label: Währungs-Import
   xlsx_group_type_import:
+    label: Gruppen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import.label: Gruppen-Import
