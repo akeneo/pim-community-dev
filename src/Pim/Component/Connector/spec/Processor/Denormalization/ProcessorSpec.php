@@ -10,7 +10,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Connector\BulkIdentifierBag;
+use Pim\Component\Connector\Item\BulkSimpleIdentifierBag;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -61,7 +61,7 @@ class ProcessorSpec extends ObjectBehavior
         $validator,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ChannelInterface $channel,
         ConstraintViolationListInterface $violationList
     ) {
@@ -96,7 +96,7 @@ class ProcessorSpec extends ObjectBehavior
         $validator,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ChannelInterface $channel,
         ConstraintViolationListInterface $violationList
     ) {
@@ -142,7 +142,7 @@ class ProcessorSpec extends ObjectBehavior
         $objectDetacher,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ChannelInterface $channel
     ) {
         $bulkIdentifierBag->has('mycode')->willReturn(false);
@@ -183,7 +183,7 @@ class ProcessorSpec extends ObjectBehavior
         $repository,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ChannelInterface $channel
     ) {
         $bulkIdentifierBag->has('mycode')->willReturn(true);

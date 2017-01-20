@@ -1,26 +1,23 @@
 <?php
 
-namespace Pim\Component\Connector;
+namespace Pim\Component\Connector\Item;
 
 /**
- * A bag of identifiers that can be used during bulk operations.
+ * A bag of simple identifiers that can be used during bulk operations.
  *
- * Typically, during an import, there can be several items with the same identifiers in the same bulk.
- * Those items are not detected as duplications and lead to errors in database.
- * This bag aims to store them momentarily during the period of the bulk.
+ * This class also supports composite keys (as implemented in the attribute options for instance).
  *
- * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BulkIdentifierBag
+class BulkSimpleIdentifierBag implements BulkIdentifierBagInterface
 {
-    private $identifiers = [];
+    /** @var array */
+    protected $identifiers = [];
 
     /**
-     * @param string $identifier
-     *
-     * @throws \LogicException when the identifier is already in the bag
+     * {@inheritdoc}
      */
     public function add($identifier)
     {
@@ -32,9 +29,7 @@ class BulkIdentifierBag
     }
 
     /**
-     * @param string $identifier
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function has($identifier)
     {
@@ -42,7 +37,7 @@ class BulkIdentifierBag
     }
 
     /**
-     * Empty the bag
+     * {@inheritdoc}
      */
     public function reset()
     {

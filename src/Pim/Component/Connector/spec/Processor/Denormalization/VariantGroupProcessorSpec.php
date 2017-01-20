@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Connector\BulkIdentifierBag;
+use Pim\Component\Connector\Item\BulkSimpleIdentifierBag;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -46,7 +46,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $validator,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ConstraintViolationListInterface $violationList
@@ -88,7 +88,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $validator,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ConstraintViolationListInterface $violationList
@@ -144,7 +144,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $validator,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ConstraintViolationListInterface $violationList

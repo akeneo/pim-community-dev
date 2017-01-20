@@ -3,11 +3,11 @@
 namespace Akeneo\Bundle\BatchBundle\EventListener;
 
 use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Event\StepExecutionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Given a job execution processing multiple entities and keeping track of their identifiers in the BulkIdentifierBag
+ * Given a job processing multiple entities and keeping track of their identifiers in the BulkIdentifierBag
  * (to prevent the processing of duplicated entities).
  * This event subscriber resets the list of identifiers treated once a full batch has been processed (the batch size
  * is configured at the job level).
@@ -18,18 +18,23 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ResetBulkIdentifierBagSubscriber implements EventSubscriberInterface
 {
-
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return [
-            EventInterface::JOB_BATCH_SIZE_REACHED => 'resetJobExecutionBulkIdentifierBar'
+            EventInterface::JOB_BATCH_SIZE_REACHED => 'resetJobExecutionBulkIdentifierBar',
         ];
     }
 
-    public function resetJobExecutionBulkIdentifierBar(JobExecutionEvent $jobExecutionEvent)
+    /**
+     * Once a step has reached the job batch size. This event subscriber resets the bulk identifier bag if it exists.
+     */
+    public function resetJobExecutionBulkIdentifierBar(StepExecutionEvent $stepExecutionEvent)
     {
-        $jobExecution = $jobExecutionEvent->getJobExecution();
-        $executionContext = $jobExecution->getExecutionContext();
+        $stepExecution = $stepExecutionEvent->getStepExecution();
+        $executionContext = $stepExecution->getExecutionContext();
         $bulkIdentifierBag = $executionContext->get('bulk_identifier_bag');
 
         if (null !== $bulkIdentifierBag) {

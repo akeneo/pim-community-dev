@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\BulkIdentifierBag;
+use Pim\Component\Connector\Item\BulkSimpleIdentifierBag;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -55,7 +55,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         AssociationInterface $association,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -127,7 +127,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -202,7 +202,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         AssociationInterface $association,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -283,7 +283,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -352,7 +352,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -393,7 +393,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
     function it_does_not_process_duplicated_associations(
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         JobParameters $jobParameters
     ) {
         $bulkIdentifierBag->has('tshirt')->willReturn(true);

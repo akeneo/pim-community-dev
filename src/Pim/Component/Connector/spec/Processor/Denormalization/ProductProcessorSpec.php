@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
-use Pim\Component\Connector\BulkIdentifierBag;
+use Pim\Component\Connector\Item\BulkSimpleIdentifierBag;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -54,7 +54,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -154,7 +154,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -226,7 +226,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -330,7 +330,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -434,7 +434,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -577,7 +577,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -688,7 +688,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         ProductInterface $product,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
@@ -801,7 +801,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -901,7 +901,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -1007,7 +1007,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ExecutionContext $executionContext,
-        BulkIdentifierBag $bulkIdentifierBag,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters

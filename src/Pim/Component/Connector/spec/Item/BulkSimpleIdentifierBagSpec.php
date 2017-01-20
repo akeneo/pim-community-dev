@@ -1,14 +1,20 @@
 <?php
 
-namespace spec\Pim\Component\Connector;
+namespace spec\Pim\Component\Connector\Item;
 
 use PhpSpec\ObjectBehavior;
 
-class BulkIdentifierBagSpec extends ObjectBehavior
+class BulkSimpleIdentifierBagSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\BulkIdentifierBag');
+        $this->shouldHaveType('Pim\Component\Connector\Item\BulkSimpleIdentifierBag');
+    }
+
+    function it_is_a_bulk_identifier_bag()
+    {
+
+        $this->shouldImplement('Pim\Component\Connector\Item\BulkIdentifierBagInterface');
     }
 
     function it_adds_a_new_identifier()
