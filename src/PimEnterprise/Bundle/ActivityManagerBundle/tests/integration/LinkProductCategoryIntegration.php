@@ -21,16 +21,16 @@ class LinkProductCategoryIntegration extends ActivityManagerTestCase
     public function testTheLinkBetweenProductAndCategory()
     {
         $project = $this->createProject([
-            'label' => 'categoriesless-project',
-            'locale' => 'en_US',
-            'owner'=> 'admin',
-            'channel' => 'ecommerce',
-            'product_filters' =>[
+            'label'           => 'categoriesless-project',
+            'locale'          => 'en_US',
+            'owner'           => 'admin',
+            'channel'         => 'ecommerce',
+            'product_filters' => [
                 [
-                    'field' => 'sku',
+                    'field'    => 'sku',
                     'operator' => 'IN',
-                    'value' => ['categoriesless', 'tshirt-the-witcher-3'],
-                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                    'value'    => ['categoriesless', 'tshirt-the-witcher-3'],
+                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
                 ],
             ],
         ]);
@@ -59,7 +59,7 @@ SQL;
         $this->assertEquals(
             $result[0],
             [
-                'product_id' => $productId,
+                'product_id'  => $productId,
                 'category_id' => $categoryId,
             ],
             'Invalid processed categories'

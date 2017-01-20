@@ -94,7 +94,7 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
 
         foreach ($categories as $category) {
             $connection->insert('pimee_activity_manager_product_category', [
-                'product_id' => $productId,
+                'product_id'  => $productId,
                 'category_id' => $category->getId(),
             ]);
         }

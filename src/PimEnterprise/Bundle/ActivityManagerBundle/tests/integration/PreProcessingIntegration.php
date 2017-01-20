@@ -29,16 +29,16 @@ class PreProcessingIntegration extends ActivityManagerTestCase
     public function testProjectCalculationOnTshirtWitcher()
     {
         $this::$project = $this->createProject([
-            'label' => 'test-project',
-            'locale' => 'en_US',
-            'owner'=> 'admin',
-            'channel' => 'ecommerce',
-            'product_filters' =>[
+            'label'           => 'test-project',
+            'locale'          => 'en_US',
+            'owner'           => 'admin',
+            'channel'         => 'ecommerce',
+            'product_filters' => [
                 [
-                    'field' => 'sku',
+                    'field'    => 'sku',
                     'operator' => '=',
-                    'value' => 'tshirt-the-witcher-3',
-                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                    'value'    => 'tshirt-the-witcher-3',
+                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
                 ],
             ],
         ]);
@@ -51,15 +51,15 @@ class PreProcessingIntegration extends ActivityManagerTestCase
             [
                 'general' => [
                     'has_at_least_one_required_attribute_filled' => '0',
-                    'is_complete' => '1'
+                    'is_complete'                                => '1'
                 ],
                 'marketing' => [
                     'has_at_least_one_required_attribute_filled' => '1',
-                    'is_complete' => '0'
+                    'is_complete'                                => '0'
                 ],
                 'technical' => [
                     'has_at_least_one_required_attribute_filled' => '0',
-                    'is_complete' => '0'
+                    'is_complete'                                => '0'
                 ],
             ],
             $product
@@ -92,16 +92,16 @@ class PreProcessingIntegration extends ActivityManagerTestCase
     public function testProjectCalculationWhenTheProductPropertiesAreEmpties()
     {
         $project = $this->createProject([
-            'label' => 'test-empty-property',
-            'locale' => 'en_US',
-            'owner'=> 'admin',
-            'channel' => 'ecommerce',
-            'product_filters' =>[
+            'label'           => 'test-empty-property',
+            'locale'          => 'en_US',
+            'owner'           => 'admin',
+            'channel'         => 'ecommerce',
+            'product_filters' => [
                 [
-                    'field' => 'sku',
+                    'field'    => 'sku',
                     'operator' => '=',
-                    'value' => 'empty-technical-product',
-                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                    'value'    => 'empty-technical-product',
+                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
                 ],
             ],
         ]);
@@ -114,7 +114,7 @@ class PreProcessingIntegration extends ActivityManagerTestCase
             [
                 'other' => [
                     'has_at_least_one_required_attribute_filled' => '0',
-                    'is_complete' => '0'
+                    'is_complete'                                => '0'
                 ]
             ],
             $product
@@ -135,23 +135,23 @@ class PreProcessingIntegration extends ActivityManagerTestCase
     public function testProjectCalculationWhenTheProductPropertiesAreFull()
     {
         $this->getConnection()->insert('acme_reference_data_color', [
-            'code' => 'red',
-            'name' => 'red',
-            'hex' => '#FF0000',
-            'red' => 1,
-            'green' => 1,
-            'blue' => 1,
-            'hue' => 1,
+            'code'          => 'red',
+            'name'          => 'red',
+            'hex'           => '#FF0000',
+            'red'           => 1,
+            'green'         => 1,
+            'blue'          => 1,
+            'hue'           => 1,
             'hslSaturation' => 1,
-            'light' => 1,
+            'light'         => 1,
             'hsvSaturation' => 1,
-            'value' => 1,
-            'sortOrder' => 10
+            'value'         => 1,
+            'sortOrder'     => 10
         ]);
 
         $this->getConnection()->insert('acme_reference_data_fabric', [
-            'code' => 'latex',
-            'name' => 'Latex',
+            'code'      => 'latex',
+            'name'      => 'Latex',
             'sortOrder' => 10
         ]);
 
@@ -161,29 +161,29 @@ class PreProcessingIntegration extends ActivityManagerTestCase
             'values' => [
                 'simple_reference_data_attribute' => [[
                     'locale' => null,
-                    'scope' => null,
-                    'data' => 'red',
+                    'scope'  => null,
+                    'data'   => 'red',
                 ]],
                 'multi_reference_data_attribute' => [[
                     'locale' => null,
-                    'scope' => null,
-                    'data' => ['latex'],
+                    'scope'  => null,
+                    'data'   => ['latex'],
                 ]]
             ]
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
 
         $project = $this->createProject([
-            'label' => 'test-full-property',
-            'locale' => 'en_US',
-            'owner'=> 'admin',
-            'channel' => 'ecommerce',
-            'product_filters' =>[
+            'label'           => 'test-full-property',
+            'locale'          => 'en_US',
+            'owner'           => 'admin',
+            'channel'         => 'ecommerce',
+            'product_filters' => [
                 [
-                    'field' => 'sku',
+                    'field'    => 'sku',
                     'operator' => '=',
-                    'value' => 'full-technical-product',
-                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                    'value'    => 'full-technical-product',
+                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
                 ],
             ],
         ]);
@@ -194,7 +194,7 @@ class PreProcessingIntegration extends ActivityManagerTestCase
             [
                 'other' => [
                     'has_at_least_one_required_attribute_filled' => '0',
-                    'is_complete' => '1'
+                    'is_complete'                                => '1'
                 ]
             ],
             $product
@@ -224,7 +224,7 @@ SQL;
             $actualCompleteness = $this->getConnection()
                 ->fetchAssoc($sql, [
                     'attribute_group_id' => $attributeGroupId,
-                    'product_id' => $product->getId(),
+                    'product_id'         => $product->getId(),
                 ]);
 
             $this->assertSame(
@@ -258,7 +258,7 @@ SQL;
         $numberOfRow = (int) $this->getConnection()->fetchColumn($sql, [
             'product_id' => $productId,
             'channel_id' => $this::$project->getChannel()->getId(),
-            'locale_id' => $this::$project->getLocale()->getId(),
+            'locale_id'  => $this::$project->getLocale()->getId(),
         ]);
 
         $this->assertSame(

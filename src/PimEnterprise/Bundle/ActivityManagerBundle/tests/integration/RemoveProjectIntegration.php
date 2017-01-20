@@ -22,32 +22,32 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
     public function testThatProjectRemovalRemovesPreProcessingEntriesAndMappedProducts()
     {
         $highTechProject = $this->createProject([
-            'label' => 'High-Tech project',
-            'locale' => 'en_US',
-            'owner'=> 'admin',
-            'channel' => 'ecommerce',
-            'product_filters' =>[
+            'label'           => 'High-Tech project',
+            'locale'          => 'en_US',
+            'owner'           => 'admin',
+            'channel'         => 'ecommerce',
+            'product_filters' => [
                 [
-                    'field' => 'categories',
+                    'field'    => 'categories',
                     'operator' => 'IN',
-                    'value' => ['high_tech'],
-                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                    'value'    => ['high_tech'],
+                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
                 ],
             ],
         ]);
         $this->calculateProject($highTechProject);
 
         $clothingProject = $this->createProject([
-            'label' => 'Clothing project',
-            'locale' => 'en_US',
-            'owner'=> 'admin',
-            'channel' => 'ecommerce',
-            'product_filters' =>[
+            'label'           => 'Clothing project',
+            'locale'          => 'en_US',
+            'owner'           => 'admin',
+            'channel'         => 'ecommerce',
+            'product_filters' => [
                 [
-                    'field' => 'categories',
+                    'field'    => 'categories',
                     'operator' => 'IN',
-                    'value' => ['clothing'],
-                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                    'value'    => ['clothing'],
+                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
                 ],
             ],
         ]);
@@ -127,10 +127,10 @@ SQL;
         $pqb = $pqbFactory->create([
             'filters' => [
                 [
-                    'field' => 'categories',
+                    'field'    => 'categories',
                     'operator' => 'IN',
-                    'value' => ['clothing'],
-                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce']
+                    'value'    => ['clothing'],
+                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce']
                 ]
             ]
         ]);

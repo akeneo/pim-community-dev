@@ -77,8 +77,8 @@ class ActivityManagerTestCase extends TestCase
     protected function createProject(array $projectData)
     {
         $projectData = array_merge([
-            'description' => 'An awesome description',
-            'due_date' => '2020-01-19',
+            'description'   => 'An awesome description',
+            'due_date'      => '2020-01-19',
             'datagrid_view' => ['filters' => '', 'columns' => 'sku,label,family'],
         ], $projectData);
 
@@ -154,9 +154,9 @@ class ActivityManagerTestCase extends TestCase
      *
      * @param int $numberOfExecutedJob
      *
+     * @throws \RuntimeException
      * @return bool
      *
-     * @throws \RuntimeException
      */
     private function isCompleteJobExecution($numberOfExecutedJob)
     {
