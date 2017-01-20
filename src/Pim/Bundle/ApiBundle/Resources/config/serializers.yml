@@ -1,0 +1,13 @@
+parameters:
+    pim_external_api_exception_serializer.class: Symfony\Component\Serializer\Serializer
+    pim_external_api.encoder.json.class: Symfony\Component\Serializer\Encoder\JsonEncoder
+
+services:
+    pim_external_api_exception_serializer:
+        class: '%pim_external_api_exception_serializer.class%'
+
+    pim_external_api.encoder.json:
+        class: '%pim_external_api.encoder.json.class%'
+        public: false
+        tags:
+            - { name: pim_external_api_exception_serializer.encoder, priority: 90 }

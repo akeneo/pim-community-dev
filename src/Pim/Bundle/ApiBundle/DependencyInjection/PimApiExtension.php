@@ -26,5 +26,6 @@ class PimApiExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
+        $loader->load('serializers.yml');
     }
 }
