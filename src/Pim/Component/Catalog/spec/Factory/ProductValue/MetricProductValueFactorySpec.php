@@ -3,16 +3,19 @@
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\Metric;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductValue;
+use Prophecy\Argument;
 
 class MetricProductValueFactorySpec extends ObjectBehavior
 {
-    function let()
+    function let(MetricFactory $metricFactory)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_metric');
+        $this->beConstructedWith($metricFactory, ProductValue::class, 'pim_catalog_metric');
     }
 
     function it_is_initializable()
@@ -26,7 +29,14 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $this->supports('pim_catalog_metric')->shouldReturn(true);
     }
 
-    function it_creates_an_empty_metric_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_product_value_class_is_wrong($metricFactory)
+    {
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
+            ->during('__construct', [$metricFactory, 'foobar', 'pim_catalog_metric']);
+    }
+
+    function it_creates_an_empty_metric_product_value($metricFactory, AttributeInterface $attribute)
     {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
@@ -35,11 +45,14 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $attribute->getMetricFamily()->shouldNotBeCalled();
+        $metricFactory->createMetric(Argument::cetera())->shouldNotBeCalled();
+
         $productValue = $this->create(
             $attribute,
             null,
             null,
-            new Metric(null, null, null, null, null)
+            null
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -49,8 +62,10 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_a_localizable_and_scopable_empty_metric_product_value(AttributeInterface $attribute)
-    {
+    function it_creates_a_localizable_and_scopable_empty_metric_product_value(
+        $metricFactory,
+        AttributeInterface $attribute
+    ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('metric_attribute');
@@ -58,11 +73,14 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $attribute->getMetricFamily()->shouldNotBeCalled();
+        $metricFactory->createMetric(Argument::cetera())->shouldNotBeCalled();
+
         $productValue = $this->create(
             $attribute,
             'ecommerce',
             'en_US',
-            new Metric(null, null, null, null, null)
+            null
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -74,8 +92,11 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_a_metric_product_value(AttributeInterface $attribute)
-    {
+    function it_creates_a_metric_product_value(
+        $metricFactory,
+        AttributeInterface $attribute,
+        MetricInterface $metric
+    ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('metric_attribute');
@@ -83,22 +104,31 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $attribute->getMetricFamily()->shouldBeCalled()->willReturn('Length');
+        $metricFactory->createMetric('Length', 'GRAM', 42)->shouldBeCalled()->willReturn($metric);
+        $metric->getData()->willReturn(42);
+        $metric->getUnit()->willReturn('GRAM');
+        $metric->getFamily()->willReturn('Length');
+
         $productValue = $this->create(
             $attribute,
             null,
             null,
-            new Metric('foofamily', 'foounit', 42, 'foobaseunit', 42)
+            ['amount' => 42, 'unit' => 'GRAM']
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
         $productValue->shouldHaveAttribute('metric_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
-        $productValue->shouldHaveMetric('42.0000 foounit');
+        $productValue->shouldHaveMetric(['amount' => 42, 'unit' => 'GRAM']);
     }
 
-    function it_creates_a_localizable_and_scopable_metric_product_value(AttributeInterface $attribute)
-    {
+    function it_creates_a_localizable_and_scopable_metric_product_value(
+        $metricFactory,
+        AttributeInterface $attribute,
+        MetricInterface $metric
+    ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('metric_attribute');
@@ -106,11 +136,17 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $attribute->getMetricFamily()->shouldBeCalled()->willReturn('Length');
+        $metricFactory->createMetric('Length', 'GRAM', 42)->shouldBeCalled()->willReturn($metric);
+        $metric->getData()->willReturn(42);
+        $metric->getUnit()->willReturn('GRAM');
+        $metric->getFamily()->willReturn('Length');
+
         $productValue = $this->create(
             $attribute,
             'ecommerce',
             'en_US',
-            new Metric('foofamily', 'foounit', 42, 'foobaseunit', 42)
+            ['amount' => 42, 'unit' => 'GRAM']
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -119,7 +155,81 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveLocale('en_US');
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldHaveMetric('42.0000 foounit');
+        $productValue->shouldHaveMetric(['amount' => 42, 'unit' => 'GRAM']);
+    }
+
+    function it_throws_an_exception_if_provided_data_is_not_an_array($metricFactory, AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('metric_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getBackendType()->willReturn('metric');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $attribute->getMetricFamily()->shouldNotBeCalled();
+        $metricFactory->createMetric(Argument::cetera())->shouldNotBeCalled();
+
+        $exception = InvalidArgumentException::arrayExpected(
+            'metric_attribute',
+            'metric',
+            'factory',
+            'string'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', 'foobar']);
+    }
+
+    function it_throws_an_exception_if_provided_data_has_no_amount($metricFactory, AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('metric_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getBackendType()->willReturn('metric');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $attribute->getMetricFamily()->shouldNotBeCalled();
+        $metricFactory->createMetric(Argument::cetera())->shouldNotBeCalled();
+
+        $exception = InvalidArgumentException::arrayKeyExpected(
+            'metric_attribute',
+            'amount',
+            'metric',
+            'factory',
+            'foo, unit'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', ['foo' => 42, 'unit' => 'GRAM']]);
+    }
+
+    function it_throws_an_exception_if_provided_data_has_no_unit($metricFactory, AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('metric_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getBackendType()->willReturn('metric');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $attribute->getMetricFamily()->shouldNotBeCalled();
+        $metricFactory->createMetric(Argument::cetera())->shouldNotBeCalled();
+
+        $exception = InvalidArgumentException::arrayKeyExpected(
+            'metric_attribute',
+            'unit',
+            'metric',
+            'factory',
+            'amount, bar'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', ['amount' => 42, 'bar' => 'GRAM']]);
     }
 
     public function getMatchers()
@@ -141,14 +251,13 @@ class MetricProductValueFactorySpec extends ObjectBehavior
                 return $channelCode === $subject->getScope();
             },
             'beEmpty'       => function ($subject) {
-                $metric = $subject->getData();
-
-                return $metric instanceof Metric && '' === $metric->__toString();
+                return null === $subject->getData();
             },
             'haveMetric'    => function ($subject, $expectedMetric) {
                 $metric = $subject->getData();
 
-                return $metric instanceof Metric && $expectedMetric === $metric->__toString();
+                return $expectedMetric['amount'] === $metric->getData() &&
+                    $expectedMetric['unit'] === $metric->getUnit();
             },
         ];
     }

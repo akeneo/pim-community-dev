@@ -2,19 +2,21 @@
 
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\OptionProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;
 
 class OptionProductValueFactorySpec extends ObjectBehavior
 {
-    function let()
+    function let(AttributeOptionRepositoryInterface $attrOptionRepository)
     {
-        $this->beConstructedWith(ProductValue::class, Argument::any());
+        $this->beConstructedWith($attrOptionRepository, ProductValue::class, 'pim_catalog_simpleselect');
     }
 
     function it_is_initializable()
@@ -22,18 +24,31 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $this->shouldHaveType(OptionProductValueFactory::class);
     }
 
-    function it_creates_an_empty_simple_select_product_value(AttributeInterface $attribute)
+    function it_supports_simpleselect_attribute_type()
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_simpleselect');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_simpleselect')->shouldReturn(true);
+    }
 
+    function it_throws_an_exception_when_product_value_class_is_wrong($attrOptionRepository)
+    {
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
+            ->during('__construct', [$attrOptionRepository, 'foobar', 'pim_catalog_simpleselect']);
+    }
+
+    function it_creates_an_empty_simple_select_product_value(
+        $attrOptionRepository,
+        AttributeInterface $attribute
+    ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('simple_select_attribute');
         $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $attrOptionRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -49,18 +64,18 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_a_localizable_and_scopable_empty_simple_select_product_value(AttributeInterface $attribute)
-    {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_simpleselect');
-        $this->supports('foo')->shouldReturn(false);
-        $this->supports('pim_catalog_simpleselect')->shouldReturn(true);
-
+    function it_creates_a_localizable_and_scopable_empty_simple_select_product_value(
+        $attrOptionRepository,
+        AttributeInterface $attribute
+    ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('simple_select_attribute');
         $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $attrOptionRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -79,13 +94,10 @@ class OptionProductValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_simple_select_product_value(
+        $attrOptionRepository,
         AttributeInterface $attribute,
         AttributeOptionInterface $option
     ) {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_simpleselect');
-        $this->supports('foo')->shouldReturn(false);
-        $this->supports('pim_catalog_simpleselect')->shouldReturn(true);
-
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('simple_select_attribute');
@@ -93,11 +105,16 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $attrOptionRepository
+            ->findOneByIdentifier('simple_select_attribute.foobar')
+            ->shouldBeCalled()
+            ->willReturn($option);
+
         $productValue = $this->create(
             $attribute,
             null,
             null,
-            $option
+            'foobar'
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -108,13 +125,10 @@ class OptionProductValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_localizable_and_scopable_simple_select_product_value(
+        $attrOptionRepository,
         AttributeInterface $attribute,
         AttributeOptionInterface $option
     ) {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_simpleselect');
-        $this->supports('foo')->shouldReturn(false);
-        $this->supports('pim_catalog_simpleselect')->shouldReturn(true);
-
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('simple_select_attribute');
@@ -122,11 +136,16 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $attrOptionRepository
+            ->findOneByIdentifier('simple_select_attribute.foobar')
+            ->shouldBeCalled()
+            ->willReturn($option);
+
         $productValue = $this->create(
             $attribute,
             'ecommerce',
             'en_US',
-            $option
+            'foobar'
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -136,6 +155,68 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
         $productValue->shouldHaveTheOption($option);
+    }
+
+    function it_throws_an_exception_if_invalid_data_is_provided($attrOptionRepository, AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('simple_select_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getBackendType()->willReturn('option');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $attrOptionRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
+
+        $booleanException = InvalidArgumentException::stringExpected(
+            'simple_select_attribute',
+            'simple select',
+            'factory',
+            'boolean'
+        );
+
+        $arrayException = InvalidArgumentException::stringExpected(
+            'simple_select_attribute',
+            'simple select',
+            'factory',
+            'array'
+        );
+
+        $this
+            ->shouldThrow($booleanException)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', true]);
+
+        $this
+            ->shouldThrow($arrayException)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', []]);
+    }
+
+    function it_throws_an_exception_if_option_does_not_exist($attrOptionRepository, AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('simple_select_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getBackendType()->willReturn('option');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $attrOptionRepository
+            ->findOneByIdentifier('simple_select_attribute.foobar')
+            ->shouldBeCalled()
+            ->willReturn(null);
+
+        $exception = InvalidPropertyException::validEntityCodeExpected(
+            'simple_select_attribute',
+            'code',
+            'The option does not exist',
+            'simple select',
+            'factory',
+            'foobar'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', 'foobar']);
     }
 
     public function getMatchers()

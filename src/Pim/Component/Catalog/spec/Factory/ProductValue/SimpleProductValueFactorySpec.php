@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\SimpleProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue;
@@ -18,6 +19,21 @@ class SimpleProductValueFactorySpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(SimpleProductValueFactory::class);
+    }
+
+    function it_throws_an_exception_when_product_value_class_is_wrong()
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(true);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
+            ->during('__construct', ['foobar', 'pim_catalog_text']);
     }
 
     function it_creates_an_empty_text_product_value(AttributeInterface $attribute)
@@ -594,6 +610,36 @@ class SimpleProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
         $productValue->getData()->shouldReturn('foobar');
+    }
+
+    function it_throws_an_exception_when_provided_data_is_not_a_scalar(AttributeInterface $attribute)
+    {
+        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_text')->shouldReturn(true);
+        $this->supports('pim_catalog_number')->shouldReturn(false);
+        $this->supports('pim_catalog_textarea')->shouldReturn(false);
+        $this->supports('pim_catalog_boolean')->shouldReturn(false);
+        $this->supports('pim_catalog_identifier')->shouldReturn(false);
+
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('text_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getBackendType()->willReturn('text');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $exception = InvalidArgumentException::expected(
+            'text_attribute',
+            'a scalar',
+            'simple',
+            'factory',
+            'array'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', ['foo' => 'bar']]);
     }
 
     public function getMatchers()

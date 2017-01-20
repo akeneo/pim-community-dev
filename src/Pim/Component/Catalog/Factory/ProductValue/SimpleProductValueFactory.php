@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -42,11 +44,16 @@ class SimpleProductValueFactory implements ProductValueFactoryInterface
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
+        $this->checkData($attribute, $data);
+
         $value = new $this->productValueClass();
         $value->setAttribute($attribute);
         $value->setScope($channelCode);
         $value->setLocale($localeCode);
-        $value->setData($data);
+
+        if (null !== $data) {
+            $value->setData($this->convertData($attribute, $data));
+        }
 
         return $value;
     }
@@ -57,5 +64,49 @@ class SimpleProductValueFactory implements ProductValueFactoryInterface
     public function supports($attributeType)
     {
         return $attributeType === $this->supportedAttributeTypes;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
+        if (null === $data) {
+            return;
+        }
+
+        if (!is_scalar($data)) {
+            throw InvalidArgumentException::expected(
+                $attribute->getCode(),
+                'a scalar',
+                'simple',
+                'factory',
+                gettype($data)
+            );
+        }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     *
+     * @return mixed
+     */
+    protected function convertData(AttributeInterface $attribute, $data)
+    {
+        if (is_string($data) && '' === trim($data)) {
+            $data = null;
+        }
+
+        if (AttributeTypes::BOOLEAN === $attribute->getAttributeType() &&
+            (1 === $data || '1' === $data || 0 === $data || '0' === $data)
+        ) {
+            $data = boolval($data);
+        }
+
+        return $data;
     }
 }

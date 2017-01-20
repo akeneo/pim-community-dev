@@ -2,13 +2,15 @@
 
 namespace Pim\Component\ReferenceData\Factory\ProductValue;
 
-use Doctrine\Common\Collections\Collection;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\ReferenceData\MethodNameGuesser;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
  * Factory that creates simple-select and multi-select product values.
@@ -21,6 +23,9 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
  */
 class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryInterface
 {
+    /** @var ReferenceDataRepositoryResolverInterface */
+    protected $repositoryResolver;
+
     /** @var string */
     protected $productValueClass;
 
@@ -28,17 +33,22 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
     protected $supportedAttributeType;
 
     /**
-     * @param string $productValueClass
-     * @param string $supportedAttributeType
+     * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
+     * @param string                                   $productValueClass
+     * @param string                                   $supportedAttributeType
      */
-    public function __construct($productValueClass, $supportedAttributeType)
-    {
+    public function __construct(
+        ReferenceDataRepositoryResolverInterface $repositoryResolver,
+        $productValueClass,
+        $supportedAttributeType
+    ) {
         if (!class_exists($productValueClass)) {
             throw new \InvalidArgumentException(
                 sprintf('The product value class "%s" does not exist.', $productValueClass)
             );
         }
 
+        $this->repositoryResolver = $repositoryResolver;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
@@ -48,16 +58,18 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
+        $this->checkData($attribute, $data);
+
         $value = new $this->productValueClass();
         $value->setAttribute($attribute);
         $value->setScope($channelCode);
         $value->setLocale($localeCode);
 
-        if ((is_array($data) && !empty($data)) || ($data instanceof Collection && !$data->isEmpty())) {
-            $adder = $this->getAdderName($value, $attribute);
-            foreach ($data as $option) {
-                $value->$adder($option);
-            }
+        $adder = $this->getAdderName($value, $attribute);
+        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
+
+        foreach ($data as $referenceDataCode) {
+            $value->$adder($this->getReferenceData($attribute, $repository, $referenceDataCode));
         }
 
         return $value;
@@ -69,6 +81,73 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
     public function supports($attributeType)
     {
         return $attributeType === $this->supportedAttributeType;
+    }
+
+    /**
+     * Checks if data is valid.
+     *
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
+        if (!is_array($data)) {
+            throw InvalidArgumentException::arrayExpected(
+                $attribute->getCode(),
+                'reference data collection',
+                'factory',
+                gettype($data)
+            );
+        }
+
+        foreach ($data as $key => $value) {
+            if (!is_string($value)) {
+                throw InvalidArgumentException::arrayStringKeyExpected(
+                    $attribute->getCode(),
+                    $key,
+                    'reference data collection',
+                    'factory',
+                    gettype($value)
+                );
+            }
+        }
+    }
+
+    /**
+     * Finds a reference data by code.
+     *
+     * @param AttributeInterface               $attribute
+     * @param ReferenceDataRepositoryInterface $repository
+     * @param string                           $referenceDataCode
+     *
+     * @throws InvalidPropertyException
+     * @return ReferenceDataInterface
+     */
+    protected function getReferenceData(
+        AttributeInterface $attribute,
+        ReferenceDataRepositoryInterface $repository,
+        $referenceDataCode
+    ) {
+        $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
+
+        if (null === $referenceData) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                $attribute->getCode(),
+                'code',
+                sprintf(
+                    'No reference data "%s" with code "%s" has been found',
+                    $attribute->getReferenceDataName(),
+                    $referenceDataCode
+                ),
+                'reference data collection',
+                'factory',
+                $referenceDataCode
+            );
+        }
+
+        return $referenceData;
     }
 
     /**

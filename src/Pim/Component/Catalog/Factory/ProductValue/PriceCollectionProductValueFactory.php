@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -17,21 +18,21 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  */
 class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
 {
+    /** @var PriceFactory */
+    protected $priceFactory;
+
     /** @var string */
     protected $productValueClass;
 
     /** @var string */
     protected $supportedAttributeType;
 
-    /** @var PriceFactory */
-    protected $priceFactory;
-
     /**
+     * @param PriceFactory $priceFactory
      * @param string       $productValueClass
      * @param string       $supportedAttributeType
-     * @param PriceFactory $priceFactory
      */
-    public function __construct($productValueClass, $supportedAttributeType, PriceFactory $priceFactory)
+    public function __construct(PriceFactory $priceFactory, $productValueClass, $supportedAttributeType)
     {
         if (!class_exists($productValueClass)) {
             throw new \InvalidArgumentException(
@@ -39,9 +40,9 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
             );
         }
 
+        $this->priceFactory = $priceFactory;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
-        $this->priceFactory = $priceFactory;
     }
 
     /**
@@ -49,15 +50,15 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
+        $this->checkData($attribute, $data);
+
         $value = new $this->productValueClass();
         $value->setAttribute($attribute);
         $value->setScope($channelCode);
         $value->setLocale($localeCode);
 
-        if (is_array($data) && !empty($data)) {
-            foreach ($data as $price) {
-                $value->addPrice($this->priceFactory->createPrice($price['amount'], $price['currency']));
-            }
+        foreach ($data as $price) {
+            $value->addPrice($this->priceFactory->createPrice($price['amount'], $price['currency']));
         }
 
         return $value;
@@ -69,5 +70,56 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
     public function supports($attributeType)
     {
         return $attributeType === $this->supportedAttributeType;
+    }
+
+    /**
+     * Checks if data are valid.
+     *
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
+        if (!is_array($data)) {
+            throw InvalidArgumentException::arrayExpected(
+                $attribute->getCode(),
+                'prices collection',
+                'factory',
+                gettype($data)
+            );
+        }
+
+        foreach ($data as $price) {
+            if (!is_array($price)) {
+                throw InvalidArgumentException::arrayOfArraysExpected(
+                    $attribute->getCode(),
+                    'prices collection',
+                    'factory',
+                    gettype($data).' of '.gettype($price)
+                );
+            }
+
+            if (!array_key_exists('amount', $price)) {
+                throw InvalidArgumentException::arrayKeyExpected(
+                    $attribute->getCode(),
+                    'amount',
+                    'prices collection',
+                    'factory',
+                    implode(', ', array_keys($price))
+                );
+            }
+
+            if (!array_key_exists('currency', $price)) {
+                throw InvalidArgumentException::arrayKeyExpected(
+                    $attribute->getCode(),
+                    'currency',
+                    'prices collection',
+                    'factory',
+                    implode(', ', array_keys($price))
+                );
+            }
+        }
     }
 }

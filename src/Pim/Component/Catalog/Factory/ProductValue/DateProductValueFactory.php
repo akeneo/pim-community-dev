@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -42,11 +44,16 @@ class DateProductValueFactory implements ProductValueFactoryInterface
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
+        $this->checkData($attribute, $data);
+
         $value = new $this->dateProductValueClass();
         $value->setAttribute($attribute);
         $value->setScope($channelCode);
         $value->setLocale($localeCode);
-        $value->setDate($data);
+
+        if (null !== $data) {
+            $value->setDate(new \DateTime($data));
+        }
 
         return $value;
     }
@@ -57,5 +64,57 @@ class DateProductValueFactory implements ProductValueFactoryInterface
     public function supports($attributeType)
     {
         return $attributeType === $this->supportedAttributeType;
+    }
+
+    /**
+     * Checks the data.
+     *
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
+        if (null === $data) {
+            return;
+        }
+
+        if (!is_string($data)) {
+            throw InvalidArgumentException::expected(
+                $attribute->getCode(),
+                'datetime or string',
+                'date',
+                'factory',
+                gettype($data)
+            );
+        }
+
+        try {
+            new \DateTime($data);
+
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+                $this->throwsInvalidDateException($attribute, $data);
+            }
+        } catch (\Exception $e) {
+            $this->throwsInvalidDateException($attribute, $data);
+        }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param                    $data
+     *
+     * @throws InvalidPropertyException
+     */
+    protected function throwsInvalidDateException(AttributeInterface $attribute, $data)
+    {
+        throw InvalidPropertyException::dateExpected(
+            $attribute->getCode(),
+            'yyyy-mm-dd',
+            'date',
+            'factory',
+            $data
+        );
     }
 }

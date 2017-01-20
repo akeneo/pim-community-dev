@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -15,6 +17,9 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class MetricProductValueFactory implements ProductValueFactoryInterface
 {
+    /** @var MetricFactory */
+    protected $metricFactory;
+
     /** @var string */
     protected $metricProductValueClass;
 
@@ -22,10 +27,11 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
     protected $supportedAttributeType;
 
     /**
-     * @param string $metricProductValueClass
-     * @param string $supportedAttributeType
+     * @param MetricFactory $metricFactory
+     * @param string        $metricProductValueClass
+     * @param string        $supportedAttributeType
      */
-    public function __construct($metricProductValueClass, $supportedAttributeType)
+    public function __construct(MetricFactory $metricFactory, $metricProductValueClass, $supportedAttributeType)
     {
         if (!class_exists($metricProductValueClass)) {
             throw new \InvalidArgumentException(
@@ -33,6 +39,7 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
             );
         }
 
+        $this->metricFactory = $metricFactory;
         $this->metricProductValueClass = $metricProductValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
@@ -42,11 +49,18 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
+        $this->checkData($attribute, $data);
+
         $value = new $this->metricProductValueClass();
         $value->setAttribute($attribute);
         $value->setScope($channelCode);
         $value->setLocale($localeCode);
-        $value->setMetric($data);
+
+        if (null !== $data) {
+            $value->setMetric(
+                $this->metricFactory->createMetric($attribute->getMetricFamily(), $data['unit'], $data['amount'])
+            );
+        }
 
         return $value;
     }
@@ -57,5 +71,49 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
     public function supports($attributeType)
     {
         return $attributeType === $this->supportedAttributeType;
+    }
+
+    /**
+     * Checks if metric data are valid.
+     *
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
+        if (null === $data) {
+            return;
+        }
+
+        if (!is_array($data)) {
+            throw InvalidArgumentException::arrayExpected(
+                $attribute->getCode(),
+                'metric',
+                'factory',
+                gettype($data)
+            );
+        }
+
+        if (!array_key_exists('amount', $data)) {
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'amount',
+                'metric',
+                'factory',
+                implode(', ', array_keys($data))
+            );
+        }
+
+        if (!array_key_exists('unit', $data)) {
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'unit',
+                'metric',
+                'factory',
+                implode(', ', array_keys($data))
+            );
+        }
     }
 }

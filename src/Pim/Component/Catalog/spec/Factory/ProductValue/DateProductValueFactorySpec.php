@@ -2,7 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\DateProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue;
@@ -23,6 +25,13 @@ class DateProductValueFactorySpec extends ObjectBehavior
     {
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_date')->shouldReturn(true);
+    }
+
+    function it_throws_an_exception_when_product_value_class_is_wrong()
+    {
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
+            ->during('__construct', ['foobar', 'pim_catalog_date']);
     }
 
     function it_creates_an_empty_date_product_value(AttributeInterface $attribute)
@@ -86,7 +95,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
             $attribute,
             null,
             null,
-            new \DateTime('2000-01-01')
+            '2000-01-01'
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -109,7 +118,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
             $attribute,
             'ecommerce',
             'en_US',
-            new \DateTime('2000-01-01')
+            '2000-01-01'
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -119,6 +128,72 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
         $productValue->shouldHaveDate('2000-01-01');
+    }
+
+    function it_throws_an_exception_when_provided_data_is_not_a_string(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('date_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_date');
+        $attribute->getBackendType()->willReturn('date');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $exception = InvalidArgumentException::expected(
+            'date_attribute',
+            'datetime or string',
+            'date',
+            'factory',
+            'array'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', []]);
+    }
+
+    function it_throws_an_exception_when_provided_data_is_not_a_date(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('date_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_date');
+        $attribute->getBackendType()->willReturn('date');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $exception = InvalidPropertyException::dateExpected(
+            'date_attribute',
+            'yyyy-mm-dd',
+            'date',
+            'factory',
+            'foobar is no date'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', 'foobar is no date']);
+    }
+
+    function it_throws_an_exception_when_provided_date_format_is_invalid(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('date_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_date');
+        $attribute->getBackendType()->willReturn('date');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $exception = InvalidPropertyException::dateExpected(
+            'date_attribute',
+            'yyyy-mm-dd',
+            'date',
+            'factory',
+            '03-04-2013'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', '03-04-2013']);
     }
 
     public function getMatchers()

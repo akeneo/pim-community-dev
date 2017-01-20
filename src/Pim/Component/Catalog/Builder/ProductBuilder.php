@@ -352,8 +352,12 @@ class ProductBuilder implements ProductBuilderInterface
                 $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
                 foreach ($requiredValues as $value) {
-                    $productValue = $this->productValueFactory->create($attribute, $value['scope'], $value['locale']);
-                    $productValue->setBoolean(false);
+                    $productValue = $this->productValueFactory->create(
+                        $attribute,
+                        $value['scope'],
+                        $value['locale'],
+                        false
+                    );
                     $product->addValue($productValue);
                 }
             }

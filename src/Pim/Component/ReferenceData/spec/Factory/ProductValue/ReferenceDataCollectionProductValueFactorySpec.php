@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionProductValueFactory;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Prophecy\Argument;
 
 /**
@@ -17,9 +19,9 @@ use Prophecy\Argument;
  */
 class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
 {
-    function let()
+    function let(ReferenceDataRepositoryResolverInterface $repositoryResolver)
     {
-        $this->beConstructedWith(ProductValue::class, Argument::any());
+        $this->beConstructedWith($repositoryResolver, ProductValue::class, 'pim_reference_data_catalog_multiselect');
     }
 
     function it_is_initializable()
@@ -27,13 +29,25 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $this->shouldHaveType(ReferenceDataCollectionProductValueFactory::class);
     }
 
-    function it_creates_an_empty_reference_data_multi_select_product_value(AttributeInterface $attribute)
+    function it_supports_pim_reference_data_catalog_multiselect_attribute_type()
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_reference_data_catalog_multiselect');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_reference_data_catalog_simpleselect')->shouldReturn(false);
         $this->supports('pim_reference_data_catalog_multiselect')->shouldReturn(true);
+    }
 
+    function it_throws_an_exception_when_product_value_class_is_wrong($repositoryResolver)
+    {
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
+            ->during('__construct', [$repositoryResolver, 'foobar', 'pim_reference_data_catalog_simpleselect']);
+    }
+
+    function it_creates_an_empty_reference_data_multi_select_product_value(
+        $repositoryResolver,
+        AttributeInterface $attribute,
+        ReferenceDataRepositoryInterface $referenceDataRepository
+    ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
@@ -41,6 +55,9 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
+
+        $repositoryResolver->resolve('fabrics')->shouldBeCalled()->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -57,13 +74,10 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_localizable_and_scopable_empty_reference_data_multi_select_product_value(
-        AttributeInterface $attribute
+        $repositoryResolver,
+        AttributeInterface $attribute,
+        ReferenceDataRepositoryInterface $referenceDataRepository
     ) {
-        $this->beConstructedWith(ProductValue::class, 'pim_reference_data_catalog_multiselect');
-        $this->supports('foo')->shouldReturn(false);
-        $this->supports('pim_reference_data_catalog_simpleselect')->shouldReturn(false);
-        $this->supports('pim_reference_data_catalog_multiselect')->shouldReturn(true);
-
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
@@ -71,6 +85,9 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
+
+        $repositoryResolver->resolve('fabrics')->shouldBeCalled()->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -89,15 +106,12 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_reference_data_multi_select_product_value(
+        $repositoryResolver,
         AttributeInterface $attribute,
         Fabric $silk,
-        Fabric $cotton
+        Fabric $cotton,
+        ReferenceDataRepositoryInterface $referenceDataRepository
     ) {
-        $this->beConstructedWith(ProductValue::class, 'pim_reference_data_catalog_multiselect');
-        $this->supports('foo')->shouldReturn(false);
-        $this->supports('pim_reference_data_catalog_simpleselect')->shouldReturn(false);
-        $this->supports('pim_reference_data_catalog_multiselect')->shouldReturn(true);
-
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
@@ -106,11 +120,15 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
 
+        $repositoryResolver->resolve('fabrics')->shouldBeCalled()->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'silk'])->shouldBeCalled()->willReturn($silk);
+        $referenceDataRepository->findOneBy(['code' => 'cotton'])->shouldBeCalled()->willReturn($cotton);
+
         $productValue = $this->create(
             $attribute,
             null,
             null,
-            [$silk, $cotton]
+            ['silk', 'cotton']
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -121,15 +139,12 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_localizable_and_scopable_reference_data_multi_select_product_value(
+        $repositoryResolver,
         AttributeInterface $attribute,
         Fabric $silk,
-        Fabric $cotton
+        Fabric $cotton,
+        ReferenceDataRepositoryInterface $referenceDataRepository
     ) {
-        $this->beConstructedWith(ProductValue::class, 'pim_reference_data_catalog_multiselect');
-        $this->supports('foo')->shouldReturn(false);
-        $this->supports('pim_reference_data_catalog_simpleselect')->shouldReturn(false);
-        $this->supports('pim_reference_data_catalog_multiselect')->shouldReturn(true);
-
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
@@ -138,11 +153,15 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
 
+        $repositoryResolver->resolve('fabrics')->shouldBeCalled()->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'silk'])->shouldBeCalled()->willReturn($silk);
+        $referenceDataRepository->findOneBy(['code' => 'cotton'])->shouldBeCalled()->willReturn($cotton);
+
         $productValue = $this->create(
             $attribute,
             'ecommerce',
             'en_US',
-            [$silk, $cotton]
+            ['silk', 'cotton']
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);

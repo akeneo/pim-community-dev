@@ -169,6 +169,7 @@ services:
         class: '%pim_catalog.factory.product_value.metric.class%'
         public: false
         arguments:
+            - '@pim_catalog.factory.metric'
             - '%pim_catalog.entity.product_value.class%'
             - 'pim_catalog_metric'
         tags:
@@ -178,9 +179,9 @@ services:
         class: '%pim_catalog.factory.product_value.price_collection.class%'
         public: false
         arguments:
+            - '@pim_catalog.factory.price'
             - '%pim_catalog.entity.product_value.class%'
             - 'pim_catalog_price_collection'
-            - '@pim_catalog.factory.price'
         tags:
             - { name: pim_catalog.factory.product_value }
 
@@ -188,6 +189,7 @@ services:
         class: '%pim_catalog.factory.product_value.option.class%'
         public: false
         arguments:
+            - '@pim_catalog.repository.attribute_option'
             - '%pim_catalog.entity.product_value.class%'
             - 'pim_catalog_simpleselect'
         tags:
@@ -197,6 +199,7 @@ services:
         class: '%pim_catalog.factory.product_value.options.class%'
         public: false
         arguments:
+            - '@pim_catalog.repository.attribute_option'
             - '%pim_catalog.entity.product_value.class%'
             - 'pim_catalog_multiselect'
         tags:
@@ -206,6 +209,7 @@ services:
         class: '%pim_catalog.factory.product_value.media.class%'
         public: false
         arguments:
+            - '@akeneo_file_storage.repository.file_info'
             - '%pim_catalog.entity.product_value.class%'
             - 'pim_catalog_file'
         tags:
@@ -215,6 +219,7 @@ services:
         class: '%pim_catalog.factory.product_value.media.class%'
         public: false
         arguments:
+            - '@akeneo_file_storage.repository.file_info'
             - '%pim_catalog.entity.product_value.class%'
             - 'pim_catalog_image'
         tags:

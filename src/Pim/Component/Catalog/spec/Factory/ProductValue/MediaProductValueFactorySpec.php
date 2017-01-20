@@ -3,7 +3,10 @@
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\MediaProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue;
@@ -11,9 +14,9 @@ use Prophecy\Argument;
 
 class MediaProductValueFactorySpec extends ObjectBehavior
 {
-    function let()
+    function let(FileInfoRepositoryInterface $fileInfoRepository)
     {
-        $this->beConstructedWith(ProductValue::class, Argument::any());
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, Argument::any());
     }
 
     function it_is_initializable()
@@ -21,9 +24,19 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $this->shouldHaveType(MediaProductValueFactory::class);
     }
 
-    function it_creates_an_empty_file_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_product_value_class_is_wrong($fileInfoRepository)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_file');
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
+            ->during('__construct', [$fileInfoRepository, 'foobar', 'pim_catalog_file']);
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
+            ->during('__construct', [$fileInfoRepository, 'foobar', 'pim_catalog_image']);
+    }
+
+    function it_creates_an_empty_file_product_value($fileInfoRepository, AttributeInterface $attribute)
+    {
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_file');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(true);
         $this->supports('pim_catalog_image')->shouldReturn(false);
@@ -34,6 +47,8 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_file');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -49,9 +64,11 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_a_localizable_and_scopable_empty_file_product_value(AttributeInterface $attribute)
-    {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_file');
+    function it_creates_a_localizable_and_scopable_empty_file_product_value(
+        $fileInfoRepository,
+        AttributeInterface $attribute
+    ) {
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_file');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(true);
         $this->supports('pim_catalog_image')->shouldReturn(false);
@@ -62,6 +79,8 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_file');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -79,9 +98,12 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_a_file_product_value(AttributeInterface $attribute, FileInfoInterface $file)
-    {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_file');
+    function it_creates_a_file_product_value(
+        $fileInfoRepository,
+        AttributeInterface $attribute,
+        FileInfoInterface $file
+    ) {
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_file');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(true);
         $this->supports('pim_catalog_image')->shouldReturn(false);
@@ -93,11 +115,13 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $fileInfoRepository->findOneByIdentifier('foobar')->shouldBeCalled()->willReturn($file);
+
         $productValue = $this->create(
             $attribute,
             null,
             null,
-            $file
+            'foobar'
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -108,10 +132,11 @@ class MediaProductValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_localizable_and_scopable_file_product_value(
+        $fileInfoRepository,
         AttributeInterface $attribute,
         FileInfoInterface $file
     ) {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_file');
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_file');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(true);
         $this->supports('pim_catalog_image')->shouldReturn(false);
@@ -123,11 +148,13 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $fileInfoRepository->findOneByIdentifier('foobar')->shouldBeCalled()->willReturn($file);
+
         $productValue = $this->create(
             $attribute,
             'ecommerce',
             'en_US',
-            $file
+            'foobar'
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -139,9 +166,9 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveMedia($file);
     }
 
-    function it_creates_an_empty_image_product_value(AttributeInterface $attribute)
+    function it_creates_an_empty_image_product_value($fileInfoRepository, AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_image');
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(false);
         $this->supports('pim_catalog_image')->shouldReturn(true);
@@ -152,6 +179,8 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_image');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -167,9 +196,11 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_a_localizable_and_scopable_empty_image_product_value(AttributeInterface $attribute)
-    {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_image');
+    function it_creates_a_localizable_and_scopable_empty_image_product_value(
+        $fileInfoRepository,
+        AttributeInterface $attribute
+    ) {
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(false);
         $this->supports('pim_catalog_image')->shouldReturn(true);
@@ -180,6 +211,8 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_image');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -197,9 +230,12 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_an_image_product_value(AttributeInterface $attribute, FileInfoInterface $image)
-    {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_image');
+    function it_creates_an_image_product_value(
+        $fileInfoRepository,
+        AttributeInterface $attribute,
+        FileInfoInterface $image
+    ) {
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(false);
         $this->supports('pim_catalog_image')->shouldReturn(true);
@@ -211,11 +247,13 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $fileInfoRepository->findOneByIdentifier('foobar')->shouldBeCalled()->willReturn($image);
+
         $productValue = $this->create(
             $attribute,
             null,
             null,
-            $image
+            'foobar'
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -226,10 +264,11 @@ class MediaProductValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_localizable_and_scopable_image_product_value(
+        $fileInfoRepository,
         AttributeInterface $attribute,
         FileInfoInterface $image
     ) {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_image');
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(false);
         $this->supports('pim_catalog_image')->shouldReturn(true);
@@ -241,11 +280,13 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $fileInfoRepository->findOneByIdentifier('foobar')->shouldBeCalled()->willReturn($image);
+
         $productValue = $this->create(
             $attribute,
             'ecommerce',
             'en_US',
-            $image
+            'foobar'
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -255,6 +296,70 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
         $productValue->shouldHaveMedia($image);
+    }
+
+    function it_throws_an_exception_if_provided_data_is_not_a_string(
+        $fileInfoRepository,
+        AttributeInterface $attribute
+    ) {
+
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_image');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_file')->shouldReturn(false);
+        $this->supports('pim_catalog_image')->shouldReturn(true);
+
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('image_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $attribute->getBackendType()->willReturn('media');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
+
+        $exception = InvalidArgumentException::stringExpected(
+            'image_attribute',
+            'media',
+            'factory',
+            'array'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', []]);
+    }
+
+    function it_throws_an_exception_if_provided_data_is_not_an_existing_fileinfo_key(
+        $fileInfoRepository,
+        AttributeInterface $attribute
+    ) {
+
+        $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_image');
+        $this->supports('foo')->shouldReturn(false);
+        $this->supports('pim_catalog_file')->shouldReturn(false);
+        $this->supports('pim_catalog_image')->shouldReturn(true);
+
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('image_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $attribute->getBackendType()->willReturn('media');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $fileInfoRepository->findOneByIdentifier('foo/bar.txt')->shouldBeCalled()->willReturn(null);
+
+        $exception = InvalidPropertyException::validEntityCodeExpected(
+            'image_attribute',
+            'fileinfo key',
+            'The media does not exist',
+            'media',
+            'factory',
+            'foo/bar.txt'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', 'foo/bar.txt']);
     }
 
     public function getMatchers()

@@ -3,20 +3,20 @@
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollection;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValue;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
 
 class PriceCollectionProductValueFactorySpec extends ObjectBehavior
 {
     function let(PriceFactory $priceFactory)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_price_collection', $priceFactory);
+        $this->beConstructedWith($priceFactory, ProductValue::class, 'pim_catalog_price_collection', $priceFactory);
     }
 
     function it_is_initializable()
@@ -28,6 +28,13 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
     {
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_price_collection')->shouldReturn(true);
+    }
+
+    function it_throws_an_exception_when_product_value_class_is_wrong($priceFactory)
+    {
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
+            ->during('__construct', [$priceFactory, 'foobar', 'pim_catalog_metric']);
     }
 
     function it_creates_a_empty_price_collection_product_value(
@@ -146,6 +153,92 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
         $productValue->shouldHavePrices();
+    }
+
+    function it_throws_an_exception_if_provided_data_is_not_an_array(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('price_collection_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getBackendType()->willReturn('prices');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $exception = InvalidArgumentException::arrayExpected(
+            'price_collection_attribute',
+            'prices collection',
+            'factory',
+            'string'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', 'foobar']);
+    }
+
+    function it_throws_an_exception_if_provided_data_is_not_an_array_of_array(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('price_collection_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getBackendType()->willReturn('prices');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $exception = InvalidArgumentException::arrayOfArraysExpected(
+            'price_collection_attribute',
+            'prices collection',
+            'factory',
+            'array of string'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', ['foobar']]);
+    }
+
+    function it_throws_an_exception_if_provided_data_does_not_contains_an_amount(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('price_collection_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getBackendType()->willReturn('prices');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $exception = InvalidArgumentException::arrayKeyExpected(
+            'price_collection_attribute',
+            'amount',
+            'prices collection',
+            'factory',
+            'foo, currency'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', [['foo' => 42, 'currency' => 'EUR']]]);
+    }
+
+    function it_throws_an_exception_if_provided_data_does_not_contains_a_currency(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('price_collection_attribute');
+        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getBackendType()->willReturn('prices');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $exception = InvalidArgumentException::arrayKeyExpected(
+            'price_collection_attribute',
+            'currency',
+            'prices collection',
+            'factory',
+            'amount, bar'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', [['amount' => 42, 'bar' => 'EUR']]]);
     }
 
     public function getMatchers()
