@@ -18,6 +18,7 @@ interface EventInterface
     const JOB_EXECUTION_FATAL_ERROR = 'akeneo_batch.job_execution_fatal_error';
     const BEFORE_JOB_STATUS_UPGRADE = 'akeneo_batch.before_job_status_upgrade';
     const AFTER_JOB_EXECUTION = 'akeneo_batch.after_job_execution';
+    const JOB_BATCH_SIZE_REACHED = 'akeneo_batch.job_batch_size_reached';
 
     /** Step execution events */
     const BEFORE_STEP_EXECUTION = 'akeneo_batch.before_step_execution';
