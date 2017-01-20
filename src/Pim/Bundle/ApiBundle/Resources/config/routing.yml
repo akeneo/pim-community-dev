@@ -1,6 +1,6 @@
 category:
     resource: '@PimApiBundle/Resources/config/routing/category.yml'
-    prefix: /rest/v1/categories
+    prefix: /rest/v1
 
 family:
     resource: '@PimApiBundle/Resources/config/routing/family.yml'

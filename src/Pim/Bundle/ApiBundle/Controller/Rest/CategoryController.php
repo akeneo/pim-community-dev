@@ -59,4 +59,28 @@ class CategoryController
 
         return new JsonResponse($categoryStandard);
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listAction(Request $request)
+    {
+        //@TODO limit will be set in configuration in an other PR
+        $limit = $request->query->get('limit', 10);
+        $page = $request->query->get('page', 1);
+
+        //@TODO add parameterValidator to validate limit and page
+
+        $offset = $limit * ($page - 1);
+
+        $categories = $this->repository->findBy([], ['root' => 'ASC', 'left' => 'ASC'], $limit, $offset);
+
+        $categoriesStandard = $this->normalizer->normalize($categories, 'external_api');
+
+        //@TODO use paginate method before return results
+
+        return new JsonResponse($categoriesStandard);
+    }
 }
