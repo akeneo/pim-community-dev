@@ -28,151 +28,21 @@ pim_connector:
     variant_group_writer.title: Variant groep opslag
     writer.title: Entiteitopslag
     csv_writer.title: CSV-schrijver
-  export:
-    csv:
-      delimiter:
-        label: Scheidingsteken
-        help: Eén teken voor het scheiden van de velden
-      enclosure:
-        label: Omsluiting
-        help: Eén teken voor gebruik als omsluitingsteken voor het veld
-      withHeader:
-        label: Met koptekst
-        help: Of de kolomnaam geprint moet worden
-      with_media:
-        label: Bestanden en afbeeldingen exporteren
-        help: Productbestanden en afbeeldingen al dan niet exporteren
-      filePath:
-        label: Bestandspad
-        help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
-      decimalSeparator:
-        label: Decimaal scheidingsteken
-        help: Bepaal het decimaal scheidingsteken
-      dateFormat:
-        label: Datumnotatie
-        help: Bepaal het formaat van de datumvelden
-    xlsx:
-      lines_per_files:
-        label: Aantal regels per bestand
-        help: Het maximum aantal regels per bestand definiëren
-      withHeader:
-        label: Met koptekst
-        help: Of de kolomnaam geprint moet worden
-      with_media:
-        label: Bestanden en afbeeldingen exporteren
-        help: Productbestanden en afbeeldingen al dan niet exporteren
-      filePath:
-        label: Bestandspad
-        help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
-      decimalSeparator:
-        label: Decimaal scheidingsteken
-        help: Bepaal het decimaal scheidingsteken
-      dateFormat:
-        label: Datumnotatie
-        help: Bepaal het formaat van de datumvelden
-    yml:
-      filePath:
-        label: Bestandspad
-        help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
-  import:
-    csv:
-      enabled:
-        label: Het product inschakelen
-        help: Of geïmporteerd product moet worden ingeschakeld
-      categoriesColumn:
-        label: Categoriekolom
-        help: Naam van de categoriekolom
-      familyColumn:
-        label: Familiekolom
-        help: Naam van de familiekolom
-      groupsColumn:
-        label: Groepskolom
-        help: Naam van de groepskolom
-      filePath:
-        label: Bestand
-      uploadAllowed:
-        label: Bestanden uploaden toestaan
-        help: Of direct uploaden van het bestand is toegestaan
-      delimiter:
-        label: Scheidingsteken
-        help: Eén teken wordt gebruikt om het veldscheidingsteken voor een CSV-file in te stellen
-      enclosure:
-        label: Omsluiting
-        help: Eén teken voor gebruik als omsluitingsteken voor het veld
-      escape:
-        label: Escape-teken
-        help: Eén teken voor gebruik als escape-teken voor het veld
-      circularRefsChecked:
-        label: Controleer op kringverwijzingen
-        help: Indien ja zullen de gegevens worden verwerkt om ervoor te zorgen dat er zich geen kringverwijzingen tussen de categorieën voordoen
-      realTimeVersioning:
-        label: Real-time geschiedenis bijwerken
-        help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
-      enabledComparison:
-        label: Vergelijk de waarden
-        help: Activeer de vergelijking tussen originele en geïmporteerde waarden. Kan import versnellen als geïmporteerde waarden erg gelijkaardig zijn aan originele waarden
-      decimalSeparator:
-        label: Decimaal scheidingsteken
-        help: Eén karakter wordt gebruik om het veldscheidingsteken voor decimalen in te stellen
-      dateFormat:
-        label: Datumnotatie
-        help: Specificeer het formaat van eender welke datumkolom in het bestand, bv. DD/MM/JJJJ voor een 30/04/2014 formaat.
-    xlsx:
-      enabled:
-        label: Het product inschakelen
-        help: Of geïmporteerd product moet worden ingeschakeld
-      categoriesColumn:
-        label: Categoriekolom
-        help: Naam van de categoriekolom
-      familyColumn:
-        label: Familiekolom
-        help: Naam van de familiekolom
-      groupsColumn:
-        label: Groepskolom
-        help: Naam van de groepskolom
-      filePath:
-        label: Bestand
-        help: Het XLSX-bestand om te importeren
-      uploadAllowed:
-        label: Bestanden uploaden toestaan
-        help: Of direct uploaden van het bestand is toegestaan
-      circularRefsChecked:
-        label: Controleer op kringverwijzingen
-        help: Indien ja zullen de gegevens worden verwerkt om ervoor te zorgen dat er zich geen kringverwijzingen tussen de categorieën voordoen
-      realTimeVersioning:
-        label: Real-time geschiedenis bijwerken
-        help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
-      enabledComparison:
-        label: Vergelijk de waarden
-        help: Activeer de vergelijking tussen originele en geïmporteerde waarden. Kan import versnellen als geïmporteerde waarden erg gelijkaardig zijn aan originele waarden
-      decimalSeparator:
-        label: Decimaal scheidingsteken
-        help: Eén karakter wordt gebruik om het veldscheidingsteken voor decimalen in te stellen
-      dateFormat:
-        label: Datumnotatie
-        help: Specificeer het formaat van eender welke datumkolom in het bestand, bv. DD/MM/JJJJ voor een 30/04/2014 formaat.
-    yml:
-      filePath:
-        label: Bestand
-        help: Het YAML-bestand om te importeren
-      uploadAllowed:
-        label: Bestanden uploaden toestaan
-        help: Of direct uploaden van het bestand is toegestaan
 job_execution.summary:
-  read: lees
-  read_lines: lees de lijnen
+  read: lezen
   write: geschreven
   skip: overgeslagen
-  create: creëren
+  create: gecreëerd
   process: verwerkt
   update_products: geüpdatete producten
   process_products: verwerkte producten
   skip_products: overgeslagen producten
-  displayed: eerst waarschuwingen weergegeven
+  displayed: eerste waarschuwingen weergegeven
   charset_validator:
     title: 'Bestandscodering:'
     skipped: overgeslagen, extensie in whitelist
   product_skipped_no_diff: overgeslagen product (geen verschillen)
+  item_position: lees de lijnen
 batch_jobs:
   csv_product_export:
     label: Productexport in CSV
@@ -192,81 +62,75 @@ batch_jobs:
   csv_group_export:
     label: Groepexport in CSV
     export.label: Groepexport
-  csv_family_export:
-    label: Familie export in CSV
-    export.label: Familie export
+  csv_variant_group_export:
+    label: Variant groep export in CSV
+    export.label: Variant groep export
   csv_product_import:
     label: Productimport in CSV
+    validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
   csv_category_import:
     label: Categorie-import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Categorie-import
   csv_attribute_import:
     label: Attribuut-import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Attribuut-import
   csv_attribute_option_import:
     label: Attribuutoptie-import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Attribuutoptie-import
   csv_association_type_import:
     label: Associatietype-import in CSV
+    validation.label: Bestandsvalidatie
     import.label: Associatietype-import
   csv_family_import:
-    label: Familie import in CSV
-    import.label: Familie import
+    validation.label: Bestandsvalidatie
   csv_group_import:
     label: Groep importeren in CSV
+    validation.label: Bestandsvalidatie
     import.label: Groep importeren
-  csv_channel_export:
-    label: Kanaal export in CSV
-    export.label: Kanaal export
-  csv_locale_export:
-    label: Locale export in CSV
-    export.label: Locale export
-  csv_attribute_group_export:
-    label: Attribuut groep export in CSV
-    export.label: Attritbuut groep export
-  csv_currency_export:
-    label: Valuta export in CSV
-    export.label: Valuta export
-  csv_group_type_export:
-    label: Groepstype export in CSV
-    export.label: Groepstype export
+  csv_variant_group_import:
+    label: Variant groep import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Variant groep import
   csv_channel_import:
-    label: Kanaal import in CSV
-    import.label: Kanaal import
+    validation.label: Bestandsvalidatie
   csv_locale_import:
-    label: Locale import in CSV
-    import.label: Locale import
+    validation.label: Bestandsvalidatie
   csv_attribute_group_import:
-    label: Attribuut groep import in CSV
-    import.label: Attritbuut groep import
+    validation.label: Bestandsvalidatie
   csv_currency_import:
-    label: Valuta import in CSV
-    import.label: Valuta import
+    validation.label: Bestandsvalidatie
   csv_group_type_import:
-    label: Groepstype-import in CSV
-    import.label: Groep type import
+    validation.label: Bestandsvalidatie
   xlsx_category_import:
     label: Categorie import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Categorie-import
   xlsx_association_type_import:
     label: Associatie type import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Associatietype-import
   xlsx_attribute_import:
     label: Attribuut import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Attribuut-import
   xlsx_attribute_option_import:
     label: Attribuut optie import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Attribuutoptie-import
   xlsx_family_import:
     label: Familie import in XLSX
-    import.label: Familie import
+    validation.label: Bestandsvalidatie
   xlsx_product_export:
     label: Product export in XLSX
     export.label: Productexport
   xlsx_product_import:
     label: Product import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
   xlsx_group_export:
@@ -274,15 +138,17 @@ batch_jobs:
     export.label: Groepexport
   xlsx_variant_group_export:
     label: Variant groep export in XLSX
+    export.label: Variant groep export
   xlsx_group_import:
     label: Groep import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Groep importeren
   xlsx_variant_group_import:
     label: Variant groep import in XLSX
+    validation.label: Bestandsvalidatie
     import.label: Variant Groep import
   xlsx_family_export:
     label: Familie export in XLSX
-    export.label: Familie export
   xlsx_category_export:
     label: Categorie export in XLSX
     export.label: Categorie-export
@@ -295,33 +161,13 @@ batch_jobs:
   xlsx_association_type_export:
     label: Associatie type export in XLSX
     export.label: Associatie type export in XLSX
-  xlsx_channel_export:
-    label: Kanaal export in XLSX
-    export.label: Kanaal export
-  xlsx_locale_export:
-    label: Locale export in XLSX
-    export.label: Locale export
-  xlsx_attribute_group_export:
-    label: Attribuut groep export in XLSX
-    export.label: Attritbuut groep export
-  xlsx_currency_export:
-    label: Valuta export in XLSX
-    export.label: Valuta export
-  xlsx_group_type_export:
-    label: Groep type export in XLSX
-    export.label: Groep type export
   xlsx_channel_import:
-    label: Kanaal import in XLSX
-    import.label: Kanaal import
+    validation.label: Bestandsvalidatie
   xlsx_locale_import:
-    label: Locale import in XLSX
-    import.label: Locale import
+    validation.label: Bestandsvalidatie
   xlsx_attribute_group_import:
-    label: Attribuut groep import in XLSX
-    import.label: Attritbuut groep import
+    validation.label: Bestandsvalidatie
   xlsx_currency_import:
-    label: Valuta import in XLSX
-    import.label: Valuta import
+    validation.label: Bestandsvalidatie
   xlsx_group_type_import:
-    label: Groepstype-import in XLSX
-    import.label: Groep type import
+    validation.label: Bestandsvalidatie

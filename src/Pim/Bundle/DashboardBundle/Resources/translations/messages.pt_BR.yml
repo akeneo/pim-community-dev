@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: Dashboard
+  title: Painel de controle
   version: Versão
   link.label:
     product: Gerenciar Produtos
@@ -18,7 +18,7 @@ pim_dashboard:
       status: Status
       date: Data
       type: Tipo
-      profile name: Nome do Profile
+      "profile name": Nome do Profile
       details: Detalhes
       job_type:
         import: Importar

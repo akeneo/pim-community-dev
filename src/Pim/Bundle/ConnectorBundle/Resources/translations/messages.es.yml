@@ -28,146 +28,8 @@ pim_connector:
     variant_group_writer.title: Almacenamiento de grupo de variantes
     writer.title: Almacenamiento de entidades
     csv_writer.title: Editor Csv
-  export:
-    csv:
-      delimiter:
-        label: Delimitador
-        help: Único caracter utilizado para delimitar el campo
-      enclosure:
-        label: Encuadre
-        help: Único caracter utilizado para encuadrar los campos
-      withHeader:
-        label: Con encabezado
-        help: Imprimir o no el nombre de columnas
-      with_media:
-        label: Exportar archivos e imágenes
-        help: Exportar o no archivos de productos e imágenes
-      filePath:
-        label: Camino del fichero
-        help: Ubicación del archivo generado dentro del servidor
-      decimalSeparator:
-        label: Separador de decimales
-        help: Determinar el separador de decimales
-      dateFormat:
-        label: Formato de fecha
-        help: Determinar el formato de los campos de fecha
-    xlsx:
-      lines_per_files:
-        label: Número de líneas por archivo
-        help: Definir la cantidad límite de líneas por archivo
-      withHeader:
-        label: Con encabezado
-        help: Imprimir o no el nombre de columnas
-      with_media:
-        label: Exportar archivos e imágenes
-        help: Exportar o no archivos de productos e imágenes
-      filePath:
-        label: Camino del fichero
-        help: Ubicación del archivo generado dentro del servidor
-      decimalSeparator:
-        label: Separador de decimales
-        help: Determinar el separador de decimales
-      dateFormat:
-        label: Formato de fecha
-        help: Determinar el formato de los campos de fecha
-    yml:
-      filePath:
-        label: Camino del fichero
-        help: Ubicación del archivo generado dentro del servidor
-  import:
-    csv:
-      enabled:
-        label: Habilitar el producto
-        help: Habilitar o no los productos importados
-      categoriesColumn:
-        label: Columna de categorías
-        help: Nombre de la columna de categorías
-      familyColumn:
-        label: Columna de familias
-        help: Nombre de la columna de familias
-      groupsColumn:
-        label: Columna de grupos
-        help: Nombre de la columna de grupos
-      filePath:
-        label: Archivo
-        help: Fichero CSV a importar
-      uploadAllowed:
-        label: Permitir la carga de ficheros
-        help: Permitir o no cargar el fichero directamente
-      delimiter:
-        label: Delimitador
-        help: Único carácter utilizado para delimitar el campo para el fichero CSV
-      enclosure:
-        label: Encuadre
-        help: Único caracter utilizado para encuadrar los campos
-      escape:
-        label: Escape
-        help: Único carácter utilizado para fijar el escape del campo
-      circularRefsChecked:
-        label: Verificar referencias circulares
-        help: De ser afirmativo, los datos serán procesados para asegurar que no haya referencias circulares entre las categorías
-      realTimeVersioning:
-        label: Actualización del historial en tiempo real
-        help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
-      copyValuesToProducts:
-        label: Copiar los valores de grupo de variantes a los productos
-        help: Significa que el producto es actualizado automáticamente con valores de un grupo de variantes, puede ser desactivado solamente para actualizar el grupo de variantes
-      enabledComparison:
-        label: Comparar valores
-        help: Permite comparar entre los valores originales y valores importados. Puede acelerar la importación si los valores importados son similares a los valores originales
-      decimalSeparator:
-        label: Separador de decimales
-        help: Único carácter utilizado para fijar el separador de campo por decimal
-      dateFormat:
-        label: Formato de fecha
-        help: Especifique el formato de cada columna tipo fecha en el archivo, por ejemplo DD/MM/YYYY para el formato 30/04/2014.
-    xlsx:
-      enabled:
-        label: Habilitar el producto
-        help: Habilitar o no los productos importados
-      categoriesColumn:
-        label: Columna de categorías
-        help: Nombre de la columna de categorías
-      familyColumn:
-        label: Columna de familias
-        help: Nombre de la columna de familias
-      groupsColumn:
-        label: Columna de grupos
-        help: Nombre de la columna de grupos
-      filePath:
-        label: Archivo
-        help: Fichero XLSX a importar
-      uploadAllowed:
-        label: Permitir la carga de ficheros
-        help: Permitir o no cargar el fichero directamente
-      circularRefsChecked:
-        label: Verificar referencias circulares
-        help: De ser afirmativo, los datos serán procesados para asegurar que no haya referencias circulares entre las categorías
-      realTimeVersioning:
-        label: Actualización del historial en tiempo real
-        help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
-      copyValuesToProducts:
-        label: Copiar los valores de grupo de variantes a los productos
-        help: Significa que el producto es actualizado automáticamente con valores de un grupo de variantes, puede ser desactivado solamente para actualizar el grupo de variantes
-      enabledComparison:
-        label: Comparar valores
-        help: Permite comparar entre los valores originales y valores importados. Puede acelerar la importación si los valores importados son similares a los valores originales
-      decimalSeparator:
-        label: Separador de decimales
-        help: Único carácter utilizado para fijar el separador de campo por decimal
-      dateFormat:
-        label: Formato de fecha
-        help: Especifique el formato de cada columna tipo fecha en el archivo, por ejemplo DD/MM/YYYY para el formato 30/04/2014.
-    yml:
-      filePath:
-        label: Archivo
-        help: Fichero YML a importar
-      uploadAllowed:
-        label: Permitir la carga de ficheros
-        help: Permitir o no cargar el fichero directamente
 job_execution.summary:
   read: leer
-  read_lines: líneas leídas
   write: escrito
   skip: omitido
   create: creado
@@ -175,11 +37,13 @@ job_execution.summary:
   update_products: productos actualizados
   process_products: productos procesados
   skip_products: productos omitidos
-  displayed: primeras alertas mostradas
+  displayed: primeras advertencias mostradas
   charset_validator:
-    title: 'Codificación del archivo:'
-    skipped: omitido, extensión en la lista blanca
+    title: 'Codificación de Archivo:'
+    skipped: omitido, extensión en lista blanca
   product_skipped_no_diff: producto omitido (ninguna diferencia)
+  product_skipped_no_associations: Productos omitidos (asociaciones no detectadas)
+  item_position: líneas leídas
 batch_jobs:
   csv_product_export:
     label: Exportar productos a CSV
@@ -260,7 +124,7 @@ batch_jobs:
   csv_locale_import:
     label: Importar locales en CSV
     validation.label: Validación de archivo
-    import.label: Importar canales
+    import.label: Importar locales
   csv_attribute_group_import:
     label: Importar grupo de atributos en CSV
     validation.label: Validación de archivo

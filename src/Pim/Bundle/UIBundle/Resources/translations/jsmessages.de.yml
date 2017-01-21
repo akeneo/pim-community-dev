@@ -110,3 +110,6 @@ oro_config:
         notification:
           title: Benachrichtigungen
           system_notification: Benachrichtigungen über neue Versionen
+        loading_message:
+          title: Nachrichten werden geladen
+          label: Nachrichten laden aktivieren
