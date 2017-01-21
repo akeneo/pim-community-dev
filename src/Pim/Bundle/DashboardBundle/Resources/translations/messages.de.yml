@@ -18,10 +18,10 @@ pim_dashboard:
       status: Status
       date: Datum
       type: Typ
-      profile name: Profilname
+      "profile name": Profilname
       details: Details
       job_type:
         import: Import
         export: Export
-        mass_edit: Mehrere bearbeiten
+        mass_edit: Massenbearbeitung
         quick_export: Schnellexport

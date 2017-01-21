@@ -1,7 +1,7 @@
 confirmation:
   remove:
     item: Jeste li sigurni da želite izbrisati ovu stavku?
-    association type: Jeste li sigurni da želite izbrisati ovaj tip pridruživanja?
+    association_type: Jeste li sigurni da želite izbrisati ovaj tip pridruživanja?
     attribute: Jeste li sigurni da želite izbrisati ovaj atribut?
     family: Jeste li sigurni da želite izbrisati ovu obitelj?
     product: Jeste li sigurni da želite izbrisati ovaj proizvod?
@@ -24,10 +24,15 @@ pim_datagrid:
       confirm_content: Jeste li sigurni da želite izbrisati odabrane proizvode?
       success: Odabrani proizvodi su uspješno izbrisani.
       error: Dogodila se pogreška prilikom pokušaja brisanja odabranih proizvoda, molimo pokušajte ponovo.
+  view_selector:
+    view: Pregledi
+    create_view_modal:
+      confirm: OK
+      cancel: Poništi
 flash:
   item:
     removed: Stavka je uspješno uklonjena
-  association type:
+  association_type:
     removed: Tip pridruživanja je uspješno uklonjen
   attribute:
     removed: Atribut je uspješno uklonjen
@@ -54,7 +59,7 @@ flash:
 error:
   removing:
     item: Ne možete izbrisati ovu stavku
-    association type: Ne možete izbrisati ovaj tip pridruživanja
+    association_type: Ne možete izbrisati ovaj tip pridruživanja
     attribute: Ne možete izbrisati ovaj atribut
     family: Ne možete izbrisati ovu obitelj
     product: Ne možete izbrisati ovaj proizvod
@@ -84,8 +89,8 @@ label:
   attribute_option:
     add_option: Dodati mogućnost
 Code: Kod
-Edit: Uređivanje
-Delete: Brisanje
+Edit: Uredi
+Delete: Obriši
 Edit attributes of the product: Uređivanje atributa proizvoda
 Classify the product: Klasifikacija proizvoda
 Delete the product: Brisanje proizvoda
@@ -103,13 +108,13 @@ pim:
       mass_edit: Promijeni informacije o proizvodu
       category_edit: Premjesti proizvode u kategorije
       sequential_edit: Sekvencijalno uređivanje proizvoda
-jstree.create: Kreiranje
+jstree.create: Kreiraj
 switch_on: "Da"
 switch_off: "Ne"
 pim_enrich:
   item:
     list:
-      delete.label: Brisanje
+      delete.label: Obriši
       delete.error: Pogreška tijekom brisanje stavke
     delete:
       confirm.content: Jeste li sigurni da želite izbrisati ovaj {{ itemName }}? Nije moguće poništiti ovu akciju
@@ -138,7 +143,7 @@ pim_enrich:
       history:
         version: Verzija
         author: Autor
-        logged_at: Zabilježeno na
+        logged_at: Prijavljen u
         more: Više
         less: Manje
         from: Od
@@ -160,9 +165,9 @@ pim_enrich:
         upload: Došlo je do pogreške tijekom prijenosa datoteke
       meta:
         created: Kreirano
-        created_by: Od strane
-        updated_by: Od strane
-        updated: Zadnja izmjena
+        created_by: Od
+        updated_by: Od
+        updated: Posljednje Ažuriranje
         family:
           title: Obitelj
           none: Niti jedan
@@ -183,8 +188,8 @@ pim_enrich:
       variant_group:
         updated_by: Ažurirano sa varijantom grupe
         switch:
-          "yes": Da
-          "no": Ne
+          "yes": "Da"
+          "no": "Ne"
       optional_attribute:
         remove: Ukloni ovaj atribut
       locale_specific_attribute:
@@ -199,9 +204,22 @@ pim_enrich:
           family: Odaberi obitelj
           save: Spremi
           cancel: Poništi
+    association_type:
+      info:
+        field_not_ready:
+          The association type cannot be saved right now. The following fields are not ready:
+            - polja
+      meta:
+        created: Kreirano
+        created_by: Kreirao korisnik
+        updated: Ažurirano
+        updated_by: Ažurirao korisnik
+      btn:
+        save: Spremi
     attribute_option:
       code: Kod
       label: Oznaka
+      actions: Akcije
     variant_group:
       title: Varijanta grupa
       info:
@@ -214,6 +232,24 @@ pim_enrich:
             - polja
         already_in_upload: Datoteka je već procesu prijenosa za ovaj atribut u lokalizaciji "{{ locale }}" i opsegu "{{ scope }}"
         no_attributes: Ova varijanta grupe još nema atribute
+      btn:
+        save: Spremi
+      meta:
+        product_count: Proizvodi
+        created: Kreirano
+        created_by: Kreirao korisnik
+        updated: Ažurirano
+        updated_by: Ažurirao korisnik
+    group:
+      title: Grupa
+      info:
+        deletion_successful: Grupa je uspješno obrisana.
+        deletion_failed: Nije moguće izbrisati grupu.
+        update_successful: Grupa je uspješno ažurirana.
+        update_failed: Grupa se ne može ažurirati.
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - polja
       btn:
         save: Spremi
       meta:
@@ -244,10 +280,10 @@ pim_enrich:
         associations:
           title: Povezanost
           info:
-            none_exist: Ne postoji tip povezanosti.
+            none_exist: Ne postoji tip pridruživanja.
             show_products: Prikaži proizvode
             show_groups: Prikaži grupe
-            number_of_associations: '{{ productCount }} proizvoda i {{ groupCount }} grupe'
+            number_of_associations: "{{ productCount }} proizvoda i {{ groupCount }} grupe"
         attributes:
           title: Atributi
           btn:
@@ -256,7 +292,7 @@ pim_enrich:
           info:
             search_attributes: Pretraži...
             no_available_attributes: Nema više atributa koje se može dodati
-            attributes_selected: '{{ attributeCount }} atributa odabrano'
+            attributes_selected: "{{ attributeCount }} atributa odabrano"
             no_match: Nisu pronađeni rezultati
             load_more: Učitavanje više rezultata...
         categories:
@@ -271,8 +307,8 @@ pim_enrich:
         history:
           title: Povijest
       switch:
-        "no": Ne
-        "yes": Da
+        "no": "Ne"
+        "yes": "Da"
       sequential_edit:
         info:
           products: proizvodi
@@ -293,6 +329,15 @@ pim_enrich:
       mass_edit:
         select_attributes: Odaberi atribute
         select: Odaberi
+    association_type:
+      tab:
+        properties:
+          title: Svojstva
+          general: Opća svojstva
+          code: Kod
+          label_translations: Prijevodi oznaka
+        history:
+          title: Povijest
     attribute_option:
       flash:
         option_created: Opcija atributa je uspješno kreirana
@@ -300,11 +345,11 @@ pim_enrich:
       add_option_modal:
         title: Dodaj opciju atributa
         confirm: Dodaj
-        cancel: Odustani
+        cancel: Poništi
     entity:
       switch:
-        "no": Ne
-        "yes": Da
+        "no": "Ne"
+        "yes": "Da"
     variant_group:
       tab:
         properties:
@@ -320,6 +365,18 @@ pim_enrich:
           title: Proizvodi
         attributes:
           title: Atributi
+    group:
+      tab:
+        properties:
+          title: Svojstva
+          general: Opća svojstva
+          code: Kod
+          type: Tip
+          label_translations: Prijevodi oznaka
+        history:
+          title: Povijest
+        products:
+          title: Proizvodi
     common:
       tab:
         attributes:
@@ -329,6 +386,74 @@ pim_enrich:
           info:
             search_attributes: Pretraži...
             no_available_attributes: Nema više atributa koje se može dodati
+    job_instance:
+      button:
+        edit.title: Uredi
+        export.title: Izvezi odmah
+        import.launch: Uvezi odmah
+        import.upload: Prebaci i uvezi odmah
+      meta:
+        job: Posao
+        connector: Priključak
+      tab:
+        content:
+          title: Sadržaj
+        properties:
+          title: Opća svojstva
+          code:
+            title: Kod
+          label:
+            title: Oznaka
+          decimal_separator:
+            title: Odvajanje decimala
+            help: Određivanje odvajanja decimala
+          date_format:
+            title: Format datuma
+            help: Određivanje oblika polja za datum
+          file_path:
+            title: Put datoteke
+            help: Gdje se zapisuje generirana datoteka u datotečnom sustavu
+          delimiter:
+            title: Graničnik
+            help: Jedan znak se koristi za postavljanje granice polja
+          enclosure:
+            title: Zagrada
+            help: Jedan znak se koristi za postavljanje zagrade polja
+          with_header:
+            title: Sa zaglavljem
+            help: Da li se ispisuje naziv stupaca
+          with_media:
+            title: Izvoz datoteka i slika
+            help: Izvoz datoteke proizvoda i slika ili ne
+          lines_per_file:
+            title: Broj redaka po datoteci
+            help: Definiranje broja redaka po datoteci
+          upload_allowed:
+            title: Omogući prijenos datoteke
+            help: Omogući izravno učitavanje datoteke
+          categories_column:
+            title: Stupac kategorije
+            help: Naziv stupca kategorije
+          escape:
+            title: Izlaz
+            help: Jedan znak koji se koristi za postavljanje polja izlaza
+          family_column:
+            title: Stupac obitelji
+            help: Naziv stupca obitelji
+          groups_column:
+            title: Stupac grupe
+            help: Naziv stupca grupe
+          enabled:
+            title: Omogući proizvod
+            help: Da li uvezeni proizvod treba biti omogućen
+          enabled_comparison:
+            title: Usporedba vrijednosti
+            help: Omogući usporedbe između izvorne vrijednosti i uvezene vrijednosti. Može se ubrzati uvoz ako su uvezene vrijednosti vrlo slične izvornim vrijednostima
+          real_time_versioning:
+            title: Povijest ažuriranja u stvarnom vremenu
+            help: Znači da će se povijest proizvoda automatski ažurirati, može se isključiti za poboljšanje performansi
+        history:
+          title: Povijest
   export:
     product:
       data:
@@ -347,7 +472,7 @@ pim_enrich:
         attributes:
           title: Atributi
           edit: Uredi
-          label: '{0} svi atributi |{1} jedan atribut odabran |] 1, Inf [{{ count }} atributa odabrano'
+          label: "{0} svi atributi |{1} jedan atribut odabran |] 1, Inf [{{ count }} atributa odabrano"
           help: 'Odaberite informacije o proizvodima za izvoz. Npr: samo tehnički atributi.'
           empty: Svi atributi će se izvesti
           modal:
@@ -356,8 +481,8 @@ pim_enrich:
             title: Odabir atributa
         attributes_selector:
           attribute_group: Grupe atributa
-          attributes: Pretraži unutar {{ attributeCount }} atributa
-          selected: Odabrani atributi
+          attributes: "Pretraži unutar {{ attributeCount }} atributa"
+          selected: "Odabrani atributi"
           clear: Obriši
           all_group: Sve grupe
           empty_selection: Svi atributi će se izvesti
@@ -366,17 +491,17 @@ pim_enrich:
           help: 'Odaberite proizvode za izvoz u odnosu na njihovu obitelji. Ex: Izvoz samo za cipele i haljine.'
           operators:
             IN: U popisu
-            NOT IN: Nije na popisu
+            "NOT IN": Nije na popisu
             EMPTY: Proizvodi koji nemaju obitelj
-            NOT EMPTY: Proizvodi koji imaju obitelj
+            "NOT EMPTY": Proizvodi koji imaju obitelj
           empty_selection: Nema stanja o obitelji
         updated:
           title: Uvjeti vremena
           operators:
             ALL: Ne postoji datum stanja
-            SINCE LAST N DAYS: Ažurirani proizvodi tijekom posljednjih n dana (npr. 6)
-            >: Ažurirani proizvodi od ovog datuma
-            SINCE LAST JOB: Ažurirani proizvodi od zadnjeg exporta
+            "SINCE LAST N DAYS": Ažurirani proizvodi tijekom posljednjih n dana (npr. 6)
+            ">": Ažurirani proizvodi od ovog datuma
+            "SINCE LAST JOB": Ažurirani proizvodi od zadnjeg exporta
         enabled:
           title: Status
           help: 'Odaberite proizvode za izvoz preko njihovog statusa. Ex: Izvoz proizvoda neovisno o njihovom statusu.'
@@ -389,8 +514,8 @@ pim_enrich:
           help: Odaberite proizvode za izvoz po njihovoj cjelovitosti.
           operators:
             ALL: Nema stanja o potpunosti podataka
-            >=: Kompletiraj barem jedan selektirani lokalni parametar
-            GREATER OR EQUALS THAN ON ALL LOCALES: Kompletiraj sve selektirane lokalne parametre
+            ">=": Kompletiraj barem jedan selektirani lokalni parametar
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Kompletiraj sve selektirane lokalne parametre
             LOWER THAN ON ALL LOCALES: Nisu kompletirani svi odabrani lokalni parametri
           empty_selection: Odaberite obitelj
         category:
@@ -401,12 +526,12 @@ pim_enrich:
           help: Identifikatori proizvoda za izvoz odvojeni su zarezima, razmakom ili prijelomom
         metric:
           operators:
-            =: Je jednako
-            !=: Nije jednako
-            >=: Veće od ili jednako
-            >: Veće od
-            <=: Manje od ili jednako
-            <: Manje od
+            "=": Je jednako
+            "!=": Nije jednako
+            ">=": Veće od ili jednako
+            ">": Veće od
+            "<=": Manje od ili jednako
+            "<": Manje od
             EMPTY: Je prazan
             NOT EMPTY: Nije prazan
         string:
@@ -414,19 +539,19 @@ pim_enrich:
             ALL: Sve
             CONTAINS: Sadrži
             DOES NOT CONTAIN: Ne sadrži
-            =: Je jednako
+            "=": Je jednako
             STARTS WITH: Počinje sa
             ENDS WITH: Završava sa
             EMPTY: Je prazan
             NOT EMPTY: Nije prazan
         price-collection:
           operators:
-            =: Je jednako
-            !=: Nije jednako
-            >=: Veće od ili jednako
-            >: Veće od
-            <=: Manje od ili jednako
-            <: Manje od
+            "=": Je jednako
+            "!=": Nije jednako
+            ">=": Veće od ili jednako
+            ">": Veće od
+            "<=": Manje od ili jednako
+            "<": Manje od
             EMPTY: Je prazan
             NOT EMPTY: Nije prazan
         multi_select:
@@ -438,31 +563,35 @@ pim_enrich:
           operators:
             CONTAINS: Sadrži
             DOES NOT CONTAIN: Ne sadrži
-            =: Je jednako
+            "=": Je jednako
             STARTS WITH: Počinje sa
             ENDS WITH: Završava sa
             EMPTY: Je prazan
             NOT EMPTY: Nije prazan
         date:
           operators:
-            >: Veće od
-            <: Manje od
-            =: Je jednako
-            !=: Nije jednako
+            ">": Veće od
+            "<": Manje od
+            "=": Je jednako
+            "!=": Nije jednako
             BETWEEN: Između
             NOT BETWEEN: Nije između
             EMPTY: Je prazan
             NOT EMPTY: Nije prazan
         number:
           operators:
-            =: Je jednako
-            !=: Nije jednako
-            >=: Veće od ili jednako
-            >: Veće od
-            <=: Manje od ili jednako
-            <: Manje od
+            "=": Je jednako
+            "!=": Nije jednako
+            ">=": Veće od ili jednako
+            ">": Veće od
+            "<=": Manje od ili jednako
+            "<": Manje od
             EMPTY: Je prazan
             NOT EMPTY: Nije prazan
+      properties:
+        title: Svojstva
+      global_settings:
+        title: Globalne postavke
   mass_edit_action:
     edit_common_attributes:
       description: Atributi odabranih proizvoda u tabličnom prikazu proizvoda će se promijeniti s podacima za lokalizaciju <span class="highlight">{{ locale }}</span> i kanala <span class="highlight">{{ channel }}</span>.
