@@ -70,6 +70,16 @@ suites:
         src_path: src/Akeneo/Bundle/MeasureBundle
 
     ## Pim Components
+    Structuring:
+        namespace: Pim\Component\Structuring
+        psr4_prefix: Pim\Component\Structuring
+        spec_path: src/Pim/Component/Structuring
+        src_path: src/Pim/Component/Structuring
+    PimClassification:
+        namespace: Pim\Component\Classification
+        psr4_prefix: Pim\Component\Classification
+        spec_path: src/Pim/Component/Classification
+        src_path: src/Pim/Component/Classification
     ReferenceData:
         namespace: Pim\Component\ReferenceData
         psr4_prefix: Pim\Component\ReferenceData
