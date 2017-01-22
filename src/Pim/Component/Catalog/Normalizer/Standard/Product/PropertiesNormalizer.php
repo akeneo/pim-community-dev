@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -75,13 +76,13 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
     /**
      * Normalize the values of the product
      *
-     * @param ArrayCollection $values
-     * @param string          $format
-     * @param array           $context
+     * @param ProductValueCollectionInterface $values
+     * @param string                          $format
+     * @param array                           $context
      *
      * @return ArrayCollection
      */
-    private function normalizeValues(ArrayCollection $values, $format, array $context = [])
+    private function normalizeValues(ProductValueCollectionInterface $values, $format, array $context = [])
     {
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection($values, $filterType, $context);

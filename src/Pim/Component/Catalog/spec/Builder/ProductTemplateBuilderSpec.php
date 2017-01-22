@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilder;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
@@ -50,7 +51,9 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $color->isLocalizable()->willReturn(false);
         $color->isScopable()->willReturn(false);
         $colorValue->getAttribute()->willReturn($color);
-        $colorValue->setEntity(Argument::type('Pim\Component\Catalog\Model\Product'))->willReturn($colorValue);
+        $colorValue->getScope()->willReturn(null);
+        $colorValue->getLocale()->willReturn(null);
+        $colorValue->setProduct(Argument::type(Product::class))->shouldBeCalled();
 
         $options = ['locale' => 'en_US', 'disable_grouping_separator' => true];
         $template->getValuesData()->willReturn(['color' => 'bar']);
@@ -66,7 +69,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $normalizer
-            ->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'standard', [
+            ->normalize(Argument::type('Pim\Component\Catalog\Model\ProductValueCollection'), 'standard', [
                 'entity'                     => 'product',
                 'locale'                     => 'en_US',
                 'disable_grouping_separator' => true

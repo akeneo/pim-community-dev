@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -77,7 +77,11 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         ProductInterface $removedProduct,
         ProductInterface $addedProduct,
         ProductTemplateInterface $productTemplate,
-        ProductQueryBuilderInterface $pqb
+        ProductQueryBuilderInterface $pqb,
+        ProductValueInterface $productValue,
+        ProductValueInterface $identifierValue,
+        ProductValueCollection $values,
+        \ArrayIterator $valuesIterator
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->findOneByIdentifier('main_color')->willReturn($attribute);
@@ -105,12 +109,16 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();
 
-        $productValue = new ProductValue();
-        $identifierValue = new ProductValue();
-
         $productBuilder->createProduct()->willReturn($product);
-        $product->getValues()->willReturn(new ArrayCollection([$productValue, $identifierValue]));
+        $product->getValues()->willReturn($values);
         $product->getIdentifier()->willReturn($identifierValue);
+
+        $values->getIterator()->willReturn($valuesIterator);
+        $values->remove($identifierValue)->shouldBeCalled();
+        $valuesIterator->rewind()->shouldBeCalled();
+        $valuesIterator->valid()->willReturn(true, true, false);
+        $valuesIterator->current()->willReturn($productValue, $identifierValue);
+        $valuesIterator->next()->shouldBeCalled();
 
         $values = [
             'code'         => 'mycode',
@@ -141,7 +149,11 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         GroupInterface $variantGroup,
         GroupTypeInterface $type,
         ProductInterface $product,
-        ProductTemplateInterface $productTemplate
+        ProductTemplateInterface $productTemplate,
+        ProductValueInterface $productValue,
+        ProductValueInterface $identifierValue,
+        ProductValueCollection $values,
+        \ArrayIterator $valuesIterator
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $pqbFactory->create()->shouldNotBeCalled();
@@ -158,12 +170,16 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $productTemplate->setValues(Argument::any())->shouldBeCalled();
         $productTemplate->setValuesData([])->shouldBeCalled();
 
-        $productValue = new ProductValue();
-        $identifierValue = new ProductValue();
-
         $productBuilder->createProduct()->willReturn($product);
-        $product->getValues()->willReturn(new ArrayCollection([$productValue, $identifierValue]));
+        $product->getValues()->willReturn($values);
         $product->getIdentifier()->willReturn($identifierValue);
+
+        $values->getIterator()->willReturn($valuesIterator);
+        $values->remove($identifierValue)->shouldBeCalled();
+        $valuesIterator->rewind()->shouldBeCalled();
+        $valuesIterator->valid()->willReturn(true, true, false);
+        $valuesIterator->current()->willReturn($productValue, $identifierValue);
+        $valuesIterator->next()->shouldBeCalled();
 
         $values = [
             'code'     => 'mycode',
@@ -250,8 +266,8 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         ProductBuilderInterface $productBuilder,
         ProductInterface $product,
         ProductValueInterface $identifier,
-        ArrayCollection $values,
-        \Iterator $valuesIterator
+        ProductValueCollection $values,
+        \ArrayIterator $valuesIterator
     ) {
         $originalValues = [
             'description' => [
@@ -310,9 +326,13 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $productBuilder->createProduct()->willReturn($product);
         $product->getValues()->willReturn($values);
         $product->getIdentifier()->willReturn($identifier);
-        $values->removeElement($identifier)->shouldBeCalled();
+        $values->remove($identifier)->shouldBeCalled();
 
         $values->getIterator()->willReturn($valuesIterator);
+        $valuesIterator->rewind()->shouldBeCalled();
+        $valuesIterator->valid()->willReturn(true, false);
+        $valuesIterator->current()->willReturn($identifier);
+        $valuesIterator->next()->shouldBeCalled();
 
         $template->setValues($values)->shouldBeCalled();
         $template->setValuesData($expectedValues)->shouldBeCalled();

@@ -65,7 +65,9 @@ class ProductBuilderSpec extends ObjectBehavior
         $skuAttribute->getCode()->willReturn('sku');
 
         $productValue->getAttribute()->willReturn($skuAttribute);
-        $productValue->setEntity(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
+        $productValue->getScope()->willReturn(null);
+        $productValue->getLocale()->willReturn(null);
+        $productValue->setProduct(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
         $productValueFactory->create($skuAttribute, null, null)
             ->willReturn($productValue);
 
@@ -99,7 +101,9 @@ class ProductBuilderSpec extends ObjectBehavior
         $tshirtFamily->getAttributes()->willReturn([]);
 
         $productValue->setData('mysku')->shouldBeCalled();
-        $productValue->setEntity(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
+        $productValue->getScope()->willReturn(null);
+        $productValue->getLocale()->willReturn(null);
+        $productValue->setProduct(Argument::type(self::PRODUCT_CLASS))->shouldBeCalled();
         $productValue->getAttribute()->willReturn($skuAttribute);
         $productValueFactory->create($skuAttribute, null, null)
             ->willReturn($productValue);

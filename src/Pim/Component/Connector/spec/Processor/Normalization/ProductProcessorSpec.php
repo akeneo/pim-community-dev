@@ -16,6 +16,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -144,7 +145,7 @@ class ProductProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         ProductValueInterface $identifier,
-        ArrayCollection $valuesCollection,
+        ProductValueCollectionInterface $valuesCollection,
         ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -215,7 +216,7 @@ class ProductProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         ProductValueInterface $identifier,
-        ArrayCollection $valuesCollection,
+        ProductValueCollectionInterface $valuesCollection,
         ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
