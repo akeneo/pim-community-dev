@@ -10,6 +10,11 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_serializer'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+            - '@router'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category'
 
     pim_api.controller.rest.family:
