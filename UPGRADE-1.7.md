@@ -160,17 +160,17 @@ Previously, to normalize an entity for versioning, formats allowed were `flat` a
 ### CSS Refactoring
 
 Akeneo 1.7 comes with a refactor of a large part of the CSS, with the implementation of [BEM methodology](http://getbem.com/introduction/).
-For more information about our choices, please read the [Akeneo Style guide documentation](https://docs.akeneo.com/1.7/styleguide/).
+For more information about our choices, please read the [Akeneo Style guide documentation](https://docs.akeneo.com/master/styleguide/).
 
-This work have been done for several reasons:
+This work has been done for several reasons:
 
 - Remove all the unused CSS declarations (~ 8600 CSS lines)
-- Make re-usable components (not dependent of context)
-- Avoid hard overriding (`!important`, selectors with tags are now forbidden)
+- Make re-usable components (independent of context)
+- Avoid hard overriding (`!important` or selectors with tags are now forbidden)
 - List all the components for developers
 - Split code into dedicated files [in one folder](https://github.com/akeneo/pim-community-dev/tree/master/src/Pim/Bundle/UIBundle/Resources/public/less/components)
 
-If you used styled components in a custom bundle, you have to some changes to do manually.
+If you used styled components in a custom bundle, you have to do some changes manually.
 
 #### Examples
 
@@ -184,7 +184,7 @@ You now have to use:
 <button class="AknButton AknButton--apply">Primary Button</button>
 ```
 
-**Warning!** In the previous example, you may use bootstrap `btn` class to catch events in Javascript.
+**Warning!** In the previous example, you may use bootstrap `btn` class to catch Javascript events.
 We very strongly encourage you to avoid using "style" class to select elements for Javascript events.
 A better solution is to add a unique class to your element, like "view-creator", to use for Javascript events.
 
@@ -199,4 +199,4 @@ The next table lists usual previous classes and the new ones to use.
 | `<input type="text">`      | `<input type="text" class="AknTextField">` |
 | `<input type="btn-group">` | `<input type="AknButtonList">`             |
 
-The complete list of changes is available on [Akeneo Style guide documentation](https://docs.akeneo.com/1.7/styleguide/).
+The complete list of changes is available on [Akeneo Style guide documentation](https://docs.akeneo.com/master/styleguide/).
