@@ -16,7 +16,7 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 class ProjectCompletenessIntegration extends ActivityManagerTestCase
 {
     /**
-     * Family: tshirt (3 products)
+     * Family: tshirt (3 products + 1 uncategorized product)
      * Channel: ecommerce
      * Locale: en_US
      */
@@ -40,7 +40,7 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
         $this->calculateProject($project);
 
         /**
-         * Julia is a project creator, she creates a project on the "tshirt" family (3 products)
+         * Julia is a project creator, she creates a project on the "tshirt" family
          * She can access to all categories and attributes groups (for all products at least one attribute group is not done)
          */
         $projectCompleteness = $this->getProjectCompleteness($project);
@@ -102,7 +102,8 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
     }
 
     /**
-     * Family: tshirt and usb_keys (5 products)
+     * Family: tshirt(3 products + 1 uncategorized product) and usb_keys (2 products)
+     * The hight tech and clothing category share a common product
      * Channel: ecommerce
      * Locale: en_US
      */
@@ -126,7 +127,7 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
         $this->calculateProject($project);
 
         /**
-         * Julia is a project creator, she creates a project on the "tshirt" family (3 products)
+         * Julia is a project creator, she creates a project on the "tshirt" family
          * She can access to all categories and attributes groups (for all product at least one attribute group is not done)
          */
         $projectCompleteness = $this->getProjectCompleteness($project);
