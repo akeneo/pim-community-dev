@@ -127,8 +127,8 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
     }
 
     /**
-     * Stores an identifier in the bag "bulk_identifier_bag",to be able to check duplications.
-     * The bag should be reset after each bulk is processed. Typically, in the Writer.
+     * Stores an identifier in the bag "bulk_identifier_bag" in order to check duplications.
+     * The bag should be reset after each bulk is processed.
      *
      * @param array  $item
      * @param string $identifier
