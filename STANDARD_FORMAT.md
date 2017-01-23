@@ -39,7 +39,7 @@ For instance, the standard format of an object that contains the properties *a_d
     
         array:2 [
           "a_decimal" => "46546.65987313"
-          "a_negative_deciaml" => "-45.8981226"
+          "a_negative_decimal" => "-45.8981226"
         ]
 
 Linked entities are represented only by their identifier as strings. For instance, the standard format of a *foo* object that has a link to an external *bar* object would be:
