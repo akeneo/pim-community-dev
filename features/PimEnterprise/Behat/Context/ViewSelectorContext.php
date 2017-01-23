@@ -47,6 +47,14 @@ class ViewSelectorContext extends PimContext
     }
 
     /**
+     * @Given /^I click on the remove project button$/
+     */
+    public function iClickOnRemoveProjectButton()
+    {
+        $this->getCurrentPage()->clickOnRemoveProjectButton();
+    }
+
+    /**
      * @Then /^I should( not)? see the "([^"]*)" project$/
      *
      * @param string $not

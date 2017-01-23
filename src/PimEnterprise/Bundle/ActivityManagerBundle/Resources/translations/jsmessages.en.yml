@@ -5,9 +5,13 @@ activity_manager:
         view_selector:
             create: Create project
             edit: Edit project
+            remove: Delete project
             create_from_view: Create a project from this view
             loading: Loading...
             start_new_project: Start a new project
+            confirmation:
+                remove: Are you sure you want to delete this project?
+                delete: Delete confirmation
     project:
         label: Label
         label_maxlength: This value is too long. It should have {{ max }} characters or less.

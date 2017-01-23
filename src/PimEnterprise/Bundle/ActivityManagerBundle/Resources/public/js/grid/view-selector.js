@@ -31,6 +31,7 @@ define(
              */
             configure: function (gridAlias) {
                 this.listenTo(this.getRoot(), 'grid:view-selector:project-edited', this.onProjectEdited.bind(this));
+                this.listenTo(this.getRoot(), 'grid:view-selector:project-removed', this.onProjectRemoved.bind(this));
 
                 return ViewSelector.prototype.configure.apply(this, arguments);
             },
@@ -94,11 +95,24 @@ define(
                 }
             },
 
+            /**
+             * Method called when a project has been edited.
+             */
             onProjectEdited: function () {
                 FetcherRegistry.getFetcher('datagrid-view').clear();
                 FetcherRegistry.getFetcher('project').clear();
 
                 this.reloadPage();
+            },
+
+            /**
+             * Method called when a project has been removed.
+             */
+            onProjectRemoved: function () {
+                FetcherRegistry.getFetcher('project').clear();
+                this.currentViewType = 'view';
+
+                this.selectView(this.getDefaultView());
             },
 
             /**

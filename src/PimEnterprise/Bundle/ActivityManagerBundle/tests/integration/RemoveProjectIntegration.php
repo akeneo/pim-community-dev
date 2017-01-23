@@ -61,6 +61,35 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
     }
 
     /**
+     * Test if datagrid view of a project is deleted on a project deletion.
+     */
+    public function testThatProjectRemovalRemovesAssociatedDatagridView()
+    {
+        $project = $this->createProject([
+            'label' => 'High-Tech project',
+            'locale' => 'en_US',
+            'owner'=> 'admin',
+            'channel' => 'ecommerce',
+            'product_filters' =>[
+                [
+                    'field' => 'categories',
+                    'operator' => 'IN',
+                    'value' => ['high_tech'],
+                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                ],
+            ],
+        ]);
+
+        $this->calculateProject($project);
+        $viewId = $project->getDatagridView()->getId();
+
+        $this->get('pimee_activity_manager.remover.project')->remove($project);
+
+        $view = $this->get('pim_datagrid.repository.datagrid_view')->find($viewId);
+        $this->assertTrue(null === $view, 'View should be deleted on a project deletion, but is still in database.');
+    }
+
+    /**
      * Checks if pre processing entries are well removed after a project removal.
      * Entries that have to be removed are rows containing products associated to the removed project
      * AND not associated to another project.

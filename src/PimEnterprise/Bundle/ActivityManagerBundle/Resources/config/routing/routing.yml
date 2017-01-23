@@ -4,6 +4,11 @@ activity_manager_project_create:
     defaults: { _controller: pimee_activity_manager.controller.project_controller:createAction}
     methods: [POST]
 
+activity_manager_project_remove:
+    path: /projects/{identifier}
+    defaults: { _controller: pimee_activity_manager.controller.project_controller:removeAction}
+    methods: [DELETE]
+
 activity_manager_project_search:
     path: /projects/search
     defaults: { _controller: pimee_activity_manager.controller.project_controller:searchAction, _format: json }
