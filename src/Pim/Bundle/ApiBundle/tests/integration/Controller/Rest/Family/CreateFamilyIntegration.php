@@ -48,8 +48,9 @@ JSON;
             'attributes'             => ['sku'],
             'attribute_as_label'     => 'sku',
             'attribute_requirements' => [
-                'ecommerce' => ['sku'],
-                'tablet'    => ['sku'],
+                'ecommerce'       => ['sku'],
+                'ecommerce_china' => ['sku'],
+                'tablet'          => ['sku'],
             ],
             'labels'                 => [],
         ];
@@ -88,8 +89,9 @@ JSON;
             'attributes'             => ['a_metric', 'a_price', 'an_image', 'sku'],
             'attribute_as_label'     => 'sku',
             'attribute_requirements' => [
-                'ecommerce' => ['a_metric', 'sku'],
-                'tablet'    => ['a_price', 'sku'],
+                'ecommerce'       => ['a_metric', 'sku'],
+                'ecommerce_china' => ['sku'],
+                'tablet'          => ['a_price', 'sku'],
             ],
             'labels'                 => [
                 'en_US' => 'Complete Family creation',
