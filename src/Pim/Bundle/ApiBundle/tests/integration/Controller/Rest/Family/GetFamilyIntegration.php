@@ -2,8 +2,9 @@
 
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Family;
 
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Test\Integration\TestCase;
 
 class GetFamilyIntegration extends TestCase
 {
@@ -100,5 +101,16 @@ class GetFamilyIntegration extends TestCase
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
         $this->assertSame('Family "not_found" does not exist.', $content['message']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return new Configuration(
+            [Configuration::getTechnicalCatalogPath()],
+            false
+        );
     }
 }

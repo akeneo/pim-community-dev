@@ -2,8 +2,9 @@
 
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\AttributeOption;
 
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Test\Integration\TestCase;
 
 class GetAttributeOptionIntegration extends TestCase
 {
@@ -71,6 +72,17 @@ class GetAttributeOptionIntegration extends TestCase
         $this->assertSame(
             'Attribute option "not_existing_option" does not exist or is not an option of the attribute "a_multi_select".',
             $content['message']
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return new Configuration(
+            [Configuration::getTechnicalCatalogPath()],
+            false
         );
     }
 }
