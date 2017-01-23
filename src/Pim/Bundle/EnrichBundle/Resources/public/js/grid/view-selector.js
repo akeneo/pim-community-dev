@@ -170,7 +170,7 @@ define(
                             }
 
                             var searchParameters = this.getSelectSearchParameters(options.term, page);
-                            var fetcher = 'datagrid-' + this.currentViewType;
+                            var fetcher = this.config.fetchers[this.currentViewType];
 
                             FetcherRegistry.getFetcher(fetcher).search(searchParameters).then(function (views) {
                                 var choices = this.toSelect2Format(views);
