@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+
 /**
  * Widget to display links
  *
@@ -11,6 +13,22 @@ namespace Pim\Bundle\DashboardBundle\Widget;
  */
 class LinksWidget implements WidgetInterface
 {
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
+    /** @var array */
+    protected $widgets;
+
+    /**
+     * @param SecurityFacade $securityFacade
+     * @param array          $widgets
+     */
+    public function __construct(SecurityFacade $securityFacade, array $widgets)
+    {
+        $this->securityFacade = $securityFacade;
+        $this->widgets        = $widgets;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,30 +50,15 @@ class LinksWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        return [
-            'links' => [
-                [
-                    'route' => 'pim_enrich_product_index',
-                    'label' => 'pim_dashboard.link.label.product',
-                    'image' => 'widget_links_products.png',
-                ],
-                [
-                    'route' => 'pim_enrich_family_index',
-                    'label' => 'pim_dashboard.link.label.family',
-                    'image' => 'widget_links_families.png',
-                ],
-                [
-                    'route' => 'pim_enrich_attribute_index',
-                    'label' => 'pim_dashboard.link.label.attribute',
-                    'image' => 'widget_links_attributes.png',
-                ],
-                [
-                    'route' => 'pim_enrich_categorytree_index',
-                    'label' => 'pim_dashboard.link.label.category',
-                    'image' => 'widget_links_categories.png',
-                ],
-            ],
-        ];
+        $result = ['links' => []];
+
+        foreach ($this->widgets as $widget) {
+            if ($this->securityFacade->isGranted($widget['acl'])) {
+                $result['links'][] = $widget;
+            }
+        }
+
+        return $result;
     }
 
     /**

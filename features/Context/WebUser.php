@@ -1428,6 +1428,18 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $button
+     *
+     * @Given /^I should not see the "([^"]*)" icon button$/
+     */
+    public function iShouldNotSeeTheIconButton($button)
+    {
+        $this->spin(function () use ($button) {
+            return null === $this->getCurrentPage()->getIconButton($button);
+        }, sprintf('Icon button "%s" should not be displayed', $button));
+    }
+
+    /**
      * @param string $buttonLabel
      *
      * @Given /^I press the "([^"]*)" button in the popin$/

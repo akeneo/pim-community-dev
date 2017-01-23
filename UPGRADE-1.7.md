@@ -19,6 +19,37 @@
 
 ## Migrate your custom code
 
+### Import/export UI migration
+
+With this 1.7 version, we migrated the old import/export configuration screens to new javascript architecture. It means
+that if you had customized them, you will need to migrate your configuration to the new one.
+
+There is three level of customization:
+
+#### You only added custom import/export without UI changes
+
+In this case, you only need to add your custom form provider for your connector. Here is an example:
+
+```
+services:
+    acme_dummy_connector.provider.form.job_instance:
+        class: '%pim_enrich.provider.form.job_instance.class%'
+        arguments:
+            -
+                my_custom_export_job_name: pim-job-instance-csv-base-export
+                my_custom_import_job_name: pim-job-instance-csv-base-import
+```
+
+#### You added some fields to your custom job
+
+In this case you will also need to register it in your form provider but aslo declare a custom form. You will find a
+detailed documentation [here](https://docs.akeneo.com/1.7/cookbook/import_export/create-connector.html)
+
+#### You created a fully customized screen for your job
+
+In this case, you will have to redo this screen with the new javascript architecture and register it like we've seen
+above.
+
 ### Global updates for any project
 
 #### Remove deprecated bundles from your AppKernel
@@ -117,6 +148,9 @@ The following command helps to migrate references to Normalizer classes or servi
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.denormalizer\.file/pim_catalog\.denormalizer\.standard\.file/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer\.denormalizer\.boolean/pim_catalog\.denormalizer\.standard\.boolean/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_user_user_rest_get/pim_user_user_rest_get_current/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle\\Validator\\Constraints\\WritableDirectory/Pim\\Component\\Catalog\\Validator\\Constraints\\WritableDirectory/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Validator\\Constraints\\Channel/Pim\\Component\\Catalog\\Validator\\Constraints\\Channel/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_import_export\.repository\.job_instance/akeneo_batch\.job\.job_instance_repository/g'
 ```
 
 #### Versioning

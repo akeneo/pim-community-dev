@@ -72,7 +72,8 @@ class FilterType extends AbstractType
     {
         $result = ['required' => false];
         if ($options['operator_choices']) {
-            $result['choices'] = $options['operator_choices'];
+            $result['choices'] = array_flip($options['operator_choices']);
+            $result['choices_as_values'] = true;
         }
         $result = array_merge($result, $options['operator_options']);
 

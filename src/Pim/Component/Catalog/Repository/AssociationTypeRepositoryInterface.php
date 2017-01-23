@@ -26,11 +26,6 @@ interface AssociationTypeRepositoryInterface extends IdentifiableObjectRepositor
     public function findMissingAssociationTypes(ProductInterface $product);
 
     /**
-     * @return mixed
-     */
-    public function createDatagridQueryBuilder();
-
-    /**
      * Return the number of association types
      *
      * @return int

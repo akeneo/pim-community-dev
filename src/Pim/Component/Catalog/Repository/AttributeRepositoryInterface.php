@@ -86,13 +86,6 @@ interface AttributeRepositoryInterface extends
     public function getAttributeIdsUseableInGrid($codes = null, $groupIds = null);
 
     /**
-     * TODO: should be extracted in an enrich bundle repository
-     *
-     * @return mixed a query builder
-     */
-    public function createDatagridQueryBuilder();
-
-    /**
      * Get the identifier attribute
      * Only one identifier attribute can exists
      *

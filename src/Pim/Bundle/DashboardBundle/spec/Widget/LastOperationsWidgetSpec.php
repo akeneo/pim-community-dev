@@ -2,11 +2,12 @@
 
 namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -18,9 +19,10 @@ class LastOperationsWidgetSpec extends ObjectBehavior
         JobExecutionManager $manager,
         TranslatorInterface $translator,
         PresenterInterface $presenter,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        SecurityFacade $securityFacade
     ) {
-        $this->beConstructedWith($manager, $translator, $presenter, $tokenStorage);
+        $this->beConstructedWith($manager, $translator, $presenter, $tokenStorage, $securityFacade);
     }
 
     function it_is_a_widget()
@@ -72,6 +74,7 @@ class LastOperationsWidgetSpec extends ObjectBehavior
 
         $operation['statusLabel'] = 'Completed';
         $operation['date'] = '01/12/2015';
+        $operation['canSeeReport'] = false;
         $this->getData()->shouldReturn([$operation]);
     }
 }

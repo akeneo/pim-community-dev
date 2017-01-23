@@ -42,7 +42,7 @@ pim_api:
 # Oro platform
 
 oro_default:
-    pattern:  /
+    path:  /
     defaults:
         template:    PimDashboardBundle:Dashboard:index.html.twig
         _controller: FrameworkBundle:Template:template

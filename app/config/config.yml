@@ -7,7 +7,7 @@ imports:
 framework:
     #esi:             ~
     translator:      { fallback: en }
-    secret:          %secret%
+    secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: "%kernel.debug%"
@@ -18,8 +18,8 @@ framework:
         enabled: true
         api: 2.5
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
-    default_locale:           "%locale%"
-    trusted_proxies:          ~
+    default_locale:  "%locale%"
+    trusted_proxies: ~
     session:
         name:                 BAPID
         handler_id:           session.handler.pdo
@@ -81,6 +81,16 @@ swiftmailer:
     username:                 "%mailer_user%"
     password:                 "%mailer_password%"
     spool:                    { type: memory }
+
+# FOSOAuthServer Configuration
+fos_oauth_server:
+    db_driver:                orm
+    client_class:             Pim\Bundle\ApiBundle\Entity\Client
+    access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
+    refresh_token_class:      Pim\Bundle\ApiBundle\Entity\RefreshToken
+    auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
+    service:
+        user_provider:        pim_user.provider.user
 
 pim_reference_data:
     fabrics:

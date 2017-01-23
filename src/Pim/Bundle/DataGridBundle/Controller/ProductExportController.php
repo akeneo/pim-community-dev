@@ -3,11 +3,11 @@
 namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DataGridManager;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -33,7 +33,7 @@ class ProductExportController
     /** @var GridFilterAdapterInterface */
     protected $gridFilterAdapter;
 
-    /** @var JobInstanceRepository */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepo;
 
     /** @var TokenStorageInterface */
@@ -46,19 +46,19 @@ class ProductExportController
     protected $datagridManager;
 
     /**
-     * @param Request                    $request
-     * @param MassActionDispatcher       $massActionDispatcher
-     * @param GridFilterAdapterInterface $gridFilterAdapter
-     * @param JobInstanceRepository      $jobInstanceRepo
-     * @param TokenStorageInterface      $tokenStorage
-     * @param JobLauncherInterface       $jobLauncher
-     * @param DataGridManager            $datagridManager
+     * @param Request                               $request
+     * @param MassActionDispatcher                  $massActionDispatcher
+     * @param GridFilterAdapterInterface            $gridFilterAdapter
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepo
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param JobLauncherInterface                  $jobLauncher
+     * @param DataGridManager                       $datagridManager
      */
     public function __construct(
         Request $request,
         MassActionDispatcher $massActionDispatcher,
         GridFilterAdapterInterface $gridFilterAdapter,
-        JobInstanceRepository $jobInstanceRepo,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
         DataGridManager $datagridManager

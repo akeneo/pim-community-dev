@@ -188,51 +188,6 @@ class ProductRepository extends EntityRepository implements
 
     /**
      * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.8
-     */
-    public function findAllWithAttribute(AttributeInterface $attribute)
-    {
-        return $this
-            ->createQueryBuilder('p')
-            ->leftJoin('p.values', 'value')
-            ->leftJoin('value.attribute', 'attribute')
-            ->where('attribute=:attribute')
-            ->setParameter('attribute', $attribute)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     *  @deprecated will be removed in 1.8
-     */
-    public function findAllWithAttributeOption(AttributeOptionInterface $option)
-    {
-        $backendType = $option->getAttribute()->getBackendType();
-
-        $qb = $this
-            ->createQueryBuilder('p')
-            ->leftJoin('p.values', 'value')
-            ->leftJoin(sprintf('value.%s', $backendType), 'option');
-
-        if ('options' === $backendType) {
-            $qb->where(
-                $qb->expr()->in('option', ':option')
-            );
-        } else {
-            $qb->where('option=:option');
-        }
-
-        return $qb
-            ->setParameter('option', $option)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function getFullProduct($id)
     {
