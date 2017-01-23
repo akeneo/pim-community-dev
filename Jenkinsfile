@@ -1,6 +1,6 @@
 #!groovy
 
-def ceBranch = "1.4.x-dev"
+def ceBranch = "dev-master"
 def ceOwner = "akeneo"
 def features = "features,vendor/akeneo/pim-community-dev/features"
 def automaticBranches = ["1.4", "1.5", "1.6", "master"]
@@ -61,10 +61,19 @@ stage('build') {
         sh "composer require --no-update \"${ceOwner}/pim-community-dev\":\"${ceBranch}\""
 
         // Install needed dependencies
-        sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
-        sh "app/console oro:requirejs:generate-config"
+        sh "composer update --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
 
         stash "project_files"
+    }
+
+    node('docker') {
+        deleteDir()
+        docker.image('carcel/php:5.4').inside {
+            unstash "project_files"
+            sh "composer run-script post-update-cmd"
+            sh "app/console oro:requirejs:generate-config"
+            stash "project_files"
+        }
     }
 }
 

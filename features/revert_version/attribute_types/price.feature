@@ -10,12 +10,15 @@ Feature: Revert product attributes to a previous version
 
   @jira https://akeneo.atlassian.net/browse/PIM-3351
   Scenario: Successfully revert a product with prices and leave them empty
-    And the following product:
-    | sku   | name-fr_FR | family |
-    | jeans | Nice jeans | pants  |
-    When I edit the "jeans" product
-    And I fill in the following information:
-    | Name | Really nice jeans |
+    When I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | jeans |
+      | family | Pants |
+    And I press the "Save" button in the popin
+    And I wait to be on the "jeans" product page
+    And I visit the "Marketing" group
+    And I change the "Price" to "42 EUR"
     And I save the product
     And the history of the product "jeans" has been built
     And I open the history
@@ -25,27 +28,36 @@ Feature: Revert product attributes to a previous version
     And I visit the "Marketing" group
     Then the product "jeans" should have the following values:
     | price      |            |
-    | name-fr_FR | Nice jeans |
 
   Scenario: Successfully revert a price attribute
-    Given the following product:
-    | sku     | family | price  |
-    | t-shirt | tees   | 49 EUR |
-    Given I am on the "t-shirt" product page
+    When I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | t-shirt |
+      | family | Tees    |
+    And I press the "Save" button in the popin
+    And I wait to be on the "t-shirt" product page
+    And I visit the "Marketing" group
+    And I change the "Price" to "49 EUR"
+    And I save the product
     And I visit the "Marketing" group
     And I change the "Price" to "39 EUR"
     And I save the product
     And the history of the product "t-shirt" has been built
     When I open the history
-    Then I should see 2 versions in the history
-    When I revert the product version number 1
+    Then I should see 3 versions in the history
+    When I revert the product version number 2
     Then the product "t-shirt" should have the following values:
     | price | 49.00 EUR |
 
   Scenario: Successfully revert a price attribute with empty value
-    Given the following product:
-    | sku     | family | price  |
-    | marcel  | tees   |        |
+    When I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | marcel |
+      | family | Tees    |
+    And I press the "Save" button in the popin
+    And I wait to be on the "marcel" product page
     Given I am on the "marcel" product page
     And I visit the "Attributes" tab
     And I visit the "Marketing" group

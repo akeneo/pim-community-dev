@@ -1,11 +1,13 @@
 # 1.4.x
 
+# 1.4.28 (2016-12-13)
+
 # 1.4.27 (2016-08-31)
--PIM-5901: Error message when deleting a localisable asset on MongoDB
+- PIM-5901: Error message when deleting a localisable asset on MongoDB
 
 # 1.4.26 (2016-07-05)
 
-## Bug fix
+## Bug fixes
 - PIM-5475: Clear temp storage folder for assets after upload on PAM
 - PIM-5371: Fix wrong order for imagemagick arguments
 
@@ -13,7 +15,7 @@
 
 # 1.4.24 (2016-05-10)
 
-## Bug fix
+## Bug fixes
 - PIM-5752: find option by identifier and not by code
 
 # 1.4.23 (2016-04-14)

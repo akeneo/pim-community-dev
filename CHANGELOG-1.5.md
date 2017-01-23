@@ -1,3 +1,10 @@
+# 1.5.17 (2017-01-18)
+
+## Bug fixes
+
+- PIM-6092: Allow to create tags starting with the same letters
+- PIM-6024: Fixed an issue preventing product associations to be mass published
+
 # 1.5.16 (2016-12-28)
 
 ## Bug fixes
