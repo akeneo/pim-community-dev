@@ -180,6 +180,7 @@ job_execution.summary:
     title: 'Codificación del archivo:'
     skipped: omitido, extensión en la lista blanca
   product_skipped_no_diff: producto omitido (ninguna diferencia)
+  product_skipped_no_associations: Productos omitidos (asociaciones no detectadas)
 batch_jobs:
   csv_product_export:
     label: Exportar productos a CSV

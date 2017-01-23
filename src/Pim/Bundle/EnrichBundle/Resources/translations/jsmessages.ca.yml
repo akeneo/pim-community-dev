@@ -183,8 +183,8 @@ pim_enrich:
       variant_group:
         updated_by: Actualitzat per un grup de variants
         switch:
-          "yes": Sí
-          "no": No
+          "yes": "Sí"
+          "no": "No"
       optional_attribute:
         remove: Eliminar aquest atribut
       locale_specific_attribute:
@@ -247,7 +247,7 @@ pim_enrich:
             none_exist: No existeix cap tipus d'associació.
             show_products: Mostrar productes
             show_groups: Mostrar grups
-            number_of_associations: productes {{ productCount }} i {{ groupCount }} grups
+            number_of_associations: "productes {{ productCount }} i {{ groupCount }} grups"
         attributes:
           title: Atributs
           btn:
@@ -256,7 +256,7 @@ pim_enrich:
           info:
             search_attributes: Cercar...
             no_available_attributes: No hi ha més atributs a afegir
-            attributes_selected: '{{ attributeCount }} attribut(s) seleccionats'
+            attributes_selected: "{{ attributeCount }} attribut(s) seleccionats"
             no_match: No s’han trobat coincidències
             load_more: Carregant més resultats...
         categories:
@@ -271,8 +271,8 @@ pim_enrich:
         history:
           title: Històric
       switch:
-        "no": No
-        "yes": Sí
+        "no": "No"
+        "yes": "Sí"
       sequential_edit:
         info:
           products: productes
@@ -303,8 +303,8 @@ pim_enrich:
         cancel: Cancelar
     entity:
       switch:
-        "no": No
-        "yes": Sí
+        "no": "No"
+        "yes": "Sí"
     variant_group:
       tab:
         properties:
@@ -347,7 +347,7 @@ pim_enrich:
         attributes:
           title: Atributs
           edit: Editar
-          label: '{0} Tots els atributs |{1} Un atribut seleccionat |] 1, Inf [{{ count }} atributs seleccionats'
+          label: "{0} Tots els atributs |{1} Un atribut seleccionat |] 1, Inf [{{ count }} atributs seleccionats"
           help: 'Seleccionar la informació del producte a exportar. Ex: només els atributs tècnics.'
           empty: S'exportaran tots els atributs
           modal:
@@ -356,8 +356,8 @@ pim_enrich:
             title: Selecció de l'atribut
         attributes_selector:
           attribute_group: Grups d'atributs
-          attributes: Cercar a {{ attributeCount }} atributs
-          selected: Atributs seleccionats
+          attributes: "Cercar a {{ attributeCount }} atributs"
+          selected: "Atributs seleccionats"
           clear: Restablir
           all_group: Tots els grups
           empty_selection: S'exportaran tots els atributs
@@ -366,17 +366,17 @@ pim_enrich:
           help: 'Seleccionar els productes per exportar de la seva família. Ex: Exportar només sabates i vestits.'
           operators:
             IN: A la llista
-            NOT IN: Fora de llista
+            "NOT IN": Fora de llista
             EMPTY: Productes sense família
-            NOT EMPTY: Productes amb família
+            "NOT EMPTY": Productes amb família
           empty_selection: Cap condició sobre les famílies
         updated:
           title: Condició de temps
           operators:
             ALL: Cap condició de data
-            SINCE LAST N DAYS: Actualització dels productes dels últims n dies (p. ex. 6)
-            >: Productes actualitzats des d'aquesta data
-            SINCE LAST JOB: Productes actualitzats des de la última exportació
+            "SINCE LAST N DAYS": Actualització dels productes dels últims n dies (p. ex. 6)
+            ">": Productes actualitzats des d'aquesta data
+            "SINCE LAST JOB": Productes actualitzats des de la última exportació
         enabled:
           title: Estat
           help: 'Seleccionar els productes d''exportació per la seva condició. Ex: Exportar productes independentment del seu estatus.'
@@ -389,8 +389,8 @@ pim_enrich:
           help: Seleccionar els productes d'exportació per la seva integritat.
           operators:
             ALL: Cap condició sobre integritat
-            >=: Completar almenys a una configuració regional seleccionada
-            GREATER OR EQUALS THAN ON ALL LOCALES: Completar a totes les configuracions regionals seleccionades
+            ">=": Completar almenys a una configuració regional seleccionada
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Completar a totes les configuracions regionals seleccionades
             LOWER THAN ON ALL LOCALES: No completar a totes les configuracions regionals seleccionades
           empty_selection: Seleccioneu una família
         category:
@@ -401,12 +401,12 @@ pim_enrich:
           help: Els identificadors de producte que voleu exportar separats per comes, espais o salts de línia
         metric:
           operators:
-            =: És igual a
-            !=: No és igual a
-            >=: Major o igual
-            >: Més gran que
-            <=: Inferiors o iguals
-            <: Inferiors a
+            "=": És igual a
+            "!=": No és igual a
+            ">=": Major o igual
+            ">": Més gran que
+            "<=": Inferiors o iguals
+            "<": Inferiors a
             EMPTY: Està buit
             NOT EMPTY: No és buit
         string:
@@ -414,19 +414,19 @@ pim_enrich:
             ALL: Tots
             CONTAINS: Conté
             DOES NOT CONTAIN: No conté
-            =: És igual a
+            "=": És igual a
             STARTS WITH: S'inicia amb
             ENDS WITH: Acaba amb
             EMPTY: Està buit
             NOT EMPTY: No és buit
         price-collection:
           operators:
-            =: És igual a
-            !=: No és igual a
-            >=: Major o igual
-            >: Més gran que
-            <=: Inferiors o iguals
-            <: Inferiors a
+            "=": És igual a
+            "!=": No és igual a
+            ">=": Major o igual
+            ">": Més gran que
+            "<=": Inferiors o iguals
+            "<": Inferiors a
             EMPTY: Està buit
             NOT EMPTY: No és buit
         multi_select:
@@ -438,29 +438,29 @@ pim_enrich:
           operators:
             CONTAINS: Conté
             DOES NOT CONTAIN: No conté
-            =: És igual a
+            "=": És igual a
             STARTS WITH: S'inicia amb
             ENDS WITH: Acaba amb
             EMPTY: Està buit
             NOT EMPTY: No és buit
         date:
           operators:
-            >: Més gran que
-            <: Inferior a
-            =: És igual a
-            !=: No és igual a
+            ">": Més gran que
+            "<": Inferior a
+            "=": És igual a
+            "!=": No és igual a
             BETWEEN: Entre
             NOT BETWEEN: No entre
             EMPTY: Està buit
             NOT EMPTY: No és buit
         number:
           operators:
-            =: És igual a
-            !=: No és igual a
-            >=: Major o igual
-            >: Més gran que
-            <=: Inferiors o iguals
-            <: Inferior a
+            "=": És igual a
+            "!=": No és igual a
+            ">=": Major o igual
+            ">": Més gran que
+            "<=": Inferiors o iguals
+            "<": Inferior a
             EMPTY: Està buit
             NOT EMPTY: No és buit
   mass_edit_action:

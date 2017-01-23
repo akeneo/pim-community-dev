@@ -18,7 +18,7 @@ Feature: purge versions
     And I press the "Save" button
     And I visit the "History" tab
     Then there should be 4 updates
-    When I launch the purge versions command for entity "Pim\\Bundle\\CatalogBundle\\Entity\\Family"
+    When I launch the purge versions command for entity "Pim\Bundle\CatalogBundle\Entity\Family"
     And I am on the "heels" family page
     And I visit the "History" tab
     Then there should be 2 updates
