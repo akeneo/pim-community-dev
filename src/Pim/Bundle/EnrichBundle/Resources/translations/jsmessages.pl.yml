@@ -172,8 +172,8 @@ pim_enrich:
       variant_group:
         updated_by: Zaktualizowany przez grupę wariantów
         switch:
-          "yes": Tak
-          "no": Nie
+          "yes": "Tak"
+          "no": "Nie"
       optional_attribute:
         remove: Usuń ten atrybut
       media:
@@ -223,7 +223,7 @@ pim_enrich:
             none_exist: Brak typów powiązań.
             show_products: Pokaż produkty
             show_groups: Pokaż grupy
-            number_of_associations: '{{ productCount }} produktów i {{ groupCount }} grup'
+            number_of_associations: "{{ productCount }} produktów i {{ groupCount }} grup"
         attributes:
           title: Atrybuty
           btn:
@@ -232,7 +232,7 @@ pim_enrich:
           info:
             search_attributes: Szukaj...
             no_available_attributes: Nie ma więcej atrybutów do dodania
-            attributes_selected: '{{ attributeCount }} atrybut(ów) wybrany(ch)'
+            attributes_selected: "{{ attributeCount }} atrybut(ów) wybrany(ch)"
             no_match: Nie znaleziono dopasowań
             load_more: Ładowanie więcej wyników...
         categories:
@@ -247,8 +247,8 @@ pim_enrich:
         history:
           title: Historia
       switch:
-        "no": Nie
-        "yes": Tak
+        "no": "Nie"
+        "yes": "Tak"
       sequential_edit:
         info:
           products: produkty
@@ -279,8 +279,8 @@ pim_enrich:
         cancel: Anuluj
     entity:
       switch:
-        "no": Nie
-        "yes": Tak
+        "no": "Nie"
+        "yes": "Tak"
     variant_group:
       tab:
         properties:

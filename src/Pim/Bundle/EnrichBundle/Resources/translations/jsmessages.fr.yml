@@ -183,8 +183,8 @@ pim_enrich:
       variant_group:
         updated_by: Mis à jour par un groupe de variantes
         switch:
-          "yes": Oui
-          "no": Non
+          "yes": "Oui"
+          "no": "Non"
       optional_attribute:
         remove: Supprimer cet attribut
       locale_specific_attribute:
@@ -247,7 +247,7 @@ pim_enrich:
             none_exist: Aucun type d'association n'existe.
             show_products: Afficher les produits
             show_groups: Afficher les groupes
-            number_of_associations: '{{ productCount }} produits et {{ groupCount }} groupes'
+            number_of_associations: "{{ productCount }} produits et {{ groupCount }} groupes"
         attributes:
           title: Attributs
           btn:
@@ -256,7 +256,7 @@ pim_enrich:
           info:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
-            attributes_selected: '{{ attributeCount }} attribut(s) sélectionné(s)'
+            attributes_selected: "{{ attributeCount }} attribut(s) sélectionné(s)"
             no_match: Aucune correspondance trouvée
             load_more: Chargement de plus de résultats...
         categories:
@@ -271,8 +271,8 @@ pim_enrich:
         history:
           title: Historique
       switch:
-        "no": Non
-        "yes": Oui
+        "no": "Non"
+        "yes": "Oui"
       sequential_edit:
         info:
           products: Produits
@@ -303,8 +303,8 @@ pim_enrich:
         cancel: Annuler
     entity:
       switch:
-        "no": Non
-        "yes": Oui
+        "no": "Non"
+        "yes": "Oui"
     variant_group:
       tab:
         properties:
@@ -351,7 +351,7 @@ pim_enrich:
         attributes:
           title: Attributs
           edit: Modifier
-          label: '{0} Tous les attributs|{1} Un attribut sélectionné|]1,Inf[ {{ count }} attributs sélectionnés'
+          label: "{0} Tous les attributs|{1} Un attribut sélectionné|]1,Inf[ {{ count }} attributs sélectionnés"
           help: 'Sélectionne les informations du produit à exporter. Par ex. : seulement les attributs techniques.'
           empty: Tous les attributs vont être exportés
           modal:
@@ -360,8 +360,8 @@ pim_enrich:
             title: Sélection d'attributs
         attributes_selector:
           attribute_group: Groupes d'attributs
-          attributes: Rechercher dans les {{ attributeCount }} attributs
-          selected: Attributs sélectionnés
+          attributes: "Rechercher dans les {{ attributeCount }} attributs"
+          selected: "Attributs sélectionnés"
           clear: Réinitialiser
           all_group: Tous les groupes
           empty_selection: Tous les attributs vont être exportés
@@ -370,17 +370,17 @@ pim_enrich:
           help: 'Sélectionne les produits à exporter en fonction de leur famille. Par ex. : exporter seulement les chaussures et les robes.'
           operators:
             IN: Dans la liste
-            NOT IN: Pas dans la liste
+            "NOT IN": Pas dans la liste
             EMPTY: Produits qui n’ont pas de famille
-            NOT EMPTY: Produits qui ont une famille
+            "NOT EMPTY": Produits qui ont une famille
           empty_selection: Pas de condition sur les familles
         updated:
           title: Condition sur la date de mise à jour
           operators:
             ALL: Pas de condition de date
-            SINCE LAST N DAYS: Produits mis à jour durant les n derniers jours (par ex. 6)
-            >: Produits mis à jours depuis cette date
-            SINCE LAST JOB: Produits mis à jour depuis le dernier export
+            "SINCE LAST N DAYS": Produits mis à jour durant les n derniers jours (par ex. 6)
+            ">": Produits mis à jours depuis cette date
+            "SINCE LAST JOB": Produits mis à jour depuis le dernier export
         enabled:
           title: État
           help: 'Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut.'
@@ -393,8 +393,8 @@ pim_enrich:
           help: Choisir les produits à exporter selon leur complétude.
           operators:
             ALL: Pas de condition sur la complétude
-            >=: Complet sur au moins une locale sélectionnée
-            GREATER OR EQUALS THAN ON ALL LOCALES: Complet sur toutes les locales sélectionnées
+            ">=": Complet sur au moins une locale sélectionnée
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Complet sur toutes les locales sélectionnées
             LOWER THAN ON ALL LOCALES: Incomplet sur toutes les locales sélectionnées
           empty_selection: Sélectionnez une famille
         category:
@@ -405,12 +405,12 @@ pim_enrich:
           help: Les identifiants des produits que vous souhaitez exporter, séparés par une virgule, par un espace ou par un saut de ligne
         metric:
           operators:
-            =: Est égal à
-            !=: N'est pas égal à
-            >=: Supérieur ou égal à
-            >: Supérieur à
-            <=: Inférieur ou égal à
-            <: Inférieur à
+            "=": Est égal à
+            "!=": N'est pas égal à
+            ">=": Supérieur ou égal à
+            ">": Supérieur à
+            "<=": Inférieur ou égal à
+            "<": Inférieur à
             EMPTY: Est vide
             NOT EMPTY: N'est pas vide
         string:
@@ -418,19 +418,19 @@ pim_enrich:
             ALL: Tous
             CONTAINS: Contient
             DOES NOT CONTAIN: Ne contient pas
-            =: Est égal à
+            "=": Est égal à
             STARTS WITH: Commence par
             ENDS WITH: Finit par
             EMPTY: Est vide
             NOT EMPTY: N'est pas vide
         price-collection:
           operators:
-            =: Est égal à
-            !=: N'est pas égal à
-            >=: Supérieur ou égal à
-            >: Supérieur à
-            <=: Inférieur ou égal à
-            <: Inférieur à
+            "=": Est égal à
+            "!=": N'est pas égal à
+            ">=": Supérieur ou égal à
+            ">": Supérieur à
+            "<=": Inférieur ou égal à
+            "<": Inférieur à
             EMPTY: Est vide
             NOT EMPTY: N'est pas vide
         multi_select:
@@ -442,29 +442,29 @@ pim_enrich:
           operators:
             CONTAINS: Contient
             DOES NOT CONTAIN: Ne contient pas
-            =: Est égal à
+            "=": Est égal à
             STARTS WITH: Commence par
             ENDS WITH: Finit par
             EMPTY: Est vide
             NOT EMPTY: N'est pas vide
         date:
           operators:
-            >: Supérieur à
-            <: Inférieur à
-            =: Est égal à
-            !=: N'est pas égal à
+            ">": Supérieur à
+            "<": Inférieur à
+            "=": Est égal à
+            "!=": N'est pas égal à
             BETWEEN: Entre
             NOT BETWEEN: Pas entre
             EMPTY: Est vide
             NOT EMPTY: N'est pas vide
         number:
           operators:
-            =: Est égal à
-            !=: N'est pas égal à
-            >=: Supérieur ou égal à
-            >: Supérieur à
-            <=: Inférieur ou égal à
-            <: Inférieur à
+            "=": Est égal à
+            "!=": N'est pas égal à
+            ">=": Supérieur ou égal à
+            ">": Supérieur à
+            "<=": Inférieur ou égal à
+            "<": Inférieur à
             EMPTY: Est vide
             NOT EMPTY: N'est pas vide
 

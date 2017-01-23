@@ -95,6 +95,7 @@ pim:
   grid:
     mass_action:
       quick_export:
+        csv_all: CSV (alle kenmerken)
         csv_grid_context: CSV (rastercontext)
         xlsx_all: Excel (alle attributen)
         xlsx_grid_context: Excel (rastercontext)
@@ -182,8 +183,8 @@ pim_enrich:
       variant_group:
         updated_by: Geüpdatet door variant groep
         switch:
-          "yes": Ja
-          "no": Nee
+          "yes": "Ja"
+          "no": "Nee"
       optional_attribute:
         remove: Dit attribuut verwijderen
       locale_specific_attribute:
@@ -246,7 +247,7 @@ pim_enrich:
             none_exist: Er bestaan geen associatietypes.
             show_products: Toon producten
             show_groups: Toon groepen
-            number_of_associations: '{{ productCount }} producten en {{ groupCount }} groepen'
+            number_of_associations: "{{ productCount }} producten en {{ groupCount }} groepen"
         attributes:
           title: Attributen
           btn:
@@ -255,7 +256,7 @@ pim_enrich:
           info:
             search_attributes: Zoeken...
             no_available_attributes: Er zijn geen attributen meer om toe te voegen
-            attributes_selected: '{{ attributeCount }} attribu(u) t(en) geselecteerd'
+            attributes_selected: "{{ attributeCount }} attribu(u) t(en) geselecteerd"
             no_match: Geen overeenkomsten gevonden
             load_more: Meer resultaten laden...
         categories:
@@ -270,8 +271,8 @@ pim_enrich:
         history:
           title: Geschiedenis
       switch:
-        "no": Nee
-        "yes": Ja
+        "no": "Nee"
+        "yes": "Ja"
       sequential_edit:
         info:
           products: producten
@@ -302,8 +303,8 @@ pim_enrich:
         cancel: Annuleren
     entity:
       switch:
-        "no": Nee
-        "yes": Ja
+        "no": "Nee"
+        "yes": "Ja"
     variant_group:
       tab:
         properties:
@@ -345,7 +346,7 @@ pim_enrich:
         attributes:
           title: Attributen
           edit: Bewerken
-          label: '{0} alle attributen|{1} 1 attribuut geselecteerd|]1,Inf[ {{ count }} attributen geselecteerd'
+          label: "{0} alle attributen|{1} 1 attribuut geselecteerd|]1,Inf[ {{ count }} attributen geselecteerd"
           help: Selecteer de product informatie om te exporteren. Bv. enkel technische attributen.
           empty: Alle attributen worden geëxporteerd
           modal:
@@ -354,8 +355,8 @@ pim_enrich:
             title: Attribuut selectie
         attributes_selector:
           attribute_group: Attribuutgroepen
-          attributes: Zoek in {{ attributeCount }} attributen
-          selected: Selecteer attributen
+          attributes: "Zoek in {{ attributeCount }} attributen"
+          selected: "Selecteer attributen"
           clear: Opruimen
           all_group: Alle groepen
           empty_selection: Alle attributen worden geëxporteerd
@@ -363,17 +364,18 @@ pim_enrich:
           title: Familie
           help: Selecteer de producten om te importeren volgens hun familie. Bv. exporteer enkel schoenen en jurken.
           operators:
-            NOT IN: Niet in de lijst
+            IN: In lijst
+            "NOT IN": Niet in de lijst
             EMPTY: Producten die geen familie hebben
-            NOT EMPTY: Producten die een familie hebben
+            "NOT EMPTY": Producten die een familie hebben
           empty_selection: Geen voorwaarde voor families
         updated:
           title: Tijdsvoorwaarde
           operators:
             ALL: Geen datum voorwaarde
-            SINCE LAST N DAYS: Geüpdatete producten gedurende de laatste n dagen (bv. 6)
-            >: Geüpdatete producten sinds deze datum
-            SINCE LAST JOB: Geüpdatete producten sinds laatste export
+            "SINCE LAST N DAYS": Geüpdatete producten gedurende de laatste n dagen (bv. 6)
+            ">": Geüpdatete producten sinds deze datum
+            "SINCE LAST JOB": Geüpdatete producten sinds laatste export
         enabled:
           title: Status
           help: Selecteer de producten om te exporteren volgens hun status. Bv. exporteer allerlei producten volgens hun status.
@@ -386,8 +388,8 @@ pim_enrich:
           help: Selecteer de producten om te exporteren volgens hun volledigheid.
           operators:
             ALL: Geen voorwaarde op volledigheid
-            >=: Vervolledig op z'n minst één gekozen landinstelling
-            GREATER OR EQUALS THAN ON ALL LOCALES: Voltooi op alle geselecteerde landinstellingen
+            ">=": Vervolledig op z'n minst één gekozen landinstelling
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Voltooi op alle geselecteerde landinstellingen
             LOWER THAN ON ALL LOCALES: Niet volledig op alle geselecteerde landinstellingen
           empty_selection: Selecteer een familie
         category:
@@ -396,59 +398,67 @@ pim_enrich:
           title: Id
         metric:
           operators:
-            =: Is gelijk aan
-            !=: Is niet gelijk aan
-            >=: Groter dan of gelijk aan
-            >: Groter dan
-            <=: Kleiner dan of gelijk aan
-            <: Kleiner dan
+            "=": Is gelijk aan
+            "!=": Is niet gelijk aan
+            ">=": Groter dan of gelijk aan
+            ">": Groter dan
+            "<=": Kleiner dan of gelijk aan
+            "<": Kleiner dan
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         string:
           operators:
             ALL: Alle
             CONTAINS: Bevat
             DOES NOT CONTAIN: Bevat geen
-            =: Is gelijk aan
+            "=": Is gelijk aan
             STARTS WITH: Begint met
             ENDS WITH: Eindigt met
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         price-collection:
           operators:
-            =: Is gelijk aan
-            !=: Is niet gelijk aan
-            >=: Groter dan of gelijk aan
-            >: Groter dan
-            <=: Kleiner dan of gelijk aan
-            <: Kleiner dan
+            "=": Is gelijk aan
+            "!=": Is niet gelijk aan
+            ">=": Groter dan of gelijk aan
+            ">": Groter dan
+            "<=": Kleiner dan of gelijk aan
+            "<": Kleiner dan
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         multi_select:
           operators:
+            IN: In lijst
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         media:
           operators:
             CONTAINS: Bevat
             DOES NOT CONTAIN: Bevat geen
-            =: Is gelijk aan
+            "=": Is gelijk aan
             STARTS WITH: Begint met
             ENDS WITH: Eindigt met
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         date:
           operators:
-            >: Groter dan
-            <: Kleiner dan
-            =: Is gelijk aan
-            !=: Is niet gelijk aan
+            ">": Groter dan
+            "<": Kleiner dan
+            "=": Is gelijk aan
+            "!=": Is niet gelijk aan
             BETWEEN: Tussen
             NOT BETWEEN: Niet tussen
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         number:
           operators:
-            =: Is gelijk aan
-            !=: Is niet gelijk aan
-            >=: Groter dan of gelijk aan
-            >: Groter dan
-            <=: Kleiner dan of gelijk aan
-            <: Kleiner dan
+            "=": Is gelijk aan
+            "!=": Is niet gelijk aan
+            ">=": Groter dan of gelijk aan
+            ">": Groter dan
+            "<=": Kleiner dan of gelijk aan
+            "<": Kleiner dan
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
   mass_edit_action:
     edit_common_attributes:

@@ -81,6 +81,13 @@ class ProductSaverSpec extends ObjectBehavior
         $productC->setId(Argument::any())->shouldBeCalled();
         $productD->setId(Argument::any())->shouldBeCalled();
 
+        $productA->setUpdated(Argument::any())->shouldBeCalled();
+        $productB->setUpdated(Argument::any())->shouldBeCalled();
+        $productC->setCreated(Argument::any())->shouldBeCalled();
+        $productC->setUpdated(Argument::any())->shouldBeCalled();
+        $productD->setCreated(Argument::any())->shouldBeCalled();
+        $productD->setUpdated(Argument::any())->shouldBeCalled();
+
         $normalizer->normalize($productA, Argument::cetera())->willReturn(['_id' => 'id_a', 'key_a' => 'data_a']);
         $normalizer->normalize($productB, Argument::cetera())->willReturn(['_id' => 'id_b', 'key_b' => 'data_b']);
         $normalizer->normalize($productC, Argument::cetera())->willReturn(['_id' => 'id_c', 'key_c' => 'data_c']);
