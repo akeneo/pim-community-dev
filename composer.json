@@ -30,7 +30,7 @@
         "doctrine/doctrine-bundle": "1.2.0",
         "doctrine/doctrine-fixtures-bundle": "2.2.0",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
-        "doctrine/migrations": "1.0.*@dev",
+        "doctrine/migrations": "1.0.0",
         "doctrine/orm": "2.4.7",
         "dompdf/dompdf" : "0.6.1",
         "escapestudios/wsse-authentication-bundle": "1.0.2",
