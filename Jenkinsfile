@@ -3,8 +3,10 @@
 def editions = ["ee", "ce"]
 def storages = ["orm", "odm"]
 def features = "features,vendor/akeneo/pim-community-dev/features"
-def automaticBranches = ["1.4", "1.5", "1.6", "master"]
+def automaticBranches = ["1.4", "1.5", "1.6", "master", "PR-5564"]
 def behatAttempts = 5
+def phpVersion = 7.1
+def mysqlVersion = 5.7
 
 stage('build') {
     if (!automaticBranches.contains(env.BRANCH_NAME)) {
@@ -44,6 +46,8 @@ stage('build') {
         storages = [userInput['storage']]
         editions = [userInput['edition']]
         features = userInput['features']
+        phpVersion = userInput['php_version']
+        mysqlVersion = userInput['mysql_version']
     }
 
     node {
@@ -51,6 +55,7 @@ stage('build') {
 
         checkout scm
         sh "composer update --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
+        sh "composer require alcaeus/mongo-php-adapter --ignore-platform-reqs"
         stash "pim_community_dev"
 
         if (editions.contains('ee')) {
@@ -60,6 +65,7 @@ stage('build') {
            ])
 
            sh "composer update --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
+           sh "composer require alcaeus/mongo-php-adapter --ignore-platform-reqs"
            stash "pim_enterprise_dev"
         }
     }
@@ -293,7 +299,7 @@ tasks["behat"] = {
                     sh "mkdir -p app/build/screenshots"
 
                     sh "cp behat.ci.yml behat.yml"
-                    sh "/usr/bin/php7.0 /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE} ${env.BUILD_NUMBER} ${storage} ${features} akeneo/job/pim-community-dev/job/${env.JOB_BASE_NAME} ${behatAttempts} ${php_version} ${mysql_version} \"${tags}\" \"behat-${edition}-${storage}\""
+                    sh "/usr/bin/php7.0 /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE} ${env.BUILD_NUMBER} ${storage} ${features} akeneo/job/pim-community-dev/job/${env.JOB_BASE_NAME} ${behatAttempts} ${phpVersion} ${mysqlVersion} \"${tags}\" \"behat-${edition}-${storage}\""
 
                     archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png,app/build/logs/consumer/*.log'
                     junit 'app/build/logs/behat/*.xml'
