@@ -3,7 +3,7 @@
 def editions = ["ee", "ce"]
 def storages = ["orm", "odm"]
 def features = "features,vendor/akeneo/pim-community-dev/features"
-def automaticBranches = ["1.4", "1.5", "1.6", "master"]
+def automaticBranches = ["1.4", "1.5", "1.6", "master", "PR-5561"]
 def behatAttempts = 5
 
 stage('build') {
@@ -39,22 +39,26 @@ stage('build') {
 
         checkout scm
         sh "composer update --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
+        sh "composer require alcaeus/mongo-php-adapter --ignore-platform-reqs"
+
         stash "pim_community_dev"
 
         if (editions.contains('ee')) {
-           checkout([$class: 'GitSCM',
-             branches: [[name: '1.6']],
-             userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
-           ])
+            checkout([$class: 'GitSCM',
+                branches: [[name: '1.6']],
+                userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+            ])
 
-           sh "composer update --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
-           stash "pim_enterprise_dev"
+            sh "composer update --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-dev"
+            sh "composer require alcaeus/mongo-php-adapter --ignore-platform-reqs"
+
+            stash "pim_enterprise_dev"
         }
     }
 
     node('docker') {
         deleteDir()
-        docker.image('carcel/php:5.6').inside {
+        docker.image('carcel/php:7.1').inside {
             unstash "pim_community_dev"
             sh "composer run-script post-update-cmd"
             sh "app/console oro:requirejs:generate-config"
@@ -65,7 +69,7 @@ stage('build') {
     if (editions.contains('ee')) {
         node('docker') {
             deleteDir()
-            docker.image('carcel/php:5.6').inside {
+            docker.image('carcel/php:7.1').inside {
                 unstash "pim_enterprise_dev"
                 sh "composer run-script post-update-cmd"
                 sh "app/console oro:requirejs:generate-config"
