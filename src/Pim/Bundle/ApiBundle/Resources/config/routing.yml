@@ -8,4 +8,4 @@ family:
 
 attribute:
     resource: '@PimApiBundle/Resources/config/routing/attribute.yml'
-    prefix: /rest/v1/attributes
+    prefix: /rest/v1
