@@ -13,6 +13,6 @@ pim_dashboard:
         mass_edit: Edición en masa
         quick_export: Exportación rápida
     completeness:
-      load_more: Cargar más...
+      load_more: 'Cargar más...'
     header:
       view_all: Ver todo

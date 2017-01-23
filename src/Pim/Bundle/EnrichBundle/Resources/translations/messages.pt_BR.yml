@@ -44,7 +44,7 @@ pim_enrich:
       property.title: Propriedades
       permission.title: Permissões
   group:
-    axis.help: Os eixos definem os atributos sobre os quais os produtos do grupo devem variar. Os eixos são atributos com opções, não localizáveis e sem âmbito. Eles não podem ser alterados após a criação do grupo variante.
+    axis.help: 'Os eixos definem os atributos sobre os quais os produtos do grupo devem variar. Os eixos são atributos com opções, não localizáveis e sem âmbito. Eles não podem ser alterados após a criação do grupo variante.'
     type:
       VARIANT: Variante
       X_SELL: Venda Cruzada
@@ -615,52 +615,52 @@ Default: Padrão
 Attributes: Atributos
 Title: Título
 pim_title.attribute_group:
-  index: Grupo de atributos
-  create: Grupo de atributos | Criar
-  edit: Grupo de atributos %group.label% | Editar
+  index: "Grupo de atributos"
+  create: "Grupo de atributos | Criar"
+  edit: "Grupo de atributos %group.label% | Editar"
 pim_title.category:
-  index: Árvores de categorias
-  create: Árvores de categoria | Criar
-  edit: Árvores de categorias %category.label% | Editar
+  index: "Árvores de categorias"
+  create: "Árvores de categoria | Criar"
+  edit: "Árvores de categorias %category.label% | Editar"
 pim_title.attribute:
-  index: Atributos
-  create: Atributos | Criar
-  edit: Atributos %attribute.label% | Editar
+  index: "Atributos"
+  create: "Atributos | Criar"
+  edit: "Atributos %attribute.label% | Editar"
 pim_title.product:
-  index: Produtos
-  edit: Produtos %product.sku% | Editar
+  index: "Produtos"
+  edit: "Produtos %product.sku% | Editar"
 pim_title.family:
-  index: Famílias
-  edit: Famílias %family.label% | Editar
+  index: "Famílias"
+  edit: "Famílias %family.label% | Editar"
 pim_title.channel:
-  index: Canais
-  create: Canais | Criar
-  edit: Canais %channel.label% | Editar
+  index: "Canais"
+  create: "Canais | Criar"
+  edit: "Canais %channel.label% | Editar"
 pim_title.currency:
-  index: Moedas
+  index: "Moedas"
 pim_title.locale:
-  index: Localidades
+  index: "Localidades"
 pim_title.group:
-  index: Grupos
-  edit: Grupos %group.label% | Editar
+  index: "Grupos"
+  edit: "Grupos %group.label% | Editar"
 pim_title.variant_group:
-  index: Grupos de variantes
-  edit: Grupos de variantes %group.label% | Editar
+  index: "Grupos de variantes"
+  edit: "Grupos de variantes %group.label% | Editar"
 pim_title.association_type:
-  index: Tipos de associação
-  edit: Tipos de associação %association type.labe% | Editar
+  index: "Tipos de associação"
+  edit: "Tipos de associação %association type.labe% | Editar"
 pim_title.group_type:
-  index: Tipos de grupos
-  edit: Tipos de grupos %group type.label% | Editar
+  index: "Tipos de grupos"
+  edit: "Tipos de grupos %group type.label% | Editar"
 pim_title.mass_edit_product_action:
-  choose: Edição em massa | Escolher
-  configure: Edição em massa | Configurar
+  choose: "Edição em massa | Escolher"
+  configure: "Edição em massa | Configurar"
 pim_title.mass_edit_family_action:
-  choose: Edição em massa | Escolher
-  configure: Edição em massa | Configurar
+  choose: "Edição em massa | Escolher"
+  configure: "Edição em massa | Configurar"
 pim_title.job_tracker:
   index: Visualizador de processos
-  show: Visualizador de processos | Mostrar tarefa
+  show: "Visualizador de processos | Mostrar tarefa"
 pim_title.dashboard: "Painel de controle"
 pim_catalog_identifier: Identificador
 pim_catalog_text: Texto
@@ -819,23 +819,23 @@ Currency: Moeda
 oro.locale:
   address_format:
     region_name_type:
-      parish: paróquia
-      state: estado
-      island: ilha
-      county: condado de
-      area: área
-      prefecture: Município
-      department: departamento
-      district: distrito
-      province: província
+      parish: "paróquia"
+      state: "estado"
+      island: "ilha"
+      county: "condado de"
+      area: "área"
+      prefecture: "Município"
+      department: "departamento"
+      district: "distrito"
+      province: "província"
   form:
     tooltip:
-      locale: Selecione a opção de localidade usada para formatar números, endereços, nomes e datas
-      location: ' A localização será usada para formatar endereços quando a opção ''Formatar o endereço em função do país'' estiver desativada'
-      format_address_by_address_country: Ao selecionar essa opção, os endereços serão formatados em função do respectivo país ao qual pertencerem. Desabilitar essa opção fará com que os endereços sejam formatados de acordo com as regras da sua localização
-      language: Selecione o idioma do sistema que deseja usar
-      timezone: Selecione o fuso horário para exibir a data e a hora
-      currency: Selecione a moeda padrão
+      locale: "Selecione a opção de localidade usada para formatar números, endereços, nomes e datas"
+      location: " A localização será usada para formatar endereços quando a opção 'Formatar o endereço em função do país' estiver desativada"
+      format_address_by_address_country: "Ao selecionar essa opção, os endereços serão formatados em função do respectivo país ao qual pertencerem. Desabilitar essa opção fará com que os endereços sejam formatados de acordo com as regras da sua localização"
+      language: "Selecione o idioma do sistema que deseja usar"
+      timezone: "Selecione o fuso horário para exibir a data e a hora"
+      currency: "Selecione a moeda padrão"
 Selected products successfully deleted: Os produtos selecionados foram eliminados com êxito
 pim_mass_edit:
   notification:

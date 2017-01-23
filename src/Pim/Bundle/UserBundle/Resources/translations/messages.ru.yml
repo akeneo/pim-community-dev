@@ -9,25 +9,25 @@ pim_user:
       email_synchronization.title: Настройки синхронизации email
       interfaces.title: Интерфейсы
 oro.user.controller:
-  group.message.saved: Группа сохранена
-  role.message.saved: Роль сохранена
-  user.message.saved: Пользователь сохранен
-  status.message.saved: Состояние сохранено
+  group.message.saved: "Группа сохранена"
+  role.message.saved: "Роль сохранена"
+  user.message.saved: "Пользователь сохранен"
+  status.message.saved: "Состояние сохранено"
 oro.user.grid.users:
   columns:
-    username: Имя пользователя
-    email: Email
-    firstName: Имя
-    lastName: Фамилия
-    createdAt: Дата создания
-    updatedAt: Дата обновления
-    enabled: Состояние
+    username: "Имя пользователя"
+    email: "Email"
+    firstName: "Имя"
+    lastName: "Фамилия"
+    createdAt: "Дата создания"
+    updatedAt: "Дата обновления"
+    enabled: "Состояние"
 oro.user.grid.roles:
   columns:
-    label: Ярлык
+    label: "Ярлык"
 oro.user.grid.groups:
   columns:
-    name: Имя
+    name: "Имя"
 pim_title:
   user.index: Пользователи
   user_role.index: Роли

@@ -46,7 +46,7 @@ class FamilySorter implements FieldSorterInterface
         }
 
         $fieldLabel = sprintf(
-            "%s.%s.label.%s",
+            "%s.%s.labels.%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             $field,
             $locale

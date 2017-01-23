@@ -44,7 +44,7 @@ pim_enrich:
       property.title: 属性
       permission.title: 权限
   group:
-    axis.help: Axis定义了一组产品中可以不同的属性。Axis就是一组带选项的属性，不可以本地化也没有范围（全局）。在创建好款式组后，他们是不能被修改的。
+    axis.help: 'Axis定义了一组产品中可以不同的属性。Axis就是一组带选项的属性，不可以本地化也没有范围（全局）。在创建好款式组后，他们是不能被修改的。'
     type:
       VARIANT: 变量
       X_SELL: X-Sell
@@ -69,7 +69,7 @@ pim_enrich:
       no_attributes: 这个款式组还没有属性
       no_attributes_in_selected_locale: 这个款式组在该本地化语言中还没有属性
   completeness:
-    progress_bar.title: 完成 %ratio%%（1 所需的值） | 完成 %ratio%%（所需的%count% 值）
+    progress_bar.title: '完成 %ratio%%（1 所需的值） | 完成 %ratio%%（所需的%count% 值）'
     subtitle: '{0} 完成 |{1} 1 缺少值 |]1，Inf] %count% 缺失值'
     missing_attributes: 缺少值 |缺少的值
     legend:
@@ -616,52 +616,52 @@ Default: 默认
 Attributes: 属性
 Title: 名称
 pim_title.attribute_group:
-  index: 属性组
-  create: 属性组 |创建
-  edit: 属性组%group.label%|编辑
+  index: "属性组"
+  create: "属性组 |创建"
+  edit: "属性组%group.label%|编辑"
 pim_title.category:
-  index: 目录树
-  create: 目录树|创建
-  edit: 目录树%category.label%|编辑
+  index: "目录树"
+  create: "目录树|创建"
+  edit: "目录树%category.label%|编辑"
 pim_title.attribute:
-  index: 属性
-  create: 属性|创建
-  edit: 属性%attribute.label%|编辑
+  index: "属性"
+  create: "属性|创建"
+  edit: "属性%attribute.label%|编辑"
 pim_title.product:
-  index: 产品
-  edit: 产品%product.sku%|编辑
+  index: "产品"
+  edit: "产品%product.sku%|编辑"
 pim_title.family:
-  index: 产品族
-  edit: 产品族%family.label%|编辑
+  index: "产品族"
+  edit: "产品族%family.label%|编辑"
 pim_title.channel:
-  index: 通道
-  create: 通道|创建
-  edit: 通道%channel.label%|编辑
+  index: "通道"
+  create: "通道|创建"
+  edit: "通道%channel.label%|编辑"
 pim_title.currency:
-  index: 货币
+  index: "货币"
 pim_title.locale:
-  index: 区域
+  index: "区域"
 pim_title.group:
-  index: 分组
-  edit: 分组%group.label%|编辑
+  index: "分组"
+  edit: "分组%group.label%|编辑"
 pim_title.variant_group:
-  index: 属性组
-  edit: 属性组%group.label%|编辑
+  index: "属性组"
+  edit: "属性组%group.label%|编辑"
 pim_title.association_type:
-  index: 关联类型
-  edit: 关联类型%association type.label%|编辑
+  index: "关联类型"
+  edit: "关联类型%association type.label%|编辑"
 pim_title.group_type:
-  index: 分组类型
-  edit: 分组类型%group type.label%|编辑
+  index: "分组类型"
+  edit: "分组类型%group type.label%|编辑"
 pim_title.mass_edit_product_action:
-  choose: 批量编辑|选择
-  configure: 批量编辑|配置
+  choose: "批量编辑|选择"
+  configure: "批量编辑|配置"
 pim_title.mass_edit_family_action:
-  choose: 批量编辑|选择
-  configure: 批量编辑|配置
+  choose: "批量编辑|选择"
+  configure: "批量编辑|配置"
 pim_title.job_tracker:
   index: 过程跟踪器
-  show: 过程跟踪器 |显示作业
+  show: "过程跟踪器 |显示作业"
 pim_title.dashboard: "监控面板"
 pim_catalog_identifier: 标识
 pim_catalog_text: 文本
@@ -820,23 +820,23 @@ Currency: 货币
 oro.locale:
   address_format:
     region_name_type:
-      parish: 行政区
-      state: 国家
-      island: 岛
-      county: 县
-      area: 区域
-      prefecture: 县
-      department: 部门
-      district: 区
-      province: 省份
+      parish: "行政区"
+      state: "国家"
+      island: "岛"
+      county: "县"
+      area: "区域"
+      prefecture: "县"
+      department: "部门"
+      district: "区"
+      province: "省份"
   form:
     tooltip:
-      locale: 选择用于格式化数字、 地址、 名称和日期的区域设置选项
-      location: 当选项”按地址中的国家来格式化地址“选项被禁用时，"所在地"将被用来格式化地址。
-      format_address_by_address_country: 选择该选项时，将会使用他们所在的国家来格式化地址。不选择该选项时，将使用所在地的地址格式来格式化地址。
-      language: 选择您想要使用的系统语言
-      timezone: 选择用于显示日期和时间的时区
-      currency: 选择默认货币
+      locale: "选择用于格式化数字、 地址、 名称和日期的区域设置选项"
+      location: "当选项”按地址中的国家来格式化地址“选项被禁用时，\"所在地\"将被用来格式化地址。"
+      format_address_by_address_country: "选择该选项时，将会使用他们所在的国家来格式化地址。不选择该选项时，将使用所在地的地址格式来格式化地址。"
+      language: "选择您想要使用的系统语言"
+      timezone: "选择用于显示日期和时间的时区"
+      currency: "选择默认货币"
 Selected products successfully deleted: 成功地删除所选的产品
 pim_mass_edit:
   notification:

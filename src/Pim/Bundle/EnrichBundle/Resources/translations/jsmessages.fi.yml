@@ -183,8 +183,8 @@ pim_enrich:
       variant_group:
         updated_by: Päivitetty variant-ryhmittäin
         switch:
-          "yes": Kyllä
-          "no": Ei
+          "yes": "Kyllä"
+          "no": "Ei"
       optional_attribute:
         remove: Poista määrite
       locale_specific_attribute:
@@ -247,7 +247,7 @@ pim_enrich:
             none_exist: Yhdistystyyppejä ei ole olemassa.
             show_products: Näytä tuotteet
             show_groups: Näytä ryhmät
-            number_of_associations: '{{ productCount }} ja {{ groupCount }} ryhmistä'
+            number_of_associations: "{{ productCount }} ja {{ groupCount }} ryhmistä"
         attributes:
           title: Ominaisuudet
           btn:
@@ -256,7 +256,7 @@ pim_enrich:
           info:
             search_attributes: Hae...
             no_available_attributes: Määritteitä ei ole enää lisättävänä
-            attributes_selected: '{{ attributeCount }} attribuuttia valittu'
+            attributes_selected: "{{ attributeCount }} attribuuttia valittu"
             no_match: Ei hakutuloksia
             load_more: Ladataan lisää tuloksia...
         categories:
@@ -271,8 +271,8 @@ pim_enrich:
         history:
           title: Historiatiedot
       switch:
-        "no": Ei
-        "yes": Kyllä
+        "no": "Ei"
+        "yes": "Kyllä"
       sequential_edit:
         info:
           products: tuotteet
@@ -303,8 +303,8 @@ pim_enrich:
         cancel: Peruuta
     entity:
       switch:
-        "no": Ei
-        "yes": Kyllä
+        "no": "Ei"
+        "yes": "Kyllä"
     variant_group:
       tab:
         properties:
@@ -347,7 +347,7 @@ pim_enrich:
         attributes:
           title: Attribuutit
           edit: Muokkaa
-          label: '{0} Kaikki attribuutit|{1} Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu'
+          label: "{0} Kaikki attribuutit|{1} Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu"
           help: 'Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit.'
           empty: Kaikki attribuutit viedään
           modal:
@@ -356,8 +356,8 @@ pim_enrich:
             title: Attribuuttivalinta
         attributes_selector:
           attribute_group: Attribuuttiryhmät
-          attributes: Etsi {{ attributeCount }} attribuutista
-          selected: Valitut attribuutit
+          attributes: "Etsi {{ attributeCount }} attribuutista"
+          selected: "Valitut attribuutit"
           clear: Tyhjennä
           all_group: Kaikki ryhmät
           empty_selection: Kaikki attribuutit viedään
@@ -366,17 +366,17 @@ pim_enrich:
           help: 'Valitse vietävät tuotteet perheen mukaan. Esim: vie vain kengät ja hameet.'
           operators:
             IN: Luettelossa
-            NOT IN: Ei luettelossa
+            "NOT IN": Ei luettelossa
             EMPTY: Perheettömät tuotteet
-            NOT EMPTY: Perheelliset tuotteet
+            "NOT EMPTY": Perheelliset tuotteet
           empty_selection: Ei perhe-ehtoja
         updated:
           title: Aikaehto
           operators:
             ALL: Ei aikaehtoa
-            SINCE LAST N DAYS: Tuotteet päivitetty viimeisen n päivän aikana (esim. 6)
-            >: Tämän päivän jälkeen päivitetyt tuotteet
-            SINCE LAST JOB: Viime viennin jälkeen päivitetyt tuotteet
+            "SINCE LAST N DAYS": Tuotteet päivitetty viimeisen n päivän aikana (esim. 6)
+            ">": Tämän päivän jälkeen päivitetyt tuotteet
+            "SINCE LAST JOB": Viime viennin jälkeen päivitetyt tuotteet
         enabled:
           title: Status
           help: 'Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta.'
@@ -389,8 +389,8 @@ pim_enrich:
           help: Valitse vietävät tuotteet valmiusasteen perusteella.
           operators:
             ALL: Ei valmiusaste-ehtoa
-            >=: Valmis ainakin yhdessä valituista lokaatioista
-            GREATER OR EQUALS THAN ON ALL LOCALES: Valmis kaikissa valituissa lokaatiossa
+            ">=": Valmis ainakin yhdessä valituista lokaatioista
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Valmis kaikissa valituissa lokaatiossa
             LOWER THAN ON ALL LOCALES: Ei valmis kaikissa lokaatioissa
           empty_selection: Valitse perhe
         category:
@@ -401,12 +401,12 @@ pim_enrich:
           help: Vietävien tuotteiden tunnisteet eroteltuna pilkuilla, välilyönneillä tai rivinvaihdoilla
         metric:
           operators:
-            =: Yhtäsuuri kuin
-            !=: Erisuuri kuin
-            >=: Suurempi tai yhtäsuuri kuin
-            >: Suurempi kuin
-            <=: Pienempi tai yhtäsuuri kuin
-            <: Pienempi kuin
+            "=": Yhtäsuuri kuin
+            "!=": Erisuuri kuin
+            ">=": Suurempi tai yhtäsuuri kuin
+            ">": Suurempi kuin
+            "<=": Pienempi tai yhtäsuuri kuin
+            "<": Pienempi kuin
             EMPTY: Tyhjä
             NOT EMPTY: Ei tyhjä
         string:
@@ -414,19 +414,19 @@ pim_enrich:
             ALL: Kaikki
             CONTAINS: Sisältää
             DOES NOT CONTAIN: Ei sisällä
-            =: Yhtä kuin
+            "=": Yhtä kuin
             STARTS WITH: Alkaa
             ENDS WITH: Päättyy
             EMPTY: Tyhjä
             NOT EMPTY: Ei tyhjä
         price-collection:
           operators:
-            =: Yhtäsuuri kuin
-            !=: Erisuuri kuin
-            >=: Suurempi tai yhtäsuuri kuin
-            >: Suurempi kuin
-            <=: Pienempi tai yhtäsuuri kuin
-            <: Pienempi kuin
+            "=": Yhtäsuuri kuin
+            "!=": Erisuuri kuin
+            ">=": Suurempi tai yhtäsuuri kuin
+            ">": Suurempi kuin
+            "<=": Pienempi tai yhtäsuuri kuin
+            "<": Pienempi kuin
             EMPTY: Tyhjä
             NOT EMPTY: Ei tyhjä
         multi_select:
@@ -438,29 +438,29 @@ pim_enrich:
           operators:
             CONTAINS: Sisältää
             DOES NOT CONTAIN: Ei sisällä
-            =: Yhtä kuin
+            "=": Yhtä kuin
             STARTS WITH: Alkaa
             ENDS WITH: Päättyy
             EMPTY: Tyhjä
             NOT EMPTY: Ei tyhjä
         date:
           operators:
-            >: Suurempi kuin
-            <: Pienempi kuin
-            =: Yhtä kuin
-            !=: Erisuuri kuin
+            ">": Suurempi kuin
+            "<": Pienempi kuin
+            "=": Yhtä kuin
+            "!=": Erisuuri kuin
             BETWEEN: Välillä
             NOT BETWEEN: Ei välillä
             EMPTY: Tyhjä
             NOT EMPTY: Ei tyhjä
         number:
           operators:
-            =: Yhtä kuin
-            !=: Erisuuri kuin
-            >=: Suurempi tai yhtäsuuri kuin
-            >: Suurempi kuin
-            <=: Pienempi tai yhtäsuuri kuin
-            <: Pienempi kuin
+            "=": Yhtä kuin
+            "!=": Erisuuri kuin
+            ">=": Suurempi tai yhtäsuuri kuin
+            ">": Suurempi kuin
+            "<=": Pienempi tai yhtäsuuri kuin
+            "<": Pienempi kuin
             EMPTY: Tyhjä
             NOT EMPTY: Ei tyhjä
   mass_edit_action:

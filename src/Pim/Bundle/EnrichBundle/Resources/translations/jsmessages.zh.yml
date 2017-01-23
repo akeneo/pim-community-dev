@@ -183,8 +183,8 @@ pim_enrich:
       variant_group:
         updated_by: 创建属性组
         switch:
-          "yes": 是
-          "no": 否　
+          "yes": "是"
+          "no": "否　"
       optional_attribute:
         remove: 删除此属性
       locale_specific_attribute:
@@ -247,7 +247,7 @@ pim_enrich:
             none_exist: 没有关联的类型存在。
             show_products: 显示产品
             show_groups: 显示组
-            number_of_associations: '{{ productCount }} 产品和 {{ groupCount }} 组'
+            number_of_associations: "{{ productCount }} 产品和 {{ groupCount }} 组"
         attributes:
           title: 属性
           btn:
@@ -256,7 +256,7 @@ pim_enrich:
           info:
             search_attributes: 搜索...
             no_available_attributes: 没有需要添加的属性
-            attributes_selected: '{{ attributeCount }} 属性选择'
+            attributes_selected: "{{ attributeCount }} 属性选择"
             no_match: 未找到匹配项
             load_more: 正在加载更多的结果...
         categories:
@@ -271,8 +271,8 @@ pim_enrich:
         history:
           title: 历史
       switch:
-        "no": 否　
-        "yes": 是
+        "no": "否　"
+        "yes": "是"
       sequential_edit:
         info:
           products: 产品
@@ -303,8 +303,8 @@ pim_enrich:
         cancel: 取消
     entity:
       switch:
-        "no": 否　
-        "yes": 是
+        "no": "否　"
+        "yes": "是"
     variant_group:
       tab:
         properties:
@@ -347,7 +347,7 @@ pim_enrich:
         attributes:
           title: 属性
           edit: 编辑
-          label: '{0} 所有产品 |{1} 一类别选择 |]1，Inf [{{ count }} 类别选择'
+          label: "{0} 所有产品 |{1} 一类别选择 |]1，Inf [{{ count }} 类别选择"
           help: 选择要导出的产品信息。例如︰ 仅导出有技术类的属性。
           empty: 将导出所有属性
           modal:
@@ -356,8 +356,8 @@ pim_enrich:
             title: 属性选择
         attributes_selector:
           attribute_group: 属性组
-          attributes: 在 {{ attributeCount }} 属性中搜索
-          selected: 选定的属性
+          attributes: "在 {{ attributeCount }} 属性中搜索"
+          selected: "选定的属性"
           clear: 清除
           all_group: 所有群组
           empty_selection: 将导出所有属性
@@ -366,17 +366,17 @@ pim_enrich:
           help: 按品类选中产品进行导出。例如︰ 只导出鞋和衣服。
           operators:
             IN: 在列表中
-            NOT IN: 不在列表中
+            "NOT IN": 不在列表中
             EMPTY: 没有品类的产品
-            NOT EMPTY: 有品类的产品
+            "NOT EMPTY": 有品类的产品
           empty_selection: 在品类上没有条件
         updated:
           title: 时间条件
           operators:
             ALL: 日期条件
-            SINCE LAST N DAYS: 在过去 n 天中更新过的产品 (例如， 6)
-            >: 从该日期开始更新过的产品
-            SINCE LAST JOB: 从上次导出后更新过的产品
+            "SINCE LAST N DAYS": 在过去 n 天中更新过的产品 (例如， 6)
+            ">": 从该日期开始更新过的产品
+            "SINCE LAST JOB": 从上次导出后更新过的产品
         enabled:
           title: 状态
           help: 根据它们的状态来选择产品导出。例如，导出所有状态的产品。
@@ -389,8 +389,8 @@ pim_enrich:
           help: 根据它们的完成度来选择产品导出
           operators:
             ALL: 在完成度上没有条件
-            >=: 完成至少一个选定的本地化语言
-            GREATER OR EQUALS THAN ON ALL LOCALES: 在所有选择的本地化语言中是完整的
+            ">=": 完成至少一个选定的本地化语言
+            "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选择的本地化语言中是完整的
             LOWER THAN ON ALL LOCALES: 在所有选择的本地化语言中是不完整的
           empty_selection: 选择一个品类
         category:
@@ -401,12 +401,12 @@ pim_enrich:
           help: 你想要导出的产品标识，用逗号，空格或换行来隔开
         metric:
           operators:
-            =: 等于
-            !=: 不等于
-            >=: 大于或等于
-            >: 大于
-            <=: 低于或等于
-            <: 低于
+            "=": 等于
+            "!=": 不等于
+            ">=": 大于或等于
+            ">": 大于
+            "<=": 低于或等于
+            "<": 低于
             EMPTY: 为空
             NOT EMPTY: 不是空的
         string:
@@ -414,19 +414,19 @@ pim_enrich:
             ALL: 所有
             CONTAINS: 包含
             DOES NOT CONTAIN: 未包含
-            =: 等于
+            "=": 等于
             STARTS WITH: 开始于
             ENDS WITH: 结束于
             EMPTY: 为空
             NOT EMPTY: 不是空的
         price-collection:
           operators:
-            =: 等于
-            !=: 不等于
-            >=: 大于或等于
-            >: 大于
-            <=: 低于或等于
-            <: 低于
+            "=": 等于
+            "!=": 不等于
+            ">=": 大于或等于
+            ">": 大于
+            "<=": 低于或等于
+            "<": 低于
             EMPTY: 为空
             NOT EMPTY: 不是空的
         multi_select:
@@ -438,29 +438,29 @@ pim_enrich:
           operators:
             CONTAINS: 包含
             DOES NOT CONTAIN: 未包含
-            =: 等于
+            "=": 等于
             STARTS WITH: 开始于
             ENDS WITH: 结束于
             EMPTY: 为空
             NOT EMPTY: 不是空的
         date:
           operators:
-            >: 大于
-            <: 低于
-            =: 等于
-            !=: 不等于
+            ">": 大于
+            "<": 低于
+            "=": 等于
+            "!=": 不等于
             BETWEEN: 介于
             NOT BETWEEN: 不介于
             EMPTY: 为空
             NOT EMPTY: 不是空的
         number:
           operators:
-            =: 等于
-            !=: 不等于
-            >=: 大于或等于
-            >: 大于
-            <=: 低于或等于
-            <: 低于
+            "=": 等于
+            "!=": 不等于
+            ">=": 大于或等于
+            ">": 大于
+            "<=": 低于或等于
+            "<": 低于
             EMPTY: 为空
             NOT EMPTY: 不是空的
   mass_edit_action:
