@@ -4,6 +4,7 @@
 
 - PIM-6113: Fix wrong context switch on association groups
 - PIM-6062: Fix potential Unix commands injection
+- PIM-5085: Fix update of the normalized data on family update (mongodb)
 
 # 1.6.9 (2017-01-17)
 
