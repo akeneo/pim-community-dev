@@ -5,8 +5,12 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Load real product values object from the $rawValues field (ie: values in JSON)
@@ -24,6 +28,18 @@ class LoadProductValuesSubscriber implements EventSubscriber
 {
     /** @var ContainerInterface */
     protected $container;
+
+    /** @var ProductValueFactory */
+    protected $valueFactory;
+
+    /** @var ProductValueCollectionFactory */
+    protected $valueCollectionFactory;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var NormalizerInterface */
+    protected $serializer;
 
     /**
      * TODO: The container is injected here to avoid a circular reference
@@ -52,6 +68,8 @@ class LoadProductValuesSubscriber implements EventSubscriber
 
     /**
      * Here we load the real object values from the raw values field.
+     * We also add the identifier as a regular value so that it can be used in the product
+     * edit form transparently.
      *
      * @param LifecycleEventArgs $event
      */
@@ -62,8 +80,64 @@ class LoadProductValuesSubscriber implements EventSubscriber
             return;
         }
 
-        $valueCollectionFactory = $this->container->get('pim_catalog.factory.product_value_collection');
-        $values = $valueCollectionFactory->createFromStorageFormat($product->getRawValues());
+        $identifierValue = $this->getProductValueFactory()->create(
+            $this->getAttributeRepository()->getIdentifier(),
+            null,
+            null,
+            $product->getIdentifier()
+        );
+        $identifierRawValue = $this->getSerializer()->normalize($identifierValue, 'storage');
+
+        $rawValues = array_merge($identifierRawValue, $product->getRawValues());
+        $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);
         $product->setValues($values);
+    }
+
+    /**
+     * @return AttributeRepositoryInterface
+     */
+    private function getAttributeRepository()
+    {
+        if (null === $this->attributeRepository) {
+            $this->attributeRepository = $this->container->get('pim_catalog.repository.attribute');
+        }
+
+        return $this->attributeRepository;
+    }
+
+    /**
+     * @return ProductValueCollectionFactory
+     */
+    private function getProductValueCollectionFactory()
+    {
+        if (null === $this->valueCollectionFactory) {
+            $this->valueCollectionFactory = $this->container->get('pim_catalog.factory.product_value_collection');
+        }
+
+        return $this->valueCollectionFactory;
+    }
+
+    /**
+     * @return ProductValueFactory
+     */
+    private function getProductValueFactory()
+    {
+        if (null === $this->valueFactory) {
+            $this->valueFactory = $this->container->get('pim_catalog.factory.product_value');
+        }
+
+        return $this->valueFactory;
+    }
+
+    /**
+     * @return NormalizerInterface
+     */
+    private function getSerializer()
+    {
+        if (null === $this->serializer) {
+            $this->serializer = $this->container->get('pim_serializer');
+        }
+
+        return $this->serializer;
     }
 }
