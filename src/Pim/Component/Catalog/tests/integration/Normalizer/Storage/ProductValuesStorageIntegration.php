@@ -21,11 +21,6 @@ class ProductValuesStorageIntegration extends TestCase
     public function testProductWithAllAttributes()
     {
         $expected = [
-            'sku' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'foo'
-                ],
-            ],
             'a_file' => [
                 '<all_channels>' => [
                     '<all_locales>' => '8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt'
