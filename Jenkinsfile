@@ -1,6 +1,6 @@
 #!groovy
 
-def ceBranch = "1.5.x-dev"
+def ceBranch = "dev-master"
 def ceOwner = "akeneo"
 def features = "features,vendor/akeneo/pim-community-dev/features"
 def automaticBranches = ["1.4", "1.5", "1.6", "master"]
