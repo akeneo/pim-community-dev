@@ -157,6 +157,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $title
      *
+     * @throws ExpectationException
+     *
      * @Then /^I could see "([^"]*)" in the manage filters list$/
      */
     public function iCouldSeeInTheManageFiltersList($title)
@@ -631,8 +633,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws ExpectationException
      *
-     * @return Step
-     *
      * @Then /^I should see products? (.*)$/
      * @Then /^I should see attributes? (?!(?:.*)in group )(.*)$/
      * @Then /^I should see channels? (.*)$/
@@ -821,18 +821,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $rows
+     * @param string      $rows
+     * @param string|null $notChecked If not null, it checks checkbox is not checked.
      *
      * @throws ExpectationException
      *
-     * @Then /^the rows? "([^"]*)" should be checked$/
+     * @Then /^the rows? "([^"]*)" should (not )?be checked$/
      */
-    public function theRowShouldBeChecked($rows)
+    public function theRowShouldBeChecked($rows, $notChecked = null)
     {
         $rows = $this->getMainContext()->listToArray($rows);
 
         foreach ($rows as $row) {
-            $this->spin(function () use ($row) {
+            $this->spin(function () use ($row, $notChecked) {
                 $gridRow  = $this->datagrid->getRow($row);
                 $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
 
@@ -840,33 +841,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                     return false;
                 }
 
-                return $checkbox->isChecked();
-            }, sprintf('Fail asserting that "%s" row was checked', $row));
-        }
-    }
-
-    /**
-     * @param string $rows
-     *
-     * @throws ExpectationException
-     *
-     * @Then /^the rows? "([^"]*)" should not be checked$/
-     */
-    public function theRowShouldBeUnchecked($rows)
-    {
-        $rows = $this->getMainContext()->listToArray($rows);
-
-        foreach ($rows as $row) {
-            $this->spin(function () use ($row) {
-                $gridRow  = $this->datagrid->getRow($row);
-                $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
-
-                if (!$checkbox) {
-                    return false;
-                }
-
-                return !$checkbox->isChecked();
-            }, sprintf('Fail asserting that "%s" row was unchecked', $row));
+                return ((null === $notChecked && $checkbox->isChecked()) ||
+                    (null !== $notChecked && !$checkbox->isChecked()));
+            }, sprintf('Fail asserting that "%s" row was %schecked', $row, $notChecked));
         }
     }
 

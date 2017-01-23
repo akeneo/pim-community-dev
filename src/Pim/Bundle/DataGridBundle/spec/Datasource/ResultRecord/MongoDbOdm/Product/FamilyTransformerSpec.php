@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
  */
 class FamilyTransformerSpec extends ObjectBehavior
 {
-    function it_transforms_product_family_result(\MongoId $id)
+    function it_transforms_product_family_result()
     {
         $locale = 'fr_FR';
         $result = [
@@ -37,5 +37,21 @@ class FamilyTransformerSpec extends ObjectBehavior
         ];
 
         $this->transform($result, $locale)->shouldReturn($expected);
+    }
+
+    function it_transforms_product_family_label_if_empty()
+    {
+        $result = [
+            'normalizedData' => [
+                'family' => [
+                    'code' => 'expected-code',
+                    'labels' => ['fr_FR' => ''],
+                ]
+            ]
+        ];
+
+        $expected = $result + ['familyLabel'  => '[expected-code]'];
+
+        $this->transform($result, 'fr_FR')->shouldReturn($expected);
     }
 }
