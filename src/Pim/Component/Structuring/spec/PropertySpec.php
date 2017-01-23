@@ -37,6 +37,7 @@ class PropertySpec extends ObjectBehavior
         $this->getValue()->shouldReturn($value);
     }
 
+    // Do we need attributes or constant ?
     function it_has_a_Type($attribute)
     {
         $this->getType()->shouldReturn($attribute);

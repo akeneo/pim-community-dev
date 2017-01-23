@@ -30,6 +30,7 @@ class TemplateSpec extends ObjectBehavior
         $this->getBlocks()->shouldReturn($blocks);
     }
 
+    // Do you need that?
     function it_add_attributes_to_the_collection(BlockInterface $block, BlockInterface $otherBlock)
     {
         $this->addBlock($block)->shouldReturn(null);
@@ -39,5 +40,30 @@ class TemplateSpec extends ObjectBehavior
         $blocks->contains($block)->shouldReturn(true);
         $blocks->contains($otherBlock)->shouldReturn(true);
         $blocks->shouldhaveCount(2);
+    }
+
+    function it_returns_the_list_of_attributes(
+        BlockInterface $block,
+        BlockInterface $otherBlock,
+        ArrayCollection $blockAttributes,
+        ArrayCollection $otherBlockAttributes,
+        \Iterator $iterator
+    ) {
+        $this->addBlock($block);
+        $this->addBlock($otherBlock);
+
+        $block->getAttributes($block)->shouldReturn($blockAttributes);
+        $block->getAttributes($otherBlock)->shouldReturn($otherBlockAttributes);
+
+        $otherBlockAttributes->getIterator($iterator);
+        $iterator->rewind()->shouldBeCalled();
+        $iterator->valid()->willReturn(true, true, false);
+        $iterator->current()->willreturn($block, $otherBlock);
+        $iterator->next()->shouldBeCalled();
+
+        $blockAttributes->add($block);
+        $blockAttributes->add($otherBlock);
+
+        $this->getAttributes()->shouldReturn($blockAttributes);
     }
 }
