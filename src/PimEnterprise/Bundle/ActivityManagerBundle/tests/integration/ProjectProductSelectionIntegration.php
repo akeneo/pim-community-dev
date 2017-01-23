@@ -16,61 +16,114 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 class ProjectProductSelectionIntegration extends ActivityManagerTestCase
 {
     /**
-     * Create a project with only one product to test that the pre processed data are well calculated for a product
-     * with no categories
+     * Test that the pre processed data are well calculated for products without any category
      *
-     * Product : categoryless
+     * Family : tshirt (4 products with one uncategorized product)
+     * User: Julia (catalog mananger)
      * Channel: ecommerce
      * Locale: en_US
      */
-    public function testProductWithoutCategoriesShouldBeProcessed()
+    public function testTheNumberOfProductForTshirtFamily()
     {
         $project = $this->createProject([
-            'label'           => 'categoriesless-project',
+            'label'           => 'test-thsirt',
             'locale'          => 'en_US',
-            'owner'           => 'admin',
+            'owner'           => 'Julia',
             'channel'         => 'ecommerce',
             'product_filters' => [
                 [
-                    'field'    => 'sku',
-                    'operator' => '=',
-                    'value'    => 'categoriesless',
+                    'field'    => 'family',
+                    'operator' => 'IN',
+                    'value'    => ['tshirt'],
                     'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
                 ],
             ],
         ]);
 
         $this->calculateProject($project);
-        $this->checkLinkProjectProduct($project);
+        $this->checkNumberOfProduct($project, 4);
+    }
+
+    /**
+     * Test that the pre processed data are well calculated for products without any category
+     *
+     * Product : categoryless
+     * User: Julia (catalog mananger)
+     * Channel: ecommerce
+     * Locale: en_US
+     */
+    public function testTheNumberOfProductForTechnicalFamily()
+    {
+        $project = $this->createProject([
+            'label'           => 'test-technical-family',
+            'locale'          => 'en_US',
+            'owner'           => 'Julia',
+            'channel'         => 'ecommerce',
+            'product_filters' => [
+                [
+                    'field'    => 'family',
+                    'operator' => 'IN',
+                    'value'    => ['technical_family'],
+                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                ],
+            ],
+        ]);
+
+        $this->calculateProject($project);
+        $this->checkNumberOfProduct($project, 2);
+    }
+
+    /**
+     * Test that the pre processed data are well calculated depending on the project creator permissions
+     *
+     * Family : tshirt (4 products with one uncategorized product)
+     * User: Teddy only the hight tech category (1 tshirt + 1 uncategorized tshirt)
+     * Channel: ecommerce
+     * Locale: en_US
+     */
+    public function testTheNumberOfProductForTshirtFamilyForTeddy()
+    {
+        $project = $this->createProject([
+            'label'           => 'test-project-creator-right',
+            'locale'          => 'en_US',
+            'owner'           => 'Teddy',
+            'channel'         => 'ecommerce',
+            'product_filters' => [
+                [
+                    'field'    => 'family',
+                    'operator' => 'IN',
+                    'value'    => ['tshirt'],
+                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
+                ],
+            ],
+        ]);
+
+        $this->calculateProject($project);
+        $this->checkNumberOfProduct($project, 2);
     }
 
     /**
      * Checks the link between a product and a project.
      *
      * @param ProjectInterface $project
+     * @param int              $expectedCount
      */
-    protected function checkLinkProjectProduct(ProjectInterface $project)
+    private function checkNumberOfProduct(ProjectInterface $project, $expectedCount)
     {
-        $productId = $this->get('pim_catalog.repository.product')
-            ->findOneByIdentifier('categoriesless')
-            ->getId();
-
         $sql = <<<SQL
 SELECT COUNT(*)
 FROM `pimee_activity_manager_project_product`
 WHERE `project_id` = :project_id
-AND `product_id` = :product_id
 SQL;
 
         $numberOfRow = (int) $this->getConnection()->fetchColumn($sql, [
-            'project_id' => $project->getId(),
-            'product_id' => $productId,
+            'project_id' => $project->getId()
         ]);
 
-        $this->assertSame(
+        $this->assertEquals(
             $numberOfRow,
-            1,
-            sprintf('Invalid number of products for the project %s', $project->getId())
+            $expectedCount,
+            sprintf('Invalid number of products for the project "%s"', $project->getCode())
         );
     }
 }
