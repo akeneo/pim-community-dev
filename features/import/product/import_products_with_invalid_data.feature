@@ -292,7 +292,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "The value SKU-001 is already set on another product for the unique attribute sku"
+    And I should see "An item with the identifier \"SKU-001\" has already been processed."
     And the product "SKU-001" should have the following value:
       | name-en_US | high heels |
 
