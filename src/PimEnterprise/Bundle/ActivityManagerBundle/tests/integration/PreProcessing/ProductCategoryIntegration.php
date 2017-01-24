@@ -22,18 +22,11 @@ class ProductCategoryIntegration extends ActivityManagerTestCase
      */
     public function testTheLinkBetweenProductAndCategory()
     {
-        $project = $this->createProject([
-            'label'           => 'categoriesless-project',
-            'locale'          => 'en_US',
-            'owner'           => 'admin',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'sku',
-                    'operator' => 'IN',
-                    'value'    => ['categoriesless', 'tshirt-the-witcher-3'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $project = $this->createProject('categoriesless-project', 'en_US', 'admin', 'ecommerce', [
+            [
+                'field'    => 'sku',
+                'operator' => 'IN',
+                'value'    => ['categoriesless', 'tshirt-the-witcher-3'],
             ],
         ]);
 

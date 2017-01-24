@@ -21,33 +21,19 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
      */
     public function testThatProjectRemovalRemovesPreProcessingEntriesAndMappedProducts()
     {
-        $highTechProject = $this->createProject([
-            'label'           => 'High-Tech project',
-            'locale'          => 'en_US',
-            'owner'           => 'admin',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'categories',
-                    'operator' => 'IN',
-                    'value'    => ['high_tech'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $highTechProject = $this->createProject('High-Tech project', 'en_US', 'admin', 'ecommerce', [
+            [
+                'field'    => 'categories',
+                'operator' => 'IN',
+                'value'    => ['high_tech'],
             ],
         ]);
 
-        $clothingProject = $this->createProject([
-            'label'           => 'Clothing project',
-            'locale'          => 'en_US',
-            'owner'           => 'admin',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'categories',
-                    'operator' => 'IN',
-                    'value'    => ['clothing'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $this->createProject('Clothing project', 'en_US', 'admin', 'ecommerce', [
+            [
+                'field'    => 'categories',
+                'operator' => 'IN',
+                'value'    => ['clothing'],
             ],
         ]);
 
@@ -63,18 +49,11 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
      */
     public function testThatProjectRemovalRemovesAssociatedDatagridView()
     {
-        $project = $this->createProject([
-            'label' => 'High-Tech project',
-            'locale' => 'en_US',
-            'owner'=> 'admin',
-            'channel' => 'ecommerce',
-            'product_filters' =>[
-                [
-                    'field' => 'categories',
-                    'operator' => 'IN',
-                    'value' => ['high_tech'],
-                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $project = $this->createProject('High-Tech project', 'en_US', 'admin', 'ecommerce', [
+            [
+                'field'    => 'categories',
+                'operator' => 'IN',
+                'value'    => ['high_tech'],
             ],
         ]);
 

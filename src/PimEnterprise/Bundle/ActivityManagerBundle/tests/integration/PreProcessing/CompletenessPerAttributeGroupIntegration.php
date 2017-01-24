@@ -36,10 +36,10 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
             'value'    => $productIdentifier,
         ]];
 
-        $skyrimEcommerceEn = $this->saveProject('skyrim-ecommerce-en', 'en_US', 'Julia', 'ecommerce', $projectFilters);
-        $skyrimEcommerceFr = $this->saveProject('skyrim-ecommerce-fr', 'fr_FR', 'Julia', 'ecommerce', $projectFilters);
-        $skyrimMobileEn = $this->saveProject('skyrim-mobile-en', 'en_US', 'Julia', 'mobile', $projectFilters);
-        $skyrimMobileFr = $this->saveProject('skyrim-mobile-fr', 'fr_FR', 'Julia', 'mobile', $projectFilters);
+        $skyrimEcommerceEn = $this->createProject('skyrim-ecommerce-en', 'en_US', 'Julia', 'ecommerce', $projectFilters);
+        $skyrimEcommerceFr = $this->createProject('skyrim-ecommerce-fr', 'fr_FR', 'Julia', 'ecommerce', $projectFilters);
+        $skyrimMobileEn = $this->createProject('skyrim-mobile-en', 'en_US', 'Julia', 'mobile', $projectFilters);
+        $skyrimMobileFr = $this->createProject('skyrim-mobile-fr', 'fr_FR', 'Julia', 'mobile', $projectFilters);
 
         $this->checkAttributeGroupCompleteness($skyrimEcommerceEn, $productIdentifier, [
             'general' => [
@@ -118,7 +118,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
             'value'    => $productIdentifier,
         ]];
 
-        $project = $this->saveProject('the-witcher-3-ecommerce-en', 'en_US', 'Julia', 'ecommerce', $projectFilters);
+        $project = $this->createProject('the-witcher-3-ecommerce-en', 'en_US', 'Julia', 'ecommerce', $projectFilters);
         $this->checkAttributeGroupCompleteness($project, $productIdentifier, [
             'general' => [
                 'has_at_least_one_required_attribute_filled' => '0',
@@ -166,7 +166,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
     public function testProjectCalculationWhenTheProductPropertiesAreEmpties()
     {
         $productIdentifier = 'empty-technical-product';
-        $project = $this->saveProject('test-empty-property', 'en_US', 'Julia', 'ecommerce', [[
+        $project = $this->createProject('test-empty-property', 'en_US', 'Julia', 'ecommerce', [[
             'field'    => 'sku',
             'operator' => '=',
             'value'    => $productIdentifier,
@@ -245,7 +245,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
         /**
          * Check the project completeness
          */
-        $project = $this->saveProject('test-full-property', 'en_US', 'Julia', 'ecommerce', [[
+        $project = $this->createProject('test-full-property', 'en_US', 'Julia', 'ecommerce', [[
             'field'    => 'sku',
             'operator' => '=',
             'value'    => $productIdentifier,
@@ -291,13 +291,6 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
         $productIdentifier,
         array $expectedAttributeGroupCompleteness
     ) {
-//        $sql = <<<SQL
-//SELECT `has_at_least_one_required_attribute_filled`, `is_complete`
-//FROM `pimee_activity_manager_completeness_per_attribute_group`
-//WHERE `attribute_group_id` = :attribute_group_id
-//AND product_id = :product_id;
-//SQL;
-
         $productId = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier)->getId();
 
         foreach ($expectedAttributeGroupCompleteness as $group => $expectedCompleteness) {
@@ -346,14 +339,6 @@ SQL
         ProjectInterface $project,
         $expectedCount
     ) {
-//        $sql = <<<SQL
-//SELECT COUNT(*)
-//FROM `pimee_activity_manager_completeness_per_attribute_group`
-//WHERE `product_id` = :product_id
-//AND `channel_id` = :channel_id
-//AND `locale_id` = :locale_id
-//SQL;
-
         $numberOfRow = (int) $this->getConnection()->fetchColumn(
 <<<SQL
 SELECT COUNT(*)

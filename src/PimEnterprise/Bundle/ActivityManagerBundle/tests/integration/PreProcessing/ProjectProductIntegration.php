@@ -26,18 +26,11 @@ class ProjectProductIntegration extends ActivityManagerTestCase
      */
     public function testTheNumberOfProductForTshirtFamily()
     {
-        $project = $this->createProject([
-            'label'           => 'test-thsirt',
-            'locale'          => 'en_US',
-            'owner'           => 'Julia',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'family',
-                    'operator' => 'IN',
-                    'value'    => ['tshirt'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $project = $this->createProject('test-thsirt', 'en_US', 'Julia', 'ecommerce', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['tshirt'],
             ],
         ]);
 
@@ -54,18 +47,11 @@ class ProjectProductIntegration extends ActivityManagerTestCase
      */
     public function testTheNumberOfProductForTechnicalFamily()
     {
-        $project = $this->createProject([
-            'label'           => 'test-technical-family',
-            'locale'          => 'en_US',
-            'owner'           => 'Julia',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'family',
-                    'operator' => 'IN',
-                    'value'    => ['technical_family'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $project = $this->createProject('test-technical-family', 'en_US', 'Julia', 'ecommerce', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['technical_family'],
             ],
         ]);
 
@@ -82,18 +68,11 @@ class ProjectProductIntegration extends ActivityManagerTestCase
      */
     public function testTheNumberOfProductForTshirtFamilyForTeddy()
     {
-        $project = $this->createProject([
-            'label'           => 'test-project-creator-right',
-            'locale'          => 'en_US',
-            'owner'           => 'Teddy',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'family',
-                    'operator' => 'IN',
-                    'value'    => ['tshirt'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $project = $this->createProject('test-project-creator-right', 'en_US', 'Teddy', 'ecommerce', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['tshirt'],
             ],
         ]);
 

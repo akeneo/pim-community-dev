@@ -69,31 +69,23 @@ class ActivityManagerTestCase extends TestCase
         );
     }
 
-    protected function saveProject($label, $locale, $owner, $channel, $filters)
-    {
-        $projectData = [
-            'label'           => $label,
-            'locale'          => $locale,
-            'owner'           => $owner,
-            'channel'         => $channel,
-            'product_filters' => $filters
-        ];
-
-        return $this->createProject($projectData);
-    }
-
     /**
      * Create a project in database and run the project calculation
      *
      * @param array $projectData
      */
-    protected function createProject(array $projectData)
+    protected function createProject($label, $locale, $owner, $channel, $filters)
     {
         $projectData = array_merge([
-            'description'   => 'An awesome description',
-            'due_date'      => '2020-01-19',
-            'datagrid_view' => ['filters' => '', 'columns' => 'sku,label,family'],
-        ], $projectData);
+            'label'           => $label,
+            'locale'          => $locale,
+            'owner'           => $owner,
+            'channel'         => $channel,
+            'product_filters' => $filters,
+            'description'     => 'An awesome description',
+            'due_date'        => '2020-01-19',
+            'datagrid_view'   => ['filters' => '', 'columns' => 'sku,label,family'],
+        ]);
 
         if (isset($projectData['product_filters'])) {
             foreach ($projectData['product_filters'] as $key => $filter) {
