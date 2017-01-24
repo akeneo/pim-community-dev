@@ -7,6 +7,7 @@ use Akeneo\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
 use Akeneo\Bundle\MeasureBundle\Exception\UnknownMeasureException;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class MetricFactorySpec extends ObjectBehavior
 {
@@ -71,7 +72,7 @@ class MetricFactorySpec extends ObjectBehavior
         $metric->getBaseData()->shouldBeEqualTo(0.0000);
     }
 
-    function it_throws_an_exception_if_provided_unit_is_not_compatible_with_measure_family(
+    function it_creates_an_invalid_metric_if_provided_unit_is_not_compatible_with_measure_family(
         $measureConverter,
         $measureManager
     ) {
@@ -81,12 +82,20 @@ class MetricFactorySpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willThrow(UnknownMeasureException::class);
 
-        $measureManager->getStandardUnitForFamily('Length')->shouldNotBeCalled();
+        $measureManager->getStandardUnitForFamily(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(\LogicException::class)->during('createMetric', ['Length', 'GRAM', 42]);
+        $metric = $this->createMetric('Length', 'GRAM', 42);
+
+        $metric->shouldReturnAnInstanceOf(self::METRIC_CLASS);
+        $metric->__toString()->shouldBeEqualTo('42.0000 GRAM');
+        $metric->getFamily()->shouldBeEqualTo('Length');
+        $metric->getUnit()->shouldBeEqualTo('GRAM');
+        $metric->getData()->shouldBeEqualTo(42);
+        $metric->getBaseUnit()->shouldBeNull();
+        $metric->getBaseData()->shouldBeNull();
     }
 
-    function it_throws_an_exception_if_provided_measure_family_does_not_exists(
+    function it_creates_an_invalid_metric_if_provided_measure_family_does_not_exists(
         $measureConverter,
         $measureManager
     ) {
@@ -95,9 +104,17 @@ class MetricFactorySpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willThrow(UnknownFamilyMeasureException::class);
 
-        $measureConverter->convertBaseToStandard('GRAM', 42)->shouldNotBeCalled();
-        $measureManager->getStandardUnitForFamily('Length')->shouldNotBeCalled();
+        $measureConverter->convertBaseToStandard(Argument::any())->shouldNotBeCalled();
+        $measureManager->getStandardUnitForFamily(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(\LogicException::class)->during('createMetric', ['FooBar', 'GRAM', 42]);
+        $metric = $this->createMetric('FooBar', 'GRAM', 42);
+
+        $metric->shouldReturnAnInstanceOf(self::METRIC_CLASS);
+        $metric->__toString()->shouldBeEqualTo('42.0000 GRAM');
+        $metric->getFamily()->shouldBeEqualTo('FooBar');
+        $metric->getUnit()->shouldBeEqualTo('GRAM');
+        $metric->getData()->shouldBeEqualTo(42);
+        $metric->getBaseUnit()->shouldBeNull();
+        $metric->getBaseData()->shouldBeNull();
     }
 }

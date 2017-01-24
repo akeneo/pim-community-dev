@@ -30,17 +30,9 @@ parameters:
 
     pim_catalog.updater.copier.registry.class:                Pim\Component\Catalog\Updater\Copier\CopierRegistry
     pim_catalog.updater.copier.abstract.class:                Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier
-    pim_catalog.updater.copier.text_value.class:              Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.textarea_value.class:          Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.boolean_value.class:           Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.number_value.class:            Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.date_value.class:              Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.image_value.class:             Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier
-    pim_catalog.updater.copier.file_value.class:              Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier
+    pim_catalog.updater.copier.base_value.class:              Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.media_value.class:             Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier
     pim_catalog.updater.copier.metric_value.class:            Pim\Component\Catalog\Updater\Copier\MetricAttributeCopier
-    pim_catalog.updater.copier.simpleselect_value.class:      Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.multiselect_value.class:       Pim\Component\Catalog\Updater\Copier\MultiSelectAttributeCopier
-    pim_catalog.updater.copier.price_collection_value.class:  Pim\Component\Catalog\Updater\Copier\PriceCollectionAttributeCopier
 
     pim_catalog.updater.adder.registry.class:                 Pim\Component\Catalog\Updater\Adder\AdderRegistry
     pim_catalog.updater.adder.category_field.class:           Pim\Component\Catalog\Updater\Adder\CategoryFieldAdder
@@ -319,18 +311,20 @@ services:
             - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.updater.copier.text_value:
-        class: '%pim_catalog.updater.copier.text_value.class%'
+        class: '%pim_catalog.updater.copier.base_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - '@pim_serializer'
             - ['pim_catalog_text']
             - ['pim_catalog_text']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.image_value:
-        class: '%pim_catalog.updater.copier.image_value.class%'
+        class: '%pim_catalog.updater.copier.media_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - '@pim_serializer'
             - '@akeneo_file_storage.file_storage.file.file_fetcher'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
@@ -340,9 +334,10 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.file_value:
-        class: '%pim_catalog.updater.copier.file_value.class%'
+        class: '%pim_catalog.updater.copier.media_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - '@pim_serializer'
             - '@akeneo_file_storage.file_storage.file.file_fetcher'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
@@ -352,36 +347,40 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.textarea_value:
-        class: '%pim_catalog.updater.copier.textarea_value.class%'
+        class: '%pim_catalog.updater.copier.base_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - '@pim_serializer'
             - ['pim_catalog_textarea']
             - ['pim_catalog_textarea']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.boolean_value:
-        class: '%pim_catalog.updater.copier.boolean_value.class%'
+        class: '%pim_catalog.updater.copier.base_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - '@pim_serializer'
             - ['pim_catalog_boolean']
             - ['pim_catalog_boolean']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.number_value:
-        class: '%pim_catalog.updater.copier.number_value.class%'
+        class: '%pim_catalog.updater.copier.base_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - '@pim_serializer'
             - ['pim_catalog_number']
             - ['pim_catalog_number']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.date_value:
-        class: '%pim_catalog.updater.copier.date_value.class%'
+        class: '%pim_catalog.updater.copier.base_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - '@pim_serializer'
             - ['pim_catalog_date']
             - ['pim_catalog_date']
         tags:
@@ -391,34 +390,37 @@ services:
         class: '%pim_catalog.updater.copier.metric_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_catalog.factory.metric'
+            - '@pim_serializer'
             - ['pim_catalog_metric']
             - ['pim_catalog_metric']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.simpleselect_value:
-        class: '%pim_catalog.updater.copier.simpleselect_value.class%'
+        class: '%pim_catalog.updater.copier.base_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - '@pim_serializer'
             - ['pim_catalog_simpleselect']
             - ['pim_catalog_simpleselect']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.multiselect_value:
-        class: '%pim_catalog.updater.copier.multiselect_value.class%'
+        class: '%pim_catalog.updater.copier.base_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - '@pim_serializer'
             - ['pim_catalog_multiselect']
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.price_collection_value:
-        class: '%pim_catalog.updater.copier.price_collection_value.class%'
+        class: '%pim_catalog.updater.copier.base_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - '@pim_serializer'
             - ['pim_catalog_price_collection']
             - ['pim_catalog_price_collection']
         tags:

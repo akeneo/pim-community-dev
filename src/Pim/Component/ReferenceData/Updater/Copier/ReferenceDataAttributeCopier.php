@@ -32,6 +32,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
+
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }
@@ -74,6 +75,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     {
         $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
         $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+
         $referenceData = ($fromAttribute->getReferenceDataName() === $toAttribute->getReferenceDataName());
 
         return $supportsFrom && $supportsTo && $referenceData;
@@ -101,11 +103,6 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null !== $toValue) {
-                $toProduct->removeValue($toValue);
-            }
-
             $fromDataGetter = $this->getValueGetterName($fromValue, $fromAttribute);
 
             $this->productBuilder->addProductValue(
@@ -113,7 +110,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
                 $toAttribute,
                 $toLocale,
                 $toScope,
-                $fromValue->$fromDataGetter()
+                $fromValue->$fromDataGetter()->getCode()
             );
         }
     }

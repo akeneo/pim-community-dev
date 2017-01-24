@@ -10,12 +10,22 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class BaseAttributeCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
-    {
-        $this->beConstructedWith($builder, $attrValidatorHelper, ['foo', 'bar'], ['foo', 'bar']);
+    function let(
+        ProductBuilderInterface $builder,
+        AttributeValidatorHelper $attrValidatorHelper,
+        NormalizerInterface $normalizer
+    ) {
+        $this->beConstructedWith(
+            $builder,
+            $attrValidatorHelper,
+            $normalizer,
+            ['foo', 'bar'],
+            ['foo', 'bar']
+        );
     }
 
     function it_is_a_copier()
@@ -61,11 +71,11 @@ class BaseAttributeCopierSpec extends ObjectBehavior
     function it_copies_a_boolean_value_to_a_product_value(
         $builder,
         $attrValidatorHelper,
+        $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
         ProductValue $fromProductValue,
         ProductValue $toProductValue
     ) {
@@ -80,32 +90,20 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getData()->willReturn(true)->shouldBeCalledTimes(2);
+        $normalizer->normalize($fromProductValue, 'standard')->shouldBeCalled()->willReturn(true);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn($toProductValue);
-        $product1->removeValue($toProductValue)->shouldBeCalled()->willReturn($product1);
         $builder
             ->addProductValue($product1, $toAttribute, $toLocale, $toScope, true)
             ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->shouldNotBeCalled();
-        $product2->removeValue($toProductValue)->shouldNotBeCalled();
         $builder
             ->addProductValue($product2, $toAttribute, $toLocale, $toScope, null)
             ->shouldNotBeCalled();
 
-        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn(null);
-        $product3->removeValue(null)->shouldNotBeCalled();
-        $builder
-            ->addProductValue($product3, $toAttribute, $toLocale, $toScope, true)
-            ->shouldBeCalled()
-            ->willReturn($toProductValue);
-
-        $products = [$product1, $product2, $product3];
+        $products = [$product1, $product2];
         foreach ($products as $product) {
             $this->copyAttributeData(
                 $product,
@@ -125,11 +123,11 @@ class BaseAttributeCopierSpec extends ObjectBehavior
     function it_copies__a_date_value_to_a_product_value(
         $builder,
         $attrValidatorHelper,
+        $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
         ProductValue $fromProductValue,
         ProductValue $toProductValue
     ) {
@@ -144,32 +142,20 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getData()->willReturn('1970-01-01')->shouldBeCalledTimes(2);
+        $normalizer->normalize($fromProductValue, 'standard')->shouldBeCalled()->willReturn('1970-01-01');
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn($toProductValue);
-        $product1->removeValue($toProductValue)->shouldBeCalled()->willReturn($product1);
         $builder
             ->addProductValue($product1, $toAttribute, $toLocale, $toScope, '1970-01-01')
             ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->shouldNotBeCalled();
-        $product2->removeValue($toProductValue)->shouldNotBeCalled();
         $builder
             ->addProductValue($product2, $toAttribute, $toLocale, $toScope, null)
             ->shouldNotBeCalled();
 
-        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn(null);
-        $product3->removeValue(null)->shouldNotBeCalled();
-        $builder
-            ->addProductValue($product3, $toAttribute, $toLocale, $toScope, '1970-01-01')
-            ->shouldBeCalled()
-            ->willReturn($toProductValue);
-
-        $products = [$product1, $product2, $product3];
+        $products = [$product1, $product2];
         foreach ($products as $product) {
             $this->copyAttributeData(
                 $product,
@@ -189,11 +175,11 @@ class BaseAttributeCopierSpec extends ObjectBehavior
     function it_copies_number_value_to_a_product_value(
         $builder,
         $attrValidatorHelper,
+        $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
         ProductValue $fromProductValue,
         ProductValue $toProductValue
     ) {
@@ -208,32 +194,20 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getData()->willReturn(123)->shouldBeCalledTimes(2);
+        $normalizer->normalize($fromProductValue, 'standard')->shouldBeCalled()->willReturn(123);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn($toProductValue);
-        $product1->removeValue($toProductValue)->shouldBeCalled()->willReturn($product1);
         $builder
             ->addProductValue($product1, $toAttribute, $toLocale, $toScope, 123)
             ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->shouldNotBeCalled();
-        $product2->removeValue($toProductValue)->shouldNotBeCalled();
         $builder
             ->addProductValue($product2, $toAttribute, $toLocale, $toScope, null)
             ->shouldNotBeCalled();
 
-        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn(null);
-        $product3->removeValue($toProductValue)->shouldNotBeCalled();
-        $builder
-            ->addProductValue($product3, $toAttribute, $toLocale, $toScope, 123)
-            ->shouldBeCalled()
-            ->willReturn($toProductValue);
-
-        $products = [$product1, $product2, $product3];
+        $products = [$product1, $product2];
         foreach ($products as $product) {
             $this->copyAttributeData(
                 $product,
@@ -253,11 +227,11 @@ class BaseAttributeCopierSpec extends ObjectBehavior
     function it_copies_text_value_to_a_product_value(
         $attrValidatorHelper,
         $builder,
+        $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
         ProductValue $fromProductValue,
         ProductValue $toProductValue
     ) {
@@ -272,97 +246,20 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getData()->willReturn('data')->shouldBeCalledTimes(2);
+        $normalizer->normalize($fromProductValue, 'standard')->shouldBeCalled()->willReturn('data');
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn($toProductValue);
-        $product1->removeValue($toProductValue)->shouldBeCalled()->willReturn($product1);
         $builder
             ->addProductValue($product1, $toAttribute, $toLocale, $toScope, 'data')
             ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->shouldNotBeCalled();
-        $product2->removeValue($toProductValue)->shouldNotBeCalled();
         $builder
             ->addProductValue($product2, $toAttribute, $toLocale, $toScope, null)
             ->shouldNotBeCalled();
 
-        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn(null);
-        $product3->removeValue(null)->shouldBeCalled()->shouldNotBeCalled();
-        $builder
-            ->addProductValue($product3, $toAttribute, $toLocale, $toScope, 'data')
-            ->shouldBeCalled()
-            ->willReturn($toProductValue);
-
-        $products = [$product1, $product2, $product3];
-        foreach ($products as $product) {
-            $this->copyAttributeData(
-                $product,
-                $product,
-                $fromAttribute,
-                $toAttribute,
-                [
-                    'from_locale' => $fromLocale,
-                    'to_locale' => $toLocale,
-                    'from_scope' => $fromScope,
-                    'to_scope' => $toScope
-                ]
-            );
-        }
-    }
-
-    function it_copies_media_value_to_a_product_value(
-        $attrValidatorHelper,
-        $builder,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3,
-        ProductValue $fromProductValue,
-        ProductValue $toProductValue
-    ) {
-        $fromLocale = 'fr_FR';
-        $toLocale = 'fr_FR';
-        $toScope = 'mobile';
-        $fromScope = 'mobile';
-        $data = ['originalFilename' => 'akeneo', 'filePath' => 'path/to/file'];
-
-        $fromAttribute->getCode()->willReturn('fromAttributeCode');
-        $toAttribute->getCode()->willReturn('toAttributeCode');
-
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-
-        $fromProductValue->getData()->willReturn($data)->shouldBeCalledTimes(2);
-
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn($toProductValue);
-        $product1->removeValue($toProductValue)->shouldBeCalled()->willReturn($product1);
-        $builder
-            ->addProductValue($product1, $toAttribute, $toLocale, $toScope, $data)
-            ->shouldBeCalled()
-            ->willReturn($toProductValue);
-
-        $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->shouldNotBeCalled();
-        $product2->removeValue($toProductValue)->shouldNotBeCalled();
-        $builder
-            ->addProductValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
-
-        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn(null);
-        $product3->removeValue(null)->shouldNotBeCalled();
-        $builder
-            ->addProductValue($product3, $toAttribute, $toLocale, $toScope, $data)
-            ->shouldBeCalled()
-            ->willReturn($toProductValue);
-
-        $products = [$product1, $product2, $product3];
+        $products = [$product1, $product2];
         foreach ($products as $product) {
             $this->copyAttributeData(
                 $product,

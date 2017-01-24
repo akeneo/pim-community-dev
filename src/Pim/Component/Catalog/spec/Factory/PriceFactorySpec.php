@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Factory;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Component\Catalog\Model\ProductPrice;
@@ -54,9 +55,15 @@ class PriceFactorySpec extends ObjectBehavior
     {
         $currencyRepository->findOneByIdentifier('FOOBAR')->willReturn(null);
 
-        $exception = new \InvalidArgumentException(
-            'Unable to create a price for non existing currency with code "FOOBAR".'
+        $exception = InvalidPropertyException::validEntityCodeExpected(
+            'currency',
+            'code',
+            'The currency does not exist',
+            'price',
+            'factory',
+            'FOOBAR'
         );
+
         $this->shouldThrow($exception)->during('createPrice', [42, 'FOOBAR']);
     }
 }

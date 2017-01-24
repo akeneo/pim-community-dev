@@ -6,9 +6,11 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Copy a simple select value attribute in other simple select value attribute
+ * Copy a value attribute in other value attribute.
+ * Are handled all scalar attribute types, simple and multi-select, and price collections.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -16,19 +18,26 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class BaseAttributeCopier extends AbstractAttributeCopier
 {
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
+     * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param NormalizerInterface      $normalizer
      * @param array                    $supportedFromTypes
      * @param array                    $supportedToTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
+        NormalizerInterface $normalizer,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
+
+        $this->normalizer = $normalizer;
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }
@@ -65,20 +74,7 @@ class BaseAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
-    {
-        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
-
-        $sameType = $fromAttribute->getAttributeType() === $toAttribute->getAttributeType();
-
-        return $supportsFrom && $supportsTo && $sameType;
-    }
-
-    /**
-     * Copy single value
+     * Copies single value.
      *
      * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
@@ -101,17 +97,12 @@ class BaseAttributeCopier extends AbstractAttributeCopier
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null !== $toValue) {
-                $toProduct->removeValue($toValue);
-            }
-
             $this->productBuilder->addProductValue(
                 $toProduct,
                 $toAttribute,
                 $toLocale,
                 $toScope,
-                $fromValue->getData()
+                $this->normalizer->normalize($fromValue, 'standard')
             );
         }
     }

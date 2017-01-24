@@ -104,20 +104,34 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null !== $toValue) {
-                $toProduct->removeValue($toValue);
-            }
-            $fromDataGetter = $this->getValueGetterName($fromValue, $fromAttribute);
-
             $this->productBuilder->addProductValue(
                 $toProduct,
                 $toAttribute,
                 $toLocale,
                 $toScope,
-                $fromValue->$fromDataGetter()
+                $this->getReferenceDataCodes($fromValue, $fromAttribute)
             );
         }
+    }
+
+    /**
+     * Gets the list of reference data codes contained in a product value collection.
+     *
+     * @param ProductValueInterface $fromValue
+     * @param AttributeInterface    $fromAttribute
+     *
+     * @return string[]
+     */
+    protected function getReferenceDataCodes(ProductValueInterface $fromValue, AttributeInterface $fromAttribute)
+    {
+        $fromDataGetter = $this->getValueGetterName($fromValue, $fromAttribute);
+
+        $referenceDataCodes = [];
+        foreach ($fromValue->$fromDataGetter() as $referenceData) {
+            $referenceDataCodes[] = $referenceData->getCode();
+        }
+
+        return $referenceDataCodes;
     }
 
     /**

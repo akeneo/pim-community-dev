@@ -28,3 +28,4 @@
     `Pim\Component\Catalog\Updater\Setter\MultiSelectAttributeSetter`, `Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter`, `Pim\Component\ReferenceData\Updater\Setter\ReferenceDataSetter`,
     `Pim\Component\ReferenceData\Updater\Setter\ReferenceDataCollectionSetter`
 - Add `Pim\Component\Catalog\Updater\Setter\SimpleAttributeSetter`
+- Remove classes `Pim\Component\Catalog\Updater\Copier\SimpleSelectAttributeCopier`, `Pim\Component\Catalog\Updater\Copier\MultiSelectAttributeCopier` and `Pim\Component\Catalog\Updater\Copier\PriceCollectionAttributeCopier`

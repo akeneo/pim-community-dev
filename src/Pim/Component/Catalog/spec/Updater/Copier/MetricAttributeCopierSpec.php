@@ -3,26 +3,25 @@
 namespace spec\Pim\Component\Catalog\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MetricAttributeCopierSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
-        MetricFactory $metricFactory
+        NormalizerInterface $normalizer
     ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
-            $metricFactory,
+            $normalizer,
             ['pim_catalog_metric'],
             ['pim_catalog_metric']
         );
@@ -54,18 +53,14 @@ class MetricAttributeCopierSpec extends ObjectBehavior
 
     function it_copies_a_metric_value_to_a_product_value(
         $builder,
-        $metricFactory,
         $attrValidatorHelper,
-        MetricInterface $metric,
+        $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
-        ProductInterface $product4,
         ProductValue $fromProductValue,
-        ProductValue $toProductValue,
-        ProductValue $toProductValue2
+        ProductValue $toProductValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -79,40 +74,23 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateUnitFamilies(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getData()->willReturn($metric);
-        $toProductValue->getData()->willReturn($metric);
-        $toProductValue->getMetric()->willReturn($metric);
-
-        $metric->getFamily()->shouldBeCalled()->willReturn('Weight');
-        $metric->getData()->shouldBeCalled()->willReturn(123);
-        $metric->getUnit()->shouldBeCalled()->willReturn('KILOGRAM');
-
-        $metricFactory->createMetric('Weight', 'KILOGRAM', 123)->shouldBeCalledTimes(2)->willReturn($metric);
+        $normalizer
+            ->normalize($fromProductValue, 'standard')
+            ->shouldBeCalled()
+            ->willReturn(['amount' => 123, 'unit' => 'GRAM']);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn($toProductValue);
-        $product1->removeValue($toProductValue)->shouldBeCalled()->willReturn($product1);
         $builder
-            ->addProductValue($product1, $toAttribute, $toLocale, $toScope, $metric)
+            ->addProductValue($product1, $toAttribute, $toLocale, $toScope, ['amount' => 123, 'unit' => 'GRAM'])
             ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->shouldNotBeCalled();
-        $product2->removeValue(Argument::any())->shouldNotBeCalled();
         $builder
             ->addProductValue($product2, $toAttribute, $toLocale, $toScope, null)
             ->shouldNotBeCalled();
 
-        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->shouldBeCalled()->willReturn(null);
-        $product3->removeValue(null)->shouldNotBeCalled();
-        $builder
-            ->addProductValue($product3, $toAttribute, $toLocale, $toScope, $metric)
-            ->shouldBeCalled()
-            ->willReturn($toProductValue);
-
-        $products = [$product1, $product2, $product3];
+        $products = [$product1, $product2];
         foreach ($products as $product) {
             $this->copyAttributeData(
                 $product,
