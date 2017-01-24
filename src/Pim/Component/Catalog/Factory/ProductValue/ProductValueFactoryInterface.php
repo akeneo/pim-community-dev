@@ -24,8 +24,6 @@ interface ProductValueFactoryInterface
      * @param string             $localeCode
      * @param mixed              $data
      *
-     * @throws \LogicException
-     *
      * @return ProductValueInterface
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data);

@@ -33,19 +33,13 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
      */
     public function __construct(MetricFactory $metricFactory, $metricProductValueClass, $supportedAttributeType)
     {
-        if (!class_exists($metricProductValueClass)) {
-            throw new \InvalidArgumentException(
-                sprintf('The product value class "%s" does not exist.', $metricProductValueClass)
-            );
-        }
-
         $this->metricFactory = $metricFactory;
         $this->metricProductValueClass = $metricProductValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
@@ -66,7 +60,7 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supports($attributeType)
     {

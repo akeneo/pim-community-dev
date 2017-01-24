@@ -21,21 +21,6 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $this->shouldHaveType(ScalarProductValueFactory::class);
     }
 
-    function it_throws_an_exception_when_product_value_class_is_wrong()
-    {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
-        $this->supports('foo')->shouldReturn(false);
-        $this->supports('pim_catalog_text')->shouldReturn(true);
-        $this->supports('pim_catalog_number')->shouldReturn(false);
-        $this->supports('pim_catalog_textarea')->shouldReturn(false);
-        $this->supports('pim_catalog_boolean')->shouldReturn(false);
-        $this->supports('pim_catalog_identifier')->shouldReturn(false);
-
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
-            ->during('__construct', ['foobar', 'pim_catalog_text']);
-    }
-
     function it_creates_an_empty_text_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');

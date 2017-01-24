@@ -27,13 +27,6 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $this->supports('pim_catalog_date')->shouldReturn(true);
     }
 
-    function it_throws_an_exception_when_product_value_class_is_wrong()
-    {
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
-            ->during('__construct', ['foobar', 'pim_catalog_date']);
-    }
-
     function it_creates_an_empty_date_product_value(AttributeInterface $attribute)
     {
         $attribute->isScopable()->willReturn(false);

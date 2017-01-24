@@ -29,18 +29,12 @@ class ScalarProductValueFactory implements ProductValueFactoryInterface
      */
     public function __construct($productValueClass, $supportedAttributeTypes)
     {
-        if (!class_exists($productValueClass)) {
-            throw new \InvalidArgumentException(
-                sprintf('The product value class "%s" does not exist.', $productValueClass)
-            );
-        }
-
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
@@ -59,7 +53,7 @@ class ScalarProductValueFactory implements ProductValueFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supports($attributeType)
     {

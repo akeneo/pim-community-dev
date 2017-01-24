@@ -24,16 +24,6 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $this->shouldHaveType(MediaProductValueFactory::class);
     }
 
-    function it_throws_an_exception_when_product_value_class_is_wrong($fileInfoRepository)
-    {
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
-            ->during('__construct', [$fileInfoRepository, 'foobar', 'pim_catalog_file']);
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
-            ->during('__construct', [$fileInfoRepository, 'foobar', 'pim_catalog_image']);
-    }
-
     function it_creates_an_empty_file_product_value($fileInfoRepository, AttributeInterface $attribute)
     {
         $this->beConstructedWith($fileInfoRepository, ProductValue::class, 'pim_catalog_file');
@@ -115,7 +105,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $fileInfoRepository->findOneByIdentifier('foobar')->shouldBeCalled()->willReturn($file);
+        $fileInfoRepository->findOneByIdentifier('foobar')->willReturn($file);
 
         $productValue = $this->create(
             $attribute,
@@ -148,7 +138,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $fileInfoRepository->findOneByIdentifier('foobar')->shouldBeCalled()->willReturn($file);
+        $fileInfoRepository->findOneByIdentifier('foobar')->willReturn($file);
 
         $productValue = $this->create(
             $attribute,
@@ -247,7 +237,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $fileInfoRepository->findOneByIdentifier('foobar')->shouldBeCalled()->willReturn($image);
+        $fileInfoRepository->findOneByIdentifier('foobar')->willReturn($image);
 
         $productValue = $this->create(
             $attribute,
@@ -280,7 +270,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $fileInfoRepository->findOneByIdentifier('foobar')->shouldBeCalled()->willReturn($image);
+        $fileInfoRepository->findOneByIdentifier('foobar')->willReturn($image);
 
         $productValue = $this->create(
             $attribute,
@@ -346,7 +336,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $fileInfoRepository->findOneByIdentifier('foo/bar.txt')->shouldBeCalled()->willReturn(null);
+        $fileInfoRepository->findOneByIdentifier('foo/bar.txt')->willReturn(null);
 
         $exception = InvalidPropertyException::validEntityCodeExpected(
             'image_attribute',

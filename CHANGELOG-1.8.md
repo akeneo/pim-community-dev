@@ -1,9 +1,5 @@
 # 1.8
 
-## Technical improvements
-
-- Introduce new product value factory registry `Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryRegistry`.
-
 ## BC breaks
 
 - Change method `fetchAll` of `Pim\Component\Connector\Processor\BulkMediaFetcher` to use a `Pim\Component\Catalog\Model\ProductValueCollectionInterface` instead of an `Doctrine\Common\Collections\ArrayCollection`
@@ -27,5 +23,10 @@
     `Pim\Component\Catalog\Updater\Setter\DateAttributeSetter`, `Pim\Component\Catalog\Updater\Setter\NumberAttributeSetter`, `Pim\Component\Catalog\Updater\Setter\SimpleSelectAttributeSetter`,
     `Pim\Component\Catalog\Updater\Setter\MultiSelectAttributeSetter`, `Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter`, `Pim\Component\ReferenceData\Updater\Setter\ReferenceDataSetter`,
     `Pim\Component\ReferenceData\Updater\Setter\ReferenceDataCollectionSetter`
-- Add `Pim\Component\Catalog\Updater\Setter\SimpleAttributeSetter`
+- Add `Pim\Component\Catalog\Updater\Setter\AttributeSetter`
 - Remove classes `Pim\Component\Catalog\Updater\Copier\SimpleSelectAttributeCopier`, `Pim\Component\Catalog\Updater\Copier\MultiSelectAttributeCopier` and `Pim\Component\Catalog\Updater\Copier\PriceCollectionAttributeCopier`
+- Rename class `Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier` in `Pim\Component\Catalog\Updater\Copier\AttributeCopier`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder` to remove `Pim\Component\Catalog\Validator\AttributeValidatorHelper`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder` to remove `Pim\Component\Catalog\Validator\AttributeValidatorHelper`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\AttributeCopier`,`Pim\Component\Catalog\Updater\Copier\MetricAttributeCopier` and `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`
+    to add `Symfony\Component\Serializer\Normalizer\NormalizerInterface` as third argument

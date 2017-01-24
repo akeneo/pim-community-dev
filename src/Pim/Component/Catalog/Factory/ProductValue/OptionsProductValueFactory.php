@@ -37,19 +37,13 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
         $productValueClass,
         $supportedAttributeType
     ) {
-        if (!class_exists($productValueClass)) {
-            throw new \InvalidArgumentException(
-                sprintf('The product value class "%s" does not exist.', $productValueClass)
-            );
-        }
-
         $this->attrOptionRepository = $attrOptionRepository;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
@@ -70,7 +64,7 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supports($attributeType)
     {

@@ -106,19 +106,17 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $filesystemProvider
             ->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)
-            ->shouldBeCalled()
             ->willReturn($fileSystem);
 
-        $fileFetcher->fetch($fileSystem, 'key')->shouldBeCalled()->willReturn($rawFile);
+        $fileFetcher->fetch($fileSystem, 'key')->willReturn($rawFile);
 
         $fileStorer
             ->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)
-            ->shouldBeCalled()
             ->willReturn($fileInfo);
 
         $fileInfo->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
 
-        $normalizer->normalize($fileInfo, 'standard')->shouldBeCalled()->willReturn('key');
+        $normalizer->normalize($fileInfo, 'standard')->willReturn('key');
 
         $builder->addProductValue($product, $toAttribute, $toLocale, $toScope, 'key');
 
@@ -215,14 +213,12 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $filesystemProvider
             ->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)
-            ->shouldBeCalled()
             ->willReturn($fileSystem);
 
-        $fileFetcher->fetch($fileSystem, 'key')->shouldBeCalled()->willReturn($rawFile);
+        $fileFetcher->fetch($fileSystem, 'key')->willReturn($rawFile);
 
         $fileStorer
             ->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)
-            ->shouldBeCalled()
             ->willReturn($fileInfo);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
@@ -230,7 +226,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $toProductValue->getMedia()->willReturn($toMedia);
 
-        $normalizer->normalize($fileInfo, 'standard')->shouldBeCalled()->willReturn('key');
+        $normalizer->normalize($fileInfo, 'standard')->willReturn('key');
 
         $builder->addProductValue($product, $toAttribute, $toLocale, $toScope, $fileInfo);
 

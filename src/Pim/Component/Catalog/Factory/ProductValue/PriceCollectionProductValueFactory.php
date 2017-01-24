@@ -34,19 +34,13 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
      */
     public function __construct(PriceFactory $priceFactory, $productValueClass, $supportedAttributeType)
     {
-        if (!class_exists($productValueClass)) {
-            throw new \InvalidArgumentException(
-                sprintf('The product value class "%s" does not exist.', $productValueClass)
-            );
-        }
-
         $this->priceFactory = $priceFactory;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
@@ -65,7 +59,7 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supports($attributeType)
     {

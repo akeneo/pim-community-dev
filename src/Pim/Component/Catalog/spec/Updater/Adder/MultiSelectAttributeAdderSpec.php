@@ -68,8 +68,8 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('attributeCode');
 
-        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
-        $product2->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn(null);
+        $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
 
         $productValue->getOptions()->shouldBeCalledTimes(1)->willReturn($optionsValue);
         $optionsValue->getIterator()->willReturn($valuesIterator);

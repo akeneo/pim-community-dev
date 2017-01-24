@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
-class SimpleAttributeSetterSpec extends ObjectBehavior
+class AttributeSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilderInterface $builder)
     {

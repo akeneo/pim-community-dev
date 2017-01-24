@@ -10,7 +10,6 @@ parameters:
     pim_catalog.factory.product_template.class:      Pim\Component\Catalog\Factory\ProductTemplateFactory
 
     pim_catalog.factory.product_value.class:                  Pim\Component\Catalog\Factory\ProductValueFactory
-    pim_catalog.factory.product_value.registry.class:         Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryRegistry
     pim_catalog.factory.product_value.scalar.class:           Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory
     pim_catalog.factory.product_value.metric.class:           Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory
     pim_catalog.factory.product_value.price_collection.class: Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactory
@@ -114,11 +113,6 @@ services:
         class: '%pim_catalog.factory.product_value.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
-            - '@pim_catalog.factory.product_value.registry'
-
-    pim_catalog.factory.product_value.registry:
-        class: '%pim_catalog.factory.product_value.registry.class%'
-        public: false
 
     pim_catalog.factory.product_value.text:
         class: '%pim_catalog.factory.product_value.scalar.class%'

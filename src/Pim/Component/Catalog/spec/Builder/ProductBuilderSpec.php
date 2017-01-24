@@ -236,17 +236,17 @@ class ProductBuilderSpec extends ObjectBehavior
         $color->isLocalizable()->willReturn(true);
         $color->isScopable()->willReturn(true);
 
-        $product->getValue('size', null, null)->shouldBeCalled()->willReturn($sizeValue);
-        $product->getValue('color', 'en_US', 'ecommerce')->shouldBeCalled()->willReturn($colorValue);
+        $product->getValue('size', null, null)->willReturn($sizeValue);
+        $product->getValue('color', 'en_US', 'ecommerce')->willReturn($colorValue);
 
-        $product->removeValue($sizeValue)->shouldBeCalled()->willReturn($product);
-        $product->removeValue($colorValue)->shouldBeCalled()->willReturn($product);
+        $product->removeValue($sizeValue)->willReturn($product);
+        $product->removeValue($colorValue)->willReturn($product);
 
         $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
         $productValueFactory->create($color, 'ecommerce', 'en_US', null)->willReturn($colorValue);
 
-        $product->addValue($sizeValue)->shouldBeCalled()->willReturn($product);
-        $product->addValue($colorValue)->shouldBeCalled()->willReturn($product);
+        $product->addValue($sizeValue)->willReturn($product);
+        $product->addValue($colorValue)->willReturn($product);
 
         $this->addProductValue($product, $size, null, null, null);
         $this->addProductValue($product, $color, 'en_US', 'ecommerce', null);
@@ -269,17 +269,17 @@ class ProductBuilderSpec extends ObjectBehavior
         $color->isLocalizable()->willReturn(true);
         $color->isScopable()->willReturn(true);
 
-        $product->getValue('size', null, null)->shouldBeCalled()->willReturn($sizeValue);
-        $product->getValue('color', 'en_US', 'ecommerce')->shouldBeCalled()->willReturn($colorValue);
+        $product->getValue('size', null, null)->willReturn($sizeValue);
+        $product->getValue('color', 'en_US', 'ecommerce')->willReturn($colorValue);
 
-        $product->removeValue($sizeValue)->shouldBeCalled()->willReturn($product);
-        $product->removeValue($colorValue)->shouldBeCalled()->willReturn($product);
+        $product->removeValue($sizeValue)->willReturn($product);
+        $product->removeValue($colorValue)->willReturn($product);
 
         $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
         $productValueFactory->create($color, 'ecommerce', 'en_US', 'red')->willReturn($colorValue);
 
-        $product->addValue($sizeValue)->shouldBeCalled()->willReturn($product);
-        $product->addValue($colorValue)->shouldBeCalled()->willReturn($product);
+        $product->addValue($sizeValue)->willReturn($product);
+        $product->addValue($colorValue)->willReturn($product);
 
         $this->addProductValue($product, $size, null, null, null);
         $this->addProductValue($product, $color, 'en_US', 'ecommerce', 'red');
@@ -296,13 +296,13 @@ class ProductBuilderSpec extends ObjectBehavior
         $label->isLocalizable()->willReturn(false);
         $label->isScopable()->willReturn(false);
 
-        $product->getValue('label', null, null)->shouldBeCalled()->willReturn(null);
+        $product->getValue('label', null, null)->willReturn(null);
 
         $product->removeValue(Argument::any())->shouldNotBeCalled();
 
         $productValueFactory->create($label, null, null, 'foobar')->willReturn($value);
 
-        $product->addValue($value)->shouldBeCalled()->willReturn($product);
+        $product->addValue($value)->willReturn($product);
 
         $this->addProductValue($product, $label, null, null, 'foobar');
     }

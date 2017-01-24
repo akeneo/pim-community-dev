@@ -20,8 +20,8 @@ class MetricFactorySpec extends ObjectBehavior
 
     function it_creates_a_metric($measureConverter, $measureManager)
     {
-        $measureConverter->setFamily('Weight')->shouldBeCalled()->willReturn($measureConverter);
-        $measureConverter->convertBaseToStandard('GRAM', 42)->shouldBeCalled()->willReturn(0.042);
+        $measureConverter->setFamily('Weight')->willReturn($measureConverter);
+        $measureConverter->convertBaseToStandard('GRAM', 42)->willReturn(0.042);
 
         $measureManager->getStandardUnitForFamily('Weight')->willReturn('KILOGRAM');
 
@@ -56,8 +56,8 @@ class MetricFactorySpec extends ObjectBehavior
 
     function it_creates_a_metric_if_provided_data_is_not_numeric($measureConverter, $measureManager)
     {
-        $measureConverter->setFamily('Weight')->shouldBeCalled()->willReturn($measureConverter);
-        $measureConverter->convertBaseToStandard('GRAM', 'foobar')->shouldBeCalled()->willReturn(0.0000);
+        $measureConverter->setFamily('Weight')->willReturn($measureConverter);
+        $measureConverter->convertBaseToStandard('GRAM', 'foobar')->willReturn(0.0000);
 
         $measureManager->getStandardUnitForFamily('Weight')->willReturn('KILOGRAM');
 
@@ -76,7 +76,7 @@ class MetricFactorySpec extends ObjectBehavior
         $measureConverter,
         $measureManager
     ) {
-        $measureConverter->setFamily('Length')->shouldBeCalled()->willReturn($measureConverter);
+        $measureConverter->setFamily('Length')->willReturn($measureConverter);
         $measureConverter
             ->convertBaseToStandard('GRAM', 42)
             ->shouldBeCalled()

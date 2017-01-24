@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterProductValueFactoryPassSpec extends ObjectBehavior
 {
     const PRODUCT_VALUE_FACTORY_TAG = 'pim_catalog.factory.product_value';
-    const PRODUCT_VALUE_FACTORY_REGISTRY = 'pim_catalog.factory.product_value.registry';
+    const PRODUCT_VALUE_FACTORY = 'pim_catalog.factory.product_value';
 
     function it_is_initializable()
     {
@@ -28,7 +28,7 @@ class RegisterProductValueFactoryPassSpec extends ObjectBehavior
     function it_throws_an_exception_if_called_on_an_unknown_service_id(
         ContainerBuilder $containerBuilder
     ) {
-        $containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY)->willReturn(false);
+        $containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY)->willReturn(false);
         $containerBuilder->getDefinition(Argument::any())->shouldNotBeCalled();
         $containerBuilder->findTaggedServiceIds(Argument::any())->shouldNotBeCalled();
 
@@ -41,13 +41,9 @@ class RegisterProductValueFactoryPassSpec extends ObjectBehavior
         ContainerBuilder $containerBuilder,
         Definition $registry
     ) {
-        $containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY)->willReturn(true);
-        $containerBuilder
-            ->getDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY)
-            ->shouldBeCalled()->willReturn($registry);
-        $containerBuilder
-            ->findTaggedServiceIds(static::PRODUCT_VALUE_FACTORY_TAG)
-            ->shouldBeCalled()->willReturn([]);
+        $containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY)->willReturn(true);
+        $containerBuilder->getDefinition(static::PRODUCT_VALUE_FACTORY)->willReturn($registry);
+        $containerBuilder->findTaggedServiceIds(static::PRODUCT_VALUE_FACTORY_TAG)->willReturn([]);
 
         $registry->addMethodCall(Argument::cetera())->shouldNotBeCalled();
 
@@ -65,19 +61,15 @@ class RegisterProductValueFactoryPassSpec extends ObjectBehavior
         ContainerBuilder $containerBuilder,
         Definition $registry
     ) {
-        $containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY)->willReturn(true);
-        $containerBuilder
-            ->getDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY)
-            ->shouldBeCalled()->willReturn($registry);
-        $containerBuilder
-            ->findTaggedServiceIds(static::PRODUCT_VALUE_FACTORY_TAG)
-            ->shouldBeCalled()->willReturn([
+        $containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY)->willReturn(true);
+        $containerBuilder->getDefinition(static::PRODUCT_VALUE_FACTORY)->willReturn($registry);
+        $containerBuilder->findTaggedServiceIds(static::PRODUCT_VALUE_FACTORY_TAG)->willReturn([
                 'factory.foo' => [[]],
                 'factory.bar' => [[]],
             ]);
 
-        $registry->addMethodCall('register', [new Reference('factory.foo', 1, true),])->shouldBeCalled();
-        $registry->addMethodCall('register', [new Reference('factory.bar', 1, true),])->shouldBeCalled();
+        $registry->addMethodCall('registerFactory', [new Reference('factory.foo', 1, true),])->shouldBeCalled();
+        $registry->addMethodCall('registerFactory', [new Reference('factory.bar', 1, true),])->shouldBeCalled();
 
         $this->process($containerBuilder);
     }
@@ -86,19 +78,15 @@ class RegisterProductValueFactoryPassSpec extends ObjectBehavior
         ContainerBuilder $containerBuilder,
         Definition $registry
     ) {
-        $containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY)->willReturn(true);
-        $containerBuilder
-            ->getDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY)
-            ->shouldBeCalled()->willReturn($registry);
-        $containerBuilder
-            ->findTaggedServiceIds(static::PRODUCT_VALUE_FACTORY_TAG)
-            ->shouldBeCalled()->willReturn([
+        $containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY)->willReturn(true);
+        $containerBuilder->getDefinition(static::PRODUCT_VALUE_FACTORY)->willReturn($registry);
+        $containerBuilder->findTaggedServiceIds(static::PRODUCT_VALUE_FACTORY_TAG)->willReturn([
                 'factory.foo' => [['priority' => 50]],
                 'factory.bar' => [['priority' => 10]],
             ]);
 
-        $registry->addMethodCall('register', [new Reference('factory.bar', 1, true),])->shouldBeCalled();
-        $registry->addMethodCall('register', [new Reference('factory.foo', 1, true),])->shouldBeCalled();
+        $registry->addMethodCall('registerFactory', [new Reference('factory.bar', 1, true),])->shouldBeCalled();
+        $registry->addMethodCall('registerFactory', [new Reference('factory.foo', 1, true),])->shouldBeCalled();
 
         $this->process($containerBuilder);
     }

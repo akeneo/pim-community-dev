@@ -30,13 +30,6 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $this->supports('pim_catalog_multiselect')->shouldReturn(true);
     }
 
-    function it_throws_an_exception_when_product_value_class_is_wrong($attributeOptionRepository)
-    {
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
-            ->during('__construct', [$attributeOptionRepository, 'foobar', 'pim_catalog_multiselect']);
-    }
-
     function it_creates_an_empty_multi_select_product_value(
         $attributeOptionRepository,
         AttributeInterface $attribute
@@ -106,15 +99,9 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attributeOptionRepository
-            ->findOneByIdentifier('multi_select_attribute.foo')
-            ->shouldBeCalled()
-            ->willReturn($option1);
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn($option1);
 
-        $attributeOptionRepository
-            ->findOneByIdentifier('multi_select_attribute.bar')
-            ->shouldBeCalled()
-            ->willReturn($option2);
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.bar')->willReturn($option2);
 
         $productValue = $this->create(
             $attribute,
@@ -143,15 +130,9 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attributeOptionRepository
-            ->findOneByIdentifier('multi_select_attribute.foo')
-            ->shouldBeCalled()
-            ->willReturn($option1);
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn($option1);
 
-        $attributeOptionRepository
-            ->findOneByIdentifier('multi_select_attribute.bar')
-            ->shouldBeCalled()
-            ->willReturn($option2);
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.bar') ->willReturn($option2);
 
         $productValue = $this->create(
             $attribute,
@@ -231,10 +212,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attributeOptionRepository
-            ->findOneByIdentifier('multi_select_attribute.foobar')
-            ->shouldBeCalled()
-            ->willReturn(null);
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foobar')->willReturn(null);
 
         $exception = InvalidArgumentException::arrayInvalidKey(
             'multi_select_attribute',

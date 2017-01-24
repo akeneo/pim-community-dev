@@ -105,8 +105,8 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $data = realpath(__DIR__ . '/../../../../../../../features/Context/fixtures/akeneo.jpg');
         $attribute->getCode()->willReturn('attributeCode');
 
-        $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
-        $storer->store(Argument::cetera())->shouldBeCalled()->willReturn($fileInfo);
+        $repository->findOneByIdentifier(Argument::any())->willReturn(null);
+        $storer->store(Argument::cetera())->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn($data);
 
         $builder->addProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
@@ -128,8 +128,8 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $data = realpath(__DIR__.'/../../../../../../../features/Context/fixtures/akeneo.jpg');
 
-        $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
-        $storer->store(Argument::cetera())->shouldBeCalled()->willReturn($fileInfo);
+        $repository->findOneByIdentifier(Argument::any())->willReturn(null);
+        $storer->store(Argument::cetera())->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn($data);
 
         $builder->addProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();

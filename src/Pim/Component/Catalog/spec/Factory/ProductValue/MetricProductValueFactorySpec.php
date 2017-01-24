@@ -29,13 +29,6 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $this->supports('pim_catalog_metric')->shouldReturn(true);
     }
 
-    function it_throws_an_exception_when_product_value_class_is_wrong($metricFactory)
-    {
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
-            ->during('__construct', [$metricFactory, 'foobar', 'pim_catalog_metric']);
-    }
-
     function it_creates_an_empty_metric_product_value($metricFactory, AttributeInterface $attribute)
     {
         $attribute->isScopable()->willReturn(false);
@@ -104,8 +97,8 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attribute->getMetricFamily()->shouldBeCalled()->willReturn('Length');
-        $metricFactory->createMetric('Length', 'GRAM', 42)->shouldBeCalled()->willReturn($metric);
+        $attribute->getMetricFamily()->willReturn('Length');
+        $metricFactory->createMetric('Length', 'GRAM', 42)->willReturn($metric);
         $metric->getData()->willReturn(42);
         $metric->getUnit()->willReturn('GRAM');
         $metric->getFamily()->willReturn('Length');
@@ -136,8 +129,8 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attribute->getMetricFamily()->shouldBeCalled()->willReturn('Length');
-        $metricFactory->createMetric('Length', 'GRAM', 42)->shouldBeCalled()->willReturn($metric);
+        $attribute->getMetricFamily()->willReturn('Length');
+        $metricFactory->createMetric('Length', 'GRAM', 42)->willReturn($metric);
         $metric->getData()->willReturn(42);
         $metric->getUnit()->willReturn('GRAM');
         $metric->getFamily()->willReturn('Length');

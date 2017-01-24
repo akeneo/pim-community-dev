@@ -29,18 +29,12 @@ class DateProductValueFactory implements ProductValueFactoryInterface
      */
     public function __construct($dateProductValueClass, $supportedAttributeType)
     {
-        if (!class_exists($dateProductValueClass)) {
-            throw new \InvalidArgumentException(
-                sprintf('The product value class "%s" does not exist.', $dateProductValueClass)
-            );
-        }
-
         $this->dateProductValueClass = $dateProductValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
@@ -59,7 +53,7 @@ class DateProductValueFactory implements ProductValueFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supports($attributeType)
     {
@@ -103,7 +97,7 @@ class DateProductValueFactory implements ProductValueFactoryInterface
 
     /**
      * @param AttributeInterface $attribute
-     * @param                    $data
+     * @param string             $data
      *
      * @throws InvalidPropertyException
      */

@@ -2,13 +2,16 @@
 
 namespace Pim\Component\Catalog\Factory;
 
-use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryRegistry;
+use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Factory that creates product values.
+ *
+ * "RegisterProductValueFactoryPass" allows to register private product value
+ * factories tagged with "pim_catalog.factory.product_value".
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -19,19 +22,19 @@ class ProductValueFactory
     /** @var AttributeValidatorHelper */
     protected $attributeValidatorHelper;
 
-    /** @var ProductValueFactoryRegistry */
-    protected $registry;
+    /** @var ProductValueFactoryInterface[] */
+    protected $factories;
 
     /**
-     * @param AttributeValidatorHelper    $attributeValidatorHelper
-     * @param ProductValueFactoryRegistry $registry
+     * @param AttributeValidatorHelper       $attributeValidatorHelper
+     * @param ProductValueFactoryInterface[] $factories
      */
     public function __construct(
         AttributeValidatorHelper $attributeValidatorHelper,
-        ProductValueFactoryRegistry $registry
+        $factories = []
     ) {
-        $this->registry = $registry;
         $this->attributeValidatorHelper = $attributeValidatorHelper;
+        $this->factories = $factories;
     }
 
     /**
@@ -52,9 +55,37 @@ class ProductValueFactory
         $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
         $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
 
-        $factory = $this->registry->get($attribute->getAttributeType());
+        $factory = $this->getFactory($attribute->getAttributeType());
         $value = $factory->create($attribute, $channelCode, $localeCode, $data);
 
         return $value;
+    }
+
+    /**
+     * @param ProductValueFactoryInterface $factory
+     */
+    public function registerFactory(ProductValueFactoryInterface $factory)
+    {
+        $this->factories[] = $factory;
+    }
+
+    /**
+     * @param string $attributeType
+     *
+     * @return ProductValueFactoryInterface
+     *
+     */
+    protected function getFactory($attributeType)
+    {
+        foreach ($this->factories as $factory) {
+            if ($factory->supports($attributeType)) {
+                return $factory;
+            }
+        }
+
+        throw new \OutOfBoundsException(sprintf(
+            'No factory has been registered to create a Product Value for the attribute type "%s"',
+            $attributeType
+        ));
     }
 }

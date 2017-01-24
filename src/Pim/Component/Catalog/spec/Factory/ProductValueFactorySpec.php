@@ -4,19 +4,16 @@ namespace spec\Pim\Component\Catalog\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
-use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryRegistry;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Prophecy\Argument;
 
 class ProductValueFactorySpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper, ProductValueFactoryRegistry $registry)
+    function let(AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($attributeValidatorHelper, $registry);
+        $this->beConstructedWith($attributeValidatorHelper, []);
     }
 
     function it_is_initializable()
@@ -26,11 +23,13 @@ class ProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_simple_empty_product_value(
         $attributeValidatorHelper,
-        $registry,
         AttributeInterface $attribute,
         ProductValueFactoryInterface $productValueFactory,
         ProductValueInterface $productValue
     ) {
+        $productValueFactory->supports('text')->willReturn(true);
+        $this->registerFactory($productValueFactory);
+
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('simple_attribute');
@@ -41,7 +40,6 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attributeValidatorHelper->validateScope($attribute, null)->shouldBeCalled();
 
-        $registry->get('text')->willReturn($productValueFactory);
         $productValueFactory->create($attribute, null, null, 'foobar')->willReturn($productValue);
 
         $this->create($attribute, null, null, 'foobar')->shouldReturn($productValue);
@@ -49,11 +47,13 @@ class ProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_simple_localizable_and_scopable_empty_product_value(
         $attributeValidatorHelper,
-        $registry,
         AttributeInterface $attribute,
         ProductValueFactoryInterface $productValueFactory,
         ProductValueInterface $productValue
     ) {
+        $productValueFactory->supports('text')->willReturn(true);
+        $this->registerFactory($productValueFactory);
+
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('simple_attribute');
@@ -66,9 +66,20 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attributeValidatorHelper->validateScope($attribute, 'ecommerce')->shouldBeCalled();
         $attributeValidatorHelper->validateLocale($attribute, 'en_US')->shouldBeCalled();
 
-        $registry->get('text')->willReturn($productValueFactory);
         $productValueFactory->create($attribute, 'ecommerce', 'en_US', 'foobar')->willReturn($productValue);
 
         $this->create($attribute, 'ecommerce', 'en_US', 'foobar')->shouldReturn($productValue);
+    }
+
+    function it_throws_an_exception_when_there_is_no_registered_factory(
+        ProductValueFactoryInterface $factory,
+        AttributeInterface $attribute
+    ) {
+        $this->registerFactory($factory);
+        $attribute->getAttributeType()->willReturn('text');
+
+        $factory->supports('text')->willReturn(false);
+
+        $this->shouldThrow('\OutOfBoundsException')->during('create', [$attribute, null, null, 'foobar']);
     }
 }

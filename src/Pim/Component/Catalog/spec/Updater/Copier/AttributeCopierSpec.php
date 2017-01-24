@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class BaseAttributeCopierSpec extends ObjectBehavior
+class AttributeCopierSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
@@ -90,12 +90,11 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->shouldBeCalled()->willReturn(true);
+        $normalizer->normalize($fromProductValue, 'standard')->willReturn(true);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
             ->addProductValue($product1, $toAttribute, $toLocale, $toScope, true)
-            ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
@@ -142,12 +141,11 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->shouldBeCalled()->willReturn('1970-01-01');
+        $normalizer->normalize($fromProductValue, 'standard')->willReturn('1970-01-01');
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
             ->addProductValue($product1, $toAttribute, $toLocale, $toScope, '1970-01-01')
-            ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
@@ -194,12 +192,11 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->shouldBeCalled()->willReturn(123);
+        $normalizer->normalize($fromProductValue, 'standard')->willReturn(123);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
             ->addProductValue($product1, $toAttribute, $toLocale, $toScope, 123)
-            ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
@@ -246,12 +243,11 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->shouldBeCalled()->willReturn('data');
+        $normalizer->normalize($fromProductValue, 'standard')->willReturn('data');
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
             ->addProductValue($product1, $toAttribute, $toLocale, $toScope, 'data')
-            ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);

@@ -54,7 +54,7 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
@@ -76,7 +76,7 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supports($attributeType)
     {

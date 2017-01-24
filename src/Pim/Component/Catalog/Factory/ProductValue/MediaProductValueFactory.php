@@ -19,6 +19,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class MediaProductValueFactory implements ProductValueFactoryInterface
 {
+    /** @var FileInfoRepositoryInterface */
     protected $fileInfoRepository;
 
     /** @var string */
@@ -37,19 +38,13 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
         $mediaProductValueClass,
         $supportedAttributeType
     ) {
-        if (!class_exists($mediaProductValueClass)) {
-            throw new \InvalidArgumentException(
-                sprintf('The product value class "%s" does not exist.', $mediaProductValueClass)
-            );
-        }
-
         $this->fileInfoRepository = $fileInfoRepository;
         $this->mediaProductValueClass = $mediaProductValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
@@ -68,7 +63,7 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supports($attributeType)
     {

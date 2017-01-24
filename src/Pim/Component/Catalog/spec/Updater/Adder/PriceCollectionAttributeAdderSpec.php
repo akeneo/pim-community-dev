@@ -78,12 +78,10 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 
         $normalizer
             ->normalize($price1, 'standard')
-            ->shouldBeCalled()
             ->willReturn(['amount' => 42, 'currency' => 'USD']);
 
         $normalizer
             ->normalize($price2, 'standard')
-            ->shouldBeCalled()
             ->willReturn(['amount' => 4.2, 'currency' => 'EUR']);
 
         $builder->addProductValue($product1, $attribute, $locale, $scope, [

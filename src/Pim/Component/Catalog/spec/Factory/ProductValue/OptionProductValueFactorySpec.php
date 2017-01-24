@@ -30,13 +30,6 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $this->supports('pim_catalog_simpleselect')->shouldReturn(true);
     }
 
-    function it_throws_an_exception_when_product_value_class_is_wrong($attrOptionRepository)
-    {
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
-            ->during('__construct', [$attrOptionRepository, 'foobar', 'pim_catalog_simpleselect']);
-    }
-
     function it_creates_an_empty_simple_select_product_value(
         $attrOptionRepository,
         AttributeInterface $attribute
@@ -105,10 +98,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attrOptionRepository
-            ->findOneByIdentifier('simple_select_attribute.foobar')
-            ->shouldBeCalled()
-            ->willReturn($option);
+        $attrOptionRepository->findOneByIdentifier('simple_select_attribute.foobar')->willReturn($option);
 
         $productValue = $this->create(
             $attribute,
@@ -136,10 +126,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attrOptionRepository
-            ->findOneByIdentifier('simple_select_attribute.foobar')
-            ->shouldBeCalled()
-            ->willReturn($option);
+        $attrOptionRepository->findOneByIdentifier('simple_select_attribute.foobar')->willReturn($option);
 
         $productValue = $this->create(
             $attribute,
@@ -200,10 +187,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attrOptionRepository
-            ->findOneByIdentifier('simple_select_attribute.foobar')
-            ->shouldBeCalled()
-            ->willReturn(null);
+        $attrOptionRepository->findOneByIdentifier('simple_select_attribute.foobar')->willReturn(null);
 
         $exception = InvalidPropertyException::validEntityCodeExpected(
             'simple_select_attribute',

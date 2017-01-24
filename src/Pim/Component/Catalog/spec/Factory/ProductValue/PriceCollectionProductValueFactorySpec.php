@@ -30,13 +30,6 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $this->supports('pim_catalog_price_collection')->shouldReturn(true);
     }
 
-    function it_throws_an_exception_when_product_value_class_is_wrong($priceFactory)
-    {
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
-            ->during('__construct', [$priceFactory, 'foobar', 'pim_catalog_metric']);
-    }
-
     function it_creates_a_empty_price_collection_product_value(
         $priceFactory,
         AttributeInterface $attribute

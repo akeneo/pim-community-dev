@@ -19,7 +19,7 @@ parameters:
 
     pim_catalog.updater.setter.registry.class:                Pim\Component\Catalog\Updater\Setter\SetterRegistry
     pim_catalog.updater.setter.abstract.class:                Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter
-    pim_catalog.updater.setter.simple_value.class:            Pim\Component\Catalog\Updater\Setter\SimpleAttributeSetter
+    pim_catalog.updater.setter.value.class:                   Pim\Component\Catalog\Updater\Setter\AttributeSetter
     pim_catalog.updater.setter.category_field.class:          Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter
     pim_catalog.updater.setter.group_field.class:             Pim\Component\Catalog\Updater\Setter\GroupFieldSetter
     pim_catalog.updater.setter.variant_group_field.class:     Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter
@@ -30,7 +30,7 @@ parameters:
 
     pim_catalog.updater.copier.registry.class:                Pim\Component\Catalog\Updater\Copier\CopierRegistry
     pim_catalog.updater.copier.abstract.class:                Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier
-    pim_catalog.updater.copier.base_value.class:              Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.value.class:                   Pim\Component\Catalog\Updater\Copier\AttributeCopier
     pim_catalog.updater.copier.media_value.class:             Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier
     pim_catalog.updater.copier.metric_value.class:            Pim\Component\Catalog\Updater\Copier\MetricAttributeCopier
 
@@ -175,7 +175,7 @@ services:
             - '@pim_catalog.builder.product'
 
     pim_catalog.updater.setter.text_value:
-        class: '%pim_catalog.updater.setter.simple_value.class%'
+        class: '%pim_catalog.updater.setter.value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_identifier']
@@ -183,7 +183,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_catalog.updater.setter.metric_value:
-        class: '%pim_catalog.updater.setter.simple_value.class%'
+        class: '%pim_catalog.updater.setter.value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_catalog_metric']
@@ -191,7 +191,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_catalog.updater.setter.boolean_value:
-        class: '%pim_catalog.updater.setter.simple_value.class%'
+        class: '%pim_catalog.updater.setter.value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_catalog_boolean']
@@ -199,7 +199,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_catalog.updater.setter.date_value:
-        class: '%pim_catalog.updater.setter.simple_value.class%'
+        class: '%pim_catalog.updater.setter.value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_catalog_date']
@@ -207,7 +207,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_catalog.updater.setter.number_value:
-        class: '%pim_catalog.updater.setter.simple_value.class%'
+        class: '%pim_catalog.updater.setter.value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_catalog_number']
@@ -264,7 +264,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_catalog.updater.setter.multiselect_value:
-        class: '%pim_catalog.updater.setter.simple_value.class%'
+        class: '%pim_catalog.updater.setter.value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_catalog_multiselect']
@@ -272,7 +272,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_catalog.updater.setter.price_collection_value:
-        class: '%pim_catalog.updater.setter.simple_value.class%'
+        class: '%pim_catalog.updater.setter.value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_catalog_price_collection']
@@ -280,7 +280,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_catalog.updater.setter.simpleselect_value:
-        class: '%pim_catalog.updater.setter.simple_value.class%'
+        class: '%pim_catalog.updater.setter.value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_catalog_simpleselect']
@@ -311,7 +311,7 @@ services:
             - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.updater.copier.text_value:
-        class: '%pim_catalog.updater.copier.base_value.class%'
+        class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - '@pim_serializer'
@@ -347,7 +347,7 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.textarea_value:
-        class: '%pim_catalog.updater.copier.base_value.class%'
+        class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - '@pim_serializer'
@@ -357,7 +357,7 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.boolean_value:
-        class: '%pim_catalog.updater.copier.base_value.class%'
+        class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - '@pim_serializer'
@@ -367,7 +367,7 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.number_value:
-        class: '%pim_catalog.updater.copier.base_value.class%'
+        class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - '@pim_serializer'
@@ -377,7 +377,7 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.date_value:
-        class: '%pim_catalog.updater.copier.base_value.class%'
+        class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - '@pim_serializer'
@@ -397,7 +397,7 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.simpleselect_value:
-        class: '%pim_catalog.updater.copier.base_value.class%'
+        class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - '@pim_serializer'
@@ -407,7 +407,7 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.multiselect_value:
-        class: '%pim_catalog.updater.copier.base_value.class%'
+        class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - '@pim_serializer'
@@ -417,7 +417,7 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.price_collection_value:
-        class: '%pim_catalog.updater.copier.base_value.class%'
+        class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - '@pim_serializer'

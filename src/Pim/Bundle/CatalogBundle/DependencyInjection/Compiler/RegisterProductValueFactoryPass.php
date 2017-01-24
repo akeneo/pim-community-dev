@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Compiler pass to register product value factories inside their registry
+ * Compiler pass that registers product value factories inside their main factory.
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -15,13 +15,10 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterProductValueFactoryPass implements CompilerPassInterface
 {
-    /** @const integer */
     const DEFAULT_PRIORITY = 25;
 
-    /** @const string The registry id */
-    const PRODUCT_VALUE_FACTORY_REGISTRY = 'pim_catalog.factory.product_value.registry';
+    const PRODUCT_VALUE_FACTORY = 'pim_catalog.factory.product_value';
 
-    /** @const string */
     const PRODUCT_VALUE_FACTORY_TAG = 'pim_catalog.factory.product_value';
 
     /**
@@ -29,15 +26,15 @@ class RegisterProductValueFactoryPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $containerBuilder)
     {
-        if (!$containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY)) {
+        if (!$containerBuilder->hasDefinition(static::PRODUCT_VALUE_FACTORY)) {
             throw new \LogicException('Product value factory must be configured');
         }
 
-        $registry = $containerBuilder->getDefinition(static::PRODUCT_VALUE_FACTORY_REGISTRY);
+        $factory = $containerBuilder->getDefinition(static::PRODUCT_VALUE_FACTORY);
 
         $filters = $this->findSortedTaggedServices(static::PRODUCT_VALUE_FACTORY_TAG, $containerBuilder);
         foreach ($filters as $filter) {
-            $registry->addMethodCall('register', [$filter]);
+            $factory->addMethodCall('registerFactory', [$filter]);
         }
     }
 

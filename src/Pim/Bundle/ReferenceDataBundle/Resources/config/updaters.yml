@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_reference_data.updater.setter.reference_data_value:
-        class: '%pim_catalog.updater.setter.simple_value.class%'
+        class: '%pim_catalog.updater.setter.value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_reference_data_simpleselect']
@@ -12,7 +12,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_reference_data.updater.setter.reference_data_collection_value:
-        class: '%pim_catalog.updater.setter.simple_value.class%'
+        class: '%pim_catalog.updater.setter.value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_reference_data_multiselect']
