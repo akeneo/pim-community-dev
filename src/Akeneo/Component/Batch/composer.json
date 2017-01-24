@@ -17,7 +17,7 @@
         "symfony/property-access": "^2.3",
         "symfony/validator": "^2.3",
         "symfony/serializer": "^2.3",
-        "symfony/filesystem": "2.7.2",
+        "symfony/filesystem": "^2.3",
         "doctrine/common": "^2.1",
         "akeneo/storage-utils": "0.6.x-dev"
     },
