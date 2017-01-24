@@ -35,7 +35,6 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
                 ],
             ],
         ]);
-        $this->calculateProject($highTechProject);
 
         $clothingProject = $this->createProject([
             'label'           => 'Clothing project',
@@ -51,7 +50,6 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
                 ],
             ],
         ]);
-        $this->calculateProject($clothingProject);
 
         $projectId = $highTechProject->getId();
         $this->removeProject($highTechProject);
@@ -80,7 +78,6 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
             ],
         ]);
 
-        $this->calculateProject($project);
         $viewId = $project->getDatagridView()->getId();
 
         $this->get('pimee_activity_manager.remover.project')->remove($project);

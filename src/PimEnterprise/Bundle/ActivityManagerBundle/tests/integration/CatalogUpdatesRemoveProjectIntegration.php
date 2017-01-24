@@ -37,7 +37,6 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
                 ],
             ],
         ]);
-        $this->calculateProject($project);
         $projectCode = $project->getCode();
 
         $mobileChannel = $channelRepository->findOneByIdentifier('mobile');
@@ -71,7 +70,7 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
                 ],
             ],
         ]);
-        $this->calculateProject($project);
+
         $projectCode = $project->getCode();
 
         $locale = $localeRepository->findOneByIdentifier('en_US');
@@ -107,7 +106,7 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
                 ],
             ]
         );
-        $this->calculateProject($project);
+
         $projectCode = $project->getCode();
 
         $attribute = $attributeRepository->findOneByIdentifier('release_date');
@@ -144,7 +143,7 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
                 ],
             ]
         );
-        $this->calculateProject($project);
+
         $projectCode = $project->getCode();
 
         $category = $categoryRepository->findOneByIdentifier('clothing');
@@ -182,7 +181,7 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
                 ],
             ]
         );
-        $this->calculateProject($project);
+
         $projectCode = $project->getCode();
 
         $channel = $channelRepository->findOneByIdentifier('ecommerce');

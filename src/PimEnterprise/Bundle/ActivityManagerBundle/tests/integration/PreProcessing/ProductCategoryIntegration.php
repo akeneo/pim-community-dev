@@ -37,8 +37,6 @@ class ProductCategoryIntegration extends ActivityManagerTestCase
             ],
         ]);
 
-        $this->calculateProject($project);
-
         $productId = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('tshirt-the-witcher-3')
             ->getId();

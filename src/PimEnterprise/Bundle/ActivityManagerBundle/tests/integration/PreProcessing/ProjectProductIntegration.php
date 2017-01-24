@@ -41,7 +41,6 @@ class ProjectProductIntegration extends ActivityManagerTestCase
             ],
         ]);
 
-        $this->calculateProject($project);
         $this->checkNumberOfProduct($project, 4);
     }
 
@@ -70,7 +69,6 @@ class ProjectProductIntegration extends ActivityManagerTestCase
             ],
         ]);
 
-        $this->calculateProject($project);
         $this->checkNumberOfProduct($project, 2);
     }
 
@@ -99,7 +97,6 @@ class ProjectProductIntegration extends ActivityManagerTestCase
             ],
         ]);
 
-        $this->calculateProject($project);
         $this->checkNumberOfProduct($project, 2);
     }
 

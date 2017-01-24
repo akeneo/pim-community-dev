@@ -85,35 +85,11 @@ class ActivityManagerTestCase extends TestCase
         $project = $this->get('pimee_activity_manager.factory.project')->create($projectData);
         $this->get('pimee_activity_manager.saver.project')->save($project);
 
+        $numberOfExecutedJob = $this->findJobExecutionCount();
+        $this->get('pimee_activity_manager.launcher.job.project_calculation')->launch($project);
+        $this->isCompleteJobExecution($numberOfExecutedJob);
+
         return $project;
-    }
-
-    /**
-     * Run the project calculation
-     *
-     * @param ProjectInterface $project
-     */
-    protected function calculateProject(ProjectInterface $project)
-    {
-        $numberOfExecutedJob = $this->findJobExecutionCount();
-
-        $this->get('pimee_activity_manager.launcher.job.project_calculation')->launch($project);
-
-        $this->isCompleteJobExecution($numberOfExecutedJob);
-    }
-
-    /**
-     * re run the project calculation
-     *
-     * @param ProjectInterface $project
-     */
-    protected function reCalculateProject(ProjectInterface $project)
-    {
-        $numberOfExecutedJob = $this->findJobExecutionCount();
-
-        $this->get('pimee_activity_manager.launcher.job.project_calculation')->launch($project);
-
-        $this->isCompleteJobExecution($numberOfExecutedJob);
     }
 
     /**
