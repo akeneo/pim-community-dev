@@ -3,3 +3,9 @@ pimee_enrich_channel_transformation_view:
     defaults: { _controller: pimee_enrich.controller.channel_transformation:viewAction }
     requirements:
         id: \d+
+
+pimee_enrich_channel_asset_transformation:
+    path: /rest/{id}/asset-transformation
+    defaults: { _controller: pimee_enrich.controller.rest.channel:assetTransformationAction, _format: json }
+    requirements:
+        id: \d+
