@@ -105,6 +105,8 @@ interface ProductBuilderInterface
      *
      * @param ProductValueInterface $value
      * @param array                 $currencies
+     *
+     * @deprecated Will be removed in 1.8.
      */
     public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies);
 
