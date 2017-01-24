@@ -51,7 +51,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
-            $this->validateDatatype($field, $value);
+            $this->validateDataType($field, $value);
             $this->setData($category, $field, $value);
         }
 
@@ -67,7 +67,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
      */
-    protected function validateDatatype($field, $data)
+    protected function validateDataType($field, $data)
     {
         if ('labels' === $field) {
             if (!is_array($data)) {
