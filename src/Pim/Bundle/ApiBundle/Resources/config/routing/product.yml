@@ -1,4 +1,4 @@
-pim_api_rest_product_list:
+pim_api_product_list:
     path: /products
-    defaults: { _controller: pim_api.controller.rest.product:listAction, _format: json }
+    defaults: { _controller: pim_api.controller.product:listAction, _format: json }
     methods: [GET]

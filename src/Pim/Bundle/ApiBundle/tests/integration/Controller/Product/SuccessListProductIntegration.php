@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Family;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\DateSanitizer;
@@ -9,7 +9,7 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListProductIntegration extends TestCase
+class SuccessListProductIntegration extends TestCase
 {
     /** @var Collection */
     private $products;
@@ -22,7 +22,7 @@ class ListProductIntegration extends TestCase
         parent::setUp();
 
         if (1 === self::$count) {
-            // no locale, no scope, no category
+            // no locale, no scope, 1 category
             $this->createProduct('simple', [
                 'categories' => ['master'],
                 'values'     => [
@@ -39,14 +39,13 @@ class ListProductIntegration extends TestCase
             $this->createProduct('localizable', [
                 'categories' => ['categoryB'],
                 'values'     => [
-                        'a_localizable_image' => [
-                            ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
-                            ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
-                            ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'zh_CN', 'scope' => null]
-                        ]
+                    'a_localizable_image' => [
+                        ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
+                        ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
+                        ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'zh_CN', 'scope' => null]
                     ]
                 ]
-            );
+            ]);
 
             // scopable, categorized in 1 tree (master)
             $this->createProduct('scopable', [
@@ -69,7 +68,7 @@ class ListProductIntegration extends TestCase
                                 ['amount' => '10.50', 'currency' => 'EUR'],
                                 ['amount' => '11.50', 'currency' => 'USD'],
                                 ['amount' => '78.77', 'currency' => 'CNY']
-                        ]
+                            ]
                         ]
                     ]
                 ]
@@ -91,6 +90,14 @@ class ListProductIntegration extends TestCase
 
             $this->createProduct('product_china', [
                 'categories' => ['master_china']
+            ]);
+
+            $this->createProduct('product_without_category', [
+                'values' => [
+                    'a_yes_no' => [
+                        ['data' => true, 'locale' => null, 'scope' => null]
+                    ]
+                ]
             ]);
         }
 
@@ -165,8 +172,8 @@ class ListProductIntegration extends TestCase
                     'a_scopable_price' => [
                         [
                             'locale' => null,
-                            'scope' => 'ecommerce',
-                            'data' => [
+                            'scope'  => 'ecommerce',
+                            'data'   => [
                                 ['amount' => '10.50', 'currency' => 'EUR'],
                                 ['amount' => '11.50', 'currency' => 'USD'],
                                 ['amount' => '78.77', 'currency' => 'CNY']
@@ -174,8 +181,8 @@ class ListProductIntegration extends TestCase
                         ],
                         [
                             'locale' => null,
-                            'scope' => 'tablet',
-                            'data' => [
+                            'scope'  => 'tablet',
+                            'data'   => [
                                 ['amount' => '10.50', 'currency' => 'EUR'],
                                 ['amount' => '11.50', 'currency' => 'USD'],
                                 ['amount' => '78.77', 'currency' => 'CNY']
@@ -218,6 +225,26 @@ class ListProductIntegration extends TestCase
                 'created'       => '2017-01-23T11:44:25+01:00',
                 'updated'       => '2017-01-23T11:44:25+01:00',
                 'associations'  => [],
+            ],
+            [
+                'identifier'    => 'product_without_category',
+                'family'        => null,
+                'groups'        => [],
+                'variant_group' => null,
+                'categories'    => [],
+                'enabled'       => true,
+                'values'        => [
+                    'a_yes_no' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => true
+                        ]
+                    ]
+                ],
+                'created'       => '2017-01-23T11:44:25+01:00',
+                'updated'       => '2017-01-23T11:44:25+01:00',
+                'associations'  => [],
             ]
         ];
 
@@ -248,10 +275,10 @@ class ListProductIntegration extends TestCase
                     'a_metric' => [
                         [
                             'locale' => null,
-                            'scope' => null,
-                            'data' => [
+                            'scope'  => null,
+                            'data'   => [
                                 'amount' => '10.0000',
-                                'unit' => 'KILOWATT'
+                                'unit'   => 'KILOWATT'
                             ]
                         ]
                     ],
@@ -294,8 +321,8 @@ class ListProductIntegration extends TestCase
                     'a_scopable_price' => [
                         [
                             'locale' => null,
-                            'scope' => 'ecommerce',
-                            'data' => [
+                            'scope'  => 'ecommerce',
+                            'data'   => [
                                 ['amount' => '10.50', 'currency' => 'EUR'],
                                 ['amount' => '11.50', 'currency' => 'USD'],
                                 ['amount' => '78.77', 'currency' => 'CNY']
@@ -352,10 +379,10 @@ class ListProductIntegration extends TestCase
                     'a_metric' => [
                         [
                             'locale' => null,
-                            'scope' => null,
-                            'data' => [
+                            'scope'  => null,
+                            'data'   => [
                                 'amount' => '10.0000',
-                                'unit' => 'KILOWATT'
+                                'unit'   => 'KILOWATT'
                             ]
                         ]
                     ],
@@ -399,8 +426,8 @@ class ListProductIntegration extends TestCase
                     'a_scopable_price' => [
                         [
                             'locale' => null,
-                            'scope' => 'tablet',
-                            'data' => [
+                            'scope'  => 'tablet',
+                            'data'   => [
                                 ['amount' => '10.50', 'currency' => 'EUR'],
                                 ['amount' => '11.50', 'currency' => 'USD'],
                                 ['amount' => '78.77', 'currency' => 'CNY']
@@ -458,10 +485,10 @@ class ListProductIntegration extends TestCase
                     'a_metric' => [
                         [
                             'locale' => null,
-                            'scope' => null,
-                            'data' => [
+                            'scope'  => null,
+                            'data'   => [
                                 'amount' => '10.0000',
-                                'unit' => 'KILOWATT'
+                                'unit'   => 'KILOWATT'
                             ]
                         ]
                     ],
@@ -504,8 +531,8 @@ class ListProductIntegration extends TestCase
                     'a_scopable_price' => [
                         [
                             'locale' => null,
-                            'scope' => 'tablet',
-                            'data' => [
+                            'scope'  => 'tablet',
+                            'data'   => [
                                 ['amount' => '10.50', 'currency' => 'EUR'],
                                 ['amount' => '11.50', 'currency' => 'USD'],
                                 ['amount' => '78.77', 'currency' => 'CNY']
@@ -607,10 +634,10 @@ class ListProductIntegration extends TestCase
                     'a_metric' => [
                         [
                             'locale' => null,
-                            'scope' => null,
-                            'data' => [
+                            'scope'  => null,
+                            'data'   => [
                                 'amount' => '10.0000',
-                                'unit' => 'KILOWATT'
+                                'unit'   => 'KILOWATT'
                             ]
                         ]
                     ],
@@ -654,8 +681,8 @@ class ListProductIntegration extends TestCase
                     'a_scopable_price' => [
                         [
                             'locale' => null,
-                            'scope' => 'ecommerce',
-                            'data' => [
+                            'scope'  => 'ecommerce',
+                            'data'   => [
                                 ['amount' => '10.50', 'currency' => 'EUR'],
                                 ['amount' => '11.50', 'currency' => 'USD'],
                                 ['amount' => '78.77', 'currency' => 'CNY']
@@ -663,8 +690,8 @@ class ListProductIntegration extends TestCase
                         ],
                         [
                             'locale' => null,
-                            'scope' => 'tablet',
-                            'data' => [
+                            'scope'  => 'tablet',
+                            'data'   => [
                                 ['amount' => '10.50', 'currency' => 'EUR'],
                                 ['amount' => '11.50', 'currency' => 'USD'],
                                 ['amount' => '78.77', 'currency' => 'CNY']
@@ -702,6 +729,26 @@ class ListProductIntegration extends TestCase
                 'categories'    => ['master_china'],
                 'enabled'       => true,
                 'values'        => [],
+                'created'       => '2017-01-23T11:44:25+01:00',
+                'updated'       => '2017-01-23T11:44:25+01:00',
+                'associations'  => [],
+            ],
+            [
+                'identifier'    => 'product_without_category',
+                'family'        => null,
+                'groups'        => [],
+                'variant_group' => null,
+                'categories'    => [],
+                'enabled'       => true,
+                'values'        => [
+                    'a_yes_no' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => true,
+                        ]
+                    ]
+                ],
                 'created'       => '2017-01-23T11:44:25+01:00',
                 'updated'       => '2017-01-23T11:44:25+01:00',
                 'associations'  => [],
@@ -787,6 +834,18 @@ class ListProductIntegration extends TestCase
                 'created'       => '2017-01-23T11:44:25+01:00',
                 'updated'       => '2017-01-23T11:44:25+01:00',
                 'associations'  => [],
+            ],
+            [
+                'identifier'    => 'product_without_category',
+                'family'        => null,
+                'groups'        => [],
+                'variant_group' => null,
+                'categories'    => [],
+                'enabled'       => true,
+                'values'        => [],
+                'created'       => '2017-01-23T11:44:25+01:00',
+                'updated'       => '2017-01-23T11:44:25+01:00',
+                'associations'  => [],
             ]
         ];
 
@@ -848,8 +907,8 @@ class ListProductIntegration extends TestCase
                     'a_scopable_price' => [
                         [
                             'locale' => null,
-                            'scope' => 'tablet',
-                            'data' => [
+                            'scope'  => 'tablet',
+                            'data'   => [
                                 ['amount' => '10.50', 'currency' => 'EUR'],
                                 ['amount' => '11.50', 'currency' => 'USD'],
                                 ['amount' => '78.77', 'currency' => 'CNY']
