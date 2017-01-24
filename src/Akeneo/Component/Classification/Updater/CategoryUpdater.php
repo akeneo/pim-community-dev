@@ -5,6 +5,7 @@ namespace Akeneo\Component\Classification\Updater;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -50,10 +51,47 @@ class CategoryUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
+            $this->validateDatatype($field, $value);
             $this->setData($category, $field, $value);
         }
 
         return $this;
+    }
+
+    /**
+     * Validate the data type of a field.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws UnknownPropertyException
+     */
+    protected function validateDatatype($field, $data)
+    {
+        if ('labels' === $field) {
+            if (!is_array($data)) {
+                throw InvalidPropertyTypeException::arrayExpected('labels', 'update', 'category', $data);
+            }
+
+            foreach ($data as $localeCode => $label) {
+                if (null !== $label && !is_scalar($label)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        'labels',
+                        'one of the labels is not a scalar',
+                        'update',
+                        'category',
+                        $data
+                    );
+                }
+            }
+        } elseif (in_array($field, ['code', 'parent'])) {
+            if (null !== $data && !is_scalar($data)) {
+                throw InvalidPropertyTypeException::scalarExpected($field, 'update', 'category', $data);
+            }
+        } else {
+            throw UnknownPropertyException::unknownProperty($field);
+        }
     }
 
     /**
@@ -71,19 +109,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
                 $category->setLocale($localeCode);
             }
         } elseif ('parent' === $field) {
-            $categoryParent = $this->findParent($data);
-            if (null === $categoryParent) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'parent',
-                    'category code',
-                    'The category does not exist',
-                    'updater',
-                    'category',
-                    $data
-                );
-            }
-
-            $category->setParent($categoryParent);
+            $this->updateParent($category, $data);
         } else {
             try {
                 $this->accessor->setValue($category, $field, $data);
@@ -94,12 +120,31 @@ class CategoryUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param string $code
+     * @param CategoryInterface $category
+     * @param string            $data
      *
-     * @return CategoryInterface|null
+     * @throws InvalidPropertyException
      */
-    protected function findParent($code)
+    protected function updateParent(CategoryInterface $category, $data)
     {
-        return $this->categoryRepository->findOneByIdentifier($code);
+        if (null === $data || '' === $data) {
+            $category->setParent(null);
+
+            return;
+        }
+
+        $categoryParent = $this->categoryRepository->findOneByIdentifier($data);
+        if (null === $categoryParent) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'parent',
+                'category code',
+                'The category does not exist',
+                'updater',
+                'category',
+                $data
+            );
+        }
+
+        $category->setParent($categoryParent);
     }
 }

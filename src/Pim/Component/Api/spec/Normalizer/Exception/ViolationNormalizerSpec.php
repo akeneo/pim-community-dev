@@ -19,7 +19,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
 
         $this->normalize($exception)->shouldReturn([
             'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
-            'message' => 'Validation failed',
+            'message' => 'Validation failed.',
             'errors'  => [
                 ['field' => 'code', 'message' => 'Not Blank'],
                 ['field' => 'name', 'message' => 'Too long']
