@@ -133,29 +133,52 @@ class CategoryController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        if (isset($data['code']) && null !== $this->repository->findOneByIdentifier($data['code'])) {
-            throw new UnprocessableEntityHttpException(sprintf('Category "%s" already exists.', $data['code']));
-        }
-
         $category = $this->factory->create();
         $this->updateCategory($category, $data);
-
-        $violations = $this->validator->validate($category);
-        if (0 !== $violations->count()) {
-            throw new ViolationHttpException($violations);
-        }
+        $this->validateCategory($category);
 
         $this->saver->save($category);
 
-        $response = new JsonResponse(null, Response::HTTP_CREATED);
-        $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
-        $response->headers->set('Location', $route);
+        $response = $this->getCreateResponse($category);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws BadRequestHttpException
+     * @throws UnprocessableEntityHttpException
+     *
+     * @return Response
+     */
+    public function partialUpdateAction(Request $request, $code)
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $isCreation = false;
+        $category = $this->repository->findOneByIdentifier($code);
+
+        if (null === $category) {
+            $isCreation = true;
+            $this->validateCodeConsistency($code, $data);
+            $data['code'] = $code;
+            $category = $this->factory->create();
+        }
+
+        $this->updateCategory($category, $data);
+        $this->validateCategory($category, $data);
+
+        $this->saver->save($category);
+
+        $response = $isCreation ? $this->getCreateResponse($category) : $this->getUpdateResponse($category);
 
         return $response;
     }
@@ -174,7 +197,7 @@ class CategoryController
         $decodedContent = json_decode($content, true);
 
         if (null === $decodedContent) {
-            throw new BadRequestHttpException('JSON is not valid.');
+            throw new BadRequestHttpException('Invalid json message received');
         }
 
         return $decodedContent;
@@ -188,7 +211,7 @@ class CategoryController
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function updateCategory(CategoryInterface $category, $data)
+    protected function updateCategory(CategoryInterface $category, array $data)
     {
         try {
             $this->updater->update($category, $data);
@@ -206,6 +229,78 @@ class CategoryController
                 $this->urlDocumentation,
                 sprintf('%s Check the standard format documentation.', $exception->getMessage()),
                 $exception
+            );
+        }
+    }
+
+    /**
+     * Validate a category. It throws an error 422 with every violated constraints if
+     * the validation failed.
+     *
+     * @param CategoryInterface $category
+     *
+     * @throws ViolationHttpException
+     */
+    protected function validateCategory(CategoryInterface $category)
+    {
+        $violations = $this->validator->validate($category);
+        if (0 !== $violations->count()) {
+            throw new ViolationHttpException($violations);
+        }
+    }
+
+    /**
+     * Get a response with HTTP code 201 when an object is created.
+     *
+     * @param CategoryInterface $category
+     *
+     * @return Response
+     */
+    protected function getCreateResponse(CategoryInterface $category)
+    {
+        $response = new Response(null, Response::HTTP_CREATED);
+        $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
+        $response->headers->set('Location', $route);
+
+        return $response;
+    }
+
+    /**
+     * Get a response with HTTP code 204 when an object is updated.
+     *
+     * @param CategoryInterface $category
+     *
+     * @return Response
+     */
+    protected function getUpdateResponse(CategoryInterface $category)
+    {
+        $response = new Response(null, Response::HTTP_NO_CONTENT);
+        $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
+        $response->headers->set('Location', $route);
+
+        return $response;
+    }
+
+    /**
+     * Throw an exception if the code provided in the url and the code provided in the request body
+     * are not equals when creating a category with a PATCH or PUT method.
+     *
+     * The code in the request body is optional when we create a resource with PATCH or PUT.
+     *
+     * @param string $code code provided in the url
+     * @param array  $data code provided in the request body
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency($code, array $data)
+    {
+        if (isset($data['code']) && $code !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The code "%s" provided in the request body must match the code "%s" provided in the url.',
+                    $data['code'],
+                    $code
+                )
             );
         }
     }
