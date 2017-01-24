@@ -209,10 +209,11 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.identifier:
-        class: '%pim_catalog.doctrine.query.filter.string.class%'
+        class: '%pim_catalog.doctrine.query.filter.identifier.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - ['pim_catalog_identifier']
+            - ['identifier']
             - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN', '!=']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }

@@ -11,6 +11,7 @@ parameters:
     pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\ProductIdFilter
     pim_catalog.doctrine.query.filter.number.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\NumberFilter
     pim_catalog.doctrine.query.filter.string.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter
+    pim_catalog.doctrine.query.filter.identifier.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\IdentifierFilter
     pim_catalog.doctrine.query.filter.boolean.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BooleanFilter
     pim_catalog.doctrine.query.filter.family.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\FamilyFilter
     pim_catalog.doctrine.query.filter.groups.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\GroupsFilter
