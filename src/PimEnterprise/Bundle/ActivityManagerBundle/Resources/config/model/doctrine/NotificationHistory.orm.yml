@@ -1,0 +1,30 @@
+PimEnterprise\Component\ActivityManager\Model\NotificationHistory:
+    type: entity
+    table: pimee_activity_manager_notification_history
+    repositoryClass: PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\NotificationHistoryRepository
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        notificationProjectCreation:
+            type: boolean
+            nullable: true
+        notificationProjectFinished:
+            type: boolean
+            nullable: true
+    manyToOne:
+        user:
+            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
+            joinColumns:
+                user_id:
+                    nullable: false
+                    referencedColumnName: id
+        project:
+            targetEntity: PimEnterprise\Component\ActivityManager\Model\ProjectInterface
+            joinColumns:
+                project_id:
+                    nullable: false
+                    referencedColumnName: id

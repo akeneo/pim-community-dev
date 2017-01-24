@@ -1,6 +1,7 @@
 parameters:
     pimee_activity_manager.model.project.class: 'PimEnterprise\Component\ActivityManager\Model\Project'
     pimee_activity_manager.model.project.interface: 'PimEnterprise\Component\ActivityManager\Model\ProjectInterface'
+    pimee_activity_manager.model.notification_history.class: 'PimEnterprise\Component\ActivityManager\Model\NotificationHistory'
 
     pimee_activity_manager.normalizer.project.class: 'PimEnterprise\Component\ActivityManager\Normalizer\ProjectNormalizer'
     pimee_activity_manager.normalizer.project_completeness.class: 'PimEnterprise\Component\ActivityManager\Normalizer\ProjectCompletenessNormalizer'
@@ -85,6 +86,11 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pimee_activity_manager.factory.project_cursor.page_size%'
 
+    pimee_activity_manager.factory.notification_history:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pimee_activity_manager.model.notification_history.class%'
+
     ### Saver
     pimee_activity_manager.saver.project:
         class: '%akeneo_storage_utils.saver.base.class%'
@@ -92,6 +98,13 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pimee_activity_manager.model.project.interface%'
+
+    pimee_activity_manager.saver.notification_history:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_activity_manager.model.notification_history.class%'
 
     ### Subscribers
     pimee_activity_manager.event_listener.event_translation:

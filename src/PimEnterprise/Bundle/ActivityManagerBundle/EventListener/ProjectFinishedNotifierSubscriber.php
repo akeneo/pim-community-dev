@@ -12,14 +12,18 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectFinishedNotificationFactory;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\NotificationHistoryRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Job execution notifier.
@@ -43,25 +47,43 @@ class ProjectFinishedNotifierSubscriber implements EventSubscriberInterface
     /** @var ProjectCompletenessRepositoryInterface */
     protected $projectCompletenessRepository;
 
+    /** @var SaverInterface */
+    protected $notificationHistorySaver;
+
+    /** @var SimpleFactoryInterface */
+    protected $notificationHistoryFactory;
+
+    /** @var NotificationHistoryRepositoryInterface */
+    protected $notificationHistoryRepository;
+
     /**
      * @param ProjectFinishedNotificationFactory     $factory
      * @param NotifierInterface                      $notifier
      * @param UserRepositoryInterface                $userRepository
      * @param PresenterInterface                     $datePresenter
      * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
+     * @param NotificationHistoryRepositoryInterface $notificationHistoryRepository
+     * @param SaverInterface                         $notificationHistorySaver
+     * @param SimpleFactoryInterface                 $notificationHistoryFactory
      */
     public function __construct(
         ProjectFinishedNotificationFactory $factory,
         NotifierInterface $notifier,
         UserRepositoryInterface $userRepository,
         PresenterInterface $datePresenter,
-        ProjectCompletenessRepositoryInterface $projectCompletenessRepository
+        ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
+        NotificationHistoryRepositoryInterface $notificationHistoryRepository,
+        SaverInterface $notificationHistorySaver,
+        SimpleFactoryInterface $notificationHistoryFactory
     ) {
         $this->factory = $factory;
         $this->notifier = $notifier;
         $this->userRepository = $userRepository;
         $this->datePresenter = $datePresenter;
         $this->projectCompletenessRepository = $projectCompletenessRepository;
+        $this->notificationHistorySaver = $notificationHistorySaver;
+        $this->notificationHistoryFactory = $notificationHistoryFactory;
+        $this->notificationHistoryRepository = $notificationHistoryRepository;
     }
 
     /**
@@ -101,6 +123,10 @@ class ProjectFinishedNotifierSubscriber implements EventSubscriberInterface
      */
     protected function notifyOwner($project)
     {
+        if ($this->notificationHistoryRepository->hasBeenNotifiedForProjectFinished($project, $project->getOwner())) {
+            return;
+        }
+
         $userLocale = $project->getOwner()->getUiLocale();
         $formattedDate = $this->datePresenter->present(
             $project->getDueDate(),
@@ -115,6 +141,7 @@ class ProjectFinishedNotifierSubscriber implements EventSubscriberInterface
 
         $notification = $this->factory->create('activity_manager.notification.project_finished.owner', $parameters);
         $this->notifier->notify($notification, [$project->getOwner()]);
+        $this->addToNotificationHistory($project, $project->getOwner());
     }
 
     /**
@@ -129,12 +156,37 @@ class ProjectFinishedNotifierSubscriber implements EventSubscriberInterface
                 ->getProjectCompleteness($project, $contributor);
 
             if ($contributorCompleteness->isComplete()) {
-                $notification = $this->factory->create(
-                    'activity_manager.notification.project_finished.contributor',
-                    $parameters
-                );
-                $this->notifier->notify($notification, [$contributor]);
+                if (!$this->notificationHistoryRepository->hasBeenNotifiedForProjectFinished(
+                    $project,
+                    $contributor
+                )
+                ) {
+                    $notification = $this->factory->create(
+                        'activity_manager.notification.project_finished.contributor',
+                        $parameters
+                    );
+                    $this->notifier->notify($notification, [$contributor]);
+                    $this->addToNotificationHistory($project, $contributor);
+                }
             }
         }
+    }
+
+    /**
+     * @param ProjectInterface $project
+     * @param UserInterface    $user
+     */
+    protected function addToNotificationHistory($project, $user)
+    {
+        $notificationHistory = $this->notificationHistoryRepository->findNotificationHistory($project, $user);
+
+        if (null === $notificationHistory) {
+            $notificationHistory = $this->notificationHistoryFactory->create();
+            $notificationHistory->setUser($user);
+            $notificationHistory->setProject($project);
+        }
+
+        $notificationHistory->setNotificationProjectFinished(true);
+        $this->notificationHistorySaver->save($notificationHistory);
     }
 }
