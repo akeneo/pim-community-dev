@@ -60,6 +60,22 @@ class Processor extends AbstractProcessor implements ItemProcessorInterface, Ste
      */
     public function process($item)
     {
+        $identifier = $this->repository->getIdentifierProperties();
+
+        if (empty($identifier) || 0 !== count(array_diff($identifier, array_keys($item)))) {
+            $this->skipItemWithMessage($item, 'The identifier must be filled');
+        }
+
+        $identifierValues = [];
+
+        foreach ($identifier as $identifierCode) {
+            if (isset($item[$identifierCode])) {
+                $identifierValues[] = $item[$identifierCode];
+            }
+        }
+
+        $this->checkIdentifierDuplication($item, $identifierValues);
+
         $entity = $this->findOrCreateObject($item);
 
         try {

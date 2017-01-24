@@ -9,6 +9,7 @@ parameters:
     akeneo_batch.launcher.simple_job_launcher.class:          Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher
     akeneo_batch.connectors_config:                           ~
     akeneo_batch.jobs_config:                                 ~
+    akeneo_batch.reset_bulk_identifier_bag.class:             Akeneo\Bundle\BatchBundle\EventListener\ResetBulkIdentifierBagSubscriber
 
 services:
     akeneo_batch.job_instance_factory:
@@ -68,3 +69,8 @@ services:
             - '@akeneo_batch.job.job_registry'
             - '%kernel.root_dir%'
             - '%kernel.environment%'
+
+    akeneo_batch.reset_bulk_identifier_bag:
+        class: '%akeneo_batch.reset_bulk_identifier_bag.class%'
+        tags:
+            - { name: kernel.event_subscriber }

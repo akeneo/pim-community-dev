@@ -2,18 +2,17 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Item\BulkSimpleIdentifierBag;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -54,10 +53,18 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         ProductInterface $product,
+        StepExecution $stepExecution,
+        ExecutionContext $executionContext,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         AssociationInterface $association,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
 
@@ -118,9 +125,17 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         $productDetacher,
+        StepExecution $stepExecution,
+        ExecutionContext $executionContext,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
@@ -185,10 +200,18 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         $productDetacher,
+        StepExecution $stepExecution,
+        ExecutionContext $executionContext,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         AssociationInterface $association,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
         $jobParameters->get('enabledComparison')->willReturn(true);
@@ -258,9 +281,17 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         $productDetacher,
+        StepExecution $stepExecution,
+        ExecutionContext $executionContext,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
 
@@ -319,9 +350,17 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         $productDetacher,
+        StepExecution $stepExecution,
+        ExecutionContext $executionContext,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(false);
+        $bulkIdentifierBag->add('tshirt')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(false);
 
@@ -348,5 +387,51 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $productDetacher->detach($product)->shouldBeCalled();
         $this->process($convertedData)->shouldReturn(null);
+    }
+
+
+    function it_does_not_process_duplicated_associations(
+        $stepExecution,
+        ExecutionContext $executionContext,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
+        JobParameters $jobParameters
+    ) {
+        $bulkIdentifierBag->has('tshirt')->willReturn(true);
+        $bulkIdentifierBag->add('tshirt')->shouldNotBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+        $this->setStepExecution($stepExecution);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(false);
+
+        $convertedData = [
+            'identifier'   => 'tshirt',
+            'values'       => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'tshirt'
+                    ],
+                ]
+            ],
+            'associations' => [
+                'XSELL' => [
+                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
+                    'product' => ['AKN_TS', 'ORO_TS']
+                ]
+            ]
+        ];
+
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
+
+        $this
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->during(
+                'process',
+                [$convertedData]
+            );
     }
 }

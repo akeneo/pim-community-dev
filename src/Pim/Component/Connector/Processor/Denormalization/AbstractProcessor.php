@@ -4,12 +4,13 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Pim\Component\Connector\Exception\MissingIdentifierException;
+use Pim\Component\Connector\Item\BulkCompositeIdentifierBag;
+use Pim\Component\Connector\Item\BulkSimpleIdentifierBag;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -123,5 +124,38 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
             0,
             $previousException
         );
+    }
+
+    /**
+     * Stores an identifier in the bag "bulk_identifier_bag",to be able to check duplications.
+     * The bag should be reset after each bulk is processed. Typically, in the Writer.
+     *
+     * @param array $item
+     * @param mixed $identifier
+     */
+    protected function checkIdentifierDuplication(array $item, $identifier)
+    {
+        if (is_array($identifier) && 1 === count($identifier)) {
+            $identifier = current($identifier);
+        }
+
+        if (null === $bag = $this->stepExecution->getExecutionContext()->get('bulk_identifier_bag')) {
+            $bag = new BulkSimpleIdentifierBag();
+
+            if (is_array($identifier)) {
+                $bag = new BulkCompositeIdentifierBag();
+            }
+
+            $this->stepExecution->getExecutionContext()->put('bulk_identifier_bag', $bag);
+        }
+
+        if ($bag->has($identifier)) {
+            $this->skipItemWithMessage(
+                $item,
+                sprintf('An item with the identifier "%s" has already been processed.', $identifier)
+            );
+        }
+
+        $bag->add($identifier);
     }
 }

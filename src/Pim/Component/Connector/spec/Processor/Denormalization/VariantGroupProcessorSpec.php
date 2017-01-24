@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -12,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Connector\Item\BulkSimpleIdentifierBag;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -42,10 +44,18 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $repository,
         $variantUpdater,
         $validator,
+        $stepExecution,
+        ExecutionContext $executionContext,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ConstraintViolationListInterface $violationList
     ) {
+        $bulkIdentifierBag->has('mycode')->willReturn(false);
+        $bulkIdentifierBag->add('mycode')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier(Argument::any())->willReturn($variantGroup);
         $groupType = new GroupType();
@@ -76,10 +86,18 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $repository,
         $variantUpdater,
         $validator,
+        $stepExecution,
+        ExecutionContext $executionContext,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ConstraintViolationListInterface $violationList
     ) {
+        $bulkIdentifierBag->has('mycode')->willReturn(false);
+        $bulkIdentifierBag->add('mycode')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier(Argument::any())->willReturn($variantGroup);
         $groupType = new GroupType();
@@ -109,6 +127,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ->update($variantGroup, $values)
             ->willThrow(new \InvalidArgumentException('Attributes: This property cannot be changed.'));
 
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
+
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
@@ -121,10 +142,18 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $repository,
         $variantUpdater,
         $validator,
+        $stepExecution,
+        ExecutionContext $executionContext,
+        BulkSimpleIdentifierBag $bulkIdentifierBag,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ConstraintViolationListInterface $violationList
     ) {
+        $bulkIdentifierBag->has('mycode')->willReturn(false);
+        $bulkIdentifierBag->add('mycode')->shouldBeCalled();
+        $executionContext->get('bulk_identifier_bag')->willReturn($bulkIdentifierBag);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier(Argument::any())->willReturn($variantGroup);
         $groupType = new GroupType();
@@ -158,6 +187,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([$violation]);
         $validator->validate($variantGroup)
             ->willReturn($violations);
+
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')

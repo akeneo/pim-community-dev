@@ -6,6 +6,7 @@
 - GITHUB-5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
 - GITHUB-5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
 - GITHUB-5337: Fixed Widget Registry. Priority is now taken in account.
+- PIM-5897: Introducing a BulkSimpleIdentifierBag and BulkCompositeIdentifierBag classes used to keep track of the entities processed (avoiding to import duplicated entities).
 
 ## Deprecations
 
@@ -33,6 +34,7 @@
 - GITHUB-5391: Redo association type edit form using backbonejs architecture and internal REST API
 - TIP-652: Redo the import/export screens in new PEF architecture
 - TIP-682: Update to Symfony 2.7.23
+- PIM-5897: Denormalization processors now check if the item's identifier has already been processed within the job lifetime using the BulkIdentifierBagInterface implementations.
 
 ## BC breaks
 - Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer` to add `Pim\Component\Catalog\Factory\ProductValueFactory`

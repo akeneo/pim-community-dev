@@ -2,6 +2,7 @@
 
 namespace Akeneo\Component\Batch\Step;
 
+use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
@@ -125,6 +126,7 @@ class ItemStep extends AbstractStep
                     $this->write($itemsToWrite);
                     $itemsToWrite = [];
                     $this->getJobRepository()->updateStepExecution($stepExecution);
+                    $this->dispatchStepExecutionEvent(EventInterface::JOB_BATCH_SIZE_REACHED, $stepExecution);
                 }
             }
         }

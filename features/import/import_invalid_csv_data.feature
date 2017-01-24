@@ -198,3 +198,47 @@ Feature: Handle import of invalid CSV data
       code;type;label-en_US;axis
       caterpil ar;VARIANT;Caterpillar;color,size
       """
+
+  Scenario: From a product CSV import, the job does not import duplicated products
+    Given the following CSV file to import:
+      """
+      sku;family
+      SKU-002;sneakers
+      SKU-003;sneakers
+      SKU-003;sneakers
+      SKU-005;boots
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    And I am logged in as "Julia"
+    And I am on the "csv_footwear_product_import" export job page
+    And I launch the "csv_footwear_product_import" import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then I should see the text "Download invalid data"
+    And the invalid data file of "csv_footwear_product_import" should contain:
+      """
+      sku;family
+      SKU-003;sneakers
+      """
+
+  Scenario: From an attribute CSV import, the job does not import duplicated attributes
+    Given the following CSV file to import:
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;required;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size
+      pim_catalog_text;name;Name;info;0;1;;;;;1;0;0;2;;;;;;;
+      pim_catalog_text;comment;Comment;other;0;1;;;;;0;0;0;7;;255;;;;;
+      pim_catalog_text;comment;Comment;other;0;1;;;;;0;0;0;7;;255;;;;;
+      pim_catalog_multiselect;weather_conditions;"Weather conditions";info;0;1;;;;;0;0;0;4;;;;;;;
+      """
+    And the following job "csv_footwear_attribute_import" configuration:
+      | filePath | %file to import% |
+    And I am logged in as "Julia"
+    And I am on the "csv_footwear_attribute_import" export job page
+    And I launch the "csv_footwear_attribute_import" import job
+    And I wait for the "csv_footwear_attribute_import" job to finish
+    Then I should see the text "Download invalid data"
+    And the invalid data file of "csv_footwear_attribute_import" should contain:
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;required;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size
+      pim_catalog_text;comment;Comment;other;0;1;;;;;0;0;0;7;;255;;;;;
+      """

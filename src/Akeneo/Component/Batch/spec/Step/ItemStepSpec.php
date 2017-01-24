@@ -50,6 +50,7 @@ class ItemStepSpec extends ObjectBehavior
         $processor->process('r1')->shouldBeCalled()->willReturn('p1');
         $processor->process('r2')->shouldBeCalled()->willReturn('p2');
         $processor->process('r3')->shouldBeCalled()->willReturn('p3');
+        $dispatcher->dispatch(EventInterface::JOB_BATCH_SIZE_REACHED, Argument::any())->shouldBeCalled();
         $writer->write(['p1', 'p2', 'p3'])->shouldBeCalled();
 
         // second batch
@@ -93,6 +94,7 @@ class ItemStepSpec extends ObjectBehavior
         $processor->process('r1')->shouldBeCalled()->willReturn('p1');
         $processor->process('r2')->shouldBeCalled()->willReturn('p2');
         $processor->process('r3')->shouldBeCalled()->willReturn('p3');
+        $dispatcher->dispatch(EventInterface::JOB_BATCH_SIZE_REACHED, Argument::any())->shouldBeCalled();
         $writer->write(['p1', 'p2', 'p3'])->shouldBeCalled();
 
         // second batch
