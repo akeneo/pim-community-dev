@@ -1,7 +1,12 @@
 parameters:
     pim_api.normalizer.exception.documented.class: Pim\Component\Api\Normalizer\Exception\DocumentedNormalizer
     pim_api.normalizer.exception.violation.class: Pim\Component\Api\Normalizer\Exception\ViolationNormalizer
-    pim_api.normalizer.simple_collection.class: Pim\Component\Api\Normalizer\SimpleCollectionNormalizer
+    pim_api.normalizer.collection.class: Pim\Component\Api\Normalizer\CollectionNormalizer
+    pim_api.normalizer.product.class: Pim\Component\Api\Normalizer\ProductNormalizer
+    pim_api.normalizer.family.class: Pim\Component\Api\Normalizer\FamilyNormalizer
+    pim_api.normalizer.category.class: Pim\Component\Api\Normalizer\CategoryNormalizer
+    pim_api.normalizer.attribute.class: Pim\Component\Api\Normalizer\AttributeNormalizer
+    pim_api.normalizer.attribute_option.class: Pim\Component\Api\Normalizer\AttributeOptionNormalizer
 
 services:
     fos_rest.serializer:
@@ -27,7 +32,43 @@ services:
         tags:
             - { name: pim_external_api_exception_serializer.normalizer, priority: 100 }
 
-    pim_api.normalizer.simple_collection:
-        class: '%pim_api.normalizer.simple_collection.class%'
+    pim_api.normalizer.collection:
+        class: '%pim_api.normalizer.collection.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.product:
+        class: '%pim_api.normalizer.product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.family:
+        class: '%pim_api.normalizer.family.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.category:
+        class: '%pim_api.normalizer.category.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.category'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.attribute:
+        class: '%pim_api.normalizer.attribute.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.attribute_option:
+        class: '%pim_api.normalizer.attribute_option.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_option'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
