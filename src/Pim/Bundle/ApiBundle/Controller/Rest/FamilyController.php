@@ -52,4 +52,28 @@ class FamilyController
 
         return new JsonResponse($familyStandard);
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listAction(Request $request)
+    {
+        //@TODO limit will be set in configuration in an other PR
+        $limit = $request->query->get('limit', 10);
+        $page = $request->query->get('page', 1);
+
+        //@TODO add parameterValidator to validate limit and page
+
+        $offset = $limit * ($page - 1);
+
+        $families = $this->repository->findBy([], [], $limit, $offset);
+
+        $familiesStandard = $this->normalizer->normalize($families, 'external_api');
+
+        //@TODO use paginate method before return results
+
+        return new JsonResponse($familiesStandard);
+    }
 }

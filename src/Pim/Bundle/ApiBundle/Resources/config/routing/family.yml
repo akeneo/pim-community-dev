@@ -1,4 +1,9 @@
+pim_api_rest_family_list:
+    path: /families
+    defaults: { _controller: pim_api.controller.rest.family:listAction, _format: json }
+    methods: [GET]
+
 pim_api_rest_family_get:
-    path: /{code}
+    path: /families/{code}
     defaults: { _controller: pim_api.controller.rest.family:getAction, _format: json }
     methods: [GET]
