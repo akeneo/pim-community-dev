@@ -86,7 +86,6 @@ css:
         - bundles/pimui/less/components/SequentialEdit.less
         - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/TitleContainer.less
-        - bundles/pimui/less/components/UserMenu.less
         - bundles/pimui/less/components/VerticalList.less
         - bundles/pimui/less/components/Widget.less
 

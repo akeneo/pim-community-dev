@@ -7,6 +7,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
 use Context\Spin\SpinCapableTrait;
+use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -21,6 +22,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class Base extends Page
 {
     use SpinCapableTrait;
+    use ClosestTrait;
 
     protected $elements = [
         'Body'             => ['css' => 'body'],
@@ -233,6 +235,25 @@ class Base extends Page
             // Use Mink search, which use "contains" xpath condition
             $button = $this->findButton($locator);
         }
+        return $button;
+    }
+
+    /**
+     * Get icon button
+     *
+     * @param string  $locator
+     *
+     * @return NodeElement|null
+     */
+    public function getIconButton($locator)
+    {
+        $button = null;
+        $icon = $this->find('css', sprintf('i[data-original-title="%s"]', $locator));
+
+        if (null !== $icon) {
+            $button = $this->getClosest($icon, 'AknIconButton');
+        }
+
         return $button;
     }
 

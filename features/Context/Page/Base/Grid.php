@@ -731,7 +731,11 @@ class Grid extends Index
     public function selectRow($value, $check = true)
     {
         $this->spin(function () use ($value, $check) {
-            $row      = $this->getRow($value);
+            $row = $this->getRow($value);
+            if (null === $row) {
+                return false;
+            }
+
             $checkbox = $row->find('css', 'input[type="checkbox"]');
 
             if (null === $checkbox || !$checkbox->isVisible()) {

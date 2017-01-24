@@ -34,6 +34,7 @@ pim_import_export:
     tab:
       property.title: Allgemeine Eigenschaften
       history.title: Historie
+      job_content.title: Inhalt
 pim_title.export_profile.index: Verwaltung der Export-Profile
 pim_title.export_profile.edit: Export-Profile %job.label% | Bearbeiten
 pim_title.export_profile.show: Export-Profile %job.label% | Anzeigen
@@ -67,7 +68,11 @@ pim_importexport:
       edit: Ein Exportprofil bearbeiten
       remove: Ein Exportprofil löschen
       launch: Ein Exportprofil ausführen
+      property_edit: Allgemeine Eigenschaften eines Export Profil bearbeiten
+      property_show: Allgemeine Eigenschaften eines Export Profil anzeigen
       history: Export-Profil Historie ansehen
+      content_edit: Inhalt eines Export Profil bearbeiten
+      content_show: Inhalt eines Export Profil anzeigen
     import_profile:
       index: Auflistung der Importprofile
       create: Ein Importprofil anlegen
@@ -122,6 +127,7 @@ History: Historie
 pane.accordion:
   properties: Eigenschaften
   global_settings: Globale Einstellungen
+  filters: Filter
 popin.create:
   export_profile.title: Ein neues Exportprofil anlegen
   import_profile.title: Ein neues Importprofil anlegen
@@ -158,3 +164,4 @@ STOPPED: GESTOPPT
 FAILED: FEHLGESCHLAGEN
 ABANDONED: AUFGEGEBEN
 UNKNOWN: UNBEKANNT
+warning.label: Warnung

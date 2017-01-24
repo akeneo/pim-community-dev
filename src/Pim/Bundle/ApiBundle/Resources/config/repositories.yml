@@ -1,0 +1,9 @@
+parameters:
+    pim_api.repository.client.class: Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ClientRepository
+
+services:
+    pim_api.repository.client:
+        class: '%pim_api.repository.client.class%'
+        arguments:
+            - '@fos_oauth_server.entity_manager'
+            - '%fos_oauth_server.model.client.class%'

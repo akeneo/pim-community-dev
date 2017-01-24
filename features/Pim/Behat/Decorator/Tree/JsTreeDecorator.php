@@ -28,13 +28,20 @@ class JsTreeDecorator extends ElementDecorator
     }
 
     /**
+     * This method is spinned because the refresh of the tree result in a WebDriver\Exception\NoSuchElement
+     * exception if the tree was found then immediately refreshed.
+     *
      * @param string $nodeName
      */
     public function expandNode($nodeName)
     {
-        $node = $this->findNodeInTree($nodeName);
-        if (!$node->isOpen()) {
-            $node->open();
-        }
+        $this->spin(function () use ($nodeName) {
+            $node = $this->findNodeInTree($nodeName);
+            if (!$node->isOpen()) {
+                $node->open();
+            }
+
+            return true;
+        }, sprintf('Unable to expand node %s', $nodeName));
     }
 }

@@ -15,6 +15,8 @@ confirmation:
     role: Möchten Sie diese Rolle wirklich löschen?
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: Stapelverarbeitung
     quick_export:
       label: Schnellexport
   mass_action:
@@ -67,6 +69,7 @@ error:
     attribute_option: Fehler beim Löschen der Attributoption
   saving:
     attribute_option: Attributoption kann nicht gespeichert werden
+    export_profile: Export-Profil kann nicht gespeichert werden. Bitte überprüfen Sie die Wert aller Filter
 alert:
   attribute_option:
     error_occured_during_submission: Während der Formularübertragung auf dem Server ist ein Fehler aufgetreten
@@ -93,6 +96,13 @@ pim:
     mass_action:
       quick_export:
         csv_all: CSV (alle Attribute)
+        csv_grid_context: CSV (Kontextabhängig)
+        xlsx_all: Excel (alle Attribute)
+        xlsx_grid_context: Excel (Kontextabhängig)
+      delete: Produkte löschen
+      mass_edit: Produktinformationen ändern
+      category_edit: Produkte in Kategorien verschieben
+      sequential_edit: Produkte se­quen­zi­ell bearbeiten
 jstree.create: Anlegen
 switch_on: "Ja"
 switch_off: "Nein"
@@ -173,8 +183,8 @@ pim_enrich:
       variant_group:
         updated_by: Aktualisiert durch eine Variantengruppe
         switch:
-          "yes": Ja
-          "no": Nein
+          "yes": "Ja"
+          "no": "Nein"
       optional_attribute:
         remove: Dieses Attribut entfernen
       locale_specific_attribute:
@@ -193,7 +203,12 @@ pim_enrich:
       code: Code
       label: Bezeichnung
     variant_group:
+      title: Variantengruppe
       info:
+        deletion_successful: Variantengruppe erfolgreich gelöscht.
+        deletion_failed: Die Variantengruppe konnte nicht gelöscht werden.
+        update_successful: Variantengruppe erfolgreich aktualisiert.
+        update_failed: Die Variantengruppe konnte nicht aktualisiert werden.
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - Felder
@@ -203,8 +218,10 @@ pim_enrich:
         save: Speichern
       meta:
         product_count: Produkte
-        created: Angelegt
+        created: Erstellt
+        created_by: Erstellt von
         updated: Aktualisiert
+        updated_by: Aktualisiert von
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
@@ -221,6 +238,7 @@ pim_enrich:
     not_allowed: Sie haben keine Berechtigung für diese Seite
     error_occured: Während des Ladens der Seite ist ein Fehler aufgetreten
   form:
+    required: (erforderlich)
     product:
       tab:
         associations:
@@ -229,7 +247,7 @@ pim_enrich:
             none_exist: Es gibt keine Verbindungstypen.
             show_products: Produkte anzeigen
             show_groups: Gruppen anzeigen
-            number_of_associations: '{{ productCount }} Produkte und {{ groupCount }} Gruppen'
+            number_of_associations: "{{ productCount }} Produkte und {{ groupCount }} Gruppen"
         attributes:
           title: Attribute
           btn:
@@ -238,7 +256,7 @@ pim_enrich:
           info:
             search_attributes: Suche...
             no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
-            attributes_selected: '{{ attributeCount }} Attribute ausgewählt'
+            attributes_selected: "{{ attributeCount }} Attribute ausgewählt"
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
         categories:
@@ -253,8 +271,8 @@ pim_enrich:
         history:
           title: Historie
       switch:
-        "no": Nein
-        "yes": Ja
+        "no": "Nein"
+        "yes": "Ja"
       sequential_edit:
         info:
           products: Produkte
@@ -285,8 +303,8 @@ pim_enrich:
         cancel: Abbrechen
     entity:
       switch:
-        "no": Nein
-        "yes": Ja
+        "no": "Nein"
+        "yes": "Ja"
     variant_group:
       tab:
         properties:
@@ -313,61 +331,138 @@ pim_enrich:
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
   export:
     product:
+      data:
+        title: Produkte filtern
       structure:
+        title: Daten filtern
         attributes:
           title: Attribute
       filter:
         channel:
           title: Ausgabekanal
+          help: Ein Ausgabekanal definiert den Umfang für Produktwerte, sowie die Gebietsschemas und den Strukturbaum um die Daten und Produkte zu selektieren.
         locales:
           title: Gebietsschemata
+          help: 'Das Gebietsschema definiert die lokalisierten Produktwerte für den Export. Beispiel: Nur Produktinformationen in französischer Sprache.'
         attributes:
           title: Attribute
           edit: Bearbeiten
+          label: "{0} alle Attribute |{1} ein Attribut ausgewählt |] 1, Inf [{{ count }} Attribute ausgewählt"
+          help: Wählen Sie die Produktinformationen die exportiert werden sollen. (z.B. alle technischen Attribute)
+          empty: Alle Attribute werden exportiert
           modal:
             apply: Anwenden
             cancel: Abbrechen
+            title: Attribut wählen
         attributes_selector:
           attribute_group: Attributgruppen
+          attributes: "Suche in {{ attributeCount }} Attributen"
+          selected: "Ausgewählte Attribute"
           clear: Zurücksetzen
           all_group: Alle Gruppen
+          empty_selection: Alle Attribute werden exportiert
         family:
           title: Produktfamilie
+          help: Wählen Sie die Produkte, die entsprechend Ihrer Produktfamilie exportiert werden sollen. (z.B. nur Schuhe und Anzüge).
           operators:
             IN: In Liste
+            "NOT IN": Nicht in der Liste
+            EMPTY: Produkte die keine Produktfamilie haben
+            "NOT EMPTY": Produkte die eine Produktfamilie haben
+          empty_selection: Keine Bedingung für Produktfamilien
+        updated:
+          title: Zeitbedingung
+          operators:
+            ALL: Keine Datumsbedingung
+            "SINCE LAST N DAYS": Aktualisierte Produkte der letzten n Tage (z.B. 6)
+            ">": Aktualisierte Produkte seit diesem Datum
+            "SINCE LAST JOB": Aktualisierte Produkte seit letztem Export
         enabled:
           title: Status
+          help: Wählen Sie die Produkte, die entsprechend Ihres Status exportiert werden sollen.
           value:
             all: Alle
             enabled: Aktiviert
             disabled: Deaktiviert
         completeness:
           title: Vollständigkeit
+          help: Wählen Sie die Produkte, die entsprechend Ihrer Vollständigkeit exportiert werden sollen.
+          operators:
+            ALL: Keine Bedingung für Vollständigkeit
+            ">=": Vervollständigen Sie für mindestens ein ausgewählten Gebietsschema
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Vervollständigen Sie für alle ausgewählten Gebietsschema
+            LOWER THAN ON ALL LOCALES: Nicht vollständig für alle ausgewählten Gebietsschemas
+          empty_selection: Produktfamilie wählen
+        category:
+          title: Kategorie
+          help: Verwenden Sie die Produktkategorien im Strukturbaum (definiert durch den Ausgabekanal oben) um die Produkte für den Export zu selektieren
         identifier:
           title: Kennung
+          help: Identifikator der Produkte die Sie exportieren möchten, getrennt durch Kommas, Leerzeichen oder Zeilenumbrüche
         metric:
           operators:
+            "=": Ist gleich
+            "!=": Ist nicht gleich
+            ">=": Größer als oder gleich
+            ">": Größer als
+            "<=": Weniger als oder gleich
+            "<": Weniger als
             EMPTY: Ist leer
+            NOT EMPTY: Ist nicht leer
         string:
           operators:
             ALL: Alle
+            CONTAINS: Enthält
+            DOES NOT CONTAIN: Enthält nicht
+            "=": Ist gleich
+            STARTS WITH: Beginnt mit
+            ENDS WITH: Endet mit
             EMPTY: Ist leer
+            NOT EMPTY: Ist nicht leer
         price-collection:
           operators:
+            "=": Ist gleich
+            "!=": Ist nicht gleich
+            ">=": Größer als oder gleich
+            ">": Größer als
+            "<=": Weniger als oder gleich
+            "<": Weniger als
             EMPTY: Ist leer
+            NOT EMPTY: Ist nicht leer
         multi_select:
           operators:
             IN: In Liste
             EMPTY: Ist leer
+            NOT EMPTY: Ist nicht leer
         media:
           operators:
+            CONTAINS: Enthält
+            DOES NOT CONTAIN: Enthält nicht
+            "=": Ist gleich
+            STARTS WITH: Beginnt mit
+            ENDS WITH: Endet mit
             EMPTY: Ist leer
+            NOT EMPTY: Ist nicht leer
         date:
           operators:
+            ">": Größer als
+            "<": Früher als
+            "=": Ist gleich
+            "!=": Ist nicht gleich
+            BETWEEN: Zwischen
+            NOT BETWEEN: Nicht zwischen
             EMPTY: Ist leer
+            NOT EMPTY: Ist nicht leer
         number:
           operators:
+            "=": Ist gleich
+            "!=": Ist nicht gleich
+            ">=": Größer als oder gleich
+            ">": Größer als
+            "<=": Weniger als oder gleich
+            "<": Weniger als
             EMPTY: Ist leer
+            NOT EMPTY: Ist nicht leer
   mass_edit_action:
     edit_common_attributes:
       description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
