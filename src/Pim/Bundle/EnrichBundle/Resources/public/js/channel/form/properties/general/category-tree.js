@@ -15,6 +15,7 @@ define([
         'pim/fetcher-registry',
         'text!pim/template/channel/tab/properties/general/category-tree',
         'pim/user-context',
+        'pim/i18n',
         'jquery.select2'
     ],
     function (
@@ -24,7 +25,8 @@ define([
         BaseForm,
         FetcherRegistry,
         template,
-        UserContext
+        UserContext,
+        i18n
     ) {
         return BaseForm.extend({
             className: 'AknFieldContainer',
@@ -64,7 +66,8 @@ define([
                         label: __('pim_enrich.form.channel.tab.properties.category_tree'),
                         requiredLabel: __('pim_enrich.form.required'),
                         defaulValueLabel: __('pim_enrich.form.channel.tab.properties.label_category_tree'),
-                        errors: this.getParent().getValidationErrorsForField('category')
+                        errors: this.getParent().getValidationErrorsForField('category'),
+                        i18n: i18n
                     }));
 
                     this.$('.select2').select2()

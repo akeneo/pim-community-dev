@@ -104,7 +104,7 @@ define([
                     this.currentLocales = newLocales;
                     this.getRoot().trigger('pim_enrich:form:entity:locales_updated');
 
-                    this.currentLocales = this.getFormData().locales;
+                    this.currentLocales = newLocales;
                 }
 
             }

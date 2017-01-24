@@ -5,7 +5,7 @@
         <div class="AknFieldContainer">
             <div class="AknFieldContainer-header">
                 <label class="AknFieldContainer-label control-label" for="<%- fieldBaseId + attribute.code %>">
-                    <%- _.has(attribute.labels, catalogLocale) ? attribute.labels[catalogLocale] : '[' + attribute.code + ']' %>
+                    <%- i18n.getLabel(attribute.labels, catalogLocale, attribute.code) %>
                 </label>
             </div>
             <div class="AknFieldContainer-inputContainer">

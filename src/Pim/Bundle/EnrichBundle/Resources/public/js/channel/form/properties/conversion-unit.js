@@ -15,6 +15,7 @@ define([
         'pim/fetcher-registry',
         'text!pim/template/channel/tab/properties/conversion-unit',
         'pim/user-context',
+        'pim/i18n',
         'jquery.select2'
     ],
     function (
@@ -24,7 +25,8 @@ define([
         BaseForm,
         FetcherRegistry,
         template,
-        UserContext
+        UserContext,
+        i18n
     ) {
         return BaseForm.extend({
             className: 'tabsection',
@@ -61,7 +63,8 @@ define([
                         catalogLocale: this.catalogLocale,
                         label: __(this.config.label),
                         fieldBaseId: this.config.fieldBaseId,
-                        doNotConvertLabel: __('pim_enrich.form.channel.tab.properties.conversion_unit.do_not_convert')
+                        doNotConvertLabel: __('pim_enrich.form.channel.tab.properties.conversion_unit.do_not_convert'),
+                        i18n: i18n
                     }));
 
                     this.$('.select2').select2().on('change', this.updateState.bind(this));

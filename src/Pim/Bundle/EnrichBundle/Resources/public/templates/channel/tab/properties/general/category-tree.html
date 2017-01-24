@@ -7,7 +7,7 @@
     <select class="select2" id="pim_enrich_channel_form_category_tree">
         <% _.each(categories, function (category) { %>
         <option value="<%- category.code %>" <%- (categoryTree == category.code) ? 'selected' : '' %> >
-            <%- null !== category.labels[catalogLocale] ? category.labels[catalogLocale] : '[' + category.code + ']' %>
+            <%- i18n.getLabel(category.labels, catalogLocale, category.code) %>
         </option>
         <% }); %>
     </select>

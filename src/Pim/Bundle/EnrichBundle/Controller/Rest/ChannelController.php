@@ -2,14 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Component\Catalog\AttributeTypes;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Updater\ChannelUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,11 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Channel controller responsible for internal api requests
+ * Channel controller
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
@@ -81,6 +77,8 @@ class ChannelController
     /**
      * Lists all channels
      *
+     * @AclAncestor("pim_enrich_channel_index")
+     *
      * @return JsonResponse
      */
     public function indexAction()
@@ -94,6 +92,8 @@ class ChannelController
 
     /**
      * Gets channel by code value
+     *
+     * @AclAncestor("pim_enrich_channel_index")
      *
      * @param string $identifier
      *
@@ -111,6 +111,8 @@ class ChannelController
     /**
      * Saves new channel
      *
+     * @AclAncestor("pim_enrich_channel_create")
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -124,6 +126,8 @@ class ChannelController
 
     /**
      * Updates channel
+     *
+     * @AclAncestor("pim_enrich_channel_edit")
      *
      * @param Request $request
      * @param string  $code
@@ -139,6 +143,8 @@ class ChannelController
 
     /**
      * Removes channel
+     *
+     * @AclAncestor("pim_enrich_channel_remove")
      *
      * @param $code
      *
@@ -157,7 +163,7 @@ class ChannelController
      *
      * @return object
      */
-    private function getChannel($code)
+    protected function getChannel($code)
     {
         $channel = $this->channelRepository->findOneBy(
             [
@@ -180,7 +186,7 @@ class ChannelController
      *
      * @return JsonResponse
      */
-    private function saveChannel($channel, $request)
+    protected function saveChannel($channel, $request)
     {
         $data = json_decode($request->getContent(), true);
         $this->updater->update($channel, $data);
@@ -195,7 +201,7 @@ class ChannelController
                 ];
             }
 
-            return new JsonResponse($errors, 400);
+            return new JsonResponse($errors, Response::HTTP_CONFLICT);
         }
 
         $this->saver->save($channel);
