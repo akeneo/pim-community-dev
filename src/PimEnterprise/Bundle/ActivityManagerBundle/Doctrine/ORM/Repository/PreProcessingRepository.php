@@ -48,7 +48,9 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
         $connection->delete(
             'pimee_activity_manager_completeness_per_attribute_group',
             [
-                'product_id' => $product->getId()
+                'product_id' => $product->getId(),
+                'channel_id' => $project->getChannel()->getId(),
+                'locale_id'  => $project->getLocale()->getId(),
             ]
         );
 

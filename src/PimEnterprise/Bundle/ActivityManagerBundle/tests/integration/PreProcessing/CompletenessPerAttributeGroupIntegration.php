@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\PreProcessing;
 
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\ActivityManagerTestCase;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
-class PreProcessingIntegration extends ActivityManagerTestCase
+class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
 {
     /** @var ProjectInterface */
     private static $project;
@@ -26,7 +27,7 @@ class PreProcessingIntegration extends ActivityManagerTestCase
      * Channel: ecommerce
      * Locale: en_US
      */
-    public function testProjectCalculationOnTshirtWitcher()
+    public function testProjectCalculationOnTshirtWitcherForEcommerceChannel()
     {
         $this::$project = $this->createProject([
             'label'           => 'test-project',

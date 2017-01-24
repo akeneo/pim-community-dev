@@ -9,9 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\PreProcessing;
 
-class LinkProductCategoryIntegration extends ActivityManagerTestCase
+use PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\ActivityManagerTestCase;
+
+class ProductCategoryIntegration extends ActivityManagerTestCase
 {
     /**
      * Product : categoryless, tshirt-the-witcher-3

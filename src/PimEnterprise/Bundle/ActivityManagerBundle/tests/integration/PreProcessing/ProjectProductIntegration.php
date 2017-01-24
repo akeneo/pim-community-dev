@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\PreProcessing;
 
+use PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\ActivityManagerTestCase;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
-class ProjectProductSelectionIntegration extends ActivityManagerTestCase
+class ProjectProductIntegration extends ActivityManagerTestCase
 {
     /**
      * Test that the pre processed data are well calculated for products without any category
