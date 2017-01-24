@@ -30,11 +30,6 @@ security:
             pattern:                        ^/media
             security:                       false
 
-        # TODO: enabled oAuth autorization with API-47
-        rest:
-            pattern:                        ^/api
-            anonymous:                      true
-
         login:
             pattern:                        ^/user/(login|reset-request|send-email|check-email)$
             provider:                       chain_provider
@@ -44,6 +39,15 @@ security:
             pattern:                        ^/user/reset/*
             provider:                       chain_provider
             anonymous:                      true
+
+        oauth_token:
+            pattern:                        ^/api/oauth/v1/token
+            security:                       false
+
+        api:
+            pattern:                        ^/api
+            fos_oauth:                      true
+            stateless:                      true
 
         main:
             pattern:                        ^/
@@ -62,3 +66,4 @@ security:
 
     access_control:
         - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/, role: IS_AUTHENTICATED_FULLY }
