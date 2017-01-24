@@ -59,6 +59,9 @@ class GetFamilyIntegration extends ApiTestCase
                     17 => 'an_image',
                     18 => 'sku',
                 ],
+                'ecommerce_china' => [
+                    0 => 'sku'
+                ],
                 'tablet' => [
                     0  => 'a_date',
                     1  => 'a_file',
