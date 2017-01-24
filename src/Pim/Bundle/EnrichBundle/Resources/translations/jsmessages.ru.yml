@@ -183,8 +183,8 @@ pim_enrich:
       variant_group:
         updated_by: Обновлено группой вариантов
         switch:
-          "yes": Да
-          "no": Нет
+          "yes": "Да"
+          "no": "Нет"
       optional_attribute:
         remove: Удалить этот атрибут
       locale_specific_attribute:
@@ -247,7 +247,7 @@ pim_enrich:
             none_exist: Типы ассоциаций отсутствуют.
             show_products: Показать продукты
             show_groups: Показать группы
-            number_of_associations: '{{ productCount }} продуктов и {{ groupCount }} групп'
+            number_of_associations: "{{ productCount }} продуктов и {{ groupCount }} групп"
         attributes:
           title: Атрибуты
           btn:
@@ -256,7 +256,7 @@ pim_enrich:
           info:
             search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
-            attributes_selected: Выбран(o) {{ attributeCount }} атрибут(ов)
+            attributes_selected: "Выбран(o) {{ attributeCount }} атрибут(ов)"
             no_match: Совпадений не найдено
             load_more: Загрузка дополнительных результатов...
         categories:
@@ -271,8 +271,8 @@ pim_enrich:
         history:
           title: Журнал
       switch:
-        "no": Нет
-        "yes": Да
+        "no": "Нет"
+        "yes": "Да"
       sequential_edit:
         info:
           products: продуктов
@@ -303,8 +303,8 @@ pim_enrich:
         cancel: Отменить
     entity:
       switch:
-        "no": Нет
-        "yes": Да
+        "no": "Нет"
+        "yes": "Да"
     variant_group:
       tab:
         properties:
@@ -347,7 +347,7 @@ pim_enrich:
         attributes:
           title: Атрибуты
           edit: Редактировать
-          label: '{0} все атрибуты |{1} один атрибут выбран |] 1, Inf [{{ count }} атрибутов выделено'
+          label: "{0} все атрибуты |{1} один атрибут выбран |] 1, Inf [{{ count }} атрибутов выделено"
           help: Выберите сведения о продукте для экспорта. На пример, только технические атрибуты.
           empty: Все атрибуты будут экспортированы
           modal:
@@ -356,8 +356,8 @@ pim_enrich:
             title: Выбор атрибутов
         attributes_selector:
           attribute_group: Группы атрибутов
-          attributes: Поиск в {{ attributeCount }} атрибутах
-          selected: Выбранные атрибуты
+          attributes: "Поиск в {{ attributeCount }} атрибутах"
+          selected: "Выбранные атрибуты"
           clear: Очистить
           all_group: Все группы
           empty_selection: Все атрибуты будут экспортированы
@@ -366,17 +366,17 @@ pim_enrich:
           help: Выберите продукты для экспорта по семейству. На пример, экспорт только обувей и платьев.
           operators:
             IN: В списке
-            NOT IN: Нет в списке
+            "NOT IN": Нет в списке
             EMPTY: Продукты, которые не имеют семейства
-            NOT EMPTY: Продукты, которые имеют семейство
+            "NOT EMPTY": Продукты, которые имеют семейство
           empty_selection: Нет условия для семейств
         updated:
           title: Условие времени
           operators:
             ALL: Нет условия
-            SINCE LAST N DAYS: Обновленные продукты за последние n дней (например, 6)
-            >: Обновленные продукты с этой даты
-            SINCE LAST JOB: Обновленные продукты с момента последнего экспорта
+            "SINCE LAST N DAYS": Обновленные продукты за последние n дней (например, 6)
+            ">": Обновленные продукты с этой даты
+            "SINCE LAST JOB": Обновленные продукты с момента последнего экспорта
         enabled:
           title: Статус
           help: Выберите продукты, для экспорта по их статусу. На пример, экспорт товаров независимо от их статуса.
@@ -389,8 +389,8 @@ pim_enrich:
           help: Выберите продукты для экспорта по законченности.
           operators:
             ALL: Нет условия
-            >=: Закончен по хотя бы одной локали
-            GREATER OR EQUALS THAN ON ALL LOCALES: Закончен по всем выбранным локалям
+            ">=": Закончен по хотя бы одной локали
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Закончен по всем выбранным локалям
             LOWER THAN ON ALL LOCALES: Незакончен ни по одной локали
           empty_selection: Выберите семейство
         category:
@@ -401,12 +401,12 @@ pim_enrich:
           help: Идентификаторы продуктов, которые вы хотите экспортировать, разделенные запятыми, пробелами или разрывами строк
         metric:
           operators:
-            =: Равно
-            !=: Не равно
-            >=: Больше или равно
-            >: Больше
-            <=: Меньше или равно
-            <: Меньше
+            "=": Равно
+            "!=": Не равно
+            ">=": Больше или равно
+            ">": Больше
+            "<=": Меньше или равно
+            "<": Меньше
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
         string:
@@ -414,19 +414,19 @@ pim_enrich:
             ALL: Все
             CONTAINS: Содержит
             DOES NOT CONTAIN: Не содержит
-            =: Равно
+            "=": Равно
             STARTS WITH: Начинается с
             ENDS WITH: Заканчивается на
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
         price-collection:
           operators:
-            =: Равно
-            !=: Не равно
-            >=: Больше или равно
-            >: Больше
-            <=: Меньше или равно
-            <: Меньше
+            "=": Равно
+            "!=": Не равно
+            ">=": Больше или равно
+            ">": Больше
+            "<=": Меньше или равно
+            "<": Меньше
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
         multi_select:
@@ -438,29 +438,29 @@ pim_enrich:
           operators:
             CONTAINS: Содержит
             DOES NOT CONTAIN: Не содержит
-            =: Равно
+            "=": Равно
             STARTS WITH: Начинается с
             ENDS WITH: Заканчивается на
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
         date:
           operators:
-            >: Больше
-            <: Меньше
-            =: Равно
-            !=: Не равно
+            ">": Больше
+            "<": Меньше
+            "=": Равно
+            "!=": Не равно
             BETWEEN: Между
             NOT BETWEEN: Не между
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
         number:
           operators:
-            =: Равно
-            !=: Не равно
-            >=: Больше или равно
-            >: Больше
-            <=: Меньше или равно
-            <: Меньше
+            "=": Равно
+            "!=": Не равно
+            ">=": Больше или равно
+            ">": Больше
+            "<=": Меньше или равно
+            "<": Меньше
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
   mass_edit_action:

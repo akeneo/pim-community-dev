@@ -517,7 +517,7 @@ abstract class AbstractProductValue implements ProductValueInterface
             $data = $data->format(\DateTime::ISO8601);
         }
 
-        if ($data instanceof Collection) {
+        if ($data instanceof Collection || is_array($data)) {
             $items = [];
             foreach ($data as $item) {
                 $value = (string) $item;

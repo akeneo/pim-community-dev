@@ -44,7 +44,7 @@ pim_enrich:
       property.title: Ominaisuudet
       permission.title: Käyttöoikeudet
   group:
-    axis.help: Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.
+    axis.help: 'Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
     type:
       VARIANT: Tuotevariaatio
       X_SELL: X-Sell
@@ -616,52 +616,52 @@ Default: Oletusarvo
 Attributes: Attribuutit
 Title: Nimike
 pim_title.attribute_group:
-  index: Attribuuttiryhmät
-  create: Attribuuttiryhmät | Luo
-  edit: Attribuuttiryhmät %group.label% | Muokkaa
+  index: "Attribuuttiryhmät"
+  create: "Attribuuttiryhmät | Luo"
+  edit: "Attribuuttiryhmät %group.label% | Muokkaa"
 pim_title.category:
-  index: Kategoriahierarkia
-  create: Kategoriahierarkia | Luo
-  edit: Kategoriahierarkia %category.label% | Muokkaa
+  index: "Kategoriahierarkia"
+  create: "Kategoriahierarkia | Luo"
+  edit: "Kategoriahierarkia %category.label% | Muokkaa"
 pim_title.attribute:
-  index: Attribuutit
-  create: Attribuutit | Luo
-  edit: Attribuutit %attribute.label% | Muokkaa
+  index: "Attribuutit"
+  create: "Attribuutit | Luo"
+  edit: "Attribuutit %attribute.label% | Muokkaa"
 pim_title.product:
-  index: Tuotteet
-  edit: Tuotteiden %product.sku% | Muokkaa
+  index: "Tuotteet"
+  edit: "Tuotteiden %product.sku% | Muokkaa"
 pim_title.family:
-  index: Tuoteperheet
-  edit: Tuoteperheiden %family.label% | Muokkaa
+  index: "Tuoteperheet"
+  edit: "Tuoteperheiden %family.label% | Muokkaa"
 pim_title.channel:
-  index: Kanavat
-  create: Kanavat | Luo
-  edit: Kanavat %channel.label% | Muokkaa
+  index: "Kanavat"
+  create: "Kanavat | Luo"
+  edit: "Kanavat %channel.label% | Muokkaa"
 pim_title.currency:
-  index: Valuutat
+  index: "Valuutat"
 pim_title.locale:
-  index: Lokaatiot
+  index: "Lokaatiot"
 pim_title.group:
-  index: Ryhmät
-  edit: Ryhmien %group.label% | Muokkaa
+  index: "Ryhmät"
+  edit: "Ryhmien %group.label% | Muokkaa"
 pim_title.variant_group:
-  index: Tuotevariaatioryhmät
-  edit: Tuotevariaatioryhmät %group.label% | Muokkaa
+  index: "Tuotevariaatioryhmät"
+  edit: "Tuotevariaatioryhmät %group.label% | Muokkaa"
 pim_title.association_type:
-  index: Määritetyypit
-  edit: Määritetyypit %association type.label% | Muokkaa
+  index: "Määritetyypit"
+  edit: "Määritetyypit %association type.label% | Muokkaa"
 pim_title.group_type:
-  index: Ryhmätyypit
-  edit: Ryhmätyypit %group type.label% | Muokkaa
+  index: "Ryhmätyypit"
+  edit: "Ryhmätyypit %group type.label% | Muokkaa"
 pim_title.mass_edit_product_action:
-  choose: Massaedit | Valitse
-  configure: Massaedit | Määritä
+  choose: "Massaedit | Valitse"
+  configure: "Massaedit | Määritä"
 pim_title.mass_edit_family_action:
-  choose: Massaedit | Valitse
-  configure: Massaedit | Määritä
+  choose: "Massaedit | Valitse"
+  configure: "Massaedit | Määritä"
 pim_title.job_tracker:
   index: Prosessiseurain
-  show: Prosessin tracker | Näytä työ
+  show: "Prosessin tracker | Näytä työ"
 pim_title.dashboard: "Ohjauspaneeli"
 pim_catalog_identifier: Tunniste
 pim_catalog_text: Teksti
@@ -820,23 +820,23 @@ Currency: Valuutta
 oro.locale:
   address_format:
     region_name_type:
-      parish: seurakunta
-      state: osavaltio
-      island: saari
-      county: maakunta
-      area: alue
-      prefecture: prefektuuri
-      department: osasto
-      district: alue
-      province: provinssi
+      parish: "seurakunta"
+      state: "osavaltio"
+      island: "saari"
+      county: "maakunta"
+      area: "alue"
+      prefecture: "prefektuuri"
+      department: "osasto"
+      district: "alue"
+      province: "provinssi"
   form:
     tooltip:
-      locale: Valitse lokaatio, jonka avulla järjestelmän numerot, osoitteet, nimet ja päivämäärät muotoillaan
-      location: ' Lokaatiota käytetään osoitteiden muotoiluun, kun "muotoile osoite maa-asetuksen mukaan" vaihtoehto on poistettu käytöstä'
-      format_address_by_address_country: Tämän vaihtoehdon valitsemisen jälkeen osoitteet muotoillaan sen valtion mukaan missä ne ovat. Tämän vaihtoehdon ottaminen pois käytöstä aiheuttaa sen, että osoitteet muotoillaan oman sijaintisi mukaan
-      language: Valitse kieli, jota haluat käyttää
-      timezone: Valitse aikavyöhyke päivän ja ajan näyttämiseen
-      currency: Valitse oletusvaluutta
+      locale: "Valitse lokaatio, jonka avulla järjestelmän numerot, osoitteet, nimet ja päivämäärät muotoillaan"
+      location: " Lokaatiota käytetään osoitteiden muotoiluun, kun \"muotoile osoite maa-asetuksen mukaan\" vaihtoehto on poistettu käytöstä"
+      format_address_by_address_country: "Tämän vaihtoehdon valitsemisen jälkeen osoitteet muotoillaan sen valtion mukaan missä ne ovat. Tämän vaihtoehdon ottaminen pois käytöstä aiheuttaa sen, että osoitteet muotoillaan oman sijaintisi mukaan"
+      language: "Valitse kieli, jota haluat käyttää"
+      timezone: "Valitse aikavyöhyke päivän ja ajan näyttämiseen"
+      currency: "Valitse oletusvaluutta"
 Selected products successfully deleted: Valitut tuotteet poistettiin
 pim_mass_edit:
   notification:

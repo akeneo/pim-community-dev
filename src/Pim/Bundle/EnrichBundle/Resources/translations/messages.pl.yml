@@ -44,7 +44,7 @@ pim_enrich:
       property.title: Ustawienia
       permission.title: Uprawnienia
   group:
-    axis.help: Oś wskazuje atrybuty, które powinny odróżniać produkty w grupie. Osie są atrybutami z ustawieniami, bez tłumaczenie i zasięgu. Nie mogą one zostać zmienione po utworzeniu grypy wariantów.
+    axis.help: 'Oś wskazuje atrybuty, które powinny odróżniać produkty w grupie. Osie są atrybutami z ustawieniami, bez tłumaczenie i zasięgu. Nie mogą one zostać zmienione po utworzeniu grypy wariantów.'
     type:
       VARIANT: Wariant
       X_SELL: Cross-selling
@@ -598,52 +598,52 @@ Default: Domyślnie
 Attributes: Atrybuty
 Title: Tytuł
 pim_title.attribute_group:
-  index: Grupy Atrybutów
-  create: Grupy atrybutów | Utwórz
-  edit: Grupy atrybutów %group.label% | Edycja
+  index: "Grupy Atrybutów"
+  create: "Grupy atrybutów | Utwórz"
+  edit: "Grupy atrybutów %group.label% | Edycja"
 pim_title.category:
-  index: Drzewo kategorii
-  create: Drzewa kategorii | Utwórz
-  edit: Drzewa kategorii %category.label% | Edycja
+  index: "Drzewo kategorii"
+  create: "Drzewa kategorii | Utwórz"
+  edit: "Drzewa kategorii %category.label% | Edycja"
 pim_title.attribute:
-  index: Atrybuty
-  create: Atrybuty | Utwórz
-  edit: Atrybuty %attribute.label% | Edycja
+  index: "Atrybuty"
+  create: "Atrybuty | Utwórz"
+  edit: "Atrybuty %attribute.label% | Edycja"
 pim_title.product:
-  index: Produkty
-  edit: Produkty %product.sku% | Edycja
+  index: "Produkty"
+  edit: "Produkty %product.sku% | Edycja"
 pim_title.family:
-  index: Rodziny
-  edit: Rodziny %family.label% | Edycja
+  index: "Rodziny"
+  edit: "Rodziny %family.label% | Edycja"
 pim_title.channel:
-  index: Kanały
-  create: Kanały | Utwórz
-  edit: Kanały %channel.label% | Edycja
+  index: "Kanały"
+  create: "Kanały | Utwórz"
+  edit: "Kanały %channel.label% | Edycja"
 pim_title.currency:
-  index: Waluty
+  index: "Waluty"
 pim_title.locale:
-  index: Ustawienia regionalne
+  index: "Ustawienia regionalne"
 pim_title.group:
-  index: Grupy
-  edit: Grupy %group.label% | Edycja
+  index: "Grupy"
+  edit: "Grupy %group.label% | Edycja"
 pim_title.variant_group:
-  index: Grupy wariantów
-  edit: Grupy wariantów %group.label% | Edycja
+  index: "Grupy wariantów"
+  edit: "Grupy wariantów %group.label% | Edycja"
 pim_title.association_type:
-  index: Typy powiązań
-  edit: Typy powiązań %association type.label% | Edycja
+  index: "Typy powiązań"
+  edit: "Typy powiązań %association type.label% | Edycja"
 pim_title.group_type:
-  index: Typy grup
-  edit: Typy grupy %group type.label% | Edycja
+  index: "Typy grup"
+  edit: "Typy grupy %group type.label% | Edycja"
 pim_title.mass_edit_product_action:
-  choose: Edycja Masowa | Wybierz
-  configure: Edycja Masowa | Konfiguruj
+  choose: "Edycja Masowa | Wybierz"
+  configure: "Edycja Masowa | Konfiguruj"
 pim_title.mass_edit_family_action:
-  choose: Edycja Masowa | Wybierz
-  configure: Edycja Masowa | Konfiguruj
+  choose: "Edycja Masowa | Wybierz"
+  configure: "Edycja Masowa | Konfiguruj"
 pim_title.job_tracker:
   index: Śledzenie procesu
-  show: Śledzenie procesu | Pokaż zadanie
+  show: "Śledzenie procesu | Pokaż zadanie"
 pim_title.dashboard: "Kokpit"
 pim_catalog_identifier: Identyfikator
 pim_catalog_text: Tekst
@@ -799,21 +799,21 @@ Currency: Waluta
 oro.locale:
   address_format:
     region_name_type:
-      parish: parafia
-      state: Stan
-      island: wyspa
-      county: hrabstwo
-      area: obszar
-      prefecture: prefektura
-      department: departament
-      district: dzielnica
-      province: prowincja
+      parish: "parafia"
+      state: "Stan"
+      island: "wyspa"
+      county: "hrabstwo"
+      area: "obszar"
+      prefecture: "prefektura"
+      department: "departament"
+      district: "dzielnica"
+      province: "prowincja"
   form:
     tooltip:
-      locale: Wybierz ustawienie regionalne używane do formatowania liczb, adresów, nazw oraz dat
-      language: Wybierz język, którego chcesz użyć w aplikacji
-      timezone: Wybierz strefę czasową do wyświetlania daty i godziny
-      currency: Wybierz domyślną walutę
+      locale: "Wybierz ustawienie regionalne używane do formatowania liczb, adresów, nazw oraz dat"
+      language: "Wybierz język, którego chcesz użyć w aplikacji"
+      timezone: "Wybierz strefę czasową do wyświetlania daty i godziny"
+      currency: "Wybierz domyślną walutę"
 Selected products successfully deleted: Wybrane produkty zostały pomyślnie usunięte
 pim_mass_edit:
   notification:
