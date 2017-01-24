@@ -69,6 +69,19 @@ class ActivityManagerTestCase extends TestCase
         );
     }
 
+    protected function saveProject($label, $locale, $owner, $channel, $filters)
+    {
+        $projectData = [
+            'label'           => $label,
+            'locale'          => $locale,
+            'owner'           => $owner,
+            'channel'         => $channel,
+            'product_filters' => $filters
+        ];
+
+        return $this->createProject($projectData);
+    }
+
     /**
      * Create a project in database and run the project calculation
      *
@@ -82,15 +95,36 @@ class ActivityManagerTestCase extends TestCase
             'datagrid_view' => ['filters' => '', 'columns' => 'sku,label,family'],
         ], $projectData);
 
+        if (isset($projectData['product_filters'])) {
+            foreach ($projectData['product_filters'] as $key => $filter) {
+                $projectData['product_filters'][$key] = array_merge($filter, [
+                    'context'  => ['locale' => $projectData['locale'], 'scope' => $projectData['channel']],
+                ]);
+            }
+        }
+
         $project = $this->get('pimee_activity_manager.factory.project')->create($projectData);
         $this->get('pimee_activity_manager.saver.project')->save($project);
 
-        $numberOfExecutedJob = $this->findJobExecutionCount();
-        $this->get('pimee_activity_manager.launcher.job.project_calculation')->launch($project);
-        $this->isCompleteJobExecution($numberOfExecutedJob);
+        $this->calculateProject($project);
 
         return $project;
     }
+
+    /**
+     * Run the project calculation
+     *
+     * @param ProjectInterface $project
+     */
+    protected function calculateProject(ProjectInterface $project)
+    {
+        $numberOfExecutedJob = $this->findJobExecutionCount();
+
+        $this->get('pimee_activity_manager.launcher.job.project_calculation')->launch($project);
+
+        $this->isCompleteJobExecution($numberOfExecutedJob);
+    }
+
 
     /**
      * @param ProjectInterface $project
