@@ -8,19 +8,16 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Simple Collection normalizer
+ * Normalize a collection for the external api
  *
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class SimpleCollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
+class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @var Serializer $serializer */
     protected $serializer;
-
-    /** @var array */
-    protected $supportedFormat = ['external_api'];
 
     /**
      * {@inheritdoc}
@@ -30,7 +27,7 @@ class SimpleCollectionNormalizer implements NormalizerInterface, SerializerAware
         $normalizedElements = [];
 
         foreach ($elements as $element) {
-            $normalizedElements[] = $this->serializer->normalize($element, 'standard', $context);
+            $normalizedElements[] = $this->serializer->normalize($element, $format, $context);
         }
 
         return $normalizedElements;
@@ -41,7 +38,7 @@ class SimpleCollectionNormalizer implements NormalizerInterface, SerializerAware
      */
     public function supportsNormalization($data, $format = null)
     {
-        return ($data instanceof \Traversable || is_array($data)) && in_array($format, $this->supportedFormat);
+        return ($data instanceof \Traversable || is_array($data)) && 'external_api' === $format;
     }
 
     /**
