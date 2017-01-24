@@ -22,8 +22,8 @@ class VariationIntegration extends AbstractStandardNormalizerTestCase
         $variation->setFileInfo($fileInfo);
 
         $expected = [
-            'code'           => $fileInfo->getKey(),
             'asset'          => 'dog',
+            'code'           => $fileInfo->getKey(),
             'locale'         => 'en_US',
             'channel'        => 'ecommerce',
             'reference_file' => $fileInfo->getKey()

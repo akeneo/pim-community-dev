@@ -129,26 +129,3 @@ PimEnterprise\Component\Workflow\Model\PublishedProductValue:
                         referencedColumnName: id
                         nullable: false
                         onDelete: CASCADE
-    oneToOne:
-        metric:
-            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductMetricInterface
-            cascade:
-                - remove
-                - persist
-                - refresh
-            inversedBy: value
-            joinColumns:
-                metric_id:
-                    referencedColumnName: id
-                    onDelete: 'SET NULL'
-    oneToMany:
-        prices:
-            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductPriceInterface
-            cascade:
-                - remove
-                - persist
-                - refresh
-            mappedBy: value
-            indexBy: currency
-            orderBy:
-                currency: ASC
