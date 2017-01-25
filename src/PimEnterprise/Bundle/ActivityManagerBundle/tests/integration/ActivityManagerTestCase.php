@@ -72,18 +72,39 @@ class ActivityManagerTestCase extends TestCase
     /**
      * Create a project in database and run the project calculation
      *
-     * @param array $projectData
+     * @param string $label
+     * @param string $owner
+     * @param string $locale
+     * @param string $channel
+     * @param array  $filters
+     *
+     * @return ProjectInterface
      */
-    protected function createProject(array $projectData)
+    protected function createProject($label, $owner, $locale, $channel, array $filters)
     {
         $projectData = array_merge([
-            'description'   => 'An awesome description',
-            'due_date'      => '2020-01-19',
-            'datagrid_view' => ['filters' => '', 'columns' => 'sku,label,family'],
-        ], $projectData);
+            'label'           => $label,
+            'locale'          => $locale,
+            'owner'           => $owner,
+            'channel'         => $channel,
+            'product_filters' => $filters,
+            'description'     => 'An awesome description',
+            'due_date'        => '2020-01-19',
+            'datagrid_view'   => ['filters' => '', 'columns' => 'sku,label,family'],
+        ]);
+
+        if (isset($projectData['product_filters'])) {
+            foreach ($projectData['product_filters'] as $key => $filter) {
+                $projectData['product_filters'][$key] = array_merge($filter, [
+                    'context'  => ['locale' => $projectData['locale'], 'scope' => $projectData['channel']],
+                ]);
+            }
+        }
 
         $project = $this->get('pimee_activity_manager.factory.project')->create($projectData);
         $this->get('pimee_activity_manager.saver.project')->save($project);
+
+        $this->calculateProject($project);
 
         return $project;
     }
@@ -102,19 +123,6 @@ class ActivityManagerTestCase extends TestCase
         $this->isCompleteJobExecution($numberOfExecutedJob);
     }
 
-    /**
-     * re run the project calculation
-     *
-     * @param ProjectInterface $project
-     */
-    protected function reCalculateProject(ProjectInterface $project)
-    {
-        $numberOfExecutedJob = $this->findJobExecutionCount();
-
-        $this->get('pimee_activity_manager.launcher.job.project_calculation')->launch($project);
-
-        $this->isCompleteJobExecution($numberOfExecutedJob);
-    }
 
     /**
      * @param ProjectInterface $project
