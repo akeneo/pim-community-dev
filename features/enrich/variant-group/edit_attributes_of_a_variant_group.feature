@@ -22,8 +22,6 @@ Feature: Edit attributes of a variant group
       | tshirts | description  | k                | en_US  | print     |
       | tshirts | description  | l                | de_DE  | print     |
       | jackets | description  | m                | en_US  | ecommerce |
-      | sweaters | localizable_image | %fixtures%/akeneo.jpg    | en_US  |           |
-      | sweaters | localizable_image | %fixtures%/akeneo2.jpg   | en_GB  |           |
     And I am logged in as "Julia"
 
   Scenario: Successfully display attributes of a variant group
@@ -88,7 +86,11 @@ Feature: Edit attributes of a variant group
     Then I should see the text "This variant group has no attributes yet"
 
   Scenario: Successfully save localized image attributes on variant group
-    Given I am on the "sweaters" variant group page
+    Given the following variant group values:
+      | group    | attribute         | value                  | locale | scope |
+      | sweaters | localizable_image | %fixtures%/akeneo.jpg  | en_US  |       |
+      | sweaters | localizable_image | %fixtures%/akeneo2.jpg | en_GB  |       |
+    And I am on the "sweaters" variant group page
     And I visit the "Attributes" tab
     When I switch the locale to "en_US"
     Then I should see the text "akeneo.jpg"
