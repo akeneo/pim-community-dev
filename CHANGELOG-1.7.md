@@ -7,6 +7,7 @@
 ## Technical improvements
 
 - Update to Symfony 2.7.23
+- Update spec to be independent from actual developer timezone
 
 ## BC breaks
 
