@@ -33,6 +33,7 @@
 - GITHUB-5391: Redo association type edit form using backbonejs architecture and internal REST API
 - TIP-652: Redo the import/export screens in new PEF architecture
 - TIP-682: Update to Symfony 2.7.23
+- GITHUB-5455: Redo channel edit form using backbonejs architecture and internal REST API, implement `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` and move validation logic from controller to newly created remover
 
 ## BC breaks
 - Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
@@ -175,3 +176,11 @@
 - Change the constructor of `Pim\Bundle\DashboardBundle\Widget\CompletenessWidget` to add `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface`
 - Change the constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Oro\Bundle\SecurityBundle\SecurityFacade` and array parameters
 - Remove unused `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType`
+- Remove unused `Pim\Bundle\EnrichBundle\Form\Type\ChannelType`
+- Remove unused `Pim\Bundle\EnrichBundle\Form\Type\ConversionUnitsType`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ChannelController` to remove all dependencies  
+- Remove `removeAction` method of `Pim\Bundle\EnrichBundle\Controller\ChannelController`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ChannelController` to add `Pim\Component\Catalog\Updater\ChannelUpdater`, `Akeneo\Component\StorageUtils\Saver\SaverInterface`, `Akeneo\Component\StorageUtils\Remover\RemoverInterface`, `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`, `Symfony\Component\Validator\Validator\ValidatorInterface`
+- Change route `pim_enrich_channel_edit` to use `code` identifier instead of `id`
+- Change method `indexAction` of `Pim\Bundle\EnrichBundle\Controller\Rest\LocaleController` to return all locales by default and only activated if `activated` parameter `true`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ChannelNormalizer` to add `Pim\Bundle\VersioningBundle\Manager\VersionManager` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface`

@@ -65,6 +65,7 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
+     * @todo remove when all routes will use `code` for identifier
      * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" association type$/
@@ -74,6 +75,36 @@ class NavigationContext extends BaseNavigationContext
     {
         $page   = 'AssociationType';
         $this->openPage(sprintf('%s edit', $page), ['code' => $identifier]);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Then /^I should be redirected to the "([^"]*)" channel page$/
+     */
+    public function shouldBeRedirectedToTheChannel($code)
+    {
+        $url = str_replace('{code}', $code, $this->getPage('Channel edit')->getUrl());
+
+        $this->spin(function () use ($url) {
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $result = (bool) strpos($actualFullUrl, $url);
+            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $url, $actualFullUrl));
+
+            return true;
+        }, 'Spining to assert address');
+    }
+
+    /**
+     * @todo remove when all routes will use `code` for identifier
+     * @param string $identifier
+     *
+     * @Given /^I visit the "([^"]*)" channel$/
+     * @Given /^I visit the "([^"]*)" channel page$/
+     */
+    public function iEditTheChannel($identifier)
+    {
+        $this->openPage(sprintf('%s edit', 'Channel'), ['code' => $identifier]);
     }
 
     /**
@@ -116,7 +147,6 @@ class NavigationContext extends BaseNavigationContext
     {
         $jobType = ucfirst($jobType);
         $this->getPage(sprintf('%s index', $jobType))->clickJobCreationLink($jobTitle);
-        $this->wait();
         $this->currentPage = sprintf('%s creation', $jobType);
     }
 

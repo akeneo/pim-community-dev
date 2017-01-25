@@ -46,9 +46,16 @@ Feature: Define user rights
     Given I am logged in as "Peter"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
-    When I revoke rights to resource <permission>
+    When I revoke rights to resource Remove a channel
     And I save the role
     And I should not see the text "There are unsaved changes."
+    And I visit the "mobile" channel
+    Then I should not see the text "Delete"
+    Given I am logged in as "Peter"
+    And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    When I revoke rights to resource <permission>
+    And I save the role
     And I am on the <page> page
     Then I should not see the text "<button>"
 
@@ -57,7 +64,6 @@ Feature: Define user rights
       | Remove an association type  | "X_SELL" association type                    | Delete |
       | Remove an attribute group   | "Sizes" attribute group                      | Delete |
       | Remove a category           | "sandals" category                           | Delete |
-      | Remove a channel            | "mobile" channel                             | Delete |
       | Remove a family             | "boots" family                               | Delete |
       | Remove a group              | "similar_boots" product group                | Delete |
       | Remove a variant group      | "caterpillar_boots" variant group            | Delete |

@@ -146,7 +146,7 @@ Feature: Datagrid views
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully removed"
     And I should see the text "Default view"
-    But I should not see the text "Sneakers only"
+    And I should not see the text "Sneakers only"
 
   Scenario: Successfully display values in grid when using a custom default view
     Given I am on the products page

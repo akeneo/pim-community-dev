@@ -38,9 +38,9 @@ define(
              * {@inheritdoc}
              */
             save: function () {
-                var group = $.extend(true, {}, this.getFormData());
+                var associationType = $.extend(true, {}, this.getFormData());
 
-                delete group.meta;
+                delete associationType.meta;
 
                 var notReadyFields = FieldManager.getNotReadyFields();
 
@@ -68,7 +68,7 @@ define(
                 this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
                 return AssociationTypeSaver
-                    .save(group.code, group)
+                    .save(associationType.code, associationType)
                     .then(function (data) {
                         this.postSave();
 

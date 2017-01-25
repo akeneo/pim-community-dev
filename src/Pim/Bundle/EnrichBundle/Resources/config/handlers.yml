@@ -19,14 +19,6 @@ services:
             - '@request'
             - '@pim_catalog.saver.attribute_group'
 
-    pim_enrich.form.handler.channel:
-        class: '%pim_enrich.form.handler.base.class%'
-        scope: request
-        arguments:
-            - '@pim_enrich.form.channel'
-            - '@request'
-            - '@pim_catalog.saver.channel'
-
     pim_enrich.form.handler.group:
         class: '%pim_enrich.form.handler.group.class%'
         scope: request

@@ -9,7 +9,7 @@ Feature: Ensure versioning on channel
     And I am logged in as "Julia"
 
   Scenario: Successfully version a channel
-    Given I am on the "mobile" channel page
+    Given I visit the "mobile" channel
     And I visit the "History" tab
     Then there should be 1 update
     Then I visit the "Properties" tab
