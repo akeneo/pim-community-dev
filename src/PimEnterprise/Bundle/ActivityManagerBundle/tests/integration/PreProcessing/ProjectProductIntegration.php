@@ -26,7 +26,7 @@ class ProjectProductIntegration extends ActivityManagerTestCase
      */
     public function testTheNumberOfProductForTshirtFamily()
     {
-        $project = $this->createProject('test-thsirt', 'en_US', 'Julia', 'ecommerce', [
+        $project = $this->createProject('test-thsirt', 'Julia', 'en_US', 'ecommerce', [
             [
                 'field'    => 'family',
                 'operator' => 'IN',
@@ -47,7 +47,7 @@ class ProjectProductIntegration extends ActivityManagerTestCase
      */
     public function testTheNumberOfProductForTechnicalFamily()
     {
-        $project = $this->createProject('test-technical-family', 'en_US', 'Julia', 'ecommerce', [
+        $project = $this->createProject('test-technical-family', 'Julia', 'en_US', 'ecommerce', [
             [
                 'field'    => 'family',
                 'operator' => 'IN',
@@ -68,7 +68,7 @@ class ProjectProductIntegration extends ActivityManagerTestCase
      */
     public function testTheNumberOfProductForTshirtFamilyForTeddy()
     {
-        $project = $this->createProject('test-project-creator-right', 'en_US', 'Teddy', 'ecommerce', [
+        $project = $this->createProject('test-project-creator-right', 'Teddy', 'en_US', 'ecommerce', [
             [
                 'field'    => 'family',
                 'operator' => 'IN',

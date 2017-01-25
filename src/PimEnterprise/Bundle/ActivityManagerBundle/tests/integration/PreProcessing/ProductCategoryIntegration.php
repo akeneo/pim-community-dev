@@ -22,7 +22,7 @@ class ProductCategoryIntegration extends ActivityManagerTestCase
      */
     public function testTheLinkBetweenProductAndCategory()
     {
-        $project = $this->createProject('categoriesless-project', 'en_US', 'admin', 'ecommerce', [
+        $project = $this->createProject('categoriesless-project', 'admin', 'en_US', 'ecommerce', [
             [
                 'field'    => 'sku',
                 'operator' => 'IN',

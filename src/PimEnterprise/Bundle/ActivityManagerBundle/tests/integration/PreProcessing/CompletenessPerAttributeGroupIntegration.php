@@ -36,10 +36,10 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
             'value'    => $productIdentifier,
         ]];
 
-        $skyrimEcommerceEn = $this->createProject('skyrim-ecommerce-en', 'en_US', 'Julia', 'ecommerce', $projectFilters);
-        $skyrimEcommerceFr = $this->createProject('skyrim-ecommerce-fr', 'fr_FR', 'Julia', 'ecommerce', $projectFilters);
-        $skyrimMobileEn = $this->createProject('skyrim-mobile-en', 'en_US', 'Julia', 'mobile', $projectFilters);
-        $skyrimMobileFr = $this->createProject('skyrim-mobile-fr', 'fr_FR', 'Julia', 'mobile', $projectFilters);
+        $skyrimEcommerceEn = $this->createProject('skyrim-ecommerce-en', 'Julia', 'en_US', 'ecommerce', $projectFilters);
+        $skyrimEcommerceFr = $this->createProject('skyrim-ecommerce-fr', 'Julia', 'fr_FR', 'ecommerce', $projectFilters);
+        $skyrimMobileEn = $this->createProject('skyrim-mobile-en', 'Julia', 'en_US', 'mobile', $projectFilters);
+        $skyrimMobileFr = $this->createProject('skyrim-mobile-fr', 'Julia', 'fr_FR', 'mobile', $projectFilters);
 
         $this->checkAttributeGroupCompleteness($skyrimEcommerceEn, $productIdentifier, [
             'general' => [
@@ -118,7 +118,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
             'value'    => $productIdentifier,
         ]];
 
-        $project = $this->createProject('the-witcher-3-ecommerce-en', 'en_US', 'Julia', 'ecommerce', $projectFilters);
+        $project = $this->createProject('the-witcher-3-ecommerce-en', 'Julia', 'en_US', 'ecommerce', $projectFilters);
         $this->checkAttributeGroupCompleteness($project, $productIdentifier, [
             'general' => [
                 'has_at_least_one_required_attribute_filled' => '0',
@@ -155,7 +155,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
      * Check that we get the value of product properties on the right channel, locale and we are able to get the
      * value for every attributes
      *
-     * For that test all value should be empties, the "other" attribute group completeness should be "to do"
+     * For that test all values should be empty, the "other" attribute group completeness should be "to do"
      *
      * Note: "other" has not a filled property for en_US and ecommerce but it has for mobile and fr_FR
      *
@@ -166,7 +166,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
     public function testProjectCalculationWhenTheProductPropertiesAreEmpties()
     {
         $productIdentifier = 'empty-technical-product';
-        $project = $this->createProject('test-empty-property', 'en_US', 'Julia', 'ecommerce', [[
+        $project = $this->createProject('test-empty-property', 'Julia', 'en_US', 'ecommerce', [[
             'field'    => 'sku',
             'operator' => '=',
             'value'    => $productIdentifier,
@@ -185,7 +185,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
     }
 
     /**
-     * For that test all value should be empties, the "other" attribute group completeness should be "done"
+     * For that test all values should be empty, the "other" attribute group completeness should be "done"
      *
      * Note: We need to insert reference data (color and fabric) to check that "other" is complete
      *
@@ -245,7 +245,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
         /**
          * Check the project completeness
          */
-        $project = $this->createProject('test-full-property', 'en_US', 'Julia', 'ecommerce', [[
+        $project = $this->createProject('test-full-property', 'Julia', 'en_US', 'ecommerce', [[
             'field'    => 'sku',
             'operator' => '=',
             'value'    => $productIdentifier,
@@ -329,8 +329,8 @@ SQL
     /**
      * Checks that the calculated number of attribute group completeness is correct.
      *
-     * A attribute group completeness is only calculated if the one of those attributes
-     * are filled and require by the family.
+     * An attribute group completeness is only calculated if one of those attributes
+     * are filled and required by the family.
      *
      * @param ProjectInterface $project
      * @param int              $expectedCount

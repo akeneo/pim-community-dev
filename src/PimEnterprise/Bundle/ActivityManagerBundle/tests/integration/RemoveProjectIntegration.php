@@ -21,7 +21,7 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
      */
     public function testThatProjectRemovalRemovesPreProcessingEntriesAndMappedProducts()
     {
-        $highTechProject = $this->createProject('High-Tech project', 'en_US', 'admin', 'ecommerce', [
+        $highTechProject = $this->createProject('High-Tech project', 'admin', 'en_US', 'ecommerce', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',
@@ -29,7 +29,7 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
             ],
         ]);
 
-        $this->createProject('Clothing project', 'en_US', 'admin', 'ecommerce', [
+        $this->createProject('Clothing project', 'admin', 'en_US', 'ecommerce', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',
@@ -49,7 +49,7 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
      */
     public function testThatProjectRemovalRemovesAssociatedDatagridView()
     {
-        $project = $this->createProject('High-Tech project', 'en_US', 'admin', 'ecommerce', [
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'ecommerce', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',

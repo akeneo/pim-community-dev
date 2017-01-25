@@ -23,7 +23,7 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
         $channelRemover = $this->get('pim_catalog.remover.channel');
         $channelRepository = $this->get('pim_catalog.repository.channel');
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
-        $project = $this->createProject('High-Tech project', 'en_US', 'admin', 'mobile', [
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'mobile', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',
@@ -49,7 +49,7 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
         $channelRepository = $this->get('pim_catalog.repository.channel');
         $channelSaver = $this->get('pim_catalog.saver.channel');
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
-        $project = $this->createProject('High-Tech project', 'en_US', 'admin', 'mobile', [
+        $project = $this->createProject('High-Tech project',  'admin', 'en_US', 'mobile', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',
@@ -76,7 +76,7 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
         $attributeRemover = $this->get('pim_catalog.remover.attribute');
         $attributeRepository = $this->get('pim_catalog.repository.attribute');
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
-        $project = $this->createProject('High-Tech project', 'en_US', 'admin', 'mobile', [
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'mobile', [
             [
                 'field'    => 'release_date',
                 'operator' => '=',
@@ -104,7 +104,7 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
         $categoryRemover = $this->get('pim_catalog.remover.category');
         $categoryRepository = $this->get('pim_catalog.repository.category');
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
-        $project = $this->createProject('High-Tech project', 'en_US', 'admin', 'mobile', [
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'mobile', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',
@@ -133,7 +133,7 @@ class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
         $currencyRepository = $this->get('pim_catalog.repository.currency');
         $channelSaver = $this->get('pim_catalog.saver.channel');
-        $project = $this->createProject('High-Tech project', 'fr_FR', 'admin', 'ecommerce', [
+        $project = $this->createProject('High-Tech project', 'admin', 'fr_FR', 'ecommerce', [
             [
                 'field'    => 'price_attribute',
                 'operator' => '>',

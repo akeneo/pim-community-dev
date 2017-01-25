@@ -72,9 +72,15 @@ class ActivityManagerTestCase extends TestCase
     /**
      * Create a project in database and run the project calculation
      *
-     * @param array $projectData
+     * @param string $label
+     * @param string $owner
+     * @param string $locale
+     * @param string $channel
+     * @param array  $filters
+     *
+     * @return ProjectInterface
      */
-    protected function createProject($label, $locale, $owner, $channel, $filters)
+    protected function createProject($label, $owner, $locale, $channel, array $filters)
     {
         $projectData = array_merge([
             'label'           => $label,
