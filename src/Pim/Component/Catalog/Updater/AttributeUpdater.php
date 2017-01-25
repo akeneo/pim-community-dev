@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -66,10 +67,74 @@ class AttributeUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
+            $this->validateDatatype($field, $value);
             $this->setData($attribute, $field, $value);
         }
 
         return $this;
+    }
+
+    /**
+     * Validate the data type of a field.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws UnknownPropertyException
+     */
+    protected function validateDatatype($field, $data)
+    {
+        if (in_array($field, ['labels', 'available_locales', 'allowed_extensions'])) {
+            if (!is_array($data)) {
+                throw InvalidPropertyTypeException::arrayExpected($field, 'update', 'attribute', $data);
+            }
+
+            foreach ($data as $key => $value) {
+                if (null !== $value && !is_scalar($value)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $field,
+                        sprintf('one of the "%s" values is not a scalar', $field),
+                        'update',
+                        'attribute',
+                        $data
+                    );
+                }
+            }
+        } elseif (in_array(
+            $field,
+            [
+                'code',
+                'type',
+                'group',
+                'unique',
+                'useable_as_grid_filter',
+                'metric_family',
+                'default_metric_unit',
+                'reference_data_name',
+                'max_characters',
+                'validation_rule',
+                'validation_regexp',
+                'wysiwyg_enabled',
+                'number_min',
+                'number_max',
+                'decimals_allowed',
+                'negative_allowed',
+                'date_min',
+                'date_max',
+                'max_file_size',
+                'minimum_input_length',
+                'sort_order',
+                'localizable',
+                'scopable',
+            ]
+        )) {
+            if (null !== $data && !is_scalar($data)) {
+                throw InvalidPropertyTypeException::scalarExpected($field, 'update', 'attribute', $data);
+            }
+        } else {
+            throw UnknownPropertyException::unknownProperty($field);
+        }
     }
 
     /**
