@@ -5,6 +5,7 @@
 - PIM-6113: Fix wrong context switch on association groups
 - PIM-6062: Fix potential Unix commands injection
 - PIM-5085: Fix update of the normalized data on family update (mongodb)
+- PIM-6080: Fix simple and multi select removal on product export builder
 
 # 1.6.9 (2017-01-17)
 
