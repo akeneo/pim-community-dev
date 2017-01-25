@@ -21,7 +21,7 @@ class FamilySelectorSpec extends ObjectBehavior
     }
 
     function it_applies_a_selector(
-        DatasourceInterface $datasource, 
+        DatasourceInterface $datasource,
         DatagridConfiguration $configuration,
         QueryBuilder $queryBuilder
     ) {
@@ -29,9 +29,15 @@ class FamilySelectorSpec extends ObjectBehavior
         $queryBuilder->getRootAlias()->willReturn('p');
 
         $queryBuilder->leftJoin('p.family', 'family')->willReturn($queryBuilder);
-        $queryBuilder->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')->willReturn($queryBuilder);
-        $queryBuilder->addSelect('COALESCE(NULLIF(ft.label, \'\'), CONCAT(\'[\', family.code, \']\')) as familyLabel')->shouldBeCalled();
-    
+
+        $queryBuilder
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
+            ->willReturn($queryBuilder);
+
+        $queryBuilder
+            ->addSelect('COALESCE(NULLIF(ft.label, \'\'), CONCAT(\'[\', family.code, \']\')) as familyLabel')
+            ->shouldBeCalled();
+
         $this->apply($datasource, $configuration);
     }
 }
