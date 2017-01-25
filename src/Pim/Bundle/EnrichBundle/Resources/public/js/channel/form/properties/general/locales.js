@@ -38,8 +38,6 @@ define([
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', this.setCurrentLocales.bind(this));
 
-                this.currentLocales = this.getFormData().locales;
-
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
@@ -52,6 +50,8 @@ define([
                 }
 
                 FetcherRegistry.getFetcher('locale').fetchAll().then(function (locales) {
+                    this.currentLocales = this.getFormData().locales;
+
                     this.$el.html(this.template({
                         currentLocales: this.getFormData().locales,
                         locales: locales,
@@ -62,7 +62,6 @@ define([
 
                     this.$('.select2').select2().on('change', this.updateState.bind(this));
 
-                    this.delegateEvents();
                     this.renderExtensions();
                 }.bind(this));
 
@@ -90,6 +89,7 @@ define([
                 var data = this.getFormData();
 
                 data.locales = codes;
+                this.currentLocales = codes;
                 this.setData(data);
             },
 
