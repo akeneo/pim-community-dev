@@ -24,7 +24,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            onDatagridStateChange: function (datagridState) {
+            onDatagridStateChange: function () {
                 BaseCurrent.prototype.onDatagridStateChange.apply(this, arguments);
 
                 if ('project' !== this.datagridView.type) {

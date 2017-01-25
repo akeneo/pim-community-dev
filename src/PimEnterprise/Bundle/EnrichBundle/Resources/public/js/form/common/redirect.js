@@ -8,17 +8,21 @@
  */
 define(
     [
+        'underscore',
         'pim/common/redirect',
         'pim/fetcher-registry'
     ],
-    function (BaseRedirect, FetcherRegistry) {
+    function (_, BaseRedirect, FetcherRegistry) {
         return BaseRedirect.extend({
             /**
              * {@inheritdoc}
              */
             isVisible: function () {
                 return FetcherRegistry.getFetcher('permission').fetchAll().then(function (permissions) {
-                    var permission = _.findWhere(permissions.job_instances, {code: this.getFormData().code})
+                    var permission = _.findWhere(
+                        permissions.job_instances,
+                        {code: this.getFormData().code}
+                    );
 
                     return permission.edit;
                 }.bind(this));
