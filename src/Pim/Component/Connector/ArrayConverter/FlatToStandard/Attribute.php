@@ -62,8 +62,6 @@ class Attribute implements ArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } elseif ('type' === $field) {
-            $convertedItem['attribute_type'] = $data;
         } elseif ('number_min' === $field ||
             'number_max' === $field ||
             'max_file_size'=== $field
