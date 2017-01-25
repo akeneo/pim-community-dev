@@ -10,6 +10,7 @@ use Pim\Component\Connector\Validator\Constraints\FilterStructureAttribute;
 use Pim\Component\Connector\Validator\Constraints\FilterStructureLocale;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -52,6 +53,13 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
                 'groups' => ['Default', 'FileConfiguration'],
             ]
         );
+        $constraintFields['with_media_as_url'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['with_media_base_url'] = New Url();
         $constraintFields['filters'] = [
             new FilterData(['groups' => ['Default', 'DataFilters']]),
             new Collection(

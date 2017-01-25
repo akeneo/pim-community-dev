@@ -478,6 +478,9 @@ pim_enrich:
                     with_media:
                         title: Export files and images
                         help: Whether or not to export product files and images
+                    with_media_as_url:
+                        title: Export files and images as URL
+                        help: Whether or not to export product files and images as URL
                     lines_per_file:
                         title: Number of lines per file
                         help: Define the limit number of lines per file

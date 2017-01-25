@@ -136,6 +136,28 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.with_media.title
             tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media.help
 
+    pim-job-instance-csv-product-export-show-properties-with-media-as-url:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-csv-product-export-show-properties
+        position: 161
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.with_media_as_url
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.with_media_as_url.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media_as_url.help
+
+    pim-job-instance-csv-product-export-show-properties-with-media-base-url:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-csv-product-export-show-properties
+        position: 162
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.with_media_base_url
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.with_media_base_url.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media_base_url.help
+
     pim-job-instance-csv-product-export-show-content-structure:
         module: pim/job/product/edit/content/structure
         parent: pim-job-instance-csv-product-export-show-content

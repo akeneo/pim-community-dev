@@ -93,13 +93,41 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             $productStandard['values'] = $this->filterValues($productStandard['values'], $attributesToFilter);
         }
 
-        if ($parameters->has('with_media') && $parameters->get('with_media')) {
+        $withMedia = ($parameters->has('with_media') && $parameters->get('with_media'));
+        $withMediaAsUrl = ($parameters->has('with_media_as_url') && $parameters->get('with_media_as_url'));
+        $withMediaBaseUrl = ($parameters->has('with_media_base_url') && strlen($parameters->get('with_media_base_url')) > 0);
+
+        if ($withMedia && !$withMediaAsUrl) {
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
                 ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
             $this->fetchMedia($product, $directory);
+        }
+        else if ($withMedia && $withMediaAsUrl) {
+            if ($withMediaBaseUrl) {
+
+                $mediaBaseUrl = $parameters->get('with_media_base_url');
+
+                $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
+
+                foreach ($productStandard['values'] as $attributeK => $attributeV) {
+                    if (!in_array($attributeK, $mediaAttributes)) {
+                        continue;
+                    }
+
+                    $productStandard['values'][$attributeK] = array_map(function($attributeValue) use ($mediaBaseUrl) {
+                        if (!isset($attributeValue['data']) || empty($attributeValue['data'])) {
+                            return $attributeValue;
+                        }
+
+                        $attributeValue['data'] = rtrim($mediaBaseUrl, '/') . '/' . $attributeValue['data'];
+                        return $attributeValue;
+                    }, $attributeV);
+                }
+            }
         } else {
             $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
+
             $productStandard['values'] = array_filter(
                 $productStandard['values'],
                 function ($attributeCode) use ($mediaAttributes) {

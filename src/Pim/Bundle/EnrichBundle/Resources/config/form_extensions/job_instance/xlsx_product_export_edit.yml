@@ -130,6 +130,28 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.with_media.title
             tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media.help
 
+    pim-job-instance-xlsx-product-export-edit-properties-with-media-as-url:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-xlsx-product-export-edit-properties
+        position: 151
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.with_media_as_url
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.with_media_as_url.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media_as_url.help
+
+    pim-job-instance-xlsx-product-export-edit-properties-with-media-base-url:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-xlsx-product-export-edit-properties
+        position: 152
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.with_media_base_url
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.with_media_base_url.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media_base_url.help
+
     pim-job-instance-xlsx-product-export-edit-content-structure:
         module: pim/job/product/edit/content/structure
         parent: pim-job-instance-xlsx-product-export-edit-content
