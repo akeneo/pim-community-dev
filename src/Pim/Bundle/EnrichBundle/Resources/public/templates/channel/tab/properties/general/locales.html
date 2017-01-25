@@ -11,11 +11,11 @@
     </select>
 </div>
 <div class="AknFieldContainer-footer">
-    <span class="AknFieldContainer-validationErrors validation-errors">
+    <div class="AknFieldContainer-validationErrors validation-errors">
         <% _.each(errors, function (error) { %>
-            <span class="AknFieldContainer-validationError">
-                <i class="icon-warning-sign"></i> <span class="error-message"><%- error %></span>
-            </span>
+        <div class="AknFieldContainer-validationError">
+            <i class="icon-warning-sign"></i><%- error %>
+        </div>
         <% }); %>
-    </span>
+    </div>
 </div>

@@ -76,6 +76,8 @@ define([
                 }));
 
                 this.delegateEvents();
+
+                this.$('[data-toggle="tooltip"]').tooltip();
                 this.renderExtensions();
             },
 
