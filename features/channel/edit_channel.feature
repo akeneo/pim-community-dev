@@ -73,3 +73,10 @@ Feature: Edit a channel
     And I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 1 elements
     And I should see locales "de_DE"
+
+  Scenario: Successfully display validation on NO_CONFLICT response
+    Given I am logged in as "Peter"
+    And I visit the "tablet" channel
+    And I fill in the following information:
+      | Currencies | |
+    Then I should not see a validation error "This collection should contain 1 element or more."
