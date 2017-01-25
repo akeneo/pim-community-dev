@@ -7,6 +7,21 @@ use Pim\Component\Connector\Exception\DataArrayConversionException;
 
 class AssetSpec extends ObjectBehavior
 {
+    const TEST_TIMEZONE = 'Europe/Paris';
+
+    protected $userTimezone;
+
+    function let()
+    {
+        $this->userTimezone = date_default_timezone_get();
+        date_default_timezone_set(self::TEST_TIMEZONE);
+    }
+
+    function legGo()
+    {
+        date_default_timezone_set($this->userTimezone);
+    }
+
     function it_converts()
     {
         $fields = [
