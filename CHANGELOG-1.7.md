@@ -7,6 +7,7 @@
 ## Technical improvements
 
 - Update to Symfony 2.7.23
+- Update spec to be independent from actual developer timezone
 - GITHUB-5455: Redo channel's form `Asset transformations` tab to fit new form implementation based on internal REST API
 
 ## BC breaks
