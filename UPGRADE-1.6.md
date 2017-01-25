@@ -131,7 +131,7 @@ This modification introduces a new constraint, the minimum version of PHP for Ak
 
 6. Then remove your old upgrades folder:
     ```
-     rm $PIM_DIR/upgrades/schema -rf
+     rm -rf $PIM_DIR/upgrades/schema
     ```
 
 7. Now you're ready to update your dependencies:
@@ -215,7 +215,7 @@ This modification introduces a new constraint, the minimum version of PHP for Ak
 9. Then, generate JS translations and re-generate the PIM assets:
 
     ```
-     rm $PIM_DIR/web/js/translation/ -rf
+     rm -rf $PIM_DIR/web/js/translation/
      php app/console pim:installer:assets
     ```
 
