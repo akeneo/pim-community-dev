@@ -99,7 +99,6 @@ define(
             fail: function (response) {
                 switch (response.status) {
                     case 400:
-                    case 409:
                         mediator.trigger(
                             'pim_enrich:form:entity:bad_request',
                             {'sentData': this.getFormData(), 'response': response.responseJSON}

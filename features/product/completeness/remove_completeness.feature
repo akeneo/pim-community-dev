@@ -60,7 +60,7 @@ Feature: Display the completeness of a product
      | complete | 50%   |
 
   Scenario: Remove completeness when locales of a channel are deleted
-    Given I visit the "tablet" channel page
+    Given I am on the "tablet" channel page
     And I change the "Locales" to "French (France)"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
@@ -80,7 +80,7 @@ Feature: Display the completeness of a product
       | tablet  | fr_FR  | warning  | Price, Rating, Side view, Size | 50%   |
 
   Scenario: Remove completeness from grid when locales of a channel are deleted
-    Given I visit the "tablet" channel
+    Given I am on the "tablet" channel page
     And I change the "Locales" to "French (France)"
     And I press the "Save" button
     Then I should see "Channel successfully updated."

@@ -13,7 +13,7 @@ Feature: Update user preferences
     And I visit the "Additional" tab
     Then I should see the text "Default tree"
     And I should see the text "2013 collection"
-    When I visit the "tablet" channel
+    When I am on the "tablet" channel page
     Then I should see the Code, English (United States), Currencies, Locales and Category tree fields
     And I fill in the following information:
       | Category tree | 2014 collection |
@@ -31,7 +31,7 @@ Feature: Update user preferences
     And I visit the "Additional" tab
     Then I should see the text "Catalog scope"
     And I should see the text "Print"
-    When I visit the "Print" channel
+    When I am on the "Print" channel page
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "Peter" user
@@ -48,7 +48,7 @@ Feature: Update user preferences
     When I visit the "Additional" tab
     Then I should see the text "Catalog locale"
     And I should see the text "fr_FR"
-    When I visit the "ecommerce" channel
+    When I am on the "ecommerce" channel page
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "Julia" user
