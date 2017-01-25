@@ -82,7 +82,8 @@
         "doctrine/mongodb-odm": "v1.0.0-BETA12@dev",
         "sensiolabs/behat-page-object-extension": "1.0.1",
         "phpspec/phpspec": "2.1.*",
-        "akeneo/phpspec-skip-example-extension": "1.1.*"
+        "akeneo/phpspec-skip-example-extension": "1.1.*",
+        "friendsofphp/php-cs-fixer":  "1.11.*"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",
