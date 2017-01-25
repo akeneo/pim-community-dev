@@ -3,13 +3,11 @@
 namespace Pim\Component\ReferenceData\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\ReferenceData\MethodNameGuesser;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
@@ -42,12 +40,6 @@ class ReferenceDataProductValueFactory implements ProductValueFactoryInterface
         $productValueClass,
         $supportedAttributeType
     ) {
-        if (!class_exists($productValueClass)) {
-            throw new \InvalidArgumentException(
-                sprintf('The product value class "%s" does not exist.', $productValueClass)
-            );
-        }
-
         $this->repositoryResolver = $repositoryResolver;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
@@ -60,16 +52,12 @@ class ReferenceDataProductValueFactory implements ProductValueFactoryInterface
     {
         $this->checkData($attribute, $data);
 
-        $value = new $this->productValueClass();
-        $value->setAttribute($attribute);
-        $value->setScope($channelCode);
-        $value->setLocale($localeCode);
-
-        if (null !== $data && '' !== trim($data)) {
+        if (null !== $data) {
             $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
-            $setter = $this->getSetterName($value, $attribute);
-            $value->$setter($this->getReferenceData($attribute, $repository, $data));
+            $data = $this->getReferenceData($attribute, $repository, $data);
         }
+
+        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
 
         return $value;
     }
@@ -107,19 +95,19 @@ class ReferenceDataProductValueFactory implements ProductValueFactoryInterface
     /**
      * Finds a reference data by code.
      *
-     * @param AttributeInterface               $attribute
-     * @param ReferenceDataRepositoryInterface $repository
-     * @param string                           $referenceDataCode
+     * @param AttributeInterface                    $attribute
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param string                                $referenceDataCode
      *
      * @throws InvalidPropertyException
      * @return ReferenceDataInterface
      */
     protected function getReferenceData(
         AttributeInterface $attribute,
-        ReferenceDataRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         $referenceDataCode
     ) {
-        $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
+        $referenceData = $repository->findOneByIdentifier($referenceDataCode);
 
         if (null === $referenceData) {
             throw InvalidPropertyException::validEntityCodeExpected(
@@ -137,26 +125,5 @@ class ReferenceDataProductValueFactory implements ProductValueFactoryInterface
         }
 
         return $referenceData;
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param AttributeInterface    $attribute
-     *
-     * @return string
-     */
-    private function getSetterName(
-        ProductValueInterface $value,
-        AttributeInterface $attribute
-    ) {
-        $method = MethodNameGuesser::guess('set', $attribute->getReferenceDataName());
-
-        if (!method_exists($value, $method)) {
-            throw new \LogicException(
-                sprintf('ProductValue method "%s" is not implemented', true)
-            );
-        }
-
-        return $method;
     }
 }

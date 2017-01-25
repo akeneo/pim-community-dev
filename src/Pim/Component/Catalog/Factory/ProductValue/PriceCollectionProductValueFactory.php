@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Factory\ProductValue;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\PriceCollection;
 
 /**
  * Factory that creates price collection product values.
@@ -46,14 +46,11 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
     {
         $this->checkData($attribute, $data);
 
-        $value = new $this->productValueClass();
-        $value->setAttribute($attribute);
-        $value->setScope($channelCode);
-        $value->setLocale($localeCode);
-
-        foreach ($data as $price) {
-            $value->addPrice($this->priceFactory->createPrice($price['amount'], $price['currency']));
+        if (null === $data) {
+            $data = [];
         }
+
+        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $this->getPrices($data));
 
         return $value;
     }
@@ -76,6 +73,10 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
+        if (null === $data || [] === $data) {
+            return;
+        }
+
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
@@ -115,5 +116,23 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
                 );
             }
         }
+    }
+
+    /**
+     * Gets a collection of price from prices in standard format.
+     *
+     * @param array $data
+     *
+     * @return PriceCollection
+     */
+    protected function getPrices(array $data)
+    {
+        $prices = new PriceCollection();
+
+        foreach ($data as $price) {
+            $prices->add($this->priceFactory->createPrice($price['amount'], $price['currency']));
+        }
+
+        return $prices;
     }
 }

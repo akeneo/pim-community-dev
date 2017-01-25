@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Denormalizer\Standard;
 
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -58,9 +59,22 @@ class ProductValueDenormalizer implements SerializerAwareInterface, Denormalizer
             );
         }
 
+        $product = $context['$product'];
+
+        if (!$product instanceof ProductInterface) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Product must be an instance of %s, %s given',
+                    'Pim\Component\Catalog\Model\ProductInterface',
+                    is_object($attribute) ? get_class($attribute) : gettype($attribute)
+                )
+            );
+        }
+
         $data = $data + ['locale' => null, 'scope' => null, 'data' => null];
 
         return $this->productValueFactory->create(
+            $product,
             $attribute,
             $data['scope'],
             $data['locale'],

@@ -23,23 +23,23 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
     protected $fileInfoRepository;
 
     /** @var string */
-    protected $mediaProductValueClass;
+    protected $productValueClass;
 
     /** @var string */
     protected $supportedAttributeType;
 
     /**
      * @param FileInfoRepositoryInterface $fileInfoRepository
-     * @param string                      $mediaProductValueClass
+     * @param string                      $productValueClass
      * @param string                      $supportedAttributeType
      */
     public function __construct(
         FileInfoRepositoryInterface $fileInfoRepository,
-        $mediaProductValueClass,
+        $productValueClass,
         $supportedAttributeType
     ) {
         $this->fileInfoRepository = $fileInfoRepository;
-        $this->mediaProductValueClass = $mediaProductValueClass;
+        $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
 
@@ -50,14 +50,11 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
     {
         $this->checkData($attribute, $data);
 
-        $value = new $this->mediaProductValueClass();
-        $value->setAttribute($attribute);
-        $value->setScope($channelCode);
-        $value->setLocale($localeCode);
-
         if (null !== $data) {
-            $value->setMedia($this->getFileInfo($attribute, $data));
+            $data = $this->getFileInfo($attribute, $data);
         }
+
+        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
 
         return $value;
     }

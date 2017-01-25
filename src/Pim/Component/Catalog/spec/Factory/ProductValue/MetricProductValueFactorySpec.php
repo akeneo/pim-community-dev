@@ -29,8 +29,11 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $this->supports('pim_catalog_metric')->shouldReturn(true);
     }
 
-    function it_creates_an_empty_metric_product_value($metricFactory, AttributeInterface $attribute)
-    {
+    function it_creates_an_empty_metric_product_value(
+        $metricFactory,
+        AttributeInterface $attribute,
+        MetricInterface $metric
+    ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('metric_attribute');
@@ -38,8 +41,11 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attribute->getMetricFamily()->shouldNotBeCalled();
-        $metricFactory->createMetric(Argument::cetera())->shouldNotBeCalled();
+        $attribute->getMetricFamily()->willReturn('Length');
+        $metricFactory->createMetric('Length', null, null)->willReturn($metric);
+        $metric->getData()->willReturn(null);
+        $metric->getUnit()->willReturn(null);
+        $metric->getFamily()->willReturn('Length');
 
         $productValue = $this->create(
             $attribute,
@@ -57,7 +63,8 @@ class MetricProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_localizable_and_scopable_empty_metric_product_value(
         $metricFactory,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        MetricInterface $metric
     ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
@@ -66,8 +73,11 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attribute->getMetricFamily()->shouldNotBeCalled();
-        $metricFactory->createMetric(Argument::cetera())->shouldNotBeCalled();
+        $attribute->getMetricFamily()->willReturn('Length');
+        $metricFactory->createMetric('Length', null, null)->willReturn($metric);
+        $metric->getData()->willReturn(null);
+        $metric->getUnit()->willReturn(null);
+        $metric->getFamily()->willReturn('Length');
 
         $productValue = $this->create(
             $attribute,
@@ -244,7 +254,9 @@ class MetricProductValueFactorySpec extends ObjectBehavior
                 return $channelCode === $subject->getScope();
             },
             'beEmpty'       => function ($subject) {
-                return null === $subject->getData();
+                $metric = $subject->getData();
+
+                return null === $metric->getData() && null === $metric->getUnit();
             },
             'haveMetric'    => function ($subject, $expectedMetric) {
                 $metric = $subject->getData();

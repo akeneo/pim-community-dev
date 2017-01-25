@@ -14,7 +14,6 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.factory.product_value'
-            - '@pim_catalog.factory.price'
             - {'product': '%pim_catalog.entity.product.class%', 'association': '%pim_catalog.entity.association.class%'}
 
     pim_catalog.builder.product_template:

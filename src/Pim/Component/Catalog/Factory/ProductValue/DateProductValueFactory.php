@@ -18,18 +18,18 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 class DateProductValueFactory implements ProductValueFactoryInterface
 {
     /** @var string */
-    protected $dateProductValueClass;
+    protected $productValueClass;
 
     /** @var string */
     protected $supportedAttributeType;
 
     /**
-     * @param string $dateProductValueClass
+     * @param string $productValueClass
      * @param string $supportedAttributeType
      */
-    public function __construct($dateProductValueClass, $supportedAttributeType)
+    public function __construct($productValueClass, $supportedAttributeType)
     {
-        $this->dateProductValueClass = $dateProductValueClass;
+        $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
 
@@ -40,14 +40,11 @@ class DateProductValueFactory implements ProductValueFactoryInterface
     {
         $this->checkData($attribute, $data);
 
-        $value = new $this->dateProductValueClass();
-        $value->setAttribute($attribute);
-        $value->setScope($channelCode);
-        $value->setLocale($localeCode);
-
         if (null !== $data) {
-            $value->setDate(new \DateTime($data));
+            $data = new \DateTime($data);
         }
+
+        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
 
         return $value;
     }

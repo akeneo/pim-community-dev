@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -49,16 +50,16 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
     {
         $this->checkData($attribute, $data);
 
-        $value = new $this->productValueClass();
-        $value->setAttribute($attribute);
-        $value->setScope($channelCode);
-        $value->setLocale($localeCode);
-
-        foreach ($data as $optionCode) {
-            if (null !== $option = $this->getOption($attribute, $optionCode)) {
-                $value->addOption($option);
-            }
+        if (null === $data) {
+            $data = [];
         }
+
+        $value = new $this->productValueClass(
+            $attribute,
+            $channelCode,
+            $localeCode,
+            $this->getOptions($attribute, $data)
+        );
 
         return $value;
     }
@@ -81,6 +82,10 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
+        if (null === $data || [] === $data) {
+            return;
+        }
+
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
@@ -101,6 +106,27 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
                 );
             }
         }
+    }
+
+    /**
+     * Returns an ArrayCollection of attribute options.
+     *
+     * @param AttributeInterface $attribute
+     * @param string[]           $data
+     *
+     * @return ArrayCollection
+     */
+    protected function getOptions(AttributeInterface $attribute, array $data)
+    {
+        $options = new ArrayCollection();
+
+        foreach ($data as $optionCode) {
+            if (null !== $option = $this->getOption($attribute, $optionCode)) {
+                $options->add($option);
+            }
+        }
+
+        return $options;
     }
 
     /**
