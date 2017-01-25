@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 
@@ -44,10 +45,14 @@ class PriceFactory
     public function createPrice($amount, $currency)
     {
         if (null === $this->currencyRepository->findOneByIdentifier($currency)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unable to create a price for non existing currency with code "%s".',
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'currency',
+                'code',
+                'The currency does not exist',
+                'price',
+                'factory',
                 $currency
-            ));
+            );
         }
 
         $price = new $this->priceClass($amount, $currency);

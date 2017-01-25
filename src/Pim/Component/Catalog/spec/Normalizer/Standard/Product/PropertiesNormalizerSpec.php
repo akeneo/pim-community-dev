@@ -2,11 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -46,7 +45,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         FamilyInterface $family,
-        ArrayCollection $values,
+        ProductValueCollection $values,
         \ArrayIterator $iterator,
         ProductValueInterface $identifier
     ) {

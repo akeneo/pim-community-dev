@@ -120,7 +120,7 @@ interface ProductRepositoryInterface extends ObjectRepository
 
     /**
      * @param GroupInterface $group
-     * @param                $maxResults
+     * @param int            $maxResults
      *
      * @return array
      */

@@ -5,31 +5,39 @@ namespace Pim\Component\Catalog\Updater\Copier;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Copy a price collection value attribute in other price collection value attribute
+ * Copy a value attribute in other value attribute.
+ * Are handled all scalar attribute types, simple and multi-select, and price collections.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceCollectionAttributeCopier extends AbstractAttributeCopier
+class AttributeCopier extends AbstractAttributeCopier
 {
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
+     * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param NormalizerInterface      $normalizer
      * @param array                    $supportedFromTypes
      * @param array                    $supportedToTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
+        NormalizerInterface $normalizer,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
+
+        $this->normalizer = $normalizer;
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }
@@ -50,8 +58,8 @@ class PriceCollectionAttributeCopier extends AbstractAttributeCopier
         $fromScope = $options['from_scope'];
         $toScope = $options['to_scope'];
 
-        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'price collection');
-        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'price collection');
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');
 
         $this->copySingleValue(
             $fromProduct,
@@ -66,7 +74,7 @@ class PriceCollectionAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * Copy single value
+     * Copies single value.
      *
      * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
@@ -89,25 +97,13 @@ class PriceCollectionAttributeCopier extends AbstractAttributeCopier
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
-            }
-            $this->copyPrices($fromValue, $toValue);
-        }
-    }
-
-    /**
-     * Copy attribute price into a price collection attribute
-     *
-     * @param ProductValueInterface $fromValue
-     * @param ProductValueInterface $toValue
-     */
-    protected function copyPrices(ProductValueInterface $fromValue, ProductValueInterface $toValue)
-    {
-        foreach ($fromValue->getData() as $price) {
-            $this->productBuilder
-                ->addPriceForCurrency($toValue, $price->getCurrency(), $price->getData());
+            $this->productBuilder->addProductValue(
+                $toProduct,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $this->normalizer->normalize($fromValue, 'standard')
+            );
         }
     }
 }

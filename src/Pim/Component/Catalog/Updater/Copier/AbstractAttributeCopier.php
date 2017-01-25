@@ -33,13 +33,11 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     protected $resolver;
 
     /**
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
+     * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      */
-    public function __construct(
-        ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attrValidatorHelper
-    ) {
+    public function __construct(ProductBuilderInterface $productBuilder, AttributeValidatorHelper $attrValidatorHelper)
+    {
         $this->productBuilder = $productBuilder;
         $this->attrValidatorHelper = $attrValidatorHelper;
 
@@ -55,7 +53,9 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
         $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
         $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
 
-        return $supportsFrom && $supportsTo;
+        $sameType = $fromAttribute->getAttributeType() === $toAttribute->getAttributeType();
+
+        return $supportsFrom && $supportsTo && $sameType;
     }
 
     /**

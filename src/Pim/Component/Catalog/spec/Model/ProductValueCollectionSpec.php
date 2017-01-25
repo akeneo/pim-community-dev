@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Prophecy\Argument;
 
 class ProductValueCollectionSpec extends ObjectBehavior
 {
@@ -42,15 +41,15 @@ class ProductValueCollectionSpec extends ObjectBehavior
 
         $value1->getScope()->willReturn(null);
         $value2->getScope()->willReturn(null);
-        $value3->getScope()->willReturn($ecommerce);
-        $value4->getScope()->willReturn($ecommerce);
-        $value5->getScope()->willReturn($print);
+        $value3->getScope()->willReturn('ecommerce');
+        $value4->getScope()->willReturn('ecommerce');
+        $value5->getScope()->willReturn('print');
 
         $value1->getLocale()->willReturn(null);
         $value2->getLocale()->willReturn(null);
-        $value3->getLocale()->willReturn($en_US);
-        $value4->getLocale()->willReturn($fr_FR);
-        $value5->getLocale()->willReturn($en_US);
+        $value3->getLocale()->willReturn('en_US');
+        $value4->getLocale()->willReturn('fr_FR');
+        $value5->getLocale()->willReturn('en_US');
 
         $this->beConstructedWith([$value1, $value2, $value3, $value4, $value5]);
     }
@@ -230,10 +229,17 @@ class ProductValueCollectionSpec extends ObjectBehavior
         $this->count()->shouldReturn(5);
     }
 
-    function it_adds_new_value($value1, $value2, $value3, $value4, $value5, $en_US, ProductValueInterface $newValue, AttributeInterface $attribute)
-    {
+    function it_adds_new_value(
+        $value1,
+        $value2,
+        $value3,
+        $value4,
+        $value5,
+        ProductValueInterface $newValue,
+        AttributeInterface $attribute
+    ) {
         $newValue->getAttribute()->willReturn($attribute);
-        $newValue->getLocale()->willReturn($en_US);
+        $newValue->getLocale()->willReturn('en_US');
         $newValue->getScope()->willReturn(null);
         $attribute->getCode()->willReturn('weight');
 

@@ -7,7 +7,6 @@ use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -102,11 +101,7 @@ class ProductBuilder implements ProductBuilderInterface
         $product = new $this->productClass();
 
         $identifierAttribute = $this->attributeRepository->getIdentifier();
-        $productValue = $this->addProductValue($product, $identifierAttribute, null, null);
-
-        if (null !== $identifier) {
-            $productValue->setData($identifier);
-        }
+        $this->addProductValue($product, $identifierAttribute, null, null, $identifier);
 
         if (null !== $familyCode) {
             $family = $this->familyRepository->findOneByIdentifier($familyCode);
@@ -137,7 +132,7 @@ class ProductBuilder implements ProductBuilderInterface
         );
 
         foreach ($missingValues as $value) {
-            $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope']);
+            $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope'], null);
         }
 
         $this->addMissingPricesToProduct($product);
@@ -170,7 +165,7 @@ class ProductBuilder implements ProductBuilderInterface
         $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
         foreach ($requiredValues as $value) {
-            $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
+            $this->addProductValue($product, $attribute, $value['locale'], $value['scope'], null);
         }
     }
 
@@ -201,43 +196,16 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $amount)
+    public function addProductValue(ProductInterface $product, AttributeInterface $attribute, $locale, $scope, $data)
     {
-        return $this->addPriceForCurrency($value, $currency, $amount);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies)
-    {
-        foreach ($value->getPrices() as $price) {
-            if (!in_array($price->getCurrency(), $currencies)) {
-                $value->removePrice($price);
-            }
+        $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
+        if (null !== $productValue) {
+            $product->removeValue($productValue);
         }
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addProductValue(
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        $locale = null,
-        $scope = null
-    ) {
-        $productValue = $this->productValueFactory->create($attribute, $scope, $locale);
-        $product->addValue($productValue);
+        $product->addValue($this->productValueFactory->create($attribute, $scope, $locale, $data));
 
         return $productValue;
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null)
-    {
-        return $this->productValueFactory->create($attribute, $locale, $scope);
     }
 
     /**
@@ -382,8 +350,12 @@ class ProductBuilder implements ProductBuilderInterface
                 $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
                 foreach ($requiredValues as $value) {
-                    $productValue = $this->productValueFactory->create($attribute, $value['scope'], $value['locale']);
-                    $productValue->setBoolean(false);
+                    $productValue = $this->productValueFactory->create(
+                        $attribute,
+                        $value['scope'],
+                        $value['locale'],
+                        false
+                    );
                     $product->addValue($productValue);
                 }
             }

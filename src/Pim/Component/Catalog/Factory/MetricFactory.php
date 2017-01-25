@@ -43,52 +43,34 @@ class MetricFactory
     }
 
     /**
+     * Creates a new metric.
+     *
+     * Ideally, we should throw a PIM business exception when the MeasureBundle
+     * throws one, but then the PEF would fail to save the product. So we simply
+     * create a invalid metric, which will be rejected by validation, allowing
+     * a proper error message to be display on the PEF.
+     *
      * @param string $family
      * @param string $unit
      * @param double $data
      *
-     * @throws \InvalidArgumentException
      * @return MetricInterface
      */
     public function createMetric($family, $unit, $data)
     {
-        $baseData = null !== $data ? $this->convertDataToBaseData($family, $unit, $data) : null;
+        try {
+            $baseData = null !== $data ?
+                $this->measureConverter->setFamily($family)->convertBaseToStandard($unit, $data) :
+                null;
+        } catch (MeasureException $e) {
+            return new $this->metricClass($family, $unit, $data, null, null);
+        }
+
         $baseUnit = $this->getBaseUnit($family);
 
         $metric = new $this->metricClass($family, $unit, $data, $baseUnit, $baseData);
 
         return $metric;
-    }
-
-    /**
-     * Converts the provided data to the metric base data, according to its family standard unit (base unit).
-     *
-     * @param string $family
-     * @param string $unit
-     * @param double $data
-     *
-     * @throws \LogicException
-     * @return double
-     */
-    protected function convertDataToBaseData($family, $unit, $data)
-    {
-        try {
-            $convertedData = $this->measureConverter->setFamily($family)->convertBaseToStandard($unit, $data);
-        } catch (MeasureException $e) {
-            // TODO: This should be a dedicated exception. Will be addressed in a coming PR.
-            throw new \LogicException(
-                sprintf(
-                    'Metric data %d cannot be converted to base data for unit %s and family %s',
-                    $data,
-                    $unit,
-                    $family
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
-
-        return $convertedData;
     }
 
     /**

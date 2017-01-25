@@ -304,8 +304,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      *          }
      *      ]
      *
-     * @param  array $originalValues
-     * @param  array $newValues
+     * @param array $originalValues
+     * @param array $newValues
      *
      * @return array
      */

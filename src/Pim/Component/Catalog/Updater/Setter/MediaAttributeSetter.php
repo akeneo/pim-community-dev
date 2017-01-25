@@ -10,10 +10,9 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
- * Sets a media value in many products
+ * Sets a media data in a product.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -28,20 +27,18 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     protected $repository;
 
     /**
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param FileStorerInterface   $storer
-     * @param FileInfoRepositoryInterface  $repository
-     * @param array                    $supportedTypes
+     * @param ProductBuilderInterface     $productBuilder
+     * @param FileStorerInterface         $storer
+     * @param FileInfoRepositoryInterface $repository
+     * @param string[]                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attrValidatorHelper,
         FileStorerInterface $storer,
         FileInfoRepositoryInterface $repository,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder, $attrValidatorHelper);
+        parent::__construct($productBuilder);
 
         $this->storer = $storer;
         $this->repository = $repository;
@@ -60,8 +57,6 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'media');
-        $this->checkData($attribute, $data);
 
         if (null === $data) {
             $file = null;
@@ -69,56 +64,22 @@ class MediaAttributeSetter extends AbstractAttributeSetter
             $file = $this->storeFile($attribute, $data);
         }
 
-        $this->setMedia($product, $attribute, $file, $options['locale'], $options['scope']);
+        $this->productBuilder->addProductValue(
+            $product,
+            $attribute,
+            $options['locale'],
+            $options['scope'],
+            null !== $file ? $file->getKey() : null
+        );
     }
 
     /**
-     * Set media in the product value
-     *
-     * @param ProductInterface       $product
-     * @param AttributeInterface     $attribute
-     * @param FileInfoInterface|null $fileInfo
-     * @param string|null            $locale
-     * @param string|null            $scope
-     */
-    protected function setMedia(
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        FileInfoInterface $fileInfo = null,
-        $locale = null,
-        $scope = null
-    ) {
-        $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-        }
-
-        $value->setMedia($fileInfo);
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
-    {
-        if (null === $data) {
-            return;
-        }
-
-        if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'media', gettype($data));
-        }
-    }
-
-    /**
-     * TODO: inform the user that this could take some time
+     * TODO: inform the user that this could take some time.
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
      * @throws InvalidArgumentException If an invalid filePath is provided
-     *
      * @return FileInfoInterface|null
      */
     protected function storeFile(AttributeInterface $attribute, $data)

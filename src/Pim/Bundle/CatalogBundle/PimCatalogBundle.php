@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterFilterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductUpdaterPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueFactoryPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterQueryGeneratorsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
@@ -40,6 +41,7 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('pim_repository'))
             ->addCompilerPass(new RegisterAttributeConstraintGuessersPass())
             ->addCompilerPass(new RegisterAttributeTypePass())
+            ->addCompilerPass(new RegisterProductValueFactoryPass())
             ->addCompilerPass(new RegisterQueryGeneratorsPass())
             ->addCompilerPass(new RegisterProductQueryFilterPass())
             ->addCompilerPass(new RegisterProductQuerySorterPass())

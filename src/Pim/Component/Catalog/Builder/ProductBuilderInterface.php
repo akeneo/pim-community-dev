@@ -86,29 +86,6 @@ interface ProductBuilderInterface
     public function addPriceForCurrency(ProductValueInterface $value, $currency, $amount);
 
     /**
-     * Add a product price with currency and data to the value. If the price already exists, its data is
-     * updated and it is returned.
-     *
-     * @param ProductValueInterface $value
-     * @param string                $currency
-     * @param float|int             $amount
-     *
-     * @return null|ProductPriceInterface
-     *
-     * @deprecated Will be removed in 1.8.
-     *             Please use "Pim\Component\Catalog\Builder\ProductBuilderInterface::addPriceForCurrency" instead.
-     */
-    public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $amount);
-
-    /**
-     * Remove extra prices that are not in the currencies passed in arguments
-     *
-     * @param ProductValueInterface $value
-     * @param array                 $currencies
-     */
-    public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies);
-
-    /**
      * Add missing prices to a product value
      *
      * @param ProductValueInterface $value
@@ -124,26 +101,15 @@ interface ProductBuilderInterface
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
+     * @param mixed              $data
      *
      * @return ProductValueInterface
      */
     public function addProductValue(
         ProductInterface $product,
         AttributeInterface $attribute,
-        $locale = null,
-        $scope = null
+        $locale,
+        $scope,
+        $data
     );
-
-    /**
-     * Create a productValue
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     *
-     * @return ProductValueInterface
-     *
-     * @deprecated will be removed in 1.8. Please use ProductValueFactory::create instead.
-     */
-    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null);
 }
