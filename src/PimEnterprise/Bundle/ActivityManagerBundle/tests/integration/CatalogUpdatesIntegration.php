@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
 
-class CatalogUpdatesRemoveProjectIntegration extends ActivityManagerTestCase
+class CatalogUpdatesIntegration extends ActivityManagerTestCase
 {
     /**
      * A project has to be removed if its channel is removed.

@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\Project;
 
+use PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\ActivityManagerTestCase;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 
 class ProjectCompletenessIntegration extends ActivityManagerTestCase
@@ -22,18 +23,11 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
      */
     public function testCreateAProjectOnTheTshirtFamily()
     {
-        $project = $this->createProject([
-            'label'           => 'Tshirt - ecommerce',
-            'locale'          => 'en_US',
-            'owner'           => 'Julia',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'family',
-                    'operator' => 'IN',
-                    'value'    => ['tshirt'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $project = $this->createProject('Tshirt - ecommerce', 'Julia', 'en_US',  'ecommerce', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['tshirt'],
             ],
         ]);
 
@@ -109,18 +103,11 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
      */
     public function testCreateAProjectOnTheTshirtAndUsbKeysFamily()
     {
-        $project = $this->createProject([
-            'label'           => 'Tshirt & USB keys - ecommerce',
-            'locale'          => 'en_US',
-            'owner'           => 'Julia',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'family',
-                    'operator' => 'IN',
-                    'value'    => ['tshirt', 'usb_keys'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $project = $this->createProject('Tshirt & USB keys - ecommerce', 'Julia', 'en_US', 'ecommerce', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['tshirt', 'usb_keys'],
             ],
         ]);
 
@@ -168,62 +155,6 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
     }
 
     /**
-     * Check the number of products done, in progress or to do
-     *
-     * @param ProjectCompleteness $projectCompleteness
-     * @param int                 $expectedTodo
-     * @param int                 $expectedInProgress
-     * @param int                 $expectedDone
-     * @param string              $username
-     */
-    private function checkProjectCompleteness(
-        ProjectCompleteness $projectCompleteness,
-        $expectedTodo,
-        $expectedInProgress,
-        $expectedDone,
-        $username
-    ) {
-        $this->assertEquals(
-            $projectCompleteness->getProductsCountDone(),
-            $expectedDone,
-            sprintf('Product count done are invalid for %s', $username)
-        );
-
-        $this->assertEquals(
-            $projectCompleteness->getProductsCountInProgress(),
-            $expectedInProgress,
-            sprintf('Product count in progress are invalid for %s', $username)
-        );
-
-        $this->assertEquals(
-            $projectCompleteness->getProductsCountTodo(),
-            $expectedTodo,
-            sprintf('Product count to do are invalid for %s', $username)
-        );
-    }
-
-    /**
-     * Check the number of products editable by the user
-     *
-     * @param ProjectCompleteness $projectCompleteness
-     * @param int                 $expectedCount
-     * @param string              $username
-     */
-    private function checkProductSelectionCount(
-        ProjectCompleteness $projectCompleteness,
-        $expectedCount,
-        $username
-    ) {
-        $this->assertEquals(
-            $expectedCount,
-            $projectCompleteness->getProductsCountDone() +
-            $projectCompleteness->getProductsCountInProgress() +
-            $projectCompleteness->getProductsCountTodo(),
-            sprintf('%s must edit/see %d product(s) for his/her project.', $username, $expectedCount)
-        );
-    }
-
-    /**
      * Check that the complete is computed with the right locale and the right channel.
      *
      * Family: tshirt (3 products + 1 uncategorized product)
@@ -232,18 +163,12 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
      */
     public function testCreateAProjectOnTheTshirtFamilyButWithAnotherChannel()
     {
-        $project = $this->createProject([
-            'label'           => 'Tshirt - print',
-            'locale'          => 'fr_FR',
-            'owner'           => 'Julia',
-            'channel'         => 'mobile',
-            'product_filters' => [
-                [
-                    'field'    => 'family',
-                    'operator' => 'IN',
-                    'value'    => ['tshirt'],
-                    'context'  => ['locale' => 'fr_FR', 'scope' => 'mobile'],
-                ],
+        $project = $this->createProject('Tshirt - print', 'Julia', 'fr_FR', 'mobile', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['tshirt'],
+                'context'  => ['locale' => 'fr_FR', 'scope' => 'mobile'],
             ],
         ]);
 
@@ -309,5 +234,61 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Marc');
         $this->checkProjectCompleteness($projectCompleteness, 3, 0, 1, 'Marc');
+    }
+
+    /**
+     * Check the number of products done, in progress or to do
+     *
+     * @param ProjectCompleteness $projectCompleteness
+     * @param int                 $expectedTodo
+     * @param int                 $expectedInProgress
+     * @param int                 $expectedDone
+     * @param string              $username
+     */
+    private function checkProjectCompleteness(
+        ProjectCompleteness $projectCompleteness,
+        $expectedTodo,
+        $expectedInProgress,
+        $expectedDone,
+        $username
+    ) {
+        $this->assertEquals(
+            $projectCompleteness->getProductsCountDone(),
+            $expectedDone,
+            sprintf('Product count done are invalid for %s', $username)
+        );
+
+        $this->assertEquals(
+            $projectCompleteness->getProductsCountInProgress(),
+            $expectedInProgress,
+            sprintf('Product count in progress are invalid for %s', $username)
+        );
+
+        $this->assertEquals(
+            $projectCompleteness->getProductsCountTodo(),
+            $expectedTodo,
+            sprintf('Product count to do are invalid for %s', $username)
+        );
+    }
+
+    /**
+     * Check the number of products editable by the user
+     *
+     * @param ProjectCompleteness $projectCompleteness
+     * @param int                 $expectedCount
+     * @param string              $username
+     */
+    private function checkProductSelectionCount(
+        ProjectCompleteness $projectCompleteness,
+        $expectedCount,
+        $username
+    ) {
+        $this->assertEquals(
+            $expectedCount,
+            $projectCompleteness->getProductsCountDone() +
+            $projectCompleteness->getProductsCountInProgress() +
+            $projectCompleteness->getProductsCountTodo(),
+            sprintf('%s must edit/see %d product(s) for his/her project.', $username, $expectedCount)
+        );
     }
 }
