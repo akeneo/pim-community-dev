@@ -1,7 +1,7 @@
 <div class="tabsection-title"><%- label %></div>
 <div class="tabsection-content">
     <div class="AknFormContainer AknFormContainer--withPadding">
-    <% _.each(metrics, function (attribute, key) { %>
+        <% _.each(metrics, function (attribute, key) { %>
         <div class="AknFieldContainer">
             <div class="AknFieldContainer-header">
                 <label class="AknFieldContainer-label control-label" for="<%- fieldBaseId + attribute.code %>">
@@ -10,12 +10,12 @@
             </div>
             <div class="AknFieldContainer-inputContainer">
                 <select class="select2" id="<%- fieldBaseId + attribute.code %>">
-                    <% key = _.findIndex(conversionUnits, function (unit) { return _.has(unit, attribute.code) }) %>
-                    <option <%- (0 > key) ? 'selected' : '' %>>
+                    <% isMetricConfigured = !_.isUndefined(conversionUnits[attribute.code]) %>
+                    <option value="no_conversion" <%- (!isMetricConfigured) ? 'selected' : '' %>>
                         <%- doNotConvertLabel %>
                     </option>
                     <% _.each(_.keys(measures[attribute.metric_family].units), function (unit) { %>
-                    <option value="<%- unit %>" <%- (0 <= key && unit == conversionUnits[key][attribute.code]) ? 'selected' : '' %>>
+                    <option value="<%- unit %>" <%- (isMetricConfigured && unit == conversionUnits[attribute.code]) ? 'selected' : '' %>>
                         <%- _.__(unit) %>
                     </option>
                     <% }) %>

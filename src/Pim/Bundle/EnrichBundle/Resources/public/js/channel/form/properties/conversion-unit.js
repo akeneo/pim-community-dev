@@ -96,17 +96,16 @@ define([
             setAttributeConversionUnit: function (attribute, value) {
                 var data = this.getFormData();
 
-                var key = _.findIndex(data.conversion_units, function (unit) {
-                    return _.has(unit, attribute);
-                });
-
-                if (0 > key) {
-                    var conversionUnit = {};
-                    conversionUnit[attribute] = value;
-                    data.conversion_units.push(conversionUnit);
-                } else {
-                    data.conversion_units[key][attribute] = value;
+                if (_.isEmpty(data.conversion_units)) {
+                    data.conversion_units = {};
                 }
+
+                if (value !== "no_conversion") {
+                    data.conversion_units[attribute] = value;
+                } else {
+                    delete data.conversion_units[attribute];
+                }
+
                 this.setData(data);
             }
         });

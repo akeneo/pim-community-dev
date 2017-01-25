@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Updates a channel
@@ -27,19 +28,25 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $currencyRepository;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $currencyRepository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $categoryRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $currencyRepository
+        IdentifiableObjectRepositoryInterface $currencyRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->localeRepository = $localeRepository;
         $this->currencyRepository = $currencyRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -54,6 +61,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *     },
      *     'locales': ['en_US'],
      *     'currencies': ['EUR', 'USD'],
+     *     'conversion_units': ["weight" => "GRAM", "display_diagnoal" => "METER"],
      *     'category_tree': 'master'
      * }
      */
@@ -96,7 +104,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 $this->setCurrencies($channel, $data);
                 break;
             case 'conversion_units':
-                $channel->setConversionUnits($data);
+                $this->setConversionUnits($channel, $data);
                 break;
             case 'labels':
                 $this->setLabels($channel, $data);
@@ -192,5 +200,42 @@ class ChannelUpdater implements ObjectUpdaterInterface
             $translation = $channel->getTranslation();
             $translation->setLabel($label);
         }
+    }
+
+    /**
+     * Validates the list of conversion units passed in before updating the channel object with.
+     *
+     * @param ChannelInterface $channel
+     * @param array            $conversionUnits
+     *
+     * @internal param $convertionUnits
+     *
+     */
+    protected function setConversionUnits($channel, $conversionUnits)
+    {
+        foreach ($conversionUnits as $attributeCode => $conversionUnit) {
+            $isValidAttribute = false;
+            $isValidMetricCode = false;
+
+            if (is_string($attributeCode)) {
+                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+                $isValidAttribute = (null !== $attribute) ? true : false;
+            }
+
+            $isValidMetricCode = true;
+
+            if (!$isValidAttribute || !$isValidMetricCode) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'conversionUnits',
+                    'attributeCode and metric code',
+                    'the attribute code does not exists',
+                    'updater',
+                    'channel',
+                    [$attributeCode => $conversionUnits]
+                );
+            }
+        }
+
+        $channel->setConversionUnits($conversionUnits);
     }
 }
