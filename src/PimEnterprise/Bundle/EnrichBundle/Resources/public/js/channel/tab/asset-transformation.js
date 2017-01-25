@@ -25,7 +25,7 @@ define([
         return BaseForm.extend({
             className: 'AknTabContainer-content asset-transformation',
             transformationTable: null,
-            notFoundLabel: __('pimee_enrich.asset_transformation.not_found'),
+            template: _.template(template),
 
             /**
              * @param {Object} config
@@ -51,28 +51,40 @@ define([
              * {@inheritdoc}
              */
             render: function () {
+                var hasId = _.has(this.getFormData().meta, 'id');
+                var notFoundLabel = __('pimee_enrich.asset_transformation.not_found');
+                var transformationLabel = __('pimee_enrich.asset_transformation.title.transformation');
+                var optionsLabel = __('pimee_enrich.asset_transformation.title.options');
+                var configuration = {};
 
-                if (!_.has(this.getFormData().meta, 'id')) {
-                    this.$el.html(
-                        '<div class="no-data AknMessageBox AknMessageBox--centered">' +
-                    __('pimee_enrich.asset_transformation.not_found') + '</div>'
-                    );
-                }
-                if (!this.transformationTable && _.has(this.getFormData().meta, 'id')) {
-                    $.get(
-                        Routing.generate(
-                            this.config.url,
-                            {id: this.getFormData().meta.id}
-                        )
-                    ).then(function (table) {
-                        this.transformationTable = table;
-                        this.$el.html(this.transformationTable);
-                    }.bind(this));
+                if (!hasId) {
+                    this.$el.html(this.template({
+                        hasId: hasId,
+                        notFoundLabel: notFoundLabel,
+                        transformationLabel: transformationLabel,
+                        optionsLabel: optionsLabel,
+                        configuration: configuration,
+                        __: __
+                    }));
 
                     return this;
                 }
 
-                this.$el.html(this.transformationTable);
+                $.get(
+                    Routing.generate(
+                        this.config.url,
+                        {id: this.getFormData().meta.id}
+                    )
+                ).then(function (configuration) {
+                    this.$el.html(this.template({
+                        hasId: hasId,
+                        notFoundLabel: notFoundLabel,
+                        transformationLabel: transformationLabel,
+                        optionsLabel: optionsLabel,
+                        configuration: configuration,
+                        __: __
+                    }));
+                }.bind(this));
 
                 return this;
             }

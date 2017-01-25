@@ -1,28 +1,36 @@
+<% if (hasId) { %>
 <div class="AknFormContainer AknFormContainer--withPadding">
     <table class="AknGrid AknGrid--unclickable AknGrid--condensed grid-asset-transformations">
         <thead>
         <tr>
-            <th class="AknGrid-headerCell">{{ 'pimee_enrich.asset_transformation.title.transformation'|trans }}</th>
-            <th class="AknGrid-headerCell">{{ 'pimee_enrich.asset_transformation.title.options'|trans }}</th>
+            <th class="AknGrid-headerCell"><%- transformationLabel %></th>
+            <th class="AknGrid-headerCell"><%- optionsLabel %></th>
         </tr>
         </thead>
         <tbody>
-        {% if channelTransformations %}
-        {% for transformation, options in channelTransformations.configuration %}
-        <tr class="AknGrid-bodyRow">
-            {% set transformationType = 'pimee_enrich.asset_transformation.' ~ transformation ~ '.title' %}
-            <td class="AknGrid-bodyCell">{{ transformationType|trans }}</td>
-            <td class="AknGrid-bodyCell">
-                {% for optionKey, optionValue in options %}
-                <span class="AknBadge AknBadge--grey badge-info-large">
-                    {% set optionType = 'pimee_enrich.asset_transformation.' ~ transformation ~ '.options.' ~ optionKey %}
-                    {{ optionType|trans({'%value%': optionValue}) }}
-                </span>
-                {% endfor %}
-            </td>
-        </tr>
-        {% endfor %}
-        {% endif %}
+        <% if (0 < _.keys(configuration).length) { %>
+            <% _.each(configuration, function (options, transformation) { %>
+            <tr class="AknGrid-bodyRow">
+                <td class="AknGrid-bodyCell">
+                    <%- __('pimee_enrich.asset_transformation.' + transformation + '.title') %>
+                </td>
+                <td class="AknGrid-bodyCell">
+                    <% _.each(options, function(value, key) { %>
+                    <span class="AknBadge AknBadge--grey badge-info-large">
+                        <% var valueTraslation = __('pimee_enrich.asset_transformation.' + transformation + '.options.' + key) %>
+                        <%- valueTraslation.replace('%value%', value) %>
+                    </span>
+                    <% }) %>
+                </td>
+            </tr>
+            <% }) %>
+        <% } %>
         </tbody>
     </table>
 </div>
+<% } else { %>
+<div class="no-data AknMessageBox AknMessageBox--centered">
+    <%- notFoundLabel %>
+</div>
+<% } %>
+

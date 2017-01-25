@@ -109,3 +109,33 @@ pimee_enrich:
             confirmation:
                 discard_changes: Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes?
                 discard_changes_title: Are you sure you want to send this draft?
+    asset_transformation:
+        not_found: No transformation found
+        title:
+            transformation: Transformation
+            options: Options
+        colorspace:
+            title: Colorspace
+            options:
+                colorspace: %value% colorspace
+        resize:
+            title: Resize
+            options:
+                width: %value%px width
+                height: %value%px height
+        resolution:
+            title: Resolution
+            options:
+                resolution: %value%
+                resolution-unit: %value%
+        scale:
+            title: Scale
+            options:
+                width: %value%px width
+                height: %value%px height
+                ratio: %value%% ratio
+        thumbnail:
+            title: Thumbnail
+            options:
+                width: %value%px width
+                height: %value%px height
