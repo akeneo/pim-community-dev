@@ -30,7 +30,7 @@ Feature: Display activity manager projects in the datagrid view selector
       | decoration | Decoration  | default |
     And the following product category accesses:
       | product category | user group          | access |
-      | clothing         | Marketing           | edit   |
+      | clothing         | Marketing           | own    |
       | clothing         | Technical Clothing  | edit   |
       | clothing         | Technical High-Tech | none   |
       | clothing         | Read Only           | view   |
@@ -81,6 +81,10 @@ Feature: Display activity manager projects in the datagrid view selector
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
     And I am logged in as "Julia"
+    And I am on the "tshirt-the-witcher-3" product page
+    And I fill in the following information:
+      | Description | A t-shirt with Geralt on it. |
+    And I save the product
     When I am on the products page
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
@@ -146,3 +150,11 @@ Feature: Display activity manager projects in the datagrid view selector
     Then I should see the "2016 summer collection" project
     When I filter view selector with name "bar"
     Then I should not see the "2016 summer collection" project
+
+  Scenario: A contributor can see the completeness of a project in the list
+    Given I am logged in as "Julia"
+    When I am on the products page
+    And I switch view selector type to "Projects"
+    Then I should see the text "2016 summer collection"
+    When I open the view selector
+    Then I should see the text "50%"
