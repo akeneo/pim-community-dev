@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface;
@@ -234,5 +235,57 @@ class AttributeUpdaterSpec extends ObjectBehavior
                 'foo'
             )
         )->during('update', [$attribute, $values, []]);
+    }
+
+    function it_throws_an_exception_when_code_is_not_scalar(AttributeInterface $attribute)
+    {
+        $values = [
+            'code' => [],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::scalarExpected('code', 'update', 'attribute', [])
+            )
+            ->during('update', [$attribute, $values, []]);
+    }
+
+    function it_throws_an_exception_when_labels_is_not_an_array(AttributeInterface $attribute)
+    {
+        $values = [
+            'labels' => 'not_an_array',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('labels', 'update', 'attribute', 'not_an_array')
+            )
+            ->during('update', [$attribute, $values, []]);
+    }
+
+    function it_throws_an_exception_when_available_locales_is_not_an_array(AttributeInterface $attribute)
+    {
+        $values = [
+            'available_locales' => 'not_an_array',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('available_locales', 'update', 'attribute', 'not_an_array')
+            )
+            ->during('update', [$attribute, $values, []]);
+    }
+
+    function it_throws_an_exception_when_allowed_extensions_is_not_an_array(AttributeInterface $attribute)
+    {
+        $values = [
+            'allowed_extensions' => 'not_an_array',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('allowed_extensions', 'update', 'attribute', 'not_an_array')
+            )
+            ->during('update', [$attribute, $values, []]);
     }
 }
