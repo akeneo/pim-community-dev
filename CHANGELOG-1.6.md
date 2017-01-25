@@ -11,6 +11,7 @@
 ## Bug fixes
 
 - PIM-6110: Saving a product value clears the saved associations
+- PIM-6086: Command that removes obsolete relations and migrates normalizedData for MongoDB documents.
 
 # 1.6.8 (2017-01-05)
 
