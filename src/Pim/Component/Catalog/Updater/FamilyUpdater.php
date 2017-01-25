@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -83,10 +84,95 @@ class FamilyUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
+            $this->validateDatatype($field, $value);
             $this->setData($family, $field, $value);
         }
 
         return $this;
+    }
+
+    /**
+     * Validate the data type of a field.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws UnknownPropertyException
+     */
+    protected function validateDatatype($field, $data)
+    {
+        if (in_array($field, ['code', 'attribute_as_label'])) {
+            if (null !== $data && !is_scalar($data)) {
+                throw InvalidPropertyTypeException::scalarExpected($field, 'update', 'family', $data);
+            }
+        } elseif (in_array($field, ['attributes', 'labels'])) {
+            $this->validateScalarArray($field, $data);
+        } elseif ('attribute_requirements' === $field) {
+            $this->validateAttributeRequirements($data);
+        } else {
+            throw UnknownPropertyException::unknownProperty($field);
+        }
+    }
+
+    /**
+     * Validate that it is an array with scalar values.
+     *
+     * @param string $field
+     * @param mixed $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateScalarArray($field, $data)
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected($field, 'update', 'family', $data);
+        }
+
+        foreach ($data as $value) {
+            if (null !== $value && !is_scalar($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    sprintf('one of the %s is not a scalar', $field),
+                    'update',
+                    'family',
+                    $data
+                );
+            }
+        }
+    }
+    /**
+     * @param mixed $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateAttributeRequirements($data)
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected('attribute_requirements', 'update', 'family', $data);
+        }
+        foreach ($data as $channel => $attributes) {
+            if (!is_array($attributes)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    'attribute_requirements',
+                    sprintf('the channel "%s" is not an array', $channel),
+                    'update',
+                    'family',
+                    $data
+                );
+            }
+            foreach ($attributes as $attribute) {
+                if (null !== $attribute && !is_scalar($attribute)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        'attribute_requirements',
+                        sprintf('one of the attributes in the channel "%s" is not a scalar', $channel),
+                        'update',
+                        'family',
+                        $data
+                    );
+                }
+            }
+        }
     }
 
     /**
