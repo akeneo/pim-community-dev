@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
@@ -12,6 +13,7 @@ use Pim\Component\Catalog\Updater\ChannelUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -97,6 +99,8 @@ class ChannelController
      *
      * @param string $identifier
      *
+     * @throws HttpExceptionInterface
+     *
      * @return JsonResponse
      */
     public function getAction($identifier)
@@ -115,6 +119,10 @@ class ChannelController
      *
      * @param Request $request
      *
+     * @throws ObjectUpdaterException
+     * @throws \LogicException
+     * @throws \InvalidArgumentException
+     *
      * @return JsonResponse
      */
     public function postAction(Request $request)
@@ -132,6 +140,11 @@ class ChannelController
      * @param Request $request
      * @param string  $code
      *
+     * @throws HttpExceptionInterface
+     * @throws ObjectUpdaterException
+     * @throws \LogicException
+     * @throws \InvalidArgumentException
+     *
      * @return JsonResponse
      */
     public function putAction(Request $request, $code)
@@ -148,6 +161,9 @@ class ChannelController
      *
      * @param $code
      *
+     * @throws HttpExceptionInterface
+     * @throws \InvalidArgumentException
+     *
      * @return JsonResponse
      */
     public function removeAction($code)
@@ -161,7 +177,9 @@ class ChannelController
     /**
      * @param $code
      *
-     * @return object
+     * @throws HttpExceptionInterface
+     *
+     * @return ChannelInterface
      */
     protected function getChannel($code)
     {
@@ -183,6 +201,10 @@ class ChannelController
     /**
      * @param ChannelInterface $channel
      * @param Request          $request
+     *
+     * @throws \LogicException
+     * @throws ObjectUpdaterException
+     * @throws \InvalidArgumentException
      *
      * @return JsonResponse
      */

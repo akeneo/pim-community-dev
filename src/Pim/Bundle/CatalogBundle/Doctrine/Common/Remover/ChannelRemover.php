@@ -95,7 +95,7 @@ class ChannelRemover implements RemoverInterface
         }
 
         $channelCount = $this->channelRepository->countAll();
-        if (1 == $channelCount) {
+        if (1 === $channelCount) {
             throw new \LogicException($this->translator->trans('flash.channel.not removable'));
         }
     }
